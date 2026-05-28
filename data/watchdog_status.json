@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-05-28T21:49:33.994836+00:00",
+  "updated_at": "2026-05-28T21:51:34.012151+00:00",
   "overall": "warning",
-  "summary": "JARVIS health: WARNING\n  [ok] app_running: JARVIS runtime is active.\n  [ok] voice_thread: Voice thread is alive.\n  [ok] tray_state: Tray mode enabled.\n  [ok] last_command_error: No recent command error.\n  [warning] tesseract: VISION_ENABLED but Tesseract OCR is not available.\n  [ok] ollama: LLM classifier disabled.\n  [ok] disk_free: 255.2 GB free on project volume.\n  [ok] command_history: Command history path is writable.",
+  "summary": "JARVIS health: WARNING\n  [ok] app_running: JARVIS runtime is active.\n  [ok] voice_thread: Voice thread is alive.\n  [ok] tray_state: Tray mode enabled.\n  [ok] last_command_error: No recent command error.\n  [warning] tesseract: VISION_ENABLED but Tesseract OCR is not available.\n  [ok] ollama: LLM classifier disabled.\n  [ok] disk_free: 255.1 GB free on project volume.\n  [ok] command_history: Command history path is writable.",
   "issues": [
     "tesseract: VISION_ENABLED but Tesseract OCR is not available."
   ],
@@ -47,7 +47,7 @@
     {
       "name": "disk_free",
       "status": "ok",
-      "message": "255.2 GB free on project volume.",
+      "message": "255.1 GB free on project volume.",
       "evidence": []
     },
     {
@@ -65,7 +65,7 @@
   "recoveries": [],
   "recovery_enabled": true,
   "runtime_monitor": {
-    "updated_at": "2026-05-28T21:49:33.997668+00:00",
+    "updated_at": "2026-05-28T21:51:34.014177+00:00",
     "overall": "ok",
     "issues": [],
     "event_loop": {
@@ -141,7 +141,7 @@
           "ident": 18604,
           "daemon": true,
           "alive": true,
-          "frame": "onnxruntime_inference_collection.py:run:322"
+          "frame": "sounddevice.py:_raw_read:1213"
         },
         {
           "name": "jarvis-watchdog",
@@ -156,14 +156,14 @@
     "timeouts": [],
     "recoveries": [],
     "heartbeats_age_seconds": {
-      "overlay_queue": 0.065,
-      "runtime_monitor": 17.63
+      "overlay_queue": 0.079,
+      "runtime_monitor": 17.615
     },
     "memory": {
-      "rss_mb": 40.81,
+      "rss_mb": 40.74,
       "growth_window_seconds": 300.0,
-      "growth_mb": 0.22,
-      "growth_mb_per_minute": 0.05,
+      "growth_mb": -1.0,
+      "growth_mb_per_minute": -0.21,
       "warn_growth_mb": 200.0,
       "sample_count": 120
     }

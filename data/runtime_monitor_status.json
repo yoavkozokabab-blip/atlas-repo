@@ -1,9 +1,9 @@
 {
-  "updated_at": "2026-05-28T21:50:16.382339+00:00",
+  "updated_at": "2026-05-28T21:52:16.408084+00:00",
   "overall": "ok",
   "issues": [],
   "event_loop": {
-    "monitor_lag_seconds": 0.01,
+    "monitor_lag_seconds": 0.004,
     "warn_after_seconds": 5.0
   },
   "threads": {
@@ -90,14 +90,14 @@
   "timeouts": [],
   "recoveries": [],
   "heartbeats_age_seconds": {
-    "overlay_queue": 0.047,
+    "overlay_queue": 0.061,
     "runtime_monitor": 0.0
   },
   "memory": {
-    "rss_mb": 40.95,
+    "rss_mb": 40.38,
     "growth_window_seconds": 300.0,
-    "growth_mb": -0.19,
-    "growth_mb_per_minute": -0.04,
+    "growth_mb": -1.21,
+    "growth_mb_per_minute": -0.26,
     "warn_growth_mb": 200.0,
     "sample_count": 120
   }
