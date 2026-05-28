@@ -1,0 +1,61 @@
+{
+  "current_topic": "show tts debug",
+  "previous_topics": [
+    "test direct tts",
+    "show conversation runtime",
+    "show tts debug",
+    "test tts playback",
+    "tool mode status",
+    "run phase 59 status"
+  ],
+  "active_project": "",
+  "unresolved_question": "",
+  "emotional_tone": "neutral",
+  "interruption_state": "speaking",
+  "pending_actions": [],
+  "recent_entities": [
+    "debug",
+    "show",
+    "direct",
+    "test",
+    "runtime",
+    "conversation",
+    "playback",
+    "status",
+    "mode",
+    "tool",
+    "phase"
+  ],
+  "follow_up_references": [
+    "voice:test_direct_tts",
+    "voice:show_conversation_runtime",
+    "voice:show_tts_debug",
+    "voice:test_tts_playback"
+  ],
+  "turn_count": 47,
+  "last_user_text": "show tts debug",
+  "last_assistant_summary": "TTS debug:\n  speak_enabled: yes\n  muted: no\n  audio_mode: conversational\n  backend: unverified\n  verified backend: none\n  backend initialized: yes\n  last suppression reason: conversational_runtime_local_fallback\n  session active: no\n  tool_first_mode: yes\n  conversational runtime enabled: yes\n  continuous mic: yes\n  bootstrap applied: yes\n\nTTS output diagnostics (Phase 59.2):\n  allowed: yes\n  reason: conversational_runtime_local_fallback\n  audio_mode: conversational\n  voice_path: show_tts_debug\n  session_active: no\n  tool_first_mode: yes\n  speak_enabled: yes\n  overlay_status: STREAMING RESPONS",
+  "last_intent": "show_tts_debug",
+  "paused_response": "",
+  "continuous_listening": false,
+  "updated_at": "2026-05-27T18:32:16.700611+00:00",
+  "interruption_count": 4,
+  "intent_continuity_chain": [
+    "test_direct_tts",
+    "show_conversation_runtime",
+    "show_tts_debug",
+    "test_tts_playback"
+  ],
+  "turn_references": [
+    "-> Direct TTS isolated test:\n  success: yes\n  elapsed ms: 4381.1\n  fallback: none",
+    "-> Human conversational runtime (Phase 59.1):\n  enabled: yes\n  continuous mic: yes",
+    "-> TTS debug:\n  speak_enabled: yes\n  muted: no\n  audio_mode: conversational\n  backe",
+    "-> TTS playback self-test:\n  success: yes\n\nWould you also like me to what am i doin",
+    "-> TTS playback self-test:\n  success: yes\n\nWould you also like me to start study mo",
+    "-> TTS playback self-test:\n  success: no\n  backend path: default\n  playback device:",
+    "-> TTS playback self-test:\n  success: yes\n\nWould you also like me to run diagnostic"
+  ],
+  "last_response_style": "warning",
+  "pending_follow_up": "",
+  "user_intent_continuity": "test_direct_tts"
+}

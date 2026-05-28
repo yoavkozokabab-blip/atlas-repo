@@ -1,0 +1,12 @@
+{
+  "apps": {
+    "discord": {
+      "app_id": "discord",
+      "display_name": "Discord",
+      "shortcut_path": "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-136\\test_forget_app_removes_approv0\\Start Menu\\Programs\\Discord.lnk",
+      "target_path": null,
+      "approved_at": "2026-05-23T14:39:57.606049+00:00"
+    }
+  },
+  "updated_at": "2026-05-23T14:39:57.606087+00:00"
+}

@@ -1,0 +1,45 @@
+{
+  "current_topic": "hello jarvis",
+  "previous_topics": [
+    "what is the weather today",
+    "thanks",
+    "hello jarvis"
+  ],
+  "active_project": "",
+  "unresolved_question": "",
+  "emotional_tone": "neutral",
+  "interruption_state": "idle",
+  "pending_actions": [],
+  "recent_entities": [
+    "jarvis",
+    "hello",
+    "today",
+    "weather",
+    "what",
+    "thanks"
+  ],
+  "follow_up_references": [
+    "voice:conversational"
+  ],
+  "turn_count": 6,
+  "last_user_text": "hello jarvis",
+  "last_assistant_summary": "Hello.",
+  "last_intent": "conversational",
+  "paused_response": "",
+  "continuous_listening": true,
+  "updated_at": "2026-05-27T16:49:20.625797+00:00",
+  "interruption_count": 2,
+  "intent_continuity_chain": [
+    "conversational"
+  ],
+  "turn_references": [
+    "hello jarvis -> Hello.",
+    "what is the weather today -> Sure. I can help with that.",
+    "thanks ->",
+    "hello jarvis ->",
+    "what is the weather today ->"
+  ],
+  "last_response_style": "neutral",
+  "pending_follow_up": "",
+  "user_intent_continuity": "conversational"
+}

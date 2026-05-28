@@ -1,0 +1,66 @@
+{
+  "current_investigation": {
+    "title": "Continuing previous assistant session:\n  investigation: summarize trading health\n  last intent: explain_last_result\n  last result: Task 1: summarize trading health\n  phase: completed\n  intent: summari",
+    "started_at": "2026-05-26T17:46:24.450463+00:00",
+    "pinned": false
+  },
+  "current_blocker": "Execution flow reconstruction (read-only):\n  files scanned: 175\n  signals generated: 4\n  signals eligible: 4\n  signals blocked: 4\n  execution attempts: 0\n  top ",
+  "recent_investigations": [
+    "Continuing previous assistant session:\n  investigation: summarize trading health\n  last intent: explain_last_result\n  la",
+    "Execution flow reconstruction (read-only):\n  files scanned: 175\n  signals generated: 4\n  signals eligible: 4\n  signals b",
+    "Trading health summary:\n\nExecution investigation (read-only)\n  files scanned: 175\n  signals generated: 4\n  signals eligi",
+    "Running tasks (2):\n  [1] running summarize trading health (0.0s)\n  [2] running reconstruct execution flow (0.0s)\n\nWould",
+    "Phase 50 \u2014 Computer Control + Context Memory\n  desktop: open/focus apps, reports, screenshots (allowlisted)\n  context: w",
+    "Phase 49 \u2014 Autonomous Operational Healing\n  runtime health: failed\n  recovery attempts (1h): 0\n  max recoveries/hour: 6",
+    "Operational suggestions (ranked, deduplicated, not auto-applied):\n  - execution blockers present [high]\n      evidence:",
+    "Resume hint: re-run related command for 'Ranked execution block reasons:\n1. overlap block severity=medium count=24 evide",
+    "Ranked execution block reasons:\n1. overlap block severity=medium count=24 evidence=C:\\FINAL_ALGO_TRADER\\reports\\live_pap",
+    "Trading operations dashboard:\n  generated: 2026-05-26T17:50:55.234579+00:00\n\n## Execution blockers\nExecution blockers:",
+    "Screen summary:\n  active window: J.A.R.V.I.S - Phase 21 Patch Implementation\n  process: (unknown)\n  capture: Status: deg",
+    "Open windows (11):\n  - python | process=unknown\n  - J.A.R.V.I.S - Phase 21 Patch Implementation | process=unknown [focus",
+    "Current JARVIS state:\n  runtime health: failed\n  active checks: 7\n\nStructured memory state:\n  current investigation: Tra",
+    "Trading operations dashboard:\n  generated: 2026-05-26T17:46:24.601859+00:00\n\n## Execution blockers\nExecution blockers:",
+    "Phase 49 \u2014 Autonomous Operational Healing\n  runtime health: healthy\n  recovery attempts (1h): 0\n  max recoveries/hour: 6",
+    "Phase 45 status\n  Mode: Elite Code + Trading Investigation Engine\n  Runtime: console + HUD first; TTS optional/deferred",
+    "Operational suggestions (explainable, not auto-applied):\n  - dashboard degraded [low]\n      evidence: <urlopen error [Wi",
+    "Resume hint: re-run related command for 'Ranked execution block reasons:\n1. overlap block severity=medium count=25 evide",
+    "Ranked execution block reasons:\n1. overlap block severity=medium count=25 evidence=C:\\FINAL_ALGO_TRADER\\reports\\live_pap",
+    "Current JARVIS state:\n  runtime health: degraded\n  active checks: 7\n\nTask memory:\n  last task: Runtime health: DEGRADED"
+  ],
+  "recent_reports": [],
+  "recent_symbols": [],
+  "open_workflows": [],
+  "pending_patches": [
+    "Trading operations dashboard:\n  generated: 2026-05-26T17:50:55.234579+00:00\n\n## Execution blockers\nExecution blockers:",
+    "Screen summary:\n  active window: J.A.R.V.I.S - Phase 21 Patch Implementation\n  process: (unknown)\n  capture: Status: deg",
+    "Open windows (11):\n  - python | process=unknown\n  - J.A.R.V.I.S - Phase 21 Patch Implementation | process=unknown [focus",
+    "Current JARVIS state:\n  runtime health: failed\n  active checks: 7\n\nStructured memory state:\n  current investigation: Tra",
+    "Trading operations dashboard:\n  generated: 2026-05-26T17:46:24.601859+00:00\n\n## Execution blockers\nExecution blockers:",
+    "Phase 45 status\n  Mode: Elite Code + Trading Investigation Engine\n  Runtime: console + HUD first; TTS optional/deferred"
+  ],
+  "pending_workflow": "Trading operations dashboard:\n  generated: 2026-05-26T17:50:55.234579+00:00\n\n## Execution blockers\nExecution blockers:\n  signals blocked: 4\n  top blocker: overl",
+  "recent_failures": [
+    "reconstruct_execution_flow: Execution flow reconstruction (read-only):\n  files scanned: 175\n  signals generated: 4\n  signals eligible: 4\n  signals b",
+    "summarize_trading_health: Trading health summary:\n\nExecution investigation (read-only)\n  files scanned: 175\n  signals generated: 4\n  signals eligi",
+    "show_runtime_health: Runtime health: DEGRADED\n  checked: 2026-05-26T20:06:11.869779+00:00\n  [OK] runtime: running=True\n  [OK] overlay: phase=",
+    "phase49_status: Phase 49 \u2014 Autonomous Operational Healing\n  runtime health: failed\n  recovery attempts (1h): 0\n  max recoveries/hour: 6",
+    "show_operational_suggestions: Operational suggestions (ranked, deduplicated, not auto-applied):\n  - execution blockers present [high]\n      evidence:",
+    "show_top_operational_blockers: Ranked execution block reasons:\n1. overlap block severity=medium count=24 evidence=C:\\FINAL_ALGO_TRADER\\reports\\live_pap",
+    "show_trading_operations_dashboard: Trading operations dashboard:\n  generated: 2026-05-26T17:50:55.234579+00:00\n\n## Execution blockers\nExecution blockers:",
+    "show_current_state: Current JARVIS state:\n  runtime health: failed\n  active checks: 7\n\nStructured memory state:\n  current investigation: Tra",
+    "show_runtime_health: Runtime health: FAILED\n  checked: 2026-05-26T17:50:40.535508+00:00\n  [OK] runtime: running=True\n  [OK] overlay: phase=Ov",
+    "show_trading_operations_dashboard: Trading operations dashboard:\n  generated: 2026-05-26T17:46:24.601859+00:00\n\n## Execution blockers\nExecution blockers:",
+    "phase45_status: Phase 45 status\n  Mode: Elite Code + Trading Investigation Engine\n  Runtime: console + HUD first; TTS optional/deferred",
+    "show_operational_suggestions: Operational suggestions (explainable, not auto-applied):\n  - dashboard degraded [low]\n      evidence: <urlopen error [Wi",
+    "show_top_operational_blockers: Ranked execution block reasons:\n1. overlap block severity=medium count=25 evidence=C:\\FINAL_ALGO_TRADER\\reports\\live_pap",
+    "show_runtime_health: Runtime health: DEGRADED\n  checked: 2026-05-26T17:08:11.161311+00:00\n  [OK] runtime: running=True\n  [OK] overlay: phase="
+  ],
+  "runtime_incidents": [
+    "Current JARVIS state:\n  runtime health: failed\n  active checks: 7\n\nStructured memory state:\n  current investigation: Tra"
+  ],
+  "last_dashboard_open": "2026-05-26T20:06:12.620518+00:00",
+  "last_task": "Unresolved operational issues:\n- none recorded in continuity store\n\nWould you also like me to run diagnostics?",
+  "last_intent": "summarize_unresolved_issues",
+  "completed_cleared_at": "",
+  "updated_at": "2026-05-26T20:44:31.835184+00:00"
+}

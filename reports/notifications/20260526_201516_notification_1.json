@@ -1,0 +1,14 @@
+{
+  "id": 1,
+  "kind": "investigation_completed",
+  "title": "Task 1 completed: summarize trading health",
+  "message": "trading health async complete \u2014 top blocker: stale open positions",
+  "severity": "success",
+  "source": "assistant",
+  "created_at": "2026-05-26T20:15:16.041298+00:00",
+  "read": false,
+  "archived": false,
+  "suggested_action": "Run explain last result or continue previous session.",
+  "related_task_id": 1,
+  "metadata": {}
+}

@@ -1,0 +1,116 @@
+{
+  "kind": "startup_integrity",
+  "started_at": "2026-05-26T21:14:16.730364+00:00",
+  "elapsed_seconds": 45.41,
+  "anomalies": [
+    "Runtime health degraded"
+  ],
+  "recommendations": [
+    {
+      "severity": "warning",
+      "confidence": 0.88,
+      "recurrence": 5,
+      "impact": "execution suppression",
+      "command": "inspect execution adapter",
+      "summary": "Adapter disabled causing execution attempts=0"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "adapter_disabled",
+      "title": "Adapter disabled causing execution attempts=0",
+      "confidence": 0.88,
+      "evidence": [
+        "Execution blockers:"
+      ],
+      "related_reports": [],
+      "verify_command": "inspect execution adapter",
+      "recurrence": 5,
+      "status": "active",
+      "created_at": "2026-05-26T21:14:16.548673+00:00",
+      "updated_at": "2026-05-26T21:14:16.548673+00:00"
+    },
+    {
+      "id": "overlap_stale_positions",
+      "title": "Overlap block caused by stale open_positions state",
+      "confidence": 0.82,
+      "evidence": [
+        "Stale open positions (read-only scan):"
+      ],
+      "related_reports": [],
+      "verify_command": "show stale open positions",
+      "recurrence": 5,
+      "status": "active",
+      "created_at": "2026-05-26T21:14:16.548673+00:00",
+      "updated_at": "2026-05-26T21:14:16.548673+00:00"
+    },
+    {
+      "id": "last_bar_filter",
+      "title": "Last-bar filtering suppressing entries",
+      "confidence": 0.74,
+      "evidence": [
+        "Execution blockers:",
+        "  signals blocked: 4"
+      ],
+      "related_reports": [],
+      "verify_command": "reconstruct execution flow",
+      "recurrence": 5,
+      "status": "active",
+      "created_at": "2026-05-26T21:14:16.548673+00:00",
+      "updated_at": "2026-05-26T21:14:16.548673+00:00"
+    },
+    {
+      "id": "stale_telemetry_risk",
+      "title": "Stale execution telemetry inflating open risk",
+      "confidence": 0.7,
+      "evidence": [
+        "Current execution risk:"
+      ],
+      "related_reports": [],
+      "verify_command": "show current execution risk",
+      "recurrence": 5,
+      "status": "active",
+      "created_at": "2026-05-26T21:14:16.548673+00:00",
+      "updated_at": "2026-05-26T21:14:16.548673+00:00"
+    },
+    {
+      "id": "cluster_divergence",
+      "title": "Replay divergences cluster around systemic mismatch pattern",
+      "confidence": 0.68,
+      "evidence": [
+        "see divergence clusters report"
+      ],
+      "related_reports": [],
+      "verify_command": "explain largest divergence cluster",
+      "recurrence": 5,
+      "status": "active",
+      "created_at": "2026-05-26T21:14:16.548673+00:00",
+      "updated_at": "2026-05-26T21:14:16.548673+00:00"
+    }
+  ],
+  "blocker_snapshot": {
+    "timestamp": "2026-05-26T21:14:02.386128+00:00",
+    "source": "startup_integrity",
+    "counts": {
+      "overlap": 3,
+      "1. overlap block severity=medium count=25 evidence=c": 1,
+      "max position": 1,
+      "2. max positions reached severity=high count=16 evidence=c": 1,
+      "last bar": 1,
+      "3. not relevant to last bar severity=high count=14 evidence=c": 1,
+      "4. already in position severity=medium count=10 evidence=c": 1,
+      "market closed": 1,
+      "5. market closed severity=medium count=10 evidence=c": 1,
+      "6. delayed entry failure severity=medium count=7 evidence=c": 1,
+      "duplicate": 1,
+      "7. duplicate block severity=medium count=5 evidence=c": 1,
+      "8. dry run mode severity=high count=3 evidence=c": 1,
+      "execution disabled": 1,
+      "adapter": 1,
+      "9. execution disabled adapter severity=critical count=2 evidence=c": 1,
+      "10. exposure limit severity=high count=2 evidence=c": 1,
+      "11. processed severity=medium count=1 evidence=c": 1,
+      "overlap block": 3
+    }
+  }
+}

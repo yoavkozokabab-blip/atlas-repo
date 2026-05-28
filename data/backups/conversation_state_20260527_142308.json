@@ -1,0 +1,51 @@
+{
+  "current_topic": "show realtime provider status",
+  "previous_topics": [
+    "benchmark realtime providers",
+    "test realtime voice",
+    "show realtime provider status",
+    "You",
+    "show voice latency",
+    "py -3 main.py --text --speak",
+    "$env:pyttsx3_rollback_only=\"true\"",
+    "$env:realtime_tts_enable=\"true\"",
+    "$env:tts_primary_backend=\"realtime\"",
+    "$env:voice_runtime_mode=\"realtime_experiment\"",
+    "$env:elevenlabs_api_key=\"dd8360eea69ea6ef8bb7297aab3580711de29a978c7a814ffa6a985b4095754c\"",
+    "open youtube"
+  ],
+  "active_project": "",
+  "unresolved_question": "",
+  "emotional_tone": "neutral",
+  "interruption_state": "idle",
+  "pending_actions": [],
+  "recent_entities": [
+    "provider",
+    "realtime",
+    "show",
+    "providers",
+    "benchmark",
+    "voice",
+    "test",
+    "latency",
+    "--speak",
+    "--text",
+    "main.py",
+    "$env:pyttsx3_rollback_only=\"true",
+    "$env:realtime_tts_enable=\"true",
+    "$env:tts_primary_backend=\"realtime",
+    "$env:voice_runtime_mode=\"realtime_experiment",
+    "$env:elevenlabs_api_key=\"dd8360eea69ea6ef8bb7297aab3580711de29a978c7a814ffa6a985b4095754c"
+  ],
+  "follow_up_references": [
+    "voice:open_website",
+    "voice:unknown"
+  ],
+  "turn_count": 57,
+  "last_user_text": "show realtime provider status",
+  "last_assistant_summary": "Realtime TTS provider status:\n  active: pyttsx3_fallback\n  fallback_only active: yes\n  providers:\n    - openai_realtime: missing latency=medium fallback_only=False bench_first_chunk_ms=n/a (OPENAI_API_KEY missing)\n    - elevenlabs: missing latency=medium fallback_only=False bench_first_chunk_ms=n/a (missing ELEVENLABS_API_KEY)\n    - piper: missing latency=medium fallback_only=False bench_first_chunk_ms=n/a (PIPER_MODEL missing or piper binary unavailable)\n    - pyttsx3_fallback: ok latency=high fallback_only=True bench_first_chunk_ms=n/a (emergency_fallback_only)\n\nWould you also like me to run",
+  "last_intent": "show_realtime_provider_status",
+  "paused_response": "",
+  "continuous_listening": false,
+  "updated_at": "2026-05-27T14:23:08.126059+00:00"
+}

@@ -1,0 +1,21 @@
+{
+  "recovery_times": [
+    35030.3358527,
+    35030.4236801
+  ],
+  "recovery_log": [
+    {
+      "ts": "2026-05-26T15:40:31.462868+00:00",
+      "action": "recover_overlay",
+      "ok": true,
+      "detail": "overlay already healthy"
+    },
+    {
+      "ts": "2026-05-26T15:40:31.550695+00:00",
+      "action": "restart_dashboard",
+      "ok": true,
+      "detail": "opened http://127.0.0.1:8077"
+    }
+  ],
+  "last_incident_id": "20260526_154031_restart_dashboard"
+}

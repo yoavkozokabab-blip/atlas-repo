@@ -1,0 +1,36 @@
+{
+  "last_probe": {
+    "url": "http://127.0.0.1:8077",
+    "status": "starting",
+    "reachable": false,
+    "detail": "[WinError 10061] No connection could be made because the target machine actively refused it",
+    "checked_at": "2026-05-28T15:05:06.432727+00:00",
+    "since_open_seconds": -38726.55,
+    "grace_seconds": 20,
+    "attempts": [
+      {
+        "attempt": 1,
+        "ok": false,
+        "detail": "[WinError 10061] No connection could be made because the target machine actively refused it"
+      },
+      {
+        "attempt": 2,
+        "ok": false,
+        "detail": "[WinError 10061] No connection could be made because the target machine actively refused it"
+      },
+      {
+        "attempt": 3,
+        "ok": false,
+        "detail": "[WinError 10061] No connection could be made because the target machine actively refused it"
+      },
+      {
+        "attempt": 4,
+        "ok": false,
+        "detail": "[WinError 10061] No connection could be made because the target machine actively refused it"
+      }
+    ]
+  },
+  "last_healthy_at": "2026-05-27T15:10:25.502567+00:00",
+  "last_open_requested_at": "2026-05-26T17:30:37.764075+00:00",
+  "last_open_monotonic": 41636.637057
+}

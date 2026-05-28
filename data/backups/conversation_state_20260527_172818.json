@@ -1,0 +1,35 @@
+{
+  "current_topic": "show tts debug",
+  "previous_topics": [
+    "show conversation runtime",
+    "run phase 59 status",
+    "show tts debug"
+  ],
+  "active_project": "",
+  "unresolved_question": "",
+  "emotional_tone": "neutral",
+  "interruption_state": "idle",
+  "pending_actions": [],
+  "recent_entities": [
+    "debug",
+    "show",
+    "runtime",
+    "conversation",
+    "status",
+    "phase"
+  ],
+  "follow_up_references": [],
+  "turn_count": 5,
+  "last_user_text": "show tts debug",
+  "last_assistant_summary": "TTS debug:\n  speak_enabled: yes\n  muted: no\n  audio_mode: deferred\n  backend: unverified\n  verified backend: none\n  backend initialized: yes\n  last suppression reason: tool_first_unverified_backend\n  session active: no\n  tool_first_mode: yes\n  conversational runtime enabled: yes\n  continuous mic: yes\n  bootstrap applied: yes\n\nTTS output diagnostics (Phase 59.2):\n  allowed: no\n  reason: tool_first_unverified_backend\n  audio_mode: deferred\n  voice_path: show_tts_debug\n  session_active: no\n  tool_first_mode: yes\n  speak_enabled: yes\n  overlay_status: TTS BLOCKED\n  suppress_flags: {'tool_first_mod",
+  "last_intent": "show_tts_debug",
+  "paused_response": "",
+  "continuous_listening": false,
+  "updated_at": "2026-05-27T17:28:15.052341+00:00",
+  "interruption_count": 0,
+  "intent_continuity_chain": [],
+  "turn_references": [],
+  "last_response_style": "neutral",
+  "pending_follow_up": "",
+  "user_intent_continuity": ""
+}

@@ -1,0 +1,16 @@
+{
+  "current_project_root": "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-81\\test_follow_up_uses_session0\\project",
+  "last_command_text": "test normal speech path",
+  "last_intent": "test_normal_speech",
+  "last_result_summary": "Normal speech path returned false.\nAudio status\n  TTS enabled: yes\n  Current engine (config): pyttsx3\n  TTS chain: edge_tts -> pyttsx3 (direct verified backend bypasses subprocess)\n  Verified backend: none (speech blocked in stable)\n  Active backend: unverified\n  Playback backend (last used): pyttsx3_direct\n  Last normal speech backend: n/a\n  Windows default output: SteelSeries Sonar - Gaming (Ste\n  Playback target (persisted): default\n  Active playback route: SteelSeries Sonar - Gaming (Ste\n  S",
+  "last_opened_file": "",
+  "last_opened_log": "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-81\\test_follow_up_uses_session0\\project\\reports\\a.log",
+  "last_report_path": "",
+  "last_error_search": "",
+  "pending_confirmation_id": "8c4c7a40",
+  "pending_confirmation_action": "run_live_daily_loop",
+  "activity_mode": "",
+  "last_workspace_snapshot": "",
+  "created_at": "",
+  "updated_at": "2026-05-27T10:20:49.363543+00:00"
+}

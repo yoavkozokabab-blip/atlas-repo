@@ -1,0 +1,1995 @@
+{
+  "entries": [
+    {
+      "timestamp": "2026-05-26T21:00:27.203675+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:00:27.211114+00:00",
+      "category": "execution_anomaly",
+      "message": "Dashboard status=failed",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:00:27.217624+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 46.45s with 2 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260526_210027_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:13:28.796107+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:manual",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:13:28.813015+00:00",
+      "category": "execution_anomaly",
+      "message": "New blocker appeared: 3. not relevant to last bar severity=high count=14 evidence=c",
+      "severity": "warning",
+      "source": "cycle:manual",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:13:28.820193+00:00",
+      "category": "execution_anomaly",
+      "message": "New blocker appeared: 1. overlap block severity=medium count=25 evidence=c",
+      "severity": "warning",
+      "source": "cycle:manual",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:13:28.846902+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle manual completed in 48.42s with 3 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260526_211328_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:13:28.949072+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:13:28.956022+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 48.57s with 1 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260526_211328_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:14:16.732321+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:startup_integrity",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:14:16.740358+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle startup_integrity completed in 45.41s with 1 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260526_211416_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:14:18.907888+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:14:18.932749+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:30:30.015776+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:30:30.024007+00:00",
+      "category": "execution_anomaly",
+      "message": "New blocker appeared: 1. overlap block severity=medium count=24 evidence=c",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:30:30.031123+00:00",
+      "category": "execution_anomaly",
+      "message": "New blocker appeared: 3. not relevant to last bar severity=high count=15 evidence=c",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:30:30.037776+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 45.54s with 3 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260526_213030_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:33:02.466146+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:33:02.494599+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:39:47.477331+00:00",
+      "category": "continuous_monitor",
+      "message": "New blocker appeared: 3. not relevant to last bar severity=high count=14 evidence=c",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:39:47.511222+00:00",
+      "category": "continuous_monitor",
+      "message": "New blocker appeared: 1. overlap block severity=medium count=25 evidence=c",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:39:47.525206+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:39:47.555161+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:46:33.032819+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:46:33.041124+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 45.32s with 1 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260526_214633_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:47:50.581221+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:47:50.619851+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:49:46.457048+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:49:46.496199+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:15:15.225897+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:15:15.233715+00:00",
+      "category": "execution_anomaly",
+      "message": "Dashboard status=failed",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:15:15.240811+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 46.58s with 2 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260527_101515_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:17:44.454685+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:17:44.471602+00:00",
+      "category": "execution_anomaly",
+      "message": "Dashboard status=failed",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:17:44.479084+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 45.96s with 2 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260527_101744_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:19:31.852996+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:19:31.863095+00:00",
+      "category": "execution_anomaly",
+      "message": "New blocker appeared: 1. overlap block severity=medium count=24 evidence=c",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:19:31.870981+00:00",
+      "category": "execution_anomaly",
+      "message": "New blocker appeared: 3. not relevant to last bar severity=high count=15 evidence=c",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:19:31.878072+00:00",
+      "category": "execution_anomaly",
+      "message": "Dashboard status=failed",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:19:31.885134+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 45.94s with 4 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260527_101931_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:22:37.137932+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:22:37.165821+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:33:12.469502+00:00",
+      "category": "continuous_monitor",
+      "message": "New blocker appeared: 1. overlap block severity=medium count=25 evidence=c",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:33:12.497537+00:00",
+      "category": "continuous_monitor",
+      "message": "New blocker appeared: 3. not relevant to last bar severity=high count=14 evidence=c",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:33:12.510800+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:33:12.524420+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:35:57.604504+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:35:57.624326+00:00",
+      "category": "execution_anomaly",
+      "message": "Dashboard status=failed",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:35:57.632700+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 45.04s with 2 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260527_103557_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:48:59.453926+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:48:59.473194+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:51:43.415755+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:51:43.423762+00:00",
+      "category": "execution_anomaly",
+      "message": "Dashboard status=failed",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:51:43.438284+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 45.59s with 2 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260527_105143_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:51:45.079376+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T10:51:45.098307+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T11:07:30.330555+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T11:07:30.359239+00:00",
+      "category": "execution_anomaly",
+      "message": "Dashboard status=failed",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T11:07:30.367294+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 44.96s with 2 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260527_110730_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T11:07:31.935043+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T11:07:31.955324+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T11:23:49.122647+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T11:23:49.133263+00:00",
+      "category": "execution_anomaly",
+      "message": "Dashboard status=failed",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T11:23:49.140487+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 44.94s with 2 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260527_112349_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T11:23:50.630981+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T11:23:50.649973+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T11:39:36.196520+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T11:39:36.220742+00:00",
+      "category": "execution_anomaly",
+      "message": "Dashboard status=failed",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T11:39:36.229614+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 45.27s with 2 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260527_113936_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T11:39:38.034163+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T11:39:38.055696+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T12:05:12.769444+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T12:05:12.782880+00:00",
+      "category": "execution_anomaly",
+      "message": "Dashboard status=failed",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T12:05:12.790851+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 45.11s with 2 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260527_120512_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T12:05:14.329041+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T12:05:14.351028+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T12:20:59.802467+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T12:20:59.812505+00:00",
+      "category": "execution_anomaly",
+      "message": "Dashboard status=failed",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T12:20:59.820369+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 45.11s with 2 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260527_122059_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T12:21:01.387146+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T12:21:01.409018+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T12:36:53.504965+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T12:36:53.519453+00:00",
+      "category": "execution_anomaly",
+      "message": "Dashboard status=failed",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T12:36:53.527222+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 45.33s with 2 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260527_123653_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T12:36:55.182317+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T12:36:55.203531+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T12:52:40.584627+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T12:52:40.594187+00:00",
+      "category": "execution_anomaly",
+      "message": "Dashboard status=failed",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T12:52:40.601822+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 45.05s with 2 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260527_125240_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T12:52:42.108853+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T12:52:42.129090+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T13:08:27.543155+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T13:08:27.552280+00:00",
+      "category": "execution_anomaly",
+      "message": "Dashboard status=failed",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T13:08:27.560313+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 45.16s with 2 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260527_130827_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T13:08:29.141365+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T13:08:29.161456+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T13:19:23.787721+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T13:19:23.810006+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T13:25:40.915858+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T13:25:40.928171+00:00",
+      "category": "execution_anomaly",
+      "message": "Dashboard status=failed",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T13:25:40.935719+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 45.0s with 2 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260527_132540_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T13:34:42.578870+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T13:34:42.612322+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T13:41:27.997371+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T13:41:28.007291+00:00",
+      "category": "execution_anomaly",
+      "message": "Dashboard status=failed",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T13:41:28.015638+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 45.26s with 2 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260527_134127_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T13:50:29.721952+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T13:50:29.742591+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T13:57:14.951669+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T13:57:14.961076+00:00",
+      "category": "execution_anomaly",
+      "message": "Dashboard status=failed",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T13:57:14.968874+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 45.08s with 2 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260527_135714_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:06:16.730785+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:06:16.767270+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:19:54.059722+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:19:54.068565+00:00",
+      "category": "execution_anomaly",
+      "message": "New blocker appeared: 3. not relevant to last bar severity=high count=15 evidence=c",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:19:54.076057+00:00",
+      "category": "execution_anomaly",
+      "message": "New blocker appeared: 1. overlap block severity=medium count=24 evidence=c",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:19:54.095257+00:00",
+      "category": "execution_anomaly",
+      "message": "Dashboard status=failed",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:19:54.102764+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 45.61s with 4 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260527_141954_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:19:56.071458+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:19:56.091898+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:23:10.582901+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:23:10.604919+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:28:15.849219+00:00",
+      "category": "continuous_monitor",
+      "message": "New blocker appeared: 3. not relevant to last bar severity=high count=14 evidence=c",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:28:15.886084+00:00",
+      "category": "continuous_monitor",
+      "message": "New blocker appeared: 1. overlap block severity=medium count=25 evidence=c",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:28:15.904322+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:28:15.922292+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:37:01.416923+00:00",
+      "category": "execution_anomaly",
+      "message": "New blocker appeared: 1. overlap block severity=medium count=24 evidence=c",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:37:01.436807+00:00",
+      "category": "execution_anomaly",
+      "message": "New blocker appeared: 3. not relevant to last bar severity=high count=15 evidence=c",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:37:01.451580+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 4.73s with 2 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260527_143701_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:37:03.595272+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:37:03.629266+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:47:55.086728+00:00",
+      "category": "continuous_monitor",
+      "message": "New blocker appeared: 3. not relevant to last bar severity=high count=14 evidence=c",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:47:55.105383+00:00",
+      "category": "continuous_monitor",
+      "message": "New blocker appeared: 1. overlap block severity=medium count=25 evidence=c",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:47:55.134881+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:47:55.152965+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:49:37.027794+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:49:37.057518+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:52:40.741448+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T14:52:40.750271+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 3.63s with 1 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260527_145240_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T15:03:27.109033+00:00",
+      "category": "continuous_monitor",
+      "message": "New blocker appeared: 3. not relevant to last bar severity=high count=15 evidence=c",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T15:03:27.138579+00:00",
+      "category": "continuous_monitor",
+      "message": "New blocker appeared: 1. overlap block severity=medium count=24 evidence=c",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T15:03:27.157678+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T15:03:27.185795+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T15:04:42.514170+00:00",
+      "category": "continuous_monitor",
+      "message": "New blocker appeared: 3. not relevant to last bar severity=high count=14 evidence=c",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T15:04:42.536381+00:00",
+      "category": "continuous_monitor",
+      "message": "New blocker appeared: 1. overlap block severity=medium count=25 evidence=c",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T15:04:42.553337+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T15:04:42.576953+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T15:07:45.313407+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T15:07:45.323131+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 2.68s with 1 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260527_150745_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T15:11:26.643392+00:00",
+      "category": "continuous_monitor",
+      "message": "New blocker appeared: 1. overlap block severity=medium count=24 evidence=c",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T15:11:26.678439+00:00",
+      "category": "continuous_monitor",
+      "message": "New blocker appeared: 3. not relevant to last bar severity=high count=15 evidence=c",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T15:11:26.717946+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T15:11:26.753786+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T15:22:45.679311+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T15:22:45.714516+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T15:24:31.912212+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T15:24:31.922842+00:00",
+      "category": "execution_anomaly",
+      "message": "Dashboard status=failed",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T15:24:31.935873+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 46.18s with 2 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260527_152431_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T15:25:50.100652+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T15:25:50.146980+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T15:40:36.761528+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T15:40:36.771453+00:00",
+      "category": "execution_anomaly",
+      "message": "Dashboard status=failed",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T15:40:36.785917+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 46.28s with 2 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260527_154036_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T15:41:38.975542+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T15:41:38.998188+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T16:42:29.656737+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T16:42:29.666149+00:00",
+      "category": "execution_anomaly",
+      "message": "Dashboard status=failed",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T16:42:29.675282+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 46.08s with 2 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260527_164229_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T16:45:34.697439+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T16:45:34.733257+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T19:11:53.812132+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T19:11:53.837726+00:00",
+      "category": "execution_anomaly",
+      "message": "New blocker appeared: 5. already in position severity=medium count=8 evidence=c",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T19:11:53.846636+00:00",
+      "category": "execution_anomaly",
+      "message": "New blocker appeared: 3. not relevant to last bar severity=high count=14 evidence=c",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T19:11:53.861252+00:00",
+      "category": "execution_anomaly",
+      "message": "New blocker appeared: 4. market closed severity=medium count=10 evidence=c",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T19:11:53.875052+00:00",
+      "category": "execution_anomaly",
+      "message": "New blocker appeared: 1. overlap block severity=medium count=25 evidence=c",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T19:11:53.883615+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 59.1s with 6 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260527_191153_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T20:15:06.273404+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T20:15:06.284139+00:00",
+      "category": "execution_anomaly",
+      "message": "Dashboard status=failed",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T20:15:06.293456+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 57.53s with 2 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260527_201506_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T20:18:59.620421+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-27T20:18:59.664607+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-28T12:49:42.565961+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-28T12:49:42.583186+00:00",
+      "category": "execution_anomaly",
+      "message": "New blocker appeared: 3. not relevant to last bar severity=high count=15 evidence=c",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-28T12:49:42.597241+00:00",
+      "category": "execution_anomaly",
+      "message": "New blocker appeared: 1. overlap block severity=medium count=24 evidence=c",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-28T12:49:42.606189+00:00",
+      "category": "execution_anomaly",
+      "message": "Dashboard status=failed",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-28T12:49:42.627290+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 46.82s with 4 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260528_124942_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-28T12:52:50.075283+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-28T12:52:50.116565+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-28T13:05:40.456458+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-28T13:05:40.478135+00:00",
+      "category": "execution_anomaly",
+      "message": "Dashboard status=failed",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-28T13:05:40.492567+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 49.81s with 2 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260528_130540_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-28T13:08:42.673025+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-28T13:08:42.700387+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-28T13:21:28.874226+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-28T13:21:28.887763+00:00",
+      "category": "execution_anomaly",
+      "message": "Dashboard status=failed",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-28T13:21:28.901433+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 46.03s with 2 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260528_132128_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-28T13:24:31.099633+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-28T13:24:31.132193+00:00",
+      "category": "continuous_monitor",
+      "message": "Execution disabled for extended period despite eligible signals",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    },
+    {
+      "timestamp": "2026-05-28T13:28:08.921752+00:00",
+      "category": "continuous_monitor",
+      "message": "Stale open positions remain elevated",
+      "severity": "warning",
+      "source": "continuous_monitor",
+      "metadata": {
+        "suggested_action": "run investigation cycle"
+      }
+    }
+  ],
+  "updated_at": "2026-05-28T13:28:08.921765+00:00"
+}

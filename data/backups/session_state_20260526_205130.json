@@ -1,0 +1,16 @@
+{
+  "current_project_root": "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-81\\test_follow_up_uses_session0\\project",
+  "last_command_text": "explain last result",
+  "last_intent": "explain_last_result",
+  "last_result_summary": "Task 2: summarize trading health\n  phase: completed\n  intent: summarize_trading_health\n  severity: info\n  elapsed: 15.6s\n  started: 2026-05-26T20:44:31.442565+00:00\n  ended: 2026-05-26T20:44:47.047684+00:00\n  last progress: checking stale open positions...\n  summary: Trading health summary:\n\nExecution investigation (read-only)\n  files scanned: 175\n  signals generated: 4\n  signals eligible: 4\n  signals blocked: 4\n  execution attempts: 0\n  execution accepted: 0\n  adapter mode: AlpacaExecutionAdapt",
+  "last_opened_file": "",
+  "last_opened_log": "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-81\\test_follow_up_uses_session0\\project\\reports\\a.log",
+  "last_report_path": "",
+  "last_error_search": "",
+  "pending_confirmation_id": "8c4c7a40",
+  "pending_confirmation_action": "run_live_daily_loop",
+  "activity_mode": "",
+  "last_workspace_snapshot": "",
+  "created_at": "",
+  "updated_at": "2026-05-26T20:51:30.878101+00:00"
+}

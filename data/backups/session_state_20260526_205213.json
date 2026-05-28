@@ -1,0 +1,16 @@
+{
+  "current_project_root": "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-81\\test_follow_up_uses_session0\\project",
+  "last_command_text": "summarize system intelligence",
+  "last_intent": "summarize_system_intelligence",
+  "last_result_summary": "System intelligence summary:\n\n## Runtime\nRuntime health: DEGRADED\n  checked: 2026-05-26T20:51:59.737342+00:00\n  [OK] runtime: running=True\n  [OK] overlay: phase=OverlayPhase.EXECUTING\n  [OK] wake_listener: alive=True\n  [OK] operator_console: queue=1\n  [OK] dashboard: status=starting detail=[WinError 10061] No connection could be made because the target machine actively refused it\n  [OK] tts_worker: speaking=None\n  [WARNING] runtime_monitor: issues=1\n\n## Current state\nCurrent JARVIS state:\n  runt",
+  "last_opened_file": "",
+  "last_opened_log": "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-81\\test_follow_up_uses_session0\\project\\reports\\a.log",
+  "last_report_path": "",
+  "last_error_search": "",
+  "pending_confirmation_id": "8c4c7a40",
+  "pending_confirmation_action": "run_live_daily_loop",
+  "activity_mode": "",
+  "last_workspace_snapshot": "",
+  "created_at": "",
+  "updated_at": "2026-05-26T20:52:13.922175+00:00"
+}

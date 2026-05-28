@@ -1,0 +1,893 @@
+[2026-05-26T21:11:34.646961+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-26T21:11:34.929167+00:00] import pystray: ok
+[2026-05-26T21:11:34.931023+00:00] import Pillow: ok
+[2026-05-26T21:11:35.959636+00:00] import openwakeword: ok
+[2026-05-26T21:11:35.960242+00:00] import onnxruntime: ok
+[2026-05-26T21:11:36.143644+00:00] import sounddevice: ok
+[2026-05-26T21:11:36.146141+00:00] import pyttsx3: ok
+[2026-05-26T21:11:36.187351+00:00] import PySide6: ok
+[2026-05-26T21:11:38.034431+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-26T21:11:38.035229+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-26T21:11:38.041481+00:00] wakeword-only: detector starting
+[2026-05-26T21:11:38.090928+00:00] wakeword-only: keepalive loop
+[2026-05-26T21:14:44.267205+00:00] wakeword-only: stopped
+[2026-05-26T21:28:44.512296+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-26T21:28:44.812954+00:00] import pystray: ok
+[2026-05-26T21:28:44.815121+00:00] import Pillow: ok
+[2026-05-26T21:28:45.807200+00:00] import openwakeword: ok
+[2026-05-26T21:28:45.807792+00:00] import onnxruntime: ok
+[2026-05-26T21:28:46.013362+00:00] import sounddevice: ok
+[2026-05-26T21:28:46.015650+00:00] import pyttsx3: ok
+[2026-05-26T21:28:46.047761+00:00] import PySide6: ok
+[2026-05-26T21:28:48.068263+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-26T21:28:48.069234+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-26T21:28:48.080428+00:00] wakeword-only: detector starting
+[2026-05-26T21:28:48.110829+00:00] wakeword-only: keepalive loop
+[2026-05-26T21:29:26.447837+00:00] wakeword-only: stopped
+[2026-05-26T21:29:39.411611+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-26T21:29:39.700490+00:00] import pystray: ok
+[2026-05-26T21:29:39.702174+00:00] import Pillow: ok
+[2026-05-26T21:29:40.686656+00:00] import openwakeword: ok
+[2026-05-26T21:29:40.687472+00:00] import onnxruntime: ok
+[2026-05-26T21:29:40.876395+00:00] import sounddevice: ok
+[2026-05-26T21:29:40.878592+00:00] import pyttsx3: ok
+[2026-05-26T21:29:40.910162+00:00] import PySide6: ok
+[2026-05-26T21:29:42.662415+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-26T21:29:42.663329+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-26T21:29:42.673894+00:00] wakeword-only: detector starting
+[2026-05-26T21:29:42.701344+00:00] wakeword-only: keepalive loop
+[2026-05-26T21:39:32.949060+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-26T21:39:33.245260+00:00] import pystray: ok
+[2026-05-26T21:39:33.247124+00:00] import Pillow: ok
+[2026-05-26T21:39:34.222120+00:00] import openwakeword: ok
+[2026-05-26T21:39:34.222717+00:00] import onnxruntime: ok
+[2026-05-26T21:39:34.406215+00:00] import sounddevice: ok
+[2026-05-26T21:39:34.408467+00:00] import pyttsx3: ok
+[2026-05-26T21:39:34.439926+00:00] import PySide6: ok
+[2026-05-26T21:39:36.393485+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-26T21:39:36.394316+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-26T21:39:36.400733+00:00] wakeword-only: detector starting
+[2026-05-26T21:39:36.433804+00:00] wakeword-only: keepalive loop
+[2026-05-26T21:47:31.912991+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-26T21:47:32.212384+00:00] import pystray: ok
+[2026-05-26T21:47:32.214098+00:00] import Pillow: ok
+[2026-05-26T21:47:33.178053+00:00] import openwakeword: ok
+[2026-05-26T21:47:33.178737+00:00] import onnxruntime: ok
+[2026-05-26T21:47:33.373290+00:00] import sounddevice: ok
+[2026-05-26T21:47:33.375556+00:00] import pyttsx3: ok
+[2026-05-26T21:47:33.406458+00:00] import PySide6: ok
+[2026-05-26T21:47:35.421122+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-26T21:47:35.422036+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-26T21:47:35.428641+00:00] wakeword-only: detector starting
+[2026-05-26T21:47:35.478319+00:00] wakeword-only: keepalive loop
+[2026-05-26T21:48:57.329690+00:00] wakeword-only: stopped
+[2026-05-26T21:49:34.922691+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-26T21:49:35.211499+00:00] import pystray: ok
+[2026-05-26T21:49:35.213344+00:00] import Pillow: ok
+[2026-05-26T21:49:36.198230+00:00] import openwakeword: ok
+[2026-05-26T21:49:36.198962+00:00] import onnxruntime: ok
+[2026-05-26T21:49:36.400992+00:00] import sounddevice: ok
+[2026-05-26T21:49:36.403134+00:00] import pyttsx3: ok
+[2026-05-26T21:49:36.434134+00:00] import PySide6: ok
+[2026-05-26T21:49:38.323632+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-26T21:49:38.324452+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-26T21:49:38.334436+00:00] wakeword-only: detector starting
+[2026-05-26T21:49:38.360806+00:00] wakeword-only: keepalive loop
+[2026-05-26T22:08:41.468229+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-26T22:08:41.755865+00:00] import pystray: ok
+[2026-05-26T22:08:41.757707+00:00] import Pillow: ok
+[2026-05-26T22:08:42.770059+00:00] import openwakeword: ok
+[2026-05-26T22:08:42.770751+00:00] import onnxruntime: ok
+[2026-05-26T22:08:42.915792+00:00] import sounddevice: ok
+[2026-05-26T22:08:42.917911+00:00] import pyttsx3: ok
+[2026-05-26T22:08:42.948392+00:00] import PySide6: ok
+[2026-05-26T22:08:44.821302+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-26T22:08:44.822103+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-26T22:08:44.833528+00:00] wakeword-only: detector starting
+[2026-05-26T22:08:44.861411+00:00] wakeword-only: keepalive loop
+[2026-05-27T09:36:13.284893+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=tray+voice+wakeword+speak
+[2026-05-27T09:36:14.611008+00:00] import pystray: ok
+[2026-05-27T09:36:14.614274+00:00] import Pillow: ok
+[2026-05-27T09:36:16.950926+00:00] import openwakeword: ok
+[2026-05-27T09:36:16.951959+00:00] import onnxruntime: ok
+[2026-05-27T09:36:17.155914+00:00] import sounddevice: ok
+[2026-05-27T09:36:17.159539+00:00] import pyttsx3: ok
+[2026-05-27T09:36:17.203129+00:00] import PySide6: ok
+[2026-05-27T09:36:24.151593+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=tray+voice+wakeword+speak
+[2026-05-27T09:36:24.152855+00:00] startup
+  mode=tray
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-27T09:36:24.161390+00:00] background quiet mode: tray only (no console HUD)
+[2026-05-27T09:36:24.162723+00:00] tray: entering main loop
+[2026-05-27T09:36:24.311956+00:00] watchdog started
+[2026-05-27T09:36:24.357701+00:00] tray icon run() starting
+[2026-05-27T10:14:13.401031+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-27T10:14:13.832551+00:00] import pystray: ok
+[2026-05-27T10:14:13.834380+00:00] import Pillow: ok
+[2026-05-27T10:14:18.637402+00:00] import openwakeword: ok
+[2026-05-27T10:14:18.638063+00:00] import onnxruntime: ok
+[2026-05-27T10:14:18.823291+00:00] import sounddevice: ok
+[2026-05-27T10:14:18.825706+00:00] import pyttsx3: ok
+[2026-05-27T10:14:18.899427+00:00] import PySide6: ok
+[2026-05-27T10:14:24.542397+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-27T10:14:24.543234+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-27T10:14:24.558639+00:00] wakeword-only: detector starting
+[2026-05-27T10:14:24.619203+00:00] wakeword-only: keepalive loop
+[2026-05-27T10:16:43.762982+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-27T10:16:44.095877+00:00] import pystray: ok
+[2026-05-27T10:16:44.097592+00:00] import Pillow: ok
+[2026-05-27T10:16:45.119404+00:00] import openwakeword: ok
+[2026-05-27T10:16:45.120162+00:00] import onnxruntime: ok
+[2026-05-27T10:16:45.300930+00:00] import sounddevice: ok
+[2026-05-27T10:16:45.303295+00:00] import pyttsx3: ok
+[2026-05-27T10:16:45.332722+00:00] import PySide6: ok
+[2026-05-27T10:16:47.125563+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-27T10:16:47.126338+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-27T10:16:47.133638+00:00] wakeword-only: detector starting
+[2026-05-27T10:16:47.146214+00:00] wakeword-only: keepalive loop
+[2026-05-27T10:18:17.173209+00:00] wakeword-only: stopped
+[2026-05-27T10:18:39.817208+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-27T10:18:40.141429+00:00] import pystray: ok
+[2026-05-27T10:18:40.143461+00:00] import Pillow: ok
+[2026-05-27T10:18:41.123189+00:00] import openwakeword: ok
+[2026-05-27T10:18:41.123817+00:00] import onnxruntime: ok
+[2026-05-27T10:18:41.308213+00:00] import sounddevice: ok
+[2026-05-27T10:18:41.310508+00:00] import pyttsx3: ok
+[2026-05-27T10:18:41.341176+00:00] import PySide6: ok
+[2026-05-27T10:18:43.223580+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-27T10:18:43.224585+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-27T10:18:43.232724+00:00] wakeword-only: detector starting
+[2026-05-27T10:18:43.262673+00:00] wakeword-only: keepalive loop
+[2026-05-27T10:33:03.814055+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-27T10:33:04.103253+00:00] import pystray: ok
+[2026-05-27T10:33:04.105083+00:00] import Pillow: ok
+[2026-05-27T10:33:05.094164+00:00] import openwakeword: ok
+[2026-05-27T10:33:05.094822+00:00] import onnxruntime: ok
+[2026-05-27T10:33:05.283916+00:00] import sounddevice: ok
+[2026-05-27T10:33:05.286314+00:00] import pyttsx3: ok
+[2026-05-27T10:33:05.320304+00:00] import PySide6: ok
+[2026-05-27T10:33:07.402761+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-27T10:33:07.403644+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-27T10:33:07.410147+00:00] wakeword-only: detector starting
+[2026-05-27T10:33:07.427513+00:00] wakeword-only: keepalive loop
+[2026-05-27T10:50:48.568743+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-27T10:50:48.876996+00:00] import pystray: ok
+[2026-05-27T10:50:48.879562+00:00] import Pillow: ok
+[2026-05-27T10:50:49.979506+00:00] import openwakeword: ok
+[2026-05-27T10:50:49.980406+00:00] import onnxruntime: ok
+[2026-05-27T10:50:50.180813+00:00] import sounddevice: ok
+[2026-05-27T10:50:50.183435+00:00] import pyttsx3: ok
+[2026-05-27T10:50:50.224817+00:00] import PySide6: ok
+[2026-05-27T10:50:52.715804+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-27T10:50:52.716588+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-27T10:50:52.726362+00:00] wakeword-only: detector starting
+[2026-05-27T10:50:52.751929+00:00] wakeword-only: keepalive loop
+[2026-05-27T11:54:53.014535+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T11:54:53.350428+00:00] import pystray: ok
+[2026-05-27T11:54:53.352962+00:00] import Pillow: ok
+[2026-05-27T11:54:54.797943+00:00] import openwakeword: ok
+[2026-05-27T11:54:54.798641+00:00] import onnxruntime: ok
+[2026-05-27T11:54:55.000676+00:00] import sounddevice: ok
+[2026-05-27T11:54:55.003075+00:00] import pyttsx3: ok
+[2026-05-27T11:54:55.035728+00:00] import PySide6: ok
+[2026-05-27T11:55:15.454366+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T11:55:15.455450+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-27T11:55:15.461746+00:00] wakeword-only: detector starting
+[2026-05-27T11:55:15.465617+00:00] wakeword-only: keepalive loop
+[2026-05-27T13:17:14.630124+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T13:17:14.949117+00:00] import pystray: ok
+[2026-05-27T13:17:14.951110+00:00] import Pillow: ok
+[2026-05-27T13:17:15.998952+00:00] import openwakeword: ok
+[2026-05-27T13:17:15.999656+00:00] import onnxruntime: ok
+[2026-05-27T13:17:16.185481+00:00] import sounddevice: ok
+[2026-05-27T13:17:16.188078+00:00] import pyttsx3: ok
+[2026-05-27T13:17:16.218173+00:00] import PySide6: ok
+[2026-05-27T13:17:19.332677+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T13:17:19.333599+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-27T13:17:19.340578+00:00] wakeword-only: detector starting
+[2026-05-27T13:17:19.372546+00:00] wakeword-only: keepalive loop
+[2026-05-27T14:14:48.762953+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T14:14:49.067219+00:00] import pystray: ok
+[2026-05-27T14:14:49.069004+00:00] import Pillow: ok
+[2026-05-27T14:14:50.091556+00:00] import openwakeword: ok
+[2026-05-27T14:14:50.092187+00:00] import onnxruntime: ok
+[2026-05-27T14:14:50.278323+00:00] import sounddevice: ok
+[2026-05-27T14:14:50.280527+00:00] import pyttsx3: ok
+[2026-05-27T14:14:50.309923+00:00] import PySide6: ok
+[2026-05-27T14:14:52.627242+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T14:14:52.628107+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-27T14:14:52.634361+00:00] wakeword-only: detector starting
+[2026-05-27T14:14:52.683244+00:00] wakeword-only: keepalive loop
+[2026-05-27T14:22:33.452551+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T14:22:33.771527+00:00] import pystray: ok
+[2026-05-27T14:22:33.773343+00:00] import Pillow: ok
+[2026-05-27T14:22:34.767658+00:00] import openwakeword: ok
+[2026-05-27T14:22:34.768309+00:00] import onnxruntime: ok
+[2026-05-27T14:22:34.949280+00:00] import sounddevice: ok
+[2026-05-27T14:22:34.951725+00:00] import pyttsx3: ok
+[2026-05-27T14:22:34.981736+00:00] import PySide6: ok
+[2026-05-27T14:22:37.342504+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T14:22:37.343388+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-27T14:22:37.353937+00:00] wakeword-only: detector starting
+[2026-05-27T14:22:37.381749+00:00] wakeword-only: keepalive loop
+[2026-05-27T14:26:37.239973+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T14:26:37.543280+00:00] import pystray: ok
+[2026-05-27T14:26:37.545024+00:00] import Pillow: ok
+[2026-05-27T14:26:38.500719+00:00] import openwakeword: ok
+[2026-05-27T14:26:38.501371+00:00] import onnxruntime: ok
+[2026-05-27T14:26:38.695231+00:00] import sounddevice: ok
+[2026-05-27T14:26:38.697475+00:00] import pyttsx3: ok
+[2026-05-27T14:26:38.726246+00:00] import PySide6: ok
+[2026-05-27T14:26:40.961003+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T14:26:40.961771+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-27T14:26:40.971141+00:00] wakeword-only: detector starting
+[2026-05-27T14:26:40.997040+00:00] wakeword-only: keepalive loop
+[2026-05-27T14:35:50.443325+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T14:35:50.765960+00:00] import pystray: ok
+[2026-05-27T14:35:50.768071+00:00] import Pillow: ok
+[2026-05-27T14:35:51.787690+00:00] import openwakeword: ok
+[2026-05-27T14:35:51.788344+00:00] import onnxruntime: ok
+[2026-05-27T14:35:51.976363+00:00] import sounddevice: ok
+[2026-05-27T14:35:51.978495+00:00] import pyttsx3: ok
+[2026-05-27T14:35:52.008111+00:00] import PySide6: ok
+[2026-05-27T14:35:54.353764+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T14:35:54.354605+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-27T14:35:54.364576+00:00] wakeword-only: detector starting
+[2026-05-27T14:35:54.404976+00:00] wakeword-only: keepalive loop
+[2026-05-27T14:47:34.508521+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T14:47:34.814746+00:00] import pystray: ok
+[2026-05-27T14:47:34.816497+00:00] import Pillow: ok
+[2026-05-27T14:47:35.785548+00:00] import openwakeword: ok
+[2026-05-27T14:47:35.786305+00:00] import onnxruntime: ok
+[2026-05-27T14:47:35.975593+00:00] import sounddevice: ok
+[2026-05-27T14:47:35.977701+00:00] import pyttsx3: ok
+[2026-05-27T14:47:36.007385+00:00] import PySide6: ok
+[2026-05-27T14:47:38.335479+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T14:47:38.336336+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-27T14:47:38.342493+00:00] wakeword-only: detector starting
+[2026-05-27T14:47:38.389461+00:00] wakeword-only: keepalive loop
+[2026-05-27T14:49:22.872401+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T14:49:23.171994+00:00] import pystray: ok
+[2026-05-27T14:49:23.173812+00:00] import Pillow: ok
+[2026-05-27T14:49:24.141570+00:00] import openwakeword: ok
+[2026-05-27T14:49:24.142176+00:00] import onnxruntime: ok
+[2026-05-27T14:49:24.342957+00:00] import sounddevice: ok
+[2026-05-27T14:49:24.345584+00:00] import pyttsx3: ok
+[2026-05-27T14:49:24.380021+00:00] import PySide6: ok
+[2026-05-27T14:49:26.701008+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T14:49:26.702242+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-27T14:49:26.710722+00:00] wakeword-only: detector starting
+[2026-05-27T14:49:26.738643+00:00] wakeword-only: keepalive loop
+[2026-05-27T15:03:08.207933+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T15:03:08.540579+00:00] import pystray: ok
+[2026-05-27T15:03:08.542410+00:00] import Pillow: ok
+[2026-05-27T15:03:09.558140+00:00] import openwakeword: ok
+[2026-05-27T15:03:09.558790+00:00] import onnxruntime: ok
+[2026-05-27T15:03:09.749765+00:00] import sounddevice: ok
+[2026-05-27T15:03:09.751918+00:00] import pyttsx3: ok
+[2026-05-27T15:03:09.780997+00:00] import PySide6: ok
+[2026-05-27T15:03:12.315041+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T15:03:12.315945+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-27T15:03:12.322279+00:00] wakeword-only: detector starting
+[2026-05-27T15:03:12.380454+00:00] wakeword-only: keepalive loop
+[2026-05-27T15:11:09.398783+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T15:11:09.697607+00:00] import pystray: ok
+[2026-05-27T15:11:09.699332+00:00] import Pillow: ok
+[2026-05-27T15:11:10.689126+00:00] import openwakeword: ok
+[2026-05-27T15:11:10.689776+00:00] import onnxruntime: ok
+[2026-05-27T15:11:10.879028+00:00] import sounddevice: ok
+[2026-05-27T15:11:10.881212+00:00] import pyttsx3: ok
+[2026-05-27T15:11:10.910344+00:00] import PySide6: ok
+[2026-05-27T15:11:13.239920+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T15:11:13.240730+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-27T15:11:13.246900+00:00] wakeword-only: detector starting
+[2026-05-27T15:11:13.271316+00:00] wakeword-only: keepalive loop
+[2026-05-27T15:20:24.166397+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T15:20:24.471309+00:00] import pystray: ok
+[2026-05-27T15:20:24.473062+00:00] import Pillow: ok
+[2026-05-27T15:20:25.448241+00:00] import openwakeword: ok
+[2026-05-27T15:20:25.448886+00:00] import onnxruntime: ok
+[2026-05-27T15:20:25.638404+00:00] import sounddevice: ok
+[2026-05-27T15:20:25.640866+00:00] import pyttsx3: ok
+[2026-05-27T15:20:25.671217+00:00] import PySide6: ok
+[2026-05-27T15:20:28.830233+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T15:20:28.831187+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-27T15:20:28.837349+00:00] wakeword-only: detector starting
+[2026-05-27T15:20:28.863857+00:00] wakeword-only: keepalive loop
+[2026-05-27T15:22:22.251934+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T15:22:22.559485+00:00] import pystray: ok
+[2026-05-27T15:22:22.561488+00:00] import Pillow: ok
+[2026-05-27T15:22:23.555604+00:00] import openwakeword: ok
+[2026-05-27T15:22:23.556295+00:00] import onnxruntime: ok
+[2026-05-27T15:22:23.741179+00:00] import sounddevice: ok
+[2026-05-27T15:22:23.743369+00:00] import pyttsx3: ok
+[2026-05-27T15:22:23.772634+00:00] import PySide6: ok
+[2026-05-27T15:22:29.394014+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T15:22:29.395040+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-27T15:22:29.402997+00:00] wakeword-only: detector starting
+[2026-05-27T15:22:29.437727+00:00] wakeword-only: keepalive loop
+[2026-05-27T15:24:55.864203+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T15:24:56.174147+00:00] import pystray: ok
+[2026-05-27T15:24:56.175861+00:00] import Pillow: ok
+[2026-05-27T15:24:57.177612+00:00] import openwakeword: ok
+[2026-05-27T15:24:57.178364+00:00] import onnxruntime: ok
+[2026-05-27T15:24:57.371183+00:00] import sounddevice: ok
+[2026-05-27T15:24:57.373507+00:00] import pyttsx3: ok
+[2026-05-27T15:24:57.403031+00:00] import PySide6: ok
+[2026-05-27T15:25:00.025551+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T15:25:00.026373+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-27T15:25:00.035350+00:00] wakeword-only: detector starting
+[2026-05-27T15:25:00.060838+00:00] wakeword-only: keepalive loop
+[2026-05-27T15:52:49.658759+00:00] wakeword-only: stopped
+[2026-05-27T16:41:17.529718+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T16:41:17.872656+00:00] import pystray: ok
+[2026-05-27T16:41:17.889874+00:00] import Pillow: ok
+[2026-05-27T16:41:18.952087+00:00] import openwakeword: ok
+[2026-05-27T16:41:18.952821+00:00] import onnxruntime: ok
+[2026-05-27T16:41:19.148311+00:00] import sounddevice: ok
+[2026-05-27T16:41:19.150535+00:00] import pyttsx3: ok
+[2026-05-27T16:41:19.180615+00:00] import PySide6: ok
+[2026-05-27T16:41:32.976526+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text+wakeword(env)+speak
+[2026-05-27T16:41:32.977489+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-27T16:41:32.986877+00:00] wakeword-only: detector starting
+[2026-05-27T16:41:33.025943+00:00] wakeword-only: keepalive loop
+[2026-05-27T16:56:32.802586+00:00] wakeword-only: stopped
+[2026-05-27T18:48:48.610344+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-27T18:48:48.946564+00:00] import pystray: ok
+[2026-05-27T18:48:48.951444+00:00] import Pillow: ok
+[2026-05-27T18:48:50.800248+00:00] import openwakeword: ok
+[2026-05-27T18:48:50.800899+00:00] import onnxruntime: ok
+[2026-05-27T18:48:50.985844+00:00] import sounddevice: ok
+[2026-05-27T18:48:50.988104+00:00] import pyttsx3: ok
+[2026-05-27T18:48:51.018685+00:00] import PySide6: ok
+[2026-05-27T18:48:55.991913+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-27T18:48:55.992774+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-27T18:48:55.999705+00:00] wakeword-only: detector starting
+[2026-05-27T18:48:56.025708+00:00] wakeword-only: keepalive loop
+[2026-05-27T19:05:38.279296+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-27T19:05:38.396272+00:00] Intent registry validation failed: english_voice_phrases intent validation failed:
+[english_voice_phrases] TEST_STREAMING_STT (test_streaming_stt) not in ALLOWED_INTENTS
+Traceback (most recent call last):
+  File "C:\J.A.R.V.I.S\local_jarvis\main.py", line 142, in main
+    run_startup_intent_validation(strict=True)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\J.A.R.V.I.S\local_jarvis\core\intent_validation.py", line 768, in run_startup_intent_validation
+    import brain.english_voice_phrases  # noqa: F401
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\J.A.R.V.I.S\local_jarvis\brain\english_voice_phrases.py", line 440, in <module>
+    assert_phrase_table_valid(_ENGLISH_VOICE_PHRASES, source="english_voice_phrases")
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\J.A.R.V.I.S\local_jarvis\core\intent_validation.py", line 308, in assert_phrase_table_valid
+    raise ImportError(f"{source} intent validation failed:\n{lines}")
+ImportError: english_voice_phrases intent validation failed:
+[english_voice_phrases] TEST_STREAMING_STT (test_streaming_stt) not in ALLOWED_INTENTS
+
+[2026-05-27T19:05:55.176370+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-27T19:05:55.289727+00:00] Intent registry validation failed: english_voice_phrases intent validation failed:
+[english_voice_phrases] TEST_STREAMING_STT (test_streaming_stt) not in ALLOWED_INTENTS
+Traceback (most recent call last):
+  File "C:\J.A.R.V.I.S\local_jarvis\main.py", line 142, in main
+    run_startup_intent_validation(strict=True)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\J.A.R.V.I.S\local_jarvis\core\intent_validation.py", line 768, in run_startup_intent_validation
+    import brain.english_voice_phrases  # noqa: F401
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\J.A.R.V.I.S\local_jarvis\brain\english_voice_phrases.py", line 440, in <module>
+    assert_phrase_table_valid(_ENGLISH_VOICE_PHRASES, source="english_voice_phrases")
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\J.A.R.V.I.S\local_jarvis\core\intent_validation.py", line 308, in assert_phrase_table_valid
+    raise ImportError(f"{source} intent validation failed:\n{lines}")
+ImportError: english_voice_phrases intent validation failed:
+[english_voice_phrases] TEST_STREAMING_STT (test_streaming_stt) not in ALLOWED_INTENTS
+
+[2026-05-27T19:10:46.457669+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-27T19:10:46.787067+00:00] import pystray: ok
+[2026-05-27T19:10:46.788949+00:00] import Pillow: ok
+[2026-05-27T19:10:47.863596+00:00] import openwakeword: ok
+[2026-05-27T19:10:47.864403+00:00] import onnxruntime: ok
+[2026-05-27T19:10:48.060595+00:00] import sounddevice: ok
+[2026-05-27T19:10:48.063110+00:00] import pyttsx3: ok
+[2026-05-27T19:10:48.093470+00:00] import PySide6: ok
+[2026-05-27T19:10:50.470406+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-27T19:10:50.471237+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-27T19:10:50.477825+00:00] wakeword-only: detector starting
+[2026-05-27T19:10:50.514600+00:00] wakeword-only: keepalive loop
+[2026-05-27T19:14:26.814405+00:00] wakeword-only: stopped
+[2026-05-27T19:26:57.019000+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-27T19:26:57.377802+00:00] import pystray: ok
+[2026-05-27T19:26:57.379935+00:00] import Pillow: ok
+[2026-05-27T19:26:58.496024+00:00] import openwakeword: ok
+[2026-05-27T19:26:58.496691+00:00] import onnxruntime: ok
+[2026-05-27T19:26:58.700022+00:00] import sounddevice: ok
+[2026-05-27T19:26:58.702374+00:00] import pyttsx3: ok
+[2026-05-27T19:26:58.734210+00:00] import PySide6: ok
+[2026-05-27T19:27:01.238810+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-27T19:27:01.239714+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-27T19:27:01.249123+00:00] wakeword-only: detector starting
+[2026-05-27T19:27:01.295537+00:00] wakeword-only: keepalive loop
+[2026-05-27T19:28:22.853071+00:00] wakeword-only: stopped
+[2026-05-27T20:14:02.181479+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-27T20:14:02.530862+00:00] import pystray: ok
+[2026-05-27T20:14:02.533074+00:00] import Pillow: ok
+[2026-05-27T20:14:03.713096+00:00] import openwakeword: ok
+[2026-05-27T20:14:03.713801+00:00] import onnxruntime: ok
+[2026-05-27T20:14:03.926472+00:00] import sounddevice: ok
+[2026-05-27T20:14:03.929447+00:00] import pyttsx3: ok
+[2026-05-27T20:14:03.965256+00:00] import PySide6: ok
+[2026-05-27T20:14:06.944374+00:00] startup header
+  executable=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+  version=3.13.0
+  cwd=C:\J.A.R.V.I.S\local_jarvis
+  env=yes
+  mode=text(default)+wakeword(env)
+[2026-05-27T20:14:06.945491+00:00] startup
+  mode=other
+  wake=True
+  voice=True
+  speak=True
+  python=C:\Users\babi2\AppData\Local\Programs\Python\Python313\python.exe
+[2026-05-27T20:14:06.957980+00:00] wakeword-only: detector starting
+[2026-05-27T20:14:07.072244+00:00] wakeword-only: keepalive loop

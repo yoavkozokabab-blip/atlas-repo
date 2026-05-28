@@ -1,0 +1,2132 @@
+{
+  "active_workflow": "",
+  "current_task": "typed:phase67 test 3",
+  "recent_screens": [
+    {
+      "ts": 1779978386229,
+      "summary": "Status: degraded\nActive window: Fortnite  \nLikely app: Window: Fortnite  \nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779978382678.png",
+      "active_app": "FortniteClient-Win64-Shipping.exe"
+    },
+    {
+      "ts": 1779979617125,
+      "summary": "Status: blocked\nActive window: .env - J.A.R.V.I.S - Visual Studio Code\nLikely app: VS Code\nVisible text: (little or no visible text detected)\nWarnings: Blocked keyword in window context: '.env'; Blocked keyword in window context: '.env'",
+      "screenshot": "",
+      "active_app": "Code.exe"
+    },
+    {
+      "ts": 1779997407216,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997406157.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997407312,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997406157.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997407416,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997406157.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997407522,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997406157.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997407623,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997406157.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997407741,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997406157.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997407850,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997406157.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997407951,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997406157.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997441290,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997441006.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997441635,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997441360.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997441994,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997441715.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997442364,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997442067.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997442703,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997442431.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997443032,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997442769.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997443365,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997443100.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997443704,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997443434.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997444034,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997443768.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997444364,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997444100.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997490133,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997489052.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997490239,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997489052.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997490339,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997489052.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997490441,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997489052.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997490544,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997489052.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997490644,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997489052.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997490749,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997489052.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997490851,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997489052.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997527566,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997527289.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997527908,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997527640.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997528242,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997527979.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997528587,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997528317.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997528923,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997528659.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997529268,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997528996.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997529653,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997529361.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997529990,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997529723.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997530327,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997530060.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779997530668,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997530400.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998309717,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998308511.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998309838,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998308511.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998309946,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998308511.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998310053,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998308511.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998310157,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998308511.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998310257,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998308511.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998310363,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998308511.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998310471,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998308511.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998348934,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998348656.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998349300,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998349010.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998349631,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998349371.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998349970,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998349705.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998350310,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998350042.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998350647,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998350384.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998350984,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998350722.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998351321,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998351059.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998351659,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998351393.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998351998,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998351734.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998361942,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998361166.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998362058,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998361166.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998362176,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998361166.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998362290,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998361166.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998362406,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998361166.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998362523,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998361166.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998362639,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998361166.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998362755,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998361166.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998401654,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998401391.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998401989,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998401728.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998402320,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998402055.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998402663,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998402389.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998402994,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998402731.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998403332,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998403061.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998403658,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998403399.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998404003,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998403726.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998404334,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998404072.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998404661,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998404400.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998449480,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998448340.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998449587,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998448340.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998449693,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998448340.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998449800,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998448340.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998449905,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998448340.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998450013,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998448340.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998450121,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998448340.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998450225,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998448340.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998488961,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998488678.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998489305,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998489030.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998489678,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998489376.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998490028,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998489757.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998490381,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998490097.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998490719,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998490451.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998491052,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998490788.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998491381,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998491121.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998491723,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998491452.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1779998492055,
+      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998491792.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1780001403489,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001403291.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1780001403546,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001403291.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1780001403601,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001403291.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1780001403656,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001403291.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1780001403713,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001403291.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1780001403767,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001403291.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1780001870369,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001870164.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1780001870430,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001870164.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1780001870492,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001870164.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1780001870556,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001870164.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1780001870617,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001870164.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1780001870679,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001870164.png",
+      "active_app": "chrome.exe"
+    }
+  ],
+  "ui_transitions": [
+    {
+      "ts": 1779998449685,
+      "action": "what_is_on_my_screen",
+      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998449791,
+      "action": "what_is_on_my_screen",
+      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998449897,
+      "action": "what_is_on_my_screen",
+      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998450005,
+      "action": "what_is_on_my_screen",
+      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998450112,
+      "action": "what_is_on_my_screen",
+      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998450216,
+      "action": "what_is_on_my_screen",
+      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998450236,
+      "action": "list_open_windows",
+      "detail": "count=9"
+    },
+    {
+      "ts": 1779998450246,
+      "action": "list_open_windows",
+      "detail": "count=9"
+    },
+    {
+      "ts": 1779998450257,
+      "action": "list_open_windows",
+      "detail": "count=9"
+    },
+    {
+      "ts": 1779998450266,
+      "action": "list_open_windows",
+      "detail": "count=9"
+    },
+    {
+      "ts": 1779998450756,
+      "action": "type_text",
+      "detail": "phase66 test 0"
+    },
+    {
+      "ts": 1779998450766,
+      "action": "type_text",
+      "detail": "phase66 test 0"
+    },
+    {
+      "ts": 1779998451229,
+      "action": "type_text",
+      "detail": "phase66 test 1"
+    },
+    {
+      "ts": 1779998451237,
+      "action": "type_text",
+      "detail": "phase66 test 1"
+    },
+    {
+      "ts": 1779998451702,
+      "action": "type_text",
+      "detail": "phase66 test 2"
+    },
+    {
+      "ts": 1779998451710,
+      "action": "type_text",
+      "detail": "phase66 test 2"
+    },
+    {
+      "ts": 1779998452174,
+      "action": "type_text",
+      "detail": "phase66 test 3"
+    },
+    {
+      "ts": 1779998452183,
+      "action": "type_text",
+      "detail": "phase66 test 3"
+    },
+    {
+      "ts": 1779998476948,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1779998476956,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998476964,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1779998476972,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998476980,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1779998476988,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998476996,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1779998477004,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998477013,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1779998477027,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998477035,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1779998477044,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998477052,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1779998477060,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998477068,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1779998477076,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998477084,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1779998477093,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998477102,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1779998477110,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998488848,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998488678.png"
+    },
+    {
+      "ts": 1779998488952,
+      "action": "what_is_on_my_screen",
+      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998488969,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1779998488977,
+      "action": "recover_desktop_operator",
+      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998489193,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998489030.png"
+    },
+    {
+      "ts": 1779998489296,
+      "action": "what_is_on_my_screen",
+      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998489314,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1779998489322,
+      "action": "recover_desktop_operator",
+      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998489553,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998489376.png"
+    },
+    {
+      "ts": 1779998489668,
+      "action": "what_is_on_my_screen",
+      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998489688,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1779998489697,
+      "action": "recover_desktop_operator",
+      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998489925,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998489757.png"
+    },
+    {
+      "ts": 1779998490020,
+      "action": "what_is_on_my_screen",
+      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998490037,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1779998490046,
+      "action": "recover_desktop_operator",
+      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998490261,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998490097.png"
+    },
+    {
+      "ts": 1779998490372,
+      "action": "what_is_on_my_screen",
+      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998490390,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1779998490399,
+      "action": "recover_desktop_operator",
+      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998490611,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998490451.png"
+    },
+    {
+      "ts": 1779998490710,
+      "action": "what_is_on_my_screen",
+      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998490727,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1779998490735,
+      "action": "recover_desktop_operator",
+      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998490944,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998490788.png"
+    },
+    {
+      "ts": 1779998491044,
+      "action": "what_is_on_my_screen",
+      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998491061,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1779998491069,
+      "action": "recover_desktop_operator",
+      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998491275,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998491121.png"
+    },
+    {
+      "ts": 1779998491373,
+      "action": "what_is_on_my_screen",
+      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998491389,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1779998491397,
+      "action": "recover_desktop_operator",
+      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998491614,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998491452.png"
+    },
+    {
+      "ts": 1779998491714,
+      "action": "what_is_on_my_screen",
+      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998491731,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1779998491739,
+      "action": "recover_desktop_operator",
+      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998491947,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998491792.png"
+    },
+    {
+      "ts": 1779998492047,
+      "action": "what_is_on_my_screen",
+      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1779998492063,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1779998492072,
+      "action": "recover_desktop_operator",
+      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001399233,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001399105.png"
+    },
+    {
+      "ts": 1780001399407,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001399282.png"
+    },
+    {
+      "ts": 1780001399587,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001399455.png"
+    },
+    {
+      "ts": 1780001399771,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001399643.png"
+    },
+    {
+      "ts": 1780001399973,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001399820.png"
+    },
+    {
+      "ts": 1780001400147,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001400020.png"
+    },
+    {
+      "ts": 1780001400322,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001400195.png"
+    },
+    {
+      "ts": 1780001400499,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001400371.png"
+    },
+    {
+      "ts": 1780001400679,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001400549.png"
+    },
+    {
+      "ts": 1780001400855,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001400728.png"
+    },
+    {
+      "ts": 1780001401032,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001400903.png"
+    },
+    {
+      "ts": 1780001401548,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001401419.png"
+    },
+    {
+      "ts": 1780001401732,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001401605.png"
+    },
+    {
+      "ts": 1780001401919,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001401790.png"
+    },
+    {
+      "ts": 1780001402108,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001401977.png"
+    },
+    {
+      "ts": 1780001402293,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001402165.png"
+    },
+    {
+      "ts": 1780001402481,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001402352.png"
+    },
+    {
+      "ts": 1780001402667,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001402540.png"
+    },
+    {
+      "ts": 1780001402855,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001402727.png"
+    },
+    {
+      "ts": 1780001403045,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001402916.png"
+    },
+    {
+      "ts": 1780001403229,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001403102.png"
+    },
+    {
+      "ts": 1780001403420,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001403291.png"
+    },
+    {
+      "ts": 1780001403481,
+      "action": "what_is_on_my_screen",
+      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001403538,
+      "action": "what_is_on_my_screen",
+      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001403593,
+      "action": "what_is_on_my_screen",
+      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001403648,
+      "action": "what_is_on_my_screen",
+      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001403705,
+      "action": "what_is_on_my_screen",
+      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001403760,
+      "action": "what_is_on_my_screen",
+      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001403947,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001403819.png"
+    },
+    {
+      "ts": 1780001404138,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001404009.png"
+    },
+    {
+      "ts": 1780001404335,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001404199.png"
+    },
+    {
+      "ts": 1780001404543,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001404405.png"
+    },
+    {
+      "ts": 1780001404735,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001404607.png"
+    },
+    {
+      "ts": 1780001404924,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001404795.png"
+    },
+    {
+      "ts": 1780001405112,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001404983.png"
+    },
+    {
+      "ts": 1780001405299,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001405170.png"
+    },
+    {
+      "ts": 1780001405327,
+      "action": "list_open_windows",
+      "detail": "count=9"
+    },
+    {
+      "ts": 1780001405336,
+      "action": "list_open_windows",
+      "detail": "count=9"
+    },
+    {
+      "ts": 1780001405345,
+      "action": "list_open_windows",
+      "detail": "count=9"
+    },
+    {
+      "ts": 1780001405354,
+      "action": "list_open_windows",
+      "detail": "count=9"
+    },
+    {
+      "ts": 1780001405822,
+      "action": "type_text",
+      "detail": "phase67 test 0"
+    },
+    {
+      "ts": 1780001405830,
+      "action": "type_text",
+      "detail": "phase67 test 0"
+    },
+    {
+      "ts": 1780001406277,
+      "action": "type_text",
+      "detail": "phase67 test 1"
+    },
+    {
+      "ts": 1780001406285,
+      "action": "type_text",
+      "detail": "phase67 test 1"
+    },
+    {
+      "ts": 1780001406730,
+      "action": "type_text",
+      "detail": "phase67 test 2"
+    },
+    {
+      "ts": 1780001406738,
+      "action": "type_text",
+      "detail": "phase67 test 2"
+    },
+    {
+      "ts": 1780001407183,
+      "action": "type_text",
+      "detail": "phase67 test 3"
+    },
+    {
+      "ts": 1780001407191,
+      "action": "type_text",
+      "detail": "phase67 test 3"
+    },
+    {
+      "ts": 1780001425574,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001425392.png"
+    },
+    {
+      "ts": 1780001425768,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001425624.png"
+    },
+    {
+      "ts": 1780001425777,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780001425785,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001425991,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001425836.png"
+    },
+    {
+      "ts": 1780001426185,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001426043.png"
+    },
+    {
+      "ts": 1780001426379,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001426235.png"
+    },
+    {
+      "ts": 1780001426388,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780001426396,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001426581,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001426443.png"
+    },
+    {
+      "ts": 1780001426772,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001426631.png"
+    },
+    {
+      "ts": 1780001426963,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001426822.png"
+    },
+    {
+      "ts": 1780001426972,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780001426980,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001427171,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001427029.png"
+    },
+    {
+      "ts": 1780001427364,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001427224.png"
+    },
+    {
+      "ts": 1780001427557,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001427414.png"
+    },
+    {
+      "ts": 1780001427567,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780001427575,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001427763,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001427622.png"
+    },
+    {
+      "ts": 1780001427972,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001427817.png"
+    },
+    {
+      "ts": 1780001428164,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001428024.png"
+    },
+    {
+      "ts": 1780001428173,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780001428182,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001428375,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001428232.png"
+    },
+    {
+      "ts": 1780001428566,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001428428.png"
+    },
+    {
+      "ts": 1780001428759,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001428616.png"
+    },
+    {
+      "ts": 1780001428768,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780001428776,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001428976,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001428823.png"
+    },
+    {
+      "ts": 1780001429168,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001429027.png"
+    },
+    {
+      "ts": 1780001429360,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001429219.png"
+    },
+    {
+      "ts": 1780001429368,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780001429376,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001429576,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001429426.png"
+    },
+    {
+      "ts": 1780001429761,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001429626.png"
+    },
+    {
+      "ts": 1780001429952,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001429810.png"
+    },
+    {
+      "ts": 1780001429961,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780001429969,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001430171,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001430018.png"
+    },
+    {
+      "ts": 1780001430377,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001430223.png"
+    },
+    {
+      "ts": 1780001430566,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001430429.png"
+    },
+    {
+      "ts": 1780001430575,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780001430583,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001430770,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001430632.png"
+    },
+    {
+      "ts": 1780001430957,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001430818.png"
+    },
+    {
+      "ts": 1780001431159,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001431017.png"
+    },
+    {
+      "ts": 1780001431168,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780001431176,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001431371,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001431225.png"
+    },
+    {
+      "ts": 1780001446664,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001446522.png"
+    },
+    {
+      "ts": 1780001446980,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001446827.png"
+    },
+    {
+      "ts": 1780001447296,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001447135.png"
+    },
+    {
+      "ts": 1780001447597,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001447453.png"
+    },
+    {
+      "ts": 1780001447913,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001447755.png"
+    },
+    {
+      "ts": 1780001448241,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001448078.png"
+    },
+    {
+      "ts": 1780001448561,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001448403.png"
+    },
+    {
+      "ts": 1780001448881,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001448728.png"
+    },
+    {
+      "ts": 1780001449185,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001449033.png"
+    },
+    {
+      "ts": 1780001449498,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001449332.png"
+    },
+    {
+      "ts": 1780001865742,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001865596.png"
+    },
+    {
+      "ts": 1780001865939,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001865798.png"
+    },
+    {
+      "ts": 1780001866134,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001866003.png"
+    },
+    {
+      "ts": 1780001866353,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001866195.png"
+    },
+    {
+      "ts": 1780001866579,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001866410.png"
+    },
+    {
+      "ts": 1780001866868,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001866687.png"
+    },
+    {
+      "ts": 1780001867064,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001866923.png"
+    },
+    {
+      "ts": 1780001867258,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001867117.png"
+    },
+    {
+      "ts": 1780001867448,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001867310.png"
+    },
+    {
+      "ts": 1780001867645,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001867506.png"
+    },
+    {
+      "ts": 1780001867850,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001867701.png"
+    },
+    {
+      "ts": 1780001868420,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001868288.png"
+    },
+    {
+      "ts": 1780001868608,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001868476.png"
+    },
+    {
+      "ts": 1780001868795,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001868664.png"
+    },
+    {
+      "ts": 1780001868984,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001868852.png"
+    },
+    {
+      "ts": 1780001869169,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001869038.png"
+    },
+    {
+      "ts": 1780001869354,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001869223.png"
+    },
+    {
+      "ts": 1780001869546,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001869411.png"
+    },
+    {
+      "ts": 1780001869733,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001869601.png"
+    },
+    {
+      "ts": 1780001869920,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001869788.png"
+    },
+    {
+      "ts": 1780001870108,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001869977.png"
+    },
+    {
+      "ts": 1780001870295,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001870164.png"
+    },
+    {
+      "ts": 1780001870361,
+      "action": "what_is_on_my_screen",
+      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001870423,
+      "action": "what_is_on_my_screen",
+      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001870485,
+      "action": "what_is_on_my_screen",
+      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001870548,
+      "action": "what_is_on_my_screen",
+      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001870609,
+      "action": "what_is_on_my_screen",
+      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001870672,
+      "action": "what_is_on_my_screen",
+      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001870860,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001870727.png"
+    },
+    {
+      "ts": 1780001871099,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001870936.png"
+    },
+    {
+      "ts": 1780001871287,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001871156.png"
+    },
+    {
+      "ts": 1780001871480,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001871347.png"
+    },
+    {
+      "ts": 1780001871672,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001871541.png"
+    },
+    {
+      "ts": 1780001871863,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001871731.png"
+    },
+    {
+      "ts": 1780001872063,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001871923.png"
+    },
+    {
+      "ts": 1780001872265,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001872126.png"
+    },
+    {
+      "ts": 1780001872287,
+      "action": "list_open_windows",
+      "detail": "count=9"
+    },
+    {
+      "ts": 1780001872296,
+      "action": "list_open_windows",
+      "detail": "count=9"
+    },
+    {
+      "ts": 1780001872305,
+      "action": "list_open_windows",
+      "detail": "count=9"
+    },
+    {
+      "ts": 1780001872314,
+      "action": "list_open_windows",
+      "detail": "count=9"
+    },
+    {
+      "ts": 1780001872779,
+      "action": "type_text",
+      "detail": "phase67 test 0"
+    },
+    {
+      "ts": 1780001872788,
+      "action": "type_text",
+      "detail": "phase67 test 0"
+    },
+    {
+      "ts": 1780001873236,
+      "action": "type_text",
+      "detail": "phase67 test 1"
+    },
+    {
+      "ts": 1780001873244,
+      "action": "type_text",
+      "detail": "phase67 test 1"
+    },
+    {
+      "ts": 1780001873690,
+      "action": "type_text",
+      "detail": "phase67 test 2"
+    },
+    {
+      "ts": 1780001873698,
+      "action": "type_text",
+      "detail": "phase67 test 2"
+    },
+    {
+      "ts": 1780001874144,
+      "action": "type_text",
+      "detail": "phase67 test 3"
+    },
+    {
+      "ts": 1780001874152,
+      "action": "type_text",
+      "detail": "phase67 test 3"
+    },
+    {
+      "ts": 1780001894929,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001894742.png"
+    },
+    {
+      "ts": 1780001895176,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001894990.png"
+    },
+    {
+      "ts": 1780001895187,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780001895196,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001895428,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001895251.png"
+    },
+    {
+      "ts": 1780001895650,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001895482.png"
+    },
+    {
+      "ts": 1780001895846,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001895702.png"
+    },
+    {
+      "ts": 1780001895855,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780001895863,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001896062,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001895914.png"
+    },
+    {
+      "ts": 1780001896259,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001896114.png"
+    },
+    {
+      "ts": 1780001896458,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001896310.png"
+    },
+    {
+      "ts": 1780001896467,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780001896475,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001896689,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001896527.png"
+    },
+    {
+      "ts": 1780001896886,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001896740.png"
+    },
+    {
+      "ts": 1780001897087,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001896939.png"
+    },
+    {
+      "ts": 1780001897096,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780001897104,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001897306,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001897157.png"
+    },
+    {
+      "ts": 1780001897506,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001897355.png"
+    },
+    {
+      "ts": 1780001897705,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001897555.png"
+    },
+    {
+      "ts": 1780001897714,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780001897723,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001897941,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001897772.png"
+    },
+    {
+      "ts": 1780001898140,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001897994.png"
+    },
+    {
+      "ts": 1780001898352,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001898195.png"
+    },
+    {
+      "ts": 1780001898362,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780001898371,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001898595,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001898431.png"
+    },
+    {
+      "ts": 1780001898799,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001898649.png"
+    },
+    {
+      "ts": 1780001898996,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001898852.png"
+    },
+    {
+      "ts": 1780001899005,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780001899013,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001899210,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001899066.png"
+    },
+    {
+      "ts": 1780001899409,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001899261.png"
+    },
+    {
+      "ts": 1780001899609,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001899460.png"
+    },
+    {
+      "ts": 1780001899618,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780001899626,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001899832,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001899680.png"
+    },
+    {
+      "ts": 1780001900032,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001899885.png"
+    },
+    {
+      "ts": 1780001900243,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001900093.png"
+    },
+    {
+      "ts": 1780001900252,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780001900259,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001900462,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001900310.png"
+    },
+    {
+      "ts": 1780001900660,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001900515.png"
+    },
+    {
+      "ts": 1780001900860,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001900710.png"
+    },
+    {
+      "ts": 1780001900869,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780001900877,
+      "action": "recover_desktop_operator",
+      "detail": "Example Domain - Google Chrome for Testing"
+    },
+    {
+      "ts": 1780001901075,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001900927.png"
+    },
+    {
+      "ts": 1780001929704,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001929567.png"
+    },
+    {
+      "ts": 1780001929973,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001929837.png"
+    },
+    {
+      "ts": 1780001930246,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001930118.png"
+    },
+    {
+      "ts": 1780001930522,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001930378.png"
+    },
+    {
+      "ts": 1780001930799,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001930657.png"
+    },
+    {
+      "ts": 1780001931074,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001930941.png"
+    },
+    {
+      "ts": 1780001931355,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001931214.png"
+    },
+    {
+      "ts": 1780001931615,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001931488.png"
+    },
+    {
+      "ts": 1780001931896,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001931749.png"
+    },
+    {
+      "ts": 1780001932156,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001932028.png"
+    },
+    {
+      "ts": 1780002993797,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780002993663.png"
+    },
+    {
+      "ts": 1780002994167,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780002994030.png"
+    },
+    {
+      "ts": 1780003012900,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780003012760.png"
+    },
+    {
+      "ts": 1780003013276,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780003013151.png"
+    },
+    {
+      "ts": 1780003028030,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780003027888.png"
+    },
+    {
+      "ts": 1780003028404,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780003028268.png"
+    }
+  ]
+}

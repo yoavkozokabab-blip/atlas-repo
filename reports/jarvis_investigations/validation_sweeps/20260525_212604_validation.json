@@ -1,0 +1,872 @@
+{
+  "created_at": "2026-05-25T21:26:04.661618+00:00",
+  "total_signals_analyzed": 543,
+  "divergences_before": 32,
+  "divergences_after": 32,
+  "reduction_pct": 0.0,
+  "unresolved_divergences": 32,
+  "confidence_score": 0.95,
+  "incomplete_candle_usage": 0,
+  "shifted_index_frequency": 0,
+  "close_price_mismatches": 32,
+  "rejected_after_patch": 0,
+  "newly_aligned_after_patch": 0,
+  "engine_breakdown": {
+    "daily": {
+      "files": 28,
+      "signals": 111,
+      "divergences": 10,
+      "incomplete": 0
+    },
+    "combined_dual": {
+      "files": 62,
+      "signals": 430,
+      "divergences": 22,
+      "incomplete": 0
+    },
+    "weekly": {
+      "files": 1,
+      "signals": 2,
+      "divergences": 0,
+      "incomplete": 0
+    }
+  },
+  "metrics": [
+    {
+      "name": "PF",
+      "direction": "uncertain",
+      "range_estimate": "small positive to unchanged",
+      "confidence": "MEDIUM",
+      "rationale": "Fewer incomplete-bar entries should reduce false entries; exact PnL unavailable."
+    },
+    {
+      "name": "WR",
+      "direction": "uncertain",
+      "range_estimate": "unchanged to modest improvement",
+      "confidence": "MEDIUM",
+      "rationale": "Rejected incomplete signals may remove weak/invalid entries."
+    },
+    {
+      "name": "CAGR",
+      "direction": "uncertain",
+      "range_estimate": "unknown; possible lower turnover",
+      "confidence": "LOW",
+      "rationale": "Candidate C may reduce opportunity count by rejecting incomplete-bar signals."
+    },
+    {
+      "name": "Max DD",
+      "direction": "uncertain",
+      "range_estimate": "unchanged to modestly lower",
+      "confidence": "MEDIUM",
+      "rationale": "Avoiding incomplete-bar entries can reduce adverse false entries."
+    },
+    {
+      "name": "expectancy",
+      "direction": "uncertain",
+      "range_estimate": "unknown to modest improvement",
+      "confidence": "MEDIUM",
+      "rationale": "Depends on whether rejected signals were profitable."
+    },
+    {
+      "name": "avg R",
+      "direction": "uncertain",
+      "range_estimate": "unknown",
+      "confidence": "LOW",
+      "rationale": "R distribution requires realized trade outcomes."
+    },
+    {
+      "name": "signal count",
+      "direction": "unchanged",
+      "range_estimate": "-0 simulated rejected signals",
+      "confidence": "MEDIUM",
+      "rationale": "Candidate C may reduce opportunity count by rejecting incomplete-bar signals."
+    },
+    {
+      "name": "skipped trades",
+      "direction": "unchanged",
+      "range_estimate": "increases by incomplete-bar rejection count",
+      "confidence": "MEDIUM",
+      "rationale": "Patch intentionally skips incomplete-bar candidates."
+    },
+    {
+      "name": "delayed entries",
+      "direction": "unchanged",
+      "range_estimate": "not directly changed",
+      "confidence": "LOW",
+      "rationale": "Candidate C rejects incomplete bars rather than changing delayed-entry policy."
+    },
+    {
+      "name": "execution rejection reasons",
+      "direction": "improved",
+      "range_estimate": "adds explicit incomplete_bar reason",
+      "confidence": "MEDIUM",
+      "rationale": "Improves auditability of skipped signals."
+    }
+  ],
+  "symbols": [
+    {
+      "symbol": "C",
+      "mismatch_count": 18,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 18,
+      "replay_instability": 3,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\cumulative_summary.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json"
+      ]
+    },
+    {
+      "symbol": "MFE",
+      "mismatch_count": 14,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 14,
+      "replay_instability": 0,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T17-26-13+00-00.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T17-26-13+00-00.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T16-44-43+00-00.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T16-44-43+00-00.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T15-48-09+00-00.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T15-48-09+00-00.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T15-40-10+00-00.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T15-40-10+00-00.json"
+      ]
+    },
+    {
+      "symbol": "R",
+      "mismatch_count": 14,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 14,
+      "replay_instability": 0,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T17-26-13+00-00.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T17-26-13+00-00.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T16-44-43+00-00.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T16-44-43+00-00.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T15-48-09+00-00.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T15-48-09+00-00.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T15-40-10+00-00.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T15-40-10+00-00.json"
+      ]
+    },
+    {
+      "symbol": "A",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 2,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T17-26-13+00-00_post_sim_rows.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T17-26-13+00-00_post_sim_rows.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T16-44-43+00-00_post_sim_rows.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T16-44-43+00-00_post_sim_rows.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\logs\\live_monitor.log"
+      ]
+    },
+    {
+      "symbol": "AA",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 2,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T17-26-13+00-00_post_sim_rows.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T17-26-13+00-00_post_sim_rows.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T16-44-43+00-00_post_sim_rows.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T16-44-43+00-00_post_sim_rows.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\logs\\live_monitor.log"
+      ]
+    },
+    {
+      "symbol": "INFO",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 2,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\weekly\\logs\\live_monitor.log"
+      ]
+    },
+    {
+      "symbol": "DEBUG",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 2,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\weekly\\logs\\live_monitor.log"
+      ]
+    },
+    {
+      "symbol": "BLOB",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 2,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\weekly\\logs\\live_monitor.log"
+      ]
+    },
+    {
+      "symbol": "IF",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 2,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\weekly\\logs\\live_monitor.log"
+      ]
+    },
+    {
+      "symbol": "OFFSET",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 2,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\weekly\\logs\\live_monitor.log"
+      ]
+    },
+    {
+      "symbol": "DATETIME",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 2,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\weekly\\logs\\live_monitor.log"
+      ]
+    },
+    {
+      "symbol": "PRIMARY",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 2,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\weekly\\logs\\live_monitor.log"
+      ]
+    },
+    {
+      "symbol": "NULL",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 2,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\weekly\\logs\\live_monitor.log"
+      ]
+    },
+    {
+      "symbol": "WHERE",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 2,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\weekly\\logs\\live_monitor.log"
+      ]
+    },
+    {
+      "symbol": "FROM",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 2,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\weekly\\logs\\live_monitor.log"
+      ]
+    },
+    {
+      "symbol": "CREATE",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 2,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\weekly\\logs\\live_monitor.log"
+      ]
+    },
+    {
+      "symbol": "LIMIT",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 2,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\weekly\\logs\\live_monitor.log"
+      ]
+    },
+    {
+      "symbol": "WITHOUT",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 2,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\weekly\\logs\\live_monitor.log"
+      ]
+    },
+    {
+      "symbol": "ROWID",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 2,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\weekly\\logs\\live_monitor.log"
+      ]
+    },
+    {
+      "symbol": "EXISTS",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 2,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\weekly\\logs\\live_monitor.log"
+      ]
+    },
+    {
+      "symbol": "AS",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 2,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\weekly\\logs\\live_monitor.log"
+      ]
+    },
+    {
+      "symbol": "OHLC",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 2,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\weekly\\logs\\live_monitor.log"
+      ]
+    },
+    {
+      "symbol": "GET",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 2,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\weekly\\logs\\live_monitor.log"
+      ]
+    },
+    {
+      "symbol": "KEY",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 2,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\weekly\\logs\\live_monitor.log"
+      ]
+    },
+    {
+      "symbol": "NOT",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 2,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\weekly\\logs\\live_monitor.log"
+      ]
+    },
+    {
+      "symbol": "VARCHAR",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 2,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\weekly\\logs\\live_monitor.log"
+      ]
+    },
+    {
+      "symbol": "SELECT",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 2,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\weekly\\logs\\live_monitor.log"
+      ]
+    },
+    {
+      "symbol": "TABLE",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 2,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\weekly\\logs\\live_monitor.log"
+      ]
+    },
+    {
+      "symbol": "SPY",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 2,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\weekly\\logs\\live_monitor.log"
+      ]
+    },
+    {
+      "symbol": "DOV",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 0,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json"
+      ]
+    },
+    {
+      "symbol": "CC",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 0,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json"
+      ]
+    },
+    {
+      "symbol": "CRC",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 0,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json"
+      ]
+    },
+    {
+      "symbol": "ASTH",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 0,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json"
+      ]
+    },
+    {
+      "symbol": "CNP",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 0,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json"
+      ]
+    },
+    {
+      "symbol": "BOOT",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 0,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T17-26-13+00-00_post_sim_rows_near_live.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T17-26-13+00-00_post_sim_rows_near_live.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T16-44-43+00-00_post_sim_rows_near_live.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T16-44-43+00-00_post_sim_rows_near_live.csv"
+      ]
+    },
+    {
+      "symbol": "CVS",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 0,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\processed_signals.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\processed_signals.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\open_positions.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\open_positions.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\paper_positions_combined.json"
+      ]
+    },
+    {
+      "symbol": "APLS",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 0,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json"
+      ]
+    },
+    {
+      "symbol": "AAPL",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 0,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T17-26-13+00-00_post_sim_rows.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T17-26-13+00-00_post_sim_rows.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T16-44-43+00-00_post_sim_rows.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T16-44-43+00-00_post_sim_rows.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\live_summary_latest.json"
+      ]
+    },
+    {
+      "symbol": "DVA",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 0,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json"
+      ]
+    },
+    {
+      "symbol": "ADP",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 0,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json"
+      ]
+    },
+    {
+      "symbol": "EXPD",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 0,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json"
+      ]
+    },
+    {
+      "symbol": "DLTR",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 0,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json"
+      ]
+    },
+    {
+      "symbol": "AGCO",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 0,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T17-26-13+00-00_post_sim_rows_near_live.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T17-26-13+00-00_post_sim_rows_near_live.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T16-44-43+00-00_post_sim_rows_near_live.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T16-44-43+00-00_post_sim_rows_near_live.csv"
+      ]
+    },
+    {
+      "symbol": "DTE",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 0,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T17-26-13+00-00_post_sim_rows_near_live.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T17-26-13+00-00_post_sim_rows_near_live.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T16-44-43+00-00_post_sim_rows_near_live.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T16-44-43+00-00_post_sim_rows_near_live.csv"
+      ]
+    },
+    {
+      "symbol": "APTV",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 0,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json"
+      ]
+    },
+    {
+      "symbol": "CMCSA",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 0,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json"
+      ]
+    },
+    {
+      "symbol": "EOG",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 0,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json"
+      ]
+    },
+    {
+      "symbol": "FAST",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 0,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T17-26-13+00-00_post_sim_rows_near_live.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T17-26-13+00-00_post_sim_rows_near_live.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T16-44-43+00-00_post_sim_rows_near_live.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T16-44-43+00-00_post_sim_rows_near_live.csv"
+      ]
+    },
+    {
+      "symbol": "AEIS",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 0,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json"
+      ]
+    },
+    {
+      "symbol": "FANG",
+      "mismatch_count": 0,
+      "incomplete_count": 0,
+      "shifted_index_count": 0,
+      "price_mismatch_count": 0,
+      "replay_instability": 0,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json"
+      ]
+    }
+  ],
+  "evidence_paths": [
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\cumulative_summary.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\live_run_history.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\live_summary_latest.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\combined\\paper_live_log_combined.txt",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\logs\\live_monitor.log",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\logs\\live_monitor.log",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_run_history.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_run_history.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_decision_summary.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_decision_summary.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\processed_signals.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\processed_signals.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\open_positions.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\open_positions.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_order_events.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_order_events.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\paper_live_log_combined.txt",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\paper_live_log_combined.txt",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\paper_positions_combined.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\paper_positions_combined.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\daily\\paper_positions_daily.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\daily\\paper_positions_daily.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\paper_safety_state.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\paper_safety_state.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\review_summary.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\review_summary.txt",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\review_summary.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\review_summary.txt",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\review_summary.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\review_summary.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_signals.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_signals.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T17-26-13+00-00.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T17-26-13+00-00.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T17-26-13+00-00_post_sim_rows_near_live.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T17-26-13+00-00_post_sim_rows_near_live.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T17-26-13+00-00_post_sim_rows.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T17-26-13+00-00_post_sim_rows.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T17-26-13+00-00_engine_summary.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T17-26-13+00-00_engine_summary.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T16-44-43+00-00.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T16-44-43+00-00.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T16-44-43+00-00_post_sim_rows_near_live.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T16-44-43+00-00_post_sim_rows_near_live.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T16-44-43+00-00_post_sim_rows.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T16-44-43+00-00_post_sim_rows.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T16-44-43+00-00_engine_summary.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T16-44-43+00-00_engine_summary.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T15-48-09+00-00_engine_summary.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T15-48-09+00-00_engine_summary.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T15-48-09+00-00.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T15-48-09+00-00.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T15-40-10+00-00.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T15-40-10+00-00_engine_summary.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T15-40-10+00-00.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T15-40-10+00-00_engine_summary.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T15-22-27+00-00_engine_summary.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T15-22-27+00-00_engine_summary.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T15-22-27+00-00.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T15-22-27+00-00.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T14-58-10+00-00.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T14-58-10+00-00_engine_summary.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T14-58-10+00-00.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\last_bar_relevance_diagnostic_2026-04-19T14-58-10+00-00_engine_summary.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\latest_daily_summary.txt",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\review_summary.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\review_summary.txt",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\review_summary.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\live_report.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\live_report_latest.txt",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\open_positions_report.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\live_run_history.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\live_summary_latest.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\state\\processed_signals.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\state\\processed_signals.json"
+  ],
+  "report_json": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\validation_sweeps\\20260525_212604_validation.json",
+  "report_markdown": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\validation_sweeps\\20260525_212604_validation.md"
+}

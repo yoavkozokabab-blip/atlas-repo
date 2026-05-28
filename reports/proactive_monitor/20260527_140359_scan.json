@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-05-27T14:03:59.910711+00:00",
+  "findings": [
+    {
+      "title": "Dashboard degraded",
+      "message": "Dashboard status=failed. [WinError 10061] No connection could be made because the target machine actively",
+      "action": "Run restart dashboard or show dashboard health."
+    },
+    {
+      "title": "Runtime degradation",
+      "message": "runtime health: failed",
+      "action": "Run show healing actions or validate runtime integrity."
+    },
+    {
+      "title": "Stale open positions",
+      "message": "Stale open positions (read-only scan):",
+      "action": "Run show stale open positions or propose execution cleanup patch."
+    },
+    {
+      "title": "Execution adapter disabled",
+      "message": "Execution blockers:",
+      "action": "Inspect execution adapter and enable paper adapter."
+    }
+  ]
+}

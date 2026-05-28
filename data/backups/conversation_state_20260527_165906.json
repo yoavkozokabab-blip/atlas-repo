@@ -1,0 +1,34 @@
+{
+  "current_topic": "what is the weather today",
+  "previous_topics": [],
+  "active_project": "",
+  "unresolved_question": "",
+  "emotional_tone": "curious",
+  "interruption_state": "idle",
+  "pending_actions": [],
+  "recent_entities": [
+    "today",
+    "weather",
+    "what"
+  ],
+  "follow_up_references": [
+    "voice:conversational"
+  ],
+  "turn_count": 1,
+  "last_user_text": "what is the weather today",
+  "last_assistant_summary": "Sure. I can help with that.",
+  "last_intent": "conversational",
+  "paused_response": "",
+  "continuous_listening": false,
+  "updated_at": "2026-05-27T16:59:06.986457+00:00",
+  "interruption_count": 0,
+  "intent_continuity_chain": [
+    "conversational"
+  ],
+  "turn_references": [
+    "what is the weather today -> Sure. I can help with that."
+  ],
+  "last_response_style": "neutral",
+  "pending_follow_up": "",
+  "user_intent_continuity": "conversational"
+}

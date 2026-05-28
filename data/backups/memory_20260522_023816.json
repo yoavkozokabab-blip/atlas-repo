@@ -1,0 +1,16 @@
+{
+  "entries": {
+    "project_root": {
+      "value": "C:\\FINAL_ALGO_TRADER",
+      "category": "fact",
+      "created_at": "2026-05-21T23:36:39.291057+00:00",
+      "updated_at": "2026-05-21T23:36:39.291057+00:00"
+    },
+    "user_preference": {
+      "value": "test",
+      "category": "preference",
+      "created_at": "2026-05-21T23:38:16.693992+00:00",
+      "updated_at": "2026-05-21T23:38:16.693992+00:00"
+    }
+  }
+}

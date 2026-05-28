@@ -1,0 +1,47 @@
+{
+  "next_id": 3,
+  "last_completed_id": 1,
+  "updated_at": "2026-05-26T20:44:31.448054+00:00",
+  "tasks": {
+    "1": {
+      "id": 1,
+      "command": "summarize trading health",
+      "intent": "summarize_trading_health",
+      "phase": "completed",
+      "started_at": "2026-05-26T20:16:04.976953+00:00",
+      "started_monotonic": 4944.8497638,
+      "last_progress_at": "2026-05-26T20:16:05.013827+00:00",
+      "last_progress_text": "executing command pipeline...",
+      "ended_at": "2026-05-26T20:16:05.218131+00:00",
+      "duration_seconds": 0.24,
+      "result_summary": "async trading health complete",
+      "severity": "info",
+      "evidence": [
+        "async trading health complete"
+      ],
+      "related_reports": [],
+      "errors": [],
+      "notification_id": 6,
+      "cancel_requested": false
+    },
+    "2": {
+      "id": 2,
+      "command": "summarize trading health",
+      "intent": "summarize_trading_health",
+      "phase": "running",
+      "started_at": "2026-05-26T20:44:31.442565+00:00",
+      "started_monotonic": 6651.3153747,
+      "last_progress_at": "2026-05-26T20:44:31.442565+00:00",
+      "last_progress_text": "",
+      "ended_at": "",
+      "duration_seconds": 0.0,
+      "result_summary": "",
+      "severity": "info",
+      "evidence": [],
+      "related_reports": [],
+      "errors": [],
+      "notification_id": null,
+      "cancel_requested": false
+    }
+  }
+}

@@ -1,0 +1,195 @@
+{
+  "series": {
+    "last_bar_filter": [
+      {
+        "timestamp": "2026-05-26T21:21:42.312075+00:00",
+        "confidence": 0.62,
+        "causal_score": 0.52,
+        "evidence_count": 4,
+        "recurrence": 1,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:22:12.735108+00:00",
+        "confidence": 0.74,
+        "causal_score": 0.64,
+        "evidence_count": 4,
+        "recurrence": 4,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:24:13.524550+00:00",
+        "confidence": 0.74,
+        "causal_score": 0.82,
+        "evidence_count": 4,
+        "recurrence": 9,
+        "contradictory_count": 0,
+        "verification_status": "verified"
+      },
+      {
+        "timestamp": "2026-05-26T21:24:43.898257+00:00",
+        "confidence": 0.74,
+        "causal_score": 0.82,
+        "evidence_count": 4,
+        "recurrence": 11,
+        "contradictory_count": 0,
+        "verification_status": "verified"
+      }
+    ],
+    "overlap_stale_positions": [
+      {
+        "timestamp": "2026-05-26T21:21:42.319177+00:00",
+        "confidence": 0.5,
+        "causal_score": 0.4,
+        "evidence_count": 3,
+        "recurrence": 1,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:22:12.741742+00:00",
+        "confidence": 0.62,
+        "causal_score": 0.52,
+        "evidence_count": 3,
+        "recurrence": 4,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:24:13.531380+00:00",
+        "confidence": 0.82,
+        "causal_score": 0.8,
+        "evidence_count": 3,
+        "recurrence": 9,
+        "contradictory_count": 0,
+        "verification_status": "verified"
+      },
+      {
+        "timestamp": "2026-05-26T21:24:43.890661+00:00",
+        "confidence": 0.82,
+        "causal_score": 0.88,
+        "evidence_count": 3,
+        "recurrence": 11,
+        "contradictory_count": 0,
+        "verification_status": "verified"
+      }
+    ],
+    "stale_telemetry_risk": [
+      {
+        "timestamp": "2026-05-26T21:21:42.325451+00:00",
+        "confidence": 0.5,
+        "causal_score": 0.4,
+        "evidence_count": 3,
+        "recurrence": 1,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:22:12.748907+00:00",
+        "confidence": 0.62,
+        "causal_score": 0.52,
+        "evidence_count": 3,
+        "recurrence": 4,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:24:13.538225+00:00",
+        "confidence": 0.7,
+        "causal_score": 0.78,
+        "evidence_count": 3,
+        "recurrence": 9,
+        "contradictory_count": 0,
+        "verification_status": "verified"
+      },
+      {
+        "timestamp": "2026-05-26T21:24:43.904793+00:00",
+        "confidence": 0.7,
+        "causal_score": 0.78,
+        "evidence_count": 3,
+        "recurrence": 11,
+        "contradictory_count": 0,
+        "verification_status": "verified"
+      }
+    ],
+    "cluster_divergence": [
+      {
+        "timestamp": "2026-05-26T21:21:42.331811+00:00",
+        "confidence": 0.38,
+        "causal_score": 0.28,
+        "evidence_count": 2,
+        "recurrence": 1,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:22:12.755731+00:00",
+        "confidence": 0.5,
+        "causal_score": 0.4,
+        "evidence_count": 2,
+        "recurrence": 4,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:24:13.545283+00:00",
+        "confidence": 0.68,
+        "causal_score": 0.6,
+        "evidence_count": 2,
+        "recurrence": 9,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:24:43.911714+00:00",
+        "confidence": 0.68,
+        "causal_score": 0.68,
+        "evidence_count": 2,
+        "recurrence": 11,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      }
+    ],
+    "adapter_disabled": [
+      {
+        "timestamp": "2026-05-26T21:21:42.338404+00:00",
+        "confidence": 0.35,
+        "causal_score": 0.25,
+        "evidence_count": 3,
+        "recurrence": 1,
+        "contradictory_count": 1,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:22:12.762340+00:00",
+        "confidence": 0.47,
+        "causal_score": 0.37,
+        "evidence_count": 3,
+        "recurrence": 4,
+        "contradictory_count": 1,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:24:13.552016+00:00",
+        "confidence": 0.67,
+        "causal_score": 0.57,
+        "evidence_count": 3,
+        "recurrence": 9,
+        "contradictory_count": 1,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:24:43.918218+00:00",
+        "confidence": 0.75,
+        "causal_score": 0.65,
+        "evidence_count": 3,
+        "recurrence": 11,
+        "contradictory_count": 1,
+        "verification_status": "pending"
+      }
+    ]
+  },
+  "updated_at": "2026-05-26T21:24:43.918225+00:00"
+}

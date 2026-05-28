@@ -1,0 +1,51 @@
+{
+  "current_topic": "open youtube",
+  "previous_topics": [
+    "Oh",
+    "open youtube",
+    "test realtime voice",
+    "show realtime provider status",
+    "benchmark realtime providers",
+    "\\",
+    "show voice latency",
+    "You",
+    "py -3 main.py --text --speak",
+    "$env:pyttsx3_rollback_only=\"true\"",
+    "$env:realtime_tts_enable=\"true\"",
+    "$env:tts_primary_backend=\"realtime\""
+  ],
+  "active_project": "",
+  "unresolved_question": "",
+  "emotional_tone": "neutral",
+  "interruption_state": "idle",
+  "pending_actions": [],
+  "recent_entities": [
+    "youtube",
+    "open",
+    "voice",
+    "realtime",
+    "test",
+    "provider",
+    "show",
+    "providers",
+    "benchmark",
+    "latency",
+    "--speak",
+    "--text",
+    "main.py",
+    "$env:pyttsx3_rollback_only=\"true",
+    "$env:realtime_tts_enable=\"true",
+    "$env:tts_primary_backend=\"realtime"
+  ],
+  "follow_up_references": [
+    "voice:open_website",
+    "voice:unknown"
+  ],
+  "turn_count": 73,
+  "last_user_text": "open youtube",
+  "last_assistant_summary": "Did you mean open website (website=youtube)? Reply yes/confirm or no/cancel (id: ec87d928).",
+  "last_intent": "open_website",
+  "paused_response": "",
+  "continuous_listening": false,
+  "updated_at": "2026-05-27T14:57:39.259274+00:00"
+}

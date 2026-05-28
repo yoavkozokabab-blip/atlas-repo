@@ -1,0 +1,14 @@
+{
+  "id": 443,
+  "kind": "proactive",
+  "title": "Autonomous investigation findings",
+  "message": "Runtime health degraded; Dashboard status=failed",
+  "severity": "warning",
+  "source": "proactive_monitor",
+  "created_at": "2026-05-27T15:24:31.943273+00:00",
+  "read": false,
+  "archived": false,
+  "suggested_action": "inspect execution adapter",
+  "related_task_id": null,
+  "metadata": {}
+}

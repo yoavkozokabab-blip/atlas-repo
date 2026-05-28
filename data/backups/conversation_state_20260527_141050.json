@@ -1,0 +1,51 @@
+{
+  "current_topic": "$env:tts_primary_backend=\"realtime\"",
+  "previous_topics": [
+    "$env:voice_runtime_mode=\"realtime_experiment\"",
+    "$env:elevenlabs_api_key=\"dd8360eea69ea6ef8bb7297aab3580711de29a978c7a814ffa6a985b4095754c\"",
+    "open youtube",
+    "Oh",
+    "show show show audio status",
+    "test interrupt speech",
+    "test realtime voice",
+    "show voice latency",
+    "What am I doing? HR is",
+    "describe screen",
+    "Just tell me what can you do",
+    "test normal speech path"
+  ],
+  "active_project": "",
+  "unresolved_question": "",
+  "emotional_tone": "neutral",
+  "interruption_state": "interrupted",
+  "pending_actions": [],
+  "recent_entities": [
+    "$env:tts_primary_backend=\"realtime",
+    "$env:voice_runtime_mode=\"realtime_experiment",
+    "$env:elevenlabs_api_key=\"dd8360eea69ea6ef8bb7297aab3580711de29a978c7a814ffa6a985b4095754c",
+    "youtube",
+    "open",
+    "show",
+    "speech",
+    "interrupt",
+    "test",
+    "voice",
+    "realtime",
+    "latency",
+    "doing",
+    "What",
+    "screen",
+    "describe"
+  ],
+  "follow_up_references": [
+    "voice:open_website",
+    "voice:unknown"
+  ],
+  "turn_count": 45,
+  "last_user_text": "$env:tts_primary_backend=\"realtime\"",
+  "last_assistant_summary": "Could not understand the command. Please rephrase.",
+  "last_intent": "unknown",
+  "paused_response": "",
+  "continuous_listening": false,
+  "updated_at": "2026-05-27T14:10:50.893489+00:00"
+}

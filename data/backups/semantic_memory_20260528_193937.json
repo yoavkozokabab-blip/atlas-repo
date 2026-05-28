@@ -1,0 +1,328 @@
+{
+  "entries": {
+    "mem_9f9a069d05": {
+      "entry_id": "mem_9f9a069d05",
+      "text": "phase61 semantic retrieval target",
+      "vector": {
+        "phase61": 1.0,
+        "semantic": 1.0,
+        "retrieval": 1.0,
+        "target": 1.0
+      },
+      "importance": 0.9,
+      "confidence": 0.9,
+      "category": "project_context",
+      "long_term": true
+    },
+    "mem_7356b3e552": {
+      "entry_id": "mem_7356b3e552",
+      "text": "phase61 persistent memory recall marker",
+      "vector": {
+        "phase61": 1.0,
+        "persistent": 1.0,
+        "memory": 1.0,
+        "recall": 1.0,
+        "marker": 1.0
+      },
+      "importance": 0.9,
+      "confidence": 0.9,
+      "category": "project_context",
+      "long_term": true
+    },
+    "mem_0149e0f885": {
+      "entry_id": "mem_0149e0f885",
+      "text": "phase61 semantic retrieval target",
+      "vector": {
+        "phase61": 1.0,
+        "semantic": 1.0,
+        "retrieval": 1.0,
+        "target": 1.0
+      },
+      "importance": 0.9,
+      "confidence": 0.9,
+      "category": "project_context",
+      "long_term": true
+    },
+    "mem_c50b41a65f": {
+      "entry_id": "mem_c50b41a65f",
+      "text": "phase61 semantic retrieval target",
+      "vector": {
+        "phase61": 1.0,
+        "semantic": 1.0,
+        "retrieval": 1.0,
+        "target": 1.0
+      },
+      "importance": 0.9,
+      "confidence": 0.9,
+      "category": "project_context",
+      "long_term": true
+    },
+    "mem_0db715a508": {
+      "entry_id": "mem_0db715a508",
+      "text": "phase61 semantic retrieval target",
+      "vector": {
+        "phase61": 1.0,
+        "semantic": 1.0,
+        "retrieval": 1.0,
+        "target": 1.0
+      },
+      "importance": 0.9,
+      "confidence": 0.9,
+      "category": "project_context",
+      "long_term": true
+    },
+    "mem_e37cd0a2f6": {
+      "entry_id": "mem_e37cd0a2f6",
+      "text": "browser_search: query=Nvidia earnings summary url=https://duckduckgo.com/?q=Nvidia+earnings+summary",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "nvidia": 2.0,
+        "earnings": 2.0,
+        "summary": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_d2f9eaa5d2": {
+      "entry_id": "mem_d2f9eaa5d2",
+      "text": "phase65 test phase65_1779996624",
+      "vector": {
+        "phase65": 1.0,
+        "test": 1.0,
+        "phase65_1779996624": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_879c66e93d": {
+      "entry_id": "mem_879c66e93d",
+      "text": "phase65 test phase65_1779996624 updated",
+      "vector": {
+        "phase65": 1.0,
+        "test": 1.0,
+        "phase65_1779996624": 1.0,
+        "updated": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_7beff9b051": {
+      "entry_id": "mem_7beff9b051",
+      "text": "phase65 test phase65_1779996646",
+      "vector": {
+        "phase65": 1.0,
+        "test": 1.0,
+        "phase65_1779996646": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_f3fe0e7455": {
+      "entry_id": "mem_f3fe0e7455",
+      "text": "phase65 test phase65_1779996646 updated",
+      "vector": {
+        "phase65": 1.0,
+        "test": 1.0,
+        "phase65_1779996646": 1.0,
+        "updated": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_85d3f93a23": {
+      "entry_id": "mem_85d3f93a23",
+      "text": "phase65 test phase65_1779996669",
+      "vector": {
+        "phase65": 1.0,
+        "test": 1.0,
+        "phase65_1779996669": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_11524b5a7d": {
+      "entry_id": "mem_11524b5a7d",
+      "text": "phase65 test phase65_1779996669 updated",
+      "vector": {
+        "phase65": 1.0,
+        "test": 1.0,
+        "phase65_1779996669": 1.0,
+        "updated": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_62c60be070": {
+      "entry_id": "mem_62c60be070",
+      "text": "phase65 test phase65_1779996681",
+      "vector": {
+        "phase65": 1.0,
+        "test": 1.0,
+        "phase65_1779996681": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_c87c26cf86": {
+      "entry_id": "mem_c87c26cf86",
+      "text": "phase65 test phase65_1779996681 updated",
+      "vector": {
+        "phase65": 1.0,
+        "test": 1.0,
+        "phase65_1779996681": 1.0,
+        "updated": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    }
+  },
+  "graph": {
+    "relations": [
+      {
+        "a": "mem_9f9a069d05",
+        "b": "mem_0149e0f885",
+        "score": 1.0
+      },
+      {
+        "a": "mem_9f9a069d05",
+        "b": "mem_c50b41a65f",
+        "score": 1.0
+      },
+      {
+        "a": "mem_9f9a069d05",
+        "b": "mem_0db715a508",
+        "score": 1.0
+      },
+      {
+        "a": "mem_0149e0f885",
+        "b": "mem_c50b41a65f",
+        "score": 1.0
+      },
+      {
+        "a": "mem_0149e0f885",
+        "b": "mem_0db715a508",
+        "score": 1.0
+      },
+      {
+        "a": "mem_c50b41a65f",
+        "b": "mem_0db715a508",
+        "score": 1.0
+      },
+      {
+        "a": "mem_d2f9eaa5d2",
+        "b": "mem_879c66e93d",
+        "score": 0.866
+      },
+      {
+        "a": "mem_d2f9eaa5d2",
+        "b": "mem_7beff9b051",
+        "score": 0.667
+      },
+      {
+        "a": "mem_d2f9eaa5d2",
+        "b": "mem_85d3f93a23",
+        "score": 0.667
+      },
+      {
+        "a": "mem_d2f9eaa5d2",
+        "b": "mem_62c60be070",
+        "score": 0.667
+      },
+      {
+        "a": "mem_879c66e93d",
+        "b": "mem_f3fe0e7455",
+        "score": 0.75
+      },
+      {
+        "a": "mem_879c66e93d",
+        "b": "mem_11524b5a7d",
+        "score": 0.75
+      },
+      {
+        "a": "mem_879c66e93d",
+        "b": "mem_c87c26cf86",
+        "score": 0.75
+      },
+      {
+        "a": "mem_7beff9b051",
+        "b": "mem_f3fe0e7455",
+        "score": 0.866
+      },
+      {
+        "a": "mem_7beff9b051",
+        "b": "mem_85d3f93a23",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7beff9b051",
+        "b": "mem_62c60be070",
+        "score": 0.667
+      },
+      {
+        "a": "mem_f3fe0e7455",
+        "b": "mem_11524b5a7d",
+        "score": 0.75
+      },
+      {
+        "a": "mem_f3fe0e7455",
+        "b": "mem_c87c26cf86",
+        "score": 0.75
+      },
+      {
+        "a": "mem_85d3f93a23",
+        "b": "mem_11524b5a7d",
+        "score": 0.866
+      },
+      {
+        "a": "mem_85d3f93a23",
+        "b": "mem_62c60be070",
+        "score": 0.667
+      },
+      {
+        "a": "mem_11524b5a7d",
+        "b": "mem_c87c26cf86",
+        "score": 0.75
+      },
+      {
+        "a": "mem_62c60be070",
+        "b": "mem_c87c26cf86",
+        "score": 0.866
+      }
+    ],
+    "contradictions": []
+  },
+  "tasks": {
+    "unit": [
+      "mem_9f9a069d05",
+      "mem_0149e0f885",
+      "mem_c50b41a65f",
+      "mem_0db715a508"
+    ],
+    "smoke": [
+      "mem_7356b3e552"
+    ]
+  }
+}

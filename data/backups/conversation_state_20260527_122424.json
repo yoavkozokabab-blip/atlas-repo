@@ -1,0 +1,37 @@
+{
+  "current_topic": "Just tell me what can you do",
+  "previous_topics": [
+    "Oh",
+    "show show show audio status",
+    "test normal speech path",
+    "show show audio status path",
+    "test direct speech",
+    "yes",
+    "verify direct speech backend"
+  ],
+  "active_project": "",
+  "unresolved_question": "",
+  "emotional_tone": "neutral",
+  "interruption_state": "idle",
+  "pending_actions": [],
+  "recent_entities": [
+    "what",
+    "tell",
+    "Just",
+    "show",
+    "speech",
+    "normal",
+    "test",
+    "audio",
+    "direct",
+    "verify"
+  ],
+  "follow_up_references": [],
+  "turn_count": 32,
+  "last_user_text": "Just tell me what can you do",
+  "last_assistant_summary": "JARVIS capabilities (all execution via router + security + registry):\n\n## Code search\nSkill: code \u2014 Search code and config in FINAL_ALGO_TRADER (read-only).\n  - search_project_file_by_name: Find files by partial name.\n  - search_code_text: Search source text for a string.\n  - find_function: Locate function definitions.\n  - find_class: Locate class definitions.\n  - find_config_key: Find configuration key usages.\n  - find_risk_usage: Grouped search for risk-related symbols.\n  ... +2 more\n\n## Computer control\nSkill: computer_control \u2014 Predefined window focus and clipboard actions (no mouse/keyboa",
+  "last_intent": "show_capabilities",
+  "paused_response": "",
+  "continuous_listening": false,
+  "updated_at": "2026-05-27T12:23:18.040596+00:00"
+}

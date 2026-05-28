@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-05-27T14:37:59.362723+00:00",
+  "findings": [
+    {
+      "title": "Stale open positions",
+      "message": "Stale open positions (read-only scan):",
+      "action": "Run show stale open positions or propose execution cleanup patch."
+    },
+    {
+      "title": "Execution adapter disabled",
+      "message": "Execution blockers:",
+      "action": "Inspect execution adapter and enable paper adapter."
+    }
+  ]
+}

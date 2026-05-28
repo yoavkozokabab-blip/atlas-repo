@@ -1,0 +1,22 @@
+{
+  "last_suggestion_at": "2026-05-27T12:54:27.866819+00:00",
+  "last_suggestions": [
+    {
+      "title": "Unresolved question",
+      "detail": "What am I doing? HR is",
+      "action": "what are we discussing"
+    },
+    {
+      "title": "Verified root cause available",
+      "detail": "Overlap block caused by stale open_positions state",
+      "action": "summarize root causes"
+    },
+    {
+      "title": "Continuous monitor alert",
+      "detail": "Execution disabled for extended period despite eligible signals",
+      "action": "show notifications"
+    }
+  ],
+  "dismissed": [],
+  "updated_at": "2026-05-27T12:54:27.866825+00:00"
+}

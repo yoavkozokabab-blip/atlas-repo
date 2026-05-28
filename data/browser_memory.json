@@ -1,0 +1,1910 @@
+{
+  "user_goal": "Nvidia earnings summary",
+  "search_queries": [
+    {
+      "ts": 1779998392618,
+      "query": "topic flow 2"
+    },
+    {
+      "ts": 1779998393199,
+      "query": "topic flow 3"
+    },
+    {
+      "ts": 1779998393762,
+      "query": "topic flow 4"
+    },
+    {
+      "ts": 1779998394304,
+      "query": "topic flow 5"
+    },
+    {
+      "ts": 1779998394860,
+      "query": "topic flow 6"
+    },
+    {
+      "ts": 1779998395402,
+      "query": "topic flow 7"
+    },
+    {
+      "ts": 1779998395942,
+      "query": "topic flow 8"
+    },
+    {
+      "ts": 1779998396483,
+      "query": "topic flow 9"
+    },
+    {
+      "ts": 1779998397046,
+      "query": "topic flow 10"
+    },
+    {
+      "ts": 1779998397596,
+      "query": "topic flow 11"
+    },
+    {
+      "ts": 1779998398149,
+      "query": "topic flow 12"
+    },
+    {
+      "ts": 1779998398709,
+      "query": "topic flow 13"
+    },
+    {
+      "ts": 1779998399310,
+      "query": "topic flow 14"
+    },
+    {
+      "ts": 1779998439118,
+      "query": "nvidia earnings"
+    },
+    {
+      "ts": 1779998439603,
+      "query": "python asyncio"
+    },
+    {
+      "ts": 1779998440037,
+      "query": "jarvis assistant"
+    },
+    {
+      "ts": 1779998440474,
+      "query": "market news"
+    },
+    {
+      "ts": 1779998440879,
+      "query": "playwright docs"
+    },
+    {
+      "ts": 1779998441282,
+      "query": "openai api"
+    },
+    {
+      "ts": 1779998441704,
+      "query": "weather today"
+    },
+    {
+      "ts": 1779998442109,
+      "query": "cpu benchmarks"
+    },
+    {
+      "ts": 1779998444065,
+      "query": "topic_0"
+    },
+    {
+      "ts": 1779998444525,
+      "query": "topic_1"
+    },
+    {
+      "ts": 1779998444941,
+      "query": "topic_2"
+    },
+    {
+      "ts": 1779998445355,
+      "query": "topic_3"
+    },
+    {
+      "ts": 1779998445794,
+      "query": "topic_4"
+    },
+    {
+      "ts": 1779998446225,
+      "query": "topic_5"
+    },
+    {
+      "ts": 1779998478567,
+      "query": "topic flow 0"
+    },
+    {
+      "ts": 1779998479440,
+      "query": "topic flow 1"
+    },
+    {
+      "ts": 1779998480043,
+      "query": "topic flow 2"
+    },
+    {
+      "ts": 1779998480626,
+      "query": "topic flow 3"
+    },
+    {
+      "ts": 1779998481201,
+      "query": "topic flow 4"
+    },
+    {
+      "ts": 1779998481738,
+      "query": "topic flow 5"
+    },
+    {
+      "ts": 1779998482296,
+      "query": "topic flow 6"
+    },
+    {
+      "ts": 1779998482834,
+      "query": "topic flow 7"
+    },
+    {
+      "ts": 1779998483394,
+      "query": "topic flow 8"
+    },
+    {
+      "ts": 1779998483963,
+      "query": "topic flow 9"
+    },
+    {
+      "ts": 1779998484517,
+      "query": "topic flow 10"
+    },
+    {
+      "ts": 1779998485052,
+      "query": "topic flow 11"
+    },
+    {
+      "ts": 1779998485592,
+      "query": "topic flow 12"
+    },
+    {
+      "ts": 1779998486160,
+      "query": "topic flow 13"
+    },
+    {
+      "ts": 1779998486696,
+      "query": "topic flow 14"
+    },
+    {
+      "ts": 1780001392238,
+      "query": "nvidia earnings"
+    },
+    {
+      "ts": 1780001392701,
+      "query": "python asyncio"
+    },
+    {
+      "ts": 1780001393128,
+      "query": "jarvis assistant"
+    },
+    {
+      "ts": 1780001393561,
+      "query": "market news"
+    },
+    {
+      "ts": 1780001393948,
+      "query": "playwright docs"
+    },
+    {
+      "ts": 1780001394327,
+      "query": "openai api"
+    },
+    {
+      "ts": 1780001394719,
+      "query": "weather today"
+    },
+    {
+      "ts": 1780001395113,
+      "query": "cpu benchmarks"
+    },
+    {
+      "ts": 1780001396942,
+      "query": "topic_0"
+    },
+    {
+      "ts": 1780001397355,
+      "query": "topic_1"
+    },
+    {
+      "ts": 1780001397753,
+      "query": "topic_2"
+    },
+    {
+      "ts": 1780001398132,
+      "query": "topic_3"
+    },
+    {
+      "ts": 1780001398514,
+      "query": "topic_4"
+    },
+    {
+      "ts": 1780001398889,
+      "query": "topic_5"
+    },
+    {
+      "ts": 1780001436939,
+      "query": "topic flow 0"
+    },
+    {
+      "ts": 1780001437803,
+      "query": "topic flow 1"
+    },
+    {
+      "ts": 1780001438473,
+      "query": "topic flow 2"
+    },
+    {
+      "ts": 1780001439152,
+      "query": "topic flow 3"
+    },
+    {
+      "ts": 1780001439799,
+      "query": "topic flow 4"
+    },
+    {
+      "ts": 1780001440436,
+      "query": "topic flow 5"
+    },
+    {
+      "ts": 1780001441046,
+      "query": "topic flow 6"
+    },
+    {
+      "ts": 1780001441658,
+      "query": "topic flow 7"
+    },
+    {
+      "ts": 1780001442432,
+      "query": "topic flow 8"
+    },
+    {
+      "ts": 1780001443058,
+      "query": "topic flow 9"
+    },
+    {
+      "ts": 1780001443675,
+      "query": "topic flow 10"
+    },
+    {
+      "ts": 1780001444291,
+      "query": "topic flow 11"
+    },
+    {
+      "ts": 1780001444892,
+      "query": "topic flow 12"
+    },
+    {
+      "ts": 1780001445550,
+      "query": "topic flow 13"
+    },
+    {
+      "ts": 1780001446165,
+      "query": "topic flow 14"
+    },
+    {
+      "ts": 1780001858903,
+      "query": "nvidia earnings"
+    },
+    {
+      "ts": 1780001859401,
+      "query": "python asyncio"
+    },
+    {
+      "ts": 1780001859807,
+      "query": "jarvis assistant"
+    },
+    {
+      "ts": 1780001860217,
+      "query": "market news"
+    },
+    {
+      "ts": 1780001860595,
+      "query": "playwright docs"
+    },
+    {
+      "ts": 1780001860971,
+      "query": "openai api"
+    },
+    {
+      "ts": 1780001861348,
+      "query": "weather today"
+    },
+    {
+      "ts": 1780001861728,
+      "query": "cpu benchmarks"
+    },
+    {
+      "ts": 1780001863465,
+      "query": "topic_0"
+    },
+    {
+      "ts": 1780001863913,
+      "query": "topic_1"
+    },
+    {
+      "ts": 1780001864284,
+      "query": "topic_2"
+    },
+    {
+      "ts": 1780001864661,
+      "query": "topic_3"
+    },
+    {
+      "ts": 1780001865038,
+      "query": "topic_4"
+    },
+    {
+      "ts": 1780001865422,
+      "query": "topic_5"
+    },
+    {
+      "ts": 1780001920641,
+      "query": "topic flow 0"
+    },
+    {
+      "ts": 1780001921432,
+      "query": "topic flow 1"
+    },
+    {
+      "ts": 1780001922057,
+      "query": "topic flow 2"
+    },
+    {
+      "ts": 1780001922685,
+      "query": "topic flow 3"
+    },
+    {
+      "ts": 1780001923294,
+      "query": "topic flow 4"
+    },
+    {
+      "ts": 1780001923875,
+      "query": "topic flow 5"
+    },
+    {
+      "ts": 1780001924459,
+      "query": "topic flow 6"
+    },
+    {
+      "ts": 1780001925042,
+      "query": "topic flow 7"
+    },
+    {
+      "ts": 1780001925791,
+      "query": "topic flow 8"
+    },
+    {
+      "ts": 1780001926385,
+      "query": "topic flow 9"
+    },
+    {
+      "ts": 1780001926954,
+      "query": "topic flow 10"
+    },
+    {
+      "ts": 1780001927546,
+      "query": "topic flow 11"
+    },
+    {
+      "ts": 1780001928123,
+      "query": "topic flow 12"
+    },
+    {
+      "ts": 1780001928704,
+      "query": "topic flow 13"
+    },
+    {
+      "ts": 1780001929272,
+      "query": "topic flow 14"
+    }
+  ],
+  "visited_pages": [
+    {
+      "ts": 1779998441715,
+      "url": "https://duckduckgo.com/?q=weather+today",
+      "title": "weather today at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998441609.png"
+    },
+    {
+      "ts": 1779998442120,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998442027.png"
+    },
+    {
+      "ts": 1779998442305,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998442223.png"
+    },
+    {
+      "ts": 1779998442389,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998442311.png"
+    },
+    {
+      "ts": 1779998442472,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998442396.png"
+    },
+    {
+      "ts": 1779998442570,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998442478.png"
+    },
+    {
+      "ts": 1779998442655,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998442577.png"
+    },
+    {
+      "ts": 1779998442740,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998442662.png"
+    },
+    {
+      "ts": 1779998442823,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998442746.png"
+    },
+    {
+      "ts": 1779998442909,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998442830.png"
+    },
+    {
+      "ts": 1779998444077,
+      "url": "https://duckduckgo.com/?q=topic_0",
+      "title": "topic_0 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998443946.png"
+    },
+    {
+      "ts": 1779998444536,
+      "url": "https://duckduckgo.com/?q=topic_1",
+      "title": "topic_1 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998444428.png"
+    },
+    {
+      "ts": 1779998444953,
+      "url": "https://duckduckgo.com/?q=topic_2",
+      "title": "topic_2 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998444848.png"
+    },
+    {
+      "ts": 1779998445366,
+      "url": "https://duckduckgo.com/?q=topic_3",
+      "title": "topic_3 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998445267.png"
+    },
+    {
+      "ts": 1779998445805,
+      "url": "https://duckduckgo.com/?q=topic_4",
+      "title": "topic_4 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998445698.png"
+    },
+    {
+      "ts": 1779998446236,
+      "url": "https://duckduckgo.com/?q=topic_5",
+      "title": "topic_5 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998446128.png"
+    },
+    {
+      "ts": 1779998478578,
+      "url": "https://duckduckgo.com/?q=topic+flow+0",
+      "title": "topic flow 0 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998478281.png"
+    },
+    {
+      "ts": 1779998479005,
+      "url": "https://duckduckgo.com/?q=topic+flow+0",
+      "title": "topic flow 0 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998478687.png"
+    },
+    {
+      "ts": 1779998479451,
+      "url": "https://duckduckgo.com/?q=topic+flow+1",
+      "title": "topic flow 1 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998479313.png"
+    },
+    {
+      "ts": 1779998479663,
+      "url": "https://duckduckgo.com/?q=topic+flow+1",
+      "title": "topic flow 1 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998479560.png"
+    },
+    {
+      "ts": 1779998480054,
+      "url": "https://duckduckgo.com/?q=topic+flow+2",
+      "title": "topic flow 2 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998479924.png"
+    },
+    {
+      "ts": 1779998480264,
+      "url": "https://duckduckgo.com/?q=topic+flow+2",
+      "title": "topic flow 2 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998480159.png"
+    },
+    {
+      "ts": 1779998480636,
+      "url": "https://duckduckgo.com/?q=topic+flow+3",
+      "title": "topic flow 3 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998480517.png"
+    },
+    {
+      "ts": 1779998480852,
+      "url": "https://duckduckgo.com/?q=topic+flow+3",
+      "title": "topic flow 3 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998480745.png"
+    },
+    {
+      "ts": 1779998481212,
+      "url": "https://duckduckgo.com/?q=topic+flow+4",
+      "title": "topic flow 4 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998481115.png"
+    },
+    {
+      "ts": 1779998481399,
+      "url": "https://duckduckgo.com/?q=topic+flow+4",
+      "title": "topic flow 4 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998481322.png"
+    },
+    {
+      "ts": 1779998481749,
+      "url": "https://duckduckgo.com/?q=topic+flow+5",
+      "title": "topic flow 5 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998481652.png"
+    },
+    {
+      "ts": 1779998481933,
+      "url": "https://duckduckgo.com/?q=topic+flow+5",
+      "title": "topic flow 5 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998481856.png"
+    },
+    {
+      "ts": 1779998482307,
+      "url": "https://duckduckgo.com/?q=topic+flow+6",
+      "title": "topic flow 6 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998482203.png"
+    },
+    {
+      "ts": 1779998482490,
+      "url": "https://duckduckgo.com/?q=topic+flow+6",
+      "title": "topic flow 6 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998482412.png"
+    },
+    {
+      "ts": 1779998482844,
+      "url": "https://duckduckgo.com/?q=topic+flow+7",
+      "title": "topic flow 7 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998482742.png"
+    },
+    {
+      "ts": 1779998483046,
+      "url": "https://duckduckgo.com/?q=topic+flow+7",
+      "title": "topic flow 7 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998482955.png"
+    },
+    {
+      "ts": 1779998483405,
+      "url": "https://duckduckgo.com/?q=topic+flow+8",
+      "title": "topic flow 8 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998483300.png"
+    },
+    {
+      "ts": 1779998483586,
+      "url": "https://duckduckgo.com/?q=topic+flow+8",
+      "title": "topic flow 8 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998483513.png"
+    },
+    {
+      "ts": 1779998483974,
+      "url": "https://duckduckgo.com/?q=topic+flow+9",
+      "title": "topic flow 9 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998483856.png"
+    },
+    {
+      "ts": 1779998484163,
+      "url": "https://duckduckgo.com/?q=topic+flow+9",
+      "title": "topic flow 9 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998484082.png"
+    },
+    {
+      "ts": 1779998484528,
+      "url": "https://duckduckgo.com/?q=topic+flow+10",
+      "title": "topic flow 10 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998484418.png"
+    },
+    {
+      "ts": 1779998484711,
+      "url": "https://duckduckgo.com/?q=topic+flow+10",
+      "title": "topic flow 10 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998484633.png"
+    },
+    {
+      "ts": 1779998485062,
+      "url": "https://duckduckgo.com/?q=topic+flow+11",
+      "title": "topic flow 11 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998484965.png"
+    },
+    {
+      "ts": 1779998485253,
+      "url": "https://duckduckgo.com/?q=topic+flow+11",
+      "title": "topic flow 11 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998485174.png"
+    },
+    {
+      "ts": 1779998485603,
+      "url": "https://duckduckgo.com/?q=topic+flow+12",
+      "title": "topic flow 12 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998485505.png"
+    },
+    {
+      "ts": 1779998485804,
+      "url": "https://duckduckgo.com/?q=topic+flow+12",
+      "title": "topic flow 12 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998485711.png"
+    },
+    {
+      "ts": 1779998486171,
+      "url": "https://duckduckgo.com/?q=topic+flow+13",
+      "title": "topic flow 13 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998486066.png"
+    },
+    {
+      "ts": 1779998486367,
+      "url": "https://duckduckgo.com/?q=topic+flow+13",
+      "title": "topic flow 13 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998486280.png"
+    },
+    {
+      "ts": 1779998486707,
+      "url": "https://duckduckgo.com/?q=topic+flow+14",
+      "title": "topic flow 14 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998486614.png"
+    },
+    {
+      "ts": 1779998486895,
+      "url": "https://duckduckgo.com/?q=topic+flow+14",
+      "title": "topic flow 14 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779998486817.png"
+    },
+    {
+      "ts": 1780001392250,
+      "url": "https://duckduckgo.com/?q=nvidia+earnings",
+      "title": "nvidia earnings at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001391933.png"
+    },
+    {
+      "ts": 1780001392711,
+      "url": "https://duckduckgo.com/?q=python+asyncio",
+      "title": "python asyncio at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001392588.png"
+    },
+    {
+      "ts": 1780001393138,
+      "url": "https://duckduckgo.com/?q=jarvis+assistant",
+      "title": "jarvis assistant at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001393005.png"
+    },
+    {
+      "ts": 1780001393571,
+      "url": "https://duckduckgo.com/?q=market+news",
+      "title": "market news at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001393431.png"
+    },
+    {
+      "ts": 1780001393958,
+      "url": "https://duckduckgo.com/?q=playwright+docs",
+      "title": "playwright docs at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001393857.png"
+    },
+    {
+      "ts": 1780001394337,
+      "url": "https://duckduckgo.com/?q=openai+api",
+      "title": "openai api at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001394246.png"
+    },
+    {
+      "ts": 1780001394730,
+      "url": "https://duckduckgo.com/?q=weather+today",
+      "title": "weather today at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001394625.png"
+    },
+    {
+      "ts": 1780001395123,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001395013.png"
+    },
+    {
+      "ts": 1780001395259,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001395211.png"
+    },
+    {
+      "ts": 1780001395354,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001395264.png"
+    },
+    {
+      "ts": 1780001395435,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001395359.png"
+    },
+    {
+      "ts": 1780001395518,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001395440.png"
+    },
+    {
+      "ts": 1780001395601,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001395524.png"
+    },
+    {
+      "ts": 1780001395680,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001395607.png"
+    },
+    {
+      "ts": 1780001395755,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001395685.png"
+    },
+    {
+      "ts": 1780001395834,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001395761.png"
+    },
+    {
+      "ts": 1780001396952,
+      "url": "https://duckduckgo.com/?q=topic_0",
+      "title": "topic_0 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001396829.png"
+    },
+    {
+      "ts": 1780001397365,
+      "url": "https://duckduckgo.com/?q=topic_1",
+      "title": "topic_1 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001397268.png"
+    },
+    {
+      "ts": 1780001397765,
+      "url": "https://duckduckgo.com/?q=topic_2",
+      "title": "topic_2 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001397651.png"
+    },
+    {
+      "ts": 1780001398144,
+      "url": "https://duckduckgo.com/?q=topic_3",
+      "title": "topic_3 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001398042.png"
+    },
+    {
+      "ts": 1780001398524,
+      "url": "https://duckduckgo.com/?q=topic_4",
+      "title": "topic_4 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001398425.png"
+    },
+    {
+      "ts": 1780001398901,
+      "url": "https://duckduckgo.com/?q=topic_5",
+      "title": "topic_5 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001398807.png"
+    },
+    {
+      "ts": 1780001436951,
+      "url": "https://duckduckgo.com/?q=topic+flow+0",
+      "title": "topic flow 0 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001436589.png"
+    },
+    {
+      "ts": 1780001437392,
+      "url": "https://duckduckgo.com/?q=topic+flow+0",
+      "title": "topic flow 0 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001437150.png"
+    },
+    {
+      "ts": 1780001437813,
+      "url": "https://duckduckgo.com/?q=topic+flow+1",
+      "title": "topic flow 1 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001437678.png"
+    },
+    {
+      "ts": 1780001438107,
+      "url": "https://duckduckgo.com/?q=topic+flow+1",
+      "title": "topic flow 1 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001438003.png"
+    },
+    {
+      "ts": 1780001438485,
+      "url": "https://duckduckgo.com/?q=topic+flow+2",
+      "title": "topic flow 2 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001438358.png"
+    },
+    {
+      "ts": 1780001438780,
+      "url": "https://duckduckgo.com/?q=topic+flow+2",
+      "title": "topic flow 2 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001438678.png"
+    },
+    {
+      "ts": 1780001439163,
+      "url": "https://duckduckgo.com/?q=topic+flow+3",
+      "title": "topic flow 3 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001439042.png"
+    },
+    {
+      "ts": 1780001439452,
+      "url": "https://duckduckgo.com/?q=topic+flow+3",
+      "title": "topic flow 3 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001439353.png"
+    },
+    {
+      "ts": 1780001439810,
+      "url": "https://duckduckgo.com/?q=topic+flow+4",
+      "title": "topic flow 4 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001439711.png"
+    },
+    {
+      "ts": 1780001440081,
+      "url": "https://duckduckgo.com/?q=topic+flow+4",
+      "title": "topic flow 4 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001440004.png"
+    },
+    {
+      "ts": 1780001440447,
+      "url": "https://duckduckgo.com/?q=topic+flow+5",
+      "title": "topic flow 5 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001440357.png"
+    },
+    {
+      "ts": 1780001440711,
+      "url": "https://duckduckgo.com/?q=topic+flow+5",
+      "title": "topic flow 5 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001440636.png"
+    },
+    {
+      "ts": 1780001441057,
+      "url": "https://duckduckgo.com/?q=topic+flow+6",
+      "title": "topic flow 6 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001440967.png"
+    },
+    {
+      "ts": 1780001441320,
+      "url": "https://duckduckgo.com/?q=topic+flow+6",
+      "title": "topic flow 6 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001441248.png"
+    },
+    {
+      "ts": 1780001441668,
+      "url": "https://duckduckgo.com/?q=topic+flow+7",
+      "title": "topic flow 7 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001441579.png"
+    },
+    {
+      "ts": 1780001441934,
+      "url": "https://duckduckgo.com/?q=topic+flow+7",
+      "title": "topic flow 7 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001441859.png"
+    },
+    {
+      "ts": 1780001442442,
+      "url": "https://duckduckgo.com/?q=topic+flow+8",
+      "title": "topic flow 8 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001442338.png"
+    },
+    {
+      "ts": 1780001442707,
+      "url": "https://duckduckgo.com/?q=topic+flow+8",
+      "title": "topic flow 8 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001442633.png"
+    },
+    {
+      "ts": 1780001443069,
+      "url": "https://duckduckgo.com/?q=topic+flow+9",
+      "title": "topic flow 9 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001442979.png"
+    },
+    {
+      "ts": 1780001443349,
+      "url": "https://duckduckgo.com/?q=topic+flow+9",
+      "title": "topic flow 9 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001443262.png"
+    },
+    {
+      "ts": 1780001443686,
+      "url": "https://duckduckgo.com/?q=topic+flow+10",
+      "title": "topic flow 10 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001443586.png"
+    },
+    {
+      "ts": 1780001443957,
+      "url": "https://duckduckgo.com/?q=topic+flow+10",
+      "title": "topic flow 10 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001443880.png"
+    },
+    {
+      "ts": 1780001444302,
+      "url": "https://duckduckgo.com/?q=topic+flow+11",
+      "title": "topic flow 11 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001444213.png"
+    },
+    {
+      "ts": 1780001444566,
+      "url": "https://duckduckgo.com/?q=topic+flow+11",
+      "title": "topic flow 11 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001444489.png"
+    },
+    {
+      "ts": 1780001444903,
+      "url": "https://duckduckgo.com/?q=topic+flow+12",
+      "title": "topic flow 12 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001444808.png"
+    },
+    {
+      "ts": 1780001445188,
+      "url": "https://duckduckgo.com/?q=topic+flow+12",
+      "title": "topic flow 12 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001445098.png"
+    },
+    {
+      "ts": 1780001445560,
+      "url": "https://duckduckgo.com/?q=topic+flow+13",
+      "title": "topic flow 13 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001445461.png"
+    },
+    {
+      "ts": 1780001445819,
+      "url": "https://duckduckgo.com/?q=topic+flow+13",
+      "title": "topic flow 13 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001445749.png"
+    },
+    {
+      "ts": 1780001446175,
+      "url": "https://duckduckgo.com/?q=topic+flow+14",
+      "title": "topic flow 14 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001446071.png"
+    },
+    {
+      "ts": 1780001446455,
+      "url": "https://duckduckgo.com/?q=topic+flow+14",
+      "title": "topic flow 14 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001446368.png"
+    },
+    {
+      "ts": 1780001858915,
+      "url": "https://duckduckgo.com/?q=nvidia+earnings",
+      "title": "nvidia earnings at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001858614.png"
+    },
+    {
+      "ts": 1780001859411,
+      "url": "https://duckduckgo.com/?q=python+asyncio",
+      "title": "python asyncio at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001859282.png"
+    },
+    {
+      "ts": 1780001859817,
+      "url": "https://duckduckgo.com/?q=jarvis+assistant",
+      "title": "jarvis assistant at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001859698.png"
+    },
+    {
+      "ts": 1780001860227,
+      "url": "https://duckduckgo.com/?q=market+news",
+      "title": "market news at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001860101.png"
+    },
+    {
+      "ts": 1780001860605,
+      "url": "https://duckduckgo.com/?q=playwright+docs",
+      "title": "playwright docs at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001860509.png"
+    },
+    {
+      "ts": 1780001860981,
+      "url": "https://duckduckgo.com/?q=openai+api",
+      "title": "openai api at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001860883.png"
+    },
+    {
+      "ts": 1780001861358,
+      "url": "https://duckduckgo.com/?q=weather+today",
+      "title": "weather today at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001861264.png"
+    },
+    {
+      "ts": 1780001861739,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001861654.png"
+    },
+    {
+      "ts": 1780001861899,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001861824.png"
+    },
+    {
+      "ts": 1780001861981,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001861904.png"
+    },
+    {
+      "ts": 1780001862058,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001861986.png"
+    },
+    {
+      "ts": 1780001862132,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001862063.png"
+    },
+    {
+      "ts": 1780001862207,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001862137.png"
+    },
+    {
+      "ts": 1780001862282,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001862212.png"
+    },
+    {
+      "ts": 1780001862357,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001862287.png"
+    },
+    {
+      "ts": 1780001862432,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "title": "cpu benchmarks at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001862362.png"
+    },
+    {
+      "ts": 1780001863475,
+      "url": "https://duckduckgo.com/?q=topic_0",
+      "title": "topic_0 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001863362.png"
+    },
+    {
+      "ts": 1780001863924,
+      "url": "https://duckduckgo.com/?q=topic_1",
+      "title": "topic_1 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001863830.png"
+    },
+    {
+      "ts": 1780001864295,
+      "url": "https://duckduckgo.com/?q=topic_2",
+      "title": "topic_2 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001864201.png"
+    },
+    {
+      "ts": 1780001864671,
+      "url": "https://duckduckgo.com/?q=topic_3",
+      "title": "topic_3 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001864580.png"
+    },
+    {
+      "ts": 1780001865049,
+      "url": "https://duckduckgo.com/?q=topic_4",
+      "title": "topic_4 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001864949.png"
+    },
+    {
+      "ts": 1780001865432,
+      "url": "https://duckduckgo.com/?q=topic_5",
+      "title": "topic_5 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001865333.png"
+    },
+    {
+      "ts": 1780001920650,
+      "url": "https://duckduckgo.com/?q=topic+flow+0",
+      "title": "topic flow 0 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001920260.png"
+    },
+    {
+      "ts": 1780001921013,
+      "url": "https://duckduckgo.com/?q=topic+flow+0&ia=web",
+      "title": "topic flow 0 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001920809.png"
+    },
+    {
+      "ts": 1780001921442,
+      "url": "https://duckduckgo.com/?q=topic+flow+1",
+      "title": "topic flow 1 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001921314.png"
+    },
+    {
+      "ts": 1780001921705,
+      "url": "https://duckduckgo.com/?q=topic+flow+1",
+      "title": "topic flow 1 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001921601.png"
+    },
+    {
+      "ts": 1780001922068,
+      "url": "https://duckduckgo.com/?q=topic+flow+2",
+      "title": "topic flow 2 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001921949.png"
+    },
+    {
+      "ts": 1780001922337,
+      "url": "https://duckduckgo.com/?q=topic+flow+2",
+      "title": "topic flow 2 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001922233.png"
+    },
+    {
+      "ts": 1780001922696,
+      "url": "https://duckduckgo.com/?q=topic+flow+3",
+      "title": "topic flow 3 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001922577.png"
+    },
+    {
+      "ts": 1780001922965,
+      "url": "https://duckduckgo.com/?q=topic+flow+3",
+      "title": "topic flow 3 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001922862.png"
+    },
+    {
+      "ts": 1780001923305,
+      "url": "https://duckduckgo.com/?q=topic+flow+4",
+      "title": "topic flow 4 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001923211.png"
+    },
+    {
+      "ts": 1780001923547,
+      "url": "https://duckduckgo.com/?q=topic+flow+4",
+      "title": "topic flow 4 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001923470.png"
+    },
+    {
+      "ts": 1780001923885,
+      "url": "https://duckduckgo.com/?q=topic+flow+5",
+      "title": "topic flow 5 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001923787.png"
+    },
+    {
+      "ts": 1780001924123,
+      "url": "https://duckduckgo.com/?q=topic+flow+5",
+      "title": "topic flow 5 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001924052.png"
+    },
+    {
+      "ts": 1780001924470,
+      "url": "https://duckduckgo.com/?q=topic+flow+6",
+      "title": "topic flow 6 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001924372.png"
+    },
+    {
+      "ts": 1780001924719,
+      "url": "https://duckduckgo.com/?q=topic+flow+6",
+      "title": "topic flow 6 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001924640.png"
+    },
+    {
+      "ts": 1780001925052,
+      "url": "https://duckduckgo.com/?q=topic+flow+7",
+      "title": "topic flow 7 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001924960.png"
+    },
+    {
+      "ts": 1780001925303,
+      "url": "https://duckduckgo.com/?q=topic+flow+7",
+      "title": "topic flow 7 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001925224.png"
+    },
+    {
+      "ts": 1780001925802,
+      "url": "https://duckduckgo.com/?q=topic+flow+8",
+      "title": "topic flow 8 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001925710.png"
+    },
+    {
+      "ts": 1780001926056,
+      "url": "https://duckduckgo.com/?q=topic+flow+8",
+      "title": "topic flow 8 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001925982.png"
+    },
+    {
+      "ts": 1780001926395,
+      "url": "https://duckduckgo.com/?q=topic+flow+9",
+      "title": "topic flow 9 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001926300.png"
+    },
+    {
+      "ts": 1780001926631,
+      "url": "https://duckduckgo.com/?q=topic+flow+9",
+      "title": "topic flow 9 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001926561.png"
+    },
+    {
+      "ts": 1780001926965,
+      "url": "https://duckduckgo.com/?q=topic+flow+10",
+      "title": "topic flow 10 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001926871.png"
+    },
+    {
+      "ts": 1780001927213,
+      "url": "https://duckduckgo.com/?q=topic+flow+10",
+      "title": "topic flow 10 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001927133.png"
+    },
+    {
+      "ts": 1780001927556,
+      "url": "https://duckduckgo.com/?q=topic+flow+11",
+      "title": "topic flow 11 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001927462.png"
+    },
+    {
+      "ts": 1780001927799,
+      "url": "https://duckduckgo.com/?q=topic+flow+11",
+      "title": "topic flow 11 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001927721.png"
+    },
+    {
+      "ts": 1780001928133,
+      "url": "https://duckduckgo.com/?q=topic+flow+12",
+      "title": "topic flow 12 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001928035.png"
+    },
+    {
+      "ts": 1780001928378,
+      "url": "https://duckduckgo.com/?q=topic+flow+12",
+      "title": "topic flow 12 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001928301.png"
+    },
+    {
+      "ts": 1780001928715,
+      "url": "https://duckduckgo.com/?q=topic+flow+13",
+      "title": "topic flow 13 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001928620.png"
+    },
+    {
+      "ts": 1780001928954,
+      "url": "https://duckduckgo.com/?q=topic+flow+13",
+      "title": "topic flow 13 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001928885.png"
+    },
+    {
+      "ts": 1780001929283,
+      "url": "https://duckduckgo.com/?q=topic+flow+14",
+      "title": "topic flow 14 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001929189.png"
+    },
+    {
+      "ts": 1780001929515,
+      "url": "https://duckduckgo.com/?q=topic+flow+14",
+      "title": "topic flow 14 at DuckDuckGo",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780001929444.png"
+    }
+  ],
+  "page_summaries": [
+    {
+      "ts": 1779997523297,
+      "url": "https://duckduckgo.com/?q=topic+flow+10",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+10\n  title: topic flow 10 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779997523827,
+      "url": "https://duckduckgo.com/?q=topic+flow+11",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+11\n  title: topic flow 11 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779997524360,
+      "url": "https://duckduckgo.com/?q=topic+flow+12",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+12\n  title: topic flow 12 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779997524916,
+      "url": "https://duckduckgo.com/?q=topic+flow+13",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+13\n  title: topic flow 13 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779997525523,
+      "url": "https://duckduckgo.com/?q=topic+flow+14",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+14\n  title: topic flow 14 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998302454,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998302537,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998302625,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998302704,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998302783,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998302876,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998302953,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998303038,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998339026,
+      "url": "https://duckduckgo.com/?q=topic+flow+0",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+0\n  title: topic flow 0 at DuckDuckGo\n  key_points: DuckDuckGo\n\nUpgrade to our browser.\n\nTry the\nDuckDuckGo Browser.\nFast. Free. Private.\n\nDownload Browser\n\nFree\n\nOpen menu\n All\nImages\nVideos\nNews\nMaps\nSearch Assist\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\n\ntopicflow.com\n\nhttps://www.topicflow.com\n\nTopicflow - Turn work signals into coaching insights\nEnable managers to drive performance and development directly in the flow of work."
+    },
+    {
+      "ts": 1779998339692,
+      "url": "https://duckduckgo.com/?q=topic+flow+1",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+1\n  title: topic flow 1 at DuckDuckGo\n  key_points: DuckDuckGo\n\nUpgrade to our browser.\n\nTry the\nDuckDuckGo Browser.\nFast. Free. Private.\n\nDownload Browser\n\nFree\n\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure"
+    },
+    {
+      "ts": 1779998340273,
+      "url": "https://duckduckgo.com/?q=topic+flow+2",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+2\n  title: topic flow 2 at DuckDuckGo\n  key_points: DuckDuckGo\n\nUpgrade to our browser.\n\nTry the\nDuckDuckGo Browser.\nFast. Free. Private.\n\nDownload Browser\n\nFree\n\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure"
+    },
+    {
+      "ts": 1779998340859,
+      "url": "https://duckduckgo.com/?q=topic+flow+3",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+3\n  title: topic flow 3 at DuckDuckGo\n  key_points: DuckDuckGo\n\nUpgrade to our browser.\n\nTry the\nDuckDuckGo Browser.\nFast. Free. Private.\n\nDownload Browser\n\nFree\n\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure"
+    },
+    {
+      "ts": 1779998341388,
+      "url": "https://duckduckgo.com/?q=topic+flow+4",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+4\n  title: topic flow 4 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998341903,
+      "url": "https://duckduckgo.com/?q=topic+flow+5",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+5\n  title: topic flow 5 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998342441,
+      "url": "https://duckduckgo.com/?q=topic+flow+6",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+6\n  title: topic flow 6 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998342976,
+      "url": "https://duckduckgo.com/?q=topic+flow+7",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+7\n  title: topic flow 7 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998343689,
+      "url": "https://duckduckgo.com/?q=topic+flow+8",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+8\n  title: topic flow 8 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998344218,
+      "url": "https://duckduckgo.com/?q=topic+flow+9",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+9\n  title: topic flow 9 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998344753,
+      "url": "https://duckduckgo.com/?q=topic+flow+10",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+10\n  title: topic flow 10 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998345284,
+      "url": "https://duckduckgo.com/?q=topic+flow+11",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+11\n  title: topic flow 11 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998345804,
+      "url": "https://duckduckgo.com/?q=topic+flow+12",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+12\n  title: topic flow 12 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998346338,
+      "url": "https://duckduckgo.com/?q=topic+flow+13",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+13\n  title: topic flow 13 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998346872,
+      "url": "https://duckduckgo.com/?q=topic+flow+14",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+14\n  title: topic flow 14 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998355482,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998355569,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998355651,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998355735,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998355818,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998355907,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998355989,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998356104,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998391587,
+      "url": "https://duckduckgo.com/?q=topic+flow+0",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+0\n  title: topic flow 0 at DuckDuckGo\n  key_points: DuckDuckGo\n\nUpgrade to our browser.\n\nTry the\nDuckDuckGo Browser.\nFast. Free. Private.\n\nDownload Browser\n\nFree\n\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure"
+    },
+    {
+      "ts": 1779998392244,
+      "url": "https://duckduckgo.com/?q=topic+flow+1",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+1\n  title: topic flow 1 at DuckDuckGo\n  key_points: DuckDuckGo\n\nUpgrade to our browser.\n\nTry the\nDuckDuckGo Browser.\nFast. Free. Private.\n\nDownload Browser\n\nFree\n\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure"
+    },
+    {
+      "ts": 1779998392828,
+      "url": "https://duckduckgo.com/?q=topic+flow+2",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+2\n  title: topic flow 2 at DuckDuckGo\n  key_points: DuckDuckGo\n\nUpgrade to our browser.\n\nTry the\nDuckDuckGo Browser.\nFast. Free. Private.\n\nDownload Browser\n\nFree\n\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure"
+    },
+    {
+      "ts": 1779998393413,
+      "url": "https://duckduckgo.com/?q=topic+flow+3",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+3\n  title: topic flow 3 at DuckDuckGo\n  key_points: DuckDuckGo\n\nUpgrade to our browser.\n\nTry the\nDuckDuckGo Browser.\nFast. Free. Private.\n\nDownload Browser\n\nFree\n\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure"
+    },
+    {
+      "ts": 1779998393945,
+      "url": "https://duckduckgo.com/?q=topic+flow+4",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+4\n  title: topic flow 4 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998394487,
+      "url": "https://duckduckgo.com/?q=topic+flow+5",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+5\n  title: topic flow 5 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998395045,
+      "url": "https://duckduckgo.com/?q=topic+flow+6",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+6\n  title: topic flow 6 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998395587,
+      "url": "https://duckduckgo.com/?q=topic+flow+7",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+7\n  title: topic flow 7 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998396128,
+      "url": "https://duckduckgo.com/?q=topic+flow+8",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+8\n  title: topic flow 8 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998396670,
+      "url": "https://duckduckgo.com/?q=topic+flow+9",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+9\n  title: topic flow 9 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998397237,
+      "url": "https://duckduckgo.com/?q=topic+flow+10",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+10\n  title: topic flow 10 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998397798,
+      "url": "https://duckduckgo.com/?q=topic+flow+11",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+11\n  title: topic flow 11 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998398353,
+      "url": "https://duckduckgo.com/?q=topic+flow+12",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+12\n  title: topic flow 12 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998398932,
+      "url": "https://duckduckgo.com/?q=topic+flow+13",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+13\n  title: topic flow 13 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998399497,
+      "url": "https://duckduckgo.com/?q=topic+flow+14",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+14\n  title: topic flow 14 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998442295,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998442379,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998442462,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998442559,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998442645,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998442728,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998442812,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998442898,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998478993,
+      "url": "https://duckduckgo.com/?q=topic+flow+0",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+0\n  title: topic flow 0 at DuckDuckGo\n  key_points: DuckDuckGo\n\nUpgrade to our browser.\n\nTry the\nDuckDuckGo Browser.\nFast. Free. Private.\n\nDownload Browser\n\nFree\n\nOpen menu\n All\nImages\nVideos\nNews\nMaps\nSearch Assist\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\n\ntopicflow.com\n\nhttps://www.topicflow.com\n\nTopicflow - Turn work signals into coaching insights\nEnable managers to drive performance and development directly in the flow of work."
+    },
+    {
+      "ts": 1779998479652,
+      "url": "https://duckduckgo.com/?q=topic+flow+1",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+1\n  title: topic flow 1 at DuckDuckGo\n  key_points: DuckDuckGo\n\nUpgrade to our browser.\n\nTry the\nDuckDuckGo Browser.\nFast. Free. Private.\n\nDownload Browser\n\nFree\n\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure"
+    },
+    {
+      "ts": 1779998480253,
+      "url": "https://duckduckgo.com/?q=topic+flow+2",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+2\n  title: topic flow 2 at DuckDuckGo\n  key_points: DuckDuckGo\n\nUpgrade to our browser.\n\nTry the\nDuckDuckGo Browser.\nFast. Free. Private.\n\nDownload Browser\n\nFree\n\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure"
+    },
+    {
+      "ts": 1779998480840,
+      "url": "https://duckduckgo.com/?q=topic+flow+3",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+3\n  title: topic flow 3 at DuckDuckGo\n  key_points: DuckDuckGo\n\nUpgrade to our browser.\n\nTry the\nDuckDuckGo Browser.\nFast. Free. Private.\n\nDownload Browser\n\nFree\n\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure"
+    },
+    {
+      "ts": 1779998481388,
+      "url": "https://duckduckgo.com/?q=topic+flow+4",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+4\n  title: topic flow 4 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998481922,
+      "url": "https://duckduckgo.com/?q=topic+flow+5",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+5\n  title: topic flow 5 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998482479,
+      "url": "https://duckduckgo.com/?q=topic+flow+6",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+6\n  title: topic flow 6 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998483036,
+      "url": "https://duckduckgo.com/?q=topic+flow+7",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+7\n  title: topic flow 7 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998483576,
+      "url": "https://duckduckgo.com/?q=topic+flow+8",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+8\n  title: topic flow 8 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998484152,
+      "url": "https://duckduckgo.com/?q=topic+flow+9",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+9\n  title: topic flow 9 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998484701,
+      "url": "https://duckduckgo.com/?q=topic+flow+10",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+10\n  title: topic flow 10 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998485243,
+      "url": "https://duckduckgo.com/?q=topic+flow+11",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+11\n  title: topic flow 11 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998485793,
+      "url": "https://duckduckgo.com/?q=topic+flow+12",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+12\n  title: topic flow 12 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998486357,
+      "url": "https://duckduckgo.com/?q=topic+flow+13",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+13\n  title: topic flow 13 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1779998486885,
+      "url": "https://duckduckgo.com/?q=topic+flow+14",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+14\n  title: topic flow 14 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001395249,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001395344,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001395425,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001395508,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001395591,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001395670,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001395745,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001395824,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001437382,
+      "url": "https://duckduckgo.com/?q=topic+flow+0",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+0\n  title: topic flow 0 at DuckDuckGo\n  key_points: DuckDuckGo\n\nUpgrade to our browser.\n\nTry the\nDuckDuckGo Browser.\nFast. Free. Private.\n\nDownload Browser\n\nFree\n\nOpen menu\n All\nImages\nVideos\nNews\nMaps\nSearch Assist\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\n\ntopicflow.com\n\nhttps://www.topicflow.com\n\nTopicflow - Turn work signals into coaching insights\nEnable managers to drive performance and development directly in the flow of work."
+    },
+    {
+      "ts": 1780001438097,
+      "url": "https://duckduckgo.com/?q=topic+flow+1",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+1\n  title: topic flow 1 at DuckDuckGo\n  key_points: DuckDuckGo\n\nUpgrade to our browser.\n\nTry the\nDuckDuckGo Browser.\nFast. Free. Private.\n\nDownload Browser\n\nFree\n\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure"
+    },
+    {
+      "ts": 1780001438770,
+      "url": "https://duckduckgo.com/?q=topic+flow+2",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+2\n  title: topic flow 2 at DuckDuckGo\n  key_points: DuckDuckGo\n\nUpgrade to our browser.\n\nTry the\nDuckDuckGo Browser.\nFast. Free. Private.\n\nDownload Browser\n\nFree\n\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure"
+    },
+    {
+      "ts": 1780001439442,
+      "url": "https://duckduckgo.com/?q=topic+flow+3",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+3\n  title: topic flow 3 at DuckDuckGo\n  key_points: DuckDuckGo\n\nUpgrade to our browser.\n\nTry the\nDuckDuckGo Browser.\nFast. Free. Private.\n\nDownload Browser\n\nFree\n\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure"
+    },
+    {
+      "ts": 1780001440072,
+      "url": "https://duckduckgo.com/?q=topic+flow+4",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+4\n  title: topic flow 4 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001440701,
+      "url": "https://duckduckgo.com/?q=topic+flow+5",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+5\n  title: topic flow 5 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001441310,
+      "url": "https://duckduckgo.com/?q=topic+flow+6",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+6\n  title: topic flow 6 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001441923,
+      "url": "https://duckduckgo.com/?q=topic+flow+7",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+7\n  title: topic flow 7 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001442695,
+      "url": "https://duckduckgo.com/?q=topic+flow+8",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+8\n  title: topic flow 8 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001443339,
+      "url": "https://duckduckgo.com/?q=topic+flow+9",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+9\n  title: topic flow 9 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001443947,
+      "url": "https://duckduckgo.com/?q=topic+flow+10",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+10\n  title: topic flow 10 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001444556,
+      "url": "https://duckduckgo.com/?q=topic+flow+11",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+11\n  title: topic flow 11 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001445178,
+      "url": "https://duckduckgo.com/?q=topic+flow+12",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+12\n  title: topic flow 12 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001445809,
+      "url": "https://duckduckgo.com/?q=topic+flow+13",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+13\n  title: topic flow 13 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001446444,
+      "url": "https://duckduckgo.com/?q=topic+flow+14",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+14\n  title: topic flow 14 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001861889,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001861971,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001862048,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001862122,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001862197,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001862272,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001862347,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001862422,
+      "url": "https://duckduckgo.com/?q=cpu+benchmarks",
+      "summary": "Summary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001921003,
+      "url": "https://duckduckgo.com/?q=topic+flow+0&ia=web",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+0&ia=web\n  title: topic flow 0 at DuckDuckGo\n  key_points: DuckDuckGo\n\nUpgrade to our browser.\n\nTry the\nDuckDuckGo Browser.\nFast. Free. Private.\n\nDownload Browser\n\nFree\n\nOpen menu\n All\nImages\nVideos\nNews\nMaps\nSearch Assist\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\n\ntopicflow.com\n\nhttps://www.topicflow.com\n\nTopicflow - Turn work signals into coaching insights\nEnable managers to drive performance and development directly in the flow of work."
+    },
+    {
+      "ts": 1780001921694,
+      "url": "https://duckduckgo.com/?q=topic+flow+1",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+1\n  title: topic flow 1 at DuckDuckGo\n  key_points: DuckDuckGo\n\nUpgrade to our browser.\n\nTry the\nDuckDuckGo Browser.\nFast. Free. Private.\n\nDownload Browser\n\nFree\n\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure"
+    },
+    {
+      "ts": 1780001922327,
+      "url": "https://duckduckgo.com/?q=topic+flow+2",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+2\n  title: topic flow 2 at DuckDuckGo\n  key_points: DuckDuckGo\n\nUpgrade to our browser.\n\nTry the\nDuckDuckGo Browser.\nFast. Free. Private.\n\nDownload Browser\n\nFree\n\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure"
+    },
+    {
+      "ts": 1780001922954,
+      "url": "https://duckduckgo.com/?q=topic+flow+3",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+3\n  title: topic flow 3 at DuckDuckGo\n  key_points: DuckDuckGo\n\nUpgrade to our browser.\n\nTry the\nDuckDuckGo Browser.\nFast. Free. Private.\n\nDownload Browser\n\nFree\n\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure"
+    },
+    {
+      "ts": 1780001923537,
+      "url": "https://duckduckgo.com/?q=topic+flow+4",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+4\n  title: topic flow 4 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001924113,
+      "url": "https://duckduckgo.com/?q=topic+flow+5",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+5\n  title: topic flow 5 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001924709,
+      "url": "https://duckduckgo.com/?q=topic+flow+6",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+6\n  title: topic flow 6 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001925293,
+      "url": "https://duckduckgo.com/?q=topic+flow+7",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+7\n  title: topic flow 7 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001926046,
+      "url": "https://duckduckgo.com/?q=topic+flow+8",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+8\n  title: topic flow 8 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001926621,
+      "url": "https://duckduckgo.com/?q=topic+flow+9",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+9\n  title: topic flow 9 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001927201,
+      "url": "https://duckduckgo.com/?q=topic+flow+10",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+10\n  title: topic flow 10 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001927788,
+      "url": "https://duckduckgo.com/?q=topic+flow+11",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+11\n  title: topic flow 11 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001928367,
+      "url": "https://duckduckgo.com/?q=topic+flow+12",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+12\n  title: topic flow 12 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001928944,
+      "url": "https://duckduckgo.com/?q=topic+flow+13",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+13\n  title: topic flow 13 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    },
+    {
+      "ts": 1780001929504,
+      "url": "https://duckduckgo.com/?q=topic+flow+14",
+      "summary": "Summary for https://duckduckgo.com/?q=topic+flow+14\n  title: topic flow 14 at DuckDuckGo\n  key_points: DuckDuckGo\nProtection. Privacy. Peace of mind.\nOpen menu\n All\nImages\n Duck.ai\nSearch Settings\nProtected\nIsrael (en)\nSafe search: moderate\nAny time\nClose menu\nSEARCH\nHomepage\nThemes\nSettings\nSHARE FEEDBACK\nDOWNLOADS\niOS Browser\nAndroid Browser\nMac Browser\nWindows Browser\nBrowser Extensions\nMORE FROM DUCKDUCKGO\n\nUpgrade to our Private Browser\n\nFast. Secure. Free.\n\nDownload Browser\nDuck.ai\nEmail Protection\nNewsletter\nBl"
+    }
+  ],
+  "facts": []
+}

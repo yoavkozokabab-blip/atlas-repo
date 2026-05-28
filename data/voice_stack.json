@@ -1,0 +1,10 @@
+{
+  "engine": "edge_tts",
+  "voice": "en-US-AriaNeural",
+  "emotion": "cinematic",
+  "rate_raw": "+8%",
+  "output_device_index": null,
+  "output_device_label": "",
+  "streaming_enabled": true,
+  "updated_at": "2026-05-25T12:50:52.502679+00:00"
+}

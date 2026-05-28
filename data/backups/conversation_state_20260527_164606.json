@@ -1,0 +1,39 @@
+{
+  "current_topic": "tell me more",
+  "previous_topics": [
+    "what is the weather today"
+  ],
+  "active_project": "",
+  "unresolved_question": "",
+  "emotional_tone": "neutral",
+  "interruption_state": "idle",
+  "pending_actions": [],
+  "recent_entities": [
+    "more",
+    "tell",
+    "today",
+    "weather",
+    "what"
+  ],
+  "follow_up_references": [
+    "voice:conversational"
+  ],
+  "turn_count": 2,
+  "last_user_text": "tell me more",
+  "last_assistant_summary": "",
+  "last_intent": "conversational",
+  "paused_response": "",
+  "continuous_listening": true,
+  "updated_at": "2026-05-27T16:46:06.521453+00:00",
+  "interruption_count": 0,
+  "intent_continuity_chain": [
+    "conversational"
+  ],
+  "turn_references": [
+    "tell me more ->",
+    "what is the weather today ->"
+  ],
+  "last_response_style": "neutral",
+  "pending_follow_up": "",
+  "user_intent_continuity": "conversational"
+}

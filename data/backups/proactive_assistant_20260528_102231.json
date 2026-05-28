@@ -1,0 +1,17 @@
+{
+  "last_suggestion_at": "2026-05-28T10:06:31.561584+00:00",
+  "last_suggestions": [
+    {
+      "title": "Verified root cause available",
+      "detail": "Overlap block caused by stale open_positions state",
+      "action": "summarize root causes"
+    },
+    {
+      "title": "Dashboard degraded",
+      "detail": "Dashboard status=failed. [WinError 10061] No connection could be made because the target machine actively",
+      "action": "show notifications"
+    }
+  ],
+  "dismissed": [],
+  "updated_at": "2026-05-28T10:06:31.561597+00:00"
+}

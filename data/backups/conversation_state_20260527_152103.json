@@ -1,0 +1,51 @@
+{
+  "current_topic": "benchmark realtime streaming",
+  "previous_topics": [
+    "show realtime latency breakdown",
+    "test websocket realtime voice",
+    "show runtime config sources",
+    "open youtube",
+    "Oh",
+    "benchmark realtime streaming",
+    "test realtime voice",
+    "show realtime provider status",
+    "benchmark realtime providers",
+    "\\",
+    "show voice latency",
+    "You"
+  ],
+  "active_project": "",
+  "unresolved_question": "",
+  "emotional_tone": "neutral",
+  "interruption_state": "speaking",
+  "pending_actions": [],
+  "recent_entities": [
+    "streaming",
+    "realtime",
+    "benchmark",
+    "latency",
+    "show",
+    "websocket",
+    "test",
+    "config",
+    "runtime",
+    "youtube",
+    "open",
+    "voice",
+    "provider",
+    "providers",
+    "--speak",
+    "--text"
+  ],
+  "follow_up_references": [
+    "voice:open_website",
+    "voice:unknown"
+  ],
+  "turn_count": 86,
+  "last_user_text": "benchmark realtime streaming",
+  "last_assistant_summary": "Realtime provider latency benchmark:\n  probes: 3\n  openai_realtime: error=unavailable\n  elevenlabs: error=unavailable\n  piper: error=unavailable\n\nStreaming playback benchmark (mock path when providers unavailable):\n  realtime TTS disabled\n\nVoice latency (Phase 58 realtime TTS)\n  provider: n/a\n  time_to_first_audio_ms: n/a\n  playback_start_ms: n/a\n  total_speech_ms: n/a\n  interruption_cancel_ms: n/a\n  provider_latency_ms: n/a\n  cancelled: n/a\n\nWould you also like me to run diagnostics?",
+  "last_intent": "benchmark_realtime_streaming",
+  "paused_response": "",
+  "continuous_listening": false,
+  "updated_at": "2026-05-27T15:21:02.981717+00:00"
+}

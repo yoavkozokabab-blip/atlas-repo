@@ -1,0 +1,16 @@
+{
+  "current_project_root": "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-81\\test_follow_up_uses_session0\\project",
+  "last_command_text": "Test streaming",
+  "last_intent": "test_streaming_stt",
+  "last_result_summary": "Streaming STT test (live mic):\n  elapsed s: 9.3\n  partial updates: 0\n  final text: 'Hey, Chalvis, this is SpamGasityTest.'\n  session streaming enabled: yes\n  partial timeout count: 0\n\nStreaming STT diagnostics (Phase 59.6):\n  mic opened: yes (4 ms)\n  worker thread started: yes (0 ms)\n  audio frames received: yes (first 110 ms)\n  chunks received: 92\n  bytes received: 588800\n  dropped chunks: 0\n  queue backlog: 0\n  VAD speech started: no\n  first partial token: no\n  inference last ms: 0\n  partial a",
+  "last_opened_file": "",
+  "last_opened_log": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\scheduled_logs\\live_weekly_20260523_162845.log",
+  "last_report_path": "",
+  "last_error_search": "",
+  "pending_confirmation_id": "8c4c7a40",
+  "pending_confirmation_action": "run_live_daily_loop",
+  "activity_mode": "",
+  "last_workspace_snapshot": "",
+  "created_at": "",
+  "updated_at": "2026-05-27T19:12:20.435402+00:00"
+}

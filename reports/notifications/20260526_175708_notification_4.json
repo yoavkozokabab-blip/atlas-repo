@@ -1,0 +1,10 @@
+{
+  "id": 4,
+  "kind": "investigation_completed",
+  "title": "Smoke investigation",
+  "message": "completed",
+  "severity": "success",
+  "created_at": "2026-05-26T17:57:08.705893+00:00",
+  "read": false,
+  "metadata": {}
+}

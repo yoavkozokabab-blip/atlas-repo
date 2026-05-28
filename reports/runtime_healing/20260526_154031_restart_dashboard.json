@@ -1,0 +1,14 @@
+{
+  "incident_id": "20260526_154031_restart_dashboard",
+  "created_at": "2026-05-26T15:40:31.551345+00:00",
+  "action": "restart_dashboard",
+  "ok": true,
+  "detail": "opened http://127.0.0.1:8077",
+  "entry": {
+    "ts": "2026-05-26T15:40:31.550695+00:00",
+    "action": "restart_dashboard",
+    "ok": true,
+    "detail": "opened http://127.0.0.1:8077"
+  },
+  "reversible": true
+}

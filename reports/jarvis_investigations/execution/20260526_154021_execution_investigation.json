@@ -1,0 +1,164 @@
+{
+  "created_at": "2026-05-26T15:40:21.224452+00:00",
+  "files_scanned": 40,
+  "signals_generated": 5,
+  "signals_eligible": 5,
+  "signals_blocked": 5,
+  "n_execution_attempts": 0,
+  "n_execution_accepted": 0,
+  "adapter_mode": "ExecutionDisabledAdapter",
+  "dry_run_status": "true",
+  "execution_disabled_status": "yes",
+  "top_blocker": "execution disabled adapter",
+  "blockers": [
+    {
+      "reason": "execution disabled adapter",
+      "severity": "critical",
+      "count": 23,
+      "evidence_path": "C:\\Users\\babi2\\AppData\\Local\\Temp\\tmpsngm_jlq\\trading\\reports\\live_paper\\dual\\execution_decision_summary.json",
+      "snippet": "{\"execution_mode\":\"paper\",\"open_risk_fraction_daily\":0.05,\"reason_if_no_attempt\":\"adapter_disabled\"}"
+    },
+    {
+      "reason": "exposure limit",
+      "severity": "high",
+      "count": 18,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_121610_execution_cleanup.md",
+      "snippet": "- telemetry primary blocker prefers exposure_limit_reached over scan noise"
+    },
+    {
+      "reason": "not relevant to last bar",
+      "severity": "high",
+      "count": 14,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_121610_execution_cleanup.json",
+      "snippet": "\"title\": \"Prefer signal-level blockers over scan-level not_relevant_to_last_bar telemetry\","
+    },
+    {
+      "reason": "max positions reached",
+      "severity": "high",
+      "count": 7,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260525_222320_execution_investigation.md",
+      "snippet": "- [high] max positions reached count=17 evidence=C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json"
+    },
+    {
+      "reason": "delayed entry failure",
+      "severity": "medium",
+      "count": 7,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260525_222320_execution_investigation.md",
+      "snippet": "- [medium] delayed entry failure count=7 evidence=C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\live_summary_latest.json"
+    },
+    {
+      "reason": "stop loss hit adapter disabled",
+      "severity": "medium",
+      "count": 7,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_121610_execution_cleanup.json",
+      "snippet": "\"reason\": \"stop_loss_hit_adapter_disabled\""
+    },
+    {
+      "reason": "stop loss hit adapter disabled stop hit",
+      "severity": "medium",
+      "count": 7,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_121610_execution_cleanup.md",
+      "snippet": "\"reason\": \"stop_loss_hit_adapter_disabled stop_hit\""
+    },
+    {
+      "reason": "duplicate block",
+      "severity": "medium",
+      "count": 6,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260525_222320_execution_investigation.md",
+      "snippet": "- [medium] duplicate block count=5 evidence=C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\live_summary_latest.json"
+    },
+    {
+      "reason": "dry run mode",
+      "severity": "high",
+      "count": 5,
+      "evidence_path": "C:\\Users\\babi2\\AppData\\Local\\Temp\\tmpsngm_jlq\\trading\\reports\\live_paper\\dual\\live_summary_latest.json",
+      "snippet": "{\"execution_adapter\":\"ExecutionDisabledAdapter\",\"execution_mode\":\"paper\",\"dry_run\":true}"
+    },
+    {
+      "reason": "already in position",
+      "severity": "medium",
+      "count": 4,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260525_222320_execution_investigation.md",
+      "snippet": "- [medium] already in position count=10 evidence=C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\cumulative_summary.json"
+    },
+    {
+      "reason": "market closed",
+      "severity": "medium",
+      "count": 4,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260525_222320_execution_investigation.md",
+      "snippet": "- [medium] market closed count=12 evidence=C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\live_summary_latest.json"
+    },
+    {
+      "reason": "overlap block",
+      "severity": "medium",
+      "count": 4,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260525_222320_execution_investigation.md",
+      "snippet": "- Top blocker: overlap block"
+    },
+    {
+      "reason": "incomplete bar",
+      "severity": "medium",
+      "count": 3,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\patch_simulations\\20260525_211724_patch_simulation.md",
+      "snippet": "\"reason\": \"incomplete_bar\""
+    },
+    {
+      "reason": "stale price guard",
+      "severity": "medium",
+      "count": 3,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\replays\\aapl_43f832d6aba0_snapshot.json",
+      "snippet": "\"stale_price\": false,"
+    },
+    {
+      "reason": "adapter disabled",
+      "severity": "medium",
+      "count": 1,
+      "evidence_path": "C:\\Users\\babi2\\AppData\\Local\\Temp\\tmpsngm_jlq\\trading\\reports\\live_paper\\dual\\execution_decision_summary.json",
+      "snippet": "\"reason_if_no_attempt\": \"adapter_disabled\""
+    },
+    {
+      "reason": "execution adapter/attempt path observed as disabled or zero; portfolio cap evidence observed",
+      "severity": "medium",
+      "count": 1,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\replays\\aapl_43f832d6aba0_snapshot.json",
+      "snippet": "\"rejection_reason\": \"execution adapter/attempt path observed as disabled or zero; portfolio cap evidence observed\""
+    }
+  ],
+  "evidence_paths": [
+    "C:\\Users\\babi2\\AppData\\Local\\Temp\\tmpsngm_jlq\\trading\\reports\\live_paper\\dual\\execution_decision_summary.json",
+    "C:\\Users\\babi2\\AppData\\Local\\Temp\\tmpsngm_jlq\\trading\\reports\\live_paper\\dual\\live_summary_latest.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_121610_execution_cleanup.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_121610_execution_cleanup.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_121047_execution_cleanup.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_121047_execution_cleanup.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_120315_execution_cleanup.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_120315_execution_cleanup.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_115657_execution_cleanup.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_115657_execution_cleanup.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_115651_execution_cleanup.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_115651_execution_cleanup.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_115059_execution_cleanup.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_115059_execution_cleanup.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_115044_execution_cleanup.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_115044_execution_cleanup.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260525_222320_execution_investigation.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260525_222320_execution_investigation.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260525_222240_execution_investigation.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260525_222240_execution_investigation.json",
+    "C:\\Users\\babi2\\AppData\\Local\\Temp\\tmpsngm_jlq\\trading\\reports\\live_paper\\dual\\state\\open_positions.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\patch_apply\\20260526_121628_rollback.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\patch_apply\\20260526_121628_rollback.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\patch_apply\\20260526_121611_apply.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\patch_apply\\20260526_121611_apply.json"
+  ],
+  "recommended_verification": [
+    "Switch adapter from disabled stub to paper adapter and rerun one dry-run cycle.",
+    "Confirm execution adapter is enabled for paper/live mode (not ExecutionDisabledAdapter).",
+    "Verify dry_run flag matches intended environment.",
+    "Check signal_detection_mode vs eligible last-bar signals.",
+    "Inspect entry_blocks and reason_if_no_attempt in execution_decision_summary.json.",
+    "Compare live_signals.csv rows to execution_order_events.csv attempt events."
+  ],
+  "report_json": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_154021_execution_investigation.json",
+  "report_markdown": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_154021_execution_investigation.md"
+}

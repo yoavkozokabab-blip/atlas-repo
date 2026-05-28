@@ -1,0 +1,14 @@
+{
+  "id": 502,
+  "kind": "proactive",
+  "title": "Dashboard degraded",
+  "message": "Dashboard status=failed. timed out",
+  "severity": "warning",
+  "source": "proactive_monitor",
+  "created_at": "2026-05-27T20:14:45.083881+00:00",
+  "read": false,
+  "archived": false,
+  "suggested_action": "Run restart dashboard or show dashboard health.",
+  "related_task_id": null,
+  "metadata": {}
+}

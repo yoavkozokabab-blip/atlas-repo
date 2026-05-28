@@ -1,0 +1,991 @@
+{
+  "created_at": "2026-05-27T14:06:16.703975+00:00",
+  "files_scanned": 175,
+  "signals_generated": 4,
+  "signals_eligible": 4,
+  "signals_blocked": 4,
+  "n_execution_attempts": 0,
+  "n_execution_accepted": 0,
+  "top_blocker": "overlap block",
+  "lifecycles": [
+    {
+      "symbol": "CYTK",
+      "signal_date": "2026-04-24",
+      "eligible": true,
+      "order_attempt": false,
+      "final_block_reason": "not relevant to last bar",
+      "steps": [
+        {
+          "name": "signal detected",
+          "passed": true,
+          "detail": "signal evidence found",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+          "snippet": "timestamp,ts,event_type,adapter,symbol,side,engine,interval,position_id,qty,qty_local,qty_broker,order_type,entry_price,entry,stop,target,risk,risk_per_share,risk_amount,rr,config,preset,signal_date,intended_entry_date,exit_price,current_price,stop_loss,take_p",
+          "expected": false
+        },
+        {
+          "name": "eligible",
+          "passed": true,
+          "detail": "eligible=True",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+          "snippet": "\"n_new_signals\": 4,",
+          "expected": false
+        },
+        {
+          "name": "last bar relevance",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+          "snippet": "\"signal_detection_mode\": \"last_closed_bar\",",
+          "expected": true
+        },
+        {
+          "name": "duplicate check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\live_summary_latest.json",
+          "snippet": "\"summary_alert_dedup_key\": \"summary|dual|C:/FINAL_ALGO_TRADER/reports/live_paper_trials/alpaca_paper_clean_100k_20260516/live_output|real_algo_config_production_v2b_weekly;real_algo_config_production_v5_daily|2026-05-16T20:44:48+00:00\",",
+          "expected": true
+        },
+        {
+          "name": "already in position check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\cumulative_summary.json",
+          "snippet": "\"already_in_position\": 1,",
+          "expected": true
+        },
+        {
+          "name": "overlap check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\live_summary_latest.json",
+          "snippet": "\"signal_flow_debug_text\": \"\\nDEBUG SIGNAL FLOW:\\n  total_symbols=22\\n  pre_setups=10248\\n  passed_filters=708\\n  failed_entry=518\\n  reject_reasons={'RR_TOO_LOW': 383, 'VOLUME_TOO_LOW': 5954, 'TREND_FILTER_FAIL': 2613, 'DEEP_RETRACE': 332, 'SETUP_EXPIRED': 60}",
+          "expected": true
+        },
+        {
+          "name": "max positions check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\cumulative_summary.json",
+          "snippet": "\"max_positions_reached\": 1,",
+          "expected": true
+        },
+        {
+          "name": "exposure/risk check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_order_events.csv",
+          "snippet": "2026-05-04T15:44:29+00:00,2026-05-04T15:44:29+00:00,order_skipped,ExecutionDisabledAdapter,AZTA,,,,,,,,,,skipped,,exposure_limit_reached,,False,,,live_paper_monitor,\"{\"\"raw_reason\"\":\"\"max_total_risk_engine\"\",\"\"signal_bar_date\"\":\"\"2026-05-01\"\",\"\"combo_label\"\":\"",
+          "expected": true
+        },
+        {
+          "name": "market open check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\live_summary_latest.json",
+          "snippet": "\"allow_market_closed\": false,",
+          "expected": true
+        },
+        {
+          "name": "kill switch check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+          "snippet": "2026-05-16T20:29:33+00:00,2026-05-16T20:29:33+00:00,order_skipped,AlpacaExecutionAdapter,CYTK,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,other:kill_switch_enabled,,,,,,skipped,,,other:kill_switch_enabled,,False,,,live_paper_monitor,\"{\"\"raw_reason\"\":\"\"kill_switch_e",
+          "expected": true
+        },
+        {
+          "name": "adapter health",
+          "passed": false,
+          "detail": "adapter=AlpacaExecutionAdapter dry_run=true disabled=yes",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+          "snippet": "timestamp,ts,event_type,adapter,symbol,side,engine,interval,position_id,qty,qty_local,qty_broker,order_type,entry_price,entry,stop,target,risk,risk_per_share,risk_amount,rr,config,preset,signal_date,intended_entry_date,exit_price,current_price,stop_loss,take_p",
+          "expected": true
+        },
+        {
+          "name": "order attempt",
+          "passed": false,
+          "detail": "attempts=0",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+          "snippet": "\"n_execution_attempts\": 0,",
+          "expected": false
+        }
+      ],
+      "suspicious": true
+    },
+    {
+      "symbol": "EIX",
+      "signal_date": "2026-04-24",
+      "eligible": true,
+      "order_attempt": false,
+      "final_block_reason": "not relevant to last bar",
+      "steps": [
+        {
+          "name": "signal detected",
+          "passed": true,
+          "detail": "signal evidence found",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+          "snippet": "timestamp,ts,event_type,adapter,symbol,side,engine,interval,position_id,qty,qty_local,qty_broker,order_type,entry_price,entry,stop,target,risk,risk_per_share,risk_amount,rr,config,preset,signal_date,intended_entry_date,exit_price,current_price,stop_loss,take_p",
+          "expected": false
+        },
+        {
+          "name": "eligible",
+          "passed": true,
+          "detail": "eligible=True",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+          "snippet": "\"n_new_signals\": 4,",
+          "expected": false
+        },
+        {
+          "name": "last bar relevance",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+          "snippet": "\"signal_detection_mode\": \"last_closed_bar\",",
+          "expected": true
+        },
+        {
+          "name": "duplicate check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\live_summary_latest.json",
+          "snippet": "\"summary_alert_dedup_key\": \"summary|dual|C:/FINAL_ALGO_TRADER/reports/live_paper_trials/alpaca_paper_clean_100k_20260516/live_output|real_algo_config_production_v2b_weekly;real_algo_config_production_v5_daily|2026-05-16T20:44:48+00:00\",",
+          "expected": true
+        },
+        {
+          "name": "already in position check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\cumulative_summary.json",
+          "snippet": "\"already_in_position\": 1,",
+          "expected": true
+        },
+        {
+          "name": "overlap check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\live_summary_latest.json",
+          "snippet": "\"signal_flow_debug_text\": \"\\nDEBUG SIGNAL FLOW:\\n  total_symbols=22\\n  pre_setups=10248\\n  passed_filters=708\\n  failed_entry=518\\n  reject_reasons={'RR_TOO_LOW': 383, 'VOLUME_TOO_LOW': 5954, 'TREND_FILTER_FAIL': 2613, 'DEEP_RETRACE': 332, 'SETUP_EXPIRED': 60}",
+          "expected": true
+        },
+        {
+          "name": "max positions check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\cumulative_summary.json",
+          "snippet": "\"max_positions_reached\": 1,",
+          "expected": true
+        },
+        {
+          "name": "exposure/risk check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_order_events.csv",
+          "snippet": "2026-05-04T15:44:29+00:00,2026-05-04T15:44:29+00:00,order_skipped,ExecutionDisabledAdapter,AZTA,,,,,,,,,,skipped,,exposure_limit_reached,,False,,,live_paper_monitor,\"{\"\"raw_reason\"\":\"\"max_total_risk_engine\"\",\"\"signal_bar_date\"\":\"\"2026-05-01\"\",\"\"combo_label\"\":\"",
+          "expected": true
+        },
+        {
+          "name": "market open check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\live_summary_latest.json",
+          "snippet": "\"allow_market_closed\": false,",
+          "expected": true
+        },
+        {
+          "name": "kill switch check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+          "snippet": "2026-05-16T20:29:33+00:00,2026-05-16T20:29:33+00:00,order_skipped,AlpacaExecutionAdapter,CYTK,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,other:kill_switch_enabled,,,,,,skipped,,,other:kill_switch_enabled,,False,,,live_paper_monitor,\"{\"\"raw_reason\"\":\"\"kill_switch_e",
+          "expected": true
+        },
+        {
+          "name": "adapter health",
+          "passed": false,
+          "detail": "adapter=AlpacaExecutionAdapter dry_run=true disabled=yes",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+          "snippet": "timestamp,ts,event_type,adapter,symbol,side,engine,interval,position_id,qty,qty_local,qty_broker,order_type,entry_price,entry,stop,target,risk,risk_per_share,risk_amount,rr,config,preset,signal_date,intended_entry_date,exit_price,current_price,stop_loss,take_p",
+          "expected": true
+        },
+        {
+          "name": "order attempt",
+          "passed": false,
+          "detail": "attempts=0",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+          "snippet": "\"n_execution_attempts\": 0,",
+          "expected": false
+        }
+      ],
+      "suspicious": true
+    },
+    {
+      "symbol": "AMP",
+      "signal_date": "2026-05-16",
+      "eligible": true,
+      "order_attempt": false,
+      "final_block_reason": "not relevant to last bar",
+      "steps": [
+        {
+          "name": "signal detected",
+          "passed": true,
+          "detail": "signal evidence found",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+          "snippet": "timestamp,ts,event_type,adapter,symbol,side,engine,interval,position_id,qty,qty_local,qty_broker,order_type,entry_price,entry,stop,target,risk,risk_per_share,risk_amount,rr,config,preset,signal_date,intended_entry_date,exit_price,current_price,stop_loss,take_p",
+          "expected": false
+        },
+        {
+          "name": "eligible",
+          "passed": true,
+          "detail": "eligible=True",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+          "snippet": "\"n_new_signals\": 4,",
+          "expected": false
+        },
+        {
+          "name": "last bar relevance",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+          "snippet": "\"signal_detection_mode\": \"last_closed_bar\",",
+          "expected": true
+        },
+        {
+          "name": "duplicate check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\live_summary_latest.json",
+          "snippet": "\"summary_alert_dedup_key\": \"summary|dual|C:/FINAL_ALGO_TRADER/reports/live_paper_trials/alpaca_paper_clean_100k_20260516/live_output|real_algo_config_production_v2b_weekly;real_algo_config_production_v5_daily|2026-05-16T20:44:48+00:00\",",
+          "expected": true
+        },
+        {
+          "name": "already in position check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\cumulative_summary.json",
+          "snippet": "\"already_in_position\": 1,",
+          "expected": true
+        },
+        {
+          "name": "overlap check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\live_summary_latest.json",
+          "snippet": "\"signal_flow_debug_text\": \"\\nDEBUG SIGNAL FLOW:\\n  total_symbols=22\\n  pre_setups=10248\\n  passed_filters=708\\n  failed_entry=518\\n  reject_reasons={'RR_TOO_LOW': 383, 'VOLUME_TOO_LOW': 5954, 'TREND_FILTER_FAIL': 2613, 'DEEP_RETRACE': 332, 'SETUP_EXPIRED': 60}",
+          "expected": true
+        },
+        {
+          "name": "max positions check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\cumulative_summary.json",
+          "snippet": "\"max_positions_reached\": 1,",
+          "expected": true
+        },
+        {
+          "name": "exposure/risk check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_order_events.csv",
+          "snippet": "2026-05-04T15:44:29+00:00,2026-05-04T15:44:29+00:00,order_skipped,ExecutionDisabledAdapter,AZTA,,,,,,,,,,skipped,,exposure_limit_reached,,False,,,live_paper_monitor,\"{\"\"raw_reason\"\":\"\"max_total_risk_engine\"\",\"\"signal_bar_date\"\":\"\"2026-05-01\"\",\"\"combo_label\"\":\"",
+          "expected": true
+        },
+        {
+          "name": "market open check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\live_summary_latest.json",
+          "snippet": "\"allow_market_closed\": false,",
+          "expected": true
+        },
+        {
+          "name": "kill switch check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+          "snippet": "2026-05-16T20:29:33+00:00,2026-05-16T20:29:33+00:00,order_skipped,AlpacaExecutionAdapter,CYTK,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,other:kill_switch_enabled,,,,,,skipped,,,other:kill_switch_enabled,,False,,,live_paper_monitor,\"{\"\"raw_reason\"\":\"\"kill_switch_e",
+          "expected": true
+        },
+        {
+          "name": "adapter health",
+          "passed": false,
+          "detail": "adapter=AlpacaExecutionAdapter dry_run=true disabled=yes",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+          "snippet": "timestamp,ts,event_type,adapter,symbol,side,engine,interval,position_id,qty,qty_local,qty_broker,order_type,entry_price,entry,stop,target,risk,risk_per_share,risk_amount,rr,config,preset,signal_date,intended_entry_date,exit_price,current_price,stop_loss,take_p",
+          "expected": true
+        },
+        {
+          "name": "order attempt",
+          "passed": false,
+          "detail": "attempts=0",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+          "snippet": "\"n_execution_attempts\": 0,",
+          "expected": false
+        }
+      ],
+      "suspicious": true
+    },
+    {
+      "symbol": "BG",
+      "signal_date": "2026-05-16",
+      "eligible": true,
+      "order_attempt": false,
+      "final_block_reason": "not relevant to last bar",
+      "steps": [
+        {
+          "name": "signal detected",
+          "passed": true,
+          "detail": "signal evidence found",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+          "snippet": "timestamp,ts,event_type,adapter,symbol,side,engine,interval,position_id,qty,qty_local,qty_broker,order_type,entry_price,entry,stop,target,risk,risk_per_share,risk_amount,rr,config,preset,signal_date,intended_entry_date,exit_price,current_price,stop_loss,take_p",
+          "expected": false
+        },
+        {
+          "name": "eligible",
+          "passed": true,
+          "detail": "eligible=True",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+          "snippet": "\"n_new_signals\": 4,",
+          "expected": false
+        },
+        {
+          "name": "last bar relevance",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+          "snippet": "\"signal_detection_mode\": \"last_closed_bar\",",
+          "expected": true
+        },
+        {
+          "name": "duplicate check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\live_summary_latest.json",
+          "snippet": "\"summary_alert_dedup_key\": \"summary|dual|C:/FINAL_ALGO_TRADER/reports/live_paper_trials/alpaca_paper_clean_100k_20260516/live_output|real_algo_config_production_v2b_weekly;real_algo_config_production_v5_daily|2026-05-16T20:44:48+00:00\",",
+          "expected": true
+        },
+        {
+          "name": "already in position check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\cumulative_summary.json",
+          "snippet": "\"already_in_position\": 1,",
+          "expected": true
+        },
+        {
+          "name": "overlap check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\live_summary_latest.json",
+          "snippet": "\"signal_flow_debug_text\": \"\\nDEBUG SIGNAL FLOW:\\n  total_symbols=22\\n  pre_setups=10248\\n  passed_filters=708\\n  failed_entry=518\\n  reject_reasons={'RR_TOO_LOW': 383, 'VOLUME_TOO_LOW': 5954, 'TREND_FILTER_FAIL': 2613, 'DEEP_RETRACE': 332, 'SETUP_EXPIRED': 60}",
+          "expected": true
+        },
+        {
+          "name": "max positions check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\cumulative_summary.json",
+          "snippet": "\"max_positions_reached\": 1,",
+          "expected": true
+        },
+        {
+          "name": "exposure/risk check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_order_events.csv",
+          "snippet": "2026-05-04T15:44:29+00:00,2026-05-04T15:44:29+00:00,order_skipped,ExecutionDisabledAdapter,AZTA,,,,,,,,,,skipped,,exposure_limit_reached,,False,,,live_paper_monitor,\"{\"\"raw_reason\"\":\"\"max_total_risk_engine\"\",\"\"signal_bar_date\"\":\"\"2026-05-01\"\",\"\"combo_label\"\":\"",
+          "expected": true
+        },
+        {
+          "name": "market open check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\live_summary_latest.json",
+          "snippet": "\"allow_market_closed\": false,",
+          "expected": true
+        },
+        {
+          "name": "kill switch check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+          "snippet": "2026-05-16T20:29:33+00:00,2026-05-16T20:29:33+00:00,order_skipped,AlpacaExecutionAdapter,CYTK,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,other:kill_switch_enabled,,,,,,skipped,,,other:kill_switch_enabled,,False,,,live_paper_monitor,\"{\"\"raw_reason\"\":\"\"kill_switch_e",
+          "expected": true
+        },
+        {
+          "name": "adapter health",
+          "passed": false,
+          "detail": "adapter=AlpacaExecutionAdapter dry_run=true disabled=yes",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+          "snippet": "timestamp,ts,event_type,adapter,symbol,side,engine,interval,position_id,qty,qty_local,qty_broker,order_type,entry_price,entry,stop,target,risk,risk_per_share,risk_amount,rr,config,preset,signal_date,intended_entry_date,exit_price,current_price,stop_loss,take_p",
+          "expected": true
+        },
+        {
+          "name": "order attempt",
+          "passed": false,
+          "detail": "attempts=0",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+          "snippet": "\"n_execution_attempts\": 0,",
+          "expected": false
+        }
+      ],
+      "suspicious": true
+    },
+    {
+      "symbol": "BRK-B",
+      "signal_date": "2026-05-26",
+      "eligible": true,
+      "order_attempt": false,
+      "final_block_reason": "not relevant to last bar",
+      "steps": [
+        {
+          "name": "signal detected",
+          "passed": true,
+          "detail": "signal evidence found",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+          "snippet": "timestamp,ts,event_type,adapter,symbol,side,engine,interval,position_id,qty,qty_local,qty_broker,order_type,entry_price,entry,stop,target,risk,risk_per_share,risk_amount,rr,config,preset,signal_date,intended_entry_date,exit_price,current_price,stop_loss,take_p",
+          "expected": false
+        },
+        {
+          "name": "eligible",
+          "passed": true,
+          "detail": "eligible=True",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+          "snippet": "\"n_new_signals\": 4,",
+          "expected": false
+        },
+        {
+          "name": "last bar relevance",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+          "snippet": "\"signal_detection_mode\": \"last_closed_bar\",",
+          "expected": true
+        },
+        {
+          "name": "duplicate check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\live_summary_latest.json",
+          "snippet": "\"summary_alert_dedup_key\": \"summary|dual|C:/FINAL_ALGO_TRADER/reports/live_paper_trials/alpaca_paper_clean_100k_20260516/live_output|real_algo_config_production_v2b_weekly;real_algo_config_production_v5_daily|2026-05-16T20:44:48+00:00\",",
+          "expected": true
+        },
+        {
+          "name": "already in position check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\cumulative_summary.json",
+          "snippet": "\"already_in_position\": 1,",
+          "expected": true
+        },
+        {
+          "name": "overlap check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\live_summary_latest.json",
+          "snippet": "\"signal_flow_debug_text\": \"\\nDEBUG SIGNAL FLOW:\\n  total_symbols=22\\n  pre_setups=10248\\n  passed_filters=708\\n  failed_entry=518\\n  reject_reasons={'RR_TOO_LOW': 383, 'VOLUME_TOO_LOW': 5954, 'TREND_FILTER_FAIL': 2613, 'DEEP_RETRACE': 332, 'SETUP_EXPIRED': 60}",
+          "expected": true
+        },
+        {
+          "name": "max positions check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\cumulative_summary.json",
+          "snippet": "\"max_positions_reached\": 1,",
+          "expected": true
+        },
+        {
+          "name": "exposure/risk check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_order_events.csv",
+          "snippet": "2026-05-04T15:44:29+00:00,2026-05-04T15:44:29+00:00,order_skipped,ExecutionDisabledAdapter,AZTA,,,,,,,,,,skipped,,exposure_limit_reached,,False,,,live_paper_monitor,\"{\"\"raw_reason\"\":\"\"max_total_risk_engine\"\",\"\"signal_bar_date\"\":\"\"2026-05-01\"\",\"\"combo_label\"\":\"",
+          "expected": true
+        },
+        {
+          "name": "market open check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\live_summary_latest.json",
+          "snippet": "\"allow_market_closed\": false,",
+          "expected": true
+        },
+        {
+          "name": "kill switch check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+          "snippet": "2026-05-16T20:29:33+00:00,2026-05-16T20:29:33+00:00,order_skipped,AlpacaExecutionAdapter,CYTK,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,other:kill_switch_enabled,,,,,,skipped,,,other:kill_switch_enabled,,False,,,live_paper_monitor,\"{\"\"raw_reason\"\":\"\"kill_switch_e",
+          "expected": true
+        },
+        {
+          "name": "adapter health",
+          "passed": false,
+          "detail": "adapter=AlpacaExecutionAdapter dry_run=true disabled=yes",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+          "snippet": "timestamp,ts,event_type,adapter,symbol,side,engine,interval,position_id,qty,qty_local,qty_broker,order_type,entry_price,entry,stop,target,risk,risk_per_share,risk_amount,rr,config,preset,signal_date,intended_entry_date,exit_price,current_price,stop_loss,take_p",
+          "expected": true
+        },
+        {
+          "name": "order attempt",
+          "passed": false,
+          "detail": "attempts=0",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+          "snippet": "\"n_execution_attempts\": 0,",
+          "expected": false
+        }
+      ],
+      "suspicious": true
+    },
+    {
+      "symbol": "CNK",
+      "signal_date": "2026-05-26",
+      "eligible": true,
+      "order_attempt": false,
+      "final_block_reason": "not relevant to last bar",
+      "steps": [
+        {
+          "name": "signal detected",
+          "passed": true,
+          "detail": "signal evidence found",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+          "snippet": "timestamp,ts,event_type,adapter,symbol,side,engine,interval,position_id,qty,qty_local,qty_broker,order_type,entry_price,entry,stop,target,risk,risk_per_share,risk_amount,rr,config,preset,signal_date,intended_entry_date,exit_price,current_price,stop_loss,take_p",
+          "expected": false
+        },
+        {
+          "name": "eligible",
+          "passed": true,
+          "detail": "eligible=True",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+          "snippet": "\"n_new_signals\": 4,",
+          "expected": false
+        },
+        {
+          "name": "last bar relevance",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+          "snippet": "\"signal_detection_mode\": \"last_closed_bar\",",
+          "expected": true
+        },
+        {
+          "name": "duplicate check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\live_summary_latest.json",
+          "snippet": "\"summary_alert_dedup_key\": \"summary|dual|C:/FINAL_ALGO_TRADER/reports/live_paper_trials/alpaca_paper_clean_100k_20260516/live_output|real_algo_config_production_v2b_weekly;real_algo_config_production_v5_daily|2026-05-16T20:44:48+00:00\",",
+          "expected": true
+        },
+        {
+          "name": "already in position check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\cumulative_summary.json",
+          "snippet": "\"already_in_position\": 1,",
+          "expected": true
+        },
+        {
+          "name": "overlap check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\live_summary_latest.json",
+          "snippet": "\"signal_flow_debug_text\": \"\\nDEBUG SIGNAL FLOW:\\n  total_symbols=22\\n  pre_setups=10248\\n  passed_filters=708\\n  failed_entry=518\\n  reject_reasons={'RR_TOO_LOW': 383, 'VOLUME_TOO_LOW': 5954, 'TREND_FILTER_FAIL': 2613, 'DEEP_RETRACE': 332, 'SETUP_EXPIRED': 60}",
+          "expected": true
+        },
+        {
+          "name": "max positions check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\cumulative_summary.json",
+          "snippet": "\"max_positions_reached\": 1,",
+          "expected": true
+        },
+        {
+          "name": "exposure/risk check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_order_events.csv",
+          "snippet": "2026-05-04T15:44:29+00:00,2026-05-04T15:44:29+00:00,order_skipped,ExecutionDisabledAdapter,AZTA,,,,,,,,,,skipped,,exposure_limit_reached,,False,,,live_paper_monitor,\"{\"\"raw_reason\"\":\"\"max_total_risk_engine\"\",\"\"signal_bar_date\"\":\"\"2026-05-01\"\",\"\"combo_label\"\":\"",
+          "expected": true
+        },
+        {
+          "name": "market open check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\live_summary_latest.json",
+          "snippet": "\"allow_market_closed\": false,",
+          "expected": true
+        },
+        {
+          "name": "kill switch check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+          "snippet": "2026-05-16T20:29:33+00:00,2026-05-16T20:29:33+00:00,order_skipped,AlpacaExecutionAdapter,CYTK,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,other:kill_switch_enabled,,,,,,skipped,,,other:kill_switch_enabled,,False,,,live_paper_monitor,\"{\"\"raw_reason\"\":\"\"kill_switch_e",
+          "expected": true
+        },
+        {
+          "name": "adapter health",
+          "passed": false,
+          "detail": "adapter=AlpacaExecutionAdapter dry_run=true disabled=yes",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+          "snippet": "timestamp,ts,event_type,adapter,symbol,side,engine,interval,position_id,qty,qty_local,qty_broker,order_type,entry_price,entry,stop,target,risk,risk_per_share,risk_amount,rr,config,preset,signal_date,intended_entry_date,exit_price,current_price,stop_loss,take_p",
+          "expected": true
+        },
+        {
+          "name": "order attempt",
+          "passed": false,
+          "detail": "attempts=0",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+          "snippet": "\"n_execution_attempts\": 0,",
+          "expected": false
+        }
+      ],
+      "suspicious": true
+    },
+    {
+      "symbol": "AZTA",
+      "signal_date": "2026-04-24",
+      "eligible": true,
+      "order_attempt": false,
+      "final_block_reason": "not relevant to last bar",
+      "steps": [
+        {
+          "name": "signal detected",
+          "passed": true,
+          "detail": "signal evidence found",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+          "snippet": "timestamp,ts,event_type,adapter,symbol,side,engine,interval,position_id,qty,qty_local,qty_broker,order_type,entry_price,entry,stop,target,risk,risk_per_share,risk_amount,rr,config,preset,signal_date,intended_entry_date,exit_price,current_price,stop_loss,take_p",
+          "expected": false
+        },
+        {
+          "name": "eligible",
+          "passed": true,
+          "detail": "eligible=True",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+          "snippet": "\"n_new_signals\": 4,",
+          "expected": false
+        },
+        {
+          "name": "last bar relevance",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+          "snippet": "\"signal_detection_mode\": \"last_closed_bar\",",
+          "expected": true
+        },
+        {
+          "name": "duplicate check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\live_summary_latest.json",
+          "snippet": "\"summary_alert_dedup_key\": \"summary|dual|C:/FINAL_ALGO_TRADER/reports/live_paper_trials/alpaca_paper_clean_100k_20260516/live_output|real_algo_config_production_v2b_weekly;real_algo_config_production_v5_daily|2026-05-16T20:44:48+00:00\",",
+          "expected": true
+        },
+        {
+          "name": "already in position check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\cumulative_summary.json",
+          "snippet": "\"already_in_position\": 1,",
+          "expected": true
+        },
+        {
+          "name": "overlap check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\live_summary_latest.json",
+          "snippet": "\"signal_flow_debug_text\": \"\\nDEBUG SIGNAL FLOW:\\n  total_symbols=22\\n  pre_setups=10248\\n  passed_filters=708\\n  failed_entry=518\\n  reject_reasons={'RR_TOO_LOW': 383, 'VOLUME_TOO_LOW': 5954, 'TREND_FILTER_FAIL': 2613, 'DEEP_RETRACE': 332, 'SETUP_EXPIRED': 60}",
+          "expected": true
+        },
+        {
+          "name": "max positions check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\cumulative_summary.json",
+          "snippet": "\"max_positions_reached\": 1,",
+          "expected": true
+        },
+        {
+          "name": "exposure/risk check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_order_events.csv",
+          "snippet": "2026-05-04T15:44:29+00:00,2026-05-04T15:44:29+00:00,order_skipped,ExecutionDisabledAdapter,AZTA,,,,,,,,,,skipped,,exposure_limit_reached,,False,,,live_paper_monitor,\"{\"\"raw_reason\"\":\"\"max_total_risk_engine\"\",\"\"signal_bar_date\"\":\"\"2026-05-01\"\",\"\"combo_label\"\":\"",
+          "expected": true
+        },
+        {
+          "name": "market open check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\live_summary_latest.json",
+          "snippet": "\"allow_market_closed\": false,",
+          "expected": true
+        },
+        {
+          "name": "kill switch check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+          "snippet": "2026-05-16T20:29:33+00:00,2026-05-16T20:29:33+00:00,order_skipped,AlpacaExecutionAdapter,CYTK,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,other:kill_switch_enabled,,,,,,skipped,,,other:kill_switch_enabled,,False,,,live_paper_monitor,\"{\"\"raw_reason\"\":\"\"kill_switch_e",
+          "expected": true
+        },
+        {
+          "name": "adapter health",
+          "passed": false,
+          "detail": "adapter=AlpacaExecutionAdapter dry_run=true disabled=yes",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+          "snippet": "timestamp,ts,event_type,adapter,symbol,side,engine,interval,position_id,qty,qty_local,qty_broker,order_type,entry_price,entry,stop,target,risk,risk_per_share,risk_amount,rr,config,preset,signal_date,intended_entry_date,exit_price,current_price,stop_loss,take_p",
+          "expected": true
+        },
+        {
+          "name": "order attempt",
+          "passed": false,
+          "detail": "attempts=0",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+          "snippet": "\"n_execution_attempts\": 0,",
+          "expected": false
+        }
+      ],
+      "suspicious": true
+    },
+    {
+      "symbol": "C",
+      "signal_date": "2026-04-24",
+      "eligible": true,
+      "order_attempt": false,
+      "final_block_reason": "not relevant to last bar",
+      "steps": [
+        {
+          "name": "signal detected",
+          "passed": true,
+          "detail": "signal evidence found",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+          "snippet": "timestamp,ts,event_type,adapter,symbol,side,engine,interval,position_id,qty,qty_local,qty_broker,order_type,entry_price,entry,stop,target,risk,risk_per_share,risk_amount,rr,config,preset,signal_date,intended_entry_date,exit_price,current_price,stop_loss,take_p",
+          "expected": false
+        },
+        {
+          "name": "eligible",
+          "passed": true,
+          "detail": "eligible=True",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+          "snippet": "\"n_new_signals\": 4,",
+          "expected": false
+        },
+        {
+          "name": "last bar relevance",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+          "snippet": "\"signal_detection_mode\": \"last_closed_bar\",",
+          "expected": true
+        },
+        {
+          "name": "duplicate check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\live_summary_latest.json",
+          "snippet": "\"summary_alert_dedup_key\": \"summary|dual|C:/FINAL_ALGO_TRADER/reports/live_paper_trials/alpaca_paper_clean_100k_20260516/live_output|real_algo_config_production_v2b_weekly;real_algo_config_production_v5_daily|2026-05-16T20:44:48+00:00\",",
+          "expected": true
+        },
+        {
+          "name": "already in position check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\cumulative_summary.json",
+          "snippet": "\"already_in_position\": 1,",
+          "expected": true
+        },
+        {
+          "name": "overlap check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\live_summary_latest.json",
+          "snippet": "\"signal_flow_debug_text\": \"\\nDEBUG SIGNAL FLOW:\\n  total_symbols=22\\n  pre_setups=10248\\n  passed_filters=708\\n  failed_entry=518\\n  reject_reasons={'RR_TOO_LOW': 383, 'VOLUME_TOO_LOW': 5954, 'TREND_FILTER_FAIL': 2613, 'DEEP_RETRACE': 332, 'SETUP_EXPIRED': 60}",
+          "expected": true
+        },
+        {
+          "name": "max positions check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\cumulative_summary.json",
+          "snippet": "\"max_positions_reached\": 1,",
+          "expected": true
+        },
+        {
+          "name": "exposure/risk check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_order_events.csv",
+          "snippet": "2026-05-04T15:44:29+00:00,2026-05-04T15:44:29+00:00,order_skipped,ExecutionDisabledAdapter,AZTA,,,,,,,,,,skipped,,exposure_limit_reached,,False,,,live_paper_monitor,\"{\"\"raw_reason\"\":\"\"max_total_risk_engine\"\",\"\"signal_bar_date\"\":\"\"2026-05-01\"\",\"\"combo_label\"\":\"",
+          "expected": true
+        },
+        {
+          "name": "market open check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\live_summary_latest.json",
+          "snippet": "\"allow_market_closed\": false,",
+          "expected": true
+        },
+        {
+          "name": "kill switch check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+          "snippet": "2026-05-16T20:29:33+00:00,2026-05-16T20:29:33+00:00,order_skipped,AlpacaExecutionAdapter,CYTK,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,other:kill_switch_enabled,,,,,,skipped,,,other:kill_switch_enabled,,False,,,live_paper_monitor,\"{\"\"raw_reason\"\":\"\"kill_switch_e",
+          "expected": true
+        },
+        {
+          "name": "adapter health",
+          "passed": false,
+          "detail": "adapter=AlpacaExecutionAdapter dry_run=true disabled=yes",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+          "snippet": "timestamp,ts,event_type,adapter,symbol,side,engine,interval,position_id,qty,qty_local,qty_broker,order_type,entry_price,entry,stop,target,risk,risk_per_share,risk_amount,rr,config,preset,signal_date,intended_entry_date,exit_price,current_price,stop_loss,take_p",
+          "expected": true
+        },
+        {
+          "name": "order attempt",
+          "passed": false,
+          "detail": "attempts=0",
+          "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+          "snippet": "\"n_execution_attempts\": 0,",
+          "expected": false
+        }
+      ],
+      "suspicious": true
+    }
+  ],
+  "dead_causes": [
+    [
+      "overlap block",
+      25,
+      "blocked signal lifecycle"
+    ],
+    [
+      "not relevant to last bar",
+      22,
+      "blocked signal lifecycle"
+    ],
+    [
+      "max positions reached",
+      16,
+      "blocked signal lifecycle"
+    ],
+    [
+      "already in position",
+      10,
+      "blocked signal lifecycle"
+    ],
+    [
+      "market closed",
+      10,
+      "blocked signal lifecycle"
+    ],
+    [
+      "last bar relevance",
+      8,
+      "blocked signal lifecycle"
+    ],
+    [
+      "duplicate check",
+      8,
+      "blocked signal lifecycle"
+    ],
+    [
+      "already in position check",
+      8,
+      "blocked signal lifecycle"
+    ],
+    [
+      "overlap check",
+      8,
+      "blocked signal lifecycle"
+    ],
+    [
+      "max positions check",
+      8,
+      "blocked signal lifecycle"
+    ],
+    [
+      "exposure/risk check",
+      8,
+      "blocked signal lifecycle"
+    ],
+    [
+      "market open check",
+      8,
+      "blocked signal lifecycle"
+    ],
+    [
+      "kill switch check",
+      8,
+      "blocked signal lifecycle"
+    ],
+    [
+      "adapter health",
+      8,
+      "blocked signal lifecycle"
+    ],
+    [
+      "delayed entry failure",
+      7,
+      "blocked signal lifecycle"
+    ],
+    [
+      "duplicate block",
+      5,
+      "blocked signal lifecycle"
+    ],
+    [
+      "dry run mode",
+      3,
+      "blocked signal lifecycle"
+    ],
+    [
+      "execution disabled adapter",
+      2,
+      "blocked signal lifecycle"
+    ],
+    [
+      "exposure limit",
+      2,
+      "blocked signal lifecycle"
+    ],
+    [
+      "processed",
+      1,
+      "blocked signal lifecycle"
+    ]
+  ],
+  "evidence_paths": [
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_order_events.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_decision_summary.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_signals.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\live_summary_latest.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\live_summary_latest.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\live_summary_latest.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\jarvis_execution_telemetry.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\audit\\ranking_execution_audit_20260516T200255Z.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\audit\\ranking_execution_audit_20260516T200255Z.md",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\audit\\ranking_execution_audit_20260516T200153Z.md",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\audit\\ranking_execution_audit_20260516T200153Z.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\audit\\ranking_execution_audit_20260516T200110Z.md",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\audit\\ranking_execution_audit_20260516T200110Z.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\audit\\ranking_execution_audit_20260516T200011Z.md",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\audit\\ranking_execution_audit_20260516T200011Z.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\state\\processed_signals.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\processed_signals.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\state\\processed_signals.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\state\\processed_signals.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\cumulative_summary.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\trial_manifest.json"
+  ],
+  "report_json": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_flow\\20260527_140616_execution_flow.json",
+  "report_markdown": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_flow\\20260527_140616_execution_flow.md"
+}

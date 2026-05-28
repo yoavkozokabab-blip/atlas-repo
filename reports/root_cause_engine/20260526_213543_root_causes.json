@@ -1,0 +1,223 @@
+{
+  "candidates": [
+    {
+      "id": "last_bar_filter",
+      "hypothesis": "Last-bar filtering suppressing entries",
+      "confidence": 0.74,
+      "evidence_count": 4,
+      "recurrence_count": 4,
+      "causal_score": 0.64,
+      "contradictory_evidence": [],
+      "verification_status": "pending",
+      "historical_trend": "rising",
+      "related_reports": [],
+      "recommended_next_experiment": "rank dead signal causes",
+      "updated_at": "2026-05-26T21:35:43.137891+00:00"
+    },
+    {
+      "id": "overlap_stale_positions",
+      "hypothesis": "Overlap block caused by stale open_positions state",
+      "confidence": 0.62,
+      "evidence_count": 3,
+      "recurrence_count": 4,
+      "causal_score": 0.52,
+      "contradictory_evidence": [],
+      "verification_status": "pending",
+      "historical_trend": "rising",
+      "related_reports": [],
+      "recommended_next_experiment": "simulate execution cleanup patch",
+      "updated_at": "2026-05-26T21:35:43.137891+00:00"
+    },
+    {
+      "id": "stale_telemetry_risk",
+      "hypothesis": "Stale execution telemetry inflating open risk",
+      "confidence": 0.62,
+      "evidence_count": 3,
+      "recurrence_count": 4,
+      "causal_score": 0.52,
+      "contradictory_evidence": [],
+      "verification_status": "pending",
+      "historical_trend": "rising",
+      "related_reports": [],
+      "recommended_next_experiment": "compare risk before after cleanup",
+      "updated_at": "2026-05-26T21:35:43.137891+00:00"
+    },
+    {
+      "id": "cluster_divergence",
+      "hypothesis": "Replay divergences cluster around systemic mismatch pattern",
+      "confidence": 0.5,
+      "evidence_count": 2,
+      "recurrence_count": 4,
+      "causal_score": 0.4,
+      "contradictory_evidence": [],
+      "verification_status": "pending",
+      "historical_trend": "rising",
+      "related_reports": [],
+      "recommended_next_experiment": "cluster replay divergences",
+      "updated_at": "2026-05-26T21:35:43.137891+00:00"
+    },
+    {
+      "id": "adapter_disabled",
+      "hypothesis": "Adapter disabled causing execution attempts=0",
+      "confidence": 0.47,
+      "evidence_count": 3,
+      "recurrence_count": 4,
+      "causal_score": 0.37,
+      "contradictory_evidence": [
+        "Adapter disabled hypothesis contradicted by execution attempt evidence"
+      ],
+      "verification_status": "pending",
+      "historical_trend": "rising",
+      "related_reports": [],
+      "recommended_next_experiment": "simulate unblock scenario",
+      "updated_at": "2026-05-26T21:35:43.137891+00:00"
+    }
+  ],
+  "history": [
+    {
+      "id": "last_bar_filter",
+      "hypothesis": "Last-bar filtering suppressing entries",
+      "confidence": 0.62,
+      "evidence_count": 4,
+      "recurrence_count": 1,
+      "causal_score": 0.52,
+      "contradictory_evidence": [],
+      "verification_status": "pending",
+      "historical_trend": "rising",
+      "related_reports": [],
+      "recommended_next_experiment": "rank dead signal causes",
+      "updated_at": "2026-05-26T21:35:12.271428+00:00"
+    },
+    {
+      "id": "overlap_stale_positions",
+      "hypothesis": "Overlap block caused by stale open_positions state",
+      "confidence": 0.5,
+      "evidence_count": 3,
+      "recurrence_count": 1,
+      "causal_score": 0.4,
+      "contradictory_evidence": [],
+      "verification_status": "pending",
+      "historical_trend": "rising",
+      "related_reports": [],
+      "recommended_next_experiment": "simulate execution cleanup patch",
+      "updated_at": "2026-05-26T21:35:12.271428+00:00"
+    },
+    {
+      "id": "stale_telemetry_risk",
+      "hypothesis": "Stale execution telemetry inflating open risk",
+      "confidence": 0.5,
+      "evidence_count": 3,
+      "recurrence_count": 1,
+      "causal_score": 0.4,
+      "contradictory_evidence": [],
+      "verification_status": "pending",
+      "historical_trend": "rising",
+      "related_reports": [],
+      "recommended_next_experiment": "compare risk before after cleanup",
+      "updated_at": "2026-05-26T21:35:12.271428+00:00"
+    },
+    {
+      "id": "cluster_divergence",
+      "hypothesis": "Replay divergences cluster around systemic mismatch pattern",
+      "confidence": 0.38,
+      "evidence_count": 2,
+      "recurrence_count": 1,
+      "causal_score": 0.28,
+      "contradictory_evidence": [],
+      "verification_status": "pending",
+      "historical_trend": "rising",
+      "related_reports": [],
+      "recommended_next_experiment": "cluster replay divergences",
+      "updated_at": "2026-05-26T21:35:12.271428+00:00"
+    },
+    {
+      "id": "adapter_disabled",
+      "hypothesis": "Adapter disabled causing execution attempts=0",
+      "confidence": 0.35,
+      "evidence_count": 3,
+      "recurrence_count": 1,
+      "causal_score": 0.25,
+      "contradictory_evidence": [
+        "Adapter disabled hypothesis contradicted by execution attempt evidence"
+      ],
+      "verification_status": "pending",
+      "historical_trend": "rising",
+      "related_reports": [],
+      "recommended_next_experiment": "simulate unblock scenario",
+      "updated_at": "2026-05-26T21:35:12.271428+00:00"
+    },
+    {
+      "id": "last_bar_filter",
+      "hypothesis": "Last-bar filtering suppressing entries",
+      "confidence": 0.74,
+      "evidence_count": 4,
+      "recurrence_count": 4,
+      "causal_score": 0.64,
+      "contradictory_evidence": [],
+      "verification_status": "pending",
+      "historical_trend": "rising",
+      "related_reports": [],
+      "recommended_next_experiment": "rank dead signal causes",
+      "updated_at": "2026-05-26T21:35:43.137891+00:00"
+    },
+    {
+      "id": "overlap_stale_positions",
+      "hypothesis": "Overlap block caused by stale open_positions state",
+      "confidence": 0.62,
+      "evidence_count": 3,
+      "recurrence_count": 4,
+      "causal_score": 0.52,
+      "contradictory_evidence": [],
+      "verification_status": "pending",
+      "historical_trend": "rising",
+      "related_reports": [],
+      "recommended_next_experiment": "simulate execution cleanup patch",
+      "updated_at": "2026-05-26T21:35:43.137891+00:00"
+    },
+    {
+      "id": "stale_telemetry_risk",
+      "hypothesis": "Stale execution telemetry inflating open risk",
+      "confidence": 0.62,
+      "evidence_count": 3,
+      "recurrence_count": 4,
+      "causal_score": 0.52,
+      "contradictory_evidence": [],
+      "verification_status": "pending",
+      "historical_trend": "rising",
+      "related_reports": [],
+      "recommended_next_experiment": "compare risk before after cleanup",
+      "updated_at": "2026-05-26T21:35:43.137891+00:00"
+    },
+    {
+      "id": "cluster_divergence",
+      "hypothesis": "Replay divergences cluster around systemic mismatch pattern",
+      "confidence": 0.5,
+      "evidence_count": 2,
+      "recurrence_count": 4,
+      "causal_score": 0.4,
+      "contradictory_evidence": [],
+      "verification_status": "pending",
+      "historical_trend": "rising",
+      "related_reports": [],
+      "recommended_next_experiment": "cluster replay divergences",
+      "updated_at": "2026-05-26T21:35:43.137891+00:00"
+    },
+    {
+      "id": "adapter_disabled",
+      "hypothesis": "Adapter disabled causing execution attempts=0",
+      "confidence": 0.47,
+      "evidence_count": 3,
+      "recurrence_count": 4,
+      "causal_score": 0.37,
+      "contradictory_evidence": [
+        "Adapter disabled hypothesis contradicted by execution attempt evidence"
+      ],
+      "verification_status": "pending",
+      "historical_trend": "rising",
+      "related_reports": [],
+      "recommended_next_experiment": "simulate unblock scenario",
+      "updated_at": "2026-05-26T21:35:43.137891+00:00"
+    }
+  ],
+  "updated_at": "2026-05-26T21:35:43.144404+00:00"
+}

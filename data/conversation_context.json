@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "turns": [
+    {
+      "timestamp": "2026-05-28T13:34:25.111000+00:00",
+      "intent": "open_browser",
+      "status": "success",
+      "summary_excerpt": "Browser session active.\n url: about:blank\n tab: 1/1\n\nWould you also like me to run diagnostics?",
+      "raw_text_excerpt": "open browser",
+      "input_mode": "console"
+    },
+    {
+      "timestamp": "2026-05-28T13:34:32.695409+00:00",
+      "intent": "open_app",
+      "status": "failed",
+      "summary_excerpt": "No installed app found for 'website_steps_www_nvidia_com'. Try: discover apps",
+      "raw_text_excerpt": "open website steps://www.nvidia.com",
+      "input_mode": "console"
+    },
+    {
+      "timestamp": "2026-05-28T13:34:40.943852+00:00",
+      "intent": "unknown",
+      "status": "blocked",
+      "summary_excerpt": "Could not understand the command. Please rephrase.",
+      "raw_text_excerpt": "what page am i on",
+      "input_mode": "console"
+    },
+    {
+      "timestamp": "2026-05-28T13:34:49.504209+00:00",
+      "intent": "summarize_current_project",
+      "status": "success",
+      "summary_excerpt": "## Project Summary\n- Root: C:\\J.A.R.V.I.S\\local_jarvis\n- Sampled files: 500\n\n## File Types\n- .ini: 1\n- .json: 39\n- .md: 3\n- .ps1: 6\n- .py: 450\n- .txt: 1\n\n## Recent Files\n- data\\task_memory.json\n- d...",
+      "raw_text_excerpt": "summarize current page",
+      "input_mode": "console"
+    },
+    {
+      "timestamp": "2026-05-28T13:51:06.773092+00:00",
+      "intent": "test_real_browser",
+      "status": "success",
+      "summary_excerpt": "REAL VISIBLE BROWSER\ntest real browser passed\n title: Example Domain\n url: https://example.com/\n screenshot: C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779976266721.png\n\nWould you a...",
+      "raw_text_excerpt": "test real browser",
+      "input_mode": "console"
+    },
+    {
+      "timestamp": "2026-05-28T13:51:27.404649+00:00",
+      "intent": "open_app",
+      "status": "failed",
+      "summary_excerpt": "No installed app found for 'website_steps_www_nvidia_com'. Try: discover apps",
+      "raw_text_excerpt": "open website steps://www.nvidia.com",
+      "input_mode": "console"
+    },
+    {
+      "timestamp": "2026-05-28T14:09:44.368895+00:00",
+      "intent": "open_trading_dashboard",
+      "status": "success",
+      "summary_excerpt": "Trading dashboard opened at http://127.0.0.1:8077\nStarted script in new window: run_dashboard.ps1\n\nWould you also like me to run diagnostics?",
+      "raw_text_excerpt": "I'll be there. Open a dashboard. Open a dashboard",
+      "input_mode": "wakeword"
+    },
+    {
+      "timestamp": "2026-05-28T14:46:57.158472+00:00",
+      "intent": "what_is_on_my_screen",
+      "status": "success",
+      "summary_excerpt": "REAL DESKTOP VISION\nStatus: blocked\nActive window: .env - J.A.R.V.I.S - Visual Studio Code\nLikely app: VS Code\nVisible text: (little or no visible text detected)\nWarnings: Blocked keyword in window...",
+      "raw_text_excerpt": "what is on my screen",
+      "input_mode": "console"
+    },
+    {
+      "timestamp": "2026-05-28T21:38:39.335463+00:00",
+      "intent": "show_capabilities",
+      "status": "success",
+      "summary_excerpt": "JARVIS capabilities (all execution via router + security + registry):\n\n## Code search\nSkill: code \u2014 Search code and config in FINAL_ALGO_TRADER (read-only).\n - search_project_file_by_name: Find fil...",
+      "raw_text_excerpt": "show capabilities",
+      "input_mode": "text"
+    },
+    {
+      "timestamp": "2026-05-28T21:38:39.380405+00:00",
+      "intent": "show_capabilities",
+      "status": "success",
+      "summary_excerpt": "JARVIS capabilities (all execution via router + security + registry):\n\n## Code search\nSkill: code \u2014 Search code and config in FINAL_ALGO_TRADER (read-only).\n - search_project_file_by_name: Find fil...",
+      "raw_text_excerpt": "show capabilities",
+      "input_mode": "text"
+    }
+  ]
+}

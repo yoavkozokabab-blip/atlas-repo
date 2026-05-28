@@ -1,0 +1,16 @@
+{
+  "current_project_root": "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-81\\test_follow_up_uses_session0\\project",
+  "last_command_text": "tool mode status",
+  "last_intent": "tool_mode_status",
+  "last_result_summary": "Tool mode status\n  TOOL_FIRST_MODE: yes\n  Notice: Audio output deferred - tool mode active\n  Primary control path: operator console + HUD\n  Voice input: available if microphone/STT runtime is available\n  Verified audio backend: none\n  TTS may run: no (deferred)\n  Active TTS backend: unverified\n\nPhase 45 - Elite Code + Trading Investigation Engine\n  Capabilities:\n    - inspect project\n    - trace bugs\n    - compare backtest vs live\n    - read logs/reports/state\n    - produce findings and propose ",
+  "last_opened_file": "",
+  "last_opened_log": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\scheduled_logs\\live_weekly_20260523_162845.log",
+  "last_report_path": "",
+  "last_error_search": "",
+  "pending_confirmation_id": "8c4c7a40",
+  "pending_confirmation_action": "run_live_daily_loop",
+  "activity_mode": "",
+  "last_workspace_snapshot": "",
+  "created_at": "",
+  "updated_at": "2026-05-27T17:43:48.090373+00:00"
+}

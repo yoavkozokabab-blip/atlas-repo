@@ -1,0 +1,26 @@
+{
+  "current_topic": "Oh",
+  "previous_topics": [],
+  "active_project": "",
+  "unresolved_question": "",
+  "emotional_tone": "neutral",
+  "interruption_state": "idle",
+  "pending_actions": [],
+  "recent_entities": [],
+  "follow_up_references": [
+    "voice:unknown"
+  ],
+  "turn_count": 1,
+  "last_user_text": "Oh",
+  "last_assistant_summary": "I didn't catch a command \u2014 still listening.",
+  "last_intent": "unknown",
+  "paused_response": "",
+  "continuous_listening": false,
+  "updated_at": "2026-05-27T16:07:38.664770+00:00",
+  "interruption_count": 0,
+  "intent_continuity_chain": [],
+  "turn_references": [],
+  "last_response_style": "neutral",
+  "pending_follow_up": "",
+  "user_intent_continuity": ""
+}

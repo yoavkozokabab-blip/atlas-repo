@@ -1,0 +1,1 @@
+{"timestamp": "2026-05-28T21:17:08.482139+00:00", "session_id": "20260528_211708_f5bb62c9", "command": "enable kill switch", "intent": "enable_kill_switch", "success": false, "status": "blocked", "latency_ms": 0, "provider": "blocked", "user_visible": true, "error": "intent_blocked_in_alpha:enable_kill_switch", "safety_block": true}

@@ -1,0 +1,16 @@
+{
+  "current_project_root": "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-81\\test_follow_up_uses_session0\\project",
+  "last_command_text": "show active hypotheses",
+  "last_intent": "show_active_hypotheses",
+  "last_result_summary": "Active hypotheses (5):\n  1. [0.88] Adapter disabled causing execution attempts=0 (recurrence=4)\n       verify: inspect execution adapter\n  2. [0.82] Overlap block caused by stale open_positions state (recurrence=4)\n       verify: show stale open positions\n  3. [0.74] Last-bar filtering suppressing entries (recurrence=4)\n       verify: reconstruct execution flow\n  4. [0.70] Stale execution telemetry inflating open risk (recurrence=4)\n       verify: show current execution risk\n  5. [0.68] Replay d",
+  "last_opened_file": "",
+  "last_opened_log": "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-81\\test_follow_up_uses_session0\\project\\reports\\a.log",
+  "last_report_path": "",
+  "last_error_search": "",
+  "pending_confirmation_id": "8c4c7a40",
+  "pending_confirmation_action": "run_live_daily_loop",
+  "activity_mode": "",
+  "last_workspace_snapshot": "",
+  "created_at": "",
+  "updated_at": "2026-05-26T21:14:14.464135+00:00"
+}

@@ -1,0 +1,85 @@
+{
+  "entries": [
+    {
+      "timestamp": "2026-05-26T21:00:27.203675+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:00:27.211114+00:00",
+      "category": "execution_anomaly",
+      "message": "Dashboard status=failed",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:00:27.217624+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle scheduled_health completed in 46.45s with 2 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260526_210027_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:13:28.796107+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:manual",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:13:28.813015+00:00",
+      "category": "execution_anomaly",
+      "message": "New blocker appeared: 3. not relevant to last bar severity=high count=14 evidence=c",
+      "severity": "warning",
+      "source": "cycle:manual",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:13:28.820193+00:00",
+      "category": "execution_anomaly",
+      "message": "New blocker appeared: 1. overlap block severity=medium count=25 evidence=c",
+      "severity": "warning",
+      "source": "cycle:manual",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:13:28.846902+00:00",
+      "category": "investigation_cycle",
+      "message": "Cycle manual completed in 48.42s with 3 anomalies",
+      "severity": "warning",
+      "source": "investigation_cycles",
+      "metadata": {
+        "report": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\autonomous_investigations\\20260526_211328_cycle.json"
+      }
+    },
+    {
+      "timestamp": "2026-05-26T21:13:28.949072+00:00",
+      "category": "execution_anomaly",
+      "message": "Runtime health degraded",
+      "severity": "warning",
+      "source": "cycle:scheduled_health",
+      "metadata": {
+        "suggested_action": "inspect execution adapter"
+      }
+    }
+  ],
+  "updated_at": "2026-05-26T21:13:28.949078+00:00"
+}

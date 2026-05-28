@@ -1,0 +1,51 @@
+{
+  "current_topic": "test websocket realtime voice",
+  "previous_topics": [
+    "show voice latency",
+    "test interrupt speech",
+    "benchmark realtime streaming",
+    "show realtime latency breakdown",
+    "test websocket realtime voice",
+    "show runtime config sources",
+    "open youtube",
+    "Oh",
+    "test realtime voice",
+    "show realtime provider status",
+    "benchmark realtime providers",
+    "\\"
+  ],
+  "active_project": "",
+  "unresolved_question": "",
+  "emotional_tone": "neutral",
+  "interruption_state": "idle",
+  "pending_actions": [],
+  "recent_entities": [
+    "realtime",
+    "websocket",
+    "test",
+    "latency",
+    "voice",
+    "show",
+    "speech",
+    "interrupt",
+    "streaming",
+    "benchmark",
+    "config",
+    "runtime",
+    "youtube",
+    "open",
+    "provider",
+    "providers"
+  ],
+  "follow_up_references": [
+    "voice:open_website",
+    "voice:unknown"
+  ],
+  "turn_count": 89,
+  "last_user_text": "test websocket realtime voice",
+  "last_assistant_summary": "Websocket realtime voice test failed: ElevenLabs websocket recv failed: Connection to remote host was lost.\nRealtime latency breakdown (Phase 58):\n  provider: elevenlabs\n  provider_connect_ms: 251.9\n  first_byte_ms: n/a\n  first_decodable_audio_ms: n/a\n  playback_start_ms: n/a\n  time_to_first_audio_ms: n/a\n  interruption_cancel_ms: n/a\n  provider_latency_ms: n/a\n  queue_wait_ms: n/a\n  adaptive_buffer_bytes: 0\n  total_playback_ms: 0.9\n  last text: 'Websocket realtime voice online.'",
+  "last_intent": "test_websocket_realtime_voice",
+  "paused_response": "",
+  "continuous_listening": false,
+  "updated_at": "2026-05-27T15:22:42.167050+00:00"
+}

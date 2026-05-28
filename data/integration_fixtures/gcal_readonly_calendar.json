@@ -1,0 +1,25 @@
+{
+  "provider": "gcal_readonly",
+  "events": [
+    {"time": "11:00", "title": "product sync (30m)"},
+    {"time": "13:00", "title": "one-on-one (45m)"},
+    {"time": "15:00", "title": "partner call (60m)"}
+  ],
+  "conflicts": [
+    {"detail": "Two overlapping holds at 15:00 and 15:30"},
+    {"detail": "No buffer before partner call"}
+  ],
+  "urgent": [
+    "Back-to-back meetings from 14:00 to 16:30 block deep work"
+  ],
+  "waiting_on_me": [
+    "Confirm architecture review attendees"
+  ],
+  "risks": [
+    "No explicit buffer before partner call"
+  ],
+  "recommended_actions": [
+    "Create a 25-minute prep block before 15:00 call",
+    "Move one low-priority meeting to tomorrow"
+  ]
+}

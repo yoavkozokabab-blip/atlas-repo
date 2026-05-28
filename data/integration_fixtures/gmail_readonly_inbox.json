@@ -1,0 +1,36 @@
+{
+  "provider": "gmail_readonly",
+  "messages": [
+    {
+      "subject": "Security review thread unresolved (deadline today 17:00)",
+      "from": "security@company.example",
+      "urgent": true,
+      "waiting_on_me": false
+    },
+    {
+      "subject": "Client reply requested on pricing amendment",
+      "from": "client@example.com",
+      "urgent": true,
+      "waiting_on_me": true
+    },
+    {
+      "subject": "Approve draft release notes before QA sync",
+      "from": "qa@company.example",
+      "urgent": false,
+      "waiting_on_me": true
+    },
+    {
+      "subject": "Weekly team standup notes",
+      "from": "team@company.example",
+      "urgent": false,
+      "waiting_on_me": false
+    }
+  ],
+  "risks": [
+    "Two unanswered client threads older than 48h"
+  ],
+  "recommended_actions": [
+    "Send pricing amendment response first",
+    "Delegate release-note wording review"
+  ]
+}

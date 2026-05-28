@@ -1,0 +1,16 @@
+{
+  "current_project_root": "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-81\\test_follow_up_uses_session0\\project",
+  "last_command_text": "summarize my day",
+  "last_intent": "summarize_my_day",
+  "last_result_summary": "Daily summary (mock provider)\nurgent:\n  - Back-to-back meetings from 14:00 to 16:30 block deep work.\nwaiting_on_me:\n  - Confirm architecture review attendees.\nschedule:\n  - 11:00 product sync (30m)\n  - 13:00 one-on-one (45m)\n  - 15:00 partner call (60m)\nrisks:\n  - No explicit buffer before partner call.\nrecommended_actions:\n  - Create a 25-minute prep block before 15:00 call.\n  - Move one low-priority meeting to tomorrow.\n\nWould you also like me to run diagnostics?",
+  "last_opened_file": "",
+  "last_opened_log": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\scheduled_logs\\live_weekly_20260523_162845.log",
+  "last_report_path": "",
+  "last_error_search": "",
+  "pending_confirmation_id": "8c4c7a40",
+  "pending_confirmation_action": "run_live_daily_loop",
+  "activity_mode": "",
+  "last_workspace_snapshot": "",
+  "created_at": "",
+  "updated_at": "2026-05-28T12:50:12.818931+00:00"
+}

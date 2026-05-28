@@ -1,0 +1,16 @@
+{
+  "current_project_root": "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-81\\test_follow_up_uses_session0\\project",
+  "last_command_text": "test interrupt speech",
+  "last_intent": "test_interrupt_speech",
+  "last_result_summary": "Interrupt speech test OK.\n  provider: unknown\n  interruption_latency_ms: 9.205299997120164\nVoice latency (Phase 57 realtime TTS)\n  provider: pyttsx3_fallback\n  time_to_first_audio_ms: n/a\n  total_speech_ms: n/a\n  total_playback_ms: n/a\n  interruption_latency_ms: n/a\n  provider_latency_ms: n/a\n  queue_wait_ms: n/a\n  failover_from: n/a\n  cancelled: no\n  last text: 'Interrupt test. Jarvis is speaking a longer sentence now. This should stop immed'\n  recent:\n    - pyttsx3_fallback: ttf=n/a total=1759",
+  "last_opened_file": "",
+  "last_opened_log": "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-81\\test_follow_up_uses_session0\\project\\reports\\a.log",
+  "last_report_path": "",
+  "last_error_search": "",
+  "pending_confirmation_id": "d163c6f4",
+  "pending_confirmation_action": "open_website",
+  "activity_mode": "",
+  "last_workspace_snapshot": "",
+  "created_at": "",
+  "updated_at": "2026-05-27T13:20:01.007077+00:00"
+}

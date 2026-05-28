@@ -1,0 +1,1 @@
+"""Telegram notifications — optional integration."""

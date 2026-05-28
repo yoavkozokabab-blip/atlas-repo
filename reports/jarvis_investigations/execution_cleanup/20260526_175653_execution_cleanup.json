@@ -1,0 +1,210 @@
+{
+  "created_at": "2026-05-26T17:56:53.005331+00:00",
+  "files_scanned": 85,
+  "adapter_mode": "count",
+  "adapter_health_ok": false,
+  "execution_enabled": false,
+  "kill_switch_enabled": false,
+  "alpaca_keys_missing": true,
+  "engine_open_position_count": 9,
+  "adapter_position_count": 4,
+  "stale_positions": [
+    {
+      "symbol": "POS1",
+      "entry_date": "unknown",
+      "reason": "engine_open_without_adapter_positions",
+      "stop_hit": true,
+      "close_rejected": true,
+      "evidence_path": "combined evidence",
+      "snippet": "{}\n# Execution Investigation Report\nGenerated: 2026-05-26T17:56:38.685445+00:00\n## Summary\n- Files scanned: 83\n- Signals generated: 5\n- Signals eligible: 5\n- Signals blocked: 5\n- Execution attempts: 0\n- Execution accepted: 0\n- Adapter mode: count\n- Dry run: un"
+    },
+    {
+      "symbol": "POS2",
+      "entry_date": "unknown",
+      "reason": "engine_open_without_adapter_positions",
+      "stop_hit": true,
+      "close_rejected": true,
+      "evidence_path": "combined evidence",
+      "snippet": "{}\n# Execution Investigation Report\nGenerated: 2026-05-26T17:56:38.685445+00:00\n## Summary\n- Files scanned: 83\n- Signals generated: 5\n- Signals eligible: 5\n- Signals blocked: 5\n- Execution attempts: 0\n- Execution accepted: 0\n- Adapter mode: count\n- Dry run: un"
+    },
+    {
+      "symbol": "POS3",
+      "entry_date": "unknown",
+      "reason": "engine_open_without_adapter_positions",
+      "stop_hit": true,
+      "close_rejected": true,
+      "evidence_path": "combined evidence",
+      "snippet": "{}\n# Execution Investigation Report\nGenerated: 2026-05-26T17:56:38.685445+00:00\n## Summary\n- Files scanned: 83\n- Signals generated: 5\n- Signals eligible: 5\n- Signals blocked: 5\n- Execution attempts: 0\n- Execution accepted: 0\n- Adapter mode: count\n- Dry run: un"
+    },
+    {
+      "symbol": "POS4",
+      "entry_date": "unknown",
+      "reason": "engine_open_without_adapter_positions",
+      "stop_hit": true,
+      "close_rejected": true,
+      "evidence_path": "combined evidence",
+      "snippet": "{}\n# Execution Investigation Report\nGenerated: 2026-05-26T17:56:38.685445+00:00\n## Summary\n- Files scanned: 83\n- Signals generated: 5\n- Signals eligible: 5\n- Signals blocked: 5\n- Execution attempts: 0\n- Execution accepted: 0\n- Adapter mode: count\n- Dry run: un"
+    },
+    {
+      "symbol": "POS5",
+      "entry_date": "unknown",
+      "reason": "engine_open_without_adapter_positions",
+      "stop_hit": true,
+      "close_rejected": true,
+      "evidence_path": "combined evidence",
+      "snippet": "{}\n# Execution Investigation Report\nGenerated: 2026-05-26T17:56:38.685445+00:00\n## Summary\n- Files scanned: 83\n- Signals generated: 5\n- Signals eligible: 5\n- Signals blocked: 5\n- Execution attempts: 0\n- Execution accepted: 0\n- Adapter mode: count\n- Dry run: un"
+    },
+    {
+      "symbol": "POS6",
+      "entry_date": "unknown",
+      "reason": "engine_open_without_adapter_positions",
+      "stop_hit": true,
+      "close_rejected": true,
+      "evidence_path": "combined evidence",
+      "snippet": "{}\n# Execution Investigation Report\nGenerated: 2026-05-26T17:56:38.685445+00:00\n## Summary\n- Files scanned: 83\n- Signals generated: 5\n- Signals eligible: 5\n- Signals blocked: 5\n- Execution attempts: 0\n- Execution accepted: 0\n- Adapter mode: count\n- Dry run: un"
+    },
+    {
+      "symbol": "POS7",
+      "entry_date": "unknown",
+      "reason": "engine_open_without_adapter_positions",
+      "stop_hit": true,
+      "close_rejected": true,
+      "evidence_path": "combined evidence",
+      "snippet": "{}\n# Execution Investigation Report\nGenerated: 2026-05-26T17:56:38.685445+00:00\n## Summary\n- Files scanned: 83\n- Signals generated: 5\n- Signals eligible: 5\n- Signals blocked: 5\n- Execution attempts: 0\n- Execution accepted: 0\n- Adapter mode: count\n- Dry run: un"
+    },
+    {
+      "symbol": "POS8",
+      "entry_date": "unknown",
+      "reason": "engine_open_without_adapter_positions",
+      "stop_hit": true,
+      "close_rejected": true,
+      "evidence_path": "combined evidence",
+      "snippet": "{}\n# Execution Investigation Report\nGenerated: 2026-05-26T17:56:38.685445+00:00\n## Summary\n- Files scanned: 83\n- Signals generated: 5\n- Signals eligible: 5\n- Signals blocked: 5\n- Execution attempts: 0\n- Execution accepted: 0\n- Adapter mode: count\n- Dry run: un"
+    },
+    {
+      "symbol": "POS9",
+      "entry_date": "unknown",
+      "reason": "engine_open_without_adapter_positions",
+      "stop_hit": true,
+      "close_rejected": true,
+      "evidence_path": "combined evidence",
+      "snippet": "{}\n# Execution Investigation Report\nGenerated: 2026-05-26T17:56:38.685445+00:00\n## Summary\n- Files scanned: 83\n- Signals generated: 5\n- Signals eligible: 5\n- Signals blocked: 5\n- Execution attempts: 0\n- Execution accepted: 0\n- Adapter mode: count\n- Dry run: un"
+    }
+  ],
+  "risk_before": 0.1125,
+  "risk_after_simulated": 0.0,
+  "open_risk_fraction_daily_before": 0.1125,
+  "open_risk_fraction_daily_after": 0.0,
+  "daily_max_total_risk_cap": 0.12,
+  "signals_eligible_before": 5,
+  "signals_eligible_after_simulated": 5,
+  "execution_attempts": 0,
+  "primary_execution_blocker": "stale open positions after stop loss hit",
+  "candidates": [
+    {
+      "candidate_id": "P1",
+      "title": "Paper-local close when adapter disabled and stop/forced exit triggered",
+      "affected_files": [
+        "C:\\FINAL_ALGO_TRADER\\services\\live_paper_engine.py",
+        "C:\\FINAL_ALGO_TRADER\\services\\live_dual_paper_cycle.py",
+        "C:\\FINAL_ALGO_TRADER\\services\\execution_adapter.py"
+      ],
+      "expected_effect": "Closes stale paper positions locally when broker adapter is disabled; emits paper_local_close_after_adapter_disabled.",
+      "risk": "MEDIUM - paper-only state mutation; must never run on real live brokerage path.",
+      "minimal_diff": "```diff\n--- a/services/live_paper_engine.py\n+++ b/services/live_paper_engine.py\n@@\n+if paper_mode and adapter_is_disabled and position.forced_exit_due:\n+    record_event(\"close_order_paper_only\", reason=\"paper_local_close_after_adapter_disabled\")\n+    close_local_open_position(position, broker_close_sent=False)\n+    emit_warning(\"Broker close NOT sent; adapter disabled/missing keys\")\n+    return\n```",
+      "rollback_plan": "Remove paper-local close branch; restore prior open_positions persistence behavior.",
+      "verification_commands": [
+        "pytest tests/test_execution_cleanup_p1.py -q",
+        "show stale open positions",
+        "compare risk before after cleanup"
+      ]
+    },
+    {
+      "candidate_id": "P2",
+      "title": "Prefer signal-level blockers over scan-level not_relevant_to_last_bar telemetry",
+      "affected_files": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\open_positions.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_decision_summary.json"
+      ],
+      "expected_effect": "reason_if_no_attempt and primary_execution_blocker prefer exposure/risk/signal blockers.",
+      "risk": "LOW - telemetry only.",
+      "minimal_diff": "```diff\n--- a/services/live_dual_paper_cycle.py\n+++ b/services/live_dual_paper_cycle.py\n@@\n-reason_if_no_attempt = \"not_relevant_to_last_bar\"\n+reason_if_no_attempt = primary_signal_blocker or scan_skip_reason\n+if primary_signal_blocker:\n+    primary_execution_blocker = primary_signal_blocker\n```",
+      "rollback_plan": "Restore previous reason_if_no_attempt assignment order.",
+      "verification_commands": [
+        "pytest tests/test_execution_cleanup_p2.py -q",
+        "explain top execution blocker"
+      ]
+    },
+    {
+      "candidate_id": "P3",
+      "title": "Separate scan skip count from execution rejection count",
+      "affected_files": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\open_positions.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_decision_summary.json"
+      ],
+      "expected_effect": "Adds n_scan_rows_skipped_last_bar distinct from n_execution_rejected.",
+      "risk": "LOW - reporting only.",
+      "minimal_diff": "```diff\n--- a/services/live_dual_paper_cycle.py\n+++ b/services/live_dual_paper_cycle.py\n@@\n+n_scan_rows_skipped_last_bar = count_scan_skipped_last_bar(signals)\n n_execution_rejected = count_execution_rejected(signals)\n```",
+      "rollback_plan": "Remove n_scan_rows_skipped_last_bar field from execution_decision_summary.",
+      "verification_commands": [
+        "pytest tests/test_execution_cleanup_p3.py -q"
+      ]
+    },
+    {
+      "candidate_id": "P4",
+      "title": "Surface adapter/risk/kill-switch fields in execution_decision_summary",
+      "affected_files": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\open_positions.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_decision_summary.json"
+      ],
+      "expected_effect": "Always expose kill_switch_enabled, adapter_health_ok, execution_enabled, primary_execution_blocker, open_risk_fraction_daily, daily_max_total_risk_cap.",
+      "risk": "LOW - reporting only.",
+      "minimal_diff": "```diff\n--- a/services/live_dual_paper_cycle.py\n+++ b/services/live_dual_paper_cycle.py\n@@\n+summary[\"kill_switch_enabled\"] = kill_switch_enabled\n+summary[\"adapter_health_ok\"] = adapter_health_ok\n+summary[\"execution_enabled\"] = execution_enabled\n+summary[\"primary_execution_blocker\"] = primary_execution_blocker\n+summary[\"open_risk_fraction_daily\"] = open_risk_fraction_daily\n+summary[\"daily_max_total_risk_cap\"] = daily_max_total_risk_cap\n```",
+      "rollback_plan": "Remove added summary telemetry keys.",
+      "verification_commands": [
+        "pytest tests/test_execution_cleanup_p4.py -q",
+        "inspect execution adapter"
+      ]
+    }
+  ],
+  "selected_candidate": "P1",
+  "patch_preview_diff": "```diff\n--- a/services/live_paper_engine.py\n+++ b/services/live_paper_engine.py\n@@\n+if paper_mode and adapter_is_disabled and position.forced_exit_due:\n+    record_event(\"close_order_paper_only\", reason=\"paper_local_close_after_adapter_disabled\")\n+    close_local_open_position(position, broker_close_sent=False)\n+    emit_warning(\"Broker close NOT sent; adapter disabled/missing keys\")\n+    return\n```",
+  "tests_to_run": [
+    "ExecutionDisabledAdapter + stop hit closes local paper position only",
+    "does not mark broker execution accepted",
+    "risk fraction drops after local close",
+    "telemetry primary blocker prefers exposure_limit_reached over scan noise",
+    "execution summary includes kill switch + adapter status",
+    "no live order call"
+  ],
+  "rollback_plan": "Remove paper-local close branch; restore prior open_positions persistence behavior.",
+  "evidence_paths": [
+    "C:\\Users\\babi2\\AppData\\Local\\Temp\\tmpchtsr5af\\trading\\reports\\live_paper\\dual\\execution_decision_summary.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175638_execution_investigation.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175638_execution_investigation.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_flow\\20260526_175633_execution_flow.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_flow\\20260526_175633_execution_flow.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175618_execution_cleanup.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175618_execution_cleanup.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_flow\\20260526_175558_execution_flow.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_flow\\20260526_175558_execution_flow.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175543_execution_investigation.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175543_execution_investigation.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175543_execution_cleanup.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175543_execution_cleanup.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175529_execution_investigation.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175529_execution_investigation.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175509_execution_investigation.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175509_execution_investigation.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175509_execution_cleanup.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175509_execution_cleanup.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175455_execution_investigation.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175455_execution_investigation.json"
+  ],
+  "report_json": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175653_execution_cleanup.json",
+  "report_markdown": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175653_execution_cleanup.md"
+}

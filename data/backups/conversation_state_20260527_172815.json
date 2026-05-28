@@ -1,0 +1,35 @@
+{
+  "current_topic": "show tts debug",
+  "previous_topics": [
+    "show conversation runtime",
+    "run phase 59 status",
+    "show tts debug"
+  ],
+  "active_project": "",
+  "unresolved_question": "",
+  "emotional_tone": "neutral",
+  "interruption_state": "idle",
+  "pending_actions": [],
+  "recent_entities": [
+    "debug",
+    "show",
+    "runtime",
+    "conversation",
+    "status",
+    "phase"
+  ],
+  "follow_up_references": [],
+  "turn_count": 4,
+  "last_user_text": "show tts debug",
+  "last_assistant_summary": "Could not understand the command. Please rephrase.",
+  "last_intent": "unknown",
+  "paused_response": "",
+  "continuous_listening": false,
+  "updated_at": "2026-05-27T17:23:04.012726+00:00",
+  "interruption_count": 0,
+  "intent_continuity_chain": [],
+  "turn_references": [],
+  "last_response_style": "neutral",
+  "pending_follow_up": "",
+  "user_intent_continuity": ""
+}

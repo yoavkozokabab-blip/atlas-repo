@@ -1,0 +1,16 @@
+{
+  "current_project_root": "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-81\\test_follow_up_uses_session0\\project",
+  "last_command_text": "test realtime voice",
+  "last_intent": "test_realtime_voice",
+  "last_result_summary": "Realtime voice test failed: ElevenLabs HTTP 402: {\"detail\":{\"type\":\"payment_required\",\"code\":\"paid_plan_required\",\"message\":\"Free users cannot use library voices via the API. Please upgrade your subscription to use this voice.\",\"status\":\"payment_req\nVoice latency (Phase 57 realtime TTS)\n  provider: elevenlabs\n  time_to_first_audio_ms: n/a\n  total_speech_ms: 272.8\n  total_playback_ms: 272.8\n  interruption_latency_ms: n/a\n  provider_latency_ms: n/a\n  queue_wait_ms: n/a\n  failover_from: n/a\n  cance",
+  "last_opened_file": "",
+  "last_opened_log": "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-81\\test_follow_up_uses_session0\\project\\reports\\a.log",
+  "last_report_path": "",
+  "last_error_search": "",
+  "pending_confirmation_id": "d163c6f4",
+  "pending_confirmation_action": "open_website",
+  "activity_mode": "",
+  "last_workspace_snapshot": "",
+  "created_at": "",
+  "updated_at": "2026-05-27T14:39:23.577457+00:00"
+}

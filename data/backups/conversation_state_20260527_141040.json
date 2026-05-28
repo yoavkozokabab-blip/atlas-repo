@@ -1,0 +1,51 @@
+{
+  "current_topic": "open youtube",
+  "previous_topics": [
+    "Oh",
+    "show show show audio status",
+    "test interrupt speech",
+    "test realtime voice",
+    "show voice latency",
+    "open youtube",
+    "What am I doing? HR is",
+    "describe screen",
+    "Just tell me what can you do",
+    "test normal speech path",
+    "show show audio status path",
+    "test direct speech"
+  ],
+  "active_project": "",
+  "unresolved_question": "",
+  "emotional_tone": "neutral",
+  "interruption_state": "interrupted",
+  "pending_actions": [],
+  "recent_entities": [
+    "youtube",
+    "open",
+    "show",
+    "speech",
+    "interrupt",
+    "test",
+    "voice",
+    "realtime",
+    "latency",
+    "doing",
+    "What",
+    "screen",
+    "describe",
+    "what",
+    "tell",
+    "Just"
+  ],
+  "follow_up_references": [
+    "voice:open_website",
+    "voice:unknown"
+  ],
+  "turn_count": 42,
+  "last_user_text": "open youtube",
+  "last_assistant_summary": "Did you mean open website (website=youtube)? Reply yes/confirm or no/cancel (id: 44595104).",
+  "last_intent": "open_website",
+  "paused_response": "",
+  "continuous_listening": false,
+  "updated_at": "2026-05-27T13:46:40.302137+00:00"
+}

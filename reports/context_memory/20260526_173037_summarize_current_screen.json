@@ -1,0 +1,3 @@
+{
+  "summary": "Screen capture unavailable.\nScreen system status:\n  mss available: False\n  pygetwindow available: False\n  pyautogui available: False\n  OCR available: False\n  screenshot capability: False\n  active window capability: False\n  vision enabled: False\n  screen understanding enabled: True\n  fix: pip install mss Pillow\n  fix: pip install pygetwindow\nInstall: pip install mss Pillow pygetwindow"
+}

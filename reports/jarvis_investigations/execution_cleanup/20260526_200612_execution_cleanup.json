@@ -1,0 +1,210 @@
+{
+  "created_at": "2026-05-26T20:06:12.546803+00:00",
+  "files_scanned": 175,
+  "adapter_mode": "AlpacaExecutionAdapter",
+  "adapter_health_ok": false,
+  "execution_enabled": false,
+  "kill_switch_enabled": false,
+  "alpaca_keys_missing": true,
+  "engine_open_position_count": 9,
+  "adapter_position_count": 4,
+  "stale_positions": [
+    {
+      "symbol": "BRBR",
+      "entry_date": "2026-04-17",
+      "reason": "stop_loss_hit_adapter_disabled",
+      "stop_hit": true,
+      "close_rejected": false,
+      "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\open_positions.json",
+      "snippet": "\"symbol\": \"BRBR\",\n      \"combo_label\": \"real_algo_config_production_v5_daily\",\n      \"interval\": \"1d\",\n      \"engine_label\": \"daily\",\n      \"preset_name\": \"real_algo_config_production_v5_daily\",\n      \"signal_bar_date\": \"2026-04-17\",\n      \"candidate_signal_ba"
+    },
+    {
+      "symbol": "BRK-B",
+      "entry_date": "2026-04-17",
+      "reason": "stop_loss_hit_close_order_rejected",
+      "stop_hit": true,
+      "close_rejected": true,
+      "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\open_positions.json",
+      "snippet": "\"symbol\": \"BRK-B\",\n      \"combo_label\": \"real_algo_config_production_v5_daily\",\n      \"interval\": \"1d\",\n      \"engine_label\": \"daily\",\n      \"preset_name\": \"real_algo_config_production_v5_daily\",\n      \"signal_bar_date\": \"2026-04-17\",\n      \"candidate_signal_b"
+    },
+    {
+      "symbol": "CB",
+      "entry_date": "2026-04-17",
+      "reason": "stop_loss_hit_adapter_disabled",
+      "stop_hit": true,
+      "close_rejected": false,
+      "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\open_positions.json",
+      "snippet": "\"symbol\": \"CB\",\n      \"combo_label\": \"real_algo_config_production_v5_daily\",\n      \"interval\": \"1d\",\n      \"engine_label\": \"daily\",\n      \"preset_name\": \"real_algo_config_production_v5_daily\",\n      \"signal_bar_date\": \"2026-04-17\",\n      \"candidate_signal_bar\""
+    },
+    {
+      "symbol": "CNK",
+      "entry_date": "2026-04-17",
+      "reason": "stop_loss_hit_close_order_rejected",
+      "stop_hit": true,
+      "close_rejected": true,
+      "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\open_positions.json",
+      "snippet": "\"symbol\": \"CNK\",\n      \"combo_label\": \"real_algo_config_production_v5_daily\",\n      \"interval\": \"1d\",\n      \"engine_label\": \"daily\",\n      \"preset_name\": \"real_algo_config_production_v5_daily\",\n      \"signal_bar_date\": \"2026-04-17\",\n      \"candidate_signal_bar"
+    },
+    {
+      "symbol": "CVS",
+      "entry_date": "2026-04-17",
+      "reason": "stop_loss_hit_adapter_disabled",
+      "stop_hit": true,
+      "close_rejected": false,
+      "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\open_positions.json",
+      "snippet": "\"symbol\": \"CVS\",\n      \"combo_label\": \"real_algo_config_production_v5_daily\",\n      \"interval\": \"1d\",\n      \"engine_label\": \"daily\",\n      \"preset_name\": \"real_algo_config_production_v5_daily\",\n      \"signal_bar_date\": \"2026-04-17\",\n      \"candidate_signal_bar"
+    },
+    {
+      "symbol": "EVRG",
+      "entry_date": "2026-04-17",
+      "reason": "stop_loss_hit_adapter_disabled",
+      "stop_hit": true,
+      "close_rejected": false,
+      "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\open_positions.json",
+      "snippet": "\"symbol\": \"EVRG\",\n      \"combo_label\": \"real_algo_config_production_v5_daily\",\n      \"interval\": \"1d\",\n      \"engine_label\": \"daily\",\n      \"preset_name\": \"real_algo_config_production_v5_daily\",\n      \"signal_bar_date\": \"2026-04-17\",\n      \"candidate_signal_ba"
+    },
+    {
+      "symbol": "FFIV",
+      "entry_date": "2026-04-17",
+      "reason": "stop_loss_hit_adapter_disabled",
+      "stop_hit": true,
+      "close_rejected": false,
+      "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\open_positions.json",
+      "snippet": "\"symbol\": \"FFIV\",\n      \"combo_label\": \"real_algo_config_production_v5_daily\",\n      \"interval\": \"1d\",\n      \"engine_label\": \"daily\",\n      \"preset_name\": \"real_algo_config_production_v5_daily\",\n      \"signal_bar_date\": \"2026-04-17\",\n      \"candidate_signal_ba"
+    },
+    {
+      "symbol": "GVA",
+      "entry_date": "2026-04-17",
+      "reason": "stop_loss_hit_adapter_disabled",
+      "stop_hit": true,
+      "close_rejected": false,
+      "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\open_positions.json",
+      "snippet": "\"symbol\": \"GVA\",\n      \"combo_label\": \"real_algo_config_production_v5_daily\",\n      \"interval\": \"1d\",\n      \"engine_label\": \"daily\",\n      \"preset_name\": \"real_algo_config_production_v5_daily\",\n      \"signal_bar_date\": \"2026-04-17\",\n      \"candidate_signal_bar"
+    },
+    {
+      "symbol": "HIG",
+      "entry_date": "2026-04-17",
+      "reason": "stop_loss_hit_close_order_rejected",
+      "stop_hit": true,
+      "close_rejected": true,
+      "evidence_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\open_positions.json",
+      "snippet": "\"symbol\": \"HIG\",\n      \"combo_label\": \"real_algo_config_production_v5_daily\",\n      \"interval\": \"1d\",\n      \"engine_label\": \"daily\",\n      \"preset_name\": \"real_algo_config_production_v5_daily\",\n      \"signal_bar_date\": \"2026-04-17\",\n      \"candidate_signal_bar"
+    }
+  ],
+  "risk_before": 0.1125,
+  "risk_after_simulated": 0.0,
+  "open_risk_fraction_daily_before": 0.1125,
+  "open_risk_fraction_daily_after": 0.0,
+  "daily_max_total_risk_cap": 0.12,
+  "signals_eligible_before": 4,
+  "signals_eligible_after_simulated": 4,
+  "execution_attempts": 0,
+  "primary_execution_blocker": "stale open positions after stop_loss_hit",
+  "candidates": [
+    {
+      "candidate_id": "P1",
+      "title": "Paper-local close when adapter disabled and stop/forced exit triggered",
+      "affected_files": [
+        "C:\\FINAL_ALGO_TRADER\\services\\live_paper_engine.py",
+        "C:\\FINAL_ALGO_TRADER\\services\\live_dual_paper_cycle.py",
+        "C:\\FINAL_ALGO_TRADER\\services\\execution_adapter.py"
+      ],
+      "expected_effect": "Closes stale paper positions locally when broker adapter is disabled; emits paper_local_close_after_adapter_disabled.",
+      "risk": "MEDIUM - paper-only state mutation; must never run on real live brokerage path.",
+      "minimal_diff": "```diff\n--- a/services/live_paper_engine.py\n+++ b/services/live_paper_engine.py\n@@\n+if paper_mode and adapter_is_disabled and position.forced_exit_due:\n+    record_event(\"close_order_paper_only\", reason=\"paper_local_close_after_adapter_disabled\")\n+    close_local_open_position(position, broker_close_sent=False)\n+    emit_warning(\"Broker close NOT sent; adapter disabled/missing keys\")\n+    return\n```",
+      "rollback_plan": "Remove paper-local close branch; restore prior open_positions persistence behavior.",
+      "verification_commands": [
+        "pytest tests/test_execution_cleanup_p1.py -q",
+        "show stale open positions",
+        "compare risk before after cleanup"
+      ]
+    },
+    {
+      "candidate_id": "P2",
+      "title": "Prefer signal-level blockers over scan-level not_relevant_to_last_bar telemetry",
+      "affected_files": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\open_positions.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_decision_summary.json"
+      ],
+      "expected_effect": "reason_if_no_attempt and primary_execution_blocker prefer exposure/risk/signal blockers.",
+      "risk": "LOW - telemetry only.",
+      "minimal_diff": "```diff\n--- a/services/live_dual_paper_cycle.py\n+++ b/services/live_dual_paper_cycle.py\n@@\n-reason_if_no_attempt = \"not_relevant_to_last_bar\"\n+reason_if_no_attempt = primary_signal_blocker or scan_skip_reason\n+if primary_signal_blocker:\n+    primary_execution_blocker = primary_signal_blocker\n```",
+      "rollback_plan": "Restore previous reason_if_no_attempt assignment order.",
+      "verification_commands": [
+        "pytest tests/test_execution_cleanup_p2.py -q",
+        "explain top execution blocker"
+      ]
+    },
+    {
+      "candidate_id": "P3",
+      "title": "Separate scan skip count from execution rejection count",
+      "affected_files": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\open_positions.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_decision_summary.json"
+      ],
+      "expected_effect": "Adds n_scan_rows_skipped_last_bar distinct from n_execution_rejected.",
+      "risk": "LOW - reporting only.",
+      "minimal_diff": "```diff\n--- a/services/live_dual_paper_cycle.py\n+++ b/services/live_dual_paper_cycle.py\n@@\n+n_scan_rows_skipped_last_bar = count_scan_skipped_last_bar(signals)\n n_execution_rejected = count_execution_rejected(signals)\n```",
+      "rollback_plan": "Remove n_scan_rows_skipped_last_bar field from execution_decision_summary.",
+      "verification_commands": [
+        "pytest tests/test_execution_cleanup_p3.py -q"
+      ]
+    },
+    {
+      "candidate_id": "P4",
+      "title": "Surface adapter/risk/kill-switch fields in execution_decision_summary",
+      "affected_files": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\open_positions.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_decision_summary.json"
+      ],
+      "expected_effect": "Always expose kill_switch_enabled, adapter_health_ok, execution_enabled, primary_execution_blocker, open_risk_fraction_daily, daily_max_total_risk_cap.",
+      "risk": "LOW - reporting only.",
+      "minimal_diff": "```diff\n--- a/services/live_dual_paper_cycle.py\n+++ b/services/live_dual_paper_cycle.py\n@@\n+summary[\"kill_switch_enabled\"] = kill_switch_enabled\n+summary[\"adapter_health_ok\"] = adapter_health_ok\n+summary[\"execution_enabled\"] = execution_enabled\n+summary[\"primary_execution_blocker\"] = primary_execution_blocker\n+summary[\"open_risk_fraction_daily\"] = open_risk_fraction_daily\n+summary[\"daily_max_total_risk_cap\"] = daily_max_total_risk_cap\n```",
+      "rollback_plan": "Remove added summary telemetry keys.",
+      "verification_commands": [
+        "pytest tests/test_execution_cleanup_p4.py -q",
+        "inspect execution adapter"
+      ]
+    }
+  ],
+  "selected_candidate": "P1",
+  "patch_preview_diff": "```diff\n--- a/services/live_paper_engine.py\n+++ b/services/live_paper_engine.py\n@@\n+if paper_mode and adapter_is_disabled and position.forced_exit_due:\n+    record_event(\"close_order_paper_only\", reason=\"paper_local_close_after_adapter_disabled\")\n+    close_local_open_position(position, broker_close_sent=False)\n+    emit_warning(\"Broker close NOT sent; adapter disabled/missing keys\")\n+    return\n```",
+  "tests_to_run": [
+    "ExecutionDisabledAdapter + stop hit closes local paper position only",
+    "does not mark broker execution accepted",
+    "risk fraction drops after local close",
+    "telemetry primary blocker prefers exposure_limit_reached over scan noise",
+    "execution summary includes kill switch + adapter status",
+    "no live order call"
+  ],
+  "rollback_plan": "Remove paper-local close branch; restore prior open_positions persistence behavior.",
+  "evidence_paths": [
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_order_events.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_order_events.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\execution_decision_summary.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_decision_summary.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_signals.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\live_summary_latest.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\live_summary_latest.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\live_summary_latest.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\jarvis_execution_telemetry.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\audit\\ranking_execution_audit_20260516T200255Z.md",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\audit\\ranking_execution_audit_20260516T200255Z.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\audit\\ranking_execution_audit_20260516T200153Z.md",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\audit\\ranking_execution_audit_20260516T200153Z.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\audit\\ranking_execution_audit_20260516T200110Z.md",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\audit\\ranking_execution_audit_20260516T200110Z.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\audit\\ranking_execution_audit_20260516T200011Z.md",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\audit\\ranking_execution_audit_20260516T200011Z.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_clean_100k_20260516\\live_output\\state\\processed_signals.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\processed_signals.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\state\\processed_signals.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\daily\\state\\processed_signals.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\cumulative_summary.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\trial_manifest.json"
+  ],
+  "report_json": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_200612_execution_cleanup.json",
+  "report_markdown": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_200612_execution_cleanup.md"
+}

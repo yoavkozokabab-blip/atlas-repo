@@ -1,0 +1,6993 @@
+{
+  "entries": {
+    "mem_9f9a069d05": {
+      "entry_id": "mem_9f9a069d05",
+      "text": "phase61 semantic retrieval target",
+      "vector": {
+        "phase61": 1.0,
+        "semantic": 1.0,
+        "retrieval": 1.0,
+        "target": 1.0
+      },
+      "importance": 0.9,
+      "confidence": 0.9,
+      "category": "project_context",
+      "long_term": true
+    },
+    "mem_7356b3e552": {
+      "entry_id": "mem_7356b3e552",
+      "text": "phase61 persistent memory recall marker",
+      "vector": {
+        "phase61": 1.0,
+        "persistent": 1.0,
+        "memory": 1.0,
+        "recall": 1.0,
+        "marker": 1.0
+      },
+      "importance": 0.9,
+      "confidence": 0.9,
+      "category": "project_context",
+      "long_term": true
+    },
+    "mem_0149e0f885": {
+      "entry_id": "mem_0149e0f885",
+      "text": "phase61 semantic retrieval target",
+      "vector": {
+        "phase61": 1.0,
+        "semantic": 1.0,
+        "retrieval": 1.0,
+        "target": 1.0
+      },
+      "importance": 0.9,
+      "confidence": 0.9,
+      "category": "project_context",
+      "long_term": true
+    },
+    "mem_c50b41a65f": {
+      "entry_id": "mem_c50b41a65f",
+      "text": "phase61 semantic retrieval target",
+      "vector": {
+        "phase61": 1.0,
+        "semantic": 1.0,
+        "retrieval": 1.0,
+        "target": 1.0
+      },
+      "importance": 0.9,
+      "confidence": 0.9,
+      "category": "project_context",
+      "long_term": true
+    },
+    "mem_0db715a508": {
+      "entry_id": "mem_0db715a508",
+      "text": "phase61 semantic retrieval target",
+      "vector": {
+        "phase61": 1.0,
+        "semantic": 1.0,
+        "retrieval": 1.0,
+        "target": 1.0
+      },
+      "importance": 0.9,
+      "confidence": 0.9,
+      "category": "project_context",
+      "long_term": true
+    },
+    "mem_e37cd0a2f6": {
+      "entry_id": "mem_e37cd0a2f6",
+      "text": "browser_search: query=Nvidia earnings summary url=https://duckduckgo.com/?q=Nvidia+earnings+summary",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "nvidia": 2.0,
+        "earnings": 2.0,
+        "summary": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_d2f9eaa5d2": {
+      "entry_id": "mem_d2f9eaa5d2",
+      "text": "phase65 test phase65_1779996624",
+      "vector": {
+        "phase65": 1.0,
+        "test": 1.0,
+        "phase65_1779996624": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_879c66e93d": {
+      "entry_id": "mem_879c66e93d",
+      "text": "phase65 test phase65_1779996624 updated",
+      "vector": {
+        "phase65": 1.0,
+        "test": 1.0,
+        "phase65_1779996624": 1.0,
+        "updated": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_7beff9b051": {
+      "entry_id": "mem_7beff9b051",
+      "text": "phase65 test phase65_1779996646",
+      "vector": {
+        "phase65": 1.0,
+        "test": 1.0,
+        "phase65_1779996646": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_f3fe0e7455": {
+      "entry_id": "mem_f3fe0e7455",
+      "text": "phase65 test phase65_1779996646 updated",
+      "vector": {
+        "phase65": 1.0,
+        "test": 1.0,
+        "phase65_1779996646": 1.0,
+        "updated": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_85d3f93a23": {
+      "entry_id": "mem_85d3f93a23",
+      "text": "phase65 test phase65_1779996669",
+      "vector": {
+        "phase65": 1.0,
+        "test": 1.0,
+        "phase65_1779996669": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_11524b5a7d": {
+      "entry_id": "mem_11524b5a7d",
+      "text": "phase65 test phase65_1779996669 updated",
+      "vector": {
+        "phase65": 1.0,
+        "test": 1.0,
+        "phase65_1779996669": 1.0,
+        "updated": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_62c60be070": {
+      "entry_id": "mem_62c60be070",
+      "text": "phase65 test phase65_1779996681",
+      "vector": {
+        "phase65": 1.0,
+        "test": 1.0,
+        "phase65_1779996681": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_c87c26cf86": {
+      "entry_id": "mem_c87c26cf86",
+      "text": "phase65 test phase65_1779996681 updated",
+      "vector": {
+        "phase65": 1.0,
+        "test": 1.0,
+        "phase65_1779996681": 1.0,
+        "updated": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_6e6cbad1ae": {
+      "entry_id": "mem_6e6cbad1ae",
+      "text": "phase65 test phase65_1779997177",
+      "vector": {
+        "phase65": 1.0,
+        "test": 1.0,
+        "phase65_1779997177": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_3da678ca46": {
+      "entry_id": "mem_3da678ca46",
+      "text": "phase65 test phase65_1779997177 updated",
+      "vector": {
+        "phase65": 1.0,
+        "test": 1.0,
+        "phase65_1779997177": 1.0,
+        "updated": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_1edeb0d0d6": {
+      "entry_id": "mem_1edeb0d0d6",
+      "text": "browser_search: query=nvidia earnings url=https://duckduckgo.com/?q=nvidia+earnings",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "nvidia": 2.0,
+        "earnings": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_a0983e9b14": {
+      "entry_id": "mem_a0983e9b14",
+      "text": "browser_search: query=python asyncio url=https://duckduckgo.com/?q=python+asyncio",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "python": 2.0,
+        "asyncio": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_08bb006f58": {
+      "entry_id": "mem_08bb006f58",
+      "text": "browser_search: query=jarvis assistant url=https://duckduckgo.com/?q=jarvis+assistant",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "jarvis": 2.0,
+        "assistant": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_d29227344e": {
+      "entry_id": "mem_d29227344e",
+      "text": "browser_search: query=market news url=https://duckduckgo.com/?q=market+news",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "market": 2.0,
+        "news": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_d4cb6e8b31": {
+      "entry_id": "mem_d4cb6e8b31",
+      "text": "browser_search: query=playwright docs url=https://duckduckgo.com/?q=playwright+docs",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "playwright": 2.0,
+        "docs": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_4565f0888d": {
+      "entry_id": "mem_4565f0888d",
+      "text": "browser_search: query=openai api url=https://duckduckgo.com/?q=openai+api",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "openai": 2.0,
+        "api": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_8d3fb2f5b8": {
+      "entry_id": "mem_8d3fb2f5b8",
+      "text": "browser_search: query=weather today url=https://duckduckgo.com/?q=weather+today",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "weather": 2.0,
+        "today": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_17bf054529": {
+      "entry_id": "mem_17bf054529",
+      "text": "browser_search: query=cpu benchmarks url=https://duckduckgo.com/?q=cpu+benchmarks",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "cpu": 2.0,
+        "benchmarks": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_76a79da3ff": {
+      "entry_id": "mem_76a79da3ff",
+      "text": "browser_search: query=topic_0 url=https://duckduckgo.com/?q=topic_0",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic_0": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_ac78fce87d": {
+      "entry_id": "mem_ac78fce87d",
+      "text": "browser_search: query=topic_1 url=https://duckduckgo.com/?q=topic_1",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic_1": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_c9bfc9e489": {
+      "entry_id": "mem_c9bfc9e489",
+      "text": "browser_search: query=topic_2 url=https://duckduckgo.com/?q=topic_2",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic_2": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_642babc1fc": {
+      "entry_id": "mem_642babc1fc",
+      "text": "browser_search: query=topic_3 url=https://duckduckgo.com/?q=topic_3",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic_3": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_5aa6cf97ec": {
+      "entry_id": "mem_5aa6cf97ec",
+      "text": "browser_search: query=topic_4 url=https://duckduckgo.com/?q=topic_4",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic_4": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_71c9fd9718": {
+      "entry_id": "mem_71c9fd9718",
+      "text": "browser_search: query=topic_5 url=https://duckduckgo.com/?q=topic_5",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic_5": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_3725010e80": {
+      "entry_id": "mem_3725010e80",
+      "text": "validation fact phase66_mem_01",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_01": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_4d198dc2b9": {
+      "entry_id": "mem_4d198dc2b9",
+      "text": "validation fact phase66_mem_02",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_02": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_761ebac1de": {
+      "entry_id": "mem_761ebac1de",
+      "text": "validation fact phase66_mem_03",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_03": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_1558397693": {
+      "entry_id": "mem_1558397693",
+      "text": "validation fact phase66_mem_04",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_04": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_9151ffaef2": {
+      "entry_id": "mem_9151ffaef2",
+      "text": "validation fact phase66_mem_05",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_05": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_9065719fe8": {
+      "entry_id": "mem_9065719fe8",
+      "text": "validation fact phase66_mem_06",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_06": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_f4c020a763": {
+      "entry_id": "mem_f4c020a763",
+      "text": "validation fact phase66_mem_07",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_07": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_a9e320d329": {
+      "entry_id": "mem_a9e320d329",
+      "text": "validation fact phase66_mem_08",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_08": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_974a0ae11e": {
+      "entry_id": "mem_974a0ae11e",
+      "text": "validation fact phase66_mem_09",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_09": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_39efd49dcd": {
+      "entry_id": "mem_39efd49dcd",
+      "text": "validation fact phase66_mem_10",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_10": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_0b82493a7b": {
+      "entry_id": "mem_0b82493a7b",
+      "text": "validation fact phase66_mem_11",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_11": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_49d49721e1": {
+      "entry_id": "mem_49d49721e1",
+      "text": "validation fact phase66_mem_12",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_12": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_c38ed19708": {
+      "entry_id": "mem_c38ed19708",
+      "text": "validation fact phase66_mem_13",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_13": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_d65bf1502e": {
+      "entry_id": "mem_d65bf1502e",
+      "text": "validation fact phase66_mem_14",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_14": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_a52dbe1934": {
+      "entry_id": "mem_a52dbe1934",
+      "text": "validation fact phase66_mem_15",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_15": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_05683a201e": {
+      "entry_id": "mem_05683a201e",
+      "text": "validation fact phase66_mem_16",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_16": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_4f65193b78": {
+      "entry_id": "mem_4f65193b78",
+      "text": "validation fact phase66_mem_17",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_17": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_0c7cd49831": {
+      "entry_id": "mem_0c7cd49831",
+      "text": "validation fact phase66_mem_18",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_18": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_abb73076e6": {
+      "entry_id": "mem_abb73076e6",
+      "text": "validation fact phase66_mem_19",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_19": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_8376972dce": {
+      "entry_id": "mem_8376972dce",
+      "text": "validation fact phase66_mem_20",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_20": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_6d475f2fd3": {
+      "entry_id": "mem_6d475f2fd3",
+      "text": "validation fact phase66_mem_21",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_21": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_6c4be092a6": {
+      "entry_id": "mem_6c4be092a6",
+      "text": "validation fact phase66_mem_22",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_22": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_fe8f1cb1c5": {
+      "entry_id": "mem_fe8f1cb1c5",
+      "text": "validation fact phase66_mem_23",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_23": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_fcb1026603": {
+      "entry_id": "mem_fcb1026603",
+      "text": "validation fact phase66_mem_24",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_24": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_f7542a5517": {
+      "entry_id": "mem_f7542a5517",
+      "text": "validation fact phase66_mem_25",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_25": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_f7499aa1e2": {
+      "entry_id": "mem_f7499aa1e2",
+      "text": "validation fact phase66_mem_26",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_26": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_9240e72442": {
+      "entry_id": "mem_9240e72442",
+      "text": "validation fact phase66_mem_27",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_27": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_23e0b267a1": {
+      "entry_id": "mem_23e0b267a1",
+      "text": "validation fact phase66_mem_28",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_28": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_4b861b039b": {
+      "entry_id": "mem_4b861b039b",
+      "text": "validation fact phase66_mem_29",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_29": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_94902d5705": {
+      "entry_id": "mem_94902d5705",
+      "text": "validation fact phase66_mem_30",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_30": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_7ccb1c3c20": {
+      "entry_id": "mem_7ccb1c3c20",
+      "text": "validation fact phase66_mem_31",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_31": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_0fa30cd031": {
+      "entry_id": "mem_0fa30cd031",
+      "text": "validation fact phase66_mem_32",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_32": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_c11e3a09b4": {
+      "entry_id": "mem_c11e3a09b4",
+      "text": "validation fact phase66_mem_33",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_33": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_9f5e14c534": {
+      "entry_id": "mem_9f5e14c534",
+      "text": "validation fact phase66_mem_34",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_34": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_0be35ab250": {
+      "entry_id": "mem_0be35ab250",
+      "text": "validation fact phase66_mem_35",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_35": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_96bfa1389f": {
+      "entry_id": "mem_96bfa1389f",
+      "text": "validation fact phase66_mem_36",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_36": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_ba4ab49e15": {
+      "entry_id": "mem_ba4ab49e15",
+      "text": "validation fact phase66_mem_37",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_37": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_47efaf6525": {
+      "entry_id": "mem_47efaf6525",
+      "text": "validation fact phase66_mem_38",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_38": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_a1392d9993": {
+      "entry_id": "mem_a1392d9993",
+      "text": "validation fact phase66_mem_39",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_39": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_ac20e8458c": {
+      "entry_id": "mem_ac20e8458c",
+      "text": "validation fact phase66_mem_40",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_40": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_da6705973d": {
+      "entry_id": "mem_da6705973d",
+      "text": "validation fact phase66_mem_41",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_41": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_f6f0adb0fa": {
+      "entry_id": "mem_f6f0adb0fa",
+      "text": "validation fact phase66_mem_42",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_42": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_8a6931f155": {
+      "entry_id": "mem_8a6931f155",
+      "text": "validation fact phase66_mem_43",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_43": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_575269c6e4": {
+      "entry_id": "mem_575269c6e4",
+      "text": "validation fact phase66_mem_44",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_44": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_5fa9fe4efc": {
+      "entry_id": "mem_5fa9fe4efc",
+      "text": "validation fact phase66_mem_45",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_45": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_24e1cdc16e": {
+      "entry_id": "mem_24e1cdc16e",
+      "text": "validation fact phase66_mem_46",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_46": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_d2a39e6b8e": {
+      "entry_id": "mem_d2a39e6b8e",
+      "text": "validation fact phase66_mem_47",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_47": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_85f407055d": {
+      "entry_id": "mem_85f407055d",
+      "text": "validation fact phase66_mem_48",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_48": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_86f3e5a98f": {
+      "entry_id": "mem_86f3e5a98f",
+      "text": "validation fact phase66_mem_49",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_49": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_a1de1fb8b1": {
+      "entry_id": "mem_a1de1fb8b1",
+      "text": "validation fact phase66_mem_50",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_50": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_34a098e52d": {
+      "entry_id": "mem_34a098e52d",
+      "text": "browser_search: query=topic flow 0 url=https://duckduckgo.com/?q=topic+flow+0",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_ec9fa005ea": {
+      "entry_id": "mem_ec9fa005ea",
+      "text": "browser_search: query=topic flow 1 url=https://duckduckgo.com/?q=topic+flow+1",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_3a01101e0d": {
+      "entry_id": "mem_3a01101e0d",
+      "text": "browser_search: query=topic flow 2 url=https://duckduckgo.com/?q=topic+flow+2",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_54bca01c53": {
+      "entry_id": "mem_54bca01c53",
+      "text": "browser_search: query=topic flow 3 url=https://duckduckgo.com/?q=topic+flow+3",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_c9d2e25b9d": {
+      "entry_id": "mem_c9d2e25b9d",
+      "text": "browser_search: query=topic flow 4 url=https://duckduckgo.com/?q=topic+flow+4",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_7cd6cbe3e4": {
+      "entry_id": "mem_7cd6cbe3e4",
+      "text": "browser_search: query=topic flow 5 url=https://duckduckgo.com/?q=topic+flow+5",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_61a586001f": {
+      "entry_id": "mem_61a586001f",
+      "text": "browser_search: query=topic flow 6 url=https://duckduckgo.com/?q=topic+flow+6",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_7529d89f38": {
+      "entry_id": "mem_7529d89f38",
+      "text": "browser_search: query=topic flow 7 url=https://duckduckgo.com/?q=topic+flow+7",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_7aa36e75bb": {
+      "entry_id": "mem_7aa36e75bb",
+      "text": "browser_search: query=topic flow 8 url=https://duckduckgo.com/?q=topic+flow+8",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_4e9ac2c835": {
+      "entry_id": "mem_4e9ac2c835",
+      "text": "browser_search: query=topic flow 9 url=https://duckduckgo.com/?q=topic+flow+9",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_4c791ab321": {
+      "entry_id": "mem_4c791ab321",
+      "text": "browser_search: query=topic flow 10 url=https://duckduckgo.com/?q=topic+flow+10",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "10": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_7e42d515cb": {
+      "entry_id": "mem_7e42d515cb",
+      "text": "browser_search: query=topic flow 11 url=https://duckduckgo.com/?q=topic+flow+11",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "11": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_f3b10d2347": {
+      "entry_id": "mem_f3b10d2347",
+      "text": "browser_search: query=topic flow 12 url=https://duckduckgo.com/?q=topic+flow+12",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "12": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_81ae42a98d": {
+      "entry_id": "mem_81ae42a98d",
+      "text": "browser_search: query=topic flow 13 url=https://duckduckgo.com/?q=topic+flow+13",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "13": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_378a1be6d1": {
+      "entry_id": "mem_378a1be6d1",
+      "text": "browser_search: query=topic flow 14 url=https://duckduckgo.com/?q=topic+flow+14",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "14": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_df84b45ebc": {
+      "entry_id": "mem_df84b45ebc",
+      "text": "multistep flow_0",
+      "vector": {
+        "multistep": 1.0,
+        "flow_0": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_c1c0ae535b": {
+      "entry_id": "mem_c1c0ae535b",
+      "text": "multistep flow_1",
+      "vector": {
+        "multistep": 1.0,
+        "flow_1": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_ebc4846b8f": {
+      "entry_id": "mem_ebc4846b8f",
+      "text": "multistep flow_2",
+      "vector": {
+        "multistep": 1.0,
+        "flow_2": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_2d02919a1d": {
+      "entry_id": "mem_2d02919a1d",
+      "text": "multistep flow_3",
+      "vector": {
+        "multistep": 1.0,
+        "flow_3": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_3a71af5896": {
+      "entry_id": "mem_3a71af5896",
+      "text": "multistep flow_4",
+      "vector": {
+        "multistep": 1.0,
+        "flow_4": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_9ab2ae68e5": {
+      "entry_id": "mem_9ab2ae68e5",
+      "text": "multistep flow_5",
+      "vector": {
+        "multistep": 1.0,
+        "flow_5": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_8c3547e45d": {
+      "entry_id": "mem_8c3547e45d",
+      "text": "multistep flow_6",
+      "vector": {
+        "multistep": 1.0,
+        "flow_6": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_cbbb13dffe": {
+      "entry_id": "mem_cbbb13dffe",
+      "text": "multistep flow_7",
+      "vector": {
+        "multistep": 1.0,
+        "flow_7": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_ab2f995055": {
+      "entry_id": "mem_ab2f995055",
+      "text": "multistep flow_8",
+      "vector": {
+        "multistep": 1.0,
+        "flow_8": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_ec45438f21": {
+      "entry_id": "mem_ec45438f21",
+      "text": "multistep flow_9",
+      "vector": {
+        "multistep": 1.0,
+        "flow_9": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_5db5cb389b": {
+      "entry_id": "mem_5db5cb389b",
+      "text": "multistep flow_10",
+      "vector": {
+        "multistep": 1.0,
+        "flow_10": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_55fe953fdd": {
+      "entry_id": "mem_55fe953fdd",
+      "text": "multistep flow_11",
+      "vector": {
+        "multistep": 1.0,
+        "flow_11": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_34067c87ed": {
+      "entry_id": "mem_34067c87ed",
+      "text": "multistep flow_12",
+      "vector": {
+        "multistep": 1.0,
+        "flow_12": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_de56a0b365": {
+      "entry_id": "mem_de56a0b365",
+      "text": "multistep flow_13",
+      "vector": {
+        "multistep": 1.0,
+        "flow_13": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_3ecf34834c": {
+      "entry_id": "mem_3ecf34834c",
+      "text": "multistep flow_14",
+      "vector": {
+        "multistep": 1.0,
+        "flow_14": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_1b156f2c27": {
+      "entry_id": "mem_1b156f2c27",
+      "text": "browser_search: query=nvidia earnings url=https://duckduckgo.com/?q=nvidia+earnings",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "nvidia": 2.0,
+        "earnings": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_0fda415f48": {
+      "entry_id": "mem_0fda415f48",
+      "text": "browser_search: query=python asyncio url=https://duckduckgo.com/?q=python+asyncio",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "python": 2.0,
+        "asyncio": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_4b24f46a1d": {
+      "entry_id": "mem_4b24f46a1d",
+      "text": "browser_search: query=jarvis assistant url=https://duckduckgo.com/?q=jarvis+assistant",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "jarvis": 2.0,
+        "assistant": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_eebce1f1bd": {
+      "entry_id": "mem_eebce1f1bd",
+      "text": "browser_search: query=market news url=https://duckduckgo.com/?q=market+news",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "market": 2.0,
+        "news": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_8150c5592b": {
+      "entry_id": "mem_8150c5592b",
+      "text": "browser_search: query=playwright docs url=https://duckduckgo.com/?q=playwright+docs",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "playwright": 2.0,
+        "docs": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_4834fde859": {
+      "entry_id": "mem_4834fde859",
+      "text": "browser_search: query=openai api url=https://duckduckgo.com/?q=openai+api",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "openai": 2.0,
+        "api": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_b5b0551083": {
+      "entry_id": "mem_b5b0551083",
+      "text": "browser_search: query=weather today url=https://duckduckgo.com/?q=weather+today",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "weather": 2.0,
+        "today": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_811e75115a": {
+      "entry_id": "mem_811e75115a",
+      "text": "browser_search: query=cpu benchmarks url=https://duckduckgo.com/?q=cpu+benchmarks",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "cpu": 2.0,
+        "benchmarks": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_6f91817c08": {
+      "entry_id": "mem_6f91817c08",
+      "text": "browser_search: query=topic_0 url=https://duckduckgo.com/?q=topic_0",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic_0": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_13b2016bd5": {
+      "entry_id": "mem_13b2016bd5",
+      "text": "browser_search: query=topic_1 url=https://duckduckgo.com/?q=topic_1",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic_1": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_35bc046333": {
+      "entry_id": "mem_35bc046333",
+      "text": "browser_search: query=topic_2 url=https://duckduckgo.com/?q=topic_2",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic_2": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_97128370d3": {
+      "entry_id": "mem_97128370d3",
+      "text": "browser_search: query=topic_3 url=https://duckduckgo.com/?q=topic_3",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic_3": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_f32e80b862": {
+      "entry_id": "mem_f32e80b862",
+      "text": "browser_search: query=topic_4 url=https://duckduckgo.com/?q=topic_4",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic_4": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_d7b7e0873f": {
+      "entry_id": "mem_d7b7e0873f",
+      "text": "browser_search: query=topic_5 url=https://duckduckgo.com/?q=topic_5",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic_5": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_16fda34cbf": {
+      "entry_id": "mem_16fda34cbf",
+      "text": "validation fact phase66_mem_01",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_01": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_214a66cac5": {
+      "entry_id": "mem_214a66cac5",
+      "text": "validation fact phase66_mem_02",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_02": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_40a6ba44f6": {
+      "entry_id": "mem_40a6ba44f6",
+      "text": "validation fact phase66_mem_03",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_03": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_fa9215e92e": {
+      "entry_id": "mem_fa9215e92e",
+      "text": "validation fact phase66_mem_04",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_04": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_3a433f62a3": {
+      "entry_id": "mem_3a433f62a3",
+      "text": "validation fact phase66_mem_05",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_05": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_f0f8cfd905": {
+      "entry_id": "mem_f0f8cfd905",
+      "text": "validation fact phase66_mem_06",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_06": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_1491980851": {
+      "entry_id": "mem_1491980851",
+      "text": "validation fact phase66_mem_07",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_07": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_056d82d5bb": {
+      "entry_id": "mem_056d82d5bb",
+      "text": "validation fact phase66_mem_08",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_08": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_5f0505359e": {
+      "entry_id": "mem_5f0505359e",
+      "text": "validation fact phase66_mem_09",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_09": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_c918e8970e": {
+      "entry_id": "mem_c918e8970e",
+      "text": "validation fact phase66_mem_10",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_10": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_77532f2a34": {
+      "entry_id": "mem_77532f2a34",
+      "text": "validation fact phase66_mem_11",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_11": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_284eadba41": {
+      "entry_id": "mem_284eadba41",
+      "text": "validation fact phase66_mem_12",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_12": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_8095f27959": {
+      "entry_id": "mem_8095f27959",
+      "text": "validation fact phase66_mem_13",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_13": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_545405586c": {
+      "entry_id": "mem_545405586c",
+      "text": "validation fact phase66_mem_14",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_14": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_b30d3c9cac": {
+      "entry_id": "mem_b30d3c9cac",
+      "text": "validation fact phase66_mem_15",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_15": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_ac5b456f3a": {
+      "entry_id": "mem_ac5b456f3a",
+      "text": "validation fact phase66_mem_16",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_16": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_41f1f4cdfd": {
+      "entry_id": "mem_41f1f4cdfd",
+      "text": "validation fact phase66_mem_17",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_17": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_5e15b04d7a": {
+      "entry_id": "mem_5e15b04d7a",
+      "text": "validation fact phase66_mem_18",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_18": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_541f4dad3a": {
+      "entry_id": "mem_541f4dad3a",
+      "text": "validation fact phase66_mem_19",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_19": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_752cef1655": {
+      "entry_id": "mem_752cef1655",
+      "text": "validation fact phase66_mem_20",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_20": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_6be7f7943f": {
+      "entry_id": "mem_6be7f7943f",
+      "text": "validation fact phase66_mem_21",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_21": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_005342eb3d": {
+      "entry_id": "mem_005342eb3d",
+      "text": "validation fact phase66_mem_22",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_22": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_25ae11293d": {
+      "entry_id": "mem_25ae11293d",
+      "text": "validation fact phase66_mem_23",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_23": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_0f19db9fbc": {
+      "entry_id": "mem_0f19db9fbc",
+      "text": "validation fact phase66_mem_24",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_24": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_073d1a7a09": {
+      "entry_id": "mem_073d1a7a09",
+      "text": "validation fact phase66_mem_25",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_25": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_becf150033": {
+      "entry_id": "mem_becf150033",
+      "text": "validation fact phase66_mem_26",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_26": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_aa83585a14": {
+      "entry_id": "mem_aa83585a14",
+      "text": "validation fact phase66_mem_27",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_27": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_61aa07f180": {
+      "entry_id": "mem_61aa07f180",
+      "text": "validation fact phase66_mem_28",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_28": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_b742b6af3a": {
+      "entry_id": "mem_b742b6af3a",
+      "text": "validation fact phase66_mem_29",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_29": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_dc37489114": {
+      "entry_id": "mem_dc37489114",
+      "text": "validation fact phase66_mem_30",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_30": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_f388100e2a": {
+      "entry_id": "mem_f388100e2a",
+      "text": "validation fact phase66_mem_31",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_31": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_caae313892": {
+      "entry_id": "mem_caae313892",
+      "text": "validation fact phase66_mem_32",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_32": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_cc65e69470": {
+      "entry_id": "mem_cc65e69470",
+      "text": "validation fact phase66_mem_33",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_33": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_e58e6ed306": {
+      "entry_id": "mem_e58e6ed306",
+      "text": "validation fact phase66_mem_34",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_34": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_aabb2c417d": {
+      "entry_id": "mem_aabb2c417d",
+      "text": "validation fact phase66_mem_35",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_35": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_e033db5bf8": {
+      "entry_id": "mem_e033db5bf8",
+      "text": "validation fact phase66_mem_36",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_36": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_0c97c142b6": {
+      "entry_id": "mem_0c97c142b6",
+      "text": "validation fact phase66_mem_37",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_37": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_8dd0f5213b": {
+      "entry_id": "mem_8dd0f5213b",
+      "text": "validation fact phase66_mem_38",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_38": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_255d88401f": {
+      "entry_id": "mem_255d88401f",
+      "text": "validation fact phase66_mem_39",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_39": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_f31593efac": {
+      "entry_id": "mem_f31593efac",
+      "text": "validation fact phase66_mem_40",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_40": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_566a0e3727": {
+      "entry_id": "mem_566a0e3727",
+      "text": "validation fact phase66_mem_41",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_41": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_0ee907ad48": {
+      "entry_id": "mem_0ee907ad48",
+      "text": "validation fact phase66_mem_42",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_42": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_a1cf71436a": {
+      "entry_id": "mem_a1cf71436a",
+      "text": "validation fact phase66_mem_43",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_43": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_0427a2c660": {
+      "entry_id": "mem_0427a2c660",
+      "text": "validation fact phase66_mem_44",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_44": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_3971732ba9": {
+      "entry_id": "mem_3971732ba9",
+      "text": "validation fact phase66_mem_45",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_45": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_767a7f1f94": {
+      "entry_id": "mem_767a7f1f94",
+      "text": "validation fact phase66_mem_46",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_46": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_87328c0ff3": {
+      "entry_id": "mem_87328c0ff3",
+      "text": "validation fact phase66_mem_47",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_47": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_eb66c7bb5c": {
+      "entry_id": "mem_eb66c7bb5c",
+      "text": "validation fact phase66_mem_48",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_48": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_a0b14cfd9e": {
+      "entry_id": "mem_a0b14cfd9e",
+      "text": "validation fact phase66_mem_49",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_49": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_c6b1682f0f": {
+      "entry_id": "mem_c6b1682f0f",
+      "text": "validation fact phase66_mem_50",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_50": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_8568aa7af1": {
+      "entry_id": "mem_8568aa7af1",
+      "text": "browser_search: query=topic flow 0 url=https://duckduckgo.com/?q=topic+flow+0",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_d9ad805109": {
+      "entry_id": "mem_d9ad805109",
+      "text": "browser_search: query=topic flow 1 url=https://duckduckgo.com/?q=topic+flow+1",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_bda3fbaff4": {
+      "entry_id": "mem_bda3fbaff4",
+      "text": "browser_search: query=topic flow 2 url=https://duckduckgo.com/?q=topic+flow+2",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_f455535594": {
+      "entry_id": "mem_f455535594",
+      "text": "browser_search: query=topic flow 3 url=https://duckduckgo.com/?q=topic+flow+3",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_51750b327b": {
+      "entry_id": "mem_51750b327b",
+      "text": "browser_search: query=topic flow 4 url=https://duckduckgo.com/?q=topic+flow+4",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_be89d3ea3d": {
+      "entry_id": "mem_be89d3ea3d",
+      "text": "browser_search: query=topic flow 5 url=https://duckduckgo.com/?q=topic+flow+5",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_b3b118071d": {
+      "entry_id": "mem_b3b118071d",
+      "text": "browser_search: query=topic flow 6 url=https://duckduckgo.com/?q=topic+flow+6",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_b91c4840b6": {
+      "entry_id": "mem_b91c4840b6",
+      "text": "browser_search: query=topic flow 7 url=https://duckduckgo.com/?q=topic+flow+7",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_9e5729194c": {
+      "entry_id": "mem_9e5729194c",
+      "text": "browser_search: query=topic flow 8 url=https://duckduckgo.com/?q=topic+flow+8",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_d5d2efe8b0": {
+      "entry_id": "mem_d5d2efe8b0",
+      "text": "browser_search: query=topic flow 9 url=https://duckduckgo.com/?q=topic+flow+9",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_238587091a": {
+      "entry_id": "mem_238587091a",
+      "text": "browser_search: query=topic flow 10 url=https://duckduckgo.com/?q=topic+flow+10",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "10": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_eab5d2eece": {
+      "entry_id": "mem_eab5d2eece",
+      "text": "browser_search: query=topic flow 11 url=https://duckduckgo.com/?q=topic+flow+11",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "11": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_6c134dbd8e": {
+      "entry_id": "mem_6c134dbd8e",
+      "text": "browser_search: query=topic flow 12 url=https://duckduckgo.com/?q=topic+flow+12",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "12": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_0931b29a00": {
+      "entry_id": "mem_0931b29a00",
+      "text": "browser_search: query=topic flow 13 url=https://duckduckgo.com/?q=topic+flow+13",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "13": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_6efb2c3adb": {
+      "entry_id": "mem_6efb2c3adb",
+      "text": "browser_search: query=topic flow 14 url=https://duckduckgo.com/?q=topic+flow+14",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic": 2.0,
+        "flow": 2.0,
+        "14": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_69e5fc0a05": {
+      "entry_id": "mem_69e5fc0a05",
+      "text": "multistep flow_0",
+      "vector": {
+        "multistep": 1.0,
+        "flow_0": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_84fce32855": {
+      "entry_id": "mem_84fce32855",
+      "text": "multistep flow_1",
+      "vector": {
+        "multistep": 1.0,
+        "flow_1": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_b91d66ea0e": {
+      "entry_id": "mem_b91d66ea0e",
+      "text": "multistep flow_2",
+      "vector": {
+        "multistep": 1.0,
+        "flow_2": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_8f31f9393f": {
+      "entry_id": "mem_8f31f9393f",
+      "text": "multistep flow_3",
+      "vector": {
+        "multistep": 1.0,
+        "flow_3": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_7bb2aceeaa": {
+      "entry_id": "mem_7bb2aceeaa",
+      "text": "multistep flow_4",
+      "vector": {
+        "multistep": 1.0,
+        "flow_4": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_c71b4ef119": {
+      "entry_id": "mem_c71b4ef119",
+      "text": "multistep flow_5",
+      "vector": {
+        "multistep": 1.0,
+        "flow_5": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_117ef7ef42": {
+      "entry_id": "mem_117ef7ef42",
+      "text": "multistep flow_6",
+      "vector": {
+        "multistep": 1.0,
+        "flow_6": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_bf34b4738c": {
+      "entry_id": "mem_bf34b4738c",
+      "text": "multistep flow_7",
+      "vector": {
+        "multistep": 1.0,
+        "flow_7": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_2f7a072968": {
+      "entry_id": "mem_2f7a072968",
+      "text": "multistep flow_8",
+      "vector": {
+        "multistep": 1.0,
+        "flow_8": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_a4227e94fe": {
+      "entry_id": "mem_a4227e94fe",
+      "text": "multistep flow_9",
+      "vector": {
+        "multistep": 1.0,
+        "flow_9": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_9f3093dfa2": {
+      "entry_id": "mem_9f3093dfa2",
+      "text": "multistep flow_10",
+      "vector": {
+        "multistep": 1.0,
+        "flow_10": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_124e5f6cb1": {
+      "entry_id": "mem_124e5f6cb1",
+      "text": "multistep flow_11",
+      "vector": {
+        "multistep": 1.0,
+        "flow_11": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_8b4adf7c1b": {
+      "entry_id": "mem_8b4adf7c1b",
+      "text": "multistep flow_12",
+      "vector": {
+        "multistep": 1.0,
+        "flow_12": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_2bf282a638": {
+      "entry_id": "mem_2bf282a638",
+      "text": "multistep flow_13",
+      "vector": {
+        "multistep": 1.0,
+        "flow_13": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_974fb09336": {
+      "entry_id": "mem_974fb09336",
+      "text": "multistep flow_14",
+      "vector": {
+        "multistep": 1.0,
+        "flow_14": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_cfa2a8070d": {
+      "entry_id": "mem_cfa2a8070d",
+      "text": "validation fact phase66_mem_01",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_01": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_fb4747ef00": {
+      "entry_id": "mem_fb4747ef00",
+      "text": "validation fact phase66_mem_02",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_02": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_aa29102d80": {
+      "entry_id": "mem_aa29102d80",
+      "text": "validation fact phase66_mem_03",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_03": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_bdcfcd43f7": {
+      "entry_id": "mem_bdcfcd43f7",
+      "text": "validation fact phase66_mem_04",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_04": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_2738bff800": {
+      "entry_id": "mem_2738bff800",
+      "text": "validation fact phase66_mem_05",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_05": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_fa272b837e": {
+      "entry_id": "mem_fa272b837e",
+      "text": "validation fact phase66_mem_06",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_06": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_2f6ef6e8c8": {
+      "entry_id": "mem_2f6ef6e8c8",
+      "text": "validation fact phase66_mem_07",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_07": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_4ccc85b64e": {
+      "entry_id": "mem_4ccc85b64e",
+      "text": "validation fact phase66_mem_08",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_08": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_2d6fafdfc4": {
+      "entry_id": "mem_2d6fafdfc4",
+      "text": "validation fact phase66_mem_09",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_09": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_2a15d468f1": {
+      "entry_id": "mem_2a15d468f1",
+      "text": "validation fact phase66_mem_10",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_10": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_b5b22d5fe7": {
+      "entry_id": "mem_b5b22d5fe7",
+      "text": "validation fact phase66_mem_11",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_11": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_7df08b56d5": {
+      "entry_id": "mem_7df08b56d5",
+      "text": "validation fact phase66_mem_12",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_12": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_297231fd4d": {
+      "entry_id": "mem_297231fd4d",
+      "text": "validation fact phase66_mem_13",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_13": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_04cf19cce7": {
+      "entry_id": "mem_04cf19cce7",
+      "text": "validation fact phase66_mem_14",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_14": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_fefe6550c3": {
+      "entry_id": "mem_fefe6550c3",
+      "text": "validation fact phase66_mem_15",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_15": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_11194a7474": {
+      "entry_id": "mem_11194a7474",
+      "text": "validation fact phase66_mem_16",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_16": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_1526d08b5a": {
+      "entry_id": "mem_1526d08b5a",
+      "text": "validation fact phase66_mem_17",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_17": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_748dc721ba": {
+      "entry_id": "mem_748dc721ba",
+      "text": "validation fact phase66_mem_18",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_18": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_58354536f6": {
+      "entry_id": "mem_58354536f6",
+      "text": "validation fact phase66_mem_19",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_19": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_ba9fc8b45a": {
+      "entry_id": "mem_ba9fc8b45a",
+      "text": "validation fact phase66_mem_20",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_20": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_089e406764": {
+      "entry_id": "mem_089e406764",
+      "text": "validation fact phase66_mem_21",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_21": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_3bdfc98eb1": {
+      "entry_id": "mem_3bdfc98eb1",
+      "text": "validation fact phase66_mem_22",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_22": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_00c30b7164": {
+      "entry_id": "mem_00c30b7164",
+      "text": "validation fact phase66_mem_23",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_23": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_ba6064ac0c": {
+      "entry_id": "mem_ba6064ac0c",
+      "text": "validation fact phase66_mem_24",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_24": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_d1d241c870": {
+      "entry_id": "mem_d1d241c870",
+      "text": "validation fact phase66_mem_25",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_25": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_49ecaeab1e": {
+      "entry_id": "mem_49ecaeab1e",
+      "text": "validation fact phase66_mem_26",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_26": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_9bde96459e": {
+      "entry_id": "mem_9bde96459e",
+      "text": "validation fact phase66_mem_27",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_27": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_a7866c1a45": {
+      "entry_id": "mem_a7866c1a45",
+      "text": "validation fact phase66_mem_28",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_28": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_5e54733895": {
+      "entry_id": "mem_5e54733895",
+      "text": "validation fact phase66_mem_29",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_29": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_364835fcfd": {
+      "entry_id": "mem_364835fcfd",
+      "text": "validation fact phase66_mem_30",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_30": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_ab496d5258": {
+      "entry_id": "mem_ab496d5258",
+      "text": "validation fact phase66_mem_31",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_31": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_c02640f954": {
+      "entry_id": "mem_c02640f954",
+      "text": "validation fact phase66_mem_32",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_32": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_de7556ef8d": {
+      "entry_id": "mem_de7556ef8d",
+      "text": "validation fact phase66_mem_33",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_33": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_3a03b57392": {
+      "entry_id": "mem_3a03b57392",
+      "text": "validation fact phase66_mem_34",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_34": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_13668cb807": {
+      "entry_id": "mem_13668cb807",
+      "text": "validation fact phase66_mem_35",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_35": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_ca73e4b2a1": {
+      "entry_id": "mem_ca73e4b2a1",
+      "text": "validation fact phase66_mem_36",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_36": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_b470b70ea1": {
+      "entry_id": "mem_b470b70ea1",
+      "text": "validation fact phase66_mem_37",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_37": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_b8ffb0703e": {
+      "entry_id": "mem_b8ffb0703e",
+      "text": "validation fact phase66_mem_38",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_38": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_94d350d564": {
+      "entry_id": "mem_94d350d564",
+      "text": "validation fact phase66_mem_39",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_39": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_6a6fa1727d": {
+      "entry_id": "mem_6a6fa1727d",
+      "text": "validation fact phase66_mem_40",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_40": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_1bf6255f66": {
+      "entry_id": "mem_1bf6255f66",
+      "text": "validation fact phase66_mem_41",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_41": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_a480cf7e5a": {
+      "entry_id": "mem_a480cf7e5a",
+      "text": "validation fact phase66_mem_42",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_42": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_2534f44b4b": {
+      "entry_id": "mem_2534f44b4b",
+      "text": "validation fact phase66_mem_43",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_43": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_9bb3252ba4": {
+      "entry_id": "mem_9bb3252ba4",
+      "text": "validation fact phase66_mem_44",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_44": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_2f136bba93": {
+      "entry_id": "mem_2f136bba93",
+      "text": "validation fact phase66_mem_45",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_45": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_5400754ad8": {
+      "entry_id": "mem_5400754ad8",
+      "text": "validation fact phase66_mem_46",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_46": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_26899080b2": {
+      "entry_id": "mem_26899080b2",
+      "text": "validation fact phase66_mem_47",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_47": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_6b49723c49": {
+      "entry_id": "mem_6b49723c49",
+      "text": "validation fact phase66_mem_48",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_48": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_2bf9036cd5": {
+      "entry_id": "mem_2bf9036cd5",
+      "text": "validation fact phase66_mem_49",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_49": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_0c4805e95e": {
+      "entry_id": "mem_0c4805e95e",
+      "text": "validation fact phase66_mem_50",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_50": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_e378bc4d40": {
+      "entry_id": "mem_e378bc4d40",
+      "text": "browser_search: query=nvidia earnings url=https://duckduckgo.com/?q=nvidia+earnings",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "nvidia": 2.0,
+        "earnings": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_0589ce86da": {
+      "entry_id": "mem_0589ce86da",
+      "text": "browser_search: query=python asyncio url=https://duckduckgo.com/?q=python+asyncio",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "python": 2.0,
+        "asyncio": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_a51ca77cea": {
+      "entry_id": "mem_a51ca77cea",
+      "text": "browser_search: query=jarvis assistant url=https://duckduckgo.com/?q=jarvis+assistant",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "jarvis": 2.0,
+        "assistant": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_e5472ac845": {
+      "entry_id": "mem_e5472ac845",
+      "text": "browser_search: query=market news url=https://duckduckgo.com/?q=market+news",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "market": 2.0,
+        "news": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_2faa18e422": {
+      "entry_id": "mem_2faa18e422",
+      "text": "browser_search: query=playwright docs url=https://duckduckgo.com/?q=playwright+docs",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "playwright": 2.0,
+        "docs": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_6e2e4f25e8": {
+      "entry_id": "mem_6e2e4f25e8",
+      "text": "browser_search: query=openai api url=https://duckduckgo.com/?q=openai+api",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "openai": 2.0,
+        "api": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_8e075dd987": {
+      "entry_id": "mem_8e075dd987",
+      "text": "browser_search: query=weather today url=https://duckduckgo.com/?q=weather+today",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "weather": 2.0,
+        "today": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_231bdaa82d": {
+      "entry_id": "mem_231bdaa82d",
+      "text": "browser_search: query=cpu benchmarks url=https://duckduckgo.com/?q=cpu+benchmarks",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "cpu": 2.0,
+        "benchmarks": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_5628125390": {
+      "entry_id": "mem_5628125390",
+      "text": "browser_search: query=topic_0 url=https://duckduckgo.com/?q=topic_0",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic_0": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_da2efdf7eb": {
+      "entry_id": "mem_da2efdf7eb",
+      "text": "browser_search: query=topic_1 url=https://duckduckgo.com/?q=topic_1",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic_1": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_6b7ec44ad3": {
+      "entry_id": "mem_6b7ec44ad3",
+      "text": "browser_search: query=topic_2 url=https://duckduckgo.com/?q=topic_2",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic_2": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_e1e92cb1d5": {
+      "entry_id": "mem_e1e92cb1d5",
+      "text": "browser_search: query=topic_3 url=https://duckduckgo.com/?q=topic_3",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic_3": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_764919aed8": {
+      "entry_id": "mem_764919aed8",
+      "text": "browser_search: query=topic_4 url=https://duckduckgo.com/?q=topic_4",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic_4": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_01d3e0b7fb": {
+      "entry_id": "mem_01d3e0b7fb",
+      "text": "browser_search: query=topic_5 url=https://duckduckgo.com/?q=topic_5",
+      "vector": {
+        "browser_search": 1.0,
+        "query": 1.0,
+        "topic_5": 2.0,
+        "url": 1.0,
+        "https": 1.0,
+        "duckduckgo": 1.0,
+        "com": 1.0
+      },
+      "importance": 0.4,
+      "confidence": 0.9,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_6dd67ef150": {
+      "entry_id": "mem_6dd67ef150",
+      "text": "validation fact phase66_mem_01",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_01": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_e960b732e1": {
+      "entry_id": "mem_e960b732e1",
+      "text": "validation fact phase66_mem_02",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_02": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_6c449b862a": {
+      "entry_id": "mem_6c449b862a",
+      "text": "validation fact phase66_mem_03",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_03": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_1b82e982b0": {
+      "entry_id": "mem_1b82e982b0",
+      "text": "validation fact phase66_mem_04",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_04": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_85e00718c6": {
+      "entry_id": "mem_85e00718c6",
+      "text": "validation fact phase66_mem_05",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_05": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_add0836a1e": {
+      "entry_id": "mem_add0836a1e",
+      "text": "validation fact phase66_mem_06",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_06": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_ae96f6b76d": {
+      "entry_id": "mem_ae96f6b76d",
+      "text": "validation fact phase66_mem_07",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_07": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_1304fbc17c": {
+      "entry_id": "mem_1304fbc17c",
+      "text": "validation fact phase66_mem_08",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_08": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_044ad4e56e": {
+      "entry_id": "mem_044ad4e56e",
+      "text": "validation fact phase66_mem_09",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_09": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_3974a8531e": {
+      "entry_id": "mem_3974a8531e",
+      "text": "validation fact phase66_mem_10",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_10": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_e577e657aa": {
+      "entry_id": "mem_e577e657aa",
+      "text": "validation fact phase66_mem_11",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_11": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_0450df2900": {
+      "entry_id": "mem_0450df2900",
+      "text": "validation fact phase66_mem_12",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_12": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_94e5b8c17f": {
+      "entry_id": "mem_94e5b8c17f",
+      "text": "validation fact phase66_mem_13",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_13": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_fb7164d96c": {
+      "entry_id": "mem_fb7164d96c",
+      "text": "validation fact phase66_mem_14",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_14": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_9c8ed28cd4": {
+      "entry_id": "mem_9c8ed28cd4",
+      "text": "validation fact phase66_mem_15",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_15": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_2e656f88a9": {
+      "entry_id": "mem_2e656f88a9",
+      "text": "validation fact phase66_mem_16",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_16": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_f61e348e00": {
+      "entry_id": "mem_f61e348e00",
+      "text": "validation fact phase66_mem_17",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_17": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_cbb669629d": {
+      "entry_id": "mem_cbb669629d",
+      "text": "validation fact phase66_mem_18",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_18": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_e76a3c7468": {
+      "entry_id": "mem_e76a3c7468",
+      "text": "validation fact phase66_mem_19",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_19": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_a8ff49413d": {
+      "entry_id": "mem_a8ff49413d",
+      "text": "validation fact phase66_mem_20",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_20": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_2e99b2b5fa": {
+      "entry_id": "mem_2e99b2b5fa",
+      "text": "validation fact phase66_mem_21",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_21": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_94cf9fcd5c": {
+      "entry_id": "mem_94cf9fcd5c",
+      "text": "validation fact phase66_mem_22",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_22": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_9e577046f6": {
+      "entry_id": "mem_9e577046f6",
+      "text": "validation fact phase66_mem_23",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_23": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_261a5aeb8f": {
+      "entry_id": "mem_261a5aeb8f",
+      "text": "validation fact phase66_mem_24",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_24": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_b8ce1b1d2d": {
+      "entry_id": "mem_b8ce1b1d2d",
+      "text": "validation fact phase66_mem_25",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_25": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_801ca9b1f7": {
+      "entry_id": "mem_801ca9b1f7",
+      "text": "validation fact phase66_mem_26",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_26": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_3d6e6314aa": {
+      "entry_id": "mem_3d6e6314aa",
+      "text": "validation fact phase66_mem_27",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_27": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_cc1a0aa217": {
+      "entry_id": "mem_cc1a0aa217",
+      "text": "validation fact phase66_mem_28",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_28": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_7c2d4e547f": {
+      "entry_id": "mem_7c2d4e547f",
+      "text": "validation fact phase66_mem_29",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_29": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_a2c3b11645": {
+      "entry_id": "mem_a2c3b11645",
+      "text": "validation fact phase66_mem_30",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_30": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_ff207f28d5": {
+      "entry_id": "mem_ff207f28d5",
+      "text": "validation fact phase66_mem_31",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_31": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_b8c5998062": {
+      "entry_id": "mem_b8c5998062",
+      "text": "validation fact phase66_mem_32",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_32": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_6804f3782d": {
+      "entry_id": "mem_6804f3782d",
+      "text": "validation fact phase66_mem_33",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_33": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_dba8c76452": {
+      "entry_id": "mem_dba8c76452",
+      "text": "validation fact phase66_mem_34",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_34": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_baab7ba230": {
+      "entry_id": "mem_baab7ba230",
+      "text": "validation fact phase66_mem_35",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_35": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_d800a859a0": {
+      "entry_id": "mem_d800a859a0",
+      "text": "validation fact phase66_mem_36",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_36": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_7d5893585f": {
+      "entry_id": "mem_7d5893585f",
+      "text": "validation fact phase66_mem_37",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_37": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_10b4980ea9": {
+      "entry_id": "mem_10b4980ea9",
+      "text": "validation fact phase66_mem_38",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_38": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_7ded42f51c": {
+      "entry_id": "mem_7ded42f51c",
+      "text": "validation fact phase66_mem_39",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_39": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_e7b898138b": {
+      "entry_id": "mem_e7b898138b",
+      "text": "validation fact phase66_mem_40",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_40": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_630ecf1d64": {
+      "entry_id": "mem_630ecf1d64",
+      "text": "validation fact phase66_mem_41",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_41": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_5cdea86623": {
+      "entry_id": "mem_5cdea86623",
+      "text": "validation fact phase66_mem_42",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_42": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_9f0940632d": {
+      "entry_id": "mem_9f0940632d",
+      "text": "validation fact phase66_mem_43",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_43": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_5c8c2a6603": {
+      "entry_id": "mem_5c8c2a6603",
+      "text": "validation fact phase66_mem_44",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_44": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_9e3d45a0c7": {
+      "entry_id": "mem_9e3d45a0c7",
+      "text": "validation fact phase66_mem_45",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_45": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_c58a1a92c5": {
+      "entry_id": "mem_c58a1a92c5",
+      "text": "validation fact phase66_mem_46",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_46": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_2eebd910db": {
+      "entry_id": "mem_2eebd910db",
+      "text": "validation fact phase66_mem_47",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_47": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_88eedbbd5d": {
+      "entry_id": "mem_88eedbbd5d",
+      "text": "validation fact phase66_mem_48",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_48": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_c3de82806b": {
+      "entry_id": "mem_c3de82806b",
+      "text": "validation fact phase66_mem_49",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_49": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    },
+    "mem_4dd7c845f9": {
+      "entry_id": "mem_4dd7c845f9",
+      "text": "validation fact phase66_mem_50",
+      "vector": {
+        "validation": 1.0,
+        "fact": 1.0,
+        "phase66_mem_50": 1.0
+      },
+      "importance": 0.5,
+      "confidence": 0.7,
+      "category": "session",
+      "long_term": false
+    }
+  },
+  "graph": {
+    "relations": [
+      {
+        "a": "mem_cbb669629d",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_cbb669629d",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_cbb669629d",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_cbb669629d",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_a8ff49413d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_2e99b2b5fa",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_94cf9fcd5c",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_9e577046f6",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_261a5aeb8f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_b8ce1b1d2d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_801ca9b1f7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_3d6e6314aa",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_cc1a0aa217",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_7c2d4e547f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_a2c3b11645",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_ff207f28d5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_b8c5998062",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_6804f3782d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_dba8c76452",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_baab7ba230",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_d800a859a0",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_7d5893585f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_10b4980ea9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_7ded42f51c",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_e7b898138b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_630ecf1d64",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_5cdea86623",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_9f0940632d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_5c8c2a6603",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_9e3d45a0c7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e76a3c7468",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_2e99b2b5fa",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_94cf9fcd5c",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_9e577046f6",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_261a5aeb8f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_b8ce1b1d2d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_801ca9b1f7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_3d6e6314aa",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_cc1a0aa217",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_7c2d4e547f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_a2c3b11645",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_ff207f28d5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_b8c5998062",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_6804f3782d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_dba8c76452",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_baab7ba230",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_d800a859a0",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_7d5893585f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_10b4980ea9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_7ded42f51c",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_e7b898138b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_630ecf1d64",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_5cdea86623",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_9f0940632d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_5c8c2a6603",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_9e3d45a0c7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a8ff49413d",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_94cf9fcd5c",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_9e577046f6",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_261a5aeb8f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_b8ce1b1d2d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_801ca9b1f7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_3d6e6314aa",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_cc1a0aa217",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_7c2d4e547f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_a2c3b11645",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_ff207f28d5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_b8c5998062",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_6804f3782d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_dba8c76452",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_baab7ba230",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_d800a859a0",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_7d5893585f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_10b4980ea9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_7ded42f51c",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_e7b898138b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_630ecf1d64",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_5cdea86623",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_9f0940632d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_5c8c2a6603",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_9e3d45a0c7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2e99b2b5fa",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_9e577046f6",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_261a5aeb8f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_b8ce1b1d2d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_801ca9b1f7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_3d6e6314aa",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_cc1a0aa217",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_7c2d4e547f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_a2c3b11645",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_ff207f28d5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_b8c5998062",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_6804f3782d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_dba8c76452",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_baab7ba230",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_d800a859a0",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_7d5893585f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_10b4980ea9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_7ded42f51c",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_e7b898138b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_630ecf1d64",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_5cdea86623",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_9f0940632d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_5c8c2a6603",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_9e3d45a0c7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_94cf9fcd5c",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_261a5aeb8f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_b8ce1b1d2d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_801ca9b1f7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_3d6e6314aa",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_cc1a0aa217",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_7c2d4e547f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_a2c3b11645",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_ff207f28d5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_b8c5998062",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_6804f3782d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_dba8c76452",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_baab7ba230",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_d800a859a0",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_7d5893585f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_10b4980ea9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_7ded42f51c",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_e7b898138b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_630ecf1d64",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_5cdea86623",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_9f0940632d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_5c8c2a6603",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_9e3d45a0c7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e577046f6",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_261a5aeb8f",
+        "b": "mem_b8ce1b1d2d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_261a5aeb8f",
+        "b": "mem_801ca9b1f7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_261a5aeb8f",
+        "b": "mem_3d6e6314aa",
+        "score": 0.667
+      },
+      {
+        "a": "mem_261a5aeb8f",
+        "b": "mem_cc1a0aa217",
+        "score": 0.667
+      },
+      {
+        "a": "mem_261a5aeb8f",
+        "b": "mem_7c2d4e547f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_261a5aeb8f",
+        "b": "mem_a2c3b11645",
+        "score": 0.667
+      },
+      {
+        "a": "mem_261a5aeb8f",
+        "b": "mem_ff207f28d5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_261a5aeb8f",
+        "b": "mem_b8c5998062",
+        "score": 0.667
+      },
+      {
+        "a": "mem_261a5aeb8f",
+        "b": "mem_6804f3782d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_261a5aeb8f",
+        "b": "mem_dba8c76452",
+        "score": 0.667
+      },
+      {
+        "a": "mem_261a5aeb8f",
+        "b": "mem_baab7ba230",
+        "score": 0.667
+      },
+      {
+        "a": "mem_261a5aeb8f",
+        "b": "mem_d800a859a0",
+        "score": 0.667
+      },
+      {
+        "a": "mem_261a5aeb8f",
+        "b": "mem_7d5893585f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_261a5aeb8f",
+        "b": "mem_10b4980ea9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_261a5aeb8f",
+        "b": "mem_7ded42f51c",
+        "score": 0.667
+      },
+      {
+        "a": "mem_261a5aeb8f",
+        "b": "mem_e7b898138b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_261a5aeb8f",
+        "b": "mem_630ecf1d64",
+        "score": 0.667
+      },
+      {
+        "a": "mem_261a5aeb8f",
+        "b": "mem_5cdea86623",
+        "score": 0.667
+      },
+      {
+        "a": "mem_261a5aeb8f",
+        "b": "mem_9f0940632d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_261a5aeb8f",
+        "b": "mem_5c8c2a6603",
+        "score": 0.667
+      },
+      {
+        "a": "mem_261a5aeb8f",
+        "b": "mem_9e3d45a0c7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_261a5aeb8f",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_261a5aeb8f",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_261a5aeb8f",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_261a5aeb8f",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_261a5aeb8f",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8ce1b1d2d",
+        "b": "mem_801ca9b1f7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8ce1b1d2d",
+        "b": "mem_3d6e6314aa",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8ce1b1d2d",
+        "b": "mem_cc1a0aa217",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8ce1b1d2d",
+        "b": "mem_7c2d4e547f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8ce1b1d2d",
+        "b": "mem_a2c3b11645",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8ce1b1d2d",
+        "b": "mem_ff207f28d5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8ce1b1d2d",
+        "b": "mem_b8c5998062",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8ce1b1d2d",
+        "b": "mem_6804f3782d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8ce1b1d2d",
+        "b": "mem_dba8c76452",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8ce1b1d2d",
+        "b": "mem_baab7ba230",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8ce1b1d2d",
+        "b": "mem_d800a859a0",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8ce1b1d2d",
+        "b": "mem_7d5893585f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8ce1b1d2d",
+        "b": "mem_10b4980ea9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8ce1b1d2d",
+        "b": "mem_7ded42f51c",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8ce1b1d2d",
+        "b": "mem_e7b898138b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8ce1b1d2d",
+        "b": "mem_630ecf1d64",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8ce1b1d2d",
+        "b": "mem_5cdea86623",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8ce1b1d2d",
+        "b": "mem_9f0940632d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8ce1b1d2d",
+        "b": "mem_5c8c2a6603",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8ce1b1d2d",
+        "b": "mem_9e3d45a0c7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8ce1b1d2d",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8ce1b1d2d",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8ce1b1d2d",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8ce1b1d2d",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8ce1b1d2d",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_801ca9b1f7",
+        "b": "mem_3d6e6314aa",
+        "score": 0.667
+      },
+      {
+        "a": "mem_801ca9b1f7",
+        "b": "mem_cc1a0aa217",
+        "score": 0.667
+      },
+      {
+        "a": "mem_801ca9b1f7",
+        "b": "mem_7c2d4e547f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_801ca9b1f7",
+        "b": "mem_a2c3b11645",
+        "score": 0.667
+      },
+      {
+        "a": "mem_801ca9b1f7",
+        "b": "mem_ff207f28d5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_801ca9b1f7",
+        "b": "mem_b8c5998062",
+        "score": 0.667
+      },
+      {
+        "a": "mem_801ca9b1f7",
+        "b": "mem_6804f3782d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_801ca9b1f7",
+        "b": "mem_dba8c76452",
+        "score": 0.667
+      },
+      {
+        "a": "mem_801ca9b1f7",
+        "b": "mem_baab7ba230",
+        "score": 0.667
+      },
+      {
+        "a": "mem_801ca9b1f7",
+        "b": "mem_d800a859a0",
+        "score": 0.667
+      },
+      {
+        "a": "mem_801ca9b1f7",
+        "b": "mem_7d5893585f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_801ca9b1f7",
+        "b": "mem_10b4980ea9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_801ca9b1f7",
+        "b": "mem_7ded42f51c",
+        "score": 0.667
+      },
+      {
+        "a": "mem_801ca9b1f7",
+        "b": "mem_e7b898138b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_801ca9b1f7",
+        "b": "mem_630ecf1d64",
+        "score": 0.667
+      },
+      {
+        "a": "mem_801ca9b1f7",
+        "b": "mem_5cdea86623",
+        "score": 0.667
+      },
+      {
+        "a": "mem_801ca9b1f7",
+        "b": "mem_9f0940632d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_801ca9b1f7",
+        "b": "mem_5c8c2a6603",
+        "score": 0.667
+      },
+      {
+        "a": "mem_801ca9b1f7",
+        "b": "mem_9e3d45a0c7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_801ca9b1f7",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_801ca9b1f7",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_801ca9b1f7",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_801ca9b1f7",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_801ca9b1f7",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_3d6e6314aa",
+        "b": "mem_cc1a0aa217",
+        "score": 0.667
+      },
+      {
+        "a": "mem_3d6e6314aa",
+        "b": "mem_7c2d4e547f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_3d6e6314aa",
+        "b": "mem_a2c3b11645",
+        "score": 0.667
+      },
+      {
+        "a": "mem_3d6e6314aa",
+        "b": "mem_ff207f28d5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_3d6e6314aa",
+        "b": "mem_b8c5998062",
+        "score": 0.667
+      },
+      {
+        "a": "mem_3d6e6314aa",
+        "b": "mem_6804f3782d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_3d6e6314aa",
+        "b": "mem_dba8c76452",
+        "score": 0.667
+      },
+      {
+        "a": "mem_3d6e6314aa",
+        "b": "mem_baab7ba230",
+        "score": 0.667
+      },
+      {
+        "a": "mem_3d6e6314aa",
+        "b": "mem_d800a859a0",
+        "score": 0.667
+      },
+      {
+        "a": "mem_3d6e6314aa",
+        "b": "mem_7d5893585f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_3d6e6314aa",
+        "b": "mem_10b4980ea9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_3d6e6314aa",
+        "b": "mem_7ded42f51c",
+        "score": 0.667
+      },
+      {
+        "a": "mem_3d6e6314aa",
+        "b": "mem_e7b898138b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_3d6e6314aa",
+        "b": "mem_630ecf1d64",
+        "score": 0.667
+      },
+      {
+        "a": "mem_3d6e6314aa",
+        "b": "mem_5cdea86623",
+        "score": 0.667
+      },
+      {
+        "a": "mem_3d6e6314aa",
+        "b": "mem_9f0940632d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_3d6e6314aa",
+        "b": "mem_5c8c2a6603",
+        "score": 0.667
+      },
+      {
+        "a": "mem_3d6e6314aa",
+        "b": "mem_9e3d45a0c7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_3d6e6314aa",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_3d6e6314aa",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_3d6e6314aa",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_3d6e6314aa",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_3d6e6314aa",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_cc1a0aa217",
+        "b": "mem_7c2d4e547f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_cc1a0aa217",
+        "b": "mem_a2c3b11645",
+        "score": 0.667
+      },
+      {
+        "a": "mem_cc1a0aa217",
+        "b": "mem_ff207f28d5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_cc1a0aa217",
+        "b": "mem_b8c5998062",
+        "score": 0.667
+      },
+      {
+        "a": "mem_cc1a0aa217",
+        "b": "mem_6804f3782d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_cc1a0aa217",
+        "b": "mem_dba8c76452",
+        "score": 0.667
+      },
+      {
+        "a": "mem_cc1a0aa217",
+        "b": "mem_baab7ba230",
+        "score": 0.667
+      },
+      {
+        "a": "mem_cc1a0aa217",
+        "b": "mem_d800a859a0",
+        "score": 0.667
+      },
+      {
+        "a": "mem_cc1a0aa217",
+        "b": "mem_7d5893585f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_cc1a0aa217",
+        "b": "mem_10b4980ea9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_cc1a0aa217",
+        "b": "mem_7ded42f51c",
+        "score": 0.667
+      },
+      {
+        "a": "mem_cc1a0aa217",
+        "b": "mem_e7b898138b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_cc1a0aa217",
+        "b": "mem_630ecf1d64",
+        "score": 0.667
+      },
+      {
+        "a": "mem_cc1a0aa217",
+        "b": "mem_5cdea86623",
+        "score": 0.667
+      },
+      {
+        "a": "mem_cc1a0aa217",
+        "b": "mem_9f0940632d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_cc1a0aa217",
+        "b": "mem_5c8c2a6603",
+        "score": 0.667
+      },
+      {
+        "a": "mem_cc1a0aa217",
+        "b": "mem_9e3d45a0c7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_cc1a0aa217",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_cc1a0aa217",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_cc1a0aa217",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_cc1a0aa217",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_cc1a0aa217",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7c2d4e547f",
+        "b": "mem_a2c3b11645",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7c2d4e547f",
+        "b": "mem_ff207f28d5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7c2d4e547f",
+        "b": "mem_b8c5998062",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7c2d4e547f",
+        "b": "mem_6804f3782d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7c2d4e547f",
+        "b": "mem_dba8c76452",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7c2d4e547f",
+        "b": "mem_baab7ba230",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7c2d4e547f",
+        "b": "mem_d800a859a0",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7c2d4e547f",
+        "b": "mem_7d5893585f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7c2d4e547f",
+        "b": "mem_10b4980ea9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7c2d4e547f",
+        "b": "mem_7ded42f51c",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7c2d4e547f",
+        "b": "mem_e7b898138b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7c2d4e547f",
+        "b": "mem_630ecf1d64",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7c2d4e547f",
+        "b": "mem_5cdea86623",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7c2d4e547f",
+        "b": "mem_9f0940632d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7c2d4e547f",
+        "b": "mem_5c8c2a6603",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7c2d4e547f",
+        "b": "mem_9e3d45a0c7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7c2d4e547f",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7c2d4e547f",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7c2d4e547f",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7c2d4e547f",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7c2d4e547f",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a2c3b11645",
+        "b": "mem_ff207f28d5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a2c3b11645",
+        "b": "mem_b8c5998062",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a2c3b11645",
+        "b": "mem_6804f3782d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a2c3b11645",
+        "b": "mem_dba8c76452",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a2c3b11645",
+        "b": "mem_baab7ba230",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a2c3b11645",
+        "b": "mem_d800a859a0",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a2c3b11645",
+        "b": "mem_7d5893585f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a2c3b11645",
+        "b": "mem_10b4980ea9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a2c3b11645",
+        "b": "mem_7ded42f51c",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a2c3b11645",
+        "b": "mem_e7b898138b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a2c3b11645",
+        "b": "mem_630ecf1d64",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a2c3b11645",
+        "b": "mem_5cdea86623",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a2c3b11645",
+        "b": "mem_9f0940632d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a2c3b11645",
+        "b": "mem_5c8c2a6603",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a2c3b11645",
+        "b": "mem_9e3d45a0c7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a2c3b11645",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a2c3b11645",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a2c3b11645",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a2c3b11645",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_a2c3b11645",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_ff207f28d5",
+        "b": "mem_b8c5998062",
+        "score": 0.667
+      },
+      {
+        "a": "mem_ff207f28d5",
+        "b": "mem_6804f3782d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_ff207f28d5",
+        "b": "mem_dba8c76452",
+        "score": 0.667
+      },
+      {
+        "a": "mem_ff207f28d5",
+        "b": "mem_baab7ba230",
+        "score": 0.667
+      },
+      {
+        "a": "mem_ff207f28d5",
+        "b": "mem_d800a859a0",
+        "score": 0.667
+      },
+      {
+        "a": "mem_ff207f28d5",
+        "b": "mem_7d5893585f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_ff207f28d5",
+        "b": "mem_10b4980ea9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_ff207f28d5",
+        "b": "mem_7ded42f51c",
+        "score": 0.667
+      },
+      {
+        "a": "mem_ff207f28d5",
+        "b": "mem_e7b898138b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_ff207f28d5",
+        "b": "mem_630ecf1d64",
+        "score": 0.667
+      },
+      {
+        "a": "mem_ff207f28d5",
+        "b": "mem_5cdea86623",
+        "score": 0.667
+      },
+      {
+        "a": "mem_ff207f28d5",
+        "b": "mem_9f0940632d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_ff207f28d5",
+        "b": "mem_5c8c2a6603",
+        "score": 0.667
+      },
+      {
+        "a": "mem_ff207f28d5",
+        "b": "mem_9e3d45a0c7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_ff207f28d5",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_ff207f28d5",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_ff207f28d5",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_ff207f28d5",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_ff207f28d5",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8c5998062",
+        "b": "mem_6804f3782d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8c5998062",
+        "b": "mem_dba8c76452",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8c5998062",
+        "b": "mem_baab7ba230",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8c5998062",
+        "b": "mem_d800a859a0",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8c5998062",
+        "b": "mem_7d5893585f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8c5998062",
+        "b": "mem_10b4980ea9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8c5998062",
+        "b": "mem_7ded42f51c",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8c5998062",
+        "b": "mem_e7b898138b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8c5998062",
+        "b": "mem_630ecf1d64",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8c5998062",
+        "b": "mem_5cdea86623",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8c5998062",
+        "b": "mem_9f0940632d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8c5998062",
+        "b": "mem_5c8c2a6603",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8c5998062",
+        "b": "mem_9e3d45a0c7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8c5998062",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8c5998062",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8c5998062",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8c5998062",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_b8c5998062",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_6804f3782d",
+        "b": "mem_dba8c76452",
+        "score": 0.667
+      },
+      {
+        "a": "mem_6804f3782d",
+        "b": "mem_baab7ba230",
+        "score": 0.667
+      },
+      {
+        "a": "mem_6804f3782d",
+        "b": "mem_d800a859a0",
+        "score": 0.667
+      },
+      {
+        "a": "mem_6804f3782d",
+        "b": "mem_7d5893585f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_6804f3782d",
+        "b": "mem_10b4980ea9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_6804f3782d",
+        "b": "mem_7ded42f51c",
+        "score": 0.667
+      },
+      {
+        "a": "mem_6804f3782d",
+        "b": "mem_e7b898138b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_6804f3782d",
+        "b": "mem_630ecf1d64",
+        "score": 0.667
+      },
+      {
+        "a": "mem_6804f3782d",
+        "b": "mem_5cdea86623",
+        "score": 0.667
+      },
+      {
+        "a": "mem_6804f3782d",
+        "b": "mem_9f0940632d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_6804f3782d",
+        "b": "mem_5c8c2a6603",
+        "score": 0.667
+      },
+      {
+        "a": "mem_6804f3782d",
+        "b": "mem_9e3d45a0c7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_6804f3782d",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_6804f3782d",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_6804f3782d",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_6804f3782d",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_6804f3782d",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_dba8c76452",
+        "b": "mem_baab7ba230",
+        "score": 0.667
+      },
+      {
+        "a": "mem_dba8c76452",
+        "b": "mem_d800a859a0",
+        "score": 0.667
+      },
+      {
+        "a": "mem_dba8c76452",
+        "b": "mem_7d5893585f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_dba8c76452",
+        "b": "mem_10b4980ea9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_dba8c76452",
+        "b": "mem_7ded42f51c",
+        "score": 0.667
+      },
+      {
+        "a": "mem_dba8c76452",
+        "b": "mem_e7b898138b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_dba8c76452",
+        "b": "mem_630ecf1d64",
+        "score": 0.667
+      },
+      {
+        "a": "mem_dba8c76452",
+        "b": "mem_5cdea86623",
+        "score": 0.667
+      },
+      {
+        "a": "mem_dba8c76452",
+        "b": "mem_9f0940632d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_dba8c76452",
+        "b": "mem_5c8c2a6603",
+        "score": 0.667
+      },
+      {
+        "a": "mem_dba8c76452",
+        "b": "mem_9e3d45a0c7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_dba8c76452",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_dba8c76452",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_dba8c76452",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_dba8c76452",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_dba8c76452",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_baab7ba230",
+        "b": "mem_d800a859a0",
+        "score": 0.667
+      },
+      {
+        "a": "mem_baab7ba230",
+        "b": "mem_7d5893585f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_baab7ba230",
+        "b": "mem_10b4980ea9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_baab7ba230",
+        "b": "mem_7ded42f51c",
+        "score": 0.667
+      },
+      {
+        "a": "mem_baab7ba230",
+        "b": "mem_e7b898138b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_baab7ba230",
+        "b": "mem_630ecf1d64",
+        "score": 0.667
+      },
+      {
+        "a": "mem_baab7ba230",
+        "b": "mem_5cdea86623",
+        "score": 0.667
+      },
+      {
+        "a": "mem_baab7ba230",
+        "b": "mem_9f0940632d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_baab7ba230",
+        "b": "mem_5c8c2a6603",
+        "score": 0.667
+      },
+      {
+        "a": "mem_baab7ba230",
+        "b": "mem_9e3d45a0c7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_baab7ba230",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_baab7ba230",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_baab7ba230",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_baab7ba230",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_baab7ba230",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_d800a859a0",
+        "b": "mem_7d5893585f",
+        "score": 0.667
+      },
+      {
+        "a": "mem_d800a859a0",
+        "b": "mem_10b4980ea9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_d800a859a0",
+        "b": "mem_7ded42f51c",
+        "score": 0.667
+      },
+      {
+        "a": "mem_d800a859a0",
+        "b": "mem_e7b898138b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_d800a859a0",
+        "b": "mem_630ecf1d64",
+        "score": 0.667
+      },
+      {
+        "a": "mem_d800a859a0",
+        "b": "mem_5cdea86623",
+        "score": 0.667
+      },
+      {
+        "a": "mem_d800a859a0",
+        "b": "mem_9f0940632d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_d800a859a0",
+        "b": "mem_5c8c2a6603",
+        "score": 0.667
+      },
+      {
+        "a": "mem_d800a859a0",
+        "b": "mem_9e3d45a0c7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_d800a859a0",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_d800a859a0",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_d800a859a0",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_d800a859a0",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_d800a859a0",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7d5893585f",
+        "b": "mem_10b4980ea9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7d5893585f",
+        "b": "mem_7ded42f51c",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7d5893585f",
+        "b": "mem_e7b898138b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7d5893585f",
+        "b": "mem_630ecf1d64",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7d5893585f",
+        "b": "mem_5cdea86623",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7d5893585f",
+        "b": "mem_9f0940632d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7d5893585f",
+        "b": "mem_5c8c2a6603",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7d5893585f",
+        "b": "mem_9e3d45a0c7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7d5893585f",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7d5893585f",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7d5893585f",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7d5893585f",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7d5893585f",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_10b4980ea9",
+        "b": "mem_7ded42f51c",
+        "score": 0.667
+      },
+      {
+        "a": "mem_10b4980ea9",
+        "b": "mem_e7b898138b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_10b4980ea9",
+        "b": "mem_630ecf1d64",
+        "score": 0.667
+      },
+      {
+        "a": "mem_10b4980ea9",
+        "b": "mem_5cdea86623",
+        "score": 0.667
+      },
+      {
+        "a": "mem_10b4980ea9",
+        "b": "mem_9f0940632d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_10b4980ea9",
+        "b": "mem_5c8c2a6603",
+        "score": 0.667
+      },
+      {
+        "a": "mem_10b4980ea9",
+        "b": "mem_9e3d45a0c7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_10b4980ea9",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_10b4980ea9",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_10b4980ea9",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_10b4980ea9",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_10b4980ea9",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7ded42f51c",
+        "b": "mem_e7b898138b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7ded42f51c",
+        "b": "mem_630ecf1d64",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7ded42f51c",
+        "b": "mem_5cdea86623",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7ded42f51c",
+        "b": "mem_9f0940632d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7ded42f51c",
+        "b": "mem_5c8c2a6603",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7ded42f51c",
+        "b": "mem_9e3d45a0c7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7ded42f51c",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7ded42f51c",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7ded42f51c",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7ded42f51c",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_7ded42f51c",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e7b898138b",
+        "b": "mem_630ecf1d64",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e7b898138b",
+        "b": "mem_5cdea86623",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e7b898138b",
+        "b": "mem_9f0940632d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e7b898138b",
+        "b": "mem_5c8c2a6603",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e7b898138b",
+        "b": "mem_9e3d45a0c7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e7b898138b",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e7b898138b",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e7b898138b",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e7b898138b",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_e7b898138b",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_630ecf1d64",
+        "b": "mem_5cdea86623",
+        "score": 0.667
+      },
+      {
+        "a": "mem_630ecf1d64",
+        "b": "mem_9f0940632d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_630ecf1d64",
+        "b": "mem_5c8c2a6603",
+        "score": 0.667
+      },
+      {
+        "a": "mem_630ecf1d64",
+        "b": "mem_9e3d45a0c7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_630ecf1d64",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_630ecf1d64",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_630ecf1d64",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_630ecf1d64",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_630ecf1d64",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_5cdea86623",
+        "b": "mem_9f0940632d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_5cdea86623",
+        "b": "mem_5c8c2a6603",
+        "score": 0.667
+      },
+      {
+        "a": "mem_5cdea86623",
+        "b": "mem_9e3d45a0c7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_5cdea86623",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_5cdea86623",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_5cdea86623",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_5cdea86623",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_5cdea86623",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9f0940632d",
+        "b": "mem_5c8c2a6603",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9f0940632d",
+        "b": "mem_9e3d45a0c7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9f0940632d",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9f0940632d",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9f0940632d",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9f0940632d",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9f0940632d",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_5c8c2a6603",
+        "b": "mem_9e3d45a0c7",
+        "score": 0.667
+      },
+      {
+        "a": "mem_5c8c2a6603",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_5c8c2a6603",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_5c8c2a6603",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_5c8c2a6603",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_5c8c2a6603",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e3d45a0c7",
+        "b": "mem_c58a1a92c5",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e3d45a0c7",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e3d45a0c7",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e3d45a0c7",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_9e3d45a0c7",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_c58a1a92c5",
+        "b": "mem_2eebd910db",
+        "score": 0.667
+      },
+      {
+        "a": "mem_c58a1a92c5",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_c58a1a92c5",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_c58a1a92c5",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2eebd910db",
+        "b": "mem_88eedbbd5d",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2eebd910db",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_2eebd910db",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_88eedbbd5d",
+        "b": "mem_c3de82806b",
+        "score": 0.667
+      },
+      {
+        "a": "mem_88eedbbd5d",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      },
+      {
+        "a": "mem_c3de82806b",
+        "b": "mem_4dd7c845f9",
+        "score": 0.667
+      }
+    ],
+    "contradictions": []
+  },
+  "tasks": {
+    "unit": [
+      "mem_9f9a069d05",
+      "mem_0149e0f885",
+      "mem_c50b41a65f",
+      "mem_0db715a508"
+    ],
+    "smoke": [
+      "mem_7356b3e552"
+    ]
+  }
+}

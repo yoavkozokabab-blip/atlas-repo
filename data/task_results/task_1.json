@@ -1,0 +1,21 @@
+{
+  "id": 1,
+  "command": "summarize trading health",
+  "intent": "summarize_trading_health",
+  "phase": "completed",
+  "started_at": "2026-05-26T20:16:04.976953+00:00",
+  "started_monotonic": 4944.8497638,
+  "last_progress_at": "2026-05-26T20:16:05.013827+00:00",
+  "last_progress_text": "executing command pipeline...",
+  "ended_at": "2026-05-26T20:16:05.218131+00:00",
+  "duration_seconds": 0.24,
+  "result_summary": "async trading health complete",
+  "severity": "info",
+  "evidence": [
+    "async trading health complete"
+  ],
+  "related_reports": [],
+  "errors": [],
+  "notification_id": 6,
+  "cancel_requested": false
+}

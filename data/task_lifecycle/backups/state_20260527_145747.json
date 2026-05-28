@@ -1,0 +1,78 @@
+{
+  "next_id": 4,
+  "last_completed_id": 3,
+  "updated_at": "2026-05-27T14:57:42.920840+00:00",
+  "tasks": {
+    "1": {
+      "id": 1,
+      "command": "summarize trading health",
+      "intent": "summarize_trading_health",
+      "phase": "completed",
+      "started_at": "2026-05-26T20:16:04.976953+00:00",
+      "started_monotonic": 4944.8497638,
+      "last_progress_at": "2026-05-26T20:16:05.013827+00:00",
+      "last_progress_text": "executing command pipeline...",
+      "ended_at": "2026-05-26T20:16:05.218131+00:00",
+      "duration_seconds": 0.24,
+      "result_summary": "async trading health complete",
+      "severity": "info",
+      "evidence": [
+        "async trading health complete"
+      ],
+      "related_reports": [],
+      "errors": [],
+      "notification_id": 6,
+      "cancel_requested": false
+    },
+    "2": {
+      "id": 2,
+      "command": "summarize trading health",
+      "intent": "summarize_trading_health",
+      "phase": "completed",
+      "started_at": "2026-05-26T20:44:31.442565+00:00",
+      "started_monotonic": 6651.3153747,
+      "last_progress_at": "2026-05-26T20:44:46.982145+00:00",
+      "last_progress_text": "checking stale open positions...",
+      "ended_at": "2026-05-26T20:44:47.047684+00:00",
+      "duration_seconds": 15.61,
+      "result_summary": "Trading health summary:\n\nExecution investigation (read-only)\n  files scanned: 175\n  signals generated: 4\n  signals eligible: 4\n  signals blocked: 4\n  execution attempts: 0\n  execution accepted: 0\n  adapter mode: AlpacaExecutionAdapter\n  dry run: true\n  execution disabled: yes\n  top blocker: overlap block\n  report json: C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_204432_execution_investigation.json\n  report markdown: C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_inve",
+      "severity": "info",
+      "evidence": [
+        "top blocker: overlap block",
+        "stale open positions detected",
+        "Trading health summary:"
+      ],
+      "related_reports": [
+        "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\trading_operations\\20260526_204446_trading_health.md"
+      ],
+      "errors": [],
+      "notification_id": 9,
+      "cancel_requested": false
+    },
+    "3": {
+      "id": 3,
+      "command": "summarize trading health",
+      "intent": "summarize_trading_health",
+      "phase": "completed",
+      "started_at": "2026-05-26T20:51:30.599278+00:00",
+      "started_monotonic": 7070.4720876,
+      "last_progress_at": "2026-05-26T20:51:46.184989+00:00",
+      "last_progress_text": "checking stale open positions...",
+      "ended_at": "2026-05-26T20:51:46.251605+00:00",
+      "duration_seconds": 15.65,
+      "result_summary": "Trading health summary:\n\nExecution investigation (read-only)\n  files scanned: 175\n  signals generated: 4\n  signals eligible: 4\n  signals blocked: 4\n  execution attempts: 0\n  execution accepted: 0\n  adapter mode: AlpacaExecutionAdapter\n  dry run: true\n  execution disabled: yes\n  top blocker: overlap block\n  report json: C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_205131_execution_investigation.json\n  report markdown: C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_inve",
+      "severity": "info",
+      "evidence": [
+        "top blocker: overlap block",
+        "stale open positions detected",
+        "Trading health summary:"
+      ],
+      "related_reports": [
+        "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\trading_operations\\20260526_205146_trading_health.md"
+      ],
+      "errors": [],
+      "notification_id": 14,
+      "cancel_requested": false
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "last_suggestion_at": "2026-05-28T14:48:45.014426+00:00",
+  "last_suggestions": [
+    {
+      "title": "Verified root cause available",
+      "detail": "Overlap block caused by stale open_positions state",
+      "action": "summarize root causes"
+    },
+    {
+      "title": "Continuous monitor alert",
+      "detail": "Execution disabled for extended period despite eligible signals",
+      "action": "show notifications"
+    }
+  ],
+  "dismissed": [],
+  "updated_at": "2026-05-28T14:48:45.014434+00:00"
+}

@@ -1,0 +1,51 @@
+{
+  "current_topic": "test realtime voice",
+  "previous_topics": [
+    "show voice latency",
+    "open youtube",
+    "Oh",
+    "What am I doing? HR is",
+    "describe screen",
+    "Just tell me what can you do",
+    "show show show audio status",
+    "test normal speech path",
+    "show show audio status path",
+    "test direct speech",
+    "yes",
+    "verify direct speech backend"
+  ],
+  "active_project": "",
+  "unresolved_question": "",
+  "emotional_tone": "neutral",
+  "interruption_state": "idle",
+  "pending_actions": [],
+  "recent_entities": [
+    "voice",
+    "realtime",
+    "test",
+    "latency",
+    "show",
+    "youtube",
+    "open",
+    "doing",
+    "What",
+    "screen",
+    "describe",
+    "what",
+    "tell",
+    "Just",
+    "speech",
+    "normal"
+  ],
+  "follow_up_references": [
+    "voice:open_website",
+    "voice:unknown"
+  ],
+  "turn_count": 38,
+  "last_user_text": "test realtime voice",
+  "last_assistant_summary": "Realtime voice test failed: pyttsx3 direct playback failed: runAndWait did not complete\nVoice latency (Phase 57 realtime TTS)\n  provider: pyttsx3_fallback\n  time_to_first_audio_ms: n/a\n  total_speech_ms: 17593.1\n  total_playback_ms: 17593.1\n  interruption_latency_ms: n/a\n  provider_latency_ms: n/a\n  queue_wait_ms: n/a\n  failover_from: n/a\n  cancelled: yes\n  last text: 'Jarvis realtime voice online. Low latency streaming is active.'\n  recent:\n    - pyttsx3_fallback: ttf=n/a total=17593.1",
+  "last_intent": "test_realtime_voice",
+  "paused_response": "",
+  "continuous_listening": false,
+  "updated_at": "2026-05-27T13:19:58.862880+00:00"
+}

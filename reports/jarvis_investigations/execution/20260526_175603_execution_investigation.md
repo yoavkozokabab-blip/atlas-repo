@@ -1,0 +1,63 @@
+# Execution Investigation Report
+Generated: 2026-05-26T17:56:03.730189+00:00
+## Summary
+- Files scanned: 75
+- Signals generated: 5
+- Signals eligible: 5
+- Signals blocked: 5
+- Execution attempts: 0
+- Execution accepted: 0
+- Adapter mode: ExecutionDisabledAdapter
+- Dry run: unknown
+- Execution disabled: yes
+- Top blocker: execution disabled adapter
+## Block Reasons
+- [critical] execution disabled adapter count=57 evidence=C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution_flow\20260526_175558_execution_flow.json
+- [high] exposure limit count=54 evidence=C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution_flow\20260526_175558_execution_flow.json
+- [high] not relevant to last bar count=42 evidence=C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution_flow\20260526_175558_execution_flow.json
+- [high] max positions reached count=29 evidence=C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution_flow\20260526_175558_execution_flow.json
+- [medium] delayed entry failure count=28 evidence=C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution_flow\20260526_175558_execution_flow.md
+- [medium] duplicate block count=28 evidence=C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution_flow\20260526_175558_execution_flow.json
+- [medium] already in position count=26 evidence=C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution_flow\20260526_175558_execution_flow.json
+- [medium] market closed count=26 evidence=C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution_flow\20260526_175558_execution_flow.json
+- [medium] overlap block count=26 evidence=C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution_flow\20260526_175558_execution_flow.json
+- [high] dry run mode count=25 evidence=C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution_flow\20260526_175558_execution_flow.md
+- [medium] stale price guard count=16 evidence=C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution_flow\20260526_175558_execution_flow.md
+- [medium] stop loss hit adapter disabled stop hit count=5 evidence=C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution_cleanup\20260526_175056_execution_cleanup.md
+- [medium] engine open without adapter positions count=4 evidence=C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution_cleanup\20260526_175543_execution_cleanup.json
+- [medium] engine open without adapter positions stop hit count=4 evidence=C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution_cleanup\20260526_175543_execution_cleanup.md
+- [medium] stop loss hit adapter disabled count=4 evidence=C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution_cleanup\20260526_175056_execution_cleanup.json
+- [medium] risk check rejection count=2 evidence=C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution_flow\20260526_175558_execution_flow.json
+## Evidence Paths
+- C:\Users\babi2\AppData\Local\Temp\tmpzwsegix9\trading\reports\live_paper\dual\execution_decision_summary.json
+- C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution_flow\20260526_175558_execution_flow.json
+- C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution_flow\20260526_175558_execution_flow.md
+- C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution\20260526_175543_execution_investigation.md
+- C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution\20260526_175543_execution_investigation.json
+- C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution_cleanup\20260526_175543_execution_cleanup.md
+- C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution_cleanup\20260526_175543_execution_cleanup.json
+- C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution\20260526_175529_execution_investigation.md
+- C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution\20260526_175529_execution_investigation.json
+- C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution\20260526_175509_execution_investigation.md
+- C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution\20260526_175509_execution_investigation.json
+- C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution_cleanup\20260526_175509_execution_cleanup.md
+- C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution_cleanup\20260526_175509_execution_cleanup.json
+- C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution\20260526_175455_execution_investigation.md
+- C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution\20260526_175455_execution_investigation.json
+- C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution\20260526_175112_execution_investigation.md
+- C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution\20260526_175112_execution_investigation.json
+- C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution_cleanup\20260526_175056_execution_cleanup.md
+- C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution_cleanup\20260526_175056_execution_cleanup.json
+- C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution\20260526_175056_execution_investigation.md
+- C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution\20260526_175056_execution_investigation.json
+- C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution_cleanup\20260526_174625_execution_cleanup.md
+- C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution_cleanup\20260526_174625_execution_cleanup.json
+- C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution\20260526_174625_execution_investigation.md
+- C:\J.A.R.V.I.S\local_jarvis\reports\jarvis_investigations\execution\20260526_174625_execution_investigation.json
+## Recommended Verification
+- Switch adapter from disabled stub to paper adapter and rerun one dry-run cycle.
+- Confirm execution adapter is enabled for paper/live mode (not ExecutionDisabledAdapter).
+- Verify dry_run flag matches intended environment.
+- Check signal_detection_mode vs eligible last-bar signals.
+- Inspect entry_blocks and reason_if_no_attempt in execution_decision_summary.json.
+- Compare live_signals.csv rows to execution_order_events.csv attempt events.

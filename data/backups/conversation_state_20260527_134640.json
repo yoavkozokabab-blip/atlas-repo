@@ -1,0 +1,51 @@
+{
+  "current_topic": "Oh",
+  "previous_topics": [
+    "show show show audio status",
+    "test interrupt speech",
+    "test realtime voice",
+    "show voice latency",
+    "open youtube",
+    "Oh",
+    "What am I doing? HR is",
+    "describe screen",
+    "Just tell me what can you do",
+    "test normal speech path",
+    "show show audio status path",
+    "test direct speech"
+  ],
+  "active_project": "",
+  "unresolved_question": "",
+  "emotional_tone": "neutral",
+  "interruption_state": "interrupted",
+  "pending_actions": [],
+  "recent_entities": [
+    "show",
+    "speech",
+    "interrupt",
+    "test",
+    "voice",
+    "realtime",
+    "latency",
+    "youtube",
+    "open",
+    "doing",
+    "What",
+    "screen",
+    "describe",
+    "what",
+    "tell",
+    "Just"
+  ],
+  "follow_up_references": [
+    "voice:unknown",
+    "voice:open_website"
+  ],
+  "turn_count": 41,
+  "last_user_text": "Oh",
+  "last_assistant_summary": "I didn't catch a command \u2014 still listening.",
+  "last_intent": "unknown",
+  "paused_response": "",
+  "continuous_listening": false,
+  "updated_at": "2026-05-27T13:46:40.268461+00:00"
+}

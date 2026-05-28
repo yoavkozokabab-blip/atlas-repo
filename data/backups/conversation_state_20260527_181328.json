@@ -1,0 +1,55 @@
+{
+  "current_topic": "test tts playback",
+  "previous_topics": [
+    "show tts debug",
+    "show conversation runtime",
+    "tool mode status",
+    "test tts playback",
+    "run phase 59 status"
+  ],
+  "active_project": "",
+  "unresolved_question": "",
+  "emotional_tone": "neutral",
+  "interruption_state": "speaking",
+  "pending_actions": [],
+  "recent_entities": [
+    "playback",
+    "test",
+    "debug",
+    "show",
+    "runtime",
+    "conversation",
+    "status",
+    "mode",
+    "tool",
+    "phase"
+  ],
+  "follow_up_references": [
+    "voice:test_tts_playback",
+    "voice:show_tts_debug",
+    "voice:show_conversation_runtime"
+  ],
+  "turn_count": 37,
+  "last_user_text": "test tts playback",
+  "last_assistant_summary": "TTS playback self-test:\n  success: yes\n\nWould you also like me to start study mode?",
+  "last_intent": "test_tts_playback",
+  "paused_response": "",
+  "continuous_listening": false,
+  "updated_at": "2026-05-27T18:13:26.344484+00:00",
+  "interruption_count": 4,
+  "intent_continuity_chain": [
+    "test_tts_playback",
+    "show_tts_debug",
+    "show_conversation_runtime"
+  ],
+  "turn_references": [
+    "-> TTS playback self-test:\n  success: no\n  backend path: default\n  playback device:",
+    "-> TTS debug:\n  speak_enabled: yes\n  muted: no\n  audio_mode: conversational\n  backe",
+    "-> Human conversational runtime (Phase 59.1):\n  enabled: yes\n  continuous mic: yes",
+    "-> TTS playback self-test:\n  success: yes\n\nWould you also like me to what am i doin",
+    "-> TTS playback self-test:\n  success: yes\n\nWould you also like me to run diagnostic"
+  ],
+  "last_response_style": "warning",
+  "pending_follow_up": "",
+  "user_intent_continuity": "test_tts_playback"
+}

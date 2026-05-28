@@ -1,0 +1,991 @@
+{
+  "created_at": "2026-05-26T17:56:33.301478+00:00",
+  "files_scanned": 81,
+  "signals_generated": 5,
+  "signals_eligible": 5,
+  "signals_blocked": 5,
+  "n_execution_attempts": 0,
+  "n_execution_accepted": 0,
+  "top_blocker": "execution disabled adapter",
+  "lifecycles": [
+    {
+      "symbol": "C",
+      "signal_date": "2026-05-25",
+      "eligible": true,
+      "order_attempt": false,
+      "final_block_reason": "not relevant to last bar",
+      "steps": [
+        {
+          "name": "signal detected",
+          "passed": true,
+          "detail": "signal evidence found",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Signals generated: 5",
+          "expected": false
+        },
+        {
+          "name": "eligible",
+          "passed": true,
+          "detail": "eligible=True",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Signals eligible: 5",
+          "expected": false
+        },
+        {
+          "name": "last bar relevance",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Check signal_detection_mode vs eligible last-bar signals.",
+          "expected": true
+        },
+        {
+          "name": "duplicate check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] duplicate block count=30 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "already in position check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] already in position count=28 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "overlap check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] overlap block count=28 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "max positions check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [high] max positions reached count=31 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "exposure/risk check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [high] exposure limit count=58 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175618_execution_cleanup.md",
+          "expected": true
+        },
+        {
+          "name": "market open check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] market closed count=28 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "kill switch check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175618_execution_cleanup.md",
+          "snippet": "- kill_switch_enabled: False",
+          "expected": true
+        },
+        {
+          "name": "adapter health",
+          "passed": false,
+          "detail": "adapter=ExecutionDisabledAdapter dry_run=unknown disabled=yes",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Adapter mode: ExecutionDisabledAdapter",
+          "expected": true
+        },
+        {
+          "name": "order attempt",
+          "passed": false,
+          "detail": "attempts=0",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Compare live_signals.csv rows to execution_order_events.csv attempt events.",
+          "expected": false
+        }
+      ],
+      "suspicious": true
+    },
+    {
+      "symbol": "J.A.R.V.",
+      "signal_date": "2026-05-25",
+      "eligible": true,
+      "order_attempt": false,
+      "final_block_reason": "not relevant to last bar",
+      "steps": [
+        {
+          "name": "signal detected",
+          "passed": true,
+          "detail": "signal evidence found",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Signals generated: 5",
+          "expected": false
+        },
+        {
+          "name": "eligible",
+          "passed": true,
+          "detail": "eligible=True",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Signals eligible: 5",
+          "expected": false
+        },
+        {
+          "name": "last bar relevance",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Check signal_detection_mode vs eligible last-bar signals.",
+          "expected": true
+        },
+        {
+          "name": "duplicate check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] duplicate block count=30 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "already in position check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] already in position count=28 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "overlap check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] overlap block count=28 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "max positions check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [high] max positions reached count=31 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "exposure/risk check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [high] exposure limit count=58 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175618_execution_cleanup.md",
+          "expected": true
+        },
+        {
+          "name": "market open check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] market closed count=28 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "kill switch check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175618_execution_cleanup.md",
+          "snippet": "- kill_switch_enabled: False",
+          "expected": true
+        },
+        {
+          "name": "adapter health",
+          "passed": false,
+          "detail": "adapter=ExecutionDisabledAdapter dry_run=unknown disabled=yes",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Adapter mode: ExecutionDisabledAdapter",
+          "expected": true
+        },
+        {
+          "name": "order attempt",
+          "passed": false,
+          "detail": "attempts=0",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Compare live_signals.csv rows to execution_order_events.csv attempt events.",
+          "expected": false
+        }
+      ],
+      "suspicious": true
+    },
+    {
+      "symbol": "I.S",
+      "signal_date": "2026-05-25",
+      "eligible": true,
+      "order_attempt": false,
+      "final_block_reason": "not relevant to last bar",
+      "steps": [
+        {
+          "name": "signal detected",
+          "passed": true,
+          "detail": "signal evidence found",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Signals generated: 5",
+          "expected": false
+        },
+        {
+          "name": "eligible",
+          "passed": true,
+          "detail": "eligible=True",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Signals eligible: 5",
+          "expected": false
+        },
+        {
+          "name": "last bar relevance",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Check signal_detection_mode vs eligible last-bar signals.",
+          "expected": true
+        },
+        {
+          "name": "duplicate check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] duplicate block count=30 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "already in position check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] already in position count=28 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "overlap check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] overlap block count=28 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "max positions check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [high] max positions reached count=31 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "exposure/risk check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [high] exposure limit count=58 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175618_execution_cleanup.md",
+          "expected": true
+        },
+        {
+          "name": "market open check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] market closed count=28 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "kill switch check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175618_execution_cleanup.md",
+          "snippet": "- kill_switch_enabled: False",
+          "expected": true
+        },
+        {
+          "name": "adapter health",
+          "passed": false,
+          "detail": "adapter=ExecutionDisabledAdapter dry_run=unknown disabled=yes",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Adapter mode: ExecutionDisabledAdapter",
+          "expected": true
+        },
+        {
+          "name": "order attempt",
+          "passed": false,
+          "detail": "attempts=0",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Compare live_signals.csv rows to execution_order_events.csv attempt events.",
+          "expected": false
+        }
+      ],
+      "suspicious": true
+    },
+    {
+      "symbol": "P1",
+      "signal_date": "2026-05-26",
+      "eligible": true,
+      "order_attempt": false,
+      "final_block_reason": "not relevant to last bar",
+      "steps": [
+        {
+          "name": "signal detected",
+          "passed": true,
+          "detail": "signal evidence found",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Signals generated: 5",
+          "expected": false
+        },
+        {
+          "name": "eligible",
+          "passed": true,
+          "detail": "eligible=True",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Signals eligible: 5",
+          "expected": false
+        },
+        {
+          "name": "last bar relevance",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Check signal_detection_mode vs eligible last-bar signals.",
+          "expected": true
+        },
+        {
+          "name": "duplicate check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] duplicate block count=30 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "already in position check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] already in position count=28 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "overlap check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] overlap block count=28 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "max positions check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [high] max positions reached count=31 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "exposure/risk check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [high] exposure limit count=58 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175618_execution_cleanup.md",
+          "expected": true
+        },
+        {
+          "name": "market open check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] market closed count=28 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "kill switch check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175618_execution_cleanup.md",
+          "snippet": "- kill_switch_enabled: False",
+          "expected": true
+        },
+        {
+          "name": "adapter health",
+          "passed": false,
+          "detail": "adapter=ExecutionDisabledAdapter dry_run=unknown disabled=yes",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Adapter mode: ExecutionDisabledAdapter",
+          "expected": true
+        },
+        {
+          "name": "order attempt",
+          "passed": false,
+          "detail": "attempts=0",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Compare live_signals.csv rows to execution_order_events.csv attempt events.",
+          "expected": false
+        }
+      ],
+      "suspicious": true
+    },
+    {
+      "symbol": "POS1",
+      "signal_date": "2026-05-26",
+      "eligible": true,
+      "order_attempt": false,
+      "final_block_reason": "not relevant to last bar",
+      "steps": [
+        {
+          "name": "signal detected",
+          "passed": true,
+          "detail": "signal evidence found",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Signals generated: 5",
+          "expected": false
+        },
+        {
+          "name": "eligible",
+          "passed": true,
+          "detail": "eligible=True",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Signals eligible: 5",
+          "expected": false
+        },
+        {
+          "name": "last bar relevance",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Check signal_detection_mode vs eligible last-bar signals.",
+          "expected": true
+        },
+        {
+          "name": "duplicate check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] duplicate block count=30 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "already in position check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] already in position count=28 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "overlap check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] overlap block count=28 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "max positions check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [high] max positions reached count=31 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "exposure/risk check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [high] exposure limit count=58 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175618_execution_cleanup.md",
+          "expected": true
+        },
+        {
+          "name": "market open check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] market closed count=28 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "kill switch check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175618_execution_cleanup.md",
+          "snippet": "- kill_switch_enabled: False",
+          "expected": true
+        },
+        {
+          "name": "adapter health",
+          "passed": false,
+          "detail": "adapter=ExecutionDisabledAdapter dry_run=unknown disabled=yes",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Adapter mode: ExecutionDisabledAdapter",
+          "expected": true
+        },
+        {
+          "name": "order attempt",
+          "passed": false,
+          "detail": "attempts=0",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Compare live_signals.csv rows to execution_order_events.csv attempt events.",
+          "expected": false
+        }
+      ],
+      "suspicious": true
+    },
+    {
+      "symbol": "POS2",
+      "signal_date": "2026-05-26",
+      "eligible": true,
+      "order_attempt": false,
+      "final_block_reason": "not relevant to last bar",
+      "steps": [
+        {
+          "name": "signal detected",
+          "passed": true,
+          "detail": "signal evidence found",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Signals generated: 5",
+          "expected": false
+        },
+        {
+          "name": "eligible",
+          "passed": true,
+          "detail": "eligible=True",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Signals eligible: 5",
+          "expected": false
+        },
+        {
+          "name": "last bar relevance",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Check signal_detection_mode vs eligible last-bar signals.",
+          "expected": true
+        },
+        {
+          "name": "duplicate check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] duplicate block count=30 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "already in position check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] already in position count=28 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "overlap check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] overlap block count=28 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "max positions check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [high] max positions reached count=31 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "exposure/risk check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [high] exposure limit count=58 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175618_execution_cleanup.md",
+          "expected": true
+        },
+        {
+          "name": "market open check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] market closed count=28 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "kill switch check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175618_execution_cleanup.md",
+          "snippet": "- kill_switch_enabled: False",
+          "expected": true
+        },
+        {
+          "name": "adapter health",
+          "passed": false,
+          "detail": "adapter=ExecutionDisabledAdapter dry_run=unknown disabled=yes",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Adapter mode: ExecutionDisabledAdapter",
+          "expected": true
+        },
+        {
+          "name": "order attempt",
+          "passed": false,
+          "detail": "attempts=0",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Compare live_signals.csv rows to execution_order_events.csv attempt events.",
+          "expected": false
+        }
+      ],
+      "suspicious": true
+    },
+    {
+      "symbol": "POS3",
+      "signal_date": "2026-05-26",
+      "eligible": true,
+      "order_attempt": false,
+      "final_block_reason": "not relevant to last bar",
+      "steps": [
+        {
+          "name": "signal detected",
+          "passed": true,
+          "detail": "signal evidence found",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Signals generated: 5",
+          "expected": false
+        },
+        {
+          "name": "eligible",
+          "passed": true,
+          "detail": "eligible=True",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Signals eligible: 5",
+          "expected": false
+        },
+        {
+          "name": "last bar relevance",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Check signal_detection_mode vs eligible last-bar signals.",
+          "expected": true
+        },
+        {
+          "name": "duplicate check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] duplicate block count=30 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "already in position check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] already in position count=28 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "overlap check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] overlap block count=28 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "max positions check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [high] max positions reached count=31 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "exposure/risk check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [high] exposure limit count=58 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175618_execution_cleanup.md",
+          "expected": true
+        },
+        {
+          "name": "market open check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] market closed count=28 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "kill switch check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175618_execution_cleanup.md",
+          "snippet": "- kill_switch_enabled: False",
+          "expected": true
+        },
+        {
+          "name": "adapter health",
+          "passed": false,
+          "detail": "adapter=ExecutionDisabledAdapter dry_run=unknown disabled=yes",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Adapter mode: ExecutionDisabledAdapter",
+          "expected": true
+        },
+        {
+          "name": "order attempt",
+          "passed": false,
+          "detail": "attempts=0",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Compare live_signals.csv rows to execution_order_events.csv attempt events.",
+          "expected": false
+        }
+      ],
+      "suspicious": true
+    },
+    {
+      "symbol": "POS4",
+      "signal_date": "2026-05-26",
+      "eligible": true,
+      "order_attempt": false,
+      "final_block_reason": "not relevant to last bar",
+      "steps": [
+        {
+          "name": "signal detected",
+          "passed": true,
+          "detail": "signal evidence found",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Signals generated: 5",
+          "expected": false
+        },
+        {
+          "name": "eligible",
+          "passed": true,
+          "detail": "eligible=True",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Signals eligible: 5",
+          "expected": false
+        },
+        {
+          "name": "last bar relevance",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Check signal_detection_mode vs eligible last-bar signals.",
+          "expected": true
+        },
+        {
+          "name": "duplicate check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] duplicate block count=30 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "already in position check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] already in position count=28 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "overlap check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] overlap block count=28 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "max positions check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [high] max positions reached count=31 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "exposure/risk check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [high] exposure limit count=58 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175618_execution_cleanup.md",
+          "expected": true
+        },
+        {
+          "name": "market open check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- [medium] market closed count=28 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+          "expected": true
+        },
+        {
+          "name": "kill switch check",
+          "passed": false,
+          "detail": "blocked",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175618_execution_cleanup.md",
+          "snippet": "- kill_switch_enabled: False",
+          "expected": true
+        },
+        {
+          "name": "adapter health",
+          "passed": false,
+          "detail": "adapter=ExecutionDisabledAdapter dry_run=unknown disabled=yes",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Adapter mode: ExecutionDisabledAdapter",
+          "expected": true
+        },
+        {
+          "name": "order attempt",
+          "passed": false,
+          "detail": "attempts=0",
+          "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+          "snippet": "- Compare live_signals.csv rows to execution_order_events.csv attempt events.",
+          "expected": false
+        }
+      ],
+      "suspicious": true
+    }
+  ],
+  "dead_causes": [
+    [
+      "execution disabled adapter",
+      63,
+      "blocked signal lifecycle"
+    ],
+    [
+      "exposure limit",
+      60,
+      "blocked signal lifecycle"
+    ],
+    [
+      "not relevant to last bar",
+      55,
+      "blocked signal lifecycle"
+    ],
+    [
+      "max positions reached",
+      33,
+      "blocked signal lifecycle"
+    ],
+    [
+      "delayed entry failure",
+      32,
+      "blocked signal lifecycle"
+    ],
+    [
+      "duplicate block",
+      32,
+      "blocked signal lifecycle"
+    ],
+    [
+      "already in position",
+      30,
+      "blocked signal lifecycle"
+    ],
+    [
+      "market closed",
+      30,
+      "blocked signal lifecycle"
+    ],
+    [
+      "overlap block",
+      30,
+      "blocked signal lifecycle"
+    ],
+    [
+      "dry run mode",
+      29,
+      "blocked signal lifecycle"
+    ],
+    [
+      "stale price guard",
+      20,
+      "blocked signal lifecycle"
+    ],
+    [
+      "last bar relevance",
+      8,
+      "blocked signal lifecycle"
+    ],
+    [
+      "duplicate check",
+      8,
+      "blocked signal lifecycle"
+    ],
+    [
+      "already in position check",
+      8,
+      "blocked signal lifecycle"
+    ],
+    [
+      "overlap check",
+      8,
+      "blocked signal lifecycle"
+    ],
+    [
+      "max positions check",
+      8,
+      "blocked signal lifecycle"
+    ],
+    [
+      "exposure/risk check",
+      8,
+      "blocked signal lifecycle"
+    ],
+    [
+      "market open check",
+      8,
+      "blocked signal lifecycle"
+    ],
+    [
+      "kill switch check",
+      8,
+      "blocked signal lifecycle"
+    ],
+    [
+      "adapter health",
+      8,
+      "blocked signal lifecycle"
+    ]
+  ],
+  "evidence_paths": [
+    "C:\\Users\\babi2\\AppData\\Local\\Temp\\tmpzwsegix9\\trading\\reports\\live_paper\\dual\\execution_decision_summary.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175618_execution_investigation.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175618_execution_cleanup.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175618_execution_cleanup.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175603_execution_investigation.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_flow\\20260526_175558_execution_flow.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_flow\\20260526_175558_execution_flow.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175543_execution_investigation.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175543_execution_investigation.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175543_execution_cleanup.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175543_execution_cleanup.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175529_execution_investigation.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175529_execution_investigation.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175509_execution_investigation.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175509_execution_investigation.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175509_execution_cleanup.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175509_execution_cleanup.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175455_execution_investigation.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175455_execution_investigation.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175112_execution_investigation.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175112_execution_investigation.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175056_execution_cleanup.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175056_execution_cleanup.json"
+  ],
+  "report_json": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_flow\\20260526_175633_execution_flow.json",
+  "report_markdown": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_flow\\20260526_175633_execution_flow.md"
+}

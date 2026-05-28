@@ -1,0 +1,51 @@
+{
+  "current_topic": "\\",
+  "previous_topics": [
+    "test realtime voice",
+    "show voice latency",
+    "benchmark realtime providers",
+    "show realtime provider status",
+    "You",
+    "py -3 main.py --text --speak",
+    "$env:pyttsx3_rollback_only=\"true\"",
+    "$env:realtime_tts_enable=\"true\"",
+    "$env:tts_primary_backend=\"realtime\"",
+    "$env:voice_runtime_mode=\"realtime_experiment\"",
+    "$env:elevenlabs_api_key=\"dd8360eea69ea6ef8bb7297aab3580711de29a978c7a814ffa6a985b4095754c\"",
+    "open youtube"
+  ],
+  "active_project": "",
+  "unresolved_question": "",
+  "emotional_tone": "neutral",
+  "interruption_state": "idle",
+  "pending_actions": [],
+  "recent_entities": [
+    "voice",
+    "realtime",
+    "test",
+    "latency",
+    "show",
+    "providers",
+    "benchmark",
+    "provider",
+    "--speak",
+    "--text",
+    "main.py",
+    "$env:pyttsx3_rollback_only=\"true",
+    "$env:realtime_tts_enable=\"true",
+    "$env:tts_primary_backend=\"realtime",
+    "$env:voice_runtime_mode=\"realtime_experiment",
+    "$env:elevenlabs_api_key=\"dd8360eea69ea6ef8bb7297aab3580711de29a978c7a814ffa6a985b4095754c"
+  ],
+  "follow_up_references": [
+    "voice:open_website",
+    "voice:unknown"
+  ],
+  "turn_count": 66,
+  "last_user_text": "\\",
+  "last_assistant_summary": "Could not understand the command. Please rephrase.",
+  "last_intent": "unknown",
+  "paused_response": "",
+  "continuous_listening": false,
+  "updated_at": "2026-05-27T14:48:01.879313+00:00"
+}

@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-05-28T20:51:55Z",
+  "mic_capture_path": "C:\\Users\\babi2\\AppData\\Local\\Temp\\jarvis__q2hrbsm.wav",
+  "mic_capture_ok": true,
+  "stt_ok": true,
+  "transcript": "Show voice health.",
+  "routed_intent": "",
+  "tts_ok": true,
+  "tts_output_path": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\voice_evidence\\real_voice_1780001519623.json",
+  "wakeword_used": false,
+  "error": "; route:intent_classifier intent validation failed:\n[intent_classifier] TEST_REAL_VOICE_CONVERSATION (test_real_voice_conversation) not in ALLOWED_INTENTS\n[intent_classifier] SHOW_DESKTOP_VISION_HEALTH (show_desktop_vision_health) not in ALLOWED_INTENTS"
+}

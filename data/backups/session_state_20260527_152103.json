@@ -1,0 +1,16 @@
+{
+  "current_project_root": "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-81\\test_follow_up_uses_session0\\project",
+  "last_command_text": "benchmark realtime streaming",
+  "last_intent": "benchmark_realtime_streaming",
+  "last_result_summary": "Realtime provider latency benchmark:\n  probes: 3\n  openai_realtime: error=unavailable\n  elevenlabs: error=unavailable\n  piper: error=unavailable\n\nStreaming playback benchmark (mock path when providers unavailable):\n  realtime TTS disabled\n\nVoice latency (Phase 58 realtime TTS)\n  provider: n/a\n  time_to_first_audio_ms: n/a\n  playback_start_ms: n/a\n  total_speech_ms: n/a\n  interruption_cancel_ms: n/a\n  provider_latency_ms: n/a\n  cancelled: n/a\n\nWould you also like me to run diagnostics?",
+  "last_opened_file": "",
+  "last_opened_log": "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-81\\test_follow_up_uses_session0\\project\\reports\\a.log",
+  "last_report_path": "",
+  "last_error_search": "",
+  "pending_confirmation_id": "27d4b147",
+  "pending_confirmation_action": "open_website",
+  "activity_mode": "",
+  "last_workspace_snapshot": "",
+  "created_at": "",
+  "updated_at": "2026-05-27T15:21:02.961720+00:00"
+}

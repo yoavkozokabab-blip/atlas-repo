@@ -1,0 +1,11 @@
+{
+  "paused": false,
+  "last_runs": {
+    "health_15m": "2026-05-27T12:36:53.552635+00:00",
+    "blockers_1h": "2026-05-27T12:22:34.262958+00:00",
+    "startup_integrity": "2026-05-26T21:14:16.742892+00:00",
+    "verification_2h": "2026-05-27T12:26:07.997679+00:00"
+  },
+  "startup_integrity_done": true,
+  "updated_at": "2026-05-27T12:36:53.552650+00:00"
+}

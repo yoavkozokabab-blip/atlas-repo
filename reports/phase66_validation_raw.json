@@ -1,0 +1,3597 @@
+{
+  "generated_at": "2026-05-28T19:45:30Z",
+  "scenarios_per_category": 50,
+  "categories": [
+    {
+      "category": "Voice Conversation",
+      "total": 50,
+      "passed": 50,
+      "failed": 0,
+      "success_rate": 100.0,
+      "failure_rate": 0.0,
+      "average_execution_time_ms": 30.93,
+      "crash_count": 0,
+      "recovery_count": 0,
+      "scenarios": [
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_intent_01",
+          "passed": true,
+          "latency_ms": 141.13,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "intent=show_voice_health"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_intent_02",
+          "passed": true,
+          "latency_ms": 64.23,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "intent=show_voice_debug"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_intent_03",
+          "passed": true,
+          "latency_ms": 0.09,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "intent=test_streaming_stt"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_intent_04",
+          "passed": true,
+          "latency_ms": 0.05,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "intent=cancel_active_speech"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_intent_05",
+          "passed": true,
+          "latency_ms": 0.04,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "intent=what_is_on_my_screen"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_intent_06",
+          "passed": true,
+          "latency_ms": 0.05,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "intent=show_capability_health"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_intent_07",
+          "passed": true,
+          "latency_ms": 0.05,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "intent=test_tts_playback"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_intent_08",
+          "passed": true,
+          "latency_ms": 1.31,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "intent=show_audio_status"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_intent_09",
+          "passed": true,
+          "latency_ms": 0.06,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "intent=show_conversation_runtime"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_intent_10",
+          "passed": true,
+          "latency_ms": 0.06,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "intent=show_interruption_metrics"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_intent_11",
+          "passed": true,
+          "latency_ms": 0.04,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "intent=show_voice_health"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_intent_12",
+          "passed": true,
+          "latency_ms": 1.22,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "intent=show_voice_debug"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_intent_13",
+          "passed": true,
+          "latency_ms": 0.05,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "intent=test_streaming_stt"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_intent_14",
+          "passed": true,
+          "latency_ms": 0.07,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "intent=cancel_active_speech"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_intent_15",
+          "passed": true,
+          "latency_ms": 0.04,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "intent=what_is_on_my_screen"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_intent_16",
+          "passed": true,
+          "latency_ms": 0.04,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "intent=show_capability_health"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_intent_17",
+          "passed": true,
+          "latency_ms": 0.04,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "intent=test_tts_playback"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_intent_18",
+          "passed": true,
+          "latency_ms": 1.21,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "intent=show_audio_status"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_intent_19",
+          "passed": true,
+          "latency_ms": 0.06,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "intent=show_conversation_runtime"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_intent_20",
+          "passed": true,
+          "latency_ms": 0.1,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "intent=show_interruption_metrics"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_intent_21",
+          "passed": true,
+          "latency_ms": 0.06,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "intent=show_voice_health"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_intent_22",
+          "passed": true,
+          "latency_ms": 1.3,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "intent=show_voice_debug"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_intent_23",
+          "passed": true,
+          "latency_ms": 0.05,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "intent=test_streaming_stt"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_intent_24",
+          "passed": true,
+          "latency_ms": 0.07,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "intent=cancel_active_speech"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_intent_25",
+          "passed": true,
+          "latency_ms": 0.04,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "intent=what_is_on_my_screen"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_health_01",
+          "passed": true,
+          "latency_ms": 1105.94,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Voice health (Phase 65):\n  voice_runtime_mode: stable\n  conversational_runtime: True\n  streaming_stt: False\n  tts_enable"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_health_02",
+          "passed": true,
+          "latency_ms": 1.15,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Voice health (Phase 65):\n  voice_runtime_mode: stable\n  conversational_runtime: True\n  streaming_stt: False\n  tts_enable"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_health_03",
+          "passed": true,
+          "latency_ms": 1.06,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Voice health (Phase 65):\n  voice_runtime_mode: stable\n  conversational_runtime: True\n  streaming_stt: False\n  tts_enable"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_health_04",
+          "passed": true,
+          "latency_ms": 1.05,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Voice health (Phase 65):\n  voice_runtime_mode: stable\n  conversational_runtime: True\n  streaming_stt: False\n  tts_enable"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_health_05",
+          "passed": true,
+          "latency_ms": 1.04,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Voice health (Phase 65):\n  voice_runtime_mode: stable\n  conversational_runtime: True\n  streaming_stt: False\n  tts_enable"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_health_06",
+          "passed": true,
+          "latency_ms": 1.03,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Voice health (Phase 65):\n  voice_runtime_mode: stable\n  conversational_runtime: True\n  streaming_stt: False\n  tts_enable"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_health_07",
+          "passed": true,
+          "latency_ms": 1.17,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Voice health (Phase 65):\n  voice_runtime_mode: stable\n  conversational_runtime: True\n  streaming_stt: False\n  tts_enable"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_health_08",
+          "passed": true,
+          "latency_ms": 1.09,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Voice health (Phase 65):\n  voice_runtime_mode: stable\n  conversational_runtime: True\n  streaming_stt: False\n  tts_enable"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_health_09",
+          "passed": true,
+          "latency_ms": 1.14,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Voice health (Phase 65):\n  voice_runtime_mode: stable\n  conversational_runtime: True\n  streaming_stt: False\n  tts_enable"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_health_10",
+          "passed": true,
+          "latency_ms": 1.07,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Voice health (Phase 65):\n  voice_runtime_mode: stable\n  conversational_runtime: True\n  streaming_stt: False\n  tts_enable"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_barge_in_01",
+          "passed": true,
+          "latency_ms": 14.26,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "conversation timeout recovery failed: cannot import name 'end_session' from 'con"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_barge_in_02",
+          "passed": true,
+          "latency_ms": 0.01,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "conversation timeout recovery failed: cannot import name 'end_session' from 'con"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_barge_in_03",
+          "passed": true,
+          "latency_ms": 0.0,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "conversation timeout recovery failed: cannot import name 'end_session' from 'con"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_barge_in_04",
+          "passed": true,
+          "latency_ms": 0.0,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "conversation timeout recovery failed: cannot import name 'end_session' from 'con"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_barge_in_05",
+          "passed": true,
+          "latency_ms": 0.0,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "conversation timeout recovery failed: cannot import name 'end_session' from 'con"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_streaming_01",
+          "passed": true,
+          "latency_ms": 0.0,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "enabled=False reason=none"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_streaming_02",
+          "passed": true,
+          "latency_ms": 0.0,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "enabled=False reason=none"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_streaming_03",
+          "passed": true,
+          "latency_ms": 0.0,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "enabled=False reason=none"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_streaming_04",
+          "passed": true,
+          "latency_ms": 0.0,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "enabled=False reason=none"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_streaming_05",
+          "passed": true,
+          "latency_ms": 0.0,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "enabled=False reason=none"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_action_01",
+          "passed": true,
+          "latency_ms": 199.7,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Voice health (Phase 65):\n  voice_runtime_mode: stable\n  conversational_runtime: True\n  streaming_stt: False\n  tts_enable"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_action_02",
+          "passed": true,
+          "latency_ms": 1.46,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Voice health (Phase 65):\n  voice_runtime_mode: stable\n  conversational_runtime: True\n  streaming_stt: False\n  tts_enable"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_action_03",
+          "passed": true,
+          "latency_ms": 1.18,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Voice health (Phase 65):\n  voice_runtime_mode: stable\n  conversational_runtime: True\n  streaming_stt: False\n  tts_enable"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_action_04",
+          "passed": true,
+          "latency_ms": 1.27,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Voice health (Phase 65):\n  voice_runtime_mode: stable\n  conversational_runtime: True\n  streaming_stt: False\n  tts_enable"
+        },
+        {
+          "category": "Voice Conversation",
+          "scenario_id": "voice_action_05",
+          "passed": true,
+          "latency_ms": 1.2,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Voice health (Phase 65):\n  voice_runtime_mode: stable\n  conversational_runtime: True\n  streaming_stt: False\n  tts_enable"
+        }
+      ]
+    },
+    {
+      "category": "Browser Task",
+      "total": 50,
+      "passed": 50,
+      "failed": 0,
+      "success_rate": 100.0,
+      "failure_rate": 0.0,
+      "average_execution_time_ms": 194.55,
+      "crash_count": 0,
+      "recovery_count": 0,
+      "scenarios": [
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_open_01",
+          "passed": true,
+          "latency_ms": 884.51,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: about:blank\n  tab: 1/1"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_open_02",
+          "passed": true,
+          "latency_ms": 44.79,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: about:blank\n  tab: 1/1"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_open_03",
+          "passed": true,
+          "latency_ms": 67.44,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: about:blank\n  tab: 1/1"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_open_04",
+          "passed": true,
+          "latency_ms": 41.29,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: about:blank\n  tab: 1/1"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_open_05",
+          "passed": true,
+          "latency_ms": 40.99,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: about:blank\n  tab: 1/1"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_open_06",
+          "passed": true,
+          "latency_ms": 41.76,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: about:blank\n  tab: 1/1"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_open_07",
+          "passed": true,
+          "latency_ms": 41.97,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: about:blank\n  tab: 1/1"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_open_08",
+          "passed": true,
+          "latency_ms": 41.43,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: about:blank\n  tab: 1/1"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_search_01",
+          "passed": true,
+          "latency_ms": 1730.51,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Search results (REAL VISIBLE BROWSER):\n  query: nvidia earnings\n  active_url: https://duckduckgo.com"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_search_02",
+          "passed": true,
+          "latency_ms": 491.87,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Search results (REAL VISIBLE BROWSER):\n  query: python asyncio\n  active_url: https://duckduckgo.com/"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_search_03",
+          "passed": true,
+          "latency_ms": 398.26,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Search results (REAL VISIBLE BROWSER):\n  query: jarvis assistant\n  active_url: https://duckduckgo.co"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_search_04",
+          "passed": true,
+          "latency_ms": 387.07,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Search results (REAL VISIBLE BROWSER):\n  query: market news\n  active_url: https://duckduckgo.com/?q="
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_search_05",
+          "passed": true,
+          "latency_ms": 350.78,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Search results (REAL VISIBLE BROWSER):\n  query: playwright docs\n  active_url: https://duckduckgo.com"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_search_06",
+          "passed": true,
+          "latency_ms": 384.36,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Search results (REAL VISIBLE BROWSER):\n  query: openai api\n  active_url: https://duckduckgo.com/?q=o"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_search_07",
+          "passed": true,
+          "latency_ms": 362.38,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Search results (REAL VISIBLE BROWSER):\n  query: weather today\n  active_url: https://duckduckgo.com/?"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_search_08",
+          "passed": true,
+          "latency_ms": 374.0,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Search results (REAL VISIBLE BROWSER):\n  query: cpu benchmarks\n  active_url: https://duckduckgo.com/"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_summarize_01",
+          "passed": true,
+          "latency_ms": 84.75,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nSummary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_summarize_02",
+          "passed": true,
+          "latency_ms": 83.47,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nSummary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_summarize_03",
+          "passed": true,
+          "latency_ms": 84.31,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nSummary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_summarize_04",
+          "passed": true,
+          "latency_ms": 81.47,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nSummary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_summarize_05",
+          "passed": true,
+          "latency_ms": 92.9,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nSummary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_summarize_06",
+          "passed": true,
+          "latency_ms": 83.48,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nSummary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_summarize_07",
+          "passed": true,
+          "latency_ms": 85.34,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nSummary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_summarize_08",
+          "passed": true,
+          "latency_ms": 81.57,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nSummary for https://duckduckgo.com/?q=cpu+benchmarks\n  title: cpu benchmarks at"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_health_01",
+          "passed": true,
+          "latency_ms": 0.67,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Browser health (Phase 65):\n  provider: playwright\n  session_active: True\n  brows"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_health_02",
+          "passed": true,
+          "latency_ms": 0.01,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Browser health (Phase 65):\n  provider: playwright\n  session_active: True\n  brows"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_health_03",
+          "passed": true,
+          "latency_ms": 0.0,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Browser health (Phase 65):\n  provider: playwright\n  session_active: True\n  brows"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_health_04",
+          "passed": true,
+          "latency_ms": 0.0,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Browser health (Phase 65):\n  provider: playwright\n  session_active: True\n  brows"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_health_05",
+          "passed": true,
+          "latency_ms": 0.0,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Browser health (Phase 65):\n  provider: playwright\n  session_active: True\n  brows"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_health_06",
+          "passed": true,
+          "latency_ms": 0.0,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Browser health (Phase 65):\n  provider: playwright\n  session_active: True\n  brows"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_nav_01",
+          "passed": true,
+          "latency_ms": 485.84,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: https://example.com/\n  t"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_nav_02",
+          "passed": true,
+          "latency_ms": 45.3,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: https://example.com/\n  t"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_nav_03",
+          "passed": true,
+          "latency_ms": 46.03,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: https://example.com/\n  t"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_nav_04",
+          "passed": true,
+          "latency_ms": 45.97,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: https://example.com/\n  t"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_nav_05",
+          "passed": true,
+          "latency_ms": 41.56,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: https://example.com/\n  t"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_nav_06",
+          "passed": true,
+          "latency_ms": 45.85,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: https://example.com/\n  t"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_nav_07",
+          "passed": true,
+          "latency_ms": 41.22,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: https://example.com/\n  t"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_nav_08",
+          "passed": true,
+          "latency_ms": 46.08,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: https://example.com/\n  t"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_active_01",
+          "passed": true,
+          "latency_ms": 1.78,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Active tab:\n  index: 1/1\n  title: Example Domain\n  url: https://example.com/"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_active_02",
+          "passed": true,
+          "latency_ms": 1.77,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Active tab:\n  index: 1/1\n  title: Example Domain\n  url: https://example.com/"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_active_03",
+          "passed": true,
+          "latency_ms": 1.18,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Active tab:\n  index: 1/1\n  title: Example Domain\n  url: https://example.com/"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_active_04",
+          "passed": true,
+          "latency_ms": 1.45,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Active tab:\n  index: 1/1\n  title: Example Domain\n  url: https://example.com/"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_active_05",
+          "passed": true,
+          "latency_ms": 1.4,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Active tab:\n  index: 1/1\n  title: Example Domain\n  url: https://example.com/"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_active_06",
+          "passed": true,
+          "latency_ms": 1.07,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Active tab:\n  index: 1/1\n  title: Example Domain\n  url: https://example.com/"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_find_01",
+          "passed": true,
+          "latency_ms": 664.77,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Search results (REAL VISIBLE BROWSER):\n  query: topic_0\n  active_url: https://duckduckgo.com/?q=topi"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_find_02",
+          "passed": true,
+          "latency_ms": 472.09,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Search results (REAL VISIBLE BROWSER):\n  query: topic_1\n  active_url: https://duckduckgo.com/?q=topi"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_find_03",
+          "passed": true,
+          "latency_ms": 372.11,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Search results (REAL VISIBLE BROWSER):\n  query: topic_2\n  active_url: https://duckduckgo.com/?q=topi"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_find_04",
+          "passed": true,
+          "latency_ms": 364.0,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Search results (REAL VISIBLE BROWSER):\n  query: topic_3\n  active_url: https://duckduckgo.com/?q=topi"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_find_05",
+          "passed": true,
+          "latency_ms": 350.8,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Search results (REAL VISIBLE BROWSER):\n  query: topic_4\n  active_url: https://duckduckgo.com/?q=topi"
+        },
+        {
+          "category": "Browser Task",
+          "scenario_id": "browser_find_06",
+          "passed": true,
+          "latency_ms": 335.61,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Search results (REAL VISIBLE BROWSER):\n  query: topic_5\n  active_url: https://duckduckgo.com/?q=topi"
+        }
+      ]
+    },
+    {
+      "category": "Desktop Operator",
+      "total": 50,
+      "passed": 50,
+      "failed": 0,
+      "success_rate": 100.0,
+      "failure_rate": 0.0,
+      "average_execution_time_ms": 116.42,
+      "crash_count": 0,
+      "recovery_count": 0,
+      "scenarios": [
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_capture_01",
+          "passed": true,
+          "latency_ms": 289.17,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL DESKTOP VISION\nCaptured active monitor: C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\de"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_capture_02",
+          "passed": true,
+          "latency_ms": 204.19,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL DESKTOP VISION\nCaptured active monitor: C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\de"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_capture_03",
+          "passed": true,
+          "latency_ms": 205.08,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL DESKTOP VISION\nCaptured active monitor: C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\de"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_capture_04",
+          "passed": true,
+          "latency_ms": 218.18,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL DESKTOP VISION\nCaptured active monitor: C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\de"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_capture_05",
+          "passed": true,
+          "latency_ms": 225.68,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL DESKTOP VISION\nCaptured active monitor: C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\de"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_capture_06",
+          "passed": true,
+          "latency_ms": 214.15,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL DESKTOP VISION\nCaptured active monitor: C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\de"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_capture_07",
+          "passed": true,
+          "latency_ms": 226.53,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL DESKTOP VISION\nCaptured active monitor: C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\de"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_capture_08",
+          "passed": true,
+          "latency_ms": 234.0,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL DESKTOP VISION\nCaptured active monitor: C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\de"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_capture_09",
+          "passed": true,
+          "latency_ms": 210.31,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL DESKTOP VISION\nCaptured active monitor: C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\de"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_capture_10",
+          "passed": true,
+          "latency_ms": 215.85,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL DESKTOP VISION\nCaptured active monitor: C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\de"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_ocr_01",
+          "passed": true,
+          "latency_ms": 388.83,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "engine=unknown len=0"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_ocr_02",
+          "passed": true,
+          "latency_ms": 56.04,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "engine=unknown len=0"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_ocr_03",
+          "passed": true,
+          "latency_ms": 41.84,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "engine=unknown len=0"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_ocr_04",
+          "passed": true,
+          "latency_ms": 42.21,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "engine=unknown len=0"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_ocr_05",
+          "passed": true,
+          "latency_ms": 41.57,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "engine=unknown len=0"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_ocr_06",
+          "passed": true,
+          "latency_ms": 43.76,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "engine=unknown len=0"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_ocr_07",
+          "passed": true,
+          "latency_ms": 45.49,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "engine=unknown len=0"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_ocr_08",
+          "passed": true,
+          "latency_ms": 40.69,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "engine=unknown len=0"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_ocr_09",
+          "passed": true,
+          "latency_ms": 41.02,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "engine=unknown len=0"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_ocr_10",
+          "passed": true,
+          "latency_ms": 41.55,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "engine=unknown len=0"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_windows_01",
+          "passed": true,
+          "latency_ms": 27.95,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "count=9"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_windows_02",
+          "passed": true,
+          "latency_ms": 1.1,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "count=9"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_windows_03",
+          "passed": true,
+          "latency_ms": 0.87,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "count=9"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_windows_04",
+          "passed": true,
+          "latency_ms": 0.82,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "count=9"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_windows_05",
+          "passed": true,
+          "latency_ms": 0.83,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "count=9"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_windows_06",
+          "passed": true,
+          "latency_ms": 0.81,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "count=9"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_windows_07",
+          "passed": true,
+          "latency_ms": 0.83,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "count=9"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_windows_08",
+          "passed": true,
+          "latency_ms": 0.7,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "count=9"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_screen_01",
+          "passed": true,
+          "latency_ms": 102.93,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL DESKTOP VISION\nStatus: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testin"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_screen_02",
+          "passed": true,
+          "latency_ms": 105.74,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL DESKTOP VISION\nStatus: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testin"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_screen_03",
+          "passed": true,
+          "latency_ms": 100.42,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL DESKTOP VISION\nStatus: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testin"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_screen_04",
+          "passed": true,
+          "latency_ms": 101.86,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL DESKTOP VISION\nStatus: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testin"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_screen_05",
+          "passed": true,
+          "latency_ms": 102.84,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL DESKTOP VISION\nStatus: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testin"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_screen_06",
+          "passed": true,
+          "latency_ms": 100.5,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL DESKTOP VISION\nStatus: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testin"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_screen_07",
+          "passed": true,
+          "latency_ms": 104.25,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL DESKTOP VISION\nStatus: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testin"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_screen_08",
+          "passed": true,
+          "latency_ms": 102.56,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL DESKTOP VISION\nStatus: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testin"
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_health_01",
+          "passed": true,
+          "latency_ms": 0.46,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Desktop operator health (Phase 65):\n  operator_enabled: True\n  safe_mode: True\n "
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_health_02",
+          "passed": true,
+          "latency_ms": 0.01,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Desktop operator health (Phase 65):\n  operator_enabled: True\n  safe_mode: True\n "
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_health_03",
+          "passed": true,
+          "latency_ms": 0.0,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Desktop operator health (Phase 65):\n  operator_enabled: True\n  safe_mode: True\n "
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_health_04",
+          "passed": true,
+          "latency_ms": 0.0,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Desktop operator health (Phase 65):\n  operator_enabled: True\n  safe_mode: True\n "
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_health_05",
+          "passed": true,
+          "latency_ms": 0.0,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Desktop operator health (Phase 65):\n  operator_enabled: True\n  safe_mode: True\n "
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_health_06",
+          "passed": true,
+          "latency_ms": 0.0,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Desktop operator health (Phase 65):\n  operator_enabled: True\n  safe_mode: True\n "
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_list_01",
+          "passed": true,
+          "latency_ms": 9.26,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL DESKTOP VISION\nOpen windows (9):\n  - topic_5 at DuckDuckGo - Google Chrome "
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_list_02",
+          "passed": true,
+          "latency_ms": 8.95,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL DESKTOP VISION\nOpen windows (9):\n  - topic_5 at DuckDuckGo - Google Chrome "
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_list_03",
+          "passed": true,
+          "latency_ms": 8.91,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL DESKTOP VISION\nOpen windows (9):\n  - topic_5 at DuckDuckGo - Google Chrome "
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_list_04",
+          "passed": true,
+          "latency_ms": 8.45,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL DESKTOP VISION\nOpen windows (9):\n  - topic_5 at DuckDuckGo - Google Chrome "
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_type_01",
+          "passed": true,
+          "latency_ms": 501.49,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Typed text (14 chars)."
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_type_02",
+          "passed": true,
+          "latency_ms": 468.75,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Typed text (14 chars)."
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_type_03",
+          "passed": true,
+          "latency_ms": 466.04,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Typed text (14 chars)."
+        },
+        {
+          "category": "Desktop Operator",
+          "scenario_id": "desktop_type_04",
+          "passed": true,
+          "latency_ms": 467.74,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Typed text (14 chars)."
+        }
+      ]
+    },
+    {
+      "category": "Memory Recall",
+      "total": 50,
+      "passed": 50,
+      "failed": 0,
+      "success_rate": 100.0,
+      "failure_rate": 0.0,
+      "average_execution_time_ms": 64.43,
+      "crash_count": 0,
+      "recovery_count": 0,
+      "scenarios": [
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_remember_01",
+          "passed": true,
+          "latency_ms": 47.56,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "mem_16fda34cbf"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_retrieve_02",
+          "passed": true,
+          "latency_ms": 67.43,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_remember_03",
+          "passed": true,
+          "latency_ms": 35.29,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "mem_40a6ba44f6"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_retrieve_04",
+          "passed": true,
+          "latency_ms": 66.73,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_remember_05",
+          "passed": true,
+          "latency_ms": 37.76,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "mem_3a433f62a3"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_retrieve_06",
+          "passed": true,
+          "latency_ms": 66.6,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_remember_07",
+          "passed": true,
+          "latency_ms": 38.43,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "mem_1491980851"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_retrieve_08",
+          "passed": true,
+          "latency_ms": 67.5,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_remember_09",
+          "passed": true,
+          "latency_ms": 38.11,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "mem_5f0505359e"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_retrieve_10",
+          "passed": true,
+          "latency_ms": 67.5,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_remember_11",
+          "passed": true,
+          "latency_ms": 41.97,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "mem_77532f2a34"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_retrieve_12",
+          "passed": true,
+          "latency_ms": 71.62,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_remember_13",
+          "passed": true,
+          "latency_ms": 42.71,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "mem_8095f27959"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_retrieve_14",
+          "passed": true,
+          "latency_ms": 69.03,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_remember_15",
+          "passed": true,
+          "latency_ms": 41.26,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "mem_b30d3c9cac"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_retrieve_16",
+          "passed": true,
+          "latency_ms": 72.21,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_remember_17",
+          "passed": true,
+          "latency_ms": 43.91,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "mem_41f1f4cdfd"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_retrieve_18",
+          "passed": true,
+          "latency_ms": 73.94,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_remember_19",
+          "passed": true,
+          "latency_ms": 45.28,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "mem_541f4dad3a"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_retrieve_20",
+          "passed": true,
+          "latency_ms": 74.42,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_remember_21",
+          "passed": true,
+          "latency_ms": 45.96,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "mem_6be7f7943f"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_retrieve_22",
+          "passed": true,
+          "latency_ms": 73.95,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_remember_23",
+          "passed": true,
+          "latency_ms": 51.3,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "mem_25ae11293d"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_retrieve_24",
+          "passed": true,
+          "latency_ms": 80.61,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_remember_25",
+          "passed": true,
+          "latency_ms": 48.3,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "mem_073d1a7a09"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_retrieve_26",
+          "passed": true,
+          "latency_ms": 82.19,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_remember_27",
+          "passed": true,
+          "latency_ms": 51.02,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "mem_aa83585a14"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_retrieve_28",
+          "passed": true,
+          "latency_ms": 79.93,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_remember_29",
+          "passed": true,
+          "latency_ms": 50.61,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "mem_b742b6af3a"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_retrieve_30",
+          "passed": true,
+          "latency_ms": 85.77,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_remember_31",
+          "passed": true,
+          "latency_ms": 50.72,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "mem_f388100e2a"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_retrieve_32",
+          "passed": true,
+          "latency_ms": 82.86,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_remember_33",
+          "passed": true,
+          "latency_ms": 53.68,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "mem_cc65e69470"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_retrieve_34",
+          "passed": true,
+          "latency_ms": 84.09,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_remember_35",
+          "passed": true,
+          "latency_ms": 53.88,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "mem_aabb2c417d"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_retrieve_36",
+          "passed": true,
+          "latency_ms": 82.42,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_remember_37",
+          "passed": true,
+          "latency_ms": 55.42,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "mem_0c97c142b6"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_retrieve_38",
+          "passed": true,
+          "latency_ms": 82.62,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_remember_39",
+          "passed": true,
+          "latency_ms": 55.28,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "mem_255d88401f"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_retrieve_40",
+          "passed": true,
+          "latency_ms": 86.24,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_remember_41",
+          "passed": true,
+          "latency_ms": 61.57,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "mem_566a0e3727"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_retrieve_42",
+          "passed": true,
+          "latency_ms": 86.81,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_remember_43",
+          "passed": true,
+          "latency_ms": 64.04,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "mem_a1cf71436a"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_retrieve_44",
+          "passed": true,
+          "latency_ms": 89.44,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_remember_45",
+          "passed": true,
+          "latency_ms": 55.55,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "mem_3971732ba9"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_retrieve_46",
+          "passed": true,
+          "latency_ms": 91.98,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_remember_47",
+          "passed": true,
+          "latency_ms": 66.68,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "mem_87328c0ff3"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_retrieve_48",
+          "passed": true,
+          "latency_ms": 96.03,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_remember_49",
+          "passed": true,
+          "latency_ms": 66.93,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "mem_a0b14cfd9e"
+        },
+        {
+          "category": "Memory Recall",
+          "scenario_id": "memory_retrieve_50",
+          "passed": true,
+          "latency_ms": 96.32,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        }
+      ]
+    },
+    {
+      "category": "Coding Task",
+      "total": 50,
+      "passed": 50,
+      "failed": 0,
+      "success_rate": 100.0,
+      "failure_rate": 0.0,
+      "average_execution_time_ms": 117.4,
+      "crash_count": 0,
+      "recovery_count": 0,
+      "scenarios": [
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_inspect_01",
+          "passed": true,
+          "latency_ms": 183.26,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Phase 45 project inspection (read-only).\n- JARVIS project: C:\\J.A.R.V.I.S\\local_jarvis (exists)\n  fi"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_inspect_02",
+          "passed": true,
+          "latency_ms": 181.38,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Phase 45 project inspection (read-only).\n- JARVIS project: C:\\J.A.R.V.I.S\\local_jarvis (exists)\n  fi"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_inspect_03",
+          "passed": true,
+          "latency_ms": 181.36,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Phase 45 project inspection (read-only).\n- JARVIS project: C:\\J.A.R.V.I.S\\local_jarvis (exists)\n  fi"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_inspect_04",
+          "passed": true,
+          "latency_ms": 176.12,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Phase 45 project inspection (read-only).\n- JARVIS project: C:\\J.A.R.V.I.S\\local_jarvis (exists)\n  fi"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_inspect_05",
+          "passed": true,
+          "latency_ms": 177.21,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Phase 45 project inspection (read-only).\n- JARVIS project: C:\\J.A.R.V.I.S\\local_jarvis (exists)\n  fi"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_inspect_06",
+          "passed": true,
+          "latency_ms": 178.07,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Phase 45 project inspection (read-only).\n- JARVIS project: C:\\J.A.R.V.I.S\\local_jarvis (exists)\n  fi"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_inspect_07",
+          "passed": true,
+          "latency_ms": 176.65,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Phase 45 project inspection (read-only).\n- JARVIS project: C:\\J.A.R.V.I.S\\local_jarvis (exists)\n  fi"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_inspect_08",
+          "passed": true,
+          "latency_ms": 179.76,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Phase 45 project inspection (read-only).\n- JARVIS project: C:\\J.A.R.V.I.S\\local_jarvis (exists)\n  fi"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_inspect_09",
+          "passed": true,
+          "latency_ms": 174.62,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Phase 45 project inspection (read-only).\n- JARVIS project: C:\\J.A.R.V.I.S\\local_jarvis (exists)\n  fi"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_inspect_10",
+          "passed": true,
+          "latency_ms": 175.77,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Phase 45 project inspection (read-only).\n- JARVIS project: C:\\J.A.R.V.I.S\\local_jarvis (exists)\n  fi"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_inspect_11",
+          "passed": true,
+          "latency_ms": 180.16,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Phase 45 project inspection (read-only).\n- JARVIS project: C:\\J.A.R.V.I.S\\local_jarvis (exists)\n  fi"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_inspect_12",
+          "passed": true,
+          "latency_ms": 178.02,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Phase 45 project inspection (read-only).\n- JARVIS project: C:\\J.A.R.V.I.S\\local_jarvis (exists)\n  fi"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_inspect_13",
+          "passed": true,
+          "latency_ms": 175.21,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Phase 45 project inspection (read-only).\n- JARVIS project: C:\\J.A.R.V.I.S\\local_jarvis (exists)\n  fi"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_inspect_14",
+          "passed": true,
+          "latency_ms": 176.14,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Phase 45 project inspection (read-only).\n- JARVIS project: C:\\J.A.R.V.I.S\\local_jarvis (exists)\n  fi"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_inspect_15",
+          "passed": true,
+          "latency_ms": 176.68,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Phase 45 project inspection (read-only).\n- JARVIS project: C:\\J.A.R.V.I.S\\local_jarvis (exists)\n  fi"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_analyze_01",
+          "passed": true,
+          "latency_ms": 17.47,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Algorithm bug hunt (read-only; findings are hypotheses unless snippets prove behavior).\n- MEDIUM iss"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_analyze_02",
+          "passed": true,
+          "latency_ms": 256.51,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Latest error explanation (read-only).\n- Evidence: C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_logs\\st"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_analyze_03",
+          "passed": true,
+          "latency_ms": 16.54,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Algorithm bug hunt (read-only; findings are hypotheses unless snippets prove behavior).\n- MEDIUM iss"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_analyze_04",
+          "passed": true,
+          "latency_ms": 261.38,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Latest error explanation (read-only).\n- Evidence: C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_logs\\st"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_analyze_05",
+          "passed": true,
+          "latency_ms": 19.86,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Algorithm bug hunt (read-only; findings are hypotheses unless snippets prove behavior).\n- MEDIUM iss"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_analyze_06",
+          "passed": true,
+          "latency_ms": 299.1,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Latest error explanation (read-only).\n- Evidence: C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_logs\\st"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_analyze_07",
+          "passed": true,
+          "latency_ms": 15.79,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Algorithm bug hunt (read-only; findings are hypotheses unless snippets prove behavior).\n- MEDIUM iss"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_analyze_08",
+          "passed": true,
+          "latency_ms": 263.35,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Latest error explanation (read-only).\n- Evidence: C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_logs\\st"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_analyze_09",
+          "passed": true,
+          "latency_ms": 17.27,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Algorithm bug hunt (read-only; findings are hypotheses unless snippets prove behavior).\n- MEDIUM iss"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_analyze_10",
+          "passed": true,
+          "latency_ms": 258.24,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Latest error explanation (read-only).\n- Evidence: C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_logs\\st"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_patch_01",
+          "passed": true,
+          "latency_ms": 0.85,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "conf=0.92 path=ok"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_patch_02",
+          "passed": true,
+          "latency_ms": 0.23,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "conf=0.92 path=ok"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_patch_03",
+          "passed": true,
+          "latency_ms": 0.25,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "conf=0.92 path=ok"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_patch_04",
+          "passed": true,
+          "latency_ms": 0.3,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "conf=0.92 path=ok"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_patch_05",
+          "passed": true,
+          "latency_ms": 0.48,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "conf=0.92 path=not a file"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_patch_06",
+          "passed": true,
+          "latency_ms": 0.35,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "conf=0.92 path=ok"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_patch_07",
+          "passed": true,
+          "latency_ms": 0.31,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "conf=0.92 path=ok"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_patch_08",
+          "passed": true,
+          "latency_ms": 0.3,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "conf=0.92 path=ok"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_patch_09",
+          "passed": true,
+          "latency_ms": 0.21,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "conf=0.92 path=ok"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_patch_10",
+          "passed": true,
+          "latency_ms": 0.22,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "conf=0.92 path=ok"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_patch_11",
+          "passed": true,
+          "latency_ms": 0.2,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "conf=0.92 path=ok"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_patch_12",
+          "passed": true,
+          "latency_ms": 0.28,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "conf=0.92 path=ok"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_patch_13",
+          "passed": true,
+          "latency_ms": 0.22,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "conf=0.92 path=ok"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_patch_14",
+          "passed": true,
+          "latency_ms": 0.21,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "conf=0.92 path=ok"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_patch_15",
+          "passed": true,
+          "latency_ms": 0.25,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "conf=0.92 path=not a file"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_action_01",
+          "passed": true,
+          "latency_ms": 174.12,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Phase 45 project inspection (read-only).\n- JARVIS project: C:\\J.A.R.V.I.S\\local_jarvis (exists)\n  fi"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_action_02",
+          "passed": true,
+          "latency_ms": 179.01,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Phase 45 project inspection (read-only).\n- JARVIS project: C:\\J.A.R.V.I.S\\local_jarvis (exists)\n  fi"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_action_03",
+          "passed": true,
+          "latency_ms": 179.13,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Phase 45 project inspection (read-only).\n- JARVIS project: C:\\J.A.R.V.I.S\\local_jarvis (exists)\n  fi"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_action_04",
+          "passed": true,
+          "latency_ms": 176.2,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Phase 45 project inspection (read-only).\n- JARVIS project: C:\\J.A.R.V.I.S\\local_jarvis (exists)\n  fi"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_action_05",
+          "passed": true,
+          "latency_ms": 176.71,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Phase 45 project inspection (read-only).\n- JARVIS project: C:\\J.A.R.V.I.S\\local_jarvis (exists)\n  fi"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_action_06",
+          "passed": true,
+          "latency_ms": 178.78,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Phase 45 project inspection (read-only).\n- JARVIS project: C:\\J.A.R.V.I.S\\local_jarvis (exists)\n  fi"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_action_07",
+          "passed": true,
+          "latency_ms": 176.38,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Phase 45 project inspection (read-only).\n- JARVIS project: C:\\J.A.R.V.I.S\\local_jarvis (exists)\n  fi"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_action_08",
+          "passed": true,
+          "latency_ms": 176.94,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Phase 45 project inspection (read-only).\n- JARVIS project: C:\\J.A.R.V.I.S\\local_jarvis (exists)\n  fi"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_action_09",
+          "passed": true,
+          "latency_ms": 174.39,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Phase 45 project inspection (read-only).\n- JARVIS project: C:\\J.A.R.V.I.S\\local_jarvis (exists)\n  fi"
+        },
+        {
+          "category": "Coding Task",
+          "scenario_id": "coding_action_10",
+          "passed": true,
+          "latency_ms": 177.65,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "Phase 45 project inspection (read-only).\n- JARVIS project: C:\\J.A.R.V.I.S\\local_jarvis (exists)\n  fi"
+        }
+      ]
+    },
+    {
+      "category": "Recovery After Failures",
+      "total": 50,
+      "passed": 50,
+      "failed": 0,
+      "success_rate": 100.0,
+      "failure_rate": 0.0,
+      "average_execution_time_ms": 281.02,
+      "crash_count": 0,
+      "recovery_count": 50,
+      "scenarios": [
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_browser_01",
+          "passed": true,
+          "latency_ms": 814.8,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session recovered."
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_browser_02",
+          "passed": true,
+          "latency_ms": 857.29,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session recovered."
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_browser_03",
+          "passed": true,
+          "latency_ms": 833.65,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session recovered."
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_browser_04",
+          "passed": true,
+          "latency_ms": 858.71,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session recovered."
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_browser_05",
+          "passed": true,
+          "latency_ms": 848.53,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session recovered."
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_browser_06",
+          "passed": true,
+          "latency_ms": 840.16,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session recovered."
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_browser_07",
+          "passed": true,
+          "latency_ms": 843.56,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session recovered."
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_browser_08",
+          "passed": true,
+          "latency_ms": 866.17,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session recovered."
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_browser_09",
+          "passed": true,
+          "latency_ms": 828.51,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session recovered."
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_browser_10",
+          "passed": true,
+          "latency_ms": 835.74,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session recovered."
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_browser_11",
+          "passed": true,
+          "latency_ms": 846.12,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session recovered."
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_browser_12",
+          "passed": true,
+          "latency_ms": 865.98,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session recovered."
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_browser_13",
+          "passed": true,
+          "latency_ms": 862.36,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session recovered."
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_browser_14",
+          "passed": true,
+          "latency_ms": 815.72,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session recovered."
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_browser_15",
+          "passed": true,
+          "latency_ms": 850.4,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session recovered."
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_nav_01",
+          "passed": true,
+          "latency_ms": 486.37,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: https://example.com/\n  t"
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_nav_02",
+          "passed": true,
+          "latency_ms": 56.17,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: https://example.com/\n  t"
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_nav_03",
+          "passed": true,
+          "latency_ms": 46.33,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: https://example.com/\n  t"
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_nav_04",
+          "passed": true,
+          "latency_ms": 45.5,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: https://example.com/\n  t"
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_nav_05",
+          "passed": true,
+          "latency_ms": 45.7,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: https://example.com/\n  t"
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_nav_06",
+          "passed": true,
+          "latency_ms": 46.11,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: https://example.com/\n  t"
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_nav_07",
+          "passed": true,
+          "latency_ms": 48.87,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: https://example.com/\n  t"
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_nav_08",
+          "passed": true,
+          "latency_ms": 47.19,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: https://example.com/\n  t"
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_nav_09",
+          "passed": true,
+          "latency_ms": 49.41,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: https://example.com/\n  t"
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_nav_10",
+          "passed": true,
+          "latency_ms": 45.4,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: https://example.com/\n  t"
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_nav_11",
+          "passed": true,
+          "latency_ms": 46.47,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: https://example.com/\n  t"
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_nav_12",
+          "passed": true,
+          "latency_ms": 45.17,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: https://example.com/\n  t"
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_nav_13",
+          "passed": true,
+          "latency_ms": 46.1,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: https://example.com/\n  t"
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_nav_14",
+          "passed": true,
+          "latency_ms": 41.84,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: https://example.com/\n  t"
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_nav_15",
+          "passed": true,
+          "latency_ms": 45.6,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nBrowser session active.\n  browser_visible: True\n  url: https://example.com/\n  t"
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_desktop_01",
+          "passed": true,
+          "latency_ms": 16.85,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "Desktop operator state recovered."
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_desktop_02",
+          "passed": true,
+          "latency_ms": 14.83,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "Desktop operator state recovered."
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_desktop_03",
+          "passed": true,
+          "latency_ms": 15.33,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "Desktop operator state recovered."
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_desktop_04",
+          "passed": true,
+          "latency_ms": 14.49,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "Desktop operator state recovered."
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_desktop_05",
+          "passed": true,
+          "latency_ms": 15.11,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "Desktop operator state recovered."
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_desktop_06",
+          "passed": true,
+          "latency_ms": 15.29,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "Desktop operator state recovered."
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_desktop_07",
+          "passed": true,
+          "latency_ms": 14.65,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "Desktop operator state recovered."
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_desktop_08",
+          "passed": true,
+          "latency_ms": 15.08,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "Desktop operator state recovered."
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_desktop_09",
+          "passed": true,
+          "latency_ms": 14.84,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "Desktop operator state recovered."
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_desktop_10",
+          "passed": true,
+          "latency_ms": 15.39,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "Desktop operator state recovered."
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_memory_01",
+          "passed": true,
+          "latency_ms": 7.45,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "Memory store repair complete.\n  entries_before: 177\n  entries_after: 113\n  dupli"
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_memory_02",
+          "passed": true,
+          "latency_ms": 19.68,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "Memory store repair complete.\n  entries_before: 113\n  entries_after: 113\n  dupli"
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_memory_03",
+          "passed": true,
+          "latency_ms": 20.81,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "Memory store repair complete.\n  entries_before: 113\n  entries_after: 113\n  dupli"
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_memory_04",
+          "passed": true,
+          "latency_ms": 20.51,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "Memory store repair complete.\n  entries_before: 113\n  entries_after: 113\n  dupli"
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_memory_05",
+          "passed": true,
+          "latency_ms": 20.89,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "Memory store repair complete.\n  entries_before: 113\n  entries_after: 113\n  dupli"
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_voice_01",
+          "passed": true,
+          "latency_ms": 0.02,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "conversation timeout recovery failed: cannot import name 'end_session' from 'con"
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_voice_02",
+          "passed": true,
+          "latency_ms": 0.0,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "conversation timeout recovery failed: cannot import name 'end_session' from 'con"
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_voice_03",
+          "passed": true,
+          "latency_ms": 0.0,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "conversation timeout recovery failed: cannot import name 'end_session' from 'con"
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_voice_04",
+          "passed": true,
+          "latency_ms": 0.0,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "conversation timeout recovery failed: cannot import name 'end_session' from 'con"
+        },
+        {
+          "category": "Recovery After Failures",
+          "scenario_id": "recovery_voice_05",
+          "passed": true,
+          "latency_ms": 0.0,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "conversation timeout recovery failed: cannot import name 'end_session' from 'con"
+        }
+      ]
+    },
+    {
+      "category": "Multi-Step Task Completion",
+      "total": 50,
+      "passed": 50,
+      "failed": 0,
+      "success_rate": 100.0,
+      "failure_rate": 0.0,
+      "average_execution_time_ms": 294.94,
+      "crash_count": 0,
+      "recovery_count": 10,
+      "scenarios": [
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_browser_01",
+          "passed": true,
+          "latency_ms": 1756.35,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nSummary for https://duckduckgo.com/?q=topic+flow+0\n  title:"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_browser_02",
+          "passed": true,
+          "latency_ms": 646.78,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nSummary for https://duckduckgo.com/?q=topic+flow+1\n  title:"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_browser_03",
+          "passed": true,
+          "latency_ms": 592.07,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nSummary for https://duckduckgo.com/?q=topic+flow+2\n  title:"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_browser_04",
+          "passed": true,
+          "latency_ms": 585.95,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nSummary for https://duckduckgo.com/?q=topic+flow+3\n  title:"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_browser_05",
+          "passed": true,
+          "latency_ms": 509.46,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nSummary for https://duckduckgo.com/?q=topic+flow+4\n  title:"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_browser_06",
+          "passed": true,
+          "latency_ms": 511.36,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nSummary for https://duckduckgo.com/?q=topic+flow+5\n  title:"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_browser_07",
+          "passed": true,
+          "latency_ms": 508.69,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nSummary for https://duckduckgo.com/?q=topic+flow+6\n  title:"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_browser_08",
+          "passed": true,
+          "latency_ms": 512.1,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nSummary for https://duckduckgo.com/?q=topic+flow+7\n  title:"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_browser_09",
+          "passed": true,
+          "latency_ms": 695.79,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nSummary for https://duckduckgo.com/?q=topic+flow+8\n  title:"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_browser_10",
+          "passed": true,
+          "latency_ms": 524.86,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nSummary for https://duckduckgo.com/?q=topic+flow+9\n  title:"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_browser_11",
+          "passed": true,
+          "latency_ms": 527.84,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nSummary for https://duckduckgo.com/?q=topic+flow+10\n  title"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_browser_12",
+          "passed": true,
+          "latency_ms": 529.32,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nSummary for https://duckduckgo.com/?q=topic+flow+11\n  title"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_browser_13",
+          "passed": true,
+          "latency_ms": 534.13,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nSummary for https://duckduckgo.com/?q=topic+flow+12\n  title"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_browser_14",
+          "passed": true,
+          "latency_ms": 555.41,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nSummary for https://duckduckgo.com/?q=topic+flow+13\n  title"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_browser_15",
+          "passed": true,
+          "latency_ms": 607.38,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "REAL VISIBLE BROWSER\nSummary for https://duckduckgo.com/?q=topic+flow+14\n  title"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_memory_01",
+          "passed": true,
+          "latency_ms": 109.87,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_memory_02",
+          "passed": true,
+          "latency_ms": 105.47,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_memory_03",
+          "passed": true,
+          "latency_ms": 104.32,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_memory_04",
+          "passed": true,
+          "latency_ms": 102.61,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_memory_05",
+          "passed": true,
+          "latency_ms": 102.27,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_memory_06",
+          "passed": true,
+          "latency_ms": 106.32,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_memory_07",
+          "passed": true,
+          "latency_ms": 105.63,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_memory_08",
+          "passed": true,
+          "latency_ms": 107.46,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_memory_09",
+          "passed": true,
+          "latency_ms": 111.1,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_memory_10",
+          "passed": true,
+          "latency_ms": 111.63,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_memory_11",
+          "passed": true,
+          "latency_ms": 108.09,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_memory_12",
+          "passed": true,
+          "latency_ms": 110.82,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_memory_13",
+          "passed": true,
+          "latency_ms": 111.89,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_memory_14",
+          "passed": true,
+          "latency_ms": 107.66,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_memory_15",
+          "passed": true,
+          "latency_ms": 106.78,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "hits=2"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_health_01",
+          "passed": true,
+          "latency_ms": 20.09,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "parts=3"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_health_02",
+          "passed": true,
+          "latency_ms": 5.91,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "parts=3"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_health_03",
+          "passed": true,
+          "latency_ms": 6.51,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "parts=3"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_health_04",
+          "passed": true,
+          "latency_ms": 5.86,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "parts=3"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_health_05",
+          "passed": true,
+          "latency_ms": 6.07,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "parts=3"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_health_06",
+          "passed": true,
+          "latency_ms": 7.03,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "parts=3"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_health_07",
+          "passed": true,
+          "latency_ms": 5.45,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "parts=3"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_health_08",
+          "passed": true,
+          "latency_ms": 5.8,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "parts=3"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_health_09",
+          "passed": true,
+          "latency_ms": 6.6,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "parts=3"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_health_10",
+          "passed": true,
+          "latency_ms": 5.18,
+          "crashed": false,
+          "recovered": false,
+          "failure_reason": "",
+          "detail": "parts=3"
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_desktop_01",
+          "passed": true,
+          "latency_ms": 361.04,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "Desktop operator state recovered."
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_desktop_02",
+          "passed": true,
+          "latency_ms": 341.36,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "Desktop operator state recovered."
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_desktop_03",
+          "passed": true,
+          "latency_ms": 334.26,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "Desktop operator state recovered."
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_desktop_04",
+          "passed": true,
+          "latency_ms": 345.63,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "Desktop operator state recovered."
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_desktop_05",
+          "passed": true,
+          "latency_ms": 336.77,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "Desktop operator state recovered."
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_desktop_06",
+          "passed": true,
+          "latency_ms": 350.62,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "Desktop operator state recovered."
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_desktop_07",
+          "passed": true,
+          "latency_ms": 378.47,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "Desktop operator state recovered."
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_desktop_08",
+          "passed": true,
+          "latency_ms": 337.66,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "Desktop operator state recovered."
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_desktop_09",
+          "passed": true,
+          "latency_ms": 336.88,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "Desktop operator state recovered."
+        },
+        {
+          "category": "Multi-Step Task Completion",
+          "scenario_id": "multistep_desktop_10",
+          "passed": true,
+          "latency_ms": 340.16,
+          "crashed": false,
+          "recovered": true,
+          "failure_reason": "",
+          "detail": "Desktop operator state recovered."
+        }
+      ]
+    }
+  ]
+}

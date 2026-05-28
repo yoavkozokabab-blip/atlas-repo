@@ -1,0 +1,1039 @@
+{"ts": "2026-05-28T13:26:03Z", "action": "session_start_failed", "payload": {"error": "No module named 'playwright'"}}
+{"ts": "2026-05-28T13:26:09Z", "action": "session_start_failed", "payload": {"error": "No module named 'playwright'"}}
+{"ts": "2026-05-28T13:26:09Z", "action": "session_start_failed", "payload": {"error": "No module named 'playwright'"}}
+{"ts": "2026-05-28T13:26:09Z", "action": "session_start_failed", "payload": {"error": "No module named 'playwright'"}}
+{"ts": "2026-05-28T13:28:29Z", "action": "session_start_failed", "payload": {"error": "No module named 'playwright'"}}
+{"ts": "2026-05-28T13:28:48Z", "action": "session_start_failed", "payload": {"error": "No module named 'playwright'"}}
+{"ts": "2026-05-28T13:29:02Z", "action": "session_start_failed", "payload": {"error": "No module named 'playwright'"}}
+{"ts": "2026-05-28T13:29:13Z", "action": "session_start_failed", "payload": {"error": "No module named 'playwright'"}}
+{"ts": "2026-05-28T13:34:24Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T13:34:25Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T13:49:39Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T13:49:39Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T13:49:47Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T13:49:48Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T13:49:48Z", "action": "test_real_browser_start", "payload": {"target": "https://example.com"}}
+{"ts": "2026-05-28T13:49:48Z", "action": "test_real_browser_done", "payload": {"ok": true, "url": "https://example.com/", "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779976188216.png"}}
+{"ts": "2026-05-28T13:49:50Z", "action": "open_browser", "payload": {"url": "https://www.nvidia.com", "tab_count": 1}}
+{"ts": "2026-05-28T13:49:50Z", "action": "summarize_page", "payload": {"url": "https://www.nvidia.com/en-eu/"}}
+{"ts": "2026-05-28T13:51:05Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T13:51:06Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T13:51:06Z", "action": "test_real_browser_start", "payload": {"target": "https://example.com"}}
+{"ts": "2026-05-28T13:51:06Z", "action": "test_real_browser_done", "payload": {"ok": true, "url": "https://example.com/", "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779976266721.png"}}
+{"ts": "2026-05-28T13:56:09Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T13:56:10Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T13:56:11Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T13:56:24Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T13:56:26Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T13:56:26Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T13:56:36Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T13:56:36Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T13:56:39Z", "action": "open_browser", "payload": {"url": "https://www.nvidia.com", "tab_count": 1}}
+{"ts": "2026-05-28T13:56:39Z", "action": "summarize_page", "payload": {"url": "https://www.nvidia.com/en-eu/"}}
+{"ts": "2026-05-28T13:56:41Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T13:56:41Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T13:56:41Z", "action": "test_real_browser_start", "payload": {"target": "https://example.com"}}
+{"ts": "2026-05-28T13:56:41Z", "action": "test_real_browser_done", "payload": {"ok": true, "url": "https://example.com/", "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779976601720.png"}}
+{"ts": "2026-05-28T13:56:43Z", "action": "open_browser", "payload": {"url": "https://www.nvidia.com", "tab_count": 1}}
+{"ts": "2026-05-28T13:56:44Z", "action": "summarize_page", "payload": {"url": "https://www.nvidia.com/en-eu/"}}
+{"ts": "2026-05-28T14:12:35Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T14:12:35Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T14:12:37Z", "action": "search_web", "payload": {"query": "Nvidia earnings summary", "url": "https://duckduckgo.com/?q=Nvidia+earnings+summary"}}
+{"ts": "2026-05-28T14:12:38Z", "action": "open_browser", "payload": {"url": "https://duckduckgo.com/", "tab_count": 1}}
+{"ts": "2026-05-28T14:12:39Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/"}}
+{"ts": "2026-05-28T14:12:40Z", "action": "save_browser_research_report", "payload": {"path": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\reports\\browser_research_1779977560.md"}}
+{"ts": "2026-05-28T19:30:26Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:30:27Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:30:30Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:30:31Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:30:31Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:30:31Z", "action": "summarize_page", "payload": {"url": "about:blank"}}
+{"ts": "2026-05-28T19:30:48Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:30:48Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:30:48Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:30:49Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:30:49Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:30:49Z", "action": "summarize_page", "payload": {"url": "about:blank"}}
+{"ts": "2026-05-28T19:31:10Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:31:10Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:31:12Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:31:12Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:31:12Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:31:13Z", "action": "summarize_page", "payload": {"url": "about:blank"}}
+{"ts": "2026-05-28T19:31:21Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:31:22Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:31:23Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:31:23Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:31:24Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:31:24Z", "action": "summarize_page", "payload": {"url": "about:blank"}}
+{"ts": "2026-05-28T19:39:38Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:39:38Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:39:39Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:39:39Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:39:39Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:39:40Z", "action": "summarize_page", "payload": {"url": "about:blank"}}
+{"ts": "2026-05-28T19:43:15Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:43:15Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:15Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:15Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:15Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:16Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:16Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:16Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:16Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:17Z", "action": "search_web", "payload": {"query": "nvidia earnings", "url": "https://duckduckgo.com/?q=nvidia+earnings"}}
+{"ts": "2026-05-28T19:43:18Z", "action": "search_web", "payload": {"query": "python asyncio", "url": "https://duckduckgo.com/?q=python+asyncio"}}
+{"ts": "2026-05-28T19:43:18Z", "action": "search_web", "payload": {"query": "jarvis assistant", "url": "https://duckduckgo.com/?q=jarvis+assistant"}}
+{"ts": "2026-05-28T19:43:19Z", "action": "search_web", "payload": {"query": "market news", "url": "https://duckduckgo.com/?q=market+news"}}
+{"ts": "2026-05-28T19:43:19Z", "action": "search_web", "payload": {"query": "playwright docs", "url": "https://duckduckgo.com/?q=playwright+docs"}}
+{"ts": "2026-05-28T19:43:19Z", "action": "search_web", "payload": {"query": "openai api", "url": "https://duckduckgo.com/?q=openai+api"}}
+{"ts": "2026-05-28T19:43:20Z", "action": "search_web", "payload": {"query": "weather today", "url": "https://duckduckgo.com/?q=weather+today"}}
+{"ts": "2026-05-28T19:43:20Z", "action": "search_web", "payload": {"query": "cpu benchmarks", "url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:43:20Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:43:20Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:43:20Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:43:20Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:43:20Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:43:20Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:43:21Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:43:21Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:43:21Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:21Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:21Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:21Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:21Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:21Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:21Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:21Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:22Z", "action": "search_web", "payload": {"query": "topic_0", "url": "https://duckduckgo.com/?q=topic_0"}}
+{"ts": "2026-05-28T19:43:22Z", "action": "search_web", "payload": {"query": "topic_1", "url": "https://duckduckgo.com/?q=topic_1"}}
+{"ts": "2026-05-28T19:43:22Z", "action": "search_web", "payload": {"query": "topic_2", "url": "https://duckduckgo.com/?q=topic_2"}}
+{"ts": "2026-05-28T19:43:23Z", "action": "search_web", "payload": {"query": "topic_3", "url": "https://duckduckgo.com/?q=topic_3"}}
+{"ts": "2026-05-28T19:43:23Z", "action": "search_web", "payload": {"query": "topic_4", "url": "https://duckduckgo.com/?q=topic_4"}}
+{"ts": "2026-05-28T19:43:23Z", "action": "search_web", "payload": {"query": "topic_5", "url": "https://duckduckgo.com/?q=topic_5"}}
+{"ts": "2026-05-28T19:43:37Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:43:37Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:43:38Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:43:38Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:43:38Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:43:39Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:43:39Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:43:40Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:43:40Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:43:41Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:43:41Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:43:42Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:43:42Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:43:42Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:43:43Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:43:43Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:43:43Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:43:44Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:43:44Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:43:45Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:43:45Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:43:46Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:43:46Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:43:47Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:43:47Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:43:47Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:43:48Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:43:48Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:43:49Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:43:49Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:43:49Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:49Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:50Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:50Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:50Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:50Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:50Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:50Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:50Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:50Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:50Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:50Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:50Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:50Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:50Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:50Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:52Z", "action": "search_web", "payload": {"query": "topic flow 0", "url": "https://duckduckgo.com/?q=topic+flow+0"}}
+{"ts": "2026-05-28T19:43:52Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+0&ia=web"}}
+{"ts": "2026-05-28T19:43:52Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:52Z", "action": "search_web", "payload": {"query": "topic flow 1", "url": "https://duckduckgo.com/?q=topic+flow+1"}}
+{"ts": "2026-05-28T19:43:53Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+1"}}
+{"ts": "2026-05-28T19:43:53Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:53Z", "action": "search_web", "payload": {"query": "topic flow 2", "url": "https://duckduckgo.com/?q=topic+flow+2"}}
+{"ts": "2026-05-28T19:43:53Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+2"}}
+{"ts": "2026-05-28T19:43:53Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:54Z", "action": "search_web", "payload": {"query": "topic flow 3", "url": "https://duckduckgo.com/?q=topic+flow+3"}}
+{"ts": "2026-05-28T19:43:54Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+3"}}
+{"ts": "2026-05-28T19:43:54Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:54Z", "action": "search_web", "payload": {"query": "topic flow 4", "url": "https://duckduckgo.com/?q=topic+flow+4"}}
+{"ts": "2026-05-28T19:43:54Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+4"}}
+{"ts": "2026-05-28T19:43:55Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:55Z", "action": "search_web", "payload": {"query": "topic flow 5", "url": "https://duckduckgo.com/?q=topic+flow+5"}}
+{"ts": "2026-05-28T19:43:55Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+5"}}
+{"ts": "2026-05-28T19:43:55Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:55Z", "action": "search_web", "payload": {"query": "topic flow 6", "url": "https://duckduckgo.com/?q=topic+flow+6"}}
+{"ts": "2026-05-28T19:43:56Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+6"}}
+{"ts": "2026-05-28T19:43:56Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:56Z", "action": "search_web", "payload": {"query": "topic flow 7", "url": "https://duckduckgo.com/?q=topic+flow+7"}}
+{"ts": "2026-05-28T19:43:56Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+7"}}
+{"ts": "2026-05-28T19:43:56Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:57Z", "action": "search_web", "payload": {"query": "topic flow 8", "url": "https://duckduckgo.com/?q=topic+flow+8"}}
+{"ts": "2026-05-28T19:43:57Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+8"}}
+{"ts": "2026-05-28T19:43:57Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:57Z", "action": "search_web", "payload": {"query": "topic flow 9", "url": "https://duckduckgo.com/?q=topic+flow+9"}}
+{"ts": "2026-05-28T19:43:57Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+9"}}
+{"ts": "2026-05-28T19:43:57Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:58Z", "action": "search_web", "payload": {"query": "topic flow 10", "url": "https://duckduckgo.com/?q=topic+flow+10"}}
+{"ts": "2026-05-28T19:43:58Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+10"}}
+{"ts": "2026-05-28T19:43:58Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:58Z", "action": "search_web", "payload": {"query": "topic flow 11", "url": "https://duckduckgo.com/?q=topic+flow+11"}}
+{"ts": "2026-05-28T19:43:58Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+11"}}
+{"ts": "2026-05-28T19:43:58Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:58Z", "action": "search_web", "payload": {"query": "topic flow 12", "url": "https://duckduckgo.com/?q=topic+flow+12"}}
+{"ts": "2026-05-28T19:43:59Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+12"}}
+{"ts": "2026-05-28T19:43:59Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:59Z", "action": "search_web", "payload": {"query": "topic flow 13", "url": "https://duckduckgo.com/?q=topic+flow+13"}}
+{"ts": "2026-05-28T19:43:59Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+13"}}
+{"ts": "2026-05-28T19:43:59Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:43:59Z", "action": "search_web", "payload": {"query": "topic flow 14", "url": "https://duckduckgo.com/?q=topic+flow+14"}}
+{"ts": "2026-05-28T19:44:00Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+14"}}
+{"ts": "2026-05-28T19:44:37Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:44:38Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:44:38Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:44:38Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:44:38Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:44:38Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:44:38Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:44:38Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:44:38Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:44:40Z", "action": "search_web", "payload": {"query": "nvidia earnings", "url": "https://duckduckgo.com/?q=nvidia+earnings"}}
+{"ts": "2026-05-28T19:44:40Z", "action": "search_web", "payload": {"query": "python asyncio", "url": "https://duckduckgo.com/?q=python+asyncio"}}
+{"ts": "2026-05-28T19:44:40Z", "action": "search_web", "payload": {"query": "jarvis assistant", "url": "https://duckduckgo.com/?q=jarvis+assistant"}}
+{"ts": "2026-05-28T19:44:41Z", "action": "search_web", "payload": {"query": "market news", "url": "https://duckduckgo.com/?q=market+news"}}
+{"ts": "2026-05-28T19:44:41Z", "action": "search_web", "payload": {"query": "playwright docs", "url": "https://duckduckgo.com/?q=playwright+docs"}}
+{"ts": "2026-05-28T19:44:42Z", "action": "search_web", "payload": {"query": "openai api", "url": "https://duckduckgo.com/?q=openai+api"}}
+{"ts": "2026-05-28T19:44:42Z", "action": "search_web", "payload": {"query": "weather today", "url": "https://duckduckgo.com/?q=weather+today"}}
+{"ts": "2026-05-28T19:44:42Z", "action": "search_web", "payload": {"query": "cpu benchmarks", "url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:44:42Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:44:43Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:44:43Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:44:43Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:44:43Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:44:43Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:44:43Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:44:43Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:44:44Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:44:44Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:44:44Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:44:44Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:44:44Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:44:44Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:44:44Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:44:44Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:44:44Z", "action": "search_web", "payload": {"query": "topic_0", "url": "https://duckduckgo.com/?q=topic_0"}}
+{"ts": "2026-05-28T19:44:45Z", "action": "search_web", "payload": {"query": "topic_1", "url": "https://duckduckgo.com/?q=topic_1"}}
+{"ts": "2026-05-28T19:44:45Z", "action": "search_web", "payload": {"query": "topic_2", "url": "https://duckduckgo.com/?q=topic_2"}}
+{"ts": "2026-05-28T19:44:46Z", "action": "search_web", "payload": {"query": "topic_3", "url": "https://duckduckgo.com/?q=topic_3"}}
+{"ts": "2026-05-28T19:44:46Z", "action": "search_web", "payload": {"query": "topic_4", "url": "https://duckduckgo.com/?q=topic_4"}}
+{"ts": "2026-05-28T19:44:46Z", "action": "search_web", "payload": {"query": "topic_5", "url": "https://duckduckgo.com/?q=topic_5"}}
+{"ts": "2026-05-28T19:45:02Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:45:02Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:45:02Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:45:03Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:45:03Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:45:04Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:45:04Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:45:05Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:45:05Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:45:06Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:45:06Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:45:06Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:45:07Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:45:07Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:45:07Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:45:08Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:45:08Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:45:09Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:45:09Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:45:10Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:45:10Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:45:11Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:45:11Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:45:12Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:45:12Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:45:12Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:45:13Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:45:13Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:45:13Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:45:14Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:45:15Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:15Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:15Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:15Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:15Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:15Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:15Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:15Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:15Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:15Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:15Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:15Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:15Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:15Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:15Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:15Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:17Z", "action": "search_web", "payload": {"query": "topic flow 0", "url": "https://duckduckgo.com/?q=topic+flow+0"}}
+{"ts": "2026-05-28T19:45:17Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+0"}}
+{"ts": "2026-05-28T19:45:17Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:18Z", "action": "search_web", "payload": {"query": "topic flow 1", "url": "https://duckduckgo.com/?q=topic+flow+1"}}
+{"ts": "2026-05-28T19:45:18Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+1"}}
+{"ts": "2026-05-28T19:45:18Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:18Z", "action": "search_web", "payload": {"query": "topic flow 2", "url": "https://duckduckgo.com/?q=topic+flow+2"}}
+{"ts": "2026-05-28T19:45:18Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+2"}}
+{"ts": "2026-05-28T19:45:18Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:19Z", "action": "search_web", "payload": {"query": "topic flow 3", "url": "https://duckduckgo.com/?q=topic+flow+3"}}
+{"ts": "2026-05-28T19:45:19Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+3"}}
+{"ts": "2026-05-28T19:45:19Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:19Z", "action": "search_web", "payload": {"query": "topic flow 4", "url": "https://duckduckgo.com/?q=topic+flow+4"}}
+{"ts": "2026-05-28T19:45:20Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+4"}}
+{"ts": "2026-05-28T19:45:20Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:20Z", "action": "search_web", "payload": {"query": "topic flow 5", "url": "https://duckduckgo.com/?q=topic+flow+5"}}
+{"ts": "2026-05-28T19:45:20Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+5"}}
+{"ts": "2026-05-28T19:45:20Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:20Z", "action": "search_web", "payload": {"query": "topic flow 6", "url": "https://duckduckgo.com/?q=topic+flow+6"}}
+{"ts": "2026-05-28T19:45:21Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+6"}}
+{"ts": "2026-05-28T19:45:21Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:21Z", "action": "search_web", "payload": {"query": "topic flow 7", "url": "https://duckduckgo.com/?q=topic+flow+7"}}
+{"ts": "2026-05-28T19:45:21Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+7"}}
+{"ts": "2026-05-28T19:45:21Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:22Z", "action": "search_web", "payload": {"query": "topic flow 8", "url": "https://duckduckgo.com/?q=topic+flow+8"}}
+{"ts": "2026-05-28T19:45:22Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+8"}}
+{"ts": "2026-05-28T19:45:22Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:22Z", "action": "search_web", "payload": {"query": "topic flow 9", "url": "https://duckduckgo.com/?q=topic+flow+9"}}
+{"ts": "2026-05-28T19:45:22Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+9"}}
+{"ts": "2026-05-28T19:45:22Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:23Z", "action": "search_web", "payload": {"query": "topic flow 10", "url": "https://duckduckgo.com/?q=topic+flow+10"}}
+{"ts": "2026-05-28T19:45:23Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+10"}}
+{"ts": "2026-05-28T19:45:23Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:23Z", "action": "search_web", "payload": {"query": "topic flow 11", "url": "https://duckduckgo.com/?q=topic+flow+11"}}
+{"ts": "2026-05-28T19:45:23Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+11"}}
+{"ts": "2026-05-28T19:45:23Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:24Z", "action": "search_web", "payload": {"query": "topic flow 12", "url": "https://duckduckgo.com/?q=topic+flow+12"}}
+{"ts": "2026-05-28T19:45:24Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+12"}}
+{"ts": "2026-05-28T19:45:24Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:24Z", "action": "search_web", "payload": {"query": "topic flow 13", "url": "https://duckduckgo.com/?q=topic+flow+13"}}
+{"ts": "2026-05-28T19:45:24Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+13"}}
+{"ts": "2026-05-28T19:45:24Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:45:25Z", "action": "search_web", "payload": {"query": "topic flow 14", "url": "https://duckduckgo.com/?q=topic+flow+14"}}
+{"ts": "2026-05-28T19:45:25Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+14"}}
+{"ts": "2026-05-28T19:58:16Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:58:17Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:17Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:17Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:17Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:17Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:17Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:17Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:17Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:19Z", "action": "search_web", "payload": {"query": "nvidia earnings", "url": "https://duckduckgo.com/?q=nvidia+earnings"}}
+{"ts": "2026-05-28T19:58:19Z", "action": "search_web", "payload": {"query": "python asyncio", "url": "https://duckduckgo.com/?q=python+asyncio"}}
+{"ts": "2026-05-28T19:58:20Z", "action": "search_web", "payload": {"query": "jarvis assistant", "url": "https://duckduckgo.com/?q=jarvis+assistant"}}
+{"ts": "2026-05-28T19:58:20Z", "action": "search_web", "payload": {"query": "market news", "url": "https://duckduckgo.com/?q=market+news"}}
+{"ts": "2026-05-28T19:58:20Z", "action": "search_web", "payload": {"query": "playwright docs", "url": "https://duckduckgo.com/?q=playwright+docs"}}
+{"ts": "2026-05-28T19:58:21Z", "action": "search_web", "payload": {"query": "openai api", "url": "https://duckduckgo.com/?q=openai+api"}}
+{"ts": "2026-05-28T19:58:21Z", "action": "search_web", "payload": {"query": "weather today", "url": "https://duckduckgo.com/?q=weather+today"}}
+{"ts": "2026-05-28T19:58:22Z", "action": "search_web", "payload": {"query": "cpu benchmarks", "url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:58:22Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:58:22Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:58:22Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:58:22Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:58:22Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:58:22Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:58:22Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:58:23Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:58:23Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:23Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:23Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:23Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:23Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:23Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:23Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:23Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:24Z", "action": "search_web", "payload": {"query": "topic_0", "url": "https://duckduckgo.com/?q=topic_0"}}
+{"ts": "2026-05-28T19:58:24Z", "action": "search_web", "payload": {"query": "topic_1", "url": "https://duckduckgo.com/?q=topic_1"}}
+{"ts": "2026-05-28T19:58:25Z", "action": "search_web", "payload": {"query": "topic_2", "url": "https://duckduckgo.com/?q=topic_2"}}
+{"ts": "2026-05-28T19:58:25Z", "action": "search_web", "payload": {"query": "topic_3", "url": "https://duckduckgo.com/?q=topic_3"}}
+{"ts": "2026-05-28T19:58:25Z", "action": "search_web", "payload": {"query": "topic_4", "url": "https://duckduckgo.com/?q=topic_4"}}
+{"ts": "2026-05-28T19:58:26Z", "action": "search_web", "payload": {"query": "topic_5", "url": "https://duckduckgo.com/?q=topic_5"}}
+{"ts": "2026-05-28T19:58:43Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:58:44Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:58:44Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:58:45Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:58:45Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:58:46Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:58:46Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:58:46Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:58:47Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:58:47Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:58:47Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:58:48Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:58:48Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:58:49Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:58:49Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:58:50Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:58:50Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:58:51Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:58:51Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:58:52Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:58:52Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:58:52Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:58:53Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:58:53Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:58:53Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:58:54Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:58:54Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:58:55Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:58:55Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:58:56Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:58:56Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:56Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:56Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:56Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:56Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:56Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:56Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:56Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:56Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:56Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:56Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:56Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:56Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:56Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:57Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:57Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:58Z", "action": "search_web", "payload": {"query": "topic flow 0", "url": "https://duckduckgo.com/?q=topic+flow+0"}}
+{"ts": "2026-05-28T19:58:59Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+0"}}
+{"ts": "2026-05-28T19:58:59Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:58:59Z", "action": "search_web", "payload": {"query": "topic flow 1", "url": "https://duckduckgo.com/?q=topic+flow+1"}}
+{"ts": "2026-05-28T19:58:59Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+1"}}
+{"ts": "2026-05-28T19:58:59Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:00Z", "action": "search_web", "payload": {"query": "topic flow 2", "url": "https://duckduckgo.com/?q=topic+flow+2"}}
+{"ts": "2026-05-28T19:59:00Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+2"}}
+{"ts": "2026-05-28T19:59:00Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:00Z", "action": "search_web", "payload": {"query": "topic flow 3", "url": "https://duckduckgo.com/?q=topic+flow+3"}}
+{"ts": "2026-05-28T19:59:00Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+3"}}
+{"ts": "2026-05-28T19:59:00Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:01Z", "action": "search_web", "payload": {"query": "topic flow 4", "url": "https://duckduckgo.com/?q=topic+flow+4"}}
+{"ts": "2026-05-28T19:59:01Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+4"}}
+{"ts": "2026-05-28T19:59:01Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:01Z", "action": "search_web", "payload": {"query": "topic flow 5", "url": "https://duckduckgo.com/?q=topic+flow+5"}}
+{"ts": "2026-05-28T19:59:01Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+5"}}
+{"ts": "2026-05-28T19:59:01Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:02Z", "action": "search_web", "payload": {"query": "topic flow 6", "url": "https://duckduckgo.com/?q=topic+flow+6"}}
+{"ts": "2026-05-28T19:59:02Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+6"}}
+{"ts": "2026-05-28T19:59:02Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:02Z", "action": "search_web", "payload": {"query": "topic flow 7", "url": "https://duckduckgo.com/?q=topic+flow+7"}}
+{"ts": "2026-05-28T19:59:02Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+7"}}
+{"ts": "2026-05-28T19:59:03Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:03Z", "action": "search_web", "payload": {"query": "topic flow 8", "url": "https://duckduckgo.com/?q=topic+flow+8"}}
+{"ts": "2026-05-28T19:59:03Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+8"}}
+{"ts": "2026-05-28T19:59:03Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:04Z", "action": "search_web", "payload": {"query": "topic flow 9", "url": "https://duckduckgo.com/?q=topic+flow+9"}}
+{"ts": "2026-05-28T19:59:04Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+9"}}
+{"ts": "2026-05-28T19:59:04Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:04Z", "action": "search_web", "payload": {"query": "topic flow 10", "url": "https://duckduckgo.com/?q=topic+flow+10"}}
+{"ts": "2026-05-28T19:59:04Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+10"}}
+{"ts": "2026-05-28T19:59:04Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:05Z", "action": "search_web", "payload": {"query": "topic flow 11", "url": "https://duckduckgo.com/?q=topic+flow+11"}}
+{"ts": "2026-05-28T19:59:05Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+11"}}
+{"ts": "2026-05-28T19:59:05Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:05Z", "action": "search_web", "payload": {"query": "topic flow 12", "url": "https://duckduckgo.com/?q=topic+flow+12"}}
+{"ts": "2026-05-28T19:59:05Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+12"}}
+{"ts": "2026-05-28T19:59:05Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:06Z", "action": "search_web", "payload": {"query": "topic flow 13", "url": "https://duckduckgo.com/?q=topic+flow+13"}}
+{"ts": "2026-05-28T19:59:06Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+13"}}
+{"ts": "2026-05-28T19:59:06Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:06Z", "action": "search_web", "payload": {"query": "topic flow 14", "url": "https://duckduckgo.com/?q=topic+flow+14"}}
+{"ts": "2026-05-28T19:59:06Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+14"}}
+{"ts": "2026-05-28T19:59:12Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:12Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:12Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:12Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:12Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:12Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:12Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:12Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:12Z", "action": "search_web", "payload": {"query": "nvidia earnings", "url": "https://duckduckgo.com/?q=nvidia+earnings"}}
+{"ts": "2026-05-28T19:59:13Z", "action": "search_web", "payload": {"query": "python asyncio", "url": "https://duckduckgo.com/?q=python+asyncio"}}
+{"ts": "2026-05-28T19:59:13Z", "action": "search_web", "payload": {"query": "jarvis assistant", "url": "https://duckduckgo.com/?q=jarvis+assistant"}}
+{"ts": "2026-05-28T19:59:13Z", "action": "search_web", "payload": {"query": "market news", "url": "https://duckduckgo.com/?q=market+news"}}
+{"ts": "2026-05-28T19:59:14Z", "action": "search_web", "payload": {"query": "playwright docs", "url": "https://duckduckgo.com/?q=playwright+docs"}}
+{"ts": "2026-05-28T19:59:14Z", "action": "search_web", "payload": {"query": "openai api", "url": "https://duckduckgo.com/?q=openai+api"}}
+{"ts": "2026-05-28T19:59:14Z", "action": "search_web", "payload": {"query": "weather today", "url": "https://duckduckgo.com/?q=weather+today"}}
+{"ts": "2026-05-28T19:59:15Z", "action": "search_web", "payload": {"query": "cpu benchmarks", "url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:59:15Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:59:15Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:59:15Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:59:15Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:59:15Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:59:15Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:59:15Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:59:16Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T19:59:16Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:16Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:16Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:16Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:16Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:16Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:16Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:16Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:17Z", "action": "search_web", "payload": {"query": "topic_0", "url": "https://duckduckgo.com/?q=topic_0"}}
+{"ts": "2026-05-28T19:59:17Z", "action": "search_web", "payload": {"query": "topic_1", "url": "https://duckduckgo.com/?q=topic_1"}}
+{"ts": "2026-05-28T19:59:17Z", "action": "search_web", "payload": {"query": "topic_2", "url": "https://duckduckgo.com/?q=topic_2"}}
+{"ts": "2026-05-28T19:59:18Z", "action": "search_web", "payload": {"query": "topic_3", "url": "https://duckduckgo.com/?q=topic_3"}}
+{"ts": "2026-05-28T19:59:18Z", "action": "search_web", "payload": {"query": "topic_4", "url": "https://duckduckgo.com/?q=topic_4"}}
+{"ts": "2026-05-28T19:59:19Z", "action": "search_web", "payload": {"query": "topic_5", "url": "https://duckduckgo.com/?q=topic_5"}}
+{"ts": "2026-05-28T19:59:35Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:59:36Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:59:36Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:59:37Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:59:37Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:59:38Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:59:38Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:59:39Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:59:39Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:59:40Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:59:40Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:59:40Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:59:41Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:59:41Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:59:41Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:59:42Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:59:42Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:59:43Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:59:43Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:59:44Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:59:44Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:59:45Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:59:45Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:59:46Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:59:46Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:59:47Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:59:47Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:59:48Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:59:48Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T19:59:48Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T19:59:49Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:49Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:49Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:49Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:49Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:49Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:49Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:49Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:49Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:49Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:49Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:49Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:49Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:49Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:49Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:50Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:51Z", "action": "search_web", "payload": {"query": "topic flow 0", "url": "https://duckduckgo.com/?q=topic+flow+0"}}
+{"ts": "2026-05-28T19:59:51Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+0"}}
+{"ts": "2026-05-28T19:59:51Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:52Z", "action": "search_web", "payload": {"query": "topic flow 1", "url": "https://duckduckgo.com/?q=topic+flow+1"}}
+{"ts": "2026-05-28T19:59:52Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+1"}}
+{"ts": "2026-05-28T19:59:52Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:52Z", "action": "search_web", "payload": {"query": "topic flow 2", "url": "https://duckduckgo.com/?q=topic+flow+2"}}
+{"ts": "2026-05-28T19:59:52Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+2"}}
+{"ts": "2026-05-28T19:59:52Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:53Z", "action": "search_web", "payload": {"query": "topic flow 3", "url": "https://duckduckgo.com/?q=topic+flow+3"}}
+{"ts": "2026-05-28T19:59:53Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+3"}}
+{"ts": "2026-05-28T19:59:53Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:53Z", "action": "search_web", "payload": {"query": "topic flow 4", "url": "https://duckduckgo.com/?q=topic+flow+4"}}
+{"ts": "2026-05-28T19:59:53Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+4"}}
+{"ts": "2026-05-28T19:59:54Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:54Z", "action": "search_web", "payload": {"query": "topic flow 5", "url": "https://duckduckgo.com/?q=topic+flow+5"}}
+{"ts": "2026-05-28T19:59:54Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+5"}}
+{"ts": "2026-05-28T19:59:54Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:54Z", "action": "search_web", "payload": {"query": "topic flow 6", "url": "https://duckduckgo.com/?q=topic+flow+6"}}
+{"ts": "2026-05-28T19:59:55Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+6"}}
+{"ts": "2026-05-28T19:59:55Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:55Z", "action": "search_web", "payload": {"query": "topic flow 7", "url": "https://duckduckgo.com/?q=topic+flow+7"}}
+{"ts": "2026-05-28T19:59:55Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+7"}}
+{"ts": "2026-05-28T19:59:55Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:55Z", "action": "search_web", "payload": {"query": "topic flow 8", "url": "https://duckduckgo.com/?q=topic+flow+8"}}
+{"ts": "2026-05-28T19:59:56Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+8"}}
+{"ts": "2026-05-28T19:59:56Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:56Z", "action": "search_web", "payload": {"query": "topic flow 9", "url": "https://duckduckgo.com/?q=topic+flow+9"}}
+{"ts": "2026-05-28T19:59:56Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+9"}}
+{"ts": "2026-05-28T19:59:56Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:57Z", "action": "search_web", "payload": {"query": "topic flow 10", "url": "https://duckduckgo.com/?q=topic+flow+10"}}
+{"ts": "2026-05-28T19:59:57Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+10"}}
+{"ts": "2026-05-28T19:59:57Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:57Z", "action": "search_web", "payload": {"query": "topic flow 11", "url": "https://duckduckgo.com/?q=topic+flow+11"}}
+{"ts": "2026-05-28T19:59:57Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+11"}}
+{"ts": "2026-05-28T19:59:57Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:58Z", "action": "search_web", "payload": {"query": "topic flow 12", "url": "https://duckduckgo.com/?q=topic+flow+12"}}
+{"ts": "2026-05-28T19:59:58Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+12"}}
+{"ts": "2026-05-28T19:59:58Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:58Z", "action": "search_web", "payload": {"query": "topic flow 13", "url": "https://duckduckgo.com/?q=topic+flow+13"}}
+{"ts": "2026-05-28T19:59:58Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+13"}}
+{"ts": "2026-05-28T19:59:58Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T19:59:59Z", "action": "search_web", "payload": {"query": "topic flow 14", "url": "https://duckduckgo.com/?q=topic+flow+14"}}
+{"ts": "2026-05-28T19:59:59Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+14"}}
+{"ts": "2026-05-28T20:00:21Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:00:22Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:00:22Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:00:23Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:00:23Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:00:24Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:00:24Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:00:25Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:00:25Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:00:26Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:00:26Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:00:26Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:00:27Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:00:27Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:00:27Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:00:28Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:00:28Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:00:29Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:00:29Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:00:30Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:00:30Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:00:31Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:00:31Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:00:32Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:00:32Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:00:32Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:00:33Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:00:33Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:00:33Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:00:34Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:00:34Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:34Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:34Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:34Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:34Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:35Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:35Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:35Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:35Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:35Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:35Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:35Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:35Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:35Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:35Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:37Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:37Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:37Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:37Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:37Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:37Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:37Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:37Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:39Z", "action": "search_web", "payload": {"query": "nvidia earnings", "url": "https://duckduckgo.com/?q=nvidia+earnings"}}
+{"ts": "2026-05-28T20:00:39Z", "action": "search_web", "payload": {"query": "python asyncio", "url": "https://duckduckgo.com/?q=python+asyncio"}}
+{"ts": "2026-05-28T20:00:40Z", "action": "search_web", "payload": {"query": "jarvis assistant", "url": "https://duckduckgo.com/?q=jarvis+assistant"}}
+{"ts": "2026-05-28T20:00:40Z", "action": "search_web", "payload": {"query": "market news", "url": "https://duckduckgo.com/?q=market+news"}}
+{"ts": "2026-05-28T20:00:40Z", "action": "search_web", "payload": {"query": "playwright docs", "url": "https://duckduckgo.com/?q=playwright+docs"}}
+{"ts": "2026-05-28T20:00:41Z", "action": "search_web", "payload": {"query": "openai api", "url": "https://duckduckgo.com/?q=openai+api"}}
+{"ts": "2026-05-28T20:00:41Z", "action": "search_web", "payload": {"query": "weather today", "url": "https://duckduckgo.com/?q=weather+today"}}
+{"ts": "2026-05-28T20:00:42Z", "action": "search_web", "payload": {"query": "cpu benchmarks", "url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:00:42Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:00:42Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:00:42Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:00:42Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:00:42Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:00:42Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:00:42Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:00:42Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:00:42Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:43Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:43Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:43Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:43Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:43Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:43Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:43Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:00:44Z", "action": "search_web", "payload": {"query": "topic_0", "url": "https://duckduckgo.com/?q=topic_0"}}
+{"ts": "2026-05-28T20:00:44Z", "action": "search_web", "payload": {"query": "topic_1", "url": "https://duckduckgo.com/?q=topic_1"}}
+{"ts": "2026-05-28T20:00:44Z", "action": "search_web", "payload": {"query": "topic_2", "url": "https://duckduckgo.com/?q=topic_2"}}
+{"ts": "2026-05-28T20:00:45Z", "action": "search_web", "payload": {"query": "topic_3", "url": "https://duckduckgo.com/?q=topic_3"}}
+{"ts": "2026-05-28T20:00:45Z", "action": "search_web", "payload": {"query": "topic_4", "url": "https://duckduckgo.com/?q=topic_4"}}
+{"ts": "2026-05-28T20:00:46Z", "action": "search_web", "payload": {"query": "topic_5", "url": "https://duckduckgo.com/?q=topic_5"}}
+{"ts": "2026-05-28T20:01:03Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:01:04Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:01:04Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:01:04Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:01:05Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:01:05Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:01:06Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:01:06Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:01:06Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:01:07Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:01:07Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:01:08Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:01:08Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:01:09Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:01:09Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:01:10Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:01:10Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:01:10Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:01:11Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:01:11Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:01:11Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:01:12Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:01:12Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:01:13Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:01:13Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:01:14Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:01:14Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:01:15Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:01:15Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:01:16Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:01:16Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:16Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:16Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:16Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:16Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:16Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:16Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:16Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:16Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:16Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:16Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:16Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:16Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:16Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:16Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:17Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:18Z", "action": "search_web", "payload": {"query": "topic flow 0", "url": "https://duckduckgo.com/?q=topic+flow+0"}}
+{"ts": "2026-05-28T20:01:18Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+0"}}
+{"ts": "2026-05-28T20:01:19Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:19Z", "action": "search_web", "payload": {"query": "topic flow 1", "url": "https://duckduckgo.com/?q=topic+flow+1"}}
+{"ts": "2026-05-28T20:01:19Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+1"}}
+{"ts": "2026-05-28T20:01:19Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:20Z", "action": "search_web", "payload": {"query": "topic flow 2", "url": "https://duckduckgo.com/?q=topic+flow+2"}}
+{"ts": "2026-05-28T20:01:20Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+2"}}
+{"ts": "2026-05-28T20:01:20Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:20Z", "action": "search_web", "payload": {"query": "topic flow 3", "url": "https://duckduckgo.com/?q=topic+flow+3"}}
+{"ts": "2026-05-28T20:01:20Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+3"}}
+{"ts": "2026-05-28T20:01:20Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:21Z", "action": "search_web", "payload": {"query": "topic flow 4", "url": "https://duckduckgo.com/?q=topic+flow+4"}}
+{"ts": "2026-05-28T20:01:21Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+4"}}
+{"ts": "2026-05-28T20:01:21Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:21Z", "action": "search_web", "payload": {"query": "topic flow 5", "url": "https://duckduckgo.com/?q=topic+flow+5"}}
+{"ts": "2026-05-28T20:01:21Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+5"}}
+{"ts": "2026-05-28T20:01:21Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:22Z", "action": "search_web", "payload": {"query": "topic flow 6", "url": "https://duckduckgo.com/?q=topic+flow+6"}}
+{"ts": "2026-05-28T20:01:22Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+6"}}
+{"ts": "2026-05-28T20:01:22Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:22Z", "action": "search_web", "payload": {"query": "topic flow 7", "url": "https://duckduckgo.com/?q=topic+flow+7"}}
+{"ts": "2026-05-28T20:01:23Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+7"}}
+{"ts": "2026-05-28T20:01:23Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:23Z", "action": "search_web", "payload": {"query": "topic flow 8", "url": "https://duckduckgo.com/?q=topic+flow+8"}}
+{"ts": "2026-05-28T20:01:23Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+8"}}
+{"ts": "2026-05-28T20:01:23Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:23Z", "action": "search_web", "payload": {"query": "topic flow 9", "url": "https://duckduckgo.com/?q=topic+flow+9"}}
+{"ts": "2026-05-28T20:01:24Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+9"}}
+{"ts": "2026-05-28T20:01:24Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:24Z", "action": "search_web", "payload": {"query": "topic flow 10", "url": "https://duckduckgo.com/?q=topic+flow+10"}}
+{"ts": "2026-05-28T20:01:24Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+10"}}
+{"ts": "2026-05-28T20:01:24Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:25Z", "action": "search_web", "payload": {"query": "topic flow 11", "url": "https://duckduckgo.com/?q=topic+flow+11"}}
+{"ts": "2026-05-28T20:01:25Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+11"}}
+{"ts": "2026-05-28T20:01:25Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:25Z", "action": "search_web", "payload": {"query": "topic flow 12", "url": "https://duckduckgo.com/?q=topic+flow+12"}}
+{"ts": "2026-05-28T20:01:25Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+12"}}
+{"ts": "2026-05-28T20:01:25Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:26Z", "action": "search_web", "payload": {"query": "topic flow 13", "url": "https://duckduckgo.com/?q=topic+flow+13"}}
+{"ts": "2026-05-28T20:01:26Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+13"}}
+{"ts": "2026-05-28T20:01:26Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:01:26Z", "action": "search_web", "payload": {"query": "topic flow 14", "url": "https://duckduckgo.com/?q=topic+flow+14"}}
+{"ts": "2026-05-28T20:01:26Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+14"}}
+{"ts": "2026-05-28T20:49:49Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:49:50Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:49:50Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:49:50Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:49:50Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:49:50Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:49:50Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:49:50Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:49:50Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:49:52Z", "action": "search_web", "payload": {"query": "nvidia earnings", "url": "https://duckduckgo.com/?q=nvidia+earnings"}}
+{"ts": "2026-05-28T20:49:52Z", "action": "search_web", "payload": {"query": "python asyncio", "url": "https://duckduckgo.com/?q=python+asyncio"}}
+{"ts": "2026-05-28T20:49:53Z", "action": "search_web", "payload": {"query": "jarvis assistant", "url": "https://duckduckgo.com/?q=jarvis+assistant"}}
+{"ts": "2026-05-28T20:49:53Z", "action": "search_web", "payload": {"query": "market news", "url": "https://duckduckgo.com/?q=market+news"}}
+{"ts": "2026-05-28T20:49:53Z", "action": "search_web", "payload": {"query": "playwright docs", "url": "https://duckduckgo.com/?q=playwright+docs"}}
+{"ts": "2026-05-28T20:49:54Z", "action": "search_web", "payload": {"query": "openai api", "url": "https://duckduckgo.com/?q=openai+api"}}
+{"ts": "2026-05-28T20:49:54Z", "action": "search_web", "payload": {"query": "weather today", "url": "https://duckduckgo.com/?q=weather+today"}}
+{"ts": "2026-05-28T20:49:55Z", "action": "search_web", "payload": {"query": "cpu benchmarks", "url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:49:55Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:49:55Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:49:55Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:49:55Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:49:55Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:49:55Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:49:55Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:49:55Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:49:56Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:49:56Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:49:56Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:49:56Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:49:56Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:49:56Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:49:56Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:49:56Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:49:56Z", "action": "search_web", "payload": {"query": "topic_0", "url": "https://duckduckgo.com/?q=topic_0"}}
+{"ts": "2026-05-28T20:49:57Z", "action": "search_web", "payload": {"query": "topic_1", "url": "https://duckduckgo.com/?q=topic_1"}}
+{"ts": "2026-05-28T20:49:57Z", "action": "search_web", "payload": {"query": "topic_2", "url": "https://duckduckgo.com/?q=topic_2"}}
+{"ts": "2026-05-28T20:49:58Z", "action": "search_web", "payload": {"query": "topic_3", "url": "https://duckduckgo.com/?q=topic_3"}}
+{"ts": "2026-05-28T20:49:58Z", "action": "search_web", "payload": {"query": "topic_4", "url": "https://duckduckgo.com/?q=topic_4"}}
+{"ts": "2026-05-28T20:49:58Z", "action": "search_web", "payload": {"query": "topic_5", "url": "https://duckduckgo.com/?q=topic_5"}}
+{"ts": "2026-05-28T20:50:15Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:50:16Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:50:16Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:50:17Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:50:17Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:50:17Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:50:18Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:50:18Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:50:18Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:50:19Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:50:19Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:50:20Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:50:20Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:50:20Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:50:21Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:50:21Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:50:21Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:50:22Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:50:22Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:50:23Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:50:23Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:50:23Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:50:24Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:50:24Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:50:24Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:50:24Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:50:25Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:50:25Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:50:25Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:50:25Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:50:25Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:50:25Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:50:25Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:50:25Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:50:31Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:50:32Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:50:32Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:50:33Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:50:33Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:50:33Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:50:34Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:50:34Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:50:34Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:50:35Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:50:35Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:50:36Z", "action": "search_web", "payload": {"query": "topic flow 0", "url": "https://duckduckgo.com/?q=topic+flow+0"}}
+{"ts": "2026-05-28T20:50:37Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+0"}}
+{"ts": "2026-05-28T20:50:37Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:50:37Z", "action": "search_web", "payload": {"query": "topic flow 1", "url": "https://duckduckgo.com/?q=topic+flow+1"}}
+{"ts": "2026-05-28T20:50:38Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+1"}}
+{"ts": "2026-05-28T20:50:38Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:50:38Z", "action": "search_web", "payload": {"query": "topic flow 2", "url": "https://duckduckgo.com/?q=topic+flow+2"}}
+{"ts": "2026-05-28T20:50:38Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+2"}}
+{"ts": "2026-05-28T20:50:38Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:50:39Z", "action": "search_web", "payload": {"query": "topic flow 3", "url": "https://duckduckgo.com/?q=topic+flow+3"}}
+{"ts": "2026-05-28T20:50:39Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+3"}}
+{"ts": "2026-05-28T20:50:39Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:50:39Z", "action": "search_web", "payload": {"query": "topic flow 4", "url": "https://duckduckgo.com/?q=topic+flow+4"}}
+{"ts": "2026-05-28T20:50:40Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+4"}}
+{"ts": "2026-05-28T20:50:40Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:50:40Z", "action": "search_web", "payload": {"query": "topic flow 5", "url": "https://duckduckgo.com/?q=topic+flow+5"}}
+{"ts": "2026-05-28T20:50:40Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+5"}}
+{"ts": "2026-05-28T20:50:40Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:50:41Z", "action": "search_web", "payload": {"query": "topic flow 6", "url": "https://duckduckgo.com/?q=topic+flow+6"}}
+{"ts": "2026-05-28T20:50:41Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+6"}}
+{"ts": "2026-05-28T20:50:41Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:50:41Z", "action": "search_web", "payload": {"query": "topic flow 7", "url": "https://duckduckgo.com/?q=topic+flow+7"}}
+{"ts": "2026-05-28T20:50:41Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+7"}}
+{"ts": "2026-05-28T20:50:41Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:50:42Z", "action": "search_web", "payload": {"query": "topic flow 8", "url": "https://duckduckgo.com/?q=topic+flow+8"}}
+{"ts": "2026-05-28T20:50:42Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+8"}}
+{"ts": "2026-05-28T20:50:42Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:50:43Z", "action": "search_web", "payload": {"query": "topic flow 9", "url": "https://duckduckgo.com/?q=topic+flow+9"}}
+{"ts": "2026-05-28T20:50:43Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+9"}}
+{"ts": "2026-05-28T20:50:43Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:50:43Z", "action": "search_web", "payload": {"query": "topic flow 10", "url": "https://duckduckgo.com/?q=topic+flow+10"}}
+{"ts": "2026-05-28T20:50:43Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+10"}}
+{"ts": "2026-05-28T20:50:44Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:50:44Z", "action": "search_web", "payload": {"query": "topic flow 11", "url": "https://duckduckgo.com/?q=topic+flow+11"}}
+{"ts": "2026-05-28T20:50:44Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+11"}}
+{"ts": "2026-05-28T20:50:44Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:50:44Z", "action": "search_web", "payload": {"query": "topic flow 12", "url": "https://duckduckgo.com/?q=topic+flow+12"}}
+{"ts": "2026-05-28T20:50:45Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+12"}}
+{"ts": "2026-05-28T20:50:45Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:50:45Z", "action": "search_web", "payload": {"query": "topic flow 13", "url": "https://duckduckgo.com/?q=topic+flow+13"}}
+{"ts": "2026-05-28T20:50:45Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+13"}}
+{"ts": "2026-05-28T20:50:45Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:50:46Z", "action": "search_web", "payload": {"query": "topic flow 14", "url": "https://duckduckgo.com/?q=topic+flow+14"}}
+{"ts": "2026-05-28T20:50:46Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+14"}}
+{"ts": "2026-05-28T20:57:36Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:57:36Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:57:36Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:57:36Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:57:37Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:57:37Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:57:37Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:57:37Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:57:37Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:57:38Z", "action": "search_web", "payload": {"query": "nvidia earnings", "url": "https://duckduckgo.com/?q=nvidia+earnings"}}
+{"ts": "2026-05-28T20:57:39Z", "action": "search_web", "payload": {"query": "python asyncio", "url": "https://duckduckgo.com/?q=python+asyncio"}}
+{"ts": "2026-05-28T20:57:39Z", "action": "search_web", "payload": {"query": "jarvis assistant", "url": "https://duckduckgo.com/?q=jarvis+assistant"}}
+{"ts": "2026-05-28T20:57:40Z", "action": "search_web", "payload": {"query": "market news", "url": "https://duckduckgo.com/?q=market+news"}}
+{"ts": "2026-05-28T20:57:40Z", "action": "search_web", "payload": {"query": "playwright docs", "url": "https://duckduckgo.com/?q=playwright+docs"}}
+{"ts": "2026-05-28T20:57:40Z", "action": "search_web", "payload": {"query": "openai api", "url": "https://duckduckgo.com/?q=openai+api"}}
+{"ts": "2026-05-28T20:57:41Z", "action": "search_web", "payload": {"query": "weather today", "url": "https://duckduckgo.com/?q=weather+today"}}
+{"ts": "2026-05-28T20:57:41Z", "action": "search_web", "payload": {"query": "cpu benchmarks", "url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:57:41Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:57:41Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:57:42Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:57:42Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:57:42Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:57:42Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:57:42Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:57:42Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=cpu+benchmarks"}}
+{"ts": "2026-05-28T20:57:42Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:57:42Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:57:42Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:57:42Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:57:42Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:57:42Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:57:42Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:57:42Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:57:43Z", "action": "search_web", "payload": {"query": "topic_0", "url": "https://duckduckgo.com/?q=topic_0"}}
+{"ts": "2026-05-28T20:57:43Z", "action": "search_web", "payload": {"query": "topic_1", "url": "https://duckduckgo.com/?q=topic_1"}}
+{"ts": "2026-05-28T20:57:44Z", "action": "search_web", "payload": {"query": "topic_2", "url": "https://duckduckgo.com/?q=topic_2"}}
+{"ts": "2026-05-28T20:57:44Z", "action": "search_web", "payload": {"query": "topic_3", "url": "https://duckduckgo.com/?q=topic_3"}}
+{"ts": "2026-05-28T20:57:45Z", "action": "search_web", "payload": {"query": "topic_4", "url": "https://duckduckgo.com/?q=topic_4"}}
+{"ts": "2026-05-28T20:57:45Z", "action": "search_web", "payload": {"query": "topic_5", "url": "https://duckduckgo.com/?q=topic_5"}}
+{"ts": "2026-05-28T20:58:04Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:58:05Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:58:05Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:58:06Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:58:06Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:58:07Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:58:07Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:58:07Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:58:08Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:58:08Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:58:08Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:58:09Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:58:09Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:58:10Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:58:10Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:58:10Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:58:11Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:58:11Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:58:11Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:58:12Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:58:12Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:58:13Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:58:13Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:58:14Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:58:14Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:58:14Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:58:14Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:58:14Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:58:14Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:58:14Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:58:14Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:58:14Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:58:14Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:58:14Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T20:58:35Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:58:35Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:58:35Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:58:36Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:58:36Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:58:37Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:58:37Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:58:38Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:58:38Z", "action": "recover_browser_session", "payload": {"phase": "reset"}}
+{"ts": "2026-05-28T20:58:38Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T20:58:38Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:58:40Z", "action": "search_web", "payload": {"query": "topic flow 0", "url": "https://duckduckgo.com/?q=topic+flow+0"}}
+{"ts": "2026-05-28T20:58:40Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+0&ia=web"}}
+{"ts": "2026-05-28T20:58:41Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:58:41Z", "action": "search_web", "payload": {"query": "topic flow 1", "url": "https://duckduckgo.com/?q=topic+flow+1"}}
+{"ts": "2026-05-28T20:58:41Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+1"}}
+{"ts": "2026-05-28T20:58:41Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:58:42Z", "action": "search_web", "payload": {"query": "topic flow 2", "url": "https://duckduckgo.com/?q=topic+flow+2"}}
+{"ts": "2026-05-28T20:58:42Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+2"}}
+{"ts": "2026-05-28T20:58:42Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:58:42Z", "action": "search_web", "payload": {"query": "topic flow 3", "url": "https://duckduckgo.com/?q=topic+flow+3"}}
+{"ts": "2026-05-28T20:58:42Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+3"}}
+{"ts": "2026-05-28T20:58:43Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:58:43Z", "action": "search_web", "payload": {"query": "topic flow 4", "url": "https://duckduckgo.com/?q=topic+flow+4"}}
+{"ts": "2026-05-28T20:58:43Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+4"}}
+{"ts": "2026-05-28T20:58:43Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:58:43Z", "action": "search_web", "payload": {"query": "topic flow 5", "url": "https://duckduckgo.com/?q=topic+flow+5"}}
+{"ts": "2026-05-28T20:58:44Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+5"}}
+{"ts": "2026-05-28T20:58:44Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:58:44Z", "action": "search_web", "payload": {"query": "topic flow 6", "url": "https://duckduckgo.com/?q=topic+flow+6"}}
+{"ts": "2026-05-28T20:58:44Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+6"}}
+{"ts": "2026-05-28T20:58:44Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:58:45Z", "action": "search_web", "payload": {"query": "topic flow 7", "url": "https://duckduckgo.com/?q=topic+flow+7"}}
+{"ts": "2026-05-28T20:58:45Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+7"}}
+{"ts": "2026-05-28T20:58:45Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:58:45Z", "action": "search_web", "payload": {"query": "topic flow 8", "url": "https://duckduckgo.com/?q=topic+flow+8"}}
+{"ts": "2026-05-28T20:58:46Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+8"}}
+{"ts": "2026-05-28T20:58:46Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:58:46Z", "action": "search_web", "payload": {"query": "topic flow 9", "url": "https://duckduckgo.com/?q=topic+flow+9"}}
+{"ts": "2026-05-28T20:58:46Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+9"}}
+{"ts": "2026-05-28T20:58:46Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:58:46Z", "action": "search_web", "payload": {"query": "topic flow 10", "url": "https://duckduckgo.com/?q=topic+flow+10"}}
+{"ts": "2026-05-28T20:58:47Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+10"}}
+{"ts": "2026-05-28T20:58:47Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:58:47Z", "action": "search_web", "payload": {"query": "topic flow 11", "url": "https://duckduckgo.com/?q=topic+flow+11"}}
+{"ts": "2026-05-28T20:58:47Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+11"}}
+{"ts": "2026-05-28T20:58:47Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:58:48Z", "action": "search_web", "payload": {"query": "topic flow 12", "url": "https://duckduckgo.com/?q=topic+flow+12"}}
+{"ts": "2026-05-28T20:58:48Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+12"}}
+{"ts": "2026-05-28T20:58:48Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:58:48Z", "action": "search_web", "payload": {"query": "topic flow 13", "url": "https://duckduckgo.com/?q=topic+flow+13"}}
+{"ts": "2026-05-28T20:58:48Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+13"}}
+{"ts": "2026-05-28T20:58:49Z", "action": "open_browser", "payload": {"url": "about:blank", "tab_count": 1}}
+{"ts": "2026-05-28T20:58:49Z", "action": "search_web", "payload": {"query": "topic flow 14", "url": "https://duckduckgo.com/?q=topic+flow+14"}}
+{"ts": "2026-05-28T20:58:49Z", "action": "summarize_page", "payload": {"url": "https://duckduckgo.com/?q=topic+flow+14"}}
+{"ts": "2026-05-28T21:16:32Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T21:16:33Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T21:16:33Z", "action": "test_real_browser_start", "payload": {"target": "https://example.com"}}
+{"ts": "2026-05-28T21:16:33Z", "action": "test_real_browser_done", "payload": {"ok": true, "url": "https://example.com/", "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780002993541.png"}}
+{"ts": "2026-05-28T21:16:33Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T21:16:33Z", "action": "test_real_browser_start", "payload": {"target": "https://example.com"}}
+{"ts": "2026-05-28T21:16:33Z", "action": "test_real_browser_done", "payload": {"ok": true, "url": "https://example.com/", "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780002993964.png"}}
+{"ts": "2026-05-28T21:16:51Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T21:16:52Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T21:16:52Z", "action": "test_real_browser_start", "payload": {"target": "https://example.com"}}
+{"ts": "2026-05-28T21:16:52Z", "action": "test_real_browser_done", "payload": {"ok": true, "url": "https://example.com/", "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780003012633.png"}}
+{"ts": "2026-05-28T21:16:53Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T21:16:53Z", "action": "test_real_browser_start", "payload": {"target": "https://example.com"}}
+{"ts": "2026-05-28T21:16:53Z", "action": "test_real_browser_done", "payload": {"ok": true, "url": "https://example.com/", "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780003013082.png"}}
+{"ts": "2026-05-28T21:17:06Z", "action": "session_start", "payload": {"provider": "playwright"}}
+{"ts": "2026-05-28T21:17:07Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T21:17:07Z", "action": "test_real_browser_start", "payload": {"target": "https://example.com"}}
+{"ts": "2026-05-28T21:17:07Z", "action": "test_real_browser_done", "payload": {"ok": true, "url": "https://example.com/", "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780003027763.png"}}
+{"ts": "2026-05-28T21:17:08Z", "action": "open_browser", "payload": {"url": "https://example.com", "tab_count": 1}}
+{"ts": "2026-05-28T21:17:08Z", "action": "test_real_browser_start", "payload": {"target": "https://example.com"}}
+{"ts": "2026-05-28T21:17:08Z", "action": "test_real_browser_done", "payload": {"ok": true, "url": "https://example.com/", "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1780003028198.png"}}

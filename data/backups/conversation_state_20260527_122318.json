@@ -1,0 +1,33 @@
+{
+  "current_topic": "Oh",
+  "previous_topics": [
+    "show show show audio status",
+    "test normal speech path",
+    "show show audio status path",
+    "test direct speech",
+    "yes",
+    "verify direct speech backend"
+  ],
+  "active_project": "",
+  "unresolved_question": "",
+  "emotional_tone": "neutral",
+  "interruption_state": "idle",
+  "pending_actions": [],
+  "recent_entities": [
+    "show",
+    "speech",
+    "normal",
+    "test",
+    "audio",
+    "direct",
+    "verify"
+  ],
+  "follow_up_references": [],
+  "turn_count": 31,
+  "last_user_text": "Oh",
+  "last_assistant_summary": "Which website should I open? (e.g. open chatgpt)",
+  "last_intent": "open_website",
+  "paused_response": "",
+  "continuous_listening": false,
+  "updated_at": "2026-05-27T12:22:31.809911+00:00"
+}

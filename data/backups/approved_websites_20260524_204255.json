@@ -1,0 +1,11 @@
+{
+  "websites": {
+    "mysite": {
+      "site_id": "mysite",
+      "display_name": "My Docs",
+      "url": "https://docs.example.com",
+      "approved_at": "2026-05-24T17:42:55.717858+00:00"
+    }
+  },
+  "updated_at": "2026-05-24T17:42:55.717882+00:00"
+}

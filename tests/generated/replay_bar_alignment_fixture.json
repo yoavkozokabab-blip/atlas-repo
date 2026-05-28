@@ -1,0 +1,131 @@
+{
+  "created_at": "2026-05-25T21:03:23.178240+00:00",
+  "read_only": true,
+  "symbol": "AAPL",
+  "replay_hash": "43f832d6aba07119baef60afefcb8b5cdbe514b4d46e7efa5be45c13fda300b6",
+  "fixtures": {
+    "two_bar_mismatch": [
+      {
+        "index": 0,
+        "timestamp": "2026-04-18T16:47:37",
+        "open": 135.8,
+        "high": 136.8,
+        "low": 135.4,
+        "close": 136.0,
+        "volume": 1000.0,
+        "complete": true
+      },
+      {
+        "index": 1,
+        "timestamp": "2026-04-18T16:47:37",
+        "open": 136.3,
+        "high": 137.3,
+        "low": 135.9,
+        "close": 136.5,
+        "volume": 1001.0,
+        "complete": true
+      }
+    ],
+    "delayed_entry": [
+      {
+        "name": "delayed entry",
+        "inputs": {
+          "selected_bar": 1
+        },
+        "outputs": {
+          "next_bar_index": 2,
+          "frozen": true
+        },
+        "rejection_reason": "",
+        "state_delta": {},
+        "evidence_paths": [
+          "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\scheduled_logs\\live_weekly_20260523_162845.log",
+          "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\logs\\live_monitor.log",
+          "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+          "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_run_history.csv",
+          "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_decision_summary.json",
+          "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\sent_alerts.json"
+        ]
+      }
+    ],
+    "stale_price": [],
+    "ranking_order": {
+      "AAPL": 0.860816
+    }
+  },
+  "diff": {
+    "symbol": "AAPL",
+    "status": "different",
+    "first_divergence": "index alignment mismatch live=2 backtest=1",
+    "live_bar": {
+      "index": 2,
+      "timestamp": "2026-04-18T16:47:37",
+      "open": 136.8,
+      "high": 137.8,
+      "low": 136.4,
+      "close": 137.0,
+      "volume": 1002.0,
+      "complete": false
+    },
+    "backtest_bar": {
+      "index": 1,
+      "timestamp": "2026-04-18T16:47:37",
+      "open": 136.3,
+      "high": 137.3,
+      "low": 135.9,
+      "close": 136.5,
+      "volume": 1001.0,
+      "complete": true
+    },
+    "divergence_reasons": [
+      "index alignment mismatch live=2 backtest=1",
+      "incomplete candle usage in live replay",
+      "price mismatch live_close=137.0 backtest_close=136.5"
+    ],
+    "evidence_paths": [
+      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\scheduled_logs\\live_weekly_20260523_162845.log",
+      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\logs\\live_monitor.log",
+      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_run_history.csv",
+      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_decision_summary.json",
+      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\sent_alerts.json",
+      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\processed_signals.json",
+      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\open_positions.json",
+      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_order_events.csv",
+      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\weekly\\paper_live_log_weekly.txt",
+      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\daily\\paper_live_log_daily.txt",
+      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\paper_live_log_combined.txt",
+      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\paper_positions_combined.json",
+      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\weekly\\paper_positions_weekly.json",
+      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\daily\\paper_positions_daily.json",
+      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\paper_positions.json",
+      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\paper_safety_state.json",
+      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\paper_portfolio_state.json",
+      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\review_summary.csv",
+      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\review_summary.txt"
+    ],
+    "confidence": 0.88
+  },
+  "evidence_paths": [
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\scheduled_logs\\live_weekly_20260523_162845.log",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\logs\\live_monitor.log",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_run_history.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_decision_summary.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\sent_alerts.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\processed_signals.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\open_positions.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_order_events.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\weekly\\paper_live_log_weekly.txt",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\daily\\paper_live_log_daily.txt",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\paper_live_log_combined.txt",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\paper_positions_combined.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\weekly\\paper_positions_weekly.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\daily\\paper_positions_daily.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\paper_positions.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\paper_safety_state.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\paper_portfolio_state.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\review_summary.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\review_summary.txt"
+  ]
+}

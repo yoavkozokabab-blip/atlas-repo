@@ -1,0 +1,3 @@
+{
+  "summary": "Screen summary:\n  active window: .env - local_jarvis - Visual Studio Code\n  process: (unknown)\n  capture: Status: blocked\nActive window: .env - local_jarvis - Visual Studio Code\nLikely app: VS Code\nVisible text: (little or no visible text detected)\nWarnings: Blocked keyword in window context: '.env'; Blocked keyword in window context: '.env'\n  visible apps: .env - local_jarvis - Visual Studio Code\n  detected issues:\n    - capture exception: Vision is disabled. Set VISION_ENABLED=true to enable r"
+}

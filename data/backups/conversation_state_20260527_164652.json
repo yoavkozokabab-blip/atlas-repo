@@ -1,0 +1,41 @@
+{
+  "current_topic": "what is the weather today",
+  "previous_topics": [
+    "open youtube",
+    "Oh"
+  ],
+  "active_project": "",
+  "unresolved_question": "",
+  "emotional_tone": "curious",
+  "interruption_state": "idle",
+  "pending_actions": [],
+  "recent_entities": [
+    "today",
+    "weather",
+    "what",
+    "youtube",
+    "open"
+  ],
+  "follow_up_references": [
+    "voice:conversational",
+    "voice:open_website",
+    "voice:unknown"
+  ],
+  "turn_count": 5,
+  "last_user_text": "what is the weather today",
+  "last_assistant_summary": "",
+  "last_intent": "conversational",
+  "paused_response": "",
+  "continuous_listening": true,
+  "updated_at": "2026-05-27T16:46:52.395317+00:00",
+  "interruption_count": 0,
+  "intent_continuity_chain": [
+    "conversational"
+  ],
+  "turn_references": [
+    "what is the weather today ->"
+  ],
+  "last_response_style": "neutral",
+  "pending_follow_up": "",
+  "user_intent_continuity": "conversational"
+}

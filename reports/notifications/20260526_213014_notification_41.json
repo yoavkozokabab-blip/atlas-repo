@@ -1,0 +1,14 @@
+{
+  "id": 41,
+  "kind": "stale_positions",
+  "title": "Stale positions detected",
+  "message": "Stale open positions (read-only scan):",
+  "severity": "warning",
+  "source": "assistant",
+  "created_at": "2026-05-26T21:30:14.075005+00:00",
+  "read": false,
+  "archived": false,
+  "suggested_action": "Run show stale open positions or propose execution cleanup patch.",
+  "related_task_id": null,
+  "metadata": {}
+}

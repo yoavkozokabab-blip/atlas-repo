@@ -1,0 +1,43 @@
+{
+  "run_timestamp": "2026-05-05T13:51:36+00:00",
+  "signal_detection_mode": "last_closed_bar",
+  "universe_count": 755,
+  "n_symbols_processed": 738,
+  "n_new_signals": 5,
+  "n_new_entries": 0,
+  "stop_loss_triggered_count": 6,
+  "signals_seen": 5,
+  "signals_blocked": 5,
+  "block_reasons": {
+    "exposure_limit_reached": 5
+  },
+  "n_execution_attempts": 0,
+  "n_execution_accepted": 0,
+  "n_execution_rejected": 7327,
+  "n_execution_success": 0,
+  "n_execution_failed": 0,
+  "n_execution_dry_run": 0,
+  "n_execution_skipped": 7327,
+  "reason_if_no_attempt": "not_relevant_to_last_bar",
+  "last_bar_relevant_rows": {
+    "daily": 5
+  },
+  "entry_blocks": {
+    "daily": {
+      "max_total_risk_engine": 5
+    }
+  },
+  "executed": {},
+  "output_dir": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual",
+  "execution_mode": "alpaca",
+  "alpaca_dry_run": false,
+  "execution_adapter_health_ok": false,
+  "execution_degraded": true,
+  "execution_enabled": false,
+  "state_write_ok": true,
+  "fallback_writes_count": 0,
+  "run_status": "partial_success",
+  "historical_entry_log_path": "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_signals.csv",
+  "historical_entry_log_is_current": false,
+  "runtime_seconds": 1255.9481418000069
+}

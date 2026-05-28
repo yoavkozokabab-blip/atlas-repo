@@ -1,0 +1,14 @@
+{
+  "id": 575,
+  "kind": "proactive",
+  "title": "Continuous monitor alert",
+  "message": "New blocker appeared: 3. not relevant to last bar severity=high count=14 evidence=c",
+  "severity": "warning",
+  "source": "proactive_monitor",
+  "created_at": "2026-05-28T13:34:05.411527+00:00",
+  "read": false,
+  "archived": false,
+  "suggested_action": "run investigation cycle",
+  "related_task_id": null,
+  "metadata": {}
+}

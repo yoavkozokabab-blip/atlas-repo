@@ -1,0 +1,30 @@
+{
+  "created_at": "2026-05-26T12:16:28.328202+00:00",
+  "event": "rollback",
+  "approver": "operator",
+  "patch_id": "phase47_p1_p2_p4",
+  "backup_id": "20260526_121610_95ec3bbe",
+  "files_changed": [
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\open_positions.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_decision_summary.json",
+    "C:\\FINAL_ALGO_TRADER\\services\\live_paper_engine.py",
+    "C:\\FINAL_ALGO_TRADER\\services\\live_dual_paper_cycle.py"
+  ],
+  "pre": {
+    "risk": 0.0,
+    "engine_positions": 9,
+    "eligible_signals": 5,
+    "removed_symbols": []
+  },
+  "post": {
+    "risk": 0.1125,
+    "engine_positions": 9,
+    "eligible_signals": 4
+  },
+  "replay_passed": false,
+  "replay_message": "risk 0.0->0.1125; eligible 5->4; stale cleanup=0 symbols",
+  "telemetry_passed": true,
+  "telemetry_issues": [],
+  "rollback_status": "SUCCESS",
+  "risk_assessment": "paper-only operational fix; no broker orders"
+}

@@ -1,0 +1,14 @@
+{
+  "id": 278,
+  "kind": "proactive",
+  "title": "Autonomous investigation findings",
+  "message": "Runtime health degraded; Dashboard status=failed",
+  "severity": "warning",
+  "source": "proactive_monitor",
+  "created_at": "2026-05-27T13:08:27.563275+00:00",
+  "read": false,
+  "archived": false,
+  "suggested_action": "inspect execution adapter",
+  "related_task_id": null,
+  "metadata": {}
+}

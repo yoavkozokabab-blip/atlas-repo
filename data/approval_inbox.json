@@ -1,0 +1,155 @@
+{
+  "items": [
+    {
+      "item_id": "f2e389c7",
+      "confirmation_id": "7ae1316e",
+      "timestamp": "2026-05-25T13:00:08.421516+00:00",
+      "intent": "run_live_daily_loop",
+      "action_name": "run_live_daily_loop",
+      "summary": "run_live_daily_loop requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "run live daily loop",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "284d33f2",
+      "confirmation_id": "d163c6f4",
+      "timestamp": "2026-05-27T12:35:53.418140+00:00",
+      "intent": "open_website",
+      "action_name": "open_website",
+      "summary": "open_website requires confirmation.",
+      "risk_level": "low",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "open youtube",
+        "params": {
+          "website": "youtube"
+        }
+      }
+    },
+    {
+      "item_id": "206bcc5c",
+      "confirmation_id": "44595104",
+      "timestamp": "2026-05-27T13:46:40.292836+00:00",
+      "intent": "open_website",
+      "action_name": "open_website",
+      "summary": "open_website requires confirmation.",
+      "risk_level": "low",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "open youtube",
+        "params": {
+          "website": "youtube"
+        }
+      }
+    },
+    {
+      "item_id": "77f9d565",
+      "confirmation_id": "20e71175",
+      "timestamp": "2026-05-27T14:57:20.433859+00:00",
+      "intent": "open_website",
+      "action_name": "open_website",
+      "summary": "open_website requires confirmation.",
+      "risk_level": "low",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "open youtube",
+        "params": {
+          "website": "youtube"
+        }
+      }
+    },
+    {
+      "item_id": "297e16d5",
+      "confirmation_id": "ec87d928",
+      "timestamp": "2026-05-27T14:57:39.250513+00:00",
+      "intent": "open_website",
+      "action_name": "open_website",
+      "summary": "open_website requires confirmation.",
+      "risk_level": "low",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "open youtube",
+        "params": {
+          "website": "youtube"
+        }
+      }
+    },
+    {
+      "item_id": "afdfd922",
+      "confirmation_id": "27d4b147",
+      "timestamp": "2026-05-27T14:59:23.625118+00:00",
+      "intent": "open_website",
+      "action_name": "open_website",
+      "summary": "open_website requires confirmation.",
+      "risk_level": "low",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "open youtube",
+        "params": {
+          "website": "youtube"
+        }
+      }
+    },
+    {
+      "item_id": "3ad94e10",
+      "confirmation_id": "3e2d78f9",
+      "timestamp": "2026-05-27T15:18:03.206353+00:00",
+      "intent": "open_website",
+      "action_name": "open_website",
+      "summary": "open_website requires confirmation.",
+      "risk_level": "low",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "open youtube",
+        "params": {
+          "website": "youtube"
+        }
+      }
+    },
+    {
+      "item_id": "ef9dd555",
+      "confirmation_id": "91ae6e8c",
+      "timestamp": "2026-05-27T16:07:38.704170+00:00",
+      "intent": "open_website",
+      "action_name": "open_website",
+      "summary": "open_website requires confirmation.",
+      "risk_level": "low",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "open youtube",
+        "params": {
+          "website": "youtube"
+        }
+      }
+    },
+    {
+      "item_id": "098fe155",
+      "confirmation_id": "0ef3d1f3",
+      "timestamp": "2026-05-27T16:46:08.615289+00:00",
+      "intent": "open_website",
+      "action_name": "open_website",
+      "summary": "open_website requires confirmation.",
+      "risk_level": "low",
+      "required_confirmation": true,
+      "status": "pending",
+      "safe_payload": {
+        "raw_text": "open youtube",
+        "params": {
+          "website": "youtube"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": 3,
+  "kind": "investigation_completed",
+  "title": "Task 2 completed: reconstruct execution flow",
+  "message": "Execution flow reconstruction (read-only):\n  files scanned: 175\n  signals generated: 4\n  signals eligible: 4\n  signals blocked: 4\n  execution attempts: 0\n  top blocker: overlap block\n  symbol lifecycl",
+  "severity": "success",
+  "created_at": "2026-05-26T20:06:14.483706+00:00",
+  "read": false,
+  "metadata": {}
+}

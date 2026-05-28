@@ -1,0 +1,157 @@
+{
+  "created_at": "2026-05-26T17:55:43.823381+00:00",
+  "files_scanned": 71,
+  "signals_generated": 5,
+  "signals_eligible": 5,
+  "signals_blocked": 5,
+  "n_execution_attempts": 0,
+  "n_execution_accepted": 0,
+  "adapter_mode": "ExecutionDisabledAdapter",
+  "dry_run_status": "unknown",
+  "execution_disabled_status": "yes",
+  "top_blocker": "execution disabled adapter",
+  "blockers": [
+    {
+      "reason": "execution disabled adapter",
+      "severity": "critical",
+      "count": 53,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175543_execution_cleanup.md",
+      "snippet": "- ExecutionDisabledAdapter + stop_loss_hit close rejections leave stale open_positions."
+    },
+    {
+      "reason": "exposure limit",
+      "severity": "high",
+      "count": 50,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175543_execution_cleanup.md",
+      "snippet": "- telemetry primary blocker prefers exposure_limit_reached over scan noise"
+    },
+    {
+      "reason": "not relevant to last bar",
+      "severity": "high",
+      "count": 39,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175543_execution_cleanup.json",
+      "snippet": "\"title\": \"Prefer signal-level blockers over scan-level not_relevant_to_last_bar telemetry\","
+    },
+    {
+      "reason": "max positions reached",
+      "severity": "high",
+      "count": 25,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175529_execution_investigation.md",
+      "snippet": "- [high] max positions reached count=23 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175509_execution_investigation.md"
+    },
+    {
+      "reason": "delayed entry failure",
+      "severity": "medium",
+      "count": 25,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175529_execution_investigation.md",
+      "snippet": "- [medium] delayed entry failure count=23 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175509_execution_investigation.md"
+    },
+    {
+      "reason": "duplicate block",
+      "severity": "medium",
+      "count": 24,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175529_execution_investigation.md",
+      "snippet": "- [medium] duplicate block count=22 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175509_execution_investigation.md"
+    },
+    {
+      "reason": "dry run mode",
+      "severity": "high",
+      "count": 22,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175529_execution_investigation.md",
+      "snippet": "- Dry run: unknown"
+    },
+    {
+      "reason": "already in position",
+      "severity": "medium",
+      "count": 22,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175529_execution_investigation.md",
+      "snippet": "- [medium] already in position count=20 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175509_execution_investigation.md"
+    },
+    {
+      "reason": "market closed",
+      "severity": "medium",
+      "count": 22,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175529_execution_investigation.md",
+      "snippet": "- [medium] market closed count=20 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175509_execution_investigation.md"
+    },
+    {
+      "reason": "overlap block",
+      "severity": "medium",
+      "count": 22,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175529_execution_investigation.md",
+      "snippet": "- [medium] overlap block count=20 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175509_execution_investigation.md"
+    },
+    {
+      "reason": "stale price guard",
+      "severity": "medium",
+      "count": 13,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175529_execution_investigation.md",
+      "snippet": "- [medium] stale price guard count=11 evidence=C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175509_execution_investigation.md"
+    },
+    {
+      "reason": "stop loss hit adapter disabled stop hit",
+      "severity": "medium",
+      "count": 7,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175056_execution_cleanup.md",
+      "snippet": "\"reason\": \"stop_loss_hit_adapter_disabled stop_hit\""
+    },
+    {
+      "reason": "stop loss hit adapter disabled",
+      "severity": "medium",
+      "count": 6,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175056_execution_cleanup.json",
+      "snippet": "\"reason\": \"stop_loss_hit_adapter_disabled\""
+    },
+    {
+      "reason": "engine open without adapter positions",
+      "severity": "medium",
+      "count": 4,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175543_execution_cleanup.json",
+      "snippet": "\"reason\": \"engine_open_without_adapter_positions\""
+    },
+    {
+      "reason": "engine open without adapter positions stop hit",
+      "severity": "medium",
+      "count": 4,
+      "evidence_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175543_execution_cleanup.md",
+      "snippet": "\"reason\": \"engine_open_without_adapter_positions stop_hit\""
+    }
+  ],
+  "evidence_paths": [
+    "C:\\Users\\babi2\\AppData\\Local\\Temp\\tmp2u_1ph6n\\trading\\reports\\live_paper\\dual\\execution_decision_summary.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175543_execution_cleanup.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175543_execution_cleanup.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175529_execution_investigation.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175529_execution_investigation.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175509_execution_investigation.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175509_execution_investigation.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175509_execution_cleanup.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175509_execution_cleanup.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175455_execution_investigation.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175455_execution_investigation.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175112_execution_investigation.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175112_execution_investigation.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175056_execution_cleanup.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_175056_execution_cleanup.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175056_execution_investigation.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175056_execution_investigation.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_174625_execution_cleanup.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_174625_execution_cleanup.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_174625_execution_investigation.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_174625_execution_investigation.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_173037_execution_cleanup.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution_cleanup\\20260526_173037_execution_cleanup.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_173037_execution_investigation.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_173037_execution_investigation.json"
+  ],
+  "recommended_verification": [
+    "Switch adapter from disabled stub to paper adapter and rerun one dry-run cycle.",
+    "Confirm execution adapter is enabled for paper/live mode (not ExecutionDisabledAdapter).",
+    "Verify dry_run flag matches intended environment.",
+    "Check signal_detection_mode vs eligible last-bar signals.",
+    "Inspect entry_blocks and reason_if_no_attempt in execution_decision_summary.json.",
+    "Compare live_signals.csv rows to execution_order_events.csv attempt events."
+  ],
+  "report_json": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175543_execution_investigation.json",
+  "report_markdown": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_175543_execution_investigation.md"
+}

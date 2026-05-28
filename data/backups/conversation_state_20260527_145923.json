@@ -1,0 +1,51 @@
+{
+  "current_topic": "Oh",
+  "previous_topics": [
+    "open youtube",
+    "Oh",
+    "test realtime voice",
+    "show realtime provider status",
+    "benchmark realtime providers",
+    "\\",
+    "show voice latency",
+    "You",
+    "py -3 main.py --text --speak",
+    "$env:pyttsx3_rollback_only=\"true\"",
+    "$env:realtime_tts_enable=\"true\"",
+    "$env:tts_primary_backend=\"realtime\""
+  ],
+  "active_project": "",
+  "unresolved_question": "",
+  "emotional_tone": "neutral",
+  "interruption_state": "speaking",
+  "pending_actions": [],
+  "recent_entities": [
+    "youtube",
+    "open",
+    "voice",
+    "realtime",
+    "test",
+    "provider",
+    "show",
+    "providers",
+    "benchmark",
+    "latency",
+    "--speak",
+    "--text",
+    "main.py",
+    "$env:pyttsx3_rollback_only=\"true",
+    "$env:realtime_tts_enable=\"true",
+    "$env:tts_primary_backend=\"realtime"
+  ],
+  "follow_up_references": [
+    "voice:unknown",
+    "voice:open_website"
+  ],
+  "turn_count": 74,
+  "last_user_text": "Oh",
+  "last_assistant_summary": "I didn't catch a command \u2014 still listening.",
+  "last_intent": "unknown",
+  "paused_response": "",
+  "continuous_listening": false,
+  "updated_at": "2026-05-27T14:59:23.595478+00:00"
+}

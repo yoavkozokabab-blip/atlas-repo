@@ -1,0 +1,105 @@
+{
+  "series": {
+    "last_bar_filter": [
+      {
+        "timestamp": "2026-05-26T21:21:42.312075+00:00",
+        "confidence": 0.62,
+        "causal_score": 0.52,
+        "evidence_count": 4,
+        "recurrence": 1,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:22:12.735108+00:00",
+        "confidence": 0.74,
+        "causal_score": 0.64,
+        "evidence_count": 4,
+        "recurrence": 4,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      }
+    ],
+    "overlap_stale_positions": [
+      {
+        "timestamp": "2026-05-26T21:21:42.319177+00:00",
+        "confidence": 0.5,
+        "causal_score": 0.4,
+        "evidence_count": 3,
+        "recurrence": 1,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:22:12.741742+00:00",
+        "confidence": 0.62,
+        "causal_score": 0.52,
+        "evidence_count": 3,
+        "recurrence": 4,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      }
+    ],
+    "stale_telemetry_risk": [
+      {
+        "timestamp": "2026-05-26T21:21:42.325451+00:00",
+        "confidence": 0.5,
+        "causal_score": 0.4,
+        "evidence_count": 3,
+        "recurrence": 1,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:22:12.748907+00:00",
+        "confidence": 0.62,
+        "causal_score": 0.52,
+        "evidence_count": 3,
+        "recurrence": 4,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      }
+    ],
+    "cluster_divergence": [
+      {
+        "timestamp": "2026-05-26T21:21:42.331811+00:00",
+        "confidence": 0.38,
+        "causal_score": 0.28,
+        "evidence_count": 2,
+        "recurrence": 1,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:22:12.755731+00:00",
+        "confidence": 0.5,
+        "causal_score": 0.4,
+        "evidence_count": 2,
+        "recurrence": 4,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      }
+    ],
+    "adapter_disabled": [
+      {
+        "timestamp": "2026-05-26T21:21:42.338404+00:00",
+        "confidence": 0.35,
+        "causal_score": 0.25,
+        "evidence_count": 3,
+        "recurrence": 1,
+        "contradictory_count": 1,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:22:12.762340+00:00",
+        "confidence": 0.47,
+        "causal_score": 0.37,
+        "evidence_count": 3,
+        "recurrence": 4,
+        "contradictory_count": 1,
+        "verification_status": "pending"
+      }
+    ]
+  },
+  "updated_at": "2026-05-26T21:22:12.762347+00:00"
+}

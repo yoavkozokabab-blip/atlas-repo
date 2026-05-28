@@ -1,0 +1,19 @@
+{
+  "current_investigation": "summarize trading health",
+  "pending_tasks": [],
+  "recent_blockers": [
+    "top blocker: overlap block"
+  ],
+  "latest_dashboard_state": "",
+  "latest_reports": [
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\trading_operations\\20260526_205146_trading_health.md",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\trading_operations\\20260526_204446_trading_health.md"
+  ],
+  "recent_symbols": [],
+  "operational_risks": [],
+  "unresolved_incidents": [],
+  "last_session_summary": "Trading health summary:\n\nExecution investigation (read-only)\n  files scanned: 175\n  signals generated: 4\n  signals eligible: 4\n  signals blocked: 4\n  execution attempts: 0\n  execution accepted: 0\n  adapter mode: AlpacaExecutionAdapter\n  dry run: true\n  execution disabled: yes\n  top blocker: overlap block\n  report json: C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_20",
+  "last_started_at": "2026-05-26T21:07:39.330269+00:00",
+  "last_ended_at": "",
+  "updated_at": "2026-05-26T21:07:39.330274+00:00"
+}

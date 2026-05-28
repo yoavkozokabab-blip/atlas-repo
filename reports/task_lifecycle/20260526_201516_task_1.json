@@ -1,0 +1,21 @@
+{
+  "id": 1,
+  "command": "summarize trading health",
+  "intent": "summarize_trading_health",
+  "phase": "completed",
+  "started_at": "2026-05-26T20:15:15.659341+00:00",
+  "started_monotonic": 4895.5321498,
+  "last_progress_at": "2026-05-26T20:15:15.685727+00:00",
+  "last_progress_text": "executing command pipeline...",
+  "ended_at": "2026-05-26T20:15:16.043806+00:00",
+  "duration_seconds": 0.38,
+  "result_summary": "trading health async complete \u2014 top blocker: stale open positions",
+  "severity": "info",
+  "evidence": [
+    "trading health async complete \u2014 top blocker: stale open positions"
+  ],
+  "related_reports": [],
+  "errors": [],
+  "notification_id": 1,
+  "cancel_requested": false
+}

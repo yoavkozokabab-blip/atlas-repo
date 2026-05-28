@@ -1,0 +1,42 @@
+{
+  "current_topic": "show conversational memory",
+  "previous_topics": [
+    "show conversation runtime",
+    "phase 59 status",
+    "open youtube",
+    "Oh"
+  ],
+  "active_project": "",
+  "unresolved_question": "",
+  "emotional_tone": "neutral",
+  "interruption_state": "idle",
+  "pending_actions": [],
+  "recent_entities": [
+    "memory",
+    "conversational",
+    "show",
+    "runtime",
+    "conversation",
+    "status",
+    "phase",
+    "youtube",
+    "open"
+  ],
+  "follow_up_references": [
+    "voice:open_website",
+    "voice:unknown"
+  ],
+  "turn_count": 5,
+  "last_user_text": "show conversational memory",
+  "last_assistant_summary": "Conversational memory (Phase 59):\n  active topic: show conversation runtime\n  unresolved question: n/a\n  emotional tone: neutral\n  interruptions: 0\n  intent continuity: n/a\n  pending follow-up: n/a\n  last response style: neutral\n  turn count: 4\n\nWould you also like me to run diagnostics?",
+  "last_intent": "show_conversational_memory",
+  "paused_response": "",
+  "continuous_listening": false,
+  "updated_at": "2026-05-27T16:41:43.781108+00:00",
+  "interruption_count": 0,
+  "intent_continuity_chain": [],
+  "turn_references": [],
+  "last_response_style": "neutral",
+  "pending_follow_up": "",
+  "user_intent_continuity": ""
+}

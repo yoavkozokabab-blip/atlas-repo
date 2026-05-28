@@ -1,0 +1,150 @@
+{
+  "series": {
+    "last_bar_filter": [
+      {
+        "timestamp": "2026-05-26T21:35:12.281530+00:00",
+        "confidence": 0.62,
+        "causal_score": 0.52,
+        "evidence_count": 4,
+        "recurrence": 1,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:35:43.148281+00:00",
+        "confidence": 0.74,
+        "causal_score": 0.64,
+        "evidence_count": 4,
+        "recurrence": 4,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:37:44.931248+00:00",
+        "confidence": 0.74,
+        "causal_score": 0.82,
+        "evidence_count": 4,
+        "recurrence": 9,
+        "contradictory_count": 0,
+        "verification_status": "verified"
+      }
+    ],
+    "overlap_stale_positions": [
+      {
+        "timestamp": "2026-05-26T21:35:12.288748+00:00",
+        "confidence": 0.5,
+        "causal_score": 0.4,
+        "evidence_count": 3,
+        "recurrence": 1,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:35:43.156748+00:00",
+        "confidence": 0.62,
+        "causal_score": 0.52,
+        "evidence_count": 3,
+        "recurrence": 4,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:37:44.938647+00:00",
+        "confidence": 0.82,
+        "causal_score": 0.8,
+        "evidence_count": 3,
+        "recurrence": 9,
+        "contradictory_count": 0,
+        "verification_status": "verified"
+      }
+    ],
+    "stale_telemetry_risk": [
+      {
+        "timestamp": "2026-05-26T21:35:12.295686+00:00",
+        "confidence": 0.5,
+        "causal_score": 0.4,
+        "evidence_count": 3,
+        "recurrence": 1,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:35:43.164269+00:00",
+        "confidence": 0.62,
+        "causal_score": 0.52,
+        "evidence_count": 3,
+        "recurrence": 4,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:37:44.946210+00:00",
+        "confidence": 0.7,
+        "causal_score": 0.78,
+        "evidence_count": 3,
+        "recurrence": 9,
+        "contradictory_count": 0,
+        "verification_status": "verified"
+      }
+    ],
+    "cluster_divergence": [
+      {
+        "timestamp": "2026-05-26T21:35:12.302134+00:00",
+        "confidence": 0.38,
+        "causal_score": 0.28,
+        "evidence_count": 2,
+        "recurrence": 1,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:35:43.172102+00:00",
+        "confidence": 0.5,
+        "causal_score": 0.4,
+        "evidence_count": 2,
+        "recurrence": 4,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:37:44.953033+00:00",
+        "confidence": 0.68,
+        "causal_score": 0.6,
+        "evidence_count": 2,
+        "recurrence": 9,
+        "contradictory_count": 0,
+        "verification_status": "pending"
+      }
+    ],
+    "adapter_disabled": [
+      {
+        "timestamp": "2026-05-26T21:35:12.309113+00:00",
+        "confidence": 0.35,
+        "causal_score": 0.25,
+        "evidence_count": 3,
+        "recurrence": 1,
+        "contradictory_count": 1,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:35:43.179859+00:00",
+        "confidence": 0.47,
+        "causal_score": 0.37,
+        "evidence_count": 3,
+        "recurrence": 4,
+        "contradictory_count": 1,
+        "verification_status": "pending"
+      },
+      {
+        "timestamp": "2026-05-26T21:37:44.960459+00:00",
+        "confidence": 0.67,
+        "causal_score": 0.57,
+        "evidence_count": 3,
+        "recurrence": 9,
+        "contradictory_count": 1,
+        "verification_status": "pending"
+      }
+    ]
+  },
+  "updated_at": "2026-05-26T21:37:44.960468+00:00"
+}

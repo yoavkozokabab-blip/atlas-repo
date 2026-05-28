@@ -1,0 +1,17 @@
+{
+  "last_suggestion_at": "2026-05-27T11:00:57.855242+00:00",
+  "last_suggestions": [
+    {
+      "title": "Verified root cause available",
+      "detail": "Overlap block caused by stale open_positions state",
+      "action": "summarize root causes"
+    },
+    {
+      "title": "Execution adapter disabled",
+      "detail": "Execution blockers:",
+      "action": "show notifications"
+    }
+  ],
+  "dismissed": [],
+  "updated_at": "2026-05-27T11:00:57.855248+00:00"
+}

@@ -1,0 +1,1498 @@
+{
+  "active": [
+    {
+      "id": "adapter_disabled",
+      "title": "Adapter disabled causing execution attempts=0",
+      "confidence": 0.88,
+      "evidence": [
+        "Execution blockers:"
+      ],
+      "related_reports": [],
+      "verify_command": "inspect execution adapter",
+      "recurrence": 161,
+      "status": "active",
+      "created_at": "2026-05-28T14:53:21.942356+00:00",
+      "updated_at": "2026-05-28T14:53:21.942356+00:00"
+    },
+    {
+      "id": "overlap_stale_positions",
+      "title": "Overlap block caused by stale open_positions state",
+      "confidence": 0.82,
+      "evidence": [
+        "Stale open positions (read-only scan):"
+      ],
+      "related_reports": [],
+      "verify_command": "show stale open positions",
+      "recurrence": 161,
+      "status": "active",
+      "created_at": "2026-05-28T14:53:21.942356+00:00",
+      "updated_at": "2026-05-28T14:53:21.942356+00:00"
+    },
+    {
+      "id": "last_bar_filter",
+      "title": "Last-bar filtering suppressing entries",
+      "confidence": 0.74,
+      "evidence": [
+        "Execution blockers:",
+        "  signals blocked: 4"
+      ],
+      "related_reports": [],
+      "verify_command": "reconstruct execution flow",
+      "recurrence": 161,
+      "status": "active",
+      "created_at": "2026-05-28T14:53:21.942356+00:00",
+      "updated_at": "2026-05-28T14:53:21.942356+00:00"
+    },
+    {
+      "id": "stale_telemetry_risk",
+      "title": "Stale execution telemetry inflating open risk",
+      "confidence": 0.7,
+      "evidence": [
+        "Current execution risk:"
+      ],
+      "related_reports": [],
+      "verify_command": "show current execution risk",
+      "recurrence": 161,
+      "status": "active",
+      "created_at": "2026-05-28T14:53:21.942356+00:00",
+      "updated_at": "2026-05-28T14:53:21.942356+00:00"
+    },
+    {
+      "id": "cluster_divergence",
+      "title": "Replay divergences cluster around systemic mismatch pattern",
+      "confidence": 0.68,
+      "evidence": [
+        "see divergence clusters report"
+      ],
+      "related_reports": [],
+      "verify_command": "explain largest divergence cluster",
+      "recurrence": 161,
+      "status": "active",
+      "created_at": "2026-05-28T14:53:21.942356+00:00",
+      "updated_at": "2026-05-28T14:53:21.942356+00:00"
+    }
+  ],
+  "history": [
+    {
+      "id": "adapter_disabled",
+      "title": "Adapter disabled causing execution attempts=0",
+      "confidence": 0.88,
+      "evidence": [
+        "Execution blockers:"
+      ],
+      "related_reports": [],
+      "verify_command": "inspect execution adapter",
+      "recurrence": 142,
+      "status": "active",
+      "created_at": "2026-05-28T12:50:45.948056+00:00",
+      "updated_at": "2026-05-28T12:50:45.948056+00:00"
+    },
+    {
+      "id": "overlap_stale_positions",
+      "title": "Overlap block caused by stale open_positions state",
+      "confidence": 0.82,
+      "evidence": [
+        "Stale open positions (read-only scan):"
+      ],
+      "related_reports": [],
+      "verify_command": "show stale open positions",
+      "recurrence": 142,
+      "status": "active",
+      "created_at": "2026-05-28T12:50:45.948056+00:00",
+      "updated_at": "2026-05-28T12:50:45.948056+00:00"
+    },
+    {
+      "id": "last_bar_filter",
+      "title": "Last-bar filtering suppressing entries",
+      "confidence": 0.74,
+      "evidence": [
+        "Execution blockers:",
+        "  signals blocked: 4"
+      ],
+      "related_reports": [],
+      "verify_command": "reconstruct execution flow",
+      "recurrence": 142,
+      "status": "active",
+      "created_at": "2026-05-28T12:50:45.948056+00:00",
+      "updated_at": "2026-05-28T12:50:45.948056+00:00"
+    },
+    {
+      "id": "stale_telemetry_risk",
+      "title": "Stale execution telemetry inflating open risk",
+      "confidence": 0.7,
+      "evidence": [
+        "Current execution risk:"
+      ],
+      "related_reports": [],
+      "verify_command": "show current execution risk",
+      "recurrence": 142,
+      "status": "active",
+      "created_at": "2026-05-28T12:50:45.948056+00:00",
+      "updated_at": "2026-05-28T12:50:45.948056+00:00"
+    },
+    {
+      "id": "cluster_divergence",
+      "title": "Replay divergences cluster around systemic mismatch pattern",
+      "confidence": 0.68,
+      "evidence": [
+        "see divergence clusters report"
+      ],
+      "related_reports": [],
+      "verify_command": "explain largest divergence cluster",
+      "recurrence": 142,
+      "status": "active",
+      "created_at": "2026-05-28T12:50:45.948056+00:00",
+      "updated_at": "2026-05-28T12:50:45.948056+00:00"
+    },
+    {
+      "id": "adapter_disabled",
+      "title": "Adapter disabled causing execution attempts=0",
+      "confidence": 0.88,
+      "evidence": [
+        "Execution blockers:"
+      ],
+      "related_reports": [],
+      "verify_command": "inspect execution adapter",
+      "recurrence": 143,
+      "status": "active",
+      "created_at": "2026-05-28T12:51:16.845938+00:00",
+      "updated_at": "2026-05-28T12:51:16.845938+00:00"
+    },
+    {
+      "id": "overlap_stale_positions",
+      "title": "Overlap block caused by stale open_positions state",
+      "confidence": 0.82,
+      "evidence": [
+        "Stale open positions (read-only scan):"
+      ],
+      "related_reports": [],
+      "verify_command": "show stale open positions",
+      "recurrence": 143,
+      "status": "active",
+      "created_at": "2026-05-28T12:51:16.845938+00:00",
+      "updated_at": "2026-05-28T12:51:16.845938+00:00"
+    },
+    {
+      "id": "last_bar_filter",
+      "title": "Last-bar filtering suppressing entries",
+      "confidence": 0.74,
+      "evidence": [
+        "Execution blockers:",
+        "  signals blocked: 4"
+      ],
+      "related_reports": [],
+      "verify_command": "reconstruct execution flow",
+      "recurrence": 143,
+      "status": "active",
+      "created_at": "2026-05-28T12:51:16.845938+00:00",
+      "updated_at": "2026-05-28T12:51:16.845938+00:00"
+    },
+    {
+      "id": "stale_telemetry_risk",
+      "title": "Stale execution telemetry inflating open risk",
+      "confidence": 0.7,
+      "evidence": [
+        "Current execution risk:"
+      ],
+      "related_reports": [],
+      "verify_command": "show current execution risk",
+      "recurrence": 143,
+      "status": "active",
+      "created_at": "2026-05-28T12:51:16.845938+00:00",
+      "updated_at": "2026-05-28T12:51:16.845938+00:00"
+    },
+    {
+      "id": "cluster_divergence",
+      "title": "Replay divergences cluster around systemic mismatch pattern",
+      "confidence": 0.68,
+      "evidence": [
+        "see divergence clusters report"
+      ],
+      "related_reports": [],
+      "verify_command": "explain largest divergence cluster",
+      "recurrence": 143,
+      "status": "active",
+      "created_at": "2026-05-28T12:51:16.845938+00:00",
+      "updated_at": "2026-05-28T12:51:16.845938+00:00"
+    },
+    {
+      "id": "adapter_disabled",
+      "title": "Adapter disabled causing execution attempts=0",
+      "confidence": 0.88,
+      "evidence": [
+        "Execution blockers:"
+      ],
+      "related_reports": [],
+      "verify_command": "inspect execution adapter",
+      "recurrence": 144,
+      "status": "active",
+      "created_at": "2026-05-28T12:51:47.769474+00:00",
+      "updated_at": "2026-05-28T12:51:47.769474+00:00"
+    },
+    {
+      "id": "overlap_stale_positions",
+      "title": "Overlap block caused by stale open_positions state",
+      "confidence": 0.82,
+      "evidence": [
+        "Stale open positions (read-only scan):"
+      ],
+      "related_reports": [],
+      "verify_command": "show stale open positions",
+      "recurrence": 144,
+      "status": "active",
+      "created_at": "2026-05-28T12:51:47.769474+00:00",
+      "updated_at": "2026-05-28T12:51:47.769474+00:00"
+    },
+    {
+      "id": "last_bar_filter",
+      "title": "Last-bar filtering suppressing entries",
+      "confidence": 0.74,
+      "evidence": [
+        "Execution blockers:",
+        "  signals blocked: 4"
+      ],
+      "related_reports": [],
+      "verify_command": "reconstruct execution flow",
+      "recurrence": 144,
+      "status": "active",
+      "created_at": "2026-05-28T12:51:47.769474+00:00",
+      "updated_at": "2026-05-28T12:51:47.769474+00:00"
+    },
+    {
+      "id": "stale_telemetry_risk",
+      "title": "Stale execution telemetry inflating open risk",
+      "confidence": 0.7,
+      "evidence": [
+        "Current execution risk:"
+      ],
+      "related_reports": [],
+      "verify_command": "show current execution risk",
+      "recurrence": 144,
+      "status": "active",
+      "created_at": "2026-05-28T12:51:47.769474+00:00",
+      "updated_at": "2026-05-28T12:51:47.769474+00:00"
+    },
+    {
+      "id": "cluster_divergence",
+      "title": "Replay divergences cluster around systemic mismatch pattern",
+      "confidence": 0.68,
+      "evidence": [
+        "see divergence clusters report"
+      ],
+      "related_reports": [],
+      "verify_command": "explain largest divergence cluster",
+      "recurrence": 144,
+      "status": "active",
+      "created_at": "2026-05-28T12:51:47.769474+00:00",
+      "updated_at": "2026-05-28T12:51:47.769474+00:00"
+    },
+    {
+      "id": "adapter_disabled",
+      "title": "Adapter disabled causing execution attempts=0",
+      "confidence": 0.88,
+      "evidence": [
+        "Execution blockers:"
+      ],
+      "related_reports": [],
+      "verify_command": "inspect execution adapter",
+      "recurrence": 145,
+      "status": "active",
+      "created_at": "2026-05-28T12:52:18.137716+00:00",
+      "updated_at": "2026-05-28T12:52:18.137716+00:00"
+    },
+    {
+      "id": "overlap_stale_positions",
+      "title": "Overlap block caused by stale open_positions state",
+      "confidence": 0.82,
+      "evidence": [
+        "Stale open positions (read-only scan):"
+      ],
+      "related_reports": [],
+      "verify_command": "show stale open positions",
+      "recurrence": 145,
+      "status": "active",
+      "created_at": "2026-05-28T12:52:18.137716+00:00",
+      "updated_at": "2026-05-28T12:52:18.137716+00:00"
+    },
+    {
+      "id": "last_bar_filter",
+      "title": "Last-bar filtering suppressing entries",
+      "confidence": 0.74,
+      "evidence": [
+        "Execution blockers:",
+        "  signals blocked: 4"
+      ],
+      "related_reports": [],
+      "verify_command": "reconstruct execution flow",
+      "recurrence": 145,
+      "status": "active",
+      "created_at": "2026-05-28T12:52:18.137716+00:00",
+      "updated_at": "2026-05-28T12:52:18.137716+00:00"
+    },
+    {
+      "id": "stale_telemetry_risk",
+      "title": "Stale execution telemetry inflating open risk",
+      "confidence": 0.7,
+      "evidence": [
+        "Current execution risk:"
+      ],
+      "related_reports": [],
+      "verify_command": "show current execution risk",
+      "recurrence": 145,
+      "status": "active",
+      "created_at": "2026-05-28T12:52:18.137716+00:00",
+      "updated_at": "2026-05-28T12:52:18.137716+00:00"
+    },
+    {
+      "id": "cluster_divergence",
+      "title": "Replay divergences cluster around systemic mismatch pattern",
+      "confidence": 0.68,
+      "evidence": [
+        "see divergence clusters report"
+      ],
+      "related_reports": [],
+      "verify_command": "explain largest divergence cluster",
+      "recurrence": 145,
+      "status": "active",
+      "created_at": "2026-05-28T12:52:18.137716+00:00",
+      "updated_at": "2026-05-28T12:52:18.137716+00:00"
+    },
+    {
+      "id": "adapter_disabled",
+      "title": "Adapter disabled causing execution attempts=0",
+      "confidence": 0.88,
+      "evidence": [
+        "Execution blockers:"
+      ],
+      "related_reports": [],
+      "verify_command": "inspect execution adapter",
+      "recurrence": 146,
+      "status": "active",
+      "created_at": "2026-05-28T12:52:18.295381+00:00",
+      "updated_at": "2026-05-28T12:52:18.295381+00:00"
+    },
+    {
+      "id": "overlap_stale_positions",
+      "title": "Overlap block caused by stale open_positions state",
+      "confidence": 0.82,
+      "evidence": [
+        "Stale open positions (read-only scan):"
+      ],
+      "related_reports": [],
+      "verify_command": "show stale open positions",
+      "recurrence": 146,
+      "status": "active",
+      "created_at": "2026-05-28T12:52:18.295381+00:00",
+      "updated_at": "2026-05-28T12:52:18.295381+00:00"
+    },
+    {
+      "id": "last_bar_filter",
+      "title": "Last-bar filtering suppressing entries",
+      "confidence": 0.74,
+      "evidence": [
+        "Execution blockers:",
+        "  signals blocked: 4"
+      ],
+      "related_reports": [],
+      "verify_command": "reconstruct execution flow",
+      "recurrence": 146,
+      "status": "active",
+      "created_at": "2026-05-28T12:52:18.295381+00:00",
+      "updated_at": "2026-05-28T12:52:18.295381+00:00"
+    },
+    {
+      "id": "stale_telemetry_risk",
+      "title": "Stale execution telemetry inflating open risk",
+      "confidence": 0.7,
+      "evidence": [
+        "Current execution risk:"
+      ],
+      "related_reports": [],
+      "verify_command": "show current execution risk",
+      "recurrence": 146,
+      "status": "active",
+      "created_at": "2026-05-28T12:52:18.295381+00:00",
+      "updated_at": "2026-05-28T12:52:18.295381+00:00"
+    },
+    {
+      "id": "cluster_divergence",
+      "title": "Replay divergences cluster around systemic mismatch pattern",
+      "confidence": 0.68,
+      "evidence": [
+        "see divergence clusters report"
+      ],
+      "related_reports": [],
+      "verify_command": "explain largest divergence cluster",
+      "recurrence": 146,
+      "status": "active",
+      "created_at": "2026-05-28T12:52:18.295381+00:00",
+      "updated_at": "2026-05-28T12:52:18.295381+00:00"
+    },
+    {
+      "id": "adapter_disabled",
+      "title": "Adapter disabled causing execution attempts=0",
+      "confidence": 0.88,
+      "evidence": [
+        "Execution blockers:"
+      ],
+      "related_reports": [],
+      "verify_command": "inspect execution adapter",
+      "recurrence": 147,
+      "status": "active",
+      "created_at": "2026-05-28T13:05:40.283999+00:00",
+      "updated_at": "2026-05-28T13:05:40.283999+00:00"
+    },
+    {
+      "id": "overlap_stale_positions",
+      "title": "Overlap block caused by stale open_positions state",
+      "confidence": 0.82,
+      "evidence": [
+        "Stale open positions (read-only scan):"
+      ],
+      "related_reports": [],
+      "verify_command": "show stale open positions",
+      "recurrence": 147,
+      "status": "active",
+      "created_at": "2026-05-28T13:05:40.283999+00:00",
+      "updated_at": "2026-05-28T13:05:40.283999+00:00"
+    },
+    {
+      "id": "last_bar_filter",
+      "title": "Last-bar filtering suppressing entries",
+      "confidence": 0.74,
+      "evidence": [
+        "Execution blockers:",
+        "  signals blocked: 4"
+      ],
+      "related_reports": [],
+      "verify_command": "reconstruct execution flow",
+      "recurrence": 147,
+      "status": "active",
+      "created_at": "2026-05-28T13:05:40.283999+00:00",
+      "updated_at": "2026-05-28T13:05:40.283999+00:00"
+    },
+    {
+      "id": "stale_telemetry_risk",
+      "title": "Stale execution telemetry inflating open risk",
+      "confidence": 0.7,
+      "evidence": [
+        "Current execution risk:"
+      ],
+      "related_reports": [],
+      "verify_command": "show current execution risk",
+      "recurrence": 147,
+      "status": "active",
+      "created_at": "2026-05-28T13:05:40.283999+00:00",
+      "updated_at": "2026-05-28T13:05:40.283999+00:00"
+    },
+    {
+      "id": "cluster_divergence",
+      "title": "Replay divergences cluster around systemic mismatch pattern",
+      "confidence": 0.68,
+      "evidence": [
+        "see divergence clusters report"
+      ],
+      "related_reports": [],
+      "verify_command": "explain largest divergence cluster",
+      "recurrence": 147,
+      "status": "active",
+      "created_at": "2026-05-28T13:05:40.283999+00:00",
+      "updated_at": "2026-05-28T13:05:40.283999+00:00"
+    },
+    {
+      "id": "adapter_disabled",
+      "title": "Adapter disabled causing execution attempts=0",
+      "confidence": 0.88,
+      "evidence": [
+        "Execution blockers:"
+      ],
+      "related_reports": [],
+      "verify_command": "inspect execution adapter",
+      "recurrence": 148,
+      "status": "active",
+      "created_at": "2026-05-28T13:21:28.677926+00:00",
+      "updated_at": "2026-05-28T13:21:28.677926+00:00"
+    },
+    {
+      "id": "overlap_stale_positions",
+      "title": "Overlap block caused by stale open_positions state",
+      "confidence": 0.82,
+      "evidence": [
+        "Stale open positions (read-only scan):"
+      ],
+      "related_reports": [],
+      "verify_command": "show stale open positions",
+      "recurrence": 148,
+      "status": "active",
+      "created_at": "2026-05-28T13:21:28.677926+00:00",
+      "updated_at": "2026-05-28T13:21:28.677926+00:00"
+    },
+    {
+      "id": "last_bar_filter",
+      "title": "Last-bar filtering suppressing entries",
+      "confidence": 0.74,
+      "evidence": [
+        "Execution blockers:",
+        "  signals blocked: 4"
+      ],
+      "related_reports": [],
+      "verify_command": "reconstruct execution flow",
+      "recurrence": 148,
+      "status": "active",
+      "created_at": "2026-05-28T13:21:28.677926+00:00",
+      "updated_at": "2026-05-28T13:21:28.677926+00:00"
+    },
+    {
+      "id": "stale_telemetry_risk",
+      "title": "Stale execution telemetry inflating open risk",
+      "confidence": 0.7,
+      "evidence": [
+        "Current execution risk:"
+      ],
+      "related_reports": [],
+      "verify_command": "show current execution risk",
+      "recurrence": 148,
+      "status": "active",
+      "created_at": "2026-05-28T13:21:28.677926+00:00",
+      "updated_at": "2026-05-28T13:21:28.677926+00:00"
+    },
+    {
+      "id": "cluster_divergence",
+      "title": "Replay divergences cluster around systemic mismatch pattern",
+      "confidence": 0.68,
+      "evidence": [
+        "see divergence clusters report"
+      ],
+      "related_reports": [],
+      "verify_command": "explain largest divergence cluster",
+      "recurrence": 148,
+      "status": "active",
+      "created_at": "2026-05-28T13:21:28.677926+00:00",
+      "updated_at": "2026-05-28T13:21:28.677926+00:00"
+    },
+    {
+      "id": "adapter_disabled",
+      "title": "Adapter disabled causing execution attempts=0",
+      "confidence": 0.88,
+      "evidence": [
+        "Execution blockers:"
+      ],
+      "related_reports": [],
+      "verify_command": "inspect execution adapter",
+      "recurrence": 149,
+      "status": "active",
+      "created_at": "2026-05-28T13:37:51.586803+00:00",
+      "updated_at": "2026-05-28T13:37:51.586803+00:00"
+    },
+    {
+      "id": "overlap_stale_positions",
+      "title": "Overlap block caused by stale open_positions state",
+      "confidence": 0.82,
+      "evidence": [
+        "Stale open positions (read-only scan):"
+      ],
+      "related_reports": [],
+      "verify_command": "show stale open positions",
+      "recurrence": 149,
+      "status": "active",
+      "created_at": "2026-05-28T13:37:51.586803+00:00",
+      "updated_at": "2026-05-28T13:37:51.586803+00:00"
+    },
+    {
+      "id": "last_bar_filter",
+      "title": "Last-bar filtering suppressing entries",
+      "confidence": 0.74,
+      "evidence": [
+        "Execution blockers:",
+        "  signals blocked: 4"
+      ],
+      "related_reports": [],
+      "verify_command": "reconstruct execution flow",
+      "recurrence": 149,
+      "status": "active",
+      "created_at": "2026-05-28T13:37:51.586803+00:00",
+      "updated_at": "2026-05-28T13:37:51.586803+00:00"
+    },
+    {
+      "id": "stale_telemetry_risk",
+      "title": "Stale execution telemetry inflating open risk",
+      "confidence": 0.7,
+      "evidence": [
+        "Current execution risk:"
+      ],
+      "related_reports": [],
+      "verify_command": "show current execution risk",
+      "recurrence": 149,
+      "status": "active",
+      "created_at": "2026-05-28T13:37:51.586803+00:00",
+      "updated_at": "2026-05-28T13:37:51.586803+00:00"
+    },
+    {
+      "id": "cluster_divergence",
+      "title": "Replay divergences cluster around systemic mismatch pattern",
+      "confidence": 0.68,
+      "evidence": [
+        "see divergence clusters report"
+      ],
+      "related_reports": [],
+      "verify_command": "explain largest divergence cluster",
+      "recurrence": 149,
+      "status": "active",
+      "created_at": "2026-05-28T13:37:51.586803+00:00",
+      "updated_at": "2026-05-28T13:37:51.586803+00:00"
+    },
+    {
+      "id": "adapter_disabled",
+      "title": "Adapter disabled causing execution attempts=0",
+      "confidence": 0.88,
+      "evidence": [
+        "Execution blockers:"
+      ],
+      "related_reports": [],
+      "verify_command": "inspect execution adapter",
+      "recurrence": 150,
+      "status": "active",
+      "created_at": "2026-05-28T13:50:56.106891+00:00",
+      "updated_at": "2026-05-28T13:50:56.106891+00:00"
+    },
+    {
+      "id": "overlap_stale_positions",
+      "title": "Overlap block caused by stale open_positions state",
+      "confidence": 0.82,
+      "evidence": [
+        "Stale open positions (read-only scan):"
+      ],
+      "related_reports": [],
+      "verify_command": "show stale open positions",
+      "recurrence": 150,
+      "status": "active",
+      "created_at": "2026-05-28T13:50:56.106891+00:00",
+      "updated_at": "2026-05-28T13:50:56.106891+00:00"
+    },
+    {
+      "id": "last_bar_filter",
+      "title": "Last-bar filtering suppressing entries",
+      "confidence": 0.74,
+      "evidence": [
+        "Execution blockers:",
+        "  signals blocked: 4"
+      ],
+      "related_reports": [],
+      "verify_command": "reconstruct execution flow",
+      "recurrence": 150,
+      "status": "active",
+      "created_at": "2026-05-28T13:50:56.106891+00:00",
+      "updated_at": "2026-05-28T13:50:56.106891+00:00"
+    },
+    {
+      "id": "stale_telemetry_risk",
+      "title": "Stale execution telemetry inflating open risk",
+      "confidence": 0.7,
+      "evidence": [
+        "Current execution risk:"
+      ],
+      "related_reports": [],
+      "verify_command": "show current execution risk",
+      "recurrence": 150,
+      "status": "active",
+      "created_at": "2026-05-28T13:50:56.106891+00:00",
+      "updated_at": "2026-05-28T13:50:56.106891+00:00"
+    },
+    {
+      "id": "cluster_divergence",
+      "title": "Replay divergences cluster around systemic mismatch pattern",
+      "confidence": 0.68,
+      "evidence": [
+        "see divergence clusters report"
+      ],
+      "related_reports": [],
+      "verify_command": "explain largest divergence cluster",
+      "recurrence": 150,
+      "status": "active",
+      "created_at": "2026-05-28T13:50:56.106891+00:00",
+      "updated_at": "2026-05-28T13:50:56.106891+00:00"
+    },
+    {
+      "id": "adapter_disabled",
+      "title": "Adapter disabled causing execution attempts=0",
+      "confidence": 0.88,
+      "evidence": [
+        "Execution blockers:"
+      ],
+      "related_reports": [],
+      "verify_command": "inspect execution adapter",
+      "recurrence": 151,
+      "status": "active",
+      "created_at": "2026-05-28T13:50:56.286618+00:00",
+      "updated_at": "2026-05-28T13:50:56.286618+00:00"
+    },
+    {
+      "id": "overlap_stale_positions",
+      "title": "Overlap block caused by stale open_positions state",
+      "confidence": 0.82,
+      "evidence": [
+        "Stale open positions (read-only scan):"
+      ],
+      "related_reports": [],
+      "verify_command": "show stale open positions",
+      "recurrence": 151,
+      "status": "active",
+      "created_at": "2026-05-28T13:50:56.286618+00:00",
+      "updated_at": "2026-05-28T13:50:56.286618+00:00"
+    },
+    {
+      "id": "last_bar_filter",
+      "title": "Last-bar filtering suppressing entries",
+      "confidence": 0.74,
+      "evidence": [
+        "Execution blockers:",
+        "  signals blocked: 4"
+      ],
+      "related_reports": [],
+      "verify_command": "reconstruct execution flow",
+      "recurrence": 151,
+      "status": "active",
+      "created_at": "2026-05-28T13:50:56.286618+00:00",
+      "updated_at": "2026-05-28T13:50:56.286618+00:00"
+    },
+    {
+      "id": "stale_telemetry_risk",
+      "title": "Stale execution telemetry inflating open risk",
+      "confidence": 0.7,
+      "evidence": [
+        "Current execution risk:"
+      ],
+      "related_reports": [],
+      "verify_command": "show current execution risk",
+      "recurrence": 151,
+      "status": "active",
+      "created_at": "2026-05-28T13:50:56.286618+00:00",
+      "updated_at": "2026-05-28T13:50:56.286618+00:00"
+    },
+    {
+      "id": "cluster_divergence",
+      "title": "Replay divergences cluster around systemic mismatch pattern",
+      "confidence": 0.68,
+      "evidence": [
+        "see divergence clusters report"
+      ],
+      "related_reports": [],
+      "verify_command": "explain largest divergence cluster",
+      "recurrence": 151,
+      "status": "active",
+      "created_at": "2026-05-28T13:50:56.286618+00:00",
+      "updated_at": "2026-05-28T13:50:56.286618+00:00"
+    },
+    {
+      "id": "adapter_disabled",
+      "title": "Adapter disabled causing execution attempts=0",
+      "confidence": 0.88,
+      "evidence": [
+        "Execution blockers:"
+      ],
+      "related_reports": [],
+      "verify_command": "inspect execution adapter",
+      "recurrence": 152,
+      "status": "active",
+      "created_at": "2026-05-28T13:50:56.460564+00:00",
+      "updated_at": "2026-05-28T13:50:56.460564+00:00"
+    },
+    {
+      "id": "overlap_stale_positions",
+      "title": "Overlap block caused by stale open_positions state",
+      "confidence": 0.82,
+      "evidence": [
+        "Stale open positions (read-only scan):"
+      ],
+      "related_reports": [],
+      "verify_command": "show stale open positions",
+      "recurrence": 152,
+      "status": "active",
+      "created_at": "2026-05-28T13:50:56.460564+00:00",
+      "updated_at": "2026-05-28T13:50:56.460564+00:00"
+    },
+    {
+      "id": "last_bar_filter",
+      "title": "Last-bar filtering suppressing entries",
+      "confidence": 0.74,
+      "evidence": [
+        "Execution blockers:",
+        "  signals blocked: 4"
+      ],
+      "related_reports": [],
+      "verify_command": "reconstruct execution flow",
+      "recurrence": 152,
+      "status": "active",
+      "created_at": "2026-05-28T13:50:56.460564+00:00",
+      "updated_at": "2026-05-28T13:50:56.460564+00:00"
+    },
+    {
+      "id": "stale_telemetry_risk",
+      "title": "Stale execution telemetry inflating open risk",
+      "confidence": 0.7,
+      "evidence": [
+        "Current execution risk:"
+      ],
+      "related_reports": [],
+      "verify_command": "show current execution risk",
+      "recurrence": 152,
+      "status": "active",
+      "created_at": "2026-05-28T13:50:56.460564+00:00",
+      "updated_at": "2026-05-28T13:50:56.460564+00:00"
+    },
+    {
+      "id": "cluster_divergence",
+      "title": "Replay divergences cluster around systemic mismatch pattern",
+      "confidence": 0.68,
+      "evidence": [
+        "see divergence clusters report"
+      ],
+      "related_reports": [],
+      "verify_command": "explain largest divergence cluster",
+      "recurrence": 152,
+      "status": "active",
+      "created_at": "2026-05-28T13:50:56.460564+00:00",
+      "updated_at": "2026-05-28T13:50:56.460564+00:00"
+    },
+    {
+      "id": "adapter_disabled",
+      "title": "Adapter disabled causing execution attempts=0",
+      "confidence": 0.88,
+      "evidence": [
+        "Execution blockers:"
+      ],
+      "related_reports": [],
+      "verify_command": "inspect execution adapter",
+      "recurrence": 153,
+      "status": "active",
+      "created_at": "2026-05-28T13:51:08.581323+00:00",
+      "updated_at": "2026-05-28T13:51:08.581323+00:00"
+    },
+    {
+      "id": "overlap_stale_positions",
+      "title": "Overlap block caused by stale open_positions state",
+      "confidence": 0.82,
+      "evidence": [
+        "Stale open positions (read-only scan):"
+      ],
+      "related_reports": [],
+      "verify_command": "show stale open positions",
+      "recurrence": 153,
+      "status": "active",
+      "created_at": "2026-05-28T13:51:08.581323+00:00",
+      "updated_at": "2026-05-28T13:51:08.581323+00:00"
+    },
+    {
+      "id": "last_bar_filter",
+      "title": "Last-bar filtering suppressing entries",
+      "confidence": 0.74,
+      "evidence": [
+        "Execution blockers:",
+        "  signals blocked: 4"
+      ],
+      "related_reports": [],
+      "verify_command": "reconstruct execution flow",
+      "recurrence": 153,
+      "status": "active",
+      "created_at": "2026-05-28T13:51:08.581323+00:00",
+      "updated_at": "2026-05-28T13:51:08.581323+00:00"
+    },
+    {
+      "id": "stale_telemetry_risk",
+      "title": "Stale execution telemetry inflating open risk",
+      "confidence": 0.7,
+      "evidence": [
+        "Current execution risk:"
+      ],
+      "related_reports": [],
+      "verify_command": "show current execution risk",
+      "recurrence": 153,
+      "status": "active",
+      "created_at": "2026-05-28T13:51:08.581323+00:00",
+      "updated_at": "2026-05-28T13:51:08.581323+00:00"
+    },
+    {
+      "id": "cluster_divergence",
+      "title": "Replay divergences cluster around systemic mismatch pattern",
+      "confidence": 0.68,
+      "evidence": [
+        "see divergence clusters report"
+      ],
+      "related_reports": [],
+      "verify_command": "explain largest divergence cluster",
+      "recurrence": 153,
+      "status": "active",
+      "created_at": "2026-05-28T13:51:08.581323+00:00",
+      "updated_at": "2026-05-28T13:51:08.581323+00:00"
+    },
+    {
+      "id": "adapter_disabled",
+      "title": "Adapter disabled causing execution attempts=0",
+      "confidence": 0.88,
+      "evidence": [
+        "Execution blockers:"
+      ],
+      "related_reports": [],
+      "verify_command": "inspect execution adapter",
+      "recurrence": 154,
+      "status": "active",
+      "created_at": "2026-05-28T13:51:09.017894+00:00",
+      "updated_at": "2026-05-28T13:51:09.017894+00:00"
+    },
+    {
+      "id": "overlap_stale_positions",
+      "title": "Overlap block caused by stale open_positions state",
+      "confidence": 0.82,
+      "evidence": [
+        "Stale open positions (read-only scan):"
+      ],
+      "related_reports": [],
+      "verify_command": "show stale open positions",
+      "recurrence": 154,
+      "status": "active",
+      "created_at": "2026-05-28T13:51:09.017894+00:00",
+      "updated_at": "2026-05-28T13:51:09.017894+00:00"
+    },
+    {
+      "id": "last_bar_filter",
+      "title": "Last-bar filtering suppressing entries",
+      "confidence": 0.74,
+      "evidence": [
+        "Execution blockers:",
+        "  signals blocked: 4"
+      ],
+      "related_reports": [],
+      "verify_command": "reconstruct execution flow",
+      "recurrence": 154,
+      "status": "active",
+      "created_at": "2026-05-28T13:51:09.017894+00:00",
+      "updated_at": "2026-05-28T13:51:09.017894+00:00"
+    },
+    {
+      "id": "stale_telemetry_risk",
+      "title": "Stale execution telemetry inflating open risk",
+      "confidence": 0.7,
+      "evidence": [
+        "Current execution risk:"
+      ],
+      "related_reports": [],
+      "verify_command": "show current execution risk",
+      "recurrence": 154,
+      "status": "active",
+      "created_at": "2026-05-28T13:51:09.017894+00:00",
+      "updated_at": "2026-05-28T13:51:09.017894+00:00"
+    },
+    {
+      "id": "cluster_divergence",
+      "title": "Replay divergences cluster around systemic mismatch pattern",
+      "confidence": 0.68,
+      "evidence": [
+        "see divergence clusters report"
+      ],
+      "related_reports": [],
+      "verify_command": "explain largest divergence cluster",
+      "recurrence": 154,
+      "status": "active",
+      "created_at": "2026-05-28T13:51:09.017894+00:00",
+      "updated_at": "2026-05-28T13:51:09.017894+00:00"
+    },
+    {
+      "id": "adapter_disabled",
+      "title": "Adapter disabled causing execution attempts=0",
+      "confidence": 0.88,
+      "evidence": [
+        "Execution blockers:"
+      ],
+      "related_reports": [],
+      "verify_command": "inspect execution adapter",
+      "recurrence": 155,
+      "status": "active",
+      "created_at": "2026-05-28T13:51:09.261491+00:00",
+      "updated_at": "2026-05-28T13:51:09.261491+00:00"
+    },
+    {
+      "id": "overlap_stale_positions",
+      "title": "Overlap block caused by stale open_positions state",
+      "confidence": 0.82,
+      "evidence": [
+        "Stale open positions (read-only scan):"
+      ],
+      "related_reports": [],
+      "verify_command": "show stale open positions",
+      "recurrence": 155,
+      "status": "active",
+      "created_at": "2026-05-28T13:51:09.261491+00:00",
+      "updated_at": "2026-05-28T13:51:09.261491+00:00"
+    },
+    {
+      "id": "last_bar_filter",
+      "title": "Last-bar filtering suppressing entries",
+      "confidence": 0.74,
+      "evidence": [
+        "Execution blockers:",
+        "  signals blocked: 4"
+      ],
+      "related_reports": [],
+      "verify_command": "reconstruct execution flow",
+      "recurrence": 155,
+      "status": "active",
+      "created_at": "2026-05-28T13:51:09.261491+00:00",
+      "updated_at": "2026-05-28T13:51:09.261491+00:00"
+    },
+    {
+      "id": "stale_telemetry_risk",
+      "title": "Stale execution telemetry inflating open risk",
+      "confidence": 0.7,
+      "evidence": [
+        "Current execution risk:"
+      ],
+      "related_reports": [],
+      "verify_command": "show current execution risk",
+      "recurrence": 155,
+      "status": "active",
+      "created_at": "2026-05-28T13:51:09.261491+00:00",
+      "updated_at": "2026-05-28T13:51:09.261491+00:00"
+    },
+    {
+      "id": "cluster_divergence",
+      "title": "Replay divergences cluster around systemic mismatch pattern",
+      "confidence": 0.68,
+      "evidence": [
+        "see divergence clusters report"
+      ],
+      "related_reports": [],
+      "verify_command": "explain largest divergence cluster",
+      "recurrence": 155,
+      "status": "active",
+      "created_at": "2026-05-28T13:51:09.261491+00:00",
+      "updated_at": "2026-05-28T13:51:09.261491+00:00"
+    },
+    {
+      "id": "adapter_disabled",
+      "title": "Adapter disabled causing execution attempts=0",
+      "confidence": 0.88,
+      "evidence": [
+        "Execution blockers:"
+      ],
+      "related_reports": [],
+      "verify_command": "inspect execution adapter",
+      "recurrence": 156,
+      "status": "active",
+      "created_at": "2026-05-28T13:54:29.441727+00:00",
+      "updated_at": "2026-05-28T13:54:29.441727+00:00"
+    },
+    {
+      "id": "overlap_stale_positions",
+      "title": "Overlap block caused by stale open_positions state",
+      "confidence": 0.82,
+      "evidence": [
+        "Stale open positions (read-only scan):"
+      ],
+      "related_reports": [],
+      "verify_command": "show stale open positions",
+      "recurrence": 156,
+      "status": "active",
+      "created_at": "2026-05-28T13:54:29.441727+00:00",
+      "updated_at": "2026-05-28T13:54:29.441727+00:00"
+    },
+    {
+      "id": "last_bar_filter",
+      "title": "Last-bar filtering suppressing entries",
+      "confidence": 0.74,
+      "evidence": [
+        "Execution blockers:",
+        "  signals blocked: 4"
+      ],
+      "related_reports": [],
+      "verify_command": "reconstruct execution flow",
+      "recurrence": 156,
+      "status": "active",
+      "created_at": "2026-05-28T13:54:29.441727+00:00",
+      "updated_at": "2026-05-28T13:54:29.441727+00:00"
+    },
+    {
+      "id": "stale_telemetry_risk",
+      "title": "Stale execution telemetry inflating open risk",
+      "confidence": 0.7,
+      "evidence": [
+        "Current execution risk:"
+      ],
+      "related_reports": [],
+      "verify_command": "show current execution risk",
+      "recurrence": 156,
+      "status": "active",
+      "created_at": "2026-05-28T13:54:29.441727+00:00",
+      "updated_at": "2026-05-28T13:54:29.441727+00:00"
+    },
+    {
+      "id": "cluster_divergence",
+      "title": "Replay divergences cluster around systemic mismatch pattern",
+      "confidence": 0.68,
+      "evidence": [
+        "see divergence clusters report"
+      ],
+      "related_reports": [],
+      "verify_command": "explain largest divergence cluster",
+      "recurrence": 156,
+      "status": "active",
+      "created_at": "2026-05-28T13:54:29.441727+00:00",
+      "updated_at": "2026-05-28T13:54:29.441727+00:00"
+    },
+    {
+      "id": "adapter_disabled",
+      "title": "Adapter disabled causing execution attempts=0",
+      "confidence": 0.88,
+      "evidence": [
+        "Execution blockers:"
+      ],
+      "related_reports": [],
+      "verify_command": "inspect execution adapter",
+      "recurrence": 157,
+      "status": "active",
+      "created_at": "2026-05-28T14:47:44.650694+00:00",
+      "updated_at": "2026-05-28T14:47:44.650694+00:00"
+    },
+    {
+      "id": "overlap_stale_positions",
+      "title": "Overlap block caused by stale open_positions state",
+      "confidence": 0.82,
+      "evidence": [
+        "Stale open positions (read-only scan):"
+      ],
+      "related_reports": [],
+      "verify_command": "show stale open positions",
+      "recurrence": 157,
+      "status": "active",
+      "created_at": "2026-05-28T14:47:44.650694+00:00",
+      "updated_at": "2026-05-28T14:47:44.650694+00:00"
+    },
+    {
+      "id": "last_bar_filter",
+      "title": "Last-bar filtering suppressing entries",
+      "confidence": 0.74,
+      "evidence": [
+        "Execution blockers:",
+        "  signals blocked: 4"
+      ],
+      "related_reports": [],
+      "verify_command": "reconstruct execution flow",
+      "recurrence": 157,
+      "status": "active",
+      "created_at": "2026-05-28T14:47:44.650694+00:00",
+      "updated_at": "2026-05-28T14:47:44.650694+00:00"
+    },
+    {
+      "id": "stale_telemetry_risk",
+      "title": "Stale execution telemetry inflating open risk",
+      "confidence": 0.7,
+      "evidence": [
+        "Current execution risk:"
+      ],
+      "related_reports": [],
+      "verify_command": "show current execution risk",
+      "recurrence": 157,
+      "status": "active",
+      "created_at": "2026-05-28T14:47:44.650694+00:00",
+      "updated_at": "2026-05-28T14:47:44.650694+00:00"
+    },
+    {
+      "id": "cluster_divergence",
+      "title": "Replay divergences cluster around systemic mismatch pattern",
+      "confidence": 0.68,
+      "evidence": [
+        "see divergence clusters report"
+      ],
+      "related_reports": [],
+      "verify_command": "explain largest divergence cluster",
+      "recurrence": 157,
+      "status": "active",
+      "created_at": "2026-05-28T14:47:44.650694+00:00",
+      "updated_at": "2026-05-28T14:47:44.650694+00:00"
+    },
+    {
+      "id": "adapter_disabled",
+      "title": "Adapter disabled causing execution attempts=0",
+      "confidence": 0.88,
+      "evidence": [
+        "Execution blockers:"
+      ],
+      "related_reports": [],
+      "verify_command": "inspect execution adapter",
+      "recurrence": 158,
+      "status": "active",
+      "created_at": "2026-05-28T14:51:49.871138+00:00",
+      "updated_at": "2026-05-28T14:51:49.871138+00:00"
+    },
+    {
+      "id": "overlap_stale_positions",
+      "title": "Overlap block caused by stale open_positions state",
+      "confidence": 0.82,
+      "evidence": [
+        "Stale open positions (read-only scan):"
+      ],
+      "related_reports": [],
+      "verify_command": "show stale open positions",
+      "recurrence": 158,
+      "status": "active",
+      "created_at": "2026-05-28T14:51:49.871138+00:00",
+      "updated_at": "2026-05-28T14:51:49.871138+00:00"
+    },
+    {
+      "id": "last_bar_filter",
+      "title": "Last-bar filtering suppressing entries",
+      "confidence": 0.74,
+      "evidence": [
+        "Execution blockers:",
+        "  signals blocked: 4"
+      ],
+      "related_reports": [],
+      "verify_command": "reconstruct execution flow",
+      "recurrence": 158,
+      "status": "active",
+      "created_at": "2026-05-28T14:51:49.871138+00:00",
+      "updated_at": "2026-05-28T14:51:49.871138+00:00"
+    },
+    {
+      "id": "stale_telemetry_risk",
+      "title": "Stale execution telemetry inflating open risk",
+      "confidence": 0.7,
+      "evidence": [
+        "Current execution risk:"
+      ],
+      "related_reports": [],
+      "verify_command": "show current execution risk",
+      "recurrence": 158,
+      "status": "active",
+      "created_at": "2026-05-28T14:51:49.871138+00:00",
+      "updated_at": "2026-05-28T14:51:49.871138+00:00"
+    },
+    {
+      "id": "cluster_divergence",
+      "title": "Replay divergences cluster around systemic mismatch pattern",
+      "confidence": 0.68,
+      "evidence": [
+        "see divergence clusters report"
+      ],
+      "related_reports": [],
+      "verify_command": "explain largest divergence cluster",
+      "recurrence": 158,
+      "status": "active",
+      "created_at": "2026-05-28T14:51:49.871138+00:00",
+      "updated_at": "2026-05-28T14:51:49.871138+00:00"
+    },
+    {
+      "id": "adapter_disabled",
+      "title": "Adapter disabled causing execution attempts=0",
+      "confidence": 0.88,
+      "evidence": [
+        "Execution blockers:"
+      ],
+      "related_reports": [],
+      "verify_command": "inspect execution adapter",
+      "recurrence": 159,
+      "status": "active",
+      "created_at": "2026-05-28T14:51:50.103419+00:00",
+      "updated_at": "2026-05-28T14:51:50.103419+00:00"
+    },
+    {
+      "id": "overlap_stale_positions",
+      "title": "Overlap block caused by stale open_positions state",
+      "confidence": 0.82,
+      "evidence": [
+        "Stale open positions (read-only scan):"
+      ],
+      "related_reports": [],
+      "verify_command": "show stale open positions",
+      "recurrence": 159,
+      "status": "active",
+      "created_at": "2026-05-28T14:51:50.103419+00:00",
+      "updated_at": "2026-05-28T14:51:50.103419+00:00"
+    },
+    {
+      "id": "last_bar_filter",
+      "title": "Last-bar filtering suppressing entries",
+      "confidence": 0.74,
+      "evidence": [
+        "Execution blockers:",
+        "  signals blocked: 4"
+      ],
+      "related_reports": [],
+      "verify_command": "reconstruct execution flow",
+      "recurrence": 159,
+      "status": "active",
+      "created_at": "2026-05-28T14:51:50.103419+00:00",
+      "updated_at": "2026-05-28T14:51:50.103419+00:00"
+    },
+    {
+      "id": "stale_telemetry_risk",
+      "title": "Stale execution telemetry inflating open risk",
+      "confidence": 0.7,
+      "evidence": [
+        "Current execution risk:"
+      ],
+      "related_reports": [],
+      "verify_command": "show current execution risk",
+      "recurrence": 159,
+      "status": "active",
+      "created_at": "2026-05-28T14:51:50.103419+00:00",
+      "updated_at": "2026-05-28T14:51:50.103419+00:00"
+    },
+    {
+      "id": "cluster_divergence",
+      "title": "Replay divergences cluster around systemic mismatch pattern",
+      "confidence": 0.68,
+      "evidence": [
+        "see divergence clusters report"
+      ],
+      "related_reports": [],
+      "verify_command": "explain largest divergence cluster",
+      "recurrence": 159,
+      "status": "active",
+      "created_at": "2026-05-28T14:51:50.103419+00:00",
+      "updated_at": "2026-05-28T14:51:50.103419+00:00"
+    },
+    {
+      "id": "adapter_disabled",
+      "title": "Adapter disabled causing execution attempts=0",
+      "confidence": 0.88,
+      "evidence": [
+        "Execution blockers:"
+      ],
+      "related_reports": [],
+      "verify_command": "inspect execution adapter",
+      "recurrence": 160,
+      "status": "active",
+      "created_at": "2026-05-28T14:51:50.347989+00:00",
+      "updated_at": "2026-05-28T14:51:50.347989+00:00"
+    },
+    {
+      "id": "overlap_stale_positions",
+      "title": "Overlap block caused by stale open_positions state",
+      "confidence": 0.82,
+      "evidence": [
+        "Stale open positions (read-only scan):"
+      ],
+      "related_reports": [],
+      "verify_command": "show stale open positions",
+      "recurrence": 160,
+      "status": "active",
+      "created_at": "2026-05-28T14:51:50.347989+00:00",
+      "updated_at": "2026-05-28T14:51:50.347989+00:00"
+    },
+    {
+      "id": "last_bar_filter",
+      "title": "Last-bar filtering suppressing entries",
+      "confidence": 0.74,
+      "evidence": [
+        "Execution blockers:",
+        "  signals blocked: 4"
+      ],
+      "related_reports": [],
+      "verify_command": "reconstruct execution flow",
+      "recurrence": 160,
+      "status": "active",
+      "created_at": "2026-05-28T14:51:50.347989+00:00",
+      "updated_at": "2026-05-28T14:51:50.347989+00:00"
+    },
+    {
+      "id": "stale_telemetry_risk",
+      "title": "Stale execution telemetry inflating open risk",
+      "confidence": 0.7,
+      "evidence": [
+        "Current execution risk:"
+      ],
+      "related_reports": [],
+      "verify_command": "show current execution risk",
+      "recurrence": 160,
+      "status": "active",
+      "created_at": "2026-05-28T14:51:50.347989+00:00",
+      "updated_at": "2026-05-28T14:51:50.347989+00:00"
+    },
+    {
+      "id": "cluster_divergence",
+      "title": "Replay divergences cluster around systemic mismatch pattern",
+      "confidence": 0.68,
+      "evidence": [
+        "see divergence clusters report"
+      ],
+      "related_reports": [],
+      "verify_command": "explain largest divergence cluster",
+      "recurrence": 160,
+      "status": "active",
+      "created_at": "2026-05-28T14:51:50.347989+00:00",
+      "updated_at": "2026-05-28T14:51:50.347989+00:00"
+    },
+    {
+      "id": "adapter_disabled",
+      "title": "Adapter disabled causing execution attempts=0",
+      "confidence": 0.88,
+      "evidence": [
+        "Execution blockers:"
+      ],
+      "related_reports": [],
+      "verify_command": "inspect execution adapter",
+      "recurrence": 161,
+      "status": "active",
+      "created_at": "2026-05-28T14:53:21.942356+00:00",
+      "updated_at": "2026-05-28T14:53:21.942356+00:00"
+    },
+    {
+      "id": "overlap_stale_positions",
+      "title": "Overlap block caused by stale open_positions state",
+      "confidence": 0.82,
+      "evidence": [
+        "Stale open positions (read-only scan):"
+      ],
+      "related_reports": [],
+      "verify_command": "show stale open positions",
+      "recurrence": 161,
+      "status": "active",
+      "created_at": "2026-05-28T14:53:21.942356+00:00",
+      "updated_at": "2026-05-28T14:53:21.942356+00:00"
+    },
+    {
+      "id": "last_bar_filter",
+      "title": "Last-bar filtering suppressing entries",
+      "confidence": 0.74,
+      "evidence": [
+        "Execution blockers:",
+        "  signals blocked: 4"
+      ],
+      "related_reports": [],
+      "verify_command": "reconstruct execution flow",
+      "recurrence": 161,
+      "status": "active",
+      "created_at": "2026-05-28T14:53:21.942356+00:00",
+      "updated_at": "2026-05-28T14:53:21.942356+00:00"
+    },
+    {
+      "id": "stale_telemetry_risk",
+      "title": "Stale execution telemetry inflating open risk",
+      "confidence": 0.7,
+      "evidence": [
+        "Current execution risk:"
+      ],
+      "related_reports": [],
+      "verify_command": "show current execution risk",
+      "recurrence": 161,
+      "status": "active",
+      "created_at": "2026-05-28T14:53:21.942356+00:00",
+      "updated_at": "2026-05-28T14:53:21.942356+00:00"
+    },
+    {
+      "id": "cluster_divergence",
+      "title": "Replay divergences cluster around systemic mismatch pattern",
+      "confidence": 0.68,
+      "evidence": [
+        "see divergence clusters report"
+      ],
+      "related_reports": [],
+      "verify_command": "explain largest divergence cluster",
+      "recurrence": 161,
+      "status": "active",
+      "created_at": "2026-05-28T14:53:21.942356+00:00",
+      "updated_at": "2026-05-28T14:53:21.942356+00:00"
+    }
+  ],
+  "updated_at": "2026-05-28T14:53:22.154253+00:00"
+}

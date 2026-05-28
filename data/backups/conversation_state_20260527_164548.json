@@ -1,0 +1,18 @@
+{
+  "current_topic": "",
+  "previous_topics": [],
+  "active_project": "",
+  "unresolved_question": "",
+  "emotional_tone": "neutral",
+  "interruption_state": "idle",
+  "pending_actions": [],
+  "recent_entities": [],
+  "follow_up_references": [],
+  "turn_count": 0,
+  "last_user_text": "",
+  "last_assistant_summary": "",
+  "last_intent": "",
+  "paused_response": "",
+  "continuous_listening": false,
+  "updated_at": "2026-05-27T16:45:48.946017+00:00"
+}
