@@ -1256,6 +1256,46 @@ _KEYWORD_RULES: list[tuple[list[str], Intent, float]] = [
 ]
 
 
+# ---------------------------------------------------------------------------
+# Phase 72 — bounded read-only tool-use commands (highest priority, anchored).
+# Only three commands are exposed; each is matched explicitly so it cannot be
+# hijacked by, or hijack, other intents.
+# ---------------------------------------------------------------------------
+_TOOL_SHOW_LAST_RE = re.compile(r"^\s*show\s+last\s+(?:tool\s+run|web\s+task)\s*$", re.I)
+_TOOL_PLAN_RE = re.compile(r"^\s*(?:plan\s+tool\s+task|preview\s+web\s+task)\s+(.+?)\s*$", re.I)
+_TOOL_RUN_RE = re.compile(
+    r"^\s*(?:run\s+tool\s+task|research|look\s+up)\s+(.+?)(?:\s+and\s+summari[sz]e)?\s*$",
+    re.I,
+)
+
+
+def match_tool_use_command(text: str):
+    """Match the 3 Phase 72 tool-use commands. Returns CommandRequest or None."""
+    t = (text or "").strip()
+    if not t:
+        return None
+    if _TOOL_SHOW_LAST_RE.match(t):
+        return CommandRequest(
+            raw_text=text, intent=Intent.SHOW_LAST_TOOL_RUN,
+            confidence=0.97, classifier_source="tool_use",
+        )
+    m = _TOOL_PLAN_RE.match(t)
+    if m:
+        return CommandRequest(
+            raw_text=text, intent=Intent.PLAN_TOOL_TASK,
+            confidence=0.96, params={"goal": m.group(1).strip()},
+            classifier_source="tool_use",
+        )
+    m = _TOOL_RUN_RE.match(t)
+    if m:
+        return CommandRequest(
+            raw_text=text, intent=Intent.RUN_TOOL_TASK,
+            confidence=0.96, params={"goal": m.group(1).strip()},
+            classifier_source="tool_use",
+        )
+    return None
+
+
 def _normalize(text: str) -> str:
     text = unicodedata.normalize("NFKC", text).strip().lower()
     return re.sub(r"\s+", " ", text)
@@ -1783,6 +1823,10 @@ def classify_rules(text: str) -> CommandRequest:
     from brain.operational_command_phrases import match_operational_priority_commands
     from brain.patch_command_phrases import match_patch_workflow_commands
 
+    tool_req = match_tool_use_command(text)
+    if tool_req is not None:
+        return tool_req
+
     operational = match_operational_priority_commands(text)
     if operational is not None:
         operational.classifier_source = "operational_phrases"
@@ -1866,6 +1910,12 @@ def classify(
     """
     from brain.operational_command_phrases import match_operational_priority_commands
     from brain.patch_command_phrases import match_patch_workflow_commands
+
+    # Phase 72 — tool-use commands are matched first, deterministically,
+    # ahead of semantic/LLM layers so they cannot be misrouted.
+    tool_req = match_tool_use_command(text)
+    if tool_req is not None:
+        return tool_req
 
     operational = match_operational_priority_commands(text)
     if operational is not None:

@@ -509,6 +509,10 @@ class Intent(str, Enum):
     BENCHMARK_FULL_DUPLEX_CONVERSATION = "benchmark_full_duplex_conversation"
     PHASE59_STATUS = "phase59_status"
     CANCEL_ACTIVE_SPEECH = "cancel_active_speech"
+    # Phase 72 — bounded, read-only tool use (router-wired)
+    PLAN_TOOL_TASK = "plan_tool_task"
+    RUN_TOOL_TASK = "run_tool_task"
+    SHOW_LAST_TOOL_RUN = "show_last_tool_run"
     UNKNOWN = "unknown"
     CLARIFY = "clarify"
 

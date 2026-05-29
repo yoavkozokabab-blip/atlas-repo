@@ -557,6 +557,11 @@ from actions.phase62_browser_actions import (
     SaveBrowserResearchReportAction,
     SummarizeTopResultsAction,
 )
+from actions.tool_use_actions import (
+    PlanToolTaskAction,
+    RunToolTaskAction,
+    ShowLastToolRunAction,
+)
 from core.results import result_success
 from core.types import CommandRequest, CommandResult, Intent
 
@@ -1050,6 +1055,10 @@ class ActionRegistry:
             SetVoiceEmotionAction(),
             BenchmarkTtsAction(),
             StopSpeakingAction(),
+            # Phase 72 — bounded read-only tool use
+            PlanToolTaskAction(),
+            RunToolTaskAction(),
+            ShowLastToolRunAction(),
         ):
             self.register(action)
 

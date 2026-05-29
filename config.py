@@ -146,6 +146,10 @@ TOOL_FIRST_MODE = os.getenv("TOOL_FIRST_MODE", "true").lower() in {"1", "true", 
 # All intents that may be routed (allowlist)
 ALLOWED_INTENTS: frozenset[str] = frozenset(
     {
+        # Phase 72 — bounded read-only tool use
+        "plan_tool_task",
+        "run_tool_task",
+        "show_last_tool_run",
         "open_cursor",
         "open_chrome",
         "open_file_explorer",
@@ -642,6 +646,10 @@ ALLOWED_INTENTS: frozenset[str] = frozenset(
 # Intents with registered handlers (Phase 1.5)
 IMPLEMENTED_INTENTS: frozenset[str] = frozenset(
     {
+        # Phase 72 — bounded read-only tool use
+        "plan_tool_task",
+        "run_tool_task",
+        "show_last_tool_run",
         "open_cursor",
         "open_chrome",
         "open_trading_dashboard",

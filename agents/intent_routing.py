@@ -69,6 +69,13 @@ _INTENT_PREFIX_RULES: tuple[tuple[str, AgentId], ...] = (
     ("read_screen", AgentId.DESKTOP),
     ("take_screenshot", AgentId.DESKTOP),
     ("find_on_screen", AgentId.DESKTOP),
+    # ── Phase 72 tool use ───────────────────────────────────────────────────
+    # run_tool_task is health-gated via BROWSER (if the browser subsystem is
+    # down we must not execute). plan/show are read-only and routed to EXECUTIVE
+    # so they remain available even when the browser is unhealthy.
+    ("run_tool_task", AgentId.BROWSER),
+    ("plan_tool_task", AgentId.EXECUTIVE),
+    ("show_last_tool_run", AgentId.EXECUTIVE),
     # ── Trading intents → AgentId.TRADING (S3.4) ────────────────────────────
     ("run_live", AgentId.TRADING),
     ("open_trading_dashboard", AgentId.TRADING),
