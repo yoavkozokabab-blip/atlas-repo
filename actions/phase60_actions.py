@@ -3,8 +3,14 @@
 from __future__ import annotations
 
 from actions.base import BaseAction
-from core.results import result_clarification, result_failed, result_success
+from core.results import result_blocked, result_clarification, result_failed, result_success
 from core.types import CommandRequest, CommandResult, Intent
+
+
+def _browser_failure(intent: Intent, body: str, provider: str) -> CommandResult:
+    if provider != "playwright":
+        return result_blocked(intent, body, error="real browser provider unavailable")
+    return result_failed(intent, body)
 
 
 class ShowMemoryDebugAction(BaseAction):
@@ -37,7 +43,7 @@ class OpenBrowserAction(BaseAction):
         body = open_browser(url)
         state = get_browser_runtime_state()
         if not state.last_action_success:
-            return result_failed(Intent.OPEN_BROWSER, body)
+            return _browser_failure(Intent.OPEN_BROWSER, body, state.provider)
         return result_success(Intent.OPEN_BROWSER, body, data={"url": url})
 
 
@@ -57,8 +63,8 @@ class SearchWebForAction(BaseAction):
 
         body = search_web(query)
         state = get_browser_runtime_state()
-        if not state.last_action_success and state.provider != "mock":
-            return result_failed(Intent.SEARCH_WEB_FOR, body)
+        if not state.last_action_success:
+            return _browser_failure(Intent.SEARCH_WEB_FOR, body, state.provider)
         return result_success(Intent.SEARCH_WEB_FOR, body, data={"query": query, "read_only": True})
 
 
@@ -71,8 +77,8 @@ class SummarizeThisPageAction(BaseAction):
 
         body = summarize_current_page()
         state = get_browser_runtime_state()
-        if not state.last_action_success and state.provider != "mock":
-            return result_failed(Intent.SUMMARIZE_THIS_PAGE, body)
+        if not state.last_action_success:
+            return _browser_failure(Intent.SUMMARIZE_THIS_PAGE, body, state.provider)
         return result_success(Intent.SUMMARIZE_THIS_PAGE, body, data={"read_only": True})
 
 
@@ -85,8 +91,8 @@ class CompareTheseResultsAction(BaseAction):
 
         body = compare_latest_results()
         state = get_browser_runtime_state()
-        if not state.last_action_success and state.provider == "playwright":
-            return result_failed(Intent.COMPARE_THESE_RESULTS, body)
+        if not state.last_action_success:
+            return _browser_failure(Intent.COMPARE_THESE_RESULTS, body, state.provider)
         return result_success(Intent.COMPARE_THESE_RESULTS, body, data={"read_only": True})
 
 
@@ -95,9 +101,13 @@ class CompareThesePagesAction(BaseAction):
 
     def execute(self, request: CommandRequest) -> CommandResult:
         del request
-        from browser.runtime import compare_latest_results
+        from browser.runtime import compare_latest_results, get_browser_runtime_state
 
-        return result_success(Intent.COMPARE_THESE_PAGES, compare_latest_results(), data={"read_only": True})
+        body = compare_latest_results()
+        state = get_browser_runtime_state()
+        if not state.last_action_success:
+            return _browser_failure(Intent.COMPARE_THESE_PAGES, body, state.provider)
+        return result_success(Intent.COMPARE_THESE_PAGES, body, data={"read_only": True})
 
 
 class WhatTabIsActiveAction(BaseAction):
@@ -105,9 +115,13 @@ class WhatTabIsActiveAction(BaseAction):
 
     def execute(self, request: CommandRequest) -> CommandResult:
         del request
-        from browser.runtime import active_tab_status
+        from browser.runtime import active_tab_status, get_browser_runtime_state
 
-        return result_success(Intent.WHAT_TAB_IS_ACTIVE, active_tab_status(), data={"read_only": True})
+        body = active_tab_status()
+        state = get_browser_runtime_state()
+        if not state.last_action_success:
+            return _browser_failure(Intent.WHAT_TAB_IS_ACTIVE, body, state.provider)
+        return result_success(Intent.WHAT_TAB_IS_ACTIVE, body, data={"read_only": True})
 
 
 class TestRealBrowserAction(BaseAction):

@@ -37,9 +37,7 @@ def run_browser_acceptance() -> TrackScore:
 
         body = open_browser("about:blank")
         st = get_browser_runtime_state()
-        if st.provider == "mock":
-            return True, "mock mode"
-        return st.last_action_success or "BROWSER" in body, body[:120]
+        return bool(st.provider == "playwright" and st.last_action_success), body[:120]
 
     def _nav_recovery() -> tuple[bool, str]:
         from browser.runtime import recover_navigation
@@ -53,16 +51,18 @@ def run_browser_acceptance() -> TrackScore:
         return ok, msg[:120]
 
     def _summarize() -> tuple[bool, str]:
-        from browser.runtime import summarize_current_page
+        from browser.runtime import get_browser_runtime_state, summarize_current_page
 
         body = summarize_current_page()
-        return bool(body), body[:120]
+        st = get_browser_runtime_state()
+        return bool(st.provider == "playwright" and st.last_action_success), body[:120]
 
     def _active_page() -> tuple[bool, str]:
-        from browser.runtime import active_tab_status
+        from browser.runtime import active_tab_status, get_browser_runtime_state
 
         body = active_tab_status()
-        return "tab" in body.lower() or "active" in body.lower(), body[:120]
+        st = get_browser_runtime_state()
+        return bool(st.provider == "playwright" and st.last_action_success), body[:120]
 
     score.cases.extend(
         [

@@ -70,6 +70,15 @@ _SAFETY_BANNER = (
     "This will open a REAL browser and visit external web pages. Read-only: it "
     "will NOT log in, submit forms, buy, book, order, or download."
 )
+_UNTRUSTED_PROVIDER_LABELS = {"mock", "unavailable", "degraded", "simulated"}
+
+
+def _run_has_untrusted_provider(run) -> bool:
+    for step in run.steps:
+        provider = ((step.observation.provider if step.observation else "") or "").strip().lower()
+        if provider in _UNTRUSTED_PROVIDER_LABELS:
+            return True
+    return False
 
 
 class PlanToolTaskAction(BaseAction):
@@ -157,6 +166,11 @@ class RunToolTaskAction(BaseAction):
 
         body = run.format()
         if run.status == RunStatus.SUCCESS:
+            if _run_has_untrusted_provider(run):
+                return result_blocked(
+                    Intent.RUN_TOOL_TASK,
+                    f"{body}\n\nUntrusted browser provider label observed — success refused.",
+                )
             return result_success(Intent.RUN_TOOL_TASK, body, data={"final_status": run.status.value})
         if run.status == RunStatus.BLOCKED_UNAVAILABLE:
             return result_blocked(

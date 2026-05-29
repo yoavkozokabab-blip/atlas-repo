@@ -5,6 +5,7 @@ from __future__ import annotations
 from actions.base import BaseAction
 from core import confirmation
 from core.results import (
+    result_blocked,
     result_clarification,
     result_confirmation_required,
     result_failed,
@@ -97,6 +98,12 @@ class OpenWebsiteAction(BaseAction):
             body = navigate_to_url(target)
             st = get_browser_runtime_state()
             if not st.last_action_success:
+                if st.provider != "playwright":
+                    return result_blocked(
+                        Intent.OPEN_WEBSITE,
+                        body,
+                        error="real browser provider unavailable",
+                    )
                 return result_failed(Intent.OPEN_WEBSITE, body)
             return result_success(Intent.OPEN_WEBSITE, body, data={"url": target, "real_browser": True})
 

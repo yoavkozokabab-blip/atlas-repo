@@ -19,6 +19,7 @@ _SEARCH_HOSTS = (
 )
 
 _MIN_SUMMARY_TEXT = 50  # chars of visible text required to claim a real summary
+_UNTRUSTED_PROVIDER_LABELS = {"mock", "unavailable", "degraded", "simulated"}
 
 
 def _host(url: str) -> str:
@@ -39,12 +40,12 @@ def verify_step(
     after: Observation,
 ) -> VerificationResult:
     """Return whether *after* satisfies *step*'s success criteria."""
-    # Any step that needed the world requires a real provider, full stop.
-    if step.is_external and not after.real:
-        return VerificationResult(False, "no real provider (mock/unavailable not accepted)")
+    provider = (after.provider or "").strip().lower()
+    if (not after.real) or provider in _UNTRUSTED_PROVIDER_LABELS:
+        return VerificationResult(False, "no trusted real provider (mock/unavailable/degraded not accepted)")
 
     if step.kind == StepKind.OPEN_SESSION:
-        if after.real and after.provider:
+        if after.provider:
             return VerificationResult(True, f"real provider connected: {after.provider}")
         return VerificationResult(False, "browser session not connected")
 

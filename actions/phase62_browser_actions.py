@@ -3,8 +3,14 @@
 from __future__ import annotations
 
 from actions.base import BaseAction
-from core.results import result_clarification, result_failed, result_success
+from core.results import result_blocked, result_clarification, result_failed, result_success
 from core.types import CommandRequest, CommandResult, Intent
+
+
+def _browser_failure(intent: Intent, body: str, provider: str) -> CommandResult:
+    if provider != "playwright":
+        return result_blocked(intent, body, error="real browser provider unavailable")
+    return result_failed(intent, body)
 
 
 class FindInformationAboutAction(BaseAction):
@@ -24,8 +30,8 @@ class FindInformationAboutAction(BaseAction):
         plan = browser_task_plan(query)
         body = f"{plan}\n\n{find_information_about(query)}"
         state = get_browser_runtime_state()
-        if not state.last_action_success and state.provider != "mock":
-            return result_failed(Intent.FIND_INFORMATION_ABOUT, body)
+        if not state.last_action_success:
+            return _browser_failure(Intent.FIND_INFORMATION_ABOUT, body, state.provider)
         return result_success(Intent.FIND_INFORMATION_ABOUT, body, data={"query": query})
 
 
@@ -39,7 +45,7 @@ class OpenBestResultAction(BaseAction):
         body = open_best_result()
         state = get_browser_runtime_state()
         if not state.last_action_success:
-            return result_failed(Intent.OPEN_BEST_RESULT, body)
+            return _browser_failure(Intent.OPEN_BEST_RESULT, body, state.provider)
         return result_success(Intent.OPEN_BEST_RESULT, body)
 
 
@@ -53,7 +59,7 @@ class SummarizeTopResultsAction(BaseAction):
         body = summarize_top_results()
         state = get_browser_runtime_state()
         if not state.last_action_success:
-            return result_failed(Intent.SUMMARIZE_TOP_RESULTS, body)
+            return _browser_failure(Intent.SUMMARIZE_TOP_RESULTS, body, state.provider)
         return result_success(Intent.SUMMARIZE_TOP_RESULTS, body, data={"read_only": True})
 
 
@@ -67,7 +73,7 @@ class CompareTheseSearchResultsAction(BaseAction):
         body = compare_search_results()
         state = get_browser_runtime_state()
         if not state.last_action_success:
-            return result_failed(Intent.COMPARE_THESE_SEARCH_RESULTS, body)
+            return _browser_failure(Intent.COMPARE_THESE_SEARCH_RESULTS, body, state.provider)
         return result_success(Intent.COMPARE_THESE_SEARCH_RESULTS, body, data={"read_only": True})
 
 
@@ -80,8 +86,8 @@ class ExtractKeyFactsFromThisPageAction(BaseAction):
 
         body = extract_key_facts_from_page()
         state = get_browser_runtime_state()
-        if not state.last_action_success and state.provider != "mock":
-            return result_failed(Intent.EXTRACT_KEY_FACTS_FROM_THIS_PAGE, body)
+        if not state.last_action_success:
+            return _browser_failure(Intent.EXTRACT_KEY_FACTS_FROM_THIS_PAGE, body, state.provider)
         return result_success(Intent.EXTRACT_KEY_FACTS_FROM_THIS_PAGE, body)
 
 
@@ -90,8 +96,11 @@ class SaveBrowserResearchReportAction(BaseAction):
 
     def execute(self, request: CommandRequest) -> CommandResult:
         del request
-        from browser.runtime import save_browser_research_report
+        from browser.runtime import get_browser_runtime_state, save_browser_research_report
 
         body = save_browser_research_report()
+        state = get_browser_runtime_state()
+        if not state.last_action_success:
+            return _browser_failure(Intent.SAVE_BROWSER_RESEARCH_REPORT, body, state.provider)
         return result_success(Intent.SAVE_BROWSER_RESEARCH_REPORT, body)
 

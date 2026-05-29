@@ -1,4 +1,4 @@
-"""Browser runtime facade with truthful visible/headless/mock reporting."""
+"""Browser runtime facade with truthful visible/headless/unavailable reporting."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from urllib.parse import quote_plus
 from config import DATA_DIR
 from browser.url_parser import normalize_url
 
-_MOCK_BANNER = "MOCK MODE | NO REAL EXTERNAL ACCESS | SIMULATED OUTPUT ONLY"
+_UNAVAILABLE_BANNER = "BROWSER UNAVAILABLE | REAL PROVIDER REQUIRED | NO SIMULATED OUTPUT"
 _REAL_VISIBLE = "REAL VISIBLE BROWSER"
 _REAL_HEADLESS = "REAL HEADLESS BROWSER"
 _REPLAY_LOG = DATA_DIR / "browser_action_replay.jsonl"
@@ -20,7 +20,7 @@ _SCREENSHOT_DIR = DATA_DIR / "browser_screenshots"
 
 @dataclass
 class BrowserRuntimeState:
-    provider: str = "mock"
+    provider: str = "unavailable"
     session_active: bool = False
     headed_mode: bool = False
     browser_visible: bool = False
@@ -38,8 +38,12 @@ class BrowserRuntimeState:
     comparisons: list[str] = field(default_factory=list)
     last_updated_ts: float = field(default_factory=time.time)
 
+    @property
+    def provider_available(self) -> bool:
+        return self.provider == "playwright" and self.browser_process_alive
+
     def format_debug(self) -> str:
-        mode_line = _MOCK_BANNER
+        mode_line = _UNAVAILABLE_BANNER
         if self.provider == "playwright":
             mode_line = _REAL_VISIBLE if self.browser_visible else _REAL_HEADLESS
         lines = [
@@ -107,7 +111,7 @@ def _ensure_playwright_session() -> bool:
         _append_replay("session_start", {"provider": "playwright"})
         return True
     except Exception as exc:
-        _state.provider = "mock"
+        _state.provider = "unavailable"
         _state.session_active = False
         _state.browser_visible = False
         _state.browser_process_alive = False
@@ -249,7 +253,7 @@ def _truth_success() -> bool:
 
 def _mode_banner() -> str:
     if _state.provider != "playwright":
-        return _MOCK_BANNER
+        return _UNAVAILABLE_BANNER
     return _REAL_VISIBLE if _state.browser_visible else _REAL_HEADLESS
 
 
@@ -259,7 +263,11 @@ def open_browser(url: str = "about:blank") -> str:
         if not ok:
             _state.last_updated_ts = time.time()
             _state.last_action_success = False
-            return f"Browser open requested.\n{_MOCK_BANNER}"
+            return (
+                "Browser open blocked: real browser provider unavailable.\n"
+                f"  mode: {_mode_banner()}\n"
+                f"  last_exception: {_state.last_exception or 'none'}"
+            )
         global _active_page
         if _active_page is None and _context is not None:
             _active_page = _context.new_page()
@@ -338,11 +346,10 @@ def search_web(query: str) -> str:
             _state.last_updated_ts = time.time()
             _state.last_action_success = False
             return (
-                f"Search results (mock):\n  {_MOCK_BANNER}\n"
+                "Browser search blocked: real browser provider unavailable.\n"
                 f"  query: {q or 'n/a'}\n"
-                "  top_result_1: Official source appears first.\n"
-                "  top_result_2: News analysis with contrasting sentiment.\n"
-                "  top_result_3: Community discussion (lower reliability)."
+                f"  mode: {_mode_banner()}\n"
+                f"  last_exception: {_state.last_exception or 'none'}"
             )
         global _active_page
         if _active_page is None and _context is not None:
@@ -410,7 +417,10 @@ def summarize_current_page() -> str:
         if not ok:
             url = _state.current_url or "current tab"
             _state.last_page_summary = (
-                f"{_MOCK_BANNER}\nSummary for {url}: headline context is clear, but verify publication date and source credibility."
+                "Page summary blocked: real browser provider unavailable.\n"
+                f"  target: {url}\n"
+                f"  mode: {_mode_banner()}\n"
+                f"  last_exception: {_state.last_exception or 'none'}"
             )
             _state.last_updated_ts = time.time()
             _state.last_action_success = False
@@ -438,7 +448,7 @@ def compare_latest_results() -> str:
     with _lock:
         if _context is None or len(_context.pages) < 2:
             comparison = (
-                f"Comparison (mock): {_MOCK_BANNER}\nNeed at least two tabs/pages for real comparison."
+                "Comparison blocked: real browser provider unavailable or fewer than two real pages are open."
             )
             _state.comparisons.append(comparison)
             _state.last_updated_ts = time.time()
@@ -466,10 +476,18 @@ def compare_latest_results() -> str:
 
 def active_tab_status() -> str:
     with _lock:
-        _ensure_playwright_session()
+        if not _ensure_playwright_session():
+            _state.last_action_success = False
+            return (
+                "Active tab unavailable: real browser provider unavailable.\n"
+                f"  mode: {_mode_banner()}\n"
+                f"  last_exception: {_state.last_exception or 'none'}"
+            )
         _sync_state_from_page()
         if _state.tab_count <= 0:
+            _state.last_action_success = False
             return "No active tab."
+        _state.last_action_success = True
         return (
             "Active tab:\n"
             f"  index: {_state.active_tab_index + 1}/{_state.tab_count}\n"
@@ -483,7 +501,7 @@ def test_real_browser() -> tuple[bool, str]:
         out = navigate_to_url("https://example.com")
         _append_replay("test_real_browser_start", {"target": "https://example.com"})
         if _state.provider != "playwright":
-            return False, f"{_MOCK_BANNER}\n{out}"
+            return False, f"{_UNAVAILABLE_BANNER}\n{out}"
         if not _state.browser_visible:
             return False, (
                 f"{_REAL_HEADLESS}\n"
@@ -526,6 +544,9 @@ def open_best_result() -> str:
 
 def summarize_top_results() -> str:
     with _lock:
+        if _state.provider != "playwright" or not _state.browser_process_alive:
+            _state.last_action_success = False
+            return "Top results unavailable: no real browser provider is active."
         if not _last_search_results:
             _state.last_action_success = False
             return "No top results available yet. Run: find information about <query>"
@@ -539,6 +560,9 @@ def summarize_top_results() -> str:
 
 def compare_search_results() -> str:
     with _lock:
+        if _state.provider != "playwright" or not _state.browser_process_alive:
+            _state.last_action_success = False
+            return "Search result comparison unavailable: no real browser provider is active."
         if len(_last_search_results) < 2:
             _state.last_action_success = False
             return "Need at least two search results to compare."
@@ -559,7 +583,11 @@ def extract_key_facts_from_page() -> str:
         ok = _ensure_playwright_session()
         if not ok:
             _state.last_action_success = False
-            return f"{_MOCK_BANNER}\nCannot extract real facts without real browser session."
+            return (
+                "Key fact extraction blocked: real browser provider unavailable.\n"
+                f"  mode: {_mode_banner()}\n"
+                f"  last_exception: {_state.last_exception or 'none'}"
+            )
         _sync_state_from_page()
         model = _extract_page_understanding()
         text = str(model.get("visible_text") or "")
@@ -584,7 +612,18 @@ def extract_key_facts_from_page() -> str:
 
 def page_understanding() -> dict[str, object]:
     with _lock:
-        _ensure_playwright_session()
+        if not _ensure_playwright_session():
+            _state.last_action_success = False
+            return {
+                "title": "",
+                "url": _state.current_url or "",
+                "headings": [],
+                "links": [],
+                "visible_text": "",
+                "forms_buttons": [],
+                "screenshot_path": "",
+                "error": "real browser provider unavailable",
+            }
         _sync_state_from_page()
         model = _extract_page_understanding()
         _state.last_screenshot_path = str(model.get("screenshot_path") or _state.last_screenshot_path)
@@ -605,6 +644,9 @@ def browser_task_plan(goal: str = "") -> str:
 
 def save_browser_research_report() -> str:
     with _lock:
+        if not _truth_success():
+            _state.last_action_success = False
+            return "Browser research report blocked: no real browser session is active."
         from browser.memory import snapshot
 
         mem = snapshot()

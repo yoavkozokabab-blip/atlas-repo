@@ -66,7 +66,12 @@ def _browser_scenarios() -> list:
             body = show_browser_health()
             st = get_browser_runtime_state()
             if st.provider != "playwright":
-                return _out(ScenarioStatus.MOCK_PASS, ProviderKind.MOCK, detail=body[:80], error_message="health_mock")
+                return _out(
+                    ScenarioStatus.FAIL,
+                    ProviderKind.UNAVAILABLE,
+                    detail=body[:80],
+                    error_message="browser_provider_unavailable",
+                )
             return grade_browser_after_action(body, require_url=False)
 
         return _run
@@ -92,7 +97,12 @@ def _browser_scenarios() -> list:
             body = active_tab_status()
             st = get_browser_runtime_state()
             if st.provider != "playwright":
-                return _out(ScenarioStatus.MOCK_PASS, ProviderKind.MOCK, detail=body[:80], error_message="active_tab_mock")
+                return _out(
+                    ScenarioStatus.FAIL,
+                    ProviderKind.UNAVAILABLE,
+                    detail=body[:80],
+                    error_message="browser_provider_unavailable",
+                )
             return grade_browser_after_action(body)
 
         return _run
