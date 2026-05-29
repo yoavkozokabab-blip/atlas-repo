@@ -234,6 +234,39 @@ def validate_win32_dependencies() -> dict[str, bool]:
 
 
 # ---------------------------------------------------------------------------
+# Phase 78 — Tool Registry catalog validation (additive; no routing change)
+# ---------------------------------------------------------------------------
+
+def validate_tool_catalog() -> list[str]:
+    """
+    Build the default Tool Registry catalog and report any registration errors
+    (malformed names, FORBIDDEN tools, irreversible-external, denylisted mock
+    handlers, or tools mapped to intents with no handler).
+
+    Returns a list of error strings (empty = catalog is valid). Never raises.
+    """
+    errors: list[str] = []
+    try:
+        from tools.registry import ToolRegistry, ToolRegistrationError
+        from tools.catalog import default_specs
+
+        reg = ToolRegistry()
+        for spec in default_specs():
+            try:
+                reg.register(spec)
+            except ToolRegistrationError as exc:
+                errors.append(str(exc))
+        if errors:
+            logger.warning("STARTUP: tool catalog has %d invalid tool(s): %s",
+                           len(errors), errors[:5])
+        else:
+            logger.info("STARTUP: tool catalog OK (%d tools)", len(reg.all()))
+    except Exception as exc:
+        logger.debug("Tool catalog validation skipped: %s", exc)
+    return errors
+
+
+# ---------------------------------------------------------------------------
 # Combined entry point (called from runtime_bootstrap)
 # ---------------------------------------------------------------------------
 

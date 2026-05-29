@@ -91,6 +91,24 @@ def ensure_jarvis_runtime_bootstrapped(
         except Exception as exc:
             logger.warning("HealthMonitorAgent start failed: %s", exc)
 
+        # Phase 78 — build + validate the Tool Registry catalog at startup.
+        # ADDITIVE ONLY: this changes no routing. The keyword classifier and
+        # ActionRegistry remain authoritative. LLM tool routing stays disabled.
+        try:
+            from tools.flags import llm_tool_router_enabled, tool_registry_enabled
+
+            if tool_registry_enabled():
+                from tools.catalog import build_default_tool_registry
+
+                treg = build_default_tool_registry()
+                logger.info(
+                    "ToolRegistry: %d tools registered (%s); llm_tool_router=%s",
+                    len(treg.all()), treg.by_safety_class(),
+                    "on" if llm_tool_router_enabled() else "off",
+                )
+        except Exception as exc:
+            logger.warning("ToolRegistry build skipped: %s", exc)
+
         if enable_watchdog:
             try:
                 from services.watchdog_runtime import ensure_process_watchdog
