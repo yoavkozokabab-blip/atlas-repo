@@ -139,7 +139,11 @@ def _validate_tool_call(
     registry,
     name: str,
     args: dict[str, Any],
+    *,
+    candidate_names: frozenset[str],
 ) -> tuple[ToolSpec | None, str]:
+    if name not in candidate_names:
+        return None, "not_in_candidates"
     spec = registry.get(name)
     if spec is None:
         return None, "hallucinated_tool"
@@ -254,10 +258,11 @@ def route_miss(
             fallback_reason=f"llm_error:{type(exc).__name__}",
             latency_ms=(time.perf_counter() - t0) * 1000.0,
         )
-        _audit_shadow(text, rule_request, decision, llm_raw_excerpt=str(exc)[:200])
+        _audit_shadow(text, rule_request, decision, parse_result=f"llm_error:{type(exc).__name__}")
         return decision
 
     kind, payload = parse_router_output(raw)
+    parse_result = kind
     if kind == "malformed":
         retry_raw = ""
         try:
@@ -267,18 +272,22 @@ def route_miss(
                     user + "\n\nYour previous reply was invalid. Return one JSON object only.",
                 )
                 kind, payload = parse_router_output(retry_raw)
-                raw = retry_raw or raw
+                parse_result = kind
         except Exception:
             pass
         if kind == "malformed":
             decision = RouterDecision(
-                outcome="clarify",
-                clarify_question="Could you rephrase that?",
+                outcome="no_tool",
                 candidate_tools=tuple(candidates),
                 fallback_reason="malformed_llm_output",
                 latency_ms=(time.perf_counter() - t0) * 1000.0,
             )
-            _audit_shadow(text, rule_request, decision, llm_raw_excerpt=raw[:300])
+            _audit_shadow(
+                text,
+                rule_request,
+                decision,
+                parse_result=parse_result,
+            )
             _record_success()
             return decision
 
@@ -289,7 +298,7 @@ def route_miss(
             candidate_tools=tuple(candidates),
             latency_ms=(time.perf_counter() - t0) * 1000.0,
         )
-        _audit_shadow(text, rule_request, decision, llm_raw_excerpt=raw[:300])
+        _audit_shadow(text, rule_request, decision, parse_result=parse_result)
         _record_success()
         return decision
 
@@ -300,7 +309,7 @@ def route_miss(
             candidate_tools=tuple(candidates),
             latency_ms=(time.perf_counter() - t0) * 1000.0,
         )
-        _audit_shadow(text, rule_request, decision, llm_raw_excerpt=raw[:300])
+        _audit_shadow(text, rule_request, decision, parse_result=parse_result)
         _record_success()
         return decision
 
@@ -310,23 +319,30 @@ def route_miss(
             candidate_tools=tuple(candidates),
             latency_ms=(time.perf_counter() - t0) * 1000.0,
         )
-        _audit_shadow(text, rule_request, decision, llm_raw_excerpt=raw[:300])
+        _audit_shadow(text, rule_request, decision, parse_result=parse_result)
         _record_success()
         return decision
 
     if kind == "tool_call":
         name = str(payload.get("name") or "")
         args = dict(payload.get("args") or {})
-        spec, reject = _validate_tool_call(registry, name, args)
+        candidate_set = frozenset(candidates)
+        spec, reject = _validate_tool_call(
+            registry,
+            name,
+            args,
+            candidate_names=candidate_set,
+        )
         if spec is None:
+            outcome = "no_tool" if reject in {"not_in_candidates", "hallucinated_tool"} else "clarify"
             decision = RouterDecision(
-                outcome="clarify",
-                clarify_question="Could you rephrase that?",
+                outcome=outcome,
+                clarify_question="Could you rephrase that?" if outcome == "clarify" else "",
                 candidate_tools=tuple(candidates),
                 fallback_reason=reject or "invalid_tool_call",
                 latency_ms=(time.perf_counter() - t0) * 1000.0,
             )
-            _audit_shadow(text, rule_request, decision, llm_raw_excerpt=raw[:300])
+            _audit_shadow(text, rule_request, decision, parse_result=parse_result)
             _record_success()
             return decision
 
@@ -346,20 +362,19 @@ def route_miss(
             text,
             rule_request,
             decision,
-            llm_raw_excerpt=raw[:300],
+            parse_result=parse_result,
             shadow_would_execute=would_execute,
         )
         _record_success()
         return decision
 
     decision = RouterDecision(
-        outcome="clarify",
-        clarify_question="Could you rephrase that?",
+        outcome="no_tool",
         candidate_tools=tuple(candidates),
         fallback_reason="unknown_kind",
         latency_ms=(time.perf_counter() - t0) * 1000.0,
     )
-    _audit_shadow(text, rule_request, decision, llm_raw_excerpt=raw[:300])
+    _audit_shadow(text, rule_request, decision, parse_result=parse_result)
     _record_success()
     return decision
 
@@ -384,19 +399,19 @@ def shadow_route_miss(
 
 def maybe_shadow_route_on_miss(
     text: str,
-    rule_request: CommandRequest,
+    classifier_request: CommandRequest,
     *,
     session_context: object | None = None,
     llm_fn: LlmFn | None = None,
 ) -> None:
-    """Invoke shadow router on classifier miss without changing classify() output."""
+    """Invoke shadow router on classifier miss without changing routing."""
     if not should_invoke_shadow_router():
         return
-    if not is_classifier_miss(rule_request):
+    if not is_classifier_miss(classifier_request):
         return
     shadow_route_miss(
         text,
-        rule_request=rule_request,
+        rule_request=classifier_request,
         session_context=session_context,
         llm_fn=_resolve_llm_fn(llm_fn),
     )
@@ -418,7 +433,7 @@ def _audit_shadow(
     rule_request: CommandRequest,
     decision: RouterDecision,
     *,
-    llm_raw_excerpt: str = "",
+    parse_result: str = "",
     shadow_would_execute: bool = False,
 ) -> None:
     tool_router_audit.record_shadow_decision(
@@ -434,6 +449,6 @@ def _audit_shadow(
         shadow_would_execute=shadow_would_execute,
         latency_ms=decision.latency_ms,
         fallback_reason=decision.fallback_reason,
-        llm_raw_excerpt=llm_raw_excerpt,
+        parse_result=parse_result,
         circuit_breaker_open=decision.circuit_breaker_open,
     )

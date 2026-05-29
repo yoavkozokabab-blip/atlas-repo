@@ -2,3 +2,4 @@ __pycache__/
 .pytest_cache/
 .pytest_tmp/
 tests_tmp/
+data/llm_router_audit.jsonl

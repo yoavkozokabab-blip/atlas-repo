@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import re
 from typing import Any
 
 from tools.spec import SafetyClass, ToolSpec
@@ -14,7 +13,7 @@ CORE_TOOL_NAMES: tuple[str, ...] = (
     "research.plan",
 )
 
-ROUTER_OUTPUT_KINDS = frozenset({"tool_call", "clarify", "refuse", "no_tool"})
+ROUTER_DECISION_KEYS = frozenset({"tool_call", "clarify", "refuse", "no_tool"})
 
 
 def build_system_prompt(*, allowed_classes: tuple[SafetyClass, ...]) -> str:
@@ -59,51 +58,57 @@ def build_user_prompt(*, user_text: str, candidates_block: str, context_snippet:
     return "\n\n".join(parts)
 
 
-def extract_json_object(raw: str) -> dict[str, Any] | None:
-    text = (raw or "").strip()
-    if not text:
-        return None
-    try:
-        parsed = json.loads(text)
-        if isinstance(parsed, dict):
-            return parsed
-    except json.JSONDecodeError:
-        pass
-    match = re.search(r"\{[\s\S]*\}", text)
-    if not match:
-        return None
-    try:
-        parsed = json.loads(match.group(0))
-    except json.JSONDecodeError:
-        return None
-    return parsed if isinstance(parsed, dict) else None
-
-
 def parse_router_output(raw: str) -> tuple[str, dict[str, Any]]:
     """
-    Parse LLM output into (kind, payload).
-
-    kind is one of tool_call, clarify, refuse, no_tool, or malformed.
+    Strict parser: entire response must be one JSON object with exactly one
+    decision key. Rejects prose wrappers and embedded JSON.
     """
-    obj = extract_json_object(raw)
-    if not obj:
+    text = (raw or "").strip()
+    if not text or not text.startswith("{") or not text.endswith("}"):
         return "malformed", {}
-    if "tool_call" in obj:
-        tc = obj.get("tool_call")
-        if isinstance(tc, dict) and isinstance(tc.get("name"), str):
-            args = tc.get("args")
-            if args is None:
-                args = {}
-            if not isinstance(args, dict):
-                return "malformed", {}
-            return "tool_call", {"name": tc["name"].strip(), "args": args}
+    try:
+        obj = json.loads(text)
+    except json.JSONDecodeError:
         return "malformed", {}
-    if "clarify" in obj:
-        q = str(obj.get("clarify") or "").strip()
-        return ("clarify", {"question": q}) if q else ("malformed", {})
-    if "refuse" in obj:
-        r = str(obj.get("refuse") or "").strip()
-        return ("refuse", {"reason": r}) if r else ("malformed", {})
+    if not isinstance(obj, dict) or not obj:
+        return "malformed", {}
+
+    decision_keys = [k for k in obj if k in ROUTER_DECISION_KEYS]
+    if len(decision_keys) != 1:
+        return "malformed", {}
+    if set(obj.keys()) != {decision_keys[0]}:
+        return "malformed", {}
+
+    key = decision_keys[0]
+    if key == "tool_call":
+        tc = obj["tool_call"]
+        if not isinstance(tc, dict):
+            return "malformed", {}
+        if set(tc.keys()) - {"name", "args"}:
+            return "malformed", {}
+        name = tc.get("name")
+        if not isinstance(name, str) or not name.strip():
+            return "malformed", {}
+        args = tc.get("args", {})
+        if args is None:
+            args = {}
+        if not isinstance(args, dict):
+            return "malformed", {}
+        return "tool_call", {"name": name.strip(), "args": args}
+
+    if key == "clarify":
+        q = obj.get("clarify")
+        if not isinstance(q, str) or not q.strip():
+            return "malformed", {}
+        return "clarify", {"question": q.strip()}
+
+    if key == "refuse":
+        r = obj.get("refuse")
+        if not isinstance(r, str) or not r.strip():
+            return "malformed", {}
+        return "refuse", {"reason": r.strip()}
+
     if obj.get("no_tool") is True:
         return "no_tool", {}
+
     return "malformed", {}
