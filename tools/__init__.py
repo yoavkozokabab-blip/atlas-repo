@@ -9,6 +9,8 @@ from __future__ import annotations
 
 from tools.flags import (
     llm_tool_router_enabled,
+    llm_tool_router_readonly_only,
+    llm_tool_router_shadow,
     tool_registry_enabled,
     tool_registry_shadow_compare,
 )
@@ -23,7 +25,11 @@ from tools.spec import (
 )
 
 __all__ = [
-    "tool_registry_enabled", "llm_tool_router_enabled", "tool_registry_shadow_compare",
+    "tool_registry_enabled",
+    "llm_tool_router_enabled",
+    "llm_tool_router_shadow",
+    "llm_tool_router_readonly_only",
+    "tool_registry_shadow_compare",
     "ToolRegistry", "ToolRegistrationError", "get_tool_registry",
     "ToolSpec", "ToolResult", "ToolStatus", "SafetyClass", "SideEffect", "Verification",
 ]

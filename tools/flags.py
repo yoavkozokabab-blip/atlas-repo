@@ -6,7 +6,9 @@ config.py later once the working tree settles.
 
 Defaults (per the Phase 78 plan):
   TOOL_REGISTRY_ENABLED        = true    build + validate the catalog at startup
-  LLM_TOOL_ROUTER_ENABLED      = false   Phase 79 — NOT used this phase
+  LLM_TOOL_ROUTER_ENABLED      = false   Phase 79 — shadow/canary (default off)
+  LLM_TOOL_ROUTER_SHADOW       = false   Stage 1 — log only, never execute
+  LLM_TOOL_ROUTER_READONLY_ONLY = true   Stage 2+ — REVERSIBLE tools → clarify
   TOOL_REGISTRY_SHADOW_COMPARE = false   dev-only parity telemetry; no user effect
 """
 
@@ -26,8 +28,15 @@ def tool_registry_enabled() -> bool:
 
 
 def llm_tool_router_enabled() -> bool:
-    # Phase 79 owns this. It MUST default false in Phase 78.
     return _flag("LLM_TOOL_ROUTER_ENABLED", False)
+
+
+def llm_tool_router_shadow() -> bool:
+    return _flag("LLM_TOOL_ROUTER_SHADOW", False)
+
+
+def llm_tool_router_readonly_only() -> bool:
+    return _flag("LLM_TOOL_ROUTER_READONLY_ONLY", True)
 
 
 def tool_registry_shadow_compare() -> bool:
