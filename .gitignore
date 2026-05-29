@@ -2,4 +2,17 @@ __pycache__/
 .pytest_cache/
 .pytest_tmp/
 tests_tmp/
+
+# Generated / runtime outputs (repo hygiene)
 data/llm_router_audit.jsonl
+data/browser_screenshots/
+data/backups/
+data/*state*.json
+data/task_*
+reports/proactive_monitor/
+reports/root_cause_engine/
+reports/autonomous_investigations/
+reports/assistant_state/
+reports/verification_plans/
+reports/trading_operations/
+reports/jarvis_logs/*.log
