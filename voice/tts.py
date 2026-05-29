@@ -656,6 +656,7 @@ class TTSService:
         def _run() -> None:
             t0 = time.perf_counter()
             provider = normalize_tts_engine(cfg.TTS_FORCE_ENGINE or cfg.TTS_ENGINE)
+            expected_completion = False
             try:
                 self._speak_with_timeout(safe)
             except TTSError as exc:
@@ -663,6 +664,7 @@ class TTSService:
                 logger.warning("Async TTS failed: %s; retrying sync", msg)
                 try:
                     if self._speak_blocking(safe):
+                        expected_completion = True
                         return
                 except TTSError as retry_exc:
                     msg = f"{msg}; sync retry: {retry_exc}"
@@ -678,6 +680,7 @@ class TTSService:
                     mark_tts_failed(msg)
                 except Exception:
                     pass
+                expected_completion = True
             except Exception as exc:
                 msg = str(exc)
                 logger.warning("Async TTS failed (unexpected): %s", msg)
@@ -696,6 +699,7 @@ class TTSService:
                     mark_tts_failed(msg)
                 except Exception:
                     pass
+                expected_completion = True
             else:
                 try:
                     from voice.latency_tracker import set_tts_ms
@@ -703,8 +707,26 @@ class TTSService:
                     set_tts_ms((time.perf_counter() - t0) * 1000.0)
                 except Exception:
                     pass
+                expected_completion = True
+            finally:
+                if expected_completion:
+                    try:
+                        from core.thread_registry import get_thread_registry
+
+                        get_thread_registry().deregister_if_thread(
+                            "jarvis-tts",
+                            threading.current_thread(),
+                        )
+                    except Exception:
+                        pass
 
         self._worker = threading.Thread(target=_run, name="jarvis-tts", daemon=True)
+        try:
+            from core.thread_registry import get_thread_registry
+
+            get_thread_registry().update("jarvis-tts", self._worker)
+        except Exception:
+            pass
         self._worker.start()
 
     def reset_engine(self) -> None:
@@ -724,6 +746,13 @@ class TTSService:
         worker = self._worker
         if worker is not None and worker.is_alive():
             worker.join(timeout=max(0.05, join_timeout))
+        if worker is not None and not worker.is_alive():
+            try:
+                from core.thread_registry import get_thread_registry
+
+                get_thread_registry().deregister_if_thread("jarvis-tts", worker)
+            except Exception:
+                pass
         self._worker = None
 
 
@@ -741,3 +770,10 @@ def shutdown_tts_service(*, join_timeout: float = 1.5) -> None:
             continue
         remaining = max(0.05, deadline - time.monotonic())
         thread.join(timeout=remaining)
+        if not thread.is_alive():
+            try:
+                from core.thread_registry import get_thread_registry
+
+                get_thread_registry().deregister_if_thread("jarvis-tts", thread)
+            except Exception:
+                pass

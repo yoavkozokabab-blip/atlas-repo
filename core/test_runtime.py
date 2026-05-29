@@ -142,4 +142,11 @@ def shutdown_jarvis_test_runtime(*, join_timeout: float = 1.5) -> None:
     except Exception as exc:
         logger.debug("runtime monitor stop: %s", exc)
 
+    try:
+        from services.watchdog_runtime import stop_process_watchdog
+
+        stop_process_watchdog()
+    except Exception as exc:
+        logger.debug("watchdog stop: %s", exc)
+
     _join_threads(list_jarvis_threads(), timeout=join_timeout)

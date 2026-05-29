@@ -180,6 +180,24 @@ def run_voice_loop(
     state = runtime or app.runtime
     state.set_voice(True)
 
+    import threading
+
+    from core.thread_registry import get_thread_registry
+
+    current = threading.current_thread()
+    registry = get_thread_registry()
+    if current.name == "jarvis-voice":
+        registry.register("jarvis-voice-loop", current)
+    else:
+        registry.register_fn(
+            "jarvis-voice-loop",
+            lambda: app._running and state.running and state.voice_enabled,
+        )
+
+    # VF-4 fix: track consecutive microphone errors for exponential backoff.
+    # Without this the loop spins at CPU-max speed when the mic is disconnected.
+    _mic_error_count = 0
+
     while app._running and state.running and state.voice_enabled:
         wav_path: Path | None = None
         begin_voice_command(source="push_to_talk")
@@ -191,8 +209,15 @@ def run_voice_loop(
                 notify_overlay_listening()
             wav_path = record_fn()
             set_record_ms((time.perf_counter() - t_record) * 1000.0)
+            _mic_error_count = 0  # reset backoff counter on successful capture
         except MicrophoneError as exc:
-            app.console.print(f"[red]Microphone error:[/] {exc}")
+            _mic_error_count += 1
+            # Exponential backoff: 1s, 2s, 4s, 8s … capped at 30s.
+            delay = min(2.0 ** (_mic_error_count - 1), 30.0)
+            app.console.print(
+                f"[red]Microphone error:[/] {exc} "
+                f"(retry in {delay:.0f}s, attempt {_mic_error_count})"
+            )
             try:
                 from ui.overlay_app import notify_overlay_error
 
@@ -200,6 +225,7 @@ def run_voice_loop(
             except Exception:
                 pass
             finish_and_log()
+            time.sleep(delay)
             continue
 
         if wav_path is None:
@@ -213,16 +239,28 @@ def run_voice_loop(
                 notify_overlay_transcribing()
             t_stt = time.perf_counter()
             stt_result = transcribe_audio_detailed(wav_path)
-            set_transcribe_ms((time.perf_counter() - t_stt) * 1000.0)
-            record_stt_result(stt_result)
+            transcribe_ms = (time.perf_counter() - t_stt) * 1000.0
+            set_transcribe_ms(transcribe_ms)
             text = stt_result.text or ""
+            normalized_text = prepare_command_text(text)
+            record_stt_result(
+                stt_result,
+                transcribe_ms=transcribe_ms,
+                empty=not bool(normalized_text.strip()),
+                raw_text=text,
+                normalized_text=normalized_text,
+            )
             if state.overlay_enabled:
                 from ui.overlay_app import notify_overlay_thinking, notify_overlay_transcript
 
                 notify_overlay_transcript(text)
                 notify_overlay_thinking()
             if getattr(stt_result, "low_confidence", False):
-                notify_low_confidence()
+                notify_low_confidence(
+                    app,
+                    overlay_enabled=state.overlay_enabled,
+                    speak_prompt=False,
+                )
             feedback = get_last_transcription_feedback()
             if feedback:
                 app.console.print(f"[dim]STT tip: {feedback}[/]")
@@ -246,3 +284,8 @@ def run_voice_loop(
                     wav_path.unlink(missing_ok=True)
             except OSError:
                 pass
+
+    try:
+        get_thread_registry().deregister("jarvis-voice-loop")
+    except Exception:
+        pass

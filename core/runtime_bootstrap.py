@@ -32,6 +32,7 @@ def ensure_jarvis_runtime_bootstrapped(
     *,
     runtime: RuntimeState | None = None,
     speak_enabled: bool | None = None,
+    enable_watchdog: bool = True,
 ) -> RuntimeState:
     """
     Idempotent startup path shared by main() and JarvisApp().
@@ -43,12 +44,61 @@ def ensure_jarvis_runtime_bootstrapped(
     runtime = runtime or get_runtime_state()
 
     if not _bootstrapped:
+        # One-time backup cleanup (VF-1): trim data/backups/ to 5 files per stem.
+        try:
+            from core.persistent_json import cleanup_old_backups
+            from config import DATA_DIR
+
+            removed = cleanup_old_backups(DATA_DIR / "backups")
+            if removed:
+                logger.info("Startup: removed %d stale backup files from data/backups/", removed)
+        except Exception as exc:
+            logger.debug("Startup backup cleanup skipped: %s", exc)
+
+        # S2.5 / S3.2 — config + optional dependency checks (degraded, not fatal).
+        try:
+            from core.startup_validation import (
+                apply_startup_validation_to_runtime,
+                run_startup_validation,
+            )
+
+            validation = run_startup_validation()
+            apply_startup_validation_to_runtime(runtime, validation, print_summary=True)
+        except Exception as exc:
+            logger.debug("Startup validation skipped: %s", exc)
+
         try:
             from voice.audio_runtime_init import initialize_audio_runtime_at_startup
 
             initialize_audio_runtime_at_startup()
         except Exception as exc:
             logger.warning("Audio runtime bootstrap failed: %s", exc)
+
+        # S3.1 — build 11-agent registry and run health checks.
+        try:
+            from agents.registry import build_default_registry, validate_registry
+            build_default_registry()
+            errors = validate_registry()
+            if errors:
+                logger.warning("AgentRegistry: %d unhealthy agent(s) at startup", len(errors))
+        except Exception as exc:
+            logger.warning("Agent registry bootstrap failed: %s", exc)
+
+        # S3.5 — start HealthMonitorAgent heartbeat (30s storage checks).
+        try:
+            from agents.health_monitor_agent import get_health_monitor_agent
+            get_health_monitor_agent().start()
+        except Exception as exc:
+            logger.warning("HealthMonitorAgent start failed: %s", exc)
+
+        if enable_watchdog:
+            try:
+                from services.watchdog_runtime import ensure_process_watchdog
+
+                ensure_process_watchdog(runtime=runtime)
+            except Exception as exc:
+                logger.warning("Process watchdog start failed: %s", exc)
+
         _bootstrapped = True
 
     from voice.tts import resolve_tts_enabled

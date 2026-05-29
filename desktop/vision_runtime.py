@@ -9,10 +9,12 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from config import DATA_DIR, SCREEN_UNDERSTANDING_ENABLED
+from core.file_cleanup import remove_file_best_effort
 from desktop.memory import add_recent_screen, add_ui_transition
 from desktop.state import DesktopRuntimeState
 
 _SCREENSHOT_DIR = DATA_DIR / "desktop_screenshots"
+_MAX_DESKTOP_SCREENSHOTS = 10
 _MOCK_BANNER = "SIMULATED DESKTOP VISION | NO REAL CAPTURE"
 _REAL_BANNER = "REAL DESKTOP VISION"
 
@@ -53,6 +55,20 @@ def _record_action(action: str, detail: str = "", *, success: bool = True) -> No
     add_ui_transition(action, detail)
 
 
+def _prune_screenshot_count() -> None:
+    """Keep only the newest desktop screenshots."""
+    try:
+        files = sorted(
+            _SCREENSHOT_DIR.glob("*.png"),
+            key=lambda p: p.stat().st_mtime,
+            reverse=True,
+        )
+    except OSError:
+        return
+    for old in files[_MAX_DESKTOP_SCREENSHOTS:]:
+        remove_file_best_effort(old, attempts=2)
+
+
 def capture_active_monitor() -> tuple[bool, str, str]:
     """Capture primary monitor; returns (ok, path, message)."""
     with _lock:
@@ -71,6 +87,7 @@ def capture_active_monitor() -> tuple[bool, str, str]:
             _SCREENSHOT_DIR.mkdir(parents=True, exist_ok=True)
             path = _SCREENSHOT_DIR / f"desktop_{int(time.time() * 1000)}.png"
             capture.image.save(path, format="PNG")
+            _prune_screenshot_count()
             _state.last_screenshot_path = str(path)
             _record_action("capture_active_monitor", str(path))
             return True, str(path), f"{_REAL_BANNER}\nCaptured active monitor: {path}"

@@ -123,6 +123,12 @@ class OverlayController:
         )
         self._queue_thread.start()
         _overlay_instances.add(self)
+        # S2.3: register the queue-worker thread so the watchdog can detect its death.
+        try:
+            from core.thread_registry import get_thread_registry
+            get_thread_registry().register("jarvis-overlay-queue", self._queue_thread)
+        except Exception:
+            pass
 
     def is_enabled(self) -> bool:
         return self._enabled
@@ -142,10 +148,30 @@ class OverlayController:
             "queue_size": self._update_queue.qsize(),
         }
 
+    # S2.6 — Maximum crash-recovery attempts before switching to headless mode.
+    _MAX_QT_RESTART_ATTEMPTS: int = 3
+
     def recover_if_crashed(self, *, reason: str = "overlay_health_check") -> bool:
         if not self._enabled or not _runtime_overlay_enabled() or not OVERLAY_QT_ENABLED:
             return False
         if self._qt_thread and self._qt_thread.is_alive():
+            return False
+        # S2.6: stop retrying after _MAX_QT_RESTART_ATTEMPTS consecutive crashes.
+        if self._qt_crash_count >= self._MAX_QT_RESTART_ATTEMPTS:
+            if self._enabled:
+                logger.error(
+                    "Overlay Qt crashed %d times (limit=%d); disabling overlay "
+                    "and continuing headless. Last exception: %s",
+                    self._qt_crash_count,
+                    self._MAX_QT_RESTART_ATTEMPTS,
+                    self._last_qt_exception or "unknown",
+                )
+                self._enabled = False
+                try:
+                    from core.runtime_state import get_runtime_state
+                    get_runtime_state().set_overlay(False)
+                except Exception:
+                    pass
             return False
         now = time.monotonic()
         if now - self._last_recovery_monotonic < OVERLAY_RECOVERY_BACKOFF_SECONDS:
@@ -207,6 +233,12 @@ class OverlayController:
         )
         self._qt_start_count += 1
         self._qt_thread.start()
+        # S2.3: (re-)register the Qt thread so the watchdog tracks the current instance.
+        try:
+            from core.thread_registry import get_thread_registry
+            get_thread_registry().update("jarvis-overlay-qt", self._qt_thread)
+        except Exception:
+            pass
         if not self._ready.wait(timeout=OVERLAY_STARTUP_WAIT_SECONDS):
             logger.debug("Overlay Qt thread not ready within %.1fs (continuing)", OVERLAY_STARTUP_WAIT_SECONDS)
 

@@ -171,7 +171,7 @@ def main() -> int:
             runtime.set_voice(False)
             runtime.set_wake_word(False)
             runtime.set_speak(False)
-            app = JarvisApp(speak_enabled=False, runtime=runtime)
+            app = JarvisApp(speak_enabled=False, runtime=runtime, enable_watchdog=False)
             print_startup_banner(args, runtime=runtime, app=app)
             append_startup_log("safe-mode entering text loop")
             app.run()
@@ -239,6 +239,16 @@ def main() -> int:
             overlay_enabled = overlay_enabled or OVERLAY_SHOW_ON_WAKE or True
         runtime.set_overlay(overlay_enabled)
         app = JarvisApp(speak_enabled=resolved_speak, runtime=runtime)
+
+        if not getattr(args, "safe_mode", False):
+            try:
+                from services.watchdog_runtime import ensure_process_watchdog
+
+                ensure_process_watchdog(runtime=runtime)
+            except Exception as exc:
+                print(f"[WARNING] Watchdog failed to start: {exc}", flush=True)
+                append_startup_log("watchdog failed", exc=exc)
+
         if resolved_speak:
             try:
                 from voice.tts_startup import run_tts_startup_self_test

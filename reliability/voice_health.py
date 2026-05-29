@@ -67,16 +67,34 @@ def run_voice_acceptance() -> TrackScore:
         ok = bool(config.VOICE_ENABLED or config.WAKE_WORD_ENABLED or config.TTS_ENABLED)
         return ok, f"voice={config.VOICE_ENABLED} wake={config.WAKE_WORD_ENABLED} tts={config.TTS_ENABLED}"
 
-    def _streaming_policy() -> tuple[bool, str]:
-        from voice.streaming_stt.session_policy import get_streaming_disable_reason, is_streaming_stt_enabled_for_session
+    def _streaming_policy() -> tuple[bool | None, str]:
+        # T-3 fix: return actual streaming state, not hardcoded True.
+        # SKIP when no session has started yet (test/no-hardware environment).
+        # FAIL when streaming is explicitly disabled for a known reason.
+        from voice.streaming_stt.session_policy import (
+            get_streaming_disable_reason,
+            is_streaming_stt_enabled_for_session,
+        )
 
-        return True, f"enabled={is_streaming_stt_enabled_for_session()} reason={get_streaming_disable_reason() or 'none'}"
+        enabled = is_streaming_stt_enabled_for_session()
+        reason = get_streaming_disable_reason() or "none"
+        if not enabled and reason == "none":
+            # Not disabled for a reason — simply not yet initialized (no live session).
+            return None, "SKIP: streaming not yet initialized (requires live audio session)"
+        return enabled, f"enabled={enabled} reason={reason}"
 
-    def _tts_backend() -> tuple[bool, str]:
+    def _tts_backend() -> tuple[bool | None, str]:
+        # T-4 fix: fail when no verified backend exists.
+        # SKIP when no TTS call has been made yet (test/no-hardware environment).
         from voice.audio_status import get_audio_status
 
         audio = get_audio_status()
-        return True, f"backend={audio.selected_verified_audio_backend or audio.last_provider or 'unverified'}"
+        backend = audio.selected_verified_audio_backend or audio.last_provider or ""
+        if not backend:
+            # No backend selected yet — TTS has never been called in this process.
+            return None, "SKIP: no TTS backend selected yet (requires at least one TTS call)"
+        ok = backend != "unverified"
+        return ok, f"backend={backend}"
 
     def _interruption_hooks() -> tuple[bool, str]:
         from voice.conversational_runtime import barge_in_cancel, recover_conversation_timeout
@@ -88,6 +106,24 @@ def run_voice_acceptance() -> TrackScore:
 
         return "cancel active speech" in _EXACT_PHRASES, "stop path registered"
 
+    def _long_sentence_normalization() -> tuple[bool, str]:
+        # T-1 fix: actually call the normalization module.
+        from voice.spoken_normalization import normalize_spoken_command
+
+        test_input = "J.A.R.V.I.S. show me the latest trading dashboard status please"
+        result = normalize_spoken_command(test_input)
+        ok = bool(result and len(result) > 5)
+        return ok, f"normalized={result[:60]!r}"
+
+    def _paragraph_transcription_path() -> tuple[bool, str]:
+        # T-2 fix: verify the transcriber and streaming session policy are importable
+        # and queryable (hardware-free check — full STT requires a microphone).
+        from voice.streaming_stt.session_policy import is_streaming_stt_enabled_for_session
+        from voice.transcriber import transcribe_audio_detailed  # noqa: F401 (import check)
+
+        streaming_on = is_streaming_stt_enabled_for_session()
+        return True, f"transcriber_importable=True streaming_enabled={streaming_on}"
+
     score.cases.extend(
         [
             run_case("voice_config_present", _cfg_ok),
@@ -95,8 +131,8 @@ def run_voice_acceptance() -> TrackScore:
             run_case("tts_backend_reported", _tts_backend),
             run_case("interruption_hooks", _interruption_hooks),
             run_case("stop_listening_intent", _wake_phrase_registered),
-            run_case("long_sentence_normalization", lambda: (True, "spoken_normalization module available")),
-            run_case("paragraph_transcription_path", lambda: (True, "streaming buffer policy available")),
+            run_case("long_sentence_normalization", _long_sentence_normalization),
+            run_case("paragraph_transcription_path", _paragraph_transcription_path),
         ]
     )
     score.finalize_score()

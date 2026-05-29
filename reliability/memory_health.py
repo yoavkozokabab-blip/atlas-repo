@@ -89,20 +89,38 @@ def run_memory_acceptance() -> TrackScore:
         return len(hits) > 0, f"hits={len(hits)}"
 
     def _semantic() -> tuple[bool, str]:
+        # T-5 fix: len() >= 0 is a tautology; require at least one hit.
         hits = store.semantic_search(tag, limit=3)
-        return len(hits) >= 0, f"semantic_hits={len(hits)}"
+        return len(hits) > 0, f"semantic_hits={len(hits)}"
 
     def _update() -> tuple[bool, str]:
-        store.remember(f"phase65 test {tag} updated", category="session", tags=["phase65", remembered_id])
-        return True, "updated"
+        # T-6 fix: verify the update is actually retrievable, not hardcoded True.
+        store.remember(
+            f"phase65 test {tag} updated",
+            category="session",
+            tags=["phase65", remembered_id],
+        )
+        hits = store.search_memory(f"{tag} updated")
+        ok = len(hits) > 0
+        return ok, f"update_retrievable={ok} hits={len(hits)}"
 
     def _forget() -> tuple[bool, str]:
+        # T-7 fix: n >= 0 is a tautology; require at least one entry was hidden.
         n = store.forget(tag)
-        return n >= 0, f"hidden={n}"
+        return n > 0, f"hidden={n}"
 
-    def _dup_detect() -> tuple[bool, str]:
+    def _stale_entries() -> tuple[bool, str]:
+        # T-8 fix: check stale (expired) entries count rather than hardcoding True.
+        # vacuum() runs at startup; stale should be low after a cold start.
         d = _diagnostics()
-        return True, f"duplicates={d['duplicates']}"
+        stale = d["stale"]
+        ok = stale < 50  # tolerate a small backlog between vacuum runs
+        return ok, f"stale_entries={stale} duplicates={d['duplicates']}"
+
+    def _ranking_diagnostics() -> tuple[bool, str]:
+        # T-9 fix: actually call diagnostics and verify it returns a non-empty report.
+        report = show_memory_ranking_diagnostics()
+        return bool(report), report[:120]
 
     score.cases.extend(
         [
@@ -111,8 +129,8 @@ def run_memory_acceptance() -> TrackScore:
             run_case("semantic_retrieve", _semantic),
             run_case("update", _update),
             run_case("forget", _forget),
-            run_case("duplicate_detection", _dup_detect),
-            run_case("ranking_diagnostics", lambda: (True, show_memory_ranking_diagnostics()[:120])),
+            run_case("stale_entries", _stale_entries),
+            run_case("ranking_diagnostics", _ranking_diagnostics),
         ]
     )
     score.finalize_score()

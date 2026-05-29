@@ -28,11 +28,34 @@ class JarvisApp:
         speak_enabled: bool | None = None,
         runtime: RuntimeState | None = None,
         skip_bootstrap: bool = False,
+        enable_watchdog: bool = True,
     ) -> None:
         self.console = Console()
         self.router = CommandRouter()
         self.runtime = runtime or get_runtime_state()
         self._running = True
+
+        # S2.4 / S3.2 — intent coverage + apply degraded flags on runtime.
+        try:
+            from core.startup_validation import (
+                apply_startup_validation_to_runtime,
+                run_startup_validation,
+            )
+
+            validation = run_startup_validation(self.router.registry)
+            apply_startup_validation_to_runtime(
+                self.runtime,
+                validation,
+                print_summary=False,
+            )
+            missing = validation.get("intent_coverage") or []
+            if missing:
+                logger.warning(
+                    "Startup: %d intent(s) have no handler — will return not_implemented at runtime",
+                    len(missing),
+                )
+        except Exception as exc:
+            logger.debug("Intent coverage check skipped: %s", exc)
 
         if not skip_bootstrap:
             from core.runtime_bootstrap import (
@@ -43,6 +66,7 @@ class JarvisApp:
             ensure_jarvis_runtime_bootstrapped(
                 runtime=self.runtime,
                 speak_enabled=speak_enabled,
+                enable_watchdog=enable_watchdog,
             )
             print_jarvis_runtime_diagnostics(runtime=self.runtime)
         elif speak_enabled is not None:

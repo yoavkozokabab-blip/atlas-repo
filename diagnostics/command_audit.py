@@ -9,9 +9,23 @@ from pathlib import Path
 from typing import Any
 
 from config import DATA_DIR
+from core.rotating_jsonl import RotatingJSONLWriter
 from core.types import CommandRequest, CommandResult
 
 COMMAND_AUDIT_PATH = DATA_DIR / "command_audit.jsonl"
+
+# Lazy writer cache (VF-2 fix): keyed by resolved path string so that
+# monkeypatch works correctly in tests.
+_audit_writers: dict[str, RotatingJSONLWriter] = {}
+
+
+def _get_audit_writer() -> RotatingJSONLWriter:
+    path_str = str(COMMAND_AUDIT_PATH)
+    if path_str not in _audit_writers:
+        _audit_writers[path_str] = RotatingJSONLWriter(
+            Path(COMMAND_AUDIT_PATH), max_bytes=5_000_000, backup_count=3
+        )
+    return _audit_writers[path_str]
 DEFAULT_AUDIT_LIMIT = 20
 MAX_SUMMARY_LEN = 400
 MAX_RAW_TEXT_LEN = 200
@@ -178,11 +192,7 @@ def append_audit_event(
     """Append one audit line. Returns False on failure; never raises."""
     try:
         entry = build_audit_entry(request, result, duration_ms, log_meta=log_meta)
-        path = Path(COMMAND_AUDIT_PATH)
-        path.parent.mkdir(parents=True, exist_ok=True)
-        line = json.dumps(entry, ensure_ascii=False) + "\n"
-        with path.open("a", encoding="utf-8") as f:
-            f.write(line)
+        _get_audit_writer().write_line(json.dumps(entry, ensure_ascii=False))
         return True
     except Exception:
         return False
@@ -244,7 +254,10 @@ def format_audit_report(entries: list[dict[str, Any]], *, limit: int = DEFAULT_A
 
 
 def reset_audit_store() -> None:
-    """Test helper — remove audit file."""
+    """Test helper — remove audit file and clear the writer cache."""
+    # Clear the writer cache so the next call to _get_audit_writer() picks up
+    # the (potentially monkeypatched) COMMAND_AUDIT_PATH.
+    _audit_writers.clear()
     path = Path(COMMAND_AUDIT_PATH)
     if path.is_file():
         try:

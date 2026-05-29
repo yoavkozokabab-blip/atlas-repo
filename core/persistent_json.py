@@ -4,8 +4,10 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import shutil
 import tempfile
+from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable, TypeVar
@@ -32,6 +34,17 @@ def atomic_write_json(path: Path, payload: Any, *, indent: int = 2) -> None:
             shutil.copy2(path, backup_dir / f"{path.stem}_{_timestamp()}.json")
         except OSError as exc:
             logger.debug("Backup skipped for %s: %s", path, exc)
+        # Keep only the 5 most recent backups for this stem (VF-1 fix).
+        try:
+            existing = sorted(
+                backup_dir.glob(f"{path.stem}_*.json"),
+                key=lambda p: p.stat().st_mtime,
+                reverse=True,
+            )
+            for old in existing[5:]:
+                old.unlink(missing_ok=True)
+        except OSError as exc:
+            logger.debug("Backup pruning skipped for %s: %s", path.stem, exc)
     fd, tmp_name = tempfile.mkstemp(
         suffix=".json",
         prefix=f"{path.stem}_",
@@ -102,3 +115,43 @@ def load_json(
             except OSError:
                 pass
         return default
+
+
+# ---------------------------------------------------------------------------
+# One-time startup cleanup (VF-1 fix)
+# ---------------------------------------------------------------------------
+
+_BACKUP_STEM_RE = re.compile(r"^(.+?)_\d{8}_\d{6}\.json$")
+
+
+def cleanup_old_backups(backup_dir: Path, *, keep: int = 5) -> int:
+    """
+    For every unique JSON stem in *backup_dir*, keep only the *keep* most
+    recent timestamped backups and delete the rest.
+
+    Returns the total count of deleted files.
+
+    Designed to be called once at startup to recover from unbounded backup
+    growth (VF-1).  Safe to call repeatedly — subsequent calls are no-ops
+    when the backup count is already within the limit.
+    """
+    backup_dir = Path(backup_dir)
+    if not backup_dir.is_dir():
+        return 0
+
+    groups: dict[str, list[Path]] = defaultdict(list)
+    for f in backup_dir.glob("*.json"):
+        m = _BACKUP_STEM_RE.match(f.name)
+        if m:
+            groups[m.group(1)].append(f)
+
+    deleted = 0
+    for _stem, files in groups.items():
+        files.sort(key=lambda p: p.stat().st_mtime, reverse=True)
+        for old in files[keep:]:
+            try:
+                old.unlink(missing_ok=True)
+                deleted += 1
+            except OSError:
+                pass
+    return deleted

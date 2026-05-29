@@ -40,33 +40,46 @@ _INTENT_PREFIX_RULES: tuple[tuple[str, AgentId], ...] = (
     ("list_preferences", AgentId.MEMORY),
     ("summarize_session", AgentId.MEMORY),
     ("what_were_we_doing", AgentId.MEMORY),
-    ("open_browser", AgentId.OPERATOR),
-    ("open_website", AgentId.OPERATOR),
-    ("open_app", AgentId.OPERATOR),
-    ("search_web", AgentId.OPERATOR),
-    ("find_information", AgentId.OPERATOR),
-    ("summarize_this_page", AgentId.OPERATOR),
-    ("summarize_current", AgentId.OPERATOR),
-    ("what_tab", AgentId.OPERATOR),
-    ("what_is_on_my_screen", AgentId.OPERATOR),
-    ("summarize_this_screen", AgentId.OPERATOR),
-    ("click_button", AgentId.OPERATOR),
-    ("type_this", AgentId.OPERATOR),
-    ("list_open_windows", AgentId.OPERATOR),
-    ("switch_to_chrome", AgentId.OPERATOR),
-    ("show_desktop", AgentId.OPERATOR),
-    ("desktop", AgentId.OPERATOR),
-    ("browser", AgentId.OPERATOR),
-    ("focus_window", AgentId.OPERATOR),
-    ("mouse_", AgentId.OPERATOR),
-    ("discover_apps", AgentId.OPERATOR),
-    ("list_apps", AgentId.OPERATOR),
-    ("approve_app", AgentId.OPERATOR),
-    ("forget_app", AgentId.OPERATOR),
-    ("describe_screen", AgentId.OPERATOR),
-    ("read_screen", AgentId.OPERATOR),
-    ("take_screenshot", AgentId.OPERATOR),
-    ("find_on_screen", AgentId.OPERATOR),
+    # ── Browser intents → AgentId.BROWSER (S3.2) ───────────────────────────
+    ("open_browser", AgentId.BROWSER),
+    ("open_website", AgentId.BROWSER),
+    ("search_web", AgentId.BROWSER),
+    ("find_information", AgentId.BROWSER),
+    ("summarize_this_page", AgentId.BROWSER),
+    ("summarize_current", AgentId.BROWSER),
+    ("what_tab", AgentId.BROWSER),
+    ("browser", AgentId.BROWSER),
+    # ── Desktop intents → AgentId.DESKTOP (S3.3) ────────────────────────────
+    ("open_app", AgentId.DESKTOP),
+    ("what_is_on_my_screen", AgentId.DESKTOP),
+    ("summarize_this_screen", AgentId.DESKTOP),
+    ("click_button", AgentId.DESKTOP),
+    ("type_this", AgentId.DESKTOP),
+    ("list_open_windows", AgentId.DESKTOP),
+    ("switch_to_chrome", AgentId.DESKTOP),
+    ("show_desktop", AgentId.DESKTOP),
+    ("desktop", AgentId.DESKTOP),
+    ("focus_window", AgentId.DESKTOP),
+    ("mouse_", AgentId.DESKTOP),
+    ("discover_apps", AgentId.DESKTOP),
+    ("list_apps", AgentId.DESKTOP),
+    ("approve_app", AgentId.DESKTOP),
+    ("forget_app", AgentId.DESKTOP),
+    ("describe_screen", AgentId.DESKTOP),
+    ("read_screen", AgentId.DESKTOP),
+    ("take_screenshot", AgentId.DESKTOP),
+    ("find_on_screen", AgentId.DESKTOP),
+    # ── Trading intents → AgentId.TRADING (S3.4) ────────────────────────────
+    ("run_live", AgentId.TRADING),
+    ("open_trading_dashboard", AgentId.TRADING),
+    ("show_dashboard_health", AgentId.TRADING),
+    ("enable_kill_switch", AgentId.TRADING),
+    ("disable_kill_switch", AgentId.TRADING),
+    ("show_open_positions", AgentId.TRADING),
+    ("show_last_errors", AgentId.TRADING),
+    ("show_rejection_reasons", AgentId.TRADING),
+    ("search_trading", AgentId.TRADING),
+    ("trading_", AgentId.TRADING),
     ("investigate", AgentId.RESEARCH),
     ("compare_live", AgentId.RESEARCH),
     ("compare_backtest", AgentId.RESEARCH),
@@ -120,13 +133,11 @@ _EXACT_INTENT_AGENTS: dict[str, AgentId] = {
 
 
 def agent_for_intent(intent: Intent | str) -> AgentId:
-    """Resolve owning agent for an intent (routing metadata only)."""
+    """Resolve owning agent for an intent (used by runtime_wiring at execute time)."""
     value = intent.value if isinstance(intent, Intent) else str(intent)
     if value in _EXACT_INTENT_AGENTS:
         return _EXACT_INTENT_AGENTS[value]
     for prefix, agent in _INTENT_PREFIX_RULES:
         if value.startswith(prefix) or prefix in value:
             return agent
-    if value.startswith("run_live") or value.startswith("trading") or "trading" in value:
-        return AgentId.RESEARCH
     return AgentId.EXECUTIVE

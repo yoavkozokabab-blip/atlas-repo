@@ -9,6 +9,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+# How old the file must be (seconds) before vacuum runs automatically at init.
+_VACUUM_MIN_AGE_SECONDS = 3600  # 1 hour
+
 from config import MEMORY_ENABLED, MEMORY_STORE_PATH
 from memory.redaction import UnsafeMemoryError, redact_text, validate_safe_text
 
@@ -56,10 +59,40 @@ def _now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+def _entry_expired(row: dict[str, Any], now: datetime) -> bool:
+    """Return True if *row* has a non-empty expires_at that is in the past."""
+    exp = str(row.get("expires_at") or "").strip()
+    if not exp:
+        return False
+    try:
+        return datetime.fromisoformat(exp) <= now
+    except ValueError:
+        return False
+
+
 class PersonalMemoryStore:
     def __init__(self, path: Path | None = None) -> None:
         self.path = path or MEMORY_STORE_PATH
         self.path.parent.mkdir(parents=True, exist_ok=True)
+        self._startup_vacuum()
+
+    def _startup_vacuum(self) -> None:
+        """Run vacuum once at startup if the file is older than 1 hour (VF-3 fix)."""
+        if not self.path.is_file():
+            return
+        try:
+            now_ts = datetime.now(timezone.utc).timestamp()
+            age_seconds = now_ts - self.path.stat().st_mtime
+            if age_seconds >= _VACUUM_MIN_AGE_SECONDS:
+                removed = self.vacuum()
+                if removed:
+                    from core.logger import setup_logger as _sl
+                    _sl("jarvis.memory.store").info(
+                        "Startup vacuum removed %d expired/hidden entries from %s",
+                        removed, self.path.name,
+                    )
+        except OSError:
+            pass
 
     def _load(self) -> dict[str, Any]:
         if not self.path.is_file():
@@ -100,9 +133,27 @@ class PersonalMemoryStore:
         safe_text = redact_text(text.strip())
         if not safe_text:
             raise UnsafeMemoryError("Nothing to remember after redaction.")
+
+        # S2.1 — per-entry size limit (10 KB). Prevents a single large entry from
+        # bloating the JSON store and slowing every subsequent _load() call.
+        _MAX_ENTRY_BYTES = 10_240
+        encoded = safe_text.encode("utf-8")
+        if len(encoded) > _MAX_ENTRY_BYTES:
+            safe_text = encoded[:_MAX_ENTRY_BYTES].decode("utf-8", errors="ignore").rstrip()
+
         cat = _CATEGORY_MAP.get(category, category)
         if cat not in VALID_CATEGORIES:
             cat = "personal_note"
+
+        # S2.2 — default TTL for ephemeral categories. Entries in session/short_term/
+        # temporary_fact never expire without this, even though they are logically
+        # short-lived. 24 hours is a reasonable automatic expiry.
+        _EPHEMERAL_CATEGORIES: frozenset[str] = frozenset(
+            {"session", "short_term", "temporary_fact"}
+        )
+        if ttl_seconds is None and cat in _EPHEMERAL_CATEGORIES:
+            ttl_seconds = 86_400  # 24 hours
+
         entry = MemoryEntry(
             entry_id=f"mem_{uuid.uuid4().hex[:10]}",
             category=cat,
@@ -163,19 +214,37 @@ class PersonalMemoryStore:
             self._save(data)
         return count
 
+    def vacuum(self) -> int:
+        """
+        Physically remove expired and hidden entries from disk (VF-3 fix).
+
+        list_visible() already *skips* expired/hidden entries, but they stay
+        in the JSON file and are parsed on every _load().  This method
+        rewrites the file containing only live entries.
+
+        Returns the count of entries removed.
+        """
+        data = self._load()
+        before = len(data.get("entries", []))
+        now = datetime.now(timezone.utc)
+        data["entries"] = [
+            row
+            for row in data.get("entries", [])
+            if not row.get("hidden") and not _entry_expired(row, now)
+        ]
+        removed = before - len(data["entries"])
+        if removed:
+            self._save(data)
+        return removed
+
     def list_visible(self, *, category: str | None = None, limit: int = 50) -> list[MemoryEntry]:
         out: list[MemoryEntry] = []
         now = datetime.now(timezone.utc)
         for row in self._load().get("entries", []):
             if row.get("hidden"):
                 continue
-            expires_at = str(row.get("expires_at", "") or "").strip()
-            if expires_at:
-                try:
-                    if datetime.fromisoformat(expires_at) <= now:
-                        continue
-                except ValueError:
-                    pass
+            if _entry_expired(row, now):
+                continue
             if category and row.get("category") != category:
                 continue
             try:

@@ -2,7 +2,19 @@
 
 from __future__ import annotations
 
+import os
+from dataclasses import dataclass
+
 import config as cfg
+
+
+@dataclass(frozen=True)
+class WakeListenResolution:
+    """Resolved wake listen window for diagnostics and capture."""
+
+    wake_listen_seconds: float
+    source: str
+    mode: str  # stable | discrete | conversational
 
 
 def _positive_seconds(value: float | int, fallback: float) -> float:
@@ -23,18 +35,58 @@ def effective_max_record_seconds(*, wake_session: bool = False) -> float:
     return float(cfg.STT_RECORDING_MAX_SECONDS)
 
 
-def effective_wake_listen_seconds() -> float:
-    try:
-        from conversation.human_runtime import uses_continuous_conversation
+def resolve_wake_listen_seconds() -> WakeListenResolution:
+    """Resolve wake listen duration.
 
-        if uses_continuous_conversation():
-            return max(8.0, float(getattr(cfg, "CONVERSATION_TURN_MAX_SECONDS", 45.0)))
-    except Exception:
-        pass
-    wake_cap = _positive_seconds(getattr(cfg, "WAKE_MAX_LISTEN_SECONDS", 4.0), 4.0)
+    - stable / discrete post-wake capture: ``WAKE_MAX_LISTEN_SECONDS`` (default 5s)
+    - active human conversational session: ``CONVERSATION_TURN_MAX_SECONDS`` (e.g. 45s)
+    - enabling continuous conversation alone does *not* widen discrete wake capture
+    """
+    from conversation.human_runtime import is_session_active
+    from voice.runtime_mode import is_stable_voice_mode
+
+    if is_session_active():
+        turn_max = max(
+            8.0,
+            _positive_seconds(
+                getattr(cfg, "CONVERSATION_TURN_MAX_SECONDS", 45.0),
+                45.0,
+            ),
+        )
+        return WakeListenResolution(
+            turn_max,
+            "conversation_turn_max_seconds",
+            "conversational",
+        )
+
+    wake_cap = _positive_seconds(getattr(cfg, "WAKE_MAX_LISTEN_SECONDS", 5.0), 5.0)
+    source = (
+        "env:WAKE_MAX_LISTEN_SECONDS"
+        if os.getenv("WAKE_MAX_LISTEN_SECONDS") is not None
+        else "wake_max_listen_seconds"
+    )
     if cfg.FAST_VOICE_MODE:
-        return min(wake_cap, _positive_seconds(cfg.STT_MAX_RECORD_SECONDS, wake_cap))
-    return wake_cap
+        wake_cap = min(
+            wake_cap,
+            _positive_seconds(getattr(cfg, "STT_MAX_RECORD_SECONDS", wake_cap), wake_cap),
+        )
+        source = f"{source}+fast_voice_cap"
+
+    mode = "stable" if is_stable_voice_mode() else "discrete"
+    return WakeListenResolution(wake_cap, source, mode)
+
+
+def effective_wake_listen_seconds() -> float:
+    return resolve_wake_listen_seconds().wake_listen_seconds
+
+
+def format_wake_listen_diagnostics() -> str:
+    """Single-line wake listen resolution for status / debug output."""
+    res = resolve_wake_listen_seconds()
+    return (
+        f"wake_listen_seconds={res.wake_listen_seconds:.1f} "
+        f"source={res.source} mode={res.mode}"
+    )
 
 
 def effective_wake_cooldown_seconds() -> float:

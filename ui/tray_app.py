@@ -216,8 +216,30 @@ class JarvisTrayApp:
             except Exception as exc:
                 logger.warning("Voice loop ended: %s", exc)
                 self.runtime.record_result("", str(exc))
+            finally:
+                expected_stop = not (
+                    self.runtime.voice_enabled
+                    and self.runtime.running
+                    and self.app._running
+                )
+                if expected_stop:
+                    try:
+                        from core.thread_registry import get_thread_registry
+
+                        get_thread_registry().deregister_if_thread(
+                            "jarvis-voice-loop",
+                            threading.current_thread(),
+                        )
+                    except Exception:
+                        pass
 
         self._voice_thread = threading.Thread(target=_run, daemon=True, name="jarvis-voice")
+        try:
+            from core.thread_registry import get_thread_registry
+
+            get_thread_registry().register("jarvis-voice-loop", self._voice_thread)
+        except Exception:
+            pass
         self._voice_thread.start()
 
     def restart_background_services(self, *, reason: str = "watchdog") -> list[dict[str, object]]:
@@ -463,15 +485,24 @@ class JarvisTrayApp:
         self._watchdog = None
         if self._enable_watchdog:
             try:
-                from services.watchdog import WatchdogService
+                from services.watchdog_runtime import (
+                    attach_tray_to_watchdog,
+                    ensure_process_watchdog,
+                    get_process_watchdog,
+                    is_watchdog_running,
+                )
 
-                self._watchdog = WatchdogService(self)
-                self._watchdog.start()
-                append_startup_log("watchdog started")
-                try:
-                    self._watchdog.run_once()
-                except Exception as exc:
-                    logger.debug("Initial watchdog tick: %s", exc)
+                self.runtime.tray_enabled = True
+                if is_watchdog_running():
+                    attach_tray_to_watchdog(self)
+                    self._watchdog = get_process_watchdog()
+                    append_startup_log("watchdog reattached for tray")
+                else:
+                    self._watchdog = ensure_process_watchdog(
+                        runtime=self.runtime,
+                        tray_app=self,
+                    )
+                    append_startup_log("watchdog started")
             except Exception as exc:
                 logger.warning("Watchdog failed to start (tray continues): %s", exc)
                 print(f"[WARNING] Watchdog failed: {exc}", flush=True)

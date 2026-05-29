@@ -15,17 +15,23 @@ from reliability.voice_health import run_voice_acceptance
 
 def collect_all_track_scores(*, run_acceptance: bool = True) -> list[TrackScore]:
     if not run_acceptance:
-        # Lightweight estimates without full suite execution.
-        return [
-            TrackScore("Voice", 65.0, 85.0),
-            TrackScore("Memory", 55.0, 85.0),
-            TrackScore("Browser", 65.0, 85.0),
-            TrackScore("Desktop Operator", 50.0, 80.0),
-            TrackScore("Coding Assistant", 78.0, 90.0),
-            TrackScore("Integrations", 12.0, 60.0),
-            TrackScore("Reliability", 58.0, 85.0),
-            TrackScore("Performance", 62.0, 85.0),
+        # T-12 fix: return 0.0 scores rather than invented estimates.
+        # Invented numbers (65, 55, 78, …) gave a false impression of measured
+        # readiness.  0.0 makes clear that acceptance has not been run.
+        _targets = [
+            ("Voice", 85.0),
+            ("Memory", 85.0),
+            ("Browser", 85.0),
+            ("Desktop Operator", 80.0),
+            ("Coding Assistant", 90.0),
+            ("Integrations", 60.0),
+            ("Reliability", 85.0),
+            ("Performance", 85.0),
         ]
+        not_run = [TrackScore(track, 0.0, target) for track, target in _targets]
+        for s in not_run:
+            s.blockers.append("Acceptance suite was not run (run_acceptance=False).")
+        return not_run
     return [
         run_voice_acceptance(),
         run_memory_acceptance(),

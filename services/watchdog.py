@@ -19,6 +19,7 @@ from config import (
 from core.logger import setup_logger
 from services.health import HealthReport, run_jarvis_health_check
 from services.runtime_monitor import get_runtime_monitor
+from services.watchdog_context import WatchdogContext
 
 if TYPE_CHECKING:
     from ui.tray_app import JarvisTrayApp
@@ -41,12 +42,15 @@ class WatchdogService:
 
     def __init__(
         self,
-        tray_app: "JarvisTrayApp",
+        host: "JarvisTrayApp | WatchdogContext",
         *,
         interval_seconds: int | None = None,
         status_path: Path | None = None,
     ) -> None:
-        self._tray = tray_app
+        if isinstance(host, WatchdogContext):
+            self._ctx = host
+        else:
+            self._ctx = WatchdogContext(host.runtime, tray_app=host)
         self._interval = interval_seconds or WATCHDOG_INTERVAL_SECONDS
         self._status_path = status_path or WATCHDOG_STATUS_PATH
         self._stop = threading.Event()
@@ -64,6 +68,12 @@ class WatchdogService:
             daemon=True,
         )
         self._thread.start()
+        # S2.3: register watchdog itself so the thread registry is self-consistent.
+        try:
+            from core.thread_registry import get_thread_registry
+            get_thread_registry().register("jarvis-watchdog", self._thread)
+        except Exception:
+            pass
         logger.info("Watchdog started (interval=%ss)", self._interval)
 
     def stop(self) -> None:
@@ -74,18 +84,27 @@ class WatchdogService:
 
     def run_once(self) -> dict[str, Any]:
         """Single health pass; persist status; notify on new critical issues."""
+        # S2.3: check registered threads for unexpected deaths before the main health pass.
+        try:
+            from core.thread_registry import get_thread_registry
+            dead = get_thread_registry().heartbeat_check()
+            if dead:
+                logger.critical("Watchdog: dead threads detected: %s", dead)
+        except Exception as exc:
+            logger.debug("Thread registry heartbeat skipped: %s", exc)
+
         report = run_jarvis_health_check(
-            runtime=self._tray.runtime,
-            voice_thread=self._tray._voice_thread,
-            tray_running=self._tray.runtime.tray_enabled,
+            runtime=self._ctx.runtime,
+            voice_thread=self._ctx.voice_thread,
+            tray_running=self._ctx.tray_running,
         )
         runtime_status = get_runtime_monitor().run_once()
         recoveries = self._recover(report, runtime_status)
         if recoveries:
             report = run_jarvis_health_check(
-                runtime=self._tray.runtime,
-                voice_thread=self._tray._voice_thread,
-                tray_running=self._tray.runtime.tray_enabled,
+                runtime=self._ctx.runtime,
+                voice_thread=self._ctx.voice_thread,
+                tray_running=self._ctx.tray_running,
             )
             runtime_status = get_runtime_monitor().run_once()
         status = self._build_status(report, runtime_status, recoveries)
@@ -165,15 +184,14 @@ class WatchdogService:
         if not self._can_recover():
             return []
 
-        restart = getattr(self._tray, "restart_background_services", None)
-        raw_actions = restart(reason="watchdog") if callable(restart) else []
-        actions = list(raw_actions) if isinstance(raw_actions, (list, tuple)) else []
+        raw_actions = self._ctx.restart_background_services(reason="watchdog")
+        actions = list(raw_actions)
         runtime_issues = runtime_status.get("issues") or []
         if runtime_issues:
             try:
                 from ui.overlay_app import get_overlay_controller
 
-                if self._tray.runtime.overlay_enabled:
+                if self._ctx.runtime.overlay_enabled:
                     recovered = get_overlay_controller().recover_if_crashed(
                         reason="watchdog_runtime_issue"
                     )
@@ -231,7 +249,8 @@ class WatchdogService:
             from ui.notifications import notify
 
             msg = status.get("issues", ["Critical health issue"])[0]
-            notify("JARVIS Watchdog", msg[:240], icon=self._tray._icon)
+            icon = getattr(getattr(self._ctx, "tray_app", None), "_icon", None)
+            notify("JARVIS Watchdog", msg[:240], icon=icon)
         except Exception as exc:
             logger.debug("Watchdog notify failed: %s", exc)
 

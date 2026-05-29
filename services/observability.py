@@ -112,6 +112,8 @@ class ObservabilityService:
         self._overlay_frames = 0
         self._overlay_started = time.monotonic()
         self._overlay_last_fps = 0.0
+        # Rotating writers keyed by path (VF-2 fix).
+        self._jsonl_writers: dict[Path, Any] = {}
 
     def reset(self) -> None:
         with self._lock:
@@ -347,14 +349,24 @@ class ObservabilityService:
                 "trace_log_path": str(self.trace_path),
             }
 
+    def _get_jsonl_writer(self, path: Path) -> Any:
+        """Return (and cache) a RotatingJSONLWriter for *path*."""
+        if path not in self._jsonl_writers:
+            from core.rotating_jsonl import RotatingJSONLWriter
+
+            # event log: 10 MB × 3 rotations; trace log: 5 MB × 3 rotations.
+            max_bytes = 5_000_000 if path == self.trace_path else 10_000_000
+            self._jsonl_writers[path] = RotatingJSONLWriter(
+                path, max_bytes=max_bytes, backup_count=3
+            )
+        return self._jsonl_writers[path]
+
     def _append_jsonl(self, path: Path, record: dict[str, Any]) -> None:
         if not OBSERVABILITY_ENABLED:
             return
         try:
-            path.parent.mkdir(parents=True, exist_ok=True)
-            with path.open("a", encoding="utf-8") as fh:
-                fh.write(json.dumps(record, ensure_ascii=False, sort_keys=True) + "\n")
-        except OSError as exc:
+            self._get_jsonl_writer(path).write(record)
+        except Exception as exc:
             logger.debug("Observability JSONL write failed: %s", exc)
 
 

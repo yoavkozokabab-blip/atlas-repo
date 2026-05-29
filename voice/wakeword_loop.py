@@ -8,7 +8,10 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 from core.logger import setup_logger
-from voice.fast_voice import effective_wake_cooldown_seconds, effective_wake_listen_seconds
+from voice.fast_voice import (
+    effective_wake_cooldown_seconds,
+    resolve_wake_listen_seconds,
+)
 from voice.latency_tracker import (
     begin_voice_command,
     finish_and_log,
@@ -89,7 +92,14 @@ def run_post_wake_listening_session(
     begin_voice_command(source="wakeword")
     mark_wake_detected(0.0)
 
-    listen_seconds = effective_wake_listen_seconds()
+    wake_listen = resolve_wake_listen_seconds()
+    listen_seconds = wake_listen.wake_listen_seconds
+    logger.info(
+        "wake_session: listen_seconds=%.1f source=%s mode=%s",
+        listen_seconds,
+        wake_listen.source,
+        wake_listen.mode,
+    )
     notify_overlay_listening()
     play_wake_greeting_async(app)
 

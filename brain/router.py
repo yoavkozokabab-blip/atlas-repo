@@ -15,7 +15,20 @@ from config import (
     SESSION_SUMMARY_EVERY_N,
     WORKSPACE_AWARENESS_ENABLED,
 )
+from core.rotating_jsonl import RotatingJSONLWriter
 from actions.registry import ActionRegistry
+
+# Lazy writer cache for command history (VF-2 fix).
+_history_writers: dict[str, RotatingJSONLWriter] = {}
+
+
+def _get_history_writer() -> RotatingJSONLWriter:
+    path_str = str(COMMAND_HISTORY_PATH)
+    if path_str not in _history_writers:
+        _history_writers[path_str] = RotatingJSONLWriter(
+            Path(COMMAND_HISTORY_PATH), max_bytes=5_000_000, backup_count=5
+        )
+    return _history_writers[path_str]
 from brain.aliases import resolve_alias
 from brain.command_parser import enrich_request, resolve_follow_up
 from brain.intent_classifier import classify
@@ -28,6 +41,41 @@ from core.types import ActionStatus, CommandRequest, CommandResult, Intent
 from core.logger import setup_logger
 
 logger = setup_logger("jarvis.router")
+
+def _json_serializable(value: object) -> bool:
+    try:
+        json.dumps(value)
+        return True
+    except (TypeError, ValueError):
+        return False
+
+
+def _agent_metadata_for_history(
+    result: CommandResult,
+    *,
+    log_meta: dict | None = None,
+) -> dict[str, object]:
+    """Optional agent/runtime fields for command_history.jsonl (Sprint 3.2)."""
+    extra: dict[str, object] = {}
+    data = result.data or {}
+
+    for key in ("agent_id", "agent_health", "routing_source"):
+        if key in data:
+            extra[key] = data[key]
+
+    block_reason = data.get("block_reason")
+    if block_reason is None and data.get("blocked_by_agent_health"):
+        block_reason = result.error or result.summary
+    if block_reason is not None:
+        extra["block_reason"] = str(block_reason)[:500]
+
+    execution_context = data.get("execution_context")
+    if execution_context is None and log_meta:
+        execution_context = log_meta.get("execution_context")
+    if execution_context is not None and _json_serializable(execution_context):
+        extra["execution_context"] = execution_context
+
+    return extra
 
 
 class CommandRouter:
@@ -443,10 +491,10 @@ class CommandRouter:
         transcribed = (log_meta or {}).get("transcribed_text")
         if transcribed:
             entry["transcribed_text"] = str(transcribed)[:500]
+        entry.update(_agent_metadata_for_history(result, log_meta=log_meta))
         try:
-            with Path(COMMAND_HISTORY_PATH).open("a", encoding="utf-8") as f:
-                f.write(json.dumps(entry, ensure_ascii=False) + "\n")
-        except OSError as exc:
+            _get_history_writer().write_line(json.dumps(entry, ensure_ascii=False))
+        except Exception as exc:
             logger.warning("Failed to write command history: %s", exc)
 
     def _record_approval_inbox(self, confirmation_id: str, request: CommandRequest) -> None:

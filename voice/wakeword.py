@@ -248,6 +248,12 @@ class WakeWordDetector:
             daemon=True,
         )
         self._thread.start()
+        # S2.3: register wake-word thread so the watchdog detects unexpected deaths.
+        try:
+            from core.thread_registry import get_thread_registry
+            get_thread_registry().update("jarvis-wakeword", self._thread)
+        except Exception:
+            pass
         display = ", ".join(parse_wake_display_phrases())
         logger.info(
             "WakeWordDetector started model=%s trained=%s phrases=[%s] threshold=%.2f path=%s",

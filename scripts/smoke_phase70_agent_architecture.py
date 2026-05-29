@@ -34,7 +34,7 @@ def main() -> None:
         _fail(f"expected 7 agent capabilities, got {len(catalog)}")
 
     assert agent_for_intent(Intent.REMEMBER_FACT) == AgentId.MEMORY
-    assert agent_for_intent(Intent.OPEN_BROWSER) == AgentId.OPERATOR
+    assert agent_for_intent(Intent.OPEN_BROWSER) == AgentId.BROWSER
     assert agent_for_intent(Intent.SHOW_VOICE_HEALTH) == AgentId.CONVERSATION
     assert agent_for_intent(Intent.START_TASK) == AgentId.PLANNING
 

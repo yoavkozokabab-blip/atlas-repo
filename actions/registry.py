@@ -1060,17 +1060,37 @@ class ActionRegistry:
         return intent in self._actions
 
     def execute(self, request: CommandRequest) -> CommandResult:
+        from agents.runtime_wiring import (
+            attach_agent_runtime_metadata,
+            block_unhealthy_result,
+            resolve_execution_context,
+            should_block_unhealthy_execution,
+        )
+
+        ctx = resolve_execution_context(request)
         handler = self._actions.get(request.intent.value)
         if handler is None:
             if request.intent == Intent.SHUTDOWN_JARVIS:
-                return result_success(
+                result = result_success(
                     Intent.SHUTDOWN_JARVIS,
                     "Shutting down JARVIS.",
                 )
-            from core.results import result_not_implemented
+            else:
+                from core.results import result_not_implemented
 
-            return result_not_implemented(
-                request.intent,
-                f"No handler registered for '{request.intent.value}'.",
-            )
-        return handler.execute(request)
+                result = result_not_implemented(
+                    request.intent,
+                    f"No handler registered for '{request.intent.value}'.",
+                )
+            return attach_agent_runtime_metadata(result, ctx)
+
+        block, reason = should_block_unhealthy_execution(
+            ctx.agent_id,
+            request.intent,
+            ctx.agent_health,
+        )
+        if block:
+            return block_unhealthy_result(request, ctx, reason)
+
+        result = handler.execute(request)
+        return attach_agent_runtime_metadata(result, ctx)

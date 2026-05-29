@@ -1,4 +1,11 @@
-"""Agent architecture primitives (Phase 70) — delegation only, no new capabilities."""
+"""Agent architecture primitives (Phase 70) — delegation only, no new capabilities.
+
+Sprint 3 additions:
+- BROWSER      extracted from OPERATOR; owns browser runtime, DOM read, web search
+- DESKTOP      extracted from OPERATOR; owns window control, screen capture, apps
+- TRADING      extracted from RESEARCH; owns trading loop, dashboard, kill-switch
+- HEALTH_MONITOR  new; owns system health, storage checks, dependency validation
+"""
 
 from __future__ import annotations
 
@@ -13,10 +20,15 @@ class AgentId(str, Enum):
     EXECUTIVE = "executive"
     CONVERSATION = "conversation"
     MEMORY = "memory"
-    OPERATOR = "operator"
+    OPERATOR = "operator"       # legacy shim — browser + desktop now split below
     RESEARCH = "research"
     CODING = "coding"
     PLANNING = "planning"
+    # --- Sprint 3 additions ---
+    BROWSER = "browser"
+    DESKTOP = "desktop"
+    TRADING = "trading"
+    HEALTH_MONITOR = "health_monitor"
 
 
 @dataclass(frozen=True)

@@ -12,13 +12,14 @@ from voice.transcriber import TranscriptionResult
 from voice.voice_loop import run_voice_loop
 
 
-def _stt(text: str) -> TranscriptionResult:
+def _stt(text: str, *, low_confidence: bool = False) -> TranscriptionResult:
     return TranscriptionResult(
         text=text,
         language="en",
         model="medium",
         device="cpu",
         compute_type="int8",
+        low_confidence=low_confidence,
     )
 
 
@@ -100,6 +101,85 @@ def test_voice_loop_hebrew_through_router(tmp_path: Path):
     route.assert_called_once()
     assert route.call_args[0][0] == "פתח קרסור"
     assert route.call_args[1]["input_mode"] == "voice"
+
+
+def test_voice_loop_records_stt_latency_before_routing(tmp_path: Path):
+    wav = tmp_path / "test.wav"
+    wav.write_bytes(b"RIFF")
+    app = JarvisApp(speak_enabled=False)
+    app._running = True
+    app.runtime.set_voice(True)
+
+    def fake_record():
+        app._running = False
+        return wav
+
+    with (
+        patch("voice.voice_loop.record_until_enter", side_effect=fake_record),
+        patch("voice.voice_loop.transcribe_audio_detailed", return_value=_stt("open cursor")),
+        patch("voice.voice_loop.record_stt_result") as record_stt,
+        patch.object(app.router, "route") as route,
+    ):
+        route.return_value = MagicMock(
+            intent=Intent.OPEN_CURSOR,
+            status=ActionStatus.SUCCESS,
+            summary="Opened Cursor.",
+            data={},
+            error=None,
+            requires_confirmation=False,
+            confirmation_id=None,
+            next_suggestions=[],
+        )
+        run_voice_loop(app)
+
+    record_stt.assert_called_once()
+    _, kwargs = record_stt.call_args
+    assert kwargs["transcribe_ms"] >= 0.0
+    assert kwargs["empty"] is False
+    assert kwargs["raw_text"] == "open cursor"
+    assert kwargs["normalized_text"] == "open cursor"
+    route.assert_called_once()
+
+
+def test_voice_loop_low_confidence_notifies_and_still_routes_final(tmp_path: Path):
+    wav = tmp_path / "test.wav"
+    wav.write_bytes(b"RIFF")
+    app = JarvisApp(speak_enabled=False)
+    app._running = True
+    app.runtime.set_voice(True)
+    app.runtime.set_overlay(True)
+
+    def fake_record():
+        app._running = False
+        return wav
+
+    with (
+        patch("voice.voice_loop.record_until_enter", side_effect=fake_record),
+        patch(
+            "voice.voice_loop.transcribe_audio_detailed",
+            return_value=_stt("open cursor", low_confidence=True),
+        ),
+        patch("voice.voice_loop.notify_low_confidence") as notify_low,
+        patch.object(app.router, "route") as route,
+    ):
+        route.return_value = MagicMock(
+            intent=Intent.OPEN_CURSOR,
+            status=ActionStatus.SUCCESS,
+            summary="Opened Cursor.",
+            data={},
+            error=None,
+            requires_confirmation=False,
+            confirmation_id=None,
+            next_suggestions=[],
+        )
+        run_voice_loop(app)
+
+    notify_low.assert_called_once_with(
+        app,
+        overlay_enabled=True,
+        speak_prompt=False,
+    )
+    route.assert_called_once()
 
 
 def test_voice_loop_empty_transcript_skips_router(tmp_path: Path):

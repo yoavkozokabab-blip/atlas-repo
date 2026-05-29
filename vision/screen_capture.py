@@ -77,6 +77,7 @@ def _capture_dir() -> Path:
 
 
 def _prune_old_screenshots(directory: Path) -> None:
+    """Delete screenshots older than VISION_MAX_SCREENSHOT_AGE_SECONDS."""
     if VISION_MAX_SCREENSHOT_AGE_SECONDS <= 0:
         return
     cutoff = datetime.now(timezone.utc).timestamp() - VISION_MAX_SCREENSHOT_AGE_SECONDS
@@ -85,7 +86,26 @@ def _prune_old_screenshots(directory: Path) -> None:
             if item.stat().st_mtime < cutoff:
                 item.unlink(missing_ok=True)
     except OSError as exc:
-        logger.debug("Screenshot prune skipped: %s", exc)
+        logger.debug("Screenshot age-prune skipped: %s", exc)
+
+
+# S2.7 — Maximum screenshot count.  Regardless of age, keep only the most
+# recent _MAX_SCREENSHOTS files so the directory never grows without bound.
+_MAX_SCREENSHOTS: int = 10
+
+
+def _prune_screenshot_count(directory: Path) -> None:
+    """Keep only the _MAX_SCREENSHOTS most recent PNG files in *directory*."""
+    files: list[tuple[float, Path]] = []
+    for item in directory.glob("*.png"):
+        try:
+            files.append((item.stat().st_mtime, item))
+        except OSError as exc:
+            logger.debug("Screenshot count-prune stat skipped for %s: %s", item, exc)
+    files.sort(key=lambda pair: pair[0], reverse=True)
+    for _mtime, old in files[_MAX_SCREENSHOTS:]:
+        if not remove_file_best_effort(old):
+            logger.debug("Screenshot count-prune could not remove %s", old)
 
 
 def _save_image(image: Any, *, force_save: bool) -> Path | None:
@@ -98,6 +118,8 @@ def _save_image(image: Any, *, force_save: bool) -> Path | None:
     stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     dest = directory / f"{stamp}.png"
     image.save(dest, format="PNG")
+    # S2.7: enforce count limit AFTER saving so we always keep the just-saved file.
+    _prune_screenshot_count(directory)
     return dest.resolve()
 
 

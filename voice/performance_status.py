@@ -35,9 +35,12 @@ def format_voice_performance_status() -> str:
     from voice.stt_diagnostics import format_diagnostics_lines
     from voice.transcriber import get_stt_status
 
+    from voice.fast_voice import format_wake_listen_diagnostics
+
     lines = ["Voice performance status", ""]
     for key, val in voice_performance_settings():
         lines.append(f"  {key}={val}")
+    lines.append(f"  {format_wake_listen_diagnostics()}")
     stt = get_stt_status()
     lines.append("")
     lines.append("STT runtime")

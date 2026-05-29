@@ -11,7 +11,11 @@ from core.app import JarvisApp
 from core.runtime_state import RuntimeState, reset_runtime_state
 from ui.overlay_app import OverlayController, reset_overlay_controller
 from ui.overlay_state import OverlayPhase
-from voice.fast_voice import effective_wake_listen_seconds, effective_wake_silence_seconds
+from voice.fast_voice import (
+    effective_wake_listen_seconds,
+    effective_wake_silence_seconds,
+    resolve_wake_listen_seconds,
+)
 from voice.microphone import _silence_stop_ready, record_for_seconds
 from voice.normalization import normalize_wake_transcript
 from voice.performance_status import format_voice_performance_status
@@ -153,6 +157,54 @@ def test_recommended_env_example_values():
 
 
 def test_effective_wake_listen_default_cap(monkeypatch):
+    from conversation.human_runtime import (
+        enable_human_conversational_runtime,
+        reset_human_runtime_for_tests,
+    )
+
+    reset_human_runtime_for_tests()
     monkeypatch.setattr("config.WAKE_MAX_LISTEN_SECONDS", 5.0, raising=False)
     monkeypatch.setattr("config.FAST_VOICE_MODE", False, raising=False)
-    assert effective_wake_listen_seconds() == 5.0
+    monkeypatch.setattr("config.HUMAN_CONVERSATIONAL_RUNTIME_ENABLED", True, raising=False)
+    monkeypatch.setattr("config.CONVERSATION_CONTINUOUS_MIC_ENABLED", True, raising=False)
+    enable_human_conversational_runtime()
+    res = resolve_wake_listen_seconds()
+    assert res.wake_listen_seconds == 5.0
+    assert res.mode in {"stable", "discrete"}
+    assert res.source.startswith("wake_max_listen_seconds") or res.source.startswith(
+        "env:WAKE_MAX_LISTEN_SECONDS"
+    )
+
+
+def test_conversational_session_uses_turn_max(monkeypatch):
+    from conversation.human_runtime import (
+        activate_session_for_tests,
+        reset_human_runtime_for_tests,
+    )
+
+    reset_human_runtime_for_tests()
+    monkeypatch.setattr("config.CONVERSATION_TURN_MAX_SECONDS", 45.0, raising=False)
+    activate_session_for_tests()
+    res = resolve_wake_listen_seconds()
+    assert res.wake_listen_seconds == 45.0
+    assert res.mode == "conversational"
+    assert res.source == "conversation_turn_max_seconds"
+
+
+def test_wake_listen_env_override(monkeypatch):
+    from conversation.human_runtime import reset_human_runtime_for_tests
+
+    reset_human_runtime_for_tests()
+    monkeypatch.setenv("WAKE_MAX_LISTEN_SECONDS", "7.5")
+    monkeypatch.setattr("config.WAKE_MAX_LISTEN_SECONDS", 7.5, raising=False)
+    monkeypatch.setattr("config.FAST_VOICE_MODE", False, raising=False)
+    res = resolve_wake_listen_seconds()
+    assert res.wake_listen_seconds == 7.5
+    assert "WAKE_MAX_LISTEN_SECONDS" in res.source
+
+
+def test_diagnostics_include_wake_listen_resolution():
+    text = format_voice_performance_status()
+    assert "wake_listen_seconds=" in text
+    assert "source=" in text
+    assert "mode=" in text

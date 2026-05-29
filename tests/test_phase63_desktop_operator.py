@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import os
+import time
+from types import SimpleNamespace
 from unittest.mock import patch
 
 import pytest
@@ -57,3 +60,36 @@ def test_what_is_on_my_screen_action(_mock):
         CommandRequest(raw_text="what is on my screen", intent=Intent.WHAT_IS_ON_MY_SCREEN)
     )
     assert "REAL DESKTOP VISION" in result.summary
+
+
+def test_desktop_screenshot_cleanup_keeps_newest(monkeypatch, tmp_path):
+    import desktop.vision_runtime as runtime
+
+    class FakeImage:
+        def save(self, path, format=None):
+            path.write_bytes(b"new")
+
+    base = time.time() - 100.0
+    for idx in range(12):
+        path = tmp_path / f"old_{idx}.png"
+        path.write_bytes(b"old")
+        os.utime(path, (base + idx, base + idx))
+
+    monkeypatch.setattr(runtime, "SCREEN_UNDERSTANDING_ENABLED", True)
+    monkeypatch.setattr(runtime, "_SCREENSHOT_DIR", tmp_path)
+    monkeypatch.setattr(runtime, "add_ui_transition", lambda *_args, **_kwargs: None)
+    removed: list[str] = []
+    monkeypatch.setattr(
+        runtime,
+        "remove_file_best_effort",
+        lambda path, **_kwargs: removed.append(path.name) or True,
+    )
+
+    capture = SimpleNamespace(ok=True, image=FakeImage(), error=None, warning=None)
+    with patch("vision.screen_capture.safe_capture_screen", return_value=capture):
+        ok, saved_path, _msg = runtime.capture_active_monitor()
+
+    assert ok is True
+    assert saved_path
+    assert os.path.exists(saved_path)
+    assert removed == ["old_2.png", "old_1.png", "old_0.png"]

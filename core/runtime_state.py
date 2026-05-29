@@ -18,6 +18,8 @@ class RuntimeState:
     tray_enabled: bool = False
     overlay_enabled: bool = False
     running: bool = True
+    degraded: bool = False
+    degraded_reasons: list[str] = field(default_factory=list)
     last_result_summary: str = ""
     last_error: str | None = None
     wake_word_enabled: bool = False
@@ -99,6 +101,22 @@ class RuntimeState:
             self.running = False
             self._touch_locked("stop")
 
+    def mark_degraded(self, reason: str) -> None:
+        reason = (reason or "").strip()
+        if not reason:
+            return
+        with self._lock:
+            self.degraded = True
+            if reason not in self.degraded_reasons:
+                self.degraded_reasons.append(reason[:300])
+            self._touch_locked("degraded")
+
+    def clear_degraded(self) -> None:
+        with self._lock:
+            self.degraded = False
+            self.degraded_reasons.clear()
+            self._touch_locked("degraded_clear")
+
     def increment_counter(self, name: str, amount: int = 1) -> int:
         with self._lock:
             current = self.runtime_counters.get(name, 0) + int(amount)
@@ -132,6 +150,8 @@ class RuntimeState:
                 "tray_enabled": self.tray_enabled,
                 "overlay_enabled": self.overlay_enabled,
                 "running": self.running,
+                "degraded": self.degraded,
+                "degraded_reasons": list(self.degraded_reasons),
                 "wake_word_enabled": self.wake_word_enabled,
                 "wake_word_listening_active": self.wake_word_listening_active,
                 "wake_word_detection_count": self.wake_word_detection_count,
