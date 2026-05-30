@@ -1,4 +1,10 @@
-"""Run Phase 84 external holdout benchmark (read-only static analysis)."""
+"""Run the external holdout benchmark through the UNIFIED ENGINE (Phase 92A).
+
+Primary output (pass/fail) comes from the unified engine for both the QuixBugs
+in-domain baseline and the out-of-domain holdout. The legacy semantic-path
+numbers are printed only as a clearly labeled comparison and never drive
+pass/fail. Read-only static analysis; no target code is executed.
+"""
 
 from __future__ import annotations
 
@@ -9,19 +15,37 @@ _ROOT = Path(__file__).resolve().parents[1]
 if str(_ROOT) not in sys.path:
     sys.path.insert(0, str(_ROOT))
 
-from builder_core import benchmark as quixbugs_benchmark
-from builder_core.external_benchmark import evaluate_holdout, format_holdout_report
+from builder_core.bug_intelligence import engine_benchmark
+
+QUIXBUGS = r"C:\Repos\QuixBugs"
 
 
 def main() -> int:
-    print("=== QuixBugs baseline (in-domain) ===")
-    quix = quixbugs_benchmark.evaluate_quixbugs(r"C:\Repos\QuixBugs")
-    print(quixbugs_benchmark.format_report(quix))
+    print("=== QuixBugs baseline (in-domain) — unified engine ===")
+    quix = engine_benchmark.evaluate_quixbugs_engine(QUIXBUGS)
+    print(engine_benchmark.format_report(quix))
     print()
 
-    print("=== External holdout (out-of-domain / transfer) ===")
-    holdout = evaluate_holdout()
-    print(format_holdout_report(holdout))
+    print("=== External holdout (out-of-domain / transfer) — unified engine ===")
+    holdout = engine_benchmark.evaluate_holdout_engine()
+    print(engine_benchmark.format_holdout_report(holdout))
+
+    # --- legacy comparison only (does NOT drive pass/fail) ---------------
+    try:
+        from builder_core import external_benchmark as legacy_holdout
+        legacy = legacy_holdout.evaluate_holdout()
+        if legacy.get("available"):
+            print()
+            print("=== [comparison only] legacy semantic-path holdout ===")
+            print(f"cases analyzed: {legacy['cases_analyzed']}")
+            print(f"true positives: {legacy['true_positives']}")
+            print(f"false positives: {legacy['false_positives']}")
+            print(f"precision: {legacy['precision']:.4f}")
+            print(f"recall: {legacy['recall']:.4f}")
+    except Exception:
+        pass  # comparison is optional and must never affect the result
+
+    # pass/fail is driven solely by the unified-engine holdout.
     return 0 if holdout.get("available") else 1
 
 
