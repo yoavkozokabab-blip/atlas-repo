@@ -14,10 +14,13 @@ if str(_ROOT) not in sys.path:
 
 def main() -> int:
     from brain.llm_tool_router import (
+        allow_llm_fn_injection_for_tests,
         get_router_invoke_count,
         reset_llm_tool_router_for_tests,
         route_miss,
         set_llm_fn_for_tests,
+        set_tool_registry_for_tests,
+        shadow_route_miss,
     )
     from core.types import CommandRequest, Intent
     from tests.test_phase78_tool_registry import FakeActionRegistry
@@ -26,6 +29,7 @@ def main() -> int:
 
     reset_llm_tool_router_for_tests()
     reset_tool_registry()
+    allow_llm_fn_injection_for_tests()
     ok = True
 
     fake = FakeActionRegistry()
@@ -33,9 +37,7 @@ def main() -> int:
     for spec in default_specs():
         reg.register(spec)
 
-    import tools.catalog as cat
-
-    cat.build_default_tool_registry = lambda **_: reg  # type: ignore[assignment]
+    set_tool_registry_for_tests(reg)
 
     def _llm(raw: str):
         def _fn(_s: str, _u: str) -> str:
@@ -45,12 +47,9 @@ def main() -> int:
 
     req = CommandRequest(raw_text="x", intent=Intent.UNKNOWN, confidence=0.0)
 
-    # Flag off — no routing
     os.environ["LLM_TOOL_ROUTER_ENABLED"] = "false"
     os.environ["LLM_TOOL_ROUTER_SHADOW"] = "false"
     set_llm_fn_for_tests(_llm(json.dumps({"tool_call": {"name": "assistant.capabilities", "args": {}}})))
-    from brain.llm_tool_router import shadow_route_miss
-
     shadow_route_miss("x", rule_request=req)
     if get_router_invoke_count() != 0:
         print("FAIL router ran with flags off")
@@ -77,18 +76,18 @@ def main() -> int:
         rule_request=req,
         llm_fn=_llm(json.dumps({"tool_call": {"name": "not.real", "args": {}}})),
     )
-    if hall.outcome != "clarify":
+    if hall.outcome != "no_tool":
         print(f"FAIL hallucinated tool outcome={hall.outcome}")
         ok = False
     else:
-        print("OK hallucinated tool -> clarify")
+        print("OK hallucinated tool -> no_tool")
 
     junk = route_miss("odd", rule_request=req, llm_fn=_llm("<<<not json>>>"))
-    if junk.outcome != "clarify":
+    if junk.outcome != "no_tool":
         print(f"FAIL malformed outcome={junk.outcome}")
         ok = False
     else:
-        print("OK malformed output -> clarify")
+        print("OK malformed output -> no_tool")
 
     if fake.calls:
         print("FAIL actions executed during safety smoke")
@@ -96,6 +95,8 @@ def main() -> int:
     else:
         print("OK no tool execution")
 
+    set_tool_registry_for_tests(None)
+    set_llm_fn_for_tests(None)
     print("SMOKE PASS phase79_safety" if ok else "SMOKE FAIL phase79_safety")
     return 0 if ok else 1
 

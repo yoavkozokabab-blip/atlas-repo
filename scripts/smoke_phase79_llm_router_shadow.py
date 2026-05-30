@@ -1,4 +1,4 @@
-"""Smoke: Phase 79 shadow LLM tool router — logs only, classifier stays authoritative."""
+"""Smoke: Phase 79 router shadow mode — logs only, classifier result unchanged."""
 
 from __future__ import annotations
 
@@ -22,7 +22,12 @@ def main() -> int:
     cfg.SEMANTIC_UNDERSTANDING_ENABLED = False
     cfg.LLM_CLASSIFIER_ENABLED = False
 
-    from brain.llm_tool_router import reset_llm_tool_router_for_tests, set_llm_fn_for_tests
+    from brain.llm_tool_router import (
+        allow_llm_fn_injection_for_tests,
+        reset_llm_tool_router_for_tests,
+        set_llm_fn_for_tests,
+        set_tool_registry_for_tests,
+    )
     from brain.router import CommandRouter
     from core.types import Intent
     from tests.test_phase78_tool_registry import FakeActionRegistry
@@ -31,6 +36,7 @@ def main() -> int:
 
     reset_llm_tool_router_for_tests()
     reset_tool_registry()
+    allow_llm_fn_injection_for_tests()
     ok = True
 
     fake = FakeActionRegistry()
@@ -38,14 +44,7 @@ def main() -> int:
     for spec in default_specs():
         reg.register(spec)
 
-    import tools.catalog as cat
-
-    original_build = cat.build_default_tool_registry
-
-    def _build(**kwargs):
-        return reg
-
-    cat.build_default_tool_registry = _build  # type: ignore[assignment]
+    set_tool_registry_for_tests(reg)
 
     def _fake_llm(_system: str, user: str) -> str:
         request_part = user.split("Candidate tools:")[0].lower()
@@ -57,49 +56,53 @@ def main() -> int:
 
     from brain import llm_tool_router
 
-    jarvis_router = CommandRouter()
+    router = CommandRouter()
     before = llm_tool_router.get_router_invoke_count()
-    hit = jarvis_router.route("show capabilities")
+    hit = router.route("show capabilities")
     if hit.intent != Intent.SHOW_CAPABILITIES:
         print(f"FAIL confident route intent={hit.intent}")
         ok = False
     elif llm_tool_router.get_router_invoke_count() != before:
-        print("FAIL shadow LLM router invoked on confident hit")
+        print("FAIL shadow router invoked on confident hit")
         ok = False
     else:
         print("OK confident hit skips shadow router")
 
-    miss = jarvis_router.route("phase79 shadow smoke unmapped phrase")
+    miss = router.route("phase79 router shadow unmapped phrase")
     if miss.intent not in (Intent.UNKNOWN, Intent.CLARIFY):
-        print(f"FAIL miss route changed to {miss.intent}")
+        print(f"FAIL classifier result changed to {miss.intent}")
         ok = False
     elif llm_tool_router.get_router_invoke_count() <= before:
-        print("FAIL shadow LLM router not invoked on miss")
+        print("FAIL shadow router not invoked on miss")
         ok = False
     elif fake.calls:
-        print("FAIL tool registry invoked during shadow")
+        print("FAIL tool executed during shadow")
         ok = False
     else:
-        print(f"OK miss shadow logged (route intent={miss.intent.value})")
+        print(f"OK classifier unchanged on miss ({miss.intent.value})")
 
     from config import DATA_DIR
 
-    audit = Path(DATA_DIR) / "llm_router_audit.jsonl"
-    if not audit.is_file():
-        print("FAIL audit file missing")
+    audit_path = Path(DATA_DIR) / "llm_router_audit.jsonl"
+    if not audit_path.is_file():
+        print("FAIL audit missing")
         ok = False
     else:
-        last = json.loads(audit.read_text(encoding="utf-8").strip().splitlines()[-1])
+        last = json.loads(audit_path.read_text(encoding="utf-8").strip().splitlines()[-1])
+        blob = json.dumps(last)
         if last.get("executed") is not False:
             print("FAIL audit executed flag")
             ok = False
+        elif "user_text" in last or "llm_raw" in blob.lower():
+            print("FAIL audit leaked raw user/llm payload")
+            ok = False
         else:
-            print(f"OK audit outcome={last.get('outcome')!r}")
+            print(f"OK audit outcome={last.get('outcome')!r} fingerprint={last.get('user_fingerprint')!r}")
 
-    cat.build_default_tool_registry = original_build  # type: ignore[assignment]
+    set_tool_registry_for_tests(None)
     set_llm_fn_for_tests(None)
 
-    print("SMOKE PASS phase79_shadow" if ok else "SMOKE FAIL phase79_shadow")
+    print("SMOKE PASS phase79_llm_router_shadow" if ok else "SMOKE FAIL phase79_llm_router_shadow")
     return 0 if ok else 1
 
 

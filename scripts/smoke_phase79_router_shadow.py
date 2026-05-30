@@ -22,7 +22,12 @@ def main() -> int:
     cfg.SEMANTIC_UNDERSTANDING_ENABLED = False
     cfg.LLM_CLASSIFIER_ENABLED = False
 
-    from brain.llm_tool_router import reset_llm_tool_router_for_tests, set_llm_fn_for_tests
+    from brain.llm_tool_router import (
+        allow_llm_fn_injection_for_tests,
+        reset_llm_tool_router_for_tests,
+        set_llm_fn_for_tests,
+        set_tool_registry_for_tests,
+    )
     from brain.router import CommandRouter
     from core.types import Intent
     from tests.test_phase78_tool_registry import FakeActionRegistry
@@ -31,6 +36,7 @@ def main() -> int:
 
     reset_llm_tool_router_for_tests()
     reset_tool_registry()
+    allow_llm_fn_injection_for_tests()
     ok = True
 
     fake = FakeActionRegistry()
@@ -38,10 +44,7 @@ def main() -> int:
     for spec in default_specs():
         reg.register(spec)
 
-    import tools.catalog as cat
-
-    original_build = cat.build_default_tool_registry
-    cat.build_default_tool_registry = lambda **_: reg  # type: ignore[assignment]
+    set_tool_registry_for_tests(reg)
 
     def _fake_llm(_system: str, user: str) -> str:
         request_part = user.split("Candidate tools:")[0].lower()
@@ -96,7 +99,7 @@ def main() -> int:
         else:
             print(f"OK audit outcome={last.get('outcome')!r} fingerprint={last.get('user_fingerprint')!r}")
 
-    cat.build_default_tool_registry = original_build  # type: ignore[assignment]
+    set_tool_registry_for_tests(None)
     set_llm_fn_for_tests(None)
 
     print("SMOKE PASS phase79_router_shadow" if ok else "SMOKE FAIL phase79_router_shadow")

@@ -16,7 +16,13 @@ def main() -> int:
     os.environ["LLM_TOOL_ROUTER_ENABLED"] = "true"
     os.environ["LLM_TOOL_ROUTER_SHADOW"] = "true"
 
-    from brain.llm_tool_router import reset_llm_tool_router_for_tests, route_miss, set_llm_fn_for_tests
+    from brain.llm_tool_router import (
+        allow_llm_fn_injection_for_tests,
+        reset_llm_tool_router_for_tests,
+        route_miss,
+        set_llm_fn_for_tests,
+        set_tool_registry_for_tests,
+    )
     from core.types import CommandRequest, Intent
     from tests.test_phase78_tool_registry import FakeActionRegistry
     from tools.catalog import default_specs
@@ -24,6 +30,7 @@ def main() -> int:
 
     reset_llm_tool_router_for_tests()
     reset_tool_registry()
+    allow_llm_fn_injection_for_tests()
     ok = True
 
     fake = FakeActionRegistry()
@@ -31,9 +38,7 @@ def main() -> int:
     for spec in default_specs():
         reg.register(spec)
 
-    import tools.catalog as cat
-
-    cat.build_default_tool_registry = lambda **_: reg  # type: ignore[assignment]
+    set_tool_registry_for_tests(reg)
 
     cases = {
         "what can you do today": json.dumps(
@@ -80,6 +85,7 @@ def main() -> int:
     else:
         print("OK no tool execution")
 
+    set_tool_registry_for_tests(None)
     set_llm_fn_for_tests(None)
     print("SMOKE PASS phase79_fake" if ok else "SMOKE FAIL phase79_fake")
     return 0 if ok else 1

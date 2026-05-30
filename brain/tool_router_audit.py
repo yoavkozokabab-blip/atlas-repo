@@ -20,6 +20,24 @@ _SECRET_KEY_RE = re.compile(
     r"private_key|access_key|refresh_token|session)",
     re.IGNORECASE,
 )
+_SAFE_FALLBACK_REASONS = frozenset({
+    "circuit_breaker_open",
+    "hallucinated_tool",
+    "llm_timeout",
+    "malformed_llm_output",
+    "no_candidates",
+    "not_in_candidates",
+    "safety_class_blocked",
+    "shadow_disabled",
+    "unknown_kind",
+    "user_forbidden_phrase",
+})
+_TYPED_FALLBACK_PREFIXES = frozenset({
+    "invalid_args",
+    "llm_error",
+    "registry_unavailable",
+})
+_EXCEPTION_TYPE_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*(?:Error|Exception)$")
 
 
 def _audit_path() -> Path:
@@ -75,12 +93,28 @@ def _redact_args(args: dict[str, Any] | None) -> dict[str, Any]:
     return {str(k): _redact_value(str(k), v) for k, v in (args or {}).items()}
 
 
+def _sanitize_fallback_reason(reason: str) -> str:
+    raw = str(reason or "")
+    if not raw:
+        return ""
+    if raw in _SAFE_FALLBACK_REASONS:
+        return raw
+    prefix, separator, detail = raw.partition(":")
+    if (
+        separator
+        and prefix in _TYPED_FALLBACK_PREFIXES
+        and _EXCEPTION_TYPE_RE.fullmatch(detail)
+    ):
+        return f"{prefix}:{detail}"
+    return f"redacted:sha256={_sha256_fingerprint(raw.encode('utf-8', errors='replace'))}"
+
+
 def _write(record: dict[str, Any]) -> None:
     record.setdefault("ts", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
     try:
         _get_writer().write_line(json.dumps(record, ensure_ascii=True))
     except Exception as exc:
-        logger.warning("llm_router audit write failed: %s", exc)
+        logger.warning("llm_router audit write failed: %s", type(exc).__name__)
 
 
 def record_shadow_decision(
@@ -115,7 +149,7 @@ def record_shadow_decision(
         "mapped_intent": mapped_intent,
         "shadow_would_execute": shadow_would_execute,
         "latency_ms": round(latency_ms, 2),
-        "fallback_reason": (fallback_reason or "")[:120],
+        "fallback_reason": _sanitize_fallback_reason(fallback_reason),
         "parse_result": (parse_result or "")[:40],
         "circuit_breaker_open": circuit_breaker_open,
     })
