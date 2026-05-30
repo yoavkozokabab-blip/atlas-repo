@@ -68,6 +68,15 @@ class LogicBugAgent:
         return out
 
 
+class FactLogicAgent:
+    """Fact-backed logic findings (Phase 92B): detectors that consume the unified
+    fact model instead of re-walking the AST. Currently: inconsistent_return."""
+
+    def run(self, module_facts: Dict[str, Any], file: str) -> List[Finding]:
+        from . import fact_detectors
+        return fact_detectors.all_detectors(module_facts, file)
+
+
 class SecurityAgent:
     """Taint-based security findings + value-level null-deref, via valueflow."""
 

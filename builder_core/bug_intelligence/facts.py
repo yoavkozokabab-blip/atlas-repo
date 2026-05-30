@@ -50,6 +50,7 @@ def extract_module_facts(
             "reaching_definitions": vfn.get("reaching_definitions", {}),
             "branches": vfn.get("branch_conditions", []),
             "returns": vfn.get("returns", []),
+            "return_summary": vfn.get("return_summary", {}),
             "loops": dfn.get("loops", []),
             "calls": dfn.get("calls", []),
             "container_mutations": _container_mutations(dfn, vfn),

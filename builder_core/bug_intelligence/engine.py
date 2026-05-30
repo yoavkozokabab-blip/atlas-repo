@@ -57,6 +57,7 @@ class AnalysisResult:
 _parse = A.ParseAgent()
 _facts = A.FactExtractionAgent()
 _logic = A.LogicBugAgent()
+_factlogic = A.FactLogicAgent()
 _security = A.SecurityAgent()
 _algorithm = A.AlgorithmAgent()
 _ranker = A.FindingRankerAgent()
@@ -81,6 +82,7 @@ def analyze_source(
 
     findings: List[Finding] = []
     findings.extend(_logic.run(tree, lines, rel_path))
+    findings.extend(_factlogic.run(module_facts, rel_path))
     findings.extend(_security.run(text, rel_path))
     if include_algorithm:
         findings.extend(_algorithm.run(tree, text, rel_path, test_documents=test_documents))

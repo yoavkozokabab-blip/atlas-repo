@@ -759,6 +759,97 @@ def _container_state(fn: ast.AST) -> Dict[str, Dict[str, Any]]:
 
 
 # ---------------------------------------------------------------------------
+# Return-flow summary (Phase 92B) — conservative fall-through analysis
+# ---------------------------------------------------------------------------
+def _walk_local(node: ast.AST):
+    """Yield descendants of ``node`` without descending into nested function or
+    lambda definitions (so a function's facts exclude inner scopes)."""
+    for child in ast.iter_child_nodes(node):
+        yield child
+        if isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef, ast.Lambda)):
+            continue
+        yield from _walk_local(child)
+
+
+def _has_direct_break(stmts: List[ast.stmt]) -> bool:
+    """True if a break belongs directly to the enclosing loop (not a nested one)."""
+    for s in stmts:
+        if isinstance(s, ast.Break):
+            return True
+        if isinstance(s, (ast.For, ast.AsyncFor, ast.While,
+                          ast.FunctionDef, ast.AsyncFunctionDef)):
+            continue  # nested loop/function owns its own breaks
+        if isinstance(s, ast.If):
+            if _has_direct_break(s.body) or _has_direct_break(s.orelse):
+                return True
+        elif isinstance(s, (ast.With, ast.AsyncWith)):
+            if _has_direct_break(s.body):
+                return True
+        elif isinstance(s, ast.Try):
+            if (_has_direct_break(s.body) or _has_direct_break(s.orelse)
+                    or _has_direct_break(s.finalbody)
+                    or any(_has_direct_break(h.body) for h in s.handlers)):
+                return True
+        elif isinstance(s, ast.Match):
+            if any(_has_direct_break(c.body) for c in s.cases):
+                return True
+    return False
+
+
+def _reaches_end(stmts: List[ast.stmt]) -> bool:
+    """Conservative: True iff control can fall off the end of this block."""
+    reachable = True
+    for s in stmts:
+        if not reachable:
+            return False  # already terminated; tail is unreachable
+        reachable = _falls_off(s)
+    return reachable
+
+
+def _falls_off(s: ast.stmt) -> bool:
+    if isinstance(s, (ast.Return, ast.Raise, ast.Break, ast.Continue)):
+        return False
+    if isinstance(s, ast.If):
+        body = _reaches_end(s.body)
+        orelse = _reaches_end(s.orelse) if s.orelse else True
+        return body or orelse
+    if isinstance(s, ast.While):
+        if isinstance(s.test, ast.Constant) and bool(s.test.value) and not _has_direct_break(s.body):
+            return False  # infinite loop with no break never falls through
+        return True
+    if isinstance(s, (ast.For, ast.AsyncFor)):
+        return True
+    if isinstance(s, (ast.With, ast.AsyncWith)):
+        return _reaches_end(s.body)
+    if isinstance(s, ast.Try):
+        normal = _reaches_end(s.orelse) if s.orelse else _reaches_end(s.body)
+        handlers = any(_reaches_end(h.body) for h in s.handlers)
+        after = normal or handlers
+        if s.finalbody:
+            return after and _reaches_end(s.finalbody)
+        return after
+    if isinstance(s, ast.Match):
+        has_wildcard = any(
+            isinstance(c.pattern, ast.MatchAs) and c.pattern.pattern is None
+            for c in s.cases
+        )
+        return (not has_wildcard) or any(_reaches_end(c.body) for c in s.cases)
+    return True  # plain statements fall through
+
+
+def _return_summary(fn: ast.AST) -> Dict[str, bool]:
+    local_returns = [n for n in _walk_local(fn) if isinstance(n, ast.Return)]
+    kinds = [_return_kind(r.value) for r in local_returns]
+    is_generator = any(isinstance(n, (ast.Yield, ast.YieldFrom)) for n in _walk_local(fn))
+    return {
+        "has_value_return": any(k != "none" for k in kinds),
+        "has_none_return": any(k == "none" for k in kinds),
+        # generators never "fall through to None" in the missing-return sense
+        "can_fall_through": (not is_generator) and _reaches_end(getattr(fn, "body", [])),
+    }
+
+
+# ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
 def analyze_function(fn: ast.AST, lines: List[str]) -> Dict[str, Any]:
@@ -806,6 +897,12 @@ def analyze_function(fn: ast.AST, lines: List[str]) -> Dict[str, Any]:
         "sinks": flow.sinks,
     }
 
+    try:
+        return_summary = _return_summary(fn)
+    except Exception:
+        return_summary = {"has_value_return": False, "has_none_return": False,
+                          "can_fall_through": False}
+
     return {
         "name": fn.name,
         "line": fn.lineno,
@@ -816,6 +913,7 @@ def analyze_function(fn: ast.AST, lines: List[str]) -> Dict[str, Any]:
         "reaching_definitions": rd_out,
         "branch_conditions": branch_conditions,
         "returns": returns,
+        "return_summary": return_summary,
         "container_state": _container_state(fn),
         "nullability": nullability,
         "intervals": flow.interval_summary,
