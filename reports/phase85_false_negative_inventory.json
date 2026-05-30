@@ -1,0 +1,231 @@
+{
+  "generated_at": "2026-05-30",
+  "benchmark": "quixbugs",
+  "total_false_negatives": 28,
+  "entries": [
+    {
+      "benchmark": "quixbugs",
+      "file": "bitcount.py",
+      "path": "python_programs/bitcount.py",
+      "actual_bug_summary": "Uses n ^= n - 1 instead of n &= n - 1; bit-clearing loop wrong.",
+      "likely_required_reasoning_type": "Numerical loop-state progress for Kernighan-style bit counting",
+      "candidate_subsystem": "numerical_bitwise_reasoning"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "depth_first_search.py",
+      "path": "python_programs/depth_first_search.py",
+      "actual_bug_summary": "Omits nodesvisited.add(node) before recursive expansion; cycles recurse indefinitely.",
+      "likely_required_reasoning_type": "Graph traversal: mark expanded node before recursive descent",
+      "candidate_subsystem": "dfs_visited_state"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "detect_cycle.py",
+      "path": "python_programs/detect_cycle.py",
+      "actual_bug_summary": "Dereferences hare.successor without null guard on acyclic lists.",
+      "likely_required_reasoning_type": "Linked-list traversal null-guard analysis",
+      "candidate_subsystem": "pointer_null_guard"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "find_first_in_sorted.py",
+      "path": "python_programs/find_first_in_sorted.py",
+      "actual_bug_summary": "while lo <= hi with hi=len(arr) exclusive allows arr[len(arr)] access.",
+      "likely_required_reasoning_type": "Inclusive vs exclusive interval boundary reasoning",
+      "candidate_subsystem": "iterative_binary_search_boundaries"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "flatten.py",
+      "path": "python_programs/flatten.py",
+      "actual_bug_summary": "Scalar leaves yield flatten(x) generators instead of yielding x.",
+      "likely_required_reasoning_type": "Recursive tree traversal: emit scalars, recurse containers only",
+      "candidate_subsystem": "generator_leaf_shape"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "get_factors.py",
+      "path": "python_programs/get_factors.py",
+      "actual_bug_summary": "Returns [] when no smaller divisor; loses residual prime factor.",
+      "likely_required_reasoning_type": "Terminal-state: emit remaining prime when search exhausts",
+      "candidate_subsystem": "factorization_terminal_state"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "hanoi.py",
+      "path": "python_programs/hanoi.py",
+      "actual_bug_summary": "Main move emits (start, helper) instead of (start, end).",
+      "likely_required_reasoning_type": "Recursive planning with source/helper/destination roles",
+      "candidate_subsystem": "hanoi_recurrence"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "is_valid_parenthesization.py",
+      "path": "python_programs/is_valid_parenthesization.py",
+      "actual_bug_summary": "Returns True when unmatched opens leave positive final depth.",
+      "likely_required_reasoning_type": "Stack-depth validation; final depth must be zero",
+      "candidate_subsystem": "delimiter_stack_invariant"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "knapsack.py",
+      "path": "python_programs/knapsack.py",
+      "actual_bug_summary": "Uses weight < j instead of weight <= j; excludes exact-fit items.",
+      "likely_required_reasoning_type": "DP transition boundary / exact-fit inclusion",
+      "candidate_subsystem": "dp_boundary_reasoning"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "kth.py",
+      "path": "python_programs/kth.py",
+      "actual_bug_summary": "Upper partition keeps k unchanged instead of rebasing rank.",
+      "likely_required_reasoning_type": "Selection partition rank rebasing invariant",
+      "candidate_subsystem": "selection_rank_rebasing"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "lcs_length.py",
+      "path": "python_programs/lcs_length.py",
+      "actual_bug_summary": "Match uses dp[i-1,j]+1 instead of diagonal dp[i-1,j-1]+1.",
+      "likely_required_reasoning_type": "Paired-sequence DP: match advances both axes",
+      "candidate_subsystem": "paired_sequence_dp"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "levenshtein.py",
+      "path": "python_programs/levenshtein.py",
+      "actual_bug_summary": "Equal leading characters incorrectly add edit cost.",
+      "likely_required_reasoning_type": "Edit-distance: equal chars advance both at zero cost",
+      "candidate_subsystem": "paired_sequence_dp"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "lis.py",
+      "path": "python_programs/lis.py",
+      "actual_bug_summary": "Assigns longest = length + 1 allowing global optimum to decrease.",
+      "likely_required_reasoning_type": "DP aggregate monotonicity invariant",
+      "candidate_subsystem": "dp_monotonicity"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "longest_common_subsequence.py",
+      "path": "python_programs/longest_common_subsequence.py",
+      "actual_bug_summary": "On match advances a but not b; reuses same b character.",
+      "likely_required_reasoning_type": "Matched-symbol recursion consumes both sequences",
+      "candidate_subsystem": "paired_sequence_consumption"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "max_sublist_sum.py",
+      "path": "python_programs/max_sublist_sum.py",
+      "actual_bug_summary": "Carries negative prefixes instead of restart/clamp (Kadane).",
+      "likely_required_reasoning_type": "Kadane restart-vs-extend recurrence",
+      "candidate_subsystem": "kadane_recurrence"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "minimum_spanning_tree.py",
+      "path": "python_programs/minimum_spanning_tree.py",
+      "actual_bug_summary": "Updates component sets without shared merged representative.",
+      "likely_required_reasoning_type": "Union-find equivalence-class consistency",
+      "candidate_subsystem": "union_find_consistency"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "next_palindrome.py",
+      "path": "python_programs/next_palindrome.py",
+      "actual_bug_summary": "Overflow multiplies by len(digit_list) not len-1; extra zero.",
+      "likely_required_reasoning_type": "Numeric carry expansion shape invariant",
+      "candidate_subsystem": "output_shape_boundary"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "next_permutation.py",
+      "path": "python_programs/next_permutation.py",
+      "actual_bug_summary": "Swap comparison reversed; selects smaller not greater successor.",
+      "likely_required_reasoning_type": "Next-permutation comparison direction",
+      "candidate_subsystem": "next_permutation_profile"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "pascal.py",
+      "path": "python_programs/pascal.py",
+      "actual_bug_summary": "Row r built with range(0,r) not range(0,r+1); drops right edge.",
+      "likely_required_reasoning_type": "Combinatorial row has r+1 entries",
+      "candidate_subsystem": "output_shape_boundary"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "powerset.py",
+      "path": "python_programs/powerset.py",
+      "actual_bug_summary": "Returns only include branch; omits exclude branch.",
+      "likely_required_reasoning_type": "Include/exclude branch completeness; cardinality 2**n",
+      "candidate_subsystem": "recursive_branch_completeness"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "reverse_linked_list.py",
+      "path": "python_programs/reverse_linked_list.py",
+      "actual_bug_summary": "Never sets prevnode=node; reversed prefix lost, result None.",
+      "likely_required_reasoning_type": "Loop-carried pointer state for list reversal",
+      "candidate_subsystem": "linked_list_loop_state"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "rpn_eval.py",
+      "path": "python_programs/rpn_eval.py",
+      "actual_bug_summary": "Pops operands in wrong order for subtraction/division.",
+      "likely_required_reasoning_type": "Stack machine operand roles (second pop is left)",
+      "candidate_subsystem": "stack_machine_operands"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "shunting_yard.py",
+      "path": "python_programs/shunting_yard.py",
+      "actual_bug_summary": "Never pushes operators onto opstack; operators disappear.",
+      "likely_required_reasoning_type": "Parser token conservation on operator stack",
+      "candidate_subsystem": "parser_token_conservation"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "sieve.py",
+      "path": "python_programs/sieve.py",
+      "actual_bug_summary": "Uses any(n%p>0) not all-divisors; empty-prime edge case.",
+      "likely_required_reasoning_type": "Prime sieve quantifier and vacuous truth",
+      "candidate_subsystem": "domain_quantifier_reasoning"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "sqrt.py",
+      "path": "python_programs/sqrt.py",
+      "actual_bug_summary": "Checks abs(x-approx) not abs(x-approx**2) for convergence.",
+      "likely_required_reasoning_type": "Newton method residual invariant",
+      "candidate_subsystem": "numerical_method_residual"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "to_base.py",
+      "path": "python_programs/to_base.py",
+      "actual_bug_summary": "Appends LSD to right; digit order reversed.",
+      "likely_required_reasoning_type": "Base conversion prepend-or-reverse invariant",
+      "candidate_subsystem": "numeric_conversion_direction"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "topological_ordering.py",
+      "path": "python_programs/topological_ordering.py",
+      "actual_bug_summary": "Checks outgoing order not incoming prerequisites.",
+      "likely_required_reasoning_type": "Topological dependency direction invariant",
+      "candidate_subsystem": "topological_dependency_direction"
+    },
+    {
+      "benchmark": "quixbugs",
+      "file": "wrap.py",
+      "path": "python_programs/wrap.py",
+      "actual_bug_summary": "Fails to append final unsplit remainder after loop.",
+      "likely_required_reasoning_type": "Segmentation remainder consumption",
+      "candidate_subsystem": "segmentation_remainder"
+    }
+  ]
+}

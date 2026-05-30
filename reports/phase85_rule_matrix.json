@@ -1,0 +1,279 @@
+{
+  "generated_at": "2026-05-30",
+  "generator": "scripts/generate_phase85_evidence.py",
+  "benchmarks": {
+    "quixbugs": {
+      "project": "C:\\Repos\\QuixBugs",
+      "algorithm_pairs": 40
+    },
+    "holdout": {
+      "pairs_root": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs",
+      "cases": 12
+    }
+  },
+  "summary": {
+    "total_rules": 18,
+    "quixbugs_tp_files": 12,
+    "quixbugs_fp_files": 0,
+    "holdout_tp_files": 2,
+    "holdout_fp_files": 1
+  },
+  "rules": [
+    {
+      "rule": "bfs_queue_exhaustion",
+      "source_location": "builder_core/semantic_reasoning.py:199 (_bfs_findings)",
+      "algorithm_family": "bfs",
+      "quixbugs_tp_count": 1,
+      "quixbugs_fp_count": 0,
+      "holdout_tp_count": 1,
+      "holdout_fp_count": 0,
+      "suspected_benchmark_coupling": "high",
+      "coupling_notes": "Requires bfs profile; enriched by QuixBugs python_testcases stem match",
+      "related_files_functions": [
+        "breadth_first_search.py:breadth_first_search",
+        "transfer_bfs_empty_queue/buggy.py:bfs"
+      ]
+    },
+    {
+      "rule": "bfs_frontier_termination",
+      "source_location": "builder_core/semantic_reasoning.py:213 (_bfs_findings)",
+      "algorithm_family": "bfs",
+      "quixbugs_tp_count": 0,
+      "quixbugs_fp_count": 0,
+      "holdout_tp_count": 0,
+      "holdout_fp_count": 0,
+      "suspected_benchmark_coupling": "medium",
+      "coupling_notes": "Requires bfs profile and popleft without queue truthiness in while test",
+      "related_files_functions": [
+        "any bfs-profile function with non-standard loop guard"
+      ]
+    },
+    {
+      "rule": "bfs_fifo_violation",
+      "source_location": "builder_core/semantic_reasoning.py:225 (_bfs_findings)",
+      "algorithm_family": "bfs",
+      "quixbugs_tp_count": 0,
+      "quixbugs_fp_count": 0,
+      "holdout_tp_count": 0,
+      "holdout_fp_count": 0,
+      "suspected_benchmark_coupling": "low",
+      "coupling_notes": "Queue pop() without popleft() on named queue/deque",
+      "related_files_functions": [
+        "bfs-profile functions using stack-style pop"
+      ]
+    },
+    {
+      "rule": "bfs_missing_visited_tracking",
+      "source_location": "builder_core/semantic_reasoning.py:237 (_bfs_findings)",
+      "algorithm_family": "bfs",
+      "quixbugs_tp_count": 0,
+      "quixbugs_fp_count": 0,
+      "holdout_tp_count": 1,
+      "holdout_fp_count": 1,
+      "suspected_benchmark_coupling": "medium",
+      "coupling_notes": "Append to frontier without seen/visited identifier name",
+      "related_files_functions": [
+        "breadth_first_search.py",
+        "transfer_bfs_empty_queue/*.py:bfs"
+      ]
+    },
+    {
+      "rule": "bfs_cycle_handling",
+      "source_location": "builder_core/semantic_reasoning.py:249 (_bfs_findings)",
+      "algorithm_family": "bfs",
+      "quixbugs_tp_count": 0,
+      "quixbugs_fp_count": 0,
+      "holdout_tp_count": 0,
+      "holdout_fp_count": 0,
+      "suspected_benchmark_coupling": "medium",
+      "coupling_notes": "Visited name present but no in/not-in membership filter on frontier growth",
+      "related_files_functions": [
+        "bfs-profile functions with visited set naming"
+      ]
+    },
+    {
+      "rule": "recursive_interval_not_shrinking",
+      "source_location": "builder_core/semantic_reasoning.py:353 (_recursive_findings)",
+      "algorithm_family": "binary_search",
+      "quixbugs_tp_count": 1,
+      "quixbugs_fp_count": 0,
+      "holdout_tp_count": 0,
+      "holdout_fp_count": 0,
+      "suspected_benchmark_coupling": "very_high",
+      "coupling_notes": "Function name binsearch AND file stem find_in_sorted",
+      "related_files_functions": [
+        "find_in_sorted.py:binsearch"
+      ]
+    },
+    {
+      "rule": "recursive_euclidean_state_not_rotated",
+      "source_location": "builder_core/semantic_reasoning.py:369 (_recursive_findings)",
+      "algorithm_family": "gcd",
+      "quixbugs_tp_count": 1,
+      "quixbugs_fp_count": 0,
+      "holdout_tp_count": 1,
+      "holdout_fp_count": 0,
+      "suspected_benchmark_coupling": "high",
+      "coupling_notes": "Function name gcd with recursive second arg literally b",
+      "related_files_functions": [
+        "gcd.py:gcd",
+        "transfer_gcd_no_rotate/buggy.py:gcd"
+      ]
+    },
+    {
+      "rule": "recursive_singleton_base_case_missing",
+      "source_location": "builder_core/semantic_reasoning.py:385 (_recursive_findings)",
+      "algorithm_family": "merge_sort",
+      "quixbugs_tp_count": 1,
+      "quixbugs_fp_count": 0,
+      "holdout_tp_count": 0,
+      "holdout_fp_count": 0,
+      "suspected_benchmark_coupling": "very_high",
+      "coupling_notes": "Function name mergesort only",
+      "related_files_functions": [
+        "mergesort.py:mergesort"
+      ]
+    },
+    {
+      "rule": "recursive_empty_choice_base_case_missing",
+      "source_location": "builder_core/semantic_reasoning.py:415 (_recursive_findings)",
+      "algorithm_family": "coin_change",
+      "quixbugs_tp_count": 1,
+      "quixbugs_fp_count": 0,
+      "holdout_tp_count": 0,
+      "holdout_fp_count": 0,
+      "suspected_benchmark_coupling": "very_high",
+      "coupling_notes": "Function name possible_change only",
+      "related_files_functions": [
+        "possible_change.py:possible_change"
+      ]
+    },
+    {
+      "rule": "recursive_identity_base_case",
+      "source_location": "builder_core/semantic_reasoning.py:437 (_recursive_findings)",
+      "algorithm_family": "subsequences",
+      "quixbugs_tp_count": 1,
+      "quixbugs_fp_count": 0,
+      "holdout_tp_count": 0,
+      "holdout_fp_count": 0,
+      "suspected_benchmark_coupling": "very_high",
+      "coupling_notes": "Function name subsequences with k==0 empty list return",
+      "related_files_functions": [
+        "subsequences.py:subsequences"
+      ]
+    },
+    {
+      "rule": "dijkstra_relaxes_from_destination",
+      "source_location": "builder_core/semantic_reasoning.py:486 (_shortest_path_findings)",
+      "algorithm_family": "shortest_path_dijkstra",
+      "quixbugs_tp_count": 1,
+      "quixbugs_fp_count": 0,
+      "holdout_tp_count": 0,
+      "holdout_fp_count": 0,
+      "suspected_benchmark_coupling": "very_high",
+      "coupling_notes": "Function shortest_path_length; variables length_by_edge and .get()",
+      "related_files_functions": [
+        "shortest_path_length.py:shortest_path_length"
+      ]
+    },
+    {
+      "rule": "floyd_warshall_recurrence_direction",
+      "source_location": "builder_core/semantic_reasoning.py:515 (_shortest_path_findings)",
+      "algorithm_family": "shortest_path_floyd_warshall",
+      "quixbugs_tp_count": 1,
+      "quixbugs_fp_count": 0,
+      "holdout_tp_count": 0,
+      "holdout_fp_count": 0,
+      "suspected_benchmark_coupling": "very_high",
+      "coupling_notes": "Function shortest_path_lengths; indices i,j,k and length_by_path",
+      "related_files_functions": [
+        "shortest_path_lengths.py:shortest_path_lengths"
+      ]
+    },
+    {
+      "rule": "bellman_ford_updates_edge_weight",
+      "source_location": "builder_core/semantic_reasoning.py:541 (_shortest_path_findings)",
+      "algorithm_family": "shortest_path_bellman_ford",
+      "quixbugs_tp_count": 1,
+      "quixbugs_fp_count": 0,
+      "holdout_tp_count": 0,
+      "holdout_fp_count": 0,
+      "suspected_benchmark_coupling": "very_high",
+      "coupling_notes": "Function shortest_paths; assigns min() into weight_by_edge subscript",
+      "related_files_functions": [
+        "shortest_paths.py:shortest_paths"
+      ]
+    },
+    {
+      "rule": "counting_sort_reconstructs_from_input",
+      "source_location": "builder_core/semantic_reasoning.py:582 (_sorting_cardinality_findings)",
+      "algorithm_family": "sorting_counting",
+      "quixbugs_tp_count": 1,
+      "quixbugs_fp_count": 0,
+      "holdout_tp_count": 0,
+      "holdout_fp_count": 0,
+      "suspected_benchmark_coupling": "very_high",
+      "coupling_notes": "Function bucketsort; enumerate(arr) reconstruction pattern",
+      "related_files_functions": [
+        "bucketsort.py:bucketsort"
+      ]
+    },
+    {
+      "rule": "heap_window_reprocesses_seed",
+      "source_location": "builder_core/semantic_reasoning.py:612 (_sorting_cardinality_findings)",
+      "algorithm_family": "sorting_heap",
+      "quixbugs_tp_count": 1,
+      "quixbugs_fp_count": 0,
+      "holdout_tp_count": 0,
+      "holdout_fp_count": 0,
+      "suspected_benchmark_coupling": "very_high",
+      "coupling_notes": "Function kheapsort; arr[:k] seed plus full arr iteration",
+      "related_files_functions": [
+        "kheapsort.py:kheapsort"
+      ]
+    },
+    {
+      "rule": "quicksort_drops_duplicate_values",
+      "source_location": "builder_core/semantic_reasoning.py:638 (_sorting_cardinality_findings)",
+      "algorithm_family": "sorting_quicksort",
+      "quixbugs_tp_count": 1,
+      "quixbugs_fp_count": 0,
+      "holdout_tp_count": 0,
+      "holdout_fp_count": 0,
+      "suspected_benchmark_coupling": "very_high",
+      "coupling_notes": "Function quicksort; strict x/pivot comparisons",
+      "related_files_functions": [
+        "quicksort.py:quicksort"
+      ]
+    },
+    {
+      "rule": "recursive_progress_invariant",
+      "source_location": "builder_core/semantic_reasoning.py:674 (_generic_profile_findings)",
+      "algorithm_family": "recursion_generic",
+      "quixbugs_tp_count": 0,
+      "quixbugs_fp_count": 0,
+      "holdout_tp_count": 0,
+      "holdout_fp_count": 0,
+      "suspected_benchmark_coupling": "low",
+      "coupling_notes": "Recursion profile; no visible if/return base case in AST",
+      "related_files_functions": [
+        "any function matching recursion profile patterns"
+      ]
+    },
+    {
+      "rule": "graph_traversal_cycle_handling",
+      "source_location": "builder_core/semantic_reasoning.py:692 (_generic_profile_findings)",
+      "algorithm_family": "graph_traversal",
+      "quixbugs_tp_count": 0,
+      "quixbugs_fp_count": 0,
+      "holdout_tp_count": 1,
+      "holdout_fp_count": 1,
+      "suspected_benchmark_coupling": "medium",
+      "coupling_notes": "dfs or graph_traversal profile; append without visited name",
+      "related_files_functions": [
+        "depth_first_search.py (FN)",
+        "transfer_bfs_empty_queue/*.py:bfs"
+      ]
+    }
+  ]
+}

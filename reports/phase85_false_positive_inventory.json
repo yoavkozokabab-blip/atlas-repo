@@ -1,0 +1,37 @@
+{
+  "generated_at": "2026-05-30",
+  "total_false_positives": 2,
+  "total_false_positive_files": 1,
+  "entries": [
+    {
+      "benchmark": "holdout",
+      "case_id": "transfer_bfs_empty_queue",
+      "file": "holdout/transfer_bfs_empty_queue/fixed.py",
+      "rule": "bfs_missing_visited_tracking",
+      "line": 11,
+      "why_it_fired": "Rule requires a seen/visited identifier when appending to BFS frontier; fixed code uses while queue with append-only expansion and no visited name.",
+      "why_fixed_code_is_valid": "Correct minimal BFS on acyclic/small graphs can omit explicit visited tracking; loop terminates on empty queue and returns False when goal unreachable.",
+      "evidence": "queue.append(neighbor)",
+      "paired_buggy_rules": [
+        "bfs_queue_exhaustion",
+        "bfs_missing_visited_tracking",
+        "graph_traversal_cycle_handling"
+      ]
+    },
+    {
+      "benchmark": "holdout",
+      "case_id": "transfer_bfs_empty_queue",
+      "file": "holdout/transfer_bfs_empty_queue/fixed.py",
+      "rule": "graph_traversal_cycle_handling",
+      "line": 4,
+      "why_it_fired": "Function matches graph_traversal profile (neighbor/graph tokens) and appends to frontier without visited identifier.",
+      "why_fixed_code_is_valid": "Same valid BFS: uses proper while queue termination; acyclic test graphs do not require visited set for correctness in holdout fixture.",
+      "evidence": "def bfs(graph, start, goal):",
+      "paired_buggy_rules": [
+        "bfs_queue_exhaustion",
+        "bfs_missing_visited_tracking",
+        "graph_traversal_cycle_handling"
+      ]
+    }
+  ]
+}
