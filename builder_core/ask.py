@@ -10,7 +10,7 @@ from __future__ import annotations
 import re
 from typing import Any, Dict, List
 
-from . import retrieval, risk
+from . import repository_understanding, retrieval, risk
 
 _RISK_RE = re.compile(
     r"\b(risk|risks|risky|danger|dangerous|debt|fragile|fragility|unsafe|"
@@ -24,6 +24,8 @@ _BUG_RE = re.compile(r"\b(bug|bugs|logic error|logic errors|analy[sz]e|review|wr
 def classify(question: str) -> str:
     if _RISK_RE.search(question):
         return "risk"
+    if retrieval.is_architecture_question(question):
+        return "architecture"
     return "retrieval"
 
 
@@ -117,6 +119,87 @@ def _answer_retrieval(index: Dict[str, Any], question: str, limit: int = 6) -> D
     }
 
 
+def _subsystem_line(subsystem: Dict[str, Any]) -> str:
+    production_count = subsystem.get("role_counts", {}).get("production_code", 0)
+    entries = ", ".join(subsystem.get("entry_files", [])[:3]) or "(no production entry file)"
+    dependencies = ", ".join(subsystem.get("dependencies", [])) or "(none detected)"
+    return (
+        f"{subsystem['name']}: {production_count} production file(s); "
+        f"entry files: {entries}; dependencies: {dependencies}"
+    )
+
+
+def _architecture_sources(
+    hits: List[Any], subsystems: List[Dict[str, Any]], limit: int = 12
+) -> List[str]:
+    sources: List[str] = []
+    for subsystem in subsystems:
+        for path in subsystem.get("entry_files", []):
+            if path not in sources:
+                sources.append(path)
+    for chunk, _score in hits:
+        role = chunk.get("role") or repository_understanding.classify_file_role(
+            chunk.get("path", "")
+        )
+        if role in {"benchmark", "dataset", "generated", "report_history"}:
+            continue
+        path = chunk.get("path", "")
+        if path and path not in sources:
+            sources.append(path)
+    return sources[:limit]
+
+
+def _answer_architecture(index: Dict[str, Any], question: str) -> Dict[str, Any]:
+    subsystems = repository_understanding.production_subsystems(index)
+    if not subsystems:
+        return _answer_retrieval(index, question)
+
+    lowered = question.lower()
+    named = next(
+        (
+            subsystem for subsystem in subsystems
+            if subsystem.get("name", "").lower() in lowered
+        ),
+        None,
+    )
+    if named is not None:
+        selected = [named]
+        answer = (
+            f"The indexed {named['name']} subsystem is the primary production area "
+            f"for this question. {_subsystem_line(named)}."
+        )
+    elif "production code" in lowered or "which folders" in lowered:
+        selected = subsystems[:12]
+        folders = ", ".join(
+            f"{item['name']} ({item['role_counts'].get('production_code', 0)})"
+            for item in selected
+        )
+        answer = f"Indexed folders containing production code: {folders}."
+    else:
+        selected = subsystems[:8]
+        overview = " ".join(
+            f"{position}. {_subsystem_line(item)}."
+            for position, item in enumerate(selected, 1)
+        )
+        answer = f"The most important indexed production subsystems are: {overview}"
+
+    hits = retrieval.search(index, question, limit=6)
+    sources = _architecture_sources(hits, selected)
+    evidence = [f"subsystem map: {_subsystem_line(item)}" for item in selected]
+    for chunk, _score in hits[:3]:
+        path = chunk.get("path", "")
+        text = chunk.get("text", "")
+        if path in sources:
+            evidence.append(f"{path}: {text}")
+    return {
+        "mode": "architecture",
+        "answer": answer,
+        "findings": [],
+        "evidence": evidence,
+        "sources": sources,
+    }
+
+
 def _matching_python_analysis(index: Dict[str, Any], question: str) -> Dict[str, Any] | None:
     lowered = question.replace("\\", "/").lower()
     analyses = list(index.get("python_analysis", []))
@@ -185,8 +268,16 @@ def answer(index: Dict[str, Any], question: str) -> Dict[str, Any]:
     """Return {mode, answer, evidence, sources} for a question against an index."""
     target = _matching_python_analysis(index, question)
     if target is not None and _BUG_RE.search(question):
-        return _answer_python_analysis(target)
-    mode = classify(question)
-    if mode == "risk":
-        return _answer_risk(index)
-    return _answer_retrieval(index, question)
+        result = _answer_python_analysis(target)
+    else:
+        mode = classify(question)
+        if mode == "risk":
+            result = _answer_risk(index)
+        elif mode == "architecture":
+            result = _answer_architecture(index, question)
+        else:
+            result = _answer_retrieval(index, question)
+    result["ask_quality"] = retrieval.source_distribution_for_sources(
+        index, result["sources"]
+    )
+    return result

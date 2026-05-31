@@ -15,6 +15,7 @@ from typing import Any, Dict, List, Optional
 from . import MEMORY_DIRNAME, __version__
 from . import gitutil
 from . import python_analysis
+from . import repository_understanding
 
 # ---------------------------------------------------------------------------
 # Tunables (kept conservative so index.json stays small on large repos)
@@ -37,7 +38,8 @@ SKIP_DIRS = {
     ".git", MEMORY_DIRNAME, "__pycache__", "node_modules", ".venv", "venv",
     "env", ".env", "dist", "build", ".pytest_cache", ".mypy_cache",
     ".idea", ".vscode", "site-packages", ".tox", "target", "vendor",
-    ".next", ".cache", "coverage", "htmlcov", ".gradle",
+    ".next", ".cache", "coverage", "htmlcov", ".gradle", ".pytest_tmp",
+    "tests_tmp", "backups",
 }
 
 _SIG_RE = re.compile(
@@ -52,30 +54,13 @@ def _now_iso() -> str:
     return _dt.datetime.now(_dt.timezone.utc).replace(microsecond=0).isoformat()
 
 
-def _categorize(rel_path: str, ext: str) -> Optional[str]:
-    name = os.path.basename(rel_path)
-    lower = name.lower()
-    parts = rel_path.replace("\\", "/").lower().split("/")
-
-    if lower.startswith("readme"):
-        return "readme"
-
-    is_test = (
-        lower.startswith("test_")
-        or lower.endswith("_test.py")
-        or lower.endswith(".test.js")
-        or lower.endswith(".test.ts")
-        or lower.endswith(".spec.js")
-        or lower.endswith(".spec.ts")
-        or any(p in ("test", "tests", "__tests__", "spec") for p in parts[:-1])
+def _categorize(rel_path: str, ext: str, *, project_root: str | None = None) -> Optional[str]:
+    role = repository_understanding.classify_file_role(
+        rel_path, ext, project_root=project_root
     )
-    if is_test and ext in CODE_EXTS:
-        return "test"
-    if ext in CODE_EXTS:
-        return "src"
-    if ext in DOC_EXTS or "docs" in parts[:-1] or "doc" in parts[:-1]:
-        return "docs"
-    return None
+    if not repository_understanding.is_indexable(rel_path, ext, project_root=project_root):
+        return None
+    return repository_understanding.legacy_category(role, rel_path)
 
 
 def _read_text(path: str) -> Optional[str]:
@@ -175,8 +160,10 @@ def build_index(project_root: str) -> Dict[str, Any]:
     chunks: List[Dict[str, str]] = []
     python_sources: List[Dict[str, str]] = []
     python_tests: List[Dict[str, str]] = []
+    python_documents: List[Dict[str, str]] = []
     total_chunks = 0
-    counts = {"readme": 0, "docs": 0, "src": 0, "test": 0}
+    counts = {"readme": 0, "docs": 0, "src": 0, "test": 0, "config": 0, "benchmark": 0}
+    role_counts = {role: 0 for role in sorted(repository_understanding.FILE_ROLES)}
 
     for dirpath, dirnames, filenames in os.walk(project_root):
         # prune skip dirs in-place for efficiency
@@ -184,13 +171,17 @@ def build_index(project_root: str) -> Dict[str, Any]:
             d for d in dirnames
             if d not in SKIP_DIRS and not d.startswith(".jarvis_builder")
         ]
-        for fname in filenames:
+        dirnames.sort()
+        for fname in sorted(filenames):
             abs_path = os.path.join(dirpath, fname)
             rel_path = os.path.relpath(abs_path, project_root).replace("\\", "/")
             ext = os.path.splitext(fname)[1].lower()
-            category = _categorize(rel_path, ext)
+            category = _categorize(rel_path, ext, project_root=project_root)
             if category is None:
                 continue
+            role = repository_understanding.classify_file_role(
+                rel_path, ext, project_root=project_root
+            )
             try:
                 size = os.path.getsize(abs_path)
             except OSError:
@@ -204,6 +195,7 @@ def build_index(project_root: str) -> Dict[str, Any]:
                 {
                     "path": rel_path,
                     "category": category,
+                    "role": role,
                     "ext": ext,
                     "size": size,
                     "lines": line_count,
@@ -211,11 +203,14 @@ def build_index(project_root: str) -> Dict[str, Any]:
                 }
             )
             counts[category] += 1
+            role_counts[role] += 1
             if text and ext == ".py":
                 python_document = {"path": rel_path, "text": text}
-                if category == "test":
+                if role == "production_code":
+                    python_documents.append(python_document)
+                if role == "test":
                     python_tests.append(python_document)
-                elif category == "src":
+                elif role == "production_code":
                     python_sources.append(python_document)
 
             if text and total_chunks < MAX_TOTAL_CHUNKS:
@@ -227,7 +222,7 @@ def build_index(project_root: str) -> Dict[str, Any]:
                     if total_chunks >= MAX_TOTAL_CHUNKS:
                         break
                     chunks.append(
-                        {"path": rel_path, "category": category, "text": ch}
+                        {"path": rel_path, "category": category, "role": role, "text": ch}
                     )
                     total_chunks += 1
 
@@ -252,7 +247,7 @@ def build_index(project_root: str) -> Dict[str, Any]:
         for document in python_sources
     ]
     index: Dict[str, Any] = {
-        "schema_version": 1,
+        "schema_version": 2,
         "builder_core_version": __version__,
         "project_root": project_root,
         "indexed_at": _now_iso(),
@@ -260,12 +255,14 @@ def build_index(project_root: str) -> Dict[str, Any]:
         "stats": {
             "files": len(files),
             "chunks": len(chunks),
+            "roles": role_counts,
             **counts,
         },
         "project_type": _detect_project_type(project_root, files),
         "files": files,
         "chunks": chunks,
         "python_analysis": python_files,
+        "subsystems": repository_understanding.discover_subsystems(files, python_documents),
         "git_log": git_log,
         "churn": churn,
     }
