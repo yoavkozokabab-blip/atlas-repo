@@ -77,6 +77,24 @@ class FactLogicAgent:
         return fact_detectors.all_detectors(module_facts, file)
 
 
+class InterproceduralAgent:
+    """Phase 93A — infrastructure only. Attaches an ``interproc`` section
+    (ephemeral same-file call graph + bounded function summaries) to the fact
+    model. It emits NO findings and is consumed by NO detector. Removing its one
+    registration in engine._fact_augmenters fully disables it with no behavior
+    change (the call graph and summaries simply stop being attached)."""
+
+    def attach(self, module_facts: Dict[str, Any], tree, file: str) -> Dict[str, Any]:
+        try:
+            from . import callgraph, summaries
+            cg = callgraph.build_call_graph(tree, file)
+            summ = summaries.compute_summaries(module_facts, cg)
+            module_facts["interproc"] = {"call_graph": cg, "summaries": summ}
+        except Exception:
+            module_facts.setdefault("interproc", {})
+        return module_facts
+
+
 class SecurityAgent:
     """Taint-based security findings + value-level null-deref, via valueflow."""
 

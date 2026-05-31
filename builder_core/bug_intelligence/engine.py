@@ -58,6 +58,10 @@ _parse = A.ParseAgent()
 _facts = A.FactExtractionAgent()
 _logic = A.LogicBugAgent()
 _factlogic = A.FactLogicAgent()
+
+# Additive, findings-free fact augmenters. Remove the single InterproceduralAgent
+# registration below to fully disable Phase 93A with no behavior change.
+_fact_augmenters = [A.InterproceduralAgent()]
 _security = A.SecurityAgent()
 _algorithm = A.AlgorithmAgent()
 _ranker = A.FindingRankerAgent()
@@ -78,6 +82,10 @@ def analyze_source(
 
     lines = text.splitlines()
     module_facts = _facts.extract(text, rel_path, test_documents=test_documents)
+    # Additive interprocedural facts (Phase 93A). Findings-free: no detector
+    # reads these. Disable by emptying _fact_augmenters.
+    for _augmenter in _fact_augmenters:
+        module_facts = _augmenter.attach(module_facts, tree, rel_path)
     function_names = [fn.get("name") for fn in module_facts.get("functions", [])]
 
     findings: List[Finding] = []
