@@ -74,6 +74,7 @@ def analyze_source(
     *,
     test_documents: Optional[List[Dict[str, str]]] = None,
     include_algorithm: bool = True,
+    project_context: Optional[Dict[str, Any]] = None,
 ) -> AnalysisResult:
     tree, errors = _parse.parse(text, rel_path)
     if tree is None:
@@ -82,10 +83,18 @@ def analyze_source(
 
     lines = text.splitlines()
     module_facts = _facts.extract(text, rel_path, test_documents=test_documents)
-    # Additive interprocedural facts (Phase 93A). Findings-free: no detector
-    # reads these. Disable by emptying _fact_augmenters.
+    # Additive intra-file interprocedural facts (Phase 93A). Findings-free: no
+    # detector reads these. Disable by emptying _fact_augmenters.
     for _augmenter in _fact_augmenters:
         module_facts = _augmenter.attach(module_facts, tree, rel_path)
+    # Additive cross-file facts (Phase 93C), parallel namespace, consumed by NO
+    # detector. Present only when a project_context is supplied (project mode);
+    # single-file callers (incl. the benchmark) pass None -> nothing attached.
+    if project_context is not None:
+        from . import cross_file
+        cf_slice = cross_file.slice_for(project_context, rel_path)
+        if cf_slice is not None:
+            module_facts.setdefault("interproc", {})["cross_file"] = cf_slice
     function_names = [fn.get("name") for fn in module_facts.get("functions", [])]
 
     findings: List[Finding] = []
@@ -168,12 +177,28 @@ def _collect_python_files(root: str) -> List[tuple]:
 
 
 def analyze_repository(root: str, *, include_algorithm: bool = True) -> List[AnalysisResult]:
-    results: List[AnalysisResult] = []
+    file_texts: List[tuple] = []
     for abs_path, rel in _collect_python_files(root):
         text = _read(abs_path)
-        if text is None:
-            continue
-        results.append(analyze_source(text, rel, include_algorithm=include_algorithm))
+        if text is not None:
+            file_texts.append((rel, text))
+
+    # Build the cross-file project context (Phase 93C). Project mode only; the
+    # context is attached to facts (interproc.cross_file) and consumed by no
+    # detector. Flag-off or failure -> None -> pure intra-file behavior.
+    project_context = None
+    try:
+        from . import cross_file
+        if cross_file.CROSS_FILE_ENABLED:
+            project_context = cross_file.build_project_context(file_texts)
+    except Exception:
+        project_context = None
+
+    results: List[AnalysisResult] = []
+    for rel, text in file_texts:
+        results.append(analyze_source(
+            text, rel, include_algorithm=include_algorithm,
+            project_context=project_context))
     return results
 
 
