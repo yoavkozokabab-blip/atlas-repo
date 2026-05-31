@@ -218,3 +218,12 @@ def security_findings(root: str, top: int = 20) -> List[Finding]:
 
 def format_result(result: AnalysisResult) -> str:
     return _formatter.format_file(result)
+
+
+def build_dependency_graph(root: str) -> Dict[str, Any]:
+    """Build the Phase 94 dependency graph for a repository root.
+
+    Additive entry point only — does not run findings or touch the benchmark path.
+    """
+    from . import depgraph
+    return depgraph.build_graph(root)

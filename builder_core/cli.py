@@ -87,6 +87,54 @@ def build_parser() -> argparse.ArgumentParser:
     _add_project_arg(p_sec)
     p_sec.add_argument("--top", type=int, default=20, help="Maximum findings to list.")
 
+    graph = sub.add_parser("graph", help="Build and inspect the dependency graph (Phase 94).")
+    graph_sub = graph.add_subparsers(dest="graph_command", required=True)
+
+    graph_build = graph_sub.add_parser(
+        "build", help="Build the dependency graph and print a short summary.")
+    _add_project_arg(graph_build)
+
+    graph_summary = graph_sub.add_parser(
+        "summary", help="Build the graph and print full statistics.")
+    _add_project_arg(graph_summary)
+
+    graph_export = graph_sub.add_parser(
+        "export", help="Build the graph and write deterministic JSON.")
+    _add_project_arg(graph_export)
+    graph_export.add_argument(
+        "--output",
+        default="",
+        help="Output path (default: <project>/.jarvis_builder/depgraph.json).",
+    )
+
+    from .bug_intelligence.impact import IMPACT_ENABLED
+
+    if IMPACT_ENABLED:
+        p_impact = sub.add_parser(
+            "impact", help="Impact analysis over the dependency graph (Phase 94B).")
+        _add_project_arg(p_impact)
+        selectors = p_impact.add_mutually_exclusive_group(required=True)
+        selectors.add_argument("--file", metavar="PATH", help="Analyze impact for a file.")
+        selectors.add_argument("--module", metavar="DOTTED", help="Analyze module import impact.")
+        selectors.add_argument(
+            "--function", metavar="PATH::QUAL", help="Analyze function call impact.")
+        selectors.add_argument(
+            "--paths-to", metavar="PATH::QUAL", help="List resolved execution paths to a function.")
+        mode = p_impact.add_mutually_exclusive_group()
+        mode.add_argument(
+            "--transitive", action="store_true", default=False,
+            help="Include transitive impact closure (default: direct + summary).")
+        mode.add_argument(
+            "--direct", action="store_true", default=False,
+            help="Direct impact only (skip transitive closure).")
+        p_impact.add_argument(
+            "--max-depth", type=int, default=6, help="Transitive reverse BFS depth bound.")
+        p_impact.add_argument(
+            "--top", type=int, default=20, help="Maximum listed dependents in summary.")
+        p_impact.add_argument(
+            "--json", nargs="?", const="", default=None,
+            help="Write deterministic JSON to PATH or .jarvis_builder/impact.json.")
+
     return parser
 
 
@@ -105,6 +153,7 @@ def _cmd_init(project: str) -> int:
     project_type = index.get("project_type", {})
     print(f"  project type: {project_type.get('primary', 'unknown')}")
     print(f"  python analyzed: {len(index.get('python_analysis', []))}")
+    print(f"  subsystems: {len(index.get('subsystems', []))}")
     if git.get("is_repo"):
         commit = (git.get('commit') or '')[:12]
         print(f"  git: branch={git.get('branch')} commit={commit} "
@@ -147,6 +196,14 @@ def _cmd_ask(project: str, question: str) -> int:
             print(f"- {src}")
     else:
         print("- (none)")
+    quality = result.get("ask_quality", {})
+    print()
+    print("ASK QUALITY")
+    print(f"- source distribution: {quality.get('source_distribution', {})}")
+    print(f"- production: {quality.get('production_percent', 0.0)}%")
+    print(f"- architecture: {quality.get('architecture_percent', 0.0)}%")
+    print(f"- reports: {quality.get('reports_percent', 0.0)}%")
+    print(f"- benchmarks: {quality.get('benchmark_percent', 0.0)}%")
     return 0
 
 
@@ -308,6 +365,102 @@ def _cmd_security_scan(project: str, top: int) -> int:
     return 0
 
 
+def _cmd_graph_build(project: str) -> int:
+    from .bug_intelligence import depgraph
+
+    project_root = store.resolve_project_root(project)
+    graph = depgraph.build_graph(project_root)
+    stats = graph["statistics"]
+    print("DEPENDENCY GRAPH BUILT")
+    print(f"  repository: {graph['repository_root']}")
+    print(f"  nodes: {stats['total_nodes']}  edges: {stats['total_edges']}")
+    print(f"  modules: {stats['node_counts'].get('module', 0)}  "
+          f"functions: {stats['node_counts'].get('function', 0)}")
+    if graph.get("degraded"):
+        print(f"  degraded: {graph.get('degraded_reason')}", file=sys.stderr)
+        return 2
+    return 0
+
+
+def _cmd_graph_summary(project: str) -> int:
+    from .bug_intelligence import depgraph
+
+    project_root = store.resolve_project_root(project)
+    graph = depgraph.build_graph(project_root)
+    print(depgraph.format_summary(graph), end="")
+    return 2 if graph.get("degraded") else 0
+
+
+def _cmd_graph_export(project: str, output: str) -> int:
+    from pathlib import Path
+
+    from .bug_intelligence import depgraph
+
+    project_root = store.resolve_project_root(project)
+    graph = depgraph.build_graph(project_root)
+    out_path = Path(output) if output else Path(project_root) / ".jarvis_builder" / "depgraph.json"
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(depgraph.export_json(graph), encoding="utf-8")
+    print(f"Dependency graph written to {out_path}")
+    return 2 if graph.get("degraded") else 0
+
+
+def _cmd_impact(
+    project: str,
+    *,
+    file_path: str = "",
+    module: str = "",
+    function: str = "",
+    paths_to: str = "",
+    transitive: bool = False,
+    direct: bool = False,
+    max_depth: int = 6,
+    top: int = 20,
+    json_path: Optional[str] = None,
+) -> int:
+    from pathlib import Path
+
+    from .bug_intelligence import impact
+
+    project_root = store.resolve_project_root(project)
+    if paths_to:
+        kind = "paths-to"
+        fn_arg = paths_to
+    elif function:
+        kind = "function"
+        fn_arg = function
+    elif module:
+        kind = "module"
+        fn_arg = None
+    else:
+        kind = "file"
+        fn_arg = None
+
+    include_transitive = not direct and not paths_to
+    if transitive:
+        include_transitive = True
+
+    result = impact.build_and_analyze(
+        project_root,
+        kind=kind,
+        file_path=file_path or None,
+        module=module or None,
+        function=fn_arg,
+        max_depth=max_depth,
+        include_transitive=include_transitive,
+        paths_only=bool(paths_to),
+    )
+
+    if json_path is not None:
+        out = Path(json_path) if json_path else Path(project_root) / ".jarvis_builder" / "impact.json"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(impact.export_json(result), encoding="utf-8")
+        print(f"Impact analysis written to {out}")
+
+    print(impact.format_summary(result, top=max(0, top)), end="")
+    return impact.exit_code(result)
+
+
 def _cmd_benchmark_quixbugs(project: str, engine_mode: str = "unified") -> int:
     project_root = store.resolve_project_root(project)
     if engine_mode == "legacy":
@@ -342,6 +495,26 @@ def main(argv: Optional[List[str]] = None) -> int:
         return _cmd_benchmark_quixbugs(args.project, getattr(args, "engine", "unified"))
     if args.command == "security-scan":
         return _cmd_security_scan(args.project, args.top)
+    if args.command == "graph":
+        if args.graph_command == "build":
+            return _cmd_graph_build(args.project)
+        if args.graph_command == "summary":
+            return _cmd_graph_summary(args.project)
+        if args.graph_command == "export":
+            return _cmd_graph_export(args.project, getattr(args, "output", ""))
+    if args.command == "impact":
+        return _cmd_impact(
+            args.project,
+            file_path=getattr(args, "file", "") or "",
+            module=getattr(args, "module", "") or "",
+            function=getattr(args, "function", "") or "",
+            paths_to=getattr(args, "paths_to", "") or "",
+            transitive=getattr(args, "transitive", False),
+            direct=getattr(args, "direct", False),
+            max_depth=getattr(args, "max_depth", 6),
+            top=getattr(args, "top", 20),
+            json_path=getattr(args, "json", None),
+        )
     parser.print_help()
     return 1
 
