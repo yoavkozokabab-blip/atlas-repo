@@ -28,22 +28,50 @@ from .finding import Finding, LOGIC_BUG
 QUARANTINE_KIND = "pattern"     # diagnostic only; excluded from the verdict
 PROMOTED_KIND = "value_flow"    # verdict-eligible
 
-# GATE RESULT (Phase 93B): promotion ENABLED — measured 0 false positives on
-# QuixBugs correct files and holdout fixed files. See
+# GATE RESULT (Phase 93B): intra-file promotion ENABLED — measured 0 false
+# positives on QuixBugs correct files and holdout fixed files. See
 # reports/phase93b_inconsistent_return_promotion.md.
 INTERPROC_PROMOTION_ENABLED = True
 
+# Phase 93D — cross-file consumption, shipped DISABLED by default. When False the
+# detector behaves EXACTLY as Phase 93B (intra-file evidence only). It may be set
+# True only after the resolution-precision and 0-FP real-repo gates pass; that
+# enablement is deliberately NOT done here. See
+# reports/phase93d_cross_file_consumer_gate_design.md.
+CROSS_FILE_CONSUMPTION_ENABLED = False
 
-def _promote(qualname, usage_by_callee: Dict[str, Any]) -> bool:
-    """Promote iff >=1 resolved caller dereferences the result and none null-checks."""
+
+def _merge_usage(qualname, intra: Dict[str, Any], cross) -> Dict[str, bool] | None:
+    """Merge intra-file and (optionally) cross-file call-site usage for ``qualname``.
+
+    Returns the OR-merged {uses_return, null_checked, dereferenced}, or None when
+    neither source has a resolved caller. ``cross`` is None unless cross-file
+    consumption is enabled and the facts are present (so flag-off == 93B exactly).
+    """
     if qualname is None:
+        return None
+    sources = [intra.get(qualname)]
+    if cross is not None:
+        sources.append(cross.get(qualname))
+    sources = [s for s in sources if s]
+    if not sources:                       # no resolved caller anywhere -> unresolved
+        return None
+    merged = {"uses_return": False, "null_checked": False, "dereferenced": False}
+    for s in sources:
+        merged["uses_return"] = merged["uses_return"] or bool(s.get("uses_return"))
+        merged["null_checked"] = merged["null_checked"] or bool(s.get("null_checked"))
+        merged["dereferenced"] = merged["dereferenced"] or bool(s.get("dereferenced"))
+    return merged
+
+
+def _promote_from_usage(merged: Dict[str, bool] | None) -> bool:
+    """Promote iff >=1 caller dereferences and NO caller null-checks (any null-check
+    or unresolved-only evidence vetoes)."""
+    if merged is None:
         return False
-    usage = usage_by_callee.get(qualname)
-    if not usage:                       # no resolved same-file caller -> unresolved
+    if merged["null_checked"]:            # any null-check -> contract / mixed -> quarantine
         return False
-    if usage.get("null_checked"):       # any null-check -> contract / mixed -> quarantine
-        return False
-    return bool(usage.get("dereferenced"))
+    return bool(merged["dereferenced"])
 
 
 def detect_inconsistent_return(module_facts: Dict[str, Any], file: str) -> List[Finding]:
@@ -56,11 +84,17 @@ def detect_inconsistent_return(module_facts: Dict[str, Any], file: str) -> List[
     """
     interproc = module_facts.get("interproc", {}) or {}
     cg = interproc.get("call_graph", {}) or {}
-    usage_by_callee = cg.get("usage_by_callee", {}) or {}
+    intra_usage = cg.get("usage_by_callee", {}) or {}
     line_to_qual = {
         meta.get("line"): qual
         for qual, meta in (cg.get("functions", {}) or {}).items()
     }
+
+    # Cross-file usage is read ONLY when consumption is enabled AND the facts are
+    # present. Absent / disabled -> None -> exact Phase 93B (intra-file) behavior.
+    cross_usage = None
+    if CROSS_FILE_CONSUMPTION_ENABLED:
+        cross_usage = (interproc.get("cross_file", {}) or {}).get("usage_by_callee")
 
     out: List[Finding] = []
     for fn in module_facts.get("functions", []):
@@ -72,19 +106,23 @@ def detect_inconsistent_return(module_facts: Dict[str, Any], file: str) -> List[
 
         name = fn.get("name", "")
         qual = line_to_qual.get(fn.get("line"))
-        promoted = INTERPROC_PROMOTION_ENABLED and _promote(qual, usage_by_callee)
+        merged = _merge_usage(qual, intra_usage, cross_usage)
+        promoted = INTERPROC_PROMOTION_ENABLED and _promote_from_usage(merged)
+        used_cross = bool(cross_usage and qual in cross_usage)
 
         if promoted:
             kind, confidence = PROMOTED_KIND, "high"
+            scope = "a caller (intra- or cross-file)" if used_cross else "a caller in this file"
             explanation = (
                 f"'{name}' returns a value on some paths but can fall through to an "
-                f"implicit None, and at least one caller in this file dereferences the "
-                f"result without a None check (and no caller null-checks it). The "
-                f"implicit-None path will therefore crash a caller — a missing return."
+                f"implicit None, and {scope} dereferences the result without a None "
+                f"check (and no caller null-checks it). The implicit-None path will "
+                f"therefore crash a caller — a missing return."
             )
             source_facts = [
                 "return_summary: has_value_return && !has_none_return && can_fall_through",
-                "interproc: a resolved caller dereferences the result; none null-checks it",
+                ("interproc: a resolved caller dereferences the result; none null-checks it"
+                 + (" (cross-file evidence used)" if used_cross else "")),
             ]
         else:
             kind, confidence = QUARANTINE_KIND, "medium"
