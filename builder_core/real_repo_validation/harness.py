@@ -47,6 +47,7 @@ LANGUAGE_PROFILES = {
     "python_secondary",
 }
 OUTCOMES = {"success", "degraded", "failed", "unsafe", "unavailable"}
+TRACKS = {"primary", "pilot", "stress"}
 
 # Real-repository review includes every grounded product kind. The algorithm
 # benchmark excludes security findings only because security is out of band for
@@ -128,6 +129,9 @@ def load_manifest(path: str | Path) -> Dict[str, Any]:
 
 def _repo_metadata(repo: Dict[str, Any]) -> Dict[str, Any]:
     return {
+        "track": repo.get("track", "primary"),
+        "primary_eligible": repo.get("primary_eligible", True),
+        "eligibility_note": repo.get("eligibility_note", ""),
         "size_band": repo.get("size_band"),
         "language_profile": repo.get("language_profile"),
         "project_shape": repo.get("project_shape"),
@@ -174,6 +178,10 @@ def validate_manifest(manifest: Dict[str, Any]) -> List[str]:
                 f"repository[{index}] has invalid language_profile "
                 f"'{repo.get('language_profile')}'"
             )
+        if repo.get("track", "primary") not in TRACKS:
+            issues.append(f"repository[{index}] has invalid track '{repo.get('track')}'")
+        if not isinstance(repo.get("primary_eligible", True), bool):
+            issues.append(f"repository[{index}] primary_eligible must be true or false")
     historical = manifest.get("historical_bugs", [])
     if not isinstance(historical, list):
         issues.append("'historical_bugs' must be a list when present")
@@ -206,6 +214,7 @@ def _normalized_manifest(manifest: Dict[str, Any]) -> Dict[str, Any]:
         [dict(case) for case in manifest.get("historical_bugs", [])],
         key=lambda case: case["id"],
     )
+    normalized["sampling_seed"] = str(manifest.get("sampling_seed", "phase95"))
     return normalized
 
 
@@ -429,6 +438,58 @@ def all_records(program: Dict[str, Any]) -> List[Dict[str, Any]]:
     return sorted(records, key=_record_sort_key)
 
 
+def finding_inventory(records: List[Dict[str, Any]]) -> Dict[str, Any]:
+    verdict = [record for record in records if record["verdict_eligible"]]
+    advisory = [record for record in records if not record["verdict_eligible"]]
+
+    def _counts(key: str, items: List[Dict[str, Any]]) -> Dict[str, int]:
+        values: Dict[str, int] = {}
+        for item in items:
+            value = str(item.get(key) or "unknown")
+            values[value] = values.get(value, 0) + 1
+        return dict(sorted(values.items()))
+
+    return {
+        "total_findings": len(records),
+        "verdict_eligible_findings": len(verdict),
+        "advisory_findings": len(advisory),
+        "verdict_by_kind": _counts("kind", verdict),
+        "advisory_by_kind": _counts("kind", advisory),
+    }
+
+
+def corpus_summary(manifest: Dict[str, Any], program: Dict[str, Any]) -> Dict[str, Any]:
+    repos = _normalized_manifest(manifest)["repositories"]
+    primary = [
+        repo for repo in repos
+        if repo.get("track", "primary") == "primary" and repo.get("primary_eligible", True)
+    ]
+
+    def _counts(key: str, items: List[Dict[str, Any]]) -> Dict[str, int]:
+        values: Dict[str, int] = {}
+        for item in items:
+            value = str(item.get(key) or "unknown")
+            values[value] = values.get(value, 0) + 1
+        return dict(sorted(values.items()))
+
+    outcomes: Dict[str, int] = {}
+    for scan in program["scans"]:
+        outcomes[scan["outcome"]] = outcomes.get(scan["outcome"], 0) + 1
+    return {
+        "repositories_scanned": len(repos),
+        "primary_eligible_repositories": len(primary),
+        "tracks": _counts("track", repos),
+        "primary_size_bands": _counts("size_band", primary),
+        "primary_language_profiles": _counts("language_profile", primary),
+        "primary_project_shapes": _counts("project_shape", primary),
+        "historical_bug_cases": len(manifest.get("historical_bugs", [])),
+        "historical_bug_repositories": len({
+            case["repo_id"] for case in manifest.get("historical_bugs", [])
+        }),
+        "outcomes": dict(sorted(outcomes.items())),
+    }
+
+
 def _ensure_output_outside_targets(output_dir: str | Path, manifest: Dict[str, Any]) -> Path:
     output = Path(output_dir).resolve()
     for repo in manifest["repositories"]:
@@ -468,6 +529,125 @@ def export_repo_score_template(repositories: List[Dict[str, Any]], path: str | P
             "reason": "",
         }
     write_json(path, {"review_schema_version": REVIEW_SCHEMA_VERSION, "repositories": scores})
+
+
+def _stable_rank(seed: str, value: str) -> str:
+    return hashlib.sha256(f"{seed}|{value}".encode("utf-8")).hexdigest()
+
+
+def select_review_sample(
+    records: List[Dict[str, Any]], *, seed: str = "phase95", max_findings: int = 300
+) -> List[Dict[str, Any]]:
+    """Select grounded findings for review without hiding inconvenient strata."""
+    verdict = [dict(record) for record in records if record["verdict_eligible"]]
+    verdict.sort(key=_record_sort_key)
+    if len(verdict) <= max_findings:
+        return verdict
+
+    repo_counts: Dict[str, int] = {}
+    for record in verdict:
+        repo_counts[record["repo_id"]] = repo_counts.get(record["repo_id"], 0) + 1
+    mandatory = {
+        record["record_id"]
+        for record in verdict
+        if record.get("severity") in {"critical", "high"}
+        or repo_counts[record["repo_id"]] <= 10
+    }
+    for rule in sorted({record.get("rule", "") for record in verdict}):
+        rule_records = [record for record in verdict if record.get("rule", "") == rule]
+        rule_records.sort(key=lambda record: _stable_rank(seed, record["record_id"]))
+        mandatory.update(record["record_id"] for record in rule_records[:25])
+
+    selected = [record for record in verdict if record["record_id"] in mandatory]
+    remaining = [record for record in verdict if record["record_id"] not in mandatory]
+    slots = max(0, max_findings - len(selected))
+    remaining.sort(key=lambda record: _stable_rank(seed, record["record_id"]))
+    probability = round(min(1.0, slots / len(remaining)), 6) if remaining else 1.0
+    for record in remaining[:slots]:
+        record["sampling_probability"] = probability
+        selected.append(record)
+    return sorted(selected, key=_record_sort_key)
+
+
+def export_reviewer_packets(records: List[Dict[str, Any]], output_dir: str | Path) -> None:
+    output = Path(output_dir)
+    shared = [
+        {
+            "record_id": record["record_id"],
+            "finding_id": record["id"],
+            "repo_id": record["repo_id"],
+            "file": record["file"],
+            "line": record["line"],
+            "rule": record["rule"],
+            "kind": record["kind"],
+            "severity": record["severity"],
+            "confidence": record["confidence"],
+            "title": record["title"],
+            "explanation": record["explanation"],
+            "evidence": record["evidence"],
+            "why_might_be_wrong": record["why_might_be_wrong"],
+            "next_verification_step": record["next_verification_step"],
+            "source_window": record.get("source_window", []),
+        }
+        for record in sorted(records, key=_record_sort_key)
+    ]
+    write_json(output / "reviewer_a_packets.json", shared)
+    write_json(output / "reviewer_b_packets.json", shared)
+    write_json(output / "adjudication_packets.json", shared)
+
+
+def select_negative_file_sample(
+    manifest: Dict[str, Any], program: Dict[str, Any]
+) -> List[Dict[str, Any]]:
+    """Choose up to three unflagged Python files per scanned repository."""
+    by_repo = {repo["id"]: repo for repo in manifest["repositories"]}
+    sample: List[Dict[str, Any]] = []
+    for scan in sorted(program["scans"], key=lambda item: item["repo_id"]):
+        if scan["outcome"] not in {"success", "degraded"}:
+            continue
+        flagged = {
+            record["file"] for record in scan["records"] if record["verdict_eligible"]
+        }
+        candidates = []
+        for abs_path, rel_path in engine._collect_python_files(scan["path"]):
+            if rel_path in flagged:
+                continue
+            try:
+                size = os.path.getsize(abs_path)
+            except OSError:
+                continue
+            candidates.append((size, rel_path))
+        candidates.sort(key=lambda item: (item[0], item[1]))
+        if not candidates:
+            continue
+        indexes = sorted({0, len(candidates) // 2, len(candidates) - 1})
+        repo = by_repo[scan["repo_id"]]
+        for index in indexes:
+            size, rel_path = candidates[index]
+            sample.append({
+                "repo_id": scan["repo_id"],
+                "file": rel_path,
+                "bytes": size,
+                "track": repo.get("track", "primary"),
+                "review": {
+                    "obvious_actionable_issue": None,
+                    "notes": "",
+                    "review_minutes": None,
+                },
+            })
+    return sorted(sample, key=lambda item: (item["repo_id"], item["bytes"], item["file"]))
+
+
+def export_historical_review_template(manifest: Dict[str, Any], path: str | Path) -> None:
+    cases = []
+    for case in sorted(manifest.get("historical_bugs", []), key=lambda item: item["id"]):
+        cases.append({
+            **case,
+            "relevant_emitted_finding": None,
+            "notes": "",
+            "review_minutes": None,
+        })
+    write_json(path, {"historical_bug_reviews": cases})
 
 
 def load_reviews(path: str | Path) -> Dict[str, Any]:
@@ -691,11 +871,90 @@ def score_usefulness(
     }
 
 
+def _gate(name: str, passed: bool, detail: str) -> Dict[str, Any]:
+    return {"name": name, "passed": bool(passed), "detail": detail}
+
+
+def evaluate_readiness(
+    manifest: Dict[str, Any],
+    program: Dict[str, Any],
+    precision: Dict[str, Any],
+    usefulness: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Apply Phase 95B external-alpha gates without tuning the engine."""
+    summary = corpus_summary(manifest, program)
+    scans = program["scans"]
+    unsafe = [scan["repo_id"] for scan in scans if scan["outcome"] == "unsafe"]
+    completed = [
+        scan for scan in scans if scan["outcome"] in {"success", "degraded"}
+    ]
+    primary_count = summary["primary_eligible_repositories"]
+    crash_free_rate = _rate(len(completed), len(scans)) or 0.0
+    historical_count = summary["historical_bug_cases"]
+    historical_repos = summary["historical_bug_repositories"]
+    scored_repos = usefulness["per_repository"]["scored_repositories"]
+    repo_usefulness = usefulness["per_repository"]["median_repo_usefulness"]
+    would_again = usefulness["per_repository"]["would_use_again_rate"]
+    reviewed = precision["reviewed_in_scope"]
+
+    gates = [
+        _gate("unsafe_outcomes", not unsafe, f"{len(unsafe)} unsafe: {unsafe}"),
+        _gate(
+            "crash_free_completion",
+            crash_free_rate >= 0.95,
+            f"{len(completed)}/{len(scans)} completed ({crash_free_rate})",
+        ),
+        _gate("primary_repository_count", primary_count >= 24, f"{primary_count}/24"),
+        _gate(
+            "historical_bug_cases",
+            historical_count >= 20 and historical_repos >= 10,
+            f"{historical_count} cases across {historical_repos} repositories",
+        ),
+        _gate("review_completion", precision["unreviewed"] == 0, f"{precision['unreviewed']} unreviewed"),
+        _gate(
+            "adjudication_completion",
+            precision["needs_adjudication"] == 0,
+            f"{precision['needs_adjudication']} need adjudication",
+        ),
+        _gate(
+            "strict_precision",
+            reviewed > 0 and (precision["strict_precision"] or 0.0) >= 0.90,
+            f"{precision['strict_precision']} from {reviewed} reviewed findings",
+        ),
+        _gate(
+            "misleading_rate",
+            reviewed > 0 and (precision["misleading_rate"] or 0.0) <= 0.05,
+            f"{precision['misleading_rate']} from {reviewed} reviewed findings",
+        ),
+        _gate(
+            "repository_usefulness",
+            scored_repos >= primary_count > 0 and (repo_usefulness or 0.0) >= 3.0,
+            f"median {repo_usefulness}; {scored_repos}/{primary_count} primary repositories scored",
+        ),
+        _gate(
+            "would_use_again",
+            would_again is not None and would_again >= 0.70,
+            f"{would_again}",
+        ),
+        _gate(
+            "review_lead_rate",
+            reviewed > 0 and (precision["review_lead_rate"] or 0.0) >= 0.60,
+            f"{precision['review_lead_rate']}",
+        ),
+    ]
+    verdict = "FAIL" if unsafe else ("PASS" if all(g["passed"] for g in gates) else "HOLD")
+    return {"verdict": verdict, "corpus": summary, "gates": gates}
+
+
 # ---------------------------------------------------------------------------
 # Deterministic artifacts and report
 # ---------------------------------------------------------------------------
 def generate_report(
-    program: Dict[str, Any], precision: Dict[str, Any], usefulness: Dict[str, Any]
+    program: Dict[str, Any],
+    precision: Dict[str, Any],
+    usefulness: Dict[str, Any],
+    readiness: Optional[Dict[str, Any]] = None,
+    inventory: Optional[Dict[str, Any]] = None,
 ) -> str:
     candidate = program["candidate"]
     lines = [
@@ -707,11 +966,33 @@ def generate_report(
         f"- commit: {candidate['builder_core_commit']}",
         f"- flags: {json.dumps(candidate['frozen_flags'], sort_keys=True)}",
         f"- real-repository verdict kinds: {candidate['real_repo_verdict_kinds']}",
+    ]
+    if readiness is not None:
+        corpus = readiness["corpus"]
+        lines.extend([
+            "",
+            "## External Alpha Verdict",
+            f"**{readiness['verdict']}**",
+            "",
+            "## Corpus Composition",
+            f"- repositories scanned: {corpus['repositories_scanned']}",
+            f"- primary eligible repositories: {corpus['primary_eligible_repositories']}/24",
+            f"- tracks: {corpus['tracks']}",
+            f"- historical bug cases: {corpus['historical_bug_cases']} "
+            f"across {corpus['historical_bug_repositories']} repositories",
+            "",
+            "## Readiness Gates",
+            "| gate | pass | detail |",
+            "| --- | --- | --- |",
+        ])
+        for gate in readiness["gates"]:
+            lines.append(f"| {gate['name']} | {gate['passed']} | {gate['detail']} |")
+    lines.extend([
         "",
         "## Operational Safety",
         "| repo | outcome | parse errors | modified tracked files | duration s |",
         "| --- | --- | ---: | ---: | ---: |",
-    ]
+    ])
     for scan in sorted(program["scans"], key=lambda item: item["repo_id"]):
         safety = scan.get("safety", {})
         lines.append(
@@ -721,6 +1002,16 @@ def generate_report(
             f"{scan.get('duration_seconds', '-')} |"
         )
     counts = precision["counts"]
+    if inventory is not None:
+        lines.extend([
+            "",
+            "## Finding Inventory",
+            f"- total findings: {inventory['total_findings']}",
+            f"- grounded verdict-eligible findings: {inventory['verdict_eligible_findings']}",
+            f"- advisory findings: {inventory['advisory_findings']}",
+            f"- grounded kinds: {inventory['verdict_by_kind']}",
+            f"- advisory kinds: {inventory['advisory_by_kind']}",
+        ])
     lines.extend(
         [
             "",
@@ -780,16 +1071,25 @@ def run_to_directory(manifest: Dict[str, Any], output_dir: str | Path) -> Dict[s
     write_json(output / "manifest.normalized.json", _normalized_manifest(manifest))
     write_json(output / "program.json", program)
     export_findings(records, output / "findings.json")
-    export_review_template(records, output / "reviews.json")
+    review_sample = select_review_sample(
+        records, seed=str(manifest.get("sampling_seed", "phase95"))
+    )
+    write_json(output / "review_sample.json", review_sample)
+    export_review_template(review_sample, output / "reviews.json")
+    export_reviewer_packets(review_sample, output)
     export_repo_score_template(manifest["repositories"], output / "repository_scores.json")
+    write_json(output / "negative_file_sample.json", select_negative_file_sample(manifest, program))
+    export_historical_review_template(manifest, output / "historical_bug_reviews.json")
     write_report_from_directory(output)
     return program
 
 
 def write_report_from_directory(output_dir: str | Path) -> str:
     output = Path(output_dir)
+    manifest = load_json(output / "manifest.normalized.json")
     program = load_json(output / "program.json")
-    records = load_json(output / "findings.json")
+    all_exported_records = load_json(output / "findings.json")
+    records = load_json(output / "review_sample.json")
     reviews = load_reviews(output / "reviews.json")
     scores = load_repo_scores(output / "repository_scores.json")
     review_issues = validate_reviews(reviews)
@@ -799,8 +1099,20 @@ def write_report_from_directory(output_dir: str | Path) -> str:
     labeled = merge_reviews(records, reviews)
     precision = measure_precision(labeled)
     usefulness = score_usefulness(labeled, scores)
+    inventory = finding_inventory(all_exported_records)
+    precision["verdict_eligible_total"] = inventory["verdict_eligible_findings"]
+    precision["advisory_separate"]["total"] = inventory["advisory_findings"]
+    readiness = evaluate_readiness(manifest, program, precision, usefulness)
     write_json(output / "findings.reviewed.json", labeled)
-    write_json(output / "metrics.json", {"precision": precision, "usefulness": usefulness})
-    report = generate_report(program, precision, usefulness)
+    write_json(
+        output / "metrics.json",
+        {
+            "finding_inventory": inventory,
+            "precision": precision,
+            "readiness": readiness,
+            "usefulness": usefulness,
+        },
+    )
+    report = generate_report(program, precision, usefulness, readiness, inventory)
     (output / "report.md").write_text(report, encoding="utf-8")
     return report

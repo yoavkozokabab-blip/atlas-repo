@@ -226,13 +226,19 @@ def test_run_to_directory_writes_complete_artifact_set(tmp_path):
     manifest = _manifest(root, commit)
     H.run_to_directory(manifest, output)
     expected = {
+        "adjudication_packets.json",
         "findings.json",
         "findings.reviewed.json",
+        "historical_bug_reviews.json",
         "manifest.normalized.json",
         "metrics.json",
+        "negative_file_sample.json",
         "program.json",
         "report.md",
         "repository_scores.json",
+        "review_sample.json",
+        "reviewer_a_packets.json",
+        "reviewer_b_packets.json",
         "reviews.json",
     }
     assert {path.name for path in output.iterdir()} == expected

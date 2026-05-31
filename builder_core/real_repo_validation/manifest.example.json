@@ -9,6 +9,7 @@
   },
   "historical_bugs": [],
   "program_id": "phase95-public-corpus-v1",
+  "sampling_seed": "phase95-public-corpus-v1",
   "repositories": [
     {
       "commit": "replace-with-pinned-git-commit",
@@ -16,11 +17,13 @@
       "language_profile": "python_dominant",
       "license": "replace-with-license",
       "path": "C:\\Repos\\example-small-library",
+      "primary_eligible": true,
       "project_shape": "library",
       "python_files": 12,
       "python_loc": 1800,
       "selection_rationale": "Selected before analysis as a maintained small Python library.",
-      "size_band": "small"
+      "size_band": "small",
+      "track": "primary"
     }
   ],
   "schema_version": 1
