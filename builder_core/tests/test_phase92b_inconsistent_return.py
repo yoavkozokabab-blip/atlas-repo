@@ -132,8 +132,18 @@ def test_engine_dedup_does_not_inflate():
     assert len(ir) == 1  # one finding per function, not inflated by two sources
 
 
-def test_detector_is_quarantined_kind_pattern():
-    assert fact_detectors.INCONSISTENT_RETURN_KIND == "pattern"
+def test_detector_quarantines_without_interproc_evidence():
+    # Phase 93B: a lone missing-return function (no resolved deref-caller) is
+    # quarantined as kind=pattern; promotion requires interprocedural evidence.
+    assert fact_detectors.INTERPROC_PROMOTION_ENABLED is True
+    res = engine.analyze_source(textwrap.dedent("""
+        def find(xs, t):
+            for i, x in enumerate(xs):
+                if x == t:
+                    return i
+    """), "x.py")
+    ir = [f for f in res.findings if f.rule == "inconsistent_return"]
+    assert ir and all(f.kind == "pattern" for f in ir)
 
 
 def test_quarantined_finding_excluded_from_verdict():

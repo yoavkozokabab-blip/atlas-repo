@@ -92,10 +92,14 @@ def dedupe(findings: List[Finding]) -> List[Finding]:
 
 
 def rank(findings: List[Finding]) -> List[Finding]:
-    return sorted(
-        dedupe(findings),
+    # Sort first (strongest first), THEN dedupe, so that when two detector
+    # sources emit the same (file, line, rule) the higher-weight finding
+    # survives (required once a fact-backed detector is promoted — Phase 93B).
+    ordered = sorted(
+        findings,
         key=lambda f: (-f.weight, -_CONF_ORDER.get(f.confidence, 0), f.file, f.line, f.rule),
     )
+    return dedupe(ordered)
 
 
 # ---------------------------------------------------------------------------
