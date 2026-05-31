@@ -1,0 +1,27 @@
+{
+  "candidate": {
+    "builder_core_commit": "replace-with-frozen-builder-core-commit",
+    "frozen_flags": {
+      "CROSS_FILE_CONSUMPTION_ENABLED": false,
+      "CROSS_FILE_ENABLED": true,
+      "INTERPROC_PROMOTION_ENABLED": true
+    }
+  },
+  "historical_bugs": [],
+  "program_id": "phase95-public-corpus-v1",
+  "repositories": [
+    {
+      "commit": "replace-with-pinned-git-commit",
+      "id": "example-small-library",
+      "language_profile": "python_dominant",
+      "license": "replace-with-license",
+      "path": "C:\\Repos\\example-small-library",
+      "project_shape": "library",
+      "python_files": 12,
+      "python_loc": 1800,
+      "selection_rationale": "Selected before analysis as a maintained small Python library.",
+      "size_band": "small"
+    }
+  ],
+  "schema_version": 1
+}

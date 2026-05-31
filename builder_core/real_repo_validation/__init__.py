@@ -1,0 +1,41 @@
+"""Read-only real-repository validation infrastructure for Builder Core."""
+
+from .harness import (
+    all_records,
+    candidate_record,
+    export_review_template,
+    export_repo_score_template,
+    generate_report,
+    load_manifest,
+    load_reviews,
+    load_repo_scores,
+    measure_precision,
+    merge_reviews,
+    run_program,
+    run_to_directory,
+    score_usefulness,
+    validate_manifest,
+    validate_repo_scores,
+    validate_reviews,
+    write_report_from_directory,
+)
+
+__all__ = [
+    "all_records",
+    "candidate_record",
+    "export_review_template",
+    "export_repo_score_template",
+    "generate_report",
+    "load_manifest",
+    "load_reviews",
+    "load_repo_scores",
+    "measure_precision",
+    "merge_reviews",
+    "run_program",
+    "run_to_directory",
+    "score_usefulness",
+    "validate_manifest",
+    "validate_repo_scores",
+    "validate_reviews",
+    "write_report_from_directory",
+]
