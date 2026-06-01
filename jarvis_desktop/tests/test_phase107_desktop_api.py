@@ -41,7 +41,10 @@ def test_health_shape():
 
 
 def test_select_repository(tmp_path):
-    assert api.select_repository(str(tmp_path))["ok"] is True
+    root = tmp_path / "repo"
+    root.mkdir()
+    (root / "main.py").write_text("x = 1\n", encoding="utf-8")
+    assert api.select_repository(str(root))["ok"] is True
     assert api.select_repository(str(tmp_path / "nope"))["ok"] is False
 
 
@@ -131,6 +134,8 @@ def test_dispatch_all_routes(tmp_path):
     assert server.dispatch("POST", "/api/impact", {"target": "core/util.py"})[1]["ok"]
     assert server.dispatch("POST", "/api/bug-investigation", {"text": "core/util.py"})[1]["ok"]
     assert server.dispatch("POST", "/api/context/export", {"target": "codex", "packet": "compact"})[1]["ok"]
+    assert server.dispatch("POST", "/api/repositories/validate", {"path": str(root)})[1]["ok"]
+    assert server.dispatch("POST", "/api/demo/load")[1]["ok"]
     assert server.dispatch("POST", "/api/copilot/ask", {"question": "What does this repository do?"})[1]["ok"]
     assert server.dispatch("GET", "/api/unknown")[0] == 404
 
@@ -140,4 +145,4 @@ def test_all_documented_routes_are_dispatchable():
     documented = {(m, p) for m, p in server.ROUTES}
     assert ("GET", "/api/health") in documented
     assert ("POST", "/api/context/export") in documented
-    assert len(documented) == 10
+    assert len(documented) == 12

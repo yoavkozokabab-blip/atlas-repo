@@ -181,5 +181,34 @@ ul.clean{margin:0;padding-left:18px;line-height:1.9;color:#c7d2f5}
   background:rgba(10,16,30,.92);border:1px solid rgba(62,240,255,.4);color:#eaf0ff;padding:12px 22px;border-radius:14px;
   box-shadow:0 10px 40px rgba(0,0,0,.5);opacity:0;transition:.3s;pointer-events:none;font-size:13px}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast-success{border-color:rgba(66,245,176,.5)}
+.toast-error{border-color:rgba(255,92,122,.5)}
+.topbar{align-items:center}
+
+/* Phase 110 — demo readiness */
+.demo-badge{font-size:11px;color:#ffd36a;border:1px solid rgba(255,194,75,.45);padding:5px 10px;border-radius:20px;background:rgba(255,194,75,.1)}
+.picker-help{margin:6px 0 10px}
+.path-error{margin-top:8px;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,92,122,.45);background:rgba(255,92,122,.08);color:#ffb3c0;font-size:12.5px}
+.path-ok{margin-top:6px;color:var(--green)}
+.onboarding{position:fixed;inset:0;z-index:100;background:rgba(4,8,18,.82);display:grid;place-items:center;padding:24px}
+.onboarding-card{max-width:640px;padding:28px}
+.onboarding-card h2{font-family:Orbitron;margin:0 0 10px}
+.onboard-steps{margin:16px 0 22px;padding-left:22px;line-height:1.75;color:#c7d2f5}
+.onboard-steps li{margin-bottom:10px}
+.onboard-actions{display:flex;gap:10px;flex-wrap:wrap}
+.scan-result{max-width:900px;margin:24px auto;padding:24px}
+.scan-result.fail{border-color:rgba(255,92,122,.35)}
+.fail-msg{color:#ffb3c0;line-height:1.6}
+.success-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+.success-grid .metric{background:rgba(8,12,22,.5)}
+.success-risk{margin:12px 0;padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(8,12,22,.35)}
+.success-actions-title{font-family:Orbitron;font-size:12px;color:var(--cyan);letter-spacing:1px;margin:18px 0 8px}
+.success-buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.skeleton-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.skeleton{height:64px;border-radius:14px;background:linear-gradient(90deg,rgba(255,255,255,.03),rgba(255,255,255,.08),rgba(255,255,255,.03));background-size:200% 100%;animation:shimmer 1.2s infinite}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.empty-state{padding:28px;text-align:center;color:var(--muted);max-width:520px;margin:40px auto}
+.empty-state h3{color:#eaf0ff;font-family:Orbitron;font-size:15px}
+.empty-state .btn{margin-top:14px}
 
 @media(max-width:1100px){.cards{grid-template-columns:1fr 1fr}.center-grid{grid-template-columns:1fr;height:auto}.scan-wrap,.export-grid,.intel-body{grid-template-columns:1fr}#graph3d{height:480px}}

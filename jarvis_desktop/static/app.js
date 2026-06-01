@@ -3,8 +3,10 @@ const STATE = {
   repo: null, summary: null, graph: null, graphView: "module", graphPerf: null,
   exportTarget: "claude", exportPacket: "compact", graph3d: null, hoverNodeId: null,
   selectedNode: null, copilotResult: null, showEdges: true, riskPercentiles: null,
+  demoMode: false,
 };
 const RECENT_KEY = "jarvis_recent_repos";
+const ONBOARDING_KEY = "jarvis_onboarding_done_v1";
 
 async function api(path, method = "GET", body) {
   const opt = { method, headers: { "Content-Type": "application/json" } };
@@ -13,10 +15,131 @@ async function api(path, method = "GET", body) {
   return r.json();
 }
 function $(id) { return document.getElementById(id); }
-function toast(msg) { const t = $("toast"); t.textContent = msg; t.classList.add("show"); setTimeout(() => t.classList.remove("show"), 2200); }
+function toast(msg, kind) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.className = "toast show" + (kind === "success" ? " toast-success" : kind === "error" ? " toast-error" : "");
+  setTimeout(() => { t.classList.remove("show"); t.className = "toast"; }, 2400);
+}
 async function copyText(text, label) {
-  try { await navigator.clipboard.writeText(text); toast((label || "Copied") + " ✓"); }
-  catch (e) { const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); toast((label || "Copied") + " ✓"); }
+  try { await navigator.clipboard.writeText(text); toast((label || "Copied") + " ✓", "success"); }
+  catch (e) { const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); toast((label || "Copied") + " ✓", "success"); }
+}
+
+function emptyStateHtml(title, body, actionLabel, actionFn) {
+  return `<div class="empty-state glass"><h3>${title}</h3><p>${body}</p><button class="btn primary" onclick="${actionFn}">${actionLabel}</button></div>`;
+}
+
+function updateRepoChip(name, demo) {
+  $("repoChip").textContent = name || "No repository";
+  $("demoBadge").style.display = demo ? "inline-block" : "none";
+  STATE.demoMode = !!demo;
+}
+
+function dismissOnboarding(skipDemo) {
+  localStorage.setItem(ONBOARDING_KEY, "1");
+  $("onboarding").style.display = "none";
+  if (!skipDemo) go("home");
+}
+
+function maybeShowOnboarding() {
+  try {
+    if (localStorage.getItem(ONBOARDING_KEY) === "1") return;
+  } catch (e) {}
+  $("onboarding").style.display = "grid";
+}
+
+function showScanPanel(which) {
+  $("scanRunning").style.display = which === "running" ? "block" : "none";
+  $("scanSuccess").style.display = which === "success" ? "block" : "none";
+  $("scanFailed").style.display = which === "failed" ? "block" : "none";
+}
+
+function renderScanSkeleton() {
+  $("scanSkeleton").innerHTML = Array.from({ length: 8 }, () => '<div class="skeleton"></div>').join("");
+}
+
+function showScanFailed(message, code) {
+  showScanPanel("failed");
+  $("scanFailedMsg").textContent = message || "Scan failed.";
+  const hints = {
+    empty_path: ["Enter the full path to your project folder.", "Example: C:\\dev\\my-app"],
+    not_found: ["Check spelling and drive letter.", "Use Validate before scanning."],
+    no_code_files: ["Choose a folder that contains source files.", "Try Demo Mode to explore without a repo."],
+    permission_denied: ["Run JARVIS Desktop with read access to the folder.", "Avoid system-protected directories."],
+  };
+  $("scanFailedHints").innerHTML = (hints[code] || ["Try Demo Mode or pick a different folder."]).map(h => `<li>${h}</li>`).join("");
+}
+
+function renderScanSuccess(scan) {
+  showScanPanel("success");
+  const demo = scan.demo_mode ? " · Demo Mode" : "";
+  $("scanSuccessSub").textContent = `${scan.repo_name || "Repository"} indexed in ${scan.scan_duration_seconds || "?"}s${demo}`;
+  $("scanSuccessMetrics").innerHTML = [
+    ["Files indexed", scan.file_count],
+    ["Modules", scan.module_count],
+    ["Edges", scan.dependency_edges],
+    ["Subsystems", scan.subsystem_count],
+  ].map(([l, v]) => `<div class="metric"><div class="mv">${v ?? "—"}</div><div class="ml">${l}</div></div>`).join("");
+  const risk = scan.top_risks?.[0];
+  $("scanSuccessRisk").innerHTML = risk
+    ? `<b style="color:${riskColor(risk.score)}">Top risk:</b> ${risk.module || risk.path} (score ${risk.score})`
+    : `<span class="muted">No architectural risk ranking available.</span>`;
+  $("scanSuccessActions").innerHTML = (scan.suggested_next_actions || []).map(a => `<li>${a}</li>`).join("");
+}
+
+async function validateRepoPath(showToast) {
+  const path = ($("repoPath").value || "").trim();
+  $("pathError").style.display = "none";
+  $("pathOk").style.display = "none";
+  if (!path) {
+    $("pathError").style.display = "block";
+    $("pathError").textContent = "Enter a folder path first.";
+    if (showToast) toast("Enter a folder path", "error");
+    return null;
+  }
+  const res = await api("/api/repositories/validate", "POST", { path });
+  if (!res.ok) {
+    $("pathError").style.display = "block";
+    $("pathError").textContent = res.error || "Invalid path";
+    if (showToast) toast("✗ " + (res.error || "Invalid path"), "error");
+    return null;
+  }
+  $("pathOk").style.display = "block";
+  $("pathOk").textContent = `✓ ${res.name} — ${res.code_files} code file(s) found`;
+  if (res.warnings?.length) {
+    $("pathOk").textContent += " · " + res.warnings.join(" ");
+  }
+  if (showToast) toast("Path validated ✓", "success");
+  return res;
+}
+
+function focusCopilot() { go("center"); setTimeout(() => $("askInput")?.focus(), 120); }
+
+function finishScanSession(scan, pathLabel) {
+  if (pathLabel && !scan.demo_mode) pushRecent(pathLabel);
+  STATE.summary = null;
+  STATE.graph = null;
+  STATE.graph3d = null;
+  STATE.graphPerf = null;
+  updateRepoChip(scan.repo_name, scan.demo_mode);
+  unlockNav();
+  renderScanSuccess(scan);
+}
+
+async function loadDemoMode() {
+  dismissOnboarding(true);
+  go("scan");
+  showScanPanel("running");
+  $("scanPath").textContent = "Loading JARVIS Demo Sample…";
+  renderScanSkeleton();
+  setBar(30);
+  const scan = await api("/api/demo/load", "POST", {});
+  setBar(100);
+  if (!scan.ok) { showScanFailed(scan.error, scan.code); toast("✗ Demo load failed", "error"); return; }
+  STATE.summary = await api("/api/repositories/current/summary");
+  finishScanSession(scan, null);
+  toast("Demo Mode loaded ✓", "success");
 }
 
 function go(view) {
@@ -30,9 +153,9 @@ function go(view) {
 }
 function unlockNav() { document.querySelectorAll('#nav button[data-lock="1"]').forEach(b => b.removeAttribute("data-lock")); }
 
-function browseRepo() {
-  const p = prompt("Enter the repository folder path:", $("repoPath").value || ".");
-  if (p) { $("repoPath").value = p; }
+function selectRecentPath(p) {
+  $("repoPath").value = p;
+  validateRepoPath(false);
 }
 
 /* ---------------- Recent repos ---------------- */
@@ -40,7 +163,7 @@ function loadRecent() {
   let list = []; try { list = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]"); } catch (e) {}
   const box = $("recentList");
   if (!list.length) { box.innerHTML = '<span class="muted">None yet — scan a repo to populate this.</span>'; return; }
-  box.innerHTML = list.map(p => `<span class="rr" title="${p}" onclick="document.getElementById('repoPath').value=${JSON.stringify(p)}">${p.split(/[\\/]/).pop() || p}</span>`).join("");
+  box.innerHTML = list.map(p => `<span class="rr" title="${p}" onclick="selectRecentPath(${JSON.stringify(p)})">${p.split(/[\\/]/).pop() || p}</span>`).join("");
 }
 function pushRecent(p) {
   let list = []; try { list = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]"); } catch (e) {}
@@ -53,30 +176,33 @@ const STAGES = ["Indexing repository", "Building dependency graph", "Extracting 
   "Detecting architectural risks", "Extracting contracts", "Generating verification evidence", "Building AI context packets"];
 
 async function scanFlow() {
-  const path = $("repoPath").value.trim() || ".";
+  const validation = await validateRepoPath(true);
+  if (!validation) return;
+  const path = validation.path;
   const sel = await api("/api/repositories/select", "POST", { path });
-  if (!sel.ok) { toast("✗ " + (sel.error || "Invalid path")); return; }
+  if (!sel.ok) { toast("✗ " + (sel.error || "Invalid path"), "error"); return; }
   STATE.repo = sel;
-  $("repoChip").textContent = sel.name; $("scanPath").textContent = sel.path;
+  updateRepoChip(sel.name, false);
+  $("scanPath").textContent = sel.path;
   go("scan");
-  // render stages
+  showScanPanel("running");
   $("stages").innerHTML = STAGES.map((s, i) => `<div class="stage todo" id="st${i}"><span class="dot"></span><span class="lbl">${s}</span></div>`).join("");
-  $("scanMetrics").innerHTML = metricGrid({});
+  renderScanSkeleton();
   let stage = 0; setStage(0, "run"); setBar(4);
   const timer = setInterval(() => { if (stage < STAGES.length - 1) { setStage(stage, "done"); stage++; setStage(stage, "run"); setBar(8 + stage * 12); } }, 850);
 
   const scan = await api("/api/repositories/scan", "POST", { path });
   clearInterval(timer);
   STAGES.forEach((_, i) => setStage(i, "done")); setBar(100); $("scanPct").textContent = "100%";
-  if (!scan.ok) { toast("✗ Scan failed: " + (scan.error || "")); return; }
-  STATE.graph = null;
-  STATE.graph3d = null;
-  STATE.graphPerf = null;
+  if (!scan.ok) {
+    showScanFailed(scan.error || "Scan failed", scan.code);
+    toast("✗ Scan failed", "error");
+    return;
+  }
   $("scanMetrics").innerHTML = metricGrid(scan);
-  pushRecent(sel.path);
   STATE.summary = await api("/api/repositories/current/summary");
-  unlockNav();
-  setTimeout(() => go("center"), 950);
+  finishScanSession(scan, sel.path);
+  toast("Scan complete ✓", "success");
 }
 function setStage(i, cls) { const el = $("st" + i); if (el) el.className = "stage " + cls; }
 function setBar(pct) { $("scanBar").style.width = pct + "%"; $("scanPct").textContent = Math.round(pct) + "%"; }
@@ -117,7 +243,12 @@ function updateGraphMeta(data, perf) {
 
 async function renderCenter() {
   const sum = STATE.summary || (STATE.summary = await api("/api/repositories/current/summary"));
-  if (!sum.ok) { $("leftPanel").innerHTML = '<p class="muted">Scan a repository first.</p>'; return; }
+  if (!sum.ok) {
+    $("leftPanel").innerHTML = emptyStateHtml("No repository scanned", "Scan a folder or load Demo Mode to explore the dependency graph.", "Go to Home", "go('home')");
+    $("graph3d").innerHTML = emptyStateHtml("Graph unavailable", "Complete a scan to render the dependency graph.", "Try Demo Mode", "loadDemoMode()");
+    $("suggest").innerHTML = "";
+    return;
+  }
   const sav = sum.token_savings || {};
   $("leftPanel").innerHTML = `
     <h3>Overview</h3>
@@ -408,7 +539,10 @@ async function copyContext(target) {
 async function renderIntel() {
   const sum = STATE.summary || (STATE.summary = await api("/api/repositories/current/summary"));
   const body = $("intelBody");
-  if (!sum.ok) { body.innerHTML = '<p class="muted">Scan a repository first.</p>'; return; }
+  if (!sum.ok) {
+    body.innerHTML = emptyStateHtml("Scan required", "Project Intelligence needs a scanned repository or Demo Mode.", "Try Demo Mode", "loadDemoMode()");
+    return;
+  }
   const flow = ["entry point", "→", "subsystems", "→", "core hubs", "→", "actions"].map(x => x === "→" ? '<span class="ar">→</span>' : `<span class="fn">${x}</span>`).join("");
   body.innerHTML = `
     <div class="glass ib full"><h3>Plain-English explanation</h3><p>${sum.explanation}</p></div>
@@ -473,6 +607,13 @@ function wireSeg(id, key) {
   });
 }
 async function refreshExport() {
+  const sum = STATE.summary || await api("/api/repositories/current/summary");
+  if (!sum.ok) {
+    $("exportPreview").innerHTML = emptyStateHtml("Export unavailable", "Scan a repository or load Demo Mode to build an AI context packet.", "Try Demo Mode", "loadDemoMode()");
+    $("tokEst").textContent = "—";
+    $("previewMeta").textContent = "Scan required";
+    return;
+  }
   const res = await api("/api/context/export", "POST", { target: STATE.exportTarget, packet: STATE.exportPacket });
   if (!res.ok) { $("exportPreview").textContent = "Scan a repository first."; $("tokEst").textContent = "—"; return; }
   $("exportPreview").textContent = res.text;
@@ -491,8 +632,17 @@ function saveExport() {
 /* ---------------- Boot ---------------- */
 (async function boot() {
   loadRecent();
+  maybeShowOnboarding();
   wireSeg("segTarget", "exportTarget"); wireSeg("segPacket", "exportPacket");
   $("askInput").addEventListener("keydown", e => { if (e.key === "Enter") sendCopilotQuestion(); });
   $("askSend").addEventListener("click", sendCopilotQuestion);
-  try { const h = await api("/api/health"); if (h.repository_open) { unlockNav(); STATE.summary = await api("/api/repositories/current/summary"); } } catch (e) {}
+  $("repoPath").addEventListener("keydown", e => { if (e.key === "Enter") validateRepoPath(true); });
+  try {
+    const h = await api("/api/health");
+    if (h.repository_open) {
+      unlockNav();
+      STATE.summary = await api("/api/repositories/current/summary");
+      updateRepoChip(h.repo_name || STATE.summary?.repo_name, h.demo_mode);
+    }
+  } catch (e) {}
 })();

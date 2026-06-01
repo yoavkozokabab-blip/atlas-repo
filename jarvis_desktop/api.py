@@ -20,10 +20,16 @@ from typing import Any, Dict, List, Optional, Tuple
 from builder_core import architectural_risk, repository_understanding
 from builder_core.bug_intelligence import depgraph
 
-PRODUCT_VERSION = "phase109-copilot"
+PRODUCT_VERSION = "phase110-demo-ready"
 CHARS_PER_TOKEN = 4.0
 GRAPH_DISPLAY_CAP = 5000
 RISK_RANK_TOP = 5000
+
+_CODE_EXTENSIONS = {
+    ".py", ".js", ".ts", ".tsx", ".jsx", ".go", ".rs", ".java", ".cs", ".rb",
+    ".cpp", ".c", ".h", ".hpp", ".swift", ".kt", ".scala", ".php", ".vue",
+}
+_DEMO_REPO_PATH = os.path.join(os.path.dirname(__file__), "demo", "sample_repo")
 
 # Directories pruned from the light index walk (keeps scans fast + excludes the
 # vendored data corpus, mirroring the depgraph production scope).
@@ -36,7 +42,14 @@ _SKIP_DIRS = {
 }
 
 # Single-repo product state (one repository open at a time).
-_STATE: Dict[str, Any] = {"path": None, "scan": None, "graph": None, "index": None, "risks": None}
+_STATE: Dict[str, Any] = {
+    "path": None,
+    "scan": None,
+    "graph": None,
+    "index": None,
+    "risks": None,
+    "demo_mode": False,
+}
 
 
 # --------------------------------------------------------------------------
@@ -107,28 +120,169 @@ def _short(node_id: str) -> str:
 # Endpoints
 # --------------------------------------------------------------------------
 def health() -> Dict[str, Any]:
+    scan = _STATE.get("scan") or {}
     return {
         "status": "ok",
         "product": "JARVIS",
         "tagline": "Repository Intelligence Platform",
         "version": PRODUCT_VERSION,
-        "repository_open": bool(_STATE.get("scan")),
+        "repository_open": bool(scan),
+        "demo_mode": bool(_STATE.get("demo_mode")),
+        "repo_name": scan.get("repo_name"),
     }
 
 
+def demo_repo_path() -> str:
+    return os.path.abspath(_DEMO_REPO_PATH)
+
+
+def _count_code_files(root: str) -> Tuple[int, int]:
+    """Return (total_files, code_files) under root, skipping vendor dirs."""
+    total = 0
+    code = 0
+    for dirpath, dirnames, filenames in os.walk(root):
+        dirnames[:] = sorted(d for d in dirnames if d not in _SKIP_DIRS)
+        for name in filenames:
+            total += 1
+            ext = os.path.splitext(name)[1].lower()
+            if ext in _CODE_EXTENSIONS:
+                code += 1
+    return total, code
+
+
+def validate_repository_path(path: str) -> Dict[str, Any]:
+    """Validate a repository path before scan (exists, readable, contains code)."""
+    raw = (path or "").strip()
+    if not raw:
+        return {
+            "ok": False,
+            "code": "empty_path",
+            "error": "Enter a folder path to scan.",
+            "warnings": [],
+        }
+    abspath = os.path.abspath(os.path.expanduser(raw))
+    if not os.path.exists(abspath):
+        return {
+            "ok": False,
+            "code": "not_found",
+            "error": f"Path does not exist: {abspath}",
+            "path": abspath,
+            "warnings": [],
+        }
+    if not os.path.isdir(abspath):
+        return {
+            "ok": False,
+            "code": "not_directory",
+            "error": f"Path is not a folder: {abspath}",
+            "path": abspath,
+            "warnings": [],
+        }
+    if not os.access(abspath, os.R_OK | os.X_OK):
+        return {
+            "ok": False,
+            "code": "permission_denied",
+            "error": f"Cannot read folder (check permissions): {abspath}",
+            "path": abspath,
+            "warnings": [],
+        }
+    total_files, code_files = _count_code_files(abspath)
+    warnings: List[str] = []
+    if code_files == 0:
+        return {
+            "ok": False,
+            "code": "no_code_files",
+            "error": "No source code files found in this folder (.py, .js, .ts, .go, …).",
+            "path": abspath,
+            "name": os.path.basename(abspath) or abspath,
+            "total_files": total_files,
+            "code_files": code_files,
+            "warnings": ["Choose a project root that contains source files."],
+        }
+    if total_files < 3:
+        warnings.append("Very small folder — scan results may be limited.")
+    return {
+        "ok": True,
+        "path": abspath,
+        "name": os.path.basename(abspath) or abspath,
+        "total_files": total_files,
+        "code_files": code_files,
+        "warnings": warnings,
+    }
+
+
+def _scan_next_actions(scan: Dict[str, Any]) -> List[str]:
+    actions = [
+        "Explore the dependency graph in Command Center",
+        "Ask Copilot: What does this repository do?",
+        "Ask Copilot: What are the top architectural risks?",
+    ]
+    if scan.get("top_hubs"):
+        hub = scan["top_hubs"][0].get("path") or scan["top_hubs"][0].get("module")
+        if hub:
+            actions.append(f"Ask Copilot: What breaks if I change {hub}?")
+    if scan.get("import_cycle_count"):
+        actions.append("Ask Copilot: Show import cycles")
+    actions.append("Export a compact Claude/Codex/Cursor context packet")
+    return actions
+
+
 def select_repository(path: str) -> Dict[str, Any]:
-    if not path or not os.path.isdir(path):
-        return {"ok": False, "error": f"Not a directory: {path!r}"}
-    abspath = os.path.abspath(path)
+    validation = validate_repository_path(path)
+    if not validation.get("ok"):
+        return {
+            "ok": False,
+            "error": validation.get("error", "Invalid path"),
+            "code": validation.get("code", "invalid"),
+            "warnings": validation.get("warnings", []),
+        }
+    abspath = validation["path"]
     _STATE["path"] = abspath
-    return {"ok": True, "path": abspath, "name": os.path.basename(abspath) or abspath}
+    _STATE["demo_mode"] = False
+    return {
+        "ok": True,
+        "path": abspath,
+        "name": validation["name"],
+        "code_files": validation.get("code_files", 0),
+        "warnings": validation.get("warnings", []),
+    }
+
+
+def load_demo_mode() -> Dict[str, Any]:
+    """Load bundled sample repository into product state (clearly labeled demo)."""
+    demo_path = demo_repo_path()
+    if not os.path.isdir(demo_path):
+        return {
+            "ok": False,
+            "error": "Bundled demo repository is missing.",
+            "code": "demo_missing",
+        }
+    _STATE["demo_mode"] = False
+    result = scan_repository(demo_path)
+    if not result.get("ok"):
+        return result
+    _STATE["demo_mode"] = True
+    result["demo_mode"] = True
+    result["repo_name"] = "JARVIS Demo Sample"
+    result["repo_path"] = demo_path
+    _STATE["scan"]["demo_mode"] = True
+    _STATE["scan"]["repo_name"] = "JARVIS Demo Sample"
+    _STATE["scan"]["repo_path"] = demo_path
+    return result
 
 
 def scan_repository(path: Optional[str] = None) -> Dict[str, Any]:
     """Run the real Builder Core scan (graph + light index + risk ranking)."""
     repo = os.path.abspath(path or _STATE.get("path") or ".")
-    if not os.path.isdir(repo):
-        return {"ok": False, "error": f"Not a directory: {repo!r}"}
+    validation = validate_repository_path(repo)
+    if not validation.get("ok"):
+        return {
+            "ok": False,
+            "error": validation.get("error", "Invalid repository path"),
+            "code": validation.get("code", "invalid"),
+            "warnings": validation.get("warnings", []),
+        }
+    repo = validation["path"]
+    _STATE["demo_mode"] = repo == demo_repo_path()
     started = time.time()
 
     graph = depgraph.build_graph(repo)               # production scope (Phase 100G)
@@ -166,10 +320,12 @@ def scan_repository(path: Optional[str] = None) -> Dict[str, Any]:
     ]
 
     duration = round(time.time() - started, 2)
+    top_risk = top_risks[0] if top_risks else {}
     scan = {
         "ok": True,
         "repo_path": repo,
         "repo_name": os.path.basename(repo) or repo,
+        "demo_mode": bool(_STATE.get("demo_mode")),
         "file_count": len(index["files"]),
         "files_discovered": diag.get("total_candidate_files", len(module_nodes)),
         "module_count": len(module_nodes),
@@ -182,10 +338,15 @@ def scan_repository(path: Optional[str] = None) -> Dict[str, Any]:
         "import_cycle_count": stats.get("import_cycles") and len(stats["import_cycles"]) or 0,
         "top_hubs": top_hubs,
         "top_risks": top_risks,
+        "top_risk_module": top_risk.get("module") or top_risk.get("path") or "",
+        "top_risk_score": top_risk.get("score", 0),
         "role_counts": index["stats"]["roles"],
         "scan_duration_seconds": duration,
         "scanned_at": time.strftime("%Y-%m-%dT%H:%M:%S"),
+        "validation_warnings": validation.get("warnings", []),
+        "suggested_next_actions": [],
     }
+    scan["suggested_next_actions"] = _scan_next_actions(scan)
     # token estimate for the compact AI-context packet built from this scan
     _STATE.update({"path": repo, "scan": scan, "graph": graph, "index": index, "risks": risks})
     scan["compact_token_estimate"] = estimate_tokens(_render_context("claude", "compact"))
@@ -213,6 +374,7 @@ def current_summary() -> Dict[str, Any]:
         "ok": True,
         "repo_name": scan["repo_name"],
         "repo_path": scan["repo_path"],
+        "demo_mode": bool(scan.get("demo_mode")),
         "file_count": scan["file_count"],
         "module_count": scan["module_count"],
         "subsystem_count": scan["subsystem_count"],

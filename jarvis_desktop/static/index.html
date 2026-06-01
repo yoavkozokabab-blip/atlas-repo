@@ -31,6 +31,7 @@
       <button data-view="export" data-lock="1" onclick="go('export')">AI Export</button>
     </nav>
     <div class="repo-chip" id="repoChip">No repository</div>
+    <span class="demo-badge" id="demoBadge" style="display:none">Demo Mode</span>
   </header>
 
   <main id="app">
@@ -54,18 +55,21 @@
         </div>
 
         <div class="repo-pick glass">
-          <label>Repository folder</label>
+          <label for="repoPath">Repository folder</label>
+          <p class="muted tiny picker-help">Paste the full path to your project root. JARVIS analyzes dependencies, risk, and structure locally — no cloud upload.</p>
           <div class="pick-row">
-            <input id="repoPath" type="text" placeholder="C:\path\to\your\repository  (or .)" value="." />
-            <button class="btn ghost" onclick="browseRepo()">Browse</button>
-            <button class="btn ghost" onclick="document.getElementById('repoPath').value='.'">Use current</button>
+            <input id="repoPath" type="text" placeholder="C:\projects\my-app  or  /home/dev/my-app" value="" autocomplete="off" />
+            <button class="btn ghost" type="button" onclick="validateRepoPath()">Validate</button>
           </div>
+          <div class="path-error" id="pathError" style="display:none"></div>
+          <div class="path-ok muted tiny" id="pathOk" style="display:none"></div>
           <div class="pick-actions">
-            <button class="btn primary big" onclick="scanFlow()">⟳ Scan Repository</button>
+            <button class="btn primary big" type="button" onclick="scanFlow()">⟳ Scan Repository</button>
+            <button class="btn ghost big" type="button" onclick="loadDemoMode()">Try Demo Mode</button>
           </div>
           <div class="recent">
             <span class="recent-title">Recent repositories</span>
-            <div id="recentList" class="recent-list"><span class="muted">None yet — scan a repo to populate this.</span></div>
+            <div id="recentList" class="recent-list"><span class="muted">None yet — scan a repo or use Demo Mode.</span></div>
           </div>
         </div>
       </div>
@@ -73,13 +77,37 @@
 
     <!-- ===================== SCREEN 2: SCAN ===================== -->
     <section class="view" id="view-scan">
-      <h2 class="vh">Scanning repository</h2>
-      <div class="scan-path glass" id="scanPath">—</div>
-      <div class="scan-wrap">
-        <div class="stages glass" id="stages"></div>
-        <div class="metrics glass" id="scanMetrics"></div>
+      <h2 class="vh">Scan repository</h2>
+      <div id="scanRunning">
+        <div class="scan-path glass" id="scanPath">—</div>
+        <div class="scan-wrap">
+          <div class="stages glass" id="stages"></div>
+          <div class="metrics glass" id="scanMetrics"><div class="skeleton-grid" id="scanSkeleton"></div></div>
+        </div>
+        <div class="scan-foot"><div class="bar"><div class="bar-fill" id="scanBar"></div></div><span id="scanPct">0%</span></div>
       </div>
-      <div class="scan-foot"><div class="bar"><div class="bar-fill" id="scanBar"></div></div><span id="scanPct">0%</span></div>
+      <div id="scanSuccess" class="scan-result glass" style="display:none">
+        <h3>Scan complete</h3>
+        <p class="muted" id="scanSuccessSub"></p>
+        <div class="success-grid" id="scanSuccessMetrics"></div>
+        <div class="success-risk" id="scanSuccessRisk"></div>
+        <h4 class="success-actions-title">Suggested next steps</h4>
+        <ul class="clean" id="scanSuccessActions"></ul>
+        <div class="success-buttons">
+          <button class="btn primary" onclick="go('center')">Explore graph</button>
+          <button class="btn ghost" onclick="focusCopilot()">Ask Copilot</button>
+          <button class="btn ghost" onclick="go('export')">Export AI prompt</button>
+        </div>
+      </div>
+      <div id="scanFailed" class="scan-result glass fail" style="display:none">
+        <h3>Scan failed</h3>
+        <p id="scanFailedMsg" class="fail-msg"></p>
+        <ul class="clean" id="scanFailedHints"></ul>
+        <div class="success-buttons">
+          <button class="btn primary" onclick="go('home')">Choose another folder</button>
+          <button class="btn ghost" onclick="loadDemoMode()">Try Demo Mode</button>
+        </div>
+      </div>
     </section>
 
     <!-- ===================== SCREEN 3: COMMAND CENTER ===================== -->
@@ -203,6 +231,25 @@
     </section>
 
   </main>
+
+  <div id="onboarding" class="onboarding" style="display:none">
+    <div class="onboarding-card glass">
+      <h2>Welcome to JARVIS</h2>
+      <p class="muted">JARVIS prepares your codebase for AI assistants — locally, with evidence-backed structure.</p>
+      <ol class="onboard-steps">
+        <li><b>What JARVIS does</b> — Maps dependencies, architectural risk, and subsystems from your repo.</li>
+        <li><b>Step 1: Choose repository</b> — Paste your project folder path or try Demo Mode.</li>
+        <li><b>Step 2: Scan</b> — Builder Core indexes modules and import edges (runs on your machine).</li>
+        <li><b>Step 3: Explore graph</b> — 3D dependency view with risk coloring.</li>
+        <li><b>Step 4: Ask Copilot</b> — Grounded answers about risk, impact, and architecture.</li>
+        <li><b>Step 5: Export prompt</b> — Copy compact context for Claude, Codex, or Cursor.</li>
+      </ol>
+      <div class="onboard-actions">
+        <button class="btn primary" onclick="dismissOnboarding(false)">Get started</button>
+        <button class="btn ghost" onclick="loadDemoMode(); dismissOnboarding(true)">Try Demo Mode</button>
+      </div>
+    </div>
+  </div>
 
   <div id="toast" class="toast"></div>
   <script src="app.js"></script>

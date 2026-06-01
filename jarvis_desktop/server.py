@@ -38,6 +38,10 @@ def dispatch(
             return 200, api.health()
         if method == "POST" and path == "/api/repositories/select":
             return 200, api.select_repository(str(body.get("path", "")))
+        if method == "POST" and path == "/api/repositories/validate":
+            return 200, api.validate_repository_path(str(body.get("path", "")))
+        if method == "POST" and path == "/api/demo/load":
+            return 200, api.load_demo_mode()
         if method == "POST" and path == "/api/repositories/scan":
             return 200, api.scan_repository(body.get("path"))
         if method == "GET" and path == "/api/repositories/current/summary":
@@ -67,6 +71,8 @@ def dispatch(
 ROUTES = (
     ("GET", "/api/health"),
     ("POST", "/api/repositories/select"),
+    ("POST", "/api/repositories/validate"),
+    ("POST", "/api/demo/load"),
     ("POST", "/api/repositories/scan"),
     ("GET", "/api/repositories/current/summary"),
     ("GET", "/api/repositories/current/graph"),
@@ -82,7 +88,7 @@ ROUTES = (
 # stdlib HTTP handler (default runtime)
 # --------------------------------------------------------------------------
 class JarvisHandler(BaseHTTPRequestHandler):
-    server_version = "JARVISDesktop/109"
+    server_version = "JARVISDesktop/110"
 
     def log_message(self, *args: Any) -> None:  # quiet console
         pass
@@ -186,6 +192,14 @@ def create_fastapi_app():  # pragma: no cover - exercised only when fastapi pres
     @app.post("/api/repositories/select")
     async def _select(request: Request):
         return api.select_repository(str((await _body(request)).get("path", "")))
+
+    @app.post("/api/repositories/validate")
+    async def _validate(request: Request):
+        return api.validate_repository_path(str((await _body(request)).get("path", "")))
+
+    @app.post("/api/demo/load")
+    async def _demo():
+        return api.load_demo_mode()
 
     @app.post("/api/repositories/scan")
     async def _scan(request: Request):
