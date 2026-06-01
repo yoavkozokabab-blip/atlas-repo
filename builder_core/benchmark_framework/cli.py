@@ -23,7 +23,7 @@ from .schema import (
 )
 from .scoring import build_manual_score
 from .summary import aggregate, render_markdown
-from .tokens import estimated_count
+from .tokens import attach_answer_to_breakdown, estimated_count
 
 DEFAULT_TASKS = os.path.join(os.path.dirname(__file__), "data", "benchmark_tasks_v1.json")
 DEFAULT_OUT = os.path.join("reports", "benchmarks")
@@ -88,6 +88,13 @@ def _cmd_record_run(args: argparse.Namespace) -> int:
     if args.estimated_input_tokens is not None:
         log.estimated_input_tokens = args.estimated_input_tokens
     log.estimated_output_tokens = estimated_count(answer, manual_override=args.estimated_output_tokens)
+    if log.token_breakdown:
+        log.token_breakdown = attach_answer_to_breakdown(
+            log.token_breakdown,
+            answer,
+            manual_override=args.estimated_output_tokens,
+        )
+        dump_json(log.token_breakdown, os.path.join(task_root, f"token_breakdown.{args.mode}.json"))
     log.notes = args.notes
     dump_json(log.to_dict(), log_path)
     print(f"Recorded {args.task_id} / {args.mode}: {log_path}")

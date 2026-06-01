@@ -57,9 +57,13 @@ class RunLog:
     score_path: str = ""
     notes: str = ""
     token_numbers_are_estimates: bool = True
+    token_breakdown: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        return asdict(self)
+        payload = asdict(self)
+        if not self.token_breakdown:
+            payload.pop("token_breakdown", None)
+        return payload
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "RunLog":
@@ -174,6 +178,15 @@ def validate_run_log(data: Dict[str, Any]) -> List[str]:
             errors.append(f"run log missing {name}")
     if data.get("token_numbers_are_estimates") is not True:
         errors.append("token_numbers_are_estimates must be true")
+    breakdown = data.get("token_breakdown")
+    if breakdown is not None and breakdown != {}:
+        if not isinstance(breakdown, dict):
+            errors.append("token_breakdown must be an object when present")
+        else:
+            for key in ("raw_prompt", "jarvis_context", "final_prompt_package"):
+                section = breakdown.get(key)
+                if not isinstance(section, dict) or "estimated_tokens" not in section:
+                    errors.append(f"token_breakdown.{key}.estimated_tokens required")
     return errors
 
 

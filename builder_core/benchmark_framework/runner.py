@@ -8,7 +8,11 @@ from typing import Any, Callable, Dict, Optional
 
 from . import FRAMEWORK_VERSION, SCHEMA_VERSION
 from .schema import BenchmarkTask, MODES, RunLog, dump_json
-from .tokens import estimated_count
+from .tokens import (
+    INSTRUMENTATION_VERSION,
+    build_token_breakdown,
+    prompt_metadata_comment,
+)
 
 JarvisContextFn = Callable[[BenchmarkTask], str]
 _INDEX_CACHE: Dict[str, Any] = {}
@@ -111,18 +115,30 @@ def generate_run_package(
         dump_json(task.to_dict(), os.path.join(task_root, "task.json"))
         for mode in MODES:
             prompt = build_prompt(task, mode, jarvis_context)
+            context_for_mode = jarvis_context if mode == "jarvis_plus_codex" else ""
+            breakdown = build_token_breakdown(
+                raw_prompt=task.prompt,
+                jarvis_context=context_for_mode,
+                final_prompt_package=prompt,
+            )
             prompt_name = f"{mode}.prompt.md"
-            _write_text(os.path.join(task_root, prompt_name), prompt)
+            _write_text(
+                os.path.join(task_root, prompt_name),
+                prompt_metadata_comment(breakdown) + prompt,
+            )
             score_path = f"score.{mode}.json"
             answer_path = f"answers/{task.task_id}.{mode}.txt"
             log = RunLog(
                 task_id=task.task_id,
                 mode=mode,
-                estimated_input_tokens=estimated_count(prompt),
+                estimated_input_tokens=breakdown.final_prompt_package.estimated_tokens,
                 raw_answer_path=answer_path,
                 score_path=score_path,
+                token_breakdown=breakdown.to_dict(),
             )
-            dump_json(log.to_dict(), os.path.join(task_root, f"run_log.{mode}.json"))
+            log_path = os.path.join(task_root, f"run_log.{mode}.json")
+            dump_json(log.to_dict(), log_path)
+            dump_json(breakdown.to_dict(), os.path.join(task_root, f"token_breakdown.{mode}.json"))
             dump_json(_score_template(task.task_id, mode), os.path.join(task_root, score_path))
 
     manifest = {
@@ -135,6 +151,16 @@ def generate_run_package(
         "repositories": dict(sorted(repo_paths.items())),
         "deterministic_generation": True,
         "token_numbers_are_estimates": True,
+        "token_instrumentation": {
+            "version": INSTRUMENTATION_VERSION,
+            "estimator": "chars_per_4_estimate",
+            "fields": [
+                "raw_prompt",
+                "jarvis_context",
+                "final_prompt_package",
+                "answer_text",
+            ],
+        },
     }
     dump_json(manifest, os.path.join(run_root, "manifest.json"))
     _write_text(os.path.join(run_root, "README.md"), _readme(manifest))

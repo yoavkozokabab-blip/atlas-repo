@@ -130,6 +130,8 @@ def render_markdown(summary: Dict[str, Any], *, run_id: str) -> str:
         "|---|---:|---:|",
         f"| Logged runs | {baseline['runs_logged']} | {jarvis['runs_logged']} |",
         f"| Scored runs | {baseline['runs_scored']} | {jarvis['runs_scored']} |",
+        f"| Average estimated input tokens | {_display(baseline['average_estimated_input_tokens'])} | {_display(jarvis['average_estimated_input_tokens'])} |",
+        f"| Average estimated output tokens | {_display(baseline['average_estimated_output_tokens'])} | {_display(jarvis['average_estimated_output_tokens'])} |",
         f"| Average estimated total tokens | {_display(baseline['average_estimated_total_tokens'])} | {_display(jarvis['average_estimated_total_tokens'])} |",
         f"| Average latency seconds | {_display(baseline['average_latency_seconds'])} | {_display(jarvis['average_latency_seconds'])} |",
         f"| Task success rate | {_display(baseline['task_success_rate'])} | {_display(jarvis['task_success_rate'])} |",
