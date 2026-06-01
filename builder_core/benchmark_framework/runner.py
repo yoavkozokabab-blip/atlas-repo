@@ -7,8 +7,10 @@ import os
 from typing import Any, Callable, Dict, Optional
 
 from . import FRAMEWORK_VERSION, SCHEMA_VERSION
-from .schema import BenchmarkTask, MODES, RunLog, dump_json
+from .schema import BenchmarkTask, MODES, RunLog
+from .compact_packets import format_jarvis_context, packet_format_from_env
 from .jarvis_packet import format_jarvis_packet
+from .schema import dump_json
 from .tokens import (
     INSTRUMENTATION_VERSION,
     build_token_breakdown,
@@ -36,7 +38,13 @@ def default_jarvis_context(task: BenchmarkTask) -> str:
             index = indexer.build_index(repo_path)
             _INDEX_CACHE[repo_path] = index
         result = ask.answer(index, task.prompt)
-        return format_jarvis_packet(result)
+        packet_format = packet_format_from_env()
+        context, packet_meta = format_jarvis_context(
+            result, task, index, packet_format=packet_format
+        )
+        packet_meta["comparison"]["ask_mode"] = result.get("mode")
+        _INDEX_CACHE[f"{repo_path}__packet_meta__{task.task_id}"] = packet_meta
+        return context
     except Exception as exc:  # pragma: no cover - guarded fallback is environment-specific
         return f"[JARVIS context unavailable: {type(exc).__name__}]"
 
@@ -95,6 +103,22 @@ def generate_run_package(
         task_root = os.path.join(run_root, task.task_id)
         os.makedirs(os.path.join(task_root, "answers"), exist_ok=True)
         jarvis_context = context_fn(task)
+        repo_key = os.path.abspath(task.repo_path)
+        packet_meta = _INDEX_CACHE.pop(f"{repo_key}__packet_meta__{task.task_id}", {})
+        if packet_meta:
+            dump_json(
+                packet_meta.get("comparison", {}),
+                os.path.join(task_root, "context_token_comparison.json"),
+            )
+            if packet_meta.get("compact_text"):
+                _write_text(
+                    os.path.join(task_root, "context_packet.compact.txt"),
+                    packet_meta["compact_text"],
+                )
+            dump_json(
+                packet_meta.get("expanded", {}),
+                os.path.join(task_root, "context_packet.expanded.json"),
+            )
         dump_json(task.to_dict(), os.path.join(task_root, "task.json"))
         for mode in MODES:
             prompt = build_prompt(task, mode, jarvis_context)
@@ -144,6 +168,7 @@ def generate_run_package(
                 "answer_text",
             ],
         },
+        "context_packet_format": packet_format_from_env(),
     }
     dump_json(manifest, os.path.join(run_root, "manifest.json"))
     _write_text(os.path.join(run_root, "README.md"), _readme(manifest))
