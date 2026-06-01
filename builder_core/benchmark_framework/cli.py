@@ -8,6 +8,7 @@ import shutil
 import sys
 from typing import Any, List
 
+from .context_profiling import profile_jarvis_context, write_profile_report
 from .runner import generate_run_package
 from .schema import (
     MODES,
@@ -124,6 +125,24 @@ def _cmd_score(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_profile_context(args: argparse.Namespace) -> int:
+    tasks = load_tasks(args.tasks)
+    if args.limit > 0:
+        tasks = tasks[: args.limit]
+    shared_index = None
+    if args.reuse_index:
+        from ..store import load_index
+
+        shared_index = load_index(args.repo or ".")
+    profiles = [
+        profile_jarvis_context(task, index=shared_index) for task in tasks
+    ]
+    write_profile_report(args.out, profiles)
+    print(f"Context profile report written: {args.out}")
+    print(f"Profiled {len(profiles)} task(s).")
+    return 0
+
+
 def _cmd_summary(run_dir: str) -> int:
     logs: List[RunLog] = []
     scores: List[ManualScore] = []
@@ -206,6 +225,23 @@ def _build_parser() -> argparse.ArgumentParser:
 
     summary = commands.add_parser("summary", help="Aggregate logged and manually scored runs.")
     summary.add_argument("--run-dir", required=True)
+
+    profile = commands.add_parser(
+        "profile-context",
+        help="Profile JARVIS context generation time and token estimates (Phase 104B).",
+    )
+    profile.add_argument("--tasks", default=DEFAULT_TASKS)
+    profile.add_argument(
+        "--out",
+        default=os.path.join("reports", "phase104b_context_generation_profile.md"),
+    )
+    profile.add_argument("--limit", type=int, default=0, help="Max tasks to profile (0 = all).")
+    profile.add_argument(
+        "--reuse-index",
+        action="store_true",
+        help="Load .jarvis_builder/index.json once for all tasks (same repo).",
+    )
+    profile.add_argument("--repo", default=".", help="Project root when using --reuse-index.")
     return parser
 
 
@@ -221,6 +257,8 @@ def main(argv: List[str] | None = None) -> int:
         return _cmd_score(args)
     if args.command == "summary":
         return _cmd_summary(args.run_dir)
+    if args.command == "profile-context":
+        return _cmd_profile_context(args)
     return 2
 
 
