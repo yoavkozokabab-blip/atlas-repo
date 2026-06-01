@@ -57,7 +57,12 @@ _TIER1: List[Tuple[re.Pattern[str], str, int, str]] = [
     ),
     (
         re.compile(
-            r"\bbottleneck\b|\barchitectural bottleneck\b|\bcritical architectural\b",
+            r"\bbottlenecks?\b|\barchitectural bottlenecks?\b|\bcritical architectural\b|"
+            r"\barchitectural risk\b|\barchitecture risk\b|\brisk modules?\b|"
+            r"\briskiest modules?\b|\bblast radius\b|\bfan[\s-]?in\b|"
+            r"\bimport cycles?\b|\bdependency cycles?\b|"
+            r"\bcircular (?:imports?|dependenc\w+)\b|\bstructural fragility\b|"
+            r"\b(?:highly|most) coupled\b|\bmost depended\b",
             re.IGNORECASE,
         ),
         "bottleneck",
@@ -137,7 +142,7 @@ _TIER1: List[Tuple[re.Pattern[str], str, int, str]] = [
     ),
     (
         re.compile(
-            r"\barchitecture\b|\boverall structure\b|\bhigh level\b|\boverview of the system\b",
+            r"\barchitectur\w*\b|\boverall structure\b|\bhigh level\b|\boverview of the system\b",
             re.IGNORECASE,
         ),
         "architecture",
@@ -150,7 +155,7 @@ _WEAK_LEXICONS: Dict[str, Tuple[str, ...]] = {
     "production_layout": ("production", "folder", "directory", "layout", "density", "concentration"),
     "subsystem_centrality": ("central", "centrality", "subsystem", "important"),
     "dependency_centrality": ("incoming", "imported", "module", "dependency", "depend"),
-    "bottleneck": ("bottleneck", "critical", "central", "hub"),
+    "bottleneck": ("bottleneck", "critical", "central", "hub", "fan", "cycle", "cycles", "coupled", "coupling", "blast"),
     "execution_path": ("execution", "path", "flow", "happens", "reach"),
     "impact": ("break", "impact", "change", "affect", "depend"),
     "architecture": ("architecture", "structure", "overview", "system"),

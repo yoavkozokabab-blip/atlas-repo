@@ -516,8 +516,11 @@ def _answer_impact(index: Dict[str, Any], question: str) -> Dict[str, Any]:
 def _route_ru3_answer(
     index: Dict[str, Any], question: str, detail: Dict[str, Any]
 ) -> Dict[str, Any] | None:
-    if not str(detail.get("fired_rule", "")).startswith("anchor:"):
-        return None
+    # Route on the resolved category. ``classify_question_detail`` already gates
+    # low-confidence/ambiguous questions to ``unknown`` (which is not in the map
+    # below and falls through to coarse routing), so any concrete graph category
+    # here — whether from a Tier-1 anchor or a confident Tier-2 match — is safe to
+    # dispatch to its handler instead of silently falling back to retrieval.
     category = detail.get("category")
     if category == "production_layout":
         return _answer_production_layout(index)
