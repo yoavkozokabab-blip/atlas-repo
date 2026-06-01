@@ -435,6 +435,8 @@ def _answer_bottlenecks(index: Dict[str, Any]) -> Dict[str, Any]:
             "category": "bottleneck",
             "interpretation_confidence": "high",
             "support_confidence": "high" if ranked else "medium",
+            "graph_scope": graph.get("graph_scope"),
+            "scope_diagnostics": graph.get("scope_diagnostics"),
         },
     }
 

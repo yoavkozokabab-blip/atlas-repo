@@ -24,6 +24,48 @@ EDGE_TYPES = ("contains", "imports", "calls", "references")
 _MAX_FILES = cross_file._MAX_FILES
 _MAX_FUNCTIONS = cross_file._MAX_FUNCTIONS
 
+# Phase 100G — dependency-graph scope. ``production`` reuses the RU-2 role
+# classifier to keep only production source files, so generated/runtime/data/
+# benchmark/report files do not push the graph over the cap. ``full`` is the
+# legacy behavior (every Python file). ``graph_scope`` on the result is
+# ``production``/``full`` when built cleanly, or ``degraded`` if still over cap.
+PRODUCTION_SCOPE = "production"
+FULL_SCOPE = "full"
+DEGRADED_SCOPE = "degraded"
+GRAPH_SCOPES = (PRODUCTION_SCOPE, FULL_SCOPE)
+
+
+def _production_scope_filter(
+    root_abs: str,
+    candidates: List[Tuple[str, str]],
+    *,
+    include_tests: bool,
+) -> Tuple[List[Tuple[str, str]], Dict[str, int]]:
+    """Keep production source files only, reusing the RU-2 role classifier.
+
+    Returns ``(kept, excluded_by_role)``. ``.py`` under a top-level data tree
+    (``data/``, ``fixtures/`` …) classifies as ``production_code`` by role yet is
+    not first-party source (e.g. a vendored evaluation corpus), so it is excluded
+    by location and reported as ``dataset_tree`` in the diagnostics.
+    """
+    from .. import repository_understanding as ru
+
+    dataset_parts = ru._DATASET_PARTS
+    kept: List[Tuple[str, str]] = []
+    excluded: Dict[str, int] = {}
+    for abs_path, rel in candidates:
+        rel_posix = rel.replace("\\", "/")
+        role = ru.classify_file_role(rel_posix, ".py", project_root=root_abs)
+        segments = rel_posix.lower().split("/")
+        in_data_tree = bool(segments) and segments[0] in dataset_parts
+        allowed_role = role == "production_code" or (include_tests and role == "test")
+        if allowed_role and not in_data_tree:
+            kept.append((abs_path, rel_posix))
+        else:
+            key = "dataset_tree" if (in_data_tree and role == "production_code") else role
+            excluded[key] = excluded.get(key, 0) + 1
+    return kept, excluded
+
 
 def _stable_json(value: Any) -> str:
     return json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
@@ -686,10 +728,61 @@ def _import_cycles(edges: List[Dict[str, Any]]) -> List[List[str]]:
     return cycles
 
 
-def build_graph(repository_root: str) -> Dict[str, Any]:
-    """Build a dependency graph for all Python files under ``repository_root``."""
-    files = _collect_files(repository_root)
-    return build_graph_from_files(repository_root, files)
+def build_graph(
+    repository_root: str,
+    *,
+    scope: str = PRODUCTION_SCOPE,
+    include_tests: bool = False,
+) -> Dict[str, Any]:
+    """Build a dependency graph under ``repository_root``.
+
+    ``scope='production'`` (default) reuses the RU-2 role classifier to keep only
+    first-party production source, so generated/runtime/data/benchmark/report
+    files do not push the graph over the cap. ``scope='full'`` is the legacy
+    every-file behavior. ``include_tests=True`` additionally keeps test files.
+
+    The result carries a ``graph_scope`` field (``production``/``full``/
+    ``degraded``) and a ``scope_diagnostics`` block.
+    """
+    from . import engine
+
+    root_abs = os.path.abspath(repository_root).replace("\\", "/")
+    candidates = list(engine._collect_python_files(root_abs))
+    total_candidates = len(candidates)
+
+    if scope == FULL_SCOPE:
+        kept = candidates
+        excluded_by_role: Dict[str, int] = {}
+    else:
+        kept, excluded_by_role = _production_scope_filter(
+            root_abs, candidates, include_tests=include_tests
+        )
+
+    files: List[Tuple[str, str]] = []
+    for abs_path, rel in kept:
+        try:
+            with open(abs_path, "r", encoding="utf-8-sig", errors="ignore") as handle:
+                files.append((rel.replace("\\", "/"), handle.read()))
+        except OSError:
+            continue
+
+    graph = build_graph_from_files(repository_root, files)
+    degraded = bool(graph.get("degraded"))
+    graph["graph_scope"] = (
+        DEGRADED_SCOPE if degraded else (FULL_SCOPE if scope == FULL_SCOPE else PRODUCTION_SCOPE)
+    )
+    graph["scope_diagnostics"] = {
+        "requested_scope": scope,
+        "include_tests": include_tests,
+        "total_candidate_files": total_candidates,
+        "files_kept": len(files),
+        "files_excluded": total_candidates - len(files),
+        "excluded_by_role": dict(sorted(excluded_by_role.items())),
+        "degraded": degraded,
+        "cap_files": _MAX_FILES,
+        "cap_functions": _MAX_FUNCTIONS,
+    }
+    return graph
 
 
 def export_json(graph: Dict[str, Any]) -> str:
