@@ -1,0 +1,9 @@
+{
+  "verbose_tokens": 9839,
+  "compact_tokens": 4860,
+  "reduction_percent": 50.6,
+  "meets_fifty_percent_reduction": true,
+  "meets_forty_percent_reduction": true,
+  "cap_compliance_pass": true,
+  "evidence_preservation_pass": true
+}

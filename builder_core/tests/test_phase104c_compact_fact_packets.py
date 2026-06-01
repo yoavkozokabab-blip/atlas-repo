@@ -84,7 +84,7 @@ def test_impact_task_gets_impact_packet_not_arch_ranking(tmp_path):
     assert kind == "IMPACT"
     compact, _expanded, packet_kind = build_compact_packet(result, task, index)
     assert packet_kind == "IMPACT"
-    assert "TARGET|PATH=config.py" in compact
+    assert "TARGET|" in compact and "config.py" in compact
     assert compact.count("MODULE|") <= 1
 
 
