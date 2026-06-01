@@ -17,7 +17,7 @@ from .schema import BenchmarkTask
 from .tokens import estimated_count
 
 PACKET_VERSION = "1"
-COMPACT_INSTRUMENTATION_VERSION = "phase104c-fix-v1"
+COMPACT_INSTRUMENTATION_VERSION = "phase104c-fix2-v1"
 
 TASK_TO_KIND = {
     "repository_understanding": "REPO_MAP",
@@ -164,56 +164,96 @@ def _index_paths(index: Dict[str, Any]) -> List[str]:
     ]
 
 
-def _resolve_indexed_path(hint: str, index: Dict[str, Any]) -> Tuple[Optional[str], str]:
-    """Map abbreviated evidence hints to one indexed repository path."""
+def _sort_paths(paths: Sequence[str]) -> List[str]:
+    return sorted({path for path in paths if path}, key=lambda path: (path.count("/"), len(path), path))
+
+
+def _path_candidates(hint: str, index: Dict[str, Any]) -> List[str]:
+    """Return all indexed paths matching a hint, deterministically sorted."""
     hint_norm = str(hint or "").replace("\\", "/").strip()
     if not hint_norm:
-        return None, "missing"
+        return []
     paths = _index_paths(index)
     if hint_norm in paths:
-        return hint_norm, "exact"
+        return [hint_norm]
     if hint_norm.endswith("/"):
         prefix = hint_norm.rstrip("/")
-        matches = [path for path in paths if path == prefix or path.startswith(prefix + "/")]
-        if len(matches) == 1:
-            return matches[0], "resolved"
-        if matches:
-            matches.sort(key=lambda path: (path.count("/"), len(path)))
-            return matches[0], "ambiguous"
-        return None, "missing"
+        return _sort_paths(
+            path for path in paths if path == prefix or path.startswith(prefix + "/")
+        )
     suffix_matches = [
-        path
-        for path in paths
-        if path == hint_norm or path.endswith("/" + hint_norm)
+        path for path in paths if path == hint_norm or path.endswith("/" + hint_norm)
     ]
-    if len(suffix_matches) == 1:
-        return suffix_matches[0], "resolved"
-    if len(suffix_matches) > 1:
-        suffix_matches.sort(key=lambda path: (path.count("/"), len(path)))
-        return suffix_matches[0], "ambiguous"
+    if suffix_matches:
+        return _sort_paths(suffix_matches)
     basename = hint_norm.split("/")[-1]
-    basename_matches = [path for path in paths if path.split("/")[-1] == basename]
-    if len(basename_matches) == 1:
-        return basename_matches[0], "resolved"
-    if len(basename_matches) > 1:
-        basename_matches.sort(key=lambda path: (path.count("/"), len(path)))
-        return basename_matches[0], "ambiguous"
-    return None, "missing"
+    return _sort_paths(path for path in paths if path.split("/")[-1] == basename)
+
+
+def _resolve_indexed_path(hint: str, index: Dict[str, Any]) -> Tuple[Optional[str], str, List[str]]:
+    """Resolve a hint to zero or one path; never silently pick among ambiguous matches."""
+    candidates = _path_candidates(hint, index)
+    if not candidates:
+        return None, "missing", []
+    if len(candidates) == 1:
+        path = candidates[0]
+        hint_norm = str(hint or "").replace("\\", "/").strip()
+        status = "exact" if path == hint_norm else "resolved"
+        return path, status, []
+    return None, "ambiguous", candidates
+
+
+def _ambiguous_ref_row(hint: str, candidates: Sequence[str]) -> str:
+    listed = _sort_paths(candidates)[:8]
+    return format_row(
+        "AMBIGUOUS_REF",
+        {
+            "HINT": hint,
+            "COUNT": len(candidates),
+            "CANDIDATES": ";".join(listed),
+        },
+    )
+
+
+def _required_evidence_resolution(
+    task: BenchmarkTask,
+    index: Dict[str, Any],
+) -> Tuple[List[str], List[str]]:
+    """Return unambiguous resolved paths and AMBIGUOUS_REF rows for conflicting hints."""
+    resolved: List[str] = []
+    ambiguous_rows: List[str] = []
+    seen_paths: set[str] = set()
+    for item in task.required_evidence:
+        hint = str(item)
+        if not (hint.endswith(".py") or hint.endswith("/") or ("/" in hint and "." in hint)):
+            continue
+        path, status, candidates = _resolve_indexed_path(hint, index)
+        if status == "ambiguous":
+            ambiguous_rows.append(_ambiguous_ref_row(hint, candidates))
+            continue
+        if path and path not in seen_paths:
+            seen_paths.add(path)
+            resolved.append(path)
+    return resolved, ambiguous_rows
 
 
 def _target_from_task(task: BenchmarkTask, index: Dict[str, Any]) -> Tuple[Optional[str], str]:
     for item in task.required_evidence:
         if str(item).endswith(".py"):
-            path, resolution = _resolve_indexed_path(str(item), index)
+            path, resolution, _candidates = _resolve_indexed_path(str(item), index)
+            if resolution == "ambiguous":
+                return None, "ambiguous"
             if path:
                 return path, resolution
     lowered = task.prompt.lower()
-    for path in _index_paths(index):
+    for path in _sort_paths(_index_paths(index)):
         if path.lower() in lowered:
             return path, "exact"
     match = re.search(r"[\w./-]+\.py", task.prompt)
     if match:
-        path, resolution = _resolve_indexed_path(match.group(0), index)
+        path, resolution, _candidates = _resolve_indexed_path(match.group(0), index)
+        if resolution == "ambiguous":
+            return None, "ambiguous"
         if path:
             return path, resolution
         return match.group(0), "missing"
@@ -232,18 +272,75 @@ def _target_row(path: Optional[str], resolution: str) -> str:
 
 
 def _required_evidence_paths(task: BenchmarkTask, index: Dict[str, Any]) -> List[str]:
-    refs: List[str] = []
+    resolved, _ambiguous = _required_evidence_resolution(task, index)
+    return resolved
+
+
+def _extract_contract_fact_rows(
+    task: BenchmarkTask,
+    index: Dict[str, Any],
+    *,
+    module_limit: int = 6,
+) -> Tuple[List[str], str]:
+    """Build CONTRACT_SRC rows only from extracted contract_facts payloads."""
+    import ast
+
+    from ..bug_intelligence import contract_facts
+
+    if not contract_facts.CONTRACT_FACTS_ENABLED:
+        return [], "disabled"
+
+    project_root = index.get("project_root") or ""
+    paths_to_scan: List[str] = []
     for item in task.required_evidence:
         hint = str(item)
-        if hint.endswith(".py") or hint.endswith("/"):
-            path, _resolution = _resolve_indexed_path(hint, index)
-            if path:
-                refs.append(path)
-        elif "/" in hint and not hint.endswith(".py"):
-            path, _resolution = _resolve_indexed_path(hint, index)
-            if path:
-                refs.append(path)
-    return refs
+        if not hint.endswith(".py"):
+            continue
+        path, status, _candidates = _resolve_indexed_path(hint, index)
+        if path and status != "ambiguous":
+            paths_to_scan.append(path)
+    if not paths_to_scan:
+        for analysis in index.get("python_analysis", []):
+            if analysis.get("parse_error"):
+                continue
+            path = str(analysis.get("path", "")).replace("\\", "/")
+            if path.endswith(".py"):
+                paths_to_scan.append(path)
+    paths_to_scan = _sort_paths(paths_to_scan)[:module_limit]
+
+    by_source: Dict[str, int] = {}
+    for path in paths_to_scan:
+        if not project_root:
+            continue
+        full = os.path.join(project_root, path)
+        try:
+            source = Path(full).read_text(encoding="utf-8-sig", errors="ignore")
+            tree = ast.parse(source, filename=path)
+        except (OSError, SyntaxError):
+            continue
+        payload = contract_facts.extract_module_contracts({"parse_error": ""}, tree, path)
+        statistics = payload.get("statistics") or {}
+        for source_kind, count in (statistics.get("by_source") or {}).items():
+            by_source[str(source_kind)] = by_source.get(str(source_kind), 0) + int(count)
+
+    rows: List[str] = []
+    for index_no, (source_kind, count) in enumerate(sorted(by_source.items()), 1):
+        if count <= 0:
+            continue
+        rows.append(
+            format_row(
+                "CONTRACT_SRC",
+                {
+                    "ID": f"CS{index_no}",
+                    "KIND": source_kind,
+                    "COUNT": count,
+                    "ORIGIN": "extracted",
+                },
+            )
+        )
+    if rows:
+        return rows, "extracted"
+    return [], "none"
 
 
 def _is_corpus_path(path: str) -> bool:
@@ -259,15 +356,21 @@ def _fixture_pair_paths(task: BenchmarkTask, index: Dict[str, Any]) -> Tuple[Opt
     for item in task.required_evidence:
         hint = str(item)
         if "buggy.py" in hint:
-            buggy_path, _ = _resolve_indexed_path(hint, index)
+            buggy_path, _, _candidates = _resolve_indexed_path(hint, index)
         if "fixed.py" in hint:
-            fixed_path, _ = _resolve_indexed_path(hint, index)
+            fixed_path, _, _candidates = _resolve_indexed_path(hint, index)
     if buggy_path and not fixed_path:
-        sibling, _ = _resolve_indexed_path(buggy_path.replace("buggy.py", "fixed.py"), index)
-        fixed_path = sibling
+        sibling, _status, _candidates = _resolve_indexed_path(
+            buggy_path.replace("buggy.py", "fixed.py"), index
+        )
+        if sibling and _status != "ambiguous":
+            fixed_path = sibling
     if fixed_path and not buggy_path:
-        sibling, _ = _resolve_indexed_path(fixed_path.replace("fixed.py", "buggy.py"), index)
-        buggy_path = sibling
+        sibling, _status, _candidates = _resolve_indexed_path(
+            fixed_path.replace("fixed.py", "buggy.py"), index
+        )
+        if sibling and _status != "ambiguous":
+            buggy_path = sibling
     return buggy_path, fixed_path
 
 
@@ -318,6 +421,7 @@ _CAP_START_PREFIXES = (
     "SYMBOL|",
     "FIXTURE|",
     "CONTRACT_SRC|",
+    "CONTRACT_STATUS|",
     "CYCLE|",
     "VOICE|",
     "BUILDER|",
@@ -327,6 +431,12 @@ _CAP_START_PREFIXES = (
     "IMPACT|",
     "CONSTRAINT|",
     "VERIFY|",
+    "AMBIGUOUS_REF|",
+    "RANK_META|",
+    "RANK_DIAG|",
+    "CENTRALITY|",
+    "RISK_MODEL|",
+    "LIMIT|",
 )
 _CAP_END_PREFIXES = ("GRAPH|", "CAVEAT|", "REF|", "TRUNCATED|", "DETAIL|", "OVERFLOW|")
 
@@ -419,7 +529,9 @@ def _build_repo_map(
     quality = result.get("ask_quality") or {}
     if quality:
         rows.append(_srcq_row(quality))
-    ref_paths = _required_evidence_paths(task, index) + sources + [
+    resolved_paths, ambiguous_rows = _required_evidence_resolution(task, index)
+    rows.extend(ambiguous_rows)
+    ref_paths = resolved_paths + sources + [
         path for path in result.get("sources", []) if not _is_corpus_path(str(path))
     ]
     rows.extend(_refs_block(ref_paths))
@@ -494,7 +606,9 @@ def _build_dependency(
     rows.extend(_caveat_rows(result))
     if resolution in {"missing", "ambiguous"}:
         rows.append(format_row("CAVEAT", {"CODE": "TARGET_RESOLUTION", "VALUE": resolution}))
-    ref_paths = _required_evidence_paths(task, index) + [target] + [
+    resolved_paths, ambiguous_rows = _required_evidence_resolution(task, index)
+    rows.extend(ambiguous_rows)
+    ref_paths = resolved_paths + ([target] if target else []) + [
         path for path in result.get("sources", []) if not _is_corpus_path(str(path))
     ]
     rows.extend(_refs_block(ref_paths))
@@ -578,7 +692,9 @@ def _build_impact(
         for item in impact_payload.get("questions", {}).get("files_dependent", [])
         if item.get("path")
     ]
-    ref_paths = _required_evidence_paths(task, index) + [target] + sources
+    resolved_paths, ambiguous_rows = _required_evidence_resolution(task, index)
+    rows.extend(ambiguous_rows)
+    ref_paths = resolved_paths + ([target] if target else []) + sources
     rows.extend(_refs_block(ref_paths))
     expanded = {
         "kind": "IMPACT",
@@ -614,27 +730,117 @@ def _build_arch_risk(
     focus = _task_focus_row(task)
     if focus:
         rows.append(focus)
-    modules = list((ranking or {}).get("ranked_modules", []))[:8]
-    for item in modules:
-        metrics = item.get("metrics", {})
-        breakdown = item.get("score_breakdown", {})
+    ranked_modules = list((ranking or {}).get("ranked_modules", []))
+    if task.task_id == "risk01_ranking":
+        from .. import architectural_risk as arch_risk
+
         rows.append(
             format_row(
-                "MODULE",
+                "RANK_META",
                 {
-                    "PATH": item.get("path", item.get("label", "")),
-                    "RANK": item.get("rank", 0),
-                    "SCORE": item.get("total_score", 0),
-                    "FAN_IN": metrics.get("fan_in", 0),
-                    "FAN_OUT": metrics.get("fan_out", 0),
-                    "CYCLES": breakdown.get("import_cycle_member", 0),
-                    "LOC": metrics.get("line_count", 0),
-                    "TESTED": _yes_no(bool(metrics.get("has_test_reference"))),
-                    "CONTRACT": breakdown.get("contract_evidence", 0),
-                    "STATIC": breakdown.get("static_findings", 0),
+                    "ENGINE": arch_risk.ENGINE_VERSION,
+                    "SIGNALS": "fan_in,fan_out,cycles,loc,test,contract,static",
+                    "MODULES": ranking.get("modules_considered", 0) if ranking else 0,
                 },
             )
         )
+        for item in ranked_modules[:8]:
+            metrics = item.get("metrics", {})
+            breakdown = item.get("score_breakdown", {})
+            rows.append(
+                format_row(
+                    "MODULE",
+                    {
+                        "PATH": item.get("path", item.get("label", "")),
+                        "RANK": item.get("rank", 0),
+                        "SCORE": item.get("total_score", 0),
+                        "FAN_IN": metrics.get("fan_in", 0),
+                        "FAN_OUT": metrics.get("fan_out", 0),
+                        "CYCLES": breakdown.get("import_cycle_member", 0),
+                        "LOC": metrics.get("line_count", 0),
+                        "TESTED": _yes_no(bool(metrics.get("has_test_reference"))),
+                        "CONTRACT": breakdown.get("contract_evidence", 0),
+                        "STATIC": breakdown.get("static_findings", 0),
+                    },
+                )
+            )
+            diagnostics = item.get("rank_diagnostics") or []
+            if diagnostics:
+                rows.append(
+                    format_row(
+                        "RANK_DIAG",
+                        {
+                            "PATH": item.get("path", ""),
+                            "SIGNAL": str(diagnostics[0])[:100],
+                        },
+                    )
+                )
+    elif task.task_id == "risk02_centrality_vs_risk":
+        from .. import architectural_risk as arch_risk
+
+        top_risk_paths = {
+            str(item.get("path", ""))
+            for item in ranked_modules[:5]
+            if item.get("path")
+        }
+        rows.append(
+            format_row(
+                "RISK_MODEL",
+                {
+                    "WEIGHT_FAN_IN": arch_risk.WEIGHT_FAN_IN,
+                    "WEIGHT_FAN_OUT": arch_risk.WEIGHT_FAN_OUT,
+                    "LOC_GATE": f"fan_in>={arch_risk.MIN_FAN_IN_FOR_LOC}",
+                },
+            )
+        )
+        by_fan_in = sorted(
+            ranked_modules,
+            key=lambda item: int((item.get("metrics") or {}).get("fan_in", 0)),
+            reverse=True,
+        )
+        for item in by_fan_in[:6]:
+            path = str(item.get("path", ""))
+            metrics = item.get("metrics", {})
+            rows.append(
+                format_row(
+                    "CENTRALITY",
+                    {
+                        "PATH": path,
+                        "FAN_IN": metrics.get("fan_in", 0),
+                        "SCORE": item.get("total_score", 0),
+                        "RANK": item.get("rank", 0),
+                        "CHALLENGE": _yes_no(path not in top_risk_paths),
+                    },
+                )
+            )
+        rows.append(
+            format_row(
+                "LIMIT",
+                {"CODE": "FAN_IN_NOT_SUFFICIENT", "VALUE": "centrality_requires_corroboration"},
+            )
+        )
+    else:
+        modules = ranked_modules[:8]
+        for item in modules:
+            metrics = item.get("metrics", {})
+            breakdown = item.get("score_breakdown", {})
+            rows.append(
+                format_row(
+                    "MODULE",
+                    {
+                        "PATH": item.get("path", item.get("label", "")),
+                        "RANK": item.get("rank", 0),
+                        "SCORE": item.get("total_score", 0),
+                        "FAN_IN": metrics.get("fan_in", 0),
+                        "FAN_OUT": metrics.get("fan_out", 0),
+                        "CYCLES": breakdown.get("import_cycle_member", 0),
+                        "LOC": metrics.get("line_count", 0),
+                        "TESTED": _yes_no(bool(metrics.get("has_test_reference"))),
+                        "CONTRACT": breakdown.get("contract_evidence", 0),
+                        "STATIC": breakdown.get("static_findings", 0),
+                    },
+                )
+            )
     if ranking:
         rows.append(
             format_row(
@@ -654,8 +860,10 @@ def _build_arch_risk(
             path_hint = ",".join(str(item) for item in members[:4])
             rows.append(format_row("CYCLE", {"ID": f"CY{index_no}", "MEMBERS": path_hint[:120]}))
     rows.extend(_caveat_rows(result))
-    module_paths = [item.get("path", "") for item in modules if item.get("path")]
-    ref_paths = _required_evidence_paths(task, index) + module_paths
+    module_paths = [str(item.get("path", "")) for item in ranked_modules[:8] if item.get("path")]
+    resolved_paths, ambiguous_rows = _required_evidence_resolution(task, index)
+    rows.extend(ambiguous_rows)
+    ref_paths = resolved_paths + module_paths
     rows.extend(_refs_block(ref_paths))
     expanded = {"kind": "ARCH_RISK", "task_id": task.task_id, "ranking": ranking}
     return rows, expanded
@@ -667,77 +875,51 @@ def _build_contract(
     index: Dict[str, Any],
     session: Optional["BenchmarkContextSession"] = None,
 ) -> Tuple[List[str], Dict[str, Any]]:
-    from ..bug_intelligence import contract_facts
-
     rows = [_header("CONTRACT", result.get("mode", "retrieval"), "production")]
     focus = _task_focus_row(task)
     if focus:
         rows.append(focus)
+    resolved_paths, ambiguous_rows = _required_evidence_resolution(task, index)
+    rows.extend(ambiguous_rows)
     analysis = _matching_analysis(task, index)
+    contract_src_rows, contract_status = _extract_contract_fact_rows(task, index)
+    rows.extend(contract_src_rows)
+    rows.append(format_row("CONTRACT_STATUS", {"VALUE": contract_status}))
     contract_rows = 0
-    source_catalog = [
-        ("type_hint", contract_facts.SOURCE_TYPE_HINT, "explicit"),
-        ("docstring", contract_facts.SOURCE_DOCSTRING, "inferred_weak"),
-        ("assert", contract_facts.SOURCE_ASSERT, "inferred_strong"),
-        ("test", contract_facts.SOURCE_TEST, "inferred_strong"),
-        ("caller_behavior", contract_facts.SOURCE_CALLER_BEHAVIOR, "inferred_weak"),
-        ("callee_behavior", contract_facts.SOURCE_CALLEE_BEHAVIOR, "inferred_weak"),
-        ("guard", contract_facts.SOURCE_GUARD, "inferred_strong"),
-    ]
-    prompt_lower = task.prompt.lower()
-    evidence_text = " ".join(task.required_evidence).lower()
-    for keyword, source_kind, strength in source_catalog:
-        if keyword in evidence_text or keyword in prompt_lower:
-            contract_rows += 1
-            rows.append(
-                format_row(
-                    "CONTRACT_SRC",
-                    {
-                        "ID": f"CS{contract_rows}",
-                        "KIND": source_kind,
-                        "STRENGTH": strength,
-                        "TRUST": "review_only",
-                    },
-                )
-            )
-    if task.task_id == "contract02_inconsistent_return":
-        rows.append(
-            format_row(
-                "CONTRACT",
-                {
-                    "ID": "CQ1",
-                    "RULE": "inconsistent_return",
-                    "STATUS": "review_lead_only",
-                    "REASON": "quarantined_without_usage_proof",
-                },
-            )
-        )
     if analysis:
         rows.append(format_row("SYMBOL", {"PATH": analysis.get("path", "")}))
         for finding in analysis.get("findings", [])[:4]:
-            if finding.get("rule") == "wrong_return_shape":
-                contract_rows += 1
-                rows.append(
-                    format_row(
-                        "CONTRACT",
-                        {
-                            "ID": f"C{contract_rows}",
-                            "TYPE": "return_shape",
-                            "RULE": finding.get("rule", ""),
-                            "SEVERITY": finding.get("severity", "low"),
-                            "LINE": finding.get("line", 0),
-                        },
-                    )
+            rule = str(finding.get("rule", ""))
+            if rule not in {"wrong_return_shape", "inconsistent_return"}:
+                continue
+            contract_rows += 1
+            rows.append(
+                format_row(
+                    "CONTRACT",
+                    {
+                        "ID": f"C{contract_rows}",
+                        "TYPE": rule,
+                        "RULE": rule,
+                        "SEVERITY": finding.get("severity", "low"),
+                        "LINE": finding.get("line", 0),
+                        "ORIGIN": "analysis_finding",
+                    },
                 )
+            )
     rows.append(format_row("CAVEAT", {"CODE": "USAGE_CONTRACT_NOT_PROVEN", "VALUE": "yes"}))
     rows.extend(_caveat_rows(result))
-    ref_paths = _required_evidence_paths(task, index) + [
+    ref_paths = resolved_paths + [
         path for path in result.get("sources", []) if not _is_corpus_path(str(path))
     ]
     if analysis and analysis.get("path"):
         ref_paths.append(analysis["path"])
     rows.extend(_refs_block(ref_paths))
-    expanded = {"kind": "CONTRACT", "task_id": task.task_id, "analysis": analysis}
+    expanded = {
+        "kind": "CONTRACT",
+        "task_id": task.task_id,
+        "analysis": analysis,
+        "contract_status": contract_status,
+    }
     return rows, expanded
 
 
@@ -773,7 +955,9 @@ def _build_verify(
             )
         )
     rows.extend(_caveat_rows(result))
-    ref_paths = _required_evidence_paths(task, index) + [
+    resolved_paths, ambiguous_rows = _required_evidence_resolution(task, index)
+    rows.extend(ambiguous_rows)
+    ref_paths = resolved_paths + [
         path for path in result.get("sources", []) if not _is_corpus_path(str(path))
     ]
     rows.extend(_refs_block(ref_paths))
@@ -831,7 +1015,9 @@ def _build_defect_review(
             )
     rows.append(format_row("CAVEAT", {"CODE": "REVIEW_LEAD_NOT_CONFIRMED", "VALUE": "yes"}))
     rows.extend(_caveat_rows(result))
-    ref_paths = _required_evidence_paths(task, index)
+    resolved_paths, ambiguous_rows = _required_evidence_resolution(task, index)
+    rows.extend(ambiguous_rows)
+    ref_paths = list(resolved_paths)
     if buggy_path:
         ref_paths.append(buggy_path)
     if fixed_path:
@@ -856,21 +1042,58 @@ def _build_plan_input(
     index: Dict[str, Any],
     session: Optional["BenchmarkContextSession"] = None,
 ) -> Tuple[List[str], Dict[str, Any]]:
-    impact_rows, impact_expanded = _build_impact(result, task, index, session=session)
+    from ..bug_intelligence import impact
+
+    target, resolution = _target_from_task(task, index)
+    if not target:
+        target = "config.py"
+        resolution = "fallback"
+    if session is not None:
+        graph = session.get_dependency_graph()
+    else:
+        from ..bug_intelligence import depgraph
+
+        graph = depgraph.build_graph(index.get("project_root", task.repo_path))
     rows = [_header("PLAN_INPUT", result.get("mode", "impact"), "production")]
-    for row in impact_rows[1:]:
-        if row.startswith("TARGET|") or row.startswith("IMPACT|") or row.startswith("DEPENDENT|") or row.startswith("CAVEAT|"):
-            rows.append(row)
-    rows.append(format_row("CONSTRAINT", {"TYPE": "preserve_public_contract", "VALUE": "yes"}))
-    rows.append(format_row("VERIFY", {"TYPE": "targeted_tests", "VALUE": "required"}))
     focus = _task_focus_row(task)
     if focus:
         rows.append(focus)
-    ref_paths = _required_evidence_paths(task, index) + [
+    resolved_paths, ambiguous_rows = _required_evidence_resolution(task, index)
+    rows.extend(ambiguous_rows)
+    rows.append(_target_row(target, resolution))
+    impact_payload: Dict[str, Any] = {}
+    if graph and not graph.get("degraded"):
+        impact_payload = impact.analyze_impact(
+            graph,
+            kind="file",
+            file_path=target,
+            project_root=index.get("project_root", task.repo_path),
+        )
+        may = impact_payload.get("questions", {}).get("may_break", {})
+        rows.append(
+            format_row(
+                "IMPACT",
+                {
+                    "DIRECT": may.get("direct_count", 0),
+                    "TRANSITIVE": may.get("transitive_count", 0),
+                    "RISK": (impact_payload.get("risk") or {}).get("bucket", "unknown"),
+                    "CONFIDENCE": (impact_payload.get("confidence") or {}).get("bucket", "unknown"),
+                },
+            )
+        )
+    rows.append(format_row("CONSTRAINT", {"TYPE": "preserve_public_contract", "VALUE": "yes"}))
+    rows.append(format_row("VERIFY", {"TYPE": "targeted_tests", "VALUE": "required"}))
+    ref_paths = resolved_paths + ([target] if target else []) + [
         path for path in result.get("sources", []) if not _is_corpus_path(str(path))
     ]
     rows.extend(_refs_block(ref_paths))
-    expanded = {"kind": "PLAN_INPUT", "task_id": task.task_id, "impact": impact_expanded.get("impact")}
+    expanded = {
+        "kind": "PLAN_INPUT",
+        "task_id": task.task_id,
+        "target": target,
+        "target_resolution": resolution,
+        "impact": impact_payload,
+    }
     return rows, expanded
 
 
@@ -965,44 +1188,47 @@ def _apply_cap(
 
     emitted_body = 1 + len(start) + len(kept_optional)
     total_body = 1 + len(start) + len(optional) + len(end)
-    overflow = False
-    final_rows = [header, *start, *kept_optional, *end]
-    if truncated:
-        final_rows.extend(_metadata_rows(True, emitted_body, total_body, digest, False))
-    text = "\n".join(final_rows)
+
+    def _compose(include_metadata: bool, metadata_overflow: bool) -> str:
+        body_rows = [header, *start, *kept_optional, *end]
+        if include_metadata and truncated:
+            body_rows.extend(_metadata_rows(True, emitted_body, total_body, digest, metadata_overflow))
+        return "\n".join(body_rows)
+
+    text = _compose(include_metadata=truncated, metadata_overflow=False)
+    while estimated_count(text) > cap and kept_optional:
+        kept_optional = kept_optional[:-1]
+        truncated = bool(optional)
+        emitted_body = 1 + len(start) + len(kept_optional)
+        text = _compose(include_metadata=truncated, metadata_overflow=False)
+
     if estimated_count(text) > cap:
-        overflow = True
-        while kept_optional and estimated_count(text) > cap:
-            kept_optional = kept_optional[:-1]
-            final_rows = [header, *start, *kept_optional, *end]
-            if truncated:
-                final_rows = [
+        text = _compose(include_metadata=truncated, metadata_overflow=True)
+        if estimated_count(text) > cap:
+            text = "\n".join(
+                [
                     header,
                     *start,
-                    *kept_optional,
                     *end,
-                    *_metadata_rows(True, 1 + len(start) + len(kept_optional), total_body, digest, False),
+                    format_row("OVERFLOW", {"VALUE": "yes", "CAP_EXCEEDED": "yes", "CAP": cap}),
                 ]
-            text = "\n".join(final_rows)
-        if estimated_count(text) > cap:
-            final_rows = [header, *start, *end]
-            if truncated:
-                final_rows.extend(_metadata_rows(True, 1 + len(start), total_body, digest, True))
-            else:
-                final_rows.append(format_row("OVERFLOW", {"VALUE": "yes", "CAP_EXCEEDED": "yes"}))
-            text = "\n".join(final_rows)
-            overflow = True
+            )
+
+    token_estimate = estimated_count(text)
+    overflow = token_estimate > cap
+    if overflow and "OVERFLOW|" not in text:
+        text = text + "\n" + format_row("OVERFLOW", {"VALUE": "yes", "CAP_EXCEEDED": "yes", "CAP": cap})
+        token_estimate = estimated_count(text)
 
     if truncated:
         expanded["truncated"] = True
-        expanded["truncated_emitted"] = 1 + len(start) + len(kept_optional)
+        expanded["truncated_emitted"] = emitted_body
         expanded["truncated_total"] = total_body
         expanded["sha256"] = digest
-    if overflow:
-        expanded["cap_overflow"] = True
+    expanded["cap_overflow"] = overflow
     expanded["token_cap"] = cap
-    expanded["token_estimate"] = estimated_count(text)
-    expanded["cap_compliant"] = packet_cap_compliant(text, kind)
+    expanded["token_estimate"] = token_estimate
+    expanded["cap_compliant"] = token_estimate <= cap
     return text, expanded, truncated
 
 
@@ -1033,10 +1259,9 @@ def compare_formats_enabled(selected_format: str) -> bool:
 
 
 def packet_cap_compliant(text: str, kind: str) -> bool:
+    """True only when the emitted packet estimate is within the declared hard cap."""
     cap = HARD_TOKEN_CAPS.get(kind, 325)
-    if estimated_count(text) <= cap:
-        return True
-    return "OVERFLOW|" in text
+    return estimated_count(text) <= cap
 
 
 def measure_compact_corpus(
@@ -1075,11 +1300,14 @@ def measure_compact_corpus(
         ref_count = compact.count("REF|")
         if kind in {"ARCH_RISK", "CONTRACT", "DEFECT_REVIEW", "IMPACT", "DEPENDENCY"} and ref_count == 0:
             missing_refs.append(task.task_id)
-        if task.task_id == "contract01_sources" and "CONTRACT_SRC|" not in compact:
-            evidence_gaps.append(task.task_id)
+        if task.task_id == "contract01_sources":
+            if "CONTRACT_STATUS|" not in compact:
+                evidence_gaps.append(task.task_id)
+            elif "CONTRACT_SRC|" in compact and "ORIGIN=extracted" not in compact:
+                evidence_gaps.append(task.task_id)
         if task.task_id in {"defect01_wrong_operator", "defect02_bfs_queue"} and "FIXTURE|" not in compact:
             evidence_gaps.append(task.task_id)
-        compliant = packet_cap_compliant(compact, kind)
+        compliant = bool(expanded.get("cap_compliant")) and packet_cap_compliant(compact, kind)
         if not compliant:
             cap_failures.append(task.task_id)
         rows.append(
@@ -1088,8 +1316,10 @@ def measure_compact_corpus(
                 "kind": kind,
                 "verbose_tokens": verbose_tokens,
                 "compact_tokens": compact_tokens,
+                "token_cap": expanded.get("token_cap"),
                 "ref_count": ref_count,
                 "truncated": bool(expanded.get("truncated")),
+                "cap_overflow": bool(expanded.get("cap_overflow")),
                 "cap_compliant": compliant,
             }
         )

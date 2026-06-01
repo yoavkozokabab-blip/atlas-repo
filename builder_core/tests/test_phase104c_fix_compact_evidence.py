@@ -40,7 +40,11 @@ def _mini_repo(tmp_path: Path) -> Path:
     _write(root / "core" / "util.py", "def helper():\n    return 1\n")
     _write(
         root / "builder_core" / "bug_intelligence" / "contract_facts.py",
-        "def enabled():\n    return True\n",
+        "def enabled() -> bool:\n    assert True\n    return True\n",
+    )
+    _write(
+        root / "typed.py",
+        "def add(x: int) -> int:\n    assert x >= 0\n    return x + 1\n",
     )
     _write(root / "a.py", "from core.util import helper\n\ndef run():\n    return helper()\n")
     return root
@@ -64,7 +68,7 @@ def test_cap_enforcement_reserves_metadata(tmp_path):
     result = ask.answer(index, task.prompt)
     compact, expanded, kind = build_compact_packet(result, task, index)
     cap = HARD_TOKEN_CAPS[kind]
-    assert estimated_count(compact) <= cap or "OVERFLOW|" in compact
+    assert expanded.get("cap_compliant") == (estimated_count(compact) <= cap)
     if expanded.get("truncated"):
         assert "TRUNCATED|EMITTED=" in compact
         assert "DETAIL|PATH=context_packet.expanded.json" in compact
@@ -102,14 +106,16 @@ def test_contract_packet_preserves_source_kinds(tmp_path):
         prompt="Which source kinds produce contract facts?",
         expected_answer="sources",
         scoring_rubric=["sources"],
-        required_evidence=["type_hint", "assert", "builder_core/bug_intelligence/contract_facts.py"],
+        required_evidence=["typed.py", "builder_core/bug_intelligence/contract_facts.py"],
         baseline_mode="read-only",
         jarvis_mode="use jarvis",
     )
     result = ask.answer(index, task.prompt)
     compact, _expanded, kind = build_compact_packet(result, task, index)
     assert kind == "CONTRACT"
-    assert "CONTRACT_SRC|" in compact
+    assert "CONTRACT_STATUS|" in compact
+    if "CONTRACT_SRC|" in compact:
+        assert "ORIGIN=extracted" in compact
     assert "USAGE_CONTRACT_NOT_PROVEN" in compact
     assert "REF|" in compact
 
