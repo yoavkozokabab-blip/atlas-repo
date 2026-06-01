@@ -41,6 +41,7 @@ def test_rank_modules_returns_structured_breakdown(tmp_path):
     ranking = architectural_risk.rank_modules(index, graph, top=5)
 
     assert ranking["schema_version"] == architectural_risk.SCHEMA_VERSION
+    assert ranking["engine_version"] == architectural_risk.ENGINE_VERSION
     assert ranking["graph_scope"] == "production"
     assert not ranking["degraded"]
     assert ranking["ranked_modules"]
@@ -55,9 +56,12 @@ def test_rank_modules_returns_structured_breakdown(tmp_path):
         "import_cycle_member",
         "module_size_loc",
         "untested_module",
+        "test_evidence",
         "contract_evidence",
+        "static_findings",
     ):
         assert key in bd
+    assert "component_root" not in bd
     assert top["metrics"]["fan_in"] >= 1
 
 
