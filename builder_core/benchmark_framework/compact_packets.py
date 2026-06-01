@@ -6,7 +6,10 @@ import hashlib
 import json
 import os
 import re
-from typing import Any, Dict, List, Optional, Sequence, Tuple
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Sequence, Tuple
+
+if TYPE_CHECKING:
+    from .context_cache import BenchmarkContextSession
 
 from .jarvis_packet import format_jarvis_packet
 from .schema import BenchmarkTask
@@ -177,12 +180,18 @@ def _yes_no(value: bool) -> str:
 
 
 def _build_repo_map(
-    result: Dict[str, Any], task: BenchmarkTask, index: Dict[str, Any]
+    result: Dict[str, Any],
+    task: BenchmarkTask,
+    index: Dict[str, Any],
+    session: Optional["BenchmarkContextSession"] = None,
 ) -> Tuple[List[str], Dict[str, Any]]:
-    from .. import repository_understanding as ru
-
     rows = [_header("REPO_MAP", result.get("mode", "architecture"), "production")]
-    subsystems = [item for item in ru.production_subsystems(index) if _is_product_subsystem(item)]
+    if session is not None:
+        subsystems = session.get_production_subsystems()
+    else:
+        from .. import repository_understanding as ru
+
+        subsystems = [item for item in ru.production_subsystems(index) if _is_product_subsystem(item)]
     sources: List[str] = []
     for subsystem in subsystems[:10]:
         production = subsystem.get("role_counts", {}).get("production_code", 0)
@@ -216,11 +225,17 @@ def _build_repo_map(
 
 
 def _build_dependency(
-    result: Dict[str, Any], task: BenchmarkTask, index: Dict[str, Any]
+    result: Dict[str, Any],
+    task: BenchmarkTask,
+    index: Dict[str, Any],
+    session: Optional["BenchmarkContextSession"] = None,
 ) -> Tuple[List[str], Dict[str, Any]]:
-    from ..bug_intelligence import depgraph
+    if session is not None:
+        graph = session.get_dependency_graph()
+    else:
+        from ..bug_intelligence import depgraph
 
-    graph = depgraph.build_graph(index.get("project_root", task.repo_path))
+        graph = depgraph.build_graph(index.get("project_root", task.repo_path))
     target = _target_from_task(task, index) or "builder_core/bug_intelligence/engine.py"
     rows = [_header("DEPENDENCY", result.get("mode", "dependency"), "production")]
     rows.append(format_row("TARGET", {"PATH": target}))
@@ -269,12 +284,20 @@ def _build_dependency(
 
 
 def _build_impact(
-    result: Dict[str, Any], task: BenchmarkTask, index: Dict[str, Any]
+    result: Dict[str, Any],
+    task: BenchmarkTask,
+    index: Dict[str, Any],
+    session: Optional["BenchmarkContextSession"] = None,
 ) -> Tuple[List[str], Dict[str, Any]]:
-    from ..bug_intelligence import depgraph, impact
+    from ..bug_intelligence import impact
 
     target = _target_from_task(task, index) or "config.py"
-    graph = depgraph.build_graph(index.get("project_root", task.repo_path))
+    if session is not None:
+        graph = session.get_dependency_graph()
+    else:
+        from ..bug_intelligence import depgraph
+
+        graph = depgraph.build_graph(index.get("project_root", task.repo_path))
     rows = [_header("IMPACT", "impact", "production")]
     rows.append(format_row("TARGET", {"PATH": target}))
     impact_payload: Dict[str, Any] = {}
@@ -324,15 +347,25 @@ def _build_impact(
 
 
 def _build_arch_risk(
-    result: Dict[str, Any], task: BenchmarkTask, index: Dict[str, Any]
+    result: Dict[str, Any],
+    task: BenchmarkTask,
+    index: Dict[str, Any],
+    session: Optional["BenchmarkContextSession"] = None,
 ) -> Tuple[List[str], Dict[str, Any]]:
     from .. import architectural_risk
-    from ..bug_intelligence import depgraph
 
-    graph = depgraph.build_graph(index.get("project_root", task.repo_path))
+    if session is not None:
+        graph = session.get_dependency_graph()
+    else:
+        from ..bug_intelligence import depgraph
+
+        graph = depgraph.build_graph(index.get("project_root", task.repo_path))
     ranking = result.get("architectural_risk_ranking")
     if ranking is None and graph:
-        ranking = architectural_risk.rank_modules(index, graph, top=12)
+        if session is not None:
+            ranking = session.get_architectural_risk_ranking(top=12)
+        else:
+            ranking = architectural_risk.rank_modules(index, graph, top=12)
     rows = [_header("ARCH_RISK", result.get("mode", "bottleneck"), "production")]
     modules = list((ranking or {}).get("ranked_modules", []))[:12]
     for item in modules:
@@ -374,7 +407,10 @@ def _build_arch_risk(
 
 
 def _build_contract(
-    result: Dict[str, Any], task: BenchmarkTask, index: Dict[str, Any]
+    result: Dict[str, Any],
+    task: BenchmarkTask,
+    index: Dict[str, Any],
+    session: Optional["BenchmarkContextSession"] = None,
 ) -> Tuple[List[str], Dict[str, Any]]:
     rows = [_header("CONTRACT", result.get("mode", "retrieval"), "production")]
     analysis = _matching_analysis(task, index)
@@ -404,7 +440,10 @@ def _build_contract(
 
 
 def _build_verify(
-    result: Dict[str, Any], task: BenchmarkTask, index: Dict[str, Any]
+    result: Dict[str, Any],
+    task: BenchmarkTask,
+    index: Dict[str, Any],
+    session: Optional["BenchmarkContextSession"] = None,
 ) -> Tuple[List[str], Dict[str, Any]]:
     rows = [_header("VERIFY", result.get("mode", "retrieval"), "finding")]
     rows.append(format_row("CAVEAT", {"CODE": "NON_PROMOTING_EVIDENCE", "VALUE": "yes"}))
@@ -426,7 +465,10 @@ def _build_verify(
 
 
 def _build_defect_review(
-    result: Dict[str, Any], task: BenchmarkTask, index: Dict[str, Any]
+    result: Dict[str, Any],
+    task: BenchmarkTask,
+    index: Dict[str, Any],
+    session: Optional["BenchmarkContextSession"] = None,
 ) -> Tuple[List[str], Dict[str, Any]]:
     target = _target_from_task(task, index)
     analysis = _matching_analysis(task, index)
@@ -467,9 +509,12 @@ def _build_defect_review(
 
 
 def _build_plan_input(
-    result: Dict[str, Any], task: BenchmarkTask, index: Dict[str, Any]
+    result: Dict[str, Any],
+    task: BenchmarkTask,
+    index: Dict[str, Any],
+    session: Optional["BenchmarkContextSession"] = None,
 ) -> Tuple[List[str], Dict[str, Any]]:
-    impact_rows, impact_expanded = _build_impact(result, task, index)
+    impact_rows, impact_expanded = _build_impact(result, task, index, session=session)
     rows = [_header("PLAN_INPUT", result.get("mode", "impact"), "production")]
     for row in impact_rows[1:]:
         if row.startswith("TARGET|") or row.startswith("IMPACT|") or row.startswith("DEPENDENT|") or row.startswith("CAVEAT|"):
@@ -482,7 +527,10 @@ def _build_plan_input(
 
 
 def _build_retrieval(
-    result: Dict[str, Any], task: BenchmarkTask, index: Dict[str, Any]
+    result: Dict[str, Any],
+    task: BenchmarkTask,
+    index: Dict[str, Any],
+    session: Optional["BenchmarkContextSession"] = None,
 ) -> Tuple[List[str], Dict[str, Any]]:
     rows = [_header("RETRIEVAL", result.get("mode", "retrieval"), "repository")]
     query = task.prompt[:120]
@@ -574,11 +622,13 @@ def build_compact_packet(
     result: Dict[str, Any],
     task: BenchmarkTask,
     index: Dict[str, Any],
+    *,
+    session: Optional["BenchmarkContextSession"] = None,
 ) -> Tuple[str, Dict[str, Any], str]:
     """Return compact packet text, expanded sidecar payload, and packet kind."""
     kind = resolve_packet_kind(task, result)
     builder = _BUILDERS.get(kind, _build_retrieval)
-    rows, expanded = builder(result, task, index)
+    rows, expanded = builder(result, task, index, session=session)
     text, expanded, _ = _apply_cap(rows, kind, expanded)
     expanded["packet_format"] = "compact"
     expanded["packet_kind"] = kind
@@ -591,10 +641,12 @@ def compare_context_formats(
     result: Dict[str, Any],
     task: BenchmarkTask,
     index: Dict[str, Any],
+    *,
+    session: Optional["BenchmarkContextSession"] = None,
 ) -> Dict[str, Any]:
     """Token accounting for verbose vs compact JARVIS context."""
     verbose = format_jarvis_packet(result)
-    compact, _expanded, kind = build_compact_packet(result, task, index)
+    compact, _expanded, kind = build_compact_packet(result, task, index, session=session)
     verbose_tokens = estimated_count(verbose)
     compact_tokens = estimated_count(compact)
     reduction = (
@@ -620,19 +672,26 @@ def format_jarvis_context(
     index: Dict[str, Any],
     *,
     packet_format: Optional[str] = None,
+    session: Optional["BenchmarkContextSession"] = None,
 ) -> Tuple[str, Dict[str, Any]]:
     """Format JARVIS context using prose (default) or compact fact packets."""
     selected = (packet_format or packet_format_from_env()).lower()
-    comparison = compare_context_formats(result, task, index)
+    comparison = compare_context_formats(result, task, index, session=session)
     if selected == "compact":
-        compact, expanded, kind = build_compact_packet(result, task, index)
+        compact, expanded, kind = build_compact_packet(result, task, index, session=session)
         comparison["selected_format"] = "compact"
         comparison["packet_kind"] = kind
-        return compact, {
+        meta: Dict[str, Any] = {
             "comparison": comparison,
             "expanded": expanded,
             "compact_text": compact,
         }
+        if session is not None:
+            meta["cache_diagnostics"] = session.diagnostics_dict()
+        return compact, meta
     prose = format_jarvis_packet(result)
     comparison["selected_format"] = "prose"
-    return prose, {"comparison": comparison, "expanded": {"packet_format": "prose", "ask_mode": result.get("mode")}}
+    meta = {"comparison": comparison, "expanded": {"packet_format": "prose", "ask_mode": result.get("mode")}}
+    if session is not None:
+        meta["cache_diagnostics"] = session.diagnostics_dict()
+    return prose, meta

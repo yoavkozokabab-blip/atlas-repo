@@ -60,7 +60,16 @@ def _cmd_validate(tasks_path: str) -> int:
     return 1 if failures else 0
 
 
-def _cmd_generate(tasks_path: str, out_dir: str, run_id: str | None, skip_context: bool) -> int:
+def _cmd_generate(
+    tasks_path: str,
+    out_dir: str,
+    run_id: str | None,
+    skip_context: bool,
+    *,
+    context_cache: bool = False,
+) -> int:
+    if context_cache:
+        os.environ["JARVIS_BENCHMARK_CONTEXT_CACHE"] = "1"
     context_fn = (lambda _task: "[JARVIS context intentionally omitted]") if skip_context else None
     manifest = generate_run_package(load_tasks(tasks_path), out_dir, run_id=run_id, jarvis_context_fn=context_fn)
     print(f"Generated offline run package: {os.path.join(out_dir, manifest['run_id'])}")
@@ -126,16 +135,22 @@ def _cmd_score(args: argparse.Namespace) -> int:
 
 
 def _cmd_profile_context(args: argparse.Namespace) -> int:
+    if args.context_cache:
+        os.environ["JARVIS_BENCHMARK_CONTEXT_CACHE"] = "1"
     tasks = load_tasks(args.tasks)
     if args.limit > 0:
         tasks = tasks[: args.limit]
     shared_index = None
+    session = None
     if args.reuse_index:
         from ..store import load_index
+        from .context_cache import BenchmarkContextSession, cache_enabled_from_env
 
         shared_index = load_index(args.repo or ".")
+        if cache_enabled_from_env():
+            session = BenchmarkContextSession(args.repo or ".", shared_index)
     profiles = [
-        profile_jarvis_context(task, index=shared_index) for task in tasks
+        profile_jarvis_context(task, index=shared_index, session=session) for task in tasks
     ]
     write_profile_report(args.out, profiles)
     print(f"Context profile report written: {args.out}")
@@ -195,6 +210,11 @@ def _build_parser() -> argparse.ArgumentParser:
     generate.add_argument("--out", default=DEFAULT_OUT)
     generate.add_argument("--run-id")
     generate.add_argument("--skip-jarvis-context", action="store_true")
+    generate.add_argument(
+        "--context-cache",
+        action="store_true",
+        help="Enable benchmark context disk cache (sets JARVIS_BENCHMARK_CONTEXT_CACHE=1).",
+    )
 
     record = commands.add_parser("record-run", help="Record one completed manual run.")
     record.add_argument("--run-dir", required=True)
@@ -242,6 +262,11 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Load .jarvis_builder/index.json once for all tasks (same repo).",
     )
     profile.add_argument("--repo", default=".", help="Project root when using --reuse-index.")
+    profile.add_argument(
+        "--context-cache",
+        action="store_true",
+        help="Enable benchmark context disk cache (sets JARVIS_BENCHMARK_CONTEXT_CACHE=1).",
+    )
     return parser
 
 
@@ -250,7 +275,13 @@ def main(argv: List[str] | None = None) -> int:
     if args.command == "validate":
         return _cmd_validate(args.tasks)
     if args.command == "generate":
-        return _cmd_generate(args.tasks, args.out, args.run_id, args.skip_jarvis_context)
+        return _cmd_generate(
+            args.tasks,
+            args.out,
+            args.run_id,
+            args.skip_jarvis_context,
+            context_cache=args.context_cache,
+        )
     if args.command == "record-run":
         return _cmd_record_run(args)
     if args.command == "score":

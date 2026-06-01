@@ -55,9 +55,10 @@ class ContextProfile:
     stages: List[StageMeasurement] = field(default_factory=list)
     total_profiled_elapsed_ms: float = 0.0
     ask_mode: str = ""
+    cache_diagnostics: Optional[Dict[str, Any]] = None
 
     def to_dict(self) -> Dict[str, Any]:
-        return {
+        payload = {
             "profiling_version": PROFILING_VERSION,
             "task_id": self.task_id,
             "task_type": self.task_type,
@@ -67,6 +68,9 @@ class ContextProfile:
             "total_profiled_elapsed_ms": round(self.total_profiled_elapsed_ms, 3),
             "stages": [stage.to_dict() for stage in self.stages],
         }
+        if self.cache_diagnostics is not None:
+            payload["cache"] = self.cache_diagnostics
+        return payload
 
 
 def _elapsed_ms(start: float) -> float:
@@ -229,8 +233,11 @@ def profile_jarvis_context(
     *,
     index: Optional[Dict[str, Any]] = None,
     index_loader: Optional[Callable[[str], Dict[str, Any]]] = None,
+    session: Optional[Any] = None,
 ) -> ContextProfile:
     """Profile staged context generation for one benchmark task (read-only)."""
+    from .context_cache import BenchmarkContextSession, cache_enabled_from_env
+
     loader = index_loader
     if loader is None:
         from .. import indexer
@@ -246,17 +253,26 @@ def profile_jarvis_context(
         index = loader(repo_path)
     stages.append(_stage("index_loading", start, ""))
 
-    start = time.perf_counter()
-    from .. import repository_understanding as ru
+    if session is None and cache_enabled_from_env():
+        session = BenchmarkContextSession(repo_path, index)
 
-    subsystems = ru.production_subsystems(index)
+    start = time.perf_counter()
+    if session is not None:
+        subsystems = session.get_production_subsystems()
+    else:
+        from .. import repository_understanding as ru
+
+        subsystems = ru.production_subsystems(index)
     ru_text = "\n".join(_subsystem_line(item) for item in subsystems[:12])
     stages.append(_stage("repository_understanding", start, ru_text))
 
     start = time.perf_counter()
-    from ..bug_intelligence import depgraph
+    if session is not None:
+        graph = session.get_dependency_graph() if index.get("project_root") else None
+    else:
+        from ..bug_intelligence import depgraph
 
-    graph = depgraph.build_graph(repo_path) if index.get("project_root") else None
+        graph = depgraph.build_graph(repo_path) if index.get("project_root") else None
     stages.append(_stage("dependency_graph", start, _graph_summary_text(graph)))
 
     start = time.perf_counter()
@@ -288,15 +304,28 @@ def profile_jarvis_context(
 
     arch_text = "architectural risk skipped"
     if graph and not graph.get("degraded"):
-        ranking = architectural_risk.rank_modules(index, graph, top=8)
+        if session is not None:
+            ranking = session.get_architectural_risk_ranking(top=8)
+        else:
+            ranking = architectural_risk.rank_modules(index, graph, top=8)
         arch_text = architectural_risk.format_ranking_answer(ranking)
     stages.append(_stage("architectural_risk", start, arch_text))
 
     start = time.perf_counter()
-    stages.append(_stage("contract_facts", start, _probe_contract_facts(index)))
+    contract_text = (
+        session.get_contract_facts_text()
+        if session is not None
+        else _probe_contract_facts(index)
+    )
+    stages.append(_stage("contract_facts", start, contract_text))
 
     start = time.perf_counter()
-    stages.append(_stage("verification_evidence", start, _probe_verification_evidence(index)))
+    verification_text = (
+        session.get_verification_evidence_text()
+        if session is not None
+        else _probe_verification_evidence(index)
+    )
+    stages.append(_stage("verification_evidence", start, verification_text))
 
     bundle = {
         "task_id": task.task_id,
@@ -329,6 +358,7 @@ def profile_jarvis_context(
         stages=stages,
         total_profiled_elapsed_ms=sum(stage.elapsed_ms for stage in stages),
         ask_mode=str(ask_result.get("mode", "")),
+        cache_diagnostics=session.diagnostics_dict() if session is not None else None,
     )
     return profile
 

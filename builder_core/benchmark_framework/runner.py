@@ -9,6 +9,11 @@ from typing import Any, Callable, Dict, Optional
 from . import FRAMEWORK_VERSION, SCHEMA_VERSION
 from .schema import BenchmarkTask, MODES, RunLog
 from .compact_packets import format_jarvis_context, packet_format_from_env
+from .context_cache import (
+    BenchmarkContextSession,
+    cache_enabled_from_env,
+    write_context_profile,
+)
 from .jarvis_packet import format_jarvis_packet
 from .schema import dump_json
 from .tokens import (
@@ -19,6 +24,27 @@ from .tokens import (
 
 JarvisContextFn = Callable[[BenchmarkTask], str]
 _INDEX_CACHE: Dict[str, Any] = {}
+_CONTEXT_SESSIONS: Dict[str, BenchmarkContextSession] = {}
+
+
+def get_benchmark_context_session(
+    repo_path: str,
+    index: Dict[str, Any],
+    *,
+    packet_format: Optional[str] = None,
+) -> BenchmarkContextSession:
+    """Reuse one cache session per repository and packet format within a process."""
+    selected = (packet_format or packet_format_from_env()).lower()
+    key = f"{os.path.abspath(repo_path)}::{selected}"
+    session = _CONTEXT_SESSIONS.get(key)
+    if session is None:
+        session = BenchmarkContextSession(repo_path, index, packet_format=selected)
+        _CONTEXT_SESSIONS[key] = session
+    return session
+
+
+def clear_benchmark_context_sessions() -> None:
+    _CONTEXT_SESSIONS.clear()
 
 
 def _default_run_id() -> str:
@@ -39,10 +65,21 @@ def default_jarvis_context(task: BenchmarkTask) -> str:
             _INDEX_CACHE[repo_path] = index
         result = ask.answer(index, task.prompt)
         packet_format = packet_format_from_env()
+        session = (
+            get_benchmark_context_session(repo_path, index, packet_format=packet_format)
+            if cache_enabled_from_env()
+            else None
+        )
         context, packet_meta = format_jarvis_context(
-            result, task, index, packet_format=packet_format
+            result,
+            task,
+            index,
+            packet_format=packet_format,
+            session=session,
         )
         packet_meta["comparison"]["ask_mode"] = result.get("mode")
+        if session is not None:
+            packet_meta["cache_diagnostics"] = session.diagnostics_dict()
         _INDEX_CACHE[f"{repo_path}__packet_meta__{task.task_id}"] = packet_meta
         return context
     except Exception as exc:  # pragma: no cover - guarded fallback is environment-specific
@@ -119,6 +156,13 @@ def generate_run_package(
                 packet_meta.get("expanded", {}),
                 os.path.join(task_root, "context_packet.expanded.json"),
             )
+            if packet_meta.get("cache_diagnostics"):
+                write_context_profile(
+                    task_root,
+                    task.task_id,
+                    None,
+                    extra={"cache": packet_meta["cache_diagnostics"]},
+                )
         dump_json(task.to_dict(), os.path.join(task_root, "task.json"))
         for mode in MODES:
             prompt = build_prompt(task, mode, jarvis_context)
