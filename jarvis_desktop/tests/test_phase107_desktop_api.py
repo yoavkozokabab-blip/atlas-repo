@@ -145,4 +145,7 @@ def test_all_documented_routes_are_dispatchable():
     documented = {(m, p) for m, p in server.ROUTES}
     assert ("GET", "/api/health") in documented
     assert ("POST", "/api/context/export") in documented
-    assert len(documented) == 12
+    assert ("GET", "/api/repositories/current/timeline") in documented
+    assert ("GET", "/api/repositories/current/tour") in documented
+    assert ("GET", "/api/repositories/current/module") in documented
+    assert len(documented) == 15

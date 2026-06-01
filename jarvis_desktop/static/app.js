@@ -3,7 +3,7 @@ const STATE = {
   repo: null, summary: null, graph: null, graphView: "module", graphPerf: null,
   exportTarget: "claude", exportPacket: "compact", graph3d: null, hoverNodeId: null,
   selectedNode: null, copilotResult: null, showEdges: true, riskPercentiles: null,
-  demoMode: false,
+  demoMode: false, tourStops: null, screenshotMode: false,
 };
 const RECENT_KEY = "jarvis_recent_repos";
 const ONBOARDING_KEY = "jarvis_onboarding_done_v1";
@@ -237,8 +237,9 @@ function updateGraphMeta(data, perf) {
   const capText = data.total_modules > data.node_count
     ? ` · showing ${data.node_count}/${data.total_modules} modules`
     : "";
+  const clusterText = data.cluster_count ? ` · ${data.cluster_count} galaxies · ${data.bridge_link_count || 0} bridges` : "";
   $("graphMeta").textContent =
-    `${data.view || STATE.graphView} · ${data.node_count} nodes · ${data.link_count} edges · ${sum.graph_scope || data.graph_scope || ""}${capText}${perfText}`;
+    `${data.view || STATE.graphView} · ${data.node_count} nodes · ${data.link_count} edges · ${sum.graph_scope || data.graph_scope || ""}${clusterText}${capText}${perfText}`;
 }
 
 async function renderCenter() {
@@ -247,26 +248,44 @@ async function renderCenter() {
     $("leftPanel").innerHTML = emptyStateHtml("No repository scanned", "Scan a folder or load Demo Mode to explore the dependency graph.", "Go to Home", "go('home')");
     $("graph3d").innerHTML = emptyStateHtml("Graph unavailable", "Complete a scan to render the dependency graph.", "Try Demo Mode", "loadDemoMode()");
     $("suggest").innerHTML = "";
+    $("moduleInspector").innerHTML = `<h3>Module Inspector</h3><p class="muted tiny">Scan a repository first.</p>`;
+    JARVIS_UNIVERSE.renderTimeline($("timelinePanel"), null);
     return;
   }
-  const sav = sum.token_savings || {};
-  $("leftPanel").innerHTML = `
-    <h3>Overview</h3>
-    <div class="stat"><span>Files</span><b>${sum.file_count}</b></div>
-    <div class="stat"><span>Modules</span><b>${sum.module_count}</b></div>
-    <div class="stat"><span>Subsystems</span><b>${sum.subsystem_count}</b></div>
-    <div class="stat"><span>Dependency edges</span><b>${sum.dependency_edges}</b></div>
-    <div class="stat"><span>Graph health</span><span class="pill ${sum.graph_health.label==='healthy'?'ok':'warn'}">${sum.graph_health.label}</span></div>
-    <div class="gauge"><div class="muted" style="font-size:11px">Architectural risk score</div><div class="gv" style="color:${riskColor(sum.risk_score)}">${sum.risk_score}</div></div>
-    <div class="gauge"><div class="muted" style="font-size:11px">Est. token savings vs broad reading</div><div class="gv" style="color:var(--green)">${sav.reduction_percent||0}%</div>
-      <div class="muted tiny">${(sav.compact_packet_tokens||0)} tok packet vs ~${(sav.naive_read_estimate||0)} tok</div></div>
-    <h3 style="margin-top:18px">Top risks</h3>
-    ${(sum.top_risks||[]).slice(0,5).map(r=>`<div class="stat"><span title="${r.path||''}">${(r.module||'').split('.').pop()}</span><b style="color:${riskColor(r.score)}">${r.score}</b></div>`).join("")}`;
+  renderHealthCockpit(sum);
   $("suggest").innerHTML = renderCopilotSuggestions(sum);
   const graph = STATE.graph || (STATE.graph = await fetchGraphPayload());
+  STATE.tourStops = graph.tour_stops || [];
   STATE.riskPercentiles = computeRiskPercentiles(graph.nodes || []);
   updateGraphMeta(graph, STATE.graphPerf);
+  const timeline = await api("/api/repositories/current/timeline");
+  JARVIS_UNIVERSE.renderTimeline($("timelinePanel"), timeline);
+  renderModuleInspectorPlaceholder();
   build3DGraph(graph);
+}
+
+function renderHealthCockpit(sum) {
+  const sav = sum.token_savings || {};
+  const gh = sum.graph_health || {};
+  $("leftPanel").innerHTML = `
+    <h3>Health Cockpit</h3>
+    <div class="cockpit-grid">
+      <div class="cockpit-card risk"><div class="cc-label">Risk score</div><div class="cc-val" id="ccRisk">${sum.risk_score}</div></div>
+      <div class="cockpit-card"><div class="cc-label">Graph health</div><div class="cc-val" id="ccHealth" style="font-size:16px;color:${gh.label === 'healthy' ? 'var(--green)' : 'var(--amber)'}">${gh.label || "—"}</div></div>
+      <div class="cockpit-card warn"><div class="cc-label">Import cycles</div><div class="cc-val" id="ccCycles">${gh.import_cycles ?? 0}</div></div>
+      <div class="cockpit-card"><div class="cc-label">Token savings</div><div class="cc-val" id="ccSavings">${sav.reduction_percent || 0}%</div></div>
+    </div>
+    <div class="cockpit-card"><div class="cc-label">Blast radius hub</div><div class="cc-val" style="font-size:14px;color:#eaf0ff">${(sum.top_hubs?.[0]?.module || "—").split(".").pop()}</div>
+      <div class="muted tiny">${sum.top_hubs?.[0]?.fan_in ?? 0} direct importers</div></div>
+    <div class="cockpit-card"><div class="cc-label">Repository modules</div><div class="cc-val" id="ccModules">${sum.module_count}</div></div>
+    <h3 style="margin-top:14px">Top risks</h3>
+    <ul class="clean cockpit-hubs">${(sum.top_risks || []).slice(0, 5).map(r => `<li><b style="color:${riskColor(r.score)}">${(r.module || "").split(".").pop()}</b> <span class="muted">${r.score}</span></li>`).join("")}</ul>
+    <h3 style="margin-top:14px">Top hubs</h3>
+    <ul class="clean cockpit-hubs">${(sum.top_hubs || []).slice(0, 5).map(h => `<li>${h.module} <span class="muted">← ${h.fan_in}</span></li>`).join("")}</ul>`;
+  JARVIS_UNIVERSE.animateCounter($("ccRisk"), sum.risk_score, 800);
+  JARVIS_UNIVERSE.animateCounter($("ccModules"), sum.module_count, 900);
+  JARVIS_UNIVERSE.animateCounter($("ccCycles"), gh.import_cycles ?? 0, 700);
+  JARVIS_UNIVERSE.animateCounter($("ccSavings"), sav.reduction_percent || 0, 900);
 }
 function riskColor(s) { return s >= 60 ? "var(--red)" : s >= 35 ? "var(--amber)" : s >= 15 ? "var(--cyan)" : "var(--green)"; }
 
@@ -345,6 +364,7 @@ function renderCopilotAnswer(res) {
   $("copilotOut").innerHTML = limits.length
     ? `<span class="muted">Limitations: ${limits.join(" · ")}</span>`
     : `<span class="muted">Confidence: ${res.confidence || "medium"}</span>`;
+  if (res.graph_highlight) JARVIS_UNIVERSE.highlightBlastRadius(res.graph_highlight);
 }
 
 function copyCopilotAnswer() {
@@ -357,174 +377,126 @@ function copyCopilotTarget(target) {
   copyText(text, `${target} prompt copied`);
 }
 
-function graphNodeColor(n, active) {
-  if (n.in_cycle) return active ? "#c9b0ff" : "#9a7bff";
-  const pct = STATE.riskPercentiles;
-  if (pct?.top1?.has(n.id)) return active ? "#ff8aa0" : "#ff5c7a";
-  if (pct?.top5?.has(n.id)) return active ? "#ffd36a" : "#ffc24b";
-  return active ? "#7ea0ff" : "#5b76c8";
-}
-
-function graphLinkColor(link, active) {
-  const opacity = active ? Math.min(0.95, (link.opacity || 0.18) + 0.35) : (link.opacity || 0.18);
-  return `rgba(120,160,255,${opacity})`;
-}
-
-function resetGraphHighlight(fg) {
-  if (!fg) return;
-  if (STATE.selectedNode) {
-    highlightGraphNeighborhood(fg, STATE.selectedNode);
-    return;
-  }
-  const show = STATE.showEdges !== false;
-  fg.linkVisibility(() => show)
-    .nodeColor(n => graphNodeColor(n, false))
-    .linkColor(l => graphLinkColor(l, false))
-    .linkWidth(l => show ? 0.2 + (l.weight || 1) * 0.12 : 0);
-}
-
-function highlightGraphNeighborhood(fg, node) {
-  if (!fg) return;
-  const show = STATE.showEdges !== false;
-  fg.linkVisibility(() => show);
-  const focusNode = node || STATE.selectedNode;
-  if (!focusNode) { resetGraphHighlight(fg); return; }
-  const graph = fg.graphData();
-  const focus = new Set([focusNode.id]);
-  graph.links.forEach(link => {
-    const sid = typeof link.source === "object" ? link.source.id : link.source;
-    const tid = typeof link.target === "object" ? link.target.id : link.target;
-    if (sid === focusNode.id) focus.add(tid);
-    if (tid === focusNode.id) focus.add(sid);
-  });
-  fg.nodeColor(n => graphNodeColor(n, focus.has(n.id)))
-    .linkColor(l => {
-      if (!show) return "rgba(0,0,0,0)";
-      const sid = typeof l.source === "object" ? l.source.id : l.source;
-      const tid = typeof l.target === "object" ? l.target.id : l.target;
-      const active = focus.has(sid) && focus.has(tid) && (sid === focusNode.id || tid === focusNode.id);
-      return graphLinkColor(l, active);
-    })
-    .linkWidth(l => {
-      if (!show) return 0;
-      const sid = typeof l.source === "object" ? l.source.id : l.source;
-      const tid = typeof l.target === "object" ? l.target.id : l.target;
-      const active = sid === focusNode.id || tid === focusNode.id;
-      return active ? 0.75 + (l.weight || 1) * 0.22 : 0.12 + (l.weight || 1) * 0.06;
-    });
-}
-
 function toggleGraphEdges() {
   STATE.showEdges = $("showEdges").checked;
-  highlightGraphNeighborhood(STATE.graph3d, STATE.hoverNodeId ? { id: STATE.hoverNodeId } : STATE.selectedNode);
+  JARVIS_UNIVERSE.setShowEdges(STATE.showEdges);
+  JARVIS_UNIVERSE.refreshHighlight(STATE.hoverNodeId ? { id: STATE.hoverNodeId } : STATE.selectedNode);
 }
 
 function build3DGraph(data) {
-  const host = $("graph3d");
-  if (!data || !data.ok || !(data.nodes || []).length) {
-    host.innerHTML = '<div style="display:grid;place-items:center;height:100%;color:var(--muted)">No graph data.</div>';
-    return;
-  }
-  if (typeof ForceGraph3D === "undefined") {
-    host.innerHTML = `<div style="padding:24px;color:var(--muted)">3D graph library unavailable offline. Top hubs:<br>${(STATE.summary.top_hubs||[]).map(h=>`• ${h.module} ← ${h.fan_in}`).join("<br>")}</div>`;
-    return;
-  }
-  host.innerHTML = "";
-  $("nodePop").style.display = "none";
-  const nodes = data.nodes.map(n => ({ ...n }));
-  const links = data.links.map(l => ({ ...l }));
-  const t0 = performance.now();
-  const fg = ForceGraph3D()(host)
-    .graphData({ nodes: [], links: [] })
-    .backgroundColor("rgba(0,0,0,0)")
-    .showNavInfo(false)
-    .nodeLabel("")
-    .nodeVal(n => n.size || 4)
-    .nodeColor(n => graphNodeColor(n, false))
-    .nodeOpacity(0.92)
-    .linkColor(l => graphLinkColor(l, false))
-    .linkWidth(l => 0.2 + (l.weight || 1) * 0.12)
-    .linkOpacity(0.75)
-    .onNodeClick(n => showNode(n))
-    .onNodeHover(n => {
-      STATE.hoverNodeId = n ? n.id : null;
-      highlightGraphNeighborhood(fg, n || STATE.selectedNode);
-      fg.nodeLabel(node => node && n && node.id === n.id
-        ? `${node.label}\nfan-in ${node.fan_in} · fan-out ${node.fan_out} · risk ${node.risk_score}`
-        : "");
-    })
-    .onBackgroundClick(() => {
-      $("nodePop").style.display = "none";
+  JARVIS_UNIVERSE.destroyGraph?.();
+  STATE.graph3d = JARVIS_UNIVERSE.buildGraph($("graph3d"), data, {
+    onNodeClick: n => showNode(n),
+    onNodeHover: n => { STATE.hoverNodeId = n ? n.id : null; },
+    onBackgroundClick: () => {
       STATE.selectedNode = null;
       $("selectedNodeCard").style.display = "none";
+      renderModuleInspectorPlaceholder();
       if (STATE.summary) $("suggest").innerHTML = renderCopilotSuggestions(STATE.summary);
-      highlightGraphNeighborhood(fg, null);
-    })
-    .width(host.clientWidth)
-    .height(host.clientHeight);
-  STATE.graph3d = fg;
+    },
+    getSelectedNode: () => STATE.selectedNode,
+    onLoaded: perf => {
+      STATE.graphPerf = perf;
+      updateGraphMeta(data, perf);
+    },
+  });
+}
 
-  try {
-    const charge = fg.d3Force("charge");
-    if (charge && charge.strength) charge.strength(-90 - Math.min(180, nodes.length * 0.08));
-    const linkForce = fg.d3Force("link");
-    if (linkForce && linkForce.distance) linkForce.distance(l => 28 + (6 / Math.max(l.opacity || 0.15, 0.12)));
-  } catch (e) { /* library-specific force hooks */ }
-
-  const chunkSize = nodes.length > 1200 ? 180 : nodes.length;
-  let loaded = 0;
-  function loadChunk() {
-    const slice = nodes.slice(loaded, loaded + chunkSize);
-    loaded += slice.length;
-    const current = fg.graphData();
-    const mergedNodes = [...(current.nodes || []), ...slice];
-    const ids = new Set(mergedNodes.map(n => n.id));
-    const mergedLinks = links.filter(l => ids.has(l.source) && ids.has(l.target));
-    fg.graphData({ nodes: mergedNodes, links: mergedLinks });
-    if (loaded < nodes.length) {
-      requestAnimationFrame(loadChunk);
-    } else {
-      STATE.graphPerf = { loadMs: Math.round(performance.now() - t0), nodes: mergedNodes.length, links: mergedLinks.length };
-      updateGraphMeta(data, STATE.graphPerf);
-      try {
-        const dist = 160 + Math.sqrt(mergedNodes.length) * 14;
-        fg.cameraPosition({ z: dist });
-      } catch (e) {}
-    }
+async function renderModuleInspector(node) {
+  const wrap = $("moduleInspector");
+  if (!node?.path && !node?.id) {
+    renderModuleInspectorPlaceholder();
+    return;
   }
-  requestAnimationFrame(loadChunk);
-
-  if (!STATE._graphResizeBound) {
-    STATE._graphResizeBound = true;
-    window.addEventListener("resize", () => {
-      if (!STATE.graph3d || !$("graph3d")) return;
-      STATE.graph3d.width($("graph3d").clientWidth).height($("graph3d").clientHeight);
-    });
+  wrap.innerHTML = `<h3>Module Inspector</h3><div class="muted tiny">Loading ${node.path || node.label}…</div>`;
+  const target = node.path || node.id;
+  const info = await api(`/api/repositories/current/module?target=${encodeURIComponent(target)}`);
+  if (!info.ok) {
+    wrap.innerHTML = `<h3>Module Inspector</h3><p class="muted tiny">${info.error || "Unavailable"}</p>`;
+    return;
   }
+  wrap.innerHTML = `
+    <h3>Module Inspector 2.0</h3>
+    <div class="inspector-card glass">
+      <h4>${info.label}</h4>
+      <div class="nr"><span>path</span><b>${info.path}</b></div>
+      <div class="nr"><span>subsystem</span><b>${info.subsystem}</b></div>
+      <div class="nr"><span>risk score</span><b style="color:${riskColor(info.risk_score)}">${info.risk_score}</b></div>
+      <div class="nr"><span>rank</span><b>${info.risk_rank ?? "—"}</b></div>
+      <div class="nr"><span>LOC</span><b>${info.loc}</b></div>
+      <div class="nr"><span>fan-in / fan-out</span><b>${info.fan_in} / ${info.fan_out}</b></div>
+      <div class="nr"><span>cycle member</span><b>${info.in_cycle ? "yes" : "no"}</b></div>
+      <div class="nr"><span>blast radius</span><b>${info.blast_radius}</b></div>
+      <div class="inspector-evidence"><div class="copilot-label">Importers</div><div class="taglist">${(info.importers || []).slice(0, 8).map(f => `<span class="tag">${f}</span>`).join("") || '<span class="muted">none</span>'}</div></div>
+      <div class="inspector-evidence"><div class="copilot-label">Imports</div><div class="taglist">${(info.imports || []).slice(0, 8).map(f => `<span class="tag">${f}</span>`).join("") || '<span class="muted">none</span>'}</div></div>
+      <div class="inspector-evidence"><div class="copilot-label">Evidence</div><ul class="clean">${(info.evidence || []).map(e => `<li>${e}</li>`).join("") || "<li class='muted'>No ranked signals</li>"}</ul></div>
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn small" onclick="askQuestion(${JSON.stringify(`Explain module ${info.path}`)})">Explain this module</button>
+        <button class="btn small ghost" onclick="impactFor(${JSON.stringify(info.path)})">Analyze impact →</button>
+      </div>
+    </div>`;
+}
+
+function renderModuleInspectorPlaceholder() {
+  $("moduleInspector").innerHTML = `
+    <h3>Module Inspector 2.0</h3>
+    <p class="muted tiny">Click a node in the universe graph to inspect path, subsystem, risk, imports, cycles, and evidence.</p>`;
 }
 
 function showNode(n) {
   STATE.selectedNode = n;
-  const sub = (n.subsystem || "").toString();
-  const moduleLine = n.module_count != null ? `<div class="nr"><span>modules</span><b>${n.module_count}</b></div>` : "";
-  $("nodePop").style.display = "block";
-  $("nodePop").innerHTML = `<h4>${n.label}</h4>
-    <div class="nr"><span>subsystem</span><b>${sub}</b></div>
-    <div class="nr"><span>fan-in</span><b>${n.fan_in}</b></div>
-    <div class="nr"><span>fan-out</span><b>${n.fan_out}</b></div>
-    <div class="nr"><span>importers</span><b>${n.importers_count ?? n.fan_in}</b></div>
-    <div class="nr"><span>imports</span><b>${n.imported_modules_count ?? n.fan_out}</b></div>
-    <div class="nr"><span>LOC</span><b>${n.loc}</b></div>
-    <div class="nr"><span>risk score</span><b style="color:${riskColor(n.risk_score)}">${n.risk_score}</b></div>
-    <div class="nr"><span>risk rank</span><b>${n.risk_rank ?? "—"}</b></div>
-    <div class="nr"><span>cycle member</span><b>${n.in_cycle ? "yes" : "no"}</b></div>
-    ${moduleLine}
-    <div style="margin-top:8px"><button class="btn small" onclick="impactFor(${JSON.stringify(n.path)})">Analyze impact →</button></div>`;
   $("selectedNodeCard").style.display = "block";
   $("selectedNodeCard").innerHTML = `<h4>Selected: ${n.label}</h4>
-    <div class="muted tiny">${n.path || ""} · fan-in ${n.fan_in} · fan-out ${n.fan_out}</div>`;
+    <div class="muted tiny">${n.path || ""} · ${n.subsystem || ""} · fan-in ${n.fan_in}</div>`;
   if (STATE.summary) $("suggest").innerHTML = renderCopilotSuggestions(STATE.summary);
-  highlightGraphNeighborhood(STATE.graph3d, n);
+  renderModuleInspector(n);
+  JARVIS_UNIVERSE.refreshHighlight(n);
+  JARVIS_UNIVERSE.flyToNode(n, 1100);
+}
+
+function startRepositoryTour() {
+  const stops = STATE.tourStops || STATE.graph?.tour_stops || [];
+  if (!stops.length) { toast("Tour unavailable — scan a repository first"); return; }
+  $("tourPanel").style.display = "block";
+  JARVIS_UNIVERSE.startTour(stops, ({ stop, index, total, done }) => {
+    if (done) {
+      $("tourPanel").style.display = "none";
+      toast("Tour complete ✓", "success");
+      return;
+    }
+    $("tourStep").textContent = `Step ${index + 1}/${total}`;
+    $("tourTitle").textContent = stop.title;
+    $("tourNarration").textContent = stop.narration;
+  });
+}
+
+function stopRepositoryTour() {
+  JARVIS_UNIVERSE.stopTour();
+  $("tourPanel").style.display = "none";
+}
+
+function exportGraphPNG() {
+  const url = JARVIS_UNIVERSE.exportPNG(2);
+  if (!url) { toast("Export failed"); return; }
+  JARVIS_UNIVERSE.downloadDataUrl(url, `jarvis-universe-${Date.now()}.png`);
+  toast("PNG exported ✓", "success");
+}
+
+function exportGraphSVG() {
+  const svg = JARVIS_UNIVERSE.exportSVG();
+  if (!svg) { toast("SVG export failed"); return; }
+  JARVIS_UNIVERSE.downloadText(svg, `jarvis-universe-${Date.now()}.svg`, "image/svg+xml");
+  toast("SVG exported ✓", "success");
+}
+
+function toggleScreenshotMode() {
+  STATE.screenshotMode = !STATE.screenshotMode;
+  JARVIS_UNIVERSE.toggleScreenshotMode(STATE.screenshotMode);
+  $("screenshotBtn").textContent = STATE.screenshotMode ? "Exit screenshot" : "Screenshot";
+  if (STATE.graph3d || JARVIS_UNIVERSE.fg) {
+    const host = $("graph3d");
+    JARVIS_UNIVERSE.fg?.width(host.clientWidth).height(host.clientHeight);
+  }
 }
 function impactFor(path) { $("impactTarget").value = path; go("impact"); runImpact(); }
 
@@ -561,6 +533,13 @@ async function runImpact() {
   const r = await api("/api/impact", "POST", { target });
   const out = $("impactOut");
   if (!r.ok) { out.innerHTML = `<div class="glass ocard muted">${r.error||'No result'}</div>`; return; }
+  if (r.target_node_id) {
+    JARVIS_UNIVERSE.highlightBlastRadius({
+      target_node_id: r.target_node_id,
+      affected_node_ids: r.affected_node_ids || [],
+    });
+    go("center");
+  }
   const mockTag = r.mock ? `<span class="pill warn">heuristic / TODO</span>` : "";
   out.innerHTML = `
     <div class="glass ocard">

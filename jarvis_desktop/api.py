@@ -12,6 +12,7 @@ Search ``MOCK``/``TODO`` for those spots.
 
 from __future__ import annotations
 
+import math
 import os
 import re
 import time
@@ -20,7 +21,7 @@ from typing import Any, Dict, List, Optional, Tuple
 from builder_core import architectural_risk, repository_understanding
 from builder_core.bug_intelligence import depgraph
 
-PRODUCT_VERSION = "phase110-demo-ready"
+PRODUCT_VERSION = "phase111-cinematic-universe"
 CHARS_PER_TOKEN = 4.0
 GRAPH_DISPLAY_CAP = 5000
 RISK_RANK_TOP = 5000
@@ -446,6 +447,194 @@ def _risk_tier(
     return "normal"
 
 
+def _apply_galaxy_layout(nodes: List[Dict[str, Any]], links: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Visualization-only cluster positions: subsystem galaxies orbiting a center."""
+    clusters: Dict[str, List[Dict[str, Any]]] = {}
+    for node in nodes:
+        sub = str(node.get("subsystem") or "(root)")
+        clusters.setdefault(sub, []).append(node)
+
+    cluster_names = sorted(clusters.keys(), key=lambda name: (-len(clusters[name]), name))
+    cluster_meta: List[Dict[str, Any]] = []
+    n_clusters = max(len(cluster_names), 1)
+    orbit_radius = 90.0 + min(120.0, n_clusters * 6.5)
+
+    for index, name in enumerate(cluster_names):
+        members = clusters[name]
+        angle = (2.0 * math.pi * index) / n_clusters
+        cx = orbit_radius * math.cos(angle)
+        cy = orbit_radius * math.sin(angle)
+        cz = ((index % 3) - 1) * 28.0
+
+        hub = max(members, key=lambda item: (item.get("fan_in", 0), item.get("risk_score", 0)))
+        hub["is_hub"] = True
+        hub["hub_scale"] = round(2.2 + min(2.8, len(members) * 0.04), 2)
+
+        inner_radius = 10.0 + min(48.0, math.sqrt(len(members)) * 5.5)
+        for j, node in enumerate(sorted(members, key=lambda item: item.get("label", ""))):
+            ring_angle = (2.0 * math.pi * j) / max(len(members), 1)
+            depth = ((j % 5) - 2) * 5.5
+            node["cluster_id"] = name
+            node["galaxy_x"] = round(cx + inner_radius * math.cos(ring_angle), 2)
+            node["galaxy_y"] = round(cy + inner_radius * math.sin(ring_angle), 2)
+            node["galaxy_z"] = round(cz + depth, 2)
+
+        cluster_meta.append(
+            {
+                "id": name,
+                "label": name,
+                "module_count": len(members),
+                "center_x": round(cx, 2),
+                "center_y": round(cy, 2),
+                "center_z": round(cz, 2),
+                "hub_node_id": hub["id"],
+            }
+        )
+
+    node_subsystem = {n["id"]: str(n.get("subsystem") or "(root)") for n in nodes}
+    bridge_count = 0
+    for link in links:
+        src = link["source"] if isinstance(link["source"], str) else link["source"]
+        tgt = link["target"] if isinstance(link["target"], str) else link["target"]
+        src_sub = node_subsystem.get(str(src), "")
+        tgt_sub = node_subsystem.get(str(tgt), "")
+        if src_sub and tgt_sub and src_sub != tgt_sub:
+            link["bridge"] = True
+            bridge_count += 1
+            link["opacity"] = round(min(0.92, max(float(link.get("opacity", 0.18)), 0.42)), 3)
+
+    return {
+        "layout": "galaxy",
+        "cluster_count": len(cluster_meta),
+        "bridge_link_count": bridge_count,
+        "clusters": cluster_meta,
+    }
+
+
+def _apply_subsystem_galaxy_layout(nodes: List[Dict[str, Any]], links: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Galaxy ring for collapsed subsystem view."""
+    n_nodes = max(len(nodes), 1)
+    radius = 70.0 + min(90.0, n_nodes * 4.0)
+    for index, node in enumerate(sorted(nodes, key=lambda item: (-item.get("module_count", 0), item.get("label", "")))):
+        angle = (2.0 * math.pi * index) / n_nodes
+        node["is_hub"] = True
+        node["hub_scale"] = round(2.5 + min(3.0, (node.get("module_count") or 0) * 0.05), 2)
+        node["cluster_id"] = node.get("subsystem") or node.get("label")
+        node["galaxy_x"] = round(radius * math.cos(angle), 2)
+        node["galaxy_y"] = round(radius * math.sin(angle), 2)
+        node["galaxy_z"] = round(((index % 3) - 1) * 18.0, 2)
+
+    bridge_count = sum(1 for link in links if link.get("edge_count", 0) > 0)
+    for link in links:
+        if int(link.get("edge_count") or 0) >= 3:
+            link["bridge"] = True
+            link["opacity"] = round(min(0.9, max(float(link.get("opacity", 0.2)), 0.5)), 3)
+
+    return {
+        "layout": "galaxy",
+        "cluster_count": len(nodes),
+        "bridge_link_count": bridge_count,
+        "clusters": [
+            {
+                "id": node["id"],
+                "label": node["label"],
+                "module_count": node.get("module_count", 0),
+                "center_x": node["galaxy_x"],
+                "center_y": node["galaxy_y"],
+                "center_z": node["galaxy_z"],
+                "hub_node_id": node["id"],
+            }
+            for node in nodes
+        ],
+    }
+
+
+def _build_tour_stops(
+    nodes: List[Dict[str, Any]],
+    links: List[Dict[str, Any]],
+    scan: Dict[str, Any],
+    index: Dict[str, Any],
+) -> List[Dict[str, Any]]:
+    """Deterministic camera tour stops derived from real scan/graph data."""
+    if not nodes:
+        return []
+
+    by_subsystem: Dict[str, List[Dict[str, Any]]] = {}
+    for node in nodes:
+        by_subsystem.setdefault(str(node.get("subsystem") or "(root)"), []).append(node)
+
+    largest_sub = max(by_subsystem.items(), key=lambda item: len(item[1]))[0]
+    largest_nodes = by_subsystem[largest_sub]
+    largest_hub = max(largest_nodes, key=lambda item: item.get("fan_in", 0))
+
+    hubs = sorted(nodes, key=lambda item: (-item.get("fan_in", 0), -item.get("risk_score", 0)))[:5]
+    cycle_nodes = [n for n in nodes if n.get("in_cycle")]
+    top_risks = sorted(nodes, key=lambda item: (-item.get("risk_score", 0), -item.get("fan_in", 0)))[:5]
+
+    entry_paths: List[str] = []
+    for sub in index.get("subsystems", []):
+        for ef in sub.get("entry_files", [])[:2]:
+            if ef not in entry_paths:
+                entry_paths.append(str(ef))
+    entry_nodes: List[Dict[str, Any]] = []
+    for path in entry_paths[:6]:
+        match = next((n for n in nodes if n.get("path") == path), None)
+        if match:
+            entry_nodes.append(match)
+
+    if not entry_nodes:
+        entry_nodes = sorted(nodes, key=lambda item: -item.get("fan_out", 0))[:3]
+
+    def _stop(step: str, title: str, narration: str, focus: List[Dict[str, Any]]) -> Dict[str, Any]:
+        ids = [n["id"] for n in focus if n.get("id")]
+        anchor = focus[0] if focus else nodes[0]
+        return {
+            "step": step,
+            "title": title,
+            "narration": narration,
+            "focus_node_ids": ids[:12],
+            "anchor_node_id": anchor.get("id"),
+            "look_at": {
+                "x": anchor.get("galaxy_x", 0),
+                "y": anchor.get("galaxy_y", 0),
+                "z": anchor.get("galaxy_z", 0),
+            },
+        }
+
+    stops = [
+        _stop(
+            "largest_subsystem",
+            f"Galaxy: {largest_sub}",
+            f"The `{largest_sub}` subsystem contains {len(largest_nodes)} modules — the largest architectural cluster in this repository.",
+            [largest_hub] + largest_nodes[:4],
+        ),
+        _stop(
+            "critical_hubs",
+            "Critical import hubs",
+            "These modules have the highest fan-in. Many dependents route through them — changes here ripple widely.",
+            hubs,
+        ),
+        _stop(
+            "import_cycles",
+            "Import cycles",
+            "Circular imports increase coupling and test fragility. Purple halos mark cycle members.",
+            cycle_nodes[:8] if cycle_nodes else hubs[:2],
+        ),
+        _stop(
+            "highest_risks",
+            "Highest architectural risk",
+            "Risk scores combine fan-in, coupling signals, and structural evidence from Builder Core ranking.",
+            top_risks,
+        ),
+        _stop(
+            "entry_points",
+            "Entry points",
+            "Suggested runtime entry files and high fan-out modules where execution likely begins.",
+            entry_nodes,
+        ),
+    ]
+    return stops
+
 def _module_graph_payload(
     graph: Dict[str, Any],
     index: Dict[str, Any],
@@ -524,6 +713,7 @@ def _module_graph_payload(
         nodes = nodes[:GRAPH_DISPLAY_CAP]
         links = [link for link in links if link["source"] in keep_ids and link["target"] in keep_ids]
 
+    layout = _apply_galaxy_layout(nodes, links)
     return {
         "view": "module",
         "node_count": len(nodes),
@@ -534,6 +724,7 @@ def _module_graph_payload(
         ),
         "nodes": nodes,
         "links": links,
+        **layout,
     }
 
 
@@ -615,6 +806,7 @@ def _subsystem_graph_payload(
         }
         for (src, dst), count in sorted(edge_weights.items(), key=lambda item: (-item[1], item[0]))
     ]
+    layout = _apply_subsystem_galaxy_layout(nodes, links)
     return {
         "view": "subsystem",
         "node_count": len(nodes),
@@ -623,6 +815,7 @@ def _subsystem_graph_payload(
         "total_edges": module_payload["total_edges"],
         "nodes": nodes,
         "links": links,
+        **layout,
     }
 
 
@@ -639,11 +832,18 @@ def current_graph(view: str = "module") -> Dict[str, Any]:
         if mode == "subsystem"
         else _module_graph_payload(graph, index, risks)
     )
+    scan = _STATE.get("scan") or {}
+    tour_stops = _build_tour_stops(payload["nodes"], payload["links"], scan, index)
     return {
         "ok": True,
         "graph_scope": graph.get("graph_scope"),
         "degraded": bool(graph.get("degraded")),
         "view": payload["view"],
+        "layout": payload.get("layout", "galaxy"),
+        "cluster_count": payload.get("cluster_count", 0),
+        "bridge_link_count": payload.get("bridge_link_count", 0),
+        "clusters": payload.get("clusters", []),
+        "tour_stops": tour_stops,
         "node_count": payload["node_count"],
         "link_count": payload["link_count"],
         "total_modules": payload["total_modules"],
@@ -663,6 +863,116 @@ def current_risks() -> Dict[str, Any]:
         "graph_scope": _STATE["scan"]["graph_scope"],
         "import_cycles": _STATE["scan"].get("import_cycle_count", 0),
         "ranked_modules": risks.get("ranked_modules", []),
+    }
+
+
+def current_timeline() -> Dict[str, Any]:
+    """Architecture timeline hooks — current scan snapshot; history persisted in future phases."""
+    scan = _STATE.get("scan")
+    if not scan:
+        return {"ok": False, "error": "No repository scanned yet.", "snapshots": []}
+    snapshot = {
+        "timestamp": scan.get("completed_at") or scan.get("started_at") or time.time(),
+        "module_count": scan.get("module_count", 0),
+        "dependency_count": scan.get("dependency_edges", 0),
+        "risk_score": _repo_risk_score(),
+        "cycle_count": scan.get("import_cycle_count", 0),
+        "graph_health": _graph_health(scan).get("label", "unknown"),
+        "source": "current_scan",
+    }
+    return {
+        "ok": True,
+        "history_available": False,
+        "note": "Single-scan baseline; multi-scan history persistence is a future hook.",
+        "snapshots": [snapshot],
+        "latest": snapshot,
+    }
+
+
+def current_tour(view: str = "module") -> Dict[str, Any]:
+    graph_payload = current_graph(view)
+    if not graph_payload.get("ok"):
+        return graph_payload
+    return {
+        "ok": True,
+        "view": graph_payload.get("view", view),
+        "stop_count": len(graph_payload.get("tour_stops") or []),
+        "stops": graph_payload.get("tour_stops") or [],
+    }
+
+
+def module_inspector(target: str) -> Dict[str, Any]:
+    """Rich module panel payload from existing scan artifacts (no new analysis)."""
+    graph = _STATE.get("graph")
+    scan = _STATE.get("scan")
+    if not graph or not scan:
+        return {"ok": False, "error": "No repository scanned yet."}
+    target = (target or "").strip().replace("\\", "/")
+    if not target:
+        return {"ok": False, "error": "Module id or path required."}
+
+    index = _STATE.get("index") or {}
+    risks = _STATE.get("risks") or {}
+    risk_by_path = _risk_lookup(risks)
+    module_nodes = {n["id"]: n for n in graph.get("nodes", []) if n.get("type") == "module"}
+
+    match_id = None
+    match_node = None
+    if target in module_nodes:
+        match_id, match_node = target, module_nodes[target]
+    else:
+        for nid, node in module_nodes.items():
+            path = node.get("path", "")
+            if path == target or path.endswith("/" + target) or node.get("dotted") == target:
+                match_id, match_node = nid, node
+                break
+
+    if not match_node:
+        return {"ok": False, "error": f"Module not found: {target}"}
+
+    path = match_node.get("path", "")
+    importers: List[str] = []
+    imports: List[str] = []
+    for edge in graph.get("edges", []):
+        if edge.get("type") != "imports" or not edge.get("resolved"):
+            continue
+        if edge.get("to") == match_id and edge.get("from") in module_nodes:
+            importers.append(module_nodes[edge["from"]].get("path", edge["from"]))
+        if edge.get("from") == match_id and edge.get("to") in module_nodes:
+            imports.append(module_nodes[edge["to"]].get("path", edge["to"]))
+
+    cycle_members: List[str] = []
+    for cycle in (graph.get("statistics") or {}).get("import_cycles", []):
+        members = cycle if isinstance(cycle, list) else cycle.get("members", [])
+        if match_id in members or path in members:
+            cycle_members = [str(item).split(":", 1)[-1] for item in members]
+
+    risk = risk_by_path.get(path, {})
+    impact_payload = impact(path)
+    return {
+        "ok": True,
+        "node_id": match_id,
+        "path": path,
+        "label": match_node.get("dotted") or path,
+        "subsystem": _subsystem_for_path(path, index),
+        "risk_score": round(float(risk.get("total_score", 0)), 2),
+        "risk_rank": risk.get("rank"),
+        "risk_tier": _risk_tier(
+            score=float(risk.get("total_score", 0)),
+            rank=risk.get("rank"),
+            max_score=max((float(r.get("total_score", 0)) for r in risk_by_path.values()), default=0.0),
+            in_cycle=bool(cycle_members),
+        ),
+        "loc": int(match_node.get("line_count") or 0),
+        "fan_in": len(importers),
+        "fan_out": len(imports),
+        "importers": sorted(set(importers))[:40],
+        "imports": sorted(set(imports))[:40],
+        "in_cycle": bool(cycle_members),
+        "cycle_members": cycle_members[:12],
+        "evidence": (risk.get("signals") or [])[:8],
+        "blast_radius": impact_payload.get("affected_file_count", 0),
+        "affected_node_ids": impact_payload.get("affected_node_ids", []),
     }
 
 
@@ -689,14 +999,17 @@ def impact(target: str) -> Dict[str, Any]:
     risk = next((r for r in (_STATE.get("risks") or {}).get("ranked_modules", []) if r.get("path") == node["path"]), {})
     fan_in = len(importers)
     level = "high" if fan_in >= 25 else "medium" if fan_in >= 6 else "low"
+    affected_node_ids = sorted(importers)
     return {
         "ok": True,
         "target": node.get("path"),
+        "target_node_id": nid,
         "fan_in": fan_in,
         "risk_level": level,
         "risk_score": risk.get("total_score", 0),
         "affected_files": affected_files[:40],
         "affected_file_count": len(affected_files),
+        "affected_node_ids": affected_node_ids,
         "affected_subsystems": affected_subsystems,
         "recommended_tests": _recommended_tests(node.get("path", ""), affected_subsystems),
         "recommended_prompt": _impact_prompt(node.get("path", ""), fan_in, affected_subsystems),
@@ -963,8 +1276,9 @@ def _copilot_envelope(
     confidence: str = "high",
     limitations: Optional[List[str]] = None,
     packet: str = "compact",
+    graph_highlight: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
-    return {
+    payload = {
         "ok": True,
         "mode": mode,
         "answer": answer,
@@ -977,6 +1291,9 @@ def _copilot_envelope(
         "confidence": confidence,
         "limitations": limitations or [],
     }
+    if graph_highlight:
+        payload["graph_highlight"] = graph_highlight
+    return payload
 
 
 def classify_copilot_question(question: str) -> str:
@@ -1223,6 +1540,8 @@ def _answer_impact(question: str, node_context: Optional[Dict[str, Any]], packet
         f"Changing `{payload['target']}` affects {payload['affected_file_count']} direct importer(s) "
         f"across subsystems: {', '.join(payload.get('affected_subsystems') or []) or 'none'}."
     )
+    highlight_ids = [payload.get("target_node_id")] + (payload.get("affected_node_ids") or [])
+    highlight_ids = [item for item in highlight_ids if item]
     return _copilot_envelope(
         "impact",
         answer,
@@ -1237,6 +1556,13 @@ def _answer_impact(question: str, node_context: Optional[Dict[str, Any]], packet
         confidence="high" if payload.get("affected_file_count") else "medium",
         limitations=["Direct importers only; transitive impact engine (Phase 94B) not wired."],
         packet=packet,
+        graph_highlight={
+            "kind": "blast_radius",
+            "target_node_id": payload.get("target_node_id"),
+            "target_path": payload.get("target"),
+            "node_ids": highlight_ids[:80],
+            "affected_node_ids": payload.get("affected_node_ids") or [],
+        },
     )
 
 

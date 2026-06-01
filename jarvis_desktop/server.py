@@ -48,6 +48,12 @@ def dispatch(
             return 200, api.current_summary()
         if method == "GET" and path == "/api/repositories/current/graph":
             return 200, api.current_graph(str(query.get("view", "module")))
+        if method == "GET" and path == "/api/repositories/current/timeline":
+            return 200, api.current_timeline()
+        if method == "GET" and path == "/api/repositories/current/tour":
+            return 200, api.current_tour(str(query.get("view", "module")))
+        if method == "GET" and path == "/api/repositories/current/module":
+            return 200, api.module_inspector(str(query.get("target", "")))
         if method == "GET" and path == "/api/repositories/current/risks":
             return 200, api.current_risks()
         if method == "POST" and path == "/api/impact":
@@ -76,6 +82,9 @@ ROUTES = (
     ("POST", "/api/repositories/scan"),
     ("GET", "/api/repositories/current/summary"),
     ("GET", "/api/repositories/current/graph"),
+    ("GET", "/api/repositories/current/timeline"),
+    ("GET", "/api/repositories/current/tour"),
+    ("GET", "/api/repositories/current/module"),
     ("GET", "/api/repositories/current/risks"),
     ("POST", "/api/impact"),
     ("POST", "/api/bug-investigation"),
@@ -88,7 +97,7 @@ ROUTES = (
 # stdlib HTTP handler (default runtime)
 # --------------------------------------------------------------------------
 class JarvisHandler(BaseHTTPRequestHandler):
-    server_version = "JARVISDesktop/110"
+    server_version = "JARVISDesktop/111"
 
     def log_message(self, *args: Any) -> None:  # quiet console
         pass
@@ -212,6 +221,18 @@ def create_fastapi_app():  # pragma: no cover - exercised only when fastapi pres
     @app.get("/api/repositories/current/graph")
     def _graph(view: str = "module"):
         return api.current_graph(view)
+
+    @app.get("/api/repositories/current/timeline")
+    def _timeline():
+        return api.current_timeline()
+
+    @app.get("/api/repositories/current/tour")
+    def _tour(view: str = "module"):
+        return api.current_tour(view)
+
+    @app.get("/api/repositories/current/module")
+    def _module(target: str = ""):
+        return api.module_inspector(target)
 
     @app.get("/api/repositories/current/risks")
     def _risks():

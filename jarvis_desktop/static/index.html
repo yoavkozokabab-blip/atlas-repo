@@ -116,8 +116,14 @@
         <aside class="panel glass left" id="leftPanel"></aside>
         <div class="graph-stage">
           <div class="graph-head">
-            <h3>Dependency Graph</h3>
+            <h3>Repository Universe</h3>
             <div class="graph-controls">
+              <div class="graph-toolbar">
+                <button class="btn small tour-btn" type="button" onclick="startRepositoryTour()">Tour Repository</button>
+                <button class="btn small ghost" type="button" onclick="exportGraphPNG()">PNG</button>
+                <button class="btn small ghost" type="button" onclick="exportGraphSVG()">SVG</button>
+                <button class="btn small ghost" id="screenshotBtn" type="button" onclick="toggleScreenshotMode()">Screenshot</button>
+              </div>
               <div class="graph-toggle" role="radiogroup" aria-label="Graph view">
                 <label><input type="radio" name="graphView" value="module" checked onchange="setGraphView('module')"> Module graph</label>
                 <label><input type="radio" name="graphView" value="subsystem" onchange="setGraphView('subsystem')"> Subsystem graph</label>
@@ -127,9 +133,19 @@
             </div>
           </div>
           <div id="graph3d"></div>
-          <div class="node-pop glass" id="nodePop" style="display:none"></div>
+          <div class="tour-panel glass" id="tourPanel" style="display:none">
+            <div class="tour-step" id="tourStep">Step 1/5</div>
+            <h4 id="tourTitle">Tour</h4>
+            <p id="tourNarration" class="muted"></p>
+            <button class="btn small ghost" type="button" onclick="stopRepositoryTour()">Exit tour</button>
+          </div>
+          <div class="timeline-panel glass" id="timelinePanel"></div>
         </div>
         <aside class="panel glass right">
+          <div class="inspector-wrap" id="moduleInspector">
+            <h3>Module Inspector</h3>
+            <p class="muted tiny">Click a node to inspect module evidence, imports, and blast radius.</p>
+          </div>
           <h3>AI Copilot</h3>
           <div class="copilot">
             <div class="selected-node glass" id="selectedNodeCard" style="display:none"></div>
@@ -252,6 +268,7 @@
   </div>
 
   <div id="toast" class="toast"></div>
+  <script src="universe.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
