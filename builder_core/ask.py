@@ -10,7 +10,7 @@ from __future__ import annotations
 import re
 from typing import Any, Dict, List
 
-from . import question_understanding, repository_understanding, retrieval, risk
+from . import architectural_risk, question_understanding, repository_understanding, retrieval, risk
 
 _SENT_SPLIT = re.compile(r"(?<=[.!?])\s+")
 _BUG_RE = re.compile(r"\b(bug|bugs|logic error|logic errors|analy[sz]e|review|wrong|broken)\b", re.IGNORECASE)
@@ -370,73 +370,38 @@ def _answer_bottlenecks(index: Dict[str, Any]) -> Dict[str, Any]:
         payload = _graph_unavailable(index, "Project root missing; cannot build dependency graph.")
         payload["mode"] = "bottleneck"
         return payload
-    if graph.get("degraded"):
+
+    ranking = architectural_risk.rank_modules(index, graph, top=12)
+    if ranking.get("degraded"):
         payload = _graph_unavailable(
             index,
-            "Dependency graph degraded — cannot compute architectural bottlenecks.",
+            architectural_risk.format_ranking_answer(ranking),
         )
         payload["mode"] = "bottleneck"
+        payload["architectural_risk_ranking"] = ranking
         return payload
 
-    stats = graph.get("statistics", {})
-    nodes_by_id = {node["id"]: node for node in graph.get("nodes", [])}
-    import_counts: Dict[str, int] = {}
-    for edge in graph.get("edges", []):
-        if edge.get("type") == "imports" and edge.get("resolved") and edge.get("to"):
-            import_counts[edge["to"]] = import_counts.get(edge["to"], 0) + 1
-
-    cycle_modules: set[str] = set()
-    for cycle in stats.get("import_cycles", []):
-        cycle_modules.update(cycle)
-
-    components = stats.get("largest_components") or []
-    large_roots = {item.get("root") for item in components[:5]}
-
-    scored: Dict[str, Dict[str, Any]] = {}
-    for module_id, count in import_counts.items():
-        node = nodes_by_id.get(module_id, {})
-        label = node.get("dotted") or node.get("path") or module_id
-        score = count
-        reasons: List[str] = [f"import fan-in={count}"]
-        if module_id in cycle_modules:
-            score += 5
-            reasons.append("import-cycle member")
-        if module_id in large_roots:
-            score += 3
-            reasons.append("large-component root")
-        scored[label] = {
-            "score": score,
-            "reasons": reasons,
-            "path": node.get("path"),
-            "module_id": module_id,
-        }
-
-    ranked = sorted(scored.items(), key=lambda kv: (-kv[1]["score"], kv[0]))
-    lines = ["Critical architectural bottlenecks (import fan-in, cycles, component roots):"]
+    ranked_modules = ranking.get("ranked_modules") or []
     sources: List[str] = []
-    evidence: List[str] = []
-    for position, (label, item) in enumerate(ranked[:12], 1):
-        lines.append(f"{position}. {label}: score={item['score']} ({', '.join(item['reasons'])})")
+    for item in ranked_modules:
         path = item.get("path")
         if path and path not in sources:
             sources.append(path)
-        evidence.append(f"bottleneck signal: {label} -> {', '.join(item['reasons'])}")
-
-    if stats.get("import_cycles"):
-        evidence.append(f"import cycles detected: {len(stats['import_cycles'])}")
 
     return {
         "mode": "bottleneck",
-        "answer": "\n".join(lines) if ranked else "No bottleneck signals from the dependency graph.",
-        "findings": [label for label, _ in ranked[:12]],
-        "evidence": evidence,
+        "answer": architectural_risk.format_ranking_answer(ranking),
+        "findings": [item["label"] for item in ranked_modules],
+        "evidence": architectural_risk.format_ranking_evidence(ranking),
         "sources": sources[:12],
+        "architectural_risk_ranking": ranking,
         "interpretation": {
             "category": "bottleneck",
             "interpretation_confidence": "high",
-            "support_confidence": "high" if ranked else "medium",
+            "support_confidence": "high" if ranked_modules else "medium",
             "graph_scope": graph.get("graph_scope"),
             "scope_diagnostics": graph.get("scope_diagnostics"),
+            "ranking_engine": ranking.get("engine_version"),
         },
     }
 

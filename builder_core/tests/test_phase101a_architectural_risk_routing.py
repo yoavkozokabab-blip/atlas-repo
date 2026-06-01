@@ -72,6 +72,9 @@ def test_bottleneck_answer_cites_fanin_and_cycles(tmp_path):
     assert "fan-in" in joined          # fan-in signal surfaced
     assert "cycle" in joined           # the ring.x <-> ring.y cycle surfaced
     assert "core" in joined            # the fan-in hub (core.util) is ranked
+    ranking = result.get("architectural_risk_ranking") or {}
+    assert ranking.get("ranked_modules")
+    assert ranking["ranked_modules"][0]["score_breakdown"]["fan_in"] > 0
 
 
 def test_generic_risk_question_still_routes_to_risk(tmp_path):

@@ -112,3 +112,6 @@ def test_bottleneck_query_returns_ranking_despite_data_noise(tmp_path):
     # the data-corpus modules must not appear in the architectural ranking
     assert "vendor_" not in joined
     assert result["interpretation"]["graph_scope"] == "production"
+    ranking = result.get("architectural_risk_ranking") or {}
+    assert ranking.get("ranked_modules")
+    assert ranking["ranked_modules"][0].get("score_breakdown")

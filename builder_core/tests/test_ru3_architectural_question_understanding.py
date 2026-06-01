@@ -151,9 +151,17 @@ def test_bottlenecks_use_fan_in_cycles_and_components(tmp_path):
         "What are the most critical architectural bottlenecks in this repository?",
     )
     assert result["mode"] == "bottleneck"
-    assert "bottleneck" in result["answer"].lower()
+    assert "architectural_risk_ranking" in result
+    answer = result["answer"].lower()
+    assert "architectural risk ranking" in answer or "bottleneck" in answer
     assert result["evidence"]
-    assert any("fan-in=" in item or "import-cycle" in item for item in result["evidence"])
+    assert any(
+        "fan-in=" in item.lower()
+        or "fan_in" in item
+        or "import-cycle" in item
+        or "import cycles" in item.lower()
+        for item in result["evidence"]
+    )
 
 
 def test_ru3_answers_are_deterministic(tmp_path):
