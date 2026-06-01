@@ -2,6 +2,7 @@ __pycache__/
 .pytest_cache/
 .pytest_tmp/
 tests_tmp/
+.jarvis_builder/
 
 # Generated / runtime outputs (repo hygiene)
 data/llm_router_audit.jsonl
@@ -16,3 +17,4 @@ reports/assistant_state/
 reports/verification_plans/
 reports/trading_operations/
 reports/jarvis_logs/*.log
+reports/benchmarks/
