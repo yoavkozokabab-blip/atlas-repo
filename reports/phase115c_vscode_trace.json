@@ -1,0 +1,259 @@
+{
+  "repo": "C:\\\\J.A.R.V.I.S\\\\vscode",
+  "repository_discovery": {
+    "duration_ms": 294,
+    "input": "C:\\\\J.A.R.V.I.S\\\\vscode",
+    "output": {
+      "ok": true,
+      "path": "C:\\J.A.R.V.I.S\\vscode",
+      "name": "vscode",
+      "total_files": 15035,
+      "code_files": 11159,
+      "warnings": []
+    },
+    "failure": null
+  },
+  "language_detection": {
+    "duration_ms": 0,
+    "input_files": 15035,
+    "output": {
+      "top_extensions": {
+        ".ts": 10563,
+        ".json": 1294,
+        ".css": 389,
+        ".snap": 333,
+        ".md": 270,
+        ".tsx": 262,
+        "(none)": 248,
+        ".txt": 173,
+        ".js": 121,
+        ".html": 112,
+        ".svg": 98,
+        ".sqlite": 97,
+        ".ipynb": 93,
+        ".tst": 90,
+        ".rs": 81
+      },
+      "python_files": 73,
+      "typescript_ts": 10563,
+      "typescript_tsx": 262,
+      "javascript": 122,
+      "in_CODE_EXTENSIONS": {
+        ".py": 73,
+        ".ts": 10563,
+        ".tsx": 262,
+        ".js": 121
+      }
+    },
+    "failure": null
+  },
+  "pre_scan_estimate": {
+    "duration_ms": 1322,
+    "input": "C:\\\\J.A.R.V.I.S\\\\vscode",
+    "output": {
+      "total_files": 15035,
+      "code_files": 11159,
+      "estimated_modules": 7253,
+      "massive_mode_auto": true,
+      "languages": {
+        ".ts": 10563,
+        ".tsx": 262,
+        ".js": 121,
+        ".rs": 81,
+        ".py": 73,
+        ".cpp": 17,
+        ".cs": 16,
+        ".java": 7,
+        ".rb": 5,
+        ".go": 4,
+        ".hpp": 4,
+        ".php": 3
+      }
+    },
+    "failure": null
+  },
+  "module_extraction_depgraph": {
+    "duration_ms": 300,
+    "input_python_candidates": 73,
+    "output_production_kept": 0,
+    "excluded_by_role": {
+      "test": 73
+    },
+    "failure": "no_python_production_files"
+  },
+  "dependency_extraction": {
+    "duration_ms": 293,
+    "input_kept_files": 0,
+    "output_modules": 0,
+    "output_import_edges": 0,
+    "graph_scope": "production",
+    "degraded": null,
+    "scope_diagnostics": {
+      "requested_scope": "production",
+      "include_tests": false,
+      "total_candidate_files": 73,
+      "files_kept": 0,
+      "files_excluded": 73,
+      "excluded_by_role": {
+        "test": 73
+      },
+      "degraded": false,
+      "cap_files": 5000,
+      "cap_functions": 50000,
+      "graph_detail": "imports",
+      "time_budget_sec": null
+    },
+    "failure": null
+  },
+  "graph_build_plan": {
+    "output": {
+      "detail": "imports",
+      "time_budget_sec": 60.0,
+      "lazy_full": true,
+      "tier": "massive"
+    }
+  },
+  "full_scan": {
+    "duration_ms": 4637,
+    "output": {
+      "ok": true,
+      "file_count": 14871,
+      "files_discovered": 73,
+      "module_count": 0,
+      "dependency_edges": 0,
+      "graph_scope": "production",
+      "graph_detail": "imports",
+      "degraded": false,
+      "massive_mode": true,
+      "full_graph_pending": true,
+      "graph_build": {
+        "detail": "imports",
+        "time_budget_sec": 60.0,
+        "lazy_full": true,
+        "tier": "massive",
+        "elapsed_sec": 0.384,
+        "timed_out": false,
+        "partial": false
+      }
+    },
+    "failure": null
+  },
+  "graph_serialization_subsystem": {
+    "duration_ms": 0,
+    "output": {
+      "ok": true,
+      "node_count": 0,
+      "link_count": 0,
+      "total_modules": 0,
+      "error": null
+    }
+  },
+  "graph_serialization_module": {
+    "output": {
+      "node_count": 0,
+      "link_count": 0,
+      "total_modules": 0
+    }
+  },
+  "scan_perf_stages": [
+    {
+      "stage": "pre_scan_estimate",
+      "duration_ms": 1605,
+      "files_seen": 15035,
+      "code_files": 11159,
+      "modules": 7253,
+      "edges": 0,
+      "graph_detail": null
+    },
+    {
+      "stage": "validate_repository_path",
+      "duration_ms": 341,
+      "files_seen": 15035,
+      "code_files": 11159,
+      "modules": 0,
+      "edges": 0,
+      "graph_detail": null
+    },
+    {
+      "stage": "building_dependency_graph",
+      "duration_ms": 384,
+      "files_seen": 15035,
+      "code_files": 11159,
+      "modules": 0,
+      "edges": 0,
+      "graph_detail": "imports"
+    },
+    {
+      "stage": "indexing_repository",
+      "duration_ms": 1330,
+      "files_seen": 14871,
+      "code_files": 14871,
+      "modules": 0,
+      "edges": 0,
+      "graph_detail": null
+    },
+    {
+      "stage": "detecting_architectural_risks",
+      "duration_ms": 821,
+      "files_seen": 14871,
+      "code_files": 14871,
+      "modules": 0,
+      "edges": 0,
+      "graph_detail": null
+    },
+    {
+      "stage": "extracting_architecture",
+      "duration_ms": 0,
+      "files_seen": 14871,
+      "code_files": 14871,
+      "modules": 0,
+      "edges": 0,
+      "graph_detail": null
+    },
+    {
+      "stage": "extracting_contracts",
+      "duration_ms": 0,
+      "files_seen": 14871,
+      "code_files": 14871,
+      "modules": 0,
+      "edges": 0,
+      "graph_detail": null
+    },
+    {
+      "stage": "generating_verification_evidence",
+      "duration_ms": 0,
+      "files_seen": 14871,
+      "code_files": 14871,
+      "modules": 0,
+      "edges": 0,
+      "graph_detail": null
+    },
+    {
+      "stage": "building_ai_context_packets",
+      "duration_ms": 0,
+      "files_seen": 14871,
+      "code_files": 14871,
+      "modules": 0,
+      "edges": 0,
+      "graph_detail": null
+    },
+    {
+      "stage": "final_summary_serialization",
+      "duration_ms": 0,
+      "files_seen": 14871,
+      "code_files": 14871,
+      "modules": 0,
+      "edges": 0,
+      "graph_detail": null
+    },
+    {
+      "stage": "graph_payload_preparation",
+      "duration_ms": 0,
+      "files_seen": 14871,
+      "code_files": 14871,
+      "modules": 0,
+      "edges": 0,
+      "graph_detail": null
+    }
+  ]
+}

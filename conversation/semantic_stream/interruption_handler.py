@@ -35,16 +35,21 @@ def handle_streaming_interruption(*, speech_detected: bool) -> InterruptionEvent
             turn_phase=turn.phase.value,
         )
     turn.on_partial()
-    if turn.phase == TurnPhase.USER_INTERRUPT:
-        try:
-            from config import TTS_BARGE_IN_ENABLED
+    try:
+        from config import TTS_BARGE_IN_ENABLED
 
-            if TTS_BARGE_IN_ENABLED:
-                from voice.speech_controller import barge_in_if_speaking
+        if TTS_BARGE_IN_ENABLED and turn.phase == TurnPhase.USER_INTERRUPT:
+            from voice.human_conversation import (
+                interrupt_on_user_speech_start,
+                is_barge_in_active,
+            )
 
-                barge = barge_in_if_speaking()
-        except Exception:
-            pass
+            if not is_barge_in_active():
+                barge = interrupt_on_user_speech_start()
+            else:
+                barge = True
+    except Exception:
+        pass
     return InterruptionEvent(
         detected=turn.phase == TurnPhase.USER_INTERRUPT,
         barge_in_triggered=barge,

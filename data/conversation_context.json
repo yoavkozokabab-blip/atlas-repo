@@ -2,83 +2,163 @@
   "version": 1,
   "turns": [
     {
-      "timestamp": "2026-05-28T13:34:25.111000+00:00",
-      "intent": "open_browser",
-      "status": "success",
-      "summary_excerpt": "Browser session active.\n url: about:blank\n tab: 1/1\n\nWould you also like me to run diagnostics?",
-      "raw_text_excerpt": "open browser",
-      "input_mode": "console"
-    },
-    {
-      "timestamp": "2026-05-28T13:34:32.695409+00:00",
-      "intent": "open_app",
-      "status": "failed",
-      "summary_excerpt": "No installed app found for 'website_steps_www_nvidia_com'. Try: discover apps",
-      "raw_text_excerpt": "open website steps://www.nvidia.com",
-      "input_mode": "console"
-    },
-    {
-      "timestamp": "2026-05-28T13:34:40.943852+00:00",
-      "intent": "unknown",
-      "status": "blocked",
-      "summary_excerpt": "Could not understand the command. Please rephrase.",
-      "raw_text_excerpt": "what page am i on",
-      "input_mode": "console"
-    },
-    {
-      "timestamp": "2026-05-28T13:34:49.504209+00:00",
-      "intent": "summarize_current_project",
-      "status": "success",
-      "summary_excerpt": "## Project Summary\n- Root: C:\\J.A.R.V.I.S\\local_jarvis\n- Sampled files: 500\n\n## File Types\n- .ini: 1\n- .json: 39\n- .md: 3\n- .ps1: 6\n- .py: 450\n- .txt: 1\n\n## Recent Files\n- data\\task_memory.json\n- d...",
-      "raw_text_excerpt": "summarize current page",
-      "input_mode": "console"
-    },
-    {
-      "timestamp": "2026-05-28T13:51:06.773092+00:00",
-      "intent": "test_real_browser",
-      "status": "success",
-      "summary_excerpt": "REAL VISIBLE BROWSER\ntest real browser passed\n title: Example Domain\n url: https://example.com/\n screenshot: C:\\J.A.R.V.I.S\\local_jarvis\\data\\browser_screenshots\\shot_1779976266721.png\n\nWould you a...",
-      "raw_text_excerpt": "test real browser",
-      "input_mode": "console"
-    },
-    {
-      "timestamp": "2026-05-28T13:51:27.404649+00:00",
-      "intent": "open_app",
-      "status": "failed",
-      "summary_excerpt": "No installed app found for 'website_steps_www_nvidia_com'. Try: discover apps",
-      "raw_text_excerpt": "open website steps://www.nvidia.com",
-      "input_mode": "console"
-    },
-    {
-      "timestamp": "2026-05-28T14:09:44.368895+00:00",
+      "timestamp": "2026-05-31T14:42:30.846198+00:00",
       "intent": "open_trading_dashboard",
       "status": "success",
-      "summary_excerpt": "Trading dashboard opened at http://127.0.0.1:8077\nStarted script in new window: run_dashboard.ps1\n\nWould you also like me to run diagnostics?",
-      "raw_text_excerpt": "I'll be there. Open a dashboard. Open a dashboard",
-      "input_mode": "wakeword"
+      "summary_excerpt": "Trading dashboard opened at http://127.0.0.1:8077\n\nWould you also like me to run diagnostics?",
+      "raw_text_excerpt": "my dashboard",
+      "input_mode": "text"
     },
     {
-      "timestamp": "2026-05-28T14:46:57.158472+00:00",
-      "intent": "what_is_on_my_screen",
+      "timestamp": "2026-05-31T14:42:31.060229+00:00",
+      "intent": "run_live_daily_loop",
+      "status": "confirmation_required",
+      "summary_excerpt": "'run_live_daily_loop' requires confirmation. Reply yes/confirm/\u05db\u05df (id: 80c57ccb) or no/cancel/\u05dc\u05d0.",
+      "raw_text_excerpt": "go daily",
+      "input_mode": "text"
+    },
+    {
+      "timestamp": "2026-05-31T14:42:32.232825+00:00",
+      "intent": "open_app",
       "status": "success",
-      "summary_excerpt": "REAL DESKTOP VISION\nStatus: blocked\nActive window: .env - J.A.R.V.I.S - Visual Studio Code\nLikely app: VS Code\nVisible text: (little or no visible text detected)\nWarnings: Blocked keyword in window...",
-      "raw_text_excerpt": "what is on my screen",
-      "input_mode": "console"
+      "summary_excerpt": "Opened Discord.\n\nWould you also like me to show dashboard health?",
+      "raw_text_excerpt": "open discord",
+      "input_mode": "text"
     },
     {
-      "timestamp": "2026-05-28T21:38:39.335463+00:00",
+      "timestamp": "2026-05-31T14:42:33.278856+00:00",
+      "intent": "apply_task_patch",
+      "status": "confirmation_required",
+      "summary_excerpt": "'apply_task_patch' requires confirmation. Reply yes/confirm/\u05db\u05df (id: d964a0f0) or no/cancel/\u05dc\u05d0.",
+      "raw_text_excerpt": "apply task patch",
+      "input_mode": "text"
+    },
+    {
+      "timestamp": "2026-05-31T14:42:37.338121+00:00",
+      "intent": "test_tts_playback",
+      "status": "success",
+      "summary_excerpt": "TTS playback self-test:\n success: yes\n\nWould you also like me to show dashboard health?",
+      "raw_text_excerpt": "test tts playback",
+      "input_mode": "text"
+    },
+    {
+      "timestamp": "2026-05-31T14:43:53.154034+00:00",
       "intent": "show_capabilities",
       "status": "success",
-      "summary_excerpt": "JARVIS capabilities (all execution via router + security + registry):\n\n## Code search\nSkill: code \u2014 Search code and config in FINAL_ALGO_TRADER (read-only).\n - search_project_file_by_name: Find fil...",
+      "summary_excerpt": "ok\n\nWould you also like me to show dashboard health?",
       "raw_text_excerpt": "show capabilities",
       "input_mode": "text"
     },
     {
-      "timestamp": "2026-05-28T21:38:39.380405+00:00",
+      "timestamp": "2026-05-31T14:44:13.533373+00:00",
+      "intent": "focus_window",
+      "status": "confirmation_required",
+      "summary_excerpt": "'focus_window' requires confirmation. Reply yes/confirm/\u05db\u05df (id: daf2b4eb) or no/cancel/\u05dc\u05d0.",
+      "raw_text_excerpt": "focus window Chrome",
+      "input_mode": "text"
+    },
+    {
+      "timestamp": "2026-05-31T14:44:37.305093+00:00",
+      "intent": "get_focused_app",
+      "status": "success",
+      "summary_excerpt": "Focused app/window: App\n\nWould you also like me to show dashboard health?",
+      "raw_text_excerpt": "get focused app",
+      "input_mode": "text"
+    },
+    {
+      "timestamp": "2026-05-31T14:44:40.819501+00:00",
+      "intent": "run_live_daily_loop",
+      "status": "confirmation_required",
+      "summary_excerpt": "'run_live_daily_loop' requires confirmation. Reply yes/confirm/\u05db\u05df (id: a9bb8370) or no/cancel/\u05dc\u05d0.",
+      "raw_text_excerpt": "run live daily loop",
+      "input_mode": "text"
+    },
+    {
+      "timestamp": "2026-05-31T14:44:44.330049+00:00",
+      "intent": "run_live_daily_loop",
+      "status": "confirmation_required",
+      "summary_excerpt": "'run_live_daily_loop' requires confirmation. Reply yes/confirm/\u05db\u05df (id: c2272836) or no/cancel/\u05dc\u05d0.",
+      "raw_text_excerpt": "run live daily loop",
+      "input_mode": "text"
+    },
+    {
+      "timestamp": "2026-05-31T14:44:44.372285+00:00",
+      "intent": "run_live_daily_loop",
+      "status": "success",
+      "summary_excerpt": "Started script in new window: run_live_daily.ps1\n\nWould you also like me to show dashboard health?",
+      "raw_text_excerpt": "yes",
+      "input_mode": "text"
+    },
+    {
+      "timestamp": "2026-05-31T14:44:47.814574+00:00",
+      "intent": "shutdown_jarvis",
+      "status": "confirmation_required",
+      "summary_excerpt": "'shutdown_jarvis' requires confirmation. Reply yes/confirm/\u05db\u05df (id: 5626f5fb) or no/cancel/\u05dc\u05d0.",
+      "raw_text_excerpt": "shutdown jarvis",
+      "input_mode": "text"
+    },
+    {
+      "timestamp": "2026-05-31T14:44:47.851804+00:00",
+      "intent": "unknown",
+      "status": "success",
+      "summary_excerpt": "Action cancelled.",
+      "raw_text_excerpt": "no",
+      "input_mode": "text"
+    },
+    {
+      "timestamp": "2026-05-31T14:47:48.299692+00:00",
+      "intent": "unknown",
+      "status": "blocked",
+      "summary_excerpt": "Could not understand the command. Please rephrase.",
+      "raw_text_excerpt": "enable kill switch",
+      "input_mode": "voice"
+    },
+    {
+      "timestamp": "2026-05-31T14:48:02.482694+00:00",
+      "intent": "open_trading_dashboard",
+      "status": "success",
+      "summary_excerpt": "Trading dashboard opened at http://127.0.0.1:8077\nStarted script in new window: run_dashboard.ps1\n\nWould you also like me to show dashboard health?",
+      "raw_text_excerpt": "open dashboard",
+      "input_mode": "wakeword"
+    },
+    {
+      "timestamp": "2026-05-31T14:50:48.679036+00:00",
       "intent": "show_capabilities",
       "status": "success",
-      "summary_excerpt": "JARVIS capabilities (all execution via router + security + registry):\n\n## Code search\nSkill: code \u2014 Search code and config in FINAL_ALGO_TRADER (read-only).\n - search_project_file_by_name: Find fil...",
+      "summary_excerpt": "OK.",
       "raw_text_excerpt": "show capabilities",
+      "input_mode": "text"
+    },
+    {
+      "timestamp": "2026-05-31T15:02:00.302992+00:00",
+      "intent": "open_trading_dashboard",
+      "status": "success",
+      "summary_excerpt": "Trading dashboard opened at http://127.0.0.1:8077\n\nWould you also like me to show dashboard health?",
+      "raw_text_excerpt": "my dashboard",
+      "input_mode": "text"
+    },
+    {
+      "timestamp": "2026-05-31T15:02:00.511908+00:00",
+      "intent": "run_live_daily_loop",
+      "status": "confirmation_required",
+      "summary_excerpt": "'run_live_daily_loop' requires confirmation. Reply yes/confirm/\u05db\u05df (id: d375b4bd) or no/cancel/\u05dc\u05d0.",
+      "raw_text_excerpt": "go daily",
+      "input_mode": "text"
+    },
+    {
+      "timestamp": "2026-05-31T15:02:01.344059+00:00",
+      "intent": "open_app",
+      "status": "success",
+      "summary_excerpt": "Opened Discord.\n\nWould you also like me to show dashboard health?",
+      "raw_text_excerpt": "open discord",
+      "input_mode": "text"
+    },
+    {
+      "timestamp": "2026-05-31T15:02:02.100638+00:00",
+      "intent": "apply_task_patch",
+      "status": "confirmation_required",
+      "summary_excerpt": "'apply_task_patch' requires confirmation. Reply yes/confirm/\u05db\u05df (id: ad703c18) or no/cancel/\u05dc\u05d0.",
+      "raw_text_excerpt": "apply task patch",
       "input_mode": "text"
     }
   ]

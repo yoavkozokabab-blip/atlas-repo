@@ -1,0 +1,68 @@
+[
+  {
+    "bytes": 151,
+    "file": "plugins/plugin-eval/fixtures/ts-python-sample/tests/test_sample.py",
+    "repo_id": "openai-plugins-public-pilot",
+    "review": {
+      "notes": "",
+      "obvious_actionable_issue": null,
+      "review_minutes": null
+    },
+    "track": "pilot"
+  },
+  {
+    "bytes": 11019,
+    "file": "plugins/life-science-research/skills/epigraphdb-skill/scripts/rest_request.py",
+    "repo_id": "openai-plugins-public-pilot",
+    "review": {
+      "notes": "",
+      "obvious_actionable_issue": null,
+      "review_minutes": null
+    },
+    "track": "pilot"
+  },
+  {
+    "bytes": 33041,
+    "file": "plugins/mixpanel-headless/skills/mixpanelyst/scripts/help.py",
+    "repo_id": "openai-plugins-public-pilot",
+    "review": {
+      "notes": "",
+      "obvious_actionable_issue": null,
+      "review_minutes": null
+    },
+    "track": "pilot"
+  },
+  {
+    "bytes": 36,
+    "file": "skills/.curated/migrate-to-codex/scripts/utils/__init__.py",
+    "repo_id": "openai-skills-public-pilot",
+    "review": {
+      "notes": "",
+      "obvious_actionable_issue": null,
+      "review_minutes": null
+    },
+    "track": "pilot"
+  },
+  {
+    "bytes": 5551,
+    "file": "skills/.curated/hatch-pet/scripts/validate_atlas.py",
+    "repo_id": "openai-skills-public-pilot",
+    "review": {
+      "notes": "",
+      "obvious_actionable_issue": null,
+      "review_minutes": null
+    },
+    "track": "pilot"
+  },
+  {
+    "bytes": 31031,
+    "file": "skills/.curated/migrate-to-codex/scripts/cli.py",
+    "repo_id": "openai-skills-public-pilot",
+    "review": {
+      "notes": "",
+      "obvious_actionable_issue": null,
+      "review_minutes": null
+    },
+    "track": "pilot"
+  }
+]

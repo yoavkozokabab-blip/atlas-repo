@@ -1,0 +1,58 @@
+concept_id: oauth2
+name: OAuth 2.0
+title: OAuth 2.0
+domain: security
+category: authentication
+feature_type: authentication
+concept_quality_score: source_backed
+confidence: high
+aliases:
+- oauth
+- oauth2
+- authorization code
+- delegated auth
+description: Industry-standard delegated authorization (RFC 6749) — obtain access
+  tokens without sharing passwords.
+when_to_use: When third-party apps need limited access to user resources; prefer Authorization
+  Code + PKCE for public clients.
+requirements:
+- Clear ownership of OAuth 2.0 in the architecture
+implementation_strategies: &id001
+- Fail closed on validation errors
+- Centralize auth middleware
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Broken trust boundary
+- Credential leakage
+- Redirect URI open redirect
+- Leaked client secrets
+- Scope escalation
+security_risks:
+- Redirect URI open redirect
+- Leaked client secrets
+- Scope escalation
+performance_risks: []
+failure_modes:
+- Auth bypass on misconfigured middleware
+- Stale permissions after role change
+verification:
+- Validate state parameter
+- Exchange code only once
+- Rotate refresh tokens
+- Threat-model critical paths
+- Validate negative tests for unauthorized access
+testing:
+- AuthZ matrix tests
+- Session fixation/replay tests
+related_concepts:
+- jwt
+- authentication
+references:
+- RFC 6749 - OAuth 2.0 Authorization Framework
+- RFC 7636 - PKCE
+path_keywords:
+- oauth2
+- oauth
+- '2.0'
+investigate_only: false

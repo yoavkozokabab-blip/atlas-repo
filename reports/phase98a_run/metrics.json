@@ -1,0 +1,149 @@
+{
+  "finding_inventory": {
+    "advisory_by_kind": {
+      "pattern": 7278
+    },
+    "advisory_findings": 7278,
+    "total_findings": 16110,
+    "verdict_by_kind": {
+      "data_flow": 13,
+      "security": 412,
+      "semantic": 13,
+      "value_flow": 8394
+    },
+    "verdict_eligible_findings": 8832
+  },
+  "precision": {
+    "advisory_separate": {
+      "reviewed": 0,
+      "total": 7278
+    },
+    "by_kind": {},
+    "by_language_profile": {},
+    "by_rule": {},
+    "by_severity": {},
+    "by_size_band": {},
+    "counts": {
+      "benign_or_intended": 0,
+      "confirmed_actionable": 0,
+      "misleading": 0,
+      "undecidable": 0,
+      "useful_review_lead": 0
+    },
+    "misleading_rate": null,
+    "needs_adjudication": 0,
+    "out_of_scope": 0,
+    "review_lead_rate": null,
+    "reviewed_in_scope": 0,
+    "strict_precision": null,
+    "undecidable_rate": null,
+    "unreviewed": 300,
+    "verdict_eligible_total": 8832,
+    "weighted_strict_precision": null
+  },
+  "readiness": {
+    "corpus": {
+      "historical_bug_cases": 0,
+      "historical_bug_repositories": 0,
+      "outcomes": {
+        "degraded": 2,
+        "success": 22
+      },
+      "primary_eligible_repositories": 24,
+      "primary_language_profiles": {
+        "python_centered_polyglot": 8,
+        "python_dominant": 12,
+        "python_secondary": 4
+      },
+      "primary_project_shapes": {
+        "automation system": 1,
+        "cli tool": 2,
+        "developer tool": 4,
+        "library": 12,
+        "web application": 5
+      },
+      "primary_size_bands": {
+        "large": 8,
+        "medium": 11,
+        "small": 5
+      },
+      "repositories_scanned": 24,
+      "tracks": {
+        "primary": 24
+      }
+    },
+    "gates": [
+      {
+        "detail": "0 unsafe: []",
+        "name": "unsafe_outcomes",
+        "passed": true
+      },
+      {
+        "detail": "24/24 completed (1.0)",
+        "name": "crash_free_completion",
+        "passed": true
+      },
+      {
+        "detail": "24/24",
+        "name": "primary_repository_count",
+        "passed": true
+      },
+      {
+        "detail": "0 cases across 0 repositories",
+        "name": "historical_bug_cases",
+        "passed": false
+      },
+      {
+        "detail": "300 unreviewed",
+        "name": "review_completion",
+        "passed": false
+      },
+      {
+        "detail": "0 need adjudication",
+        "name": "adjudication_completion",
+        "passed": true
+      },
+      {
+        "detail": "None from 0 reviewed findings",
+        "name": "strict_precision",
+        "passed": false
+      },
+      {
+        "detail": "None from 0 reviewed findings",
+        "name": "misleading_rate",
+        "passed": false
+      },
+      {
+        "detail": "median None; 0/24 primary repositories scored",
+        "name": "repository_usefulness",
+        "passed": false
+      },
+      {
+        "detail": "None",
+        "name": "would_use_again",
+        "passed": false
+      },
+      {
+        "detail": "None",
+        "name": "review_lead_rate",
+        "passed": false
+      }
+    ],
+    "verdict": "HOLD"
+  },
+  "usefulness": {
+    "per_finding": {
+      "distribution": {},
+      "mean_usefulness": null,
+      "scored_findings": 0
+    },
+    "per_repository": {
+      "median_repo_usefulness": null,
+      "scored_repositories": 0,
+      "would_use_again_rate": null,
+      "would_use_again_total": 0,
+      "would_use_again_true": 0
+    },
+    "repositories_with_score3plus_finding": []
+  }
+}

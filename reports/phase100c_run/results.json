@@ -1,0 +1,1343 @@
+{
+  "cases": [
+    {
+      "buggy": {
+        "by_classification": {
+          "detected": 0,
+          "refuted": 1,
+          "review_lead": 0,
+          "strong_suspect": 0,
+          "unknown": 0
+        },
+        "findings": [
+          {
+            "classification": "refuted",
+            "confidence": "low",
+            "contract_review_status": "review_lead_only",
+            "file": "buggy.py",
+            "function": "reformat_many",
+            "gate": {
+              "classification": "refuted",
+              "confirmation_bundle": null,
+              "criteria": {
+                "c1": false,
+                "c2": true,
+                "c3": false,
+                "c4": false,
+                "c5": false,
+                "c6": true
+              },
+              "criteria_failures": [
+                "c1_not_promotion_candidate",
+                "c3_no_executable_witness",
+                "c4_unresolved_consequence",
+                "c5_missing_proof_obligations"
+              ],
+              "design_blockers": [
+                "no_observable_consequence",
+                "no_resolved_consuming_context",
+                "weak_contract_only"
+              ],
+              "overlay_status": "refuted",
+              "promotion_candidate_basis": false,
+              "schema_version": 2,
+              "surfaced": false,
+              "why_not_confirmed": [
+                "Confirmed defect requires C1\u2013C6 and a complete confirmation bundle.",
+                "Criteria failures: c1_not_promotion_candidate, c3_no_executable_witness, c4_unresolved_consequence, c5_missing_proof_obligations.",
+                "Design blockers: no_observable_consequence, no_resolved_consuming_context, weak_contract_only.",
+                "Finding is refuted or not actionable under overlay evidence."
+              ]
+            },
+            "id": "BI-LOGI-9058e347",
+            "kind": "pattern",
+            "line": 4,
+            "rule": "inconsistent_return",
+            "severity": "medium",
+            "verification_status": "refuted"
+          }
+        ],
+        "pipeline": {
+          "analysis": true,
+          "confirmed_defect_gate": true,
+          "contract_review": true,
+          "verification_evidence": true
+        },
+        "revision": {
+          "kind": "file",
+          "label": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\bugsinpy_black_executor\\buggy.py"
+        }
+      },
+      "buggy_revision": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\bugsinpy_black_executor\\buggy.py",
+      "case_id": "hold_black_executor",
+      "description": "BugsInPy black executor return/contract pair (distilled holdout)",
+      "fixed": {
+        "by_classification": {
+          "detected": 0,
+          "refuted": 1,
+          "review_lead": 0,
+          "strong_suspect": 0,
+          "unknown": 0
+        },
+        "findings": [
+          {
+            "classification": "refuted",
+            "confidence": "low",
+            "contract_review_status": "review_lead_only",
+            "file": "fixed.py",
+            "function": "reformat_many",
+            "gate": {
+              "classification": "refuted",
+              "confirmation_bundle": null,
+              "criteria": {
+                "c1": false,
+                "c2": true,
+                "c3": false,
+                "c4": false,
+                "c5": false,
+                "c6": true
+              },
+              "criteria_failures": [
+                "c1_not_promotion_candidate",
+                "c3_no_executable_witness",
+                "c4_unresolved_consequence",
+                "c5_missing_proof_obligations"
+              ],
+              "design_blockers": [
+                "no_observable_consequence",
+                "no_resolved_consuming_context",
+                "weak_contract_only"
+              ],
+              "overlay_status": "refuted",
+              "promotion_candidate_basis": false,
+              "schema_version": 2,
+              "surfaced": false,
+              "why_not_confirmed": [
+                "Confirmed defect requires C1\u2013C6 and a complete confirmation bundle.",
+                "Criteria failures: c1_not_promotion_candidate, c3_no_executable_witness, c4_unresolved_consequence, c5_missing_proof_obligations.",
+                "Design blockers: no_observable_consequence, no_resolved_consuming_context, weak_contract_only.",
+                "Finding is refuted or not actionable under overlay evidence."
+              ]
+            },
+            "id": "BI-LOGI-6d263a96",
+            "kind": "pattern",
+            "line": 4,
+            "rule": "inconsistent_return",
+            "severity": "medium",
+            "verification_status": "refuted"
+          }
+        ],
+        "pipeline": {
+          "analysis": true,
+          "confirmed_defect_gate": true,
+          "contract_review": true,
+          "verification_evidence": true
+        },
+        "revision": {
+          "kind": "file",
+          "label": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\bugsinpy_black_executor\\fixed.py"
+        }
+      },
+      "fixed_revision": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\bugsinpy_black_executor\\fixed.py",
+      "summary": {
+        "detected_both": false,
+        "detected_buggy_only": false,
+        "detected_neither": true,
+        "detected_on_buggy": false,
+        "detected_on_fixed": false
+      },
+      "target_files": [
+        "buggy.py"
+      ],
+      "target_rules": [
+        "inconsistent_return"
+      ]
+    },
+    {
+      "buggy": {
+        "by_classification": {
+          "detected": 0,
+          "refuted": 0,
+          "review_lead": 0,
+          "strong_suspect": 0,
+          "unknown": 0
+        },
+        "findings": [],
+        "pipeline": {
+          "analysis": true,
+          "confirmed_defect_gate": true,
+          "contract_review": true,
+          "verification_evidence": true
+        },
+        "revision": {
+          "kind": "file",
+          "label": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\bugsinpy_pysnooper_encoding\\buggy.py"
+        }
+      },
+      "buggy_revision": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\bugsinpy_pysnooper_encoding\\buggy.py",
+      "case_id": "hold_pysnooper_encoding",
+      "description": "BugsInPy PySnooper encoding pair (distilled holdout)",
+      "fixed": {
+        "by_classification": {
+          "detected": 0,
+          "refuted": 0,
+          "review_lead": 0,
+          "strong_suspect": 0,
+          "unknown": 0
+        },
+        "findings": [],
+        "pipeline": {
+          "analysis": true,
+          "confirmed_defect_gate": true,
+          "contract_review": true,
+          "verification_evidence": true
+        },
+        "revision": {
+          "kind": "file",
+          "label": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\bugsinpy_pysnooper_encoding\\fixed.py"
+        }
+      },
+      "fixed_revision": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\bugsinpy_pysnooper_encoding\\fixed.py",
+      "summary": {
+        "detected_both": false,
+        "detected_buggy_only": false,
+        "detected_neither": true,
+        "detected_on_buggy": false,
+        "detected_on_fixed": false
+      },
+      "target_files": [
+        "buggy.py"
+      ],
+      "target_rules": [
+        "inconsistent_return"
+      ]
+    },
+    {
+      "buggy": {
+        "by_classification": {
+          "detected": 0,
+          "refuted": 0,
+          "review_lead": 0,
+          "strong_suspect": 0,
+          "unknown": 0
+        },
+        "findings": [],
+        "pipeline": {
+          "analysis": true,
+          "confirmed_defect_gate": true,
+          "contract_review": true,
+          "verification_evidence": true
+        },
+        "revision": {
+          "kind": "file",
+          "label": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\bugsinpy_tqdm_enumerate\\buggy.py"
+        }
+      },
+      "buggy_revision": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\bugsinpy_tqdm_enumerate\\buggy.py",
+      "case_id": "hold_tqdm_enumerate",
+      "description": "BugsInPy tqdm enumerate pair (distilled holdout)",
+      "fixed": {
+        "by_classification": {
+          "detected": 0,
+          "refuted": 0,
+          "review_lead": 0,
+          "strong_suspect": 0,
+          "unknown": 0
+        },
+        "findings": [],
+        "pipeline": {
+          "analysis": true,
+          "confirmed_defect_gate": true,
+          "contract_review": true,
+          "verification_evidence": true
+        },
+        "revision": {
+          "kind": "file",
+          "label": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\bugsinpy_tqdm_enumerate\\fixed.py"
+        }
+      },
+      "fixed_revision": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\bugsinpy_tqdm_enumerate\\fixed.py",
+      "summary": {
+        "detected_both": false,
+        "detected_buggy_only": false,
+        "detected_neither": true,
+        "detected_on_buggy": false,
+        "detected_on_fixed": false
+      },
+      "target_files": [
+        "buggy.py"
+      ],
+      "target_rules": [
+        "inconsistent_return"
+      ]
+    },
+    {
+      "buggy": {
+        "by_classification": {
+          "detected": 0,
+          "refuted": 0,
+          "review_lead": 0,
+          "strong_suspect": 0,
+          "unknown": 0
+        },
+        "findings": [],
+        "pipeline": {
+          "analysis": true,
+          "confirmed_defect_gate": true,
+          "contract_review": true,
+          "verification_evidence": true
+        },
+        "revision": {
+          "kind": "file",
+          "label": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\classic_off_by_one\\buggy.py"
+        }
+      },
+      "buggy_revision": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\classic_off_by_one\\buggy.py",
+      "case_id": "dist_off_by_one",
+      "description": "Distractor: off-by-one (not inconsistent_return gate scope)",
+      "fixed": {
+        "by_classification": {
+          "detected": 0,
+          "refuted": 0,
+          "review_lead": 0,
+          "strong_suspect": 0,
+          "unknown": 0
+        },
+        "findings": [],
+        "pipeline": {
+          "analysis": true,
+          "confirmed_defect_gate": true,
+          "contract_review": true,
+          "verification_evidence": true
+        },
+        "revision": {
+          "kind": "file",
+          "label": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\classic_off_by_one\\fixed.py"
+        }
+      },
+      "fixed_revision": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\classic_off_by_one\\fixed.py",
+      "summary": {
+        "detected_both": false,
+        "detected_buggy_only": false,
+        "detected_neither": true,
+        "detected_on_buggy": false,
+        "detected_on_fixed": false
+      },
+      "target_files": [
+        "buggy.py"
+      ],
+      "target_rules": [
+        "inconsistent_return"
+      ]
+    },
+    {
+      "buggy": {
+        "by_classification": {
+          "detected": 0,
+          "refuted": 1,
+          "review_lead": 0,
+          "strong_suspect": 0,
+          "unknown": 0
+        },
+        "findings": [
+          {
+            "classification": "refuted",
+            "confidence": "medium",
+            "contract_review_status": "review_lead_only",
+            "file": "buggy.py",
+            "function": "average",
+            "gate": {
+              "classification": "refuted",
+              "confirmation_bundle": null,
+              "criteria": {
+                "c1": false,
+                "c2": true,
+                "c3": false,
+                "c4": false,
+                "c5": false,
+                "c6": true
+              },
+              "criteria_failures": [
+                "c1_not_promotion_candidate",
+                "c3_no_executable_witness",
+                "c4_unresolved_consequence",
+                "c5_missing_proof_obligations"
+              ],
+              "design_blockers": [
+                "no_observable_consequence",
+                "no_resolved_consuming_context",
+                "weak_contract_only"
+              ],
+              "overlay_status": "refuted",
+              "promotion_candidate_basis": false,
+              "schema_version": 2,
+              "surfaced": false,
+              "why_not_confirmed": [
+                "Confirmed defect requires C1\u2013C6 and a complete confirmation bundle.",
+                "Criteria failures: c1_not_promotion_candidate, c3_no_executable_witness, c4_unresolved_consequence, c5_missing_proof_obligations.",
+                "Design blockers: no_observable_consequence, no_resolved_consuming_context, weak_contract_only.",
+                "Finding is refuted or not actionable under overlay evidence."
+              ]
+            },
+            "id": "BI-LOGI-c77a86cb",
+            "kind": "pattern",
+            "line": 1,
+            "rule": "inconsistent_return",
+            "severity": "medium",
+            "verification_status": "refuted"
+          }
+        ],
+        "pipeline": {
+          "analysis": true,
+          "confirmed_defect_gate": true,
+          "contract_review": true,
+          "verification_evidence": true
+        },
+        "revision": {
+          "kind": "file",
+          "label": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\classic_wrong_operator\\buggy.py"
+        }
+      },
+      "buggy_revision": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\classic_wrong_operator\\buggy.py",
+      "case_id": "dist_wrong_operator",
+      "description": "Distractor: wrong operator (not inconsistent_return gate scope)",
+      "fixed": {
+        "by_classification": {
+          "detected": 0,
+          "refuted": 1,
+          "review_lead": 0,
+          "strong_suspect": 0,
+          "unknown": 0
+        },
+        "findings": [
+          {
+            "classification": "refuted",
+            "confidence": "medium",
+            "contract_review_status": "review_lead_only",
+            "file": "fixed.py",
+            "function": "average",
+            "gate": {
+              "classification": "refuted",
+              "confirmation_bundle": null,
+              "criteria": {
+                "c1": false,
+                "c2": true,
+                "c3": false,
+                "c4": false,
+                "c5": false,
+                "c6": true
+              },
+              "criteria_failures": [
+                "c1_not_promotion_candidate",
+                "c3_no_executable_witness",
+                "c4_unresolved_consequence",
+                "c5_missing_proof_obligations"
+              ],
+              "design_blockers": [
+                "no_observable_consequence",
+                "no_resolved_consuming_context",
+                "weak_contract_only"
+              ],
+              "overlay_status": "refuted",
+              "promotion_candidate_basis": false,
+              "schema_version": 2,
+              "surfaced": false,
+              "why_not_confirmed": [
+                "Confirmed defect requires C1\u2013C6 and a complete confirmation bundle.",
+                "Criteria failures: c1_not_promotion_candidate, c3_no_executable_witness, c4_unresolved_consequence, c5_missing_proof_obligations.",
+                "Design blockers: no_observable_consequence, no_resolved_consuming_context, weak_contract_only.",
+                "Finding is refuted or not actionable under overlay evidence."
+              ]
+            },
+            "id": "BI-LOGI-e4e9bec9",
+            "kind": "pattern",
+            "line": 1,
+            "rule": "inconsistent_return",
+            "severity": "medium",
+            "verification_status": "refuted"
+          }
+        ],
+        "pipeline": {
+          "analysis": true,
+          "confirmed_defect_gate": true,
+          "contract_review": true,
+          "verification_evidence": true
+        },
+        "revision": {
+          "kind": "file",
+          "label": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\classic_wrong_operator\\fixed.py"
+        }
+      },
+      "fixed_revision": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\classic_wrong_operator\\fixed.py",
+      "summary": {
+        "detected_both": false,
+        "detected_buggy_only": false,
+        "detected_neither": true,
+        "detected_on_buggy": false,
+        "detected_on_fixed": false
+      },
+      "target_files": [
+        "buggy.py"
+      ],
+      "target_rules": [
+        "inconsistent_return"
+      ]
+    },
+    {
+      "buggy": {
+        "by_classification": {
+          "detected": 0,
+          "refuted": 1,
+          "review_lead": 0,
+          "strong_suspect": 0,
+          "unknown": 0
+        },
+        "findings": [
+          {
+            "classification": "refuted",
+            "confidence": "medium",
+            "contract_review_status": "review_lead_only",
+            "file": "buggy.py",
+            "function": "factorial",
+            "gate": {
+              "classification": "refuted",
+              "confirmation_bundle": null,
+              "criteria": {
+                "c1": false,
+                "c2": true,
+                "c3": false,
+                "c4": false,
+                "c5": false,
+                "c6": true
+              },
+              "criteria_failures": [
+                "c1_not_promotion_candidate",
+                "c3_no_executable_witness",
+                "c4_unresolved_consequence",
+                "c5_missing_proof_obligations"
+              ],
+              "design_blockers": [
+                "no_observable_consequence",
+                "no_resolved_consuming_context",
+                "weak_contract_only"
+              ],
+              "overlay_status": "refuted",
+              "promotion_candidate_basis": false,
+              "schema_version": 2,
+              "surfaced": false,
+              "why_not_confirmed": [
+                "Confirmed defect requires C1\u2013C6 and a complete confirmation bundle.",
+                "Criteria failures: c1_not_promotion_candidate, c3_no_executable_witness, c4_unresolved_consequence, c5_missing_proof_obligations.",
+                "Design blockers: no_observable_consequence, no_resolved_consuming_context, weak_contract_only.",
+                "Finding is refuted or not actionable under overlay evidence."
+              ]
+            },
+            "id": "BI-LOGI-c77a86cb",
+            "kind": "pattern",
+            "line": 1,
+            "rule": "inconsistent_return",
+            "severity": "medium",
+            "verification_status": "refuted"
+          }
+        ],
+        "pipeline": {
+          "analysis": true,
+          "confirmed_defect_gate": true,
+          "contract_review": true,
+          "verification_evidence": true
+        },
+        "revision": {
+          "kind": "file",
+          "label": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\classic_missing_base_case\\buggy.py"
+        }
+      },
+      "buggy_revision": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\classic_missing_base_case\\buggy.py",
+      "case_id": "dist_missing_base_case",
+      "description": "Distractor: missing base case (not inconsistent_return gate scope)",
+      "fixed": {
+        "by_classification": {
+          "detected": 0,
+          "refuted": 1,
+          "review_lead": 0,
+          "strong_suspect": 0,
+          "unknown": 0
+        },
+        "findings": [
+          {
+            "classification": "refuted",
+            "confidence": "medium",
+            "contract_review_status": "review_lead_only",
+            "file": "fixed.py",
+            "function": "factorial",
+            "gate": {
+              "classification": "refuted",
+              "confirmation_bundle": null,
+              "criteria": {
+                "c1": false,
+                "c2": true,
+                "c3": false,
+                "c4": false,
+                "c5": false,
+                "c6": true
+              },
+              "criteria_failures": [
+                "c1_not_promotion_candidate",
+                "c3_no_executable_witness",
+                "c4_unresolved_consequence",
+                "c5_missing_proof_obligations"
+              ],
+              "design_blockers": [
+                "no_observable_consequence",
+                "no_resolved_consuming_context",
+                "weak_contract_only"
+              ],
+              "overlay_status": "refuted",
+              "promotion_candidate_basis": false,
+              "schema_version": 2,
+              "surfaced": false,
+              "why_not_confirmed": [
+                "Confirmed defect requires C1\u2013C6 and a complete confirmation bundle.",
+                "Criteria failures: c1_not_promotion_candidate, c3_no_executable_witness, c4_unresolved_consequence, c5_missing_proof_obligations.",
+                "Design blockers: no_observable_consequence, no_resolved_consuming_context, weak_contract_only.",
+                "Finding is refuted or not actionable under overlay evidence."
+              ]
+            },
+            "id": "BI-LOGI-e4e9bec9",
+            "kind": "pattern",
+            "line": 1,
+            "rule": "inconsistent_return",
+            "severity": "medium",
+            "verification_status": "refuted"
+          }
+        ],
+        "pipeline": {
+          "analysis": true,
+          "confirmed_defect_gate": true,
+          "contract_review": true,
+          "verification_evidence": true
+        },
+        "revision": {
+          "kind": "file",
+          "label": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\classic_missing_base_case\\fixed.py"
+        }
+      },
+      "fixed_revision": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\classic_missing_base_case\\fixed.py",
+      "summary": {
+        "detected_both": false,
+        "detected_buggy_only": false,
+        "detected_neither": true,
+        "detected_on_buggy": false,
+        "detected_on_fixed": false
+      },
+      "target_files": [
+        "buggy.py"
+      ],
+      "target_rules": [
+        "inconsistent_return"
+      ]
+    },
+    {
+      "buggy": {
+        "by_classification": {
+          "detected": 0,
+          "refuted": 2,
+          "review_lead": 0,
+          "strong_suspect": 0,
+          "unknown": 0
+        },
+        "findings": [
+          {
+            "classification": "refuted",
+            "confidence": "medium",
+            "contract_review_status": "review_lead_only",
+            "file": "m.py",
+            "function": "helper",
+            "gate": {
+              "classification": "refuted",
+              "confirmation_bundle": null,
+              "criteria": {
+                "c1": false,
+                "c2": true,
+                "c3": false,
+                "c4": false,
+                "c5": false,
+                "c6": true
+              },
+              "criteria_failures": [
+                "c1_not_promotion_candidate",
+                "c3_no_executable_witness",
+                "c4_unresolved_consequence",
+                "c5_missing_proof_obligations"
+              ],
+              "design_blockers": [
+                "no_observable_consequence",
+                "no_resolved_consuming_context",
+                "weak_contract_only"
+              ],
+              "overlay_status": "refuted",
+              "promotion_candidate_basis": false,
+              "schema_version": 2,
+              "surfaced": false,
+              "why_not_confirmed": [
+                "Confirmed defect requires C1\u2013C6 and a complete confirmation bundle.",
+                "Criteria failures: c1_not_promotion_candidate, c3_no_executable_witness, c4_unresolved_consequence, c5_missing_proof_obligations.",
+                "Design blockers: no_observable_consequence, no_resolved_consuming_context, weak_contract_only.",
+                "Finding is refuted or not actionable under overlay evidence."
+              ]
+            },
+            "id": "BI-LOGI-e2636d02",
+            "kind": "pattern",
+            "line": 4,
+            "rule": "inconsistent_return",
+            "severity": "medium",
+            "verification_status": "refuted"
+          },
+          {
+            "classification": "refuted",
+            "confidence": "medium",
+            "contract_review_status": "review_lead_only",
+            "file": "m.py",
+            "function": "caller",
+            "gate": {
+              "classification": "refuted",
+              "confirmation_bundle": null,
+              "criteria": {
+                "c1": false,
+                "c2": true,
+                "c3": false,
+                "c4": false,
+                "c5": false,
+                "c6": true
+              },
+              "criteria_failures": [
+                "c1_not_promotion_candidate",
+                "c3_no_executable_witness",
+                "c4_unresolved_consequence",
+                "c5_missing_proof_obligations"
+              ],
+              "design_blockers": [
+                "no_observable_consequence",
+                "no_resolved_consuming_context",
+                "weak_contract_only"
+              ],
+              "overlay_status": "refuted",
+              "promotion_candidate_basis": false,
+              "schema_version": 2,
+              "surfaced": false,
+              "why_not_confirmed": [
+                "Confirmed defect requires C1\u2013C6 and a complete confirmation bundle.",
+                "Criteria failures: c1_not_promotion_candidate, c3_no_executable_witness, c4_unresolved_consequence, c5_missing_proof_obligations.",
+                "Design blockers: no_observable_consequence, no_resolved_consuming_context, weak_contract_only.",
+                "Finding is refuted or not actionable under overlay evidence."
+              ]
+            },
+            "id": "BI-LOGI-76070964",
+            "kind": "pattern",
+            "line": 9,
+            "rule": "inconsistent_return",
+            "severity": "medium",
+            "verification_status": "refuted"
+          }
+        ],
+        "pipeline": {
+          "analysis": true,
+          "confirmed_defect_gate": true,
+          "contract_review": true,
+          "verification_evidence": true
+        },
+        "revision": {
+          "kind": "inline",
+          "label": "m.py"
+        }
+      },
+      "buggy_revision": "m.py",
+      "case_id": "neg_optional_by_design",
+      "description": "Hard negative: optional-by-design with correct guard",
+      "fixed": {
+        "by_classification": {
+          "detected": 0,
+          "refuted": 2,
+          "review_lead": 0,
+          "strong_suspect": 0,
+          "unknown": 0
+        },
+        "findings": [
+          {
+            "classification": "refuted",
+            "confidence": "medium",
+            "contract_review_status": "review_lead_only",
+            "file": "m.py",
+            "function": "helper",
+            "gate": {
+              "classification": "refuted",
+              "confirmation_bundle": null,
+              "criteria": {
+                "c1": false,
+                "c2": true,
+                "c3": false,
+                "c4": false,
+                "c5": false,
+                "c6": true
+              },
+              "criteria_failures": [
+                "c1_not_promotion_candidate",
+                "c3_no_executable_witness",
+                "c4_unresolved_consequence",
+                "c5_missing_proof_obligations"
+              ],
+              "design_blockers": [
+                "no_observable_consequence",
+                "no_resolved_consuming_context",
+                "weak_contract_only"
+              ],
+              "overlay_status": "refuted",
+              "promotion_candidate_basis": false,
+              "schema_version": 2,
+              "surfaced": false,
+              "why_not_confirmed": [
+                "Confirmed defect requires C1\u2013C6 and a complete confirmation bundle.",
+                "Criteria failures: c1_not_promotion_candidate, c3_no_executable_witness, c4_unresolved_consequence, c5_missing_proof_obligations.",
+                "Design blockers: no_observable_consequence, no_resolved_consuming_context, weak_contract_only.",
+                "Finding is refuted or not actionable under overlay evidence."
+              ]
+            },
+            "id": "BI-LOGI-e2636d02",
+            "kind": "pattern",
+            "line": 4,
+            "rule": "inconsistent_return",
+            "severity": "medium",
+            "verification_status": "refuted"
+          },
+          {
+            "classification": "refuted",
+            "confidence": "medium",
+            "contract_review_status": "review_lead_only",
+            "file": "m.py",
+            "function": "caller",
+            "gate": {
+              "classification": "refuted",
+              "confirmation_bundle": null,
+              "criteria": {
+                "c1": false,
+                "c2": true,
+                "c3": false,
+                "c4": false,
+                "c5": false,
+                "c6": true
+              },
+              "criteria_failures": [
+                "c1_not_promotion_candidate",
+                "c3_no_executable_witness",
+                "c4_unresolved_consequence",
+                "c5_missing_proof_obligations"
+              ],
+              "design_blockers": [
+                "no_observable_consequence",
+                "no_resolved_consuming_context",
+                "weak_contract_only"
+              ],
+              "overlay_status": "refuted",
+              "promotion_candidate_basis": false,
+              "schema_version": 2,
+              "surfaced": false,
+              "why_not_confirmed": [
+                "Confirmed defect requires C1\u2013C6 and a complete confirmation bundle.",
+                "Criteria failures: c1_not_promotion_candidate, c3_no_executable_witness, c4_unresolved_consequence, c5_missing_proof_obligations.",
+                "Design blockers: no_observable_consequence, no_resolved_consuming_context, weak_contract_only.",
+                "Finding is refuted or not actionable under overlay evidence."
+              ]
+            },
+            "id": "BI-LOGI-76070964",
+            "kind": "pattern",
+            "line": 9,
+            "rule": "inconsistent_return",
+            "severity": "medium",
+            "verification_status": "refuted"
+          }
+        ],
+        "pipeline": {
+          "analysis": true,
+          "confirmed_defect_gate": true,
+          "contract_review": true,
+          "verification_evidence": true
+        },
+        "revision": {
+          "kind": "inline",
+          "label": "m.py"
+        }
+      },
+      "fixed_revision": "m.py",
+      "summary": {
+        "detected_both": false,
+        "detected_buggy_only": false,
+        "detected_neither": true,
+        "detected_on_buggy": false,
+        "detected_on_fixed": false
+      },
+      "target_files": [],
+      "target_rules": [
+        "inconsistent_return"
+      ]
+    },
+    {
+      "buggy": {
+        "by_classification": {
+          "detected": 0,
+          "refuted": 2,
+          "review_lead": 0,
+          "strong_suspect": 0,
+          "unknown": 0
+        },
+        "findings": [
+          {
+            "classification": "refuted",
+            "confidence": "medium",
+            "contract_review_status": "review_lead_only",
+            "file": "m.py",
+            "function": "helper",
+            "gate": {
+              "classification": "refuted",
+              "confirmation_bundle": null,
+              "criteria": {
+                "c1": false,
+                "c2": false,
+                "c3": false,
+                "c4": false,
+                "c5": false,
+                "c6": true
+              },
+              "criteria_failures": [
+                "c1_not_promotion_candidate",
+                "c2_refuting_guard",
+                "c3_no_executable_witness",
+                "c4_unresolved_consequence",
+                "c5_missing_proof_obligations"
+              ],
+              "design_blockers": [
+                "no_observable_consequence",
+                "no_resolved_consuming_context",
+                "refuting_evidence",
+                "weak_contract_only"
+              ],
+              "overlay_status": "refuted",
+              "promotion_candidate_basis": false,
+              "schema_version": 2,
+              "surfaced": false,
+              "why_not_confirmed": [
+                "Confirmed defect requires C1\u2013C6 and a complete confirmation bundle.",
+                "Criteria failures: c1_not_promotion_candidate, c2_refuting_guard, c3_no_executable_witness, c4_unresolved_consequence, c5_missing_proof_obligations.",
+                "Design blockers: no_observable_consequence, no_resolved_consuming_context, refuting_evidence, weak_contract_only.",
+                "Finding is refuted or not actionable under overlay evidence."
+              ]
+            },
+            "id": "BI-LOGI-0005340a",
+            "kind": "pattern",
+            "line": 2,
+            "rule": "inconsistent_return",
+            "severity": "medium",
+            "verification_status": "refuted"
+          },
+          {
+            "classification": "refuted",
+            "confidence": "medium",
+            "contract_review_status": "review_lead_only",
+            "file": "m.py",
+            "function": "guarded",
+            "gate": {
+              "classification": "refuted",
+              "confirmation_bundle": null,
+              "criteria": {
+                "c1": false,
+                "c2": true,
+                "c3": false,
+                "c4": false,
+                "c5": false,
+                "c6": true
+              },
+              "criteria_failures": [
+                "c1_not_promotion_candidate",
+                "c3_no_executable_witness",
+                "c4_unresolved_consequence",
+                "c5_missing_proof_obligations"
+              ],
+              "design_blockers": [
+                "no_observable_consequence",
+                "no_resolved_consuming_context",
+                "weak_contract_only"
+              ],
+              "overlay_status": "refuted",
+              "promotion_candidate_basis": false,
+              "schema_version": 2,
+              "surfaced": false,
+              "why_not_confirmed": [
+                "Confirmed defect requires C1\u2013C6 and a complete confirmation bundle.",
+                "Criteria failures: c1_not_promotion_candidate, c3_no_executable_witness, c4_unresolved_consequence, c5_missing_proof_obligations.",
+                "Design blockers: no_observable_consequence, no_resolved_consuming_context, weak_contract_only.",
+                "Finding is refuted or not actionable under overlay evidence."
+              ]
+            },
+            "id": "BI-LOGI-140fc78c",
+            "kind": "pattern",
+            "line": 6,
+            "rule": "inconsistent_return",
+            "severity": "medium",
+            "verification_status": "refuted"
+          }
+        ],
+        "pipeline": {
+          "analysis": true,
+          "confirmed_defect_gate": true,
+          "contract_review": true,
+          "verification_evidence": true
+        },
+        "revision": {
+          "kind": "inline",
+          "label": "m.py"
+        }
+      },
+      "buggy_revision": "m.py",
+      "case_id": "neg_dominating_guard",
+      "description": "Hard negative: dominating guard excludes implicit-None path",
+      "fixed": {
+        "by_classification": {
+          "detected": 0,
+          "refuted": 2,
+          "review_lead": 0,
+          "strong_suspect": 0,
+          "unknown": 0
+        },
+        "findings": [
+          {
+            "classification": "refuted",
+            "confidence": "medium",
+            "contract_review_status": "review_lead_only",
+            "file": "m.py",
+            "function": "helper",
+            "gate": {
+              "classification": "refuted",
+              "confirmation_bundle": null,
+              "criteria": {
+                "c1": false,
+                "c2": false,
+                "c3": false,
+                "c4": false,
+                "c5": false,
+                "c6": true
+              },
+              "criteria_failures": [
+                "c1_not_promotion_candidate",
+                "c2_refuting_guard",
+                "c3_no_executable_witness",
+                "c4_unresolved_consequence",
+                "c5_missing_proof_obligations"
+              ],
+              "design_blockers": [
+                "no_observable_consequence",
+                "no_resolved_consuming_context",
+                "refuting_evidence",
+                "weak_contract_only"
+              ],
+              "overlay_status": "refuted",
+              "promotion_candidate_basis": false,
+              "schema_version": 2,
+              "surfaced": false,
+              "why_not_confirmed": [
+                "Confirmed defect requires C1\u2013C6 and a complete confirmation bundle.",
+                "Criteria failures: c1_not_promotion_candidate, c2_refuting_guard, c3_no_executable_witness, c4_unresolved_consequence, c5_missing_proof_obligations.",
+                "Design blockers: no_observable_consequence, no_resolved_consuming_context, refuting_evidence, weak_contract_only.",
+                "Finding is refuted or not actionable under overlay evidence."
+              ]
+            },
+            "id": "BI-LOGI-0005340a",
+            "kind": "pattern",
+            "line": 2,
+            "rule": "inconsistent_return",
+            "severity": "medium",
+            "verification_status": "refuted"
+          },
+          {
+            "classification": "refuted",
+            "confidence": "medium",
+            "contract_review_status": "review_lead_only",
+            "file": "m.py",
+            "function": "guarded",
+            "gate": {
+              "classification": "refuted",
+              "confirmation_bundle": null,
+              "criteria": {
+                "c1": false,
+                "c2": true,
+                "c3": false,
+                "c4": false,
+                "c5": false,
+                "c6": true
+              },
+              "criteria_failures": [
+                "c1_not_promotion_candidate",
+                "c3_no_executable_witness",
+                "c4_unresolved_consequence",
+                "c5_missing_proof_obligations"
+              ],
+              "design_blockers": [
+                "no_observable_consequence",
+                "no_resolved_consuming_context",
+                "weak_contract_only"
+              ],
+              "overlay_status": "refuted",
+              "promotion_candidate_basis": false,
+              "schema_version": 2,
+              "surfaced": false,
+              "why_not_confirmed": [
+                "Confirmed defect requires C1\u2013C6 and a complete confirmation bundle.",
+                "Criteria failures: c1_not_promotion_candidate, c3_no_executable_witness, c4_unresolved_consequence, c5_missing_proof_obligations.",
+                "Design blockers: no_observable_consequence, no_resolved_consuming_context, weak_contract_only.",
+                "Finding is refuted or not actionable under overlay evidence."
+              ]
+            },
+            "id": "BI-LOGI-140fc78c",
+            "kind": "pattern",
+            "line": 6,
+            "rule": "inconsistent_return",
+            "severity": "medium",
+            "verification_status": "refuted"
+          }
+        ],
+        "pipeline": {
+          "analysis": true,
+          "confirmed_defect_gate": true,
+          "contract_review": true,
+          "verification_evidence": true
+        },
+        "revision": {
+          "kind": "inline",
+          "label": "m.py"
+        }
+      },
+      "fixed_revision": "m.py",
+      "summary": {
+        "detected_both": false,
+        "detected_buggy_only": false,
+        "detected_neither": true,
+        "detected_on_buggy": false,
+        "detected_on_fixed": false
+      },
+      "target_files": [],
+      "target_rules": [
+        "inconsistent_return"
+      ]
+    },
+    {
+      "buggy": {
+        "by_classification": {
+          "detected": 0,
+          "refuted": 0,
+          "review_lead": 0,
+          "strong_suspect": 0,
+          "unknown": 0
+        },
+        "findings": [],
+        "pipeline": {
+          "analysis": true,
+          "confirmed_defect_gate": true,
+          "contract_review": true,
+          "verification_evidence": true
+        },
+        "revision": {
+          "kind": "inline",
+          "label": "m.py"
+        }
+      },
+      "buggy_revision": "m.py",
+      "case_id": "neg_raise_only_exit",
+      "description": "Hard negative: non-value branch exits via raise",
+      "fixed": {
+        "by_classification": {
+          "detected": 0,
+          "refuted": 0,
+          "review_lead": 0,
+          "strong_suspect": 0,
+          "unknown": 0
+        },
+        "findings": [],
+        "pipeline": {
+          "analysis": true,
+          "confirmed_defect_gate": true,
+          "contract_review": true,
+          "verification_evidence": true
+        },
+        "revision": {
+          "kind": "inline",
+          "label": "m.py"
+        }
+      },
+      "fixed_revision": "m.py",
+      "summary": {
+        "detected_both": false,
+        "detected_buggy_only": false,
+        "detected_neither": true,
+        "detected_on_buggy": false,
+        "detected_on_fixed": false
+      },
+      "target_files": [],
+      "target_rules": [
+        "inconsistent_return"
+      ]
+    },
+    {
+      "buggy": {
+        "by_classification": {
+          "detected": 0,
+          "refuted": 1,
+          "review_lead": 0,
+          "strong_suspect": 0,
+          "unknown": 0
+        },
+        "findings": [
+          {
+            "classification": "refuted",
+            "confidence": "medium",
+            "contract_review_status": "review_lead_only",
+            "file": "m.py",
+            "function": "helper",
+            "gate": {
+              "classification": "refuted",
+              "confirmation_bundle": null,
+              "criteria": {
+                "c1": false,
+                "c2": false,
+                "c3": true,
+                "c4": false,
+                "c5": false,
+                "c6": true
+              },
+              "criteria_failures": [
+                "c1_not_promotion_candidate",
+                "c2_refuting_guard",
+                "c4_unresolved_consequence",
+                "c5_missing_proof_obligations"
+              ],
+              "design_blockers": [
+                "no_observable_consequence",
+                "no_resolved_consuming_context",
+                "refuting_evidence",
+                "weak_contract_only"
+              ],
+              "overlay_status": "refuted",
+              "promotion_candidate_basis": false,
+              "schema_version": 2,
+              "surfaced": false,
+              "why_not_confirmed": [
+                "Confirmed defect requires C1\u2013C6 and a complete confirmation bundle.",
+                "Criteria failures: c1_not_promotion_candidate, c2_refuting_guard, c4_unresolved_consequence, c5_missing_proof_obligations.",
+                "Design blockers: no_observable_consequence, no_resolved_consuming_context, refuting_evidence, weak_contract_only.",
+                "Finding is refuted or not actionable under overlay evidence."
+              ]
+            },
+            "id": "BI-LOGI-0005340a",
+            "kind": "pattern",
+            "line": 2,
+            "rule": "inconsistent_return",
+            "severity": "medium",
+            "verification_status": "refuted"
+          }
+        ],
+        "pipeline": {
+          "analysis": true,
+          "confirmed_defect_gate": true,
+          "contract_review": true,
+          "verification_evidence": true
+        },
+        "revision": {
+          "kind": "inline",
+          "label": "m.py"
+        }
+      },
+      "buggy_revision": "m.py",
+      "case_id": "neg_expected_negative_test",
+      "description": "Hard negative: expected-negative test (None is allowed)",
+      "fixed": {
+        "by_classification": {
+          "detected": 0,
+          "refuted": 1,
+          "review_lead": 0,
+          "strong_suspect": 0,
+          "unknown": 0
+        },
+        "findings": [
+          {
+            "classification": "refuted",
+            "confidence": "medium",
+            "contract_review_status": "review_lead_only",
+            "file": "m.py",
+            "function": "helper",
+            "gate": {
+              "classification": "refuted",
+              "confirmation_bundle": null,
+              "criteria": {
+                "c1": false,
+                "c2": false,
+                "c3": true,
+                "c4": false,
+                "c5": false,
+                "c6": true
+              },
+              "criteria_failures": [
+                "c1_not_promotion_candidate",
+                "c2_refuting_guard",
+                "c4_unresolved_consequence",
+                "c5_missing_proof_obligations"
+              ],
+              "design_blockers": [
+                "no_observable_consequence",
+                "no_resolved_consuming_context",
+                "refuting_evidence",
+                "weak_contract_only"
+              ],
+              "overlay_status": "refuted",
+              "promotion_candidate_basis": false,
+              "schema_version": 2,
+              "surfaced": false,
+              "why_not_confirmed": [
+                "Confirmed defect requires C1\u2013C6 and a complete confirmation bundle.",
+                "Criteria failures: c1_not_promotion_candidate, c2_refuting_guard, c4_unresolved_consequence, c5_missing_proof_obligations.",
+                "Design blockers: no_observable_consequence, no_resolved_consuming_context, refuting_evidence, weak_contract_only.",
+                "Finding is refuted or not actionable under overlay evidence."
+              ]
+            },
+            "id": "BI-LOGI-0005340a",
+            "kind": "pattern",
+            "line": 2,
+            "rule": "inconsistent_return",
+            "severity": "medium",
+            "verification_status": "refuted"
+          }
+        ],
+        "pipeline": {
+          "analysis": true,
+          "confirmed_defect_gate": true,
+          "contract_review": true,
+          "verification_evidence": true
+        },
+        "revision": {
+          "kind": "inline",
+          "label": "m.py"
+        }
+      },
+      "fixed_revision": "m.py",
+      "summary": {
+        "detected_both": false,
+        "detected_buggy_only": false,
+        "detected_neither": true,
+        "detected_on_buggy": false,
+        "detected_on_fixed": false
+      },
+      "target_files": [],
+      "target_rules": [
+        "inconsistent_return"
+      ]
+    }
+  ],
+  "program_id": "phase100c-first-batch",
+  "replay_enabled": true,
+  "schema_version": 1
+}

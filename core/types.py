@@ -513,6 +513,15 @@ class Intent(str, Enum):
     PLAN_TOOL_TASK = "plan_tool_task"
     RUN_TOOL_TASK = "run_tool_task"
     SHOW_LAST_TOOL_RUN = "show_last_tool_run"
+    # Autonomous Agent Stack v1 — bounded read-only research agent
+    PLAN_AUTONOMOUS_TASK = "plan_autonomous_task"
+    RUN_AUTONOMOUS_TASK = "run_autonomous_task"
+    RESEARCH_DEEPLY = "research_deeply"
+    COMPARE_SOURCES_FOR = "compare_sources_for"
+    SHOW_LAST_AUTONOMOUS_RUN = "show_last_autonomous_run"
+    SHOW_AUTONOMOUS_AUDIT = "show_autonomous_audit"
+    # Project Intelligence — read-only builder questions (Phase 79+)
+    ANSWER_PROJECT_QUESTION = "answer_project_question"
     UNKNOWN = "unknown"
     CLARIFY = "clarify"
 

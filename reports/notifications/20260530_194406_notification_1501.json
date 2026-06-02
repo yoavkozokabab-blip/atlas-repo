@@ -1,0 +1,14 @@
+{
+  "id": 1501,
+  "kind": "proactive",
+  "title": "Continuous monitor alert",
+  "message": "Stale open positions remain elevated",
+  "severity": "warning",
+  "source": "proactive_monitor",
+  "created_at": "2026-05-30T19:44:06.936900+00:00",
+  "read": false,
+  "archived": false,
+  "suggested_action": "run investigation cycle",
+  "related_task_id": null,
+  "metadata": {}
+}

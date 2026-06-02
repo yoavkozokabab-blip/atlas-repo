@@ -1,0 +1,9 @@
+{
+  "all_kind_pattern": true,
+  "commit": "2746f1766b929de61d410d45683b81a0ed342235",
+  "inconsistent_return_count": 1053,
+  "repo_id": "local-jarvis-pilot",
+  "scan_seconds": 66.162,
+  "verdict_eligible_count": 0,
+  "with_verification_evidence": 1053
+}

@@ -1,0 +1,14 @@
+{
+  "id": 1399,
+  "kind": "proactive",
+  "title": "Autonomous investigation findings",
+  "message": "Runtime health degraded; New blocker appeared: 4. market closed severity=medium count=12 evidence=c; New blocker appeared: 5. already in position severity=medium count=10 evidence=c",
+  "severity": "warning",
+  "source": "proactive_monitor",
+  "created_at": "2026-05-30T17:31:13.371833+00:00",
+  "read": false,
+  "archived": false,
+  "suggested_action": "inspect execution adapter",
+  "related_task_id": null,
+  "metadata": {}
+}

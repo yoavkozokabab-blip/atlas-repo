@@ -1,0 +1,147 @@
+{
+  "cases": [
+    {
+      "description": "BugsInPy black executor return/contract pair (distilled holdout)",
+      "fixed_files": [
+        "buggy.py"
+      ],
+      "id": "hold_black_executor",
+      "pair_dir": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\bugsinpy_black_executor",
+      "target_rules": [
+        "inconsistent_return"
+      ]
+    },
+    {
+      "description": "BugsInPy PySnooper encoding pair (distilled holdout)",
+      "fixed_files": [
+        "buggy.py"
+      ],
+      "id": "hold_pysnooper_encoding",
+      "pair_dir": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\bugsinpy_pysnooper_encoding",
+      "target_rules": [
+        "inconsistent_return"
+      ]
+    },
+    {
+      "description": "BugsInPy tqdm enumerate pair (distilled holdout)",
+      "fixed_files": [
+        "buggy.py"
+      ],
+      "id": "hold_tqdm_enumerate",
+      "pair_dir": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\bugsinpy_tqdm_enumerate",
+      "target_rules": [
+        "inconsistent_return"
+      ]
+    },
+    {
+      "description": "Distractor: off-by-one (not inconsistent_return gate scope)",
+      "fixed_files": [
+        "buggy.py"
+      ],
+      "id": "dist_off_by_one",
+      "pair_dir": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\classic_off_by_one",
+      "target_rules": [
+        "inconsistent_return"
+      ]
+    },
+    {
+      "description": "Distractor: wrong operator (not inconsistent_return gate scope)",
+      "fixed_files": [
+        "buggy.py"
+      ],
+      "id": "dist_wrong_operator",
+      "pair_dir": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\classic_wrong_operator",
+      "target_rules": [
+        "inconsistent_return"
+      ]
+    },
+    {
+      "description": "Distractor: missing base case (not inconsistent_return gate scope)",
+      "fixed_files": [
+        "buggy.py"
+      ],
+      "id": "dist_missing_base_case",
+      "pair_dir": "C:\\J.A.R.V.I.S\\local_jarvis\\builder_core\\benchmarks\\holdout\\pairs\\classic_missing_base_case",
+      "target_rules": [
+        "inconsistent_return"
+      ]
+    },
+    {
+      "buggy_revision": {
+        "kind": "inline",
+        "rel_path": "m.py",
+        "source": "\nfrom typing import Optional\n\ndef helper(x: int) -> Optional[str]:\n    if x:\n        return \"a\"\n    return None\n\ndef caller():\n    v = helper(1)\n    if v is None:\n        return \"\"\n    return v.upper()\n"
+      },
+      "description": "Hard negative: optional-by-design with correct guard",
+      "fixed_revision": {
+        "kind": "inline",
+        "rel_path": "m.py",
+        "source": "\nfrom typing import Optional\n\ndef helper(x: int) -> Optional[str]:\n    if x:\n        return \"a\"\n    return None\n\ndef caller():\n    v = helper(1)\n    if v is None:\n        return \"\"\n    return v.upper()\n"
+      },
+      "id": "neg_optional_by_design",
+      "target_rules": [
+        "inconsistent_return"
+      ]
+    },
+    {
+      "buggy_revision": {
+        "kind": "inline",
+        "rel_path": "m.py",
+        "source": "\ndef helper(x) -> str:\n    if x:\n        return \"a\"\n\ndef guarded():\n    v = helper(1)\n    if v is None:\n        return \"\"\n    return v\n"
+      },
+      "description": "Hard negative: dominating guard excludes implicit-None path",
+      "fixed_revision": {
+        "kind": "inline",
+        "rel_path": "m.py",
+        "source": "\ndef helper(x) -> str:\n    if x:\n        return \"a\"\n\ndef guarded():\n    v = helper(1)\n    if v is None:\n        return \"\"\n    return v\n"
+      },
+      "id": "neg_dominating_guard",
+      "target_rules": [
+        "inconsistent_return"
+      ]
+    },
+    {
+      "buggy_revision": {
+        "kind": "inline",
+        "rel_path": "m.py",
+        "source": "\ndef helper(x) -> str:\n    if not x:\n        raise ValueError(\"x required\")\n    return \"a\"\n\ndef caller():\n    return helper(1).upper()\n"
+      },
+      "description": "Hard negative: non-value branch exits via raise",
+      "fixed_revision": {
+        "kind": "inline",
+        "rel_path": "m.py",
+        "source": "\ndef helper(x) -> str:\n    if not x:\n        raise ValueError(\"x required\")\n    return \"a\"\n\ndef caller():\n    return helper(1).upper()\n"
+      },
+      "id": "neg_raise_only_exit",
+      "target_rules": [
+        "inconsistent_return"
+      ]
+    },
+    {
+      "buggy_revision": {
+        "kind": "inline",
+        "rel_path": "m.py",
+        "source": "\ndef helper(x) -> str | None:\n    if x:\n        return \"a\"\n\ndef test_helper_may_be_none():\n    assert helper(0) is None\n"
+      },
+      "description": "Hard negative: expected-negative test (None is allowed)",
+      "fixed_revision": {
+        "kind": "inline",
+        "rel_path": "m.py",
+        "source": "\ndef helper(x) -> str | None:\n    if x:\n        return \"a\"\n\ndef test_helper_may_be_none():\n    assert helper(0) is None\n"
+      },
+      "id": "neg_expected_negative_test",
+      "target_rules": [
+        "inconsistent_return"
+      ],
+      "test_documents": [
+        {
+          "content": "\nfrom m import helper\n\ndef test_helper_may_be_none():\n    assert helper(0) is None\n",
+          "path": "tests/test_m.py"
+        }
+      ]
+    }
+  ],
+  "description": "Phase 100A first executable batch (cases 21\u201330)",
+  "program_id": "phase100c-first-batch",
+  "schema_version": 1
+}

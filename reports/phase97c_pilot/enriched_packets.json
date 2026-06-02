@@ -1,0 +1,2904 @@
+[
+  {
+    "confidence": "low",
+    "contract_review": {
+      "caller_behavior_evidence": [],
+      "conflicting_evidence": [
+        {
+          "conflict_reason": "interprocedural_gate_not_met",
+          "detail": "No unambiguous same-file caller dereferences the return without null-checking it (Phase 93B promotion gate)."
+        }
+      ],
+      "function_qualname": "EnableAutostartAction.execute",
+      "return_contract_evidence": [
+        {
+          "confidence": "explicit",
+          "obligation": "return.non_none",
+          "sources": [
+            "type_hint"
+          ],
+          "subject": {
+            "file": "actions/service_actions.py",
+            "qualname": "EnableAutostartAction.execute",
+            "slot": "return"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "why_not_confirmed": [
+        "Contract enrichment is supporting evidence only; no confirmation evaluators are enabled.",
+        "This finding is labeled review_lead_only — not a confirmed defect.",
+        "callee_behavior, guard, and docstring-return facts are excluded from promotion and confirmation.",
+        "Finding remains quarantined (kind=pattern); contract facts do not change promotion.",
+        "Conflicting contract or interprocedural signals prevent confirmation."
+      ]
+    },
+    "evidence": "def execute(self, request: CommandRequest) -> CommandResult:",
+    "explanation": "'execute' returns a value inside a branch but can also reach the end of the function without returning, yielding None. A missing final return is a common logic bug.",
+    "file": "actions/service_actions.py",
+    "finding_id": "BI-LOGI-e3e67f04",
+    "kind": "pattern",
+    "line": 21,
+    "next_verification_step": "Check every return path and the callers' expectations for a consistent contract.",
+    "record_id": "RR-ff7762f625185de7",
+    "repo_id": "local-jarvis-pilot",
+    "rule": "inconsistent_return",
+    "severity": "medium",
+    "source_window": [
+      "18: class EnableAutostartAction(BaseAction):",
+      "19:     intent = Intent.ENABLE_AUTOSTART.value",
+      "20: ",
+      "21:     def execute(self, request: CommandRequest) -> CommandResult:",
+      "22:         try:",
+      "23:             status = enable_autostart()",
+      "24:             summary = ("
+    ],
+    "title": "'execute' may fall through to an implicit None",
+    "verification_evidence": {
+      "atoms": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-9e2a0a696a71",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "actions/service_actions.py:21"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "actions/service_actions.py",
+            "line": 21,
+            "qualname": "EnableAutostartAction.execute",
+            "slot": "branch"
+          }
+        }
+      ],
+      "blockers": [],
+      "bundle": {
+        "consequence_atom_ids": [],
+        "contract_atom_ids": [],
+        "path_atom_ids": [
+          "VE-9e2a0a696a71"
+        ],
+        "reproduction_atom_ids": [],
+        "violation_atom_ids": []
+      },
+      "finding_id": "BI-LOGI-e3e67f04",
+      "impact_context": null,
+      "missing_proof_obligations": [
+        "exact contract violation atom",
+        "promotion-grade feasible path witness",
+        "repository test or runtime reproduction",
+        "evidence promotion gate disabled"
+      ],
+      "refuting_evidence": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-9e2a0a696a71",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "actions/service_actions.py:21"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "actions/service_actions.py",
+            "line": 21,
+            "qualname": "EnableAutostartAction.execute",
+            "slot": "branch"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "schema_version": 1,
+      "status": "refuted",
+      "supporting_evidence": [],
+      "why_not_confirmed": [
+        "Verification evidence is supporting context only in Phase 97A.",
+        "This finding remains review_lead_only — not a confirmed defect.",
+        "Evidence promotion and confirmed-defect output are disabled."
+      ]
+    },
+    "why_might_be_wrong": "Mixed return shapes can be intentional (e.g. value-or-None APIs)."
+  },
+  {
+    "confidence": "medium",
+    "contract_review": {
+      "caller_behavior_evidence": [],
+      "conflicting_evidence": [
+        {
+          "confidence": "explicit",
+          "conflict_reason": "optional_return_signal",
+          "obligation": "return.optional",
+          "sources": [
+            "type_hint"
+          ],
+          "subject": {
+            "file": "actions/website_actions.py",
+            "qualname": "_entry_from_params",
+            "slot": "return"
+          }
+        },
+        {
+          "confidence": "inferred_weak",
+          "conflict_reason": "optional_return_signal",
+          "obligation": "return.optional",
+          "sources": [
+            "caller_behavior"
+          ],
+          "subject": {
+            "file": "actions/website_actions.py",
+            "qualname": "_entry_from_params",
+            "slot": "return"
+          }
+        },
+        {
+          "conflict_reason": "interprocedural_gate_not_met",
+          "detail": "No unambiguous same-file caller dereferences the return without null-checking it (Phase 93B promotion gate)."
+        }
+      ],
+      "function_qualname": "_entry_from_params",
+      "return_contract_evidence": [],
+      "review_packet_status": "review_lead_only",
+      "why_not_confirmed": [
+        "Contract enrichment is supporting evidence only; no confirmation evaluators are enabled.",
+        "This finding is labeled review_lead_only — not a confirmed defect.",
+        "callee_behavior, guard, and docstring-return facts are excluded from promotion and confirmation.",
+        "Finding remains quarantined (kind=pattern); contract facts do not change promotion.",
+        "Conflicting contract or interprocedural signals prevent confirmation.",
+        "No explicit return type-hint contract or strong caller-behavior contract attached for this function."
+      ]
+    },
+    "evidence": "def _entry_from_params(data: dict) -> WebsiteEntry | None:",
+    "explanation": "'_entry_from_params' returns differing kinds of values (none, value). Callers cannot rely on a stable return type; this often signals a missed case.",
+    "file": "actions/website_actions.py",
+    "finding_id": "BI-LOGI-27a52450",
+    "kind": "pattern",
+    "line": 43,
+    "next_verification_step": "Check every return path and the callers' expectations for a consistent contract.",
+    "record_id": "RR-31eb0982084ce6a6",
+    "repo_id": "local-jarvis-pilot",
+    "rule": "inconsistent_return",
+    "severity": "medium",
+    "source_window": [
+      "40:     return normalize_website_query(raw) if raw else \"\"",
+      "41: ",
+      "42: ",
+      "43: def _entry_from_params(data: dict) -> WebsiteEntry | None:",
+      "44:     if not data:",
+      "45:         return None",
+      "46:     try:"
+    ],
+    "title": "Inconsistent return types in '_entry_from_params'",
+    "verification_evidence": {
+      "atoms": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-b70424821e34",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "actions/website_actions.py:43"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "actions/website_actions.py",
+            "line": 43,
+            "qualname": "_entry_from_params",
+            "slot": "branch"
+          }
+        }
+      ],
+      "blockers": [],
+      "bundle": {
+        "consequence_atom_ids": [],
+        "contract_atom_ids": [],
+        "path_atom_ids": [
+          "VE-b70424821e34"
+        ],
+        "reproduction_atom_ids": [],
+        "violation_atom_ids": []
+      },
+      "finding_id": "BI-LOGI-27a52450",
+      "impact_context": null,
+      "missing_proof_obligations": [
+        "exact contract violation atom",
+        "promotion-grade feasible path witness",
+        "repository test or runtime reproduction",
+        "evidence promotion gate disabled"
+      ],
+      "refuting_evidence": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-b70424821e34",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "actions/website_actions.py:43"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "actions/website_actions.py",
+            "line": 43,
+            "qualname": "_entry_from_params",
+            "slot": "branch"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "schema_version": 1,
+      "status": "refuted",
+      "supporting_evidence": [],
+      "why_not_confirmed": [
+        "Verification evidence is supporting context only in Phase 97A.",
+        "This finding remains review_lead_only — not a confirmed defect.",
+        "Evidence promotion and confirmed-defect output are disabled."
+      ]
+    },
+    "why_might_be_wrong": "Mixed return shapes can be intentional (e.g. value-or-None APIs)."
+  },
+  {
+    "confidence": "medium",
+    "contract_review": {
+      "caller_behavior_evidence": [],
+      "conflicting_evidence": [
+        {
+          "conflict_reason": "interprocedural_gate_not_met",
+          "detail": "No unambiguous same-file caller dereferences the return without null-checking it (Phase 93B promotion gate)."
+        }
+      ],
+      "function_qualname": "_infer_provider",
+      "return_contract_evidence": [
+        {
+          "confidence": "explicit",
+          "obligation": "return.non_none",
+          "sources": [
+            "type_hint"
+          ],
+          "subject": {
+            "file": "alpha/session_log.py",
+            "qualname": "_infer_provider",
+            "slot": "return"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "why_not_confirmed": [
+        "Contract enrichment is supporting evidence only; no confirmation evaluators are enabled.",
+        "This finding is labeled review_lead_only — not a confirmed defect.",
+        "callee_behavior, guard, and docstring-return facts are excluded from promotion and confirmation.",
+        "Finding remains quarantined (kind=pattern); contract facts do not change promotion.",
+        "Conflicting contract or interprocedural signals prevent confirmation."
+      ]
+    },
+    "evidence": "def _infer_provider(summary: str, data: dict[str, Any] | None) -> str:",
+    "explanation": "'_infer_provider' returns differing kinds of values (str, value). Callers cannot rely on a stable return type; this often signals a missed case.",
+    "file": "alpha/session_log.py",
+    "finding_id": "BI-LOGI-4dcd4a42",
+    "kind": "pattern",
+    "line": 40,
+    "next_verification_step": "Check every return path and the callers' expectations for a consistent contract.",
+    "record_id": "RR-c46ee76fe3b8d918",
+    "repo_id": "local-jarvis-pilot",
+    "rule": "inconsistent_return",
+    "severity": "medium",
+    "source_window": [
+      "37:     return _SESSION_DIR / \"session.jsonl\"",
+      "38: ",
+      "39: ",
+      "40: def _infer_provider(summary: str, data: dict[str, Any] | None) -> str:",
+      "41:     if data:",
+      "42:         if data.get(\"alpha_blocked\"):",
+      "43:             return \"blocked\""
+    ],
+    "title": "Inconsistent return types in '_infer_provider'",
+    "verification_evidence": {
+      "atoms": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-8ee376691f44",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "alpha/session_log.py:40"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "alpha/session_log.py",
+            "line": 40,
+            "qualname": "_infer_provider",
+            "slot": "branch"
+          }
+        }
+      ],
+      "blockers": [],
+      "bundle": {
+        "consequence_atom_ids": [],
+        "contract_atom_ids": [],
+        "path_atom_ids": [
+          "VE-8ee376691f44"
+        ],
+        "reproduction_atom_ids": [],
+        "violation_atom_ids": []
+      },
+      "finding_id": "BI-LOGI-4dcd4a42",
+      "impact_context": null,
+      "missing_proof_obligations": [
+        "exact contract violation atom",
+        "promotion-grade feasible path witness",
+        "repository test or runtime reproduction",
+        "evidence promotion gate disabled"
+      ],
+      "refuting_evidence": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-8ee376691f44",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "alpha/session_log.py:40"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "alpha/session_log.py",
+            "line": 40,
+            "qualname": "_infer_provider",
+            "slot": "branch"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "schema_version": 1,
+      "status": "refuted",
+      "supporting_evidence": [],
+      "why_not_confirmed": [
+        "Verification evidence is supporting context only in Phase 97A.",
+        "This finding remains review_lead_only — not a confirmed defect.",
+        "Evidence promotion and confirmed-defect output are disabled."
+      ]
+    },
+    "why_might_be_wrong": "Mixed return shapes can be intentional (e.g. value-or-None APIs)."
+  },
+  {
+    "confidence": "medium",
+    "contract_review": {
+      "caller_behavior_evidence": [],
+      "conflicting_evidence": [
+        {
+          "conflict_reason": "interprocedural_gate_not_met",
+          "detail": "No unambiguous same-file caller dereferences the return without null-checking it (Phase 93B promotion gate)."
+        }
+      ],
+      "function_qualname": "scheduler_tick",
+      "return_contract_evidence": [
+        {
+          "confidence": "explicit",
+          "obligation": "return.non_none",
+          "sources": [
+            "type_hint"
+          ],
+          "subject": {
+            "file": "assistant/investigation_scheduler.py",
+            "qualname": "scheduler_tick",
+            "slot": "return"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "why_not_confirmed": [
+        "Contract enrichment is supporting evidence only; no confirmation evaluators are enabled.",
+        "This finding is labeled review_lead_only — not a confirmed defect.",
+        "callee_behavior, guard, and docstring-return facts are excluded from promotion and confirmation.",
+        "Finding remains quarantined (kind=pattern); contract facts do not change promotion.",
+        "Conflicting contract or interprocedural signals prevent confirmation."
+      ]
+    },
+    "evidence": "def scheduler_tick(*, force: bool = False) -> list[str]:",
+    "explanation": "'scheduler_tick' returns differing kinds of values (list, value). Callers cannot rely on a stable return type; this often signals a missed case.",
+    "file": "assistant/investigation_scheduler.py",
+    "finding_id": "BI-LOGI-45f1470d",
+    "kind": "pattern",
+    "line": 161,
+    "next_verification_step": "Check every return path and the callers' expectations for a consistent contract.",
+    "record_id": "RR-9e301472d7138ce2",
+    "repo_id": "local-jarvis-pilot",
+    "rule": "inconsistent_return",
+    "severity": "medium",
+    "source_window": [
+      "158:     return (time.time() - last_ts) >= interval",
+      "159: ",
+      "160: ",
+      "161: def scheduler_tick(*, force: bool = False) -> list[str]:",
+      "162:     state = _load()",
+      "163:     if state.get(\"paused\") and not force:",
+      "164:         return []"
+    ],
+    "title": "Inconsistent return types in 'scheduler_tick'",
+    "verification_evidence": {
+      "atoms": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-7977dc02ee55",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "assistant/investigation_scheduler.py:161"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "assistant/investigation_scheduler.py",
+            "line": 161,
+            "qualname": "scheduler_tick",
+            "slot": "branch"
+          }
+        }
+      ],
+      "blockers": [],
+      "bundle": {
+        "consequence_atom_ids": [],
+        "contract_atom_ids": [],
+        "path_atom_ids": [
+          "VE-7977dc02ee55"
+        ],
+        "reproduction_atom_ids": [],
+        "violation_atom_ids": []
+      },
+      "finding_id": "BI-LOGI-45f1470d",
+      "impact_context": null,
+      "missing_proof_obligations": [
+        "exact contract violation atom",
+        "promotion-grade feasible path witness",
+        "repository test or runtime reproduction",
+        "evidence promotion gate disabled"
+      ],
+      "refuting_evidence": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-7977dc02ee55",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "assistant/investigation_scheduler.py:161"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "assistant/investigation_scheduler.py",
+            "line": 161,
+            "qualname": "scheduler_tick",
+            "slot": "branch"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "schema_version": 1,
+      "status": "refuted",
+      "supporting_evidence": [],
+      "why_not_confirmed": [
+        "Verification evidence is supporting context only in Phase 97A.",
+        "This finding remains review_lead_only — not a confirmed defect.",
+        "Evidence promotion and confirmed-defect output are disabled."
+      ]
+    },
+    "why_might_be_wrong": "Mixed return shapes can be intentional (e.g. value-or-None APIs)."
+  },
+  {
+    "confidence": "medium",
+    "contract_review": {
+      "caller_behavior_evidence": [
+        {
+          "confidence": "inferred_strong",
+          "obligation": "return.non_none",
+          "sources": [
+            "caller_behavior"
+          ],
+          "subject": {
+            "file": "backups/jarvis_patches/20260526_121610_95ec3bbe/services__live_paper_engine.py",
+            "qualname": "_safe_reconcile_adapter_positions",
+            "slot": "return"
+          }
+        },
+        {
+          "confidence": "inferred_strong",
+          "obligation": "null.forbidden",
+          "sources": [
+            "caller_behavior"
+          ],
+          "subject": {
+            "file": "backups/jarvis_patches/20260526_121610_95ec3bbe/services__live_paper_engine.py",
+            "qualname": "_safe_reconcile_adapter_positions",
+            "slot": "return"
+          }
+        }
+      ],
+      "conflicting_evidence": [
+        {
+          "conflict_reason": "interprocedural_gate_not_met",
+          "detail": "No unambiguous same-file caller dereferences the return without null-checking it (Phase 93B promotion gate)."
+        }
+      ],
+      "function_qualname": "_safe_reconcile_adapter_positions",
+      "return_contract_evidence": [
+        {
+          "confidence": "explicit",
+          "obligation": "return.non_none",
+          "sources": [
+            "type_hint"
+          ],
+          "subject": {
+            "file": "backups/jarvis_patches/20260526_121610_95ec3bbe/services__live_paper_engine.py",
+            "qualname": "_safe_reconcile_adapter_positions",
+            "slot": "return"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "why_not_confirmed": [
+        "Contract enrichment is supporting evidence only; no confirmation evaluators are enabled.",
+        "This finding is labeled review_lead_only — not a confirmed defect.",
+        "callee_behavior, guard, and docstring-return facts are excluded from promotion and confirmation.",
+        "Finding remains quarantined (kind=pattern); contract facts do not change promotion.",
+        "Conflicting contract or interprocedural signals prevent confirmation."
+      ]
+    },
+    "evidence": "def _safe_reconcile_adapter_positions(",
+    "explanation": "'_safe_reconcile_adapter_positions' returns differing kinds of values (dict, value). Callers cannot rely on a stable return type; this often signals a missed case.",
+    "file": "backups/jarvis_patches/20260526_121610_95ec3bbe/services__live_paper_engine.py",
+    "finding_id": "BI-LOGI-46a293f9",
+    "kind": "pattern",
+    "line": 960,
+    "next_verification_step": "Check every return path and the callers' expectations for a consistent contract.",
+    "record_id": "RR-d3ac070672e99137",
+    "repo_id": "local-jarvis-pilot",
+    "rule": "inconsistent_return",
+    "severity": "medium",
+    "source_window": [
+      "957:     }",
+      "958: ",
+      "959: ",
+      "960: def _safe_reconcile_adapter_positions(",
+      "961:     execution_adapter: ExecutionAdapter | None,",
+      "962:     open_positions: list[dict[str, Any]],",
+      "963: ) -> dict[str, Any]:"
+    ],
+    "title": "Inconsistent return types in '_safe_reconcile_adapter_positions'",
+    "verification_evidence": {
+      "atoms": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-c2d05b10d988",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "backups/jarvis_patches/20260526_121610_95ec3bbe/services__live_paper_engine.py:960"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "backups/jarvis_patches/20260526_121610_95ec3bbe/services__live_paper_engine.py",
+            "line": 960,
+            "qualname": "_safe_reconcile_adapter_positions",
+            "slot": "branch"
+          }
+        }
+      ],
+      "blockers": [],
+      "bundle": {
+        "consequence_atom_ids": [],
+        "contract_atom_ids": [],
+        "path_atom_ids": [
+          "VE-c2d05b10d988"
+        ],
+        "reproduction_atom_ids": [],
+        "violation_atom_ids": []
+      },
+      "finding_id": "BI-LOGI-46a293f9",
+      "impact_context": null,
+      "missing_proof_obligations": [
+        "exact contract violation atom",
+        "promotion-grade feasible path witness",
+        "repository test or runtime reproduction",
+        "evidence promotion gate disabled"
+      ],
+      "refuting_evidence": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-c2d05b10d988",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "backups/jarvis_patches/20260526_121610_95ec3bbe/services__live_paper_engine.py:960"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "backups/jarvis_patches/20260526_121610_95ec3bbe/services__live_paper_engine.py",
+            "line": 960,
+            "qualname": "_safe_reconcile_adapter_positions",
+            "slot": "branch"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "schema_version": 1,
+      "status": "refuted",
+      "supporting_evidence": [],
+      "why_not_confirmed": [
+        "Verification evidence is supporting context only in Phase 97A.",
+        "This finding remains review_lead_only — not a confirmed defect.",
+        "Evidence promotion and confirmed-defect output are disabled."
+      ]
+    },
+    "why_might_be_wrong": "Mixed return shapes can be intentional (e.g. value-or-None APIs)."
+  },
+  {
+    "confidence": "medium",
+    "contract_review": {
+      "caller_behavior_evidence": [],
+      "conflicting_evidence": [
+        {
+          "confidence": "inferred_weak",
+          "conflict_reason": "optional_return_signal",
+          "obligation": "return.optional",
+          "sources": [
+            "caller_behavior"
+          ],
+          "subject": {
+            "file": "brain/patch_command_phrases.py",
+            "qualname": "is_patch_workflow_phrase",
+            "slot": "return"
+          }
+        },
+        {
+          "conflict_reason": "interprocedural_gate_not_met",
+          "detail": "No unambiguous same-file caller dereferences the return without null-checking it (Phase 93B promotion gate)."
+        }
+      ],
+      "function_qualname": "is_patch_workflow_phrase",
+      "return_contract_evidence": [
+        {
+          "confidence": "explicit",
+          "obligation": "return.non_none",
+          "sources": [
+            "type_hint"
+          ],
+          "subject": {
+            "file": "brain/patch_command_phrases.py",
+            "qualname": "is_patch_workflow_phrase",
+            "slot": "return"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "why_not_confirmed": [
+        "Contract enrichment is supporting evidence only; no confirmation evaluators are enabled.",
+        "This finding is labeled review_lead_only — not a confirmed defect.",
+        "callee_behavior, guard, and docstring-return facts are excluded from promotion and confirmation.",
+        "Finding remains quarantined (kind=pattern); contract facts do not change promotion.",
+        "Conflicting contract or interprocedural signals prevent confirmation."
+      ]
+    },
+    "evidence": "def is_patch_workflow_phrase(text: str) -> bool:",
+    "explanation": "'is_patch_workflow_phrase' returns differing kinds of values (bool, value). Callers cannot rely on a stable return type; this often signals a missed case.",
+    "file": "brain/patch_command_phrases.py",
+    "finding_id": "BI-LOGI-872c8a67",
+    "kind": "pattern",
+    "line": 118,
+    "next_verification_step": "Check every return path and the callers' expectations for a consistent contract.",
+    "record_id": "RR-64ec717ecc70c8f1",
+    "repo_id": "local-jarvis-pilot",
+    "rule": "inconsistent_return",
+    "severity": "medium",
+    "source_window": [
+      "115:         return text.strip()",
+      "116: ",
+      "117: ",
+      "118: def is_patch_workflow_phrase(text: str) -> bool:",
+      "119:     normalized = _normalize(_prepare_text(text))",
+      "120:     if not normalized:",
+      "121:         return False"
+    ],
+    "title": "Inconsistent return types in 'is_patch_workflow_phrase'",
+    "verification_evidence": {
+      "atoms": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-dd2908e4403d",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "brain/patch_command_phrases.py:118"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "brain/patch_command_phrases.py",
+            "line": 118,
+            "qualname": "is_patch_workflow_phrase",
+            "slot": "branch"
+          }
+        }
+      ],
+      "blockers": [],
+      "bundle": {
+        "consequence_atom_ids": [],
+        "contract_atom_ids": [],
+        "path_atom_ids": [
+          "VE-dd2908e4403d"
+        ],
+        "reproduction_atom_ids": [],
+        "violation_atom_ids": []
+      },
+      "finding_id": "BI-LOGI-872c8a67",
+      "impact_context": null,
+      "missing_proof_obligations": [
+        "exact contract violation atom",
+        "promotion-grade feasible path witness",
+        "repository test or runtime reproduction",
+        "evidence promotion gate disabled"
+      ],
+      "refuting_evidence": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-dd2908e4403d",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "brain/patch_command_phrases.py:118"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "brain/patch_command_phrases.py",
+            "line": 118,
+            "qualname": "is_patch_workflow_phrase",
+            "slot": "branch"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "schema_version": 1,
+      "status": "refuted",
+      "supporting_evidence": [],
+      "why_not_confirmed": [
+        "Verification evidence is supporting context only in Phase 97A.",
+        "This finding remains review_lead_only — not a confirmed defect.",
+        "Evidence promotion and confirmed-defect output are disabled."
+      ]
+    },
+    "why_might_be_wrong": "Mixed return shapes can be intentional (e.g. value-or-None APIs)."
+  },
+  {
+    "confidence": "medium",
+    "contract_review": {
+      "caller_behavior_evidence": [],
+      "conflicting_evidence": [
+        {
+          "conflict_reason": "interprocedural_gate_not_met",
+          "detail": "No unambiguous same-file caller dereferences the return without null-checking it (Phase 93B promotion gate)."
+        }
+      ],
+      "function_qualname": "churn_counts",
+      "return_contract_evidence": [
+        {
+          "confidence": "explicit",
+          "obligation": "return.non_none",
+          "sources": [
+            "type_hint"
+          ],
+          "subject": {
+            "file": "builder_core/gitutil.py",
+            "qualname": "churn_counts",
+            "slot": "return"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "why_not_confirmed": [
+        "Contract enrichment is supporting evidence only; no confirmation evaluators are enabled.",
+        "This finding is labeled review_lead_only — not a confirmed defect.",
+        "callee_behavior, guard, and docstring-return facts are excluded from promotion and confirmation.",
+        "Finding remains quarantined (kind=pattern); contract facts do not change promotion.",
+        "Conflicting contract or interprocedural signals prevent confirmation."
+      ]
+    },
+    "evidence": "def churn_counts(cwd: str, limit: int = 400) -> Dict[str, int]:",
+    "explanation": "'churn_counts' returns differing kinds of values (dict, value). Callers cannot rely on a stable return type; this often signals a missed case.",
+    "file": "builder_core/gitutil.py",
+    "finding_id": "BI-LOGI-c2a2ce0f",
+    "kind": "pattern",
+    "line": 70,
+    "next_verification_step": "Check every return path and the callers' expectations for a consistent contract.",
+    "record_id": "RR-1fab6576343789e6",
+    "repo_id": "local-jarvis-pilot",
+    "rule": "inconsistent_return",
+    "severity": "medium",
+    "source_window": [
+      "67:     return commits",
+      "68: ",
+      "69: ",
+      "70: def churn_counts(cwd: str, limit: int = 400) -> Dict[str, int]:",
+      "71:     \"\"\"Map of relative file path -> number of recent commits that touched it.\"\"\"",
+      "72:     out = _run(",
+      "73:         [\"log\", f\"-n{limit}\", \"--name-only\", \"--pretty=format:%x00\"], cwd"
+    ],
+    "title": "Inconsistent return types in 'churn_counts'",
+    "verification_evidence": {
+      "atoms": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-6b5ce100110d",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "builder_core/gitutil.py:70"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "builder_core/gitutil.py",
+            "line": 70,
+            "qualname": "churn_counts",
+            "slot": "branch"
+          }
+        }
+      ],
+      "blockers": [],
+      "bundle": {
+        "consequence_atom_ids": [],
+        "contract_atom_ids": [],
+        "path_atom_ids": [
+          "VE-6b5ce100110d"
+        ],
+        "reproduction_atom_ids": [],
+        "violation_atom_ids": []
+      },
+      "finding_id": "BI-LOGI-c2a2ce0f",
+      "impact_context": null,
+      "missing_proof_obligations": [
+        "exact contract violation atom",
+        "promotion-grade feasible path witness",
+        "repository test or runtime reproduction",
+        "evidence promotion gate disabled"
+      ],
+      "refuting_evidence": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-6b5ce100110d",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "builder_core/gitutil.py:70"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "builder_core/gitutil.py",
+            "line": 70,
+            "qualname": "churn_counts",
+            "slot": "branch"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "schema_version": 1,
+      "status": "refuted",
+      "supporting_evidence": [],
+      "why_not_confirmed": [
+        "Verification evidence is supporting context only in Phase 97A.",
+        "This finding remains review_lead_only — not a confirmed defect.",
+        "Evidence promotion and confirmed-defect output are disabled."
+      ]
+    },
+    "why_might_be_wrong": "Mixed return shapes can be intentional (e.g. value-or-None APIs)."
+  },
+  {
+    "confidence": "medium",
+    "contract_review": {
+      "caller_behavior_evidence": [],
+      "conflicting_evidence": [
+        {
+          "conflict_reason": "interprocedural_gate_not_met",
+          "detail": "No unambiguous same-file caller dereferences the return without null-checking it (Phase 93B promotion gate)."
+        }
+      ],
+      "function_qualname": "extract_button_label",
+      "return_contract_evidence": [
+        {
+          "confidence": "explicit",
+          "obligation": "return.non_none",
+          "sources": [
+            "type_hint"
+          ],
+          "subject": {
+            "file": "desktop/control_runtime.py",
+            "qualname": "extract_button_label",
+            "slot": "return"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "why_not_confirmed": [
+        "Contract enrichment is supporting evidence only; no confirmation evaluators are enabled.",
+        "This finding is labeled review_lead_only — not a confirmed defect.",
+        "callee_behavior, guard, and docstring-return facts are excluded from promotion and confirmation.",
+        "Finding remains quarantined (kind=pattern); contract facts do not change promotion.",
+        "Conflicting contract or interprocedural signals prevent confirmation."
+      ]
+    },
+    "evidence": "def extract_button_label(raw: str) -> str:",
+    "explanation": "'extract_button_label' returns differing kinds of values (str, value). Callers cannot rely on a stable return type; this often signals a missed case.",
+    "file": "desktop/control_runtime.py",
+    "finding_id": "BI-LOGI-9b78cc70",
+    "kind": "pattern",
+    "line": 208,
+    "next_verification_step": "Check every return path and the callers' expectations for a consistent contract.",
+    "record_id": "RR-51c25255cdce8c68",
+    "repo_id": "local-jarvis-pilot",
+    "rule": "inconsistent_return",
+    "severity": "medium",
+    "source_window": [
+      "205:     return \"\"",
+      "206: ",
+      "207: ",
+      "208: def extract_button_label(raw: str) -> str:",
+      "209:     text = (raw or \"\").strip()",
+      "210:     patterns = [",
+      "211:         r\"click\\s+the\\s+button\\s+that\\s+says\\s+(.+)$\","
+    ],
+    "title": "Inconsistent return types in 'extract_button_label'",
+    "verification_evidence": {
+      "atoms": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-4870ddabfeff",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "desktop/control_runtime.py:208"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "desktop/control_runtime.py",
+            "line": 208,
+            "qualname": "extract_button_label",
+            "slot": "branch"
+          }
+        }
+      ],
+      "blockers": [],
+      "bundle": {
+        "consequence_atom_ids": [],
+        "contract_atom_ids": [],
+        "path_atom_ids": [
+          "VE-4870ddabfeff"
+        ],
+        "reproduction_atom_ids": [],
+        "violation_atom_ids": []
+      },
+      "finding_id": "BI-LOGI-9b78cc70",
+      "impact_context": null,
+      "missing_proof_obligations": [
+        "exact contract violation atom",
+        "promotion-grade feasible path witness",
+        "repository test or runtime reproduction",
+        "evidence promotion gate disabled"
+      ],
+      "refuting_evidence": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-4870ddabfeff",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "desktop/control_runtime.py:208"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "desktop/control_runtime.py",
+            "line": 208,
+            "qualname": "extract_button_label",
+            "slot": "branch"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "schema_version": 1,
+      "status": "refuted",
+      "supporting_evidence": [],
+      "why_not_confirmed": [
+        "Verification evidence is supporting context only in Phase 97A.",
+        "This finding remains review_lead_only — not a confirmed defect.",
+        "Evidence promotion and confirmed-defect output are disabled."
+      ]
+    },
+    "why_might_be_wrong": "Mixed return shapes can be intentional (e.g. value-or-None APIs)."
+  },
+  {
+    "confidence": "medium",
+    "contract_review": {
+      "caller_behavior_evidence": [],
+      "conflicting_evidence": [
+        {
+          "confidence": "explicit",
+          "conflict_reason": "optional_return_signal",
+          "obligation": "return.optional",
+          "sources": [
+            "type_hint"
+          ],
+          "subject": {
+            "file": "investigation/replay_cache.py",
+            "qualname": "get_cache",
+            "slot": "return"
+          }
+        },
+        {
+          "conflict_reason": "interprocedural_gate_not_met",
+          "detail": "No unambiguous same-file caller dereferences the return without null-checking it (Phase 93B promotion gate)."
+        }
+      ],
+      "function_qualname": "get_cache",
+      "return_contract_evidence": [],
+      "review_packet_status": "review_lead_only",
+      "why_not_confirmed": [
+        "Contract enrichment is supporting evidence only; no confirmation evaluators are enabled.",
+        "This finding is labeled review_lead_only — not a confirmed defect.",
+        "callee_behavior, guard, and docstring-return facts are excluded from promotion and confirmation.",
+        "Finding remains quarantined (kind=pattern); contract facts do not change promotion.",
+        "Conflicting contract or interprocedural signals prevent confirmation.",
+        "No explicit return type-hint contract or strong caller-behavior contract attached for this function."
+      ]
+    },
+    "evidence": "def get_cache(key: str) -> Any | None:",
+    "explanation": "'get_cache' returns differing kinds of values (none, value). Callers cannot rely on a stable return type; this often signals a missed case.",
+    "file": "investigation/replay_cache.py",
+    "finding_id": "BI-LOGI-d5be27c7",
+    "kind": "pattern",
+    "line": 12,
+    "next_verification_step": "Check every return path and the callers' expectations for a consistent contract.",
+    "record_id": "RR-9cb7b286ef97eb22",
+    "repo_id": "local-jarvis-pilot",
+    "rule": "inconsistent_return",
+    "severity": "medium",
+    "source_window": [
+      "9: _MAX = 64",
+      "10: ",
+      "11: ",
+      "12: def get_cache(key: str) -> Any | None:",
+      "13:     if key not in _CACHE:",
+      "14:         return None",
+      "15:     value = _CACHE.pop(key)"
+    ],
+    "title": "Inconsistent return types in 'get_cache'",
+    "verification_evidence": {
+      "atoms": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-928e039f7162",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "investigation/replay_cache.py:12"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "investigation/replay_cache.py",
+            "line": 12,
+            "qualname": "get_cache",
+            "slot": "branch"
+          }
+        }
+      ],
+      "blockers": [],
+      "bundle": {
+        "consequence_atom_ids": [],
+        "contract_atom_ids": [],
+        "path_atom_ids": [
+          "VE-928e039f7162"
+        ],
+        "reproduction_atom_ids": [],
+        "violation_atom_ids": []
+      },
+      "finding_id": "BI-LOGI-d5be27c7",
+      "impact_context": null,
+      "missing_proof_obligations": [
+        "exact contract violation atom",
+        "promotion-grade feasible path witness",
+        "repository test or runtime reproduction",
+        "evidence promotion gate disabled"
+      ],
+      "refuting_evidence": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-928e039f7162",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "investigation/replay_cache.py:12"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "investigation/replay_cache.py",
+            "line": 12,
+            "qualname": "get_cache",
+            "slot": "branch"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "schema_version": 1,
+      "status": "refuted",
+      "supporting_evidence": [],
+      "why_not_confirmed": [
+        "Verification evidence is supporting context only in Phase 97A.",
+        "This finding remains review_lead_only — not a confirmed defect.",
+        "Evidence promotion and confirmed-defect output are disabled."
+      ]
+    },
+    "why_might_be_wrong": "Mixed return shapes can be intentional (e.g. value-or-None APIs)."
+  },
+  {
+    "confidence": "medium",
+    "contract_review": {
+      "caller_behavior_evidence": [
+        {
+          "confidence": "inferred_strong",
+          "obligation": "return.non_none",
+          "sources": [
+            "caller_behavior"
+          ],
+          "subject": {
+            "file": "runtime/dashboard_health.py",
+            "qualname": "_load",
+            "slot": "return"
+          }
+        },
+        {
+          "confidence": "inferred_strong",
+          "obligation": "null.forbidden",
+          "sources": [
+            "caller_behavior"
+          ],
+          "subject": {
+            "file": "runtime/dashboard_health.py",
+            "qualname": "_load",
+            "slot": "return"
+          }
+        }
+      ],
+      "conflicting_evidence": [
+        {
+          "conflict_reason": "interprocedural_gate_not_met",
+          "detail": "No unambiguous same-file caller dereferences the return without null-checking it (Phase 93B promotion gate)."
+        }
+      ],
+      "function_qualname": "_load",
+      "return_contract_evidence": [
+        {
+          "confidence": "explicit",
+          "obligation": "return.non_none",
+          "sources": [
+            "type_hint"
+          ],
+          "subject": {
+            "file": "runtime/dashboard_health.py",
+            "qualname": "_load",
+            "slot": "return"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "why_not_confirmed": [
+        "Contract enrichment is supporting evidence only; no confirmation evaluators are enabled.",
+        "This finding is labeled review_lead_only — not a confirmed defect.",
+        "callee_behavior, guard, and docstring-return facts are excluded from promotion and confirmation.",
+        "Finding remains quarantined (kind=pattern); contract facts do not change promotion.",
+        "Conflicting contract or interprocedural signals prevent confirmation."
+      ]
+    },
+    "evidence": "def _load() -> dict[str, Any]:",
+    "explanation": "'_load' returns differing kinds of values (dict, value). Callers cannot rely on a stable return type; this often signals a missed case.",
+    "file": "runtime/dashboard_health.py",
+    "finding_id": "BI-LOGI-7a08f1b1",
+    "kind": "pattern",
+    "line": 27,
+    "next_verification_step": "Check every return path and the callers' expectations for a consistent contract.",
+    "record_id": "RR-85aa7373738f78fa",
+    "repo_id": "local-jarvis-pilot",
+    "rule": "inconsistent_return",
+    "severity": "medium",
+    "source_window": [
+      "24:     return datetime.now(timezone.utc).isoformat()",
+      "25: ",
+      "26: ",
+      "27: def _load() -> dict[str, Any]:",
+      "28:     if not DASHBOARD_HEALTH_PATH.exists():",
+      "29:         return {}",
+      "30:     try:"
+    ],
+    "title": "Inconsistent return types in '_load'",
+    "verification_evidence": {
+      "atoms": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-fe9e22ceea57",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "runtime/dashboard_health.py:27"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "runtime/dashboard_health.py",
+            "line": 27,
+            "qualname": "_load",
+            "slot": "branch"
+          }
+        }
+      ],
+      "blockers": [],
+      "bundle": {
+        "consequence_atom_ids": [],
+        "contract_atom_ids": [],
+        "path_atom_ids": [
+          "VE-fe9e22ceea57"
+        ],
+        "reproduction_atom_ids": [],
+        "violation_atom_ids": []
+      },
+      "finding_id": "BI-LOGI-7a08f1b1",
+      "impact_context": null,
+      "missing_proof_obligations": [
+        "exact contract violation atom",
+        "promotion-grade feasible path witness",
+        "repository test or runtime reproduction",
+        "evidence promotion gate disabled"
+      ],
+      "refuting_evidence": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-fe9e22ceea57",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "runtime/dashboard_health.py:27"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "runtime/dashboard_health.py",
+            "line": 27,
+            "qualname": "_load",
+            "slot": "branch"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "schema_version": 1,
+      "status": "refuted",
+      "supporting_evidence": [],
+      "why_not_confirmed": [
+        "Verification evidence is supporting context only in Phase 97A.",
+        "This finding remains review_lead_only — not a confirmed defect.",
+        "Evidence promotion and confirmed-defect output are disabled."
+      ]
+    },
+    "why_might_be_wrong": "Mixed return shapes can be intentional (e.g. value-or-None APIs)."
+  },
+  {
+    "confidence": "low",
+    "contract_review": {
+      "caller_behavior_evidence": [],
+      "conflicting_evidence": [
+        {
+          "conflict_reason": "interprocedural_gate_not_met",
+          "detail": "No unambiguous same-file caller dereferences the return without null-checking it (Phase 93B promotion gate)."
+        }
+      ],
+      "function_qualname": "test_streaming_retry_blocking_on_failure",
+      "return_contract_evidence": [],
+      "review_packet_status": "review_lead_only",
+      "why_not_confirmed": [
+        "Contract enrichment is supporting evidence only; no confirmation evaluators are enabled.",
+        "This finding is labeled review_lead_only — not a confirmed defect.",
+        "callee_behavior, guard, and docstring-return facts are excluded from promotion and confirmation.",
+        "Finding remains quarantined (kind=pattern); contract facts do not change promotion.",
+        "Conflicting contract or interprocedural signals prevent confirmation.",
+        "No explicit return type-hint contract or strong caller-behavior contract attached for this function."
+      ]
+    },
+    "evidence": "def test_streaming_retry_blocking_on_failure(monkeypatch):",
+    "explanation": "'test_streaming_retry_blocking_on_failure' returns a value inside a branch but can also reach the end of the function without returning, yielding None. A missing final return is a common logic bug.",
+    "file": "tests/test_phase41_6_tts_runtime.py",
+    "finding_id": "BI-LOGI-29391110",
+    "kind": "pattern",
+    "line": 162,
+    "next_verification_step": "Check every return path and the callers' expectations for a consistent contract.",
+    "record_id": "RR-ac85cc7772ea17ab",
+    "repo_id": "local-jarvis-pilot",
+    "rule": "inconsistent_return",
+    "severity": "medium",
+    "source_window": [
+      "159:     assert sub_called == [\"hi\"]",
+      "160: ",
+      "161: ",
+      "162: def test_streaming_retry_blocking_on_failure(monkeypatch):",
+      "163:     monkeypatch.setattr(\"config.TTS_SAFE_MODE\", False, raising=False)",
+      "164:     monkeypatch.setattr(\"config.TTS_STREAMING_ENABLED\", True, raising=False)",
+      "165:     monkeypatch.setattr(\"config.TTS_ENGINE\", \"edge_tts\", raising=False)"
+    ],
+    "title": "'test_streaming_retry_blocking_on_failure' may fall through to an implicit None",
+    "verification_evidence": {
+      "atoms": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": false,
+            "unresolved_reasons": [
+              "interprocedural_gate_not_met"
+            ]
+          },
+          "claim": "path.partial",
+          "evidence_id": "VE-01956d67d2f8",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [
+            "Static path witness only; no runtime trace imported."
+          ],
+          "polarity": "limits",
+          "provenance": {
+            "path_status": "partial",
+            "source_kind": "repository_ast",
+            "source_ref": "tests/test_phase41_6_tts_runtime.py:162"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "tests/test_phase41_6_tts_runtime.py",
+            "line": 162,
+            "qualname": "test_streaming_retry_blocking_on_failure",
+            "slot": "path"
+          }
+        }
+      ],
+      "blockers": [
+        "interprocedural_promotion_gate_not_met",
+        "missing_explicit_return_obligation"
+      ],
+      "bundle": {
+        "consequence_atom_ids": [],
+        "contract_atom_ids": [],
+        "path_atom_ids": [
+          "VE-01956d67d2f8"
+        ],
+        "reproduction_atom_ids": [],
+        "violation_atom_ids": []
+      },
+      "finding_id": "BI-LOGI-29391110",
+      "impact_context": null,
+      "missing_proof_obligations": [
+        "exact contract violation atom",
+        "promotion-grade feasible path witness",
+        "repository test or runtime reproduction",
+        "resolved caller dereference without null-check",
+        "evidence promotion gate disabled"
+      ],
+      "refuting_evidence": [],
+      "review_packet_status": "review_lead_only",
+      "schema_version": 1,
+      "status": "blocked",
+      "supporting_evidence": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": false,
+            "unresolved_reasons": [
+              "interprocedural_gate_not_met"
+            ]
+          },
+          "claim": "path.partial",
+          "evidence_id": "VE-01956d67d2f8",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [
+            "Static path witness only; no runtime trace imported."
+          ],
+          "polarity": "limits",
+          "provenance": {
+            "path_status": "partial",
+            "source_kind": "repository_ast",
+            "source_ref": "tests/test_phase41_6_tts_runtime.py:162"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "tests/test_phase41_6_tts_runtime.py",
+            "line": 162,
+            "qualname": "test_streaming_retry_blocking_on_failure",
+            "slot": "path"
+          }
+        }
+      ],
+      "why_not_confirmed": [
+        "Verification evidence is supporting context only in Phase 97A.",
+        "This finding remains review_lead_only — not a confirmed defect.",
+        "Evidence promotion and confirmed-defect output are disabled."
+      ]
+    },
+    "why_might_be_wrong": "Mixed return shapes can be intentional (e.g. value-or-None APIs)."
+  },
+  {
+    "confidence": "low",
+    "contract_review": {
+      "caller_behavior_evidence": [],
+      "conflicting_evidence": [
+        {
+          "conflict_reason": "interprocedural_gate_not_met",
+          "detail": "No unambiguous same-file caller dereferences the return without null-checking it (Phase 93B promotion gate)."
+        }
+      ],
+      "function_qualname": "test_approval_required_for_every_external_step",
+      "return_contract_evidence": [],
+      "review_packet_status": "review_lead_only",
+      "why_not_confirmed": [
+        "Contract enrichment is supporting evidence only; no confirmation evaluators are enabled.",
+        "This finding is labeled review_lead_only — not a confirmed defect.",
+        "callee_behavior, guard, and docstring-return facts are excluded from promotion and confirmation.",
+        "Finding remains quarantined (kind=pattern); contract facts do not change promotion.",
+        "Conflicting contract or interprocedural signals prevent confirmation.",
+        "No explicit return type-hint contract or strong caller-behavior contract attached for this function."
+      ]
+    },
+    "evidence": "def test_approval_required_for_every_external_step():",
+    "explanation": "'test_approval_required_for_every_external_step' returns a value inside a branch but can also reach the end of the function without returning, yielding None. A missing final return is a common logic bug.",
+    "file": "tests/test_phase71_tool_use.py",
+    "finding_id": "BI-LOGI-ae8040fa",
+    "kind": "pattern",
+    "line": 127,
+    "next_verification_step": "Check every return path and the callers' expectations for a consistent contract.",
+    "record_id": "RR-78abdc44140a6644",
+    "repo_id": "local-jarvis-pilot",
+    "rule": "inconsistent_return",
+    "severity": "medium",
+    "source_window": [
+      "124:     assert len(run.steps) == 1",
+      "125: ",
+      "126: ",
+      "127: def test_approval_required_for_every_external_step():",
+      "128:     seen: list[str] = []",
+      "129: ",
+      "130:     def approver(step: PlanStep) -> bool:"
+    ],
+    "title": "'test_approval_required_for_every_external_step' may fall through to an implicit None",
+    "verification_evidence": {
+      "atoms": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": false,
+            "unresolved_reasons": [
+              "interprocedural_gate_not_met"
+            ]
+          },
+          "claim": "path.partial",
+          "evidence_id": "VE-5e5b5fcf3a42",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [
+            "Static path witness only; no runtime trace imported."
+          ],
+          "polarity": "limits",
+          "provenance": {
+            "path_status": "partial",
+            "source_kind": "repository_ast",
+            "source_ref": "tests/test_phase71_tool_use.py:127"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "tests/test_phase71_tool_use.py",
+            "line": 127,
+            "qualname": "test_approval_required_for_every_external_step",
+            "slot": "path"
+          }
+        }
+      ],
+      "blockers": [
+        "interprocedural_promotion_gate_not_met",
+        "missing_explicit_return_obligation"
+      ],
+      "bundle": {
+        "consequence_atom_ids": [],
+        "contract_atom_ids": [],
+        "path_atom_ids": [
+          "VE-5e5b5fcf3a42"
+        ],
+        "reproduction_atom_ids": [],
+        "violation_atom_ids": []
+      },
+      "finding_id": "BI-LOGI-ae8040fa",
+      "impact_context": null,
+      "missing_proof_obligations": [
+        "exact contract violation atom",
+        "promotion-grade feasible path witness",
+        "repository test or runtime reproduction",
+        "resolved caller dereference without null-check",
+        "evidence promotion gate disabled"
+      ],
+      "refuting_evidence": [],
+      "review_packet_status": "review_lead_only",
+      "schema_version": 1,
+      "status": "blocked",
+      "supporting_evidence": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": false,
+            "unresolved_reasons": [
+              "interprocedural_gate_not_met"
+            ]
+          },
+          "claim": "path.partial",
+          "evidence_id": "VE-5e5b5fcf3a42",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [
+            "Static path witness only; no runtime trace imported."
+          ],
+          "polarity": "limits",
+          "provenance": {
+            "path_status": "partial",
+            "source_kind": "repository_ast",
+            "source_ref": "tests/test_phase71_tool_use.py:127"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "tests/test_phase71_tool_use.py",
+            "line": 127,
+            "qualname": "test_approval_required_for_every_external_step",
+            "slot": "path"
+          }
+        }
+      ],
+      "why_not_confirmed": [
+        "Verification evidence is supporting context only in Phase 97A.",
+        "This finding remains review_lead_only — not a confirmed defect.",
+        "Evidence promotion and confirmed-defect output are disabled."
+      ]
+    },
+    "why_might_be_wrong": "Mixed return shapes can be intentional (e.g. value-or-None APIs)."
+  },
+  {
+    "confidence": "low",
+    "contract_review": {
+      "caller_behavior_evidence": [],
+      "conflicting_evidence": [
+        {
+          "conflict_reason": "interprocedural_gate_not_met",
+          "detail": "No unambiguous same-file caller dereferences the return without null-checking it (Phase 93B promotion gate)."
+        }
+      ],
+      "function_qualname": "test_async_tts_failure_recorded",
+      "return_contract_evidence": [],
+      "review_packet_status": "review_lead_only",
+      "why_not_confirmed": [
+        "Contract enrichment is supporting evidence only; no confirmation evaluators are enabled.",
+        "This finding is labeled review_lead_only — not a confirmed defect.",
+        "callee_behavior, guard, and docstring-return facts are excluded from promotion and confirmation.",
+        "Finding remains quarantined (kind=pattern); contract facts do not change promotion.",
+        "Conflicting contract or interprocedural signals prevent confirmation.",
+        "No explicit return type-hint contract or strong caller-behavior contract attached for this function."
+      ]
+    },
+    "evidence": "def test_async_tts_failure_recorded(monkeypatch, capsys):",
+    "explanation": "'test_async_tts_failure_recorded' returns a value inside a branch but can also reach the end of the function without returning, yielding None. A missing final return is a common logic bug.",
+    "file": "tests/test_tts_failure_visibility.py",
+    "finding_id": "BI-LOGI-53c148e9",
+    "kind": "pattern",
+    "line": 35,
+    "next_verification_step": "Check every return path and the callers' expectations for a consistent contract.",
+    "record_id": "RR-2e517bafbae2d513",
+    "repo_id": "local-jarvis-pilot",
+    "rule": "inconsistent_return",
+    "severity": "medium",
+    "source_window": [
+      "32:     reset_tts_status_cache()",
+      "33: ",
+      "34: ",
+      "35: def test_async_tts_failure_recorded(monkeypatch, capsys):",
+      "36:     monkeypatch.setattr(\"config.TTS_ASYNC\", True, raising=False)",
+      "37:     monkeypatch.setattr(\"voice.tts.TTS_ASYNC\", True, raising=False)",
+      "38:     monkeypatch.setattr(\"config.TTS_ENGINE\", \"edge_tts\", raising=False)"
+    ],
+    "title": "'test_async_tts_failure_recorded' may fall through to an implicit None",
+    "verification_evidence": {
+      "atoms": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": false,
+            "unresolved_reasons": [
+              "interprocedural_gate_not_met"
+            ]
+          },
+          "claim": "path.partial",
+          "evidence_id": "VE-8141c98e83f5",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [
+            "Static path witness only; no runtime trace imported."
+          ],
+          "polarity": "limits",
+          "provenance": {
+            "path_status": "partial",
+            "source_kind": "repository_ast",
+            "source_ref": "tests/test_tts_failure_visibility.py:35"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "tests/test_tts_failure_visibility.py",
+            "line": 35,
+            "qualname": "test_async_tts_failure_recorded",
+            "slot": "path"
+          }
+        }
+      ],
+      "blockers": [
+        "interprocedural_promotion_gate_not_met",
+        "missing_explicit_return_obligation"
+      ],
+      "bundle": {
+        "consequence_atom_ids": [],
+        "contract_atom_ids": [],
+        "path_atom_ids": [
+          "VE-8141c98e83f5"
+        ],
+        "reproduction_atom_ids": [],
+        "violation_atom_ids": []
+      },
+      "finding_id": "BI-LOGI-53c148e9",
+      "impact_context": null,
+      "missing_proof_obligations": [
+        "exact contract violation atom",
+        "promotion-grade feasible path witness",
+        "repository test or runtime reproduction",
+        "resolved caller dereference without null-check",
+        "evidence promotion gate disabled"
+      ],
+      "refuting_evidence": [],
+      "review_packet_status": "review_lead_only",
+      "schema_version": 1,
+      "status": "blocked",
+      "supporting_evidence": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": false,
+            "unresolved_reasons": [
+              "interprocedural_gate_not_met"
+            ]
+          },
+          "claim": "path.partial",
+          "evidence_id": "VE-8141c98e83f5",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [
+            "Static path witness only; no runtime trace imported."
+          ],
+          "polarity": "limits",
+          "provenance": {
+            "path_status": "partial",
+            "source_kind": "repository_ast",
+            "source_ref": "tests/test_tts_failure_visibility.py:35"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "tests/test_tts_failure_visibility.py",
+            "line": 35,
+            "qualname": "test_async_tts_failure_recorded",
+            "slot": "path"
+          }
+        }
+      ],
+      "why_not_confirmed": [
+        "Verification evidence is supporting context only in Phase 97A.",
+        "This finding remains review_lead_only — not a confirmed defect.",
+        "Evidence promotion and confirmed-defect output are disabled."
+      ]
+    },
+    "why_might_be_wrong": "Mixed return shapes can be intentional (e.g. value-or-None APIs)."
+  },
+  {
+    "confidence": "medium",
+    "contract_review": {
+      "caller_behavior_evidence": [],
+      "conflicting_evidence": [
+        {
+          "conflict_reason": "interprocedural_gate_not_met",
+          "detail": "No unambiguous same-file caller dereferences the return without null-checking it (Phase 93B promotion gate)."
+        }
+      ],
+      "function_qualname": "last_item",
+      "return_contract_evidence": [],
+      "review_packet_status": "review_lead_only",
+      "why_not_confirmed": [
+        "Contract enrichment is supporting evidence only; no confirmation evaluators are enabled.",
+        "This finding is labeled review_lead_only — not a confirmed defect.",
+        "callee_behavior, guard, and docstring-return facts are excluded from promotion and confirmation.",
+        "Finding remains quarantined (kind=pattern); contract facts do not change promotion.",
+        "Conflicting contract or interprocedural signals prevent confirmation.",
+        "No explicit return type-hint contract or strong caller-behavior contract attached for this function."
+      ]
+    },
+    "evidence": "",
+    "explanation": "'last_item' returns a value on some paths but can also reach the end of its body without returning, yielding None. Interprocedural evidence is insufficient to confirm this is a bug (callers null-check it, do not dereference it, or are unresolved), so this is a diagnostic only.",
+    "file": "tests_tmp/pytest_temp/pytest-of-babi2/pytest-341/test_cli_ask_returns_bug_findi0/fake_repo/python_programs/off_by_one.py",
+    "finding_id": "BI-LOGI-8315436e",
+    "kind": "pattern",
+    "line": 1,
+    "next_verification_step": "Confirm whether the no-return path is reachable; if so, add an explicit return value (or an explicit `return None` if None is intended).",
+    "record_id": "RR-9449cab35a21afcf",
+    "repo_id": "local-jarvis-pilot",
+    "rule": "inconsistent_return",
+    "severity": "medium",
+    "source_window": [
+      "1: def last_item(items):",
+      "2:     for index in range(len(items) + 1):",
+      "3:         return items[index]"
+    ],
+    "title": "'last_item' may fall through to an implicit None",
+    "verification_evidence": {
+      "atoms": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": false,
+            "unresolved_reasons": [
+              "interprocedural_gate_not_met"
+            ]
+          },
+          "claim": "path.partial",
+          "evidence_id": "VE-5fbac2b3365a",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [
+            "Static path witness only; no runtime trace imported."
+          ],
+          "polarity": "limits",
+          "provenance": {
+            "path_status": "partial",
+            "source_kind": "repository_ast",
+            "source_ref": "tests_tmp/pytest_temp/pytest-of-babi2/pytest-341/test_cli_ask_returns_bug_findi0/fake_repo/python_programs/off_by_one.py:1"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "tests_tmp/pytest_temp/pytest-of-babi2/pytest-341/test_cli_ask_returns_bug_findi0/fake_repo/python_programs/off_by_one.py",
+            "line": 1,
+            "qualname": "last_item",
+            "slot": "path"
+          }
+        }
+      ],
+      "blockers": [
+        "interprocedural_promotion_gate_not_met",
+        "missing_explicit_return_obligation"
+      ],
+      "bundle": {
+        "consequence_atom_ids": [],
+        "contract_atom_ids": [],
+        "path_atom_ids": [
+          "VE-5fbac2b3365a"
+        ],
+        "reproduction_atom_ids": [],
+        "violation_atom_ids": []
+      },
+      "finding_id": "BI-LOGI-8315436e",
+      "impact_context": null,
+      "missing_proof_obligations": [
+        "exact contract violation atom",
+        "promotion-grade feasible path witness",
+        "repository test or runtime reproduction",
+        "resolved caller dereference without null-check",
+        "evidence promotion gate disabled"
+      ],
+      "refuting_evidence": [],
+      "review_packet_status": "review_lead_only",
+      "schema_version": 1,
+      "status": "blocked",
+      "supporting_evidence": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": false,
+            "unresolved_reasons": [
+              "interprocedural_gate_not_met"
+            ]
+          },
+          "claim": "path.partial",
+          "evidence_id": "VE-5fbac2b3365a",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [
+            "Static path witness only; no runtime trace imported."
+          ],
+          "polarity": "limits",
+          "provenance": {
+            "path_status": "partial",
+            "source_kind": "repository_ast",
+            "source_ref": "tests_tmp/pytest_temp/pytest-of-babi2/pytest-341/test_cli_ask_returns_bug_findi0/fake_repo/python_programs/off_by_one.py:1"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "tests_tmp/pytest_temp/pytest-of-babi2/pytest-341/test_cli_ask_returns_bug_findi0/fake_repo/python_programs/off_by_one.py",
+            "line": 1,
+            "qualname": "last_item",
+            "slot": "path"
+          }
+        }
+      ],
+      "why_not_confirmed": [
+        "Verification evidence is supporting context only in Phase 97A.",
+        "This finding remains review_lead_only — not a confirmed defect.",
+        "Evidence promotion and confirmed-defect output are disabled."
+      ]
+    },
+    "why_might_be_wrong": "The fall-through path may be unreachable in a way the intraprocedural control-flow approximation cannot see, or returning None on that path may be an unstated but intended outcome that callers tolerate."
+  },
+  {
+    "confidence": "medium",
+    "contract_review": {
+      "caller_behavior_evidence": [],
+      "conflicting_evidence": [
+        {
+          "confidence": "explicit",
+          "conflict_reason": "optional_return_signal",
+          "obligation": "return.optional",
+          "sources": [
+            "type_hint"
+          ],
+          "subject": {
+            "file": "ui/console_modal.py",
+            "qualname": "_run_modal_with_input_fn",
+            "slot": "return"
+          }
+        },
+        {
+          "conflict_reason": "interprocedural_gate_not_met",
+          "detail": "No unambiguous same-file caller dereferences the return without null-checking it (Phase 93B promotion gate)."
+        }
+      ],
+      "function_qualname": "_run_modal_with_input_fn",
+      "return_contract_evidence": [],
+      "review_packet_status": "review_lead_only",
+      "why_not_confirmed": [
+        "Contract enrichment is supporting evidence only; no confirmation evaluators are enabled.",
+        "This finding is labeled review_lead_only — not a confirmed defect.",
+        "callee_behavior, guard, and docstring-return facts are excluded from promotion and confirmation.",
+        "Finding remains quarantined (kind=pattern); contract facts do not change promotion.",
+        "Conflicting contract or interprocedural signals prevent confirmation.",
+        "No explicit return type-hint contract or strong caller-behavior contract attached for this function."
+      ]
+    },
+    "evidence": "def _run_modal_with_input_fn(",
+    "explanation": "'_run_modal_with_input_fn' returns differing kinds of values (none, value). Callers cannot rely on a stable return type; this often signals a missed case.",
+    "file": "ui/console_modal.py",
+    "finding_id": "BI-LOGI-0a7dd31a",
+    "kind": "pattern",
+    "line": 150,
+    "next_verification_step": "Check every return path and the callers' expectations for a consistent contract.",
+    "record_id": "RR-c65b16fe00a9eac0",
+    "repo_id": "local-jarvis-pilot",
+    "rule": "inconsistent_return",
+    "severity": "medium",
+    "source_window": [
+      "147:         return True",
+      "148: ",
+      "149: ",
+      "150: def _run_modal_with_input_fn(",
+      "151:     prompt: str,",
+      "152:     input_fn: Callable[[str], str],",
+      "153:     parse_yes_no: Callable[[str], bool | None],"
+    ],
+    "title": "Inconsistent return types in '_run_modal_with_input_fn'",
+    "verification_evidence": {
+      "atoms": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-536ceeeb0d53",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "ui/console_modal.py:150"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "ui/console_modal.py",
+            "line": 150,
+            "qualname": "_run_modal_with_input_fn",
+            "slot": "branch"
+          }
+        }
+      ],
+      "blockers": [],
+      "bundle": {
+        "consequence_atom_ids": [],
+        "contract_atom_ids": [],
+        "path_atom_ids": [
+          "VE-536ceeeb0d53"
+        ],
+        "reproduction_atom_ids": [],
+        "violation_atom_ids": []
+      },
+      "finding_id": "BI-LOGI-0a7dd31a",
+      "impact_context": null,
+      "missing_proof_obligations": [
+        "exact contract violation atom",
+        "promotion-grade feasible path witness",
+        "repository test or runtime reproduction",
+        "evidence promotion gate disabled"
+      ],
+      "refuting_evidence": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-536ceeeb0d53",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "ui/console_modal.py:150"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "ui/console_modal.py",
+            "line": 150,
+            "qualname": "_run_modal_with_input_fn",
+            "slot": "branch"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "schema_version": 1,
+      "status": "refuted",
+      "supporting_evidence": [],
+      "why_not_confirmed": [
+        "Verification evidence is supporting context only in Phase 97A.",
+        "This finding remains review_lead_only — not a confirmed defect.",
+        "Evidence promotion and confirmed-defect output are disabled."
+      ]
+    },
+    "why_might_be_wrong": "Mixed return shapes can be intentional (e.g. value-or-None APIs)."
+  },
+  {
+    "confidence": "low",
+    "contract_review": {
+      "caller_behavior_evidence": [
+        {
+          "confidence": "inferred_strong",
+          "obligation": "return.non_none",
+          "sources": [
+            "caller_behavior"
+          ],
+          "subject": {
+            "file": "voice/providers/elevenlabs_websocket.py",
+            "qualname": "get_elevenlabs_ws_session",
+            "slot": "return"
+          }
+        },
+        {
+          "confidence": "inferred_strong",
+          "obligation": "null.forbidden",
+          "sources": [
+            "caller_behavior"
+          ],
+          "subject": {
+            "file": "voice/providers/elevenlabs_websocket.py",
+            "qualname": "get_elevenlabs_ws_session",
+            "slot": "return"
+          }
+        }
+      ],
+      "conflicting_evidence": [
+        {
+          "conflict_reason": "interprocedural_gate_not_met",
+          "detail": "No unambiguous same-file caller dereferences the return without null-checking it (Phase 93B promotion gate)."
+        }
+      ],
+      "function_qualname": "get_elevenlabs_ws_session",
+      "return_contract_evidence": [],
+      "review_packet_status": "review_lead_only",
+      "why_not_confirmed": [
+        "Contract enrichment is supporting evidence only; no confirmation evaluators are enabled.",
+        "This finding is labeled review_lead_only — not a confirmed defect.",
+        "callee_behavior, guard, and docstring-return facts are excluded from promotion and confirmation.",
+        "Finding remains quarantined (kind=pattern); contract facts do not change promotion.",
+        "Conflicting contract or interprocedural signals prevent confirmation."
+      ]
+    },
+    "evidence": "def get_elevenlabs_ws_session() -> \"ElevenLabsWebSocketSession\":",
+    "explanation": "'get_elevenlabs_ws_session' returns a value inside a branch but can also reach the end of the function without returning, yielding None. A missing final return is a common logic bug.",
+    "file": "voice/providers/elevenlabs_websocket.py",
+    "finding_id": "BI-LOGI-cc41d6cc",
+    "kind": "pattern",
+    "line": 30,
+    "next_verification_step": "Check every return path and the callers' expectations for a consistent contract.",
+    "record_id": "RR-ff90c3494c7f555a",
+    "repo_id": "local-jarvis-pilot",
+    "rule": "inconsistent_return",
+    "severity": "medium",
+    "source_window": [
+      "27:         return True",
+      "28: ",
+      "29: ",
+      "30: def get_elevenlabs_ws_session() -> \"ElevenLabsWebSocketSession\":",
+      "31:     global _session",
+      "32:     with _session_lock:",
+      "33:         if _session is None:"
+    ],
+    "title": "'get_elevenlabs_ws_session' may fall through to an implicit None",
+    "verification_evidence": {
+      "atoms": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-3934b298b83e",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "voice/providers/elevenlabs_websocket.py:30"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "voice/providers/elevenlabs_websocket.py",
+            "line": 30,
+            "qualname": "get_elevenlabs_ws_session",
+            "slot": "branch"
+          }
+        }
+      ],
+      "blockers": [],
+      "bundle": {
+        "consequence_atom_ids": [],
+        "contract_atom_ids": [],
+        "path_atom_ids": [
+          "VE-3934b298b83e"
+        ],
+        "reproduction_atom_ids": [],
+        "violation_atom_ids": []
+      },
+      "finding_id": "BI-LOGI-cc41d6cc",
+      "impact_context": null,
+      "missing_proof_obligations": [
+        "exact contract violation atom",
+        "promotion-grade feasible path witness",
+        "repository test or runtime reproduction",
+        "evidence promotion gate disabled"
+      ],
+      "refuting_evidence": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-3934b298b83e",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "voice/providers/elevenlabs_websocket.py:30"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "voice/providers/elevenlabs_websocket.py",
+            "line": 30,
+            "qualname": "get_elevenlabs_ws_session",
+            "slot": "branch"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "schema_version": 1,
+      "status": "refuted",
+      "supporting_evidence": [],
+      "why_not_confirmed": [
+        "Verification evidence is supporting context only in Phase 97A.",
+        "This finding remains review_lead_only — not a confirmed defect.",
+        "Evidence promotion and confirmed-defect output are disabled."
+      ]
+    },
+    "why_might_be_wrong": "Mixed return shapes can be intentional (e.g. value-or-None APIs)."
+  },
+  {
+    "confidence": "low",
+    "contract_review": {
+      "caller_behavior_evidence": [
+        {
+          "confidence": "inferred_strong",
+          "obligation": "return.non_none",
+          "sources": [
+            "caller_behavior"
+          ],
+          "subject": {
+            "file": "voice/pyttsx3_completion.py",
+            "qualname": "_WorkerState.snapshot",
+            "slot": "return"
+          }
+        },
+        {
+          "confidence": "inferred_strong",
+          "obligation": "null.forbidden",
+          "sources": [
+            "caller_behavior"
+          ],
+          "subject": {
+            "file": "voice/pyttsx3_completion.py",
+            "qualname": "_WorkerState.snapshot",
+            "slot": "return"
+          }
+        }
+      ],
+      "conflicting_evidence": [
+        {
+          "conflict_reason": "interprocedural_gate_not_met",
+          "detail": "No unambiguous same-file caller dereferences the return without null-checking it (Phase 93B promotion gate)."
+        }
+      ],
+      "function_qualname": "_WorkerState.snapshot",
+      "return_contract_evidence": [
+        {
+          "confidence": "explicit",
+          "obligation": "return.non_none",
+          "sources": [
+            "type_hint"
+          ],
+          "subject": {
+            "file": "voice/pyttsx3_completion.py",
+            "qualname": "_WorkerState.snapshot",
+            "slot": "return"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "why_not_confirmed": [
+        "Contract enrichment is supporting evidence only; no confirmation evaluators are enabled.",
+        "This finding is labeled review_lead_only — not a confirmed defect.",
+        "callee_behavior, guard, and docstring-return facts are excluded from promotion and confirmation.",
+        "Finding remains quarantined (kind=pattern); contract facts do not change promotion.",
+        "Conflicting contract or interprocedural signals prevent confirmation."
+      ]
+    },
+    "evidence": "def snapshot(self) -> dict[str, object]:",
+    "explanation": "'snapshot' returns a value inside a branch but can also reach the end of the function without returning, yielding None. A missing final return is a common logic bug.",
+    "file": "voice/pyttsx3_completion.py",
+    "finding_id": "BI-LOGI-07e17ca1",
+    "kind": "pattern",
+    "line": 333,
+    "next_verification_step": "Check every return path and the callers' expectations for a consistent contract.",
+    "record_id": "RR-f19b93ae409b5e1e",
+    "repo_id": "local-jarvis-pilot",
+    "rule": "inconsistent_return",
+    "severity": "medium",
+    "source_window": [
+      "330:     worker_thread_id: int = 0",
+      "331:     error: Exception | None = None",
+      "332: ",
+      "333:     def snapshot(self) -> dict[str, object]:",
+      "334:         with self.lock:",
+      "335:             return {",
+      "336:                 \"playback_started\": self.playback_started,"
+    ],
+    "title": "'snapshot' may fall through to an implicit None",
+    "verification_evidence": {
+      "atoms": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-0d280f777ed2",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "voice/pyttsx3_completion.py:333"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "voice/pyttsx3_completion.py",
+            "line": 333,
+            "qualname": "_WorkerState.snapshot",
+            "slot": "branch"
+          }
+        }
+      ],
+      "blockers": [],
+      "bundle": {
+        "consequence_atom_ids": [],
+        "contract_atom_ids": [],
+        "path_atom_ids": [
+          "VE-0d280f777ed2"
+        ],
+        "reproduction_atom_ids": [],
+        "violation_atom_ids": []
+      },
+      "finding_id": "BI-LOGI-07e17ca1",
+      "impact_context": null,
+      "missing_proof_obligations": [
+        "exact contract violation atom",
+        "promotion-grade feasible path witness",
+        "repository test or runtime reproduction",
+        "evidence promotion gate disabled"
+      ],
+      "refuting_evidence": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-0d280f777ed2",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "voice/pyttsx3_completion.py:333"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "voice/pyttsx3_completion.py",
+            "line": 333,
+            "qualname": "_WorkerState.snapshot",
+            "slot": "branch"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "schema_version": 1,
+      "status": "refuted",
+      "supporting_evidence": [],
+      "why_not_confirmed": [
+        "Verification evidence is supporting context only in Phase 97A.",
+        "This finding remains review_lead_only — not a confirmed defect.",
+        "Evidence promotion and confirmed-defect output are disabled."
+      ]
+    },
+    "why_might_be_wrong": "Mixed return shapes can be intentional (e.g. value-or-None APIs)."
+  },
+  {
+    "confidence": "low",
+    "contract_review": {
+      "caller_behavior_evidence": [
+        {
+          "confidence": "inferred_strong",
+          "obligation": "return.non_none",
+          "sources": [
+            "caller_behavior"
+          ],
+          "subject": {
+            "file": "voice/tts_pyttsx3.py",
+            "qualname": "_get_engine",
+            "slot": "return"
+          }
+        },
+        {
+          "confidence": "inferred_strong",
+          "obligation": "null.forbidden",
+          "sources": [
+            "caller_behavior"
+          ],
+          "subject": {
+            "file": "voice/tts_pyttsx3.py",
+            "qualname": "_get_engine",
+            "slot": "return"
+          }
+        }
+      ],
+      "conflicting_evidence": [
+        {
+          "conflict_reason": "interprocedural_gate_not_met",
+          "detail": "No unambiguous same-file caller dereferences the return without null-checking it (Phase 93B promotion gate)."
+        }
+      ],
+      "function_qualname": "_get_engine",
+      "return_contract_evidence": [],
+      "review_packet_status": "review_lead_only",
+      "why_not_confirmed": [
+        "Contract enrichment is supporting evidence only; no confirmation evaluators are enabled.",
+        "This finding is labeled review_lead_only — not a confirmed defect.",
+        "callee_behavior, guard, and docstring-return facts are excluded from promotion and confirmation.",
+        "Finding remains quarantined (kind=pattern); contract facts do not change promotion.",
+        "Conflicting contract or interprocedural signals prevent confirmation."
+      ]
+    },
+    "evidence": "def _get_engine(rate_raw: str):",
+    "explanation": "'_get_engine' returns a value inside a branch but can also reach the end of the function without returning, yielding None. A missing final return is a common logic bug.",
+    "file": "voice/tts_pyttsx3.py",
+    "finding_id": "BI-LOGI-14994b51",
+    "kind": "pattern",
+    "line": 40,
+    "next_verification_step": "Check every return path and the callers' expectations for a consistent contract.",
+    "record_id": "RR-bee9192471b79acc",
+    "repo_id": "local-jarvis-pilot",
+    "rule": "inconsistent_return",
+    "severity": "medium",
+    "source_window": [
+      "37:     _select_voice(engine)",
+      "38: ",
+      "39: ",
+      "40: def _get_engine(rate_raw: str):",
+      "41:     global _engine",
+      "42:     with _engine_lock:",
+      "43:         if _engine is not None:"
+    ],
+    "title": "'_get_engine' may fall through to an implicit None",
+    "verification_evidence": {
+      "atoms": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-b9c3feb6cdf7",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "voice/tts_pyttsx3.py:40"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "voice/tts_pyttsx3.py",
+            "line": 40,
+            "qualname": "_get_engine",
+            "slot": "branch"
+          }
+        }
+      ],
+      "blockers": [],
+      "bundle": {
+        "consequence_atom_ids": [],
+        "contract_atom_ids": [],
+        "path_atom_ids": [
+          "VE-b9c3feb6cdf7"
+        ],
+        "reproduction_atom_ids": [],
+        "violation_atom_ids": []
+      },
+      "finding_id": "BI-LOGI-14994b51",
+      "impact_context": null,
+      "missing_proof_obligations": [
+        "exact contract violation atom",
+        "promotion-grade feasible path witness",
+        "repository test or runtime reproduction",
+        "evidence promotion gate disabled"
+      ],
+      "refuting_evidence": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-b9c3feb6cdf7",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "voice/tts_pyttsx3.py:40"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "voice/tts_pyttsx3.py",
+            "line": 40,
+            "qualname": "_get_engine",
+            "slot": "branch"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "schema_version": 1,
+      "status": "refuted",
+      "supporting_evidence": [],
+      "why_not_confirmed": [
+        "Verification evidence is supporting context only in Phase 97A.",
+        "This finding remains review_lead_only — not a confirmed defect.",
+        "Evidence promotion and confirmed-defect output are disabled."
+      ]
+    },
+    "why_might_be_wrong": "Mixed return shapes can be intentional (e.g. value-or-None APIs)."
+  },
+  {
+    "confidence": "medium",
+    "contract_review": {
+      "caller_behavior_evidence": [
+        {
+          "confidence": "inferred_strong",
+          "obligation": "return.non_none",
+          "sources": [
+            "caller_behavior"
+          ],
+          "subject": {
+            "file": "voice/voice_calibration.py",
+            "qualname": "_load_payload",
+            "slot": "return"
+          }
+        },
+        {
+          "confidence": "inferred_strong",
+          "obligation": "null.forbidden",
+          "sources": [
+            "caller_behavior"
+          ],
+          "subject": {
+            "file": "voice/voice_calibration.py",
+            "qualname": "_load_payload",
+            "slot": "return"
+          }
+        }
+      ],
+      "conflicting_evidence": [
+        {
+          "conflict_reason": "interprocedural_gate_not_met",
+          "detail": "No unambiguous same-file caller dereferences the return without null-checking it (Phase 93B promotion gate)."
+        }
+      ],
+      "function_qualname": "_load_payload",
+      "return_contract_evidence": [
+        {
+          "confidence": "explicit",
+          "obligation": "return.non_none",
+          "sources": [
+            "type_hint"
+          ],
+          "subject": {
+            "file": "voice/voice_calibration.py",
+            "qualname": "_load_payload",
+            "slot": "return"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "why_not_confirmed": [
+        "Contract enrichment is supporting evidence only; no confirmation evaluators are enabled.",
+        "This finding is labeled review_lead_only — not a confirmed defect.",
+        "callee_behavior, guard, and docstring-return facts are excluded from promotion and confirmation.",
+        "Finding remains quarantined (kind=pattern); contract facts do not change promotion.",
+        "Conflicting contract or interprocedural signals prevent confirmation."
+      ]
+    },
+    "evidence": "def _load_payload() -> dict:",
+    "explanation": "'_load_payload' returns differing kinds of values (dict, value). Callers cannot rely on a stable return type; this often signals a missed case.",
+    "file": "voice/voice_calibration.py",
+    "finding_id": "BI-LOGI-6af5e062",
+    "kind": "pattern",
+    "line": 58,
+    "next_verification_step": "Check every return path and the callers' expectations for a consistent contract.",
+    "record_id": "RR-36460abb83e89a0e",
+    "repo_id": "local-jarvis-pilot",
+    "rule": "inconsistent_return",
+    "severity": "medium",
+    "source_window": [
+      "55:     return normalize_spoken_command(cleanup_transcript(text or \"\"))[:240]",
+      "56: ",
+      "57: ",
+      "58: def _load_payload() -> dict:",
+      "59:     path = Path(VOICE_CALIBRATION_PATH)",
+      "60:     if not path.is_file():",
+      "61:         return {\"samples\": [], \"correction_pairs\": []}"
+    ],
+    "title": "Inconsistent return types in '_load_payload'",
+    "verification_evidence": {
+      "atoms": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-34a75c59c97d",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "voice/voice_calibration.py:58"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "voice/voice_calibration.py",
+            "line": 58,
+            "qualname": "_load_payload",
+            "slot": "branch"
+          }
+        }
+      ],
+      "blockers": [],
+      "bundle": {
+        "consequence_atom_ids": [],
+        "contract_atom_ids": [],
+        "path_atom_ids": [
+          "VE-34a75c59c97d"
+        ],
+        "reproduction_atom_ids": [],
+        "violation_atom_ids": []
+      },
+      "finding_id": "BI-LOGI-6af5e062",
+      "impact_context": null,
+      "missing_proof_obligations": [
+        "exact contract violation atom",
+        "promotion-grade feasible path witness",
+        "repository test or runtime reproduction",
+        "evidence promotion gate disabled"
+      ],
+      "refuting_evidence": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-34a75c59c97d",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "voice/voice_calibration.py:58"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "voice/voice_calibration.py",
+            "line": 58,
+            "qualname": "_load_payload",
+            "slot": "branch"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "schema_version": 1,
+      "status": "refuted",
+      "supporting_evidence": [],
+      "why_not_confirmed": [
+        "Verification evidence is supporting context only in Phase 97A.",
+        "This finding remains review_lead_only — not a confirmed defect.",
+        "Evidence promotion and confirmed-defect output are disabled."
+      ]
+    },
+    "why_might_be_wrong": "Mixed return shapes can be intentional (e.g. value-or-None APIs)."
+  },
+  {
+    "confidence": "medium",
+    "contract_review": {
+      "caller_behavior_evidence": [
+        {
+          "confidence": "inferred_strong",
+          "obligation": "return.non_none",
+          "sources": [
+            "caller_behavior"
+          ],
+          "subject": {
+            "file": "website_audit/inspector.py",
+            "qualname": "_read",
+            "slot": "return"
+          }
+        },
+        {
+          "confidence": "inferred_strong",
+          "obligation": "null.forbidden",
+          "sources": [
+            "caller_behavior"
+          ],
+          "subject": {
+            "file": "website_audit/inspector.py",
+            "qualname": "_read",
+            "slot": "return"
+          }
+        }
+      ],
+      "conflicting_evidence": [
+        {
+          "conflict_reason": "interprocedural_gate_not_met",
+          "detail": "No unambiguous same-file caller dereferences the return without null-checking it (Phase 93B promotion gate)."
+        }
+      ],
+      "function_qualname": "_read",
+      "return_contract_evidence": [
+        {
+          "confidence": "explicit",
+          "obligation": "return.non_none",
+          "sources": [
+            "type_hint"
+          ],
+          "subject": {
+            "file": "website_audit/inspector.py",
+            "qualname": "_read",
+            "slot": "return"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "why_not_confirmed": [
+        "Contract enrichment is supporting evidence only; no confirmation evaluators are enabled.",
+        "This finding is labeled review_lead_only — not a confirmed defect.",
+        "callee_behavior, guard, and docstring-return facts are excluded from promotion and confirmation.",
+        "Finding remains quarantined (kind=pattern); contract facts do not change promotion.",
+        "Conflicting contract or interprocedural signals prevent confirmation."
+      ]
+    },
+    "evidence": "def _read(path: Path) -> str:",
+    "explanation": "'_read' returns differing kinds of values (str, value). Callers cannot rely on a stable return type; this often signals a missed case.",
+    "file": "website_audit/inspector.py",
+    "finding_id": "BI-LOGI-a49748a4",
+    "kind": "pattern",
+    "line": 42,
+    "next_verification_step": "Check every return path and the callers' expectations for a consistent contract.",
+    "record_id": "RR-902344e075c1b6ff",
+    "repo_id": "local-jarvis-pilot",
+    "rule": "inconsistent_return",
+    "severity": "medium",
+    "source_window": [
+      "39:     notes: list[str] = field(default_factory=list)",
+      "40: ",
+      "41: ",
+      "42: def _read(path: Path) -> str:",
+      "43:     try:",
+      "44:         return path.read_text(encoding=\"utf-8\", errors=\"replace\")",
+      "45:     except OSError:"
+    ],
+    "title": "Inconsistent return types in '_read'",
+    "verification_evidence": {
+      "atoms": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-3f94c7b3c1e6",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "website_audit/inspector.py:42"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "website_audit/inspector.py",
+            "line": 42,
+            "qualname": "_read",
+            "slot": "branch"
+          }
+        }
+      ],
+      "blockers": [],
+      "bundle": {
+        "consequence_atom_ids": [],
+        "contract_atom_ids": [],
+        "path_atom_ids": [
+          "VE-3f94c7b3c1e6"
+        ],
+        "reproduction_atom_ids": [],
+        "violation_atom_ids": []
+      },
+      "finding_id": "BI-LOGI-a49748a4",
+      "impact_context": null,
+      "missing_proof_obligations": [
+        "exact contract violation atom",
+        "promotion-grade feasible path witness",
+        "repository test or runtime reproduction",
+        "evidence promotion gate disabled"
+      ],
+      "refuting_evidence": [
+        {
+          "binding": {
+            "resolution_scope": "intra_file",
+            "resolved": true,
+            "unresolved_reasons": []
+          },
+          "claim": "path.no_implicit_none_exit",
+          "evidence_id": "VE-3f94c7b3c1e6",
+          "evidence_type": "path_feasibility_evidence",
+          "limitations": [],
+          "polarity": "refutes",
+          "provenance": {
+            "source_kind": "repository_ast",
+            "source_ref": "website_audit/inspector.py:42"
+          },
+          "strength": "E2",
+          "subject": {
+            "file": "website_audit/inspector.py",
+            "line": 42,
+            "qualname": "_read",
+            "slot": "branch"
+          }
+        }
+      ],
+      "review_packet_status": "review_lead_only",
+      "schema_version": 1,
+      "status": "refuted",
+      "supporting_evidence": [],
+      "why_not_confirmed": [
+        "Verification evidence is supporting context only in Phase 97A.",
+        "This finding remains review_lead_only — not a confirmed defect.",
+        "Evidence promotion and confirmed-defect output are disabled."
+      ]
+    },
+    "why_might_be_wrong": "Mixed return shapes can be intentional (e.g. value-or-None APIs)."
+  }
+]

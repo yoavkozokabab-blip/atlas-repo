@@ -1,0 +1,48 @@
+concept_id: terraform_iac
+name: Terraform IaC
+title: Terraform IaC
+domain: cloud
+category: iac
+feature_type: iac
+concept_quality_score: source_backed
+confidence: high
+aliases:
+- terraform
+- infrastructure as code
+- iac
+description: Declarative infrastructure provisioning with state.
+when_to_use: Cloud resource lifecycle in teams.
+requirements:
+- Clear ownership of Terraform IaC in the architecture
+implementation_strategies: &id001
+- Infrastructure as code
+- Separate env accounts
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Misconfigured IAM
+- Public exposure
+- Over-privileged roles
+- Secrets in environment variables
+security_risks:
+- Over-privileged roles
+- Secrets in environment variables
+performance_risks: []
+failure_modes:
+- Deploy succeeds but health checks fail
+- Autoscaling lag during spike
+verification:
+- Least-privilege IAM review
+- Disaster recovery drill
+testing:
+- IaC plan/apply in CI
+- Smoke test after deploy
+related_concepts: []
+references:
+- https://developer.hashicorp.com/terraform/docs
+path_keywords:
+- terraform
+- iac
+- terraform
+- iac
+investigate_only: false

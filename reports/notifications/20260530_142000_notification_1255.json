@@ -1,0 +1,14 @@
+{
+  "id": 1255,
+  "kind": "proactive",
+  "title": "Autonomous investigation findings",
+  "message": "Runtime health degraded",
+  "severity": "warning",
+  "source": "proactive_monitor",
+  "created_at": "2026-05-30T14:20:00.379620+00:00",
+  "read": false,
+  "archived": false,
+  "suggested_action": "inspect execution adapter",
+  "related_task_id": null,
+  "metadata": {}
+}

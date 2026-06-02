@@ -86,6 +86,8 @@ def load_concepts_from_disk(
                     if not isinstance(raw, dict):
                         continue
                     rec = ConceptRecord.from_dict(raw)
+                    if not raw.get("concept_quality_score"):
+                        rec.concept_quality_score = "generated_template"
                     ok, _ = validate_concept(rec, strict=False)
                     if ok:
                         _add(rec)
@@ -148,6 +150,8 @@ def _migrate_legacy(cid: str, raw: Dict[str, Any]) -> ConceptRecord:
         merged["testing"] = ["Add regression test after root cause is confirmed."]
     if not merged.get("verification"):
         merged["verification"] = list(merged.get("verification") or ["Reproduce symptom with minimal fixture."])
+    if not merged.get("concept_quality_score"):
+        merged["concept_quality_score"] = "curated_basic"
     return ConceptRecord.from_dict(merged)
 
 

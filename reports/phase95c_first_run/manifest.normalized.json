@@ -1,0 +1,46 @@
+{
+  "candidate": {
+    "builder_core_commit": "e3b55a81c408ed4481ddf38eaed7b049079b6a0f",
+    "frozen_flags": {
+      "CROSS_FILE_CONSUMPTION_ENABLED": false,
+      "CROSS_FILE_ENABLED": true,
+      "INTERPROC_PROMOTION_ENABLED": true
+    }
+  },
+  "historical_bugs": [],
+  "program_id": "phase95c-local-public-pilot-v1",
+  "repositories": [
+    {
+      "commit": "fef63ecfb600812a4dac8ef7c37ff79c85999948",
+      "eligibility_note": "Public pinned checkout. Individual plugin licenses exist, but repository-wide license scope was not established locally; pilot-only.",
+      "id": "openai-plugins-public-pilot",
+      "language_profile": "python_centered_polyglot",
+      "license": "mixed per-plugin license files; repository-wide alpha eligibility unresolved",
+      "path": "C:\\Users\\babi2\\.codex\\.tmp\\plugins",
+      "primary_eligible": false,
+      "project_shape": "multi-package plugin repository",
+      "python_files": 101,
+      "python_loc": 32776,
+      "selection_rationale": "Selected before Builder Core scan because it is an already-present, clean, pinned public Git checkout with a non-trivial Python surface.",
+      "size_band": "medium",
+      "track": "pilot"
+    },
+    {
+      "commit": "a8924c2a35cfa290458852c4fad17c9133054c2e",
+      "eligibility_note": "Public pinned checkout. README delegates licensing to individual skill directories; repository-wide alpha eligibility unresolved; pilot-only.",
+      "id": "openai-skills-public-pilot",
+      "language_profile": "python_centered_polyglot",
+      "license": "per-skill LICENSE.txt files; repository-wide alpha eligibility unresolved",
+      "path": "C:\\Users\\babi2\\.codex\\vendor_imports\\skills",
+      "primary_eligible": false,
+      "project_shape": "multi-package developer tooling repository",
+      "python_files": 34,
+      "python_loc": 9829,
+      "selection_rationale": "Selected before Builder Core scan because it is an already-present, clean, pinned public Git checkout with a non-trivial Python surface.",
+      "size_band": "medium",
+      "track": "pilot"
+    }
+  ],
+  "sampling_seed": "phase95c-local-public-pilot-v1",
+  "schema_version": 1
+}

@@ -1,0 +1,54 @@
+{
+  "product_version": "phase108-real-graph",
+  "before": {
+    "display_cap_modules": 400,
+    "risk_ranking_top": 12,
+    "node_size": "fan_in only",
+    "node_color": "fan_in threshold + partial risk for top 12",
+    "layout": "default ForceGraph3D, fixed camera z=420",
+    "stale_graph_bug": "STATE.graph not cleared on rescan",
+    "subsystem_view": false
+  },
+  "after": {
+    "display_cap_modules": 5000,
+    "risk_ranking_top": 5000,
+    "node_size": "architectural risk score + fan-in",
+    "node_color": "blue normal / orange elevated / red top / purple cycle",
+    "layout": "d3-force charge + link distance from edge weight",
+    "progressive_load": "requestAnimationFrame chunks for large repos",
+    "hover_highlight": "incoming/outgoing neighbors",
+    "subsystem_view": true
+  },
+  "validation": [
+    {
+      "repo": "synthetic_small",
+      "modules": 3,
+      "edges": 2,
+      "module_graph_nodes": 3,
+      "module_graph_links": 2,
+      "subsystem_graph_nodes": 2,
+      "subsystem_graph_links": 1,
+      "scan_ms": 26
+    },
+    {
+      "repo": "synthetic_wide",
+      "modules": 13,
+      "edges": 12,
+      "module_graph_nodes": 13,
+      "module_graph_links": 12,
+      "subsystem_graph_nodes": 13,
+      "subsystem_graph_links": 12,
+      "scan_ms": 21
+    },
+    {
+      "repo": "local_jarvis",
+      "modules": 689,
+      "edges": 1695,
+      "module_graph_nodes": 689,
+      "module_graph_links": 1695,
+      "subsystem_graph_nodes": 42,
+      "subsystem_graph_links": 133,
+      "scan_ms": 11593
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+concept_id: graphql_api
+name: GraphQL
+title: GraphQL
+domain: apis
+category: graphql
+feature_type: graphql
+concept_quality_score: source_backed
+confidence: high
+aliases:
+- graphql
+- graph ql
+description: Schema-typed query language over a single HTTP endpoint.
+when_to_use: When clients need flexible field selection; watch N+1 and complexity
+  limits.
+requirements:
+- Clear ownership of GraphQL in the architecture
+implementation_strategies: &id001
+- Versioning strategy
+- Pagination and limits
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Breaking clients on change
+- Deep queries
+- Resolver N+1
+security_risks: []
+performance_risks:
+- Deep queries
+- Resolver N+1
+failure_modes:
+- Undocumented error codes
+- Version skew
+verification:
+- Consumer-driven contracts
+- Backward compatibility checklist
+testing:
+- Contract tests
+- Load tests on gateway
+related_concepts: []
+references:
+- https://spec.graphql.org/
+path_keywords:
+- graphql
+- api
+- graphql
+investigate_only: false

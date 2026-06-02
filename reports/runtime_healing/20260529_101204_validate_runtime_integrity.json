@@ -1,0 +1,11 @@
+{
+  "incident_id": "20260529_101204_validate_runtime_integrity",
+  "created_at": "2026-05-29T10:12:04.794454+00:00",
+  "action": "validate_runtime_integrity",
+  "ok": false,
+  "detail": "failed=3",
+  "entry": {
+    "checked_at": "2026-05-29T10:12:04.794122+00:00"
+  },
+  "reversible": true
+}

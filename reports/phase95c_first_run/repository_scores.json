@@ -1,0 +1,15 @@
+{
+  "repositories": {
+    "openai-plugins-public-pilot": {
+      "reason": "",
+      "usefulness": null,
+      "would_use_again": null
+    },
+    "openai-skills-public-pilot": {
+      "reason": "",
+      "usefulness": null,
+      "would_use_again": null
+    }
+  },
+  "review_schema_version": 1
+}

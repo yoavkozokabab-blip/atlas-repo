@@ -1,0 +1,6605 @@
+{
+  "findings": {
+    "RR-0087c64dbf337635": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-efe637c1",
+      "repo_id": "httpx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-0113dbea569a51e7": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-9f1d7a61",
+      "repo_id": "pluggy",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-012c972f4a309078": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-2ec13bbd",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-0199a740b828c6b4": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-1b95a176",
+      "repo_id": "starlette",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-01bcbb501f06e03f": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-3d3a4e43",
+      "repo_id": "cookiecutter",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-02e0aad24bc7db11": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-0141ec43",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-03f7044160b6b431": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-8e224fb6",
+      "repo_id": "black",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-04e8700ea6ccaecb": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-e086bf65",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-062cf3bab7499a66": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-cf2268c3",
+      "repo_id": "pluggy",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-07d419bb93800e04": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-7b7082e3",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-08cce43c85e30dfa": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-22cc762c",
+      "repo_id": "fastapi",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-0935f01b12ae23e1": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-717a9e54",
+      "repo_id": "httpx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-098a341250dd6a7f": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-5d17716d",
+      "repo_id": "flask",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-0af3e420b12489e2": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-18754850",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-0c8e730c0fe2686c": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-2409e8da",
+      "repo_id": "fastapi",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-0eb77a469a6db84c": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-e3680462",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-0ec37daaad05df16": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-19282d8b",
+      "repo_id": "celery",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-0eccf6ae80bf0bf8": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-8ca871b5",
+      "repo_id": "click",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-0ee6aa324459e680": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-4d0b5afb",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-0fc2db9b5e15a8a9": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-0c619ca3",
+      "repo_id": "starlette",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-10c13c14784d00de": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-df7aa699",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-1154abfcaa9761c9": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-e68f18f0",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-13232a27a1c7373e": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-8e231e55",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-16a215bb9a141e8a": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-5b73eb9d",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-195106def11e6af8": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-21c90dfa",
+      "repo_id": "fastapi",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-1a4e730240e96b91": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-3cd1f339",
+      "repo_id": "fastapi",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-1b4e2b6401bf5ad7": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-4a8b6a79",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-1b56f006599f3e0c": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-a4018d73",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-1b70fe419a45fb83": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-d059b712",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-1c53c74b61fef2b9": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-de65185a",
+      "repo_id": "black",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-1cdcf6d709b8b8d0": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-f08938ff",
+      "repo_id": "requests",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-1dea2aa8df4985a5": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-0377afd2",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-1f107dec6e4e48b3": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-8ebfbd51",
+      "repo_id": "celery",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-1fa96ae4e90c0c29": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-8c8f395d",
+      "repo_id": "black",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-1fdc64b5420a5870": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-4a7f70d5",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-200291f70aa6e6e6": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-f82788a2",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-208986b49aecc1c4": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-4fac0974",
+      "repo_id": "marshmallow",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-2175adcf46152f58": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-b589c2b8",
+      "repo_id": "fastapi",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-222663348ed3538a": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-e54f2afd",
+      "repo_id": "pytest",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-23482cd8d4692406": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-ec3b3877",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-23defb6303bcf4f2": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-4cd7e468",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-24c9d70d0eb4d19b": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-c2432493",
+      "repo_id": "pluggy",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-25023df5b81300d2": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-cd469c33",
+      "repo_id": "werkzeug",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-2510d2fa0ffb6023": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-c1a636c4",
+      "repo_id": "itsdangerous",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-26dcb1d2ca275164": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-05fff545",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-28ff59c0d5e70b90": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-d8ff64b1",
+      "repo_id": "requests",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-290f05277ea3660c": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-fa2fc2aa",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-29221cd42d123b22": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-6706b347",
+      "repo_id": "black",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-2966c01bf673e50d": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-9e16d996",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-29d46efb023be5a2": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-8bc666eb",
+      "repo_id": "pytest",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-2a7638639d2524f3": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-60fe78bb",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-2af134d2e8426fea": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-04951295",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-2b2c1e6042d74e1a": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-ALGO-ee3cad04",
+      "repo_id": "attrs",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-2c51d1aa86bb8e18": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-ALGO-d6dc7973",
+      "repo_id": "attrs",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-2c845fe631398b95": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-ALGO-365eb6f0",
+      "repo_id": "attrs",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-2dbf5c4be96e33dc": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-bcdb92a6",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-30f342d01331ac54": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-da460b5e",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-31ec93827d6881ee": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-43121d7f",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-33459ea754250c46": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-67c8fdda",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-33efa0c962c44eb1": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-937ef414",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-340fc499077f6283": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-0f1c1d91",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-34865148160e6e85": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-0904ba46",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-34ab7aef9799dce3": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-989ed218",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-357ad2d194db6421": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-6a871b7d",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-36859a59d57b87b7": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-de02f296",
+      "repo_id": "pytest",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-36d56211a04405e7": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-3fd07ef9",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-37ebde5094a46cad": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-478e3c62",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-3806ee02cc7e5dc7": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-79dacab8",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-3817b3204173ec71": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-49a85b10",
+      "repo_id": "black",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-3ab9108dc37948c5": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-11cedd0a",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-3afa0b9a096b6c32": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-3d6b23b7",
+      "repo_id": "dash",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-3c00999bf0fb98b4": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-3cbe17f1",
+      "repo_id": "fastapi",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-3cf0b9fbcf26cd21": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-ALGO-93a23389",
+      "repo_id": "rich",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-3d73930972a5bc6b": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-fab23438",
+      "repo_id": "starlette",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-3e8f0ca0ed6e7fce": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-2debc8e0",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-3ec1ed0004efa144": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-6f97cbdc",
+      "repo_id": "celery",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-402945deac3476a2": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-2bc6830d",
+      "repo_id": "dash",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-407379648299c42c": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-44efafde",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-42953a6455b6dfe8": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-754a2c59",
+      "repo_id": "click",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-43d90723fa81889c": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-5d182b1f",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-44b6ce0332a8cac0": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-ALGO-f6d6f0f2",
+      "repo_id": "pytest",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-45379fdf60d479a7": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-66a58cb5",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-46e8f15fecc6f1c6": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-c8f1f9e3",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-476dd4f25cebf70b": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-9e1cca91",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-47ebd4857081402c": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-cf1b1f6f",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-4815fecb842b5997": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-1b7dcad2",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-484e0c3957423ccf": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-61de56a2",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-4983019e85909f79": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-eb03d38b",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-4a3fd5b8e438a53e": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-3271f831",
+      "repo_id": "starlette",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-4a6e19ea67a15d1b": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-7632c643",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-4aa72a8ff9dd4c3e": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-ecb36cfa",
+      "repo_id": "rich",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-4c16d3c5757a9a14": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-1bb75632",
+      "repo_id": "werkzeug",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-4dbd3f5602fcd078": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-45180ea8",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-4e1f47ff6c504dc9": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-d33520ad",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-4e29c36300a5926b": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-8fc20084",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-4f4387ae289a17ba": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-ALGO-fec35be8",
+      "repo_id": "pathspec",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-5092c2dc51444e86": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-24f83887",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-51255859b85fd168": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-383d3369",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-51dedb1d21625d1a": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-a6392025",
+      "repo_id": "requests",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-52a7cea2df275790": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-3c3b09b3",
+      "repo_id": "httpx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-535d144ba384d835": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-e53c22b8",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-537532e06aa1d86a": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-d4def512",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-550de7e3329aa271": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-a15373e0",
+      "repo_id": "dash",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-5573d3784829dc3e": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-2f839da4",
+      "repo_id": "starlette",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-572ab6c959d9a167": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-dacf6ee6",
+      "repo_id": "celery",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-57785521850a1883": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-60e3ef7c",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-5867764f347179d9": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-58b4886b",
+      "repo_id": "pytest",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-58a2e2cd323a2ddb": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-d898aa0a",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-58d5f5605bd86221": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-28c3405f",
+      "repo_id": "attrs",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-5972f4df44211afe": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-af8b898b",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-5985fc07d1bb3d18": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-ALGO-119f58f1",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-5994e944d7b57c3c": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-4bf449ad",
+      "repo_id": "typer",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-59a4d9102503408c": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-df3bf6f5",
+      "repo_id": "fastapi",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-5a821fdf3d6a5b31": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-d2b9f042",
+      "repo_id": "dash",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-5ba937511c23e14a": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-b2f6e180",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-5bf4881dfb582f7c": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-dc8de718",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-5d0898bc2acbe643": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-bf550cb4",
+      "repo_id": "starlette",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-5edcc63666fa48a3": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-2790be43",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-5fb7414158e0bdbd": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-6d7eac6d",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-5fd96dce127e2891": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-e40a8ab7",
+      "repo_id": "click",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-617c1f9fdd534b24": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-d1df9dfe",
+      "repo_id": "pytest",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-619cf9f4f3660fe8": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-da29b5b4",
+      "repo_id": "dash",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-62e323dcb61995b3": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-26870332",
+      "repo_id": "dash",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-653af6b2c3b96666": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-0bd9c982",
+      "repo_id": "rich",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-658e8e12f321854f": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-8f6d8e37",
+      "repo_id": "typer",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-660082c2c2b0d576": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-9d6cb43e",
+      "repo_id": "pytest",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-672087e0d2c5f117": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-38188085",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-68525c5466e4e161": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-ALGO-880f428c",
+      "repo_id": "attrs",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-68cbf77eafd8ac0b": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-33d5b582",
+      "repo_id": "pytest",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-6a91c3f7bfe93d52": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-cdbc7295",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-6d10e1cceb51228b": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-b2fe6127",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-6d2457076b285964": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-ALGO-e8c7c60b",
+      "repo_id": "dash",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-6d62550ca1ce7bfa": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-5c5898a7",
+      "repo_id": "fastapi",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-6dd5ee15a4588a36": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-71a02ba8",
+      "repo_id": "black",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-6ecde301298ecb1c": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-92ef3de6",
+      "repo_id": "celery",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-6eeb322b1c55f52b": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-f1c698ae",
+      "repo_id": "cachetools",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-6f4ff46d4d8a1610": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-06c4d1b1",
+      "repo_id": "celery",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-6feea14f66f95603": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-f16d4661",
+      "repo_id": "werkzeug",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-7058e69cf5ffd037": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-adfe819f",
+      "repo_id": "attrs",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-70f5b84f87e97640": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-469a4713",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-71cbc1a213203bba": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-d19393b6",
+      "repo_id": "attrs",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-71f7b3a3c25e7bc9": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-ca4d6f02",
+      "repo_id": "starlette",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-721c6f9346a99705": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-afdf4b50",
+      "repo_id": "starlette",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-737f2d6d260ca349": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-2e27f7b5",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-73e5c3d6ca4e50a1": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-5896f445",
+      "repo_id": "dash",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-75597ee0f34afebf": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-c3be8ab8",
+      "repo_id": "fastapi",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-75a69826f92b9aa9": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-001a651c",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-781ea4e990c8fa7f": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-a2f81444",
+      "repo_id": "fastapi",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-79676b8a8ef83e77": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-7ab8d7b9",
+      "repo_id": "starlette",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-79ad1795c2279b78": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-3b3558c5",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-79c355d96037aa46": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-f47d5dab",
+      "repo_id": "starlette",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-7a3e8aeb8bb45b1f": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-86ca012a",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-7b6572bb5558d1e5": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-fae98101",
+      "repo_id": "pytest",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-7c76131afc14251c": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-c08e97c5",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-7d44a8f15b253cd1": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-ALGO-1274f9b4",
+      "repo_id": "attrs",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-7e2743253bc810a8": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-9052b409",
+      "repo_id": "starlette",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-7e54574749e03e3c": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-e0d813c9",
+      "repo_id": "fastapi",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-7e8de725c2586e35": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-fd892158",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-7ea26d8100b11f81": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-62abac7c",
+      "repo_id": "pytest",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-7eea14e574c8ee4d": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-4616eedc",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-84efc80532622c7b": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-586eaf5d",
+      "repo_id": "black",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-8516df565b784a7d": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-c3e97028",
+      "repo_id": "dash",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-85d42d930a852ce9": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-f56a3538",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-85f4d1da7719cc25": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-04c77ca8",
+      "repo_id": "fastapi",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-86a47dc4aef06bf0": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-2d36a446",
+      "repo_id": "celery",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-870fa7b931764081": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-e7355551",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-877e47db2da4f5ca": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-5580cfee",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-88066a961e898d6f": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-b9234de3",
+      "repo_id": "pathspec",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-8a884ee28b092a66": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-c873fd2f",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-8c3ebd115ece2580": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-9a127076",
+      "repo_id": "typer",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-8c522b389bc3428a": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-db272bc9",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-8d425c4464865ca8": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-2d2c44c4",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-8e11615fe4f66ffa": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-0b29d40d",
+      "repo_id": "flask",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-8ec5f8d496508b55": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-874e864c",
+      "repo_id": "starlette",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-90a68e6688ca26d8": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-a9bab145",
+      "repo_id": "httpx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-910a7713b60dd58c": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-de0acf8d",
+      "repo_id": "starlette",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-923512744fc43122": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-b353a4a9",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-926ba0e16fec62b0": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-5b50aa05",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-9320869bf1812c3e": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-33f0ce61",
+      "repo_id": "werkzeug",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-9347d0c599702d67": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-e07b1cc8",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-93e290660f95e2d2": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-b0d7e5ce",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-94383706ce38cb7e": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-6b7cb5f2",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-94ee8d2f2d029c3c": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-b81838b9",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-9613c1876fa53042": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-02bb2997",
+      "repo_id": "starlette",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-967872711a59b9d5": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-31393442",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-969debce994288d0": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-df9b48bf",
+      "repo_id": "dash",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-96c03cd82b90cb7f": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-5fed436e",
+      "repo_id": "dash",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-978a3675cd6dd3b3": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-dedbfdb8",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-9b9d91de1940aafc": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-89ccbd75",
+      "repo_id": "click",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-9cc9b480c120810c": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-f08aa1f7",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-9d4a8baaf48b184a": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-a27c3365",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-9e55b09bc8ce47d6": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-65e6dfc2",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-9eb86bd8fd90224c": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-8f678c20",
+      "repo_id": "httpx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-9ffb3d3d825901b6": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-ee7080e7",
+      "repo_id": "cookiecutter",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-a0337280ab8bddb3": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-faaced56",
+      "repo_id": "pytest",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-a14554113fc0bc01": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-07c8c28a",
+      "repo_id": "fastapi",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-a1aecf3c47766281": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-0c97618d",
+      "repo_id": "celery",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-a2085ff34ef51aec": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-b27b999e",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-a258ac3a2c28086e": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-58c6cd56",
+      "repo_id": "pytest",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-a4345912defa7bbd": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-12e22d64",
+      "repo_id": "black",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-a79320f40cbbd556": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-2d843ec2",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-a7b2993d5f57b130": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-1563b2d7",
+      "repo_id": "celery",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-a8671fa5e883b1ef": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-118ed17e",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-a9836f487efe10ba": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-f0fcca1d",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-a9a67f3e7fd5aa74": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-a76febfa",
+      "repo_id": "dash",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-a9b466b77202de4e": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-a65eff0b",
+      "repo_id": "httpx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-aa49c9e8253e5b59": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-b966d651",
+      "repo_id": "httpx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-ab4e19940aca9b8e": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-55095709",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-acaed77aa8c4d0ab": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-f84ea2f1",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-ad0c5008af0cae85": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-ef69c417",
+      "repo_id": "fastapi",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-adba4a1a3287047c": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-88c8660b",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-af1b9f71268df851": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-21a622b0",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-af2867abc014ee31": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-975cbe5b",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-af3a5f1fb51133a5": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-2e0bb833",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-aff2067949b26085": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-989a10d7",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-b0834b1ef198e232": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-440622a5",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-b0a7a7b775e31234": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-9b2826c6",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-b16e8047a25164c8": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-1a0209e2",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-b1cc432a46bd7b29": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-9f69c02c",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-b25a01a75c77cf3c": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-5069ebab",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-b2806f8375dcccbf": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-37a60992",
+      "repo_id": "fastapi",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-b2bd197efb4d627e": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-f8f29156",
+      "repo_id": "fastapi",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-b2fa5b6422a0427a": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-265b7446",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-b48f3774b4c636bf": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-8c043f13",
+      "repo_id": "pytest",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-b5fadda6e666e56f": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-3eef8e03",
+      "repo_id": "flask",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-b6a5528007deb5b0": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-2c81c3ac",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-b7278c759979fca5": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-10a27e64",
+      "repo_id": "black",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-b92c69c6ff5de327": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-597cb2e4",
+      "repo_id": "fastapi",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-bbf7a6bf4a20c5df": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-cdb2ec84",
+      "repo_id": "fastapi",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-bcb2a21990dd4890": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-b0a163fb",
+      "repo_id": "pytest",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-bd75d74a9f0312bc": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-a39eb12f",
+      "repo_id": "httpx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-be38b1319511fdf1": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-04e74107",
+      "repo_id": "pytest",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-bec7a0561489cca5": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-6b63e7d2",
+      "repo_id": "httpx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-bfbc232a1d73b569": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-5b6789e2",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-c061d74a801a00f7": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-e57a3e8b",
+      "repo_id": "marshmallow",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-c0b38f51f2a3b1b6": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-673e964b",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-c2001f1740e1f0f7": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-da58dee2",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-c235bb410b7f8cf4": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-9589fced",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-c240abe4a57200ef": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-a26f4175",
+      "repo_id": "marshmallow",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-c3aaa94e2de7e1d8": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-a7ae0896",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-c4f7b633d759c43b": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-0aa54a5a",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-c655df298ce0d6bd": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-bb617eba",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-c78726a760ec30f6": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-77f0b989",
+      "repo_id": "black",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-c796e9a4a8f78cc1": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-5c7a219e",
+      "repo_id": "fastapi",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-c8759cef86ac13e3": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-baadcecd",
+      "repo_id": "fastapi",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-c9b98a82b66a8914": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-ALGO-c2cfd655",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-ca352b6aa4607bec": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-cf8ea530",
+      "repo_id": "celery",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-cb16c03832e111d2": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-88857532",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-cc07ace0631d5fa7": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-89501c0d",
+      "repo_id": "click",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-cd21189571b393ab": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-ALGO-fe461dac",
+      "repo_id": "attrs",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-ce04c7b0f6bd014e": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-acd3e03c",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-d055ad925fc21832": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-8f477327",
+      "repo_id": "dash",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-d0e796c98a2441df": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-9649bcf6",
+      "repo_id": "fastapi",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-d1316bcca181fe7b": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-94175f50",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-d3ec96dc6502af2a": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-01ffd7bf",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-d436442102dc9d46": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-f40796b4",
+      "repo_id": "attrs",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-d4386167df90e0ab": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-77e8ee91",
+      "repo_id": "fastapi",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-d68a048294415dcd": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-d8026ed9",
+      "repo_id": "starlette",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-d8d4d54edd38c4b9": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-c4c86d9a",
+      "repo_id": "black",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-d902e57f07550029": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-c4fe1096",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-daa56dc2d7f4a642": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-3d90984a",
+      "repo_id": "fastapi",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-db37f004a2c94386": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-f6488007",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-dbf4b13807f5fa67": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-8fab9b75",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-dc27a5cf5af2bb88": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-9c4df135",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-dca249b150fe4baa": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-8c13487d",
+      "repo_id": "flask",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-de4ebbda0d4719d7": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-ALGO-6249eb77",
+      "repo_id": "werkzeug",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-e1dc4d03833016cd": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-a041c8d4",
+      "repo_id": "attrs",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-e27e155595dfa238": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-e7374122",
+      "repo_id": "requests",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-e31c95904067a6eb": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-5cc70197",
+      "repo_id": "dash",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-e38a4f24f999d95b": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-7340546b",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-e4472db9ef78079c": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-ea0f5202",
+      "repo_id": "fastapi",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-e601e491426d985b": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-23ddb75e",
+      "repo_id": "cachetools",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-e74750c218de1087": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-a85d73a4",
+      "repo_id": "pluggy",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-e8d30dbf95c9e239": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-0a46c6a9",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-e9deed3d263e74ce": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-fde8727f",
+      "repo_id": "celery",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-e9f1d85ef9426768": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-062c2e50",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-eab069a1133c8a04": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-da4e69a7",
+      "repo_id": "attrs",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-ec15ea0eaaf90aa2": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-3ce47608",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-ec2ee829ed566cf5": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-c6ae250d",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-ec6565340b92c438": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-c7bc4d68",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-f00fea65a24cc8ef": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-5ec799ce",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-f041dfc2258ffe69": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-36c0b42c",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-f060ec6c590d6509": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-5f24adee",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-f07877cf7a20e83d": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-1fbc49de",
+      "repo_id": "typer",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-f07a7ba6241024ce": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-33acfb20",
+      "repo_id": "werkzeug",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-f1e14e2700689639": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-42aeaea2",
+      "repo_id": "werkzeug",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-f41ccfd31f3c59f6": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-c6f12fce",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-f4d2a5d3eb114e46": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-914b3614",
+      "repo_id": "celery",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-f8042f9f64741377": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-78f843d1",
+      "repo_id": "httpx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-f87884587a949ea1": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-0bdeb160",
+      "repo_id": "fastapi",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-f8d931c63f0cdd07": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-02bec685",
+      "repo_id": "werkzeug",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-f8f9a2fac22f6159": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-608d7569",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-f96727182196adac": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-d0460e9a",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-f9bb1c3988311cb2": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-748cad66",
+      "repo_id": "httpx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-fa20951ba4c76488": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-7cc1e2fe",
+      "repo_id": "dash",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-faa124b50ab96489": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-158f7455",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-fd8673a9d9c7064a": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-943fb27c",
+      "repo_id": "click",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-ff1a87df08b8d6f7": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-SECU-75b918ea",
+      "repo_id": "sphinx",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-ff30b2723be51bbf": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-20469ac7",
+      "repo_id": "starlette",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    },
+    "RR-fffa4a9c600def3a": {
+      "adjudication": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "finding_id": "BI-LOGI-9d88d405",
+      "repo_id": "wagtail",
+      "reviewer_a": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      },
+      "reviewer_b": {
+        "label": "unreviewed",
+        "notes": "",
+        "review_minutes": null,
+        "usefulness": null
+      }
+    }
+  },
+  "review_schema_version": 1
+}

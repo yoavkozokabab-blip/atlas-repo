@@ -46,6 +46,26 @@ pip install -r requirements.txt
 copy .env.example .env
 ```
 
+## Run JARVIS (console)
+
+Primary entry point:
+
+```powershell
+cd C:\J.A.R.V.I.S\local_jarvis
+py -3 main.py
+```
+
+Type builder/project questions at the `JARVIS>` prompt, for example:
+
+- `Why was Phase 73A built?`
+- `What problem does Phase 79 solve?`
+- `What changed in the last 30 days?`
+
+These route to **Project Intelligence** (`project.answer_question`) and answer from
+`local_jarvis/` reports, docs, and git history — read-only, no LLM required.
+
+See [reports/phase80_project_intelligence.md](reports/phase80_project_intelligence.md).
+
 ### STT (voice input)
 
 | Variable | Default |

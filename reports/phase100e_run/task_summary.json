@@ -1,0 +1,602 @@
+{
+  "A1": {
+    "claude_only": {
+      "n_trials": 3,
+      "input_tokens_median": 8291.0,
+      "output_tokens_median": 1198.0,
+      "total_tokens_median": 9489.0,
+      "peak_context_median": 8291.0,
+      "wall_clock_s_median": 0.05164849999709986,
+      "cost_usd_median": 0.042843,
+      "quality_median": 0.0,
+      "tool_calls_median": {
+        "grep": 1.0,
+        "list_dir": 0.0,
+        "read_file": 1.0
+      }
+    },
+    "claude_plus_jarvis": {
+      "n_trials": 3,
+      "input_tokens_median": 1838.0,
+      "output_tokens_median": 486.0,
+      "total_tokens_median": 2324.0,
+      "peak_context_median": 1838.0,
+      "wall_clock_s_median": 0.0235988000058569,
+      "cost_usd_median": 0.012804,
+      "quality_median": 4.0,
+      "tool_calls_median": {
+        "ask": 1.0
+      }
+    }
+  },
+  "A2": {
+    "claude_only": {
+      "n_trials": 3,
+      "input_tokens_median": 577.0,
+      "output_tokens_median": 12.0,
+      "total_tokens_median": 589.0,
+      "peak_context_median": 577.0,
+      "wall_clock_s_median": 2.6000052457675338e-06,
+      "cost_usd_median": 0.0019110000000000002,
+      "quality_median": 1.0,
+      "tool_calls_median": {
+        "grep": 0.0,
+        "list_dir": 0.0,
+        "read_file": 0.0
+      }
+    },
+    "claude_plus_jarvis": {
+      "n_trials": 3,
+      "input_tokens_median": 1304.0,
+      "output_tokens_median": 172.0,
+      "total_tokens_median": 1476.0,
+      "peak_context_median": 1304.0,
+      "wall_clock_s_median": 0.003976500011049211,
+      "cost_usd_median": 0.0064919999999999995,
+      "quality_median": 1.0,
+      "tool_calls_median": {
+        "ask": 1.0
+      }
+    }
+  },
+  "A3": {
+    "claude_only": {
+      "n_trials": 3,
+      "input_tokens_median": 573.0,
+      "output_tokens_median": 12.0,
+      "total_tokens_median": 585.0,
+      "peak_context_median": 573.0,
+      "wall_clock_s_median": 3.000008291564882e-06,
+      "cost_usd_median": 0.001899,
+      "quality_median": 1.0,
+      "tool_calls_median": {
+        "grep": 0.0,
+        "list_dir": 0.0,
+        "read_file": 0.0
+      }
+    },
+    "claude_plus_jarvis": {
+      "n_trials": 3,
+      "input_tokens_median": 758.0,
+      "output_tokens_median": 16.0,
+      "total_tokens_median": 774.0,
+      "peak_context_median": 758.0,
+      "wall_clock_s_median": 1.4242110999912256,
+      "cost_usd_median": 0.002514,
+      "quality_median": 1.0,
+      "tool_calls_median": {
+        "ask": 1.0
+      }
+    }
+  },
+  "A4": {
+    "claude_only": {
+      "n_trials": 3,
+      "input_tokens_median": 7443.0,
+      "output_tokens_median": 1512.0,
+      "total_tokens_median": 8955.0,
+      "peak_context_median": 7443.0,
+      "wall_clock_s_median": 0.00755399999616202,
+      "cost_usd_median": 0.04500900000000001,
+      "quality_median": 0.0,
+      "tool_calls_median": {
+        "grep": 1.0,
+        "list_dir": 0.0,
+        "read_file": 1.0
+      }
+    },
+    "claude_plus_jarvis": {
+      "n_trials": 3,
+      "input_tokens_median": 1125.0,
+      "output_tokens_median": 52.0,
+      "total_tokens_median": 1177.0,
+      "peak_context_median": 1125.0,
+      "wall_clock_s_median": 0.02732569999352563,
+      "cost_usd_median": 0.004155,
+      "quality_median": 4.0,
+      "tool_calls_median": {
+        "ask": 1.0
+      }
+    }
+  },
+  "A5": {
+    "claude_only": {
+      "n_trials": 3,
+      "input_tokens_median": 10267.0,
+      "output_tokens_median": 1012.0,
+      "total_tokens_median": 11279.0,
+      "peak_context_median": 10267.0,
+      "wall_clock_s_median": 3.463215099996887,
+      "cost_usd_median": 0.045981,
+      "quality_median": 2.0,
+      "tool_calls_median": {
+        "grep": 2.0,
+        "list_dir": 0.0,
+        "read_file": 0.0
+      }
+    },
+    "claude_plus_jarvis": {
+      "n_trials": 3,
+      "input_tokens_median": 1206.0,
+      "output_tokens_median": 59.0,
+      "total_tokens_median": 1265.0,
+      "peak_context_median": 1206.0,
+      "wall_clock_s_median": 0.022702400005073287,
+      "cost_usd_median": 0.004503,
+      "quality_median": 1.0,
+      "tool_calls_median": {
+        "ask": 1.0
+      }
+    }
+  },
+  "A6": {
+    "claude_only": {
+      "n_trials": 3,
+      "input_tokens_median": 1269.0,
+      "output_tokens_median": 698.0,
+      "total_tokens_median": 1967.0,
+      "peak_context_median": 1269.0,
+      "wall_clock_s_median": 0.0001610000035725534,
+      "cost_usd_median": 0.014277,
+      "quality_median": 0.0,
+      "tool_calls_median": {
+        "grep": 0.0,
+        "list_dir": 0.0,
+        "read_file": 1.0
+      }
+    },
+    "claude_plus_jarvis": {
+      "n_trials": 3,
+      "input_tokens_median": 1829.0,
+      "output_tokens_median": 486.0,
+      "total_tokens_median": 2315.0,
+      "peak_context_median": 1829.0,
+      "wall_clock_s_median": 0.026725099989562295,
+      "cost_usd_median": 0.012777,
+      "quality_median": 4.0,
+      "tool_calls_median": {
+        "ask": 1.0
+      }
+    }
+  },
+  "A7": {
+    "claude_only": {
+      "n_trials": 3,
+      "input_tokens_median": 2830.0,
+      "output_tokens_median": 1011.0,
+      "total_tokens_median": 3841.0,
+      "peak_context_median": 2830.0,
+      "wall_clock_s_median": 0.000215300009585917,
+      "cost_usd_median": 0.023655000000000002,
+      "quality_median": 4.0,
+      "tool_calls_median": {
+        "grep": 0.0,
+        "list_dir": 0.0,
+        "read_file": 1.0
+      }
+    },
+    "claude_plus_jarvis": {
+      "n_trials": 3,
+      "input_tokens_median": 2083.0,
+      "output_tokens_median": 37.0,
+      "total_tokens_median": 2120.0,
+      "peak_context_median": 2083.0,
+      "wall_clock_s_median": 0.00279949999821838,
+      "cost_usd_median": 0.006804,
+      "quality_median": 2.0,
+      "tool_calls_median": {
+        "ask": 1.0
+      }
+    }
+  },
+  "A8": {
+    "claude_only": {
+      "n_trials": 3,
+      "input_tokens_median": 573.0,
+      "output_tokens_median": 12.0,
+      "total_tokens_median": 585.0,
+      "peak_context_median": 573.0,
+      "wall_clock_s_median": 2.4999899324029684e-06,
+      "cost_usd_median": 0.001899,
+      "quality_median": 1.0,
+      "tool_calls_median": {
+        "grep": 0.0,
+        "list_dir": 0.0,
+        "read_file": 0.0
+      }
+    },
+    "claude_plus_jarvis": {
+      "n_trials": 3,
+      "input_tokens_median": 1561.0,
+      "output_tokens_median": 56.0,
+      "total_tokens_median": 1617.0,
+      "peak_context_median": 1561.0,
+      "wall_clock_s_median": 0.021702099998947233,
+      "cost_usd_median": 0.005523,
+      "quality_median": 2.0,
+      "tool_calls_median": {
+        "ask": 1.0
+      }
+    }
+  },
+  "I1": {
+    "claude_only": {
+      "n_trials": 3,
+      "input_tokens_median": 951.0,
+      "output_tokens_median": 359.0,
+      "total_tokens_median": 1310.0,
+      "peak_context_median": 951.0,
+      "wall_clock_s_median": 3.250481700000819,
+      "cost_usd_median": 0.008238,
+      "quality_median": 2.0,
+      "tool_calls_median": {
+        "grep": 1.0,
+        "list_dir": 0.0,
+        "read_file": 0.0
+      }
+    },
+    "claude_plus_jarvis": {
+      "n_trials": 3,
+      "input_tokens_median": 767.0,
+      "output_tokens_median": 178.0,
+      "total_tokens_median": 945.0,
+      "peak_context_median": 767.0,
+      "wall_clock_s_median": 1.4800142000021879,
+      "cost_usd_median": 0.004971,
+      "quality_median": 1.0,
+      "tool_calls_median": {
+        "impact_file": 1.0
+      }
+    }
+  },
+  "I2": {
+    "claude_only": {
+      "n_trials": 3,
+      "input_tokens_median": 4954.0,
+      "output_tokens_median": 1512.0,
+      "total_tokens_median": 6466.0,
+      "peak_context_median": 4954.0,
+      "wall_clock_s_median": 3.0247596000117483,
+      "cost_usd_median": 0.037542000000000006,
+      "quality_median": 4.0,
+      "tool_calls_median": {
+        "grep": 1.0,
+        "list_dir": 0.0,
+        "read_file": 1.0
+      }
+    },
+    "claude_plus_jarvis": {
+      "n_trials": 3,
+      "input_tokens_median": 776.0,
+      "output_tokens_median": 178.0,
+      "total_tokens_median": 954.0,
+      "peak_context_median": 776.0,
+      "wall_clock_s_median": 1.4135328999982448,
+      "cost_usd_median": 0.004998000000000001,
+      "quality_median": 1.0,
+      "tool_calls_median": {
+        "impact_file": 1.0
+      }
+    }
+  },
+  "I3": {
+    "claude_only": {
+      "n_trials": 3,
+      "input_tokens_median": 574.0,
+      "output_tokens_median": 12.0,
+      "total_tokens_median": 586.0,
+      "peak_context_median": 574.0,
+      "wall_clock_s_median": 4.4000043999403715e-06,
+      "cost_usd_median": 0.001902,
+      "quality_median": 1.0,
+      "tool_calls_median": {
+        "grep": 0.0,
+        "list_dir": 0.0,
+        "read_file": 0.0
+      }
+    },
+    "claude_plus_jarvis": {
+      "n_trials": 3,
+      "input_tokens_median": 695.0,
+      "output_tokens_median": 121.0,
+      "total_tokens_median": 816.0,
+      "peak_context_median": 695.0,
+      "wall_clock_s_median": 1.4426341999933356,
+      "cost_usd_median": 0.0039,
+      "quality_median": 4.0,
+      "tool_calls_median": {
+        "graph_summary": 1.0
+      }
+    }
+  },
+  "I4": {
+    "claude_only": {
+      "n_trials": 3,
+      "input_tokens_median": 10079.0,
+      "output_tokens_median": 1512.0,
+      "total_tokens_median": 11591.0,
+      "peak_context_median": 10079.0,
+      "wall_clock_s_median": 0.037205100001301616,
+      "cost_usd_median": 0.052917000000000006,
+      "quality_median": 4.0,
+      "tool_calls_median": {
+        "grep": 1.0,
+        "list_dir": 0.0,
+        "read_file": 1.0
+      }
+    },
+    "claude_plus_jarvis": {
+      "n_trials": 3,
+      "input_tokens_median": 764.0,
+      "output_tokens_median": 178.0,
+      "total_tokens_median": 942.0,
+      "peak_context_median": 764.0,
+      "wall_clock_s_median": 1.3898834999999963,
+      "cost_usd_median": 0.004962,
+      "quality_median": 1.0,
+      "tool_calls_median": {
+        "impact_file": 1.0
+      }
+    }
+  },
+  "I5": {
+    "claude_only": {
+      "n_trials": 3,
+      "input_tokens_median": 568.0,
+      "output_tokens_median": 12.0,
+      "total_tokens_median": 580.0,
+      "peak_context_median": 568.0,
+      "wall_clock_s_median": 3.9000005926936865e-06,
+      "cost_usd_median": 0.001884,
+      "quality_median": 1.0,
+      "tool_calls_median": {
+        "grep": 0.0,
+        "list_dir": 0.0,
+        "read_file": 0.0
+      }
+    },
+    "claude_plus_jarvis": {
+      "n_trials": 3,
+      "input_tokens_median": 689.0,
+      "output_tokens_median": 121.0,
+      "total_tokens_median": 810.0,
+      "peak_context_median": 689.0,
+      "wall_clock_s_median": 1.437494500001776,
+      "cost_usd_median": 0.003882,
+      "quality_median": 4.0,
+      "tool_calls_median": {
+        "graph_summary": 1.0
+      }
+    }
+  },
+  "I6": {
+    "claude_only": {
+      "n_trials": 3,
+      "input_tokens_median": 5422.0,
+      "output_tokens_median": 512.0,
+      "total_tokens_median": 5934.0,
+      "peak_context_median": 5422.0,
+      "wall_clock_s_median": 0.08475059999909718,
+      "cost_usd_median": 0.023946,
+      "quality_median": 2.0,
+      "tool_calls_median": {
+        "grep": 1.0,
+        "list_dir": 0.0,
+        "read_file": 0.0
+      }
+    },
+    "claude_plus_jarvis": {
+      "n_trials": 3,
+      "input_tokens_median": 759.0,
+      "output_tokens_median": 176.0,
+      "total_tokens_median": 935.0,
+      "peak_context_median": 759.0,
+      "wall_clock_s_median": 1.4113134000072023,
+      "cost_usd_median": 0.0049169999999999995,
+      "quality_median": 1.0,
+      "tool_calls_median": {
+        "impact_module": 1.0
+      }
+    }
+  },
+  "C1": {
+    "claude_only": {
+      "n_trials": 3,
+      "input_tokens_median": 2962.0,
+      "output_tokens_median": 1010.0,
+      "total_tokens_median": 3972.0,
+      "peak_context_median": 2962.0,
+      "wall_clock_s_median": 0.0001588000013725832,
+      "cost_usd_median": 0.024036000000000002,
+      "quality_median": 0.0,
+      "tool_calls_median": {
+        "grep": 0.0,
+        "list_dir": 0.0,
+        "read_file": 1.0
+      }
+    },
+    "claude_plus_jarvis": {
+      "n_trials": 3,
+      "input_tokens_median": 1114.0,
+      "output_tokens_median": 126.0,
+      "total_tokens_median": 1240.0,
+      "peak_context_median": 1114.0,
+      "wall_clock_s_median": 0.023570399993332103,
+      "cost_usd_median": 0.005232,
+      "quality_median": 0.0,
+      "tool_calls_median": {
+        "ask": 1.0
+      }
+    }
+  },
+  "C2": {
+    "claude_only": {
+      "n_trials": 3,
+      "input_tokens_median": 6552.0,
+      "output_tokens_median": 1512.0,
+      "total_tokens_median": 8064.0,
+      "peak_context_median": 6552.0,
+      "wall_clock_s_median": 0.0003656999906525016,
+      "cost_usd_median": 0.042336,
+      "quality_median": 4.0,
+      "tool_calls_median": {
+        "grep": 0.0,
+        "list_dir": 0.0,
+        "read_file": 2.0
+      }
+    },
+    "claude_plus_jarvis": {
+      "n_trials": 3,
+      "input_tokens_median": 1374.0,
+      "output_tokens_median": 204.0,
+      "total_tokens_median": 1578.0,
+      "peak_context_median": 1374.0,
+      "wall_clock_s_median": 0.024807699999655597,
+      "cost_usd_median": 0.007182,
+      "quality_median": 0.0,
+      "tool_calls_median": {
+        "ask": 1.0
+      }
+    }
+  },
+  "C3": {
+    "claude_only": {
+      "n_trials": 3,
+      "input_tokens_median": 5416.0,
+      "output_tokens_median": 1009.0,
+      "total_tokens_median": 6425.0,
+      "peak_context_median": 5416.0,
+      "wall_clock_s_median": 0.00025209999876096845,
+      "cost_usd_median": 0.031383,
+      "quality_median": 4.0,
+      "tool_calls_median": {
+        "grep": 0.0,
+        "list_dir": 0.0,
+        "read_file": 1.0
+      }
+    },
+    "claude_plus_jarvis": {
+      "n_trials": 3,
+      "input_tokens_median": 1206.0,
+      "output_tokens_median": 200.0,
+      "total_tokens_median": 1406.0,
+      "peak_context_median": 1206.0,
+      "wall_clock_s_median": 0.021769400002085604,
+      "cost_usd_median": 0.006618000000000001,
+      "quality_median": 4.0,
+      "tool_calls_median": {
+        "ask": 1.0
+      }
+    }
+  },
+  "C4": {
+    "claude_only": {
+      "n_trials": 3,
+      "input_tokens_median": 711.0,
+      "output_tokens_median": 105.0,
+      "total_tokens_median": 816.0,
+      "peak_context_median": 711.0,
+      "wall_clock_s_median": 0.0001664000010350719,
+      "cost_usd_median": 0.003708,
+      "quality_median": 4.0,
+      "tool_calls_median": {
+        "grep": 0.0,
+        "list_dir": 0.0,
+        "read_file": 1.0
+      }
+    },
+    "claude_plus_jarvis": {
+      "n_trials": 3,
+      "input_tokens_median": 1847.0,
+      "output_tokens_median": 285.0,
+      "total_tokens_median": 2132.0,
+      "peak_context_median": 1847.0,
+      "wall_clock_s_median": 0.0378406000090763,
+      "cost_usd_median": 0.009816,
+      "quality_median": 0.0,
+      "tool_calls_median": {
+        "ask": 1.0
+      }
+    }
+  },
+  "C5": {
+    "claude_only": {
+      "n_trials": 3,
+      "input_tokens_median": 639.0,
+      "output_tokens_median": 40.0,
+      "total_tokens_median": 679.0,
+      "peak_context_median": 639.0,
+      "wall_clock_s_median": 0.0001765000051818788,
+      "cost_usd_median": 0.002517,
+      "quality_median": 4.0,
+      "tool_calls_median": {
+        "grep": 0.0,
+        "list_dir": 0.0,
+        "read_file": 1.0
+      }
+    },
+    "claude_plus_jarvis": {
+      "n_trials": 3,
+      "input_tokens_median": 778.0,
+      "output_tokens_median": 178.0,
+      "total_tokens_median": 956.0,
+      "peak_context_median": 778.0,
+      "wall_clock_s_median": 1.3971787000045879,
+      "cost_usd_median": 0.005004,
+      "quality_median": 1.0,
+      "tool_calls_median": {
+        "impact_file": 1.0
+      }
+    }
+  },
+  "C6": {
+    "claude_only": {
+      "n_trials": 3,
+      "input_tokens_median": 778.0,
+      "output_tokens_median": 198.0,
+      "total_tokens_median": 976.0,
+      "peak_context_median": 778.0,
+      "wall_clock_s_median": 3.307902100001229,
+      "cost_usd_median": 0.005304,
+      "quality_median": 4.0,
+      "tool_calls_median": {
+        "grep": 1.0,
+        "list_dir": 0.0,
+        "read_file": 0.0
+      }
+    },
+    "claude_plus_jarvis": {
+      "n_trials": 3,
+      "input_tokens_median": 769.0,
+      "output_tokens_median": 178.0,
+      "total_tokens_median": 947.0,
+      "peak_context_median": 769.0,
+      "wall_clock_s_median": 1.4007147999946028,
+      "cost_usd_median": 0.0049770000000000005,
+      "quality_median": 4.0,
+      "tool_calls_median": {
+        "impact_file": 1.0
+      }
+    }
+  }
+}

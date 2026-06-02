@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "atlas",
+      "runtimeExecutable": "py",
+      "runtimeArgs": ["-c", "from jarvis_desktop import server; server.run(port=8802, open_browser=False)"],
+      "port": 8802
+    }
+  ]
+}

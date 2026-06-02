@@ -1,187 +1,7 @@
 {
   "active_workflow": "",
-  "current_task": "typed:phase67 test 3",
+  "current_task": "typed:jarvis phase65 acceptance",
   "recent_screens": [
-    {
-      "ts": 1779978386229,
-      "summary": "Status: degraded\nActive window: Fortnite  \nLikely app: Window: Fortnite  \nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779978382678.png",
-      "active_app": "FortniteClient-Win64-Shipping.exe"
-    },
-    {
-      "ts": 1779979617125,
-      "summary": "Status: blocked\nActive window: .env - J.A.R.V.I.S - Visual Studio Code\nLikely app: VS Code\nVisible text: (little or no visible text detected)\nWarnings: Blocked keyword in window context: '.env'; Blocked keyword in window context: '.env'",
-      "screenshot": "",
-      "active_app": "Code.exe"
-    },
-    {
-      "ts": 1779997407216,
-      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997406157.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997407312,
-      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997406157.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997407416,
-      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997406157.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997407522,
-      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997406157.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997407623,
-      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997406157.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997407741,
-      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997406157.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997407850,
-      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997406157.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997407951,
-      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997406157.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997441290,
-      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997441006.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997441635,
-      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997441360.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997441994,
-      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997441715.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997442364,
-      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997442067.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997442703,
-      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997442431.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997443032,
-      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997442769.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997443365,
-      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997443100.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997443704,
-      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997443434.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997444034,
-      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997443768.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997444364,
-      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997444100.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997490133,
-      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997489052.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997490239,
-      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997489052.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997490339,
-      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997489052.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997490441,
-      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997489052.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997490544,
-      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997489052.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997490644,
-      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997489052.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997490749,
-      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997489052.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997490851,
-      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997489052.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997527566,
-      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997527289.png",
-      "active_app": "chrome.exe"
-    },
-    {
-      "ts": 1779997527908,
-      "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
-      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779997527640.png",
-      "active_app": "chrome.exe"
-    },
     {
       "ts": 1779997528242,
       "summary": "Status: degraded\nActive window: topic flow 14 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
@@ -625,1508 +445,1784 @@
       "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
       "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001870164.png",
       "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1780046914444,
+      "summary": "Status: degraded\nActive window: (pytest)\nLikely app: Window: (pytest)\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Active window skipped during tests",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780046913871.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780046914755,
+      "summary": "Status: degraded\nActive window: (pytest)\nLikely app: Window: (pytest)\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Active window skipped during tests",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780046913871.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780046915074,
+      "summary": "Status: degraded\nActive window: (pytest)\nLikely app: Window: (pytest)\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Active window skipped during tests",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780046913871.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780046915403,
+      "summary": "Status: degraded\nActive window: (pytest)\nLikely app: Window: (pytest)\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Active window skipped during tests",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780046913871.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780046915712,
+      "summary": "Status: degraded\nActive window: (pytest)\nLikely app: Window: (pytest)\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Active window skipped during tests",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780046913871.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780046916019,
+      "summary": "Status: degraded\nActive window: (pytest)\nLikely app: Window: (pytest)\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Active window skipped during tests",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780046913871.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780047088763,
+      "summary": "Status: degraded\nActive window: (pytest)\nLikely app: Window: (pytest)\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Active window skipped during tests",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047088335.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780047089012,
+      "summary": "Status: degraded\nActive window: (pytest)\nLikely app: Window: (pytest)\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Active window skipped during tests",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047088335.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780047089270,
+      "summary": "Status: degraded\nActive window: (pytest)\nLikely app: Window: (pytest)\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Active window skipped during tests",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047088335.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780047089514,
+      "summary": "Status: degraded\nActive window: (pytest)\nLikely app: Window: (pytest)\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Active window skipped during tests",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047088335.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780047089745,
+      "summary": "Status: degraded\nActive window: (pytest)\nLikely app: Window: (pytest)\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Active window skipped during tests",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047088335.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780047089996,
+      "summary": "Status: degraded\nActive window: (pytest)\nLikely app: Window: (pytest)\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Active window skipped during tests",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047088335.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780047284312,
+      "summary": "Status: degraded\nActive window: \u202b\u05ea\u05e0\u05d5\u05e2\u05ea \"\u05d4\u05de\u05e8\u05d9 \u05d4\u05e2\u05d1\u05e8\u05d9\": \u05d4\u05e7\u05de\u05ea \u05ea\u05e0\u05d5\u05e2\u05ea \u05d4\u05e2\u05d1\u05e8\u05d9, \u05e1\u05d9\u05d1\u05d5\u05ea, \u05d3\u05e8\u05db\u05d9 \u05e4\u05e2\u05d5\u05dc\u05d4, \u05d3\u05d5\u05d2\u05de\u05d0 \u05dc\u05de\u05d1\u05e6\u05e2, \u05e1\u05d9\u05d1\u05d5\u05ea \u05dc\u05e4\u05d9\u05e8\u05d5\u05e7\u05d4. - YouTube - Google Chrome\u202c\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047284025.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1780047284419,
+      "summary": "Status: degraded\nActive window: \u202b\u05ea\u05e0\u05d5\u05e2\u05ea \"\u05d4\u05de\u05e8\u05d9 \u05d4\u05e2\u05d1\u05e8\u05d9\": \u05d4\u05e7\u05de\u05ea \u05ea\u05e0\u05d5\u05e2\u05ea \u05d4\u05e2\u05d1\u05e8\u05d9, \u05e1\u05d9\u05d1\u05d5\u05ea, \u05d3\u05e8\u05db\u05d9 \u05e4\u05e2\u05d5\u05dc\u05d4, \u05d3\u05d5\u05d2\u05de\u05d0 \u05dc\u05de\u05d1\u05e6\u05e2, \u05e1\u05d9\u05d1\u05d5\u05ea \u05dc\u05e4\u05d9\u05e8\u05d5\u05e7\u05d4. - YouTube - Google Chrome\u202c\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047284025.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1780047284530,
+      "summary": "Status: degraded\nActive window: \u202b\u05ea\u05e0\u05d5\u05e2\u05ea \"\u05d4\u05de\u05e8\u05d9 \u05d4\u05e2\u05d1\u05e8\u05d9\": \u05d4\u05e7\u05de\u05ea \u05ea\u05e0\u05d5\u05e2\u05ea \u05d4\u05e2\u05d1\u05e8\u05d9, \u05e1\u05d9\u05d1\u05d5\u05ea, \u05d3\u05e8\u05db\u05d9 \u05e4\u05e2\u05d5\u05dc\u05d4, \u05d3\u05d5\u05d2\u05de\u05d0 \u05dc\u05de\u05d1\u05e6\u05e2, \u05e1\u05d9\u05d1\u05d5\u05ea \u05dc\u05e4\u05d9\u05e8\u05d5\u05e7\u05d4. - YouTube - Google Chrome\u202c\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047284025.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1780047284642,
+      "summary": "Status: degraded\nActive window: \u202b\u05ea\u05e0\u05d5\u05e2\u05ea \"\u05d4\u05de\u05e8\u05d9 \u05d4\u05e2\u05d1\u05e8\u05d9\": \u05d4\u05e7\u05de\u05ea \u05ea\u05e0\u05d5\u05e2\u05ea \u05d4\u05e2\u05d1\u05e8\u05d9, \u05e1\u05d9\u05d1\u05d5\u05ea, \u05d3\u05e8\u05db\u05d9 \u05e4\u05e2\u05d5\u05dc\u05d4, \u05d3\u05d5\u05d2\u05de\u05d0 \u05dc\u05de\u05d1\u05e6\u05e2, \u05e1\u05d9\u05d1\u05d5\u05ea \u05dc\u05e4\u05d9\u05e8\u05d5\u05e7\u05d4. - YouTube - Google Chrome\u202c\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047284025.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1780047284752,
+      "summary": "Status: degraded\nActive window: \u202b\u05ea\u05e0\u05d5\u05e2\u05ea \"\u05d4\u05de\u05e8\u05d9 \u05d4\u05e2\u05d1\u05e8\u05d9\": \u05d4\u05e7\u05de\u05ea \u05ea\u05e0\u05d5\u05e2\u05ea \u05d4\u05e2\u05d1\u05e8\u05d9, \u05e1\u05d9\u05d1\u05d5\u05ea, \u05d3\u05e8\u05db\u05d9 \u05e4\u05e2\u05d5\u05dc\u05d4, \u05d3\u05d5\u05d2\u05de\u05d0 \u05dc\u05de\u05d1\u05e6\u05e2, \u05e1\u05d9\u05d1\u05d5\u05ea \u05dc\u05e4\u05d9\u05e8\u05d5\u05e7\u05d4. - YouTube - Google Chrome\u202c\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047284025.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1780047284862,
+      "summary": "Status: degraded\nActive window: \u202b\u05ea\u05e0\u05d5\u05e2\u05ea \"\u05d4\u05de\u05e8\u05d9 \u05d4\u05e2\u05d1\u05e8\u05d9\": \u05d4\u05e7\u05de\u05ea \u05ea\u05e0\u05d5\u05e2\u05ea \u05d4\u05e2\u05d1\u05e8\u05d9, \u05e1\u05d9\u05d1\u05d5\u05ea, \u05d3\u05e8\u05db\u05d9 \u05e4\u05e2\u05d5\u05dc\u05d4, \u05d3\u05d5\u05d2\u05de\u05d0 \u05dc\u05de\u05d1\u05e6\u05e2, \u05e1\u05d9\u05d1\u05d5\u05ea \u05dc\u05e4\u05d9\u05e8\u05d5\u05e7\u05d4. - YouTube - Google Chrome\u202c\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047284025.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1780047507278,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047507007.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1780047507342,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047507007.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1780047507409,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047507007.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1780047507475,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047507007.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1780047507543,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047507007.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1780047507609,
+      "summary": "Status: degraded\nActive window: topic_5 at DuckDuckGo - Google Chrome for Testing\nLikely app: Chrome\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047507007.png",
+      "active_app": "chrome.exe"
+    },
+    {
+      "ts": 1780047705489,
+      "summary": "Status: degraded\nActive window: Task Manager\nLikely app: Window: Task Manager\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047705213.png",
+      "active_app": "Taskmgr.exe"
+    },
+    {
+      "ts": 1780047705562,
+      "summary": "Status: degraded\nActive window: Task Manager\nLikely app: Window: Task Manager\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047705213.png",
+      "active_app": "Taskmgr.exe"
+    },
+    {
+      "ts": 1780047705637,
+      "summary": "Status: degraded\nActive window: Task Manager\nLikely app: Window: Task Manager\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047705213.png",
+      "active_app": "Taskmgr.exe"
+    },
+    {
+      "ts": 1780047705708,
+      "summary": "Status: degraded\nActive window: Task Manager\nLikely app: Window: Task Manager\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047705213.png",
+      "active_app": "Taskmgr.exe"
+    },
+    {
+      "ts": 1780047705780,
+      "summary": "Status: degraded\nActive window: Task Manager\nLikely app: Window: Task Manager\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047705213.png",
+      "active_app": "Taskmgr.exe"
+    },
+    {
+      "ts": 1780047705848,
+      "summary": "Status: degraded\nActive window: Task Manager\nLikely app: Window: Task Manager\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047705213.png",
+      "active_app": "Taskmgr.exe"
+    },
+    {
+      "ts": 1780048122772,
+      "summary": "Status: degraded\nActive window: (pytest)\nLikely app: Window: (pytest)\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Active window skipped during tests",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048122376.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780048122984,
+      "summary": "Status: degraded\nActive window: (pytest)\nLikely app: Window: (pytest)\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Active window skipped during tests",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048122376.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780048123218,
+      "summary": "Status: degraded\nActive window: (pytest)\nLikely app: Window: (pytest)\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Active window skipped during tests",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048122376.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780048123464,
+      "summary": "Status: degraded\nActive window: (pytest)\nLikely app: Window: (pytest)\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Active window skipped during tests",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048122376.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780048123691,
+      "summary": "Status: degraded\nActive window: (pytest)\nLikely app: Window: (pytest)\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Active window skipped during tests",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048122376.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780048123904,
+      "summary": "Status: degraded\nActive window: (pytest)\nLikely app: Window: (pytest)\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Active window skipped during tests",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048122376.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780048284286,
+      "summary": "Status: degraded\nActive window: (pytest)\nLikely app: Window: (pytest)\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Active window skipped during tests",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048283969.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780048284470,
+      "summary": "Status: degraded\nActive window: (pytest)\nLikely app: Window: (pytest)\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Active window skipped during tests",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048283969.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780048284646,
+      "summary": "Status: degraded\nActive window: (pytest)\nLikely app: Window: (pytest)\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Active window skipped during tests",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048283969.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780048284836,
+      "summary": "Status: degraded\nActive window: (pytest)\nLikely app: Window: (pytest)\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Active window skipped during tests",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048283969.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780048285015,
+      "summary": "Status: degraded\nActive window: (pytest)\nLikely app: Window: (pytest)\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Active window skipped during tests",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048283969.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780048285193,
+      "summary": "Status: degraded\nActive window: (pytest)\nLikely app: Window: (pytest)\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Active window skipped during tests",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048283969.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780048628536,
+      "summary": "Status: ok\nActive window: Test\nLikely app: Settings\nVisible text: Hello Settings\nUI hints: button:settings",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048203699.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780049663515,
+      "summary": "Status: degraded\nActive window: (pytest)\nLikely app: Window: (pytest)\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Active window skipped during tests",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048203699.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780049663830,
+      "summary": "Status: degraded\nActive window: (pytest)\nLikely app: Window: (pytest)\nVisible text: (little or no visible text detected)\nWarnings: Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Tesseract OCR is not available. Install Tesseract on Windows and set TESSERACT_CMD in .env if not on PATH.; Active window skipped during tests",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048203699.png",
+      "active_app": "pytest"
+    },
+    {
+      "ts": 1780049663845,
+      "summary": "Screen summary:\n  app: pytest\n  window: (pytest)\n  text_excerpt: (pytest)\npytest\n\u202b\u05de\u05ea\u05e7\u05e4\u05ea \u05d4\u05e4\u05ea\u05e2, \u05d4\u05e7\u05e8\u05d1\u05d5\u05ea \u05d5\u05d7\u05d6\u05e8\u05ea \u05d4\u05e9\u05d1\u05d5\u05d9\u05d9\u05dd: \u05de\u05dc\u05d7\u05de\u05ea \u05d9\u05d5\u05dd \u05db\u05d9\u05e4\u05d5\u05e8 \u05d1\u05e6\u05d1\u05e2 | \u05d4\u05d9\u05d5\u05dd \u05dc\u05e4\u05e0\u05d9 - YouTube - Google Chrome\u202c\nJ.A.R.V.I.S - Codex \u05d0\u05ea\u05e8 \u05d5-Jarvis\nClaude\n\u202b\u05db\u05e8\u05d8\u05d9\u05e1\u05d9\u05d9\u05d4 \u05d7\u05d3\u05e9\u05d4 - Google Chrome\u202c\nlive_weekly_20260523_162845.log - \u05e4\u05e0\u05e7\u05e1 \u05e8\u05e9\u05d9\u05de\u05d5\u05ea\nWhatsApp\nFINAL_ALGO_TRADER - File Explorer\nAlgo Operator and 11 more pages - Personal - Microsoft\u200b Edge\nSettings\n\u202b\u05ea\u05e0\u05d5\u05e2\u05ea \u05d4\u05de\u05e8\u05d9 \u05d4\u05e2\u05d1\u05e8\u05d9 (\u05d4\u05de\u05d0\u05d1\u05e7 \u05d4\u05e6\u05d1\u05d0\u05d9 \u05e9\u05dc \u05d4\u05d9\u05d9\u05e9\u05d5\u05d1 \u05d4\u05d9\u05d4\u05d5\u05d3\u05d9 \u05d1\u05d1\u05e8\u05d9\u05d8\u05d9\u05dd) - YouTube - Google Chrome\u202c\nExample Domain - Google Chrome for Testing\nTask Manager\n  buttons_detected: 0\n  notifications: 0",
+      "screenshot": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048203699.png",
+      "active_app": "pytest"
     }
   ],
   "ui_transitions": [
     {
-      "ts": 1779998449685,
-      "action": "what_is_on_my_screen",
-      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+      "ts": 1780047772289,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047772101.png"
     },
     {
-      "ts": 1779998449791,
-      "action": "what_is_on_my_screen",
-      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+      "ts": 1780047772610,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047772436.png"
     },
     {
-      "ts": 1779998449897,
-      "action": "what_is_on_my_screen",
-      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+      "ts": 1780047772934,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047772753.png"
     },
     {
-      "ts": 1779998450005,
-      "action": "what_is_on_my_screen",
-      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+      "ts": 1780047773237,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047773069.png"
     },
     {
-      "ts": 1779998450112,
-      "action": "what_is_on_my_screen",
-      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+      "ts": 1780047773573,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047773382.png"
     },
     {
-      "ts": 1779998450216,
-      "action": "what_is_on_my_screen",
-      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+      "ts": 1780047773920,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047773712.png"
     },
     {
-      "ts": 1779998450236,
-      "action": "list_open_windows",
-      "detail": "count=9"
+      "ts": 1780047774236,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047774052.png"
     },
     {
-      "ts": 1779998450246,
-      "action": "list_open_windows",
-      "detail": "count=9"
+      "ts": 1780047774550,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047774379.png"
     },
     {
-      "ts": 1779998450257,
-      "action": "list_open_windows",
-      "detail": "count=9"
+      "ts": 1780047774890,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047774694.png"
     },
     {
-      "ts": 1779998450266,
-      "action": "list_open_windows",
-      "detail": "count=9"
+      "ts": 1780047775273,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047775046.png"
     },
     {
-      "ts": 1779998450756,
+      "ts": 1780047901889,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047901646.png"
+    },
+    {
+      "ts": 1780047902787,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780047902577.png"
+    },
+    {
+      "ts": 1780047902797,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780047902806,
+      "action": "recover_desktop_operator",
+      "detail": "Task Manager"
+    },
+    {
+      "ts": 1780047903487,
       "action": "type_text",
-      "detail": "phase66 test 0"
+      "detail": "jarvis phase65 acceptance"
     },
     {
-      "ts": 1779998450766,
+      "ts": 1780047903496,
       "action": "type_text",
-      "detail": "phase66 test 0"
+      "detail": "jarvis phase65 acceptance"
     },
     {
-      "ts": 1779998451229,
-      "action": "type_text",
-      "detail": "phase66 test 1"
-    },
-    {
-      "ts": 1779998451237,
-      "action": "type_text",
-      "detail": "phase66 test 1"
-    },
-    {
-      "ts": 1779998451702,
-      "action": "type_text",
-      "detail": "phase66 test 2"
-    },
-    {
-      "ts": 1779998451710,
-      "action": "type_text",
-      "detail": "phase66 test 2"
-    },
-    {
-      "ts": 1779998452174,
-      "action": "type_text",
-      "detail": "phase66 test 3"
-    },
-    {
-      "ts": 1779998452183,
-      "action": "type_text",
-      "detail": "phase66 test 3"
-    },
-    {
-      "ts": 1779998476948,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1779998476956,
-      "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
-    },
-    {
-      "ts": 1779998476964,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1779998476972,
-      "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
-    },
-    {
-      "ts": 1779998476980,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1779998476988,
-      "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
-    },
-    {
-      "ts": 1779998476996,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1779998477004,
-      "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
-    },
-    {
-      "ts": 1779998477013,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1779998477027,
-      "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
-    },
-    {
-      "ts": 1779998477035,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1779998477044,
-      "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
-    },
-    {
-      "ts": 1779998477052,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1779998477060,
-      "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
-    },
-    {
-      "ts": 1779998477068,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1779998477076,
-      "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
-    },
-    {
-      "ts": 1779998477084,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1779998477093,
-      "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
-    },
-    {
-      "ts": 1779998477102,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1779998477110,
-      "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
-    },
-    {
-      "ts": 1779998488848,
+      "ts": 1780048117948,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998488678.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048117812.png"
     },
     {
-      "ts": 1779998488952,
+      "ts": 1780048118157,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048117999.png"
+    },
+    {
+      "ts": 1780048118365,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048118213.png"
+    },
+    {
+      "ts": 1780048118580,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048118421.png"
+    },
+    {
+      "ts": 1780048118792,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048118638.png"
+    },
+    {
+      "ts": 1780048118997,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048118840.png"
+    },
+    {
+      "ts": 1780048119196,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048119048.png"
+    },
+    {
+      "ts": 1780048119388,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048119250.png"
+    },
+    {
+      "ts": 1780048119590,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048119439.png"
+    },
+    {
+      "ts": 1780048119804,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048119658.png"
+    },
+    {
+      "ts": 1780048120002,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048119855.png"
+    },
+    {
+      "ts": 1780048120254,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048120104.png"
+    },
+    {
+      "ts": 1780048120484,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048120321.png"
+    },
+    {
+      "ts": 1780048120687,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048120545.png"
+    },
+    {
+      "ts": 1780048120905,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048120754.png"
+    },
+    {
+      "ts": 1780048121136,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048120967.png"
+    },
+    {
+      "ts": 1780048121371,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048121200.png"
+    },
+    {
+      "ts": 1780048121596,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048121440.png"
+    },
+    {
+      "ts": 1780048121833,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048121666.png"
+    },
+    {
+      "ts": 1780048122056,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048121898.png"
+    },
+    {
+      "ts": 1780048122305,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048122121.png"
+    },
+    {
+      "ts": 1780048122538,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048122376.png"
+    },
+    {
+      "ts": 1780048122763,
       "action": "what_is_on_my_screen",
-      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
+      "detail": "(pytest)"
     },
     {
-      "ts": 1779998488969,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1779998488977,
-      "action": "recover_desktop_operator",
-      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
-    },
-    {
-      "ts": 1779998489193,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998489030.png"
-    },
-    {
-      "ts": 1779998489296,
+      "ts": 1780048122975,
       "action": "what_is_on_my_screen",
-      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
+      "detail": "(pytest)"
     },
     {
-      "ts": 1779998489314,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1779998489322,
-      "action": "recover_desktop_operator",
-      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
-    },
-    {
-      "ts": 1779998489553,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998489376.png"
-    },
-    {
-      "ts": 1779998489668,
+      "ts": 1780048123208,
       "action": "what_is_on_my_screen",
-      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
+      "detail": "(pytest)"
     },
     {
-      "ts": 1779998489688,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1779998489697,
-      "action": "recover_desktop_operator",
-      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
-    },
-    {
-      "ts": 1779998489925,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998489757.png"
-    },
-    {
-      "ts": 1779998490020,
+      "ts": 1780048123454,
       "action": "what_is_on_my_screen",
-      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
+      "detail": "(pytest)"
     },
     {
-      "ts": 1779998490037,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1779998490046,
-      "action": "recover_desktop_operator",
-      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
-    },
-    {
-      "ts": 1779998490261,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998490097.png"
-    },
-    {
-      "ts": 1779998490372,
+      "ts": 1780048123682,
       "action": "what_is_on_my_screen",
-      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
+      "detail": "(pytest)"
     },
     {
-      "ts": 1779998490390,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1779998490399,
-      "action": "recover_desktop_operator",
-      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
-    },
-    {
-      "ts": 1779998490611,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998490451.png"
-    },
-    {
-      "ts": 1779998490710,
+      "ts": 1780048123895,
       "action": "what_is_on_my_screen",
-      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
+      "detail": "(pytest)"
     },
     {
-      "ts": 1779998490727,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1779998490735,
-      "action": "recover_desktop_operator",
-      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
-    },
-    {
-      "ts": 1779998490944,
+      "ts": 1780048124137,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998490788.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048123954.png"
     },
     {
-      "ts": 1779998491044,
-      "action": "what_is_on_my_screen",
-      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
-    },
-    {
-      "ts": 1779998491061,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1779998491069,
-      "action": "recover_desktop_operator",
-      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
-    },
-    {
-      "ts": 1779998491275,
+      "ts": 1780048124356,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998491121.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048124217.png"
     },
     {
-      "ts": 1779998491373,
-      "action": "what_is_on_my_screen",
-      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
-    },
-    {
-      "ts": 1779998491389,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1779998491397,
-      "action": "recover_desktop_operator",
-      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
-    },
-    {
-      "ts": 1779998491614,
+      "ts": 1780048124575,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998491452.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048124433.png"
     },
     {
-      "ts": 1779998491714,
-      "action": "what_is_on_my_screen",
-      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
-    },
-    {
-      "ts": 1779998491731,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1779998491739,
-      "action": "recover_desktop_operator",
-      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
-    },
-    {
-      "ts": 1779998491947,
+      "ts": 1780048124806,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1779998491792.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048124649.png"
     },
     {
-      "ts": 1779998492047,
-      "action": "what_is_on_my_screen",
-      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
-    },
-    {
-      "ts": 1779998492063,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1779998492072,
-      "action": "recover_desktop_operator",
-      "detail": "topic flow 14 at DuckDuckGo - Google Chrome for Testing"
-    },
-    {
-      "ts": 1780001399233,
+      "ts": 1780048125022,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001399105.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048124878.png"
     },
     {
-      "ts": 1780001399407,
+      "ts": 1780048125248,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001399282.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048125096.png"
     },
     {
-      "ts": 1780001399587,
+      "ts": 1780048125545,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001399455.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048125326.png"
     },
     {
-      "ts": 1780001399771,
+      "ts": 1780048125971,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001399643.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048125669.png"
     },
     {
-      "ts": 1780001399973,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001399820.png"
-    },
-    {
-      "ts": 1780001400147,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001400020.png"
-    },
-    {
-      "ts": 1780001400322,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001400195.png"
-    },
-    {
-      "ts": 1780001400499,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001400371.png"
-    },
-    {
-      "ts": 1780001400679,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001400549.png"
-    },
-    {
-      "ts": 1780001400855,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001400728.png"
-    },
-    {
-      "ts": 1780001401032,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001400903.png"
-    },
-    {
-      "ts": 1780001401548,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001401419.png"
-    },
-    {
-      "ts": 1780001401732,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001401605.png"
-    },
-    {
-      "ts": 1780001401919,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001401790.png"
-    },
-    {
-      "ts": 1780001402108,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001401977.png"
-    },
-    {
-      "ts": 1780001402293,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001402165.png"
-    },
-    {
-      "ts": 1780001402481,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001402352.png"
-    },
-    {
-      "ts": 1780001402667,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001402540.png"
-    },
-    {
-      "ts": 1780001402855,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001402727.png"
-    },
-    {
-      "ts": 1780001403045,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001402916.png"
-    },
-    {
-      "ts": 1780001403229,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001403102.png"
-    },
-    {
-      "ts": 1780001403420,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001403291.png"
-    },
-    {
-      "ts": 1780001403481,
-      "action": "what_is_on_my_screen",
-      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
-    },
-    {
-      "ts": 1780001403538,
-      "action": "what_is_on_my_screen",
-      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
-    },
-    {
-      "ts": 1780001403593,
-      "action": "what_is_on_my_screen",
-      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
-    },
-    {
-      "ts": 1780001403648,
-      "action": "what_is_on_my_screen",
-      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
-    },
-    {
-      "ts": 1780001403705,
-      "action": "what_is_on_my_screen",
-      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
-    },
-    {
-      "ts": 1780001403760,
-      "action": "what_is_on_my_screen",
-      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
-    },
-    {
-      "ts": 1780001403947,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001403819.png"
-    },
-    {
-      "ts": 1780001404138,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001404009.png"
-    },
-    {
-      "ts": 1780001404335,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001404199.png"
-    },
-    {
-      "ts": 1780001404543,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001404405.png"
-    },
-    {
-      "ts": 1780001404735,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001404607.png"
-    },
-    {
-      "ts": 1780001404924,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001404795.png"
-    },
-    {
-      "ts": 1780001405112,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001404983.png"
-    },
-    {
-      "ts": 1780001405299,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001405170.png"
-    },
-    {
-      "ts": 1780001405327,
+      "ts": 1780048126059,
       "action": "list_open_windows",
-      "detail": "count=9"
+      "detail": "count=17"
     },
     {
-      "ts": 1780001405336,
+      "ts": 1780048126078,
       "action": "list_open_windows",
-      "detail": "count=9"
+      "detail": "count=17"
     },
     {
-      "ts": 1780001405345,
+      "ts": 1780048126092,
       "action": "list_open_windows",
-      "detail": "count=9"
+      "detail": "count=17"
     },
     {
-      "ts": 1780001405354,
+      "ts": 1780048126135,
       "action": "list_open_windows",
-      "detail": "count=9"
+      "detail": "count=17"
     },
     {
-      "ts": 1780001405822,
+      "ts": 1780048126815,
       "action": "type_text",
       "detail": "phase67 test 0"
     },
     {
-      "ts": 1780001405830,
+      "ts": 1780048126826,
       "action": "type_text",
       "detail": "phase67 test 0"
     },
     {
-      "ts": 1780001406277,
+      "ts": 1780048127543,
       "action": "type_text",
       "detail": "phase67 test 1"
     },
     {
-      "ts": 1780001406285,
+      "ts": 1780048127554,
       "action": "type_text",
       "detail": "phase67 test 1"
     },
     {
-      "ts": 1780001406730,
+      "ts": 1780048128095,
       "action": "type_text",
       "detail": "phase67 test 2"
     },
     {
-      "ts": 1780001406738,
+      "ts": 1780048128105,
       "action": "type_text",
       "detail": "phase67 test 2"
     },
     {
-      "ts": 1780001407183,
+      "ts": 1780048128557,
       "action": "type_text",
       "detail": "phase67 test 3"
     },
     {
-      "ts": 1780001407191,
+      "ts": 1780048128566,
       "action": "type_text",
       "detail": "phase67 test 3"
     },
     {
-      "ts": 1780001425574,
+      "ts": 1780048152217,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001425392.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048152032.png"
     },
     {
-      "ts": 1780001425768,
+      "ts": 1780048152479,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001425624.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048152278.png"
     },
     {
-      "ts": 1780001425777,
+      "ts": 1780048152488,
       "action": "recover_desktop_operator",
       "detail": "state refreshed"
     },
     {
-      "ts": 1780001425785,
+      "ts": 1780048152497,
       "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
+      "detail": "(pytest)"
     },
     {
-      "ts": 1780001425991,
+      "ts": 1780048152749,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001425836.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048152553.png"
     },
     {
-      "ts": 1780001426185,
+      "ts": 1780048152993,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001426043.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048152805.png"
     },
     {
-      "ts": 1780001426379,
+      "ts": 1780048153251,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001426235.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048153052.png"
     },
     {
-      "ts": 1780001426388,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1780001426396,
-      "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
-    },
-    {
-      "ts": 1780001426581,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001426443.png"
-    },
-    {
-      "ts": 1780001426772,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001426631.png"
-    },
-    {
-      "ts": 1780001426963,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001426822.png"
-    },
-    {
-      "ts": 1780001426972,
+      "ts": 1780048153262,
       "action": "recover_desktop_operator",
       "detail": "state refreshed"
     },
     {
-      "ts": 1780001426980,
+      "ts": 1780048153271,
       "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
+      "detail": "(pytest)"
     },
     {
-      "ts": 1780001427171,
+      "ts": 1780048153536,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001427029.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048153333.png"
     },
     {
-      "ts": 1780001427364,
+      "ts": 1780048153781,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001427224.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048153596.png"
     },
     {
-      "ts": 1780001427557,
+      "ts": 1780048154026,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001427414.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048153840.png"
     },
     {
-      "ts": 1780001427567,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1780001427575,
-      "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
-    },
-    {
-      "ts": 1780001427763,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001427622.png"
-    },
-    {
-      "ts": 1780001427972,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001427817.png"
-    },
-    {
-      "ts": 1780001428164,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001428024.png"
-    },
-    {
-      "ts": 1780001428173,
+      "ts": 1780048154036,
       "action": "recover_desktop_operator",
       "detail": "state refreshed"
     },
     {
-      "ts": 1780001428182,
+      "ts": 1780048154045,
       "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
+      "detail": "(pytest)"
     },
     {
-      "ts": 1780001428375,
+      "ts": 1780048154289,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001428232.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048154104.png"
     },
     {
-      "ts": 1780001428566,
+      "ts": 1780048154545,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001428428.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048154354.png"
     },
     {
-      "ts": 1780001428759,
+      "ts": 1780048154816,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001428616.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048154601.png"
     },
     {
-      "ts": 1780001428768,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1780001428776,
-      "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
-    },
-    {
-      "ts": 1780001428976,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001428823.png"
-    },
-    {
-      "ts": 1780001429168,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001429027.png"
-    },
-    {
-      "ts": 1780001429360,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001429219.png"
-    },
-    {
-      "ts": 1780001429368,
+      "ts": 1780048154829,
       "action": "recover_desktop_operator",
       "detail": "state refreshed"
     },
     {
-      "ts": 1780001429376,
+      "ts": 1780048154839,
       "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
+      "detail": "(pytest)"
     },
     {
-      "ts": 1780001429576,
+      "ts": 1780048155098,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001429426.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048154901.png"
     },
     {
-      "ts": 1780001429761,
+      "ts": 1780048155373,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001429626.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048155165.png"
     },
     {
-      "ts": 1780001429952,
+      "ts": 1780048155635,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001429810.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048155445.png"
     },
     {
-      "ts": 1780001429961,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1780001429969,
-      "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
-    },
-    {
-      "ts": 1780001430171,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001430018.png"
-    },
-    {
-      "ts": 1780001430377,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001430223.png"
-    },
-    {
-      "ts": 1780001430566,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001430429.png"
-    },
-    {
-      "ts": 1780001430575,
+      "ts": 1780048155648,
       "action": "recover_desktop_operator",
       "detail": "state refreshed"
     },
     {
-      "ts": 1780001430583,
+      "ts": 1780048155658,
       "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
+      "detail": "(pytest)"
     },
     {
-      "ts": 1780001430770,
+      "ts": 1780048155922,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001430632.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048155721.png"
     },
     {
-      "ts": 1780001430957,
+      "ts": 1780048156203,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001430818.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048155990.png"
     },
     {
-      "ts": 1780001431159,
+      "ts": 1780048156466,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001431017.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048156276.png"
     },
     {
-      "ts": 1780001431168,
+      "ts": 1780048156477,
       "action": "recover_desktop_operator",
       "detail": "state refreshed"
     },
     {
-      "ts": 1780001431176,
+      "ts": 1780048156488,
       "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
+      "detail": "(pytest)"
     },
     {
-      "ts": 1780001431371,
+      "ts": 1780048156749,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001431225.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048156544.png"
     },
     {
-      "ts": 1780001446664,
+      "ts": 1780048156996,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001446522.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048156804.png"
     },
     {
-      "ts": 1780001446980,
+      "ts": 1780048157253,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001446827.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048157052.png"
     },
     {
-      "ts": 1780001447296,
+      "ts": 1780048157265,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780048157274,
+      "action": "recover_desktop_operator",
+      "detail": "(pytest)"
+    },
+    {
+      "ts": 1780048157546,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001447135.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048157339.png"
     },
     {
-      "ts": 1780001447597,
+      "ts": 1780048157783,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001447453.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048157603.png"
     },
     {
-      "ts": 1780001447913,
+      "ts": 1780048158033,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001447755.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048157841.png"
     },
     {
-      "ts": 1780001448241,
+      "ts": 1780048158044,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780048158052,
+      "action": "recover_desktop_operator",
+      "detail": "(pytest)"
+    },
+    {
+      "ts": 1780048158295,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001448078.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048158105.png"
     },
     {
-      "ts": 1780001448561,
+      "ts": 1780048158553,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001448403.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048158358.png"
     },
     {
-      "ts": 1780001448881,
+      "ts": 1780048158791,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001448728.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048158613.png"
     },
     {
-      "ts": 1780001449185,
+      "ts": 1780048158802,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780048158811,
+      "action": "recover_desktop_operator",
+      "detail": "(pytest)"
+    },
+    {
+      "ts": 1780048159045,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001449033.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048158867.png"
     },
     {
-      "ts": 1780001449498,
+      "ts": 1780048159297,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001449332.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048159103.png"
     },
     {
-      "ts": 1780001865742,
+      "ts": 1780048159552,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001865596.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048159362.png"
     },
     {
-      "ts": 1780001865939,
+      "ts": 1780048159565,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780048159575,
+      "action": "recover_desktop_operator",
+      "detail": "(pytest)"
+    },
+    {
+      "ts": 1780048159839,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001865798.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048159633.png"
     },
     {
-      "ts": 1780001866134,
+      "ts": 1780048200389,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001866003.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048200239.png"
     },
     {
-      "ts": 1780001866353,
+      "ts": 1780048200720,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001866195.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048200550.png"
     },
     {
-      "ts": 1780001866579,
+      "ts": 1780048201104,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001866410.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048200913.png"
     },
     {
-      "ts": 1780001866868,
+      "ts": 1780048201495,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001866687.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048201306.png"
     },
     {
-      "ts": 1780001867064,
+      "ts": 1780048201865,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001866923.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048201683.png"
     },
     {
-      "ts": 1780001867258,
+      "ts": 1780048202268,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001867117.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048202061.png"
     },
     {
-      "ts": 1780001867448,
+      "ts": 1780048202667,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001867310.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048202476.png"
     },
     {
-      "ts": 1780001867645,
+      "ts": 1780048203092,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001867506.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048202891.png"
     },
     {
-      "ts": 1780001867850,
+      "ts": 1780048203506,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001867701.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048203311.png"
     },
     {
-      "ts": 1780001868420,
+      "ts": 1780048203853,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001868288.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048203699.png"
     },
     {
-      "ts": 1780001868608,
+      "ts": 1780048280069,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001868476.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048279941.png"
     },
     {
-      "ts": 1780001868795,
+      "ts": 1780048280230,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001868664.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048280117.png"
     },
     {
-      "ts": 1780001868984,
+      "ts": 1780048280404,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001868852.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048280287.png"
     },
     {
-      "ts": 1780001869169,
+      "ts": 1780048280568,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001869038.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048280454.png"
     },
     {
-      "ts": 1780001869354,
+      "ts": 1780048280726,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001869223.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048280615.png"
     },
     {
-      "ts": 1780001869546,
+      "ts": 1780048280885,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001869411.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048280773.png"
     },
     {
-      "ts": 1780001869733,
+      "ts": 1780048281045,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001869601.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048280932.png"
     },
     {
-      "ts": 1780001869920,
+      "ts": 1780048281206,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001869788.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048281094.png"
     },
     {
-      "ts": 1780001870108,
+      "ts": 1780048281370,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001869977.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048281259.png"
     },
     {
-      "ts": 1780001870295,
+      "ts": 1780048281535,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001870164.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048281422.png"
     },
     {
-      "ts": 1780001870361,
+      "ts": 1780048281692,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048281580.png"
+    },
+    {
+      "ts": 1780048282352,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048282241.png"
+    },
+    {
+      "ts": 1780048282526,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048282411.png"
+    },
+    {
+      "ts": 1780048282701,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048282585.png"
+    },
+    {
+      "ts": 1780048282874,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048282760.png"
+    },
+    {
+      "ts": 1780048283045,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048282932.png"
+    },
+    {
+      "ts": 1780048283216,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048283102.png"
+    },
+    {
+      "ts": 1780048283391,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048283277.png"
+    },
+    {
+      "ts": 1780048283562,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048283447.png"
+    },
+    {
+      "ts": 1780048283737,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048283624.png"
+    },
+    {
+      "ts": 1780048283911,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048283794.png"
+    },
+    {
+      "ts": 1780048284082,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048283969.png"
+    },
+    {
+      "ts": 1780048284278,
       "action": "what_is_on_my_screen",
-      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+      "detail": "(pytest)"
     },
     {
-      "ts": 1780001870423,
+      "ts": 1780048284461,
       "action": "what_is_on_my_screen",
-      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+      "detail": "(pytest)"
     },
     {
-      "ts": 1780001870485,
+      "ts": 1780048284638,
       "action": "what_is_on_my_screen",
-      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+      "detail": "(pytest)"
     },
     {
-      "ts": 1780001870548,
+      "ts": 1780048284827,
       "action": "what_is_on_my_screen",
-      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+      "detail": "(pytest)"
     },
     {
-      "ts": 1780001870609,
+      "ts": 1780048285006,
       "action": "what_is_on_my_screen",
-      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+      "detail": "(pytest)"
     },
     {
-      "ts": 1780001870672,
+      "ts": 1780048285185,
       "action": "what_is_on_my_screen",
-      "detail": "topic_5 at DuckDuckGo - Google Chrome for Testing"
+      "detail": "(pytest)"
     },
     {
-      "ts": 1780001870860,
+      "ts": 1780048285370,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001870727.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048285244.png"
     },
     {
-      "ts": 1780001871099,
+      "ts": 1780048285578,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001870936.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048285466.png"
     },
     {
-      "ts": 1780001871287,
+      "ts": 1780048285755,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001871156.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048285643.png"
     },
     {
-      "ts": 1780001871480,
+      "ts": 1780048285941,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001871347.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048285829.png"
     },
     {
-      "ts": 1780001871672,
+      "ts": 1780048286126,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001871541.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048286006.png"
     },
     {
-      "ts": 1780001871863,
+      "ts": 1780048286299,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001871731.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048286190.png"
     },
     {
-      "ts": 1780001872063,
+      "ts": 1780048286505,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001871923.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048286377.png"
     },
     {
-      "ts": 1780001872265,
+      "ts": 1780048286703,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001872126.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048286580.png"
     },
     {
-      "ts": 1780001872287,
+      "ts": 1780048286735,
       "action": "list_open_windows",
-      "detail": "count=9"
+      "detail": "count=19"
     },
     {
-      "ts": 1780001872296,
+      "ts": 1780048286746,
       "action": "list_open_windows",
-      "detail": "count=9"
+      "detail": "count=19"
     },
     {
-      "ts": 1780001872305,
+      "ts": 1780048286755,
       "action": "list_open_windows",
-      "detail": "count=9"
+      "detail": "count=19"
     },
     {
-      "ts": 1780001872314,
+      "ts": 1780048286765,
       "action": "list_open_windows",
-      "detail": "count=9"
+      "detail": "count=19"
     },
     {
-      "ts": 1780001872779,
+      "ts": 1780048287257,
       "action": "type_text",
       "detail": "phase67 test 0"
     },
     {
-      "ts": 1780001872788,
+      "ts": 1780048287265,
       "action": "type_text",
       "detail": "phase67 test 0"
     },
     {
-      "ts": 1780001873236,
+      "ts": 1780048287717,
       "action": "type_text",
       "detail": "phase67 test 1"
     },
     {
-      "ts": 1780001873244,
+      "ts": 1780048287726,
       "action": "type_text",
       "detail": "phase67 test 1"
     },
     {
-      "ts": 1780001873690,
+      "ts": 1780048288186,
       "action": "type_text",
       "detail": "phase67 test 2"
     },
     {
-      "ts": 1780001873698,
+      "ts": 1780048288195,
       "action": "type_text",
       "detail": "phase67 test 2"
     },
     {
-      "ts": 1780001874144,
+      "ts": 1780048288663,
       "action": "type_text",
       "detail": "phase67 test 3"
     },
     {
-      "ts": 1780001874152,
+      "ts": 1780048288672,
       "action": "type_text",
       "detail": "phase67 test 3"
     },
     {
-      "ts": 1780001894929,
+      "ts": 1780048313021,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001894742.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048312849.png"
     },
     {
-      "ts": 1780001895176,
+      "ts": 1780048313224,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001894990.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048313078.png"
     },
     {
-      "ts": 1780001895187,
+      "ts": 1780048313234,
       "action": "recover_desktop_operator",
       "detail": "state refreshed"
     },
     {
-      "ts": 1780001895196,
+      "ts": 1780048313243,
       "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
+      "detail": "(pytest)"
     },
     {
-      "ts": 1780001895428,
+      "ts": 1780048313448,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001895251.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048313304.png"
     },
     {
-      "ts": 1780001895650,
+      "ts": 1780048313627,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001895482.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048313494.png"
     },
     {
-      "ts": 1780001895846,
+      "ts": 1780048313839,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001895702.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048313683.png"
     },
     {
-      "ts": 1780001895855,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1780001895863,
-      "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
-    },
-    {
-      "ts": 1780001896062,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001895914.png"
-    },
-    {
-      "ts": 1780001896259,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001896114.png"
-    },
-    {
-      "ts": 1780001896458,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001896310.png"
-    },
-    {
-      "ts": 1780001896467,
+      "ts": 1780048313849,
       "action": "recover_desktop_operator",
       "detail": "state refreshed"
     },
     {
-      "ts": 1780001896475,
+      "ts": 1780048313858,
       "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
+      "detail": "(pytest)"
     },
     {
-      "ts": 1780001896689,
+      "ts": 1780048314038,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001896527.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048313910.png"
     },
     {
-      "ts": 1780001896886,
+      "ts": 1780048314241,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001896740.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048314088.png"
     },
     {
-      "ts": 1780001897087,
+      "ts": 1780048314441,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001896939.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048314296.png"
     },
     {
-      "ts": 1780001897096,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1780001897104,
-      "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
-    },
-    {
-      "ts": 1780001897306,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001897157.png"
-    },
-    {
-      "ts": 1780001897506,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001897355.png"
-    },
-    {
-      "ts": 1780001897705,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001897555.png"
-    },
-    {
-      "ts": 1780001897714,
+      "ts": 1780048314453,
       "action": "recover_desktop_operator",
       "detail": "state refreshed"
     },
     {
-      "ts": 1780001897723,
+      "ts": 1780048314462,
       "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
+      "detail": "(pytest)"
     },
     {
-      "ts": 1780001897941,
+      "ts": 1780048314681,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001897772.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048314519.png"
     },
     {
-      "ts": 1780001898140,
+      "ts": 1780048314856,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001897994.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048314738.png"
     },
     {
-      "ts": 1780001898352,
+      "ts": 1780048315020,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001898195.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048314903.png"
     },
     {
-      "ts": 1780001898362,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1780001898371,
-      "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
-    },
-    {
-      "ts": 1780001898595,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001898431.png"
-    },
-    {
-      "ts": 1780001898799,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001898649.png"
-    },
-    {
-      "ts": 1780001898996,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001898852.png"
-    },
-    {
-      "ts": 1780001899005,
+      "ts": 1780048315030,
       "action": "recover_desktop_operator",
       "detail": "state refreshed"
     },
     {
-      "ts": 1780001899013,
+      "ts": 1780048315038,
       "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
+      "detail": "(pytest)"
     },
     {
-      "ts": 1780001899210,
+      "ts": 1780048315241,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001899066.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048315089.png"
     },
     {
-      "ts": 1780001899409,
+      "ts": 1780048315423,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001899261.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048315301.png"
     },
     {
-      "ts": 1780001899609,
+      "ts": 1780048315594,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001899460.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048315473.png"
     },
     {
-      "ts": 1780001899618,
-      "action": "recover_desktop_operator",
-      "detail": "state refreshed"
-    },
-    {
-      "ts": 1780001899626,
-      "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
-    },
-    {
-      "ts": 1780001899832,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001899680.png"
-    },
-    {
-      "ts": 1780001900032,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001899885.png"
-    },
-    {
-      "ts": 1780001900243,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001900093.png"
-    },
-    {
-      "ts": 1780001900252,
+      "ts": 1780048315604,
       "action": "recover_desktop_operator",
       "detail": "state refreshed"
     },
     {
-      "ts": 1780001900259,
+      "ts": 1780048315612,
       "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
+      "detail": "(pytest)"
     },
     {
-      "ts": 1780001900462,
+      "ts": 1780048315780,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001900310.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048315658.png"
     },
     {
-      "ts": 1780001900660,
+      "ts": 1780048315952,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001900515.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048315829.png"
     },
     {
-      "ts": 1780001900860,
+      "ts": 1780048316123,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001900710.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048316001.png"
     },
     {
-      "ts": 1780001900869,
+      "ts": 1780048316134,
       "action": "recover_desktop_operator",
       "detail": "state refreshed"
     },
     {
-      "ts": 1780001900877,
+      "ts": 1780048316143,
       "action": "recover_desktop_operator",
-      "detail": "Example Domain - Google Chrome for Testing"
+      "detail": "(pytest)"
     },
     {
-      "ts": 1780001901075,
+      "ts": 1780048316326,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001900927.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048316191.png"
     },
     {
-      "ts": 1780001929704,
+      "ts": 1780048316507,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001929567.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048316387.png"
     },
     {
-      "ts": 1780001929973,
+      "ts": 1780048316676,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001929837.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048316555.png"
     },
     {
-      "ts": 1780001930246,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001930118.png"
+      "ts": 1780048316685,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
     },
     {
-      "ts": 1780001930522,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001930378.png"
+      "ts": 1780048316694,
+      "action": "recover_desktop_operator",
+      "detail": "(pytest)"
     },
     {
-      "ts": 1780001930799,
+      "ts": 1780048316866,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001930657.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048316742.png"
     },
     {
-      "ts": 1780001931074,
+      "ts": 1780048317036,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001930941.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048316916.png"
     },
     {
-      "ts": 1780001931355,
+      "ts": 1780048317243,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001931214.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048317087.png"
     },
     {
-      "ts": 1780001931615,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001931488.png"
+      "ts": 1780048317252,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
     },
     {
-      "ts": 1780001931896,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001931749.png"
+      "ts": 1780048317260,
+      "action": "recover_desktop_operator",
+      "detail": "(pytest)"
     },
     {
-      "ts": 1780001932156,
+      "ts": 1780048317475,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780001932028.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048317323.png"
     },
     {
-      "ts": 1780002993797,
+      "ts": 1780048317714,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780002993663.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048317533.png"
     },
     {
-      "ts": 1780002994167,
+      "ts": 1780048317940,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780002994030.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048317775.png"
     },
     {
-      "ts": 1780003012900,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780003012760.png"
+      "ts": 1780048317952,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
     },
     {
-      "ts": 1780003013276,
-      "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780003013151.png"
+      "ts": 1780048317962,
+      "action": "recover_desktop_operator",
+      "detail": "(pytest)"
     },
     {
-      "ts": 1780003028030,
+      "ts": 1780048318179,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780003027888.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048318021.png"
     },
     {
-      "ts": 1780003028404,
+      "ts": 1780048318394,
       "action": "capture_active_monitor",
-      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780003028268.png"
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048318243.png"
+    },
+    {
+      "ts": 1780048318595,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048318452.png"
+    },
+    {
+      "ts": 1780048318606,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780048318615,
+      "action": "recover_desktop_operator",
+      "detail": "(pytest)"
+    },
+    {
+      "ts": 1780048318782,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048318662.png"
+    },
+    {
+      "ts": 1780048433808,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048433670.png"
+    },
+    {
+      "ts": 1780048434118,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048433968.png"
+    },
+    {
+      "ts": 1780048434429,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048434280.png"
+    },
+    {
+      "ts": 1780048434731,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048434584.png"
+    },
+    {
+      "ts": 1780048435021,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048434885.png"
+    },
+    {
+      "ts": 1780048435321,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048435176.png"
+    },
+    {
+      "ts": 1780048435624,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048435477.png"
+    },
+    {
+      "ts": 1780048435923,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048435773.png"
+    },
+    {
+      "ts": 1780048436218,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048436071.png"
+    },
+    {
+      "ts": 1780048436525,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780048436381.png"
+    },
+    {
+      "ts": 1780048628526,
+      "action": "what_is_on_my_screen",
+      "detail": "(pytest)"
+    },
+    {
+      "ts": 1780049663504,
+      "action": "what_is_on_my_screen",
+      "detail": "(pytest)"
+    },
+    {
+      "ts": 1780049663821,
+      "action": "what_is_on_my_screen",
+      "detail": "(pytest)"
+    },
+    {
+      "ts": 1780049663855,
+      "action": "focus_window",
+      "detail": "chrome"
+    },
+    {
+      "ts": 1780049663865,
+      "action": "focus_window",
+      "detail": "chrome"
+    },
+    {
+      "ts": 1780049663875,
+      "action": "list_open_windows",
+      "detail": "count=25"
+    },
+    {
+      "ts": 1780049664177,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780049663940.png"
+    },
+    {
+      "ts": 1780049671622,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780049671441.png"
+    },
+    {
+      "ts": 1780049673363,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780049673153.png"
+    },
+    {
+      "ts": 1780049673653,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780049673433.png"
+    },
+    {
+      "ts": 1780049673662,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780049673671,
+      "action": "recover_desktop_operator",
+      "detail": "(pytest)"
+    },
+    {
+      "ts": 1780049674404,
+      "action": "type_text",
+      "detail": "jarvis phase65 acceptance"
+    },
+    {
+      "ts": 1780049674413,
+      "action": "type_text",
+      "detail": "jarvis phase65 acceptance"
+    },
+    {
+      "ts": 1780052800502,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780052800330.png"
+    },
+    {
+      "ts": 1780052802443,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780052802276.png"
+    },
+    {
+      "ts": 1780052802453,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780052802461,
+      "action": "recover_desktop_operator",
+      "detail": "(pytest)"
+    },
+    {
+      "ts": 1780052803278,
+      "action": "type_text",
+      "detail": "jarvis phase65 acceptance"
+    },
+    {
+      "ts": 1780052803287,
+      "action": "type_text",
+      "detail": "jarvis phase65 acceptance"
+    },
+    {
+      "ts": 1780053208331,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780053208139.png"
+    },
+    {
+      "ts": 1780053209273,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780053209081.png"
+    },
+    {
+      "ts": 1780053209283,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780053209292,
+      "action": "recover_desktop_operator",
+      "detail": "(pytest)"
+    },
+    {
+      "ts": 1780053210083,
+      "action": "type_text",
+      "detail": "jarvis phase65 acceptance"
+    },
+    {
+      "ts": 1780053210093,
+      "action": "type_text",
+      "detail": "jarvis phase65 acceptance"
+    },
+    {
+      "ts": 1780057304713,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780057304485.png"
+    },
+    {
+      "ts": 1780057305723,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780057305512.png"
+    },
+    {
+      "ts": 1780057305733,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780057305742,
+      "action": "recover_desktop_operator",
+      "detail": "(pytest)"
+    },
+    {
+      "ts": 1780057306542,
+      "action": "type_text",
+      "detail": "jarvis phase65 acceptance"
+    },
+    {
+      "ts": 1780057306551,
+      "action": "type_text",
+      "detail": "jarvis phase65 acceptance"
+    },
+    {
+      "ts": 1780057634879,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780057634700.png"
+    },
+    {
+      "ts": 1780057635821,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780057635635.png"
+    },
+    {
+      "ts": 1780057635831,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780057635840,
+      "action": "recover_desktop_operator",
+      "detail": "(pytest)"
+    },
+    {
+      "ts": 1780057636638,
+      "action": "type_text",
+      "detail": "jarvis phase65 acceptance"
+    },
+    {
+      "ts": 1780057636647,
+      "action": "type_text",
+      "detail": "jarvis phase65 acceptance"
+    },
+    {
+      "ts": 1780057961917,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780057961715.png"
+    },
+    {
+      "ts": 1780057962814,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780057962619.png"
+    },
+    {
+      "ts": 1780057962824,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780057962834,
+      "action": "recover_desktop_operator",
+      "detail": "(pytest)"
+    },
+    {
+      "ts": 1780057963642,
+      "action": "type_text",
+      "detail": "jarvis phase65 acceptance"
+    },
+    {
+      "ts": 1780057963652,
+      "action": "type_text",
+      "detail": "jarvis phase65 acceptance"
+    },
+    {
+      "ts": 1780058173358,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780058173159.png"
+    },
+    {
+      "ts": 1780058174343,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780058174159.png"
+    },
+    {
+      "ts": 1780058174354,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780058174363,
+      "action": "recover_desktop_operator",
+      "detail": "(pytest)"
+    },
+    {
+      "ts": 1780058175176,
+      "action": "type_text",
+      "detail": "jarvis phase65 acceptance"
+    },
+    {
+      "ts": 1780058175187,
+      "action": "type_text",
+      "detail": "jarvis phase65 acceptance"
+    },
+    {
+      "ts": 1780063055501,
+      "action": "capture_active_monitor",
+      "detail": "Windows graphics function failed (no error provided): BitBlt"
+    },
+    {
+      "ts": 1780063055513,
+      "action": "capture_active_monitor",
+      "detail": "Windows graphics function failed: BitBlt: Access is denied."
+    },
+    {
+      "ts": 1780063055523,
+      "action": "capture_active_monitor",
+      "detail": "Windows graphics function failed: BitBlt: Access is denied."
+    },
+    {
+      "ts": 1780063055893,
+      "action": "capture_active_monitor",
+      "detail": "Windows graphics function failed: BitBlt: Access is denied."
+    },
+    {
+      "ts": 1780063055902,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780063055911,
+      "action": "recover_desktop_operator",
+      "detail": "n/a"
+    },
+    {
+      "ts": 1780238546270,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780238545825.png"
+    },
+    {
+      "ts": 1780238548458,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780238548313.png"
+    },
+    {
+      "ts": 1780238548466,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780238548473,
+      "action": "recover_desktop_operator",
+      "detail": "(pytest)"
+    },
+    {
+      "ts": 1780238549256,
+      "action": "type_text",
+      "detail": "jarvis phase65 acceptance"
+    },
+    {
+      "ts": 1780238549263,
+      "action": "type_text",
+      "detail": "jarvis phase65 acceptance"
+    },
+    {
+      "ts": 1780239718118,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780239718008.png"
+    },
+    {
+      "ts": 1780239718574,
+      "action": "capture_active_monitor",
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\desktop_screenshots\\desktop_1780239718483.png"
+    },
+    {
+      "ts": 1780239718581,
+      "action": "recover_desktop_operator",
+      "detail": "state refreshed"
+    },
+    {
+      "ts": 1780239718587,
+      "action": "recover_desktop_operator",
+      "detail": "(pytest)"
+    },
+    {
+      "ts": 1780239719307,
+      "action": "type_text",
+      "detail": "jarvis phase65 acceptance"
+    },
+    {
+      "ts": 1780239719314,
+      "action": "type_text",
+      "detail": "jarvis phase65 acceptance"
     }
   ]
 }

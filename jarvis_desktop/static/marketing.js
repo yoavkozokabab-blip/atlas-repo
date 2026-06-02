@@ -1,10 +1,16 @@
 "use strict";
-/* JARVIS marketing layer — waitlist, counts, reveals, mock screenshots, analytics.
+/* Atlas marketing layer — waitlist, counts, reveals, mock screenshots, analytics.
    Stores locally (localStorage) with a backend-ready interface. No external calls. */
 
 const WAITLIST_BASE = 127;          // configurable placeholder ("127 developers waiting")
 const WL_KEY = "jarvis_waitlist";
 const EV_KEY = "jarvis_events";
+const ATLAS_LINKS = Object.freeze({
+  github: "",
+  x: "",
+  discord: "",
+});
+const ATLAS_LINK_UNAVAILABLE = "Coming soon — official Atlas link not configured yet.";
 
 /* ---------- storage (swap these two for a real API later) ---------- */
 function getSignups() { try { return JSON.parse(localStorage.getItem(WL_KEY) || "[]"); } catch (e) { return []; } }
@@ -53,6 +59,26 @@ async function submitWaitlist() {
   updateCounts();
 }
 function mtoast(msg) { const t = document.getElementById("mtoast"); if (!t) return; t.textContent = msg; t.classList.add("show"); setTimeout(() => t.classList.remove("show"), 2200); }
+function openAtlasSocial(name) {
+  const url = ATLAS_LINKS[name] || "";
+  if (!url) { mtoast(ATLAS_LINK_UNAVAILABLE); track("social_link_unavailable", { name }); return; }
+  window.open(url, "_blank", "noopener,noreferrer");
+}
+
+/* ---------- same-page hash navigation ---------- */
+function initHashNavigation() {
+  document.addEventListener("click", event => {
+    const link = event.target.closest("a[href^='#']");
+    if (!link) return;
+    const hash = link.getAttribute("href");
+    if (!hash || hash === "#") return;
+    const target = document.querySelector(hash);
+    if (!target) return;
+    event.preventDefault();
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    history.replaceState(null, "", hash);
+  });
+}
 
 /* ---------- reveal on scroll ---------- */
 function initReveals() {
@@ -104,7 +130,7 @@ window.addEventListener("resize", () => { clearTimeout(window._mr); window._mr =
 
 /* ---------- boot ---------- */
 document.addEventListener("DOMContentLoaded", () => {
-  updateCounts(); initReveals();
+  updateCounts(); initReveals(); initHashNavigation();
   const m = document.getElementById("waitlistModal");
   if (m) m.addEventListener("click", e => { if (e.target === m) closeWaitlist(); });
   track("page_view", { page: (location.pathname.split("/").pop() || "landing") });

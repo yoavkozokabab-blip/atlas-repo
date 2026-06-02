@@ -1,54 +1,56 @@
 {
-  "created_at": "2026-05-25T21:03:23.178240+00:00",
+  "created_at": "2026-05-29T10:11:41.859986+00:00",
   "read_only": true,
   "symbol": "AAPL",
-  "replay_hash": "43f832d6aba07119baef60afefcb8b5cdbe514b4d46e7efa5be45c13fda300b6",
+  "replay_hash": "c94fdb7d188d3031bd5487eba735c284d5b54a549f55a25ca7e01caa89076afd",
   "fixtures": {
     "two_bar_mismatch": [
       {
         "index": 0,
-        "timestamp": "2026-04-18T16:47:37",
-        "open": 135.8,
-        "high": 136.8,
-        "low": 135.4,
-        "close": 136.0,
+        "timestamp": "2026-01-01T09:35:00",
+        "open": 101.3,
+        "high": 102.3,
+        "low": 100.9,
+        "close": 101.5,
         "volume": 1000.0,
         "complete": true
       },
       {
         "index": 1,
-        "timestamp": "2026-04-18T16:47:37",
-        "open": 136.3,
-        "high": 137.3,
-        "low": 135.9,
-        "close": 136.5,
+        "timestamp": "2026-01-01T09:30:00",
+        "open": 101.8,
+        "high": 102.8,
+        "low": 101.4,
+        "close": 102.0,
         "volume": 1001.0,
-        "complete": true
+        "complete": false
       }
     ],
     "delayed_entry": [
       {
         "name": "delayed entry",
         "inputs": {
-          "selected_bar": 1
+          "selected_bar": 0
         },
         "outputs": {
-          "next_bar_index": 2,
+          "next_bar_index": 1,
           "frozen": true
         },
         "rejection_reason": "",
         "state_delta": {},
         "evidence_paths": [
-          "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\scheduled_logs\\live_weekly_20260523_162845.log",
-          "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\logs\\live_monitor.log",
-          "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
-          "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_run_history.csv",
-          "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_decision_summary.json",
-          "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\sent_alerts.json"
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\live_paper\\dual\\latest_AAPL.txt",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\backtests\\backtest_AAPL.txt",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\universe\\symbols.txt",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\configs\\strategy.yaml",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\services\\live_paper_engine.py",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\strategy\\real_algo.py"
         ]
       }
     ],
-    "stale_price": [],
+    "stale_price": [
+      "stale price guard observed in evidence"
+    ],
     "ranking_order": {
       "AAPL": 0.860816
     }
@@ -56,76 +58,52 @@
   "diff": {
     "symbol": "AAPL",
     "status": "different",
-    "first_divergence": "index alignment mismatch live=2 backtest=1",
+    "first_divergence": "index alignment mismatch live=1 backtest=0",
     "live_bar": {
-      "index": 2,
-      "timestamp": "2026-04-18T16:47:37",
-      "open": 136.8,
-      "high": 137.8,
-      "low": 136.4,
-      "close": 137.0,
-      "volume": 1002.0,
+      "index": 1,
+      "timestamp": "2026-01-01T09:30:00",
+      "open": 101.8,
+      "high": 102.8,
+      "low": 101.4,
+      "close": 102.0,
+      "volume": 1001.0,
       "complete": false
     },
     "backtest_bar": {
-      "index": 1,
-      "timestamp": "2026-04-18T16:47:37",
-      "open": 136.3,
-      "high": 137.3,
-      "low": 135.9,
-      "close": 136.5,
-      "volume": 1001.0,
+      "index": 0,
+      "timestamp": "2026-01-01T09:35:00",
+      "open": 101.3,
+      "high": 102.3,
+      "low": 100.9,
+      "close": 101.5,
+      "volume": 1000.0,
       "complete": true
     },
     "divergence_reasons": [
-      "index alignment mismatch live=2 backtest=1",
+      "index alignment mismatch live=1 backtest=0",
+      "timezone/timestamp mismatch live=2026-01-01T09:30:00 backtest=2026-01-01T09:35:00",
       "incomplete candle usage in live replay",
-      "price mismatch live_close=137.0 backtest_close=136.5"
+      "price mismatch live_close=102.0 backtest_close=101.5",
+      "stale bar/price evidence observed"
     ],
     "evidence_paths": [
-      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\scheduled_logs\\live_weekly_20260523_162845.log",
-      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\logs\\live_monitor.log",
-      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
-      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_run_history.csv",
-      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_decision_summary.json",
-      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\sent_alerts.json",
-      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\processed_signals.json",
-      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\open_positions.json",
-      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_order_events.csv",
-      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\weekly\\paper_live_log_weekly.txt",
-      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\daily\\paper_live_log_daily.txt",
-      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\paper_live_log_combined.txt",
-      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\paper_positions_combined.json",
-      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\weekly\\paper_positions_weekly.json",
-      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\daily\\paper_positions_daily.json",
-      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\paper_positions.json",
-      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\paper_safety_state.json",
-      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\paper_portfolio_state.json",
-      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\review_summary.csv",
-      "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\review_summary.txt"
+      "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\live_paper\\dual\\latest_AAPL.txt",
+      "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\backtests\\backtest_AAPL.txt",
+      "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\universe\\symbols.txt",
+      "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\configs\\strategy.yaml",
+      "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\services\\live_paper_engine.py",
+      "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\strategy\\real_algo.py",
+      "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\backtest\\fib_quality.py"
     ],
     "confidence": 0.88
   },
   "evidence_paths": [
-    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\scheduled_logs\\live_weekly_20260523_162845.log",
-    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\logs\\live_monitor.log",
-    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
-    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_run_history.csv",
-    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_decision_summary.json",
-    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\sent_alerts.json",
-    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\processed_signals.json",
-    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\open_positions.json",
-    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_order_events.csv",
-    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\weekly\\paper_live_log_weekly.txt",
-    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\daily\\paper_live_log_daily.txt",
-    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\paper_live_log_combined.txt",
-    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\paper_positions_combined.json",
-    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\weekly\\paper_positions_weekly.json",
-    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\daily\\paper_positions_daily.json",
-    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\combined\\paper_positions.json",
-    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\paper_safety_state.json",
-    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\paper_portfolio_state.json",
-    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\review_summary.csv",
-    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\review_summary.txt"
+    "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\live_paper\\dual\\latest_AAPL.txt",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\backtests\\backtest_AAPL.txt",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\universe\\symbols.txt",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\configs\\strategy.yaml",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\services\\live_paper_engine.py",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\strategy\\real_algo.py",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\backtest\\fib_quality.py"
   ]
 }

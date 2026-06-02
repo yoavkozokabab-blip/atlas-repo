@@ -14,6 +14,7 @@ from voice.realtime_tts import split_sentences
 logger = setup_logger("jarvis.conversation.llm_streaming")
 
 _SENTENCE_END = re.compile(r"(?<=[.!?…])\s+|\n+")
+_CLAUSE_BREAK = re.compile(r"(?<=[,;:—–-])\s+")
 _lock = threading.Lock()
 _generation = 0
 
@@ -27,6 +28,33 @@ def _next_generation() -> int:
 
 def cancel_llm_stream() -> None:
     _next_generation()
+
+
+def _stream_chunk_targets() -> tuple[int, int]:
+    try:
+        import config as cfg
+
+        first = int(getattr(cfg, "CONVERSATION_STREAM_FIRST_CHUNK_CHARS", 18))
+        steady = int(getattr(cfg, "CONVERSATION_STREAM_MIN_CHARS", 28))
+        return max(12, first), max(20, steady)
+    except Exception:
+        return 18, 28
+
+
+def _yield_speakable_chunks(buffer: str, *, first_chunk: bool) -> tuple[list[str], str]:
+    """Split buffer into early speakable units (clauses then sentences)."""
+    first_min, steady_min = _stream_chunk_targets()
+    min_chars = first_min if first_chunk else steady_min
+    if len(buffer) < min_chars:
+        return [], buffer
+    parts = _SENTENCE_END.split(buffer)
+    if len(parts) > 1:
+        ready = [p.strip() for p in parts[:-1] if p.strip()]
+        return ready, parts[-1]
+    clause_parts = _CLAUSE_BREAK.split(buffer)
+    if len(clause_parts) > 1 and len(clause_parts[0].strip()) >= min_chars:
+        return [clause_parts[0].strip()], clause_parts[-1]
+    return [], buffer
 
 
 def stream_sentence_fragments(
@@ -50,6 +78,7 @@ def stream_sentence_fragments(
     prompt = f"{ctx}\n\nUser: {user_text.strip()}\nAssistant:"
     buffer = ""
     first_token = False
+    first_chunk_emitted = False
     try:
         from conversation.conversation_metrics import get_last_conversation_metrics
         from integrations.ollama_client import OllamaClient, OllamaError
@@ -65,12 +94,14 @@ def stream_sentence_fragments(
                 if rec is not None:
                     rec.mark_llm_first_token()
             buffer += token
-            parts = split_sentences(buffer)
-            if len(parts) <= 1:
-                continue
-            for sentence in parts[:-1]:
-                yield sentence.strip()
-            buffer = parts[-1]
+            ready, buffer = _yield_speakable_chunks(
+                buffer,
+                first_chunk=not first_chunk_emitted,
+            )
+            for chunk in ready:
+                if chunk:
+                    yield chunk
+                    first_chunk_emitted = True
         if buffer.strip():
             yield buffer.strip()
         return

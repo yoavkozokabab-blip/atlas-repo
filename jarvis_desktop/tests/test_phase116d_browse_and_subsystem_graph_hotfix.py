@@ -118,7 +118,7 @@ def test_frontend_route_audit_includes_browse():
 
 def test_graph_mode_switch_clears_stale_graph_state():
     app = APP_JS.read_text(encoding="utf-8")
-    start = app.index("function setGraphView(view)")
+    start = app.index("function setGraphView(")
     end = app.index("function renderHierarchyBreadcrumb()", start)
     body = app[start:end]
     assert "STATE.graph = null" in body
@@ -130,4 +130,5 @@ def test_universe_subsystem_scaling_helpers_present():
     assert "function subsystemNodeScale(node)" in text
     assert "function fitGraphCamera(fg, nodes)" in text
     assert "d3.forceCollide" in text
-    assert "Math.min(14, node.visual_size" in text
+    assert "function moduleNodeScale" in text
+    assert "Math.min(18, node.visual_size" in text

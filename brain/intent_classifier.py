@@ -1225,6 +1225,91 @@ _PHRASE_RULES: list[tuple[list[str], Intent, float]] = [
         0.88,
     ),
     (["shutdown jarvis", "exit jarvis", "סגור את ג'רוויס"], Intent.SHUTDOWN_JARVIS, 0.95),
+    # ── Project Intelligence — read-only builder questions (Phase 79+) ───────
+    # These must come after all trading/diagnostic rules to avoid false-positive
+    # matches on those domains, and use 0.88 so trading-specific phrases at
+    # 0.90+ still win when the question is explicitly about trading.
+    (
+        [
+            "why was phase",
+            "what problem does phase",
+            "what did phase",
+            "why did phase",
+        ],
+        Intent.ANSWER_PROJECT_QUESTION,
+        0.88,
+    ),
+    (
+        [
+            "architectural risks in",
+            "architectural risk in",
+            "codebase risks",
+            "codebase risk in",
+            "current jarvis codebase",
+        ],
+        Intent.ANSWER_PROJECT_QUESTION,
+        0.88,
+    ),
+    (
+        [
+            "what should be built next",
+            "build next and why",
+        ],
+        Intent.ANSWER_PROJECT_QUESTION,
+        0.88,
+    ),
+    (
+        [
+            "current state of the project",
+            "state of the project",
+        ],
+        Intent.ANSWER_PROJECT_QUESTION,
+        0.88,
+    ),
+    (
+        [
+            "unfinished phases",
+            "incomplete phases",
+            "most important unfinished",
+        ],
+        Intent.ANSWER_PROJECT_QUESTION,
+        0.88,
+    ),
+    (
+        [
+            "what changed in the last",
+            "last 30 days",
+            "last 7 days",
+        ],
+        Intent.ANSWER_PROJECT_QUESTION,
+        0.88,
+    ),
+    (
+        [
+            "decisions were made recently",
+            "decisions made recently",
+            "decisions that could affect future",
+        ],
+        Intent.ANSWER_PROJECT_QUESTION,
+        0.88,
+    ),
+    (
+        [
+            "if a new developer",
+            "new developer joined",
+        ],
+        Intent.ANSWER_PROJECT_QUESTION,
+        0.88,
+    ),
+    (
+        [
+            "parts of the codebase appear unrelated",
+            "codebase appear unrelated",
+            "unrelated to jarvis for builders",
+        ],
+        Intent.ANSWER_PROJECT_QUESTION,
+        0.88,
+    ),
 ]
 
 _KEYWORD_RULES: list[tuple[list[str], Intent, float]] = [
@@ -1293,6 +1378,54 @@ def match_tool_use_command(text: str):
             confidence=0.96, params={"goal": m.group(1).strip()},
             classifier_source="tool_use",
         )
+    return None
+
+
+# ---------------------------------------------------------------------------
+# Autonomous Agent Stack v1 — bounded read-only research commands (highest
+# priority; matched before tool-use so "research deeply X" != "research X").
+# ---------------------------------------------------------------------------
+_AUTO_SHOW_LAST_RE = re.compile(r"^\s*show\s+last\s+autonomous\s+run\s*$", re.I)
+_AUTO_SHOW_AUDIT_RE = re.compile(r"^\s*show\s+autonomous\s+audit\s+(\S+)\s*$", re.I)
+_AUTO_PLAN_RE = re.compile(r"^\s*plan\s+autonomous\s+task\s+(.+?)\s*$", re.I)
+_AUTO_COMPARE_RE = re.compile(r"^\s*compare\s+sources\s+for\s+(.+?)\s*$", re.I)
+_AUTO_DEEP_RE = re.compile(r"^\s*research\s+deeply\s+(.+?)\s*$", re.I)
+_AUTO_RUN_RE = re.compile(r"^\s*run\s+autonomous\s+task\s+(.+?)\s*$", re.I)
+
+
+def match_autonomous_command(text: str):
+    """Match the 6 Autonomous Agent Stack commands. Returns CommandRequest or None."""
+    t = (text or "").strip()
+    if not t:
+        return None
+    if _AUTO_SHOW_LAST_RE.match(t):
+        return CommandRequest(raw_text=text, intent=Intent.SHOW_LAST_AUTONOMOUS_RUN,
+                              confidence=0.97, classifier_source="autonomous")
+    m = _AUTO_SHOW_AUDIT_RE.match(t)
+    if m:
+        return CommandRequest(raw_text=text, intent=Intent.SHOW_AUTONOMOUS_AUDIT,
+                              confidence=0.97, params={"task_id": m.group(1).strip()},
+                              classifier_source="autonomous")
+    m = _AUTO_PLAN_RE.match(t)
+    if m:
+        return CommandRequest(raw_text=text, intent=Intent.PLAN_AUTONOMOUS_TASK,
+                              confidence=0.96, params={"goal": m.group(1).strip()},
+                              classifier_source="autonomous")
+    m = _AUTO_COMPARE_RE.match(t)
+    if m:
+        return CommandRequest(raw_text=text, intent=Intent.COMPARE_SOURCES_FOR,
+                              confidence=0.96, params={"goal": m.group(1).strip(), "mode": "compare"},
+                              classifier_source="autonomous")
+    m = _AUTO_DEEP_RE.match(t)
+    if m:
+        return CommandRequest(raw_text=text, intent=Intent.RESEARCH_DEEPLY,
+                              confidence=0.96, params={"goal": m.group(1).strip()},
+                              classifier_source="autonomous")
+    m = _AUTO_RUN_RE.match(t)
+    if m:
+        return CommandRequest(raw_text=text, intent=Intent.RUN_AUTONOMOUS_TASK,
+                              confidence=0.96, params={"goal": m.group(1).strip()},
+                              classifier_source="autonomous")
     return None
 
 
@@ -1823,6 +1956,10 @@ def classify_rules(text: str) -> CommandRequest:
     from brain.operational_command_phrases import match_operational_priority_commands
     from brain.patch_command_phrases import match_patch_workflow_commands
 
+    auto_req = match_autonomous_command(text)
+    if auto_req is not None:
+        return auto_req
+
     tool_req = match_tool_use_command(text)
     if tool_req is not None:
         return tool_req
@@ -1836,6 +1973,17 @@ def classify_rules(text: str) -> CommandRequest:
     if patch_req is not None:
         patch_req.classifier_source = "patch_workflow"
         return patch_req
+
+    # Project intelligence questions are matched before voice reformulation so
+    # the grammar/semantic layers cannot mangle them into UNKNOWN.
+    try:
+        from project_intelligence.routing import match_builder_question
+
+        builder_req = match_builder_question(text)
+        if builder_req is not None:
+            return builder_req
+    except Exception:
+        pass
 
     try:
         from voice.command_input import prepare_command_text
@@ -1911,8 +2059,12 @@ def classify(
     from brain.operational_command_phrases import match_operational_priority_commands
     from brain.patch_command_phrases import match_patch_workflow_commands
 
-    # Phase 72 — tool-use commands are matched first, deterministically,
+    # Autonomous + tool-use commands are matched first, deterministically,
     # ahead of semantic/LLM layers so they cannot be misrouted.
+    auto_req = match_autonomous_command(text)
+    if auto_req is not None:
+        return auto_req
+
     tool_req = match_tool_use_command(text)
     if tool_req is not None:
         return tool_req
@@ -1924,6 +2076,24 @@ def classify(
     patch_req = match_patch_workflow_commands(text)
     if patch_req is not None:
         return patch_req
+
+    try:
+        from project_intelligence.routing import match_builder_question
+
+        builder_req = match_builder_question(text)
+        if builder_req is not None:
+            return builder_req
+    except Exception:
+        pass
+
+    try:
+        from conversation.follow_up_resolver import resolve_follow_up_text
+
+        expanded, _follow_reason = resolve_follow_up_text(text)
+        if expanded and expanded.strip() and expanded.strip() != text.strip():
+            text = expanded.strip()
+    except Exception:
+        pass
 
     try:
         from brain.instant_fast_lane import match_instant_fast_lane
@@ -1947,7 +2117,18 @@ def classify(
 
             semantic_req, _sem = classify_hybrid(text, session_context)
             if not LLM_CLASSIFIER_ENABLED:
-                return semantic_req
+                rule_req = classify_rules(text)
+                if (
+                    rule_req.confidence >= CONFIDENCE_THRESHOLD
+                    and rule_req.intent not in (Intent.UNKNOWN, Intent.CLARIFY)
+                ):
+                    return rule_req
+                if (
+                    semantic_req.confidence >= CONFIDENCE_THRESHOLD
+                    and semantic_req.intent not in (Intent.UNKNOWN, Intent.CLARIFY)
+                ):
+                    return semantic_req
+                return rule_req if rule_req.confidence >= semantic_req.confidence else semantic_req
             if (
                 semantic_req.confidence >= CONFIDENCE_THRESHOLD
                 and semantic_req.intent not in (Intent.UNKNOWN, Intent.CLARIFY)
@@ -1957,6 +2138,14 @@ def classify(
         pass
 
     rule_req = classify_rules(text)
+
+    try:
+        from brain.llm_tool_router import is_classifier_miss, maybe_shadow_route_on_miss
+
+        if is_classifier_miss(rule_req):
+            maybe_shadow_route_on_miss(text, rule_req, session_context=session_context)
+    except Exception:
+        pass
 
     if not LLM_CLASSIFIER_ENABLED:
         return rule_req

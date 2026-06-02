@@ -1,0 +1,46 @@
+concept_id: cardinality_explosion
+name: Metric Cardinality
+title: Metric Cardinality
+domain: observability
+category: metrics
+feature_type: metrics
+concept_quality_score: curated_deep
+confidence: medium
+aliases:
+- cardinality
+- high cardinality
+description: Unbounded label values explode storage cost.
+when_to_use: Prometheus/OTel metrics design.
+requirements:
+- Clear ownership of Metric Cardinality in the architecture
+implementation_strategies: &id001
+- Correlation IDs on all requests
+- RED metrics for SLIs
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Blind spots during incidents
+- PII in logs
+- High-cardinality metrics
+- Log volume cost
+security_risks: []
+performance_risks:
+- High-cardinality metrics
+- Log volume cost
+failure_modes:
+- Alerts fire without actionable context
+- Missing correlation across services
+verification:
+- Trace a single request end-to-end
+- Redact secrets in log samples
+testing:
+- Assert required fields on log lines
+- Synthetic probe alerts
+related_concepts: []
+references:
+- atlas://curated/observability/cardinality_explosion
+path_keywords:
+- cardinality
+- cardinality
+- high cardinality
+investigate_only: false

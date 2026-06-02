@@ -1,0 +1,45 @@
+concept_id: graphql_n_plus_one
+name: GraphQL N+1
+title: GraphQL N+1
+domain: apis
+category: graphql
+feature_type: graphql
+concept_quality_score: curated_deep
+confidence: medium
+aliases:
+- graphql n+1
+- dataloader
+description: Batch/resolver pattern to avoid N+1 queries.
+when_to_use: GraphQL with relational backing.
+requirements:
+- Clear ownership of GraphQL N+1 in the architecture
+implementation_strategies: &id001
+- Versioning strategy
+- Pagination and limits
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Breaking clients on change
+- Chatty APIs
+- Overserialized payloads
+security_risks: []
+performance_risks:
+- Chatty APIs
+- Overserialized payloads
+failure_modes:
+- Undocumented error codes
+- Version skew
+verification:
+- Consumer-driven contracts
+- Backward compatibility checklist
+testing:
+- Contract tests
+- Load tests on gateway
+related_concepts: []
+references:
+- atlas://curated/apis/graphql_n_plus_one
+path_keywords:
+- graphql
+- graphql n+1
+- dataloader
+investigate_only: false

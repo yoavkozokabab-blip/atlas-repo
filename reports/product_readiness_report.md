@@ -2,19 +2,19 @@
 
 | Capability | Current % | Target % | Gap | Status |
 |------------|-----------|----------|-----|--------|
-| Voice | 95.0 | 85.0 | 0.0 | READY |
-| Memory | 95.0 | 85.0 | 0.0 | READY |
-| Browser | 95.0 | 85.0 | 0.0 | READY |
-| Desktop Operator | 95.0 | 80.0 | 0.0 | READY |
-| Coding Assistant | 95.0 | 90.0 | 0.0 | READY |
-| Integrations | 95.0 | 60.0 | 0.0 | READY |
-| Reliability | 63.8 | 85.0 | 21.200000000000003 | HARDENING |
-| Performance | 95.0 | 85.0 | 0.0 | READY |
+| Voice | 100.0 | 85.0 | 0.0 | READY |
+| Memory | 100.0 | 85.0 | 0.0 | READY |
+| Browser | 66.7 | 85.0 | 18.299999999999997 | HARDENING |
+| Desktop Operator | 60.0 | 80.0 | 20.0 | HARDENING |
+| Coding Assistant | 100.0 | 90.0 | 0.0 | READY |
+| Integrations | 100.0 | 60.0 | 0.0 | READY |
+| Reliability | 75.0 | 85.0 | 10.0 | HARDENING |
+| Performance | 100.0 | 85.0 | 0.0 | READY |
 
 ## Per-Capability Detail
 
 ### Voice
-- current: 95.0%
+- current: 100.0%
 - target: 85.0%
 - gap: 0.0%
 - pass_rate: 100.0%
@@ -24,7 +24,7 @@
   - continue monitoring
 
 ### Memory
-- current: 95.0%
+- current: 100.0%
 - target: 85.0%
 - gap: 0.0%
 - pass_rate: 100.0%
@@ -34,27 +34,27 @@
   - continue monitoring
 
 ### Browser
-- current: 95.0%
+- current: 66.7%
 - target: 85.0%
-- gap: 0.0%
-- pass_rate: 100.0%
+- gap: 18.299999999999997%
+- pass_rate: 66.7%
 - primary blockers:
-  - none
+  - Browser acceptance below 95% target.
 - recommended actions:
-  - continue monitoring
+  - Install Playwright browsers and verify visible launch with test real browser.
 
 ### Desktop Operator
-- current: 95.0%
+- current: 60.0%
 - target: 80.0%
-- gap: 0.0%
-- pass_rate: 100.0%
+- gap: 20.0%
+- pass_rate: 60.0%
 - primary blockers:
-  - none
+  - Desktop acceptance below 90% target.
 - recommended actions:
-  - continue monitoring
+  - Enable SCREEN_UNDERSTANDING_ENABLED and install Tesseract for OCR.
 
 ### Coding Assistant
-- current: 95.0%
+- current: 100.0%
 - target: 90.0%
 - gap: 0.0%
 - pass_rate: 100.0%
@@ -64,19 +64,19 @@
   - continue monitoring
 
 ### Integrations
-- current: 95.0%
+- current: 100.0%
 - target: 60.0%
 - gap: 0.0%
 - pass_rate: 100.0%
 - primary blockers:
-  - Live email/calendar adapters not connected (mock-only).
+  - Live email/calendar adapters not connected (4 data cases SKIPPED — no OAuth credentials).
 - recommended actions:
-  - Wire OAuth read-only providers behind existing summarize commands.
+  - Set INTEGRATIONS_EMAIL_MODE=gmail_readonly and INTEGRATIONS_CALENDAR_MODE=gcal_readonly with valid OAuth tokens to enable live acceptance testing.
 
 ### Reliability
-- current: 63.8%
+- current: 75.0%
 - target: 85.0%
-- gap: 21.200000000000003%
+- gap: 10.0%
 - pass_rate: 75.0%
 - primary blockers:
   - none
@@ -84,7 +84,7 @@
   - continue monitoring
 
 ### Performance
-- current: 95.0%
+- current: 100.0%
 - target: 85.0%
 - gap: 0.0%
 - pass_rate: 100.0%

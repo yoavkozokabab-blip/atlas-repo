@@ -1,0 +1,46 @@
+concept_id: docker
+name: Docker
+title: Docker
+domain: cloud
+category: container
+feature_type: container
+concept_quality_score: source_backed
+confidence: high
+aliases:
+- docker
+- container image
+- dockerfile
+description: Package apps with dependencies into immutable images.
+when_to_use: Standard unit for deployable artifacts in CI/CD.
+requirements:
+- Clear ownership of Docker in the architecture
+implementation_strategies: &id001
+- Infrastructure as code
+- Separate env accounts
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Misconfigured IAM
+- Public exposure
+- Over-privileged roles
+- Secrets in environment variables
+security_risks:
+- Over-privileged roles
+- Secrets in environment variables
+performance_risks: []
+failure_modes:
+- Deploy succeeds but health checks fail
+- Autoscaling lag during spike
+verification:
+- Least-privilege IAM review
+- Disaster recovery drill
+testing:
+- IaC plan/apply in CI
+- Smoke test after deploy
+related_concepts: []
+references:
+- https://docs.docker.com/get-started/
+path_keywords:
+- docker
+- docker
+investigate_only: false

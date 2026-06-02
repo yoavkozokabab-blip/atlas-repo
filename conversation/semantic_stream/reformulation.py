@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import re
+
 import config as cfg
 from conversation.semantic_stream.conversation_graph import get_conversation_graph
 
@@ -46,4 +48,10 @@ def reformulate_with_context(text: str) -> tuple[str, str]:
     if lower in {"what about that", "and that", "same thing"} and last_intent:
         token = last_intent.replace("_", " ")
         return f"show {token}", "context_repeat_intent"
+    compare = re.match(r"compare\s+(?:it|that|this)\s+to\s+(.+)", lower)
+    if compare and last_intent:
+        subject = last_intent.replace("_", " ")
+        return f"compare {subject} to {compare.group(1).strip()}", "context_compare"
+    if lower in {"tell me more", "go on", "continue", "explain more"} and last_intent:
+        return f"explain {last_intent.replace('_', ' ')}", "context_tell_more"
     return raw, ""

@@ -226,21 +226,9 @@ class StreamingSttSession:
                     from voice.streaming_player import is_speaking
 
                     if is_speaking():
-                        try:
-                            from conversation.human_runtime import is_human_conversational_runtime_enabled
+                        from voice.human_conversation import interrupt_on_user_speech_start
 
-                            if is_human_conversational_runtime_enabled():
-                                from voice.human_interruption import on_user_speech_during_tts
-
-                                on_user_speech_during_tts()
-                            else:
-                                from voice.speech_controller import barge_in_if_speaking
-
-                                barge_in_if_speaking()
-                        except Exception:
-                            from voice.speech_controller import barge_in_if_speaking
-
-                            barge_in_if_speaking()
+                        interrupt_on_user_speech_start()
             except Exception:
                 pass
 

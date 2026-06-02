@@ -13,7 +13,7 @@
   "operational_risks": [],
   "unresolved_incidents": [],
   "last_session_summary": "Trading health summary:\n\nExecution investigation (read-only)\n  files scanned: 175\n  signals generated: 4\n  signals eligible: 4\n  signals blocked: 4\n  execution attempts: 0\n  execution accepted: 0\n  adapter mode: AlpacaExecutionAdapter\n  dry run: true\n  execution disabled: yes\n  top blocker: overlap block\n  report json: C:\\J.A.R.V.I.S\\local_jarvis\\reports\\jarvis_investigations\\execution\\20260526_20",
-  "last_started_at": "2026-05-28T14:46:56.627050+00:00",
+  "last_started_at": "2026-05-30T10:17:11.630587+00:00",
   "last_ended_at": "",
-  "updated_at": "2026-05-28T14:46:56.627056+00:00"
+  "updated_at": "2026-05-30T10:17:11.630594+00:00"
 }

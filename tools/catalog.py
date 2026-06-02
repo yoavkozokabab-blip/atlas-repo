@@ -110,6 +110,25 @@ def default_specs() -> list[ToolSpec]:
            args=["goal"], required=["goal"], raw="run tool task {goal}",
            cost=CostHint.NETWORK, lat=LatencyHint.SLOW, tags=("research", "web")),
         _t("research.show_last", "show_last_tool_run", desc="Show the last web research run (read-only).", tags=("research", "web")),
+        # --- project intelligence (Phase 79+) ---
+        _t(
+            "project.answer_question",
+            "answer_project_question",
+            sc=RO,
+            se=SideEffect.NONE,
+            verify=(S, NES),
+            desc=(
+                "Answer a free-form question about the JARVIS project: phase history, "
+                "architecture decisions, risks, roadmap, codebase state, or what to build next. "
+                "Reads reports/, README files, key module files, and git log. "
+                "Read-only. Never executes code or opens browsers."
+            ),
+            args=["query"],
+            required=["query"],
+            raw="answer project question about {query}",
+            lat=LatencyHint.SLOW,
+            tags=("project", "intelligence", "architecture", "builder"),
+        ),
     ]
 
 

@@ -55,6 +55,17 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
             node_context=body.get("node_context"),
         )
 
+    def _planning_change(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+        request = body.get("request") or body.get("goal") or body.get("text") or ""
+        return api.plan_change(str(request))
+
+    def _planning_investigate(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+        symptom = body.get("symptom") or body.get("text") or body.get("description") or ""
+        return api.investigate_symptom(str(symptom))
+
+    def _planning_impact(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+        return api.change_impact_simulation(str(body.get("target", "")))
+
     return {
         ("GET", "/api/health"): lambda _body, _query: api.health(),
         ("POST", "/api/system/browse-folder"): lambda _body, _query: system_browse.browse_folder(),
@@ -91,9 +102,9 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
         ("GET", "/api/repositories/current/module"): lambda _body, query: api.module_inspector(str(query.get("target", ""))),
         ("GET", "/api/repositories/current/risks"): lambda _body, _query: api.current_risks(),
         ("POST", "/api/impact"): lambda body, _query: api.impact(str(body.get("target", ""))),
-        ("POST", "/api/planning/change"): lambda body, _query: api.plan_change(str(body.get("request", ""))),
-        ("POST", "/api/planning/investigate"): lambda body, _query: api.investigate_symptom(str(body.get("symptom", ""))),
-        ("POST", "/api/planning/impact"): lambda body, _query: api.change_impact_simulation(str(body.get("target", ""))),
+        ("POST", "/api/planning/change"): _planning_change,
+        ("POST", "/api/planning/investigate"): _planning_investigate,
+        ("POST", "/api/planning/impact"): _planning_impact,
         ("POST", "/api/bug-investigation"): lambda body, _query: api.bug_investigation(str(body.get("text", ""))),
         ("POST", "/api/context/export"): lambda body, _query: api.context_export(
             str(body.get("target", "claude")),
@@ -347,11 +358,13 @@ def create_fastapi_app():  # pragma: no cover - exercised only when fastapi pres
 
     @app.post("/api/planning/change")
     async def _plan_change(request: Request):
-        return api.plan_change(str((await _body(request)).get("request", "")))
+        b = await _body(request)
+        return api.plan_change(str(b.get("request") or b.get("goal") or b.get("text") or ""))
 
     @app.post("/api/planning/investigate")
     async def _plan_investigate(request: Request):
-        return api.investigate_symptom(str((await _body(request)).get("symptom", "")))
+        b = await _body(request)
+        return api.investigate_symptom(str(b.get("symptom") or b.get("text") or b.get("description") or ""))
 
     @app.post("/api/planning/impact")
     async def _plan_impact(request: Request):

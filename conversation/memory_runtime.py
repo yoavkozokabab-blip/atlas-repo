@@ -63,7 +63,7 @@ def record_conversational_turn(
     data["turn_references"] = _push_unique(
         list(data.get("turn_references") or []),
         ref,
-        limit=12,
+        limit=20,
     )
     if "?" in (user_text or ""):
         data["pending_follow_up"] = user_text[:240]

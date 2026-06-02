@@ -1,0 +1,14 @@
+{
+  "id": 1137,
+  "kind": "proactive",
+  "title": "Execution adapter disabled",
+  "message": "Execution blockers:",
+  "severity": "warning",
+  "source": "proactive_monitor",
+  "created_at": "2026-05-30T11:46:04.288230+00:00",
+  "read": false,
+  "archived": false,
+  "suggested_action": "Inspect execution adapter and enable paper adapter.",
+  "related_task_id": null,
+  "metadata": {}
+}

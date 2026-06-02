@@ -35,7 +35,11 @@ def test_high_unresolved_ratio_marks_graph_partial_and_discloses_metrics():
     assert health["unresolved_imports"] == 69039
     assert health["external_package_imports"] == 232
     assert health["unresolved_ratio"] > 0.8
-    assert health["notice"] == "Graph is partial: many imports could not be resolved."
+    # Phase 123 — honest, non-alarmist notice (data trust): the metric counts
+    # imports leaving the internal module set (external + stdlib + unresolved
+    # internal), so the notice must disclose that rather than implying breakage.
+    assert health["notice"]
+    assert "outside the internal module set" in health["notice"]
 
 
 def test_small_unresolved_count_does_not_overstate_partial_health():

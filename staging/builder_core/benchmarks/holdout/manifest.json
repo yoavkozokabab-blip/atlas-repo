@@ -1,0 +1,68 @@
+[
+  {
+    "case_id": "classic_mutable_default",
+    "source": "independent",
+    "description": "Mutable default list argument"
+  },
+  {
+    "case_id": "classic_is_identity",
+    "source": "independent",
+    "description": "Uses `is` for small integer comparison"
+  },
+  {
+    "case_id": "classic_off_by_one",
+    "source": "independent",
+    "description": "Range upper bound excludes last element incorrectly"
+  },
+  {
+    "case_id": "classic_wrong_accumulator",
+    "source": "independent",
+    "description": "Sum initialized to 1 instead of 0"
+  },
+  {
+    "case_id": "classic_missing_base_case",
+    "source": "independent",
+    "description": "Recursive factorial missing n==0 base case"
+  },
+  {
+    "case_id": "classic_wrong_operator",
+    "source": "independent",
+    "description": "Subtraction instead of addition in average"
+  },
+  {
+    "case_id": "transfer_bfs_empty_queue",
+    "source": "synthetic_transfer",
+    "description": "Non-QuixBugs BFS with while True / empty deque (tests bfs_queue_exhaustion transfer)"
+  },
+  {
+    "case_id": "transfer_quicksort_duplicates",
+    "source": "synthetic_transfer",
+    "description": "Non-QuixBugs quicksort dropping pivot duplicates"
+  },
+  {
+    "case_id": "transfer_gcd_no_rotate",
+    "source": "synthetic_transfer",
+    "description": "Non-QuixBugs Euclidean gcd without rotation"
+  },
+  {
+    "case_id": "bugsinpy_tqdm_enumerate",
+    "source": "bugsinpy_patch",
+    "project": "tqdm",
+    "bug_id": "1",
+    "description": "tenumerate passes start to tqdm instead of enumerate"
+  },
+  {
+    "case_id": "bugsinpy_black_executor",
+    "source": "bugsinpy_patch",
+    "project": "black",
+    "bug_id": "1",
+    "description": "ProcessPoolExecutor not guarded on unsupported platforms"
+  },
+  {
+    "case_id": "bugsinpy_pysnooper_encoding",
+    "source": "bugsinpy_patch",
+    "project": "PySnooper",
+    "bug_id": "1",
+    "description": "FileWriter.open missing utf-8 encoding"
+  }
+]

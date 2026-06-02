@@ -1,0 +1,48 @@
+concept_id: helm_chart
+name: Helm Chart
+title: Helm Chart
+domain: cloud
+category: deploy
+feature_type: deploy
+concept_quality_score: source_backed
+confidence: high
+aliases:
+- helm
+- helm chart
+- kubernetes package
+description: Package Kubernetes manifests as versioned charts.
+when_to_use: Deploying apps to Kubernetes with templated config.
+requirements:
+- Clear ownership of Helm Chart in the architecture
+implementation_strategies: &id001
+- Infrastructure as code
+- Separate env accounts
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Misconfigured IAM
+- Public exposure
+- Over-privileged roles
+- Secrets in environment variables
+security_risks:
+- Over-privileged roles
+- Secrets in environment variables
+performance_risks: []
+failure_modes:
+- Deploy succeeds but health checks fail
+- Autoscaling lag during spike
+verification:
+- Least-privilege IAM review
+- Disaster recovery drill
+testing:
+- IaC plan/apply in CI
+- Smoke test after deploy
+related_concepts: []
+references:
+- https://helm.sh/docs/
+path_keywords:
+- helm
+- chart
+- helm
+- chart
+investigate_only: false

@@ -1,0 +1,190 @@
+{
+  "finding_inventory": {
+    "advisory_by_kind": {
+      "pattern": 518
+    },
+    "advisory_findings": 518,
+    "total_findings": 720,
+    "verdict_by_kind": {
+      "security": 26,
+      "value_flow": 176
+    },
+    "verdict_eligible_findings": 202
+  },
+  "precision": {
+    "advisory_separate": {
+      "reviewed": 0,
+      "total": 518
+    },
+    "by_kind": {
+      "security": {
+        "confirmed": 0,
+        "in_scope": 26,
+        "precision": 0.0
+      },
+      "value_flow": {
+        "confirmed": 0,
+        "in_scope": 176,
+        "precision": 0.0
+      }
+    },
+    "by_language_profile": {
+      "python_centered_polyglot": {
+        "confirmed": 0,
+        "in_scope": 202,
+        "precision": 0.0
+      }
+    },
+    "by_rule": {
+      "command_injection": {
+        "confirmed": 0,
+        "in_scope": 14,
+        "precision": 0.0
+      },
+      "null_dereference": {
+        "confirmed": 0,
+        "in_scope": 176,
+        "precision": 0.0
+      },
+      "path_traversal": {
+        "confirmed": 0,
+        "in_scope": 12,
+        "precision": 0.0
+      }
+    },
+    "by_severity": {
+      "high": {
+        "confirmed": 0,
+        "in_scope": 14,
+        "precision": 0.0
+      },
+      "medium": {
+        "confirmed": 0,
+        "in_scope": 188,
+        "precision": 0.0
+      }
+    },
+    "by_size_band": {
+      "medium": {
+        "confirmed": 0,
+        "in_scope": 202,
+        "precision": 0.0
+      }
+    },
+    "counts": {
+      "benign_or_intended": 34,
+      "confirmed_actionable": 0,
+      "misleading": 15,
+      "undecidable": 5,
+      "useful_review_lead": 148
+    },
+    "misleading_rate": 0.0743,
+    "needs_adjudication": 0,
+    "out_of_scope": 0,
+    "review_lead_rate": 0.7327,
+    "reviewed_in_scope": 202,
+    "strict_precision": 0.0,
+    "undecidable_rate": 0.0248,
+    "unreviewed": 0,
+    "verdict_eligible_total": 202,
+    "weighted_strict_precision": 0.0
+  },
+  "readiness": {
+    "corpus": {
+      "historical_bug_cases": 0,
+      "historical_bug_repositories": 0,
+      "outcomes": {
+        "success": 2
+      },
+      "primary_eligible_repositories": 0,
+      "primary_language_profiles": {},
+      "primary_project_shapes": {},
+      "primary_size_bands": {},
+      "repositories_scanned": 2,
+      "tracks": {
+        "pilot": 2
+      }
+    },
+    "gates": [
+      {
+        "detail": "0 unsafe: []",
+        "name": "unsafe_outcomes",
+        "passed": true
+      },
+      {
+        "detail": "2/2 completed (1.0)",
+        "name": "crash_free_completion",
+        "passed": true
+      },
+      {
+        "detail": "0/24",
+        "name": "primary_repository_count",
+        "passed": false
+      },
+      {
+        "detail": "0 cases across 0 repositories",
+        "name": "historical_bug_cases",
+        "passed": false
+      },
+      {
+        "detail": "0 unreviewed",
+        "name": "review_completion",
+        "passed": true
+      },
+      {
+        "detail": "0 need adjudication",
+        "name": "adjudication_completion",
+        "passed": true
+      },
+      {
+        "detail": "0.0 from 202 reviewed findings",
+        "name": "strict_precision",
+        "passed": false
+      },
+      {
+        "detail": "0.0743 from 202 reviewed findings",
+        "name": "misleading_rate",
+        "passed": false
+      },
+      {
+        "detail": "median None; 0/0 primary repositories scored",
+        "name": "repository_usefulness",
+        "passed": false
+      },
+      {
+        "detail": "None",
+        "name": "would_use_again",
+        "passed": false
+      },
+      {
+        "detail": "0.7327",
+        "name": "review_lead_rate",
+        "passed": true
+      }
+    ],
+    "verdict": "HOLD"
+  },
+  "usefulness": {
+    "per_finding": {
+      "distribution": {
+        "0.0": 15,
+        "1": 34,
+        "2.0": 5,
+        "3.0": 148
+      },
+      "mean_usefulness": 2.4158,
+      "scored_findings": 202
+    },
+    "per_repository": {
+      "median_repo_usefulness": null,
+      "scored_repositories": 0,
+      "would_use_again_rate": null,
+      "would_use_again_total": 0,
+      "would_use_again_true": 0
+    },
+    "repositories_with_score3plus_finding": [
+      "openai-plugins-public-pilot",
+      "openai-skills-public-pilot"
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+concept_id: sharpe_ratio
+name: Sharpe Ratio
+title: Sharpe Ratio
+domain: trading
+category: metric
+feature_type: metric
+concept_quality_score: curated_deep
+confidence: medium
+aliases:
+- sharpe
+- sharpe ratio
+description: Risk-adjusted return metric.
+when_to_use: Strategy comparison (with caution).
+requirements:
+- Clear ownership of Sharpe Ratio in the architecture
+implementation_strategies: &id001
+- Single source of truth for bar timestamps
+- Shared calculator for sim/live
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Lookahead bias
+- Backtest/live divergence
+- Python loops on large universes
+- Memory growth in streaming
+security_risks: []
+performance_risks:
+- Python loops on large universes
+- Memory growth in streaming
+failure_modes:
+- Signals on NaN indicators
+- Fill model mismatch vs live
+verification:
+- Parity test on fixed bar stream
+- Compare to reference implementation
+testing:
+- Unit tests on indicator fixtures
+- Paper/backtest reconciliation
+related_concepts: []
+references:
+- atlas://curated/trading/sharpe_ratio
+path_keywords:
+- sharpe
+- sharpe
+- sharpe ratio
+investigate_only: false

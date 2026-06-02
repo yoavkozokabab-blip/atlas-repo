@@ -1,0 +1,92 @@
+[
+  {
+    "bug_class": "return-contract",
+    "case_id": "hold_black_executor",
+    "confirmed_eligible": false,
+    "detector_expected_to_fire": "yes",
+    "expected_tier": "review_lead",
+    "gate_eligible_rule": "inconsistent_return",
+    "slice": "return_positive"
+  },
+  {
+    "bug_class": "return-contract",
+    "case_id": "hold_pysnooper_encoding",
+    "confirmed_eligible": false,
+    "detector_expected_to_fire": "no",
+    "expected_tier": "review_lead",
+    "gate_eligible_rule": "inconsistent_return",
+    "slice": "return_positive"
+  },
+  {
+    "bug_class": "return-contract",
+    "case_id": "hold_tqdm_enumerate",
+    "confirmed_eligible": false,
+    "detector_expected_to_fire": "no",
+    "expected_tier": "review_lead",
+    "gate_eligible_rule": "inconsistent_return",
+    "slice": "return_positive"
+  },
+  {
+    "bug_class": "distractor",
+    "case_id": "dist_off_by_one",
+    "confirmed_eligible": false,
+    "detector_expected_to_fire": "no",
+    "expected_tier": "refuted",
+    "gate_eligible_rule": "none",
+    "slice": "distractor"
+  },
+  {
+    "bug_class": "distractor",
+    "case_id": "dist_wrong_operator",
+    "confirmed_eligible": false,
+    "detector_expected_to_fire": "no",
+    "expected_tier": "refuted",
+    "gate_eligible_rule": "none",
+    "slice": "distractor"
+  },
+  {
+    "bug_class": "distractor",
+    "case_id": "dist_missing_base_case",
+    "confirmed_eligible": false,
+    "detector_expected_to_fire": "no",
+    "expected_tier": "refuted",
+    "gate_eligible_rule": "none",
+    "slice": "distractor"
+  },
+  {
+    "bug_class": "negative",
+    "case_id": "neg_optional_by_design",
+    "confirmed_eligible": false,
+    "detector_expected_to_fire": "yes",
+    "expected_tier": "refuted",
+    "gate_eligible_rule": "inconsistent_return",
+    "slice": "hard_negative"
+  },
+  {
+    "bug_class": "negative",
+    "case_id": "neg_dominating_guard",
+    "confirmed_eligible": false,
+    "detector_expected_to_fire": "yes",
+    "expected_tier": "refuted",
+    "gate_eligible_rule": "inconsistent_return",
+    "slice": "hard_negative"
+  },
+  {
+    "bug_class": "negative",
+    "case_id": "neg_raise_only_exit",
+    "confirmed_eligible": false,
+    "detector_expected_to_fire": "no",
+    "expected_tier": "refuted",
+    "gate_eligible_rule": "inconsistent_return",
+    "slice": "hard_negative"
+  },
+  {
+    "bug_class": "negative",
+    "case_id": "neg_expected_negative_test",
+    "confirmed_eligible": false,
+    "detector_expected_to_fire": "yes",
+    "expected_tier": "refuted",
+    "gate_eligible_rule": "inconsistent_return",
+    "slice": "hard_negative"
+  }
+]

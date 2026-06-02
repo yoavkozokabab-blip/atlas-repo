@@ -1,0 +1,46 @@
+concept_id: inbox_pattern
+name: Inbox Pattern
+title: Inbox Pattern
+domain: distributed_systems
+category: pattern
+feature_type: pattern
+concept_quality_score: curated_deep
+confidence: medium
+aliases:
+- inbox
+- idempotent consumer
+description: Dedupe incoming events via inbox table.
+when_to_use: At-least-once consumers.
+requirements:
+- Clear ownership of Inbox Pattern in the architecture
+implementation_strategies: &id001
+- Timeouts + bulkheads
+- Outbox/inbox for cross-service consistency
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Cascading failures
+- Split-brain
+- Retry storms
+- Queue backlog
+security_risks: []
+performance_risks:
+- Retry storms
+- Queue backlog
+failure_modes:
+- Duplicate side effects on retry
+- Partial failure leaves inconsistent state
+verification:
+- Chaos/fault injection on dependencies
+- Idempotency key audit
+testing:
+- Failure injection tests
+- Idempotent handler tests
+related_concepts: []
+references:
+- atlas://curated/distributed_systems/inbox_pattern
+path_keywords:
+- inbox
+- inbox
+- idempotent consumer
+investigate_only: false

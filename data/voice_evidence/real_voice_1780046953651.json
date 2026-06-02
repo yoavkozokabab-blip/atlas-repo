@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-05-29T09:29:09Z",
+  "mic_capture_path": "C:\\Users\\babi2\\AppData\\Local\\Temp\\claude\\jarvis_xl0iu2t6.wav",
+  "mic_capture_ok": true,
+  "stt_ok": true,
+  "transcript": "Show Voice Health",
+  "routed_intent": "show_voice_health",
+  "tts_ok": true,
+  "tts_output_path": "C:\\J.A.R.V.I.S\\local_jarvis\\data\\voice_evidence\\real_voice_1780046953651.json",
+  "wakeword_used": false,
+  "error": ""
+}

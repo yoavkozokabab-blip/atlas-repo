@@ -1,0 +1,300 @@
+{
+  "buggy_tier_counts": {
+    "detected": 0,
+    "refuted": 10,
+    "review_lead": 0,
+    "strong_suspect": 0
+  },
+  "confirmed": {
+    "confirmed_eligible_count": 0,
+    "directional_purity_cases": 0,
+    "expected_count": 0,
+    "false_negatives": 0,
+    "false_positives": 0,
+    "fixed_version_confirmed_count": 0,
+    "precision": null,
+    "predicted_count": 0,
+    "recall": null,
+    "recall_denominator_note": "confirmed_eligible positives (none with expected confirmed in this batch)",
+    "true_positives": 0
+  },
+  "confusion_matrix": {
+    "detected": {
+      "detected": 0,
+      "refuted": 0,
+      "review_lead": 0,
+      "strong_suspect": 0
+    },
+    "refuted": {
+      "detected": 0,
+      "refuted": 7,
+      "review_lead": 3,
+      "strong_suspect": 0
+    },
+    "review_lead": {
+      "detected": 0,
+      "refuted": 0,
+      "review_lead": 0,
+      "strong_suspect": 0
+    },
+    "strong_suspect": {
+      "detected": 0,
+      "refuted": 0,
+      "review_lead": 0,
+      "strong_suspect": 0
+    }
+  },
+  "per_case": [
+    {
+      "buggy_buckets": {
+        "detected": 0,
+        "refuted": 1,
+        "review_lead": 0,
+        "strong_suspect": 0,
+        "unknown": 0
+      },
+      "case_id": "hold_black_executor",
+      "confirmed_eligible": false,
+      "detected_buggy_only": false,
+      "detected_on_buggy": false,
+      "detected_on_fixed": false,
+      "expected_tier": "review_lead",
+      "fixed_buckets": {
+        "detected": 0,
+        "refuted": 1,
+        "review_lead": 0,
+        "strong_suspect": 0,
+        "unknown": 0
+      },
+      "predicted_tier": "refuted",
+      "slice": "return_positive",
+      "tier_match": false
+    },
+    {
+      "buggy_buckets": {
+        "detected": 0,
+        "refuted": 0,
+        "review_lead": 0,
+        "strong_suspect": 0,
+        "unknown": 0
+      },
+      "case_id": "hold_pysnooper_encoding",
+      "confirmed_eligible": false,
+      "detected_buggy_only": false,
+      "detected_on_buggy": false,
+      "detected_on_fixed": false,
+      "expected_tier": "review_lead",
+      "fixed_buckets": {
+        "detected": 0,
+        "refuted": 0,
+        "review_lead": 0,
+        "strong_suspect": 0,
+        "unknown": 0
+      },
+      "predicted_tier": "refuted",
+      "slice": "return_positive",
+      "tier_match": false
+    },
+    {
+      "buggy_buckets": {
+        "detected": 0,
+        "refuted": 0,
+        "review_lead": 0,
+        "strong_suspect": 0,
+        "unknown": 0
+      },
+      "case_id": "hold_tqdm_enumerate",
+      "confirmed_eligible": false,
+      "detected_buggy_only": false,
+      "detected_on_buggy": false,
+      "detected_on_fixed": false,
+      "expected_tier": "review_lead",
+      "fixed_buckets": {
+        "detected": 0,
+        "refuted": 0,
+        "review_lead": 0,
+        "strong_suspect": 0,
+        "unknown": 0
+      },
+      "predicted_tier": "refuted",
+      "slice": "return_positive",
+      "tier_match": false
+    },
+    {
+      "buggy_buckets": {
+        "detected": 0,
+        "refuted": 0,
+        "review_lead": 0,
+        "strong_suspect": 0,
+        "unknown": 0
+      },
+      "case_id": "dist_off_by_one",
+      "confirmed_eligible": false,
+      "detected_buggy_only": false,
+      "detected_on_buggy": false,
+      "detected_on_fixed": false,
+      "expected_tier": "refuted",
+      "fixed_buckets": {
+        "detected": 0,
+        "refuted": 0,
+        "review_lead": 0,
+        "strong_suspect": 0,
+        "unknown": 0
+      },
+      "predicted_tier": "refuted",
+      "slice": "distractor",
+      "tier_match": true
+    },
+    {
+      "buggy_buckets": {
+        "detected": 0,
+        "refuted": 1,
+        "review_lead": 0,
+        "strong_suspect": 0,
+        "unknown": 0
+      },
+      "case_id": "dist_wrong_operator",
+      "confirmed_eligible": false,
+      "detected_buggy_only": false,
+      "detected_on_buggy": false,
+      "detected_on_fixed": false,
+      "expected_tier": "refuted",
+      "fixed_buckets": {
+        "detected": 0,
+        "refuted": 1,
+        "review_lead": 0,
+        "strong_suspect": 0,
+        "unknown": 0
+      },
+      "predicted_tier": "refuted",
+      "slice": "distractor",
+      "tier_match": true
+    },
+    {
+      "buggy_buckets": {
+        "detected": 0,
+        "refuted": 1,
+        "review_lead": 0,
+        "strong_suspect": 0,
+        "unknown": 0
+      },
+      "case_id": "dist_missing_base_case",
+      "confirmed_eligible": false,
+      "detected_buggy_only": false,
+      "detected_on_buggy": false,
+      "detected_on_fixed": false,
+      "expected_tier": "refuted",
+      "fixed_buckets": {
+        "detected": 0,
+        "refuted": 1,
+        "review_lead": 0,
+        "strong_suspect": 0,
+        "unknown": 0
+      },
+      "predicted_tier": "refuted",
+      "slice": "distractor",
+      "tier_match": true
+    },
+    {
+      "buggy_buckets": {
+        "detected": 0,
+        "refuted": 2,
+        "review_lead": 0,
+        "strong_suspect": 0,
+        "unknown": 0
+      },
+      "case_id": "neg_optional_by_design",
+      "confirmed_eligible": false,
+      "detected_buggy_only": false,
+      "detected_on_buggy": false,
+      "detected_on_fixed": false,
+      "expected_tier": "refuted",
+      "fixed_buckets": {
+        "detected": 0,
+        "refuted": 2,
+        "review_lead": 0,
+        "strong_suspect": 0,
+        "unknown": 0
+      },
+      "predicted_tier": "refuted",
+      "slice": "hard_negative",
+      "tier_match": true
+    },
+    {
+      "buggy_buckets": {
+        "detected": 0,
+        "refuted": 2,
+        "review_lead": 0,
+        "strong_suspect": 0,
+        "unknown": 0
+      },
+      "case_id": "neg_dominating_guard",
+      "confirmed_eligible": false,
+      "detected_buggy_only": false,
+      "detected_on_buggy": false,
+      "detected_on_fixed": false,
+      "expected_tier": "refuted",
+      "fixed_buckets": {
+        "detected": 0,
+        "refuted": 2,
+        "review_lead": 0,
+        "strong_suspect": 0,
+        "unknown": 0
+      },
+      "predicted_tier": "refuted",
+      "slice": "hard_negative",
+      "tier_match": true
+    },
+    {
+      "buggy_buckets": {
+        "detected": 0,
+        "refuted": 0,
+        "review_lead": 0,
+        "strong_suspect": 0,
+        "unknown": 0
+      },
+      "case_id": "neg_raise_only_exit",
+      "confirmed_eligible": false,
+      "detected_buggy_only": false,
+      "detected_on_buggy": false,
+      "detected_on_fixed": false,
+      "expected_tier": "refuted",
+      "fixed_buckets": {
+        "detected": 0,
+        "refuted": 0,
+        "review_lead": 0,
+        "strong_suspect": 0,
+        "unknown": 0
+      },
+      "predicted_tier": "refuted",
+      "slice": "hard_negative",
+      "tier_match": true
+    },
+    {
+      "buggy_buckets": {
+        "detected": 0,
+        "refuted": 1,
+        "review_lead": 0,
+        "strong_suspect": 0,
+        "unknown": 0
+      },
+      "case_id": "neg_expected_negative_test",
+      "confirmed_eligible": false,
+      "detected_buggy_only": false,
+      "detected_on_buggy": false,
+      "detected_on_fixed": false,
+      "expected_tier": "refuted",
+      "fixed_buckets": {
+        "detected": 0,
+        "refuted": 1,
+        "review_lead": 0,
+        "strong_suspect": 0,
+        "unknown": 0
+      },
+      "predicted_tier": "refuted",
+      "slice": "hard_negative",
+      "tier_match": true
+    }
+  ],
+  "tier_accuracy": 0.7
+}

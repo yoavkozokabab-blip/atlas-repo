@@ -69,6 +69,14 @@ class StreamingPipeline:
                 pass
 
     def handle_user_speech_start(self, *, partial_text: str = "") -> None:
+        try:
+            from voice.human_conversation import interrupt_on_user_speech_start
+
+            if interrupt_on_user_speech_start(partial_text=partial_text or self._last_partial):
+                self.metrics.interruptions += 1
+                return
+        except Exception:
+            pass
         from voice.interruption_manager import on_user_speech_detected
 
         result = on_user_speech_detected(partial_text=partial_text or self._last_partial)

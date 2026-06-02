@@ -1,0 +1,41 @@
+{
+  "clusters": [
+    {
+      "type": "overlap_block",
+      "count": 3,
+      "samples": [
+        "  top blocker: overlap block",
+        "- [medium] overlap block count=24",
+        "- [medium] already in position count=10"
+      ],
+      "severity": "medium"
+    },
+    {
+      "type": "execution_gating_mismatch",
+      "count": 2,
+      "samples": [
+        "- [critical] execution disabled adapter count=2",
+        "  snippet: 2026-05-04T15:35:28+00:00,2026-05-04T15:35:28+00:00,adapter_health_failed,ExecutionDisabledAdapter,,,,,,,,,,,failed,,adapter_health_failed,RuntimeErr"
+      ],
+      "severity": "medium"
+    },
+    {
+      "type": "incomplete_bar_mismatch",
+      "count": 1,
+      "samples": [
+        "incomplete=0 shifted=0 price_mismatch=32"
+      ],
+      "severity": "low"
+    },
+    {
+      "type": "risk_mismatch",
+      "count": 1,
+      "samples": [
+        "- [high] max positions reached count=15"
+      ],
+      "severity": "low"
+    }
+  ],
+  "last_run": "2026-05-29T10:12:18.983402+00:00",
+  "updated_at": "2026-05-29T10:12:18.990132+00:00"
+}

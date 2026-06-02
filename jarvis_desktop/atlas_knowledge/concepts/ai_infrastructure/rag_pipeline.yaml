@@ -1,0 +1,47 @@
+concept_id: rag_pipeline
+name: RAG Pipeline
+title: RAG Pipeline
+domain: ai_infrastructure
+category: rag
+feature_type: rag
+concept_quality_score: source_backed
+confidence: high
+aliases:
+- rag
+- retrieval augmented generation
+description: Retrieve relevant documents then prompt LLM with grounded context.
+when_to_use: Q&A over private docs; reduces hallucination vs raw LLM.
+requirements:
+- Clear ownership of RAG Pipeline in the architecture
+implementation_strategies: &id001
+- Validate at boundary
+- Idempotent writes where applicable
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Contract drift between clients and server
+- Unhandled edge cases on partial failure
+- Embedding index size
+- Retrieval latency
+security_risks: []
+performance_risks:
+- Embedding index size
+- Retrieval latency
+failure_modes:
+- 500s under load without backpressure
+- Inconsistent error shapes for clients
+verification:
+- OpenAPI/contract tests
+- Load test critical endpoints
+testing:
+- Integration tests with realistic payloads
+- Contract tests for error codes
+related_concepts: []
+references:
+- https://python.langchain.com/docs/concepts/rag/
+path_keywords:
+- rag
+- pipeline
+- rag
+- pipeline
+investigate_only: false

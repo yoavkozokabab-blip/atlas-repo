@@ -9,6 +9,7 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 
 from .loader import CACHE_DIR, load_alias_index, load_concepts_from_disk, load_taxonomy
 from .retrieval import RETRIEVAL_BLOCKLIST, RetrievalPolicy
+from .quality import is_shallow_generated, quality_confidence_boost, quality_rank, quality_ui_label
 from .schema import ConceptRecord
 from .validator import validate_catalog
 
@@ -121,18 +122,28 @@ class KnowledgeEngine:
         best_score = 0.0
         best_hits: List[str] = []
 
+        best_rank = -1
         for cid, rec in self.concepts.items():
             if mode == "build" and rec.investigate_only:
                 continue
             score, hits = self._alias_score(norm, rec.aliases)
-            if score > best_score:
+            score += quality_confidence_boost(rec.concept_quality_score)
+            rank = quality_rank(rec.concept_quality_score)
+            if score > best_score or (score == best_score and rank > best_rank):
                 best_score = score
                 best_id = cid
                 best_hits = hits
+                best_rank = rank
 
         if best_id and best_score >= LOCAL_CONFIDENCE_THRESHOLD:
             rec = self.concepts[best_id]
-            conf = "high" if best_score >= HIGH_SCORE or len(best_hits) >= 2 else "medium"
+            q = rec.computed_quality_score
+            if q in ("source_backed", "curated_deep") and (best_score >= HIGH_SCORE or len(best_hits) >= 2):
+                conf = "high"
+            elif q == "generated_template":
+                conf = "low" if mode == "investigate" else "medium"
+            else:
+                conf = "medium"
             return ConceptMatch(best_id, rec, best_score, best_hits, "local", conf)
 
         # Try cache
@@ -191,6 +202,16 @@ class KnowledgeEngine:
             unknowns.append("This pattern is optimized for investigation, not greenfield implementation.")
         if m.source == "retrieval":
             unknowns.append("Knowledge from retrieval stub — validate against official documentation.")
+        if rec and is_shallow_generated(rec.concept_quality_score):
+            if mode == "investigate":
+                unknowns.append(
+                    "Matched knowledge is template-generated only — treat hypotheses as leads; "
+                    "prefer curated/source-backed concepts or add file paths."
+                )
+            else:
+                unknowns.append(
+                    "Knowledge depth is generated-template — verify against official docs before implementing."
+                )
 
         return ConceptClassification(
             concept_id=m.concept_id,
@@ -319,9 +340,13 @@ class KnowledgeEngine:
             return {"applied": False, "source": "none"}
         rec = classification.record
         m = classification.match
+        quality = rec.computed_quality_score
         return {
             "applied": True,
             "source": m.source if m else "local",
+            "concept_quality_score": quality,
+            "knowledge_quality_label": quality_ui_label(quality),
+            "knowledge_depth_warning": is_shallow_generated(quality),
             "concept_id": rec.concept_id,
             "concept_name": rec.name,
             "concept_title": rec.title or rec.name,
@@ -333,7 +358,9 @@ class KnowledgeEngine:
             "repo_mapping_confidence": classification.repo_mapping_confidence,
             "meaning": rec.description,
             "concept_understanding": rec.description,
+            "when_to_use": rec.when_to_use,
             "requirements": rec.requirements,
+            "implementation_strategies": rec.implementation_strategies,
             "common_implementations": rec.common_implementations,
             "risks": rec.risks,
             "knowledge_risks": rec.risks,
@@ -347,6 +374,8 @@ class KnowledgeEngine:
             "architecture_pattern": classification.architecture_pattern,
             "unknowns": classification.unknowns,
             "catalog_confidence": rec.confidence,
+            "security_risks": rec.security_risks,
+            "performance_risks": rec.performance_risks,
         }
 
     def _why_matters(self, rec: ConceptRecord) -> str:
@@ -475,21 +504,36 @@ class KnowledgeEngine:
         if not classification.record:
             return ""
         rec = classification.record
+        qlabel = quality_ui_label(rec.concept_quality_score)
         lines = [
             "## DOMAIN KNOWLEDGE",
             f"**Concept:** {rec.name} ({rec.title or rec.name})",
             f"**Domain:** {classification.domain_label} / {rec.category}",
+            f"**Knowledge quality:** {qlabel} ({rec.concept_quality_score})",
             f"**Source:** {classification.match.source if classification.match else 'local'}",
             "",
             "### Meaning",
             rec.description,
             "",
+        ]
+        if rec.when_to_use:
+            lines.extend(["### When to use", rec.when_to_use, ""])
+        lines.extend([
             "### Requirements",
             *([f"- {x}" for x in rec.requirements] or ["- (see description)"]),
+            "",
+            "### Implementation strategies",
+            *([f"- {x}" for x in rec.implementation_strategies] or ["- See requirements and repository map"]),
             "",
             "### Risks",
             *[f"- {x}" for x in rec.risks],
             "",
+        ])
+        if rec.security_risks:
+            lines.extend(["### Security risks", *[f"- {x}" for x in rec.security_risks], ""])
+        if rec.performance_risks:
+            lines.extend(["### Performance risks", *[f"- {x}" for x in rec.performance_risks], ""])
+        lines.extend([
             "### Failure modes",
             *[f"- {x}" for x in rec.failure_modes],
             "",
@@ -499,7 +543,7 @@ class KnowledgeEngine:
             "### Testing",
             *[f"- {x}" for x in rec.testing],
             "",
-        ]
+        ])
         if rec.references:
             lines.extend(["### References", *[f"- {x}" for x in rec.references], ""])
         return "\n".join(lines)

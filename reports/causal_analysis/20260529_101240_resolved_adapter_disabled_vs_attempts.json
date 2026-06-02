@@ -1,0 +1,9 @@
+{
+  "resolved_at": "2026-05-29T10:12:40.953916+00:00",
+  "contradiction": {
+    "id": "adapter_disabled_vs_attempts",
+    "hypothesis_id": "adapter_disabled",
+    "message": "Adapter disabled hypothesis contradicted by execution attempt evidence",
+    "severity": "warning"
+  }
+}

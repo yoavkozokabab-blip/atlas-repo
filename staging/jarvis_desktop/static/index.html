@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JARVIS — Repository Intelligence Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <!-- 3D dependency graph (Three.js under the hood). Falls back gracefully if offline. -->
+  <script src="https://unpkg.com/3d-force-graph@1.73.4/dist/3d-force-graph.min.js"></script>
+</head>
+<body>
+  <div id="bg-grid"></div>
+  <div id="bg-glow"></div>
+
+  <!-- Top bar -->
+  <header class="topbar glass">
+    <div class="brand" onclick="go('home')">
+      <span class="logo-mark">◈</span>
+      <span class="logo-text">JARVIS</span>
+      <span class="logo-sub">Repository Intelligence Platform</span>
+    </div>
+    <nav class="nav" id="nav">
+      <button data-view="home" class="active" onclick="go('home')">Home</button>
+      <button data-view="scan" onclick="go('scan')">Scan</button>
+      <button data-view="center" data-lock="1" onclick="go('center')">Command Center</button>
+      <button data-view="intel" data-lock="1" onclick="go('intel')">Intelligence</button>
+      <button data-view="impact" data-lock="1" onclick="go('impact')">Impact</button>
+      <button data-view="bug" data-lock="1" onclick="go('bug')">Bug Hunt</button>
+      <button data-view="export" data-lock="1" onclick="go('export')">AI Export</button>
+    </nav>
+    <div class="repo-chip" id="repoChip">No repository</div>
+    <span class="demo-badge" id="demoBadge" style="display:none">Demo Mode</span>
+  </header>
+
+  <main id="app">
+
+    <!-- ===================== SCREEN 1: HOME ===================== -->
+    <section class="view active" id="view-home">
+      <div class="hero">
+        <h1 class="hero-title">JARVIS</h1>
+        <p class="hero-sub">Repository Intelligence Platform</p>
+        <p class="hero-pitch">JARVIS prepares your codebase for AI. It doesn't replace
+          Claude, Codex, or Cursor — it makes them understand your repository
+          <b>faster, cheaper, and with better evidence.</b></p>
+        <h2 class="ask">What would you like to do today?</h2>
+        <div class="cards">
+          <div class="card glass" onclick="go('intel')"><div class="ci">🧭</div><h3>Understand this repository</h3><p>Subsystems, entry points, runtime flow.</p></div>
+          <div class="card glass" onclick="go('center')"><div class="ci">⚠️</div><h3>Find architectural risks</h3><p>Hubs, fan-in, cycles, risk ranking.</p></div>
+          <div class="card glass" onclick="go('impact')"><div class="ci">🌐</div><h3>Analyze impact of a change</h3><p>Blast radius before you edit.</p></div>
+          <div class="card glass" onclick="go('bug')"><div class="ci">🐞</div><h3>Investigate a bug</h3><p>Localize from a trace or description.</p></div>
+          <div class="card glass" onclick="go('impact')"><div class="ci">✅</div><h3>Verify a planned fix</h3><p>Tests and modules to check.</p></div>
+          <div class="card glass accent" onclick="go('export')"><div class="ci">✨</div><h3>Prepare context for Claude/Codex/Cursor</h3><p>Compact, token-cheap repo packets.</p></div>
+        </div>
+
+        <div class="repo-pick glass">
+          <label for="repoPath">Repository folder</label>
+          <p class="muted tiny picker-help">Paste the full path to your project root. JARVIS analyzes dependencies, risk, and structure locally — no cloud upload.</p>
+          <div class="pick-row">
+            <input id="repoPath" type="text" placeholder="C:\projects\my-app  or  /home/dev/my-app" value="" autocomplete="off" />
+            <button class="btn ghost" type="button" onclick="validateRepoPath()">Validate</button>
+          </div>
+          <div class="path-error" id="pathError" style="display:none"></div>
+          <div class="path-ok muted tiny" id="pathOk" style="display:none"></div>
+          <div class="pick-actions">
+            <button class="btn primary big" type="button" onclick="scanFlow()">⟳ Scan Repository</button>
+            <button class="btn ghost big" type="button" onclick="loadDemoMode()">Try Demo</button>
+            <button class="btn ghost big tour-launch" type="button" onclick="startProductTour()">Start Product Tour</button>
+          </div>
+          <div class="demo-pack glass">
+            <label>Demo repository size</label>
+            <p class="muted tiny">Instant wow — no folder path required. Pick a bundled codebase size.</p>
+            <div id="demoPackList" class="demo-pack-grid"></div>
+          </div>
+          <div class="recent">
+            <span class="recent-title">Recent repositories</span>
+            <div id="recentList" class="recent-list"><span class="muted">None yet — scan a repo or use Demo Mode.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SCREEN 2: SCAN ===================== -->
+    <section class="view" id="view-scan">
+      <h2 class="vh">Scan repository</h2>
+      <div id="scanRunning">
+        <div class="scan-path glass" id="scanPath">—</div>
+        <div class="scan-wrap">
+          <div class="stages glass" id="stages"></div>
+          <div class="metrics glass" id="scanMetrics"><div class="skeleton-grid" id="scanSkeleton"></div></div>
+        </div>
+        <div class="scan-foot"><div class="bar"><div class="bar-fill" id="scanBar"></div></div><span id="scanPct">0%</span></div>
+      </div>
+      <div id="scanSuccess" class="scan-result glass" style="display:none">
+        <h3>Scan complete</h3>
+        <p class="muted" id="scanSuccessSub"></p>
+        <div class="success-grid" id="scanSuccessMetrics"></div>
+        <div class="success-risk" id="scanSuccessRisk"></div>
+        <h4 class="success-actions-title">Suggested next steps</h4>
+        <ul class="clean" id="scanSuccessActions"></ul>
+        <div class="success-buttons">
+          <button class="btn primary" onclick="go('center')">Explore graph</button>
+          <button class="btn ghost" onclick="focusCopilot()">Ask Copilot</button>
+          <button class="btn ghost" onclick="go('export')">Export AI prompt</button>
+        </div>
+      </div>
+      <div id="scanFailed" class="scan-result glass fail" style="display:none">
+        <h3>Scan failed</h3>
+        <p id="scanFailedMsg" class="fail-msg"></p>
+        <ul class="clean" id="scanFailedHints"></ul>
+        <div class="success-buttons">
+          <button class="btn primary" onclick="go('home')">Choose another folder</button>
+          <button class="btn ghost" onclick="loadDemoMode()">Try Demo Mode</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SCREEN 3: COMMAND CENTER ===================== -->
+    <section class="view" id="view-center">
+      <div class="center-grid">
+        <aside class="panel glass left" id="leftPanel"></aside>
+        <div class="graph-stage">
+          <div class="graph-head">
+            <h3>Repository Universe</h3>
+            <div class="graph-controls">
+              <div class="graph-toolbar">
+                <button class="btn small tour-btn" type="button" onclick="startRepositoryTour()">Tour Repository</button>
+                <button class="btn small tour-btn" type="button" onclick="startProductTour()">Start Product Tour</button>
+                <button class="btn small ghost" type="button" onclick="exportDemoBundle()">Export Demo Bundle</button>
+                <button class="btn small ghost" type="button" onclick="exportGraphPNG()">PNG</button>
+                <button class="btn small ghost" type="button" onclick="exportGraphSVG()">SVG</button>
+                <button class="btn small ghost" id="screenshotBtn" type="button" onclick="toggleScreenshotMode()">Screenshot</button>
+              </div>
+              <div class="graph-toggle" role="radiogroup" aria-label="Graph view">
+                <label><input type="radio" name="graphView" value="module" checked onchange="setGraphView('module')"> Module graph</label>
+                <label><input type="radio" name="graphView" value="subsystem" onchange="setGraphView('subsystem')"> Subsystem graph</label>
+              </div>
+              <label class="graph-toggle edge-toggle"><input type="checkbox" id="showEdges" checked onchange="toggleGraphEdges()"> Show edges</label>
+              <span class="muted" id="graphMeta"></span>
+            </div>
+          </div>
+          <div id="graph3d"></div>
+          <div class="tour-panel glass" id="tourPanel" style="display:none">
+            <div class="tour-step" id="tourStep">Step 1/5</div>
+            <h4 id="tourTitle">Tour</h4>
+            <p id="tourNarration" class="muted"></p>
+            <button class="btn small ghost" type="button" onclick="stopRepositoryTour()">Exit tour</button>
+          </div>
+          <div class="product-tour-panel glass" id="productTourPanel" style="display:none">
+            <div class="tour-step" id="productTourStep">Product tour</div>
+            <h4 id="productTourTitle">Recording flow</h4>
+            <p id="productTourNarration" class="muted"></p>
+            <button class="btn small ghost" type="button" onclick="stopProductTour()">Stop tour</button>
+          </div>
+          <div class="presentation-badge" id="presentationBadge" style="display:none">JARVIS · Repository Intelligence</div>
+          <div class="timeline-panel glass" id="timelinePanel"></div>
+        </div>
+        <aside class="panel glass right">
+          <div class="inspector-wrap" id="moduleInspector">
+            <h3>Module Inspector</h3>
+            <p class="muted tiny">Click a node to inspect module evidence, imports, and blast radius.</p>
+          </div>
+          <h3>AI Copilot</h3>
+          <div class="copilot">
+            <div class="selected-node glass" id="selectedNodeCard" style="display:none"></div>
+            <div class="ask-row">
+              <input id="askInput" type="text" placeholder="Ask about this repository…" />
+              <button class="btn primary small" id="askSend" onclick="sendCopilotQuestion()">Send</button>
+            </div>
+            <div class="suggest" id="suggest"></div>
+            <div class="copilot-loading" id="copilotLoading" style="display:none">Analyzing repository…</div>
+            <div class="copilot-card glass" id="copilotCard" style="display:none">
+              <div class="copilot-card-head">
+                <span class="pill" id="copilotMode">mode</span>
+                <span class="lvl" id="copilotRisk">risk</span>
+              </div>
+              <div class="copilot-answer" id="copilotAnswer"></div>
+              <div class="copilot-section" id="copilotEvidenceWrap" style="display:none">
+                <div class="copilot-label">Evidence</div>
+                <ul class="clean" id="copilotEvidence"></ul>
+              </div>
+              <div class="copilot-section" id="copilotFilesWrap" style="display:none">
+                <div class="copilot-label">Relevant files</div>
+                <div class="taglist" id="copilotFiles"></div>
+              </div>
+              <div class="copilot-section" id="copilotActionWrap" style="display:none">
+                <div class="copilot-label">Suggested next action</div>
+                <div class="muted tiny" id="copilotAction"></div>
+              </div>
+              <div class="copy-row">
+                <button class="btn small" onclick="copyCopilotAnswer()">Copy answer</button>
+                <button class="btn small" onclick="copyCopilotTarget('claude')">Copy Claude</button>
+                <button class="btn small" onclick="copyCopilotTarget('codex')">Copy Codex</button>
+                <button class="btn small" onclick="copyCopilotTarget('cursor')">Copy Cursor</button>
+              </div>
+            </div>
+            <div class="copilot-out" id="copilotOut"><span class="muted">Ask a question about the scanned repository. Answers are grounded in Builder Core analysis — no external API calls.</span></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===================== SCREEN 4: PROJECT INTELLIGENCE ===================== -->
+    <section class="view" id="view-intel">
+      <h2 class="vh">Project Intelligence</h2>
+      <div id="intelBody" class="intel-body"></div>
+    </section>
+
+    <!-- ===================== SCREEN 5: IMPACT SIMULATOR ===================== -->
+    <section class="view" id="view-impact">
+      <h2 class="vh">Impact Simulator</h2>
+      <div class="io glass">
+        <label>What file or module do you want to change?</label>
+        <div class="pick-row">
+          <input id="impactTarget" type="text" placeholder="e.g. config.py  or  builder_core/ask.py" />
+          <button class="btn primary" onclick="runImpact()">Simulate Impact</button>
+        </div>
+      </div>
+      <div id="impactOut" class="out"></div>
+    </section>
+
+    <!-- ===================== SCREEN 6: BUG INVESTIGATION ===================== -->
+    <section class="view" id="view-bug">
+      <h2 class="vh">Bug Investigation</h2>
+      <div class="io glass">
+        <label>Paste a stack trace or describe the bug</label>
+        <textarea id="bugText" rows="6" placeholder="Traceback (most recent call last):&#10;  File &quot;builder_core/ask.py&quot;, line 42 …"></textarea>
+        <button class="btn primary" onclick="runBug()">Investigate</button>
+      </div>
+      <div id="bugOut" class="out"></div>
+    </section>
+
+    <!-- ===================== SCREEN 7: AI CONTEXT EXPORT ===================== -->
+    <section class="view" id="view-export">
+      <h2 class="vh">AI Context Export</h2>
+      <div class="export-grid">
+        <div class="glass controls">
+          <label>Target</label>
+          <div class="seg" id="segTarget">
+            <button class="active" data-v="claude">Claude</button>
+            <button data-v="codex">Codex</button>
+            <button data-v="cursor">Cursor</button>
+          </div>
+          <label>Packet</label>
+          <div class="seg" id="segPacket">
+            <button class="active" data-v="compact">Compact</button>
+            <button data-v="verbose">Verbose</button>
+          </div>
+          <div class="tok-est"><span class="muted">Estimated tokens</span><span class="tok-big" id="tokEst">—</span></div>
+          <div class="copy-row">
+            <button class="btn primary" onclick="copyExport()">Copy to clipboard</button>
+            <button class="btn ghost" onclick="saveExport()">Save prompt</button>
+            <button class="btn ghost" onclick="exportDemoBundle()">Export Demo Bundle</button>
+          </div>
+          <p class="muted tiny">Token numbers are estimates (chars/4). No API keys required — copy & paste into your tool.</p>
+        </div>
+        <div class="glass preview">
+          <div class="preview-head"><span>Context preview</span><span class="muted" id="previewMeta"></span></div>
+          <pre id="exportPreview" class="code">Scan a repository, then choose a target and packet.</pre>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="onboarding" class="onboarding" style="display:none">
+    <div class="onboarding-card glass">
+      <h2>Welcome to JARVIS</h2>
+      <p class="muted">JARVIS prepares your codebase for AI assistants — locally, with evidence-backed structure.</p>
+      <ol class="onboard-steps">
+        <li><b>What JARVIS does</b> — Maps dependencies, architectural risk, and subsystems from your repo.</li>
+        <li><b>Step 1: Choose repository</b> — Paste your project folder path or try Demo Mode.</li>
+        <li><b>Step 2: Scan</b> — Builder Core indexes modules and import edges (runs on your machine).</li>
+        <li><b>Step 3: Explore graph</b> — 3D dependency view with risk coloring.</li>
+        <li><b>Step 4: Ask Copilot</b> — Grounded answers about risk, impact, and architecture.</li>
+        <li><b>Step 5: Export prompt</b> — Copy compact context for Claude, Codex, or Cursor.</li>
+      </ol>
+      <div class="onboard-actions">
+        <button class="btn primary" onclick="dismissOnboarding(false)">Get started</button>
+        <button class="btn ghost" onclick="loadDemoMode(); dismissOnboarding(true)">Try Demo Mode</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script src="universe.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

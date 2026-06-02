@@ -1,0 +1,2978 @@
+[
+  {
+    "task_id": "A1",
+    "arm": "claude_only",
+    "trial": 1,
+    "input_tokens": 8291,
+    "output_tokens": 1198,
+    "total_tokens": 9489,
+    "peak_context_tokens": 8291,
+    "wall_clock_s": 0.0516,
+    "cost_usd": 0.042843,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 1,
+      "list_dir": 0
+    },
+    "quality": 0,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [
+        "python_programs/breadth_first_search.py",
+        "product_readiness.py"
+      ]
+    },
+    "answer_preview": "Based on repository reads for task A1 (trial 1): # Builder Core CLI\n\nBuilder Core is a standalone, local-only repository analysis CLI. It does not\nroute through `main.py`, execute target code, modify source files, download\nrepositories, or auto-fix findings. Its only target-repository writes are index\nfiles under `<project>/.jarvis_builder/`.\n\n## Commands\n\n```powershell\npy -3 -m builder_core.cli init --project C:\\Repos\\QuixBugs\npy -3 -m builder_core.cli ask --project C:\\Repos\\QuixBugs \"Analyze p"
+  },
+  {
+    "task_id": "A1",
+    "arm": "claude_only",
+    "trial": 2,
+    "input_tokens": 8291,
+    "output_tokens": 1198,
+    "total_tokens": 9489,
+    "peak_context_tokens": 8291,
+    "wall_clock_s": 0.0571,
+    "cost_usd": 0.042843,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 1,
+      "list_dir": 0
+    },
+    "quality": 0,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [
+        "python_programs/breadth_first_search.py",
+        "product_readiness.py"
+      ]
+    },
+    "answer_preview": "Based on repository reads for task A1 (trial 2): # Builder Core CLI\n\nBuilder Core is a standalone, local-only repository analysis CLI. It does not\nroute through `main.py`, execute target code, modify source files, download\nrepositories, or auto-fix findings. Its only target-repository writes are index\nfiles under `<project>/.jarvis_builder/`.\n\n## Commands\n\n```powershell\npy -3 -m builder_core.cli init --project C:\\Repos\\QuixBugs\npy -3 -m builder_core.cli ask --project C:\\Repos\\QuixBugs \"Analyze p"
+  },
+  {
+    "task_id": "A1",
+    "arm": "claude_only",
+    "trial": 3,
+    "input_tokens": 8291,
+    "output_tokens": 1198,
+    "total_tokens": 9489,
+    "peak_context_tokens": 8291,
+    "wall_clock_s": 0.0481,
+    "cost_usd": 0.042843,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 1,
+      "list_dir": 0
+    },
+    "quality": 0,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [
+        "python_programs/breadth_first_search.py",
+        "product_readiness.py"
+      ]
+    },
+    "answer_preview": "Based on repository reads for task A1 (trial 3): # Builder Core CLI\n\nBuilder Core is a standalone, local-only repository analysis CLI. It does not\nroute through `main.py`, execute target code, modify source files, download\nrepositories, or auto-fix findings. Its only target-repository writes are index\nfiles under `<project>/.jarvis_builder/`.\n\n## Commands\n\n```powershell\npy -3 -m builder_core.cli init --project C:\\Repos\\QuixBugs\npy -3 -m builder_core.cli ask --project C:\\Repos\\QuixBugs \"Analyze p"
+  },
+  {
+    "task_id": "A1",
+    "arm": "claude_plus_jarvis",
+    "trial": 1,
+    "input_tokens": 1838,
+    "output_tokens": 486,
+    "total_tokens": 2324,
+    "peak_context_tokens": 1838,
+    "wall_clock_s": 0.0231,
+    "cost_usd": 0.012804,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "voice",
+        "actions",
+        "builder_core",
+        "brain",
+        "core"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "The most important indexed production subsystems are: 1. data: 3936 production file(s); entry files: data/real_repo_corpus/phase98a/black/action/main.py, data/real_repo_corpus/phase98a/cookiecutter/cookiecutter/main.py, data/real_repo_corpus/phase98a/typer/typer/main.py; dependencies: (none detected). 2. voice: 133 production file(s); entry files: voice/voice_loop.py, voice/wakeword.py, voice/__init__.py; dependencies: core, vision. 3. actions: 65 production file(s); entry files: actions/__init_"
+  },
+  {
+    "task_id": "A1",
+    "arm": "claude_plus_jarvis",
+    "trial": 2,
+    "input_tokens": 1838,
+    "output_tokens": 486,
+    "total_tokens": 2324,
+    "peak_context_tokens": 1838,
+    "wall_clock_s": 0.0239,
+    "cost_usd": 0.012804,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "voice",
+        "actions",
+        "builder_core",
+        "brain",
+        "core"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "The most important indexed production subsystems are: 1. data: 3936 production file(s); entry files: data/real_repo_corpus/phase98a/black/action/main.py, data/real_repo_corpus/phase98a/cookiecutter/cookiecutter/main.py, data/real_repo_corpus/phase98a/typer/typer/main.py; dependencies: (none detected). 2. voice: 133 production file(s); entry files: voice/voice_loop.py, voice/wakeword.py, voice/__init__.py; dependencies: core, vision. 3. actions: 65 production file(s); entry files: actions/__init_"
+  },
+  {
+    "task_id": "A1",
+    "arm": "claude_plus_jarvis",
+    "trial": 3,
+    "input_tokens": 1838,
+    "output_tokens": 486,
+    "total_tokens": 2324,
+    "peak_context_tokens": 1838,
+    "wall_clock_s": 0.0236,
+    "cost_usd": 0.012804,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "voice",
+        "actions",
+        "builder_core",
+        "brain",
+        "core"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "The most important indexed production subsystems are: 1. data: 3936 production file(s); entry files: data/real_repo_corpus/phase98a/black/action/main.py, data/real_repo_corpus/phase98a/cookiecutter/cookiecutter/main.py, data/real_repo_corpus/phase98a/typer/typer/main.py; dependencies: (none detected). 2. voice: 133 production file(s); entry files: voice/voice_loop.py, voice/wakeword.py, voice/__init__.py; dependencies: core, vision. 3. actions: 65 production file(s); entry files: actions/__init_"
+  },
+  {
+    "task_id": "A2",
+    "arm": "claude_only",
+    "trial": 1,
+    "input_tokens": 577,
+    "output_tokens": 12,
+    "total_tokens": 589,
+    "peak_context_tokens": 577,
+    "wall_clock_s": 0.0,
+    "cost_usd": 0.001911,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "production_code"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task A2 (trial 1):"
+  },
+  {
+    "task_id": "A2",
+    "arm": "claude_only",
+    "trial": 2,
+    "input_tokens": 577,
+    "output_tokens": 12,
+    "total_tokens": 589,
+    "peak_context_tokens": 577,
+    "wall_clock_s": 0.0,
+    "cost_usd": 0.001911,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "production_code"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task A2 (trial 2):"
+  },
+  {
+    "task_id": "A2",
+    "arm": "claude_only",
+    "trial": 3,
+    "input_tokens": 577,
+    "output_tokens": 12,
+    "total_tokens": 589,
+    "peak_context_tokens": 577,
+    "wall_clock_s": 0.0,
+    "cost_usd": 0.001911,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "production_code"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task A2 (trial 3):"
+  },
+  {
+    "task_id": "A2",
+    "arm": "claude_plus_jarvis",
+    "trial": 1,
+    "input_tokens": 1304,
+    "output_tokens": 172,
+    "total_tokens": 1476,
+    "peak_context_tokens": 1304,
+    "wall_clock_s": 0.0052,
+    "cost_usd": 0.006492,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "production_code"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Directories ranked by production-code concentration (density, then count):\n1. actions: density=1.00 (65/65 production files)\n2. scripts: density=1.00 (62/62 production files)\n3. assistant: density=1.00 (27/27 production files)\n4. conversation: density=1.00 (22/22 production files)\n5. investigation: density=1.00 (21/21 production files)\n6. brain: density=1.00 (20/20 production files)\n7. agents: density=1.00 (16/16 production files)\n8. task_agent: density=1.00 (16/16 production files)\n9. reliabili"
+  },
+  {
+    "task_id": "A2",
+    "arm": "claude_plus_jarvis",
+    "trial": 2,
+    "input_tokens": 1304,
+    "output_tokens": 172,
+    "total_tokens": 1476,
+    "peak_context_tokens": 1304,
+    "wall_clock_s": 0.004,
+    "cost_usd": 0.006492,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "production_code"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Directories ranked by production-code concentration (density, then count):\n1. actions: density=1.00 (65/65 production files)\n2. scripts: density=1.00 (62/62 production files)\n3. assistant: density=1.00 (27/27 production files)\n4. conversation: density=1.00 (22/22 production files)\n5. investigation: density=1.00 (21/21 production files)\n6. brain: density=1.00 (20/20 production files)\n7. agents: density=1.00 (16/16 production files)\n8. task_agent: density=1.00 (16/16 production files)\n9. reliabili"
+  },
+  {
+    "task_id": "A2",
+    "arm": "claude_plus_jarvis",
+    "trial": 3,
+    "input_tokens": 1304,
+    "output_tokens": 172,
+    "total_tokens": 1476,
+    "peak_context_tokens": 1304,
+    "wall_clock_s": 0.0036,
+    "cost_usd": 0.006492,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "production_code"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Directories ranked by production-code concentration (density, then count):\n1. actions: density=1.00 (65/65 production files)\n2. scripts: density=1.00 (62/62 production files)\n3. assistant: density=1.00 (27/27 production files)\n4. conversation: density=1.00 (22/22 production files)\n5. investigation: density=1.00 (21/21 production files)\n6. brain: density=1.00 (20/20 production files)\n7. agents: density=1.00 (16/16 production files)\n8. task_agent: density=1.00 (16/16 production files)\n9. reliabili"
+  },
+  {
+    "task_id": "A3",
+    "arm": "claude_only",
+    "trial": 1,
+    "input_tokens": 573,
+    "output_tokens": 12,
+    "total_tokens": 585,
+    "peak_context_tokens": 573,
+    "wall_clock_s": 0.0,
+    "cost_usd": 0.001899,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "core",
+        "import",
+        "fan"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task A3 (trial 1):"
+  },
+  {
+    "task_id": "A3",
+    "arm": "claude_only",
+    "trial": 2,
+    "input_tokens": 573,
+    "output_tokens": 12,
+    "total_tokens": 585,
+    "peak_context_tokens": 573,
+    "wall_clock_s": 0.0,
+    "cost_usd": 0.001899,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "core",
+        "import",
+        "fan"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task A3 (trial 2):"
+  },
+  {
+    "task_id": "A3",
+    "arm": "claude_only",
+    "trial": 3,
+    "input_tokens": 573,
+    "output_tokens": 12,
+    "total_tokens": 585,
+    "peak_context_tokens": 573,
+    "wall_clock_s": 0.0,
+    "cost_usd": 0.001899,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "core",
+        "import",
+        "fan"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task A3 (trial 3):"
+  },
+  {
+    "task_id": "A3",
+    "arm": "claude_plus_jarvis",
+    "trial": 1,
+    "input_tokens": 758,
+    "output_tokens": 16,
+    "total_tokens": 774,
+    "peak_context_tokens": 758,
+    "wall_clock_s": 1.4242,
+    "cost_usd": 0.002514,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "core",
+        "import",
+        "fan"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Dependency graph degraded \u2014 cannot compute subsystem centrality."
+  },
+  {
+    "task_id": "A3",
+    "arm": "claude_plus_jarvis",
+    "trial": 2,
+    "input_tokens": 758,
+    "output_tokens": 16,
+    "total_tokens": 774,
+    "peak_context_tokens": 758,
+    "wall_clock_s": 1.4017,
+    "cost_usd": 0.002514,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "core",
+        "import",
+        "fan"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Dependency graph degraded \u2014 cannot compute subsystem centrality."
+  },
+  {
+    "task_id": "A3",
+    "arm": "claude_plus_jarvis",
+    "trial": 3,
+    "input_tokens": 758,
+    "output_tokens": 16,
+    "total_tokens": 774,
+    "peak_context_tokens": 758,
+    "wall_clock_s": 1.5336,
+    "cost_usd": 0.002514,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "core",
+        "import",
+        "fan"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Dependency graph degraded \u2014 cannot compute subsystem centrality."
+  },
+  {
+    "task_id": "A4",
+    "arm": "claude_only",
+    "trial": 1,
+    "input_tokens": 7443,
+    "output_tokens": 1512,
+    "total_tokens": 8955,
+    "peak_context_tokens": 7443,
+    "wall_clock_s": 0.0092,
+    "cost_usd": 0.045009,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 1,
+      "list_dir": 0
+    },
+    "quality": 0,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [
+        "voice.py"
+      ]
+    },
+    "answer_preview": "Based on repository reads for task A4 (trial 1): \"\"\"Push-to-talk voice input loop.\"\"\"\n\nfrom __future__ import annotations\n\nimport time\nfrom pathlib import Path\nfrom typing import TYPE_CHECKING\n\nfrom rich.panel import Panel\n\nfrom core.runtime_state import RuntimeState\nfrom voice.latency_tracker import (\n    begin_voice_command,\n    finish_and_log,\n    set_record_ms,\n    set_transcribe_ms,\n    set_transcript,\n)\nfrom voice.microphone import MicrophoneError, record_until_enter, record_until_hotkey\nf"
+  },
+  {
+    "task_id": "A4",
+    "arm": "claude_only",
+    "trial": 2,
+    "input_tokens": 7443,
+    "output_tokens": 1512,
+    "total_tokens": 8955,
+    "peak_context_tokens": 7443,
+    "wall_clock_s": 0.0076,
+    "cost_usd": 0.045009,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 1,
+      "list_dir": 0
+    },
+    "quality": 0,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [
+        "voice.py"
+      ]
+    },
+    "answer_preview": "Based on repository reads for task A4 (trial 2): \"\"\"Push-to-talk voice input loop.\"\"\"\n\nfrom __future__ import annotations\n\nimport time\nfrom pathlib import Path\nfrom typing import TYPE_CHECKING\n\nfrom rich.panel import Panel\n\nfrom core.runtime_state import RuntimeState\nfrom voice.latency_tracker import (\n    begin_voice_command,\n    finish_and_log,\n    set_record_ms,\n    set_transcribe_ms,\n    set_transcript,\n)\nfrom voice.microphone import MicrophoneError, record_until_enter, record_until_hotkey\nf"
+  },
+  {
+    "task_id": "A4",
+    "arm": "claude_only",
+    "trial": 3,
+    "input_tokens": 7443,
+    "output_tokens": 1512,
+    "total_tokens": 8955,
+    "peak_context_tokens": 7443,
+    "wall_clock_s": 0.0072,
+    "cost_usd": 0.045009,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 1,
+      "list_dir": 0
+    },
+    "quality": 0,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [
+        "voice.py"
+      ]
+    },
+    "answer_preview": "Based on repository reads for task A4 (trial 3): \"\"\"Push-to-talk voice input loop.\"\"\"\n\nfrom __future__ import annotations\n\nimport time\nfrom pathlib import Path\nfrom typing import TYPE_CHECKING\n\nfrom rich.panel import Panel\n\nfrom core.runtime_state import RuntimeState\nfrom voice.latency_tracker import (\n    begin_voice_command,\n    finish_and_log,\n    set_record_ms,\n    set_transcribe_ms,\n    set_transcript,\n)\nfrom voice.microphone import MicrophoneError, record_until_enter, record_until_hotkey\nf"
+  },
+  {
+    "task_id": "A4",
+    "arm": "claude_plus_jarvis",
+    "trial": 1,
+    "input_tokens": 1125,
+    "output_tokens": 52,
+    "total_tokens": 1177,
+    "peak_context_tokens": 1125,
+    "wall_clock_s": 0.0314,
+    "cost_usd": 0.004155,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "voice"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "The indexed voice subsystem is the primary production area for this question. voice: 133 production file(s); entry files: voice/voice_loop.py, voice/wakeword.py, voice/__init__.py; dependencies: core, vision."
+  },
+  {
+    "task_id": "A4",
+    "arm": "claude_plus_jarvis",
+    "trial": 2,
+    "input_tokens": 1125,
+    "output_tokens": 52,
+    "total_tokens": 1177,
+    "peak_context_tokens": 1125,
+    "wall_clock_s": 0.0273,
+    "cost_usd": 0.004155,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "voice"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "The indexed voice subsystem is the primary production area for this question. voice: 133 production file(s); entry files: voice/voice_loop.py, voice/wakeword.py, voice/__init__.py; dependencies: core, vision."
+  },
+  {
+    "task_id": "A4",
+    "arm": "claude_plus_jarvis",
+    "trial": 3,
+    "input_tokens": 1125,
+    "output_tokens": 52,
+    "total_tokens": 1177,
+    "peak_context_tokens": 1125,
+    "wall_clock_s": 0.0237,
+    "cost_usd": 0.004155,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "voice"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "The indexed voice subsystem is the primary production area for this question. voice: 133 production file(s); entry files: voice/voice_loop.py, voice/wakeword.py, voice/__init__.py; dependencies: core, vision."
+  },
+  {
+    "task_id": "A5",
+    "arm": "claude_only",
+    "trial": 1,
+    "input_tokens": 10267,
+    "output_tokens": 1012,
+    "total_tokens": 11279,
+    "peak_context_tokens": 10267,
+    "wall_clock_s": 3.603,
+    "cost_usd": 0.045981,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 2,
+      "list_dir": 0
+    },
+    "quality": 2,
+    "quality_detail": {
+      "anchors_hit": [
+        "main.py",
+        "cli.py"
+      ],
+      "anchors_miss": [
+        "voice_loop"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task A5 (trial 1): main.py:424:if __name__ == \"__main__\":\nbuilder_core/cli.py:594:if __name__ == \"__main__\":\nscripts/generate_phase85_evidence.py:406:if __name__ == \"__main__\":\nscripts/run_phase661_strict_validation.py:16:if __name__ == \"__main__\":\nscripts/run_phase66_real_world_validation.py:33:if __name__ == \"__main__\":\nscripts/run_phase67_balance.py:131:if __name__ == \"__main__\":\nscripts/run_phase84_holdout_benchmark.py:52:if __name__ == \"__main__\":\nscripts/smoke"
+  },
+  {
+    "task_id": "A5",
+    "arm": "claude_only",
+    "trial": 2,
+    "input_tokens": 10267,
+    "output_tokens": 1012,
+    "total_tokens": 11279,
+    "peak_context_tokens": 10267,
+    "wall_clock_s": 3.4632,
+    "cost_usd": 0.045981,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 2,
+      "list_dir": 0
+    },
+    "quality": 2,
+    "quality_detail": {
+      "anchors_hit": [
+        "main.py",
+        "cli.py"
+      ],
+      "anchors_miss": [
+        "voice_loop"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task A5 (trial 2): main.py:424:if __name__ == \"__main__\":\nbuilder_core/cli.py:594:if __name__ == \"__main__\":\nscripts/generate_phase85_evidence.py:406:if __name__ == \"__main__\":\nscripts/run_phase661_strict_validation.py:16:if __name__ == \"__main__\":\nscripts/run_phase66_real_world_validation.py:33:if __name__ == \"__main__\":\nscripts/run_phase67_balance.py:131:if __name__ == \"__main__\":\nscripts/run_phase84_holdout_benchmark.py:52:if __name__ == \"__main__\":\nscripts/smoke"
+  },
+  {
+    "task_id": "A5",
+    "arm": "claude_only",
+    "trial": 3,
+    "input_tokens": 10267,
+    "output_tokens": 1012,
+    "total_tokens": 11279,
+    "peak_context_tokens": 10267,
+    "wall_clock_s": 3.4451,
+    "cost_usd": 0.045981,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 2,
+      "list_dir": 0
+    },
+    "quality": 2,
+    "quality_detail": {
+      "anchors_hit": [
+        "main.py",
+        "cli.py"
+      ],
+      "anchors_miss": [
+        "voice_loop"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task A5 (trial 3): main.py:424:if __name__ == \"__main__\":\nbuilder_core/cli.py:594:if __name__ == \"__main__\":\nscripts/generate_phase85_evidence.py:406:if __name__ == \"__main__\":\nscripts/run_phase661_strict_validation.py:16:if __name__ == \"__main__\":\nscripts/run_phase66_real_world_validation.py:33:if __name__ == \"__main__\":\nscripts/run_phase67_balance.py:131:if __name__ == \"__main__\":\nscripts/run_phase84_holdout_benchmark.py:52:if __name__ == \"__main__\":\nscripts/smoke"
+  },
+  {
+    "task_id": "A5",
+    "arm": "claude_plus_jarvis",
+    "trial": 1,
+    "input_tokens": 1206,
+    "output_tokens": 59,
+    "total_tokens": 1265,
+    "peak_context_tokens": 1206,
+    "wall_clock_s": 0.0227,
+    "cost_usd": 0.004503,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "main.py",
+        "cli.py",
+        "voice_loop"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on the indexed project, here is the most relevant material:\nSystem status reporting. This document describes the **current** `local_jarvis` system at `C:\\J.A.R.V.I.S\\local_jarvis`. Entry point for all command execution from the app:"
+  },
+  {
+    "task_id": "A5",
+    "arm": "claude_plus_jarvis",
+    "trial": 2,
+    "input_tokens": 1206,
+    "output_tokens": 59,
+    "total_tokens": 1265,
+    "peak_context_tokens": 1206,
+    "wall_clock_s": 0.0264,
+    "cost_usd": 0.004503,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "main.py",
+        "cli.py",
+        "voice_loop"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on the indexed project, here is the most relevant material:\nSystem status reporting. This document describes the **current** `local_jarvis` system at `C:\\J.A.R.V.I.S\\local_jarvis`. Entry point for all command execution from the app:"
+  },
+  {
+    "task_id": "A5",
+    "arm": "claude_plus_jarvis",
+    "trial": 3,
+    "input_tokens": 1206,
+    "output_tokens": 59,
+    "total_tokens": 1265,
+    "peak_context_tokens": 1206,
+    "wall_clock_s": 0.0226,
+    "cost_usd": 0.004503,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "main.py",
+        "cli.py",
+        "voice_loop"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on the indexed project, here is the most relevant material:\nSystem status reporting. This document describes the **current** `local_jarvis` system at `C:\\J.A.R.V.I.S\\local_jarvis`. Entry point for all command execution from the app:"
+  },
+  {
+    "task_id": "A6",
+    "arm": "claude_only",
+    "trial": 1,
+    "input_tokens": 1269,
+    "output_tokens": 698,
+    "total_tokens": 1967,
+    "peak_context_tokens": 1269,
+    "wall_clock_s": 0.0002,
+    "cost_usd": 0.014277,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 0,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [
+        "python_programs/breadth_first_search.py"
+      ]
+    },
+    "answer_preview": "Based on repository reads for task A6 (trial 1): # Builder Core CLI\n\nBuilder Core is a standalone, local-only repository analysis CLI. It does not\nroute through `main.py`, execute target code, modify source files, download\nrepositories, or auto-fix findings. Its only target-repository writes are index\nfiles under `<project>/.jarvis_builder/`.\n\n## Commands\n\n```powershell\npy -3 -m builder_core.cli init --project C:\\Repos\\QuixBugs\npy -3 -m builder_core.cli ask --project C:\\Repos\\QuixBugs \"Analyze p"
+  },
+  {
+    "task_id": "A6",
+    "arm": "claude_only",
+    "trial": 2,
+    "input_tokens": 1269,
+    "output_tokens": 698,
+    "total_tokens": 1967,
+    "peak_context_tokens": 1269,
+    "wall_clock_s": 0.0002,
+    "cost_usd": 0.014277,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 0,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [
+        "python_programs/breadth_first_search.py"
+      ]
+    },
+    "answer_preview": "Based on repository reads for task A6 (trial 2): # Builder Core CLI\n\nBuilder Core is a standalone, local-only repository analysis CLI. It does not\nroute through `main.py`, execute target code, modify source files, download\nrepositories, or auto-fix findings. Its only target-repository writes are index\nfiles under `<project>/.jarvis_builder/`.\n\n## Commands\n\n```powershell\npy -3 -m builder_core.cli init --project C:\\Repos\\QuixBugs\npy -3 -m builder_core.cli ask --project C:\\Repos\\QuixBugs \"Analyze p"
+  },
+  {
+    "task_id": "A6",
+    "arm": "claude_only",
+    "trial": 3,
+    "input_tokens": 1269,
+    "output_tokens": 698,
+    "total_tokens": 1967,
+    "peak_context_tokens": 1269,
+    "wall_clock_s": 0.0001,
+    "cost_usd": 0.014277,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 0,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [
+        "python_programs/breadth_first_search.py"
+      ]
+    },
+    "answer_preview": "Based on repository reads for task A6 (trial 3): # Builder Core CLI\n\nBuilder Core is a standalone, local-only repository analysis CLI. It does not\nroute through `main.py`, execute target code, modify source files, download\nrepositories, or auto-fix findings. Its only target-repository writes are index\nfiles under `<project>/.jarvis_builder/`.\n\n## Commands\n\n```powershell\npy -3 -m builder_core.cli init --project C:\\Repos\\QuixBugs\npy -3 -m builder_core.cli ask --project C:\\Repos\\QuixBugs \"Analyze p"
+  },
+  {
+    "task_id": "A6",
+    "arm": "claude_plus_jarvis",
+    "trial": 1,
+    "input_tokens": 1829,
+    "output_tokens": 486,
+    "total_tokens": 2315,
+    "peak_context_tokens": 1829,
+    "wall_clock_s": 0.0223,
+    "cost_usd": 0.012777,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "subsystem",
+        "production"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "The most important indexed production subsystems are: 1. data: 3936 production file(s); entry files: data/real_repo_corpus/phase98a/black/action/main.py, data/real_repo_corpus/phase98a/cookiecutter/cookiecutter/main.py, data/real_repo_corpus/phase98a/typer/typer/main.py; dependencies: (none detected). 2. voice: 133 production file(s); entry files: voice/voice_loop.py, voice/wakeword.py, voice/__init__.py; dependencies: core, vision. 3. actions: 65 production file(s); entry files: actions/__init_"
+  },
+  {
+    "task_id": "A6",
+    "arm": "claude_plus_jarvis",
+    "trial": 2,
+    "input_tokens": 1829,
+    "output_tokens": 486,
+    "total_tokens": 2315,
+    "peak_context_tokens": 1829,
+    "wall_clock_s": 0.0267,
+    "cost_usd": 0.012777,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "subsystem",
+        "production"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "The most important indexed production subsystems are: 1. data: 3936 production file(s); entry files: data/real_repo_corpus/phase98a/black/action/main.py, data/real_repo_corpus/phase98a/cookiecutter/cookiecutter/main.py, data/real_repo_corpus/phase98a/typer/typer/main.py; dependencies: (none detected). 2. voice: 133 production file(s); entry files: voice/voice_loop.py, voice/wakeword.py, voice/__init__.py; dependencies: core, vision. 3. actions: 65 production file(s); entry files: actions/__init_"
+  },
+  {
+    "task_id": "A6",
+    "arm": "claude_plus_jarvis",
+    "trial": 3,
+    "input_tokens": 1829,
+    "output_tokens": 486,
+    "total_tokens": 2315,
+    "peak_context_tokens": 1829,
+    "wall_clock_s": 0.027,
+    "cost_usd": 0.012777,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "subsystem",
+        "production"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "The most important indexed production subsystems are: 1. data: 3936 production file(s); entry files: data/real_repo_corpus/phase98a/black/action/main.py, data/real_repo_corpus/phase98a/cookiecutter/cookiecutter/main.py, data/real_repo_corpus/phase98a/typer/typer/main.py; dependencies: (none detected). 2. voice: 133 production file(s); entry files: voice/voice_loop.py, voice/wakeword.py, voice/__init__.py; dependencies: core, vision. 3. actions: 65 production file(s); entry files: actions/__init_"
+  },
+  {
+    "task_id": "A7",
+    "arm": "claude_only",
+    "trial": 1,
+    "input_tokens": 2830,
+    "output_tokens": 1011,
+    "total_tokens": 3841,
+    "peak_context_tokens": 2830,
+    "wall_clock_s": 0.0002,
+    "cost_usd": 0.023655,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "analyze",
+        "builder_core/bug_intelligence/engine.py"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task A7 (trial 1): \"\"\"Unified Builder Intelligence Engine (Phase 90).\n\nOne entry point that orchestrates the deterministic pipeline:\n\n    Repository / file\n      -> ParseAgent            (text -> AST)\n      -> FactExtractionAgent    (data-flow + value-flow + test facts)\n      -> LogicBugAgent          (logic / structure / maintainability / test-gap)\n      -> SecurityAgent          (taint-based security + null-deref)\n      -> AlgorithmAgent         (semantic algorith"
+  },
+  {
+    "task_id": "A7",
+    "arm": "claude_only",
+    "trial": 2,
+    "input_tokens": 2830,
+    "output_tokens": 1011,
+    "total_tokens": 3841,
+    "peak_context_tokens": 2830,
+    "wall_clock_s": 0.0002,
+    "cost_usd": 0.023655,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "analyze",
+        "builder_core/bug_intelligence/engine.py"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task A7 (trial 2): \"\"\"Unified Builder Intelligence Engine (Phase 90).\n\nOne entry point that orchestrates the deterministic pipeline:\n\n    Repository / file\n      -> ParseAgent            (text -> AST)\n      -> FactExtractionAgent    (data-flow + value-flow + test facts)\n      -> LogicBugAgent          (logic / structure / maintainability / test-gap)\n      -> SecurityAgent          (taint-based security + null-deref)\n      -> AlgorithmAgent         (semantic algorith"
+  },
+  {
+    "task_id": "A7",
+    "arm": "claude_only",
+    "trial": 3,
+    "input_tokens": 2830,
+    "output_tokens": 1011,
+    "total_tokens": 3841,
+    "peak_context_tokens": 2830,
+    "wall_clock_s": 0.0002,
+    "cost_usd": 0.023655,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "analyze",
+        "builder_core/bug_intelligence/engine.py"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task A7 (trial 3): \"\"\"Unified Builder Intelligence Engine (Phase 90).\n\nOne entry point that orchestrates the deterministic pipeline:\n\n    Repository / file\n      -> ParseAgent            (text -> AST)\n      -> FactExtractionAgent    (data-flow + value-flow + test facts)\n      -> LogicBugAgent          (logic / structure / maintainability / test-gap)\n      -> SecurityAgent          (taint-based security + null-deref)\n      -> AlgorithmAgent         (semantic algorith"
+  },
+  {
+    "task_id": "A7",
+    "arm": "claude_plus_jarvis",
+    "trial": 1,
+    "input_tokens": 2083,
+    "output_tokens": 37,
+    "total_tokens": 2120,
+    "peak_context_tokens": 2083,
+    "wall_clock_s": 0.0033,
+    "cost_usd": 0.006804,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 2,
+    "quality_detail": {
+      "anchors_hit": [
+        "builder_core/bug_intelligence/engine.py"
+      ],
+      "anchors_miss": [
+        "analyze"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Static analysis found 2 review lead(s) in builder_core/bug_intelligence/engine.py. These are deterministic AST signals, not automatic proof of a bug."
+  },
+  {
+    "task_id": "A7",
+    "arm": "claude_plus_jarvis",
+    "trial": 2,
+    "input_tokens": 2083,
+    "output_tokens": 37,
+    "total_tokens": 2120,
+    "peak_context_tokens": 2083,
+    "wall_clock_s": 0.0028,
+    "cost_usd": 0.006804,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 2,
+    "quality_detail": {
+      "anchors_hit": [
+        "builder_core/bug_intelligence/engine.py"
+      ],
+      "anchors_miss": [
+        "analyze"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Static analysis found 2 review lead(s) in builder_core/bug_intelligence/engine.py. These are deterministic AST signals, not automatic proof of a bug."
+  },
+  {
+    "task_id": "A7",
+    "arm": "claude_plus_jarvis",
+    "trial": 3,
+    "input_tokens": 2083,
+    "output_tokens": 37,
+    "total_tokens": 2120,
+    "peak_context_tokens": 2083,
+    "wall_clock_s": 0.0022,
+    "cost_usd": 0.006804,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 2,
+    "quality_detail": {
+      "anchors_hit": [
+        "builder_core/bug_intelligence/engine.py"
+      ],
+      "anchors_miss": [
+        "analyze"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Static analysis found 2 review lead(s) in builder_core/bug_intelligence/engine.py. These are deterministic AST signals, not automatic proof of a bug."
+  },
+  {
+    "task_id": "A8",
+    "arm": "claude_only",
+    "trial": 1,
+    "input_tokens": 573,
+    "output_tokens": 12,
+    "total_tokens": 585,
+    "peak_context_tokens": 573,
+    "wall_clock_s": 0.0,
+    "cost_usd": 0.001899,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "production",
+        "test",
+        "benchmark"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task A8 (trial 1):"
+  },
+  {
+    "task_id": "A8",
+    "arm": "claude_only",
+    "trial": 2,
+    "input_tokens": 573,
+    "output_tokens": 12,
+    "total_tokens": 585,
+    "peak_context_tokens": 573,
+    "wall_clock_s": 0.0,
+    "cost_usd": 0.001899,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "production",
+        "test",
+        "benchmark"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task A8 (trial 2):"
+  },
+  {
+    "task_id": "A8",
+    "arm": "claude_only",
+    "trial": 3,
+    "input_tokens": 573,
+    "output_tokens": 12,
+    "total_tokens": 585,
+    "peak_context_tokens": 573,
+    "wall_clock_s": 0.0,
+    "cost_usd": 0.001899,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "production",
+        "test",
+        "benchmark"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task A8 (trial 3):"
+  },
+  {
+    "task_id": "A8",
+    "arm": "claude_plus_jarvis",
+    "trial": 1,
+    "input_tokens": 1561,
+    "output_tokens": 56,
+    "total_tokens": 1617,
+    "peak_context_tokens": 1561,
+    "wall_clock_s": 0.0235,
+    "cost_usd": 0.005523,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 2,
+    "quality_detail": {
+      "anchors_hit": [
+        "production",
+        "test"
+      ],
+      "anchors_miss": [
+        "benchmark"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Indexed folders containing production code: data (3936), voice (133), actions (65), builder_core (65), scripts (62), assistant (27), conversation (22), investigation (21), brain (20), core (20), agents (16), task_agent (16)."
+  },
+  {
+    "task_id": "A8",
+    "arm": "claude_plus_jarvis",
+    "trial": 2,
+    "input_tokens": 1561,
+    "output_tokens": 56,
+    "total_tokens": 1617,
+    "peak_context_tokens": 1561,
+    "wall_clock_s": 0.0217,
+    "cost_usd": 0.005523,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 2,
+    "quality_detail": {
+      "anchors_hit": [
+        "production",
+        "test"
+      ],
+      "anchors_miss": [
+        "benchmark"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Indexed folders containing production code: data (3936), voice (133), actions (65), builder_core (65), scripts (62), assistant (27), conversation (22), investigation (21), brain (20), core (20), agents (16), task_agent (16)."
+  },
+  {
+    "task_id": "A8",
+    "arm": "claude_plus_jarvis",
+    "trial": 3,
+    "input_tokens": 1561,
+    "output_tokens": 56,
+    "total_tokens": 1617,
+    "peak_context_tokens": 1561,
+    "wall_clock_s": 0.0216,
+    "cost_usd": 0.005523,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 2,
+    "quality_detail": {
+      "anchors_hit": [
+        "production",
+        "test"
+      ],
+      "anchors_miss": [
+        "benchmark"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Indexed folders containing production code: data (3936), voice (133), actions (65), builder_core (65), scripts (62), assistant (27), conversation (22), investigation (21), brain (20), core (20), agents (16), task_agent (16)."
+  },
+  {
+    "task_id": "I1",
+    "arm": "claude_only",
+    "trial": 1,
+    "input_tokens": 951,
+    "output_tokens": 359,
+    "total_tokens": 1310,
+    "peak_context_tokens": 951,
+    "wall_clock_s": 3.2505,
+    "cost_usd": 0.008238,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 1,
+      "list_dir": 0
+    },
+    "quality": 2,
+    "quality_detail": {
+      "anchors_hit": [
+        "engine.py"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task I1 (trial 1): scripts/run_phase84_holdout_benchmark.py:18:from builder_core.bug_intelligence import engine_benchmark\nbuilder_core/historical_bug_replay/harness.py:18:from builder_core.bug_intelligence import engine\nbuilder_core/real_repo_validation/harness.py:18:from builder_core.bug_intelligence import engine, engine_benchmark\nbuilder_core/scripts/phase96d_review_pilot.py:21:from builder_core.bug_intelligence import engine\nbuilder_core/scripts/phase97c_review_"
+  },
+  {
+    "task_id": "I1",
+    "arm": "claude_only",
+    "trial": 2,
+    "input_tokens": 951,
+    "output_tokens": 359,
+    "total_tokens": 1310,
+    "peak_context_tokens": 951,
+    "wall_clock_s": 3.3202,
+    "cost_usd": 0.008238,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 1,
+      "list_dir": 0
+    },
+    "quality": 2,
+    "quality_detail": {
+      "anchors_hit": [
+        "engine.py"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task I1 (trial 2): scripts/run_phase84_holdout_benchmark.py:18:from builder_core.bug_intelligence import engine_benchmark\nbuilder_core/historical_bug_replay/harness.py:18:from builder_core.bug_intelligence import engine\nbuilder_core/real_repo_validation/harness.py:18:from builder_core.bug_intelligence import engine, engine_benchmark\nbuilder_core/scripts/phase96d_review_pilot.py:21:from builder_core.bug_intelligence import engine\nbuilder_core/scripts/phase97c_review_"
+  },
+  {
+    "task_id": "I1",
+    "arm": "claude_only",
+    "trial": 3,
+    "input_tokens": 951,
+    "output_tokens": 359,
+    "total_tokens": 1310,
+    "peak_context_tokens": 951,
+    "wall_clock_s": 3.1855,
+    "cost_usd": 0.008238,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 1,
+      "list_dir": 0
+    },
+    "quality": 2,
+    "quality_detail": {
+      "anchors_hit": [
+        "engine.py"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task I1 (trial 3): scripts/run_phase84_holdout_benchmark.py:18:from builder_core.bug_intelligence import engine_benchmark\nbuilder_core/historical_bug_replay/harness.py:18:from builder_core.bug_intelligence import engine\nbuilder_core/real_repo_validation/harness.py:18:from builder_core.bug_intelligence import engine, engine_benchmark\nbuilder_core/scripts/phase96d_review_pilot.py:21:from builder_core.bug_intelligence import engine\nbuilder_core/scripts/phase97c_review_"
+  },
+  {
+    "task_id": "I1",
+    "arm": "claude_plus_jarvis",
+    "trial": 1,
+    "input_tokens": 767,
+    "output_tokens": 178,
+    "total_tokens": 945,
+    "peak_context_tokens": 767,
+    "wall_clock_s": 1.48,
+    "cost_usd": 0.004971,
+    "tool_calls": {
+      "impact_file": 1
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "engine.py"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "IMPACT ANALYSIS\nschema: 1  weights: 1\nrepository: C:/J.A.R.V.I.S/local_jarvis\n\nTARGET\n- kind: file\n- path: None\n- qualname: (n/a)\n- role: None  subsystem: None\n\nERROR: target file not found in graph\n\nDIRECT IMPACT\n- files: (none proven)\n\nMODULES IMPORTING\n- (none proven)\n\nFUNCTIONS DEPENDENT\n- (none proven)\n\nTRANSITIVE IMPACT\n- direct=0 transitive=0 truncated=False\n\nEXECUTION PATHS\n- no resolved path found (coverage is partial)\n\nRISK\n- bucket: unknown score: 0.0\n\nCONFIDENCE\n- bucket: unknown res"
+  },
+  {
+    "task_id": "I1",
+    "arm": "claude_plus_jarvis",
+    "trial": 2,
+    "input_tokens": 767,
+    "output_tokens": 178,
+    "total_tokens": 945,
+    "peak_context_tokens": 767,
+    "wall_clock_s": 1.4546,
+    "cost_usd": 0.004971,
+    "tool_calls": {
+      "impact_file": 1
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "engine.py"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "IMPACT ANALYSIS\nschema: 1  weights: 1\nrepository: C:/J.A.R.V.I.S/local_jarvis\n\nTARGET\n- kind: file\n- path: None\n- qualname: (n/a)\n- role: None  subsystem: None\n\nERROR: target file not found in graph\n\nDIRECT IMPACT\n- files: (none proven)\n\nMODULES IMPORTING\n- (none proven)\n\nFUNCTIONS DEPENDENT\n- (none proven)\n\nTRANSITIVE IMPACT\n- direct=0 transitive=0 truncated=False\n\nEXECUTION PATHS\n- no resolved path found (coverage is partial)\n\nRISK\n- bucket: unknown score: 0.0\n\nCONFIDENCE\n- bucket: unknown res"
+  },
+  {
+    "task_id": "I1",
+    "arm": "claude_plus_jarvis",
+    "trial": 3,
+    "input_tokens": 767,
+    "output_tokens": 178,
+    "total_tokens": 945,
+    "peak_context_tokens": 767,
+    "wall_clock_s": 1.5214,
+    "cost_usd": 0.004971,
+    "tool_calls": {
+      "impact_file": 1
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "engine.py"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "IMPACT ANALYSIS\nschema: 1  weights: 1\nrepository: C:/J.A.R.V.I.S/local_jarvis\n\nTARGET\n- kind: file\n- path: None\n- qualname: (n/a)\n- role: None  subsystem: None\n\nERROR: target file not found in graph\n\nDIRECT IMPACT\n- files: (none proven)\n\nMODULES IMPORTING\n- (none proven)\n\nFUNCTIONS DEPENDENT\n- (none proven)\n\nTRANSITIVE IMPACT\n- direct=0 transitive=0 truncated=False\n\nEXECUTION PATHS\n- no resolved path found (coverage is partial)\n\nRISK\n- bucket: unknown score: 0.0\n\nCONFIDENCE\n- bucket: unknown res"
+  },
+  {
+    "task_id": "I2",
+    "arm": "claude_only",
+    "trial": 1,
+    "input_tokens": 4954,
+    "output_tokens": 1512,
+    "total_tokens": 6466,
+    "peak_context_tokens": 4954,
+    "wall_clock_s": 3.0248,
+    "cost_usd": 0.037542,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 1,
+      "list_dir": 0
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "analyze_source",
+        "engine.py"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task I2 (trial 1): \"\"\"Unified Builder Intelligence Engine (Phase 90).\n\nOne entry point that orchestrates the deterministic pipeline:\n\n    Repository / file\n      -> ParseAgent            (text -> AST)\n      -> FactExtractionAgent    (data-flow + value-flow + test facts)\n      -> LogicBugAgent          (logic / structure / maintainability / test-gap)\n      -> SecurityAgent          (taint-based security + null-deref)\n      -> AlgorithmAgent         (semantic algorith"
+  },
+  {
+    "task_id": "I2",
+    "arm": "claude_only",
+    "trial": 2,
+    "input_tokens": 4954,
+    "output_tokens": 1512,
+    "total_tokens": 6466,
+    "peak_context_tokens": 4954,
+    "wall_clock_s": 3.0606,
+    "cost_usd": 0.037542,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 1,
+      "list_dir": 0
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "analyze_source",
+        "engine.py"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task I2 (trial 2): \"\"\"Unified Builder Intelligence Engine (Phase 90).\n\nOne entry point that orchestrates the deterministic pipeline:\n\n    Repository / file\n      -> ParseAgent            (text -> AST)\n      -> FactExtractionAgent    (data-flow + value-flow + test facts)\n      -> LogicBugAgent          (logic / structure / maintainability / test-gap)\n      -> SecurityAgent          (taint-based security + null-deref)\n      -> AlgorithmAgent         (semantic algorith"
+  },
+  {
+    "task_id": "I2",
+    "arm": "claude_only",
+    "trial": 3,
+    "input_tokens": 4954,
+    "output_tokens": 1512,
+    "total_tokens": 6466,
+    "peak_context_tokens": 4954,
+    "wall_clock_s": 3.0015,
+    "cost_usd": 0.037542,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 1,
+      "list_dir": 0
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "analyze_source",
+        "engine.py"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task I2 (trial 3): \"\"\"Unified Builder Intelligence Engine (Phase 90).\n\nOne entry point that orchestrates the deterministic pipeline:\n\n    Repository / file\n      -> ParseAgent            (text -> AST)\n      -> FactExtractionAgent    (data-flow + value-flow + test facts)\n      -> LogicBugAgent          (logic / structure / maintainability / test-gap)\n      -> SecurityAgent          (taint-based security + null-deref)\n      -> AlgorithmAgent         (semantic algorith"
+  },
+  {
+    "task_id": "I2",
+    "arm": "claude_plus_jarvis",
+    "trial": 1,
+    "input_tokens": 776,
+    "output_tokens": 178,
+    "total_tokens": 954,
+    "peak_context_tokens": 776,
+    "wall_clock_s": 1.3727,
+    "cost_usd": 0.004998,
+    "tool_calls": {
+      "impact_file": 1
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "analyze_source",
+        "engine.py"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "IMPACT ANALYSIS\nschema: 1  weights: 1\nrepository: C:/J.A.R.V.I.S/local_jarvis\n\nTARGET\n- kind: file\n- path: None\n- qualname: (n/a)\n- role: None  subsystem: None\n\nERROR: target file not found in graph\n\nDIRECT IMPACT\n- files: (none proven)\n\nMODULES IMPORTING\n- (none proven)\n\nFUNCTIONS DEPENDENT\n- (none proven)\n\nTRANSITIVE IMPACT\n- direct=0 transitive=0 truncated=False\n\nEXECUTION PATHS\n- no resolved path found (coverage is partial)\n\nRISK\n- bucket: unknown score: 0.0\n\nCONFIDENCE\n- bucket: unknown res"
+  },
+  {
+    "task_id": "I2",
+    "arm": "claude_plus_jarvis",
+    "trial": 2,
+    "input_tokens": 776,
+    "output_tokens": 178,
+    "total_tokens": 954,
+    "peak_context_tokens": 776,
+    "wall_clock_s": 1.4516,
+    "cost_usd": 0.004998,
+    "tool_calls": {
+      "impact_file": 1
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "analyze_source",
+        "engine.py"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "IMPACT ANALYSIS\nschema: 1  weights: 1\nrepository: C:/J.A.R.V.I.S/local_jarvis\n\nTARGET\n- kind: file\n- path: None\n- qualname: (n/a)\n- role: None  subsystem: None\n\nERROR: target file not found in graph\n\nDIRECT IMPACT\n- files: (none proven)\n\nMODULES IMPORTING\n- (none proven)\n\nFUNCTIONS DEPENDENT\n- (none proven)\n\nTRANSITIVE IMPACT\n- direct=0 transitive=0 truncated=False\n\nEXECUTION PATHS\n- no resolved path found (coverage is partial)\n\nRISK\n- bucket: unknown score: 0.0\n\nCONFIDENCE\n- bucket: unknown res"
+  },
+  {
+    "task_id": "I2",
+    "arm": "claude_plus_jarvis",
+    "trial": 3,
+    "input_tokens": 776,
+    "output_tokens": 178,
+    "total_tokens": 954,
+    "peak_context_tokens": 776,
+    "wall_clock_s": 1.4135,
+    "cost_usd": 0.004998,
+    "tool_calls": {
+      "impact_file": 1
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "analyze_source",
+        "engine.py"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "IMPACT ANALYSIS\nschema: 1  weights: 1\nrepository: C:/J.A.R.V.I.S/local_jarvis\n\nTARGET\n- kind: file\n- path: None\n- qualname: (n/a)\n- role: None  subsystem: None\n\nERROR: target file not found in graph\n\nDIRECT IMPACT\n- files: (none proven)\n\nMODULES IMPORTING\n- (none proven)\n\nFUNCTIONS DEPENDENT\n- (none proven)\n\nTRANSITIVE IMPACT\n- direct=0 transitive=0 truncated=False\n\nEXECUTION PATHS\n- no resolved path found (coverage is partial)\n\nRISK\n- bucket: unknown score: 0.0\n\nCONFIDENCE\n- bucket: unknown res"
+  },
+  {
+    "task_id": "I3",
+    "arm": "claude_only",
+    "trial": 1,
+    "input_tokens": 574,
+    "output_tokens": 12,
+    "total_tokens": 586,
+    "peak_context_tokens": 574,
+    "wall_clock_s": 0.0,
+    "cost_usd": 0.001902,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "import",
+        "module"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task I3 (trial 1):"
+  },
+  {
+    "task_id": "I3",
+    "arm": "claude_only",
+    "trial": 2,
+    "input_tokens": 574,
+    "output_tokens": 12,
+    "total_tokens": 586,
+    "peak_context_tokens": 574,
+    "wall_clock_s": 0.0,
+    "cost_usd": 0.001902,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "import",
+        "module"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task I3 (trial 2):"
+  },
+  {
+    "task_id": "I3",
+    "arm": "claude_only",
+    "trial": 3,
+    "input_tokens": 574,
+    "output_tokens": 12,
+    "total_tokens": 586,
+    "peak_context_tokens": 574,
+    "wall_clock_s": 0.0,
+    "cost_usd": 0.001902,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "import",
+        "module"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task I3 (trial 3):"
+  },
+  {
+    "task_id": "I3",
+    "arm": "claude_plus_jarvis",
+    "trial": 1,
+    "input_tokens": 695,
+    "output_tokens": 121,
+    "total_tokens": 816,
+    "peak_context_tokens": 695,
+    "wall_clock_s": 1.4426,
+    "cost_usd": 0.0039,
+    "tool_calls": {
+      "graph_summary": 1
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "import",
+        "module"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "DEPENDENCY GRAPH SUMMARY\nschema: 1\nrepository: C:/J.A.R.V.I.S/local_jarvis\n\nNODES\n- total: 1\n- repository: 1\n- module: 0\n- class: 0\n- function: 0\n\nEDGES\n- total: 0\n- contains: 0\n- imports: 0\n- calls: 0\n- references: 0\n\nUNRESOLVED\n- imports_external: 0\n- calls_unresolved: 0\n- references_unresolved: 0\n\nTOP IMPORTED MODULES\n- (none)\n\nTOP CALLED FUNCTIONS\n- (none)\n\nLARGEST COMPONENTS\n- size=1 root=repository:C:/J.A.R.V.I.S/local_jarvis\n\nIMPORT CYCLES\n- (none)\n\nDEGRADED: too_many_files\n"
+  },
+  {
+    "task_id": "I3",
+    "arm": "claude_plus_jarvis",
+    "trial": 2,
+    "input_tokens": 695,
+    "output_tokens": 121,
+    "total_tokens": 816,
+    "peak_context_tokens": 695,
+    "wall_clock_s": 1.4458,
+    "cost_usd": 0.0039,
+    "tool_calls": {
+      "graph_summary": 1
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "import",
+        "module"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "DEPENDENCY GRAPH SUMMARY\nschema: 1\nrepository: C:/J.A.R.V.I.S/local_jarvis\n\nNODES\n- total: 1\n- repository: 1\n- module: 0\n- class: 0\n- function: 0\n\nEDGES\n- total: 0\n- contains: 0\n- imports: 0\n- calls: 0\n- references: 0\n\nUNRESOLVED\n- imports_external: 0\n- calls_unresolved: 0\n- references_unresolved: 0\n\nTOP IMPORTED MODULES\n- (none)\n\nTOP CALLED FUNCTIONS\n- (none)\n\nLARGEST COMPONENTS\n- size=1 root=repository:C:/J.A.R.V.I.S/local_jarvis\n\nIMPORT CYCLES\n- (none)\n\nDEGRADED: too_many_files\n"
+  },
+  {
+    "task_id": "I3",
+    "arm": "claude_plus_jarvis",
+    "trial": 3,
+    "input_tokens": 695,
+    "output_tokens": 121,
+    "total_tokens": 816,
+    "peak_context_tokens": 695,
+    "wall_clock_s": 1.4135,
+    "cost_usd": 0.0039,
+    "tool_calls": {
+      "graph_summary": 1
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "import",
+        "module"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "DEPENDENCY GRAPH SUMMARY\nschema: 1\nrepository: C:/J.A.R.V.I.S/local_jarvis\n\nNODES\n- total: 1\n- repository: 1\n- module: 0\n- class: 0\n- function: 0\n\nEDGES\n- total: 0\n- contains: 0\n- imports: 0\n- calls: 0\n- references: 0\n\nUNRESOLVED\n- imports_external: 0\n- calls_unresolved: 0\n- references_unresolved: 0\n\nTOP IMPORTED MODULES\n- (none)\n\nTOP CALLED FUNCTIONS\n- (none)\n\nLARGEST COMPONENTS\n- size=1 root=repository:C:/J.A.R.V.I.S/local_jarvis\n\nIMPORT CYCLES\n- (none)\n\nDEGRADED: too_many_files\n"
+  },
+  {
+    "task_id": "I4",
+    "arm": "claude_only",
+    "trial": 1,
+    "input_tokens": 10079,
+    "output_tokens": 1512,
+    "total_tokens": 11591,
+    "peak_context_tokens": 10079,
+    "wall_clock_s": 0.0417,
+    "cost_usd": 0.052917,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 1,
+      "list_dir": 0
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "core/app.py"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task I4 (trial 1): \"\"\"Application orchestration.\"\"\"\n\nfrom __future__ import annotations\n\nimport time\nimport traceback\n\nfrom rich.console import Console\nfrom rich.panel import Panel\n\nfrom brain.router import CommandRouter\nfrom core.results import result_blocked\nfrom core.runtime_state import RuntimeState, get_runtime_state\nfrom core.types import ActionStatus, CommandResult, Intent\nfrom voice.tts import TTSError, TTSService, resolve_tts_enabled\n\nfrom core.logger impor"
+  },
+  {
+    "task_id": "I4",
+    "arm": "claude_only",
+    "trial": 2,
+    "input_tokens": 10079,
+    "output_tokens": 1512,
+    "total_tokens": 11591,
+    "peak_context_tokens": 10079,
+    "wall_clock_s": 0.0318,
+    "cost_usd": 0.052917,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 1,
+      "list_dir": 0
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "core/app.py"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task I4 (trial 2): \"\"\"Application orchestration.\"\"\"\n\nfrom __future__ import annotations\n\nimport time\nimport traceback\n\nfrom rich.console import Console\nfrom rich.panel import Panel\n\nfrom brain.router import CommandRouter\nfrom core.results import result_blocked\nfrom core.runtime_state import RuntimeState, get_runtime_state\nfrom core.types import ActionStatus, CommandResult, Intent\nfrom voice.tts import TTSError, TTSService, resolve_tts_enabled\n\nfrom core.logger impor"
+  },
+  {
+    "task_id": "I4",
+    "arm": "claude_only",
+    "trial": 3,
+    "input_tokens": 10079,
+    "output_tokens": 1512,
+    "total_tokens": 11591,
+    "peak_context_tokens": 10079,
+    "wall_clock_s": 0.0372,
+    "cost_usd": 0.052917,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 1,
+      "list_dir": 0
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "core/app.py"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task I4 (trial 3): \"\"\"Application orchestration.\"\"\"\n\nfrom __future__ import annotations\n\nimport time\nimport traceback\n\nfrom rich.console import Console\nfrom rich.panel import Panel\n\nfrom brain.router import CommandRouter\nfrom core.results import result_blocked\nfrom core.runtime_state import RuntimeState, get_runtime_state\nfrom core.types import ActionStatus, CommandResult, Intent\nfrom voice.tts import TTSError, TTSService, resolve_tts_enabled\n\nfrom core.logger impor"
+  },
+  {
+    "task_id": "I4",
+    "arm": "claude_plus_jarvis",
+    "trial": 1,
+    "input_tokens": 764,
+    "output_tokens": 178,
+    "total_tokens": 942,
+    "peak_context_tokens": 764,
+    "wall_clock_s": 1.3961,
+    "cost_usd": 0.004962,
+    "tool_calls": {
+      "impact_file": 1
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "core/app.py"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "IMPACT ANALYSIS\nschema: 1  weights: 1\nrepository: C:/J.A.R.V.I.S/local_jarvis\n\nTARGET\n- kind: file\n- path: None\n- qualname: (n/a)\n- role: None  subsystem: None\n\nERROR: target file not found in graph\n\nDIRECT IMPACT\n- files: (none proven)\n\nMODULES IMPORTING\n- (none proven)\n\nFUNCTIONS DEPENDENT\n- (none proven)\n\nTRANSITIVE IMPACT\n- direct=0 transitive=0 truncated=False\n\nEXECUTION PATHS\n- no resolved path found (coverage is partial)\n\nRISK\n- bucket: unknown score: 0.0\n\nCONFIDENCE\n- bucket: unknown res"
+  },
+  {
+    "task_id": "I4",
+    "arm": "claude_plus_jarvis",
+    "trial": 2,
+    "input_tokens": 764,
+    "output_tokens": 178,
+    "total_tokens": 942,
+    "peak_context_tokens": 764,
+    "wall_clock_s": 1.3823,
+    "cost_usd": 0.004962,
+    "tool_calls": {
+      "impact_file": 1
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "core/app.py"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "IMPACT ANALYSIS\nschema: 1  weights: 1\nrepository: C:/J.A.R.V.I.S/local_jarvis\n\nTARGET\n- kind: file\n- path: None\n- qualname: (n/a)\n- role: None  subsystem: None\n\nERROR: target file not found in graph\n\nDIRECT IMPACT\n- files: (none proven)\n\nMODULES IMPORTING\n- (none proven)\n\nFUNCTIONS DEPENDENT\n- (none proven)\n\nTRANSITIVE IMPACT\n- direct=0 transitive=0 truncated=False\n\nEXECUTION PATHS\n- no resolved path found (coverage is partial)\n\nRISK\n- bucket: unknown score: 0.0\n\nCONFIDENCE\n- bucket: unknown res"
+  },
+  {
+    "task_id": "I4",
+    "arm": "claude_plus_jarvis",
+    "trial": 3,
+    "input_tokens": 764,
+    "output_tokens": 178,
+    "total_tokens": 942,
+    "peak_context_tokens": 764,
+    "wall_clock_s": 1.3899,
+    "cost_usd": 0.004962,
+    "tool_calls": {
+      "impact_file": 1
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "core/app.py"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "IMPACT ANALYSIS\nschema: 1  weights: 1\nrepository: C:/J.A.R.V.I.S/local_jarvis\n\nTARGET\n- kind: file\n- path: None\n- qualname: (n/a)\n- role: None  subsystem: None\n\nERROR: target file not found in graph\n\nDIRECT IMPACT\n- files: (none proven)\n\nMODULES IMPORTING\n- (none proven)\n\nFUNCTIONS DEPENDENT\n- (none proven)\n\nTRANSITIVE IMPACT\n- direct=0 transitive=0 truncated=False\n\nEXECUTION PATHS\n- no resolved path found (coverage is partial)\n\nRISK\n- bucket: unknown score: 0.0\n\nCONFIDENCE\n- bucket: unknown res"
+  },
+  {
+    "task_id": "I5",
+    "arm": "claude_only",
+    "trial": 1,
+    "input_tokens": 568,
+    "output_tokens": 12,
+    "total_tokens": 580,
+    "peak_context_tokens": 568,
+    "wall_clock_s": 0.0,
+    "cost_usd": 0.001884,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "cycle"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task I5 (trial 1):"
+  },
+  {
+    "task_id": "I5",
+    "arm": "claude_only",
+    "trial": 2,
+    "input_tokens": 568,
+    "output_tokens": 12,
+    "total_tokens": 580,
+    "peak_context_tokens": 568,
+    "wall_clock_s": 0.0,
+    "cost_usd": 0.001884,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "cycle"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task I5 (trial 2):"
+  },
+  {
+    "task_id": "I5",
+    "arm": "claude_only",
+    "trial": 3,
+    "input_tokens": 568,
+    "output_tokens": 12,
+    "total_tokens": 580,
+    "peak_context_tokens": 568,
+    "wall_clock_s": 0.0,
+    "cost_usd": 0.001884,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "cycle"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task I5 (trial 3):"
+  },
+  {
+    "task_id": "I5",
+    "arm": "claude_plus_jarvis",
+    "trial": 1,
+    "input_tokens": 689,
+    "output_tokens": 121,
+    "total_tokens": 810,
+    "peak_context_tokens": 689,
+    "wall_clock_s": 1.4375,
+    "cost_usd": 0.003882,
+    "tool_calls": {
+      "graph_summary": 1
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "cycle"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "DEPENDENCY GRAPH SUMMARY\nschema: 1\nrepository: C:/J.A.R.V.I.S/local_jarvis\n\nNODES\n- total: 1\n- repository: 1\n- module: 0\n- class: 0\n- function: 0\n\nEDGES\n- total: 0\n- contains: 0\n- imports: 0\n- calls: 0\n- references: 0\n\nUNRESOLVED\n- imports_external: 0\n- calls_unresolved: 0\n- references_unresolved: 0\n\nTOP IMPORTED MODULES\n- (none)\n\nTOP CALLED FUNCTIONS\n- (none)\n\nLARGEST COMPONENTS\n- size=1 root=repository:C:/J.A.R.V.I.S/local_jarvis\n\nIMPORT CYCLES\n- (none)\n\nDEGRADED: too_many_files\n"
+  },
+  {
+    "task_id": "I5",
+    "arm": "claude_plus_jarvis",
+    "trial": 2,
+    "input_tokens": 689,
+    "output_tokens": 121,
+    "total_tokens": 810,
+    "peak_context_tokens": 689,
+    "wall_clock_s": 1.5319,
+    "cost_usd": 0.003882,
+    "tool_calls": {
+      "graph_summary": 1
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "cycle"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "DEPENDENCY GRAPH SUMMARY\nschema: 1\nrepository: C:/J.A.R.V.I.S/local_jarvis\n\nNODES\n- total: 1\n- repository: 1\n- module: 0\n- class: 0\n- function: 0\n\nEDGES\n- total: 0\n- contains: 0\n- imports: 0\n- calls: 0\n- references: 0\n\nUNRESOLVED\n- imports_external: 0\n- calls_unresolved: 0\n- references_unresolved: 0\n\nTOP IMPORTED MODULES\n- (none)\n\nTOP CALLED FUNCTIONS\n- (none)\n\nLARGEST COMPONENTS\n- size=1 root=repository:C:/J.A.R.V.I.S/local_jarvis\n\nIMPORT CYCLES\n- (none)\n\nDEGRADED: too_many_files\n"
+  },
+  {
+    "task_id": "I5",
+    "arm": "claude_plus_jarvis",
+    "trial": 3,
+    "input_tokens": 689,
+    "output_tokens": 121,
+    "total_tokens": 810,
+    "peak_context_tokens": 689,
+    "wall_clock_s": 1.4025,
+    "cost_usd": 0.003882,
+    "tool_calls": {
+      "graph_summary": 1
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "cycle"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "DEPENDENCY GRAPH SUMMARY\nschema: 1\nrepository: C:/J.A.R.V.I.S/local_jarvis\n\nNODES\n- total: 1\n- repository: 1\n- module: 0\n- class: 0\n- function: 0\n\nEDGES\n- total: 0\n- contains: 0\n- imports: 0\n- calls: 0\n- references: 0\n\nUNRESOLVED\n- imports_external: 0\n- calls_unresolved: 0\n- references_unresolved: 0\n\nTOP IMPORTED MODULES\n- (none)\n\nTOP CALLED FUNCTIONS\n- (none)\n\nLARGEST COMPONENTS\n- size=1 root=repository:C:/J.A.R.V.I.S/local_jarvis\n\nIMPORT CYCLES\n- (none)\n\nDEGRADED: too_many_files\n"
+  },
+  {
+    "task_id": "I6",
+    "arm": "claude_only",
+    "trial": 1,
+    "input_tokens": 5422,
+    "output_tokens": 512,
+    "total_tokens": 5934,
+    "peak_context_tokens": 5422,
+    "wall_clock_s": 0.0848,
+    "cost_usd": 0.023946,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 1,
+      "list_dir": 0
+    },
+    "quality": 2,
+    "quality_detail": {
+      "anchors_hit": [
+        "voice"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task I6 (trial 1): config.py:1570:from voice.stt_config import normalize_stt_model, resolve_stt_language  # noqa: E402\nconfig.py:1571:from voice.stt_profile import apply_voice_profile  # noqa: E402\nconfig.py:1608:from voice.stt_acceleration import configure_stt_runtime  # noqa: E402\nconfig.py:2146:from voice.tts_config import resolve_pyttsx_rate  # noqa: E402\nconfig.py:2175:from voice.runtime_mode import apply_voice_runtime_mode  # noqa: E402\nmain.py:64:    from con"
+  },
+  {
+    "task_id": "I6",
+    "arm": "claude_only",
+    "trial": 2,
+    "input_tokens": 5422,
+    "output_tokens": 512,
+    "total_tokens": 5934,
+    "peak_context_tokens": 5422,
+    "wall_clock_s": 0.0832,
+    "cost_usd": 0.023946,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 1,
+      "list_dir": 0
+    },
+    "quality": 2,
+    "quality_detail": {
+      "anchors_hit": [
+        "voice"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task I6 (trial 2): config.py:1570:from voice.stt_config import normalize_stt_model, resolve_stt_language  # noqa: E402\nconfig.py:1571:from voice.stt_profile import apply_voice_profile  # noqa: E402\nconfig.py:1608:from voice.stt_acceleration import configure_stt_runtime  # noqa: E402\nconfig.py:2146:from voice.tts_config import resolve_pyttsx_rate  # noqa: E402\nconfig.py:2175:from voice.runtime_mode import apply_voice_runtime_mode  # noqa: E402\nmain.py:64:    from con"
+  },
+  {
+    "task_id": "I6",
+    "arm": "claude_only",
+    "trial": 3,
+    "input_tokens": 5422,
+    "output_tokens": 512,
+    "total_tokens": 5934,
+    "peak_context_tokens": 5422,
+    "wall_clock_s": 0.0862,
+    "cost_usd": 0.023946,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 1,
+      "list_dir": 0
+    },
+    "quality": 2,
+    "quality_detail": {
+      "anchors_hit": [
+        "voice"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task I6 (trial 3): config.py:1570:from voice.stt_config import normalize_stt_model, resolve_stt_language  # noqa: E402\nconfig.py:1571:from voice.stt_profile import apply_voice_profile  # noqa: E402\nconfig.py:1608:from voice.stt_acceleration import configure_stt_runtime  # noqa: E402\nconfig.py:2146:from voice.tts_config import resolve_pyttsx_rate  # noqa: E402\nconfig.py:2175:from voice.runtime_mode import apply_voice_runtime_mode  # noqa: E402\nmain.py:64:    from con"
+  },
+  {
+    "task_id": "I6",
+    "arm": "claude_plus_jarvis",
+    "trial": 1,
+    "input_tokens": 759,
+    "output_tokens": 176,
+    "total_tokens": 935,
+    "peak_context_tokens": 759,
+    "wall_clock_s": 1.3767,
+    "cost_usd": 0.004917,
+    "tool_calls": {
+      "impact_module": 1
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "voice"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "IMPACT ANALYSIS\nschema: 1  weights: 1\nrepository: C:/J.A.R.V.I.S/local_jarvis\n\nTARGET\n- kind: module\n- path: None\n- qualname: (n/a)\n- role: None  subsystem: None\n\nERROR: module not found in graph\n\nDIRECT IMPACT\n- files: (none proven)\n\nMODULES IMPORTING\n- (none proven)\n\nFUNCTIONS DEPENDENT\n- (none proven)\n\nTRANSITIVE IMPACT\n- direct=0 transitive=0 truncated=False\n\nEXECUTION PATHS\n- no resolved path found (coverage is partial)\n\nRISK\n- bucket: unknown score: 0.0\n\nCONFIDENCE\n- bucket: unknown resolv"
+  },
+  {
+    "task_id": "I6",
+    "arm": "claude_plus_jarvis",
+    "trial": 2,
+    "input_tokens": 759,
+    "output_tokens": 176,
+    "total_tokens": 935,
+    "peak_context_tokens": 759,
+    "wall_clock_s": 1.4401,
+    "cost_usd": 0.004917,
+    "tool_calls": {
+      "impact_module": 1
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "voice"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "IMPACT ANALYSIS\nschema: 1  weights: 1\nrepository: C:/J.A.R.V.I.S/local_jarvis\n\nTARGET\n- kind: module\n- path: None\n- qualname: (n/a)\n- role: None  subsystem: None\n\nERROR: module not found in graph\n\nDIRECT IMPACT\n- files: (none proven)\n\nMODULES IMPORTING\n- (none proven)\n\nFUNCTIONS DEPENDENT\n- (none proven)\n\nTRANSITIVE IMPACT\n- direct=0 transitive=0 truncated=False\n\nEXECUTION PATHS\n- no resolved path found (coverage is partial)\n\nRISK\n- bucket: unknown score: 0.0\n\nCONFIDENCE\n- bucket: unknown resolv"
+  },
+  {
+    "task_id": "I6",
+    "arm": "claude_plus_jarvis",
+    "trial": 3,
+    "input_tokens": 759,
+    "output_tokens": 176,
+    "total_tokens": 935,
+    "peak_context_tokens": 759,
+    "wall_clock_s": 1.4113,
+    "cost_usd": 0.004917,
+    "tool_calls": {
+      "impact_module": 1
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "voice"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "IMPACT ANALYSIS\nschema: 1  weights: 1\nrepository: C:/J.A.R.V.I.S/local_jarvis\n\nTARGET\n- kind: module\n- path: None\n- qualname: (n/a)\n- role: None  subsystem: None\n\nERROR: module not found in graph\n\nDIRECT IMPACT\n- files: (none proven)\n\nMODULES IMPORTING\n- (none proven)\n\nFUNCTIONS DEPENDENT\n- (none proven)\n\nTRANSITIVE IMPACT\n- direct=0 transitive=0 truncated=False\n\nEXECUTION PATHS\n- no resolved path found (coverage is partial)\n\nRISK\n- bucket: unknown score: 0.0\n\nCONFIDENCE\n- bucket: unknown resolv"
+  },
+  {
+    "task_id": "C1",
+    "arm": "claude_only",
+    "trial": 1,
+    "input_tokens": 2962,
+    "output_tokens": 1010,
+    "total_tokens": 3972,
+    "peak_context_tokens": 2962,
+    "wall_clock_s": 0.0002,
+    "cost_usd": 0.024036,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 0,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [
+        "setup.py"
+      ]
+    },
+    "answer_preview": "Based on repository reads for task C1 (trial 1): \"\"\"Repository indexer.\n\nWalks an arbitrary project tree (read-only), classifies files, extracts a\nbounded set of text \"chunks\" for retrieval, and records git metadata. The\nresult is a plain dict serialised to ``.jarvis_builder/index.json``.\n\"\"\"\n\nfrom __future__ import annotations\n\nimport datetime as _dt\nimport os\nimport re\nfrom typing import Any, Dict, List, Optional\n\nfrom . import MEMORY_DIRNAME, __version__\nfrom . import gitutil\nfrom . import py"
+  },
+  {
+    "task_id": "C1",
+    "arm": "claude_only",
+    "trial": 2,
+    "input_tokens": 2962,
+    "output_tokens": 1010,
+    "total_tokens": 3972,
+    "peak_context_tokens": 2962,
+    "wall_clock_s": 0.0001,
+    "cost_usd": 0.024036,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 0,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [
+        "setup.py"
+      ]
+    },
+    "answer_preview": "Based on repository reads for task C1 (trial 2): \"\"\"Repository indexer.\n\nWalks an arbitrary project tree (read-only), classifies files, extracts a\nbounded set of text \"chunks\" for retrieval, and records git metadata. The\nresult is a plain dict serialised to ``.jarvis_builder/index.json``.\n\"\"\"\n\nfrom __future__ import annotations\n\nimport datetime as _dt\nimport os\nimport re\nfrom typing import Any, Dict, List, Optional\n\nfrom . import MEMORY_DIRNAME, __version__\nfrom . import gitutil\nfrom . import py"
+  },
+  {
+    "task_id": "C1",
+    "arm": "claude_only",
+    "trial": 3,
+    "input_tokens": 2962,
+    "output_tokens": 1010,
+    "total_tokens": 3972,
+    "peak_context_tokens": 2962,
+    "wall_clock_s": 0.0002,
+    "cost_usd": 0.024036,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 0,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [
+        "setup.py"
+      ]
+    },
+    "answer_preview": "Based on repository reads for task C1 (trial 3): \"\"\"Repository indexer.\n\nWalks an arbitrary project tree (read-only), classifies files, extracts a\nbounded set of text \"chunks\" for retrieval, and records git metadata. The\nresult is a plain dict serialised to ``.jarvis_builder/index.json``.\n\"\"\"\n\nfrom __future__ import annotations\n\nimport datetime as _dt\nimport os\nimport re\nfrom typing import Any, Dict, List, Optional\n\nfrom . import MEMORY_DIRNAME, __version__\nfrom . import gitutil\nfrom . import py"
+  },
+  {
+    "task_id": "C1",
+    "arm": "claude_plus_jarvis",
+    "trial": 1,
+    "input_tokens": 1114,
+    "output_tokens": 126,
+    "total_tokens": 1240,
+    "peak_context_tokens": 1114,
+    "wall_clock_s": 0.0259,
+    "cost_usd": 0.005232,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 0,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [
+        "python_programs/breadth_first_search.py"
+      ]
+    },
+    "answer_preview": "Based on the indexed project, here is the most relevant material:\n```powershell py -3 -m builder_core.cli init --project C:\\Repos\\QuixBugs py -3 -m builder_core.cli ask --project C:\\Repos\\QuixBugs \"Analyze python_programs/breadth_first_search.py for likely bugs and logic errors.\" py -3 -m builder_core.cli risk-report --project C:\\Repos\\QuixBugs --top 10 py -3 -m builder_core.cli benchmark-quixbugs --project C:\\Repos\\QuixBugs ``` Repository indexer. def build_index(project_root: str) -> Dict[str,"
+  },
+  {
+    "task_id": "C1",
+    "arm": "claude_plus_jarvis",
+    "trial": 2,
+    "input_tokens": 1114,
+    "output_tokens": 126,
+    "total_tokens": 1240,
+    "peak_context_tokens": 1114,
+    "wall_clock_s": 0.0236,
+    "cost_usd": 0.005232,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 0,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [
+        "python_programs/breadth_first_search.py"
+      ]
+    },
+    "answer_preview": "Based on the indexed project, here is the most relevant material:\n```powershell py -3 -m builder_core.cli init --project C:\\Repos\\QuixBugs py -3 -m builder_core.cli ask --project C:\\Repos\\QuixBugs \"Analyze python_programs/breadth_first_search.py for likely bugs and logic errors.\" py -3 -m builder_core.cli risk-report --project C:\\Repos\\QuixBugs --top 10 py -3 -m builder_core.cli benchmark-quixbugs --project C:\\Repos\\QuixBugs ``` Repository indexer. def build_index(project_root: str) -> Dict[str,"
+  },
+  {
+    "task_id": "C1",
+    "arm": "claude_plus_jarvis",
+    "trial": 3,
+    "input_tokens": 1114,
+    "output_tokens": 126,
+    "total_tokens": 1240,
+    "peak_context_tokens": 1114,
+    "wall_clock_s": 0.0224,
+    "cost_usd": 0.005232,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 0,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [
+        "python_programs/breadth_first_search.py"
+      ]
+    },
+    "answer_preview": "Based on the indexed project, here is the most relevant material:\n```powershell py -3 -m builder_core.cli init --project C:\\Repos\\QuixBugs py -3 -m builder_core.cli ask --project C:\\Repos\\QuixBugs \"Analyze python_programs/breadth_first_search.py for likely bugs and logic errors.\" py -3 -m builder_core.cli risk-report --project C:\\Repos\\QuixBugs --top 10 py -3 -m builder_core.cli benchmark-quixbugs --project C:\\Repos\\QuixBugs ``` Repository indexer. def build_index(project_root: str) -> Dict[str,"
+  },
+  {
+    "task_id": "C2",
+    "arm": "claude_only",
+    "trial": 1,
+    "input_tokens": 6552,
+    "output_tokens": 1512,
+    "total_tokens": 8064,
+    "peak_context_tokens": 6552,
+    "wall_clock_s": 0.0004,
+    "cost_usd": 0.042336,
+    "tool_calls": {
+      "read_file": 2,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "wakeword",
+        "voice"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task C2 (trial 1): \"\"\"openWakeWord detector \u2014 activates listening only, never executes commands.\"\"\"\n\nfrom __future__ import annotations\n\nimport threading\nimport time\nfrom dataclasses import dataclass, field\nfrom pathlib import Path\nfrom typing import TYPE_CHECKING, Callable\n\nimport numpy as np\n\nfrom config import (\n    WAKE_WORD_DEBUG,\n    WAKE_WORD_DISPLAY_PHRASES,\n    WAKE_WORD_MODEL,\n    WAKE_WORD_MODEL_PATH,\n    WAKE_WORD_NOTIFY,\n    WAKE_WORD_SAMPLE_RATE,\n    W"
+  },
+  {
+    "task_id": "C2",
+    "arm": "claude_only",
+    "trial": 2,
+    "input_tokens": 6552,
+    "output_tokens": 1512,
+    "total_tokens": 8064,
+    "peak_context_tokens": 6552,
+    "wall_clock_s": 0.0004,
+    "cost_usd": 0.042336,
+    "tool_calls": {
+      "read_file": 2,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "wakeword",
+        "voice"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task C2 (trial 2): \"\"\"openWakeWord detector \u2014 activates listening only, never executes commands.\"\"\"\n\nfrom __future__ import annotations\n\nimport threading\nimport time\nfrom dataclasses import dataclass, field\nfrom pathlib import Path\nfrom typing import TYPE_CHECKING, Callable\n\nimport numpy as np\n\nfrom config import (\n    WAKE_WORD_DEBUG,\n    WAKE_WORD_DISPLAY_PHRASES,\n    WAKE_WORD_MODEL,\n    WAKE_WORD_MODEL_PATH,\n    WAKE_WORD_NOTIFY,\n    WAKE_WORD_SAMPLE_RATE,\n    W"
+  },
+  {
+    "task_id": "C2",
+    "arm": "claude_only",
+    "trial": 3,
+    "input_tokens": 6552,
+    "output_tokens": 1512,
+    "total_tokens": 8064,
+    "peak_context_tokens": 6552,
+    "wall_clock_s": 0.0003,
+    "cost_usd": 0.042336,
+    "tool_calls": {
+      "read_file": 2,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "wakeword",
+        "voice"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task C2 (trial 3): \"\"\"openWakeWord detector \u2014 activates listening only, never executes commands.\"\"\"\n\nfrom __future__ import annotations\n\nimport threading\nimport time\nfrom dataclasses import dataclass, field\nfrom pathlib import Path\nfrom typing import TYPE_CHECKING, Callable\n\nimport numpy as np\n\nfrom config import (\n    WAKE_WORD_DEBUG,\n    WAKE_WORD_DISPLAY_PHRASES,\n    WAKE_WORD_MODEL,\n    WAKE_WORD_MODEL_PATH,\n    WAKE_WORD_NOTIFY,\n    WAKE_WORD_SAMPLE_RATE,\n    W"
+  },
+  {
+    "task_id": "C2",
+    "arm": "claude_plus_jarvis",
+    "trial": 1,
+    "input_tokens": 1374,
+    "output_tokens": 204,
+    "total_tokens": 1578,
+    "peak_context_tokens": 1374,
+    "wall_clock_s": 0.0213,
+    "cost_usd": 0.007182,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 0,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [
+        "app.py",
+        "types.py",
+        "security.py",
+        "confirmation.py"
+      ]
+    },
+    "answer_preview": "Based on the indexed project, here is the most relevant material:\n``` local_jarvis/ \u251c\u2500\u2500 main.py                 # CLI: --text, --tray, --voice, --wakeword, --speak, --overlay, \u2026 \u251c\u2500\u2500 config.py               # Allowlists, paths, feature flags (.env via python-dotenv) \u251c\u2500\u2500 requirements.txt \u251c\u2500\u2500 README.md \u251c\u2500\u2500 README_ARCHITECTURE.md  # This file \u251c\u2500\u2500 .env / .env.example \u2502 \u251c\u2500\u2500 core/                   # Application kernel \u2502   \u251c\u2500\u2500 app.py              # JarvisApp \u2014 single handle_text_command() entry \u2502   \u251c\u2500\u2500"
+  },
+  {
+    "task_id": "C2",
+    "arm": "claude_plus_jarvis",
+    "trial": 2,
+    "input_tokens": 1374,
+    "output_tokens": 204,
+    "total_tokens": 1578,
+    "peak_context_tokens": 1374,
+    "wall_clock_s": 0.0248,
+    "cost_usd": 0.007182,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 0,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [
+        "app.py",
+        "types.py",
+        "security.py",
+        "confirmation.py"
+      ]
+    },
+    "answer_preview": "Based on the indexed project, here is the most relevant material:\n``` local_jarvis/ \u251c\u2500\u2500 main.py                 # CLI: --text, --tray, --voice, --wakeword, --speak, --overlay, \u2026 \u251c\u2500\u2500 config.py               # Allowlists, paths, feature flags (.env via python-dotenv) \u251c\u2500\u2500 requirements.txt \u251c\u2500\u2500 README.md \u251c\u2500\u2500 README_ARCHITECTURE.md  # This file \u251c\u2500\u2500 .env / .env.example \u2502 \u251c\u2500\u2500 core/                   # Application kernel \u2502   \u251c\u2500\u2500 app.py              # JarvisApp \u2014 single handle_text_command() entry \u2502   \u251c\u2500\u2500"
+  },
+  {
+    "task_id": "C2",
+    "arm": "claude_plus_jarvis",
+    "trial": 3,
+    "input_tokens": 1374,
+    "output_tokens": 204,
+    "total_tokens": 1578,
+    "peak_context_tokens": 1374,
+    "wall_clock_s": 0.0251,
+    "cost_usd": 0.007182,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 0,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [
+        "app.py",
+        "types.py",
+        "security.py",
+        "confirmation.py"
+      ]
+    },
+    "answer_preview": "Based on the indexed project, here is the most relevant material:\n``` local_jarvis/ \u251c\u2500\u2500 main.py                 # CLI: --text, --tray, --voice, --wakeword, --speak, --overlay, \u2026 \u251c\u2500\u2500 config.py               # Allowlists, paths, feature flags (.env via python-dotenv) \u251c\u2500\u2500 requirements.txt \u251c\u2500\u2500 README.md \u251c\u2500\u2500 README_ARCHITECTURE.md  # This file \u251c\u2500\u2500 .env / .env.example \u2502 \u251c\u2500\u2500 core/                   # Application kernel \u2502   \u251c\u2500\u2500 app.py              # JarvisApp \u2014 single handle_text_command() entry \u2502   \u251c\u2500\u2500"
+  },
+  {
+    "task_id": "C3",
+    "arm": "claude_only",
+    "trial": 1,
+    "input_tokens": 5416,
+    "output_tokens": 1009,
+    "total_tokens": 6425,
+    "peak_context_tokens": 5416,
+    "wall_clock_s": 0.0003,
+    "cost_usd": 0.031383,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "router",
+        "brain/router.py"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task C3 (trial 1): \"\"\"Command router: classify \u2192 validate \u2192 confirm \u2192 execute \u2192 log.\"\"\"\n\nfrom __future__ import annotations\n\nimport json\nimport time\nfrom datetime import datetime, timezone\nfrom pathlib import Path\n\nfrom config import (\n    COMMAND_HISTORY_PATH,\n    CONFIDENCE_THRESHOLD,\n    CONFIRMATION_REQUIRED_INTENTS,\n    SESSION_MEMORY_ENABLED,\n    SESSION_SUMMARY_EVERY_N,\n    WORKSPACE_AWARENESS_ENABLED,\n)\nfrom core.rotating_jsonl import RotatingJSONLWriter\nfro"
+  },
+  {
+    "task_id": "C3",
+    "arm": "claude_only",
+    "trial": 2,
+    "input_tokens": 5416,
+    "output_tokens": 1009,
+    "total_tokens": 6425,
+    "peak_context_tokens": 5416,
+    "wall_clock_s": 0.0002,
+    "cost_usd": 0.031383,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "router",
+        "brain/router.py"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task C3 (trial 2): \"\"\"Command router: classify \u2192 validate \u2192 confirm \u2192 execute \u2192 log.\"\"\"\n\nfrom __future__ import annotations\n\nimport json\nimport time\nfrom datetime import datetime, timezone\nfrom pathlib import Path\n\nfrom config import (\n    COMMAND_HISTORY_PATH,\n    CONFIDENCE_THRESHOLD,\n    CONFIRMATION_REQUIRED_INTENTS,\n    SESSION_MEMORY_ENABLED,\n    SESSION_SUMMARY_EVERY_N,\n    WORKSPACE_AWARENESS_ENABLED,\n)\nfrom core.rotating_jsonl import RotatingJSONLWriter\nfro"
+  },
+  {
+    "task_id": "C3",
+    "arm": "claude_only",
+    "trial": 3,
+    "input_tokens": 5416,
+    "output_tokens": 1009,
+    "total_tokens": 6425,
+    "peak_context_tokens": 5416,
+    "wall_clock_s": 0.0003,
+    "cost_usd": 0.031383,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "router",
+        "brain/router.py"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task C3 (trial 3): \"\"\"Command router: classify \u2192 validate \u2192 confirm \u2192 execute \u2192 log.\"\"\"\n\nfrom __future__ import annotations\n\nimport json\nimport time\nfrom datetime import datetime, timezone\nfrom pathlib import Path\n\nfrom config import (\n    COMMAND_HISTORY_PATH,\n    CONFIDENCE_THRESHOLD,\n    CONFIRMATION_REQUIRED_INTENTS,\n    SESSION_MEMORY_ENABLED,\n    SESSION_SUMMARY_EVERY_N,\n    WORKSPACE_AWARENESS_ENABLED,\n)\nfrom core.rotating_jsonl import RotatingJSONLWriter\nfro"
+  },
+  {
+    "task_id": "C3",
+    "arm": "claude_plus_jarvis",
+    "trial": 1,
+    "input_tokens": 1206,
+    "output_tokens": 200,
+    "total_tokens": 1406,
+    "peak_context_tokens": 1206,
+    "wall_clock_s": 0.0218,
+    "cost_usd": 0.006618,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "brain/router.py",
+        "router"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on the indexed project, here is the most relevant material:\n| Step | Module | Role | |------|--------|------| | **Input** | `main.py`, `voice/voice_loop.py`, `voice/wakeword_loop.py`, `ui/tray_app.py` | Text console, push-to-talk, wake word \u2192 temporary listen, or tray menu phrases | | **Transcriber** | `voice/transcriber.py` | Speech \u2192 text (faster-whisper); output is plain text only | | **Classifier** | `brain/intent_classifier.py`, `brain/llm_intent_classifier.py` (optional), `brain/engl"
+  },
+  {
+    "task_id": "C3",
+    "arm": "claude_plus_jarvis",
+    "trial": 2,
+    "input_tokens": 1206,
+    "output_tokens": 200,
+    "total_tokens": 1406,
+    "peak_context_tokens": 1206,
+    "wall_clock_s": 0.0221,
+    "cost_usd": 0.006618,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "brain/router.py",
+        "router"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on the indexed project, here is the most relevant material:\n| Step | Module | Role | |------|--------|------| | **Input** | `main.py`, `voice/voice_loop.py`, `voice/wakeword_loop.py`, `ui/tray_app.py` | Text console, push-to-talk, wake word \u2192 temporary listen, or tray menu phrases | | **Transcriber** | `voice/transcriber.py` | Speech \u2192 text (faster-whisper); output is plain text only | | **Classifier** | `brain/intent_classifier.py`, `brain/llm_intent_classifier.py` (optional), `brain/engl"
+  },
+  {
+    "task_id": "C3",
+    "arm": "claude_plus_jarvis",
+    "trial": 3,
+    "input_tokens": 1206,
+    "output_tokens": 200,
+    "total_tokens": 1406,
+    "peak_context_tokens": 1206,
+    "wall_clock_s": 0.0214,
+    "cost_usd": 0.006618,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "brain/router.py",
+        "router"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on the indexed project, here is the most relevant material:\n| Step | Module | Role | |------|--------|------| | **Input** | `main.py`, `voice/voice_loop.py`, `voice/wakeword_loop.py`, `ui/tray_app.py` | Text console, push-to-talk, wake word \u2192 temporary listen, or tray menu phrases | | **Transcriber** | `voice/transcriber.py` | Speech \u2192 text (faster-whisper); output is plain text only | | **Classifier** | `brain/intent_classifier.py`, `brain/llm_intent_classifier.py` (optional), `brain/engl"
+  },
+  {
+    "task_id": "C4",
+    "arm": "claude_only",
+    "trial": 1,
+    "input_tokens": 711,
+    "output_tokens": 105,
+    "total_tokens": 816,
+    "peak_context_tokens": 711,
+    "wall_clock_s": 0.0002,
+    "cost_usd": 0.003708,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "schedule_formatting",
+        "executor"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task C4 (trial 1): from concurrent.futures import ProcessPoolExecutor\n\n\ndef reformat_many(worker_count):\n    if worker_count > 61:\n        worker_count = 61\n    executor = ProcessPoolExecutor(max_workers=worker_count)\n    try:\n        return executor\n    finally:\n        executor.shutdown()\n\n\ndef schedule_formatting(executor):\n    if executor is None:\n        return \"mono\"\n    return \"pool\""
+  },
+  {
+    "task_id": "C4",
+    "arm": "claude_only",
+    "trial": 2,
+    "input_tokens": 711,
+    "output_tokens": 105,
+    "total_tokens": 816,
+    "peak_context_tokens": 711,
+    "wall_clock_s": 0.0002,
+    "cost_usd": 0.003708,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "schedule_formatting",
+        "executor"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task C4 (trial 2): from concurrent.futures import ProcessPoolExecutor\n\n\ndef reformat_many(worker_count):\n    if worker_count > 61:\n        worker_count = 61\n    executor = ProcessPoolExecutor(max_workers=worker_count)\n    try:\n        return executor\n    finally:\n        executor.shutdown()\n\n\ndef schedule_formatting(executor):\n    if executor is None:\n        return \"mono\"\n    return \"pool\""
+  },
+  {
+    "task_id": "C4",
+    "arm": "claude_only",
+    "trial": 3,
+    "input_tokens": 711,
+    "output_tokens": 105,
+    "total_tokens": 816,
+    "peak_context_tokens": 711,
+    "wall_clock_s": 0.0002,
+    "cost_usd": 0.003708,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "schedule_formatting",
+        "executor"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task C4 (trial 3): from concurrent.futures import ProcessPoolExecutor\n\n\ndef reformat_many(worker_count):\n    if worker_count > 61:\n        worker_count = 61\n    executor = ProcessPoolExecutor(max_workers=worker_count)\n    try:\n        return executor\n    finally:\n        executor.shutdown()\n\n\ndef schedule_formatting(executor):\n    if executor is None:\n        return \"mono\"\n    return \"pool\""
+  },
+  {
+    "task_id": "C4",
+    "arm": "claude_plus_jarvis",
+    "trial": 1,
+    "input_tokens": 1847,
+    "output_tokens": 285,
+    "total_tokens": 2132,
+    "peak_context_tokens": 1847,
+    "wall_clock_s": 0.0381,
+    "cost_usd": 0.009816,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 0,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [
+        "python_programs/breadth_first_search.py"
+      ]
+    },
+    "answer_preview": "Based on the indexed project, here is the most relevant material:\n```powershell py -3 -m builder_core.cli init --project C:\\Repos\\QuixBugs py -3 -m builder_core.cli ask --project C:\\Repos\\QuixBugs \"Analyze python_programs/breadth_first_search.py for likely bugs and logic errors.\" py -3 -m builder_core.cli risk-report --project C:\\Repos\\QuixBugs --top 10 py -3 -m builder_core.cli benchmark-quixbugs --project C:\\Repos\\QuixBugs ``` _Black_ is already [successfully used](https://github.com/psf/black"
+  },
+  {
+    "task_id": "C4",
+    "arm": "claude_plus_jarvis",
+    "trial": 2,
+    "input_tokens": 1847,
+    "output_tokens": 285,
+    "total_tokens": 2132,
+    "peak_context_tokens": 1847,
+    "wall_clock_s": 0.036,
+    "cost_usd": 0.009816,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 0,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [
+        "python_programs/breadth_first_search.py"
+      ]
+    },
+    "answer_preview": "Based on the indexed project, here is the most relevant material:\n```powershell py -3 -m builder_core.cli init --project C:\\Repos\\QuixBugs py -3 -m builder_core.cli ask --project C:\\Repos\\QuixBugs \"Analyze python_programs/breadth_first_search.py for likely bugs and logic errors.\" py -3 -m builder_core.cli risk-report --project C:\\Repos\\QuixBugs --top 10 py -3 -m builder_core.cli benchmark-quixbugs --project C:\\Repos\\QuixBugs ``` _Black_ is already [successfully used](https://github.com/psf/black"
+  },
+  {
+    "task_id": "C4",
+    "arm": "claude_plus_jarvis",
+    "trial": 3,
+    "input_tokens": 1847,
+    "output_tokens": 285,
+    "total_tokens": 2132,
+    "peak_context_tokens": 1847,
+    "wall_clock_s": 0.0378,
+    "cost_usd": 0.009816,
+    "tool_calls": {
+      "ask": 1
+    },
+    "quality": 0,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [
+        "python_programs/breadth_first_search.py"
+      ]
+    },
+    "answer_preview": "Based on the indexed project, here is the most relevant material:\n```powershell py -3 -m builder_core.cli init --project C:\\Repos\\QuixBugs py -3 -m builder_core.cli ask --project C:\\Repos\\QuixBugs \"Analyze python_programs/breadth_first_search.py for likely bugs and logic errors.\" py -3 -m builder_core.cli risk-report --project C:\\Repos\\QuixBugs --top 10 py -3 -m builder_core.cli benchmark-quixbugs --project C:\\Repos\\QuixBugs ``` _Black_ is already [successfully used](https://github.com/psf/black"
+  },
+  {
+    "task_id": "C5",
+    "arm": "claude_only",
+    "trial": 1,
+    "input_tokens": 639,
+    "output_tokens": 40,
+    "total_tokens": 679,
+    "peak_context_tokens": 639,
+    "wall_clock_s": 0.0002,
+    "cost_usd": 0.002517,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "classic_is_identity"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task C5 (trial 1): def pick_small(values):\n    for value in values:\n        if value is 42:\n            return value\n    return None"
+  },
+  {
+    "task_id": "C5",
+    "arm": "claude_only",
+    "trial": 2,
+    "input_tokens": 639,
+    "output_tokens": 40,
+    "total_tokens": 679,
+    "peak_context_tokens": 639,
+    "wall_clock_s": 0.0002,
+    "cost_usd": 0.002517,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "classic_is_identity"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task C5 (trial 2): def pick_small(values):\n    for value in values:\n        if value is 42:\n            return value\n    return None"
+  },
+  {
+    "task_id": "C5",
+    "arm": "claude_only",
+    "trial": 3,
+    "input_tokens": 639,
+    "output_tokens": 40,
+    "total_tokens": 679,
+    "peak_context_tokens": 639,
+    "wall_clock_s": 0.0002,
+    "cost_usd": 0.002517,
+    "tool_calls": {
+      "read_file": 1,
+      "grep": 0,
+      "list_dir": 0
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [
+        "classic_is_identity"
+      ],
+      "anchors_miss": [],
+      "fabricated_paths": []
+    },
+    "answer_preview": "Based on repository reads for task C5 (trial 3): def pick_small(values):\n    for value in values:\n        if value is 42:\n            return value\n    return None"
+  },
+  {
+    "task_id": "C5",
+    "arm": "claude_plus_jarvis",
+    "trial": 1,
+    "input_tokens": 778,
+    "output_tokens": 178,
+    "total_tokens": 956,
+    "peak_context_tokens": 778,
+    "wall_clock_s": 1.3972,
+    "cost_usd": 0.005004,
+    "tool_calls": {
+      "impact_file": 1
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "classic_is_identity"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "IMPACT ANALYSIS\nschema: 1  weights: 1\nrepository: C:/J.A.R.V.I.S/local_jarvis\n\nTARGET\n- kind: file\n- path: None\n- qualname: (n/a)\n- role: None  subsystem: None\n\nERROR: target file not found in graph\n\nDIRECT IMPACT\n- files: (none proven)\n\nMODULES IMPORTING\n- (none proven)\n\nFUNCTIONS DEPENDENT\n- (none proven)\n\nTRANSITIVE IMPACT\n- direct=0 transitive=0 truncated=False\n\nEXECUTION PATHS\n- no resolved path found (coverage is partial)\n\nRISK\n- bucket: unknown score: 0.0\n\nCONFIDENCE\n- bucket: unknown res"
+  },
+  {
+    "task_id": "C5",
+    "arm": "claude_plus_jarvis",
+    "trial": 2,
+    "input_tokens": 778,
+    "output_tokens": 178,
+    "total_tokens": 956,
+    "peak_context_tokens": 778,
+    "wall_clock_s": 1.3753,
+    "cost_usd": 0.005004,
+    "tool_calls": {
+      "impact_file": 1
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "classic_is_identity"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "IMPACT ANALYSIS\nschema: 1  weights: 1\nrepository: C:/J.A.R.V.I.S/local_jarvis\n\nTARGET\n- kind: file\n- path: None\n- qualname: (n/a)\n- role: None  subsystem: None\n\nERROR: target file not found in graph\n\nDIRECT IMPACT\n- files: (none proven)\n\nMODULES IMPORTING\n- (none proven)\n\nFUNCTIONS DEPENDENT\n- (none proven)\n\nTRANSITIVE IMPACT\n- direct=0 transitive=0 truncated=False\n\nEXECUTION PATHS\n- no resolved path found (coverage is partial)\n\nRISK\n- bucket: unknown score: 0.0\n\nCONFIDENCE\n- bucket: unknown res"
+  },
+  {
+    "task_id": "C5",
+    "arm": "claude_plus_jarvis",
+    "trial": 3,
+    "input_tokens": 778,
+    "output_tokens": 178,
+    "total_tokens": 956,
+    "peak_context_tokens": 778,
+    "wall_clock_s": 1.4265,
+    "cost_usd": 0.005004,
+    "tool_calls": {
+      "impact_file": 1
+    },
+    "quality": 1,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [
+        "classic_is_identity"
+      ],
+      "fabricated_paths": []
+    },
+    "answer_preview": "IMPACT ANALYSIS\nschema: 1  weights: 1\nrepository: C:/J.A.R.V.I.S/local_jarvis\n\nTARGET\n- kind: file\n- path: None\n- qualname: (n/a)\n- role: None  subsystem: None\n\nERROR: target file not found in graph\n\nDIRECT IMPACT\n- files: (none proven)\n\nMODULES IMPORTING\n- (none proven)\n\nFUNCTIONS DEPENDENT\n- (none proven)\n\nTRANSITIVE IMPACT\n- direct=0 transitive=0 truncated=False\n\nEXECUTION PATHS\n- no resolved path found (coverage is partial)\n\nRISK\n- bucket: unknown score: 0.0\n\nCONFIDENCE\n- bucket: unknown res"
+  },
+  {
+    "task_id": "C6",
+    "arm": "claude_only",
+    "trial": 1,
+    "input_tokens": 778,
+    "output_tokens": 198,
+    "total_tokens": 976,
+    "peak_context_tokens": 778,
+    "wall_clock_s": 3.4745,
+    "cost_usd": 0.005304,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 1,
+      "list_dir": 0
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [],
+      "trap_honesty": true
+    },
+    "answer_preview": "Based on repository reads for task C6 (trial 1): data/real_repo_corpus/phase98a/werkzeug/examples/couchy/application.py:47:        return self.dispatch(environ, start_response)\ndata/real_repo_corpus/phase98a/werkzeug/examples/shorty/application.py:45:        return self.dispatch(environ, start_response)\ndata/real_repo_corpus/phase98a/starlette/starlette/endpoints.py:29:        return self.dispatch().__await__()\ndata/real_repo_corpus/phase98a/starlette/starlette/endpoints.py:69:        return sel"
+  },
+  {
+    "task_id": "C6",
+    "arm": "claude_only",
+    "trial": 2,
+    "input_tokens": 778,
+    "output_tokens": 198,
+    "total_tokens": 976,
+    "peak_context_tokens": 778,
+    "wall_clock_s": 3.3079,
+    "cost_usd": 0.005304,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 1,
+      "list_dir": 0
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [],
+      "trap_honesty": true
+    },
+    "answer_preview": "Based on repository reads for task C6 (trial 2): data/real_repo_corpus/phase98a/werkzeug/examples/couchy/application.py:47:        return self.dispatch(environ, start_response)\ndata/real_repo_corpus/phase98a/werkzeug/examples/shorty/application.py:45:        return self.dispatch(environ, start_response)\ndata/real_repo_corpus/phase98a/starlette/starlette/endpoints.py:29:        return self.dispatch().__await__()\ndata/real_repo_corpus/phase98a/starlette/starlette/endpoints.py:69:        return sel"
+  },
+  {
+    "task_id": "C6",
+    "arm": "claude_only",
+    "trial": 3,
+    "input_tokens": 778,
+    "output_tokens": 198,
+    "total_tokens": 976,
+    "peak_context_tokens": 778,
+    "wall_clock_s": 3.2541,
+    "cost_usd": 0.005304,
+    "tool_calls": {
+      "read_file": 0,
+      "grep": 1,
+      "list_dir": 0
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [],
+      "trap_honesty": true
+    },
+    "answer_preview": "Based on repository reads for task C6 (trial 3): data/real_repo_corpus/phase98a/werkzeug/examples/couchy/application.py:47:        return self.dispatch(environ, start_response)\ndata/real_repo_corpus/phase98a/werkzeug/examples/shorty/application.py:45:        return self.dispatch(environ, start_response)\ndata/real_repo_corpus/phase98a/starlette/starlette/endpoints.py:29:        return self.dispatch().__await__()\ndata/real_repo_corpus/phase98a/starlette/starlette/endpoints.py:69:        return sel"
+  },
+  {
+    "task_id": "C6",
+    "arm": "claude_plus_jarvis",
+    "trial": 1,
+    "input_tokens": 769,
+    "output_tokens": 178,
+    "total_tokens": 947,
+    "peak_context_tokens": 769,
+    "wall_clock_s": 1.4796,
+    "cost_usd": 0.004977,
+    "tool_calls": {
+      "impact_file": 1
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [],
+      "trap_honesty": true
+    },
+    "answer_preview": "IMPACT ANALYSIS\nschema: 1  weights: 1\nrepository: C:/J.A.R.V.I.S/local_jarvis\n\nTARGET\n- kind: file\n- path: None\n- qualname: (n/a)\n- role: None  subsystem: None\n\nERROR: target file not found in graph\n\nDIRECT IMPACT\n- files: (none proven)\n\nMODULES IMPORTING\n- (none proven)\n\nFUNCTIONS DEPENDENT\n- (none proven)\n\nTRANSITIVE IMPACT\n- direct=0 transitive=0 truncated=False\n\nEXECUTION PATHS\n- no resolved path found (coverage is partial)\n\nRISK\n- bucket: unknown score: 0.0\n\nCONFIDENCE\n- bucket: unknown res"
+  },
+  {
+    "task_id": "C6",
+    "arm": "claude_plus_jarvis",
+    "trial": 2,
+    "input_tokens": 769,
+    "output_tokens": 178,
+    "total_tokens": 947,
+    "peak_context_tokens": 769,
+    "wall_clock_s": 1.4004,
+    "cost_usd": 0.004977,
+    "tool_calls": {
+      "impact_file": 1
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [],
+      "trap_honesty": true
+    },
+    "answer_preview": "IMPACT ANALYSIS\nschema: 1  weights: 1\nrepository: C:/J.A.R.V.I.S/local_jarvis\n\nTARGET\n- kind: file\n- path: None\n- qualname: (n/a)\n- role: None  subsystem: None\n\nERROR: target file not found in graph\n\nDIRECT IMPACT\n- files: (none proven)\n\nMODULES IMPORTING\n- (none proven)\n\nFUNCTIONS DEPENDENT\n- (none proven)\n\nTRANSITIVE IMPACT\n- direct=0 transitive=0 truncated=False\n\nEXECUTION PATHS\n- no resolved path found (coverage is partial)\n\nRISK\n- bucket: unknown score: 0.0\n\nCONFIDENCE\n- bucket: unknown res"
+  },
+  {
+    "task_id": "C6",
+    "arm": "claude_plus_jarvis",
+    "trial": 3,
+    "input_tokens": 769,
+    "output_tokens": 178,
+    "total_tokens": 947,
+    "peak_context_tokens": 769,
+    "wall_clock_s": 1.4007,
+    "cost_usd": 0.004977,
+    "tool_calls": {
+      "impact_file": 1
+    },
+    "quality": 4,
+    "quality_detail": {
+      "anchors_hit": [],
+      "anchors_miss": [],
+      "fabricated_paths": [],
+      "trap_honesty": true
+    },
+    "answer_preview": "IMPACT ANALYSIS\nschema: 1  weights: 1\nrepository: C:/J.A.R.V.I.S/local_jarvis\n\nTARGET\n- kind: file\n- path: None\n- qualname: (n/a)\n- role: None  subsystem: None\n\nERROR: target file not found in graph\n\nDIRECT IMPACT\n- files: (none proven)\n\nMODULES IMPORTING\n- (none proven)\n\nFUNCTIONS DEPENDENT\n- (none proven)\n\nTRANSITIVE IMPACT\n- direct=0 transitive=0 truncated=False\n\nEXECUTION PATHS\n- no resolved path found (coverage is partial)\n\nRISK\n- bucket: unknown score: 0.0\n\nCONFIDENCE\n- bucket: unknown res"
+  }
+]

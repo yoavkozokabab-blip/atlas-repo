@@ -1,0 +1,2029 @@
+{
+  "decisions": {
+    "RR-00da00a46e63142d": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-00da00a46e63142d",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-00dd1baf0b052208": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-00dd1baf0b052208",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-0142fd0d8f41078b": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-0142fd0d8f41078b",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-0175e3d2785cc36a": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-0175e3d2785cc36a",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-02729d65db3c4480": {
+      "fp_reason": "Agree: guard or short-circuit visible in source window",
+      "harness_label": "misleading",
+      "label": "false_positive",
+      "notes": "fp_reason: Agree: guard or short-circuit visible in source window",
+      "record_id": "RR-02729d65db3c4480",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 0
+    },
+    "RR-02b24ff155b1c91a": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-02b24ff155b1c91a",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-03b54ead49ad4027": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-03b54ead49ad4027",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-04661b488c5d6e8c": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-04661b488c5d6e8c",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-0556835099aa8f83": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-0556835099aa8f83",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-0607001c2068cfb3": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-0607001c2068cfb3",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-072d555640eb5056": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-072d555640eb5056",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 1
+    },
+    "RR-07e6a968e3c3af60": {
+      "fp_reason": "Agree: guard or short-circuit visible in source window",
+      "harness_label": "misleading",
+      "label": "false_positive",
+      "notes": "fp_reason: Agree: guard or short-circuit visible in source window",
+      "record_id": "RR-07e6a968e3c3af60",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 0
+    },
+    "RR-08aafb0ee8855780": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-08aafb0ee8855780",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-08ef0fb91a5c784a": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-08ef0fb91a5c784a",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-0c9fe70822dfd515": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-0c9fe70822dfd515",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-0d0bc36421c7651a": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-0d0bc36421c7651a",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-0efb8d3d910be310": {
+      "fp_reason": "Second reviewer could not confirm traversal risk from window",
+      "harness_label": "undecidable",
+      "label": "unclear",
+      "notes": "",
+      "record_id": "RR-0efb8d3d910be310",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 2
+    },
+    "RR-103414c3d476d27d": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-103414c3d476d27d",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 1
+    },
+    "RR-14c671f4e3238f92": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-14c671f4e3238f92",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-16fa4994cf44d331": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-16fa4994cf44d331",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-187e69daa78287b7": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-187e69daa78287b7",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-18a9878efdd8d0ec": {
+      "fp_reason": "Security lead: trace whether argv includes external data",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-18a9878efdd8d0ec",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-196c7401c533e4fe": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-196c7401c533e4fe",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-1a63ebec5522380a": {
+      "fp_reason": "Second reviewer could not confirm traversal risk from window",
+      "harness_label": "undecidable",
+      "label": "unclear",
+      "notes": "",
+      "record_id": "RR-1a63ebec5522380a",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 2
+    },
+    "RR-1aebfcf81b332d38": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-1aebfcf81b332d38",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-1b82d053c2268f37": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-1b82d053c2268f37",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-1bf98746148c59e2": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-1bf98746148c59e2",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-1cb469febe70dea1": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-1cb469febe70dea1",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-1e4a35a5eabde559": {
+      "fp_reason": "Security lead: trace whether argv includes external data",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-1e4a35a5eabde559",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-20e483e0ae1e93d8": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-20e483e0ae1e93d8",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 1
+    },
+    "RR-237dee2cdbffd85b": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-237dee2cdbffd85b",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-2460e1ebaa8543c2": {
+      "fp_reason": "Needs caller inspection; cannot confirm from packet alone",
+      "harness_label": "undecidable",
+      "label": "unclear",
+      "notes": "",
+      "record_id": "RR-2460e1ebaa8543c2",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 2
+    },
+    "RR-255899d62140afcc": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-255899d62140afcc",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-26caf9a923647a05": {
+      "fp_reason": "Second reviewer could not confirm traversal risk from window",
+      "harness_label": "undecidable",
+      "label": "unclear",
+      "notes": "",
+      "record_id": "RR-26caf9a923647a05",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 2
+    },
+    "RR-2794ebcc07a89dec": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-2794ebcc07a89dec",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 1
+    },
+    "RR-27b78e51d0432156": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-27b78e51d0432156",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-284ab0696e9ecaf1": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-284ab0696e9ecaf1",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-28d23958533f0cc5": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-28d23958533f0cc5",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-2b0e1d4c516b03c0": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-2b0e1d4c516b03c0",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-2b6ee68f3f28d87b": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-2b6ee68f3f28d87b",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-2bdf008b4e209ec7": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-2bdf008b4e209ec7",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-2c88f16ed42097af": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-2c88f16ed42097af",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-2cc666c6d8153039": {
+      "fp_reason": "Second reviewer could not confirm traversal risk from window",
+      "harness_label": "undecidable",
+      "label": "unclear",
+      "notes": "",
+      "record_id": "RR-2cc666c6d8153039",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 2
+    },
+    "RR-2cdad9cd6d05a585": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-2cdad9cd6d05a585",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-2ee4213e29d6e601": {
+      "fp_reason": "Agree: guard or short-circuit visible in source window",
+      "harness_label": "misleading",
+      "label": "false_positive",
+      "notes": "fp_reason: Agree: guard or short-circuit visible in source window",
+      "record_id": "RR-2ee4213e29d6e601",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 0
+    },
+    "RR-2f923b37e4e51da0": {
+      "fp_reason": "Agree: guard or short-circuit visible in source window",
+      "harness_label": "misleading",
+      "label": "false_positive",
+      "notes": "fp_reason: Agree: guard or short-circuit visible in source window",
+      "record_id": "RR-2f923b37e4e51da0",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 0
+    },
+    "RR-2fc73397baf940ed": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-2fc73397baf940ed",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 1
+    },
+    "RR-3027dd469c3bafab": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-3027dd469c3bafab",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-303328efffe3a321": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-303328efffe3a321",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-30baad4546e60b86": {
+      "fp_reason": "Needs caller inspection; cannot confirm from packet alone",
+      "harness_label": "undecidable",
+      "label": "unclear",
+      "notes": "",
+      "record_id": "RR-30baad4546e60b86",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:18+00:00",
+      "usefulness": 2
+    },
+    "RR-32f6d5b3c7da880c": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-32f6d5b3c7da880c",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-333c808579d40764": {
+      "fp_reason": "Security lead: trace whether argv includes external data",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-333c808579d40764",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:18+00:00",
+      "usefulness": 3
+    },
+    "RR-3417d603351142d3": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-3417d603351142d3",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-34bade876823ac1c": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-34bade876823ac1c",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 1
+    },
+    "RR-35b0593e9cb5b2df": {
+      "fp_reason": "Agree: guard or short-circuit visible in source window",
+      "harness_label": "misleading",
+      "label": "false_positive",
+      "notes": "fp_reason: Agree: guard or short-circuit visible in source window",
+      "record_id": "RR-35b0593e9cb5b2df",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 0
+    },
+    "RR-39239553e89f94c6": {
+      "fp_reason": "Security lead: trace whether argv includes external data",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-39239553e89f94c6",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-3a06a4af066114ab": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-3a06a4af066114ab",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-3bc31cea5dcf6295": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-3bc31cea5dcf6295",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-3ff3b652df201507": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-3ff3b652df201507",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-40af2188f20fcb8e": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-40af2188f20fcb8e",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 1
+    },
+    "RR-41548a8ad90873cc": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-41548a8ad90873cc",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-41a27b8792cd2dcd": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-41a27b8792cd2dcd",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-42c164bc58fb0e4d": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-42c164bc58fb0e4d",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-42efc111d1ead93d": {
+      "fp_reason": "Internal template resolution",
+      "harness_label": "misleading",
+      "label": "false_positive",
+      "notes": "fp_reason: Internal template resolution",
+      "record_id": "RR-42efc111d1ead93d",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:18+00:00",
+      "usefulness": 0
+    },
+    "RR-45caeb4bf432a692": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-45caeb4bf432a692",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-464a41eb112584bd": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-464a41eb112584bd",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-47284c8c1c580626": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-47284c8c1c580626",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-4732c6ed0ad75ce5": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-4732c6ed0ad75ce5",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-479f9c52b1ba49c2": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-479f9c52b1ba49c2",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-4a63c8f2b708ae36": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-4a63c8f2b708ae36",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 1
+    },
+    "RR-4a98759f5ea568fe": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-4a98759f5ea568fe",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-4acdf828700b20bb": {
+      "fp_reason": "Needs caller inspection; cannot confirm from packet alone",
+      "harness_label": "undecidable",
+      "label": "unclear",
+      "notes": "",
+      "record_id": "RR-4acdf828700b20bb",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 2
+    },
+    "RR-4b209b6f7198bd09": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-4b209b6f7198bd09",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-4bd8d7c268bdcd44": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-4bd8d7c268bdcd44",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-4c47e85ebe1e2d09": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-4c47e85ebe1e2d09",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-4e1ce1428889e2b1": {
+      "fp_reason": "Agree: guard or short-circuit visible in source window",
+      "harness_label": "misleading",
+      "label": "false_positive",
+      "notes": "fp_reason: Agree: guard or short-circuit visible in source window",
+      "record_id": "RR-4e1ce1428889e2b1",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:18+00:00",
+      "usefulness": 0
+    },
+    "RR-516723e2fe46e2b6": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-516723e2fe46e2b6",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-524c49ab50d6f541": {
+      "fp_reason": "Security lead: trace whether argv includes external data",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-524c49ab50d6f541",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:18+00:00",
+      "usefulness": 3
+    },
+    "RR-53ac81c29c420994": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-53ac81c29c420994",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-551f985e8687f5d6": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-551f985e8687f5d6",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 1
+    },
+    "RR-5543d82ec0180a9f": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-5543d82ec0180a9f",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 1
+    },
+    "RR-5573b53e6d2dc04c": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-5573b53e6d2dc04c",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-5596085cff5eefe9": {
+      "fp_reason": "Second reviewer could not confirm traversal risk from window",
+      "harness_label": "undecidable",
+      "label": "unclear",
+      "notes": "",
+      "record_id": "RR-5596085cff5eefe9",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 2
+    },
+    "RR-5614634edf0c95b5": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-5614634edf0c95b5",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 1
+    },
+    "RR-568f4aca60ee73a8": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-568f4aca60ee73a8",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 1
+    },
+    "RR-57d5132a591b4962": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-57d5132a591b4962",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-585af6206bda4a6b": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-585af6206bda4a6b",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 1
+    },
+    "RR-5b597d5c66f45b99": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-5b597d5c66f45b99",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 1
+    },
+    "RR-5dcfa83ea90be4a9": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-5dcfa83ea90be4a9",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-5e00d52cc45a2d41": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-5e00d52cc45a2d41",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 1
+    },
+    "RR-5eeead78fb54a247": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-5eeead78fb54a247",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-606412b17702d67e": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-606412b17702d67e",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-6556a4b14cec3edf": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-6556a4b14cec3edf",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-6647f454433e2ebb": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-6647f454433e2ebb",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-66f66fc196b61538": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-66f66fc196b61538",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-67bf894b53716128": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-67bf894b53716128",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 1
+    },
+    "RR-67d23c767f212fe8": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-67d23c767f212fe8",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-696729f259514d31": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-696729f259514d31",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 1
+    },
+    "RR-6ca408437db8cf28": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-6ca408437db8cf28",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-6ea42f095a65186d": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-6ea42f095a65186d",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 1
+    },
+    "RR-73cd64b9b7a716b6": {
+      "fp_reason": "Second reviewer could not confirm traversal risk from window",
+      "harness_label": "undecidable",
+      "label": "unclear",
+      "notes": "",
+      "record_id": "RR-73cd64b9b7a716b6",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 2
+    },
+    "RR-77624d2f39d00c11": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-77624d2f39d00c11",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-79ac2a468d518035": {
+      "fp_reason": "Security lead: trace whether argv includes external data",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-79ac2a468d518035",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-7a97a3f024e32422": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-7a97a3f024e32422",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 1
+    },
+    "RR-7c8cc6a95c5f54dc": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-7c8cc6a95c5f54dc",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-8418fb94000d6b30": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-8418fb94000d6b30",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 1
+    },
+    "RR-847b9944e9832228": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-847b9944e9832228",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-85436d03969f3acf": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-85436d03969f3acf",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-8723b064a7930fb0": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-8723b064a7930fb0",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-87320ecc83e9e4bd": {
+      "fp_reason": "Security lead: trace whether argv includes external data",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-87320ecc83e9e4bd",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:18+00:00",
+      "usefulness": 3
+    },
+    "RR-8859ee3d1de0dfa7": {
+      "fp_reason": "Agree: guard or short-circuit visible in source window",
+      "harness_label": "misleading",
+      "label": "false_positive",
+      "notes": "fp_reason: Agree: guard or short-circuit visible in source window",
+      "record_id": "RR-8859ee3d1de0dfa7",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:18+00:00",
+      "usefulness": 0
+    },
+    "RR-89e0175d18018c87": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-89e0175d18018c87",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 1
+    },
+    "RR-8a340de0a4fcfa00": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-8a340de0a4fcfa00",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-8a98734a7c315d35": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-8a98734a7c315d35",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-8faff1310df173fb": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-8faff1310df173fb",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-9010092f1e3cedea": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-9010092f1e3cedea",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-903b17a3e2e2ddf2": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-903b17a3e2e2ddf2",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-937189fed10f53c7": {
+      "fp_reason": "Security lead: trace whether argv includes external data",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-937189fed10f53c7",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:18+00:00",
+      "usefulness": 3
+    },
+    "RR-95b503077acdc165": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-95b503077acdc165",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-95d85dbcfca471cc": {
+      "fp_reason": "Agree: guard or short-circuit visible in source window",
+      "harness_label": "misleading",
+      "label": "false_positive",
+      "notes": "fp_reason: Agree: guard or short-circuit visible in source window",
+      "record_id": "RR-95d85dbcfca471cc",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:18+00:00",
+      "usefulness": 0
+    },
+    "RR-9730a6a6d443c014": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-9730a6a6d443c014",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-9a2b8b5e6b67e515": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-9a2b8b5e6b67e515",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-9a713c7431415bd4": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-9a713c7431415bd4",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-9bfb23bcb4921d1a": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-9bfb23bcb4921d1a",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-9c405dfa4a86ab18": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-9c405dfa4a86ab18",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-a0130894b1943041": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-a0130894b1943041",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-a04e65f977c2c014": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-a04e65f977c2c014",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-a08bfb573fe5f8f9": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-a08bfb573fe5f8f9",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-a1a95f88bc817b9d": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-a1a95f88bc817b9d",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-a2a6836598f376bf": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-a2a6836598f376bf",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-a499f564818a4163": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-a499f564818a4163",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 1
+    },
+    "RR-ac315318f46bdaf4": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-ac315318f46bdaf4",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-ae5bb9bde18759a9": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-ae5bb9bde18759a9",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-b1b7d0a26d5f75b3": {
+      "fp_reason": "Security lead: trace whether argv includes external data",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-b1b7d0a26d5f75b3",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:18+00:00",
+      "usefulness": 3
+    },
+    "RR-b5e9ebb2d52c18cf": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-b5e9ebb2d52c18cf",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-b631d2f178b69363": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-b631d2f178b69363",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-b655b73ee40954c7": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-b655b73ee40954c7",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-b658c012a978b46a": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-b658c012a978b46a",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-b6bdfd97e180c9a8": {
+      "fp_reason": "Operator-chosen input file; document trust boundary",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-b6bdfd97e180c9a8",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:18+00:00",
+      "usefulness": 3
+    },
+    "RR-b6d7bf9a13754490": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-b6d7bf9a13754490",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-b9230bd315104908": {
+      "fp_reason": "Second reviewer could not confirm traversal risk from window",
+      "harness_label": "undecidable",
+      "label": "unclear",
+      "notes": "",
+      "record_id": "RR-b9230bd315104908",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:18+00:00",
+      "usefulness": 2
+    },
+    "RR-b9a8c0e4dfc7062f": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-b9a8c0e4dfc7062f",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-ba611ce309b43e6e": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-ba611ce309b43e6e",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-bd316654264fb322": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-bd316654264fb322",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-bff970c6732ac674": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-bff970c6732ac674",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-c03766e9065e3c36": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-c03766e9065e3c36",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-c13d1601b5510bb5": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-c13d1601b5510bb5",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-c1c1306fddb678b3": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-c1c1306fddb678b3",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-c1cbeedec7e7ea87": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-c1cbeedec7e7ea87",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-c28a34e2e86b79b9": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-c28a34e2e86b79b9",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 1
+    },
+    "RR-c37eea0047347c0b": {
+      "fp_reason": "Security lead: trace whether argv includes external data",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-c37eea0047347c0b",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-c436aadb9b35f916": {
+      "fp_reason": "Agree: guard or short-circuit visible in source window",
+      "harness_label": "misleading",
+      "label": "false_positive",
+      "notes": "fp_reason: Agree: guard or short-circuit visible in source window",
+      "record_id": "RR-c436aadb9b35f916",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:18+00:00",
+      "usefulness": 0
+    },
+    "RR-c7f30bb7a2fc2b6e": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-c7f30bb7a2fc2b6e",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-c8c9b081bcf11e66": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-c8c9b081bcf11e66",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-c8d2be670a641e7d": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-c8d2be670a641e7d",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-c9cded9b17b3a24b": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-c9cded9b17b3a24b",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 1
+    },
+    "RR-c9fbcc5e10f7e456": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-c9fbcc5e10f7e456",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-ca15710eb8b7911a": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-ca15710eb8b7911a",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 1
+    },
+    "RR-cc87ea83615f6d3f": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-cc87ea83615f6d3f",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 1
+    },
+    "RR-cf813dd4fa36e2c5": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-cf813dd4fa36e2c5",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-cff4b34652837002": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-cff4b34652837002",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-d006d9459f555f79": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-d006d9459f555f79",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 1
+    },
+    "RR-d13825160e720887": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-d13825160e720887",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 1
+    },
+    "RR-d2797bf3ee93e576": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-d2797bf3ee93e576",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-d3a07f84444a8af8": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-d3a07f84444a8af8",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-d3cc94911a98ebd4": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-d3cc94911a98ebd4",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 1
+    },
+    "RR-d3d50bba3e2b4909": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-d3d50bba3e2b4909",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 1
+    },
+    "RR-d4f759f3e8ad7c9c": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-d4f759f3e8ad7c9c",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-d50b564284ddc214": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-d50b564284ddc214",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-d5fc2d3a03face31": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-d5fc2d3a03face31",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-d7960d704097ff34": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-d7960d704097ff34",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 1
+    },
+    "RR-d8861ed817e5f899": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-d8861ed817e5f899",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-d8d0841ae588c3f6": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-d8d0841ae588c3f6",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-d93f1ab9bfb39f18": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-d93f1ab9bfb39f18",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-d97126368f63047f": {
+      "fp_reason": "Early return on None path",
+      "harness_label": "misleading",
+      "label": "false_positive",
+      "notes": "fp_reason: Early return on None path",
+      "record_id": "RR-d97126368f63047f",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:18+00:00",
+      "usefulness": 0
+    },
+    "RR-d9ef7805293bf806": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-d9ef7805293bf806",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-da70c32e77aa0a23": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-da70c32e77aa0a23",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-db0750cbe98ca27e": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-db0750cbe98ca27e",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-dd56f6af84321f67": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-dd56f6af84321f67",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-de16163c9e40f7a1": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-de16163c9e40f7a1",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-dee823474b66182d": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-dee823474b66182d",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-dff1399f667a9b40": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-dff1399f667a9b40",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-e1f9b32928cdad52": {
+      "fp_reason": "Agree: guard or short-circuit visible in source window",
+      "harness_label": "misleading",
+      "label": "false_positive",
+      "notes": "fp_reason: Agree: guard or short-circuit visible in source window",
+      "record_id": "RR-e1f9b32928cdad52",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:18+00:00",
+      "usefulness": 0
+    },
+    "RR-e92ede992bd4059e": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-e92ede992bd4059e",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 1
+    },
+    "RR-ea1a5bf8aad3ab45": {
+      "fp_reason": "Second reviewer could not confirm traversal risk from window",
+      "harness_label": "undecidable",
+      "label": "unclear",
+      "notes": "",
+      "record_id": "RR-ea1a5bf8aad3ab45",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 2
+    },
+    "RR-ee67187d2f0f032a": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-ee67187d2f0f032a",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-efc050ce2d3c0b62": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-efc050ce2d3c0b62",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-f142fe1a884a6bb6": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-f142fe1a884a6bb6",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-f1468be5b4c0c41a": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-f1468be5b4c0c41a",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-f315392cdd3ca2ea": {
+      "fp_reason": "Second reviewer could not confirm traversal risk from window",
+      "harness_label": "undecidable",
+      "label": "unclear",
+      "notes": "",
+      "record_id": "RR-f315392cdd3ca2ea",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 2
+    },
+    "RR-f4e95158370cdfdb": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-f4e95158370cdfdb",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 3
+    },
+    "RR-f58a8836b0a44aeb": {
+      "fp_reason": "Security lead: trace whether argv includes external data",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-f58a8836b0a44aeb",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:18+00:00",
+      "usefulness": 3
+    },
+    "RR-f64e0f70e821c692": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-f64e0f70e821c692",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-f861049cd7ec3c1a": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-f861049cd7ec3c1a",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 1
+    },
+    "RR-fa11ac2211e496d2": {
+      "fp_reason": "Agree: guard or short-circuit visible in source window",
+      "harness_label": "misleading",
+      "label": "false_positive",
+      "notes": "fp_reason: Agree: guard or short-circuit visible in source window",
+      "record_id": "RR-fa11ac2211e496d2",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 0
+    },
+    "RR-fc294d3a11b3dfd3": {
+      "fp_reason": "Agree: guard or short-circuit visible in source window",
+      "harness_label": "misleading",
+      "label": "false_positive",
+      "notes": "fp_reason: Agree: guard or short-circuit visible in source window",
+      "record_id": "RR-fc294d3a11b3dfd3",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 0
+    },
+    "RR-fc5ec93a3e0bc0ee": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-fc5ec93a3e0bc0ee",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-fcd030ce0ef74540": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-fcd030ce0ef74540",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-fd6b3534fd299e27": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-fd6b3534fd299e27",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-fdbd4cebf8a634e4": {
+      "fp_reason": "Agree: guard or short-circuit visible in source window",
+      "harness_label": "misleading",
+      "label": "false_positive",
+      "notes": "fp_reason: Agree: guard or short-circuit visible in source window",
+      "record_id": "RR-fdbd4cebf8a634e4",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 0
+    },
+    "RR-ff509f3d18aa2711": {
+      "fp_reason": "Agree: worth a quick confirm but not a defect claim",
+      "harness_label": "useful_review_lead",
+      "label": "useful_advisory",
+      "notes": "",
+      "record_id": "RR-ff509f3d18aa2711",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:19+00:00",
+      "usefulness": 3
+    },
+    "RR-ffe54b8a5009b2a6": {
+      "fp_reason": "Typical .get() pattern; not worth escalation",
+      "harness_label": "benign_or_intended",
+      "label": "not_useful",
+      "notes": "",
+      "record_id": "RR-ffe54b8a5009b2a6",
+      "review_minutes": null,
+      "reviewed_at": "2026-05-31T11:18:20+00:00",
+      "usefulness": 1
+    }
+  },
+  "review_tool_schema_version": 1,
+  "reviewer": "phase95e-reviewer-b",
+  "run_dir": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\phase95c_first_run",
+  "slot": "reviewer_b",
+  "updated_at": "2026-05-31T11:18:20+00:00"
+}

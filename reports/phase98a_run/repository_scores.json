@@ -1,0 +1,125 @@
+{
+  "repositories": {
+    "attrs": {
+      "reason": "",
+      "usefulness": null,
+      "would_use_again": null
+    },
+    "black": {
+      "reason": "",
+      "usefulness": null,
+      "would_use_again": null
+    },
+    "blinker": {
+      "reason": "",
+      "usefulness": null,
+      "would_use_again": null
+    },
+    "cachetools": {
+      "reason": "",
+      "usefulness": null,
+      "would_use_again": null
+    },
+    "celery": {
+      "reason": "",
+      "usefulness": null,
+      "would_use_again": null
+    },
+    "click": {
+      "reason": "",
+      "usefulness": null,
+      "would_use_again": null
+    },
+    "cookiecutter": {
+      "reason": "",
+      "usefulness": null,
+      "would_use_again": null
+    },
+    "dash": {
+      "reason": "",
+      "usefulness": null,
+      "would_use_again": null
+    },
+    "fastapi": {
+      "reason": "",
+      "usefulness": null,
+      "would_use_again": null
+    },
+    "flask": {
+      "reason": "",
+      "usefulness": null,
+      "would_use_again": null
+    },
+    "httpx": {
+      "reason": "",
+      "usefulness": null,
+      "would_use_again": null
+    },
+    "humanize": {
+      "reason": "",
+      "usefulness": null,
+      "would_use_again": null
+    },
+    "itsdangerous": {
+      "reason": "",
+      "usefulness": null,
+      "would_use_again": null
+    },
+    "marshmallow": {
+      "reason": "",
+      "usefulness": null,
+      "would_use_again": null
+    },
+    "pathspec": {
+      "reason": "",
+      "usefulness": null,
+      "would_use_again": null
+    },
+    "pluggy": {
+      "reason": "",
+      "usefulness": null,
+      "would_use_again": null
+    },
+    "pytest": {
+      "reason": "",
+      "usefulness": null,
+      "would_use_again": null
+    },
+    "requests": {
+      "reason": "",
+      "usefulness": null,
+      "would_use_again": null
+    },
+    "rich": {
+      "reason": "",
+      "usefulness": null,
+      "would_use_again": null
+    },
+    "sphinx": {
+      "reason": "",
+      "usefulness": null,
+      "would_use_again": null
+    },
+    "starlette": {
+      "reason": "",
+      "usefulness": null,
+      "would_use_again": null
+    },
+    "typer": {
+      "reason": "",
+      "usefulness": null,
+      "would_use_again": null
+    },
+    "wagtail": {
+      "reason": "",
+      "usefulness": null,
+      "would_use_again": null
+    },
+    "werkzeug": {
+      "reason": "",
+      "usefulness": null,
+      "would_use_again": null
+    }
+  },
+  "review_schema_version": 1
+}

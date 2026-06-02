@@ -31,6 +31,17 @@ class ConceptRecord:
     feature_type: str = "feature"
     # Legacy title field
     title: str = ""
+    when_to_use: str = ""
+    implementation_strategies: List[str] = field(default_factory=list)
+    security_risks: List[str] = field(default_factory=list)
+    performance_risks: List[str] = field(default_factory=list)
+    concept_quality_score: str = "generated_template"
+
+    @property
+    def computed_quality_score(self) -> str:
+        from .quality import normalize_quality
+
+        return normalize_quality(self.concept_quality_score)
 
     def to_dict(self) -> Dict[str, Any]:
         d = asdict(self)
@@ -99,6 +110,11 @@ class ConceptRecord:
             investigate_only=bool(raw.get("investigate_only")),
             feature_type=(raw.get("feature_type") or raw.get("category") or "feature").strip(),
             title=(raw.get("title") or raw.get("name") or cid).strip(),
+            when_to_use=(raw.get("when_to_use") or "").strip(),
+            implementation_strategies=_list("implementation_strategies", "implementation_steps"),
+            security_risks=_list("security_risks"),
+            performance_risks=_list("performance_risks"),
+            concept_quality_score=(raw.get("concept_quality_score") or "generated_template").strip(),
         )
 
 

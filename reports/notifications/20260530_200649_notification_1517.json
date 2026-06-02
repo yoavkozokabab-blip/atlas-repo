@@ -1,0 +1,14 @@
+{
+  "id": 1517,
+  "kind": "proactive",
+  "title": "Stale open positions",
+  "message": "Stale open positions (read-only scan):",
+  "severity": "warning",
+  "source": "proactive_monitor",
+  "created_at": "2026-05-30T20:06:49.191983+00:00",
+  "read": false,
+  "archived": false,
+  "suggested_action": "Run show stale open positions or propose execution cleanup patch.",
+  "related_task_id": null,
+  "metadata": {}
+}

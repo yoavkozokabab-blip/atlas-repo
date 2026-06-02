@@ -1,0 +1,14 @@
+{
+  "id": 859,
+  "kind": "proactive",
+  "title": "Overlay failure",
+  "message": "Overlay Qt thread is not alive.",
+  "severity": "warning",
+  "source": "proactive_monitor",
+  "created_at": "2026-05-29T12:42:31.703352+00:00",
+  "read": false,
+  "archived": false,
+  "suggested_action": "Run recover overlay or restart overlay.",
+  "related_task_id": null,
+  "metadata": {}
+}

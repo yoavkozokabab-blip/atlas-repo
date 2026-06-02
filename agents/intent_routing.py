@@ -76,6 +76,15 @@ _INTENT_PREFIX_RULES: tuple[tuple[str, AgentId], ...] = (
     ("run_tool_task", AgentId.BROWSER),
     ("plan_tool_task", AgentId.EXECUTIVE),
     ("show_last_tool_run", AgentId.EXECUTIVE),
+    # ── Autonomous Agent Stack v1 ───────────────────────────────────────────
+    # run/research/compare are health-gated via BROWSER; plan/show stay on
+    # EXECUTIVE so the read-only commands are never gated.
+    ("run_autonomous_task", AgentId.BROWSER),
+    ("research_deeply", AgentId.BROWSER),
+    ("compare_sources_for", AgentId.BROWSER),
+    ("plan_autonomous_task", AgentId.EXECUTIVE),
+    ("show_last_autonomous_run", AgentId.EXECUTIVE),
+    ("show_autonomous_audit", AgentId.EXECUTIVE),
     # ── Trading intents → AgentId.TRADING (S3.4) ────────────────────────────
     ("run_live", AgentId.TRADING),
     ("open_trading_dashboard", AgentId.TRADING),

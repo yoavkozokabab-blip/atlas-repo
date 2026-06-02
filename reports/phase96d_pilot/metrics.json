@@ -1,0 +1,51 @@
+{
+  "contract_evidence_verdicts": {
+    "helped": 13,
+    "neutral": 7
+  },
+  "false_positive_clarity_mean": {
+    "baseline": 3.0,
+    "enriched": 4.0
+  },
+  "review_speed": {
+    "baseline_mean_minutes": 1.31,
+    "baseline_total_minutes": 26.1,
+    "delta_minutes": 11.61,
+    "enriched_mean_minutes": 1.89,
+    "enriched_total_minutes": 37.71
+  },
+  "reviewer_confidence_mean": {
+    "baseline": 2.0,
+    "enriched": 3.65
+  },
+  "sample_size": 20,
+  "scan_meta": {
+    "all_kind_pattern": true,
+    "commit": "2746f1766b929de61d410d45683b81a0ed342235",
+    "inconsistent_return_count": 1049,
+    "repo_id": "local-jarvis-pilot",
+    "scan_seconds": 56.305,
+    "verdict_eligible_count": 0
+  },
+  "schema_version": 1,
+  "strata": {
+    "caller_only": 2,
+    "conflict_only": 7,
+    "return_and_caller": 5,
+    "return_only": 6
+  },
+  "useful_advisory_count": 17,
+  "useful_lead_rate": {
+    "baseline": 0.85,
+    "enriched": 0.85,
+    "label_agreement": 20
+  },
+  "why_not_confirmed_understood": {
+    "baseline_no": 0,
+    "baseline_partial": 20,
+    "baseline_yes": 0,
+    "enriched_no": 0,
+    "enriched_partial": 0,
+    "enriched_yes": 20
+  }
+}

@@ -19,9 +19,9 @@ No changes to detectors, benchmarks, promotion logic, `depgraph`, or `repository
 | Artifact | Path |
 |----------|------|
 | Engine | `builder_core/bug_intelligence/impact.py` |
-| CLI | `builder_core.cli impact` (`--file`, `--module`, `--function`, `--paths-to`) |
+| CLI | `impact-file`, `impact-module`, `impact-function`, `impact-paths` (+ unified `impact`) |
 | Feature flag | `IMPACT_ENABLED = True` (gates CLI registration) |
-| Tests | `builder_core/tests/test_phase94b_impact_analysis.py` (11 tests) |
+| Tests | `builder_core/tests/test_phase94b_impact_analysis.py` (14 tests) |
 | Report | `reports/phase94b_impact_analysis_implementation.md` |
 
 ---
@@ -50,11 +50,19 @@ depgraph.build_graph(root)  ──read-only──►  impact.analyze_impact()
 
 ## CLI
 
+Primary commands:
+
+```powershell
+py -3 -m builder_core.cli impact-file    --project . actions/base.py
+py -3 -m builder_core.cli impact-module  --project . actions.base
+py -3 -m builder_core.cli impact-function --project . actions/base.py::BaseAction.run
+py -3 -m builder_core.cli impact-paths   --project . actions/base.py::BaseAction.run
+```
+
+Unified alias (design §8):
+
 ```powershell
 py -3 -m builder_core.cli impact --project . --file actions/base.py
-py -3 -m builder_core.cli impact --project . --module actions.base
-py -3 -m builder_core.cli impact --project . --function actions/base.py::BaseAction.run
-py -3 -m builder_core.cli impact --project . --paths-to actions/base.py::BaseAction.run
 ```
 
 **Common options:** `--transitive`, `--direct`, `--max-depth`, `--top`, `--json [PATH]`
@@ -70,8 +78,8 @@ Optional JSON export: `<project>/.jarvis_builder/impact.json`
 | Command | Result |
 |---------|--------|
 | `graph summary --project .` | OK — 9,493 nodes |
-| `impact --file actions/base.py --top 5` | OK — 120 direct, 464 transitive dependents |
-| Full test suite | **241 passed** |
+| `impact-file actions/base.py --top 5` | OK — 120 direct, 464 transitive dependents |
+| Full test suite | **244 passed** |
 | QuixBugs mini fixture | 1 TP / 0 FP (unchanged) |
 | Holdout | `available: false` (unchanged) |
 

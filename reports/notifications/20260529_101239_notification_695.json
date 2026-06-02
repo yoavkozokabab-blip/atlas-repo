@@ -1,0 +1,14 @@
+{
+  "id": 695,
+  "kind": "proactive",
+  "title": "Continuous monitor alert",
+  "message": "New blocker appeared: 2. max positions reached severity=high count=15 evidence=c",
+  "severity": "warning",
+  "source": "proactive_monitor",
+  "created_at": "2026-05-29T10:12:39.552062+00:00",
+  "read": false,
+  "archived": false,
+  "suggested_action": "run investigation cycle",
+  "related_task_id": null,
+  "metadata": {}
+}

@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from config import (
+    CONVERSATION_CLASSIFY_CONTEXT_TURNS,
     CONVERSATION_CONTEXT_PATH,
     CONVERSATION_ENABLED,
     CONVERSATION_MAX_RAW_CHARS,
@@ -132,7 +133,8 @@ def get_recent_turns(*, limit: int | None = None) -> list[ConversationTurn]:
     if not CONVERSATION_ENABLED:
         return []
     try:
-        cap = limit if limit is not None else min(5, CONVERSATION_MAX_TURNS)
+        default_cap = min(CONVERSATION_CLASSIFY_CONTEXT_TURNS, CONVERSATION_MAX_TURNS)
+        cap = limit if limit is not None else default_cap
         return _load_store().turns[-cap:]
     except Exception:
         return []
@@ -143,19 +145,23 @@ def get_classify_context() -> dict[str, Any]:
     if not CONVERSATION_ENABLED:
         return {}
     try:
-        turns = get_recent_turns(limit=5)
+        turns = get_recent_turns(limit=CONVERSATION_CLASSIFY_CONTEXT_TURNS)
         if not turns:
             return {}
         lines: list[str] = []
-        for t in turns:
-            line = f"{t.intent} ({t.status})"
+        for i, t in enumerate(turns, start=1):
+            line = f"turn{i}: {t.intent} ({t.status})"
+            if t.raw_text_excerpt:
+                line += f" user={t.raw_text_excerpt[:60]}"
             if t.summary_excerpt:
-                line += f": {t.summary_excerpt[:80]}"
+                line += f" assistant={t.summary_excerpt[:80]}"
             lines.append(line)
         return {
             "recent_turns": lines,
             "last_intent": turns[-1].intent,
             "last_status": turns[-1].status,
+            "turn_count": len(turns),
+            "max_turns": CONVERSATION_MAX_TURNS,
         }
     except Exception as exc:
         logger.debug("get_classify_context degraded: %s", exc)

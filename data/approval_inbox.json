@@ -1,9 +1,41 @@
 {
   "items": [
     {
-      "item_id": "f2e389c7",
-      "confirmation_id": "7ae1316e",
-      "timestamp": "2026-05-25T13:00:08.421516+00:00",
+      "item_id": "df25e646",
+      "confirmation_id": "608ab1d1",
+      "timestamp": "2026-05-29T11:06:45.209412+00:00",
+      "intent": "run_live_daily_loop",
+      "action_name": "run_live_daily_loop",
+      "summary": "run_live_daily_loop requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "go daily",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "36f2b0c8",
+      "confirmation_id": "79c8579a",
+      "timestamp": "2026-05-29T11:08:28.428152+00:00",
+      "intent": "focus_window",
+      "action_name": "focus_window",
+      "summary": "focus_window requires confirmation.",
+      "risk_level": "medium",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "focus window Chrome",
+        "params": {
+          "title": "Chrome"
+        }
+      }
+    },
+    {
+      "item_id": "d5b85aec",
+      "confirmation_id": "fc586252",
+      "timestamp": "2026-05-29T11:08:55.876252+00:00",
       "intent": "run_live_daily_loop",
       "action_name": "run_live_daily_loop",
       "summary": "run_live_daily_loop requires confirmation.",
@@ -16,9 +48,469 @@
       }
     },
     {
-      "item_id": "284d33f2",
-      "confirmation_id": "d163c6f4",
-      "timestamp": "2026-05-27T12:35:53.418140+00:00",
+      "item_id": "eb73a86c",
+      "confirmation_id": "e914ed8d",
+      "timestamp": "2026-05-29T11:08:59.405169+00:00",
+      "intent": "run_live_daily_loop",
+      "action_name": "run_live_daily_loop",
+      "summary": "run_live_daily_loop requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "completed",
+      "safe_payload": {
+        "raw_text": "run live daily loop",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "70dec03e",
+      "confirmation_id": "73ff0144",
+      "timestamp": "2026-05-29T11:09:03.025354+00:00",
+      "intent": "shutdown_jarvis",
+      "action_name": "shutdown_jarvis",
+      "summary": "shutdown_jarvis requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "rejected",
+      "safe_payload": {
+        "raw_text": "shutdown jarvis",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "b126ab97",
+      "confirmation_id": "4d1dc600",
+      "timestamp": "2026-05-29T11:13:31.812944+00:00",
+      "intent": "run_live_daily_loop",
+      "action_name": "run_live_daily_loop",
+      "summary": "run_live_daily_loop requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "go daily",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "157ea79b",
+      "confirmation_id": "5bd71f3f",
+      "timestamp": "2026-05-29T11:15:15.561783+00:00",
+      "intent": "focus_window",
+      "action_name": "focus_window",
+      "summary": "focus_window requires confirmation.",
+      "risk_level": "medium",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "focus window Chrome",
+        "params": {
+          "title": "Chrome"
+        }
+      }
+    },
+    {
+      "item_id": "438d3c3d",
+      "confirmation_id": "7a692406",
+      "timestamp": "2026-05-29T11:15:42.920603+00:00",
+      "intent": "run_live_daily_loop",
+      "action_name": "run_live_daily_loop",
+      "summary": "run_live_daily_loop requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "run live daily loop",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "7fce52af",
+      "confirmation_id": "1920557b",
+      "timestamp": "2026-05-29T11:15:46.446348+00:00",
+      "intent": "run_live_daily_loop",
+      "action_name": "run_live_daily_loop",
+      "summary": "run_live_daily_loop requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "completed",
+      "safe_payload": {
+        "raw_text": "run live daily loop",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "deb1ee82",
+      "confirmation_id": "2f689833",
+      "timestamp": "2026-05-29T11:15:50.076234+00:00",
+      "intent": "shutdown_jarvis",
+      "action_name": "shutdown_jarvis",
+      "summary": "shutdown_jarvis requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "rejected",
+      "safe_payload": {
+        "raw_text": "shutdown jarvis",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "d1513f65",
+      "confirmation_id": "5cc27693",
+      "timestamp": "2026-05-29T12:21:48.370000+00:00",
+      "intent": "run_live_daily_loop",
+      "action_name": "run_live_daily_loop",
+      "summary": "run_live_daily_loop requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "go daily",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "8bd0cdfa",
+      "confirmation_id": "deff7ab1",
+      "timestamp": "2026-05-29T12:23:31.826730+00:00",
+      "intent": "focus_window",
+      "action_name": "focus_window",
+      "summary": "focus_window requires confirmation.",
+      "risk_level": "medium",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "focus window Chrome",
+        "params": {
+          "title": "Chrome"
+        }
+      }
+    },
+    {
+      "item_id": "b0d8f50e",
+      "confirmation_id": "685f3ae6",
+      "timestamp": "2026-05-29T12:23:59.373865+00:00",
+      "intent": "run_live_daily_loop",
+      "action_name": "run_live_daily_loop",
+      "summary": "run_live_daily_loop requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "run live daily loop",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "a519eccc",
+      "confirmation_id": "805992c6",
+      "timestamp": "2026-05-29T12:24:02.899610+00:00",
+      "intent": "run_live_daily_loop",
+      "action_name": "run_live_daily_loop",
+      "summary": "run_live_daily_loop requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "completed",
+      "safe_payload": {
+        "raw_text": "run live daily loop",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "aa61728f",
+      "confirmation_id": "350e30e8",
+      "timestamp": "2026-05-29T12:24:06.530371+00:00",
+      "intent": "shutdown_jarvis",
+      "action_name": "shutdown_jarvis",
+      "summary": "shutdown_jarvis requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "rejected",
+      "safe_payload": {
+        "raw_text": "shutdown jarvis",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "63ce9b67",
+      "confirmation_id": "d72d578b",
+      "timestamp": "2026-05-29T12:27:18.465830+00:00",
+      "intent": "run_live_daily_loop",
+      "action_name": "run_live_daily_loop",
+      "summary": "run_live_daily_loop requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "go daily",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "33519b16",
+      "confirmation_id": "3a045fd7",
+      "timestamp": "2026-05-29T12:29:02.158303+00:00",
+      "intent": "focus_window",
+      "action_name": "focus_window",
+      "summary": "focus_window requires confirmation.",
+      "risk_level": "medium",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "focus window Chrome",
+        "params": {
+          "title": "Chrome"
+        }
+      }
+    },
+    {
+      "item_id": "0d49396c",
+      "confirmation_id": "49757c97",
+      "timestamp": "2026-05-29T12:29:29.604987+00:00",
+      "intent": "run_live_daily_loop",
+      "action_name": "run_live_daily_loop",
+      "summary": "run_live_daily_loop requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "run live daily loop",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "34110633",
+      "confirmation_id": "741b884d",
+      "timestamp": "2026-05-29T12:29:33.128930+00:00",
+      "intent": "run_live_daily_loop",
+      "action_name": "run_live_daily_loop",
+      "summary": "run_live_daily_loop requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "completed",
+      "safe_payload": {
+        "raw_text": "run live daily loop",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "d00a13d9",
+      "confirmation_id": "e78c1b9f",
+      "timestamp": "2026-05-29T12:29:36.767356+00:00",
+      "intent": "shutdown_jarvis",
+      "action_name": "shutdown_jarvis",
+      "summary": "shutdown_jarvis requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "rejected",
+      "safe_payload": {
+        "raw_text": "shutdown jarvis",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "e05f5802",
+      "confirmation_id": "3c41b89e",
+      "timestamp": "2026-05-29T12:32:45.652414+00:00",
+      "intent": "run_live_daily_loop",
+      "action_name": "run_live_daily_loop",
+      "summary": "run_live_daily_loop requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "go daily",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "39a33249",
+      "confirmation_id": "d52ec80a",
+      "timestamp": "2026-05-29T12:34:31.529912+00:00",
+      "intent": "focus_window",
+      "action_name": "focus_window",
+      "summary": "focus_window requires confirmation.",
+      "risk_level": "medium",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "focus window Chrome",
+        "params": {
+          "title": "Chrome"
+        }
+      }
+    },
+    {
+      "item_id": "b37cc80b",
+      "confirmation_id": "194ff4c2",
+      "timestamp": "2026-05-29T12:34:59.052948+00:00",
+      "intent": "run_live_daily_loop",
+      "action_name": "run_live_daily_loop",
+      "summary": "run_live_daily_loop requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "run live daily loop",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "394e5b13",
+      "confirmation_id": "b9e7e521",
+      "timestamp": "2026-05-29T12:35:02.566374+00:00",
+      "intent": "run_live_daily_loop",
+      "action_name": "run_live_daily_loop",
+      "summary": "run_live_daily_loop requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "completed",
+      "safe_payload": {
+        "raw_text": "run live daily loop",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "15a7e26f",
+      "confirmation_id": "4d0808b2",
+      "timestamp": "2026-05-29T12:35:06.218107+00:00",
+      "intent": "shutdown_jarvis",
+      "action_name": "shutdown_jarvis",
+      "summary": "shutdown_jarvis requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "rejected",
+      "safe_payload": {
+        "raw_text": "shutdown jarvis",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "26e307df",
+      "confirmation_id": "f39c13c2",
+      "timestamp": "2026-05-29T12:36:17.426351+00:00",
+      "intent": "run_live_daily_loop",
+      "action_name": "run_live_daily_loop",
+      "summary": "run_live_daily_loop requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "go daily",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "e15d1a97",
+      "confirmation_id": "41dfd1ca",
+      "timestamp": "2026-05-29T12:38:02.816589+00:00",
+      "intent": "focus_window",
+      "action_name": "focus_window",
+      "summary": "focus_window requires confirmation.",
+      "risk_level": "medium",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "focus window Chrome",
+        "params": {
+          "title": "Chrome"
+        }
+      }
+    },
+    {
+      "item_id": "1531aeb6",
+      "confirmation_id": "efd19658",
+      "timestamp": "2026-05-29T12:38:30.368627+00:00",
+      "intent": "run_live_daily_loop",
+      "action_name": "run_live_daily_loop",
+      "summary": "run_live_daily_loop requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "run live daily loop",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "dbaa3338",
+      "confirmation_id": "52d787ca",
+      "timestamp": "2026-05-29T12:38:33.889827+00:00",
+      "intent": "run_live_daily_loop",
+      "action_name": "run_live_daily_loop",
+      "summary": "run_live_daily_loop requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "completed",
+      "safe_payload": {
+        "raw_text": "run live daily loop",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "9dad3d75",
+      "confirmation_id": "4e068fc3",
+      "timestamp": "2026-05-29T12:38:37.536622+00:00",
+      "intent": "shutdown_jarvis",
+      "action_name": "shutdown_jarvis",
+      "summary": "shutdown_jarvis requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "rejected",
+      "safe_payload": {
+        "raw_text": "shutdown jarvis",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "b908813d",
+      "confirmation_id": "14aa2be1",
+      "timestamp": "2026-05-29T13:43:52.879892+00:00",
+      "intent": "run_live_daily_loop",
+      "action_name": "run_live_daily_loop",
+      "summary": "run_live_daily_loop requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "run live daily loop",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "6982bd71",
+      "confirmation_id": "c2cf4bbd",
+      "timestamp": "2026-05-29T13:46:03.125890+00:00",
+      "intent": "run_live_daily_loop",
+      "action_name": "run_live_daily_loop",
+      "summary": "run_live_daily_loop requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "run live daily loop",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "47f6b13a",
+      "confirmation_id": "df876bcb",
+      "timestamp": "2026-05-29T13:54:16.227039+00:00",
+      "intent": "run_live_daily_loop",
+      "action_name": "run_live_daily_loop",
+      "summary": "run_live_daily_loop requires confirmation.",
+      "risk_level": "high",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "run live daily loop",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "24bc71b5",
+      "confirmation_id": "da709d79",
+      "timestamp": "2026-05-29T15:24:20.160751+00:00",
       "intent": "open_website",
       "action_name": "open_website",
       "summary": "open_website requires confirmation.",
@@ -33,122 +525,95 @@
       }
     },
     {
-      "item_id": "206bcc5c",
-      "confirmation_id": "44595104",
-      "timestamp": "2026-05-27T13:46:40.292836+00:00",
-      "intent": "open_website",
-      "action_name": "open_website",
-      "summary": "open_website requires confirmation.",
-      "risk_level": "low",
+      "item_id": "685d5fb0",
+      "confirmation_id": "80c57ccb",
+      "timestamp": "2026-05-31T14:42:31.048550+00:00",
+      "intent": "run_live_daily_loop",
+      "action_name": "run_live_daily_loop",
+      "summary": "run_live_daily_loop requires confirmation.",
+      "risk_level": "high",
       "required_confirmation": true,
       "status": "expired",
       "safe_payload": {
-        "raw_text": "open youtube",
+        "raw_text": "go daily",
+        "params": {}
+      }
+    },
+    {
+      "item_id": "89c4c985",
+      "confirmation_id": "daf2b4eb",
+      "timestamp": "2026-05-31T14:44:13.514365+00:00",
+      "intent": "focus_window",
+      "action_name": "focus_window",
+      "summary": "focus_window requires confirmation.",
+      "risk_level": "medium",
+      "required_confirmation": true,
+      "status": "expired",
+      "safe_payload": {
+        "raw_text": "focus window Chrome",
         "params": {
-          "website": "youtube"
+          "title": "Chrome"
         }
       }
     },
     {
-      "item_id": "77f9d565",
-      "confirmation_id": "20e71175",
-      "timestamp": "2026-05-27T14:57:20.433859+00:00",
-      "intent": "open_website",
-      "action_name": "open_website",
-      "summary": "open_website requires confirmation.",
-      "risk_level": "low",
+      "item_id": "cbc4233b",
+      "confirmation_id": "a9bb8370",
+      "timestamp": "2026-05-31T14:44:40.813266+00:00",
+      "intent": "run_live_daily_loop",
+      "action_name": "run_live_daily_loop",
+      "summary": "run_live_daily_loop requires confirmation.",
+      "risk_level": "high",
       "required_confirmation": true,
       "status": "expired",
       "safe_payload": {
-        "raw_text": "open youtube",
-        "params": {
-          "website": "youtube"
-        }
+        "raw_text": "run live daily loop",
+        "params": {}
       }
     },
     {
-      "item_id": "297e16d5",
-      "confirmation_id": "ec87d928",
-      "timestamp": "2026-05-27T14:57:39.250513+00:00",
-      "intent": "open_website",
-      "action_name": "open_website",
-      "summary": "open_website requires confirmation.",
-      "risk_level": "low",
+      "item_id": "46549b05",
+      "confirmation_id": "c2272836",
+      "timestamp": "2026-05-31T14:44:44.310354+00:00",
+      "intent": "run_live_daily_loop",
+      "action_name": "run_live_daily_loop",
+      "summary": "run_live_daily_loop requires confirmation.",
+      "risk_level": "high",
       "required_confirmation": true,
-      "status": "expired",
+      "status": "completed",
       "safe_payload": {
-        "raw_text": "open youtube",
-        "params": {
-          "website": "youtube"
-        }
+        "raw_text": "run live daily loop",
+        "params": {}
       }
     },
     {
-      "item_id": "afdfd922",
-      "confirmation_id": "27d4b147",
-      "timestamp": "2026-05-27T14:59:23.625118+00:00",
-      "intent": "open_website",
-      "action_name": "open_website",
-      "summary": "open_website requires confirmation.",
-      "risk_level": "low",
+      "item_id": "7b8f5227",
+      "confirmation_id": "5626f5fb",
+      "timestamp": "2026-05-31T14:44:47.808782+00:00",
+      "intent": "shutdown_jarvis",
+      "action_name": "shutdown_jarvis",
+      "summary": "shutdown_jarvis requires confirmation.",
+      "risk_level": "high",
       "required_confirmation": true,
-      "status": "expired",
+      "status": "rejected",
       "safe_payload": {
-        "raw_text": "open youtube",
-        "params": {
-          "website": "youtube"
-        }
+        "raw_text": "shutdown jarvis",
+        "params": {}
       }
     },
     {
-      "item_id": "3ad94e10",
-      "confirmation_id": "3e2d78f9",
-      "timestamp": "2026-05-27T15:18:03.206353+00:00",
-      "intent": "open_website",
-      "action_name": "open_website",
-      "summary": "open_website requires confirmation.",
-      "risk_level": "low",
-      "required_confirmation": true,
-      "status": "expired",
-      "safe_payload": {
-        "raw_text": "open youtube",
-        "params": {
-          "website": "youtube"
-        }
-      }
-    },
-    {
-      "item_id": "ef9dd555",
-      "confirmation_id": "91ae6e8c",
-      "timestamp": "2026-05-27T16:07:38.704170+00:00",
-      "intent": "open_website",
-      "action_name": "open_website",
-      "summary": "open_website requires confirmation.",
-      "risk_level": "low",
-      "required_confirmation": true,
-      "status": "expired",
-      "safe_payload": {
-        "raw_text": "open youtube",
-        "params": {
-          "website": "youtube"
-        }
-      }
-    },
-    {
-      "item_id": "098fe155",
-      "confirmation_id": "0ef3d1f3",
-      "timestamp": "2026-05-27T16:46:08.615289+00:00",
-      "intent": "open_website",
-      "action_name": "open_website",
-      "summary": "open_website requires confirmation.",
-      "risk_level": "low",
+      "item_id": "1374ccc9",
+      "confirmation_id": "d375b4bd",
+      "timestamp": "2026-05-31T15:02:00.501042+00:00",
+      "intent": "run_live_daily_loop",
+      "action_name": "run_live_daily_loop",
+      "summary": "run_live_daily_loop requires confirmation.",
+      "risk_level": "high",
       "required_confirmation": true,
       "status": "pending",
       "safe_payload": {
-        "raw_text": "open youtube",
-        "params": {
-          "website": "youtube"
-        }
+        "raw_text": "go daily",
+        "params": {}
       }
     }
   ]

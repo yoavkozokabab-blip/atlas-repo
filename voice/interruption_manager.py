@@ -40,29 +40,37 @@ def cancel(*, partial_text: str = "") -> bool:
             return False
 
 
-def on_user_speech_detected(*, partial_text: str = "", preserve_response: bool = True) -> InterruptionResult:
+def on_user_speech_detected(
+    *,
+    partial_text: str = "",
+    preserve_response: bool = True,
+    playback_already_stopped: bool = False,
+) -> InterruptionResult:
     """
     Stop TTS immediately when user starts speaking; preserve unfinished response.
     """
     global _interrupted, _last_event
-    stopped = False
+    stopped = bool(playback_already_stopped)
     preserved = False
     with _lock:
         speaking = _speaking_text
-        try:
-            from voice.duplex_runtime import on_user_speech_energy_detected
+        if not playback_already_stopped:
+            try:
+                from voice.duplex_runtime import on_user_speech_energy_detected
 
-            on_user_speech_energy_detected(partial_text=partial_text)
-        except Exception:
-            pass
-        try:
-            from conversation.semantic_stream.interruption_handler import handle_streaming_interruption
+                on_user_speech_energy_detected(partial_text=partial_text)
+            except Exception:
+                pass
+            try:
+                from conversation.semantic_stream.interruption_handler import (
+                    handle_streaming_interruption,
+                )
 
-            event = handle_streaming_interruption(speech_detected=True)
-            stopped = event.barge_in_triggered
-        except Exception:
-            stopped = cancel()
-        if not stopped:
+                event = handle_streaming_interruption(speech_detected=True)
+                stopped = event.barge_in_triggered
+            except Exception:
+                stopped = cancel()
+        if not stopped and not playback_already_stopped:
             try:
                 from voice.speech_controller import barge_in_if_speaking
 

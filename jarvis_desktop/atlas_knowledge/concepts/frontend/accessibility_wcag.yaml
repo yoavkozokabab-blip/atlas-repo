@@ -1,0 +1,51 @@
+concept_id: accessibility_wcag
+name: Accessibility WCAG
+title: Accessibility WCAG
+domain: frontend
+category: a11y
+feature_type: a11y
+concept_quality_score: curated_deep
+confidence: medium
+aliases:
+- wcag
+- accessibility
+- a11y
+description: Meet WCAG contrast/focus/semantic requirements.
+when_to_use: Public web apps.
+requirements:
+- Clear ownership of Accessibility WCAG in the architecture
+implementation_strategies: &id001
+- Unidirectional data flow
+- Explicit loading/error states
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- State desync
+- XSS via rendered HTML
+- XSS
+- CSRF on state-changing actions
+- Re-render storms
+- Large bundle size
+security_risks:
+- XSS
+- CSRF on state-changing actions
+performance_risks:
+- Re-render storms
+- Large bundle size
+failure_modes:
+- UI shows stale data after mutation
+- Hydration mismatch
+verification:
+- Accessibility audit
+- Cross-browser smoke
+testing:
+- Component tests
+- E2E critical flows
+related_concepts: []
+references:
+- atlas://curated/frontend/accessibility_wcag
+path_keywords:
+- accessibility
+- wcag
+- accessibility
+investigate_only: false

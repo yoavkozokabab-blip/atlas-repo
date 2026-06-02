@@ -1,0 +1,27 @@
+{
+  "metrics": {
+    "buggy": {
+      "detected": 0,
+      "refuted": 8,
+      "review_lead": 0,
+      "strong_suspect": 0,
+      "unknown": 0
+    },
+    "cases_evaluated": 10,
+    "cases_with_detected_buggy_only": 0,
+    "cases_with_detected_on_buggy": 0,
+    "cases_with_detected_on_fixed": 0,
+    "detected_case_false_positive_rate": 0.0,
+    "detected_case_purity": null,
+    "detected_case_recall": 0.0,
+    "fixed": {
+      "detected": 0,
+      "refuted": 8,
+      "review_lead": 0,
+      "strong_suspect": 0,
+      "unknown": 0
+    }
+  },
+  "program_id": "phase100c-first-batch",
+  "schema_version": 1
+}

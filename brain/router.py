@@ -138,7 +138,6 @@ class CommandRouter:
         t_classify = time.perf_counter()
         request = classify(text, session_context=self.session)
         classify_ms = (time.perf_counter() - t_classify) * 1000.0
-        self._maybe_shadow_llm_tool_route(text, request)
         request = enrich_request(request)
         if track_voice_latency:
             try:
@@ -188,21 +187,6 @@ class CommandRouter:
             except Exception:
                 pass
         return self._complete(result, request, started, log_meta=log_meta)
-
-    def _maybe_shadow_llm_tool_route(self, text: str, request: CommandRequest) -> None:
-        """Phase 79 shadow router — log on classifier miss; never change routing."""
-        try:
-            from brain.llm_tool_router import is_classifier_miss, maybe_shadow_route_on_miss
-
-            if not is_classifier_miss(request):
-                return
-            maybe_shadow_route_on_miss(
-                text,
-                request,
-                session_context=self.session,
-            )
-        except Exception:
-            pass
 
     def _emit_fast_ack(self, request: CommandRequest, log_meta: dict) -> None:
         try:

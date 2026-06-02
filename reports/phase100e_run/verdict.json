@@ -1,0 +1,36 @@
+{
+  "verdict": {
+    "verdict": "PARTIAL",
+    "gates": {
+      "quality_non_inferiority": false,
+      "no_fabrication_regression": false,
+      "token_compression_2x": true,
+      "cost_reduction_40pct": true,
+      "architecture_compression_3x": false,
+      "impact_compression_3x": true,
+      "control_integrity": false,
+      "trap_honesty": true
+    },
+    "suite_compression_ratio": 3.168,
+    "context_reduction_ratio": 3.073,
+    "cost_reduction": 0.7047,
+    "time_reduction": 0.0148,
+    "mean_quality_a": 2.15,
+    "mean_quality_b": 2.0,
+    "quality_delta": -0.15,
+    "category_compression": {
+      "architecture": 2.854,
+      "impact": 4.899,
+      "repository_understanding": 2.534
+    },
+    "break_even_queries": 2227.0
+  },
+  "index_build": {
+    "wall_clock_s": 316.744,
+    "index_build_s": 314.212,
+    "depgraph_build_s": 2.532,
+    "estimated_context_tokens": 6453965,
+    "depgraph_degraded": true,
+    "index_file_count": 14520
+  }
+}

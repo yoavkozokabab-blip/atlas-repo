@@ -1,0 +1,46 @@
+concept_id: cap_tradeoffs
+name: CAP Tradeoffs
+title: CAP Tradeoffs
+domain: distributed_systems
+category: theory
+feature_type: theory
+concept_quality_score: curated_deep
+confidence: medium
+aliases:
+- cap theorem
+- partition tolerance
+description: During partition, choose consistency vs availability.
+when_to_use: Designing multi-region systems.
+requirements:
+- Clear ownership of CAP Tradeoffs in the architecture
+implementation_strategies: &id001
+- Timeouts + bulkheads
+- Outbox/inbox for cross-service consistency
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Cascading failures
+- Split-brain
+- Retry storms
+- Queue backlog
+security_risks: []
+performance_risks:
+- Retry storms
+- Queue backlog
+failure_modes:
+- Duplicate side effects on retry
+- Partial failure leaves inconsistent state
+verification:
+- Chaos/fault injection on dependencies
+- Idempotency key audit
+testing:
+- Failure injection tests
+- Idempotent handler tests
+related_concepts: []
+references:
+- atlas://curated/distributed_systems/cap_tradeoffs
+path_keywords:
+- cap
+- cap theorem
+- partition tolerance
+investigate_only: false

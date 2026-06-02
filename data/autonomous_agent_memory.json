@@ -1,0 +1,15 @@
+{
+  "useful_domains": {
+    "example.com": 1,
+    "example.org": 1
+  },
+  "failed_domains": {},
+  "query_rewrites": [],
+  "failure_causes": {},
+  "provider_reliability": {
+    "autonomous_browser": {
+      "ok": 1,
+      "fail": 1
+    }
+  }
+}

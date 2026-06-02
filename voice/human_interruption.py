@@ -16,31 +16,40 @@ _preserved_text: str = ""
 _resume_pending = False
 
 
-def on_user_speech_during_tts(*, partial_text: str = "") -> bool:
+def on_user_speech_during_tts(
+    *,
+    partial_text: str = "",
+    playback_already_stopped: bool = False,
+) -> bool:
     """Pause playback immediately; preserve assistant response state."""
     global _interruption_active, _last_pause_ms, _resume_pending
     t0 = time.perf_counter()
-    paused = False
+    paused = bool(playback_already_stopped)
     with _lock:
-        try:
-            from voice.duplex_runtime import on_user_speech_energy_detected
-
-            on_user_speech_energy_detected(partial_text=partial_text)
-            paused = True
-        except Exception:
-            pass
-        if not paused:
+        if not playback_already_stopped:
             try:
-                from voice.streaming_player import pause_playback_immediately
+                from voice.duplex_runtime import on_user_speech_energy_detected
 
-                pause_playback_immediately()
+                on_user_speech_energy_detected(partial_text=partial_text)
                 paused = True
             except Exception:
                 pass
+            if not paused:
+                try:
+                    from voice.streaming_player import pause_playback_immediately
+
+                    pause_playback_immediately()
+                    paused = True
+                except Exception:
+                    pass
         try:
             from voice.interruption_manager import on_user_speech_detected
 
-            result = on_user_speech_detected(partial_text=partial_text, preserve_response=True)
+            result = on_user_speech_detected(
+                partial_text=partial_text,
+                preserve_response=True,
+                playback_already_stopped=playback_already_stopped,
+            )
             paused = paused or result.stopped_tts
         except Exception:
             pass

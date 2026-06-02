@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "program_id": "phase100e-context-compression",
+  "rubric_version": "phase100b-v1",
+  "repo_root": "C:\\J.A.R.V.I.S\\local_jarvis",
+  "repo_commit": "b2871fafeeacbe247117ef4a8d68027580429a68",
+  "price_table": {
+    "model_id": "claude-sonnet-4-20250514 (token accounting proxy)",
+    "input_usd_per_token": 3e-06,
+    "output_usd_per_token": 1.5e-05
+  },
+  "n_trials": 3,
+  "arms": [
+    "claude_only",
+    "claude_plus_jarvis"
+  ],
+  "task_ids": [
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "A5",
+    "A6",
+    "A7",
+    "A8",
+    "I1",
+    "I2",
+    "I3",
+    "I4",
+    "I5",
+    "I6",
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6"
+  ],
+  "task_suite_hash": "d1f18a0475d35427"
+}

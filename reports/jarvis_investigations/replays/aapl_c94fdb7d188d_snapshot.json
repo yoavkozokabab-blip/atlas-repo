@@ -1,0 +1,374 @@
+{
+  "created_at": "2026-05-29T10:11:44.959121+00:00",
+  "symbol": "AAPL",
+  "replay": {
+    "symbol": "AAPL",
+    "frozen_at": "2026-05-29T09:34:46+00:00",
+    "config_hash": "61f8d11add4e85ceb7ada8a29b1a483e4fab0ce0345c2651e706c4ab2514c740",
+    "universe_hash": "a1c55462c19f91d1b39e57f5337c6639db0783d72b4671bff74dcc9eabd7c958",
+    "random_seed": 46101,
+    "selected_bars": [
+      {
+        "index": 0,
+        "timestamp": "2026-01-01T09:35:00",
+        "open": 101.3,
+        "high": 102.3,
+        "low": 100.9,
+        "close": 101.5,
+        "volume": 1000.0,
+        "complete": true
+      },
+      {
+        "index": 1,
+        "timestamp": "2026-01-01T09:30:00",
+        "open": 101.8,
+        "high": 102.8,
+        "low": 101.4,
+        "close": 102.0,
+        "volume": 1001.0,
+        "complete": false
+      }
+    ],
+    "ranking_scores": {
+      "AAPL": 0.860816
+    },
+    "execution_attempts": 0,
+    "rejection_reasons": [
+      "stale price guard observed in evidence",
+      "execution adapter/attempt path observed as disabled or zero",
+      "portfolio cap evidence observed"
+    ],
+    "portfolio_before": {
+      "positions": 5,
+      "max_open_positions": 5
+    },
+    "portfolio_after": {
+      "positions": 5,
+      "max_open_positions": 5
+    },
+    "steps": [
+      {
+        "name": "signal detection",
+        "inputs": {
+          "symbol": "AAPL",
+          "bar_index": 0,
+          "timestamp": "2026-01-01T09:35:00"
+        },
+        "outputs": {
+          "signal": true,
+          "price": 101.5
+        },
+        "rejection_reason": "",
+        "state_delta": {},
+        "evidence_paths": [
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\live_paper\\dual\\latest_AAPL.txt",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\backtests\\backtest_AAPL.txt",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\universe\\symbols.txt",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\configs\\strategy.yaml"
+        ]
+      },
+      {
+        "name": "ranking",
+        "inputs": {
+          "symbol_order": [
+            "AAPL",
+            "MSFT"
+          ],
+          "seed": 46101
+        },
+        "outputs": {
+          "score": 0.860816,
+          "rank": 1
+        },
+        "rejection_reason": "",
+        "state_delta": {},
+        "evidence_paths": [
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\live_paper\\dual\\latest_AAPL.txt",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\backtests\\backtest_AAPL.txt",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\universe\\symbols.txt",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\configs\\strategy.yaml"
+        ]
+      },
+      {
+        "name": "entry gate",
+        "inputs": {
+          "stale_price": true,
+          "max_open_reached": true
+        },
+        "outputs": {
+          "eligible": false
+        },
+        "rejection_reason": "stale price guard observed in evidence; execution adapter/attempt path observed as disabled or zero; portfolio cap evidence observed",
+        "state_delta": {},
+        "evidence_paths": [
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\live_paper\\dual\\latest_AAPL.txt",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\backtests\\backtest_AAPL.txt",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\universe\\symbols.txt",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\configs\\strategy.yaml",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\services\\live_paper_engine.py",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\strategy\\real_algo.py"
+        ]
+      },
+      {
+        "name": "delayed entry",
+        "inputs": {
+          "selected_bar": 0
+        },
+        "outputs": {
+          "next_bar_index": 1,
+          "frozen": true
+        },
+        "rejection_reason": "",
+        "state_delta": {},
+        "evidence_paths": [
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\live_paper\\dual\\latest_AAPL.txt",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\backtests\\backtest_AAPL.txt",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\universe\\symbols.txt",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\configs\\strategy.yaml",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\services\\live_paper_engine.py",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\strategy\\real_algo.py"
+        ]
+      },
+      {
+        "name": "execution attempt",
+        "inputs": {
+          "adapter_disabled": true
+        },
+        "outputs": {
+          "execution_attempts": 0
+        },
+        "rejection_reason": "execution path disabled/zero attempts",
+        "state_delta": {},
+        "evidence_paths": [
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\live_paper\\dual\\latest_AAPL.txt",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\backtests\\backtest_AAPL.txt",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\universe\\symbols.txt",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\configs\\strategy.yaml",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\services\\live_paper_engine.py",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\strategy\\real_algo.py",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\backtest\\fib_quality.py"
+        ]
+      },
+      {
+        "name": "stop/target lifecycle",
+        "inputs": {
+          "entry": 101.5
+        },
+        "outputs": {
+          "stop": 96.425,
+          "target": 111.65
+        },
+        "rejection_reason": "",
+        "state_delta": {},
+        "evidence_paths": [
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\live_paper\\dual\\latest_AAPL.txt",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\backtests\\backtest_AAPL.txt",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\universe\\symbols.txt",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\configs\\strategy.yaml",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\services\\live_paper_engine.py",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\strategy\\real_algo.py",
+          "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\backtest\\fib_quality.py"
+        ]
+      }
+    ],
+    "evidence_paths": [
+      "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\live_paper\\dual\\latest_AAPL.txt",
+      "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\backtests\\backtest_AAPL.txt",
+      "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\universe\\symbols.txt",
+      "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\configs\\strategy.yaml",
+      "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\services\\live_paper_engine.py",
+      "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\strategy\\real_algo.py",
+      "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\backtest\\fib_quality.py"
+    ],
+    "replay_hash": "c94fdb7d188d3031bd5487eba735c284d5b54a549f55a25ca7e01caa89076afd"
+  },
+  "diff": {
+    "symbol": "AAPL",
+    "status": "different",
+    "first_divergence": "index alignment mismatch live=1 backtest=0",
+    "live_bar": {
+      "index": 1,
+      "timestamp": "2026-01-01T09:30:00",
+      "open": 101.8,
+      "high": 102.8,
+      "low": 101.4,
+      "close": 102.0,
+      "volume": 1001.0,
+      "complete": false
+    },
+    "backtest_bar": {
+      "index": 0,
+      "timestamp": "2026-01-01T09:35:00",
+      "open": 101.3,
+      "high": 102.3,
+      "low": 100.9,
+      "close": 101.5,
+      "volume": 1000.0,
+      "complete": true
+    },
+    "divergence_reasons": [
+      "index alignment mismatch live=1 backtest=0",
+      "timezone/timestamp mismatch live=2026-01-01T09:30:00 backtest=2026-01-01T09:35:00",
+      "incomplete candle usage in live replay",
+      "price mismatch live_close=102.0 backtest_close=101.5",
+      "stale bar/price evidence observed"
+    ],
+    "evidence_paths": [
+      "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\live_paper\\dual\\latest_AAPL.txt",
+      "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\backtests\\backtest_AAPL.txt",
+      "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\universe\\symbols.txt",
+      "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\configs\\strategy.yaml",
+      "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\services\\live_paper_engine.py",
+      "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\strategy\\real_algo.py",
+      "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\backtest\\fib_quality.py"
+    ],
+    "confidence": 0.88
+  },
+  "hypotheses": [
+    {
+      "title": "live/backtest bar selection may differ (last_closed_bar vs completed historical bars)",
+      "status": "VERIFIED",
+      "evidence_count": 11,
+      "replay_confirmation": true,
+      "contradictory_evidence": [],
+      "reproducibility_score": 1.0,
+      "confidence_before": 0.9,
+      "confidence_after": 0.98,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_decision_summary.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\jarvis_execution_telemetry.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\open_positions.json",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\backtest\\fib_quality.py",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\strategy\\real_algo.py",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\configs\\strategy.yaml",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\backtests\\backtest_AAPL.txt",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\live_paper\\dual\\latest_AAPL.txt",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\services\\live_paper_engine.py",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\universe\\symbols.txt"
+      ],
+      "rationale": "Replay reproduced mismatch and deterministic hash matched."
+    },
+    {
+      "title": "execution path may be disabled or producing zero attempts",
+      "status": "VERIFIED",
+      "evidence_count": 11,
+      "replay_confirmation": true,
+      "contradictory_evidence": [],
+      "reproducibility_score": 1.0,
+      "confidence_before": 0.85,
+      "confidence_after": 0.9299999999999999,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_run_history.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\jarvis_execution_telemetry.json",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\backtest\\fib_quality.py",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\strategy\\real_algo.py",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\configs\\strategy.yaml",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\backtests\\backtest_AAPL.txt",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\live_paper\\dual\\latest_AAPL.txt",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\services\\live_paper_engine.py",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\universe\\symbols.txt"
+      ],
+      "rationale": "Replay reproduced mismatch and deterministic hash matched."
+    },
+    {
+      "title": "universe coverage differs between live and backtest",
+      "status": "VERIFIED",
+      "evidence_count": 11,
+      "replay_confirmation": true,
+      "contradictory_evidence": [],
+      "reproducibility_score": 1.0,
+      "confidence_before": 0.75,
+      "confidence_after": 0.83,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_decision_summary.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_run_history.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\logs\\live_monitor.log",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\backtest\\fib_quality.py",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\strategy\\real_algo.py",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\configs\\strategy.yaml",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\backtests\\backtest_AAPL.txt",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\live_paper\\dual\\latest_AAPL.txt",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\services\\live_paper_engine.py",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\universe\\symbols.txt"
+      ],
+      "rationale": "Replay reproduced mismatch and deterministic hash matched."
+    },
+    {
+      "title": "risk cap or max open positions may block otherwise valid entries",
+      "status": "VERIFIED",
+      "evidence_count": 11,
+      "replay_confirmation": true,
+      "contradictory_evidence": [],
+      "reproducibility_score": 1.0,
+      "confidence_before": 0.72,
+      "confidence_after": 0.7999999999999999,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_run_history.csv",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\logs\\live_monitor.log",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\jarvis_execution_telemetry.json",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\backtest\\fib_quality.py",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\strategy\\real_algo.py",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\configs\\strategy.yaml",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\backtests\\backtest_AAPL.txt",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\live_paper\\dual\\latest_AAPL.txt",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\services\\live_paper_engine.py",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\universe\\symbols.txt"
+      ],
+      "rationale": "Replay reproduced mismatch and deterministic hash matched."
+    },
+    {
+      "title": "slippage/spread/gap assumptions may differ",
+      "status": "VERIFIED",
+      "evidence_count": 11,
+      "replay_confirmation": true,
+      "contradictory_evidence": [],
+      "reproducibility_score": 1.0,
+      "confidence_before": 0.55,
+      "confidence_after": 0.63,
+      "evidence_paths": [
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\cumulative_summary.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\daily_snapshots\\2026-05-28.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+        "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\run_snapshots\\snapshot_20260528T172016Z.json",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\backtest\\fib_quality.py",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\strategy\\real_algo.py",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\configs\\strategy.yaml",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\backtests\\backtest_AAPL.txt",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\live_paper\\dual\\latest_AAPL.txt",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\services\\live_paper_engine.py",
+        "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\universe\\symbols.txt"
+      ],
+      "rationale": "Replay reproduced mismatch and deterministic hash matched."
+    }
+  ],
+  "evidence_references": [
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\execution_decision_summary.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_run_history.csv",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\live_summary_latest.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\logs\\live_monitor.log",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\jarvis_execution_telemetry.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper\\dual\\state\\open_positions.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\cumulative_summary.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\daily_snapshots\\2026-05-28.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\latest_snapshot.json",
+    "C:\\FINAL_ALGO_TRADER\\reports\\live_paper_trials\\alpaca_paper_30d\\run_snapshots\\snapshot_20260528T172016Z.json",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\backtest\\fib_quality.py",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\algo_scanner\\strategy\\real_algo.py",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\configs\\strategy.yaml",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\backtests\\backtest_AAPL.txt",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\reports\\live_paper\\dual\\latest_AAPL.txt",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\services\\live_paper_engine.py",
+    "C:\\J.A.R.V.I.S\\local_jarvis\\tests_tmp\\pytest_temp\\pytest-of-babi2\\pytest-247\\test_deterministic_replay_cons0\\trading\\universe\\symbols.txt"
+  ],
+  "metadata": {
+    "read_only": true,
+    "live_execution": false,
+    "random_seed": 46101,
+    "replay_hash": "c94fdb7d188d3031bd5487eba735c284d5b54a549f55a25ca7e01caa89076afd"
+  }
+}

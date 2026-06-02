@@ -1,0 +1,136 @@
+[
+  {
+    "question": "Why was Phase 73A built?",
+    "intent": "answer_project_question",
+    "confidence": 0.92,
+    "classifier_source": "builder_question",
+    "summary_preview": "\u254c\u254c Project Intelligence \u254c\u254c\n\nQUESTION:\nWhy was Phase 73A built?\n\nANSWER:\nThis is a \"mock counted as success\" path. Phase 71's new layer is built so this is structurally impossible. The legacy leak is pre-existing and tracked separately (prior audit B11 / Sprint 6 browser work); it was not modified here to avoid scope creep.\n\nEVIDENCE:\nreports\\phase73a_browser_trust_repair_completion.md\n  # Phase 73",
+    "evidence_files": [
+      "README.md",
+      "jarvis_codebase_audit_phase73_100.md",
+      "llm_first_architecture.md",
+      "phase71_real_tool_use_foundation.md",
+      "phase73a_browser_trust_repair_completion.md"
+    ]
+  },
+  {
+    "question": "What problem does Phase 79 solve?",
+    "intent": "answer_project_question",
+    "confidence": 0.92,
+    "classifier_source": "builder_question",
+    "summary_preview": "\u254c\u254c Project Intelligence \u254c\u254c\n\nQUESTION:\nWhat problem does Phase 79 solve?\n\nANSWER:\nProblem: phase45_actions.py is 755 lines covering trading investigation. Goal: Add an LLM router that turns natural-language requests the keyword classifier misses into a Phase 78 tool selection \u2014 production-safe, flag-gated, rollbackable, and incapable of bypassing any existing safety, approval, verification, or agen",
+    "evidence_files": [
+      "README.md",
+      "consolidation_plan.md",
+      "human_conversation_runtime.md",
+      "phase79_llm_router.md",
+      "phase79_llm_router_implementation_plan.md"
+    ]
+  },
+  {
+    "question": "What are the biggest architectural risks in the current JARVIS codebase?",
+    "intent": "answer_project_question",
+    "confidence": 0.91,
+    "classifier_source": "builder_question",
+    "summary_preview": "\u254c\u254c Project Intelligence \u254c\u254c\n\nQUESTION:\nWhat are the biggest architectural risks in the current JARVIS codebase?\n\nANSWER:\nThe primary architectural risks in the current JARVIS codebase are: (1) the 507-intent / 487-handler sprawl, half of which is trading-domain code unrelated to the Builders product; (2) the LLM router (Phase 79) is still in shadow mode (Stage 1) \u2014 Stage 2 read-only canary not yet ",
+    "evidence_files": [
+      "agent_architecture_report.md",
+      "jarvis_codebase_audit_phase73_100.md",
+      "master_audit.md",
+      "phase73_100_roadmap.md",
+      "phase78_tool_registry_implementation_plan.md"
+    ]
+  },
+  {
+    "question": "What should be built next and why?",
+    "intent": "answer_project_question",
+    "confidence": 0.91,
+    "classifier_source": "builder_question",
+    "summary_preview": "\u254c\u254c Project Intelligence \u254c\u254c\n\nQUESTION:\nWhat should be built next and why?\n\nANSWER:\nBased on the Phase 73\u2013100 roadmap, the next priorities are: (1) Phase 79 Stage 2 \u2014 LLM router read-only canary (SHADOW=false, READONLY_ONLY=true); (2) Phase 80 \u2014 embedding-based semantic memory replacing keyword retrieval; (3) Phase 81 \u2014 generalised plan\u2192act\u2192reflect agent loop; (4) Phase 82 \u2014 prompt-injection defence",
+    "evidence_files": [
+      "final_agent_architecture.md",
+      "jarvis_codebase_audit_phase73_100.md",
+      "llm_first_architecture.md",
+      "memory_production_readiness.md",
+      "phase78_tool_registry_implementation_plan.md"
+    ]
+  },
+  {
+    "question": "Summarize the current state of the project in under 500 words.",
+    "intent": "answer_project_question",
+    "confidence": 0.9,
+    "classifier_source": "builder_question",
+    "summary_preview": "\u254c\u254c Project Intelligence \u254c\u254c\n\nQUESTION:\nSummarize the current state of the project in under 500 words.\n\nANSWER:\nCurrent JARVIS state: a rule-based intent classifier (150+ phrase groups, Hebrew + English) with an optional LLM router in shadow mode (Phase 79, flag off by default); a Phase 78 Tool Registry (40 READ_ONLY tools, central safety gate, audit log); a Phase 73A-hardened trust model (no fake s",
+    "evidence_files": [
+      "agent_architecture_report.md",
+      "audit_verification.md",
+      "final_agent_architecture.md",
+      "jarvis_codebase_audit_phase73_100.md",
+      "master_audit.md"
+    ]
+  },
+  {
+    "question": "What are the most important unfinished phases?",
+    "intent": "answer_project_question",
+    "confidence": 0.91,
+    "classifier_source": "builder_question",
+    "summary_preview": "\u254c\u254c Project Intelligence \u254c\u254c\n\nQUESTION:\nWhat are the most important unfinished phases?\n\nANSWER:\nUnfinished phases from the Phase 73\u2013100 roadmap: Phase 79 Stage 2 (LLM router read-only canary), Phase 80 (embedding-based semantic memory), Phase 81 (plan\u2192act\u2192reflect loop), Phase 82 (prompt-injection and egress defences), Phase 83 (multi-turn conversational state), Phase 84 (surface reduction \u2014 kill spr",
+    "evidence_files": [
+      "jarvis_codebase_audit_phase73_100.md",
+      "llm_first_architecture.md",
+      "master_audit.md",
+      "phase71_real_tool_use_foundation.md",
+      "phase73_100_roadmap.md"
+    ]
+  },
+  {
+    "question": "What changed in the last 30 days?",
+    "intent": "answer_project_question",
+    "confidence": 0.91,
+    "classifier_source": "builder_question",
+    "summary_preview": "\u254c\u254c Project Intelligence \u254c\u254c\n\nQUESTION:\nWhat changed in the last 30 days?\n\nANSWER:\nRecent commits to local_jarvis/: (HEAD -> phase78-tool-registry) phase79: harden shadow llm r (86a56c27); chore: ignore generated runtime outputs (dd0171b2); Phase 73A Browser Trust Repair (072350f7). See the full git log below.\n\nEVIDENCE:\nreports\\agent_architecture_report.md\n  Formalizes existing JARVIS runtimes into",
+    "evidence_files": [
+      "agent_architecture_report.md",
+      "consolidation_plan.md",
+      "files_changed.md",
+      "master_audit.md",
+      "memory_production_readiness.md"
+    ]
+  },
+  {
+    "question": "What decisions were made recently that could affect future architecture?",
+    "intent": "answer_project_question",
+    "confidence": 0.91,
+    "classifier_source": "builder_question",
+    "summary_preview": "\u254c\u254c Project Intelligence \u254c\u254c\n\nQUESTION:\nWhat decisions were made recently that could affect future architecture?\n\nANSWER:\nRecent architectural decisions: (1) Phase 79 shadow invariant enforced by code (_enforce_shadow_invariant raises, not just a comment) \u2014 shadow-only until explicit Stage 2 review; (2) LLM call timeout wrapper (8s, ThreadPoolExecutor) with circuit breaker; (3) Registry singleton pa",
+    "evidence_files": [
+      "agent_architecture_report.md",
+      "catalog.py",
+      "intent_classifier.py",
+      "jarvis_codebase_audit_phase73_100.md",
+      "top_20_blockers.md"
+    ]
+  },
+  {
+    "question": "If a new developer joined today, what would they need to understand first?",
+    "intent": "answer_project_question",
+    "confidence": 0.91,
+    "classifier_source": "builder_question",
+    "summary_preview": "\u254c\u254c Project Intelligence \u254c\u254c\n\nQUESTION:\nIf a new developer joined today, what would they need to understand first?\n\nANSWER:\nA new developer should read in this order: (1) README.md \u2014 setup and entry points (py -3 main.py); (2) README_ARCHITECTURE.md \u2014 full pipeline and folder map; (3) brain/router.py \u2014 the classify\u2192validate\u2192confirm\u2192execute pipeline; (4) brain/intent_classifier.py \u2014 phrase rules and ",
+    "evidence_files": [
+      "alpha_user_commands.md",
+      "audit_verification.md",
+      "consolidation_plan.md",
+      "final_agent_architecture.md",
+      "llm_first_architecture.md"
+    ]
+  },
+  {
+    "question": "What parts of the codebase appear unrelated to Jarvis for Builders?",
+    "intent": "answer_project_question",
+    "confidence": 0.92,
+    "classifier_source": "builder_question",
+    "summary_preview": "\u254c\u254c Project Intelligence \u254c\u254c\n\nQUESTION:\nWhat parts of the codebase appear unrelated to Jarvis for Builders?\n\nANSWER:\nThe following parts of the JARVIS codebase appear unrelated to the Builders product vision: the trading system (~40% of all action handlers, phases 45\u201355), the Hebrew-only phrase classifier (~150 rules for a single user's personal setup), the voice-first infrastructure (wakeword, push",
+    "evidence_files": []
+  }
+]

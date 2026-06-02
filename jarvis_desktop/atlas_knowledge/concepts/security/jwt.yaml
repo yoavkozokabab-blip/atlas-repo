@@ -1,57 +1,63 @@
 concept_id: jwt
 name: JWT
-title: JSON Web Token
+title: JWT
 domain: security
 category: authentication
-feature_type: auth
+feature_type: authentication
+concept_quality_score: source_backed
 confidence: high
 aliases:
-  - jwt
-  - json web token
-  - bearer token
-  - access token jwt
-description: >
-  Compact signed claims (RFC 7519) for stateless authentication. Structure is
-  header.payload.signature. Validate algorithm allow-list, signature, exp/nbf,
-  issuer, and audience before trusting claims.
+- jwt
+- json web token
+- bearer token
+description: 'Compact signed claims (RFC 7519) for stateless auth: header.payload.signature.'
+when_to_use: Use for machine-to-machine or SPA/mobile APIs when sessions are undesirable;
+  pair with refresh tokens for UX.
 requirements:
-  - Signing key or JWKS for asymmetric algorithms (RS256, ES256)
-  - Short-lived access tokens and optional refresh token flow
-  - Secure storage on client (httpOnly cookie or secure storage)
-common_implementations:
-  - Auth middleware validating Authorization Bearer header
-  - Login endpoint issuing access + refresh tokens
-  - JWKS endpoint for key rotation
+- Signing keys or JWKS
+- Short-lived access tokens
+- Algorithm allow-list
+implementation_strategies: &id001
+- Fail closed on validation errors
+- Centralize auth middleware
+implementation_steps: *id001
+common_implementations: *id001
 risks:
-  - Algorithm confusion (accepting none/HS when expecting RS)
-  - Long-lived tokens without rotation
-  - Storing secrets in client localStorage (XSS exfiltration)
-  - Missing exp validation or clock skew issues
-  - Replay if tokens are not bound to client context
+- Broken trust boundary
+- Credential leakage
+- Algorithm confusion (none/HS vs RS)
+- Token theft via XSS
+- Replay without rotation
+security_risks:
+- Algorithm confusion (none/HS vs RS)
+- Token theft via XSS
+- Replay without rotation
+performance_risks: []
 failure_modes:
-  - Token accepted after user revoked (no server-side denylist)
-  - Refresh token reuse without rotation detection
-  - Leaked signing key compromises all sessions
+- Auth bypass on misconfigured middleware
+- Stale permissions after role change
 verification:
-  - Reject tampered payload (signature mismatch)
-  - Reject expired and not-yet-valid tokens
-  - Verify iss/aud match configuration
-  - Test refresh rotation and reuse detection
+- Reject tampered payloads
+- Validate exp/nbf/iss/aud
+- Test refresh rotation
+- Threat-model critical paths
+- Validate negative tests for unauthorized access
 testing:
-  - Unit tests for claim validation edge cases
-  - Integration tests for login, refresh, protected routes
-  - Security tests for alg-none and key confusion attacks
+- Boundary tests on claims
+- Security tests for alg-none attacks
+- AuthZ matrix tests
+- Session fixation/replay tests
 related_concepts:
-  - oauth2
-  - authentication
-  - rbac
+- oauth2
+- authentication
+- rbac
 references:
-  - "RFC 7519 - JSON Web Token (JWT)"
-  - "RFC 8725 - JWT Best Current Practices"
+- RFC 7519 - JSON Web Token (JWT)
+- RFC 8725 - JWT Best Current Practices
 path_keywords:
-  - auth
-  - jwt
-  - token
-  - session
-  - middleware
-  - login
+- auth
+- jwt
+- token
+- middleware
+- bearer
+investigate_only: false

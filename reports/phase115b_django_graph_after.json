@@ -1,0 +1,18 @@
+{
+  "elapsed_sec": 4275.14,
+  "build": {
+    "detail": "imports",
+    "time_budget_sec": 60.0,
+    "lazy_full": true,
+    "tier": "massive",
+    "elapsed_sec": 4275.141,
+    "timed_out": false,
+    "partial": false
+  },
+  "modules": 911,
+  "import_edges": 2916,
+  "degraded": null,
+  "timed_out": null,
+  "partial": null,
+  "detail": "imports"
+}

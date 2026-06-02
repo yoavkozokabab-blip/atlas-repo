@@ -192,10 +192,10 @@ def run_continuous_mic_session(
                     on_partial(text)
                 try:
                     from voice.streaming_player import is_speaking
-                    from voice.human_interruption import on_user_speech_during_tts
+                    from voice.human_conversation import interrupt_on_user_speech_start
 
                     if text.strip() and is_speaking():
-                        on_user_speech_during_tts(partial_text=text)
+                        interrupt_on_user_speech_start(partial_text=text)
                 except Exception:
                     pass
 

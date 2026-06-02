@@ -150,6 +150,13 @@ ALLOWED_INTENTS: frozenset[str] = frozenset(
         "plan_tool_task",
         "run_tool_task",
         "show_last_tool_run",
+        # Autonomous Agent Stack v1 — bounded read-only research agent
+        "plan_autonomous_task",
+        "run_autonomous_task",
+        "research_deeply",
+        "compare_sources_for",
+        "show_last_autonomous_run",
+        "show_autonomous_audit",
         "open_cursor",
         "open_chrome",
         "open_file_explorer",
@@ -638,6 +645,8 @@ ALLOWED_INTENTS: frozenset[str] = frozenset(
         "benchmark_full_duplex_conversation",
         "phase59_status",
         "cancel_active_speech",
+        # Project Intelligence — read-only builder questions (Phase 79+)
+        "answer_project_question",
         "unknown",
         "clarify",
     }
@@ -650,6 +659,13 @@ IMPLEMENTED_INTENTS: frozenset[str] = frozenset(
         "plan_tool_task",
         "run_tool_task",
         "show_last_tool_run",
+        # Autonomous Agent Stack v1 — bounded read-only research agent
+        "plan_autonomous_task",
+        "run_autonomous_task",
+        "research_deeply",
+        "compare_sources_for",
+        "show_last_autonomous_run",
+        "show_autonomous_audit",
         "open_cursor",
         "open_chrome",
         "open_trading_dashboard",
@@ -1153,6 +1169,8 @@ IMPLEMENTED_INTENTS: frozenset[str] = frozenset(
         "show_screen_status",
         "benchmark_voice_modes",
         "show_tts_threads",
+        # Project Intelligence — read-only builder questions (Phase 80)
+        "answer_project_question",
     }
 )
 
@@ -1270,7 +1288,10 @@ CONVERSATION_ENABLED = os.getenv("CONVERSATION_ENABLED", "true").lower() in {
     "yes",
 }
 CONVERSATION_CONTEXT_PATH = DATA_DIR / "conversation_context.json"
-CONVERSATION_MAX_TURNS = int(os.getenv("CONVERSATION_MAX_TURNS", "10"))
+CONVERSATION_MAX_TURNS = int(os.getenv("CONVERSATION_MAX_TURNS", "20"))
+CONVERSATION_CLASSIFY_CONTEXT_TURNS = int(
+    os.getenv("CONVERSATION_CLASSIFY_CONTEXT_TURNS", "8")
+)
 CONVERSATION_MAX_SUMMARY_CHARS = int(os.getenv("CONVERSATION_MAX_SUMMARY_CHARS", "200"))
 CONVERSATION_MAX_RAW_CHARS = int(os.getenv("CONVERSATION_MAX_RAW_CHARS", "120"))
 CONVERSATION_CONTINUATION_ENABLED = os.getenv(
@@ -2072,6 +2093,11 @@ CONVERSATION_TARGET_TTS_FIRST_AUDIO_MS = float(
 )
 CONVERSATION_TARGET_INTERRUPT_PAUSE_MS = float(
     os.getenv("CONVERSATION_TARGET_INTERRUPT_PAUSE_MS", "100")
+)
+HUMAN_BARGE_IN_TARGET_MS = float(os.getenv("HUMAN_BARGE_IN_TARGET_MS", "200"))
+CONVERSATION_STREAM_MIN_CHARS = int(os.getenv("CONVERSATION_STREAM_MIN_CHARS", "28"))
+CONVERSATION_STREAM_FIRST_CHUNK_CHARS = int(
+    os.getenv("CONVERSATION_STREAM_FIRST_CHUNK_CHARS", "18")
 )
 CONVERSATION_TARGET_PERCEIVED_DELAY_MS = float(
     os.getenv("CONVERSATION_TARGET_PERCEIVED_DELAY_MS", "400")

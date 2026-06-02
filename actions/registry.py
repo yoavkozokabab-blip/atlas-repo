@@ -562,6 +562,15 @@ from actions.tool_use_actions import (
     RunToolTaskAction,
     ShowLastToolRunAction,
 )
+from actions.autonomous_actions import (
+    CompareSourcesForAction,
+    PlanAutonomousTaskAction,
+    ResearchDeeplyAction,
+    RunAutonomousTaskAction,
+    ShowAutonomousAuditAction,
+    ShowLastAutonomousRunAction,
+)
+from actions.project_intelligence_actions import AnswerProjectQuestionAction
 from core.results import result_success
 from core.types import CommandRequest, CommandResult, Intent
 
@@ -1059,6 +1068,15 @@ class ActionRegistry:
             PlanToolTaskAction(),
             RunToolTaskAction(),
             ShowLastToolRunAction(),
+            # Autonomous Agent Stack v1 — bounded read-only research agent
+            PlanAutonomousTaskAction(),
+            RunAutonomousTaskAction(),
+            ResearchDeeplyAction(),
+            CompareSourcesForAction(),
+            ShowLastAutonomousRunAction(),
+            ShowAutonomousAuditAction(),
+            # Project Intelligence — read-only builder questions (Phase 79+)
+            AnswerProjectQuestionAction(),
         ):
             self.register(action)
 

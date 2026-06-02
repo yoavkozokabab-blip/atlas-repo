@@ -1,0 +1,267 @@
+========================================================================
+Q1: Why was Phase 73A built?
+------------------------------------------------------------------------
+Project Intelligence — Why was Phase 73A built?
+────────────────────────────────────────────────────────────────
+
+Based on phase completion reports in reports/, this phase was delivered to address a specific trust, safety, or architecture gap in local_jarvis.
+Phases referenced: 73A
+
+Evidence from JARVIS project documentation:
+
+📄 reports\phase73a_browser_trust_repair_completion.md
+   # Phase 73A Browser Trust Repair Completion Report
+
+📄 README.md
+   - `Why was Phase 73A built?` - `What problem does Phase 79 solve?` - `What
+      changed in the last 30 days?`
+
+📄 reports\jarvis_codebase_audit_phase73_100.md
+   | # | Weakness | Evidence | Impact | |---|----------|----------|--------| | T1 |
+      **Intent/handler sprawl: 507 intents, 487 handlers** hand-registered in one
+      1,000+ line `actions/registry.py` | `core/types.py` (507),
+      `actions/registry.py` `_register_defaults` | Unmaintainable; every feature is
+      a bespoke handler; no generalization | | T2 | **Rule/keyword classifier is
+      the primary brain** (~1,950-line phrase table); LLM is only a fallback |
+      `brain/intent_classifier.py` | Brittle phrasing match; can't handle novel
+      requests; the opposite of h
+
+========================================================================
+Q2: What problem does Phase 79 solve?
+------------------------------------------------------------------------
+Project Intelligence — What problem does Phase 79 solve?
+────────────────────────────────────────────────────────────────
+
+Phase reports and implementation plans describe the problem this phase was designed to solve inside the JARVIS builder stack.
+Phases referenced: 79
+
+Evidence from JARVIS project documentation:
+
+📄 README.md
+   - `Why was Phase 73A built?` - `What problem does Phase 79 solve?` - `What
+      changed in the last 30 days?`
+
+📄 reports\phase79_llm_router.md
+   # Phase 79 Stage 1 — Shadow LLM Tool Router
+
+📄 reports\phase79_llm_router_implementation_plan.md
+   # Phase 79 — LLM Tool Router v1 Implementation Plan (no code) **Date:**
+      2026-05-29 **Goal:** Add an LLM router that turns natural-language requests
+      the keyword classifier *misses* into a Phase 78 tool selection — production-
+      safe, flag-gated, rollbackable, and **incapable of bypassing any existing
+      safety, approval, verification, or agent-health gate.** **Reads:**
+      `reports/phase78_tool_registry_implementation_plan.md` (shipped: `tools/`
+      registry, `ToolSpec`, `ToolRegistry.invoke`/`select`, verification, audit,
+      `LLM_TOOL_ROUTER_ENABLED=false`), `reports/llm_first_architectur
+
+========================================================================
+Q3: What are the biggest architectural risks in the current JARVIS codebase?
+------------------------------------------------------------------------
+Project Intelligence — What are the biggest architectural risks in the current JARVIS codebase?
+────────────────────────────────────────────────────────────────
+
+Roadmap and audit documents highlight architectural risks for JARVIS: classifier/router complexity, trading surface area, and LLM routing safety.
+
+Evidence from JARVIS project documentation:
+
+📄 reports\jarvis_codebase_audit_phase73_100.md
+   # JARVIS Codebase Audit — Technical + Product + Phase 73–100 Plan **Date:**
+      2026-05-29 **Scope:** Whole-project audit (analysis only — no code written).
+      **Lens:** Production readiness, architecture, scalability, security, and "is
+      this a real AI OS." **Grounding facts (measured):** 929 Python files,
+      ~113,000 LOC, 116 `tests/` files (+231 in `tests_tmp/`), **507 `Intent` enum
+      members**, **487 registered action handlers**, ~40 top-level packages, **no
+      web server / API** (single-process Windows desktop app), `voice/` is the
+      largest package (134 files), packaging = `requirements.txt` only.
+
+📄 reports\master_audit.md
+   **Date:** 2026-05-29   **Auditor:** Principal Engineer (automated audit via
+      Claude Code)   **Codebase:** `C:\J.A.R.V.I.S\local
+
+========================================================================
+Q4: What should be built next and why?
+------------------------------------------------------------------------
+Project Intelligence — What should be built next and why?
+────────────────────────────────────────────────────────────────
+
+The Phase 73–100 roadmap prioritises project intelligence, semantic memory, and LLM-first routing before optional trading plugin extraction.
+
+Evidence from JARVIS project documentation:
+
+📄 reports\phase78_tool_registry_implementation_plan.md
+   1. **Build registry additively** (this phase): 40 adapters, parity-tested.
+      `ActionRegistry` unchanged. 2. **Shadow validation:** with
+      `TOOL_REGISTRY_ENABLED`, the catalog is built + validated at startup but not
+      used for routing. Optional: a dev-only "shadow compare" that, for a sample of
+      commands, checks `ToolRegistry.invoke` produces the same status as the direct
+      handler (parity telemetry). 3. **Phase 79 (next):** behind
+      `LLM_TOOL_ROUTER_ENABLED`, the LLM routes *misses* (what the keyword cache
+      doesn't confidently match) to tools; classifier stays as the fast-path cache.
+      Measured on the Phase…
+
+📄 reports\final_agent_architecture.md
+   | Failure | Detection | Recovery | |---------|-----------|---------| |
+      Microphone disconnect | `MicrophoneError` in `record_until_ent
+
+========================================================================
+Q5: Summarize the current state of the project in under 500 words.
+------------------------------------------------------------------------
+Project Intelligence — Summarize the current state of the project in under 500 words.
+────────────────────────────────────────────────────────────────
+
+Current JARVIS state combines a secured command pipeline, tool registry, shadow LLM router (Stage 1), and this Project Intelligence layer.
+
+Evidence from JARVIS project documentation:
+
+📄 reports\final_agent_architecture.md
+   ### Permissions - Read: all categories in personal store, project index - Write:
+      personal store only, via `PersonalMemoryStore.remember()` - Cannot: write to
+      session state directly, access other agents' data files, write to project
+      source code
+
+📄 reports\jarvis_codebase_audit_phase73_100.md
+   | # | Weakness | Evidence | Impact | |---|----------|----------|--------| | T1 |
+      **Intent/handler sprawl: 507 intents, 487 handlers** hand-registered in one
+      1,000+ line `actions/registry.py` | `core/types.py` (507),
+      `actions/registry.py` `_register_defaults` | Unmaintainable; every feature is
+      a bespoke handler; no generalization | | T2 | **Rule/keyword classifier is
+      the primary brain** (~1,950-line phrase table); LLM is only a fallback |
+      `brain/intent_classifier.py` | 
+
+========================================================================
+Q6: What are the most important unfinished phases?
+------------------------------------------------------------------------
+Project Intelligence — What are the most important unfinished phases?
+────────────────────────────────────────────────────────────────
+
+Roadmap reports list upcoming phases (semantic memory, execution router Stage 2, builder UX) that are planned but not fully shipped.
+
+Evidence from JARVIS project documentation:
+
+📄 reports\jarvis_codebase_audit_phase73_100.md
+   | # | Weakness | Evidence | Impact | |---|----------|----------|--------| | T1 |
+      **Intent/handler sprawl: 507 intents, 487 handlers** hand-registered in one
+      1,000+ line `actions/registry.py` | `core/types.py` (507),
+      `actions/registry.py` `_register_defaults` | Unmaintainable; every feature is
+      a bespoke handler; no generalization | | T2 | **Rule/keyword classifier is
+      the primary brain** (~1,950-line phrase table); LLM is only a fallback |
+      `brain/intent_classifier.py` | Brittle phrasing match; can't handle novel
+      requests; the opposite of how ChatGPT/Claude work | | T3 | **Legacy browser
+      still mo…
+
+📄 reports\llm_first_architecture.md
+   The single most important abstraction. Replaces ad-hoc `ActionRegistry` string
+      lookup.
+
+📄 reports\master_audit.md
+   | File | Issue | |----
+
+========================================================================
+Q7: What changed in the last 30 days?
+------------------------------------------------------------------------
+Project Intelligence — What changed in the last 30 days?
+────────────────────────────────────────────────────────────────
+
+Recent repository activity is summarised from git log and phase reports under local_jarvis/ only.
+Recent commits (sample): 86a56c27, dd0171b2, 072350f7, bf17bd4a, 21cce5bb
+
+Evidence from JARVIS project documentation:
+
+📄 reports\agent_architecture_report.md
+   Formalizes existing JARVIS runtimes into seven agents. **No new capabilities,
+      commands, or UI** — facades and routing metadata only. All commands still
+      flow through `CommandRouter` → `ActionRegistry` unchanged.
+
+📄 reports\consolidation_plan.md
+   **Problem:** No single file knows the full TTS state. `tts.py` imports from all
+      six. A bug in TTS state means checking six files.   **Action:** Create
+      `voice/tts_state.py` with a single `TTSState` dataclass. Migrate all state
+      reads/writes into it. Keep the existing module names as thin wrappers for one
+      release (re-export from `tts_state`), then delete them.   **Effort:** 2 days.
+      **Risk:** Medium.
+
+📄 reports\files_changed.md
+   # Files Changed — Sprint 3
+
+📄 reports\master_audit.md
+   ### R-1: No recovery when microphone dis
+
+========================================================================
+Q8: What decisions were made recently that could affect future architecture?
+------------------------------------------------------------------------
+Project Intelligence — What decisions were made recently that could affect future architecture?
+────────────────────────────────────────────────────────────────
+
+Recent repository activity is summarised from git log and phase reports under local_jarvis/ only.
+Recent commits (sample): 86a56c27, dd0171b2, 072350f7, bf17bd4a, 21cce5bb
+
+Evidence from JARVIS project documentation:
+
+📄 brain\intent_classifier.py
+   # (phrases, intent, confidence) _PHRASE_RULES: list[tuple[list[str], Intent,
+      float]] = [     # Memory (Phase 6 + Phase 34 knowledge base)     (["remember
+      this"], Intent.REMEMBER_THIS, 0.94),     (         ["זכור שאני מעדיף",
+      "remember preference", "remember that i prefer"],
+      Intent.REMEMBER_PREFERENCE,         0.92,     ),     (         ["זכור
+      שהפרויקט", "זכור שכאשר", "remember that", "זכור ש"],
+      Intent.REMEMBER_FACT,         0.88,     ),     (         ["תראה מה אתה זוכר",
+      "מה אתה זוכר", "show memory"],         Intent.SHOW_MEMORY,         0.91,
+      ),     (["list memory"], Intent…
+
+📄 reports\jarvis_codebase_audit_phase73_100.md
+   | # | Weakness | Evidence | Impact | |---|----------|----------|--------| | T1 |
+      **Intent/handler spr
+
+========================================================================
+Q9: If a new developer joined today, what would they need to understand first?
+------------------------------------------------------------------------
+Project Intelligence — If a new developer joined today, what would they need to understand first?
+────────────────────────────────────────────────────────────────
+
+A new developer should start with README.md, README_ARCHITECTURE.md, brain/router.py, brain/intent_classifier.py, tools/registry.py, and reports/.
+
+Evidence from JARVIS project documentation:
+
+📄 reports\alpha_user_commands.md
+   | Say this | What it does | |----------|----------------| | `open website
+      example.com` | Opens a website (use a normal site you trust) | | `search web
+      for weather today` | Searches the web for a topic | | `summarize current
+      page` | Summarizes the active browser tab |
+
+📄 reports\audit_verification.md
+   **Production impact:** A developer wiring a real Gmail adapter would see the
+      integrations acceptance score drop from its current level. The test
+      incentivizes keeping the mock.
+
+📄 reports\consolidation_plan.md
+   **Problem:** Three separate health models produce three separate reports with no
+      shared data model. A developer looking at system health must check three
+      places.   **Action:**   1. `services/health.py` becomes the single
+      `HealthReport` data mo
+
+========================================================================
+Q10: What parts of the codebase appear unrelated to Jarvis for Builders?
+------------------------------------------------------------------------
+Parts of the JARVIS codebase that appear unrelated to the Builders product vision:
+
+1. Trading system (actions/trading_*.py, actions/phase45–55_actions.py)
+   ~40% of the action surface. Covers live loops, backtests, execution
+   investigation, patch workflows, and replay analysis. Entirely unrelated
+   to project intelligence or builder tooling. Candidates for an optional
+   plugin per the Phase 84 / Stage 0 plan.
+
+2. Hebrew language classifier (brain/intent_classifier.py ~lines 1–500)
+   ~150 Hebrew phrase rules built for a single user's personal setup.
+   Not a product feature. Should become language-agnostic.
+
+3. Voice-first infrastructure (voice/, ui/overlay_app.py, wakeword_loop.py)
+   Significant engineering for push-to-talk, wakeword detection, and voice
+   latency tracking. Deprioritised for a builder product (keyboard-first).
+
+4. Computer control layer (computer_control_actions.py, phase63_desktop_actions.py)
+   Clipboard, window focus/minimize. Not part of the intelligence layer.
+
+5. Study/quiz system (actions/study_actions.py)
+   Quiz mode, study notes, focus mode. Personal productivity, not builder tooling.
+
+6. Full email/calendar layer (phase60_actions.py, phase65_har

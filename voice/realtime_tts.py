@@ -80,7 +80,7 @@ def _register_active_cancel(cancel_fn: Callable[[], None] | None) -> None:
 
 
 def cancel_active_speech() -> bool:
-    """Instant cancel — flush queued audio and stop playback."""
+    """Instant cancel — flush queued audio and stop playback (idempotent)."""
     global _active_cancel
     try:
         from voice.voice_latency_metrics import get_last_realtime_latency
@@ -90,15 +90,17 @@ def cancel_active_speech() -> bool:
             rec.mark_interrupt_begin()
     except Exception:
         pass
-    cancelled = False
+    cancel_fn: Callable[[], None] | None = None
     with _active_lock:
-        if _active_cancel is not None:
-            try:
-                _active_cancel()
-                cancelled = True
-            except Exception:
-                pass
-            _active_cancel = None
+        cancel_fn = _active_cancel
+        _active_cancel = None
+    cancelled = False
+    if cancel_fn is not None:
+        try:
+            cancel_fn()
+            cancelled = True
+        except Exception:
+            pass
     request_stop_speaking()
     try:
         from voice.voice_latency_metrics import get_last_realtime_latency
@@ -269,12 +271,7 @@ def speak_realtime(
                 latency.provider_connect_ms = connect_ms
 
             def _cancel_current() -> None:
-                try:
-                    from voice.interruption_manager import cancel as interruption_cancel
-
-                    interruption_cancel()
-                except Exception:
-                    request_stop_speaking()
+                request_stop_speaking()
                 try:
                     provider.cancel()
                 except Exception:
@@ -365,6 +362,11 @@ def phase57_status() -> str:
     from voice.backend_manager import show_backend_status
 
     return "\n\n".join([show_realtime_tts_status(), show_backend_status()])
+
+
+def register_active_cancel_for_tests(cancel_fn: Callable[[], None] | None) -> None:
+    """Test hook — simulate active provider stream during barge-in."""
+    _register_active_cancel(cancel_fn)
 
 
 def reset_realtime_tts_for_tests() -> None:

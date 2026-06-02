@@ -86,7 +86,7 @@ def test_cancel_scan_flag():
     assert status["job"]["cancelled"] is True
 
 
-def test_large_graph_safety_defaults_to_subsystem(monkeypatch):
+def test_large_graph_keeps_module_view_recommends_hierarchy(monkeypatch):
     node_count = 5105
     fake_graph = {
         "graph_scope": "production",
@@ -105,11 +105,13 @@ def test_large_graph_safety_defaults_to_subsystem(monkeypatch):
     )
     payload = api.current_graph("module")
     assert payload["ok"]
-    assert payload["view"] == "subsystem"
-    assert payload["defaulted_to_subsystem"] is True
+    assert payload["view"] == "module"
+    assert payload["defaulted_to_subsystem"] is False
+    assert payload["recommended_view"] == "hierarchy"
     assert payload["render_warning"]
-    forced = api.current_graph("module", force_module=True)
-    assert forced["view"] == "module"
+    overview = api.current_graph("subsystem")
+    assert overview["view"] == "subsystem"
+    assert overview.get("architecture_clusters") is True
 
 
 def test_hierarchy_graph_levels(tmp_path):

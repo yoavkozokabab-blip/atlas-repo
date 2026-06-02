@@ -31,10 +31,16 @@
           "command": "reconstruct execution flow"
         }
       ],
-      "status": "pending",
-      "completed_steps": [],
-      "last_run_at": "",
-      "updated_at": "2026-05-28T14:55:28.992119+00:00"
+      "status": "verified",
+      "completed_steps": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "last_run_at": "2026-05-29T10:12:23.295801+00:00",
+      "updated_at": "2026-05-30T20:29:34.034464+00:00"
     },
     {
       "hypothesis_id": "overlap_stale_positions",
@@ -75,8 +81,8 @@
         4,
         5
       ],
-      "last_run_at": "2026-05-28T14:54:25.375452+00:00",
-      "updated_at": "2026-05-28T14:55:28.992119+00:00"
+      "last_run_at": "2026-05-30T19:35:43.833519+00:00",
+      "updated_at": "2026-05-30T20:29:34.034464+00:00"
     },
     {
       "hypothesis_id": "last_bar_filter",
@@ -111,8 +117,8 @@
         3,
         4
       ],
-      "last_run_at": "2026-05-28T14:54:57.021465+00:00",
-      "updated_at": "2026-05-28T14:55:28.992119+00:00"
+      "last_run_at": "2026-05-30T19:36:14.893083+00:00",
+      "updated_at": "2026-05-30T20:29:34.034464+00:00"
     },
     {
       "hypothesis_id": "stale_telemetry_risk",
@@ -141,8 +147,8 @@
         2,
         3
       ],
-      "last_run_at": "2026-05-28T14:55:28.488852+00:00",
-      "updated_at": "2026-05-28T14:55:28.992119+00:00"
+      "last_run_at": "2026-05-30T19:36:46.574147+00:00",
+      "updated_at": "2026-05-30T20:29:34.034464+00:00"
     },
     {
       "hypothesis_id": "cluster_divergence",
@@ -168,8 +174,8 @@
       "status": "pending",
       "completed_steps": [],
       "last_run_at": "",
-      "updated_at": "2026-05-28T14:55:28.992119+00:00"
+      "updated_at": "2026-05-30T20:29:34.034464+00:00"
     }
   ],
-  "updated_at": "2026-05-28T14:55:28.992157+00:00"
+  "updated_at": "2026-05-30T20:29:34.034481+00:00"
 }

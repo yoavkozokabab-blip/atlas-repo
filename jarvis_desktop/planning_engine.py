@@ -1064,9 +1064,11 @@ def _prompt_claude_change(s: Dict[str, Any]) -> str:
     if not domain_block and domain.get("applied"):
         k_risks = "\n".join(f"- {r}" for r in (domain.get("knowledge_risks") or [])[:8])
         steps = "\n".join(f"- {x}" for x in (s.get("domain_steps") or [])[:8])
+        ql = domain.get("knowledge_quality_label") or domain.get("concept_quality_score") or "Curated"
         domain_block = (
             f"\n## DOMAIN KNOWLEDGE\n"
             f"**Concept:** {domain.get('concept_name')} ({domain.get('concept_title')})\n"
+            f"**Knowledge quality:** {ql}\n"
             f"{domain.get('concept_understanding', '')}\n\n"
             f"### Risks\n{k_risks}\n\n"
             f"### Implementation steps\n{steps}\n"
@@ -1185,6 +1187,7 @@ def format_change_plan_markdown(plan: Dict[str, Any]) -> str:
         lines.extend([
             f"Detected concept: {dk_block.get('concept_name')} — {dk_block.get('concept_title')}",
             f"Domain: {dk_block.get('domain_label')} / {dk_block.get('feature_type')}",
+            f"Knowledge quality: {dk_block.get('knowledge_quality_label') or dk_block.get('concept_quality_score') or 'Curated'}",
             f"Concept confidence: {dk_block.get('concept_confidence')} · Repo mapping: {dk_block.get('repo_mapping_confidence')}",
             "",
             "Concept understanding:",
@@ -1278,6 +1281,7 @@ def format_investigation_plan_markdown(plan: Dict[str, Any]) -> str:
             "A2. Domain knowledge",
             f"   Concept: {dk_block.get('concept_name')} — {dk_block.get('concept_title')}",
             f"   Domain: {dk_block.get('domain_label')}",
+            f"   Knowledge quality: {dk_block.get('knowledge_quality_label') or dk_block.get('concept_quality_score')}",
             f"   {dk_block.get('concept_understanding', '')}",
             "",
             "   Domain failure modes to check:",

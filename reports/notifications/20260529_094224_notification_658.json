@@ -1,0 +1,14 @@
+{
+  "id": 658,
+  "kind": "proactive",
+  "title": "Continuous monitor alert",
+  "message": "New blocker appeared: 1. overlap block severity=medium count=25 evidence=c",
+  "severity": "warning",
+  "source": "proactive_monitor",
+  "created_at": "2026-05-29T09:42:24.345723+00:00",
+  "read": false,
+  "archived": false,
+  "suggested_action": "run investigation cycle",
+  "related_task_id": null,
+  "metadata": {}
+}

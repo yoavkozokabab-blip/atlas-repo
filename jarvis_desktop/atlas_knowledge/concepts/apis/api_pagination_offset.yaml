@@ -1,0 +1,45 @@
+concept_id: api_pagination_offset
+name: Offset Pagination
+title: Offset Pagination
+domain: apis
+category: pagination
+feature_type: pagination
+concept_quality_score: curated_deep
+confidence: medium
+aliases:
+- offset pagination
+- page page_size
+description: Simple page/page_size; poor at large offsets.
+when_to_use: Admin tables only at small scale.
+requirements:
+- Clear ownership of Offset Pagination in the architecture
+implementation_strategies: &id001
+- Versioning strategy
+- Pagination and limits
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Breaking clients on change
+- Chatty APIs
+- Overserialized payloads
+security_risks: []
+performance_risks:
+- Chatty APIs
+- Overserialized payloads
+failure_modes:
+- Undocumented error codes
+- Version skew
+verification:
+- Consumer-driven contracts
+- Backward compatibility checklist
+testing:
+- Contract tests
+- Load tests on gateway
+related_concepts: []
+references:
+- atlas://curated/apis/api_pagination_offset
+path_keywords:
+- api
+- offset pagination
+- page page_size
+investigate_only: false

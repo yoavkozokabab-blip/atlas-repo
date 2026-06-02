@@ -1263,15 +1263,18 @@ function renderDomainKnowledge(dk) {
   const verify = (dk.verification || []).slice(0, 5);
   const testing = (dk.testing || []).slice(0, 4);
   const source = dk.source || "local";
+  const qualityLabel = dk.knowledge_quality_label || (dk.concept_quality_score === "generated_template" ? "Local generated" : "Curated");
+  const qualityClass = dk.knowledge_depth_warning ? "quality-generated" : (dk.concept_quality_score === "source_backed" ? "quality-source" : "quality-curated");
   const tag = (p) => `<span class="tag" onclick="investigateFile(${JSON.stringify(p)})">${esc(p)}</span>`;
   return `
     <div class="domain-panel glass">
       <div class="domain-head">
         <span class="domain-concept">${esc(dk.concept_name)} — ${esc(dk.concept_title || "")}</span>
         <span class="pill">${esc(dk.domain_label || dk.domain)}</span>
+        <span class="pill ${qualityClass}">${esc(qualityLabel)}</span>
         <span class="pill">${esc(source)} knowledge</span>
       </div>
-      <p class="muted tiny"><b>Concept confidence:</b> ${esc(dk.concept_confidence)} · <b>Repo mapping:</b> ${esc(dk.repo_mapping_confidence)}</p>
+      <p class="muted tiny"><b>Concept confidence:</b> ${esc(dk.concept_confidence)} · <b>Repo mapping:</b> ${esc(dk.repo_mapping_confidence)}${dk.knowledge_depth_warning ? " · <span class=\"warn\">Template knowledge — verify with official docs</span>" : ""}</p>
       <p class="domain-why"><b>Meaning:</b> ${esc(dk.concept_understanding || dk.meaning || "")}</p>
       ${dk.why_this_matters ? `<p class="muted tiny">${esc(dk.why_this_matters)}</p>` : ""}
       ${risks.length ? `<div class="report-section"><div class="report-label">Risks</div><ul class="clean tiny">${risks.map(r => `<li>${esc(r)}</li>`).join("")}</ul></div>` : ""}

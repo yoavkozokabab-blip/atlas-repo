@@ -164,9 +164,12 @@ def test_investigation_graph_module_count_symptom(planner_scan):
     assert res["ok"]
     plan = res["plan"]
     assert plan["intent"] == "graph_module_count"
-    assert "BUG INVESTIGATION PLAN" in res["formatted"]
+    assert "INVESTIGATION REPORT" in res["formatted"]
     assert plan.get("logical_hypothesis")
     assert plan.get("verification_steps")
+    # Phase 123 — ranked hypotheses structure
+    assert plan.get("hypotheses")
+    assert plan.get("most_likely_root_cause")
 
 
 def test_change_plan_includes_actionable_fields(planner_scan):
@@ -219,8 +222,8 @@ def test_formatters_include_headers():
         "limitations": ["lim"],
     }
     inv_text = planning_engine.format_investigation_plan_markdown(inv)
-    assert "BUG INVESTIGATION PLAN" in inv_text
-    assert "Symptom:" in inv_text
+    assert "INVESTIGATION REPORT" in inv_text
+    assert "A. Symptom summary" in inv_text
 
     text = planning_engine.format_change_plan_markdown(plan)
     assert "CHANGE PLAN" in text
