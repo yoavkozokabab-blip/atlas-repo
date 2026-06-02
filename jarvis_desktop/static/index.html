@@ -146,6 +146,10 @@
           <div class="graph-head">
             <h3>Repository Universe</h3>
             <div class="graph-controls">
+              <div class="hierarchy-bar">
+                <div id="hierarchyBreadcrumb" class="muted tiny">Repository</div>
+                <button class="btn small ghost" type="button" onclick="backToOverview()">Back to overview</button>
+              </div>
               <div class="graph-toolbar">
                 <button class="btn small tour-btn" type="button" onclick="startRepositoryTour()">Tour Repository</button>
                 <button class="btn small tour-btn" type="button" onclick="startProductTour()">Start Product Tour</button>
@@ -161,6 +165,7 @@
               </div>
               <label class="graph-toggle edge-toggle"><input type="checkbox" id="showEdges" checked onchange="toggleGraphEdges()"> Show edges</label>
               <span class="muted" id="graphMeta"></span>
+              <span class="muted tiny" id="hierarchyCounts"></span>
             </div>
           </div>
           <div class="scan-path glass" id="graphWarning" style="display:none"></div>

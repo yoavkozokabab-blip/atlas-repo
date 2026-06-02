@@ -111,6 +111,10 @@ body{
 .graph-head{position:absolute;top:12px;left:16px;right:16px;z-index:3;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;pointer-events:none}
 .graph-head h3{font-family:Orbitron;letter-spacing:1px;font-size:13px;margin:0;color:#eaf0ff;text-shadow:0 0 20px rgba(62,240,255,.35)}
 .graph-controls{display:flex;flex-direction:column;align-items:flex-end;gap:6px;pointer-events:auto}
+.hierarchy-bar{display:flex;gap:8px;align-items:center;justify-content:flex-end;max-width:720px}
+#hierarchyBreadcrumb{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.crumb-link{cursor:pointer;color:#bcd0ff}
+.crumb-link:hover{color:#fff;text-decoration:underline}
 .graph-toolbar{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 .graph-toolbar .btn{padding:6px 10px;font-size:11px}
 .tour-btn{background:linear-gradient(92deg,rgba(62,240,255,.25),rgba(154,123,255,.2));border-color:rgba(62,240,255,.45);color:#fff}

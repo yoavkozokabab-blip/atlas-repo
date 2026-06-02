@@ -4,7 +4,7 @@ const STATE = {
   exportTarget: "claude", exportPacket: "compact", graph3d: null, hoverNodeId: null,
   selectedNode: null, copilotResult: null, showEdges: true, riskPercentiles: null,
   demoMode: false, tourStops: null, screenshotMode: false, demoPack: "small", productTourActive: false,
-  massiveMode: false, lastEstimate: null,
+  massiveMode: false, lastEstimate: null, hierarchy: { level: "subsystem", subsystem: "", package: "", module: "" },
 };
 const RECENT_KEY = "jarvis_recent_repos";
 const ONBOARDING_KEY = "jarvis_onboarding_done_v1";
@@ -311,6 +311,13 @@ function metricGrid(s) {
 async function fetchGraphPayload() {
   const view = STATE.graphView || "module";
   if (view === "hierarchy") {
+    const h = STATE.hierarchy || { level: "subsystem", subsystem: "", package: "" };
+    if (h.level === "package") {
+      return api(`/api/repositories/current/hierarchy-graph?level=package&parent=${encodeURIComponent(h.subsystem || "")}`);
+    }
+    if (h.level === "module") {
+      return api(`/api/repositories/current/hierarchy-graph?level=module&parent=${encodeURIComponent(h.package || h.subsystem || "")}`);
+    }
     return api("/api/repositories/current/hierarchy-graph?level=subsystem");
   }
   return api(`/api/repositories/current/graph?view=${encodeURIComponent(view)}`);
@@ -318,11 +325,51 @@ async function fetchGraphPayload() {
 
 function setGraphView(view) {
   STATE.graphView = view;
+  if (view === "hierarchy") {
+    STATE.hierarchy = { level: "subsystem", subsystem: "", package: "", module: "" };
+  }
   STATE.graph = null;
   document.querySelectorAll('input[name="graphView"]').forEach(el => {
     el.checked = el.value === view;
   });
   renderCenter();
+}
+
+function renderHierarchyBreadcrumb() {
+  const host = $("hierarchyBreadcrumb");
+  if (!host) return;
+  const h = STATE.hierarchy || { level: "subsystem", subsystem: "", package: "", module: "" };
+  const crumbs = [
+    `<span class="crumb-link" onclick="navigateHierarchy('subsystem')">Repository</span>`,
+  ];
+  if (h.subsystem) crumbs.push(`<span>/</span><span class="crumb-link" onclick="navigateHierarchy('package', ${JSON.stringify(h.subsystem)})">${h.subsystem}</span>`);
+  if (h.package) crumbs.push(`<span>/</span><span class="crumb-link" onclick="navigateHierarchy('module', ${JSON.stringify(h.package)})">${h.package}</span>`);
+  if (h.module) crumbs.push(`<span>/</span><span>${h.module}</span>`);
+  host.innerHTML = crumbs.join("");
+}
+
+function updateHierarchyCounts(graph) {
+  const c = graph?.counts || {};
+  $("hierarchyCounts").textContent = graph?.level
+    ? `${graph.level}: files ${c.files ?? 0} · modules ${c.modules ?? 0} · edges ${c.edges ?? 0} · hotspots ${c.risk_hotspots ?? 0}`
+    : "";
+}
+
+function navigateHierarchy(level, parent = "") {
+  if (level === "subsystem") {
+    STATE.hierarchy = { level: "subsystem", subsystem: "", package: "", module: "" };
+  } else if (level === "package") {
+    STATE.hierarchy = { level: "package", subsystem: parent || "", package: "", module: "" };
+  } else if (level === "module") {
+    const parentText = String(parent || "");
+    STATE.hierarchy = { level: "module", subsystem: STATE.hierarchy.subsystem || "", package: parentText, module: "" };
+  }
+  STATE.graph = null;
+  renderCenter();
+}
+
+function backToOverview() {
+  setGraphView("subsystem");
 }
 
 function updateGraphMeta(data, perf) {
@@ -350,6 +397,13 @@ async function renderCenter() {
   renderHealthCockpit(sum);
   $("suggest").innerHTML = renderCopilotSuggestions(sum);
   const graph = STATE.graph || (STATE.graph = await fetchGraphPayload());
+  if (STATE.graphView === "hierarchy") {
+    renderHierarchyBreadcrumb();
+    updateHierarchyCounts(graph);
+  } else {
+    $("hierarchyBreadcrumb").textContent = "Repository";
+    $("hierarchyCounts").textContent = "";
+  }
   if (graph.render_warning) {
     $("graphWarning").style.display = "block";
     $("graphWarning").textContent = graph.render_warning;
@@ -487,7 +541,13 @@ function toggleGraphEdges() {
 function build3DGraph(data) {
   JARVIS_UNIVERSE.destroyGraph?.();
   STATE.graph3d = JARVIS_UNIVERSE.buildGraph($("graph3d"), data, {
-    onNodeClick: n => showNode(n),
+    onNodeClick: n => {
+      if (STATE.graphView === "hierarchy") {
+        handleHierarchyClick(n);
+        return;
+      }
+      showNode(n);
+    },
     onNodeHover: n => { STATE.hoverNodeId = n ? n.id : null; },
     onBackgroundClick: () => {
       STATE.selectedNode = null;
@@ -501,6 +561,28 @@ function build3DGraph(data) {
       updateGraphMeta(data, perf);
     },
   });
+}
+
+function handleHierarchyClick(n) {
+  if (!n) return;
+  const level = STATE.hierarchy.level || "subsystem";
+  if (level === "subsystem") {
+    STATE.hierarchy = { level: "package", subsystem: n.subsystem || n.label || "", package: "", module: "" };
+    STATE.graph = null;
+    renderCenter();
+    return;
+  }
+  if (level === "package") {
+    const pkg = String(n.label || "").replace(/^package:/, "");
+    STATE.hierarchy = { level: "module", subsystem: n.subsystem || STATE.hierarchy.subsystem || "", package: pkg, module: "" };
+    STATE.graph = null;
+    renderCenter();
+    return;
+  }
+  if (level === "module") {
+    STATE.hierarchy.module = n.path || n.label || "";
+    showNode(n);
+  }
 }
 
 async function renderModuleInspector(node) {

@@ -1308,15 +1308,31 @@ def current_hierarchy_graph(level: str = "subsystem", parent: str = "") -> Dict[
     if not graph:
         return {"ok": False, "error": "No repository scanned yet.", "nodes": [], "links": []}
     level = (level or "subsystem").strip().lower()
+    def _hotspots(nodes: List[Dict[str, Any]]) -> int:
+        return sum(1 for n in nodes if str(n.get("risk_tier", "")) in {"top", "elevated", "cycle"} or float(n.get("risk_score", 0)) >= 20)
+
     if level == "subsystem":
         payload = _subsystem_graph_payload(graph, index, _STATE.get("risks") or {})
-        return {"ok": True, "level": "subsystem", "parent": "", **payload}
+        return {
+            "ok": True,
+            "level": "subsystem",
+            "parent": "",
+            "counts": {
+                "files": len(index.get("files") or []),
+                "modules": payload.get("total_modules", 0),
+                "edges": payload.get("total_edges", 0),
+                "risk_hotspots": _hotspots(payload.get("nodes") or []),
+            },
+            **payload,
+        }
 
     module_payload = _module_graph_payload(graph, index, _STATE.get("risks") or {})
     modules = module_payload["nodes"]
     parent = (parent or "").strip()
     if level == "package":
         package_nodes: Dict[str, Dict[str, Any]] = {}
+        package_edges: Dict[tuple[str, str], int] = {}
+        module_by_id = {n["id"]: n for n in modules}
         for node in modules:
             subsystem = node.get("subsystem", "(root)")
             if parent and subsystem != parent:
@@ -1330,21 +1346,71 @@ def current_hierarchy_graph(level: str = "subsystem", parent: str = "") -> Dict[
                     "label": pkg,
                     "subsystem": subsystem,
                     "module_count": 0,
+                    "file_count": 0,
+                    "edge_count": 0,
                     "risk_score": 0.0,
+                    "risk_tier": node.get("risk_tier", "normal"),
                     "size": 4.0,
                 },
             )
             bucket["module_count"] += 1
+            bucket["file_count"] += 1
             bucket["risk_score"] = max(bucket["risk_score"], node.get("risk_score", 0))
+            if str(node.get("risk_tier")) in {"top", "cycle"}:
+                bucket["risk_tier"] = node.get("risk_tier")
             bucket["size"] = round(4 + min(20, bucket["module_count"] * 0.4), 2)
+        for link in module_payload["links"]:
+            src = module_by_id.get(link["source"])
+            dst = module_by_id.get(link["target"])
+            if not src or not dst:
+                continue
+            if parent and (src.get("subsystem") != parent or dst.get("subsystem") != parent):
+                continue
+            src_pkg = (src.get("path", "") or "").rsplit("/", 1)[0] or "(root)"
+            dst_pkg = (dst.get("path", "") or "").rsplit("/", 1)[0] or "(root)"
+            key = (src_pkg, dst_pkg)
+            package_edges[key] = package_edges.get(key, 0) + 1
+        links = []
+        for (src_pkg, dst_pkg), count in package_edges.items():
+            sid = f"package:{src_pkg}"
+            tid = f"package:{dst_pkg}"
+            if sid not in package_nodes or tid not in package_nodes:
+                continue
+            links.append({"source": sid, "target": tid, "weight": 1 + min(6, count * 0.2), "opacity": 0.28})
+            package_nodes[sid]["edge_count"] = package_nodes[sid].get("edge_count", 0) + count
+            package_nodes[tid]["edge_count"] = package_nodes[tid].get("edge_count", 0) + count
         nodes = sorted(package_nodes.values(), key=lambda n: (-n["module_count"], n["label"]))
-        return {"ok": True, "level": "package", "parent": parent, "nodes": nodes, "links": []}
+        return {
+            "ok": True,
+            "level": "package",
+            "parent": parent,
+            "counts": {
+                "files": sum(int(n.get("file_count", 0)) for n in nodes),
+                "modules": sum(int(n.get("module_count", 0)) for n in nodes),
+                "edges": sum(int(n.get("edge_count", 0)) for n in nodes),
+                "risk_hotspots": _hotspots(nodes),
+            },
+            "nodes": nodes,
+            "links": links,
+        }
 
     if level == "module":
         selected = [n for n in modules if (not parent or n.get("path", "").startswith(parent.strip("/") + "/") or n.get("subsystem") == parent)]
         ids = {n["id"] for n in selected}
         links = [l for l in module_payload["links"] if l["source"] in ids and l["target"] in ids]
-        return {"ok": True, "level": "module", "parent": parent, "nodes": selected, "links": links}
+        return {
+            "ok": True,
+            "level": "module",
+            "parent": parent,
+            "counts": {
+                "files": len(selected),
+                "modules": len(selected),
+                "edges": len(links),
+                "risk_hotspots": _hotspots(selected),
+            },
+            "nodes": selected,
+            "links": links,
+        }
 
     return {"ok": False, "error": f"Unsupported hierarchy level: {level}"}
 

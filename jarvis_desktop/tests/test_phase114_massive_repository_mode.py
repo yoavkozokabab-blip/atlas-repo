@@ -117,10 +117,13 @@ def test_hierarchy_graph_levels(tmp_path):
     assert api.scan_repository(str(root), {"mode": "entire_repo"})["ok"]
     sub = api.current_hierarchy_graph("subsystem")
     assert sub["ok"] and sub["level"] == "subsystem"
+    assert sub["counts"]["modules"] >= 1
     pkg = api.current_hierarchy_graph("package")
     assert pkg["ok"] and pkg["level"] == "package"
+    assert "risk_hotspots" in pkg["counts"]
     mod = api.current_hierarchy_graph("module", "backend")
     assert mod["ok"] and mod["level"] == "module"
+    assert mod["counts"]["files"] == mod["counts"]["modules"]
 
 
 def test_server_routes_for_massive_mode(tmp_path):
@@ -130,3 +133,18 @@ def test_server_routes_for_massive_mode(tmp_path):
     assert server.dispatch("GET", "/api/repositories/current/scan-status")[1]["ok"]
     assert server.dispatch("POST", "/api/repositories/current/cancel-scan")[1]["ok"]
     assert server.dispatch("GET", "/api/repositories/current/hierarchy-graph")[1]["ok"]
+
+
+def test_frontend_hierarchy_navigation_state_markers():
+    static = Path(__file__).resolve().parents[1] / "static"
+    app = (static / "app.js").read_text(encoding="utf-8")
+    html = (static / "index.html").read_text(encoding="utf-8")
+    for needle in (
+        "navigateHierarchy(",
+        "renderHierarchyBreadcrumb(",
+        "handleHierarchyClick(",
+        "backToOverview(",
+        "hierarchyBreadcrumb",
+        "hierarchyCounts",
+    ):
+        assert needle in app or needle in html, needle
