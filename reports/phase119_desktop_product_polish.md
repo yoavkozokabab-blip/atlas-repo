@@ -1,6 +1,7 @@
 # Phase 119 — Atlas Desktop Product Polish
 
 **Date:** 2026-06-02  
+**Commits:** `2d016b85` (polish), `de5efe75` (demo label test)  
 **Server banner:** `AtlasDesktop/119`  
 **Scope:** Product polish only — branding, scan UX, graph legend, inspector quick actions, export copy, honest fallbacks. No new analysis engines.
 

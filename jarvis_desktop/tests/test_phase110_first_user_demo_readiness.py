@@ -80,7 +80,7 @@ def test_demo_mode_loads_sample_graph():
     res = api.load_demo_mode()
     assert res["ok"] is True
     assert res["demo_mode"] is True
-    assert res["repo_name"].startswith("JARVIS Demo")
+    assert res["repo_name"].startswith("Atlas Demo")
     assert res.get("demo_pack") == "small"
     assert res["module_count"] >= 3
     graph = api.current_graph("module")
