@@ -1,0 +1,1257 @@
+{
+  "version": 1,
+  "phase": 130,
+  "total": 51,
+  "categories": {
+    "feature_addition": 21,
+    "bug_investigation": 20,
+    "impact_analysis": 10
+  },
+  "scenarios": [
+    {
+      "scenario_id": "feat_001_ema",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "add EMA indicator with configurable period",
+      "task_type": "build",
+      "impact_target": "",
+      "expected_concept_id": "ema",
+      "expected_findings": [
+        "SMA",
+        "registry"
+      ],
+      "expected_files": [
+        "indicators/sma.py",
+        "indicators/indicator_registry.py",
+        "registry/signal_registry.py"
+      ],
+      "expected_insertion_points": [
+        "indicators/indicator_registry.py",
+        "registry/signal_registry.py"
+      ],
+      "expected_risks": [
+        "lookahead",
+        "backtest"
+      ],
+      "expected_tests": [
+        "indicator",
+        "test_indicators"
+      ]
+    },
+    {
+      "scenario_id": "feat_002_feature_flags",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "add feature flags for gradual rollout",
+      "task_type": "build",
+      "impact_target": "",
+      "expected_concept_id": "feature_flags",
+      "expected_findings": [
+        "feature",
+        "flag"
+      ],
+      "expected_files": [
+        "config/feature_flags.py"
+      ],
+      "expected_insertion_points": [
+        "config/feature_flags.py"
+      ],
+      "expected_risks": [],
+      "expected_tests": [
+        "feature"
+      ]
+    },
+    {
+      "scenario_id": "feat_003_stripe_billing",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "Add Stripe billing and subscriptions",
+      "task_type": "build",
+      "impact_target": "",
+      "expected_concept_id": "stripe_billing",
+      "expected_findings": [],
+      "expected_files": [
+        "billing/stripe_billing.py",
+        "billing/stripe_webhooks.py"
+      ],
+      "expected_insertion_points": [
+        "billing/stripe_billing.py"
+      ],
+      "expected_risks": [
+        "webhook",
+        "payment"
+      ],
+      "expected_tests": [
+        "billing",
+        "stripe"
+      ]
+    },
+    {
+      "scenario_id": "feat_004_circuit_breaker",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "Add circuit breaker for outbound HTTP calls",
+      "task_type": "build",
+      "impact_target": "",
+      "expected_concept_id": "circuit_breaker",
+      "expected_findings": [
+        "http",
+        "retry"
+      ],
+      "expected_files": [
+        "services/http_client.py"
+      ],
+      "expected_insertion_points": [
+        "services/http_client.py"
+      ],
+      "expected_risks": [
+        "cascading"
+      ],
+      "expected_tests": [
+        "http",
+        "client"
+      ]
+    },
+    {
+      "scenario_id": "feat_005_distributed_tracing",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "add distributed tracing with span propagation",
+      "task_type": "build",
+      "impact_target": "",
+      "expected_concept_id": "distributed_tracing",
+      "expected_findings": [
+        "request",
+        "middleware"
+      ],
+      "expected_files": [
+        "middleware/request_logging.py",
+        "middleware/tracing.py"
+      ],
+      "expected_insertion_points": [
+        "middleware/tracing.py",
+        "middleware/request_logging.py"
+      ],
+      "expected_risks": [],
+      "expected_tests": [
+        "trace",
+        "middleware"
+      ]
+    },
+    {
+      "scenario_id": "feat_006_rate_limiting",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "add API rate limiting middleware",
+      "task_type": "build",
+      "impact_target": "",
+      "expected_concept_id": "rate_limiting",
+      "expected_findings": [],
+      "expected_files": [
+        "api/rate_limit.py",
+        "api/routes.py"
+      ],
+      "expected_insertion_points": [
+        "api/rate_limit.py"
+      ],
+      "expected_risks": [
+        "429"
+      ],
+      "expected_tests": [
+        "rate"
+      ]
+    },
+    {
+      "scenario_id": "feat_007_jwt",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "configure JWT bearer authentication",
+      "task_type": "build",
+      "impact_target": "",
+      "expected_concept_id": "jwt",
+      "expected_findings": [],
+      "expected_files": [
+        "auth/middleware.py",
+        "auth/login.py"
+      ],
+      "expected_insertion_points": [
+        "auth/middleware.py"
+      ],
+      "expected_risks": [
+        "token",
+        "security"
+      ],
+      "expected_tests": [
+        "auth",
+        "test_auth"
+      ]
+    },
+    {
+      "scenario_id": "feat_008_oauth2",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "Add OAuth2 authorization code flow with PKCE",
+      "task_type": "build",
+      "impact_target": "",
+      "expected_concept_id": "oauth2",
+      "expected_findings": [],
+      "expected_files": [
+        "auth/login.py",
+        "auth/session.py"
+      ],
+      "expected_insertion_points": [
+        "auth/login.py"
+      ],
+      "expected_risks": [],
+      "expected_tests": [
+        "auth",
+        "oauth"
+      ]
+    },
+    {
+      "scenario_id": "feat_009_webhooks",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "add Stripe webhook receiver with signature verification",
+      "task_type": "build",
+      "impact_target": "",
+      "expected_concept_id": "webhook_receiver",
+      "expected_findings": [],
+      "expected_files": [
+        "billing/stripe_webhooks.py"
+      ],
+      "expected_insertion_points": [
+        "billing/stripe_webhooks.py"
+      ],
+      "expected_risks": [
+        "signature"
+      ],
+      "expected_tests": [
+        "webhook"
+      ]
+    },
+    {
+      "scenario_id": "feat_010_redis_cache",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "add Redis caching layer",
+      "task_type": "build",
+      "impact_target": "",
+      "expected_concept_id": "redis_cache",
+      "expected_findings": [],
+      "expected_files": [
+        "cache/redis_client.py",
+        "cache/cache_layer.py"
+      ],
+      "expected_insertion_points": [
+        "cache/redis_client.py"
+      ],
+      "expected_risks": [],
+      "expected_tests": [
+        "cache",
+        "redis"
+      ]
+    },
+    {
+      "scenario_id": "feat_011_db_migration",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "add database migration for new orders table",
+      "task_type": "build",
+      "impact_target": "",
+      "expected_concept_id": "database_migration",
+      "expected_findings": [],
+      "expected_files": [
+        "db/postgres.py",
+        "db/migrations/001_initial.py"
+      ],
+      "expected_insertion_points": [
+        "db/migrations/001_initial.py"
+      ],
+      "expected_risks": [
+        "migration",
+        "lock"
+      ],
+      "expected_tests": [
+        "migration"
+      ]
+    },
+    {
+      "scenario_id": "feat_012_retry",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "add retry with exponential backoff to HTTP client",
+      "task_type": "build",
+      "impact_target": "",
+      "expected_concept_id": "retry_backoff",
+      "expected_findings": [
+        "retry",
+        "sleep"
+      ],
+      "expected_files": [
+        "services/http_client.py"
+      ],
+      "expected_insertion_points": [
+        "services/http_client.py"
+      ],
+      "expected_risks": [],
+      "expected_tests": [
+        "retry",
+        "client"
+      ]
+    },
+    {
+      "scenario_id": "feat_013_structured_logging",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "add structured logging with correlation IDs",
+      "task_type": "build",
+      "impact_target": "",
+      "expected_concept_id": "structured_logging",
+      "expected_findings": [
+        "request_id",
+        "logging"
+      ],
+      "expected_files": [
+        "middleware/request_logging.py"
+      ],
+      "expected_insertion_points": [
+        "middleware/request_logging.py"
+      ],
+      "expected_risks": [],
+      "expected_tests": [
+        "log"
+      ]
+    },
+    {
+      "scenario_id": "feat_014_idempotency",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "add idempotency keys for order placement",
+      "task_type": "build",
+      "impact_target": "",
+      "expected_concept_id": "idempotency_key",
+      "expected_findings": [],
+      "expected_files": [
+        "trading/order_service.py",
+        "trading/execution.py"
+      ],
+      "expected_insertion_points": [
+        "trading/order_service.py"
+      ],
+      "expected_risks": [],
+      "expected_tests": [
+        "order"
+      ]
+    },
+    {
+      "scenario_id": "feat_015_health_check",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "add health check endpoint for services",
+      "task_type": "build",
+      "impact_target": "",
+      "expected_concept_id": "health_check",
+      "expected_findings": [],
+      "expected_files": [
+        "api/routes.py"
+      ],
+      "expected_insertion_points": [
+        "api/routes.py"
+      ],
+      "expected_risks": [],
+      "expected_tests": [
+        "health"
+      ]
+    },
+    {
+      "scenario_id": "feat_016_signal_pipeline",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "extend signal pipeline with new indicator hook",
+      "task_type": "build",
+      "impact_target": "",
+      "expected_concept_id": "ema",
+      "expected_findings": [],
+      "expected_files": [
+        "signals/pipeline.py",
+        "registry/signal_registry.py"
+      ],
+      "expected_insertion_points": [
+        "registry/signal_registry.py",
+        "signals/pipeline.py"
+      ],
+      "expected_risks": [],
+      "expected_tests": [
+        "signal"
+      ]
+    },
+    {
+      "scenario_id": "feat_017_postgres",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "add PostgreSQL session factory",
+      "task_type": "build",
+      "impact_target": "",
+      "expected_concept_id": "postgresql",
+      "expected_findings": [],
+      "expected_files": [
+        "db/postgres.py"
+      ],
+      "expected_insertion_points": [
+        "db/postgres.py"
+      ],
+      "expected_risks": [
+        "connection",
+        "pool"
+      ],
+      "expected_tests": [
+        "postgres",
+        "db"
+      ]
+    },
+    {
+      "scenario_id": "feat_018_auth_sessions",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "Add user authentication with login sessions",
+      "task_type": "build",
+      "impact_target": "",
+      "expected_concept_id": "authentication",
+      "expected_findings": [],
+      "expected_files": [
+        "auth/login.py",
+        "auth/session.py",
+        "auth/middleware.py"
+      ],
+      "expected_insertion_points": [
+        "auth/middleware.py"
+      ],
+      "expected_risks": [],
+      "expected_tests": [
+        "auth",
+        "session"
+      ]
+    },
+    {
+      "scenario_id": "feat_019_paper_trading",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "add paper trading mode alongside backtest",
+      "task_type": "build",
+      "impact_target": "",
+      "expected_concept_id": "paper_trading",
+      "expected_findings": [],
+      "expected_files": [
+        "trading/paper_trading.py",
+        "trading/backtest_engine.py"
+      ],
+      "expected_insertion_points": [
+        "trading/paper_trading.py"
+      ],
+      "expected_risks": [
+        "backtest",
+        "live"
+      ],
+      "expected_tests": [
+        "paper",
+        "backtest"
+      ]
+    },
+    {
+      "scenario_id": "feat_020_slippage_model",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "implement configurable slippage model",
+      "task_type": "build",
+      "impact_target": "",
+      "expected_concept_id": "slippage_model",
+      "expected_findings": [
+        "slippage"
+      ],
+      "expected_files": [
+        "trading/backtest_config.py",
+        "trading/paper_config.py"
+      ],
+      "expected_insertion_points": [
+        "trading/backtest_config.py"
+      ],
+      "expected_risks": [],
+      "expected_tests": [
+        "slippage"
+      ]
+    },
+    {
+      "scenario_id": "inv_001_backtest_paper",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "backtest is much better than paper trading",
+      "task_type": "investigate",
+      "impact_target": "",
+      "expected_concept_id": "backtest_live_divergence",
+      "expected_findings": [
+        "slippage",
+        "fill"
+      ],
+      "expected_files": [
+        "trading/backtest_config.py",
+        "trading/paper_config.py"
+      ],
+      "expected_insertion_points": [
+        "trading/backtest_config.py"
+      ],
+      "expected_risks": [
+        "regression"
+      ],
+      "expected_tests": [
+        "integration"
+      ]
+    },
+    {
+      "scenario_id": "inv_002_duplicate_orders",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "duplicate orders placed twice in production",
+      "task_type": "investigate",
+      "impact_target": "",
+      "expected_concept_id": "retry_backoff",
+      "expected_findings": [
+        "duplicate",
+        "order"
+      ],
+      "expected_files": [
+        "trading/order_service.py",
+        "trading/execution.py"
+      ],
+      "expected_insertion_points": [
+        "trading/order_service.py"
+      ],
+      "expected_risks": [
+        "regression"
+      ],
+      "expected_tests": [
+        "integration"
+      ]
+    },
+    {
+      "scenario_id": "inv_003_webhook_failures",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "Stripe webhook signature verification failing",
+      "task_type": "investigate",
+      "impact_target": "",
+      "expected_concept_id": "webhook_receiver",
+      "expected_findings": [
+        "webhook",
+        "signature"
+      ],
+      "expected_files": [
+        "billing/stripe_webhooks.py"
+      ],
+      "expected_insertion_points": [
+        "billing/stripe_webhooks.py"
+      ],
+      "expected_risks": [
+        "regression"
+      ],
+      "expected_tests": [
+        "integration"
+      ]
+    },
+    {
+      "scenario_id": "inv_004_stale_cache",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "API returns stale cached data after update",
+      "task_type": "investigate",
+      "impact_target": "",
+      "expected_concept_id": "redis_cache",
+      "expected_findings": [
+        "cache",
+        "stale"
+      ],
+      "expected_files": [
+        "cache/cache_layer.py",
+        "cache/redis_client.py"
+      ],
+      "expected_insertion_points": [
+        "cache/cache_layer.py"
+      ],
+      "expected_risks": [
+        "regression"
+      ],
+      "expected_tests": [
+        "integration"
+      ]
+    },
+    {
+      "scenario_id": "inv_005_auth_bypass",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "unauthenticated requests reaching protected routes",
+      "task_type": "investigate",
+      "impact_target": "",
+      "expected_concept_id": "authentication",
+      "expected_findings": [
+        "auth",
+        "middleware"
+      ],
+      "expected_files": [
+        "auth/middleware.py",
+        "api/routes.py"
+      ],
+      "expected_insertion_points": [
+        "auth/middleware.py"
+      ],
+      "expected_risks": [
+        "regression"
+      ],
+      "expected_tests": [
+        "integration"
+      ]
+    },
+    {
+      "scenario_id": "inv_006_slippage_mismatch",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "slippage differs between backtest and live",
+      "task_type": "investigate",
+      "impact_target": "",
+      "expected_concept_id": "backtest_live_divergence",
+      "expected_findings": [
+        "slippage"
+      ],
+      "expected_files": [
+        "trading/backtest_config.py",
+        "trading/paper_config.py"
+      ],
+      "expected_insertion_points": [
+        "trading/backtest_config.py"
+      ],
+      "expected_risks": [
+        "regression"
+      ],
+      "expected_tests": [
+        "integration"
+      ]
+    },
+    {
+      "scenario_id": "inv_007_indicator_mismatch",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "indicator values differ backtest vs live",
+      "task_type": "investigate",
+      "impact_target": "",
+      "expected_concept_id": "indicator_backtest_live",
+      "expected_findings": [
+        "indicator"
+      ],
+      "expected_files": [
+        "indicators/sma.py",
+        "signals/pipeline.py"
+      ],
+      "expected_insertion_points": [
+        "indicators/sma.py"
+      ],
+      "expected_risks": [
+        "regression"
+      ],
+      "expected_tests": [
+        "integration"
+      ]
+    },
+    {
+      "scenario_id": "inv_008_rate_limit_429",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "users getting 429 too many requests",
+      "task_type": "investigate",
+      "impact_target": "",
+      "expected_concept_id": "rate_limiting",
+      "expected_findings": [
+        "rate",
+        "429"
+      ],
+      "expected_files": [
+        "api/rate_limit.py"
+      ],
+      "expected_insertion_points": [
+        "api/rate_limit.py"
+      ],
+      "expected_risks": [
+        "regression"
+      ],
+      "expected_tests": [
+        "integration"
+      ]
+    },
+    {
+      "scenario_id": "inv_009_stripe_invalid_sig",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "invalid stripe webhook signature errors",
+      "task_type": "investigate",
+      "impact_target": "",
+      "expected_concept_id": "webhook_receiver",
+      "expected_findings": [
+        "signature",
+        "stripe"
+      ],
+      "expected_files": [
+        "billing/stripe_webhooks.py"
+      ],
+      "expected_insertion_points": [
+        "billing/stripe_webhooks.py"
+      ],
+      "expected_risks": [
+        "regression"
+      ],
+      "expected_tests": [
+        "integration"
+      ]
+    },
+    {
+      "scenario_id": "inv_010_session_expired",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "login session expires immediately after login",
+      "task_type": "investigate",
+      "impact_target": "",
+      "expected_concept_id": "authentication",
+      "expected_findings": [
+        "session"
+      ],
+      "expected_files": [
+        "auth/session.py",
+        "auth/login.py"
+      ],
+      "expected_insertion_points": [
+        "auth/session.py"
+      ],
+      "expected_risks": [
+        "regression"
+      ],
+      "expected_tests": [
+        "integration"
+      ]
+    },
+    {
+      "scenario_id": "inv_011_redis_timeout",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "redis connection timeout under load",
+      "task_type": "investigate",
+      "impact_target": "",
+      "expected_concept_id": "redis_cache",
+      "expected_findings": [
+        "redis",
+        "timeout"
+      ],
+      "expected_files": [
+        "cache/redis_client.py"
+      ],
+      "expected_insertion_points": [
+        "cache/redis_client.py"
+      ],
+      "expected_risks": [
+        "regression"
+      ],
+      "expected_tests": [
+        "integration"
+      ]
+    },
+    {
+      "scenario_id": "inv_012_postgres_deadlock",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "postgres deadlock on concurrent order updates",
+      "task_type": "investigate",
+      "impact_target": "",
+      "expected_concept_id": "postgresql",
+      "expected_findings": [
+        "postgres",
+        "deadlock"
+      ],
+      "expected_files": [
+        "db/postgres.py"
+      ],
+      "expected_insertion_points": [
+        "db/postgres.py"
+      ],
+      "expected_risks": [
+        "regression"
+      ],
+      "expected_tests": [
+        "integration"
+      ]
+    },
+    {
+      "scenario_id": "inv_013_retry_storm",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "retry storm amplifying outbound HTTP failures",
+      "task_type": "investigate",
+      "impact_target": "",
+      "expected_concept_id": "retry_backoff",
+      "expected_findings": [
+        "retry"
+      ],
+      "expected_files": [
+        "services/http_client.py"
+      ],
+      "expected_insertion_points": [
+        "services/http_client.py"
+      ],
+      "expected_risks": [
+        "regression"
+      ],
+      "expected_tests": [
+        "integration"
+      ]
+    },
+    {
+      "scenario_id": "inv_014_missing_traces",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "requests missing trace spans across services",
+      "task_type": "investigate",
+      "impact_target": "",
+      "expected_concept_id": "distributed_tracing",
+      "expected_findings": [
+        "trace",
+        "span"
+      ],
+      "expected_files": [
+        "middleware/tracing.py",
+        "middleware/request_logging.py"
+      ],
+      "expected_insertion_points": [
+        "middleware/tracing.py"
+      ],
+      "expected_risks": [
+        "regression"
+      ],
+      "expected_tests": [
+        "integration"
+      ]
+    },
+    {
+      "scenario_id": "inv_015_flag_rollout",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "feature flag rollout enabling wrong cohort",
+      "task_type": "investigate",
+      "impact_target": "",
+      "expected_concept_id": "feature_flags",
+      "expected_findings": [
+        "feature",
+        "flag"
+      ],
+      "expected_files": [
+        "config/feature_flags.py"
+      ],
+      "expected_insertion_points": [
+        "config/feature_flags.py"
+      ],
+      "expected_risks": [
+        "regression"
+      ],
+      "expected_tests": [
+        "integration"
+      ]
+    },
+    {
+      "scenario_id": "inv_016_jwt_expired",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "JWT tokens rejected as expired immediately",
+      "task_type": "investigate",
+      "impact_target": "",
+      "expected_concept_id": "jwt",
+      "expected_findings": [
+        "jwt",
+        "token"
+      ],
+      "expected_files": [
+        "auth/middleware.py"
+      ],
+      "expected_insertion_points": [
+        "auth/middleware.py"
+      ],
+      "expected_risks": [
+        "regression"
+      ],
+      "expected_tests": [
+        "integration"
+      ]
+    },
+    {
+      "scenario_id": "inv_017_order_fill_delay",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "orders fill slowly in paper but not backtest",
+      "task_type": "investigate",
+      "impact_target": "",
+      "expected_concept_id": "backtest_live_divergence",
+      "expected_findings": [
+        "fill",
+        "execution"
+      ],
+      "expected_files": [
+        "trading/execution.py",
+        "trading/paper_trading.py"
+      ],
+      "expected_insertion_points": [
+        "trading/execution.py"
+      ],
+      "expected_risks": [
+        "regression"
+      ],
+      "expected_tests": [
+        "integration"
+      ]
+    },
+    {
+      "scenario_id": "inv_018_cache_invalidation",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "cache invalidation not running after writes",
+      "task_type": "investigate",
+      "impact_target": "",
+      "expected_concept_id": "redis_cache",
+      "expected_findings": [
+        "cache",
+        "invalidation"
+      ],
+      "expected_files": [
+        "cache/cache_layer.py"
+      ],
+      "expected_insertion_points": [
+        "cache/cache_layer.py"
+      ],
+      "expected_risks": [
+        "regression"
+      ],
+      "expected_tests": [
+        "integration"
+      ]
+    },
+    {
+      "scenario_id": "inv_019_migration_failure",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "database migration fails on deploy",
+      "task_type": "investigate",
+      "impact_target": "",
+      "expected_concept_id": "database_migration",
+      "expected_findings": [
+        "migration"
+      ],
+      "expected_files": [
+        "db/migrations/001_initial.py"
+      ],
+      "expected_insertion_points": [
+        "db/migrations/001_initial.py"
+      ],
+      "expected_risks": [
+        "regression"
+      ],
+      "expected_tests": [
+        "integration"
+      ]
+    },
+    {
+      "scenario_id": "inv_020_execution_timing",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "execution timing differs between sim and live",
+      "task_type": "investigate",
+      "impact_target": "",
+      "expected_concept_id": "backtest_live_divergence",
+      "expected_findings": [
+        "timing",
+        "execution"
+      ],
+      "expected_files": [
+        "trading/backtest_config.py",
+        "trading/paper_config.py"
+      ],
+      "expected_insertion_points": [
+        "trading/backtest_config.py"
+      ],
+      "expected_risks": [
+        "regression"
+      ],
+      "expected_tests": [
+        "integration"
+      ]
+    },
+    {
+      "scenario_id": "imp_001_delete_auth_middleware",
+      "category": "impact_analysis",
+      "repository": "atlas_reference",
+      "prompt": "assess impact of changing `auth/middleware.py`",
+      "task_type": "impact",
+      "impact_target": "auth/middleware.py",
+      "expected_concept_id": "",
+      "expected_findings": [],
+      "expected_files": [
+        "auth/middleware.py",
+        "api/routes.py",
+        "auth/login.py"
+      ],
+      "expected_insertion_points": [
+        "auth/middleware.py"
+      ],
+      "expected_risks": [
+        "auth",
+        "security"
+      ],
+      "expected_tests": [
+        "test_auth"
+      ]
+    },
+    {
+      "scenario_id": "imp_002_replace_redis",
+      "category": "impact_analysis",
+      "repository": "atlas_reference",
+      "prompt": "assess impact of changing `cache/redis_client.py`",
+      "task_type": "impact",
+      "impact_target": "cache/redis_client.py",
+      "expected_concept_id": "",
+      "expected_findings": [],
+      "expected_files": [
+        "cache/redis_client.py",
+        "cache/cache_layer.py"
+      ],
+      "expected_insertion_points": [
+        "cache/redis_client.py"
+      ],
+      "expected_risks": [
+        "cache",
+        "availability"
+      ],
+      "expected_tests": [
+        "cache"
+      ]
+    },
+    {
+      "scenario_id": "imp_003_migrate_schema",
+      "category": "impact_analysis",
+      "repository": "atlas_reference",
+      "prompt": "assess impact of changing `db/migrations/001_initial.py`",
+      "task_type": "impact",
+      "impact_target": "db/migrations/001_initial.py",
+      "expected_concept_id": "",
+      "expected_findings": [],
+      "expected_files": [
+        "db/migrations/001_initial.py",
+        "db/postgres.py"
+      ],
+      "expected_insertion_points": [
+        "db/migrations/001_initial.py"
+      ],
+      "expected_risks": [
+        "migration",
+        "data"
+      ],
+      "expected_tests": [
+        "migration"
+      ]
+    },
+    {
+      "scenario_id": "imp_004_remove_signal_registry",
+      "category": "impact_analysis",
+      "repository": "atlas_reference",
+      "prompt": "assess impact of changing `registry/signal_registry.py`",
+      "task_type": "impact",
+      "impact_target": "registry/signal_registry.py",
+      "expected_concept_id": "",
+      "expected_findings": [],
+      "expected_files": [
+        "registry/signal_registry.py",
+        "signals/pipeline.py",
+        "indicators/indicator_registry.py"
+      ],
+      "expected_insertion_points": [
+        "registry/signal_registry.py"
+      ],
+      "expected_risks": [
+        "signal",
+        "breaking"
+      ],
+      "expected_tests": [
+        "signal"
+      ]
+    },
+    {
+      "scenario_id": "imp_005_delete_webhooks",
+      "category": "impact_analysis",
+      "repository": "atlas_reference",
+      "prompt": "assess impact of changing `billing/stripe_webhooks.py`",
+      "task_type": "impact",
+      "impact_target": "billing/stripe_webhooks.py",
+      "expected_concept_id": "",
+      "expected_findings": [],
+      "expected_files": [
+        "billing/stripe_webhooks.py",
+        "billing/stripe_billing.py"
+      ],
+      "expected_insertion_points": [
+        "billing/stripe_webhooks.py"
+      ],
+      "expected_risks": [
+        "billing",
+        "webhook"
+      ],
+      "expected_tests": [
+        "stripe"
+      ]
+    },
+    {
+      "scenario_id": "imp_006_remove_tracing",
+      "category": "impact_analysis",
+      "repository": "atlas_reference",
+      "prompt": "assess impact of changing `middleware/tracing.py`",
+      "task_type": "impact",
+      "impact_target": "middleware/tracing.py",
+      "expected_concept_id": "",
+      "expected_findings": [],
+      "expected_files": [
+        "middleware/tracing.py",
+        "middleware/request_logging.py",
+        "api/routes.py"
+      ],
+      "expected_insertion_points": [
+        "middleware/tracing.py"
+      ],
+      "expected_risks": [
+        "observability"
+      ],
+      "expected_tests": [
+        "middleware"
+      ]
+    },
+    {
+      "scenario_id": "imp_007_delete_indicator_registry",
+      "category": "impact_analysis",
+      "repository": "atlas_reference",
+      "prompt": "assess impact of changing `indicators/indicator_registry.py`",
+      "task_type": "impact",
+      "impact_target": "indicators/indicator_registry.py",
+      "expected_concept_id": "",
+      "expected_findings": [],
+      "expected_files": [
+        "indicators/indicator_registry.py",
+        "registry/signal_registry.py",
+        "signals/pipeline.py"
+      ],
+      "expected_insertion_points": [
+        "indicators/indicator_registry.py"
+      ],
+      "expected_risks": [
+        "indicator"
+      ],
+      "expected_tests": [
+        "test_indicators"
+      ]
+    },
+    {
+      "scenario_id": "imp_008_replace_http_client",
+      "category": "impact_analysis",
+      "repository": "atlas_reference",
+      "prompt": "assess impact of changing `services/http_client.py`",
+      "task_type": "impact",
+      "impact_target": "services/http_client.py",
+      "expected_concept_id": "",
+      "expected_findings": [],
+      "expected_files": [
+        "services/http_client.py"
+      ],
+      "expected_insertion_points": [
+        "services/http_client.py"
+      ],
+      "expected_risks": [
+        "http",
+        "retry"
+      ],
+      "expected_tests": [
+        "client"
+      ]
+    },
+    {
+      "scenario_id": "imp_009_delete_rate_limit",
+      "category": "impact_analysis",
+      "repository": "atlas_reference",
+      "prompt": "assess impact of changing `api/rate_limit.py`",
+      "task_type": "impact",
+      "impact_target": "api/rate_limit.py",
+      "expected_concept_id": "",
+      "expected_findings": [],
+      "expected_files": [
+        "api/rate_limit.py",
+        "api/routes.py"
+      ],
+      "expected_insertion_points": [
+        "api/rate_limit.py"
+      ],
+      "expected_risks": [
+        "rate",
+        "abuse"
+      ],
+      "expected_tests": [
+        "rate"
+      ]
+    },
+    {
+      "scenario_id": "imp_010_remove_backtest",
+      "category": "impact_analysis",
+      "repository": "atlas_reference",
+      "prompt": "assess impact of changing `trading/backtest_engine.py`",
+      "task_type": "impact",
+      "impact_target": "trading/backtest_engine.py",
+      "expected_concept_id": "",
+      "expected_findings": [],
+      "expected_files": [
+        "trading/backtest_engine.py",
+        "trading/paper_trading.py"
+      ],
+      "expected_insertion_points": [
+        "trading/backtest_engine.py"
+      ],
+      "expected_risks": [
+        "backtest",
+        "trading"
+      ],
+      "expected_tests": [
+        "backtest"
+      ]
+    },
+    {
+      "scenario_id": "opt_final_algo_ema",
+      "category": "feature_addition",
+      "repository": "FINAL_ALGO_TRADER",
+      "prompt": "add ema indicator",
+      "task_type": "build",
+      "expected_concept_id": "ema",
+      "expected_files": [
+        "indicator",
+        "signal"
+      ],
+      "expected_insertion_points": [
+        "indicator",
+        "registry"
+      ],
+      "expected_findings": [
+        "EMA"
+      ],
+      "expected_risks": [
+        "lookahead"
+      ],
+      "expected_tests": [
+        "indicator"
+      ],
+      "notes": "Optional \u2014 requires FINAL_ALGO_TRADER on disk"
+    }
+  ]
+}

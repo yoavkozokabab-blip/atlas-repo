@@ -1,0 +1,4194 @@
+{
+  "aggregate": {
+    "total": 50,
+    "executed_ok": 50,
+    "atlas_score_mean": 63.8,
+    "by_category": {
+      "feature_addition": {
+        "count": 20,
+        "atlas_score_mean": 68.4,
+        "file_precision_mean": 0.126,
+        "file_recall_mean": 1.0
+      },
+      "bug_investigation": {
+        "count": 20,
+        "atlas_score_mean": 63.1,
+        "file_precision_mean": 0.106,
+        "file_recall_mean": 0.9
+      },
+      "impact_analysis": {
+        "count": 10,
+        "atlas_score_mean": 55.8,
+        "file_precision_mean": 1.0,
+        "file_recall_mean": 0.733
+      }
+    },
+    "failures": [
+      {
+        "scenario_id": "feat_003_stripe_billing",
+        "reason": "Incorrect insertion point",
+        "evidence_used": [
+          "handle_stripe_webhook in `billing/stripe_webhooks.py`",
+          "FEATURE_STRIPE in `config/feature_flags.py`"
+        ],
+        "expected_evidence": [],
+        "missing_evidence": []
+      },
+      {
+        "scenario_id": "feat_004_circuit_breaker",
+        "reason": "Incorrect insertion point",
+        "evidence_used": [
+          "cache.redis_client.RedisClient() in `cache/cache_layer.py`",
+          "fetch in `services/http_client.py`"
+        ],
+        "expected_evidence": [
+          "http",
+          "retry"
+        ],
+        "missing_evidence": [
+          "Aiohttp",
+          "Breaker",
+          "Circuit Breaker",
+          "Half Open",
+          "Http",
+          "Httpx"
+        ]
+      },
+      {
+        "scenario_id": "feat_006_rate_limiting",
+        "reason": "Incorrect insertion point",
+        "evidence_used": [
+          "rate_limit_middleware in `api/rate_limit.py`",
+          "cache.redis_client.RedisClient() in `cache/cache_layer.py`"
+        ],
+        "expected_evidence": [],
+        "missing_evidence": [
+          "Limiter",
+          "Throttle"
+        ]
+      },
+      {
+        "scenario_id": "feat_007_jwt",
+        "reason": "Incorrect insertion point",
+        "evidence_used": [
+          "auth.middleware.auth_middleware() in `api/routes.py`",
+          "login in `auth/login.py`",
+          "auth.session.create_session() in `auth/login.py`",
+          "rate_limit_middleware in `api/rate_limit.py`",
+          "authenticate_jwt in `auth/middleware.py`"
+        ],
+        "expected_evidence": [],
+        "missing_evidence": [
+          "Password"
+        ]
+      },
+      {
+        "scenario_id": "feat_007_jwt",
+        "reason": "Wrong concept identified",
+        "evidence_used": [
+          "authentication"
+        ],
+        "expected_evidence": [
+          "jwt"
+        ],
+        "missing_evidence": [
+          "jwt"
+        ]
+      },
+      {
+        "scenario_id": "feat_008_oauth2",
+        "reason": "Incorrect insertion point",
+        "evidence_used": [],
+        "expected_evidence": [],
+        "missing_evidence": [
+          "Authorization Code Flow",
+          "Authorize",
+          "Client Id",
+          "Oauth",
+          "Pkce",
+          "Token"
+        ]
+      },
+      {
+        "scenario_id": "feat_011_db_migration",
+        "reason": "Incorrect insertion point",
+        "evidence_used": [
+          "sqlalchemy.create_engine() in `db/postgres.py`",
+          "auth.session.create_session() in `auth/login.py`"
+        ],
+        "expected_evidence": [],
+        "missing_evidence": [
+          "Alembic",
+          "Migrate",
+          "Postgres"
+        ]
+      },
+      {
+        "scenario_id": "feat_013_structured_logging",
+        "reason": "Incorrect insertion point",
+        "evidence_used": [
+          "login in `auth/login.py`"
+        ],
+        "expected_evidence": [
+          "request_id",
+          "logging"
+        ],
+        "missing_evidence": [
+          "Correlation Id",
+          "Json",
+          "Logger",
+          "Logging",
+          "Structlog",
+          "Structured Fields"
+        ]
+      },
+      {
+        "scenario_id": "feat_016_signal_pipeline",
+        "reason": "Wrong concept identified",
+        "evidence_used": [
+          "ci_cd_pipeline"
+        ],
+        "expected_evidence": [
+          "ema"
+        ],
+        "missing_evidence": [
+          "ema"
+        ]
+      },
+      {
+        "scenario_id": "feat_018_auth_sessions",
+        "reason": "Incorrect insertion point",
+        "evidence_used": [
+          "auth.middleware.auth_middleware() in `api/routes.py`",
+          "login in `auth/login.py`",
+          "auth.session.create_session() in `auth/login.py`",
+          "rate_limit_middleware in `api/rate_limit.py`",
+          "authenticate_jwt in `auth/middleware.py`"
+        ],
+        "expected_evidence": [],
+        "missing_evidence": [
+          "Password"
+        ]
+      },
+      {
+        "scenario_id": "feat_019_paper_trading",
+        "reason": "Incorrect insertion point",
+        "evidence_used": [
+          "SMAIndicator in `indicators/sma.py`",
+          "IndicatorRegistry in `indicators/indicator_registry.py`",
+          "SignalRegistry in `registry/signal_registry.py`",
+          "IndicatorRegistry.register_indicator() in `indicators/indicator_registry.py`"
+        ],
+        "expected_evidence": [],
+        "missing_evidence": [
+          "Ema",
+          "Exponential Moving Average",
+          "Moving Average",
+          "EMA",
+          "Exponential moving average"
+        ]
+      },
+      {
+        "scenario_id": "feat_020_slippage_model",
+        "reason": "Incorrect insertion point",
+        "evidence_used": [
+          "SMAIndicator in `indicators/sma.py`",
+          "IndicatorRegistry in `indicators/indicator_registry.py`",
+          "SignalRegistry in `registry/signal_registry.py`",
+          "IndicatorRegistry.register_indicator() in `indicators/indicator_registry.py`"
+        ],
+        "expected_evidence": [
+          "slippage"
+        ],
+        "missing_evidence": [
+          "Ema",
+          "Exponential Moving Average",
+          "Moving Average",
+          "EMA",
+          "Exponential moving average"
+        ]
+      },
+      {
+        "scenario_id": "inv_001_backtest_paper",
+        "reason": "Incorrect insertion point",
+        "evidence_used": [
+          "Slippage mismatch: backtest ['trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`', 'SLIPPAGE in `trading/paper_config.py`'] vs live ['trading.paper_config.SLIPPAGE() in `trading/paper_trading.py`']",
+          "Different fill model symbols between backtest and live paths"
+        ],
+        "expected_evidence": [
+          "slippage",
+          "fill"
+        ],
+        "missing_evidence": [
+          "Side-by-side slippage/fill comparison"
+        ]
+      },
+      {
+        "scenario_id": "inv_001_backtest_paper",
+        "reason": "Wrong concept identified",
+        "evidence_used": [
+          "paper_trading"
+        ],
+        "expected_evidence": [
+          "backtest_live_divergence"
+        ],
+        "missing_evidence": [
+          "backtest_live_divergence"
+        ]
+      },
+      {
+        "scenario_id": "inv_002_duplicate_orders",
+        "reason": "Incorrect insertion point",
+        "evidence_used": [
+          "SMAIndicator in `indicators/sma.py`",
+          "IndicatorRegistry in `indicators/indicator_registry.py`",
+          "SignalRegistry in `registry/signal_registry.py`",
+          "IndicatorRegistry.register_indicator() in `indicators/indicator_registry.py`"
+        ],
+        "expected_evidence": [
+          "duplicate",
+          "order"
+        ],
+        "missing_evidence": [
+          "Ema",
+          "Exponential Moving Average",
+          "Moving Average",
+          "EMA",
+          "Exponential moving average"
+        ]
+      },
+      {
+        "scenario_id": "inv_002_duplicate_orders",
+        "reason": "Low file recall",
+        "evidence_used": [
+          "registry/signal_registry.py",
+          "indicators/indicator_registry.py",
+          "indicators/sma.py",
+          "signals/pipeline.py",
+          "trading/backtest_engine.py",
+          "trading/backtest_config.py",
+          "cache/redis_client.py",
+          "trading/paper_config.py"
+        ],
+        "expected_evidence": [
+          "trading/order_service.py",
+          "trading/execution.py"
+        ],
+        "missing_evidence": [
+          "trading/order_service.py",
+          "trading/execution.py"
+        ]
+      },
+      {
+        "scenario_id": "inv_002_duplicate_orders",
+        "reason": "Wrong concept identified",
+        "evidence_used": [
+          "ema"
+        ],
+        "expected_evidence": [
+          "retry_backoff"
+        ],
+        "missing_evidence": [
+          "retry_backoff"
+        ]
+      },
+      {
+        "scenario_id": "inv_004_stale_cache",
+        "reason": "Incorrect insertion point",
+        "evidence_used": [
+          "cache.redis_client.RedisClient in `cache/cache_layer.py`",
+          "get_cached in `cache/cache_layer.py`",
+          "RedisClient in `cache/redis_client.py`",
+          "RedisClient.get in `cache/redis_client.py`",
+          "RedisClient.set in `cache/redis_client.py`"
+        ],
+        "expected_evidence": [
+          "cache",
+          "stale"
+        ],
+        "missing_evidence": []
+      },
+      {
+        "scenario_id": "inv_005_auth_bypass",
+        "reason": "Incorrect insertion point",
+        "evidence_used": [
+          "auth.middleware.auth_middleware() in `api/routes.py`",
+          "login in `auth/login.py`",
+          "auth.session.create_session() in `auth/login.py`",
+          "rate_limit_middleware in `api/rate_limit.py`",
+          "authenticate_jwt in `auth/middleware.py`"
+        ],
+        "expected_evidence": [
+          "auth",
+          "middleware"
+        ],
+        "missing_evidence": [
+          "Password"
+        ]
+      },
+      {
+        "scenario_id": "inv_006_slippage_mismatch",
+        "reason": "Incorrect insertion point",
+        "evidence_used": [
+          "Slippage mismatch: backtest ['trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`', 'SLIPPAGE in `trading/paper_config.py`'] vs live ['trading.paper_config.SLIPPAGE() in `trading/paper_trading.py`']",
+          "Different fill model symbols between backtest and live paths"
+        ],
+        "expected_evidence": [
+          "slippage"
+        ],
+        "missing_evidence": [
+          "Side-by-side slippage/fill comparison"
+        ]
+      },
+      {
+        "scenario_id": "inv_006_slippage_mismatch",
+        "reason": "Wrong concept identified",
+        "evidence_used": [
+          "slippage_model"
+        ],
+        "expected_evidence": [
+          "backtest_live_divergence"
+        ],
+        "missing_evidence": [
+          "backtest_live_divergence"
+        ]
+      },
+      {
+        "scenario_id": "inv_007_indicator_mismatch",
+        "reason": "Incorrect insertion point",
+        "evidence_used": [
+          "Slippage mismatch: backtest ['trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`', 'SLIPPAGE in `trading/paper_config.py`'] vs live ['trading.paper_config.SLIPPAGE() in `trading/paper_trading.py`']",
+          "Different fill model symbols between backtest and live paths"
+        ],
+        "expected_evidence": [
+          "indicator"
+        ],
+        "missing_evidence": [
+          "Side-by-side slippage/fill comparison"
+        ]
+      },
+      {
+        "scenario_id": "inv_007_indicator_mismatch",
+        "reason": "Low file recall",
+        "evidence_used": [
+          "trading/paper_trading.py",
+          "trading/backtest_engine.py",
+          "trading/backtest_config.py",
+          "trading/paper_config.py",
+          "trading/order_service.py",
+          "registry/signal_registry.py",
+          "trading/execution.py",
+          "cache/redis_client.py"
+        ],
+        "expected_evidence": [
+          "indicators/sma.py",
+          "signals/pipeline.py"
+        ],
+        "missing_evidence": [
+          "indicators/sma.py",
+          "signals/pipeline.py"
+        ]
+      },
+      {
+        "scenario_id": "inv_007_indicator_mismatch",
+        "reason": "Wrong concept identified",
+        "evidence_used": [
+          "implied_volatility"
+        ],
+        "expected_evidence": [
+          "indicator_backtest_live"
+        ],
+        "missing_evidence": [
+          "indicator_backtest_live"
+        ]
+      },
+      {
+        "scenario_id": "inv_008_rate_limit_429",
+        "reason": "Incorrect insertion point",
+        "evidence_used": [
+          "rate_limit_middleware in `api/rate_limit.py`",
+          "cache.redis_client.RedisClient() in `cache/cache_layer.py`"
+        ],
+        "expected_evidence": [
+          "rate",
+          "429"
+        ],
+        "missing_evidence": [
+          "Limiter",
+          "Throttle"
+        ]
+      },
+      {
+        "scenario_id": "inv_010_session_expired",
+        "reason": "Incorrect insertion point",
+        "evidence_used": [
+          "auth.middleware.auth_middleware() in `api/routes.py`",
+          "login in `auth/login.py`",
+          "auth.session.create_session() in `auth/login.py`",
+          "rate_limit_middleware in `api/rate_limit.py`",
+          "authenticate_jwt in `auth/middleware.py`"
+        ],
+        "expected_evidence": [
+          "session"
+        ],
+        "missing_evidence": [
+          "Password"
+        ]
+      },
+      {
+        "scenario_id": "inv_014_missing_traces",
+        "reason": "Incorrect insertion point",
+        "evidence_used": [
+          "request_id_middleware in `middleware/request_logging.py`",
+          "rate_limit_middleware in `api/rate_limit.py`"
+        ],
+        "expected_evidence": [
+          "trace",
+          "span"
+        ],
+        "missing_evidence": [
+          "Correlation",
+          "Logger",
+          "Logging",
+          "Structlog"
+        ]
+      },
+      {
+        "scenario_id": "inv_017_order_fill_delay",
+        "reason": "Incorrect insertion point",
+        "evidence_used": [
+          "Slippage mismatch: backtest ['trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`', 'SLIPPAGE in `trading/paper_config.py`'] vs live ['trading.paper_config.SLIPPAGE() in `trading/paper_trading.py`']",
+          "Different fill model symbols between backtest and live paths"
+        ],
+        "expected_evidence": [
+          "fill",
+          "execution"
+        ],
+        "missing_evidence": [
+          "Side-by-side slippage/fill comparison"
+        ]
+      },
+      {
+        "scenario_id": "inv_017_order_fill_delay",
+        "reason": "Wrong concept identified",
+        "evidence_used": [
+          "slo_error_budget"
+        ],
+        "expected_evidence": [
+          "backtest_live_divergence"
+        ],
+        "missing_evidence": [
+          "backtest_live_divergence"
+        ]
+      },
+      {
+        "scenario_id": "inv_018_cache_invalidation",
+        "reason": "Incorrect insertion point",
+        "evidence_used": [
+          "cache.redis_client.RedisClient in `cache/cache_layer.py`",
+          "get_cached in `cache/cache_layer.py`",
+          "RedisClient in `cache/redis_client.py`",
+          "RedisClient.get in `cache/redis_client.py`",
+          "RedisClient.set in `cache/redis_client.py`"
+        ],
+        "expected_evidence": [
+          "cache",
+          "invalidation"
+        ],
+        "missing_evidence": []
+      },
+      {
+        "scenario_id": "inv_019_migration_failure",
+        "reason": "Incorrect insertion point",
+        "evidence_used": [
+          "sqlalchemy.create_engine() in `db/postgres.py`",
+          "auth.session.create_session() in `auth/login.py`"
+        ],
+        "expected_evidence": [
+          "migration"
+        ],
+        "missing_evidence": [
+          "Alembic",
+          "Migrate",
+          "Postgres"
+        ]
+      },
+      {
+        "scenario_id": "inv_020_execution_timing",
+        "reason": "Incorrect insertion point",
+        "evidence_used": [
+          "Slippage mismatch: backtest ['trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`', 'SLIPPAGE in `trading/paper_config.py`'] vs live ['trading.paper_config.SLIPPAGE() in `trading/paper_trading.py`']",
+          "Different fill model symbols between backtest and live paths"
+        ],
+        "expected_evidence": [
+          "timing",
+          "execution"
+        ],
+        "missing_evidence": [
+          "Side-by-side slippage/fill comparison"
+        ]
+      },
+      {
+        "scenario_id": "inv_020_execution_timing",
+        "reason": "Wrong concept identified",
+        "evidence_used": [
+          "implied_volatility"
+        ],
+        "expected_evidence": [
+          "backtest_live_divergence"
+        ],
+        "missing_evidence": [
+          "backtest_live_divergence"
+        ]
+      },
+      {
+        "scenario_id": "imp_006_remove_tracing",
+        "reason": "Low file recall",
+        "evidence_used": [
+          "middleware/tracing.py"
+        ],
+        "expected_evidence": [
+          "middleware/tracing.py",
+          "middleware/request_logging.py",
+          "api/routes.py"
+        ],
+        "missing_evidence": [
+          "middleware/request_logging.py",
+          "api/routes.py"
+        ]
+      }
+    ],
+    "evidence_audits": [
+      {
+        "scenario_id": "feat_003_stripe_billing",
+        "audit_type": "incorrect_insertion_point",
+        "detail": "got `billing/stripe_webhooks.py` expected one of ['billing/stripe_billing.py']"
+      },
+      {
+        "scenario_id": "feat_004_circuit_breaker",
+        "audit_type": "incorrect_insertion_point",
+        "detail": "got `cache/redis_client.py` expected one of ['services/http_client.py']"
+      },
+      {
+        "scenario_id": "feat_006_rate_limiting",
+        "audit_type": "incorrect_insertion_point",
+        "detail": "got `api/routes.py` expected one of ['api/rate_limit.py']"
+      },
+      {
+        "scenario_id": "feat_007_jwt",
+        "audit_type": "incorrect_insertion_point",
+        "detail": "got `auth/login.py` expected one of ['auth/middleware.py']"
+      },
+      {
+        "scenario_id": "feat_008_oauth2",
+        "audit_type": "incorrect_insertion_point",
+        "detail": "got `api/routes.py` expected one of ['auth/login.py']"
+      },
+      {
+        "scenario_id": "feat_011_db_migration",
+        "audit_type": "incorrect_insertion_point",
+        "detail": "got `db/postgres.py` expected one of ['db/migrations/001_initial.py']"
+      },
+      {
+        "scenario_id": "feat_013_structured_logging",
+        "audit_type": "incorrect_insertion_point",
+        "detail": "got `auth/login.py` expected one of ['middleware/request_logging.py']"
+      },
+      {
+        "scenario_id": "feat_018_auth_sessions",
+        "audit_type": "incorrect_insertion_point",
+        "detail": "got `auth/login.py` expected one of ['auth/middleware.py']"
+      },
+      {
+        "scenario_id": "feat_019_paper_trading",
+        "audit_type": "incorrect_insertion_point",
+        "detail": "got `registry/signal_registry.py` expected one of ['trading/paper_trading.py']"
+      },
+      {
+        "scenario_id": "feat_020_slippage_model",
+        "audit_type": "incorrect_insertion_point",
+        "detail": "got `registry/signal_registry.py` expected one of ['trading/backtest_config.py']"
+      },
+      {
+        "scenario_id": "inv_001_backtest_paper",
+        "audit_type": "incorrect_insertion_point",
+        "detail": "got `trading/paper_trading.py` expected one of ['trading/backtest_config.py']"
+      },
+      {
+        "scenario_id": "inv_002_duplicate_orders",
+        "audit_type": "incorrect_insertion_point",
+        "detail": "got `registry/signal_registry.py` expected one of ['trading/order_service.py']"
+      },
+      {
+        "scenario_id": "inv_004_stale_cache",
+        "audit_type": "incorrect_insertion_point",
+        "detail": "got `cache/redis_client.py` expected one of ['cache/cache_layer.py']"
+      },
+      {
+        "scenario_id": "inv_005_auth_bypass",
+        "audit_type": "incorrect_insertion_point",
+        "detail": "got `auth/login.py` expected one of ['auth/middleware.py']"
+      },
+      {
+        "scenario_id": "inv_006_slippage_mismatch",
+        "audit_type": "incorrect_insertion_point",
+        "detail": "got `trading/paper_trading.py` expected one of ['trading/backtest_config.py']"
+      },
+      {
+        "scenario_id": "inv_007_indicator_mismatch",
+        "audit_type": "incorrect_insertion_point",
+        "detail": "got `trading/paper_trading.py` expected one of ['indicators/sma.py']"
+      },
+      {
+        "scenario_id": "inv_008_rate_limit_429",
+        "audit_type": "incorrect_insertion_point",
+        "detail": "got `api/routes.py` expected one of ['api/rate_limit.py']"
+      },
+      {
+        "scenario_id": "inv_010_session_expired",
+        "audit_type": "incorrect_insertion_point",
+        "detail": "got `auth/login.py` expected one of ['auth/session.py']"
+      },
+      {
+        "scenario_id": "inv_014_missing_traces",
+        "audit_type": "incorrect_insertion_point",
+        "detail": "got `middleware/request_logging.py` expected one of ['middleware/tracing.py']"
+      },
+      {
+        "scenario_id": "inv_017_order_fill_delay",
+        "audit_type": "incorrect_insertion_point",
+        "detail": "got `trading/paper_trading.py` expected one of ['trading/execution.py']"
+      },
+      {
+        "scenario_id": "inv_018_cache_invalidation",
+        "audit_type": "incorrect_insertion_point",
+        "detail": "got `cache/redis_client.py` expected one of ['cache/cache_layer.py']"
+      },
+      {
+        "scenario_id": "inv_019_migration_failure",
+        "audit_type": "incorrect_insertion_point",
+        "detail": "got `db/postgres.py` expected one of ['db/migrations/001_initial.py']"
+      },
+      {
+        "scenario_id": "inv_020_execution_timing",
+        "audit_type": "incorrect_insertion_point",
+        "detail": "got `trading/paper_trading.py` expected one of ['trading/backtest_config.py']"
+      }
+    ]
+  },
+  "results": [
+    {
+      "scenario_id": "feat_001_ema",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "add EMA indicator with configurable period",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.21428571428571427,
+        "file_recall": 1.0,
+        "insertion_point_correct": true,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.92,
+        "risk_recall": 1.0,
+        "test_recall": 0.5,
+        "finding_recall": 1.0,
+        "atlas_score": 85.7,
+        "repository_understanding": 75.7,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 92.0,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 90.0
+      },
+      "recommended_files": [
+        "registry/signal_registry.py",
+        "indicators/indicator_registry.py",
+        "indicators/sma.py",
+        "signals/pipeline.py",
+        "trading/backtest_engine.py",
+        "trading/backtest_config.py",
+        "cache/redis_client.py",
+        "trading/paper_config.py",
+        "api/rate_limit.py",
+        "auth/session.py",
+        "trading/execution.py",
+        "api/routes.py",
+        "trading/paper_trading.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "ema",
+      "actual_insertion": "registry/signal_registry.py",
+      "actual_findings": [
+        "SMAIndicator in `indicators/sma.py`",
+        "IndicatorRegistry in `indicators/indicator_registry.py`",
+        "SignalRegistry in `registry/signal_registry.py`",
+        "IndicatorRegistry.register_indicator() in `indicators/indicator_registry.py`",
+        "Implementation status: Partially Implemented",
+        "Evidence score: 80/100",
+        "Found: SMAIndicator in `indicators/sma.py`; IndicatorRegistry in `indicators/indicator_registry.py`; SignalRegistry in `registry/signal_registry.py`; IndicatorRegistry.register_indicator() in `indicators/indicator_registry.py`",
+        "Missing: Ema; Exponential Moving Average; Moving Average; EMA",
+        "Recommended insertion: `registry/signal_registry.py`",
+        "Matched feature intent: general",
+        "Module `registry/signal_registry.py` \u2014 fan-in 0, risk 0, match score 3.2",
+        "Module `trading/backtest_engine.py` \u2014 fan-in 0, risk 0, match score 3.2",
+        "Module `indicators/indicator_registry.py` \u2014 fan-in 0, risk 0, match score 3.2",
+        "Module `trading/backtest_config.py` \u2014 fan-in 0, risk 0, match score 3.2",
+        "Module `signals/pipeline.py` \u2014 fan-in 0, risk 0, match score 3.2"
+      ],
+      "failures": [],
+      "evidence_audits": [],
+      "error": ""
+    },
+    {
+      "scenario_id": "feat_002_feature_flags",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "add feature flags for gradual rollout",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.08333333333333333,
+        "file_recall": 1.0,
+        "insertion_point_correct": true,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.984,
+        "risk_recall": 1.0,
+        "test_recall": 1.0,
+        "finding_recall": 1.0,
+        "atlas_score": 90.4,
+        "repository_understanding": 69.2,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 98.4,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 100.0
+      },
+      "recommended_files": [
+        "config/feature_flags.py",
+        "trading/paper_trading.py",
+        "trading/backtest_engine.py",
+        "registry/signal_registry.py",
+        "cache/redis_client.py",
+        "indicators/indicator_registry.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "api/rate_limit.py",
+        "auth/session.py",
+        "trading/execution.py",
+        "api/routes.py"
+      ],
+      "actual_concept_id": "feature_flags",
+      "actual_insertion": "config/feature_flags.py",
+      "actual_findings": [
+        "FEATURE_EMA in `config/feature_flags.py`",
+        "trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`",
+        "Implementation status: Implemented",
+        "Evidence score: 96/100",
+        "Found: FEATURE_EMA in `config/feature_flags.py`; trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`",
+        "Missing: Feature Flag; Launchdarkly; Settings; Toggle",
+        "Recommended insertion: `config/feature_flags.py`",
+        "Matched feature intent: general",
+        "Module `config/feature_flags.py` \u2014 fan-in 0, risk 0, match score 9.2",
+        "Module `registry/signal_registry.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `trading/backtest_engine.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `cache/redis_client.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `indicators/indicator_registry.py` \u2014 fan-in 0, risk 0, match score 0.2"
+      ],
+      "failures": [],
+      "evidence_audits": [],
+      "error": ""
+    },
+    {
+      "scenario_id": "feat_003_stripe_billing",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "Add Stripe billing and subscriptions",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.15384615384615385,
+        "file_recall": 1.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.681,
+        "risk_recall": 1.0,
+        "test_recall": 1.0,
+        "finding_recall": 1.0,
+        "atlas_score": 69.3,
+        "repository_understanding": 57.7,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 68.1,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 100.0
+      },
+      "recommended_files": [
+        "billing/stripe_webhooks.py",
+        "config/feature_flags.py",
+        "billing/stripe_billing.py",
+        "registry/signal_registry.py",
+        "trading/backtest_engine.py",
+        "cache/redis_client.py",
+        "indicators/indicator_registry.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "api/rate_limit.py",
+        "auth/session.py",
+        "trading/execution.py",
+        "trading/paper_trading.py"
+      ],
+      "actual_concept_id": "stripe_billing",
+      "actual_insertion": "billing/stripe_webhooks.py",
+      "actual_findings": [
+        "handle_stripe_webhook in `billing/stripe_webhooks.py`",
+        "FEATURE_STRIPE in `config/feature_flags.py`",
+        "Implementation status: Partially Implemented",
+        "Evidence score: 64/100",
+        "Found: handle_stripe_webhook in `billing/stripe_webhooks.py`; FEATURE_STRIPE in `config/feature_flags.py`",
+        "Recommended insertion: `billing/stripe_webhooks.py`",
+        "Matched feature intent: billing",
+        "Module `billing/stripe_webhooks.py` \u2014 fan-in 0, risk 0, match score 6.2",
+        "Module `billing/stripe_billing.py` \u2014 fan-in 0, risk 0, match score 6.2",
+        "Module `registry/signal_registry.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `trading/backtest_engine.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `cache/redis_client.py` \u2014 fan-in 0, risk 0, match score 0.2"
+      ],
+      "failures": [
+        {
+          "scenario_id": "feat_003_stripe_billing",
+          "reason": "Incorrect insertion point",
+          "evidence_used": [
+            "handle_stripe_webhook in `billing/stripe_webhooks.py`",
+            "FEATURE_STRIPE in `config/feature_flags.py`"
+          ],
+          "expected_evidence": [],
+          "missing_evidence": []
+        }
+      ],
+      "evidence_audits": [
+        {
+          "scenario_id": "feat_003_stripe_billing",
+          "audit_type": "incorrect_insertion_point",
+          "detail": "got `billing/stripe_webhooks.py` expected one of ['billing/stripe_billing.py']"
+        }
+      ],
+      "error": ""
+    },
+    {
+      "scenario_id": "feat_004_circuit_breaker",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "Add circuit breaker for outbound HTTP calls",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.07142857142857142,
+        "file_recall": 1.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.681,
+        "risk_recall": 1.0,
+        "test_recall": 1.0,
+        "finding_recall": 0.5,
+        "atlas_score": 68.1,
+        "repository_understanding": 53.6,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 68.1,
+        "investigation_quality": 70.0,
+        "impact_analysis_quality": 100.0
+      },
+      "recommended_files": [
+        "cache/redis_client.py",
+        "services/http_client.py",
+        "cache/cache_layer.py",
+        "registry/signal_registry.py",
+        "trading/backtest_engine.py",
+        "indicators/indicator_registry.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "api/rate_limit.py",
+        "auth/session.py",
+        "trading/execution.py",
+        "api/routes.py",
+        "trading/paper_trading.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "circuit_breaker",
+      "actual_insertion": "cache/redis_client.py",
+      "actual_findings": [
+        "cache.redis_client.RedisClient() in `cache/cache_layer.py`",
+        "fetch in `services/http_client.py`",
+        "Implementation status: Partially Implemented",
+        "Evidence score: 64/100",
+        "Found: cache.redis_client.RedisClient() in `cache/cache_layer.py`; fetch in `services/http_client.py`",
+        "Missing: Aiohttp; Breaker; Circuit Breaker; Half Open",
+        "Recommended insertion: `cache/redis_client.py`",
+        "Matched feature intent: general",
+        "Module `services/http_client.py` \u2014 fan-in 0, risk 0, match score 3.2",
+        "Module `registry/signal_registry.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `trading/backtest_engine.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `cache/redis_client.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `indicators/indicator_registry.py` \u2014 fan-in 0, risk 0, match score 0.2"
+      ],
+      "failures": [
+        {
+          "scenario_id": "feat_004_circuit_breaker",
+          "reason": "Incorrect insertion point",
+          "evidence_used": [
+            "cache.redis_client.RedisClient() in `cache/cache_layer.py`",
+            "fetch in `services/http_client.py`"
+          ],
+          "expected_evidence": [
+            "http",
+            "retry"
+          ],
+          "missing_evidence": [
+            "Aiohttp",
+            "Breaker",
+            "Circuit Breaker",
+            "Half Open",
+            "Http",
+            "Httpx"
+          ]
+        }
+      ],
+      "evidence_audits": [
+        {
+          "scenario_id": "feat_004_circuit_breaker",
+          "audit_type": "incorrect_insertion_point",
+          "detail": "got `cache/redis_client.py` expected one of ['services/http_client.py']"
+        }
+      ],
+      "error": ""
+    },
+    {
+      "scenario_id": "feat_005_distributed_tracing",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "add distributed tracing with span propagation",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.14285714285714285,
+        "file_recall": 1.0,
+        "insertion_point_correct": true,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.9,
+        "risk_recall": 1.0,
+        "test_recall": 0.5,
+        "finding_recall": 1.0,
+        "atlas_score": 84.1,
+        "repository_understanding": 72.1,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 90.0,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 90.0
+      },
+      "recommended_files": [
+        "middleware/request_logging.py",
+        "api/routes.py",
+        "middleware/tracing.py",
+        "api/rate_limit.py",
+        "auth/middleware.py",
+        "registry/signal_registry.py",
+        "trading/backtest_engine.py",
+        "cache/redis_client.py",
+        "indicators/indicator_registry.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "auth/session.py",
+        "trading/paper_trading.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "distributed_tracing",
+      "actual_insertion": "middleware/request_logging.py",
+      "actual_findings": [
+        "request_id_middleware in `middleware/request_logging.py`",
+        "rate_limit_middleware in `api/rate_limit.py`",
+        "Implementation status: Implemented",
+        "Evidence score: 75/100",
+        "Found: request_id_middleware in `middleware/request_logging.py`; rate_limit_middleware in `api/rate_limit.py`",
+        "Missing: Correlation; Logger; Logging; Structlog",
+        "Recommended insertion: `middleware/request_logging.py`",
+        "Matched feature intent: general",
+        "Module `middleware/tracing.py` \u2014 fan-in 0, risk 0, match score 3.1",
+        "Module `registry/signal_registry.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `trading/backtest_engine.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `cache/redis_client.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `indicators/indicator_registry.py` \u2014 fan-in 0, risk 0, match score 0.2"
+      ],
+      "failures": [],
+      "evidence_audits": [],
+      "error": ""
+    },
+    {
+      "scenario_id": "feat_006_rate_limiting",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "add API rate limiting middleware",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.14285714285714285,
+        "file_recall": 1.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.7450000000000001,
+        "risk_recall": 0.0,
+        "test_recall": 1.0,
+        "finding_recall": 1.0,
+        "atlas_score": 60.8,
+        "repository_understanding": 57.1,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 74.5,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 70.0
+      },
+      "recommended_files": [
+        "api/routes.py",
+        "cache/redis_client.py",
+        "api/rate_limit.py",
+        "cache/cache_layer.py",
+        "auth/middleware.py",
+        "middleware/request_logging.py",
+        "middleware/tracing.py",
+        "registry/signal_registry.py",
+        "trading/backtest_engine.py",
+        "indicators/indicator_registry.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "trading/paper_trading.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "rate_limiting",
+      "actual_insertion": "api/routes.py",
+      "actual_findings": [
+        "rate_limit_middleware in `api/rate_limit.py`",
+        "cache.redis_client.RedisClient() in `cache/cache_layer.py`",
+        "Implementation status: Implemented",
+        "Evidence score: 80/100",
+        "Found: rate_limit_middleware in `api/rate_limit.py`; cache.redis_client.RedisClient() in `cache/cache_layer.py`",
+        "Missing: Limiter; Throttle",
+        "Recommended insertion: `api/routes.py`",
+        "Matched feature intent: general",
+        "Module `api/rate_limit.py` \u2014 fan-in 0, risk 0, match score 9.2",
+        "Module `api/routes.py` \u2014 fan-in 0, risk 0, match score 3.2",
+        "Module `middleware/request_logging.py` \u2014 fan-in 0, risk 0, match score 3.2",
+        "Module `middleware/tracing.py` \u2014 fan-in 0, risk 0, match score 3.1",
+        "Module `auth/middleware.py` \u2014 fan-in 0, risk 0, match score 3.0"
+      ],
+      "failures": [
+        {
+          "scenario_id": "feat_006_rate_limiting",
+          "reason": "Incorrect insertion point",
+          "evidence_used": [
+            "rate_limit_middleware in `api/rate_limit.py`",
+            "cache.redis_client.RedisClient() in `cache/cache_layer.py`"
+          ],
+          "expected_evidence": [],
+          "missing_evidence": [
+            "Limiter",
+            "Throttle"
+          ]
+        }
+      ],
+      "evidence_audits": [
+        {
+          "scenario_id": "feat_006_rate_limiting",
+          "audit_type": "incorrect_insertion_point",
+          "detail": "got `api/routes.py` expected one of ['api/rate_limit.py']"
+        }
+      ],
+      "error": ""
+    },
+    {
+      "scenario_id": "feat_007_jwt",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "configure JWT bearer authentication",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.11764705882352941,
+        "file_recall": 1.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": false,
+        "evidence_accuracy": 0.761,
+        "risk_recall": 0.5,
+        "test_recall": 0.5,
+        "finding_recall": 1.0,
+        "atlas_score": 45.8,
+        "repository_understanding": 55.9,
+        "knowledge_understanding": 0.0,
+        "evidence_quality": 76.1,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 75.0
+      },
+      "recommended_files": [
+        "auth/login.py",
+        "auth/middleware.py",
+        "api/routes.py",
+        "auth/session.py",
+        "api/rate_limit.py",
+        "db/postgres.py",
+        "registry/signal_registry.py",
+        "signals/pipeline.py",
+        "trading/backtest_engine.py",
+        "cache/redis_client.py",
+        "indicators/indicator_registry.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "trading/paper_trading.py",
+        "config/feature_flags.py",
+        "middleware/request_logging.py",
+        "middleware/tracing.py"
+      ],
+      "actual_concept_id": "authentication",
+      "actual_insertion": "auth/login.py",
+      "actual_findings": [
+        "auth.middleware.auth_middleware() in `api/routes.py`",
+        "login in `auth/login.py`",
+        "auth.session.create_session() in `auth/login.py`",
+        "rate_limit_middleware in `api/rate_limit.py`",
+        "authenticate_jwt in `auth/middleware.py`",
+        "Implementation status: Implemented",
+        "Evidence score: 84/100",
+        "Found: auth.middleware.auth_middleware() in `api/routes.py`; login in `auth/login.py`; auth.session.create_session() in `auth/login.py`; rate_limit_middleware in `api/rate_limit.py`",
+        "Missing: Password",
+        "Recommended insertion: `auth/login.py`",
+        "Matched feature intent: authentication",
+        "Module `auth/session.py` \u2014 fan-in 0, risk 0, match score 6.2",
+        "Module `auth/login.py` \u2014 fan-in 0, risk 0, match score 6.2",
+        "Module `registry/signal_registry.py` \u2014 fan-in 0, risk 0, match score 3.2",
+        "Module `signals/pipeline.py` \u2014 fan-in 0, risk 0, match score 3.2",
+        "Module `auth/middleware.py` \u2014 fan-in 0, risk 0, match score 3.0"
+      ],
+      "failures": [
+        {
+          "scenario_id": "feat_007_jwt",
+          "reason": "Incorrect insertion point",
+          "evidence_used": [
+            "auth.middleware.auth_middleware() in `api/routes.py`",
+            "login in `auth/login.py`",
+            "auth.session.create_session() in `auth/login.py`",
+            "rate_limit_middleware in `api/rate_limit.py`",
+            "authenticate_jwt in `auth/middleware.py`"
+          ],
+          "expected_evidence": [],
+          "missing_evidence": [
+            "Password"
+          ]
+        },
+        {
+          "scenario_id": "feat_007_jwt",
+          "reason": "Wrong concept identified",
+          "evidence_used": [
+            "authentication"
+          ],
+          "expected_evidence": [
+            "jwt"
+          ],
+          "missing_evidence": [
+            "jwt"
+          ]
+        }
+      ],
+      "evidence_audits": [
+        {
+          "scenario_id": "feat_007_jwt",
+          "audit_type": "incorrect_insertion_point",
+          "detail": "got `auth/login.py` expected one of ['auth/middleware.py']"
+        }
+      ],
+      "error": ""
+    },
+    {
+      "scenario_id": "feat_008_oauth2",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "Add OAuth2 authorization code flow with PKCE",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.14285714285714285,
+        "file_recall": 1.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.215,
+        "risk_recall": 1.0,
+        "test_recall": 0.5,
+        "finding_recall": 1.0,
+        "atlas_score": 52.5,
+        "repository_understanding": 57.1,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 21.5,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 90.0
+      },
+      "recommended_files": [
+        "api/routes.py",
+        "registry/signal_registry.py",
+        "trading/backtest_engine.py",
+        "cache/redis_client.py",
+        "indicators/indicator_registry.py",
+        "trading/backtest_config.py",
+        "auth/session.py",
+        "auth/login.py",
+        "auth/middleware.py",
+        "trading/paper_config.py",
+        "api/rate_limit.py",
+        "trading/execution.py",
+        "trading/paper_trading.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "oauth2",
+      "actual_insertion": "api/routes.py",
+      "actual_findings": [
+        "Implementation status: Not Found",
+        "Evidence score: 10/100",
+        "Missing: Authorization Code Flow; Authorize; Client Id; Oauth",
+        "Recommended insertion: `api/routes.py`",
+        "Matched feature intent: authentication",
+        "Module `auth/session.py` \u2014 fan-in 0, risk 0, match score 6.2",
+        "Module `auth/login.py` \u2014 fan-in 0, risk 0, match score 6.2",
+        "Module `auth/middleware.py` \u2014 fan-in 0, risk 0, match score 3.0",
+        "Module `registry/signal_registry.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `trading/backtest_engine.py` \u2014 fan-in 0, risk 0, match score 0.2"
+      ],
+      "failures": [
+        {
+          "scenario_id": "feat_008_oauth2",
+          "reason": "Incorrect insertion point",
+          "evidence_used": [],
+          "expected_evidence": [],
+          "missing_evidence": [
+            "Authorization Code Flow",
+            "Authorize",
+            "Client Id",
+            "Oauth",
+            "Pkce",
+            "Token"
+          ]
+        }
+      ],
+      "evidence_audits": [
+        {
+          "scenario_id": "feat_008_oauth2",
+          "audit_type": "incorrect_insertion_point",
+          "detail": "got `api/routes.py` expected one of ['auth/login.py']"
+        }
+      ],
+      "error": ""
+    },
+    {
+      "scenario_id": "feat_009_webhooks",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "add Stripe webhook receiver with signature verification",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.07692307692307693,
+        "file_recall": 1.0,
+        "insertion_point_correct": true,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.761,
+        "risk_recall": 0.0,
+        "test_recall": 1.0,
+        "finding_recall": 1.0,
+        "atlas_score": 74.7,
+        "repository_understanding": 68.8,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 76.1,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 70.0
+      },
+      "recommended_files": [
+        "billing/stripe_webhooks.py",
+        "config/feature_flags.py",
+        "registry/signal_registry.py",
+        "trading/backtest_engine.py",
+        "cache/redis_client.py",
+        "indicators/indicator_registry.py",
+        "billing/stripe_billing.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "api/rate_limit.py",
+        "auth/session.py",
+        "trading/execution.py",
+        "trading/paper_trading.py"
+      ],
+      "actual_concept_id": "webhook_receiver",
+      "actual_insertion": "billing/stripe_webhooks.py",
+      "actual_findings": [
+        "verify_webhook_signature in `billing/stripe_webhooks.py`",
+        "handle_stripe_webhook in `billing/stripe_webhooks.py`",
+        "Implementation status: Implemented",
+        "Evidence score: 84/100",
+        "Found: verify_webhook_signature in `billing/stripe_webhooks.py`; handle_stripe_webhook in `billing/stripe_webhooks.py`",
+        "Missing: Endpoint",
+        "Recommended insertion: `billing/stripe_webhooks.py`",
+        "Matched feature intent: billing",
+        "Module `billing/stripe_webhooks.py` \u2014 fan-in 0, risk 0, match score 9.2",
+        "Module `billing/stripe_billing.py` \u2014 fan-in 0, risk 0, match score 6.2",
+        "Module `registry/signal_registry.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `trading/backtest_engine.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `cache/redis_client.py` \u2014 fan-in 0, risk 0, match score 0.2"
+      ],
+      "failures": [],
+      "evidence_audits": [],
+      "error": ""
+    },
+    {
+      "scenario_id": "feat_010_redis_cache",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "add Redis caching layer",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.15384615384615385,
+        "file_recall": 1.0,
+        "insertion_point_correct": true,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.7450000000000001,
+        "risk_recall": 1.0,
+        "test_recall": 1.0,
+        "finding_recall": 1.0,
+        "atlas_score": 85.4,
+        "repository_understanding": 72.7,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 74.5,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 100.0
+      },
+      "recommended_files": [
+        "cache/redis_client.py",
+        "cache/cache_layer.py",
+        "registry/signal_registry.py",
+        "trading/backtest_engine.py",
+        "indicators/indicator_registry.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "api/rate_limit.py",
+        "auth/session.py",
+        "trading/execution.py",
+        "api/routes.py",
+        "trading/paper_trading.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "redis_cache",
+      "actual_insertion": "cache/redis_client.py",
+      "actual_findings": [
+        "cache.redis_client.RedisClient in `cache/cache_layer.py`",
+        "get_cached in `cache/cache_layer.py`",
+        "RedisClient in `cache/redis_client.py`",
+        "RedisClient.get in `cache/redis_client.py`",
+        "RedisClient.set in `cache/redis_client.py`",
+        "Implementation status: Partially Implemented",
+        "Evidence score: 80/100",
+        "Found: cache.redis_client.RedisClient in `cache/cache_layer.py`; get_cached in `cache/cache_layer.py`; RedisClient in `cache/redis_client.py`; RedisClient.get in `cache/redis_client.py`",
+        "Recommended insertion: `cache/redis_client.py`",
+        "Matched feature intent: caching",
+        "Module `cache/redis_client.py` \u2014 fan-in 0, risk 0, match score 6.2",
+        "Module `cache/cache_layer.py` \u2014 fan-in 0, risk 0, match score 3.2",
+        "Module `registry/signal_registry.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `trading/backtest_engine.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `indicators/indicator_registry.py` \u2014 fan-in 0, risk 0, match score 0.2"
+      ],
+      "failures": [],
+      "evidence_audits": [],
+      "error": ""
+    },
+    {
+      "scenario_id": "feat_011_db_migration",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "add database migration for new orders table",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.15384615384615385,
+        "file_recall": 1.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.825,
+        "risk_recall": 1.0,
+        "test_recall": 1.0,
+        "finding_recall": 1.0,
+        "atlas_score": 72.9,
+        "repository_understanding": 57.7,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 82.5,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 100.0
+      },
+      "recommended_files": [
+        "db/postgres.py",
+        "trading/paper_trading.py",
+        "auth/login.py",
+        "auth/session.py",
+        "db/migrations/001_initial.py",
+        "registry/signal_registry.py",
+        "trading/backtest_engine.py",
+        "cache/redis_client.py",
+        "indicators/indicator_registry.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "api/rate_limit.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "database_migration",
+      "actual_insertion": "db/postgres.py",
+      "actual_findings": [
+        "sqlalchemy.create_engine() in `db/postgres.py`",
+        "auth.session.create_session() in `auth/login.py`",
+        "Implementation status: Implemented",
+        "Evidence score: 100/100",
+        "Found: sqlalchemy.create_engine() in `db/postgres.py`; auth.session.create_session() in `auth/login.py`",
+        "Missing: Alembic; Migrate; Postgres",
+        "Recommended insertion: `db/postgres.py`",
+        "Matched feature intent: general",
+        "Module `db/migrations/001_initial.py` \u2014 fan-in 0, risk 0, match score 3.2",
+        "Module `registry/signal_registry.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `trading/backtest_engine.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `cache/redis_client.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `indicators/indicator_registry.py` \u2014 fan-in 0, risk 0, match score 0.2"
+      ],
+      "failures": [
+        {
+          "scenario_id": "feat_011_db_migration",
+          "reason": "Incorrect insertion point",
+          "evidence_used": [
+            "sqlalchemy.create_engine() in `db/postgres.py`",
+            "auth.session.create_session() in `auth/login.py`"
+          ],
+          "expected_evidence": [],
+          "missing_evidence": [
+            "Alembic",
+            "Migrate",
+            "Postgres"
+          ]
+        }
+      ],
+      "evidence_audits": [
+        {
+          "scenario_id": "feat_011_db_migration",
+          "audit_type": "incorrect_insertion_point",
+          "detail": "got `db/postgres.py` expected one of ['db/migrations/001_initial.py']"
+        }
+      ],
+      "error": ""
+    },
+    {
+      "scenario_id": "feat_012_retry",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "add retry with exponential backoff to HTTP client",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.07692307692307693,
+        "file_recall": 1.0,
+        "insertion_point_correct": true,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.4325,
+        "risk_recall": 1.0,
+        "test_recall": 0.5,
+        "finding_recall": 0.0,
+        "atlas_score": 71.4,
+        "repository_understanding": 68.8,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 43.2,
+        "investigation_quality": 40.0,
+        "impact_analysis_quality": 90.0
+      },
+      "recommended_files": [
+        "services/http_client.py",
+        "registry/signal_registry.py",
+        "trading/backtest_engine.py",
+        "cache/redis_client.py",
+        "indicators/indicator_registry.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "api/rate_limit.py",
+        "auth/session.py",
+        "trading/execution.py",
+        "api/routes.py",
+        "trading/paper_trading.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "retry_backoff",
+      "actual_insertion": "services/http_client.py",
+      "actual_findings": [
+        "fetch in `services/http_client.py`",
+        "Implementation status: Partially Implemented",
+        "Evidence score: 55/100",
+        "Found: fetch in `services/http_client.py`",
+        "Missing: Attempt; Backoff; Exponential Backoff; Jitter",
+        "Recommended insertion: `services/http_client.py`",
+        "Matched feature intent: general",
+        "Module `services/http_client.py` \u2014 fan-in 0, risk 0, match score 6.2",
+        "Module `cache/redis_client.py` \u2014 fan-in 0, risk 0, match score 3.2",
+        "Module `registry/signal_registry.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `trading/backtest_engine.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `indicators/indicator_registry.py` \u2014 fan-in 0, risk 0, match score 0.2"
+      ],
+      "failures": [],
+      "evidence_audits": [],
+      "error": ""
+    },
+    {
+      "scenario_id": "feat_013_structured_logging",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "add structured logging with correlation IDs",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.07142857142857142,
+        "file_recall": 1.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.37,
+        "risk_recall": 1.0,
+        "test_recall": 1.0,
+        "finding_recall": 0.5,
+        "atlas_score": 60.3,
+        "repository_understanding": 53.6,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 37.0,
+        "investigation_quality": 70.0,
+        "impact_analysis_quality": 100.0
+      },
+      "recommended_files": [
+        "auth/login.py",
+        "middleware/request_logging.py",
+        "registry/signal_registry.py",
+        "trading/backtest_engine.py",
+        "cache/redis_client.py",
+        "indicators/indicator_registry.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "api/rate_limit.py",
+        "auth/session.py",
+        "trading/execution.py",
+        "api/routes.py",
+        "trading/paper_trading.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "structured_logging",
+      "actual_insertion": "auth/login.py",
+      "actual_findings": [
+        "login in `auth/login.py`",
+        "Implementation status: Partially Implemented",
+        "Evidence score: 55/100",
+        "Found: login in `auth/login.py`",
+        "Missing: Correlation Id; Json; Logger; Logging",
+        "Recommended insertion: `auth/login.py`",
+        "Matched feature intent: audit_logging",
+        "Module `middleware/request_logging.py` \u2014 fan-in 0, risk 0, match score 6.2",
+        "Module `auth/login.py` \u2014 fan-in 0, risk 0, match score 3.2",
+        "Module `registry/signal_registry.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `trading/backtest_engine.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `cache/redis_client.py` \u2014 fan-in 0, risk 0, match score 0.2"
+      ],
+      "failures": [
+        {
+          "scenario_id": "feat_013_structured_logging",
+          "reason": "Incorrect insertion point",
+          "evidence_used": [
+            "login in `auth/login.py`"
+          ],
+          "expected_evidence": [
+            "request_id",
+            "logging"
+          ],
+          "missing_evidence": [
+            "Correlation Id",
+            "Json",
+            "Logger",
+            "Logging",
+            "Structlog",
+            "Structured Fields"
+          ]
+        }
+      ],
+      "evidence_audits": [
+        {
+          "scenario_id": "feat_013_structured_logging",
+          "audit_type": "incorrect_insertion_point",
+          "detail": "got `auth/login.py` expected one of ['middleware/request_logging.py']"
+        }
+      ],
+      "error": ""
+    },
+    {
+      "scenario_id": "feat_014_idempotency",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "add idempotency keys for order placement",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.15384615384615385,
+        "file_recall": 1.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.215,
+        "risk_recall": 1.0,
+        "test_recall": 1.0,
+        "finding_recall": 1.0,
+        "atlas_score": 57.7,
+        "repository_understanding": 57.7,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 21.5,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 100.0
+      },
+      "recommended_files": [
+        "registry/signal_registry.py",
+        "trading/backtest_engine.py",
+        "cache/redis_client.py",
+        "indicators/indicator_registry.py",
+        "trading/backtest_config.py",
+        "trading/order_service.py",
+        "trading/paper_config.py",
+        "api/rate_limit.py",
+        "auth/session.py",
+        "trading/execution.py",
+        "api/routes.py",
+        "trading/paper_trading.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "idempotency_key",
+      "actual_insertion": "registry/signal_registry.py",
+      "actual_findings": [
+        "Implementation status: Not Found",
+        "Evidence score: 10/100",
+        "Missing: Idempotency Key",
+        "Matched feature intent: general",
+        "Module `trading/order_service.py` \u2014 fan-in 0, risk 0, match score 3.2",
+        "Module `registry/signal_registry.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `trading/backtest_engine.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `cache/redis_client.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `indicators/indicator_registry.py` \u2014 fan-in 0, risk 0, match score 0.2"
+      ],
+      "failures": [],
+      "evidence_audits": [],
+      "error": ""
+    },
+    {
+      "scenario_id": "feat_015_health_check",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "add health check endpoint for services",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.07692307692307693,
+        "file_recall": 1.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.215,
+        "risk_recall": 1.0,
+        "test_recall": 0.0,
+        "finding_recall": 1.0,
+        "atlas_score": 46.5,
+        "repository_understanding": 53.8,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 21.5,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 80.0
+      },
+      "recommended_files": [
+        "registry/signal_registry.py",
+        "trading/backtest_engine.py",
+        "cache/redis_client.py",
+        "indicators/indicator_registry.py",
+        "trading/backtest_config.py",
+        "services/http_client.py",
+        "trading/paper_config.py",
+        "api/rate_limit.py",
+        "auth/session.py",
+        "trading/execution.py",
+        "api/routes.py",
+        "trading/paper_trading.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "health_check",
+      "actual_insertion": "registry/signal_registry.py",
+      "actual_findings": [
+        "Implementation status: Not Found",
+        "Evidence score: 10/100",
+        "Missing: Health Check",
+        "Matched feature intent: general",
+        "Module `services/http_client.py` \u2014 fan-in 0, risk 0, match score 3.2",
+        "Module `registry/signal_registry.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `trading/backtest_engine.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `cache/redis_client.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `indicators/indicator_registry.py` \u2014 fan-in 0, risk 0, match score 0.2"
+      ],
+      "failures": [],
+      "evidence_audits": [],
+      "error": ""
+    },
+    {
+      "scenario_id": "feat_016_signal_pipeline",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "extend signal pipeline with new indicator hook",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.14285714285714285,
+        "file_recall": 1.0,
+        "insertion_point_correct": true,
+        "knowledge_correct": false,
+        "evidence_accuracy": 0.215,
+        "risk_recall": 1.0,
+        "test_recall": 1.0,
+        "finding_recall": 1.0,
+        "atlas_score": 57.0,
+        "repository_understanding": 72.1,
+        "knowledge_understanding": 0.0,
+        "evidence_quality": 21.5,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 100.0
+      },
+      "recommended_files": [
+        "signals/pipeline.py",
+        "registry/signal_registry.py",
+        "trading/backtest_engine.py",
+        "cache/redis_client.py",
+        "indicators/indicator_registry.py",
+        "billing/stripe_webhooks.py",
+        "indicators/sma.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "api/rate_limit.py",
+        "auth/session.py",
+        "trading/execution.py",
+        "trading/paper_trading.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "ci_cd_pipeline",
+      "actual_insertion": "signals/pipeline.py",
+      "actual_findings": [
+        "Implementation status: Not Found",
+        "Evidence score: 10/100",
+        "Missing: CI/CD Pipeline",
+        "Matched feature intent: general",
+        "Module `signals/pipeline.py` \u2014 fan-in 0, risk 0, match score 6.2",
+        "Module `registry/signal_registry.py` \u2014 fan-in 0, risk 0, match score 3.2",
+        "Module `indicators/indicator_registry.py` \u2014 fan-in 0, risk 0, match score 3.2",
+        "Module `billing/stripe_webhooks.py` \u2014 fan-in 0, risk 0, match score 3.2",
+        "Module `indicators/sma.py` \u2014 fan-in 0, risk 0, match score 2.9"
+      ],
+      "failures": [
+        {
+          "scenario_id": "feat_016_signal_pipeline",
+          "reason": "Wrong concept identified",
+          "evidence_used": [
+            "ci_cd_pipeline"
+          ],
+          "expected_evidence": [
+            "ema"
+          ],
+          "missing_evidence": [
+            "ema"
+          ]
+        }
+      ],
+      "evidence_audits": [],
+      "error": ""
+    },
+    {
+      "scenario_id": "feat_017_postgres",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "add PostgreSQL session factory",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.07692307692307693,
+        "file_recall": 1.0,
+        "insertion_point_correct": true,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.825,
+        "risk_recall": 1.0,
+        "test_recall": 1.0,
+        "finding_recall": 1.0,
+        "atlas_score": 86.3,
+        "repository_understanding": 68.8,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 82.5,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 100.0
+      },
+      "recommended_files": [
+        "db/postgres.py",
+        "trading/paper_trading.py",
+        "auth/login.py",
+        "auth/session.py",
+        "db/migrations/001_initial.py",
+        "registry/signal_registry.py",
+        "auth/middleware.py",
+        "trading/backtest_engine.py",
+        "cache/redis_client.py",
+        "indicators/indicator_registry.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "postgresql",
+      "actual_insertion": "db/postgres.py",
+      "actual_findings": [
+        "sqlalchemy.create_engine() in `db/postgres.py`",
+        "auth.session.create_session() in `auth/login.py`",
+        "Implementation status: Implemented",
+        "Evidence score: 100/100",
+        "Found: sqlalchemy.create_engine() in `db/postgres.py`; auth.session.create_session() in `auth/login.py`",
+        "Missing: Alembic; Migrate; Postgres",
+        "Recommended insertion: `db/postgres.py`",
+        "Matched feature intent: authentication",
+        "Module `auth/session.py` \u2014 fan-in 0, risk 0, match score 6.2",
+        "Module `auth/login.py` \u2014 fan-in 0, risk 0, match score 6.2",
+        "Module `db/migrations/001_initial.py` \u2014 fan-in 0, risk 0, match score 3.2",
+        "Module `db/postgres.py` \u2014 fan-in 0, risk 0, match score 3.2",
+        "Module `auth/middleware.py` \u2014 fan-in 0, risk 0, match score 3.0"
+      ],
+      "failures": [],
+      "evidence_audits": [],
+      "error": ""
+    },
+    {
+      "scenario_id": "feat_018_auth_sessions",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "Add user authentication with login sessions",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.17647058823529413,
+        "file_recall": 1.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.761,
+        "risk_recall": 1.0,
+        "test_recall": 1.0,
+        "finding_recall": 1.0,
+        "atlas_score": 71.7,
+        "repository_understanding": 58.8,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 76.1,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 100.0
+      },
+      "recommended_files": [
+        "auth/login.py",
+        "auth/middleware.py",
+        "api/routes.py",
+        "auth/session.py",
+        "api/rate_limit.py",
+        "db/postgres.py",
+        "registry/signal_registry.py",
+        "signals/pipeline.py",
+        "trading/backtest_engine.py",
+        "cache/redis_client.py",
+        "indicators/indicator_registry.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "trading/paper_trading.py",
+        "config/feature_flags.py",
+        "middleware/request_logging.py",
+        "middleware/tracing.py"
+      ],
+      "actual_concept_id": "authentication",
+      "actual_insertion": "auth/login.py",
+      "actual_findings": [
+        "auth.middleware.auth_middleware() in `api/routes.py`",
+        "login in `auth/login.py`",
+        "auth.session.create_session() in `auth/login.py`",
+        "rate_limit_middleware in `api/rate_limit.py`",
+        "authenticate_jwt in `auth/middleware.py`",
+        "Implementation status: Implemented",
+        "Evidence score: 84/100",
+        "Found: auth.middleware.auth_middleware() in `api/routes.py`; login in `auth/login.py`; auth.session.create_session() in `auth/login.py`; rate_limit_middleware in `api/rate_limit.py`",
+        "Missing: Password",
+        "Recommended insertion: `auth/login.py`",
+        "Matched feature intent: authentication",
+        "Module `auth/session.py` \u2014 fan-in 0, risk 0, match score 6.2",
+        "Module `auth/login.py` \u2014 fan-in 0, risk 0, match score 6.2",
+        "Module `registry/signal_registry.py` \u2014 fan-in 0, risk 0, match score 3.2",
+        "Module `signals/pipeline.py` \u2014 fan-in 0, risk 0, match score 3.2",
+        "Module `auth/middleware.py` \u2014 fan-in 0, risk 0, match score 3.0"
+      ],
+      "failures": [
+        {
+          "scenario_id": "feat_018_auth_sessions",
+          "reason": "Incorrect insertion point",
+          "evidence_used": [
+            "auth.middleware.auth_middleware() in `api/routes.py`",
+            "login in `auth/login.py`",
+            "auth.session.create_session() in `auth/login.py`",
+            "rate_limit_middleware in `api/rate_limit.py`",
+            "authenticate_jwt in `auth/middleware.py`"
+          ],
+          "expected_evidence": [],
+          "missing_evidence": [
+            "Password"
+          ]
+        }
+      ],
+      "evidence_audits": [
+        {
+          "scenario_id": "feat_018_auth_sessions",
+          "audit_type": "incorrect_insertion_point",
+          "detail": "got `auth/login.py` expected one of ['auth/middleware.py']"
+        }
+      ],
+      "error": ""
+    },
+    {
+      "scenario_id": "feat_019_paper_trading",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "add paper trading mode alongside backtest",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.15384615384615385,
+        "file_recall": 1.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.7450000000000001,
+        "risk_recall": 1.0,
+        "test_recall": 1.0,
+        "finding_recall": 1.0,
+        "atlas_score": 70.9,
+        "repository_understanding": 57.7,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 74.5,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 100.0
+      },
+      "recommended_files": [
+        "registry/signal_registry.py",
+        "indicators/indicator_registry.py",
+        "indicators/sma.py",
+        "signals/pipeline.py",
+        "trading/paper_config.py",
+        "trading/paper_trading.py",
+        "trading/backtest_engine.py",
+        "trading/backtest_config.py",
+        "trading/execution.py",
+        "trading/order_service.py",
+        "cache/redis_client.py",
+        "api/rate_limit.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "paper_trading",
+      "actual_insertion": "registry/signal_registry.py",
+      "actual_findings": [
+        "SMAIndicator in `indicators/sma.py`",
+        "IndicatorRegistry in `indicators/indicator_registry.py`",
+        "SignalRegistry in `registry/signal_registry.py`",
+        "IndicatorRegistry.register_indicator() in `indicators/indicator_registry.py`",
+        "Implementation status: Partially Implemented",
+        "Evidence score: 80/100",
+        "Found: SMAIndicator in `indicators/sma.py`; IndicatorRegistry in `indicators/indicator_registry.py`; SignalRegistry in `registry/signal_registry.py`; IndicatorRegistry.register_indicator() in `indicators/indicator_registry.py`",
+        "Missing: Ema; Exponential Moving Average; Moving Average; EMA",
+        "Recommended insertion: `registry/signal_registry.py`",
+        "Matched feature intent: general",
+        "Module `trading/backtest_engine.py` \u2014 fan-in 0, risk 0, match score 6.2",
+        "Module `trading/backtest_config.py` \u2014 fan-in 0, risk 0, match score 6.2",
+        "Module `trading/paper_config.py` \u2014 fan-in 0, risk 0, match score 6.2",
+        "Module `trading/paper_trading.py` \u2014 fan-in 0, risk 0, match score 6.2",
+        "Module `trading/execution.py` \u2014 fan-in 0, risk 0, match score 3.2"
+      ],
+      "failures": [
+        {
+          "scenario_id": "feat_019_paper_trading",
+          "reason": "Incorrect insertion point",
+          "evidence_used": [
+            "SMAIndicator in `indicators/sma.py`",
+            "IndicatorRegistry in `indicators/indicator_registry.py`",
+            "SignalRegistry in `registry/signal_registry.py`",
+            "IndicatorRegistry.register_indicator() in `indicators/indicator_registry.py`"
+          ],
+          "expected_evidence": [],
+          "missing_evidence": [
+            "Ema",
+            "Exponential Moving Average",
+            "Moving Average",
+            "EMA",
+            "Exponential moving average"
+          ]
+        }
+      ],
+      "evidence_audits": [
+        {
+          "scenario_id": "feat_019_paper_trading",
+          "audit_type": "incorrect_insertion_point",
+          "detail": "got `registry/signal_registry.py` expected one of ['trading/paper_trading.py']"
+        }
+      ],
+      "error": ""
+    },
+    {
+      "scenario_id": "feat_020_slippage_model",
+      "category": "feature_addition",
+      "repository": "atlas_reference",
+      "prompt": "implement configurable slippage model",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.14285714285714285,
+        "file_recall": 1.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.5700000000000001,
+        "risk_recall": 1.0,
+        "test_recall": 0.0,
+        "finding_recall": 0.0,
+        "atlas_score": 56.4,
+        "repository_understanding": 57.1,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 57.0,
+        "investigation_quality": 40.0,
+        "impact_analysis_quality": 80.0
+      },
+      "recommended_files": [
+        "registry/signal_registry.py",
+        "indicators/indicator_registry.py",
+        "indicators/sma.py",
+        "signals/pipeline.py",
+        "trading/backtest_engine.py",
+        "cache/redis_client.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "api/rate_limit.py",
+        "auth/session.py",
+        "trading/execution.py",
+        "api/routes.py",
+        "trading/paper_trading.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "slippage_model",
+      "actual_insertion": "registry/signal_registry.py",
+      "actual_findings": [
+        "SMAIndicator in `indicators/sma.py`",
+        "IndicatorRegistry in `indicators/indicator_registry.py`",
+        "SignalRegistry in `registry/signal_registry.py`",
+        "IndicatorRegistry.register_indicator() in `indicators/indicator_registry.py`",
+        "Implementation status: Partially Implemented",
+        "Evidence score: 80/100",
+        "Found: SMAIndicator in `indicators/sma.py`; IndicatorRegistry in `indicators/indicator_registry.py`; SignalRegistry in `registry/signal_registry.py`; IndicatorRegistry.register_indicator() in `indicators/indicator_registry.py`",
+        "Missing: Ema; Exponential Moving Average; Moving Average; EMA",
+        "Recommended insertion: `registry/signal_registry.py`",
+        "Matched feature intent: general",
+        "Module `registry/signal_registry.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `trading/backtest_engine.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `cache/redis_client.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `indicators/indicator_registry.py` \u2014 fan-in 0, risk 0, match score 0.2",
+        "Module `trading/backtest_config.py` \u2014 fan-in 0, risk 0, match score 0.2"
+      ],
+      "failures": [
+        {
+          "scenario_id": "feat_020_slippage_model",
+          "reason": "Incorrect insertion point",
+          "evidence_used": [
+            "SMAIndicator in `indicators/sma.py`",
+            "IndicatorRegistry in `indicators/indicator_registry.py`",
+            "SignalRegistry in `registry/signal_registry.py`",
+            "IndicatorRegistry.register_indicator() in `indicators/indicator_registry.py`"
+          ],
+          "expected_evidence": [
+            "slippage"
+          ],
+          "missing_evidence": [
+            "Ema",
+            "Exponential Moving Average",
+            "Moving Average",
+            "EMA",
+            "Exponential moving average"
+          ]
+        }
+      ],
+      "evidence_audits": [
+        {
+          "scenario_id": "feat_020_slippage_model",
+          "audit_type": "incorrect_insertion_point",
+          "detail": "got `registry/signal_registry.py` expected one of ['trading/backtest_config.py']"
+        }
+      ],
+      "error": ""
+    },
+    {
+      "scenario_id": "inv_001_backtest_paper",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "backtest is much better than paper trading",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.18181818181818182,
+        "file_recall": 1.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": false,
+        "evidence_accuracy": 1.0,
+        "risk_recall": 0.0,
+        "test_recall": 0.0,
+        "finding_recall": 1.0,
+        "atlas_score": 66.8,
+        "repository_understanding": 59.1,
+        "knowledge_understanding": 0.0,
+        "evidence_quality": 100.0,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 50.0
+      },
+      "recommended_files": [
+        "trading/paper_trading.py",
+        "trading/backtest_engine.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "trading/order_service.py",
+        "registry/signal_registry.py",
+        "trading/execution.py",
+        "cache/redis_client.py",
+        "indicators/indicator_registry.py",
+        "api/rate_limit.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "paper_trading",
+      "actual_insertion": "trading/paper_trading.py",
+      "actual_findings": [
+        "Slippage mismatch: backtest ['trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`', 'SLIPPAGE in `trading/paper_config.py`'] vs live ['trading.paper_config.SLIPPAGE() in `trading/paper_trading.py`']",
+        "Different fill model symbols between backtest and live paths",
+        "Execution/fill modeling differs between backtest and live",
+        "`trading/execution.py` matches this area (fan-in 0, risk 4.0)",
+        "`trading/order_service.py` matches this area (fan-in 0, risk 3.36)",
+        "Data feed / bar timing mismatch (look-ahead bias)",
+        "No scanned module path matched this area \u2014 treat as a lead, not a localization.",
+        "Fees/commission applied inconsistently",
+        "No scanned module path matched this area \u2014 treat as a lead, not a localization.",
+        "Evidence: Slippage mismatch: backtest ['trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`', 'SLIPPAGE in `trading/paper_config.py`'] vs live ['trading.paper_config.SLIPPAGE() in `trading/paper_trading.py`']",
+        "Evidence: Different fill model symbols between backtest and live paths",
+        "Symptom intent: paper_trading",
+        "Symptoms comparing backtest vs live/paper often involve execution, slippage, or data-feed paths.",
+        "`trading/backtest_engine.py` matched (score 6.2, fan-in 0)",
+        "`trading/backtest_config.py` matched (score 6.2, fan-in 0)",
+        "Slippage mismatch: backtest ['trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`', 'SLIPPAGE in `trading/paper_config.py`'] vs live ['trading.paper_config.SLIPPAGE() in `trading/paper_trading.py`']"
+      ],
+      "failures": [
+        {
+          "scenario_id": "inv_001_backtest_paper",
+          "reason": "Incorrect insertion point",
+          "evidence_used": [
+            "Slippage mismatch: backtest ['trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`', 'SLIPPAGE in `trading/paper_config.py`'] vs live ['trading.paper_config.SLIPPAGE() in `trading/paper_trading.py`']",
+            "Different fill model symbols between backtest and live paths"
+          ],
+          "expected_evidence": [
+            "slippage",
+            "fill"
+          ],
+          "missing_evidence": [
+            "Side-by-side slippage/fill comparison"
+          ]
+        },
+        {
+          "scenario_id": "inv_001_backtest_paper",
+          "reason": "Wrong concept identified",
+          "evidence_used": [
+            "paper_trading"
+          ],
+          "expected_evidence": [
+            "backtest_live_divergence"
+          ],
+          "missing_evidence": [
+            "backtest_live_divergence"
+          ]
+        }
+      ],
+      "evidence_audits": [
+        {
+          "scenario_id": "inv_001_backtest_paper",
+          "audit_type": "incorrect_insertion_point",
+          "detail": "got `trading/paper_trading.py` expected one of ['trading/backtest_config.py']"
+        }
+      ],
+      "error": ""
+    },
+    {
+      "scenario_id": "inv_002_duplicate_orders",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "duplicate orders placed twice in production",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.0,
+        "file_recall": 0.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": false,
+        "evidence_accuracy": 0.5700000000000001,
+        "risk_recall": 0.0,
+        "test_recall": 0.0,
+        "finding_recall": 0.0,
+        "atlas_score": 14.2,
+        "repository_understanding": 0.0,
+        "knowledge_understanding": 0.0,
+        "evidence_quality": 57.0,
+        "investigation_quality": 0.0,
+        "impact_analysis_quality": 0.0
+      },
+      "recommended_files": [
+        "registry/signal_registry.py",
+        "indicators/indicator_registry.py",
+        "indicators/sma.py",
+        "signals/pipeline.py",
+        "trading/backtest_engine.py",
+        "trading/backtest_config.py",
+        "cache/redis_client.py",
+        "trading/paper_config.py",
+        "api/rate_limit.py",
+        "auth/session.py",
+        "trading/paper_trading.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "ema",
+      "actual_insertion": "registry/signal_registry.py",
+      "actual_findings": [
+        "SMAIndicator in `indicators/sma.py`",
+        "IndicatorRegistry in `indicators/indicator_registry.py`",
+        "SignalRegistry in `registry/signal_registry.py`",
+        "IndicatorRegistry.register_indicator() in `indicators/indicator_registry.py`",
+        "Defect originates in `registry/signal_registry.py`",
+        "`registry/signal_registry.py` \u2014 fan-in 0, risk 4.36",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `trading/backtest_engine.py`",
+        "`trading/backtest_engine.py` \u2014 fan-in 0, risk 4.36",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `indicators/indicator_registry.py`",
+        "`indicators/indicator_registry.py` \u2014 fan-in 0, risk 4.01",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `trading/backtest_config.py`",
+        "`trading/backtest_config.py` \u2014 fan-in 0, risk 4.01",
+        "Matched symptom keywords in the module path/index.",
+        "Evidence: SMAIndicator in `indicators/sma.py`",
+        "Evidence: IndicatorRegistry in `indicators/indicator_registry.py`",
+        "Evidence: SignalRegistry in `registry/signal_registry.py`",
+        "Evidence: IndicatorRegistry.register_indicator() in `indicators/indicator_registry.py`",
+        "Symptom intent: general",
+        "Keyword overlap between the symptom and indexed module paths.",
+        "`registry/signal_registry.py` matched (score 3.2, fan-in 0)",
+        "`trading/backtest_engine.py` matched (score 3.2, fan-in 0)",
+        "SMAIndicator in `indicators/sma.py`"
+      ],
+      "failures": [
+        {
+          "scenario_id": "inv_002_duplicate_orders",
+          "reason": "Incorrect insertion point",
+          "evidence_used": [
+            "SMAIndicator in `indicators/sma.py`",
+            "IndicatorRegistry in `indicators/indicator_registry.py`",
+            "SignalRegistry in `registry/signal_registry.py`",
+            "IndicatorRegistry.register_indicator() in `indicators/indicator_registry.py`"
+          ],
+          "expected_evidence": [
+            "duplicate",
+            "order"
+          ],
+          "missing_evidence": [
+            "Ema",
+            "Exponential Moving Average",
+            "Moving Average",
+            "EMA",
+            "Exponential moving average"
+          ]
+        },
+        {
+          "scenario_id": "inv_002_duplicate_orders",
+          "reason": "Low file recall",
+          "evidence_used": [
+            "registry/signal_registry.py",
+            "indicators/indicator_registry.py",
+            "indicators/sma.py",
+            "signals/pipeline.py",
+            "trading/backtest_engine.py",
+            "trading/backtest_config.py",
+            "cache/redis_client.py",
+            "trading/paper_config.py"
+          ],
+          "expected_evidence": [
+            "trading/order_service.py",
+            "trading/execution.py"
+          ],
+          "missing_evidence": [
+            "trading/order_service.py",
+            "trading/execution.py"
+          ]
+        },
+        {
+          "scenario_id": "inv_002_duplicate_orders",
+          "reason": "Wrong concept identified",
+          "evidence_used": [
+            "ema"
+          ],
+          "expected_evidence": [
+            "retry_backoff"
+          ],
+          "missing_evidence": [
+            "retry_backoff"
+          ]
+        }
+      ],
+      "evidence_audits": [
+        {
+          "scenario_id": "inv_002_duplicate_orders",
+          "audit_type": "incorrect_insertion_point",
+          "detail": "got `registry/signal_registry.py` expected one of ['trading/order_service.py']"
+        }
+      ],
+      "error": ""
+    },
+    {
+      "scenario_id": "inv_003_webhook_failures",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "Stripe webhook signature verification failing",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.09090909090909091,
+        "file_recall": 1.0,
+        "insertion_point_correct": true,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.9359999999999999,
+        "risk_recall": 0.0,
+        "test_recall": 0.0,
+        "finding_recall": 1.0,
+        "atlas_score": 82.3,
+        "repository_understanding": 69.5,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 93.6,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 50.0
+      },
+      "recommended_files": [
+        "billing/stripe_webhooks.py",
+        "config/feature_flags.py",
+        "registry/signal_registry.py",
+        "trading/backtest_engine.py",
+        "cache/redis_client.py",
+        "indicators/indicator_registry.py",
+        "billing/stripe_billing.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "api/rate_limit.py",
+        "trading/paper_trading.py"
+      ],
+      "actual_concept_id": "webhook_receiver",
+      "actual_insertion": "billing/stripe_webhooks.py",
+      "actual_findings": [
+        "verify_webhook_signature in `billing/stripe_webhooks.py`",
+        "handle_stripe_webhook in `billing/stripe_webhooks.py`",
+        "Defect originates in `billing/stripe_webhooks.py`",
+        "`billing/stripe_webhooks.py` \u2014 fan-in 0, risk 3.01",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `billing/stripe_billing.py`",
+        "`billing/stripe_billing.py` \u2014 fan-in 0, risk 3.0",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `registry/signal_registry.py`",
+        "`registry/signal_registry.py` \u2014 fan-in 0, risk 4.36",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `trading/backtest_engine.py`",
+        "`trading/backtest_engine.py` \u2014 fan-in 0, risk 4.36",
+        "Matched symptom keywords in the module path/index.",
+        "Evidence: verify_webhook_signature in `billing/stripe_webhooks.py`",
+        "Evidence: handle_stripe_webhook in `billing/stripe_webhooks.py`",
+        "Symptom intent: general",
+        "Keyword overlap between the symptom and indexed module paths.",
+        "`billing/stripe_webhooks.py` matched (score 6.2, fan-in 0)",
+        "`billing/stripe_billing.py` matched (score 3.1, fan-in 0)",
+        "verify_webhook_signature in `billing/stripe_webhooks.py`"
+      ],
+      "failures": [],
+      "evidence_audits": [],
+      "error": ""
+    },
+    {
+      "scenario_id": "inv_004_stale_cache",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "API returns stale cached data after update",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.16666666666666666,
+        "file_recall": 1.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.7450000000000001,
+        "risk_recall": 0.0,
+        "test_recall": 0.0,
+        "finding_recall": 0.5,
+        "atlas_score": 66.3,
+        "repository_understanding": 58.3,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 74.5,
+        "investigation_quality": 70.0,
+        "impact_analysis_quality": 50.0
+      },
+      "recommended_files": [
+        "cache/redis_client.py",
+        "cache/cache_layer.py",
+        "registry/signal_registry.py",
+        "trading/backtest_engine.py",
+        "indicators/indicator_registry.py",
+        "api/rate_limit.py",
+        "api/routes.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "auth/session.py",
+        "trading/paper_trading.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "redis_cache",
+      "actual_insertion": "cache/redis_client.py",
+      "actual_findings": [
+        "cache.redis_client.RedisClient in `cache/cache_layer.py`",
+        "get_cached in `cache/cache_layer.py`",
+        "RedisClient in `cache/redis_client.py`",
+        "RedisClient.get in `cache/redis_client.py`",
+        "RedisClient.set in `cache/redis_client.py`",
+        "Defect originates in `cache/redis_client.py`",
+        "`cache/redis_client.py` \u2014 fan-in 0, risk 4.01",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `api/rate_limit.py`",
+        "`api/rate_limit.py` \u2014 fan-in 0, risk 4.0",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `api/routes.py`",
+        "`api/routes.py` \u2014 fan-in 0, risk 3.71",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `cache/cache_layer.py`",
+        "`cache/cache_layer.py` \u2014 fan-in 0, risk 3.36",
+        "Matched symptom keywords in the module path/index.",
+        "Evidence: cache.redis_client.RedisClient in `cache/cache_layer.py`",
+        "Evidence: get_cached in `cache/cache_layer.py`",
+        "Evidence: RedisClient in `cache/redis_client.py`",
+        "Evidence: RedisClient.get in `cache/redis_client.py`",
+        "Evidence: RedisClient.set in `cache/redis_client.py`",
+        "Symptom intent: general",
+        "Keyword overlap between the symptom and indexed module paths.",
+        "`cache/redis_client.py` matched (score 6.2, fan-in 0)",
+        "`api/rate_limit.py` matched (score 3.2, fan-in 0)",
+        "cache.redis_client.RedisClient in `cache/cache_layer.py`"
+      ],
+      "failures": [
+        {
+          "scenario_id": "inv_004_stale_cache",
+          "reason": "Incorrect insertion point",
+          "evidence_used": [
+            "cache.redis_client.RedisClient in `cache/cache_layer.py`",
+            "get_cached in `cache/cache_layer.py`",
+            "RedisClient in `cache/redis_client.py`",
+            "RedisClient.get in `cache/redis_client.py`",
+            "RedisClient.set in `cache/redis_client.py`"
+          ],
+          "expected_evidence": [
+            "cache",
+            "stale"
+          ],
+          "missing_evidence": []
+        }
+      ],
+      "evidence_audits": [
+        {
+          "scenario_id": "inv_004_stale_cache",
+          "audit_type": "incorrect_insertion_point",
+          "detail": "got `cache/redis_client.py` expected one of ['cache/cache_layer.py']"
+        }
+      ],
+      "error": ""
+    },
+    {
+      "scenario_id": "inv_005_auth_bypass",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "unauthenticated requests reaching protected routes",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.125,
+        "file_recall": 1.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.9359999999999999,
+        "risk_recall": 0.0,
+        "test_recall": 0.0,
+        "finding_recall": 1.0,
+        "atlas_score": 79.6,
+        "repository_understanding": 56.2,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 93.6,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 50.0
+      },
+      "recommended_files": [
+        "auth/login.py",
+        "auth/middleware.py",
+        "api/routes.py",
+        "auth/session.py",
+        "api/rate_limit.py",
+        "db/postgres.py",
+        "registry/signal_registry.py",
+        "signals/pipeline.py",
+        "trading/backtest_engine.py",
+        "cache/redis_client.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "trading/paper_trading.py",
+        "config/feature_flags.py",
+        "middleware/request_logging.py",
+        "middleware/tracing.py"
+      ],
+      "actual_concept_id": "authentication",
+      "actual_insertion": "auth/login.py",
+      "actual_findings": [
+        "auth.middleware.auth_middleware() in `api/routes.py`",
+        "login in `auth/login.py`",
+        "auth.session.create_session() in `auth/login.py`",
+        "rate_limit_middleware in `api/rate_limit.py`",
+        "authenticate_jwt in `auth/middleware.py`",
+        "Defect originates in `auth/login.py`",
+        "`auth/login.py` \u2014 fan-in 0, risk 3.36",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `registry/signal_registry.py`",
+        "`registry/signal_registry.py` \u2014 fan-in 0, risk 4.36",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `auth/session.py`",
+        "`auth/session.py` \u2014 fan-in 0, risk 4.0",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `api/routes.py`",
+        "`api/routes.py` \u2014 fan-in 0, risk 3.71",
+        "Matched symptom keywords in the module path/index.",
+        "Evidence: auth.middleware.auth_middleware() in `api/routes.py`",
+        "Evidence: login in `auth/login.py`",
+        "Evidence: auth.session.create_session() in `auth/login.py`",
+        "Evidence: rate_limit_middleware in `api/rate_limit.py`",
+        "Evidence: authenticate_jwt in `auth/middleware.py`",
+        "Symptom intent: general",
+        "Keyword overlap between the symptom and indexed module paths.",
+        "`auth/login.py` matched (score 6.2, fan-in 0)",
+        "`registry/signal_registry.py` matched (score 3.2, fan-in 0)",
+        "auth.middleware.auth_middleware() in `api/routes.py`"
+      ],
+      "failures": [
+        {
+          "scenario_id": "inv_005_auth_bypass",
+          "reason": "Incorrect insertion point",
+          "evidence_used": [
+            "auth.middleware.auth_middleware() in `api/routes.py`",
+            "login in `auth/login.py`",
+            "auth.session.create_session() in `auth/login.py`",
+            "rate_limit_middleware in `api/rate_limit.py`",
+            "authenticate_jwt in `auth/middleware.py`"
+          ],
+          "expected_evidence": [
+            "auth",
+            "middleware"
+          ],
+          "missing_evidence": [
+            "Password"
+          ]
+        }
+      ],
+      "evidence_audits": [
+        {
+          "scenario_id": "inv_005_auth_bypass",
+          "audit_type": "incorrect_insertion_point",
+          "detail": "got `auth/login.py` expected one of ['auth/middleware.py']"
+        }
+      ],
+      "error": ""
+    },
+    {
+      "scenario_id": "inv_006_slippage_mismatch",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "slippage differs between backtest and live",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.18181818181818182,
+        "file_recall": 1.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": false,
+        "evidence_accuracy": 1.0,
+        "risk_recall": 0.0,
+        "test_recall": 0.0,
+        "finding_recall": 1.0,
+        "atlas_score": 66.8,
+        "repository_understanding": 59.1,
+        "knowledge_understanding": 0.0,
+        "evidence_quality": 100.0,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 50.0
+      },
+      "recommended_files": [
+        "trading/paper_trading.py",
+        "trading/backtest_engine.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "trading/order_service.py",
+        "registry/signal_registry.py",
+        "trading/execution.py",
+        "cache/redis_client.py",
+        "indicators/indicator_registry.py",
+        "api/rate_limit.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "slippage_model",
+      "actual_insertion": "trading/paper_trading.py",
+      "actual_findings": [
+        "Slippage mismatch: backtest ['trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`', 'SLIPPAGE in `trading/paper_config.py`'] vs live ['trading.paper_config.SLIPPAGE() in `trading/paper_trading.py`']",
+        "Different fill model symbols between backtest and live paths",
+        "Execution/fill modeling differs between backtest and live",
+        "`trading/execution.py` matches this area (fan-in 0, risk 4.0)",
+        "`trading/order_service.py` matches this area (fan-in 0, risk 3.36)",
+        "Data feed / bar timing mismatch (look-ahead bias)",
+        "No scanned module path matched this area \u2014 treat as a lead, not a localization.",
+        "Fees/commission applied inconsistently",
+        "No scanned module path matched this area \u2014 treat as a lead, not a localization.",
+        "Evidence: Slippage mismatch: backtest ['trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`', 'SLIPPAGE in `trading/paper_config.py`'] vs live ['trading.paper_config.SLIPPAGE() in `trading/paper_trading.py`']",
+        "Evidence: Different fill model symbols between backtest and live paths",
+        "Symptom intent: paper_trading",
+        "Symptoms comparing backtest vs live/paper often involve execution, slippage, or data-feed paths.",
+        "`trading/backtest_engine.py` matched (score 3.2, fan-in 0)",
+        "`trading/backtest_config.py` matched (score 3.2, fan-in 0)",
+        "Slippage mismatch: backtest ['trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`', 'SLIPPAGE in `trading/paper_config.py`'] vs live ['trading.paper_config.SLIPPAGE() in `trading/paper_trading.py`']"
+      ],
+      "failures": [
+        {
+          "scenario_id": "inv_006_slippage_mismatch",
+          "reason": "Incorrect insertion point",
+          "evidence_used": [
+            "Slippage mismatch: backtest ['trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`', 'SLIPPAGE in `trading/paper_config.py`'] vs live ['trading.paper_config.SLIPPAGE() in `trading/paper_trading.py`']",
+            "Different fill model symbols between backtest and live paths"
+          ],
+          "expected_evidence": [
+            "slippage"
+          ],
+          "missing_evidence": [
+            "Side-by-side slippage/fill comparison"
+          ]
+        },
+        {
+          "scenario_id": "inv_006_slippage_mismatch",
+          "reason": "Wrong concept identified",
+          "evidence_used": [
+            "slippage_model"
+          ],
+          "expected_evidence": [
+            "backtest_live_divergence"
+          ],
+          "missing_evidence": [
+            "backtest_live_divergence"
+          ]
+        }
+      ],
+      "evidence_audits": [
+        {
+          "scenario_id": "inv_006_slippage_mismatch",
+          "audit_type": "incorrect_insertion_point",
+          "detail": "got `trading/paper_trading.py` expected one of ['trading/backtest_config.py']"
+        }
+      ],
+      "error": ""
+    },
+    {
+      "scenario_id": "inv_007_indicator_mismatch",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "indicator values differ backtest vs live",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.0,
+        "file_recall": 0.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": false,
+        "evidence_accuracy": 0.65,
+        "risk_recall": 0.0,
+        "test_recall": 0.0,
+        "finding_recall": 0.0,
+        "atlas_score": 16.2,
+        "repository_understanding": 0.0,
+        "knowledge_understanding": 0.0,
+        "evidence_quality": 65.0,
+        "investigation_quality": 0.0,
+        "impact_analysis_quality": 0.0
+      },
+      "recommended_files": [
+        "trading/paper_trading.py",
+        "trading/backtest_engine.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "trading/order_service.py",
+        "registry/signal_registry.py",
+        "trading/execution.py",
+        "cache/redis_client.py",
+        "indicators/indicator_registry.py",
+        "api/rate_limit.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "implied_volatility",
+      "actual_insertion": "trading/paper_trading.py",
+      "actual_findings": [
+        "Slippage mismatch: backtest ['trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`', 'SLIPPAGE in `trading/paper_config.py`'] vs live ['trading.paper_config.SLIPPAGE() in `trading/paper_trading.py`']",
+        "Different fill model symbols between backtest and live paths",
+        "Execution/fill modeling differs between backtest and live",
+        "`trading/execution.py` matches this area (fan-in 0, risk 4.0)",
+        "`trading/order_service.py` matches this area (fan-in 0, risk 3.36)",
+        "Data feed / bar timing mismatch (look-ahead bias)",
+        "No scanned module path matched this area \u2014 treat as a lead, not a localization.",
+        "Fees/commission applied inconsistently",
+        "No scanned module path matched this area \u2014 treat as a lead, not a localization.",
+        "Evidence: Slippage mismatch: backtest ['trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`', 'SLIPPAGE in `trading/paper_config.py`'] vs live ['trading.paper_config.SLIPPAGE() in `trading/paper_trading.py`']",
+        "Evidence: Different fill model symbols between backtest and live paths",
+        "Symptom intent: paper_trading",
+        "Symptoms comparing backtest vs live/paper often involve execution, slippage, or data-feed paths.",
+        "`trading/backtest_engine.py` matched (score 3.2, fan-in 0)",
+        "`trading/backtest_config.py` matched (score 3.2, fan-in 0)",
+        "Slippage mismatch: backtest ['trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`', 'SLIPPAGE in `trading/paper_config.py`'] vs live ['trading.paper_config.SLIPPAGE() in `trading/paper_trading.py`']"
+      ],
+      "failures": [
+        {
+          "scenario_id": "inv_007_indicator_mismatch",
+          "reason": "Incorrect insertion point",
+          "evidence_used": [
+            "Slippage mismatch: backtest ['trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`', 'SLIPPAGE in `trading/paper_config.py`'] vs live ['trading.paper_config.SLIPPAGE() in `trading/paper_trading.py`']",
+            "Different fill model symbols between backtest and live paths"
+          ],
+          "expected_evidence": [
+            "indicator"
+          ],
+          "missing_evidence": [
+            "Side-by-side slippage/fill comparison"
+          ]
+        },
+        {
+          "scenario_id": "inv_007_indicator_mismatch",
+          "reason": "Low file recall",
+          "evidence_used": [
+            "trading/paper_trading.py",
+            "trading/backtest_engine.py",
+            "trading/backtest_config.py",
+            "trading/paper_config.py",
+            "trading/order_service.py",
+            "registry/signal_registry.py",
+            "trading/execution.py",
+            "cache/redis_client.py"
+          ],
+          "expected_evidence": [
+            "indicators/sma.py",
+            "signals/pipeline.py"
+          ],
+          "missing_evidence": [
+            "indicators/sma.py",
+            "signals/pipeline.py"
+          ]
+        },
+        {
+          "scenario_id": "inv_007_indicator_mismatch",
+          "reason": "Wrong concept identified",
+          "evidence_used": [
+            "implied_volatility"
+          ],
+          "expected_evidence": [
+            "indicator_backtest_live"
+          ],
+          "missing_evidence": [
+            "indicator_backtest_live"
+          ]
+        }
+      ],
+      "evidence_audits": [
+        {
+          "scenario_id": "inv_007_indicator_mismatch",
+          "audit_type": "incorrect_insertion_point",
+          "detail": "got `trading/paper_trading.py` expected one of ['indicators/sma.py']"
+        }
+      ],
+      "error": ""
+    },
+    {
+      "scenario_id": "inv_008_rate_limit_429",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "users getting 429 too many requests",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.07142857142857142,
+        "file_recall": 1.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.7450000000000001,
+        "risk_recall": 0.0,
+        "test_recall": 0.0,
+        "finding_recall": 0.5,
+        "atlas_score": 65.3,
+        "repository_understanding": 53.6,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 74.5,
+        "investigation_quality": 70.0,
+        "impact_analysis_quality": 50.0
+      },
+      "recommended_files": [
+        "api/routes.py",
+        "cache/redis_client.py",
+        "api/rate_limit.py",
+        "cache/cache_layer.py",
+        "auth/middleware.py",
+        "middleware/request_logging.py",
+        "registry/signal_registry.py",
+        "trading/backtest_engine.py",
+        "indicators/indicator_registry.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "trading/paper_trading.py",
+        "config/feature_flags.py",
+        "middleware/tracing.py"
+      ],
+      "actual_concept_id": "rate_limiting",
+      "actual_insertion": "api/routes.py",
+      "actual_findings": [
+        "rate_limit_middleware in `api/rate_limit.py`",
+        "cache.redis_client.RedisClient() in `cache/cache_layer.py`",
+        "Defect originates in `api/rate_limit.py`",
+        "`api/rate_limit.py` \u2014 fan-in 0, risk 4.0",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `registry/signal_registry.py`",
+        "`registry/signal_registry.py` \u2014 fan-in 0, risk 4.36",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `trading/backtest_engine.py`",
+        "`trading/backtest_engine.py` \u2014 fan-in 0, risk 4.36",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `cache/redis_client.py`",
+        "`cache/redis_client.py` \u2014 fan-in 0, risk 4.01",
+        "Matched symptom keywords in the module path/index.",
+        "Evidence: rate_limit_middleware in `api/rate_limit.py`",
+        "Evidence: cache.redis_client.RedisClient() in `cache/cache_layer.py`",
+        "Symptom intent: general",
+        "Keyword overlap between the symptom and indexed module paths.",
+        "`api/rate_limit.py` matched (score 6.2, fan-in 0)",
+        "`registry/signal_registry.py` matched (score 0.2, fan-in 0)",
+        "rate_limit_middleware in `api/rate_limit.py`"
+      ],
+      "failures": [
+        {
+          "scenario_id": "inv_008_rate_limit_429",
+          "reason": "Incorrect insertion point",
+          "evidence_used": [
+            "rate_limit_middleware in `api/rate_limit.py`",
+            "cache.redis_client.RedisClient() in `cache/cache_layer.py`"
+          ],
+          "expected_evidence": [
+            "rate",
+            "429"
+          ],
+          "missing_evidence": [
+            "Limiter",
+            "Throttle"
+          ]
+        }
+      ],
+      "evidence_audits": [
+        {
+          "scenario_id": "inv_008_rate_limit_429",
+          "audit_type": "incorrect_insertion_point",
+          "detail": "got `api/routes.py` expected one of ['api/rate_limit.py']"
+        }
+      ],
+      "error": ""
+    },
+    {
+      "scenario_id": "inv_009_stripe_invalid_sig",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "invalid stripe webhook signature errors",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.09090909090909091,
+        "file_recall": 1.0,
+        "insertion_point_correct": true,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.9359999999999999,
+        "risk_recall": 0.0,
+        "test_recall": 0.0,
+        "finding_recall": 1.0,
+        "atlas_score": 82.3,
+        "repository_understanding": 69.5,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 93.6,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 50.0
+      },
+      "recommended_files": [
+        "billing/stripe_webhooks.py",
+        "config/feature_flags.py",
+        "registry/signal_registry.py",
+        "trading/backtest_engine.py",
+        "cache/redis_client.py",
+        "indicators/indicator_registry.py",
+        "billing/stripe_billing.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "api/rate_limit.py",
+        "trading/paper_trading.py"
+      ],
+      "actual_concept_id": "webhook_receiver",
+      "actual_insertion": "billing/stripe_webhooks.py",
+      "actual_findings": [
+        "verify_webhook_signature in `billing/stripe_webhooks.py`",
+        "handle_stripe_webhook in `billing/stripe_webhooks.py`",
+        "Defect originates in `billing/stripe_webhooks.py`",
+        "`billing/stripe_webhooks.py` \u2014 fan-in 0, risk 3.01",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `billing/stripe_billing.py`",
+        "`billing/stripe_billing.py` \u2014 fan-in 0, risk 3.0",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `registry/signal_registry.py`",
+        "`registry/signal_registry.py` \u2014 fan-in 0, risk 4.36",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `trading/backtest_engine.py`",
+        "`trading/backtest_engine.py` \u2014 fan-in 0, risk 4.36",
+        "Matched symptom keywords in the module path/index.",
+        "Evidence: verify_webhook_signature in `billing/stripe_webhooks.py`",
+        "Evidence: handle_stripe_webhook in `billing/stripe_webhooks.py`",
+        "Symptom intent: general",
+        "Keyword overlap between the symptom and indexed module paths.",
+        "`billing/stripe_webhooks.py` matched (score 6.2, fan-in 0)",
+        "`billing/stripe_billing.py` matched (score 3.1, fan-in 0)",
+        "verify_webhook_signature in `billing/stripe_webhooks.py`"
+      ],
+      "failures": [],
+      "evidence_audits": [],
+      "error": ""
+    },
+    {
+      "scenario_id": "inv_010_session_expired",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "login session expires immediately after login",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.125,
+        "file_recall": 1.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.9359999999999999,
+        "risk_recall": 0.0,
+        "test_recall": 0.0,
+        "finding_recall": 1.0,
+        "atlas_score": 79.6,
+        "repository_understanding": 56.2,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 93.6,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 50.0
+      },
+      "recommended_files": [
+        "auth/login.py",
+        "auth/middleware.py",
+        "api/routes.py",
+        "auth/session.py",
+        "api/rate_limit.py",
+        "db/postgres.py",
+        "registry/signal_registry.py",
+        "signals/pipeline.py",
+        "trading/backtest_engine.py",
+        "cache/redis_client.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "trading/paper_trading.py",
+        "config/feature_flags.py",
+        "middleware/request_logging.py",
+        "middleware/tracing.py"
+      ],
+      "actual_concept_id": "authentication",
+      "actual_insertion": "auth/login.py",
+      "actual_findings": [
+        "auth.middleware.auth_middleware() in `api/routes.py`",
+        "login in `auth/login.py`",
+        "auth.session.create_session() in `auth/login.py`",
+        "rate_limit_middleware in `api/rate_limit.py`",
+        "authenticate_jwt in `auth/middleware.py`",
+        "Defect originates in `auth/session.py`",
+        "`auth/session.py` \u2014 fan-in 0, risk 4.0",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `auth/login.py`",
+        "`auth/login.py` \u2014 fan-in 0, risk 3.36",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `registry/signal_registry.py`",
+        "`registry/signal_registry.py` \u2014 fan-in 0, risk 4.36",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `signals/pipeline.py`",
+        "`signals/pipeline.py` \u2014 fan-in 0, risk 3.36",
+        "Matched symptom keywords in the module path/index.",
+        "Evidence: auth.middleware.auth_middleware() in `api/routes.py`",
+        "Evidence: login in `auth/login.py`",
+        "Evidence: auth.session.create_session() in `auth/login.py`",
+        "Evidence: rate_limit_middleware in `api/rate_limit.py`",
+        "Evidence: authenticate_jwt in `auth/middleware.py`",
+        "Symptom intent: general",
+        "Keyword overlap between the symptom and indexed module paths.",
+        "`auth/session.py` matched (score 6.2, fan-in 0)",
+        "`auth/login.py` matched (score 6.2, fan-in 0)",
+        "auth.middleware.auth_middleware() in `api/routes.py`"
+      ],
+      "failures": [
+        {
+          "scenario_id": "inv_010_session_expired",
+          "reason": "Incorrect insertion point",
+          "evidence_used": [
+            "auth.middleware.auth_middleware() in `api/routes.py`",
+            "login in `auth/login.py`",
+            "auth.session.create_session() in `auth/login.py`",
+            "rate_limit_middleware in `api/rate_limit.py`",
+            "authenticate_jwt in `auth/middleware.py`"
+          ],
+          "expected_evidence": [
+            "session"
+          ],
+          "missing_evidence": [
+            "Password"
+          ]
+        }
+      ],
+      "evidence_audits": [
+        {
+          "scenario_id": "inv_010_session_expired",
+          "audit_type": "incorrect_insertion_point",
+          "detail": "got `auth/login.py` expected one of ['auth/session.py']"
+        }
+      ],
+      "error": ""
+    },
+    {
+      "scenario_id": "inv_011_redis_timeout",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "redis connection timeout under load",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.08333333333333333,
+        "file_recall": 1.0,
+        "insertion_point_correct": true,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.7450000000000001,
+        "risk_recall": 0.0,
+        "test_recall": 0.0,
+        "finding_recall": 0.5,
+        "atlas_score": 68.5,
+        "repository_understanding": 69.2,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 74.5,
+        "investigation_quality": 70.0,
+        "impact_analysis_quality": 50.0
+      },
+      "recommended_files": [
+        "cache/redis_client.py",
+        "cache/cache_layer.py",
+        "registry/signal_registry.py",
+        "trading/backtest_engine.py",
+        "indicators/indicator_registry.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "api/rate_limit.py",
+        "auth/session.py",
+        "trading/execution.py",
+        "trading/paper_trading.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "redis_cache",
+      "actual_insertion": "cache/redis_client.py",
+      "actual_findings": [
+        "cache.redis_client.RedisClient in `cache/cache_layer.py`",
+        "get_cached in `cache/cache_layer.py`",
+        "RedisClient in `cache/redis_client.py`",
+        "RedisClient.get in `cache/redis_client.py`",
+        "RedisClient.set in `cache/redis_client.py`",
+        "Defect originates in `cache/redis_client.py`",
+        "`cache/redis_client.py` \u2014 fan-in 0, risk 4.01",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `cache/cache_layer.py`",
+        "`cache/cache_layer.py` \u2014 fan-in 0, risk 3.36",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `registry/signal_registry.py`",
+        "`registry/signal_registry.py` \u2014 fan-in 0, risk 4.36",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `trading/backtest_engine.py`",
+        "`trading/backtest_engine.py` \u2014 fan-in 0, risk 4.36",
+        "Matched symptom keywords in the module path/index.",
+        "Evidence: cache.redis_client.RedisClient in `cache/cache_layer.py`",
+        "Evidence: get_cached in `cache/cache_layer.py`",
+        "Evidence: RedisClient in `cache/redis_client.py`",
+        "Evidence: RedisClient.get in `cache/redis_client.py`",
+        "Evidence: RedisClient.set in `cache/redis_client.py`",
+        "Symptom intent: general",
+        "Keyword overlap between the symptom and indexed module paths.",
+        "`cache/redis_client.py` matched (score 6.2, fan-in 0)",
+        "`cache/cache_layer.py` matched (score 3.2, fan-in 0)",
+        "cache.redis_client.RedisClient in `cache/cache_layer.py`"
+      ],
+      "failures": [],
+      "evidence_audits": [],
+      "error": ""
+    },
+    {
+      "scenario_id": "inv_012_postgres_deadlock",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "postgres deadlock on concurrent order updates",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.07692307692307693,
+        "file_recall": 1.0,
+        "insertion_point_correct": true,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.825,
+        "risk_recall": 0.0,
+        "test_recall": 0.0,
+        "finding_recall": 0.5,
+        "atlas_score": 70.4,
+        "repository_understanding": 68.8,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 82.5,
+        "investigation_quality": 70.0,
+        "impact_analysis_quality": 50.0
+      },
+      "recommended_files": [
+        "db/postgres.py",
+        "trading/paper_trading.py",
+        "auth/login.py",
+        "auth/session.py",
+        "db/migrations/001_initial.py",
+        "registry/signal_registry.py",
+        "trading/order_service.py",
+        "trading/backtest_engine.py",
+        "cache/redis_client.py",
+        "indicators/indicator_registry.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "postgresql",
+      "actual_insertion": "db/postgres.py",
+      "actual_findings": [
+        "sqlalchemy.create_engine() in `db/postgres.py`",
+        "auth.session.create_session() in `auth/login.py`",
+        "Defect originates in `trading/order_service.py`",
+        "`trading/order_service.py` \u2014 fan-in 0, risk 3.36",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `db/migrations/001_initial.py`",
+        "`db/migrations/001_initial.py` \u2014 fan-in 0, risk 3.01",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `db/postgres.py`",
+        "`db/postgres.py` \u2014 fan-in 0, risk 3.01",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `registry/signal_registry.py`",
+        "`registry/signal_registry.py` \u2014 fan-in 0, risk 4.36",
+        "Matched symptom keywords in the module path/index.",
+        "Evidence: sqlalchemy.create_engine() in `db/postgres.py`",
+        "Evidence: auth.session.create_session() in `auth/login.py`",
+        "Symptom intent: general",
+        "Keyword overlap between the symptom and indexed module paths.",
+        "`trading/order_service.py` matched (score 3.2, fan-in 0)",
+        "`db/migrations/001_initial.py` matched (score 3.2, fan-in 0)",
+        "sqlalchemy.create_engine() in `db/postgres.py`"
+      ],
+      "failures": [],
+      "evidence_audits": [],
+      "error": ""
+    },
+    {
+      "scenario_id": "inv_013_retry_storm",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "retry storm amplifying outbound HTTP failures",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.08333333333333333,
+        "file_recall": 1.0,
+        "insertion_point_correct": true,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.4325,
+        "risk_recall": 0.0,
+        "test_recall": 0.0,
+        "finding_recall": 0.0,
+        "atlas_score": 51.6,
+        "repository_understanding": 69.2,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 43.2,
+        "investigation_quality": 40.0,
+        "impact_analysis_quality": 50.0
+      },
+      "recommended_files": [
+        "services/http_client.py",
+        "registry/signal_registry.py",
+        "trading/backtest_engine.py",
+        "cache/redis_client.py",
+        "indicators/indicator_registry.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "api/rate_limit.py",
+        "auth/session.py",
+        "trading/execution.py",
+        "trading/paper_trading.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "retry_backoff",
+      "actual_insertion": "services/http_client.py",
+      "actual_findings": [
+        "fetch in `services/http_client.py`",
+        "Defect originates in `services/http_client.py`",
+        "`services/http_client.py` \u2014 fan-in 0, risk 3.02",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `registry/signal_registry.py`",
+        "`registry/signal_registry.py` \u2014 fan-in 0, risk 4.36",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `trading/backtest_engine.py`",
+        "`trading/backtest_engine.py` \u2014 fan-in 0, risk 4.36",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `cache/redis_client.py`",
+        "`cache/redis_client.py` \u2014 fan-in 0, risk 4.01",
+        "Matched symptom keywords in the module path/index.",
+        "Evidence: fetch in `services/http_client.py`",
+        "Symptom intent: general",
+        "Keyword overlap between the symptom and indexed module paths.",
+        "`services/http_client.py` matched (score 3.2, fan-in 0)",
+        "`registry/signal_registry.py` matched (score 0.2, fan-in 0)",
+        "fetch in `services/http_client.py`"
+      ],
+      "failures": [],
+      "evidence_audits": [],
+      "error": ""
+    },
+    {
+      "scenario_id": "inv_014_missing_traces",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "requests missing trace spans across services",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.14285714285714285,
+        "file_recall": 1.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.55,
+        "risk_recall": 0.0,
+        "test_recall": 0.0,
+        "finding_recall": 0.0,
+        "atlas_score": 52.2,
+        "repository_understanding": 57.1,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 55.0,
+        "investigation_quality": 40.0,
+        "impact_analysis_quality": 50.0
+      },
+      "recommended_files": [
+        "api/routes.py",
+        "middleware/request_logging.py",
+        "middleware/tracing.py",
+        "api/rate_limit.py",
+        "auth/middleware.py",
+        "registry/signal_registry.py",
+        "services/http_client.py",
+        "trading/backtest_engine.py",
+        "cache/redis_client.py",
+        "indicators/indicator_registry.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "trading/paper_trading.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "distributed_tracing",
+      "actual_insertion": "middleware/request_logging.py",
+      "actual_findings": [
+        "request_id_middleware in `middleware/request_logging.py`",
+        "rate_limit_middleware in `api/rate_limit.py`",
+        "Defect originates in `services/http_client.py`",
+        "`services/http_client.py` \u2014 fan-in 0, risk 3.02",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `middleware/tracing.py`",
+        "`middleware/tracing.py` \u2014 fan-in 0, risk 3.0",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `registry/signal_registry.py`",
+        "`registry/signal_registry.py` \u2014 fan-in 0, risk 4.36",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `trading/backtest_engine.py`",
+        "`trading/backtest_engine.py` \u2014 fan-in 0, risk 4.36",
+        "Matched symptom keywords in the module path/index.",
+        "Evidence: request_id_middleware in `middleware/request_logging.py`",
+        "Evidence: rate_limit_middleware in `api/rate_limit.py`",
+        "Symptom intent: general",
+        "Keyword overlap between the symptom and indexed module paths.",
+        "`services/http_client.py` matched (score 3.2, fan-in 0)",
+        "`middleware/tracing.py` matched (score 3.1, fan-in 0)",
+        "request_id_middleware in `middleware/request_logging.py`"
+      ],
+      "failures": [
+        {
+          "scenario_id": "inv_014_missing_traces",
+          "reason": "Incorrect insertion point",
+          "evidence_used": [
+            "request_id_middleware in `middleware/request_logging.py`",
+            "rate_limit_middleware in `api/rate_limit.py`"
+          ],
+          "expected_evidence": [
+            "trace",
+            "span"
+          ],
+          "missing_evidence": [
+            "Correlation",
+            "Logger",
+            "Logging",
+            "Structlog"
+          ]
+        }
+      ],
+      "evidence_audits": [
+        {
+          "scenario_id": "inv_014_missing_traces",
+          "audit_type": "incorrect_insertion_point",
+          "detail": "got `middleware/request_logging.py` expected one of ['middleware/tracing.py']"
+        }
+      ],
+      "error": ""
+    },
+    {
+      "scenario_id": "inv_015_flag_rollout",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "feature flag rollout enabling wrong cohort",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.1,
+        "file_recall": 1.0,
+        "insertion_point_correct": true,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.984,
+        "risk_recall": 0.0,
+        "test_recall": 0.0,
+        "finding_recall": 1.0,
+        "atlas_score": 83.6,
+        "repository_understanding": 70.0,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 98.4,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 50.0
+      },
+      "recommended_files": [
+        "config/feature_flags.py",
+        "trading/paper_trading.py",
+        "trading/backtest_engine.py",
+        "registry/signal_registry.py",
+        "cache/redis_client.py",
+        "indicators/indicator_registry.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "api/rate_limit.py",
+        "auth/session.py"
+      ],
+      "actual_concept_id": "feature_flags",
+      "actual_insertion": "config/feature_flags.py",
+      "actual_findings": [
+        "FEATURE_EMA in `config/feature_flags.py`",
+        "trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`",
+        "Defect originates in `config/feature_flags.py`",
+        "`config/feature_flags.py` \u2014 fan-in 0, risk 3.01",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `registry/signal_registry.py`",
+        "`registry/signal_registry.py` \u2014 fan-in 0, risk 4.36",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `trading/backtest_engine.py`",
+        "`trading/backtest_engine.py` \u2014 fan-in 0, risk 4.36",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `cache/redis_client.py`",
+        "`cache/redis_client.py` \u2014 fan-in 0, risk 4.01",
+        "Matched symptom keywords in the module path/index.",
+        "Evidence: FEATURE_EMA in `config/feature_flags.py`",
+        "Evidence: trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`",
+        "Symptom intent: general",
+        "Keyword overlap between the symptom and indexed module paths.",
+        "`config/feature_flags.py` matched (score 9.2, fan-in 0)",
+        "`registry/signal_registry.py` matched (score 0.2, fan-in 0)",
+        "FEATURE_EMA in `config/feature_flags.py`"
+      ],
+      "failures": [],
+      "evidence_audits": [],
+      "error": ""
+    },
+    {
+      "scenario_id": "inv_016_jwt_expired",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "JWT tokens rejected as expired immediately",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.07142857142857142,
+        "file_recall": 1.0,
+        "insertion_point_correct": true,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.7290000000000001,
+        "risk_recall": 0.0,
+        "test_recall": 0.0,
+        "finding_recall": 0.5,
+        "atlas_score": 67.9,
+        "repository_understanding": 68.6,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 72.9,
+        "investigation_quality": 70.0,
+        "impact_analysis_quality": 50.0
+      },
+      "recommended_files": [
+        "auth/middleware.py",
+        "api/routes.py",
+        "auth/login.py",
+        "api/rate_limit.py",
+        "middleware/request_logging.py",
+        "middleware/tracing.py",
+        "auth/session.py",
+        "billing/stripe_webhooks.py",
+        "registry/signal_registry.py",
+        "trading/backtest_engine.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "trading/paper_trading.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "jwt",
+      "actual_insertion": "auth/middleware.py",
+      "actual_findings": [
+        "authenticate_jwt in `auth/middleware.py`",
+        "rate_limit_middleware in `api/rate_limit.py`",
+        "auth.middleware.auth_middleware() in `api/routes.py`",
+        "Defect originates in `auth/middleware.py`",
+        "`auth/middleware.py` \u2014 fan-in 0, risk -0.49",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `auth/session.py`",
+        "`auth/session.py` \u2014 fan-in 0, risk 4.0",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `auth/login.py`",
+        "`auth/login.py` \u2014 fan-in 0, risk 3.36",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `billing/stripe_webhooks.py`",
+        "`billing/stripe_webhooks.py` \u2014 fan-in 0, risk 3.01",
+        "Matched symptom keywords in the module path/index.",
+        "Evidence: authenticate_jwt in `auth/middleware.py`",
+        "Evidence: rate_limit_middleware in `api/rate_limit.py`",
+        "Evidence: auth.middleware.auth_middleware() in `api/routes.py`",
+        "Symptom intent: general",
+        "Keyword overlap between the symptom and indexed module paths.",
+        "`auth/middleware.py` matched (score 6.0, fan-in 0)",
+        "`auth/session.py` matched (score 3.2, fan-in 0)",
+        "authenticate_jwt in `auth/middleware.py`"
+      ],
+      "failures": [],
+      "evidence_audits": [],
+      "error": ""
+    },
+    {
+      "scenario_id": "inv_017_order_fill_delay",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "orders fill slowly in paper but not backtest",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.18181818181818182,
+        "file_recall": 1.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": false,
+        "evidence_accuracy": 0.825,
+        "risk_recall": 0.0,
+        "test_recall": 0.0,
+        "finding_recall": 1.0,
+        "atlas_score": 62.4,
+        "repository_understanding": 59.1,
+        "knowledge_understanding": 0.0,
+        "evidence_quality": 82.5,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 50.0
+      },
+      "recommended_files": [
+        "trading/paper_trading.py",
+        "trading/backtest_engine.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "trading/order_service.py",
+        "registry/signal_registry.py",
+        "trading/execution.py",
+        "cache/redis_client.py",
+        "indicators/indicator_registry.py",
+        "api/rate_limit.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "slo_error_budget",
+      "actual_insertion": "trading/paper_trading.py",
+      "actual_findings": [
+        "Slippage mismatch: backtest ['trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`', 'SLIPPAGE in `trading/paper_config.py`'] vs live ['trading.paper_config.SLIPPAGE() in `trading/paper_trading.py`']",
+        "Different fill model symbols between backtest and live paths",
+        "Execution/fill modeling differs between backtest and live",
+        "`trading/execution.py` matches this area (fan-in 0, risk 4.0)",
+        "`trading/order_service.py` matches this area (fan-in 0, risk 3.36)",
+        "Data feed / bar timing mismatch (look-ahead bias)",
+        "No scanned module path matched this area \u2014 treat as a lead, not a localization.",
+        "Fees/commission applied inconsistently",
+        "No scanned module path matched this area \u2014 treat as a lead, not a localization.",
+        "Evidence: Slippage mismatch: backtest ['trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`', 'SLIPPAGE in `trading/paper_config.py`'] vs live ['trading.paper_config.SLIPPAGE() in `trading/paper_trading.py`']",
+        "Evidence: Different fill model symbols between backtest and live paths",
+        "Symptom intent: paper_trading",
+        "Symptoms comparing backtest vs live/paper often involve execution, slippage, or data-feed paths.",
+        "`trading/backtest_engine.py` matched (score 3.2, fan-in 0)",
+        "`trading/backtest_config.py` matched (score 3.2, fan-in 0)",
+        "Slippage mismatch: backtest ['trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`', 'SLIPPAGE in `trading/paper_config.py`'] vs live ['trading.paper_config.SLIPPAGE() in `trading/paper_trading.py`']"
+      ],
+      "failures": [
+        {
+          "scenario_id": "inv_017_order_fill_delay",
+          "reason": "Incorrect insertion point",
+          "evidence_used": [
+            "Slippage mismatch: backtest ['trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`', 'SLIPPAGE in `trading/paper_config.py`'] vs live ['trading.paper_config.SLIPPAGE() in `trading/paper_trading.py`']",
+            "Different fill model symbols between backtest and live paths"
+          ],
+          "expected_evidence": [
+            "fill",
+            "execution"
+          ],
+          "missing_evidence": [
+            "Side-by-side slippage/fill comparison"
+          ]
+        },
+        {
+          "scenario_id": "inv_017_order_fill_delay",
+          "reason": "Wrong concept identified",
+          "evidence_used": [
+            "slo_error_budget"
+          ],
+          "expected_evidence": [
+            "backtest_live_divergence"
+          ],
+          "missing_evidence": [
+            "backtest_live_divergence"
+          ]
+        }
+      ],
+      "evidence_audits": [
+        {
+          "scenario_id": "inv_017_order_fill_delay",
+          "audit_type": "incorrect_insertion_point",
+          "detail": "got `trading/paper_trading.py` expected one of ['trading/execution.py']"
+        }
+      ],
+      "error": ""
+    },
+    {
+      "scenario_id": "inv_018_cache_invalidation",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "cache invalidation not running after writes",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.08333333333333333,
+        "file_recall": 1.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.7450000000000001,
+        "risk_recall": 0.0,
+        "test_recall": 0.0,
+        "finding_recall": 0.5,
+        "atlas_score": 65.5,
+        "repository_understanding": 54.2,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 74.5,
+        "investigation_quality": 70.0,
+        "impact_analysis_quality": 50.0
+      },
+      "recommended_files": [
+        "cache/redis_client.py",
+        "cache/cache_layer.py",
+        "registry/signal_registry.py",
+        "trading/backtest_engine.py",
+        "indicators/indicator_registry.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "api/rate_limit.py",
+        "auth/session.py",
+        "trading/execution.py",
+        "trading/paper_trading.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "redis_cache",
+      "actual_insertion": "cache/redis_client.py",
+      "actual_findings": [
+        "cache.redis_client.RedisClient in `cache/cache_layer.py`",
+        "get_cached in `cache/cache_layer.py`",
+        "RedisClient in `cache/redis_client.py`",
+        "RedisClient.get in `cache/redis_client.py`",
+        "RedisClient.set in `cache/redis_client.py`",
+        "Defect originates in `cache/redis_client.py`",
+        "`cache/redis_client.py` \u2014 fan-in 0, risk 4.01",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `cache/cache_layer.py`",
+        "`cache/cache_layer.py` \u2014 fan-in 0, risk 3.36",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `registry/signal_registry.py`",
+        "`registry/signal_registry.py` \u2014 fan-in 0, risk 4.36",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `trading/backtest_engine.py`",
+        "`trading/backtest_engine.py` \u2014 fan-in 0, risk 4.36",
+        "Matched symptom keywords in the module path/index.",
+        "Evidence: cache.redis_client.RedisClient in `cache/cache_layer.py`",
+        "Evidence: get_cached in `cache/cache_layer.py`",
+        "Evidence: RedisClient in `cache/redis_client.py`",
+        "Evidence: RedisClient.get in `cache/redis_client.py`",
+        "Evidence: RedisClient.set in `cache/redis_client.py`",
+        "Symptom intent: general",
+        "Keyword overlap between the symptom and indexed module paths.",
+        "`cache/redis_client.py` matched (score 6.2, fan-in 0)",
+        "`cache/cache_layer.py` matched (score 3.2, fan-in 0)",
+        "cache.redis_client.RedisClient in `cache/cache_layer.py`"
+      ],
+      "failures": [
+        {
+          "scenario_id": "inv_018_cache_invalidation",
+          "reason": "Incorrect insertion point",
+          "evidence_used": [
+            "cache.redis_client.RedisClient in `cache/cache_layer.py`",
+            "get_cached in `cache/cache_layer.py`",
+            "RedisClient in `cache/redis_client.py`",
+            "RedisClient.get in `cache/redis_client.py`",
+            "RedisClient.set in `cache/redis_client.py`"
+          ],
+          "expected_evidence": [
+            "cache",
+            "invalidation"
+          ],
+          "missing_evidence": []
+        }
+      ],
+      "evidence_audits": [
+        {
+          "scenario_id": "inv_018_cache_invalidation",
+          "audit_type": "incorrect_insertion_point",
+          "detail": "got `cache/redis_client.py` expected one of ['cache/cache_layer.py']"
+        }
+      ],
+      "error": ""
+    },
+    {
+      "scenario_id": "inv_019_migration_failure",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "database migration fails on deploy",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.08333333333333333,
+        "file_recall": 1.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.65,
+        "risk_recall": 0.0,
+        "test_recall": 0.0,
+        "finding_recall": 1.0,
+        "atlas_score": 72.1,
+        "repository_understanding": 54.2,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 65.0,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 50.0
+      },
+      "recommended_files": [
+        "db/postgres.py",
+        "trading/paper_trading.py",
+        "auth/login.py",
+        "auth/session.py",
+        "db/migrations/001_initial.py",
+        "registry/signal_registry.py",
+        "trading/backtest_engine.py",
+        "cache/redis_client.py",
+        "indicators/indicator_registry.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "database_migration",
+      "actual_insertion": "db/postgres.py",
+      "actual_findings": [
+        "sqlalchemy.create_engine() in `db/postgres.py`",
+        "auth.session.create_session() in `auth/login.py`",
+        "Defect originates in `db/migrations/001_initial.py`",
+        "`db/migrations/001_initial.py` \u2014 fan-in 0, risk 3.01",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `registry/signal_registry.py`",
+        "`registry/signal_registry.py` \u2014 fan-in 0, risk 4.36",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `trading/backtest_engine.py`",
+        "`trading/backtest_engine.py` \u2014 fan-in 0, risk 4.36",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `cache/redis_client.py`",
+        "`cache/redis_client.py` \u2014 fan-in 0, risk 4.01",
+        "Matched symptom keywords in the module path/index.",
+        "Evidence: sqlalchemy.create_engine() in `db/postgres.py`",
+        "Evidence: auth.session.create_session() in `auth/login.py`",
+        "Symptom intent: general",
+        "Keyword overlap between the symptom and indexed module paths.",
+        "`db/migrations/001_initial.py` matched (score 3.2, fan-in 0)",
+        "`registry/signal_registry.py` matched (score 0.2, fan-in 0)",
+        "sqlalchemy.create_engine() in `db/postgres.py`"
+      ],
+      "failures": [
+        {
+          "scenario_id": "inv_019_migration_failure",
+          "reason": "Incorrect insertion point",
+          "evidence_used": [
+            "sqlalchemy.create_engine() in `db/postgres.py`",
+            "auth.session.create_session() in `auth/login.py`"
+          ],
+          "expected_evidence": [
+            "migration"
+          ],
+          "missing_evidence": [
+            "Alembic",
+            "Migrate",
+            "Postgres"
+          ]
+        }
+      ],
+      "evidence_audits": [
+        {
+          "scenario_id": "inv_019_migration_failure",
+          "audit_type": "incorrect_insertion_point",
+          "detail": "got `db/postgres.py` expected one of ['db/migrations/001_initial.py']"
+        }
+      ],
+      "error": ""
+    },
+    {
+      "scenario_id": "inv_020_execution_timing",
+      "category": "bug_investigation",
+      "repository": "atlas_reference",
+      "prompt": "execution timing differs between sim and live",
+      "ok": true,
+      "metrics": {
+        "file_precision": 0.18181818181818182,
+        "file_recall": 1.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": false,
+        "evidence_accuracy": 0.65,
+        "risk_recall": 0.0,
+        "test_recall": 0.0,
+        "finding_recall": 0.5,
+        "atlas_score": 49.1,
+        "repository_understanding": 59.1,
+        "knowledge_understanding": 0.0,
+        "evidence_quality": 65.0,
+        "investigation_quality": 70.0,
+        "impact_analysis_quality": 50.0
+      },
+      "recommended_files": [
+        "trading/paper_trading.py",
+        "trading/backtest_engine.py",
+        "trading/backtest_config.py",
+        "trading/paper_config.py",
+        "trading/order_service.py",
+        "registry/signal_registry.py",
+        "trading/execution.py",
+        "cache/redis_client.py",
+        "indicators/indicator_registry.py",
+        "api/rate_limit.py",
+        "config/feature_flags.py"
+      ],
+      "actual_concept_id": "implied_volatility",
+      "actual_insertion": "trading/paper_trading.py",
+      "actual_findings": [
+        "Slippage mismatch: backtest ['trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`', 'SLIPPAGE in `trading/paper_config.py`'] vs live ['trading.paper_config.SLIPPAGE() in `trading/paper_trading.py`']",
+        "Different fill model symbols between backtest and live paths",
+        "Defect originates in `trading/execution.py`",
+        "`trading/execution.py` \u2014 fan-in 0, risk 4.0",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `registry/signal_registry.py`",
+        "`registry/signal_registry.py` \u2014 fan-in 0, risk 4.36",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `trading/backtest_engine.py`",
+        "`trading/backtest_engine.py` \u2014 fan-in 0, risk 4.36",
+        "Matched symptom keywords in the module path/index.",
+        "Defect originates in `cache/redis_client.py`",
+        "`cache/redis_client.py` \u2014 fan-in 0, risk 4.01",
+        "Matched symptom keywords in the module path/index.",
+        "Evidence: Slippage mismatch: backtest ['trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`', 'SLIPPAGE in `trading/paper_config.py`'] vs live ['trading.paper_config.SLIPPAGE() in `trading/paper_trading.py`']",
+        "Evidence: Different fill model symbols between backtest and live paths",
+        "Symptom intent: general",
+        "Keyword overlap between the symptom and indexed module paths.",
+        "`trading/execution.py` matched (score 3.2, fan-in 0)",
+        "`registry/signal_registry.py` matched (score 0.2, fan-in 0)",
+        "Slippage mismatch: backtest ['trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`', 'SLIPPAGE in `trading/paper_config.py`'] vs live ['trading.paper_config.SLIPPAGE() in `trading/paper_trading.py`']"
+      ],
+      "failures": [
+        {
+          "scenario_id": "inv_020_execution_timing",
+          "reason": "Incorrect insertion point",
+          "evidence_used": [
+            "Slippage mismatch: backtest ['trading.backtest_config.SLIPPAGE() in `trading/backtest_engine.py`', 'SLIPPAGE in `trading/paper_config.py`'] vs live ['trading.paper_config.SLIPPAGE() in `trading/paper_trading.py`']",
+            "Different fill model symbols between backtest and live paths"
+          ],
+          "expected_evidence": [
+            "timing",
+            "execution"
+          ],
+          "missing_evidence": [
+            "Side-by-side slippage/fill comparison"
+          ]
+        },
+        {
+          "scenario_id": "inv_020_execution_timing",
+          "reason": "Wrong concept identified",
+          "evidence_used": [
+            "implied_volatility"
+          ],
+          "expected_evidence": [
+            "backtest_live_divergence"
+          ],
+          "missing_evidence": [
+            "backtest_live_divergence"
+          ]
+        }
+      ],
+      "evidence_audits": [
+        {
+          "scenario_id": "inv_020_execution_timing",
+          "audit_type": "incorrect_insertion_point",
+          "detail": "got `trading/paper_trading.py` expected one of ['trading/backtest_config.py']"
+        }
+      ],
+      "error": ""
+    },
+    {
+      "scenario_id": "imp_001_delete_auth_middleware",
+      "category": "impact_analysis",
+      "repository": "atlas_reference",
+      "prompt": "assess impact of changing `auth/middleware.py`",
+      "ok": true,
+      "metrics": {
+        "file_precision": 1.0,
+        "file_recall": 0.6666666666666666,
+        "insertion_point_correct": false,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.0,
+        "risk_recall": 0.0,
+        "test_recall": 0.0,
+        "finding_recall": 1.0,
+        "atlas_score": 34.1,
+        "repository_understanding": 83.3,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 0.0,
+        "investigation_quality": 86.7,
+        "impact_analysis_quality": 33.3
+      },
+      "recommended_files": [
+        "api/routes.py",
+        "auth/middleware.py"
+      ],
+      "actual_concept_id": "",
+      "actual_insertion": "api/routes.py",
+      "actual_findings": [],
+      "failures": [],
+      "evidence_audits": [],
+      "error": ""
+    },
+    {
+      "scenario_id": "imp_002_replace_redis",
+      "category": "impact_analysis",
+      "repository": "atlas_reference",
+      "prompt": "assess impact of changing `cache/redis_client.py`",
+      "ok": true,
+      "metrics": {
+        "file_precision": 1.0,
+        "file_recall": 1.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.0,
+        "risk_recall": 0.0,
+        "test_recall": 1.0,
+        "finding_recall": 1.0,
+        "atlas_score": 68.0,
+        "repository_understanding": 100.0,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 0.0,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 70.0
+      },
+      "recommended_files": [
+        "cache/cache_layer.py",
+        "cache/redis_client.py"
+      ],
+      "actual_concept_id": "",
+      "actual_insertion": "cache/cache_layer.py",
+      "actual_findings": [],
+      "failures": [],
+      "evidence_audits": [],
+      "error": ""
+    },
+    {
+      "scenario_id": "imp_003_migrate_schema",
+      "category": "impact_analysis",
+      "repository": "atlas_reference",
+      "prompt": "assess impact of changing `db/migrations/001_initial.py`",
+      "ok": true,
+      "metrics": {
+        "file_precision": 1.0,
+        "file_recall": 0.5,
+        "insertion_point_correct": true,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.0,
+        "risk_recall": 0.0,
+        "test_recall": 1.0,
+        "finding_recall": 1.0,
+        "atlas_score": 55.5,
+        "repository_understanding": 90.0,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 0.0,
+        "investigation_quality": 80.0,
+        "impact_analysis_quality": 45.0
+      },
+      "recommended_files": [
+        "db/migrations/001_initial.py"
+      ],
+      "actual_concept_id": "",
+      "actual_insertion": "db/migrations/001_initial.py",
+      "actual_findings": [],
+      "failures": [],
+      "evidence_audits": [],
+      "error": ""
+    },
+    {
+      "scenario_id": "imp_004_remove_signal_registry",
+      "category": "impact_analysis",
+      "repository": "atlas_reference",
+      "prompt": "assess impact of changing `registry/signal_registry.py`",
+      "ok": true,
+      "metrics": {
+        "file_precision": 1.0,
+        "file_recall": 0.6666666666666666,
+        "insertion_point_correct": false,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.0,
+        "risk_recall": 0.0,
+        "test_recall": 1.0,
+        "finding_recall": 1.0,
+        "atlas_score": 57.1,
+        "repository_understanding": 83.3,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 0.0,
+        "investigation_quality": 86.7,
+        "impact_analysis_quality": 53.3
+      },
+      "recommended_files": [
+        "signals/pipeline.py",
+        "registry/signal_registry.py"
+      ],
+      "actual_concept_id": "",
+      "actual_insertion": "signals/pipeline.py",
+      "actual_findings": [],
+      "failures": [],
+      "evidence_audits": [],
+      "error": ""
+    },
+    {
+      "scenario_id": "imp_005_delete_webhooks",
+      "category": "impact_analysis",
+      "repository": "atlas_reference",
+      "prompt": "assess impact of changing `billing/stripe_webhooks.py`",
+      "ok": true,
+      "metrics": {
+        "file_precision": 1.0,
+        "file_recall": 0.5,
+        "insertion_point_correct": true,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.0,
+        "risk_recall": 0.0,
+        "test_recall": 1.0,
+        "finding_recall": 1.0,
+        "atlas_score": 55.5,
+        "repository_understanding": 90.0,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 0.0,
+        "investigation_quality": 80.0,
+        "impact_analysis_quality": 45.0
+      },
+      "recommended_files": [
+        "billing/stripe_webhooks.py"
+      ],
+      "actual_concept_id": "",
+      "actual_insertion": "billing/stripe_webhooks.py",
+      "actual_findings": [],
+      "failures": [],
+      "evidence_audits": [],
+      "error": ""
+    },
+    {
+      "scenario_id": "imp_006_remove_tracing",
+      "category": "impact_analysis",
+      "repository": "atlas_reference",
+      "prompt": "assess impact of changing `middleware/tracing.py`",
+      "ok": true,
+      "metrics": {
+        "file_precision": 1.0,
+        "file_recall": 0.3333333333333333,
+        "insertion_point_correct": true,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.0,
+        "risk_recall": 0.0,
+        "test_recall": 1.0,
+        "finding_recall": 1.0,
+        "atlas_score": 50.1,
+        "repository_understanding": 81.7,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 0.0,
+        "investigation_quality": 73.3,
+        "impact_analysis_quality": 36.7
+      },
+      "recommended_files": [
+        "middleware/tracing.py"
+      ],
+      "actual_concept_id": "",
+      "actual_insertion": "middleware/tracing.py",
+      "actual_findings": [],
+      "failures": [
+        {
+          "scenario_id": "imp_006_remove_tracing",
+          "reason": "Low file recall",
+          "evidence_used": [
+            "middleware/tracing.py"
+          ],
+          "expected_evidence": [
+            "middleware/tracing.py",
+            "middleware/request_logging.py",
+            "api/routes.py"
+          ],
+          "missing_evidence": [
+            "middleware/request_logging.py",
+            "api/routes.py"
+          ]
+        }
+      ],
+      "evidence_audits": [],
+      "error": ""
+    },
+    {
+      "scenario_id": "imp_007_delete_indicator_registry",
+      "category": "impact_analysis",
+      "repository": "atlas_reference",
+      "prompt": "assess impact of changing `indicators/indicator_registry.py`",
+      "ok": true,
+      "metrics": {
+        "file_precision": 1.0,
+        "file_recall": 0.6666666666666666,
+        "insertion_point_correct": false,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.0,
+        "risk_recall": 0.0,
+        "test_recall": 0.0,
+        "finding_recall": 1.0,
+        "atlas_score": 34.1,
+        "repository_understanding": 83.3,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 0.0,
+        "investigation_quality": 86.7,
+        "impact_analysis_quality": 33.3
+      },
+      "recommended_files": [
+        "registry/signal_registry.py",
+        "indicators/indicator_registry.py"
+      ],
+      "actual_concept_id": "",
+      "actual_insertion": "registry/signal_registry.py",
+      "actual_findings": [],
+      "failures": [],
+      "evidence_audits": [],
+      "error": ""
+    },
+    {
+      "scenario_id": "imp_008_replace_http_client",
+      "category": "impact_analysis",
+      "repository": "atlas_reference",
+      "prompt": "assess impact of changing `services/http_client.py`",
+      "ok": true,
+      "metrics": {
+        "file_precision": 1.0,
+        "file_recall": 1.0,
+        "insertion_point_correct": true,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.0,
+        "risk_recall": 0.0,
+        "test_recall": 1.0,
+        "finding_recall": 1.0,
+        "atlas_score": 68.0,
+        "repository_understanding": 100.0,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 0.0,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 70.0
+      },
+      "recommended_files": [
+        "services/http_client.py"
+      ],
+      "actual_concept_id": "",
+      "actual_insertion": "services/http_client.py",
+      "actual_findings": [],
+      "failures": [],
+      "evidence_audits": [],
+      "error": ""
+    },
+    {
+      "scenario_id": "imp_009_delete_rate_limit",
+      "category": "impact_analysis",
+      "repository": "atlas_reference",
+      "prompt": "assess impact of changing `api/rate_limit.py`",
+      "ok": true,
+      "metrics": {
+        "file_precision": 1.0,
+        "file_recall": 1.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.0,
+        "risk_recall": 0.0,
+        "test_recall": 1.0,
+        "finding_recall": 1.0,
+        "atlas_score": 68.0,
+        "repository_understanding": 100.0,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 0.0,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 70.0
+      },
+      "recommended_files": [
+        "api/routes.py",
+        "api/rate_limit.py"
+      ],
+      "actual_concept_id": "",
+      "actual_insertion": "api/routes.py",
+      "actual_findings": [],
+      "failures": [],
+      "evidence_audits": [],
+      "error": ""
+    },
+    {
+      "scenario_id": "imp_010_remove_backtest",
+      "category": "impact_analysis",
+      "repository": "atlas_reference",
+      "prompt": "assess impact of changing `trading/backtest_engine.py`",
+      "ok": true,
+      "metrics": {
+        "file_precision": 1.0,
+        "file_recall": 1.0,
+        "insertion_point_correct": false,
+        "knowledge_correct": true,
+        "evidence_accuracy": 0.0,
+        "risk_recall": 0.0,
+        "test_recall": 1.0,
+        "finding_recall": 1.0,
+        "atlas_score": 68.0,
+        "repository_understanding": 100.0,
+        "knowledge_understanding": 100.0,
+        "evidence_quality": 0.0,
+        "investigation_quality": 100.0,
+        "impact_analysis_quality": 70.0
+      },
+      "recommended_files": [
+        "trading/paper_trading.py",
+        "trading/backtest_engine.py"
+      ],
+      "actual_concept_id": "",
+      "actual_insertion": "trading/paper_trading.py",
+      "actual_findings": [],
+      "failures": [],
+      "evidence_audits": [],
+      "error": ""
+    }
+  ]
+}

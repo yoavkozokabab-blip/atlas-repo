@@ -1,0 +1,3 @@
+SLIPPAGE = 0.001
+FILL_MODEL = 'ideal'
+EXECUTION_TIMING = 'close'

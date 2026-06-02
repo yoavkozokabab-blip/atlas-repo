@@ -1,0 +1,3 @@
+SLIPPAGE = 0.01
+FILL_MODEL = 'broker'
+EXECUTION_TIMING = 'live'
