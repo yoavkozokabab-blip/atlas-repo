@@ -3,16 +3,37 @@ const STATE = {
   repo: null, summary: null, graph: null, graphView: "module", graphPerf: null,
   exportTarget: "claude", exportPacket: "compact", graph3d: null, hoverNodeId: null,
   selectedNode: null, copilotResult: null, showEdges: true, riskPercentiles: null,
-  demoMode: false, tourStops: null, screenshotMode: false,
+  demoMode: false, tourStops: null, screenshotMode: false, demoPack: "small", productTourActive: false,
+  massiveMode: false, lastEstimate: null,
 };
 const RECENT_KEY = "jarvis_recent_repos";
 const ONBOARDING_KEY = "jarvis_onboarding_done_v1";
+const DEMO_PACK_KEY = "jarvis_demo_pack_v1";
+
+function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+
+async function trackAnalytics(event, props) {
+  try {
+    await api("/api/analytics/event", "POST", { event, ...(props || {}) });
+  } catch (e) { /* local-only, never block UX */ }
+}
 
 async function api(path, method = "GET", body) {
+  const raw = String(path || "");
+  const splitAt = raw.indexOf("?");
+  const pathPart = splitAt >= 0 ? raw.slice(0, splitAt) : raw;
+  const queryPart = splitAt >= 0 ? raw.slice(splitAt + 1) : "";
+  const normalizedPath = pathPart.replace(/\/+$/, "") || "/api";
+  const normalized = queryPart ? `${normalizedPath}?${queryPart}` : normalizedPath;
   const opt = { method, headers: { "Content-Type": "application/json" } };
   if (body) opt.body = JSON.stringify(body);
-  const r = await fetch(path, opt);
-  return r.json();
+  const r = await fetch(normalized, opt);
+  let payload = {};
+  try { payload = await r.json(); } catch (e) { payload = { ok: false, error: "Invalid server response" }; }
+  if (!payload.ok && String(payload.error || "").startsWith("Unknown endpoint")) {
+    console.error("JARVIS API route missing:", method, normalized, payload.error);
+  }
+  return payload;
 }
 function $(id) { return document.getElementById(id); }
 function toast(msg, kind) {
@@ -34,6 +55,20 @@ function updateRepoChip(name, demo) {
   $("repoChip").textContent = name || "No repository";
   $("demoBadge").style.display = demo ? "inline-block" : "none";
   STATE.demoMode = !!demo;
+}
+
+function updateMassiveBadge(on) {
+  STATE.massiveMode = !!on;
+  if ($("massiveBadge")) $("massiveBadge").style.display = on ? "inline-block" : "none";
+}
+
+function readScopeConfig() {
+  const mode = $("scopeMode")?.value || "entire_repo";
+  const folder = ($("scopeFolder")?.value || "").trim();
+  const include_patterns = (($("scopeInclude")?.value || "").split(",").map(s => s.trim()).filter(Boolean));
+  const exclude_patterns = (($("scopeExclude")?.value || "").split(",").map(s => s.trim()).filter(Boolean));
+  const manual_massive_mode = !!$("manualMassiveMode")?.checked;
+  return { mode, folder, include_patterns, exclude_patterns, manual_massive_mode };
 }
 
 function dismissOnboarding(skipDemo) {
@@ -111,6 +146,16 @@ async function validateRepoPath(showToast) {
     $("pathOk").textContent += " · " + res.warnings.join(" ");
   }
   if (showToast) toast("Path validated ✓", "success");
+  try {
+    const estimate = await api("/api/repositories/estimate", "POST", { path: res.path, scope: readScopeConfig() });
+    STATE.lastEstimate = estimate.ok ? estimate : null;
+    if (estimate.ok) {
+      updateMassiveBadge(!!estimate.massive_mode_auto || !!readScopeConfig().manual_massive_mode);
+      $("preScanEstimate").textContent =
+        `${estimate.total_files} files · ${estimate.code_files} code · ${estimate.repo_size_mb} MB · ` +
+        `~${estimate.likely_scan_time_seconds}s · suggested: ${(estimate.suggested_scopes || []).join(", ")}`;
+    }
+  } catch (e) {}
   return res;
 }
 
@@ -127,19 +172,50 @@ function finishScanSession(scan, pathLabel) {
   renderScanSuccess(scan);
 }
 
-async function loadDemoMode() {
+async function loadDemoMode(pack) {
   dismissOnboarding(true);
+  const packId = pack || STATE.demoPack || "small";
   go("scan");
   showScanPanel("running");
-  $("scanPath").textContent = "Loading JARVIS Demo Sample…";
+  $("scanPath").textContent = `Loading JARVIS demo (${packId})…`;
   renderScanSkeleton();
   setBar(30);
-  const scan = await api("/api/demo/load", "POST", {});
+  const scan = await api("/api/demo/load", "POST", { pack: packId });
   setBar(100);
   if (!scan.ok) { showScanFailed(scan.error, scan.code); toast("✗ Demo load failed", "error"); return; }
+  STATE.demoPack = scan.demo_pack || packId;
+  try { localStorage.setItem(DEMO_PACK_KEY, STATE.demoPack); } catch (e) {}
   STATE.summary = await api("/api/repositories/current/summary");
   finishScanSession(scan, null);
-  toast("Demo Mode loaded ✓", "success");
+  toast("Demo loaded ✓", "success");
+}
+
+async function renderDemoPackPicker() {
+  const host = $("demoPackList");
+  if (!host) return;
+  const res = await api("/api/demo/packs");
+  if (!res.ok || !(res.packs || []).length) {
+    host.innerHTML = `<span class="muted tiny">Demo packs unavailable.</span>`;
+    return;
+  }
+  let selected = STATE.demoPack || "small";
+  try {
+    const saved = localStorage.getItem(DEMO_PACK_KEY);
+    if (saved) selected = saved;
+  } catch (e) {}
+  STATE.demoPack = selected;
+  host.innerHTML = res.packs.map(p => `
+    <div class="demo-pack-card glass ${p.id === selected ? "active" : ""}" onclick="selectDemoPack(${JSON.stringify(p.id)})">
+      <h4>${p.label}</h4>
+      <p>${p.description}</p>
+    </div>`).join("");
+}
+
+function selectDemoPack(id) {
+  STATE.demoPack = id;
+  try { localStorage.setItem(DEMO_PACK_KEY, id); } catch (e) {}
+  renderDemoPackPicker();
+  loadDemoMode(id);
 }
 
 function go(view) {
@@ -147,7 +223,11 @@ function go(view) {
   const el = $("view-" + view); if (el) el.classList.add("active");
   document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("active", b.dataset.view === view));
   window.scrollTo({ top: 0, behavior: "smooth" });
-  if (view === "center") setTimeout(renderCenter, 60);
+  if (view === "center") {
+    trackAnalytics("graph_opened");
+    setTimeout(renderCenter, 60);
+  }
+  if (view === "home") renderDemoPackPicker();
   if (view === "intel") renderIntel();
   if (view === "export") refreshExport();
 }
@@ -191,13 +271,20 @@ async function scanFlow() {
   let stage = 0; setStage(0, "run"); setBar(4);
   const timer = setInterval(() => { if (stage < STAGES.length - 1) { setStage(stage, "done"); stage++; setStage(stage, "run"); setBar(8 + stage * 12); } }, 850);
 
-  const scan = await api("/api/repositories/scan", "POST", { path });
+  const scan = await api("/api/repositories/scan", "POST", { path, scope: readScopeConfig() });
   clearInterval(timer);
   STAGES.forEach((_, i) => setStage(i, "done")); setBar(100); $("scanPct").textContent = "100%";
   if (!scan.ok) {
     showScanFailed(scan.error || "Scan failed", scan.code);
     toast("✗ Scan failed", "error");
     return;
+  }
+  updateMassiveBadge(!!scan.massive_mode);
+  if (scan.massive_mode) {
+    $("scanModeInfo").style.display = "block";
+    $("scanModeInfo").textContent = "Massive Repository Mode enabled. Starting with architecture overview is recommended.";
+  } else {
+    $("scanModeInfo").style.display = "none";
   }
   $("scanMetrics").innerHTML = metricGrid(scan);
   STATE.summary = await api("/api/repositories/current/summary");
@@ -206,6 +293,10 @@ async function scanFlow() {
 }
 function setStage(i, cls) { const el = $("st" + i); if (el) el.className = "stage " + cls; }
 function setBar(pct) { $("scanBar").style.width = pct + "%"; $("scanPct").textContent = Math.round(pct) + "%"; }
+async function cancelCurrentScan() {
+  const res = await api("/api/repositories/current/cancel-scan", "POST", {});
+  if (res.ok) toast("Cancel requested", "success");
+}
 function metricGrid(s) {
   const M = [
     ["files discovered", s.files_discovered], ["modules indexed", s.module_count],
@@ -219,6 +310,9 @@ function metricGrid(s) {
 /* ---------------- Command Center ---------------- */
 async function fetchGraphPayload() {
   const view = STATE.graphView || "module";
+  if (view === "hierarchy") {
+    return api("/api/repositories/current/hierarchy-graph?level=subsystem");
+  }
   return api(`/api/repositories/current/graph?view=${encodeURIComponent(view)}`);
 }
 
@@ -238,8 +332,9 @@ function updateGraphMeta(data, perf) {
     ? ` · showing ${data.node_count}/${data.total_modules} modules`
     : "";
   const clusterText = data.cluster_count ? ` · ${data.cluster_count} galaxies · ${data.bridge_link_count || 0} bridges` : "";
+  const cacheText = (STATE.summary?.cache?.hit || STATE.graph?.cache?.hit) ? " · cache hit" : "";
   $("graphMeta").textContent =
-    `${data.view || STATE.graphView} · ${data.node_count} nodes · ${data.link_count} edges · ${sum.graph_scope || data.graph_scope || ""}${clusterText}${capText}${perfText}`;
+    `${data.view || STATE.graphView} · ${data.node_count} nodes · ${data.link_count} edges · ${sum.graph_scope || data.graph_scope || ""}${clusterText}${capText}${cacheText}${perfText}`;
 }
 
 async function renderCenter() {
@@ -255,6 +350,12 @@ async function renderCenter() {
   renderHealthCockpit(sum);
   $("suggest").innerHTML = renderCopilotSuggestions(sum);
   const graph = STATE.graph || (STATE.graph = await fetchGraphPayload());
+  if (graph.render_warning) {
+    $("graphWarning").style.display = "block";
+    $("graphWarning").textContent = graph.render_warning;
+  } else {
+    $("graphWarning").style.display = "none";
+  }
   STATE.tourStops = graph.tour_stops || [];
   STATE.riskPercentiles = computeRiskPercentiles(graph.nodes || []);
   updateGraphMeta(graph, STATE.graphPerf);
@@ -493,10 +594,82 @@ function toggleScreenshotMode() {
   STATE.screenshotMode = !STATE.screenshotMode;
   JARVIS_UNIVERSE.toggleScreenshotMode(STATE.screenshotMode);
   $("screenshotBtn").textContent = STATE.screenshotMode ? "Exit screenshot" : "Screenshot";
+  if ($("presentationBadge")) $("presentationBadge").style.display = STATE.screenshotMode ? "block" : "none";
   if (STATE.graph3d || JARVIS_UNIVERSE.fg) {
     const host = $("graph3d");
     JARVIS_UNIVERSE.fg?.width(host.clientWidth).height(host.clientHeight);
   }
+}
+
+async function exportDemoBundle() {
+  const res = await api("/api/demo/export-bundle", "POST", {});
+  if (!res.ok) { toast("✗ " + (res.error || "Export failed")); return; }
+  const binary = atob(res.content_base64 || "");
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  const blob = new Blob([bytes], { type: "application/zip" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = res.filename || "jarvis_demo_bundle.zip";
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+  toast("Demo bundle exported ✓", "success");
+}
+
+let _productTourTimer = null;
+function stopProductTour() {
+  STATE.productTourActive = false;
+  if (_productTourTimer) clearTimeout(_productTourTimer);
+  JARVIS_UNIVERSE.stopTour?.();
+  $("productTourPanel").style.display = "none";
+  if (STATE.screenshotMode) toggleScreenshotMode();
+}
+
+function setProductTourStep(title, narration) {
+  $("productTourPanel").style.display = "block";
+  $("productTourTitle").textContent = title;
+  $("productTourNarration").textContent = narration;
+}
+
+async function startProductTour() {
+  if (STATE.productTourActive) return;
+  STATE.productTourActive = true;
+  trackAnalytics("product_tour_started");
+  dismissOnboarding(true);
+  setProductTourStep("Loading demo", "Scanning bundled repository for a screen-recording friendly walkthrough…");
+  await loadDemoMode("small");
+  await sleep(1200);
+  if (!STATE.productTourActive) return;
+  toggleScreenshotMode();
+  go("center");
+  await sleep(2500);
+  if (!STATE.productTourActive) return;
+  setProductTourStep("Repository universe", "Flying through subsystem galaxies — each cluster is real architecture from the scan.");
+  startRepositoryTour();
+  await sleep(34000);
+  if (!STATE.productTourActive) return;
+  stopRepositoryTour();
+  setProductTourStep("Architectural risks", "Copilot answers are grounded in Builder Core ranking — no cloud API.");
+  $("askInput").value = "What are the top architectural risks?";
+  await sendCopilotQuestion();
+  await sleep(6000);
+  if (!STATE.productTourActive) return;
+  const hub = STATE.summary?.top_hubs?.[0]?.path;
+  if (hub) {
+    setProductTourStep("Impact analysis", `Simulating blast radius if you change ${hub}.`);
+    $("impactTarget").value = hub;
+    go("impact");
+    await runImpact();
+    await sleep(5000);
+  }
+  if (!STATE.productTourActive) return;
+  setProductTourStep("AI context export", "One-click compact packets for Claude, Codex, or Cursor.");
+  go("export");
+  await refreshExport();
+  await sleep(4000);
+  setProductTourStep("Tour complete", "Export Demo Bundle for marketing assets, or scan your own repository.");
+  STATE.productTourActive = false;
+  toast("Product tour complete ✓", "success");
 }
 function impactFor(path) { $("impactTarget").value = path; go("impact"); runImpact(); }
 
@@ -612,16 +785,23 @@ function saveExport() {
 (async function boot() {
   loadRecent();
   maybeShowOnboarding();
+  renderDemoPackPicker();
   wireSeg("segTarget", "exportTarget"); wireSeg("segPacket", "exportPacket");
   $("askInput").addEventListener("keydown", e => { if (e.key === "Enter") sendCopilotQuestion(); });
   $("askSend").addEventListener("click", sendCopilotQuestion);
   $("repoPath").addEventListener("keydown", e => { if (e.key === "Enter") validateRepoPath(true); });
+  ["scopeMode", "scopeFolder", "scopeInclude", "scopeExclude", "manualMassiveMode"].forEach(id => {
+    const el = $(id);
+    if (!el) return;
+    el.addEventListener("change", () => validateRepoPath(false));
+  });
   try {
     const h = await api("/api/health");
     if (h.repository_open) {
       unlockNav();
       STATE.summary = await api("/api/repositories/current/summary");
       updateRepoChip(h.repo_name || STATE.summary?.repo_name, h.demo_mode);
+      updateMassiveBadge(!!STATE.summary?.massive_mode);
     }
   } catch (e) {}
 })();

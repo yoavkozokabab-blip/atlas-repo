@@ -147,5 +147,7 @@ def test_all_documented_routes_are_dispatchable():
     assert ("POST", "/api/context/export") in documented
     assert ("GET", "/api/repositories/current/timeline") in documented
     assert ("GET", "/api/repositories/current/tour") in documented
-    assert ("GET", "/api/repositories/current/module") in documented
-    assert len(documented) == 15
+    assert ("GET", "/api/analytics/summary") in documented
+    assert ("POST", "/api/repositories/estimate") in documented
+    assert ("GET", "/api/repositories/current/hierarchy-graph") in documented
+    assert len(documented) == 23

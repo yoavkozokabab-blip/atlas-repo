@@ -12,25 +12,59 @@ Search ``MOCK``/``TODO`` for those spots.
 
 from __future__ import annotations
 
+import base64
+import fnmatch
+import hashlib
+import io
+import json as _json
 import math
 import os
 import re
 import time
+import zipfile
 from typing import Any, Dict, List, Optional, Tuple
 
 from builder_core import architectural_risk, repository_understanding
 from builder_core.bug_intelligence import depgraph
 
-PRODUCT_VERSION = "phase111-cinematic-universe"
+from . import analytics
+
+PRODUCT_VERSION = "phase112-installer-demo"
 CHARS_PER_TOKEN = 4.0
 GRAPH_DISPLAY_CAP = 5000
 RISK_RANK_TOP = 5000
+MASSIVE_FILES_THRESHOLD = 20_000
+MASSIVE_MODULES_THRESHOLD = 5_000
+MASSIVE_SIZE_THRESHOLD_BYTES = 1_000_000_000
 
 _CODE_EXTENSIONS = {
     ".py", ".js", ".ts", ".tsx", ".jsx", ".go", ".rs", ".java", ".cs", ".rb",
     ".cpp", ".c", ".h", ".hpp", ".swift", ".kt", ".scala", ".php", ".vue",
 }
-_DEMO_REPO_PATH = os.path.join(os.path.dirname(__file__), "demo", "sample_repo")
+_DEMO_ROOT = os.path.join(os.path.dirname(__file__), "demo")
+_DEMO_PACKS: Dict[str, Dict[str, Any]] = {
+    "small": {
+        "id": "small",
+        "label": "Small demo",
+        "description": "Quick wow moment — 6 modules, one import cycle.",
+        "path": os.path.join(_DEMO_ROOT, "small_repo"),
+        "fallback": os.path.join(_DEMO_ROOT, "sample_repo"),
+    },
+    "medium": {
+        "id": "medium",
+        "label": "Medium demo",
+        "description": "Multi-subsystem app — ~18 modules, cross-service edges.",
+        "path": os.path.join(_DEMO_ROOT, "medium_repo"),
+        "fallback": None,
+    },
+    "large": {
+        "id": "large",
+        "label": "Large demo",
+        "description": "Galaxy-scale graph — ~40 modules across six subsystems.",
+        "path": os.path.join(_DEMO_ROOT, "large_repo"),
+        "fallback": None,
+    },
+}
 
 # Directories pruned from the light index walk (keeps scans fast + excludes the
 # vendored data corpus, mirroring the depgraph production scope).
@@ -50,6 +84,9 @@ _STATE: Dict[str, Any] = {
     "index": None,
     "risks": None,
     "demo_mode": False,
+    "last_scope": {"mode": "entire_repo"},
+    "scan_cache": {},
+    "scan_job": {"id": None, "cancelled": False, "stage": "idle"},
 }
 
 
@@ -68,22 +105,30 @@ def _read(path: str) -> str:
         return ""
 
 
-def _light_index(root: str) -> Dict[str, Any]:
+def _light_index(root: str, scope: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     """Fast index: file roles + subsystem map, WITHOUT the slow per-file analysis.
 
     Sufficient for ``architectural_risk.rank_modules`` (which tolerates empty
     ``python_analysis``/``churn``) and the product summary.
     """
     root = os.path.abspath(root)
+    scope = _scope_from_input(scope)
     files: List[Dict[str, Any]] = []
     py_docs: List[Dict[str, str]] = []
     role_counts: Dict[str, int] = {}
+    excluded_count = 0
     for dirpath, dirnames, filenames in os.walk(root):
         dirnames[:] = sorted(d for d in dirnames if d not in _SKIP_DIRS)
         for name in sorted(filenames):
             abs_path = os.path.join(dirpath, name)
             rel = os.path.relpath(abs_path, root).replace("\\", "/")
             ext = os.path.splitext(name)[1].lower()
+            if _is_binary_ext(ext) or ext in {".log", ".tmp", ".cache", ".lock"}:
+                excluded_count += 1
+                continue
+            if not _scope_allows(rel, ext, scope):
+                excluded_count += 1
+                continue
             role = repository_understanding.classify_file_role(rel, ext, project_root=root)
             try:
                 size = os.path.getsize(abs_path)
@@ -110,6 +155,8 @@ def _light_index(root: str) -> Dict[str, Any]:
         "churn": {},
         "chunks": [],
         "stats": {"files": len(files), "roles": role_counts},
+        "excluded_files": excluded_count,
+        "scope": scope,
     }
 
 
@@ -133,9 +180,41 @@ def health() -> Dict[str, Any]:
     }
 
 
-def demo_repo_path() -> str:
-    return os.path.abspath(_DEMO_REPO_PATH)
+def demo_repo_path(pack: str = "small") -> str:
+    """Resolve bundled demo repository path for a pack id."""
+    key = (pack or "small").strip().lower()
+    meta = _DEMO_PACKS.get(key) or _DEMO_PACKS["small"]
+    primary = os.path.abspath(meta["path"])
+    if os.path.isdir(primary):
+        return primary
+    fallback = meta.get("fallback")
+    if fallback and os.path.isdir(fallback):
+        return os.path.abspath(fallback)
+    return primary
 
+
+def list_demo_packs() -> Dict[str, Any]:
+    packs = []
+    for meta in _DEMO_PACKS.values():
+        path = demo_repo_path(meta["id"])
+        packs.append(
+            {
+                "id": meta["id"],
+                "label": meta["label"],
+                "description": meta["description"],
+                "available": os.path.isdir(path),
+                "path": path,
+            }
+        )
+    return {"ok": True, "packs": packs, "default": "small"}
+
+
+def track_analytics_event(event: str, **properties: Any) -> Dict[str, Any]:
+    return analytics.track_event(event, product=PRODUCT_VERSION, **properties)
+
+
+def analytics_overview() -> Dict[str, Any]:
+    return analytics.analytics_summary()
 
 def _count_code_files(root: str) -> Tuple[int, int]:
     """Return (total_files, code_files) under root, skipping vendor dirs."""
@@ -149,6 +228,86 @@ def _count_code_files(root: str) -> Tuple[int, int]:
             if ext in _CODE_EXTENSIONS:
                 code += 1
     return total, code
+
+
+def _infer_bucket(path: str) -> str:
+    p = path.replace("\\", "/").lower()
+    if any(token in p for token in ("/frontend/", "/web/", "/ui/", "/client/")):
+        return "frontend"
+    if any(token in p for token in ("/backend/", "/api/", "/server/", "/services/")):
+        return "backend"
+    return "other"
+
+
+def _is_binary_ext(ext: str) -> bool:
+    return ext in {
+        ".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".bmp", ".pdf", ".zip",
+        ".tar", ".gz", ".7z", ".exe", ".dll", ".so", ".dylib", ".o", ".a", ".class",
+        ".jar", ".mp4", ".mov", ".avi", ".mp3", ".wav", ".bin",
+    }
+
+
+def _scan_signature(root: str, scope: Dict[str, Any]) -> str:
+    hasher = hashlib.sha256()
+    hasher.update(os.path.abspath(root).encode("utf-8", errors="ignore"))
+    hasher.update(_json.dumps(scope, sort_keys=True).encode("utf-8", errors="ignore"))
+    sample = 0
+    for dirpath, dirnames, filenames in os.walk(root):
+        dirnames[:] = sorted(d for d in dirnames if d not in _SKIP_DIRS)
+        for name in sorted(filenames):
+            if sample >= 2500:
+                break
+            path = os.path.join(dirpath, name)
+            try:
+                st = os.stat(path)
+            except OSError:
+                continue
+            hasher.update(str(st.st_size).encode())
+            hasher.update(str(int(st.st_mtime)).encode())
+            sample += 1
+        if sample >= 2500:
+            break
+    return hasher.hexdigest()
+
+
+def _scope_from_input(scope: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+    scope = scope or {}
+    mode = str(scope.get("mode", "entire_repo")).strip().lower()
+    if mode not in {"entire_repo", "folder", "python_only", "backend", "frontend", "custom"}:
+        mode = "entire_repo"
+    return {
+        "mode": mode,
+        "folder": str(scope.get("folder", "")).strip().replace("\\", "/"),
+        "include_patterns": [str(x).strip() for x in (scope.get("include_patterns") or []) if str(x).strip()],
+        "exclude_patterns": [str(x).strip() for x in (scope.get("exclude_patterns") or []) if str(x).strip()],
+        "manual_massive_mode": bool(scope.get("manual_massive_mode", False)),
+    }
+
+
+def _scope_allows(path: str, ext: str, scope: Dict[str, Any]) -> bool:
+    rel = path.replace("\\", "/")
+    mode = scope.get("mode", "entire_repo")
+    if mode == "folder":
+        folder = (scope.get("folder") or "").strip("/")
+        if folder and not (rel == folder or rel.startswith(folder + "/")):
+            return False
+    elif mode == "python_only":
+        if ext != ".py":
+            return False
+    elif mode == "backend":
+        if _infer_bucket("/" + rel) != "backend":
+            return False
+    elif mode == "frontend":
+        if _infer_bucket("/" + rel) != "frontend":
+            return False
+    elif mode == "custom":
+        includes = scope.get("include_patterns") or []
+        excludes = scope.get("exclude_patterns") or []
+        if includes and not any(fnmatch.fnmatch(rel, pat) for pat in includes):
+            return False
+        if excludes and any(fnmatch.fnmatch(rel, pat) for pat in excludes):
+            return False
+    return True
 
 
 def validate_repository_path(path: str) -> Dict[str, Any]:
@@ -211,6 +370,61 @@ def validate_repository_path(path: str) -> Dict[str, Any]:
     }
 
 
+def pre_scan_estimate(path: str, scope: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    validation = validate_repository_path(path)
+    if not validation.get("ok"):
+        return validation
+    root = validation["path"]
+    scope_data = _scope_from_input(scope)
+    total_files = 0
+    code_files = 0
+    bytes_total = 0
+    languages: Dict[str, int] = {}
+    ignored_dirs = sorted(_SKIP_DIRS)
+    for dirpath, dirnames, filenames in os.walk(root):
+        dirnames[:] = sorted(d for d in dirnames if d not in _SKIP_DIRS)
+        for name in filenames:
+            total_files += 1
+            abs_path = os.path.join(dirpath, name)
+            rel = os.path.relpath(abs_path, root).replace("\\", "/")
+            ext = os.path.splitext(name)[1].lower()
+            try:
+                size = os.path.getsize(abs_path)
+            except OSError:
+                size = 0
+            bytes_total += size
+            if _is_binary_ext(ext) or not _scope_allows(rel, ext, scope_data):
+                continue
+            if ext in _CODE_EXTENSIONS:
+                code_files += 1
+                languages[ext or "(none)"] = languages.get(ext or "(none)", 0) + 1
+    likely_seconds = max(2, int(code_files / 120) + int(total_files / 4000))
+    suggested_scopes = ["entire_repo", "backend", "frontend", "python_only"]
+    if total_files > MASSIVE_FILES_THRESHOLD or bytes_total > MASSIVE_SIZE_THRESHOLD_BYTES:
+        suggested_scopes = ["backend", "frontend", "python_only", "folder", "custom"]
+    estimated_modules = max(1, int(code_files * 0.65))
+    massive_auto = (
+        total_files > MASSIVE_FILES_THRESHOLD
+        or estimated_modules > MASSIVE_MODULES_THRESHOLD
+        or bytes_total > MASSIVE_SIZE_THRESHOLD_BYTES
+    )
+    return {
+        "ok": True,
+        "path": root,
+        "scope": scope_data,
+        "total_files": total_files,
+        "code_files": code_files,
+        "estimated_modules": estimated_modules,
+        "repo_size_bytes": bytes_total,
+        "repo_size_mb": round(bytes_total / (1024 * 1024), 2),
+        "languages": dict(sorted(languages.items(), key=lambda item: (-item[1], item[0]))[:12]),
+        "ignored_folders": ignored_dirs,
+        "likely_scan_time_seconds": likely_seconds,
+        "suggested_scopes": suggested_scopes,
+        "massive_mode_auto": massive_auto,
+    }
+
+
 def _scan_next_actions(scan: Dict[str, Any]) -> List[str]:
     actions = [
         "Explore the dependency graph in Command Center",
@@ -248,32 +462,53 @@ def select_repository(path: str) -> Dict[str, Any]:
     }
 
 
-def load_demo_mode() -> Dict[str, Any]:
-    """Load bundled sample repository into product state (clearly labeled demo)."""
-    demo_path = demo_repo_path()
+def _is_demo_path(path: str) -> bool:
+    abspath = os.path.abspath(path)
+    for meta in _DEMO_PACKS.values():
+        if abspath == os.path.abspath(meta["path"]):
+            return True
+        fallback = meta.get("fallback")
+        if fallback and abspath == os.path.abspath(fallback):
+            return True
+    return False
+
+
+def load_demo_mode(pack: str = "small") -> Dict[str, Any]:
+    """Load bundled demo repository into product state (clearly labeled demo)."""
+    pack_id = (pack or "small").strip().lower()
+    meta = _DEMO_PACKS.get(pack_id)
+    if not meta:
+        return {"ok": False, "error": f"Unknown demo pack: {pack_id}", "code": "demo_unknown_pack"}
+    demo_path = demo_repo_path(pack_id)
     if not os.path.isdir(demo_path):
         return {
             "ok": False,
-            "error": "Bundled demo repository is missing.",
+            "error": f"Bundled demo repository is missing: {pack_id}",
             "code": "demo_missing",
+            "pack": pack_id,
         }
     _STATE["demo_mode"] = False
     result = scan_repository(demo_path)
     if not result.get("ok"):
         return result
+    label = meta["label"]
     _STATE["demo_mode"] = True
     result["demo_mode"] = True
-    result["repo_name"] = "JARVIS Demo Sample"
+    result["demo_pack"] = pack_id
+    result["repo_name"] = f"JARVIS Demo - {label}"
     result["repo_path"] = demo_path
     _STATE["scan"]["demo_mode"] = True
-    _STATE["scan"]["repo_name"] = "JARVIS Demo Sample"
+    _STATE["scan"]["demo_pack"] = pack_id
+    _STATE["scan"]["repo_name"] = result["repo_name"]
     _STATE["scan"]["repo_path"] = demo_path
+    track_analytics_event("demo_loaded", pack=pack_id, modules=result.get("module_count", 0))
     return result
 
 
-def scan_repository(path: Optional[str] = None) -> Dict[str, Any]:
+def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     """Run the real Builder Core scan (graph + light index + risk ranking)."""
     repo = os.path.abspath(path or _STATE.get("path") or ".")
+    scope_data = _scope_from_input(scope)
     validation = validate_repository_path(repo)
     if not validation.get("ok"):
         return {
@@ -283,14 +518,47 @@ def scan_repository(path: Optional[str] = None) -> Dict[str, Any]:
             "warnings": validation.get("warnings", []),
         }
     repo = validation["path"]
-    _STATE["demo_mode"] = repo == demo_repo_path()
+    _STATE["demo_mode"] = _is_demo_path(repo)
+    _STATE["last_scope"] = scope_data
+    estimate = pre_scan_estimate(repo, scope_data)
+    scan_job = _STATE.get("scan_job") or {"id": None, "cancelled": False, "stage": "idle"}
+    previous_stage = scan_job.get("stage", "idle")
+    if previous_stage in {"idle", "completed"}:
+        scan_job["cancelled"] = False
+    scan_job.update({"id": f"scan-{int(time.time()*1000)}", "stage": "discovering_files"})
+    _STATE["scan_job"] = scan_job
+
+    signature = _scan_signature(repo, scope_data)
+    cache = _STATE.setdefault("scan_cache", {})
+    cached = cache.get(signature)
+    if cached:
+        _STATE.update(
+            {
+                "path": repo,
+                "scan": _json.loads(_json.dumps(cached["scan"])),
+                "graph": cached["graph"],
+                "index": cached["index"],
+                "risks": cached["risks"],
+            }
+        )
+        _STATE["scan"]["cache"] = {"hit": True, "signature": signature}
+        _STATE["scan_job"]["stage"] = "completed"
+        track_analytics_event("scan_completed", demo=bool(_STATE.get("demo_mode")), cache_hit=True)
+        return _STATE["scan"]
     started = time.time()
 
+    if _STATE["scan_job"].get("cancelled"):
+        return {"ok": False, "error": "Scan cancelled.", "code": "scan_cancelled"}
+    _STATE["scan_job"]["stage"] = "building_graph"
     graph = depgraph.build_graph(repo)               # production scope (Phase 100G)
-    index = _light_index(repo)
+    if _STATE["scan_job"].get("cancelled"):
+        return {"ok": False, "error": "Scan cancelled.", "code": "scan_cancelled"}
+    _STATE["scan_job"]["stage"] = "indexing_modules"
+    index = _light_index(repo, scope_data)
     module_nodes = [n for n in graph.get("nodes", []) if n.get("type") == "module"]
     module_count = len(module_nodes)
     try:
+        _STATE["scan_job"]["stage"] = "ranking_risks"
         risks = architectural_risk.rank_modules(
             index,
             graph,
@@ -346,13 +614,41 @@ def scan_repository(path: Optional[str] = None) -> Dict[str, Any]:
         "scanned_at": time.strftime("%Y-%m-%dT%H:%M:%S"),
         "validation_warnings": validation.get("warnings", []),
         "suggested_next_actions": [],
+        "scope": scope_data,
+        "cache": {"hit": False, "signature": signature},
     }
     scan["suggested_next_actions"] = _scan_next_actions(scan)
     # token estimate for the compact AI-context packet built from this scan
     _STATE.update({"path": repo, "scan": scan, "graph": graph, "index": index, "risks": risks})
+    _STATE["scan_job"]["stage"] = "generating_summary"
     scan["compact_token_estimate"] = estimate_tokens(_render_context("claude", "compact"))
     scan["verbose_token_estimate"] = estimate_tokens(_render_context("claude", "verbose"))
     _STATE["scan"]["compact_token_estimate"] = scan["compact_token_estimate"]
+    massive_mode = bool(scope_data.get("manual_massive_mode")) or bool(estimate.get("massive_mode_auto"))
+    _STATE["scan"]["massive_mode"] = massive_mode
+    _STATE["scan"]["massive_reason"] = {
+        "files": estimate.get("total_files", 0) > MASSIVE_FILES_THRESHOLD,
+        "modules": scan["module_count"] > MASSIVE_MODULES_THRESHOLD,
+        "size": estimate.get("repo_size_bytes", 0) > MASSIVE_SIZE_THRESHOLD_BYTES,
+        "manual": bool(scope_data.get("manual_massive_mode")),
+    }
+    _STATE["scan"]["estimate"] = estimate
+    cache[signature] = {
+        "scan": _STATE["scan"],
+        "graph": graph,
+        "index": index,
+        "risks": risks,
+        "cached_at": time.time(),
+    }
+    _STATE["scan_job"]["stage"] = "completed"
+    track_analytics_event(
+        "scan_completed",
+        demo=bool(_STATE.get("demo_mode")),
+        modules=scan["module_count"],
+        edges=scan["dependency_edges"],
+        cache_hit=False,
+        massive_mode=massive_mode,
+    )
     return scan
 
 
@@ -399,7 +695,24 @@ def current_summary() -> Dict[str, Any]:
         "top_risks": scan["top_risks"],
         "explanation": _plain_english(scan, prod, entry_points),
         "recommended_questions": _recommended_questions(scan),
+        "massive_mode": bool(scan.get("massive_mode")),
+        "massive_reason": scan.get("massive_reason", {}),
+        "scope": scan.get("scope", {"mode": "entire_repo"}),
+        "cache": scan.get("cache", {"hit": False}),
     }
+
+
+def scan_status() -> Dict[str, Any]:
+    job = _STATE.get("scan_job") or {"id": None, "cancelled": False, "stage": "idle"}
+    return {"ok": True, "job": job}
+
+
+def cancel_scan() -> Dict[str, Any]:
+    job = _STATE.setdefault("scan_job", {"id": None, "cancelled": False, "stage": "idle"})
+    job["cancelled"] = True
+    if job.get("stage") != "completed":
+        job["stage"] = "cancel_requested"
+    return {"ok": True, "cancelled": True, "job": job}
 
 
 def _subsystem_for_path(path: str, index: Dict[str, Any]) -> str:
@@ -819,7 +1132,7 @@ def _subsystem_graph_payload(
     }
 
 
-def current_graph(view: str = "module") -> Dict[str, Any]:
+def current_graph(view: str = "module", force_module: bool = False) -> Dict[str, Any]:
     """Graph payload shaped for a 3D force graph (nodes + links)."""
     graph = _STATE.get("graph")
     if not graph:
@@ -827,13 +1140,22 @@ def current_graph(view: str = "module") -> Dict[str, Any]:
     index = _STATE.get("index") or {}
     risks = _STATE.get("risks") or {}
     mode = (view or "module").strip().lower()
+    scan = _STATE.get("scan") or {}
+    is_massive = bool(scan.get("massive_mode"))
+    if is_massive and mode == "module" and not force_module:
+        mode = "subsystem"
     payload = (
         _subsystem_graph_payload(graph, index, risks)
         if mode == "subsystem"
         else _module_graph_payload(graph, index, risks)
     )
-    scan = _STATE.get("scan") or {}
     tour_stops = _build_tour_stops(payload["nodes"], payload["links"], scan, index)
+    render_warning = ""
+    if is_massive and payload.get("total_modules", 0) > GRAPH_DISPLAY_CAP:
+        render_warning = (
+            "This repository is too large to visualize all modules at once. "
+            "Start with architecture overview."
+        )
     return {
         "ok": True,
         "graph_scope": graph.get("graph_scope"),
@@ -849,6 +1171,9 @@ def current_graph(view: str = "module") -> Dict[str, Any]:
         "total_modules": payload["total_modules"],
         "total_edges": payload["total_edges"],
         "display_cap": GRAPH_DISPLAY_CAP,
+        "massive_mode": is_massive,
+        "render_warning": render_warning,
+        "defaulted_to_subsystem": bool(is_massive and (view or "module").strip().lower() == "module" and not force_module),
         "nodes": payload["nodes"],
         "links": payload["links"],
     }
@@ -976,6 +1301,54 @@ def module_inspector(target: str) -> Dict[str, Any]:
     }
 
 
+def current_hierarchy_graph(level: str = "subsystem", parent: str = "") -> Dict[str, Any]:
+    """Hierarchical graph for massive repositories: subsystem -> package -> module."""
+    graph = _STATE.get("graph")
+    index = _STATE.get("index") or {}
+    if not graph:
+        return {"ok": False, "error": "No repository scanned yet.", "nodes": [], "links": []}
+    level = (level or "subsystem").strip().lower()
+    if level == "subsystem":
+        payload = _subsystem_graph_payload(graph, index, _STATE.get("risks") or {})
+        return {"ok": True, "level": "subsystem", "parent": "", **payload}
+
+    module_payload = _module_graph_payload(graph, index, _STATE.get("risks") or {})
+    modules = module_payload["nodes"]
+    parent = (parent or "").strip()
+    if level == "package":
+        package_nodes: Dict[str, Dict[str, Any]] = {}
+        for node in modules:
+            subsystem = node.get("subsystem", "(root)")
+            if parent and subsystem != parent:
+                continue
+            pkg = (node.get("path", "") or "").rsplit("/", 1)[0] or "(root)"
+            bid = f"package:{pkg}"
+            bucket = package_nodes.setdefault(
+                bid,
+                {
+                    "id": bid,
+                    "label": pkg,
+                    "subsystem": subsystem,
+                    "module_count": 0,
+                    "risk_score": 0.0,
+                    "size": 4.0,
+                },
+            )
+            bucket["module_count"] += 1
+            bucket["risk_score"] = max(bucket["risk_score"], node.get("risk_score", 0))
+            bucket["size"] = round(4 + min(20, bucket["module_count"] * 0.4), 2)
+        nodes = sorted(package_nodes.values(), key=lambda n: (-n["module_count"], n["label"]))
+        return {"ok": True, "level": "package", "parent": parent, "nodes": nodes, "links": []}
+
+    if level == "module":
+        selected = [n for n in modules if (not parent or n.get("path", "").startswith(parent.strip("/") + "/") or n.get("subsystem") == parent)]
+        ids = {n["id"] for n in selected}
+        links = [l for l in module_payload["links"] if l["source"] in ids and l["target"] in ids]
+        return {"ok": True, "level": "module", "parent": parent, "nodes": selected, "links": links}
+
+    return {"ok": False, "error": f"Unsupported hierarchy level: {level}"}
+
+
 def impact(target: str) -> Dict[str, Any]:
     """Reverse-dependency impact from the real graph (mock fallback if unresolved)."""
     graph = _STATE.get("graph")
@@ -1067,7 +1440,7 @@ def bug_investigation(text: str) -> Dict[str, Any]:
     }
 
 
-def context_export(target: str = "claude", packet: str = "compact") -> Dict[str, Any]:
+def context_export(target: str = "claude", packet: str = "compact", *, track: bool = True) -> Dict[str, Any]:
     """Build a copyable, token-estimated AI-context packet for the open repo."""
     if not _STATE.get("scan"):
         return {"ok": False, "error": "No repository scanned yet."}
@@ -1078,12 +1451,150 @@ def context_export(target: str = "claude", packet: str = "compact") -> Dict[str,
     if packet not in ("compact", "verbose"):
         packet = "compact"
     text = _render_context(target, packet)
+    if track:
+        track_analytics_event("export_created", target=target, packet=packet)
     return {
         "ok": True,
         "target": target,
         "packet": packet,
         "estimated_tokens": estimate_tokens(text),
         "text": text,
+    }
+
+
+def _graph_topology_svg(graph_payload: Dict[str, Any]) -> str:
+    """2D galaxy topology SVG from real graph layout coordinates."""
+    nodes = graph_payload.get("nodes") or []
+    links = graph_payload.get("links") or []
+    if not nodes:
+        return '<svg xmlns="http://www.w3.org/2000/svg"><text x="8" y="16">No graph data</text></svg>'
+    xs = [float(n.get("galaxy_x") or 0) for n in nodes]
+    ys = [float(n.get("galaxy_y") or 0) for n in nodes]
+    pad = 40.0
+    min_x, max_x = min(xs) - pad, max(xs) + pad
+    min_y, max_y = min(ys) - pad, max(ys) + pad
+    width, height = max(max_x - min_x, 80), max(max_y - min_y, 80)
+    by_id = {n["id"]: n for n in nodes}
+    parts = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{min_x} {min_y} {width} {height}" '
+        f'width="{int(width * 2)}" height="{int(height * 2)}">',
+        f'<rect x="{min_x}" y="{min_y}" width="{width}" height="{height}" fill="#070b14"/>',
+    ]
+    for link in links:
+        src = by_id.get(link.get("source"))
+        tgt = by_id.get(link.get("target"))
+        if not src or not tgt:
+            continue
+        stroke = "#42f5b0" if link.get("bridge") else "#5b76c8"
+        opacity = link.get("opacity") or 0.2
+        width_px = 1.2 if link.get("bridge") else 0.6
+        parts.append(
+            f'<line x1="{src["galaxy_x"]}" y1="{src["galaxy_y"]}" x2="{tgt["galaxy_x"]}" y2="{tgt["galaxy_y"]}" '
+            f'stroke="{stroke}" stroke-opacity="{opacity}" stroke-width="{width_px}"/>'
+        )
+    for node in nodes:
+        radius = 5 if node.get("is_hub") else 2.2
+        fill = "#9a7bff" if node.get("in_cycle") else ("#3ef0ff" if node.get("is_hub") else "#5b76c8")
+        parts.append(
+            f'<circle cx="{node["galaxy_x"]}" cy="{node["galaxy_y"]}" r="{radius}" fill="{fill}"/>'
+        )
+        if node.get("is_hub"):
+            label = str(node.get("label", "")).replace("&", "&amp;").replace("<", "&lt;")
+            parts.append(
+                f'<text x="{float(node["galaxy_x"]) + 6}" y="{float(node["galaxy_y"]) - 6}" '
+                f'fill="#3ef0ff" font-size="8" font-family="Inter,sans-serif">{label}</text>'
+            )
+    parts.append("</svg>")
+    return "".join(parts)
+
+
+def _architecture_report_text(summary: Dict[str, Any]) -> str:
+    lines = [
+        "JARVIS Architecture Report",
+        "==========================",
+        f"Repository: {summary.get('repo_name', '')}",
+        f"Modules: {summary.get('module_count', 0)}",
+        f"Dependency edges: {summary.get('dependency_edges', 0)}",
+        f"Subsystems: {summary.get('subsystem_count', 0)}",
+        f"Risk score: {summary.get('risk_score', 0)}",
+        f"Graph health: {(summary.get('graph_health') or {}).get('label', 'unknown')}",
+        "",
+        "Explanation",
+        "-----------",
+        summary.get("explanation", ""),
+        "",
+        "Top risks",
+        "---------",
+    ]
+    for risk in summary.get("top_risks") or []:
+        lines.append(f"- {risk.get('module')} ({risk.get('score')}): {', '.join(risk.get('reasons') or [])}")
+    lines.extend(["", "Top hubs", "--------"])
+    for hub in summary.get("top_hubs") or []:
+        lines.append(f"- {hub.get('module')} <- {hub.get('fan_in')} importers")
+    return "\n".join(lines)
+
+
+def export_demo_bundle() -> Dict[str, Any]:
+    """One-click demo bundle: summary, architecture report, graph SVG, AI context."""
+    if not _STATE.get("scan"):
+        return {"ok": False, "error": "No repository scanned yet."}
+    summary = current_summary()
+    if not summary.get("ok"):
+        return summary
+    graph = current_graph("module")
+    context = context_export("claude", "compact", track=False)
+    report = _architecture_report_text(summary)
+    svg = _graph_topology_svg(graph)
+    manifest = {
+        "product": "JARVIS Desktop",
+        "version": PRODUCT_VERSION,
+        "repo_name": summary.get("repo_name"),
+        "demo_mode": summary.get("demo_mode"),
+        "generated_at": time.strftime("%Y-%m-%dT%H:%M:%S"),
+        "files": [
+            "manifest.json",
+            "summary.json",
+            "architecture_report.txt",
+            "graph_topology.svg",
+            "context_claude_compact.txt",
+            "screenshots/README.txt",
+            "landing_assets/checklists.md",
+        ],
+    }
+    landing_checklist = (
+        "# Landing asset capture checklist\n\n"
+        "## Screenshots\n"
+        "- Command Center galaxy graph (Screenshot mode)\n"
+        "- Module Inspector with evidence\n"
+        "- Copilot impact answer with blast radius\n"
+        "- Health Cockpit metrics\n\n"
+        "## GIF ideas\n"
+        "- Tour Repository camera flight\n"
+        "- Copilot question -> graph highlight\n\n"
+        "## Demo video beats\n"
+        "1. Install / Try Demo\n2. Graph wow\n3. Risk tour\n4. Impact\n5. Export bundle\n"
+    )
+    buffer = io.BytesIO()
+    with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as archive:
+        archive.writestr("manifest.json", _json.dumps(manifest, indent=2))
+        archive.writestr("summary.json", _json.dumps(summary, indent=2, default=str))
+        archive.writestr("architecture_report.txt", report)
+        archive.writestr("graph_topology.svg", svg)
+        archive.writestr("context_claude_compact.txt", context.get("text", ""))
+        archive.writestr(
+            "screenshots/README.txt",
+            "Capture marketing PNGs from JARVIS Desktop Screenshot mode, then add them here.\n",
+        )
+        archive.writestr("landing_assets/checklists.md", landing_checklist)
+    payload = buffer.getvalue()
+    stamp = time.strftime("%Y%m%d_%H%M%S")
+    filename = f"jarvis_demo_bundle_{stamp}.zip"
+    track_analytics_event("bundle_exported", bytes=len(payload))
+    return {
+        "ok": True,
+        "filename": filename,
+        "size_bytes": len(payload),
+        "content_base64": base64.b64encode(payload).decode("ascii"),
     }
 
 
@@ -1734,6 +2245,8 @@ def copilot_ask(
             mode = "repository_understanding"
         elif "prompt" in q or "claude" in q:
             mode = "context_export"
+
+    track_analytics_event("copilot_question", mode=mode)
 
     if mode == "repository_understanding":
         return _answer_repository_understanding(question, packet)

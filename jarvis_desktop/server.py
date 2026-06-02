@@ -13,11 +13,76 @@ import mimetypes
 import os
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
-from typing import Any, Dict, Tuple
+from typing import Any, Callable, Dict, Tuple
 
 from . import api
 
 STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
+RouteHandler = Callable[[Dict[str, Any], Dict[str, str]], Dict[str, Any]]
+
+
+def normalize_api_path(path: str) -> str:
+    """Normalize request paths so `/api/foo` and `/api/foo/` resolve identically."""
+    cleaned = (path or "/").split("?", 1)[0].strip()
+    if not cleaned.startswith("/"):
+        cleaned = f"/{cleaned}"
+    if cleaned != "/":
+        cleaned = cleaned.rstrip("/")
+    return cleaned or "/"
+
+
+def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
+    """Single source of truth for API routing (stdlib + tests + route audit)."""
+
+    def _analytics_event(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+        props = {k: v for k, v in body.items() if k != "event"}
+        return api.track_analytics_event(str(body.get("event", "")), **props)
+
+    def _copilot(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+        return api.copilot_ask(
+            str(body.get("question", "")),
+            str(body.get("target", "none")),
+            str(body.get("packet", "compact")),
+            node_context=body.get("node_context"),
+        )
+
+    return {
+        ("GET", "/api/health"): lambda _body, _query: api.health(),
+        ("POST", "/api/repositories/select"): lambda body, _query: api.select_repository(str(body.get("path", ""))),
+        ("POST", "/api/repositories/validate"): lambda body, _query: api.validate_repository_path(str(body.get("path", ""))),
+        ("POST", "/api/repositories/estimate"): lambda body, _query: api.pre_scan_estimate(str(body.get("path", "")), body.get("scope")),
+        ("POST", "/api/demo/load"): lambda body, _query: api.load_demo_mode(str(body.get("pack", "small"))),
+        ("GET", "/api/demo/packs"): lambda _body, _query: api.list_demo_packs(),
+        ("POST", "/api/demo/export-bundle"): lambda _body, _query: api.export_demo_bundle(),
+        ("POST", "/api/analytics/event"): _analytics_event,
+        ("GET", "/api/analytics/summary"): lambda _body, _query: api.analytics_overview(),
+        ("POST", "/api/repositories/scan"): lambda body, _query: api.scan_repository(body.get("path"), body.get("scope")),
+        ("GET", "/api/repositories/current/scan-status"): lambda _body, _query: api.scan_status(),
+        ("POST", "/api/repositories/current/cancel-scan"): lambda _body, _query: api.cancel_scan(),
+        ("GET", "/api/repositories/current/summary"): lambda _body, _query: api.current_summary(),
+        ("GET", "/api/repositories/current/graph"): lambda _body, query: api.current_graph(
+            str(query.get("view", "module")),
+            force_module=str(query.get("force_module", "0")).lower() in {"1", "true", "yes"},
+        ),
+        ("GET", "/api/repositories/current/hierarchy-graph"): lambda _body, query: api.current_hierarchy_graph(
+            str(query.get("level", "subsystem")),
+            str(query.get("parent", "")),
+        ),
+        ("GET", "/api/repositories/current/timeline"): lambda _body, _query: api.current_timeline(),
+        ("GET", "/api/repositories/current/tour"): lambda _body, query: api.current_tour(str(query.get("view", "module"))),
+        ("GET", "/api/repositories/current/module"): lambda _body, query: api.module_inspector(str(query.get("target", ""))),
+        ("GET", "/api/repositories/current/risks"): lambda _body, _query: api.current_risks(),
+        ("POST", "/api/impact"): lambda body, _query: api.impact(str(body.get("target", ""))),
+        ("POST", "/api/bug-investigation"): lambda body, _query: api.bug_investigation(str(body.get("text", ""))),
+        ("POST", "/api/context/export"): lambda body, _query: api.context_export(
+            str(body.get("target", "claude")),
+            str(body.get("packet", "compact")),
+        ),
+        ("POST", "/api/copilot/ask"): _copilot,
+    }
+
+
+ROUTES = tuple(sorted(_route_handlers().keys()))
 
 
 # --------------------------------------------------------------------------
@@ -33,71 +98,25 @@ def dispatch(
     body = body or {}
     query = query or {}
     method = method.upper()
+    path = normalize_api_path(path)
+    handler = _route_handlers().get((method, path))
     try:
-        if method == "GET" and path == "/api/health":
-            return 200, api.health()
-        if method == "POST" and path == "/api/repositories/select":
-            return 200, api.select_repository(str(body.get("path", "")))
-        if method == "POST" and path == "/api/repositories/validate":
-            return 200, api.validate_repository_path(str(body.get("path", "")))
-        if method == "POST" and path == "/api/demo/load":
-            return 200, api.load_demo_mode()
-        if method == "POST" and path == "/api/repositories/scan":
-            return 200, api.scan_repository(body.get("path"))
-        if method == "GET" and path == "/api/repositories/current/summary":
-            return 200, api.current_summary()
-        if method == "GET" and path == "/api/repositories/current/graph":
-            return 200, api.current_graph(str(query.get("view", "module")))
-        if method == "GET" and path == "/api/repositories/current/timeline":
-            return 200, api.current_timeline()
-        if method == "GET" and path == "/api/repositories/current/tour":
-            return 200, api.current_tour(str(query.get("view", "module")))
-        if method == "GET" and path == "/api/repositories/current/module":
-            return 200, api.module_inspector(str(query.get("target", "")))
-        if method == "GET" and path == "/api/repositories/current/risks":
-            return 200, api.current_risks()
-        if method == "POST" and path == "/api/impact":
-            return 200, api.impact(str(body.get("target", "")))
-        if method == "POST" and path == "/api/bug-investigation":
-            return 200, api.bug_investigation(str(body.get("text", "")))
-        if method == "POST" and path == "/api/context/export":
-            return 200, api.context_export(str(body.get("target", "claude")), str(body.get("packet", "compact")))
-        if method == "POST" and path == "/api/copilot/ask":
-            return 200, api.copilot_ask(
-                str(body.get("question", "")),
-                str(body.get("target", "none")),
-                str(body.get("packet", "compact")),
-                node_context=body.get("node_context"),
-            )
-        return 404, {"ok": False, "error": f"Unknown endpoint: {method} {path}"}
+        if handler is None:
+            return 404, {"ok": False, "error": f"Unknown endpoint: {method} {path}"}
+        return 200, handler(body, query)
     except Exception as exc:  # never 500 the desktop app silently
         return 500, {"ok": False, "error": f"{type(exc).__name__}: {exc}"}
 
 
-ROUTES = (
-    ("GET", "/api/health"),
-    ("POST", "/api/repositories/select"),
-    ("POST", "/api/repositories/validate"),
-    ("POST", "/api/demo/load"),
-    ("POST", "/api/repositories/scan"),
-    ("GET", "/api/repositories/current/summary"),
-    ("GET", "/api/repositories/current/graph"),
-    ("GET", "/api/repositories/current/timeline"),
-    ("GET", "/api/repositories/current/tour"),
-    ("GET", "/api/repositories/current/module"),
-    ("GET", "/api/repositories/current/risks"),
-    ("POST", "/api/impact"),
-    ("POST", "/api/bug-investigation"),
-    ("POST", "/api/context/export"),
-    ("POST", "/api/copilot/ask"),
-)
+def route_is_registered(method: str, path: str) -> bool:
+    return (method.upper(), normalize_api_path(path)) in _route_handlers()
 
 
 # --------------------------------------------------------------------------
 # stdlib HTTP handler (default runtime)
 # --------------------------------------------------------------------------
 class JarvisHandler(BaseHTTPRequestHandler):
-    server_version = "JARVISDesktop/111"
+    server_version = "JARVISDesktop/112"
 
     def log_message(self, *args: Any) -> None:  # quiet console
         pass
@@ -139,20 +158,20 @@ class JarvisHandler(BaseHTTPRequestHandler):
 
     def _route_api(self) -> None:
         parsed = urlparse(self.path)
-        path = parsed.path
+        path = normalize_api_path(parsed.path)
         query_items = parse_qs(parsed.query or "")
         query = {key: values[0] for key, values in query_items.items() if values}
         status, payload = dispatch(self.command, path, self._read_body() if self.command == "POST" else None, query)
         self._send_json(status, payload)
 
     def do_GET(self) -> None:
-        if self.path.split("?", 1)[0].startswith("/api/"):
+        if normalize_api_path(self.path.split("?", 1)[0]).startswith("/api/"):
             self._route_api()
         else:
             self._serve_static()
 
     def do_POST(self) -> None:
-        if self.path.split("?", 1)[0].startswith("/api/"):
+        if normalize_api_path(self.path.split("?", 1)[0]).startswith("/api/"):
             self._route_api()
         else:
             self._send_json(404, {"ok": False, "error": "not found"})
@@ -206,21 +225,56 @@ def create_fastapi_app():  # pragma: no cover - exercised only when fastapi pres
     async def _validate(request: Request):
         return api.validate_repository_path(str((await _body(request)).get("path", "")))
 
+    @app.post("/api/repositories/estimate")
+    async def _estimate(request: Request):
+        b = await _body(request)
+        return api.pre_scan_estimate(str(b.get("path", "")), b.get("scope"))
+
     @app.post("/api/demo/load")
-    async def _demo():
-        return api.load_demo_mode()
+    async def _demo(request: Request):
+        return api.load_demo_mode(str((await _body(request)).get("pack", "small")))
+
+    @app.get("/api/demo/packs")
+    def _demo_packs():
+        return api.list_demo_packs()
+
+    @app.post("/api/demo/export-bundle")
+    def _demo_bundle():
+        return api.export_demo_bundle()
+
+    @app.post("/api/analytics/event")
+    async def _analytics_event(request: Request):
+        b = await _body(request)
+        return api.track_analytics_event(str(b.get("event", "")), **{k: v for k, v in b.items() if k != "event"})
+
+    @app.get("/api/analytics/summary")
+    def _analytics_summary():
+        return api.analytics_overview()
 
     @app.post("/api/repositories/scan")
     async def _scan(request: Request):
-        return api.scan_repository((await _body(request)).get("path"))
+        b = await _body(request)
+        return api.scan_repository(b.get("path"), b.get("scope"))
+
+    @app.get("/api/repositories/current/scan-status")
+    def _scan_status():
+        return api.scan_status()
+
+    @app.post("/api/repositories/current/cancel-scan")
+    def _cancel_scan():
+        return api.cancel_scan()
 
     @app.get("/api/repositories/current/summary")
     def _summary():
         return api.current_summary()
 
     @app.get("/api/repositories/current/graph")
-    def _graph(view: str = "module"):
-        return api.current_graph(view)
+    def _graph(view: str = "module", force_module: bool = False):
+        return api.current_graph(view, force_module=force_module)
+
+    @app.get("/api/repositories/current/hierarchy-graph")
+    def _hierarchy_graph(level: str = "subsystem", parent: str = ""):
+        return api.current_hierarchy_graph(level, parent)
 
     @app.get("/api/repositories/current/timeline")
     def _timeline():
