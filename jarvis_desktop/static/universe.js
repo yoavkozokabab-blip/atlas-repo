@@ -1,7 +1,11 @@
 "use strict";
 
-/** Phase 111 — Cinematic 3D repository universe (visualization only). */
+/** Phase 111/116B — Cinematic 3D repository universe (visualization only). */
 const JARVIS_UNIVERSE = (() => {
+  const LARGE_GRAPH_THRESHOLD = 1000;
+  const HOVER_NEIGHBOR_CAP = 100;
+  const SELECT_NEIGHBOR_CAP = 250;
+
   const U = {
     fg: null,
     host: null,
@@ -18,7 +22,170 @@ const JARVIS_UNIVERSE = (() => {
     animFrame: null,
     driftFrame: null,
     lastInteraction: Date.now(),
+    accessorsInstalled: false,
+    largeGraph: false,
+    adj: { neighbors: new Map(), meta: new Map(), linkKeys: new Map() },
+    highlightState: { hoverId: null, selectedId: null, focus: new Set() },
+    hoverRaf: null,
+    lastHoverId: null,
+    perfEnabled: false,
   };
+
+  function enablePerfLogging(on) {
+    U.perfEnabled = !!on;
+  }
+
+  function linkEndpoints(link) {
+    const sid = typeof link.source === "object" ? link.source.id : link.source;
+    const tid = typeof link.target === "object" ? link.target.id : link.target;
+    return [sid, tid];
+  }
+
+  function buildAdjacencyMaps(nodes, links) {
+    const neighbors = new Map();
+    const meta = new Map();
+    const linkKeys = new Map();
+    const ensure = (id) => {
+      if (!neighbors.has(id)) neighbors.set(id, new Set());
+      return neighbors.get(id);
+    };
+    nodes.forEach((n) => {
+      ensure(n.id);
+      meta.set(n.id, {
+        label: n.label,
+        subsystem: n.subsystem,
+        fan_in: n.fan_in,
+        risk_score: n.risk_score,
+        is_hub: n.is_hub,
+        tooltip: `${n.label}\n${n.subsystem || ""}\nfan-in ${n.fan_in} · risk ${n.risk_score}${n.is_hub ? " · HUB" : ""}`,
+      });
+    });
+    links.forEach((link, idx) => {
+      const [sid, tid] = linkEndpoints(link);
+      if (!sid || !tid) return;
+      ensure(sid).add(tid);
+      ensure(tid).add(sid);
+      linkKeys.set(`${sid}\0${tid}`, idx);
+    });
+    return { neighbors, meta, linkKeys };
+  }
+
+  function neighborFocus(nodeId, cap) {
+    const focus = new Set();
+    if (!nodeId) return focus;
+    focus.add(nodeId);
+    const neigh = U.adj.neighbors.get(nodeId);
+    if (!neigh) return focus;
+    let n = 0;
+    for (const id of neigh) {
+      if (n >= cap) break;
+      focus.add(id);
+      n += 1;
+    }
+    return focus;
+  }
+
+  function rebuildFocusSet() {
+    const cap = U.largeGraph ? HOVER_NEIGHBOR_CAP : Number.POSITIVE_INFINITY;
+    const selCap = U.largeGraph ? SELECT_NEIGHBOR_CAP : Number.POSITIVE_INFINITY;
+    const focus = new Set();
+    if (U.highlightState.selectedId) {
+      neighborFocus(U.highlightState.selectedId, selCap).forEach((id) => focus.add(id));
+    }
+    if (U.highlightState.hoverId && U.highlightState.hoverId !== U.highlightState.selectedId) {
+      neighborFocus(U.highlightState.hoverId, cap).forEach((id) => focus.add(id));
+    }
+    if (U.blastTargetId) focus.add(U.blastTargetId);
+    (U.blastRadiusIds || []).forEach((id) => focus.add(id));
+    U.highlightState.focus = focus;
+  }
+
+  function getBlastForNode(n) {
+    if (!U.blastTargetId && !(U.blastRadiusIds || []).length) return null;
+    return {
+      target: U.blastTargetId,
+      affected: new Set(U.blastRadiusIds || []),
+    };
+  }
+
+  function logHoverPerf(ms, label) {
+    if (!U.perfEnabled) return;
+    if (ms > 50) console.warn(`[JARVIS graph] ${label} ${ms.toFixed(1)}ms (>50ms)`);
+    else if (ms > 16) console.debug(`[JARVIS graph] ${label} ${ms.toFixed(1)}ms`);
+  }
+
+  function syncHighlightVisuals(fg) {
+    if (!fg) return;
+    rebuildFocusSet();
+    const hoverId = U.highlightState.hoverId;
+    if (hoverId && U.adj.meta.has(hoverId)) {
+      const m = U.adj.meta.get(hoverId);
+      fg.nodeLabel(`${m.label}\n${m.subsystem || ""}\nfan-in ${m.fan_in} · risk ${m.risk_score}${m.is_hub ? " · HUB" : ""}`);
+    } else {
+      fg.nodeLabel("");
+    }
+    if (typeof fg.refresh === "function") fg.refresh();
+  }
+
+  function installGraphAccessors(fg) {
+    if (!fg || U.accessorsInstalled) return;
+    U.accessorsInstalled = true;
+    const showEdges = () => U.showEdges !== false;
+
+    fg.linkVisibility(() => showEdges());
+    fg.nodeColor((n) => {
+      const blast = getBlastForNode(n);
+      const active = U.highlightState.focus.has(n.id);
+      return nodeColor(n, active, blast);
+    });
+    fg.linkColor((l) => {
+      if (!showEdges()) return "rgba(0,0,0,0)";
+      const [sid, tid] = linkEndpoints(l);
+      const active = U.highlightState.focus.size > 0
+        && (U.highlightState.focus.has(sid) || U.highlightState.focus.has(tid));
+      return linkColor(l, active, l.bridge);
+    });
+    fg.linkWidth((l) => {
+      if (!showEdges()) return 0;
+      const [sid, tid] = linkEndpoints(l);
+      const active = U.highlightState.focus.size > 0
+        && (U.highlightState.focus.has(sid) || U.highlightState.focus.has(tid));
+      const w = l.weight || 1;
+      if (l.bridge) return active ? 1.1 + w * 0.3 : 0.35 + w * 0.12;
+      return active ? 0.85 + w * 0.22 : 0.08 + w * 0.05;
+    });
+    fg.linkDirectionalParticles((l) => {
+      if (!showEdges() || U.largeGraph) return 0;
+      if (l.bridge) return 4;
+      return (l.weight || 1) > 2.5 ? 2 : 0;
+    });
+    fg.linkDirectionalParticleWidth((l) => (l.bridge ? 1.8 : 1.2));
+    fg.linkDirectionalParticleSpeed((l) => 0.004 + (l.weight || 1) * 0.0012);
+    fg.linkDirectionalParticleColor((l) => (l.bridge ? "#42f5b0" : "#78a0ff"));
+  }
+
+  function scheduleHoverUpdate(fg, node, callbacks) {
+    const id = node?.id ?? null;
+    if (id === U.lastHoverId) return;
+    U.lastHoverId = id;
+    callbacks?.onNodeHover?.(node);
+    if (U.hoverRaf) cancelAnimationFrame(U.hoverRaf);
+    U.hoverRaf = requestAnimationFrame(() => {
+      U.hoverRaf = null;
+      const t0 = performance.now();
+      U.highlightState.hoverId = id;
+      syncHighlightVisuals(fg);
+      logHoverPerf(performance.now() - t0, "hover");
+    });
+  }
+
+  function applySelectionHighlight(fg, selectedNode) {
+    if (!fg) return;
+    const t0 = performance.now();
+    U.highlightState.selectedId = selectedNode?.id || null;
+    syncHighlightVisuals(fg);
+    logHoverPerf(performance.now() - t0, "select");
+  }
 
   function nodeColor(n, active, blast) {
     if (blast?.target === n.id) return "#ff2244";
@@ -194,51 +361,17 @@ const JARVIS_UNIVERSE = (() => {
     U.driftFrame = null;
   }
 
+  /** Legacy entry — mutates highlight state then refresh (no accessor re-bind). */
   function applyHighlight(fg, focusNode, blast) {
     if (!fg) return;
-    const show = U.showEdges !== false;
-    fg.linkVisibility(() => show);
-    const graph = fg.graphData();
-    const focus = new Set();
-    if (focusNode?.id) {
-      focus.add(focusNode.id);
-      graph.links.forEach(link => {
-        const sid = typeof link.source === "object" ? link.source.id : link.source;
-        const tid = typeof link.target === "object" ? link.target.id : link.target;
-        if (sid === focusNode.id) focus.add(tid);
-        if (tid === focusNode.id) focus.add(sid);
-      });
+    if (blast?.affected) {
+      U.blastRadiusIds = [...blast.affected];
+      U.blastTargetId = blast.target || null;
     }
-    if (blast?.affected) blast.affected.forEach(id => focus.add(id));
-    if (blast?.target) focus.add(blast.target);
-
-    const hasFocus = focus.size > 0 || blast;
-    fg.nodeThreeObjectExtend(true);
-    fg.nodeColor(n => nodeColor(n, focus.has(n.id), blast))
-      .linkColor(l => {
-        if (!show) return "rgba(0,0,0,0)";
-        const sid = typeof l.source === "object" ? l.source.id : l.source;
-        const tid = typeof l.target === "object" ? l.target.id : l.target;
-        const active = hasFocus && (focus.has(sid) || focus.has(tid));
-        return linkColor(l, active, l.bridge);
-      })
-      .linkWidth(l => {
-        if (!show) return 0;
-        const sid = typeof l.source === "object" ? l.source.id : l.source;
-        const tid = typeof l.target === "object" ? l.target.id : l.target;
-        const active = hasFocus && (focus.has(sid) || focus.has(tid));
-        const w = l.weight || 1;
-        if (l.bridge) return active ? 1.1 + w * 0.3 : 0.35 + w * 0.12;
-        return active ? 0.85 + w * 0.22 : 0.08 + w * 0.05;
-      })
-      .linkDirectionalParticles(l => {
-        if (!show) return 0;
-        if (l.bridge) return 4;
-        return (l.weight || 1) > 2.5 ? 2 : 0;
-      })
-      .linkDirectionalParticleWidth(l => (l.bridge ? 1.8 : 1.2))
-      .linkDirectionalParticleSpeed(l => 0.004 + (l.weight || 1) * 0.0012)
-      .linkDirectionalParticleColor(l => (l.bridge ? "#42f5b0" : "#78a0ff"));
+    if (focusNode?.id) {
+      U.highlightState.selectedId = focusNode.id;
+    }
+    syncHighlightVisuals(fg);
   }
 
   function buildGraph(host, data, callbacks) {
@@ -274,16 +407,12 @@ const JARVIS_UNIVERSE = (() => {
       .linkCurvature(0.12)
       .linkDirectionalArrowLength(0)
       .onNodeClick(n => callbacks.onNodeClick?.(n))
-      .onNodeHover(n => {
-        callbacks.onNodeHover?.(n);
-        fg.nodeLabel(node => node && n && node.id === n.id
-          ? `${node.label}\n${node.subsystem || ""}\nfan-in ${node.fan_in} · risk ${node.risk_score}${node.is_hub ? " · HUB" : ""}`
-          : "");
-        applyHighlight(fg, n || callbacks.getSelectedNode?.(), getBlastState());
-      })
+      .onNodeHover(n => scheduleHoverUpdate(fg, n, callbacks))
       .onBackgroundClick(() => {
         callbacks.onBackgroundClick?.();
-        applyHighlight(fg, callbacks.getSelectedNode?.(), getBlastState());
+        U.lastHoverId = null;
+        U.highlightState.hoverId = null;
+        scheduleHoverUpdate(fg, null, callbacks);
       })
       .width(host.clientWidth)
       .height(host.clientHeight);
@@ -293,11 +422,7 @@ const JARVIS_UNIVERSE = (() => {
     setupControls(fg);
     setupGalaxyForces(fg, nodes);
 
-    fg.linkDirectionalParticles(l => (l.bridge ? 3 : (l.weight || 1) > 2 ? 1 : 0))
-      .linkDirectionalParticleWidth(1.4)
-      .linkDirectionalParticleSpeed(0.005);
-
-    applyHighlight(fg, callbacks.getSelectedNode?.(), getBlastState());
+    installGraphAccessors(fg);
 
     const chunkSize = nodes.length > 1000 ? 160 : nodes.length;
     let loaded = 0;
@@ -312,11 +437,22 @@ const JARVIS_UNIVERSE = (() => {
       if (loaded < nodes.length) {
         requestAnimationFrame(loadChunk);
       } else {
-        const perf = { loadMs: Math.round(performance.now() - t0), nodes: mergedNodes.length, links: mergedLinks.length };
+        U.adj = buildAdjacencyMaps(mergedNodes, mergedLinks);
+        U.largeGraph = mergedNodes.length > LARGE_GRAPH_THRESHOLD;
+        U.highlightState = { hoverId: null, selectedId: null, focus: new Set() };
+        installGraphAccessors(fg);
+        syncHighlightVisuals(fg);
+        const perf = {
+          loadMs: Math.round(performance.now() - t0),
+          nodes: mergedNodes.length,
+          links: mergedLinks.length,
+          largeGraph: U.largeGraph,
+          adjacencyBuilt: U.adj.neighbors.size,
+        };
         callbacks.onLoaded?.(perf);
         const dist = 170 + Math.sqrt(mergedNodes.length) * 16;
         fg.cameraPosition({ x: dist * 0.35, y: dist * 0.22, z: dist }, { x: 0, y: 0, z: 0 }, 1200);
-        startPulseLoop(fg);
+        if (!U.largeGraph) startPulseLoop(fg);
         startCameraDrift(fg);
       }
     }
@@ -350,7 +486,7 @@ const JARVIS_UNIVERSE = (() => {
       if (U.blastTargetId) ids.delete(U.blastTargetId);
       U.blastRadiusIds = [...ids];
     }
-    applyHighlight(U.fg, null, getBlastState());
+    syncHighlightVisuals(U.fg);
     if (U.blastTargetId && U.fg) {
       const graph = U.fg.graphData();
       const target = (graph.nodes || []).find(n => n.id === U.blastTargetId);
@@ -392,7 +528,7 @@ const JARVIS_UNIVERSE = (() => {
       const focusIds = new Set(stop.focus_node_ids || []);
       U.blastTargetId = stop.anchor_node_id;
       U.blastRadiusIds = [...focusIds].filter(id => id !== U.blastTargetId);
-      applyHighlight(U.fg, anchor, getBlastState());
+      syncHighlightVisuals(U.fg);
       index += 1;
       setTimeout(runStep, 6500);
     }
@@ -408,18 +544,24 @@ const JARVIS_UNIVERSE = (() => {
     stopPulseLoop();
     stopCameraDrift();
     stopTour();
+    if (U.hoverRaf) cancelAnimationFrame(U.hoverRaf);
+    U.hoverRaf = null;
+    U.lastHoverId = null;
     U.fg = null;
     U.blastRadiusIds = null;
     U.blastTargetId = null;
+    U.accessorsInstalled = false;
+    U.adj = { neighbors: new Map(), meta: new Map(), linkKeys: new Map() };
+    U.highlightState = { hoverId: null, selectedId: null, focus: new Set() };
   }
 
   function setShowEdges(show) {
     U.showEdges = show;
-    applyHighlight(U.fg, null, getBlastState());
+    syncHighlightVisuals(U.fg);
   }
 
   function refreshHighlight(selectedNode) {
-    applyHighlight(U.fg, selectedNode, getBlastState());
+    applySelectionHighlight(U.fg, selectedNode);
   }
 
   function exportPNG(scale) {
@@ -542,6 +684,12 @@ const JARVIS_UNIVERSE = (() => {
     destroyGraph,
     highlightBlastRadius,
     refreshHighlight,
+    applySelectionHighlight,
+    buildAdjacencyMaps,
+    scheduleHoverUpdate,
+    enablePerfLogging,
+    LARGE_GRAPH_THRESHOLD,
+    HOVER_NEIGHBOR_CAP,
     setShowEdges,
     startTour,
     stopTour,

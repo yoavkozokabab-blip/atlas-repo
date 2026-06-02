@@ -159,6 +159,29 @@ async function validateRepoPath(showToast) {
   return res;
 }
 
+async function browseRepoFolder() {
+  const btn = $("browseRepoBtn");
+  if (btn) { btn.disabled = true; btn.textContent = "Opening…"; }
+  try {
+    const res = await api("/api/system/browse-folder", "POST", {});
+    if (res.cancelled) return;
+    if (!res.ok || !res.path) {
+      $("pathError").style.display = "block";
+      $("pathError").textContent = res.error || "Native folder selection is unavailable. Paste the repository path manually.";
+      toast("Browse unavailable — paste a path manually", "error");
+      return;
+    }
+    $("repoPath").value = res.path;
+    await validateRepoPath(true);
+  } catch (e) {
+    $("pathError").style.display = "block";
+    $("pathError").textContent = "Native folder selection is unavailable. Paste the repository path manually.";
+    toast("Browse unavailable — paste a path manually", "error");
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = "Browse"; }
+  }
+}
+
 function focusCopilot() { go("center"); setTimeout(() => $("askInput")?.focus(), 120); }
 
 function finishScanSession(scan, pathLabel) {
@@ -595,7 +618,7 @@ function build3DGraph(data) {
       }
       showNode(n);
     },
-    onNodeHover: n => { STATE.hoverNodeId = n ? n.id : null; },
+    onNodeHover: n => { STATE.hoverNodeId = n ? n.id : null; }, // lightweight; inspector on click only
     onBackgroundClick: () => {
       STATE.selectedNode = null;
       $("selectedNodeCard").style.display = "none";
