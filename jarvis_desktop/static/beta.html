@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>JARVIS — Beta Program</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="marketing.css" />
+</head>
+<body>
+<div class="bg-aura"></div>
+<header class="mnav"><div class="wrap row">
+  <a class="mlogo" href="landing.html"><span class="mk">◈</span> JARVIS</a>
+  <nav class="mlinks"><a href="landing.html#features">Features</a><a href="demo.html">Demo</a><a href="gallery.html">Gallery</a>
+    <a href="index.html" class="btn ghost">Open App</a><a href="#" class="btn primary" onclick="openWaitlist();return false">Join Waitlist</a></nav>
+</div></header>
+
+<section class="page-hero"><div class="wrap">
+  <span class="eyebrow"><span class="dot"></span> Private beta · onboarding in waves</span>
+  <h1 class="h1">Help shape <span class="grad-text">repository intelligence</span></h1>
+  <p class="lead">We're inviting a small group of developers to use JARVIS on real codebases and
+    tell us what makes AI coding genuinely better. You get early access; we get honest signal.</p>
+  <div class="cta-row"><a class="btn primary lg" href="#" onclick="openWaitlist();return false">Apply for the Beta</a></div>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap">
+  <div class="sec-head reveal"><div class="sec-tag">Who should join</div><h2 class="sec-h">This beta is for you if…</h2></div>
+  <div class="beta-grid">
+    <div class="bcard reveal"><h3>🧑‍💻 You live in Claude / Codex / Cursor</h3><p class="muted">You use an AI coding agent daily and feel it burning tokens re-reading your repo, or guessing at structure it never learned.</p></div>
+    <div class="bcard reveal"><h3>🏗️ You own a real codebase</h3><p class="muted">You work in a non-trivial repository (10k+ LOC) where architecture, dependencies and risk actually matter.</p></div>
+    <div class="bcard reveal"><h3>🔍 You care about evidence</h3><p class="muted">You'd rather your tools cite real structure than produce confident hallucinations. Determinism beats vibes.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="sec-head reveal"><div class="sec-tag">What we need from you</div><h2 class="sec-h">The feedback that helps most</h2></div>
+  <div class="beta-grid">
+    <div class="bcard reveal"><h3>Does it understand your repo?</h3><p class="muted">Tell us where the architecture summary, subsystem map or risk ranking is right — and where it's wrong.</p></div>
+    <div class="bcard reveal"><h3>Does the AI export actually help?</h3><p class="muted">Paste a JARVIS context packet into your agent. Did it answer faster, cheaper, with better evidence? Show us.</p></div>
+    <div class="bcard reveal"><h3>Would you keep it open?</h3><p class="muted">The honest one: does JARVIS earn a permanent tab next to your editor — or not yet?</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="sec-head reveal"><div class="sec-tag">Timeline</div><h2 class="sec-h">What to expect</h2></div>
+  <div class="timeline">
+    <div class="tl reveal"><div class="when">Week 0</div><div class="what"><h4>Invite & install</h4><p>You get an access link and a 2-minute local setup. No cloud, no keys.</p></div></div>
+    <div class="tl reveal"><div class="when">Week 1–2</div><div class="what"><h4>Use it for real</h4><p>Run it on your own repositories. Export context into your AI tool on real tasks.</p></div></div>
+    <div class="tl reveal"><div class="when">Week 2</div><div class="what"><h4>15-minute feedback call</h4><p>Optional. Walk us through what worked, what didn't, and what you'd change.</p></div></div>
+    <div class="tl reveal"><div class="when">Ongoing</div><div class="what"><h4>Shape the roadmap</h4><p>Beta users vote on languages, integrations and features. You're early — it counts.</p></div></div>
+  </div>
+  <div style="text-align:center;margin-top:var(--s5)"><a class="btn primary lg" href="#" onclick="openWaitlist();return false">Apply for the Beta</a></div>
+</div></section>
+
+<footer class="footer"><div class="wrap row">
+  <a class="mlogo" href="landing.html"><span class="mk">◈</span> JARVIS</a>
+  <div style="display:flex;gap:var(--s3);flex-wrap:wrap"><a href="landing.html">Home</a><a href="demo.html">Demo</a><a href="gallery.html">Gallery</a><a href="index.html">Open app</a></div>
+</div></footer>
+
+<div class="modal-bg" id="waitlistModal"><div class="modal">
+  <div id="waitlistForm"><h3>Apply for the beta</h3><p class="sub"><b id="modalCount">127</b> developers already waiting.</p>
+    <div class="field"><label>Name</label><input id="wlName" type="text" /><div class="err" id="errName">Please enter your name.</div></div>
+    <div class="field"><label>Email</label><input id="wlEmail" type="email" /><div class="err" id="errEmail">Please enter a valid email.</div></div>
+    <div class="row2"><div class="field"><label>Company <span class="muted tiny">(optional)</span></label><input id="wlCompany" type="text" /></div>
+      <div class="field"><label>Repository size</label><select id="wlSize"><option value="">Select…</option><option>Small (&lt; 10k LOC)</option><option>Medium (10k–100k LOC)</option><option>Large (100k–1M LOC)</option><option>Huge (1M+ LOC)</option></select></div></div>
+    <div class="field"><label>AI tool you use most</label><select id="wlTool"><option value="">Select…</option><option>Claude</option><option>Codex / ChatGPT</option><option>Cursor</option><option>GitHub Copilot</option><option>Other / none yet</option></select></div>
+    <div class="actions"><button class="btn primary lg" style="flex:1" onclick="submitWaitlist()">Apply</button><button class="btn ghost" onclick="closeWaitlist()">Cancel</button></div></div>
+  <div id="waitlistDone" class="success-msg" style="display:none"><div class="check">✓</div><h3>Application received.</h3><p class="sub">You're <b id="yourPos">#128</b> in line. We onboard in small waves.</p><div class="actions" style="justify-content:center"><a class="btn primary" href="index.html">Open the app</a></div></div>
+</div></div>
+<div class="mtoast" id="mtoast"></div>
+<script src="marketing.js"></script>
+</body></html>
