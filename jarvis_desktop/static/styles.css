@@ -153,6 +153,8 @@ body.screenshot-mode .center-grid{grid-template-columns:1fr;height:100vh}
 body.screenshot-mode .graph-stage{border:none;border-radius:0;height:100vh}
 body.screenshot-mode #graph3d{min-height:100vh}
 body.screenshot-mode .presentation-badge{display:block!important}
+.screenshot-exit{display:none;position:fixed;top:14px;right:14px;z-index:90;background:rgba(7,11,20,.82)}
+body.screenshot-mode .screenshot-exit{display:block!important}
 .presentation-badge{display:none;position:absolute;top:18px;left:50%;transform:translateX(-50%);z-index:5;font-family:Orbitron;letter-spacing:2px;font-size:12px;color:var(--cyan);text-shadow:0 0 18px rgba(62,240,255,.45);pointer-events:none}
 .product-tour-panel{position:absolute;right:16px;bottom:92px;z-index:4;max-width:320px;padding:14px 16px}
 .demo-pack{margin-top:18px;padding:16px;text-align:left}

@@ -11,14 +11,23 @@ from __future__ import annotations
 import json
 import mimetypes
 import os
+from ipaddress import ip_address
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
 from typing import Any, Callable, Dict, Tuple
 
-from . import api
+from . import api, system_browse
 
 STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 RouteHandler = Callable[[Dict[str, Any], Dict[str, str]], Dict[str, Any]]
+
+
+def _is_loopback_host(host: str) -> bool:
+    """Return whether an HTTP client host is local to this machine."""
+    try:
+        return ip_address((host or "").split("%", 1)[0]).is_loopback
+    except ValueError:
+        return (host or "").lower() == "localhost"
 
 
 def normalize_api_path(path: str) -> str:
@@ -48,6 +57,7 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
 
     return {
         ("GET", "/api/health"): lambda _body, _query: api.health(),
+        ("POST", "/api/system/browse-folder"): lambda _body, _query: system_browse.browse_folder(),
         ("POST", "/api/repositories/select"): lambda body, _query: api.select_repository(str(body.get("path", ""))),
         ("POST", "/api/repositories/validate"): lambda body, _query: api.validate_repository_path(str(body.get("path", ""))),
         ("POST", "/api/repositories/estimate"): lambda body, _query: api.pre_scan_estimate(str(body.get("path", "")), body.get("scope")),
@@ -167,6 +177,18 @@ class JarvisHandler(BaseHTTPRequestHandler):
     def _route_api(self) -> None:
         parsed = urlparse(self.path)
         path = normalize_api_path(parsed.path)
+        if path == "/api/system/browse-folder" and not _is_loopback_host(str(self.client_address[0])):
+            self._send_json(
+                403,
+                {
+                    "ok": False,
+                    "supported": False,
+                    "cancelled": False,
+                    "code": "localhost_required",
+                    "error": "Native folder selection is available only from localhost.",
+                },
+            )
+            return
         query_items = parse_qs(parsed.query or "")
         query = {key: values[0] for key, values in query_items.items() if values}
         status, payload = dispatch(self.command, path, self._read_body() if self.command == "POST" else None, query)
@@ -224,6 +246,22 @@ def create_fastapi_app():  # pragma: no cover - exercised only when fastapi pres
     @app.get("/api/health")
     def _health():
         return api.health()
+
+    @app.post("/api/system/browse-folder")
+    def _browse_folder(request: Request):
+        client_host = request.client.host if request.client else ""
+        if not _is_loopback_host(client_host):
+            return JSONResponse(
+                status_code=403,
+                content={
+                    "ok": False,
+                    "supported": False,
+                    "cancelled": False,
+                    "code": "localhost_required",
+                    "error": "Native folder selection is available only from localhost.",
+                },
+            )
+        return system_browse.browse_folder()
 
     @app.post("/api/repositories/select")
     async def _select(request: Request):

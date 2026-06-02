@@ -166,9 +166,14 @@ async function browseRepoFolder() {
     const res = await api("/api/system/browse-folder", "POST", {});
     if (res.cancelled) return;
     if (!res.ok || !res.path) {
+      const fallback = res.message || res.error || "Paste the folder path manually.";
       $("pathError").style.display = "block";
-      $("pathError").textContent = res.error || "Native folder selection is unavailable. Paste the repository path manually.";
-      toast("Browse unavailable — paste a path manually", "error");
+      $("pathError").textContent = fallback;
+      if (res.code !== "unsupported_browse_dialog" && res.error !== "unsupported_browse_dialog") {
+        toast("Browse unavailable — paste a path manually", "error");
+      } else {
+        toast(fallback, "error");
+      }
       return;
     }
     $("repoPath").value = res.path;
@@ -746,11 +751,20 @@ function toggleScreenshotMode() {
   STATE.screenshotMode = !STATE.screenshotMode;
   JARVIS_UNIVERSE.toggleScreenshotMode(STATE.screenshotMode);
   $("screenshotBtn").textContent = STATE.screenshotMode ? "Exit screenshot" : "Screenshot";
+  if ($("screenshotExitBtn")) {
+    $("screenshotExitBtn").style.display = STATE.screenshotMode ? "block" : "none";
+    $("screenshotExitBtn").textContent = STATE.productTourActive ? "Stop tour" : "Exit screenshot";
+  }
   if ($("presentationBadge")) $("presentationBadge").style.display = STATE.screenshotMode ? "block" : "none";
   if (STATE.graph3d || JARVIS_UNIVERSE.fg) {
     const host = $("graph3d");
     JARVIS_UNIVERSE.fg?.width(host.clientWidth).height(host.clientHeight);
   }
+}
+
+function exitPresentationMode() {
+  if (STATE.productTourActive) { stopProductTour(); return; }
+  if (STATE.screenshotMode) toggleScreenshotMode();
 }
 
 async function exportDemoBundle() {
@@ -772,7 +786,7 @@ let _productTourTimer = null;
 function stopProductTour() {
   STATE.productTourActive = false;
   if (_productTourTimer) clearTimeout(_productTourTimer);
-  JARVIS_UNIVERSE.stopTour?.();
+  stopRepositoryTour();
   $("productTourPanel").style.display = "none";
   if (STATE.screenshotMode) toggleScreenshotMode();
 }
@@ -940,7 +954,6 @@ function saveExport() {
   renderDemoPackPicker();
   wireSeg("segTarget", "exportTarget"); wireSeg("segPacket", "exportPacket");
   $("askInput").addEventListener("keydown", e => { if (e.key === "Enter") sendCopilotQuestion(); });
-  $("askSend").addEventListener("click", sendCopilotQuestion);
   $("repoPath").addEventListener("keydown", e => { if (e.key === "Enter") validateRepoPath(true); });
   ["scopeMode", "scopeFolder", "scopeInclude", "scopeExclude", "manualMassiveMode"].forEach(id => {
     const el = $(id);

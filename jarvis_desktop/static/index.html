@@ -60,6 +60,7 @@
           <p class="muted tiny picker-help">Paste the full path to your project root. JARVIS analyzes dependencies, risk, and structure locally — no cloud upload.</p>
           <div class="pick-row">
             <input id="repoPath" type="text" placeholder="C:\projects\my-app  or  /home/dev/my-app" value="" autocomplete="off" />
+            <button class="btn ghost" id="browseRepoBtn" type="button" onclick="browseRepoFolder()">Browse</button>
             <button class="btn ghost" type="button" onclick="validateRepoPath()">Validate</button>
           </div>
           <div class="path-error" id="pathError" style="display:none"></div>
@@ -292,6 +293,8 @@
     </section>
 
   </main>
+
+  <button class="btn ghost screenshot-exit" id="screenshotExitBtn" type="button" onclick="exitPresentationMode()">Exit screenshot</button>
 
   <div id="onboarding" class="onboarding" style="display:none">
     <div class="onboarding-card glass">
