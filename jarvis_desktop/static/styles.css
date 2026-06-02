@@ -167,7 +167,7 @@ body{
 .cockpit-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
 .cockpit-hubs{margin-top:8px;font-size:12px}
 .cockpit-hubs li{margin:4px 0;color:#c7d2f5}
-body.screenshot-mode .topbar,body.screenshot-mode .panel,body.screenshot-mode .graph-head,body.screenshot-mode .graph-scale-header,body.screenshot-mode .graph-mode-badge,body.screenshot-mode .graph-entity-summary,body.screenshot-mode .graph-render-diagnostics,body.screenshot-mode .massive-mode-banner,body.screenshot-mode .timeline-panel,body.screenshot-mode .tour-panel,body.screenshot-mode .product-tour-panel{display:none!important}
+body.screenshot-mode .topbar,body.screenshot-mode .panel,body.screenshot-mode .map-header,body.screenshot-mode .graph-mode-badge,body.screenshot-mode .graph-entity-summary,body.screenshot-mode .graph-render-diagnostics,body.screenshot-mode .timeline-panel,body.screenshot-mode .tour-panel,body.screenshot-mode .product-tour-panel{display:none!important}
 body.screenshot-mode .center-grid{grid-template-columns:1fr;height:100vh}
 body.screenshot-mode .graph-stage{border:none;border-radius:0;height:100vh}
 body.screenshot-mode #graph3d{min-height:100vh}
@@ -316,20 +316,105 @@ ul.clean{margin:0;padding-left:18px;line-height:1.9;color:#c7d2f5}
 .bug-hint-title{font-size:11px;letter-spacing:.8px;color:var(--violet);text-transform:uppercase;margin-bottom:8px}
 .bug-hint code{font-family:ui-monospace,monospace;color:var(--cyan);font-size:11px}
 
+/* Phase 123 — Investigation report + hypothesis cards */
+.report-section{margin:14px 0}
+.report-label{font-size:11px;letter-spacing:.7px;color:var(--cyan);text-transform:uppercase;margin-bottom:7px}
+.report-section p{margin:0;line-height:1.55;color:#c7d2f5}
+.root-cause{font-size:15px;color:#eaf0ff !important;font-weight:600}
+.plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:760px){.plan-grid{grid-template-columns:1fr}}
+.hyp-card{border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px;background:rgba(8,12,22,.45)}
+.hyp-card:first-child{border-color:rgba(62,240,255,.35);box-shadow:0 0 22px rgba(62,240,255,.08)}
+.hyp-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.hyp-rank{font-family:Orbitron;font-size:12px;color:#06101f;background:linear-gradient(135deg,var(--cyan),var(--violet));padding:3px 9px;border-radius:8px;font-weight:700}
+.hyp-title{flex:1;font-size:14px;font-weight:600;color:#eaf0ff}
+.hyp-why{margin:6px 0 !important;font-size:12.5px}
+.hyp-files{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.hyp-files .tag{cursor:pointer}
+.hyp-files .tag:hover{border-color:rgba(62,240,255,.5)}
+.hyp-evidence{margin:6px 0;color:var(--muted)}
+.hyp-line{margin:6px 0 !important;font-size:12px;color:#bcc8ef}
+.hyp-line.disprove{color:#9fb0d8}
+.hyp-line b,.hyp-why b{color:var(--cyan)}
+
 /* AI Export "Why this helps" */
 .export-why{padding:12px 14px;border:1px solid rgba(62,240,255,.2);border-radius:12px;background:rgba(62,240,255,.05);margin-bottom:4px}
 .export-why-title{font-size:11px;letter-spacing:.8px;color:var(--cyan);text-transform:uppercase;margin-bottom:6px}
 .export-why p{margin:0;font-size:12px;color:#aab7e0;line-height:1.5}
+
+/* Domain knowledge panel (Phase 125) */
+.domain-panel{margin:12px 0;padding:14px 16px;border-color:rgba(62,240,255,.25);background:rgba(62,240,255,.04)}
+.domain-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:8px}
+.domain-concept{font-size:14px;font-weight:600;color:var(--cyan)}
+.domain-why{font-size:12px;color:#aab7e0;line-height:1.5;margin:8px 0}
 
 /* Module browse fallback (readable when graph is secondary) */
 .module-browse-panel{max-height:220px;overflow:hidden;margin-top:8px;padding:10px 12px}
 .mbp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .mbp-head h4{margin:0;font-size:13px;color:var(--cyan)}
 .mbp-filter{width:100%;margin-bottom:8px;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:rgba(0,0,0,.25);color:#eaf0ff;font-size:12px}
-.mbp-list{max-height:140px;overflow:auto;margin:0}
-.mbp-item{background:none;border:none;color:#c7d2f5;text-align:left;padding:4px 0;cursor:pointer;font-size:11px;width:100%}
-.mbp-item:hover{color:var(--cyan)}
+.mbp-list{max-height:150px;overflow:auto;margin:0}
+.mbp-item{background:none;border:none;color:#c7d2f5;text-align:left;padding:5px 6px;cursor:pointer;font-size:11.5px;width:100%;display:flex;justify-content:space-between;gap:10px;border-radius:6px}
+.mbp-item:hover{color:#fff;background:rgba(62,240,255,.07)}
+.mbp-path{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mbp-meta{color:var(--muted);white-space:nowrap;font-size:10.5px}
+/* Inspector empty-state quick picks */
+.inspector-empty{font-size:14px!important;color:#eaf0ff!important;font-weight:600;margin:2px 0}
+.qpick-group{margin-top:12px}
+.qpick-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.qpick{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:8px;color:#c7d2f5;font-size:11px;padding:5px 9px;cursor:pointer}
+.qpick:hover{border-color:rgba(62,240,255,.45);color:#fff}
+.qpick-list{max-height:160px;overflow:auto;margin:6px 0 0}
 .graph-advanced-toolbar summary{cursor:pointer;list-style:none}
 .graph-advanced-toolbar .graph-toolbar{margin-top:8px}
 
-@media(max-width:1100px){.cards{grid-template-columns:1fr 1fr}.center-grid{grid-template-columns:1fr;height:auto}.scan-wrap,.export-grid,.intel-body{grid-template-columns:1fr}#graph3d{height:480px}.steps-row{flex-direction:column;gap:8px}.step-arrow{transform:rotate(90deg)}}
+/* ======================================================================
+   Phase 124 — Repository Map clean layout (flow header, no floating cards)
+   ====================================================================== */
+.graph-stage{display:flex;flex-direction:column;overflow:hidden}
+.map-header{flex:none;display:flex;flex-direction:column;gap:8px;padding:10px 14px;
+  border-bottom:1px solid var(--line);background:rgba(8,12,22,.6);z-index:6}
+.map-titlebar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.map-title-left{display:flex;align-items:center;gap:10px;min-width:0}
+.map-title-left h3{font-family:Orbitron;letter-spacing:1px;font-size:14px;margin:0;color:#eaf0ff;text-shadow:none}
+.map-repo{font-size:12px;color:var(--cyan);max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.map-health-badge{font-size:10px;letter-spacing:.5px;text-transform:uppercase;padding:3px 9px;border-radius:20px;border:1px solid var(--line);color:var(--muted)}
+.map-health-badge.healthy{color:var(--green);border-color:rgba(66,245,176,.4);background:rgba(66,245,176,.08)}
+.map-health-badge.partial,.map-health-badge.watch{color:var(--amber);border-color:rgba(255,194,75,.4);background:rgba(255,194,75,.08)}
+/* Controls row (override the old column/absolute layout) */
+.graph-head{position:static}
+.graph-controls{position:static;flex-direction:row;align-items:center;gap:8px;flex-wrap:wrap;pointer-events:auto}
+.graph-controls .graph-toggle{margin:0}
+.graph-advanced-toolbar{position:relative}
+.graph-advanced-toolbar summary{cursor:pointer;list-style:none;display:inline-block}
+.graph-advanced-toolbar summary::-webkit-details-marker{display:none}
+.graph-advanced-toolbar[open] .graph-toolbar{position:absolute;right:0;top:calc(100% + 6px);z-index:30;
+  display:flex;flex-direction:column;align-items:stretch;gap:6px;padding:10px;min-width:200px;border-radius:12px}
+.graph-advanced-toolbar .graph-toolbar .btn{width:100%;text-align:left}
+/* Compact metrics strip (Row 2) */
+.map-metrics{display:flex;flex-wrap:wrap;gap:10px 26px;align-items:center;padding:8px 14px;border-radius:12px}
+.map-metrics .scale-row{display:flex;gap:10px 26px;flex-wrap:wrap;align-items:baseline}
+.map-metrics .scale-row-title{display:none}
+.map-metrics .scale-stat{flex-direction:row;align-items:baseline;gap:6px;min-width:auto}
+.map-metrics .scale-num{font-family:Orbitron;font-size:17px;color:var(--cyan);text-shadow:none}
+.map-metrics .scale-lbl{font-size:10px;letter-spacing:.5px;color:var(--muted);text-transform:uppercase;margin:0}
+.map-metrics .scale-row.underlying{opacity:.8}
+.map-metrics .scale-row.underlying .scale-num{font-size:13px;color:#9eb8ff}
+/* Breadcrumb (hierarchy only) */
+.map-breadcrumb{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+/* Concise warning + compact massive banner (Row 3) */
+.map-warning{display:flex;gap:8px;align-items:center;font-size:12px;color:#ffd9a0;
+  padding:6px 12px;border:1px solid rgba(255,194,75,.3);border-radius:8px;background:rgba(255,194,75,.07)}
+.map-warning .map-warning-details{color:var(--cyan);cursor:pointer;text-decoration:underline;font-size:11px;white-space:nowrap}
+.map-massive{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px;
+  padding:6px 12px;border:1px solid rgba(255,154,75,.4);border-radius:8px;background:rgba(255,154,75,.08)}
+.map-massive .mmb-title{font-family:Orbitron;font-size:11px;color:#ff9a4b;letter-spacing:.5px}
+.map-massive .btn{margin:0}
+/* Graph fills the rest; no floating center clutter */
+#graph3d{flex:1 1 auto;min-height:0;width:100%}
+.graph-mode-badge{display:none!important}
+.graph-entity-summary{display:none!important}
+.graph-legend{bottom:16px;left:14px}
+.timeline-panel{flex:none}
+
+@media(max-width:1100px){.cards{grid-template-columns:1fr 1fr}.center-grid{grid-template-columns:1fr;height:auto}.scan-wrap,.export-grid,.intel-body{grid-template-columns:1fr}#graph3d{height:480px;flex:none}.steps-row{flex-direction:column;gap:8px}.step-arrow{transform:rotate(90deg)}}

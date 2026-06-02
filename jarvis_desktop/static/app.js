@@ -88,23 +88,21 @@ function renderGraphModeMetrics(sum, graph) {
   const totals = graphUnderlyingTotals(sum, graph);
   const vis = graphVisibleCounts(graph);
   const badge = $("graphModeBadge");
-  if (badge) {
-    badge.style.display = "block";
-    badge.textContent = graphModeTitle(view, graph);
-    badge.className = `graph-mode-badge mode-${view}`;
-  }
+  if (badge) badge.style.display = "none";  // Phase 124 — no floating center badge
   const host = $("graphScaleHeader");
   if (host) {
+    const gh = sum?.graph_health || {};
     const risk = sum?.risk_score ?? 0;
-    const cycles = sum?.graph_health?.import_cycles ?? 0;
+    const cycles = gh.import_cycles ?? 0;
+    const coverage = gh.label || "—";
     if (view === "module") {
       host.innerHTML = `
         <div class="scale-row">
-          <div class="scale-row-title">Visible</div>
           <div class="scale-stat"><span class="scale-num">${vis.nodes.toLocaleString()}</span><span class="scale-lbl">modules</span></div>
           <div class="scale-stat"><span class="scale-num">${vis.links.toLocaleString()}</span><span class="scale-lbl">dependencies</span></div>
-          <div class="scale-stat"><span class="scale-num">${risk}</span><span class="scale-lbl">risk score</span></div>
+          <div class="scale-stat"><span class="scale-num">${risk}</span><span class="scale-lbl">risk</span></div>
           <div class="scale-stat"><span class="scale-num">${cycles}</span><span class="scale-lbl">cycles</span></div>
+          <div class="scale-stat"><span class="scale-num" style="font-size:13px;color:${coverage === 'healthy' ? 'var(--green)' : 'var(--amber)'}">${coverage}</span><span class="scale-lbl">coverage</span></div>
         </div>`;
     } else if (view === "subsystem") {
       const linkLbl = graph?.architecture_clusters ? "cluster links" : "subsystem links";
@@ -693,22 +691,20 @@ async function renderCenter() {
     return;
   }
   renderHealthCockpit(sum);
+  renderMapHeader(sum);
   $("suggest").innerHTML = renderCopilotSuggestions(sum);
   const graph = STATE.graph || (STATE.graph = await fetchGraphPayload());
+  const bc = $("mapBreadcrumb");
   if (STATE.graphView === "hierarchy") {
+    if (bc) bc.style.display = "flex";
     renderHierarchyBreadcrumb();
     updateHierarchyCounts(graph);
   } else {
+    if (bc) bc.style.display = "none";
     $("hierarchyBreadcrumb").textContent = "Repository";
     $("hierarchyCounts").textContent = "";
   }
-  const graphWarning = [graph.render_warning, sum.graph_health?.notice].filter(Boolean).join(" ");
-  if (graphWarning) {
-    $("graphWarning").style.display = "block";
-    $("graphWarning").textContent = graphWarning;
-  } else {
-    $("graphWarning").style.display = "none";
-  }
+  setMapWarning(graph, sum);
   STATE.tourStops = graph.tour_stops || [];
   STATE.riskPercentiles = computeRiskPercentiles(graph.nodes || []);
   renderGraphModeMetrics(sum, graph);
@@ -724,6 +720,31 @@ async function renderCenter() {
   renderArchitectureSummary(sum);
   renderModuleBrowsePanel(graph, sum);
   build3DGraph(graph);
+}
+
+function renderMapHeader(sum) {
+  const nameEl = $("mapRepoName");
+  if (nameEl) nameEl.textContent = sum.repo_name ? `· ${sum.repo_name}` : "";
+  const badge = $("mapHealthBadge");
+  if (badge) {
+    const label = sum.graph_health?.label || "—";
+    badge.textContent = label;
+    badge.className = `map-health-badge ${label}`;
+  }
+}
+
+// Concise warning + "Details" link (full explanation in a toast, not a wall of text).
+function setMapWarning(graph, sum) {
+  const el = $("graphWarning");
+  if (!el) return;
+  const full = [graph.render_warning, sum.graph_health?.notice].filter(Boolean).join(" ");
+  if (!full) { el.style.display = "none"; return; }
+  const partial = (sum.graph_health?.label || "") !== "healthy";
+  const concise = partial
+    ? "Graph coverage is partial. Most missing links are external or dynamic imports."
+    : "Some dependencies could not be resolved.";
+  el.style.display = "flex";
+  el.innerHTML = `<span>${concise}</span><span class="map-warning-details" role="button" tabindex="0" onclick="toast(${JSON.stringify(full)})">Details</span>`;
 }
 
 function renderArchitectureSummary(sum) {
@@ -758,19 +779,24 @@ function filterModuleBrowseList() {
   const list = $("moduleBrowseList");
   if (!list || !STATE.moduleBrowseNodes) return;
   const q = ($("moduleBrowseFilter")?.value || "").trim().toLowerCase();
-  const items = STATE.moduleBrowseNodes.filter(n => !q || (n.path || "").toLowerCase().includes(q)).slice(0, 80);
+  const items = STATE.moduleBrowseNodes.filter(n => !q || (n.path || "").toLowerCase().includes(q)).slice(0, 100);
   list.innerHTML = items.map(n => {
     const path = n.path || "";
-    const fan = n.fan_in || 0;
+    const fi = n.fan_in || 0, fo = n.fan_out || 0;
     const risk = n.risk_score || 0;
-    return `<li><button type="button" class="mbp-item" onclick="selectModuleFromList(${JSON.stringify(path)})">${esc(path)} <span class="muted">fan-in ${fan} · risk ${risk}</span></button></li>`;
+    const sub = n.subsystem || "";
+    const rc = risk >= 60 ? "var(--red)" : risk >= 35 ? "var(--amber)" : risk >= 15 ? "var(--cyan)" : "var(--green)";
+    return `<li><button type="button" class="mbp-item" onclick="selectModuleFromList(${JSON.stringify(path)})">
+      <span class="mbp-path">${esc(path)}</span>
+      <span class="mbp-meta"><b style="color:${rc}">risk ${risk}</b> · in ${fi} · out ${fo}${sub ? " · " + esc(sub) : ""}</span>
+    </button></li>`;
   }).join("") || '<li class="muted tiny">No modules match filter</li>';
 }
 
 function selectModuleFromList(path) {
   if (!path || !STATE.graph) return;
   const node = (STATE.graph.nodes || []).find(n => n.path === path);
-  if (node) JARVIS_UNIVERSE.focusNode?.(node.id) || JARVIS_UNIVERSE.onNodeClick?.(node);
+  if (node) showNode(node);
 }
 
 function renderHealthCockpit(sum) {
@@ -1027,9 +1053,29 @@ async function renderModuleInspector(node) {
 }
 
 function renderModuleInspectorPlaceholder() {
+  const sum = STATE.summary || {};
+  const hubs = (sum.top_hubs || []).slice(0, 5);
+  const risks = (sum.top_risks || []).slice(0, 5);
+  const hubItems = hubs.map(h => `<button type="button" class="qpick" onclick="selectModuleFromList(${JSON.stringify(h.path || h.module || "")})">${esc((h.module || h.path || "").split(/[./\\]/).pop())} <span class="muted">← ${h.fan_in ?? 0}</span></button>`).join("") || '<span class="muted tiny">—</span>';
+  const riskItems = risks.map(r => `<button type="button" class="qpick" onclick="selectModuleFromList(${JSON.stringify(r.path || "")})">${esc((r.module || r.path || "").split(/[./\\]/).pop())} <span class="muted">${r.score ?? ""}</span></button>`).join("") || '<span class="muted tiny">—</span>';
   $("moduleInspector").innerHTML = `
-    <h3>Module Inspector 2.0</h3>
-    <p class="muted tiny">Click a node in the universe graph to inspect path, subsystem, risk, imports, cycles, and evidence.</p>`;
+    <h3>Module Inspector</h3>
+    <p class="muted tiny inspector-empty">Select a module</p>
+    <p class="muted tiny" style="margin:2px 0 10px">Click a node, or choose a file below, to inspect dependencies, risk, and impact.</p>
+    <input type="search" id="inspectorSearch" class="mbp-filter" placeholder="Search modules…" oninput="inspectorSearchModules()" />
+    <ul class="clean qpick-list" id="inspectorSearchResults" style="display:none"></ul>
+    <div class="qpick-group"><div class="copilot-label">Top hubs</div><div class="qpick-row">${hubItems}</div></div>
+    <div class="qpick-group"><div class="copilot-label">Top risks</div><div class="qpick-row">${riskItems}</div></div>`;
+}
+
+function inspectorSearchModules() {
+  const q = ($("inspectorSearch")?.value || "").trim().toLowerCase();
+  const out = $("inspectorSearchResults");
+  if (!out) return;
+  if (!q) { out.style.display = "none"; out.innerHTML = ""; return; }
+  const nodes = (STATE.graph?.nodes || []).filter(n => n.path && n.path.toLowerCase().includes(q)).slice(0, 12);
+  out.style.display = nodes.length ? "block" : "none";
+  out.innerHTML = nodes.map(n => `<li><button type="button" class="mbp-item" onclick="selectModuleFromList(${JSON.stringify(n.path)})"><span class="mbp-path">${esc(n.path)}</span></button></li>`).join("");
 }
 
 function showNode(n) {
@@ -1209,6 +1255,29 @@ function renderLimitations(items) {
   return `<h3 style="font-size:13px;color:var(--amber);margin-top:14px">Limitations</h3><ul class="clean">${list.map(x => `<li>${esc(x)}</li>`).join("")}</ul>`;
 }
 
+function renderDomainKnowledge(dk) {
+  if (!dk || !dk.applied) return "";
+  const roles = dk.file_roles || {};
+  const risks = (dk.knowledge_risks || []).slice(0, 8);
+  const tag = (p) => `<span class="tag" onclick="investigateFile(${JSON.stringify(p)})">${esc(p)}</span>`;
+  return `
+    <div class="domain-panel glass">
+      <div class="domain-head">
+        <span class="domain-concept">${esc(dk.concept_name)} — ${esc(dk.concept_title || "")}</span>
+        <span class="pill">${esc(dk.domain_label || dk.domain)}</span>
+      </div>
+      <p class="muted tiny"><b>Concept confidence:</b> ${esc(dk.concept_confidence)} · <b>Repo mapping:</b> ${esc(dk.repo_mapping_confidence)}</p>
+      <p class="domain-why">${esc(dk.why_this_matters || dk.concept_understanding || "")}</p>
+      ${risks.length ? `<div class="report-section"><div class="report-label">Knowledge-backed risks</div><ul class="clean tiny">${risks.map(r => `<li>${esc(r)}</li>`).join("")}</ul></div>` : ""}
+      <div class="report-section"><div class="report-label">File roles</div>
+        <p class="muted tiny">Must inspect</p><div class="taglist">${(roles.must_inspect || []).map(tag).join("") || '<span class="muted tiny">—</span>'}</div>
+        <p class="muted tiny">Likely modify</p><div class="taglist">${(roles.likely_modify || []).map(tag).join("") || '<span class="muted tiny">—</span>'}</div>
+        <p class="muted tiny">Verify only</p><div class="taglist">${(roles.verify_only || []).map(tag).join("") || '<span class="muted tiny">—</span>'}</div>
+      </div>
+      ${dk.integration_note ? `<p class="muted tiny">${esc(dk.integration_note)}</p>` : ""}
+    </div>`;
+}
+
 async function runChangePlan() {
   const request = $("buildRequest")?.value.trim();
   if (!request) { toast("Describe the change you want"); return; }
@@ -1227,10 +1296,20 @@ async function runChangePlan() {
         <h3 style="margin:0">Change Plan</h3>
         <span class="lvl ${p.confidence?.includes('high') ? 'low' : 'medium'}">confidence: ${esc(p.confidence)}</span>
       </div>
-      <p class="muted tiny" style="margin:8px 0">Size: <b>${esc(p.estimated_change_size)}</b> · Intent: ${esc(p.intent)}</p>
-      <pre class="code" style="max-height:320px;overflow:auto">${esc(r.formatted || "")}</pre>
-      <h3 style="font-size:13px;color:var(--cyan);margin-top:14px">Evidence</h3>
-      <ul class="clean">${(p.evidence || []).map(e => `<li>${esc(e)}</li>`).join("")}</ul>
+      <p class="muted tiny" style="margin:8px 0">Size: <b>${esc(p.estimated_change_size)}</b> · Risk: <b>${esc(p.risk_level)}</b> · Intent: ${esc(p.intent)}</p>
+      ${renderDomainKnowledge(p.domain_knowledge)}
+      <div class="plan-grid">
+        <div class="report-section"><div class="report-label">Affected systems</div><div class="taglist">${(p.affected_systems || p.likely_affected_subsystems || []).map(s => `<span class="tag">${esc(s)}</span>`).join("") || '<span class="muted tiny">none matched</span>'}</div></div>
+        <div class="report-section"><div class="report-label">Entry points</div><div class="taglist">${(p.entry_points || []).map(s => `<span class="tag">${esc(s)}</span>`).join("") || '<span class="muted tiny">none detected</span>'}</div></div>
+      </div>
+      <div class="report-section"><div class="report-label">Implementation order</div><ol class="clean">${(p.implementation_order || []).map(s => `<li>${esc(s)}</li>`).join("") || '<li class="muted">n/a</li>'}</ol></div>
+      <div class="report-section"><div class="report-label">What may break (direct importers / high coupling)</div><div class="taglist">${(p.what_may_break || p.files_likely_to_break || []).map(s => `<span class="tag" onclick="investigateFile(${JSON.stringify(s)})">${esc(s)}</span>`).join("") || '<span class="muted tiny">nothing high-risk identified</span>'}</div></div>
+      <div class="report-section"><div class="report-label">Tests required</div><ul class="clean">${(p.tests_required || p.tests_likely_affected || []).map(s => `<li>${esc(s)}</li>`).join("")}</ul></div>
+      <div class="report-section"><div class="report-label">Rollback plan</div><ul class="clean">${(p.rollback_plan || []).map(s => `<li>${esc(s)}</li>`).join("")}</ul></div>
+      <details style="margin-top:8px"><summary class="muted tiny">Full plan (markdown) + evidence</summary>
+        <pre class="code" style="max-height:320px;overflow:auto">${esc(r.formatted || "")}</pre>
+        <ul class="clean tiny">${(p.evidence || []).map(e => `<li>${esc(e)}</li>`).join("")}</ul>
+      </details>
       ${renderLimitations(r.limitations)}
       <h3 style="font-size:13px;color:var(--cyan);margin-top:16px">Export implementation prompts</h3>
       <div class="copy-row">
@@ -1287,25 +1366,66 @@ async function runInvestigationPlan() {
   out.innerHTML = `
     <div class="glass ocard">
       <div style="display:flex;justify-content:space-between;align-items:center">
-        <h3 style="margin:0">Investigation Plan</h3>
-        <span class="lvl ${p.confidence === 'high' ? 'low' : 'medium'}">confidence: ${esc(p.confidence)}</span>
+        <h3 style="margin:0">Investigation Report</h3>
+        <span class="lvl ${p.confidence === 'high' ? 'low' : p.confidence === 'low' ? 'unknown' : 'medium'}">confidence: ${esc(p.confidence)}</span>
       </div>
-      <pre class="code" style="max-height:320px;overflow:auto">${esc(r.formatted || "")}</pre>
-      ${p.most_likely_source ? `<p class="muted tiny"><b>Most likely source:</b> ${esc(p.most_likely_source)}</p>` : ""}
-      ${p.logical_hypothesis ? `<p class="muted tiny"><b>Hypothesis:</b> ${esc(p.logical_hypothesis)}</p>` : ""}
-      <div class="taglist" style="margin:10px 0">${(p.likely_modules || []).map(m => `<span class="tag">${esc(m)}</span>`).join("") || '<span class="muted">No grounded module match</span>'}</div>
-      ${(p.verification_steps || []).length ? `<h3 style="font-size:13px;color:var(--cyan);margin-top:12px">Verification</h3><ul class="clean">${p.verification_steps.map(v => `<li>${esc(v)}</li>`).join("")}</ul>` : ""}
-      ${p.risk_if_fixed ? `<p class="muted tiny"><b>Risk if fixed incorrectly:</b> ${esc(p.risk_if_fixed)}</p>` : ""}
+      <div class="report-section">
+        <div class="report-label">Symptom summary</div>
+        <p>${esc(p.symptom_summary || p.symptom || "")}</p>
+      </div>
+      ${renderDomainKnowledge(p.domain_knowledge)}
+      ${(p.domain_failure_modes || []).length ? `<div class="report-section"><div class="report-label">Domain failure modes</div><ul class="clean">${p.domain_failure_modes.map(m => `<li>${esc(m)}</li>`).join("")}</ul></div>` : ""}
+      <div class="report-section">
+        <div class="report-label">Most likely root cause</div>
+        <p class="root-cause">${esc(p.most_likely_root_cause || p.most_likely_source || "Not localizable from this symptom alone")}</p>
+      </div>
+      <div class="report-section">
+        <div class="report-label">Ranked hypotheses</div>
+        ${renderHypotheses(p.hypotheses || [])}
+      </div>
+      ${(p.verification_checklist || []).length ? `<div class="report-section"><div class="report-label">Verification checklist</div><ul class="clean">${p.verification_checklist.map(v => `<li>${esc(v)}</li>`).join("")}</ul></div>` : ""}
+      ${(p.minimal_fix_strategy || []).length ? `<div class="report-section"><div class="report-label">Minimal fix strategy</div><ul class="clean">${p.minimal_fix_strategy.map(v => `<li>${esc(v)}</li>`).join("")}</ul></div>` : ""}
+      ${(p.risks_of_incorrect_fix || []).length ? `<div class="report-section"><div class="report-label">Risks of fixing incorrectly</div><ul class="clean">${p.risks_of_incorrect_fix.map(v => `<li>${esc(v)}</li>`).join("")}</ul></div>` : ""}
       ${renderLimitations(r.limitations)}
-      <h3 style="font-size:13px;color:var(--cyan);margin-top:14px">Export prompts</h3>
+      <h3 style="font-size:13px;color:var(--cyan);margin-top:16px">Export investigation prompt</h3>
       <div class="copy-row">
         <button class="btn small" onclick="copyInvestigatePrompt('claude')">Copy Claude</button>
         <button class="btn small" onclick="copyInvestigatePrompt('codex')">Copy Codex</button>
         <button class="btn small" onclick="copyInvestigatePrompt('cursor')">Copy Cursor</button>
       </div>
-      <details style="margin-top:12px"><summary class="muted tiny">Preview Claude prompt</summary>
-        <pre class="code">${esc(prompts.claude || "")}</pre></details>
+      <details style="margin-top:12px"><summary class="muted tiny">Preview full report (markdown)</summary>
+        <pre class="code">${esc(r.formatted || "")}</pre></details>
     </div>`;
+}
+
+function renderHypotheses(hyps) {
+  if (!hyps.length) {
+    return `<p class="muted tiny">No grounded hypotheses — add a file path, error type, or subsystem name and re-run.</p>`;
+  }
+  return hyps.map((h, i) => {
+    const conf = h.confidence === "high" ? "low" : h.confidence === "low" ? "unknown" : "medium";
+    const files = (h.files_involved || []).map(f => `<span class="tag" onclick="investigateFile(${JSON.stringify(f)})" title="Open in impact">${esc(f)}</span>`).join("")
+      || '<span class="muted tiny">no grounded file — lead only</span>';
+    return `
+    <div class="hyp-card">
+      <div class="hyp-head">
+        <span class="hyp-rank">H${i + 1}</span>
+        <span class="hyp-title">${esc(h.title)}</span>
+        <span class="lvl ${conf}">${esc(h.confidence)}</span>
+      </div>
+      <p class="hyp-why"><b>Why it fits:</b> ${esc(h.why_it_fits)}</p>
+      <div class="hyp-files">${files}</div>
+      ${(h.evidence || []).length ? `<ul class="clean tiny hyp-evidence">${h.evidence.map(e => `<li>${esc(e)}</li>`).join("")}</ul>` : ""}
+      <p class="hyp-line"><b>If correct:</b> ${esc(h.what_should_be_true_if_correct || "")}</p>
+      <p class="hyp-line disprove"><b>How to disprove:</b> ${esc(h.how_to_disprove || "")}</p>
+    </div>`;
+  }).join("");
+}
+
+function investigateFile(path) {
+  if ($("impactTarget")) { $("impactTarget").value = path; }
+  go("impact");
+  runImpact();
 }
 
 function copyInvestigatePrompt(tool) {

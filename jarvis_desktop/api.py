@@ -31,7 +31,7 @@ from . import analytics
 from . import graph_build
 from . import planning_engine
 
-PRODUCT_VERSION = "phase122-atlas-product-hardening"
+PRODUCT_VERSION = "phase125-domain-knowledge-layer"
 CHARS_PER_TOKEN = 4.0
 GRAPH_DISPLAY_CAP = 5000
 GRAPH_DEFAULT_HIERARCHY_THRESHOLD = 1000
@@ -2304,11 +2304,24 @@ def _graph_health(scan: Dict[str, Any]) -> Dict[str, Any]:
         "unresolved_imports": unresolved,
         "external_package_imports": external,
         "unresolved_ratio": ratio,
+        # Phase 123 — honest labeling (data trust). The current resolver reports
+        # `imports_external`: every import whose target is OUTSIDE the internal
+        # production module set. That bucket includes third-party packages and the
+        # standard library, NOT just failed internal resolutions. A high ratio is
+        # normal for dependency-heavy apps and does not by itself mean the internal
+        # graph is incomplete. (External vs internal-unresolved split is a tracked
+        # improvement — see reports/phase123_unresolved_imports_investigation.md.)
         "unresolved_ratio_note": (
-            "Unresolved internal imports ÷ (resolved + unresolved internal). "
-            "External package imports are tracked separately and do not inflate this ratio."
+            "External imports (targets outside the internal module set: third-party "
+            "packages + standard library + any unresolved internal imports) ÷ all imports. "
+            "High values are normal for apps with many dependencies."
         ),
-        "notice": "Graph is partial: many imports could not be resolved." if unresolved_high else "",
+        "external_label": "external + stdlib imports",
+        "notice": (
+            "Many imports point outside the internal module set (third-party packages, "
+            "standard library, or unresolved internal imports). Common for dependency-heavy "
+            "apps — internal architecture may still be fully mapped."
+        ) if unresolved_high else "",
         "label": label,
     }
 

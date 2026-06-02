@@ -58,8 +58,9 @@ def test_module_browse_panel_present():
     assert "filterModuleBrowseList" in APP_JS.read_text(encoding="utf-8")
 
 
-def test_product_version_phase122():
-    assert "phase122" in api.PRODUCT_VERSION
+def test_product_version_atlas_hardening_lineage():
+    assert "phase12" in api.PRODUCT_VERSION
+    assert "atlas" in api.PRODUCT_VERSION or "domain" in api.PRODUCT_VERSION
 
 
 def test_investigation_grounded_paths_only(planner_scan):
@@ -108,5 +109,6 @@ def test_investigation_formatter_sections(planner_scan):
     res = api.investigate_symptom("position close sometimes fails")
     assert res["ok"]
     text = res.get("formatted") or ""
-    for section in ("Symptom:", "Confidence:", "Limitations:"):
+    # Phase 123 — senior-engineer report structure
+    for section in ("A. Symptom summary", "C. Ranked hypotheses", "E. Minimal fix strategy", "Limitations:"):
         assert section in text

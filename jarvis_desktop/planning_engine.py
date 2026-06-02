@@ -9,6 +9,8 @@ from __future__ import annotations
 import re
 from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
 
+from . import domain_knowledge as dk
+
 # Feature intents → search terms for path/module matching (deterministic heuristics).
 _FEATURE_SPECS: Dict[str, Dict[str, Any]] = {
     "authentication": {
@@ -61,43 +63,271 @@ _SYMPTOM_SPECS: Dict[str, Dict[str, Any]] = {
         ),
         "search": ("backtest", "paper", "live", "trade", "broker", "execution", "sim"),
         "why": "Symptoms comparing backtest vs live/paper often involve execution, slippage, or data-feed paths.",
+        "hypotheses": (
+            {
+                "title": "Execution/fill modeling differs between backtest and live",
+                "why": "Backtest assumes idealized fills; live/paper applies slippage, latency, and partial fills.",
+                "keywords": ("execution", "fill", "slippage", "order", "broker"),
+                "should_be_true": "Backtest and live use the same fill price source and slippage model for the same bar.",
+                "disprove": "Log the fill price + timestamp for one trade in both modes; if identical, this is not the cause.",
+            },
+            {
+                "title": "Data feed / bar timing mismatch (look-ahead bias)",
+                "why": "Backtests often see the closed bar instantly; live sees forming bars, causing look-ahead in backtest.",
+                "keywords": ("data", "feed", "bar", "candle", "ohlc", "market"),
+                "should_be_true": "Signals fire on the same closed-bar timestamp in both modes.",
+                "disprove": "Compare the timestamp a signal evaluates against the bar close time; equal ⇒ no look-ahead.",
+            },
+            {
+                "title": "Fees/commission applied inconsistently",
+                "why": "Backtest may omit or flat-rate fees that live applies per-fill.",
+                "keywords": ("fee", "commission", "cost"),
+                "should_be_true": "Per-trade fee in backtest equals the broker's fee schedule used live.",
+                "disprove": "Sum fees over a fixed trade set in both modes; equal totals ⇒ not the cause.",
+            },
+        ),
     },
     "delayed_alerts": {
         "triggers": ("telegram", "alert", "delayed", "delay", "notification", "notify"),
         "search": ("telegram", "alert", "notify", "message", "webhook", "queue", "scheduler"),
         "why": "Alert delays usually trace through messaging integrations, queues, or schedulers.",
+        "hypotheses": (
+            {
+                "title": "Alerts are queued and worker lag delays delivery",
+                "why": "If alerts enqueue to a background worker, queue backlog adds latency before send.",
+                "keywords": ("queue", "worker", "celery", "task", "scheduler", "job"),
+                "should_be_true": "Queue depth stays near zero and enqueue→send time is sub-second.",
+                "disprove": "Measure enqueue timestamp vs send timestamp; small gap ⇒ delay is elsewhere.",
+            },
+            {
+                "title": "Synchronous network call to the messaging API blocks",
+                "why": "A slow/blocking Telegram/webhook HTTP call in the request path stalls delivery.",
+                "keywords": ("telegram", "webhook", "http", "client", "send", "notify"),
+                "should_be_true": "The send call has a timeout and runs off the critical path.",
+                "disprove": "Time the send() call in isolation; if fast, blocking is not the cause.",
+            },
+            {
+                "title": "Scheduler/cron interval batches alerts",
+                "why": "A periodic poll loop only checks every N seconds/minutes, adding fixed delay.",
+                "keywords": ("scheduler", "cron", "interval", "poll", "loop", "tick"),
+                "should_be_true": "Alert evaluation runs event-driven, not on a coarse polling interval.",
+                "disprove": "Inspect the loop interval; if << observed delay, scheduling is not the cause.",
+            },
+        ),
     },
     "memory_growth": {
         "triggers": ("memory", "leak", "increasing", "oom", "out of memory"),
         "search": ("cache", "pool", "worker", "stream", "buffer", "session", "loop"),
         "why": "Growing memory often ties to caches, long-lived workers, or unreleased handles.",
+        "hypotheses": (
+            {
+                "title": "Unbounded cache or accumulating collection",
+                "why": "A dict/list/cache that only grows (no eviction or TTL) leaks under steady load.",
+                "keywords": ("cache", "store", "registry", "buffer", "history", "map"),
+                "should_be_true": "Every long-lived collection has a max size, TTL, or eviction policy.",
+                "disprove": "Snapshot collection sizes over time; flat sizes ⇒ not this cache.",
+            },
+            {
+                "title": "Unreleased resources / handles in a long-lived worker",
+                "why": "Connections, file handles, or subscriptions opened per-iteration and never closed.",
+                "keywords": ("worker", "pool", "connection", "session", "client", "stream"),
+                "should_be_true": "Resources are closed in finally/`with` and pools are reused, not recreated.",
+                "disprove": "Count open handles/connections over time; stable count ⇒ not handle leak.",
+            },
+        ),
     },
     "dashboard_mismatch": {
         "triggers": ("dashboard", "numbers wrong", "metric", "display", "report wrong"),
         "search": ("dashboard", "metric", "report", "aggregate", "stats", "ui", "view"),
         "why": "Wrong dashboard values often come from aggregation, caching, or UI binding layers.",
+        "hypotheses": (
+            {
+                "title": "Aggregation/rollup computes the wrong value",
+                "why": "Sum/avg/group-by logic in the aggregation layer diverges from the raw source.",
+                "keywords": ("aggregate", "rollup", "sum", "stats", "metric", "report"),
+                "should_be_true": "Re-deriving the metric from raw rows matches the dashboard value.",
+                "disprove": "Manually compute the metric from the source table; match ⇒ aggregation is correct.",
+            },
+            {
+                "title": "Stale cache serving outdated values",
+                "why": "A cached metric isn't invalidated when the underlying data changes.",
+                "keywords": ("cache", "redis", "memo", "ttl"),
+                "should_be_true": "Cache is invalidated on every relevant write or has a short TTL.",
+                "disprove": "Bypass the cache and re-query; same value ⇒ cache is not stale.",
+            },
+            {
+                "title": "UI binding formats/maps the wrong field",
+                "why": "The display layer reads the wrong key or applies wrong formatting/units.",
+                "keywords": ("ui", "view", "dashboard", "component", "render", "template"),
+                "should_be_true": "The API response value equals what the widget renders.",
+                "disprove": "Compare the raw API payload to the rendered number; equal ⇒ UI binding is fine.",
+            },
+        ),
     },
     "position_close": {
         "triggers": ("position close", "closes fail", "close order", "exit position"),
         "search": ("position", "close", "order", "execution", "trade", "risk"),
         "why": "Intermittent close failures often involve order routing, state machines, or broker adapters.",
-        "hypothesis": "Order state, venue rules, or partial-fill handling may reject or delay close requests.",
         "verify": (
             "Reproduce with a single symbol and capture order lifecycle logs.",
             "Compare close path vs open path (same adapter, different state transitions).",
         ),
         "risk_if_fixed": "Overly aggressive retries could duplicate closes or violate risk limits.",
+        "hypotheses": (
+            {
+                "title": "Order state machine rejects close in certain states",
+                "why": "Close is only valid from specific states; a race leaves the order in a state that rejects close.",
+                "keywords": ("state", "order", "position", "status", "lifecycle"),
+                "should_be_true": "Close is permitted from every state the position can legitimately reach.",
+                "disprove": "Log the order state at each failed close; if always the same legal state, look elsewhere.",
+            },
+            {
+                "title": "Partial-fill handling leaves residual quantity",
+                "why": "A partial fill on close leaves an unclosed remainder that looks like a failure.",
+                "keywords": ("fill", "partial", "quantity", "qty", "execution"),
+                "should_be_true": "Close quantity equals current open quantity including prior partial fills.",
+                "disprove": "Compare requested close qty vs open qty; equal ⇒ not a partial-fill remainder.",
+            },
+            {
+                "title": "Broker/venue adapter rejects or times out",
+                "why": "Venue-specific rules (min size, market hours) or timeouts reject the close request.",
+                "keywords": ("broker", "adapter", "venue", "client", "api"),
+                "should_be_true": "The adapter returns success and an exchange order id for the close.",
+                "disprove": "Inspect the adapter response for the failing close; success ⇒ rejection is upstream.",
+            },
+        ),
     },
     "dashboard_pnl": {
         "triggers": ("pnl", "profit and loss", "dashboard pnl", "wrong pnl", "pnl is wrong"),
         "search": ("pnl", "profit", "loss", "equity", "balance", "dashboard", "metric", "portfolio"),
         "why": "PnL mismatches often come from position accounting, mark-to-market sources, or UI aggregation.",
-        "hypothesis": "Stale marks, double-counted fills, or inconsistent fee/slippage treatment between layers.",
         "verify": (
             "Trace PnL from raw fills → position ledger → API → dashboard widget.",
             "Compare paper/live vs backtest PnL components on the same date range.",
         ),
         "risk_if_fixed": "Fixing display-only bugs can hide real accounting errors; verify ledger first.",
+        "hypotheses": (
+            {
+                "title": "Stale or wrong mark-to-market price source",
+                "why": "Unrealized PnL uses a stale/last price instead of the current market mark.",
+                "keywords": ("mark", "price", "quote", "market", "value", "pnl"),
+                "should_be_true": "Unrealized PnL recomputes correctly when marked to the latest price.",
+                "disprove": "Recompute PnL with a known price; match ⇒ mark source is correct.",
+            },
+            {
+                "title": "Double-counted or missed fills in the position ledger",
+                "why": "Fills applied twice (retry/replay) or dropped corrupt realized PnL.",
+                "keywords": ("fill", "ledger", "position", "trade", "accounting"),
+                "should_be_true": "Ledger fill count equals the broker's fill count for the period.",
+                "disprove": "Reconcile ledger fills vs broker statement; equal ⇒ no double-count.",
+            },
+            {
+                "title": "Fee/slippage treated differently per layer",
+                "why": "Realized PnL net of fees in one layer, gross in another.",
+                "keywords": ("fee", "commission", "slippage", "net", "gross"),
+                "should_be_true": "Every layer agrees on net-vs-gross and the same fee schedule.",
+                "disprove": "Diff PnL with fees forced to zero in both layers; equal deltas ⇒ fees consistent.",
+            },
+        ),
+    },
+    "stop_loss": {
+        "triggers": ("stop loss", "stop-loss", "stopped out", "unexpected stop", "stop triggered", "sl hit"),
+        "search": ("stop", "loss", "risk", "trigger", "order", "price", "trail"),
+        "why": "Unexpected stops usually involve trigger price comparison, tick/wick handling, or trailing logic.",
+        "verify": (
+            "Capture the trigger price, comparison operator, and the bar/tick that fired it.",
+            "Replay the same price series through the stop check in isolation.",
+        ),
+        "risk_if_fixed": "Loosening stop logic can remove protection and increase downside risk.",
+        "hypotheses": (
+            {
+                "title": "Stop compares against wick/intrabar price, not close",
+                "why": "Using high/low (or live tick) instead of close fires stops on transient spikes.",
+                "keywords": ("stop", "trigger", "price", "tick", "high", "low", "bar"),
+                "should_be_true": "Stop fires only when the intended price field crosses the level.",
+                "disprove": "Log the price field used at trigger; if it's the intended one, look elsewhere.",
+            },
+            {
+                "title": "Trailing-stop level updated incorrectly",
+                "why": "A trailing stop ratchets the wrong way or recomputes from a stale reference.",
+                "keywords": ("trail", "stop", "level", "update", "high", "peak"),
+                "should_be_true": "Trailing level only moves in the favorable direction from the running extreme.",
+                "disprove": "Replay prices and assert the stop level is monotonic; if so, not the cause.",
+            },
+            {
+                "title": "Comparison operator / rounding off-by-a-tick",
+                "why": ">= vs > or float rounding fires the stop one tick early.",
+                "keywords": ("compare", "round", "price", "level", "stop"),
+                "should_be_true": "The boundary price does not trigger unless it truly breaches the level.",
+                "disprove": "Unit-test the boundary price exactly at the level; no trigger ⇒ operator is fine.",
+            },
+        ),
+    },
+    "position_sizing": {
+        "triggers": ("position siz", "sizing", "lot size", "quantity wrong", "wrong size", "size mismatch", "risk per trade"),
+        "search": ("size", "sizing", "position", "risk", "allocation", "quantity", "qty", "capital"),
+        "why": "Sizing mismatches involve the risk formula, rounding/lot constraints, or the capital/balance input.",
+        "verify": (
+            "Recompute size by hand from the documented formula and inputs.",
+            "Log every input (balance, risk %, price, stop distance) at the sizing call.",
+        ),
+        "risk_if_fixed": "Increasing size to 'match expectation' can breach risk limits — verify the formula is the bug.",
+        "hypotheses": (
+            {
+                "title": "Risk formula uses wrong input (balance vs equity vs free margin)",
+                "why": "Sizing off the wrong capital base scales every position incorrectly.",
+                "keywords": ("balance", "equity", "capital", "margin", "size", "risk"),
+                "should_be_true": "The capital input matches the documented basis for the risk model.",
+                "disprove": "Log the capital value used; if it matches the intended basis, look elsewhere.",
+            },
+            {
+                "title": "Rounding to lot/contract size distorts small positions",
+                "why": "Rounding to min lot or step size changes the effective risk, especially for small accounts.",
+                "keywords": ("lot", "round", "step", "min", "contract", "quantity"),
+                "should_be_true": "Rounded size stays within tolerance of the unrounded target.",
+                "disprove": "Compare unrounded vs rounded size; small delta ⇒ rounding is not the cause.",
+            },
+            {
+                "title": "Stop distance / pip value miscomputed in the formula",
+                "why": "Risk-based sizing divides by stop distance; a wrong unit (pips vs price) blows up size.",
+                "keywords": ("stop", "distance", "pip", "tick", "value", "size"),
+                "should_be_true": "size = risk_amount / (stop_distance × value_per_unit) holds with correct units.",
+                "disprove": "Plug the logged inputs into the formula by hand; match ⇒ formula is correct.",
+            },
+        ),
+    },
+    "signal_not_triggering": {
+        "triggers": ("signal not", "no signal", "signal isn't", "not triggering", "never fires", "entry not", "strategy not firing"),
+        "search": ("signal", "strategy", "indicator", "condition", "entry", "rule", "trigger"),
+        "why": "Missing signals trace to the condition logic, the indicator inputs, or the data window feeding them.",
+        "verify": (
+            "Log the boolean value of each signal condition on the bar where you expected a fire.",
+            "Confirm indicators have enough warm-up data and are not NaN.",
+        ),
+        "risk_if_fixed": "Loosening conditions to force signals can create false positives and overtrading.",
+        "hypotheses": (
+            {
+                "title": "A condition in the AND-chain is never satisfied",
+                "why": "Compound entry conditions mean one always-false clause suppresses all signals.",
+                "keywords": ("condition", "signal", "rule", "entry", "filter"),
+                "should_be_true": "Each individual condition is true at least sometimes on the test data.",
+                "disprove": "Log each clause separately; if all true on the expected bar, logic is fine.",
+            },
+            {
+                "title": "Indicator warm-up / NaN suppresses early signals",
+                "why": "Indicators need N bars; until then values are NaN and conditions silently fail.",
+                "keywords": ("indicator", "window", "period", "warmup", "ma", "rsi", "ema"),
+                "should_be_true": "Enough history is loaded before signal evaluation starts.",
+                "disprove": "Check indicator values are non-NaN on the expected bar; if valid, not warm-up.",
+            },
+            {
+                "title": "Wrong data timeframe / window feeding the signal",
+                "why": "Signal evaluated on a different timeframe or a window that excludes the move.",
+                "keywords": ("data", "timeframe", "window", "bar", "resample", "feed"),
+                "should_be_true": "The signal sees the same bars/timeframe you observed the setup on.",
+                "disprove": "Print the bars the signal evaluated; if they include the setup, data is fine.",
+            },
+        ),
     },
     "graph_module_count": {
         "triggers": (
@@ -110,12 +340,27 @@ _SYMPTOM_SPECS: Dict[str, Dict[str, Any]] = {
         ),
         "search": ("graph", "scan", "module", "index", "universe", "import", "dependency"),
         "why": "Graph/module count issues usually involve scan scope, production filters, or overview vs module view.",
-        "hypothesis": "UI may show architecture overview or partial graph while totals reflect full scan.",
         "verify": (
             "Confirm scan scope (entire repo vs folder) and production filter settings.",
             "Switch to Module Graph and compare visible count to summary module_count.",
         ),
         "risk_if_fixed": "Forcing full module graph on huge repos may degrade performance — use hierarchy when appropriate.",
+        "hypotheses": (
+            {
+                "title": "Subsystem/overview view shown instead of module view",
+                "why": "The overview collapses modules into subsystem nodes, so the visible count is far lower.",
+                "keywords": ("graph", "view", "subsystem", "overview", "universe"),
+                "should_be_true": "Module-graph node count equals summary.module_count.",
+                "disprove": "Switch to Module Graph and compare counts; equal ⇒ it was just the view.",
+            },
+            {
+                "title": "Scan scope or production filter excluded files",
+                "why": "Folder scope or production-only filters drop tests/vendored code from the count.",
+                "keywords": ("scan", "scope", "filter", "index", "production"),
+                "should_be_true": "Counted files match the configured scope and filter.",
+                "disprove": "Re-scan with entire-repo scope; if count matches expectation, scope was the cause.",
+            },
+        ),
     },
 }
 
@@ -280,9 +525,10 @@ def plan_change(request: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
     if not graph:
         return {"ok": False, "error": "No repository scanned yet."}
 
+    build_class = dk.classify_request(goal, mode="build")
     intent, terms = _detect_intent(goal, _FEATURE_SPECS)
     spec = _FEATURE_SPECS.get(intent, {})
-    extra_terms = set(spec.get("search", ())) | terms
+    extra_terms = set(spec.get("search", ())) | terms | dk.search_terms_for_classification(build_class)
     modules = _production_modules(graph)
     risks_map = _risks_map(ctx.get("risks"))
     scored = _score_modules(modules, extra_terms, risks_map)
@@ -336,31 +582,59 @@ def plan_change(request: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
         "intent": intent,
         "likely_affected_modules": matched_paths,
         "likely_affected_subsystems": subsystems,
+        "affected_systems": subsystems,  # Phase 123 alias (senior-architect label)
         "entry_points": entry_points,
         "files_to_inspect_first": matched_paths[:8],
         "files_likely_to_change": matched_paths[:8],
         "files_likely_to_break": likely_break,
+        "what_may_break": likely_break,  # Phase 123 alias
         "dependencies_involved": {
             "outbound_imports": outbound,
             "inbound_importers": inbound,
         },
         "architectural_risks": arch_risks[:10],
         "tests_likely_affected": tests,
+        "tests_required": tests,  # Phase 123 alias
         "estimated_change_size": _estimate_size(len(matched_paths) or 1),
         "risk_level": risk_level,
         "implementation_order": _implementation_order(matched_paths[:12], graph),
         "verification_plan": verification_plan,
+        "rollback_plan": _rollback_plan(intent, matched_paths, risk_level),
         "confidence": confidence,
         "evidence": _change_evidence(scored[:8], intent),
         "limitations": limitations,
     }
+    roles = dk.map_concept_to_repository(build_class, modules, risks_map, scored_paths=matched_paths)
+    dk.enrich_build_plan(plan, build_class, roles)
+    if build_class.concept_id:
+        limitations = list(plan.get("limitations") or [])
+        limitations.extend(build_class.unknowns)
+        plan["limitations"] = limitations
     prompts = build_implementation_prompts(plan, ctx)
     return {
         "ok": True,
         "plan": plan,
         "prompts": prompts,
-        "limitations": limitations,
+        "limitations": plan.get("limitations", limitations),
     }
+
+
+def _rollback_plan(intent: str, paths: List[str], risk_level: str) -> List[str]:
+    """Concrete rollback guidance for a planned change."""
+    steps = [
+        "Make the change on a feature branch; keep `main` deployable.",
+        "Commit in small, revertible steps so any single commit can be `git revert`-ed cleanly.",
+    ]
+    if paths:
+        steps.append(f"Before editing, note the current behavior of: {', '.join(paths[:3])}.")
+    if intent in {"billing", "authentication", "redis", "caching"}:
+        steps.append("Gate the new path behind a feature flag so it can be disabled without a deploy.")
+    if intent == "billing":
+        steps.append("For payment flows, verify in a sandbox/test-mode account before enabling live keys.")
+    if risk_level == "high":
+        steps.append("Plan a fast rollback: keep the previous release artifact and a one-command redeploy ready.")
+    steps.append("Keep DB migrations backward-compatible (additive) so the old code still runs if you roll back.")
+    return steps
 
 
 def _change_evidence(scored: List[Tuple[float, Dict[str, Any]]], intent: str) -> List[str]:
@@ -386,6 +660,107 @@ def _tests_for_change(paths: List[str], subsystems: List[str]) -> List[str]:
     return tests
 
 
+def _files_for_keywords(keywords: Tuple[str, ...], candidate_paths: List[str]) -> List[str]:
+    """Pick candidate module paths whose path contains any keyword."""
+    kws = tuple(k.lower() for k in keywords)
+    hits = [p for p in candidate_paths if any(k in p.lower().replace("\\", "/") for k in kws)]
+    return hits[:5]
+
+
+def _confidence_rank(value: str) -> int:
+    return {"high": 3, "medium": 2, "low": 1}.get(value, 0)
+
+
+def _build_hypotheses(
+    intent: str,
+    spec: Dict[str, Any],
+    scored: List[Tuple[float, Dict[str, Any]]],
+    explicit_paths: List[str],
+    risks_map: Dict[str, Dict[str, Any]],
+) -> List[Dict[str, Any]]:
+    """Build ranked, evidence-grounded hypotheses for a symptom.
+
+    Each hypothesis is anchored to real module paths from the scan where possible.
+    Hypotheses with more matched files (and explicit path mentions) rank higher.
+    """
+    candidate_paths = [n.get("path", "") for _, n in scored if n.get("path")]
+    templates = list(spec.get("hypotheses", ()))
+    hypotheses: List[Dict[str, Any]] = []
+
+    if templates:
+        for tmpl in templates:
+            files = _files_for_keywords(tuple(tmpl.get("keywords", ())), candidate_paths)
+            # Promote explicitly-mentioned paths that match the keywords
+            for ep in explicit_paths:
+                if ep not in files and any(k in ep.lower() for k in tmpl.get("keywords", ())):
+                    files.insert(0, ep)
+            files = files[:5]
+            if files and any(f in explicit_paths for f in files):
+                confidence = "high"
+            elif len(files) >= 2:
+                confidence = "medium"
+            elif files:
+                confidence = "low"
+            else:
+                confidence = "low"
+            evidence: List[str] = []
+            for f in files:
+                row = risks_map.get(f) or {}
+                evidence.append(
+                    f"`{f}` matches this area (fan-in {row.get('fan_in', 0)}, risk {row.get('total_score', 0)})"
+                )
+            if not files:
+                evidence.append("No scanned module path matched this area — treat as a lead, not a localization.")
+            hypotheses.append({
+                "title": tmpl["title"],
+                "confidence": confidence,
+                "why_it_fits": tmpl["why"],
+                "evidence": evidence,
+                "files_involved": files,
+                "what_to_inspect": files or ["Entry points and top import hubs for this subsystem"],
+                "what_should_be_true_if_correct": tmpl["should_be_true"],
+                "how_to_disprove": tmpl["disprove"],
+            })
+        # Rank: confidence desc, then number of matched files desc
+        hypotheses.sort(key=lambda h: (-_confidence_rank(h["confidence"]), -len(h["files_involved"])))
+        return hypotheses[:4]
+
+    # Generic intent: derive structural hypotheses from the top matched modules.
+    top = [n for _, n in scored[:4] if n.get("path")]
+    for node in top:
+        path = node.get("path", "")
+        row = risks_map.get(path) or {}
+        fan_in = int(node.get("fan_in", 0) or 0)
+        hypotheses.append({
+            "title": f"Defect originates in `{path}`",
+            "confidence": "high" if path in explicit_paths else ("medium" if fan_in >= 6 else "low"),
+            "why_it_fits": (
+                f"`{path}` scored highest on keyword overlap with the symptom"
+                + (f" and has high coupling (fan-in {fan_in})." if fan_in >= 6 else ".")
+            ),
+            "evidence": [
+                f"`{path}` — fan-in {fan_in}, risk {row.get('total_score', node.get('risk_score', 0))}",
+                "Matched symptom keywords in the module path/index.",
+            ],
+            "files_involved": [path],
+            "what_to_inspect": [path],
+            "what_should_be_true_if_correct": f"The failing behavior is reproducible by exercising `{path}` directly.",
+            "how_to_disprove": f"Add a focused test around `{path}`; if it passes with the symptom inputs, the cause is elsewhere.",
+        })
+    if not hypotheses:
+        hypotheses.append({
+            "title": "Insufficient anchors to localize",
+            "confidence": "low",
+            "why_it_fits": "No file path, error type, or subsystem name in the symptom matched the scanned index.",
+            "evidence": ["Symptom is described in behavioral terms only."],
+            "files_involved": [],
+            "what_to_inspect": ["Entry points", "Top import hubs (see Repository Map)"],
+            "what_should_be_true_if_correct": "n/a — gather a stack trace, error message, or file path first.",
+            "how_to_disprove": "Provide a trace or a concrete file/module name and re-run the investigation.",
+        })
+    return hypotheses[:4]
+
+
 def investigate_symptom(symptom: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
     """Symptom-based investigation plan (not stack-trace literal matching)."""
     text = (symptom or "").strip()
@@ -396,9 +771,10 @@ def investigate_symptom(symptom: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
     if not graph and not index:
         return {"ok": False, "error": "No repository scanned yet."}
 
+    inv_class = dk.classify_request(text, mode="investigate")
     intent, terms = _detect_intent(text, _SYMPTOM_SPECS)
     spec = _SYMPTOM_SPECS.get(intent, {})
-    search_terms = set(spec.get("search", ())) | terms
+    search_terms = set(spec.get("search", ())) | terms | dk.search_terms_for_classification(inv_class)
 
     blob = text.replace("\\", "/")
     explicit_paths: List[str] = []
@@ -463,9 +839,28 @@ def investigate_symptom(symptom: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
     )
 
     questions = _suggested_questions(intent, likely_modules)
+
+    # Phase 123 — ranked hypotheses (senior-engineer output).
+    hypotheses = _build_hypotheses(intent, spec, scored, explicit_paths, risks_map)
+    most_likely_root_cause = hypotheses[0]["title"] if hypotheses else (
+        f"Defect likely in {likely_modules[0]}" if likely_modules else "Not localizable from this symptom alone"
+    )
+    symptom_summary = _symptom_summary(text, intent, likely_modules)
+    verification_checklist = _verification_checklist(hypotheses, verify_steps, inbound)
+    minimal_fix_strategy = _minimal_fix_strategy(hypotheses, likely_modules)
+    risks_of_incorrect_fix = _risks_of_incorrect_fix(risk_if_fixed, inbound)
+
     plan = {
         "symptom": text,
         "intent": intent,
+        # Phase 123 senior-engineer structure
+        "symptom_summary": symptom_summary,
+        "most_likely_root_cause": most_likely_root_cause,
+        "hypotheses": hypotheses,
+        "verification_checklist": verification_checklist,
+        "minimal_fix_strategy": minimal_fix_strategy,
+        "risks_of_incorrect_fix": risks_of_incorrect_fix,
+        # Backward-compatible fields (Phase 120)
         "likely_modules": likely_modules,
         "likely_files": likely_modules,
         "likely_symbols": sorted(set(likely_symbols))[:12],
@@ -482,8 +877,63 @@ def investigate_symptom(symptom: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
         "suggested_questions": questions,
         "limitations": limitations,
     }
+    roles = dk.map_concept_to_repository(inv_class, modules, risks_map, scored_paths=likely_modules)
+    dk.enrich_investigation_plan(plan, inv_class, roles)
+    if inv_class.concept_id:
+        limitations = list(plan.get("limitations") or [])
+        limitations.extend(inv_class.unknowns)
+        plan["limitations"] = limitations
     prompts = build_investigation_prompts(plan, ctx)
-    return {"ok": True, "plan": plan, "prompts": prompts, "limitations": limitations}
+    return {"ok": True, "plan": plan, "prompts": prompts, "limitations": plan.get("limitations", limitations)}
+
+
+def _symptom_summary(text: str, intent: str, modules: List[str]) -> str:
+    head = " ".join((text or "").split())[:180]
+    intent_label = intent.replace("_", " ")
+    anchor = f" Likely area: {modules[0]}." if modules else " No module anchor matched yet."
+    domain = "" if intent == "general" else f" Pattern recognized: {intent_label}."
+    return f"Reported: \"{head}\".{domain}{anchor}"
+
+
+def _verification_checklist(
+    hypotheses: List[Dict[str, Any]],
+    verify_steps: List[str],
+    inbound: List[str],
+) -> List[str]:
+    checklist: List[str] = []
+    for i, h in enumerate(hypotheses[:3], 1):
+        checklist.append(f"H{i} — {h['title']}: {h['how_to_disprove']}")
+    for step in verify_steps[:3]:
+        if step not in checklist:
+            checklist.append(step)
+    if inbound:
+        checklist.append(f"Smoke-test direct importers after any change: {', '.join(inbound[:3])}")
+    return checklist[:8]
+
+
+def _minimal_fix_strategy(hypotheses: List[Dict[str, Any]], modules: List[str]) -> List[str]:
+    if not hypotheses:
+        return ["Gather a stack trace or error message before attempting a fix."]
+    top = hypotheses[0]
+    files = top.get("files_involved") or modules[:1]
+    steps = [
+        f"Confirm H1 first ({top['title']}) using its disproof test before editing.",
+    ]
+    if files:
+        steps.append(f"Scope the change to {', '.join(files[:3])} — avoid touching unrelated hubs.")
+    steps.append("Add a regression test that reproduces the symptom, then make it pass.")
+    steps.append("Keep the diff minimal; do not refactor adjacent code in the same change.")
+    return steps
+
+
+def _risks_of_incorrect_fix(risk_if_fixed: str, inbound: List[str]) -> List[str]:
+    risks = [risk_if_fixed] if risk_if_fixed else []
+    if inbound:
+        risks.append(
+            f"This area has {len(inbound)} direct importer(s); a wrong fix can break: {', '.join(inbound[:4])}."
+        )
+    risks.append("Treating a symptom (display/logging) as the root cause can hide a deeper data/accounting bug.")
+    return risks[:5]
 
 
 def _suggested_questions(intent: str, modules: List[str]) -> List[str]:
@@ -556,6 +1006,7 @@ def build_implementation_prompts(plan: Dict[str, Any], ctx: Dict[str, Any]) -> D
     confidence = plan.get("confidence") or "low"
     context_blurb = (ctx.get("explanation") or "")[:400]
 
+    dk_block = plan.get("domain_knowledge") or {}
     shared = {
         "goal": goal,
         "repo": repo,
@@ -570,6 +1021,8 @@ def build_implementation_prompts(plan: Dict[str, Any], ctx: Dict[str, Any]) -> D
         "confidence": confidence,
         "context": context_blurb,
         "limitations": plan.get("limitations") or [],
+        "domain": dk_block,
+        "domain_steps": plan.get("domain_implementation_steps") or [],
     }
     return {
         "claude": _prompt_claude_change(shared),
@@ -588,6 +1041,11 @@ def build_investigation_prompts(plan: Dict[str, Any], ctx: Dict[str, Any]) -> Di
         "questions": plan.get("suggested_questions") or [],
         "confidence": plan.get("confidence") or "low",
         "limitations": plan.get("limitations") or [],
+        "hypotheses": plan.get("hypotheses") or [],
+        "root_cause": plan.get("most_likely_root_cause") or "",
+        "fix_strategy": plan.get("minimal_fix_strategy") or [],
+        "domain": plan.get("domain_knowledge") or {},
+        "domain_failure_modes": plan.get("domain_failure_modes") or [],
     }
     return {
         "claude": _prompt_claude_investigate(shared),
@@ -599,9 +1057,22 @@ def build_investigation_prompts(plan: Dict[str, Any], ctx: Dict[str, Any]) -> Di
 def _prompt_claude_change(s: Dict[str, Any]) -> str:
     files = "\n".join(f"- {p}" for p in s["files"]) or "- (none matched — start from entry points)"
     risks = "\n".join(f"- {r}" for r in s["risks"][:6]) or "- Review coupling on listed modules"
+    domain = s.get("domain") or {}
+    domain_block = ""
+    if domain.get("applied"):
+        k_risks = "\n".join(f"- {r}" for r in (domain.get("knowledge_risks") or [])[:8])
+        steps = "\n".join(f"- {x}" for x in (s.get("domain_steps") or [])[:8])
+        domain_block = (
+            f"\n## Domain concept: {domain.get('concept_name')} ({domain.get('concept_title')})\n"
+            f"{domain.get('concept_understanding', '')}\n\n"
+            f"Why this matters: {domain.get('why_this_matters', '')}\n\n"
+            f"### Knowledge-backed risks\n{k_risks}\n\n"
+            f"### Recommended implementation steps\n{steps}\n"
+        )
     return (
         f"You are planning a change in `{s['repo']}` — do not implement yet.\n\n"
         f"## Goal\n{s['goal']}\n\n"
+        f"{domain_block}"
         f"## Repository context\n{s['context']}\n\n"
         f"## Files to inspect first\n{files}\n\n"
         f"## Likely subsystems\n{', '.join(s['subsystems']) or 'unknown'}\n\n"
@@ -639,15 +1110,36 @@ def _prompt_cursor_change(s: Dict[str, Any]) -> str:
 
 
 def _prompt_claude_investigate(s: Dict[str, Any]) -> str:
-    mods = "\n".join(f"- {m}" for m in s["modules"][:8]) or "- No grounded module match — widen search using entry points"
-    ev = "\n".join(f"- {e}" for e in s["evidence"][:6])
     qs = "\n".join(f"- {q}" for q in s["questions"])
+    hyp_lines: List[str] = []
+    for i, h in enumerate(s.get("hypotheses") or [], 1):
+        files = ", ".join(h.get("files_involved") or []) or "(no grounded file)"
+        hyp_lines.append(
+            f"### H{i}: {h.get('title','')} [confidence {h.get('confidence','low')}]\n"
+            f"- Why it fits: {h.get('why_it_fits','')}\n"
+            f"- Files: {files}\n"
+            f"- Should be true if correct: {h.get('what_should_be_true_if_correct','')}\n"
+            f"- How to disprove: {h.get('how_to_disprove','')}"
+        )
+    hyp_block = "\n".join(hyp_lines) or "- No grounded hypothesis — gather a trace or error first."
+    fix = "\n".join(f"- {x}" for x in (s.get("fix_strategy") or [])) or "- Confirm root cause before fixing."
+    domain = s.get("domain") or {}
+    domain_block = ""
+    if domain.get("applied"):
+        modes = "\n".join(f"- {m}" for m in (s.get("domain_failure_modes") or domain.get("domain_failure_modes") or [])[:6])
+        domain_block = (
+            f"\n## Domain concept: {domain.get('concept_name')} ({domain.get('concept_title')})\n"
+            f"{domain.get('concept_understanding', '')}\n\n"
+            f"### Trading/domain failure modes to check\n{modes}\n"
+        )
     return (
-        f"Investigate a symptom in `{s['repo']}` — hypothesis-first, cite evidence.\n\n"
+        f"You are a senior engineer investigating a symptom in `{s['repo']}`. "
+        f"Prove which hypothesis is true before fixing — cite evidence, do not guess.\n\n"
         f"## Symptom\n{s['symptom']}\n\n"
-        f"## Why these areas\n{s['why']}\n\n"
-        f"## Likely modules (from static index)\n{mods}\n\n"
-        f"## Evidence from Atlas\n{ev}\n\n"
+        f"{domain_block}"
+        f"## Atlas's most likely root cause\n{s.get('root_cause','')}\n\n"
+        f"## Ranked hypotheses (disprove top-down)\n{hyp_block}\n\n"
+        f"## Minimal fix strategy\n{fix}\n\n"
         f"## Questions to answer\n{qs}\n\n"
         f"Confidence: {s['confidence']}. Do not claim certainty without runtime proof.\n"
         f"Limitations: {'; '.join(s['limitations'])}"
@@ -688,6 +1180,46 @@ def format_change_plan_markdown(plan: Dict[str, Any]) -> str:
         "",
         f"Goal: {plan.get('goal', '')}",
         "",
+    ]
+    dk_block = plan.get("domain_knowledge") or {}
+    if dk_block.get("applied"):
+        roles = dk_block.get("file_roles") or {}
+        lines.extend([
+            f"Detected concept: {dk_block.get('concept_name')} — {dk_block.get('concept_title')}",
+            f"Domain: {dk_block.get('domain_label')} / {dk_block.get('feature_type')}",
+            f"Concept confidence: {dk_block.get('concept_confidence')} · Repo mapping: {dk_block.get('repo_mapping_confidence')}",
+            "",
+            "Concept understanding:",
+            dk_block.get("concept_understanding", ""),
+            "",
+            "Why this matters:",
+            dk_block.get("why_this_matters", ""),
+            "",
+            "Knowledge-backed risks:",
+            *_md_bullets(dk_block.get("knowledge_risks") or []),
+            "",
+            dk_block.get("integration_note", ""),
+            "",
+            "MUST inspect:",
+            *_md_bullets(roles.get("must_inspect") or []),
+            "",
+            "LIKELY modify:",
+            *_md_bullets(roles.get("likely_modify") or []),
+            "",
+            "VERIFY only:",
+            *_md_bullets(roles.get("verify_only") or []),
+            "",
+            "DO NOT touch unless needed:",
+            *_md_bullets(roles.get("do_not_touch") or [], "- (none flagged)"),
+            "",
+        ])
+        if plan.get("domain_implementation_steps"):
+            lines.extend([
+                "Domain implementation steps:",
+                *_md_bullets(plan.get("domain_implementation_steps") or []),
+                "",
+            ])
+    lines.extend([
         "Files to inspect first:",
         *_md_bullets(plan.get("files_to_inspect_first") or [], "- (none matched — provide more context)"),
         "",
@@ -716,13 +1248,16 @@ def format_change_plan_markdown(plan: Dict[str, Any]) -> str:
         "Verification plan:",
         *_md_bullets(plan.get("verification_plan") or []),
         "",
+        "Rollback plan:",
+        *_md_bullets(plan.get("rollback_plan") or []),
+        "",
         "Architectural risks:",
         *_md_bullets(plan.get("architectural_risks") or [], "- Review coupling on listed modules"),
         "",
         f"Risk level: {plan.get('risk_level', 'unknown')}",
         f"Estimated change size: {plan.get('estimated_change_size', 'Unknown')}",
         f"Confidence: {plan.get('confidence', 'low')}",
-    ]
+    ])
     lim = plan.get("limitations") or []
     if lim:
         lines.extend(["", "Limitations:", *(f"- {x}" for x in lim)])
@@ -731,45 +1266,64 @@ def format_change_plan_markdown(plan: Dict[str, Any]) -> str:
 
 def format_investigation_plan_markdown(plan: Dict[str, Any]) -> str:
     deps = plan.get("relevant_dependencies") or {}
-    symbols = plan.get("likely_symbols") or []
     lines = [
-        "BUG INVESTIGATION PLAN",
-        "======================",
+        "INVESTIGATION REPORT",
+        "====================",
         "",
-        f"Symptom: {plan.get('symptom', '')}",
-        "",
-        f"Most likely source: {plan.get('most_likely_source') or '(no grounded module — see limitations)'}",
-        "",
-        "Likely files:",
-        *_md_bullets(plan.get("likely_modules") or [], "- (none matched)"),
+        "A. Symptom summary",
+        f"   {plan.get('symptom_summary') or plan.get('symptom', '')}",
         "",
     ]
-    if symbols:
-        lines.extend(["Likely symbols (from filenames only):", *(f"- {s}" for s in symbols), ""])
+    dk_block = plan.get("domain_knowledge") or {}
+    if dk_block.get("applied"):
+        lines.extend([
+            "A2. Domain knowledge",
+            f"   Concept: {dk_block.get('concept_name')} — {dk_block.get('concept_title')}",
+            f"   Domain: {dk_block.get('domain_label')}",
+            f"   {dk_block.get('concept_understanding', '')}",
+            "",
+            "   Domain failure modes to check:",
+            *(f"     - {m}" for m in (plan.get("domain_failure_modes") or dk_block.get("domain_failure_modes") or [])[:6]),
+            "",
+            f"   {dk_block.get('integration_note', '')}",
+            "",
+        ])
     lines.extend([
-        f"Why: {plan.get('why', '')}",
+        "B. Most likely root cause",
+        f"   {plan.get('most_likely_root_cause') or plan.get('most_likely_source') or '(not localizable yet)'}",
         "",
-        f"Possible logical cause: {plan.get('logical_hypothesis', '')}",
+        "C. Ranked hypotheses",
+    ])
+    hyps = plan.get("hypotheses") or []
+    if not hyps:
+        lines.append("   (none — insufficient anchors; see limitations)")
+    for i, h in enumerate(hyps, 1):
+        lines.extend([
+            f"   H{i}. {h.get('title', '')}  [confidence: {h.get('confidence', 'low')}]",
+            f"       Why it fits: {h.get('why_it_fits', '')}",
+            f"       Files involved: {', '.join(h.get('files_involved') or []) or '(none grounded)'}",
+            "       Evidence:",
+            *(f"         - {e}" for e in (h.get("evidence") or [])),
+            f"       What to inspect: {', '.join(h.get('what_to_inspect') or [])}",
+            f"       Should be true if correct: {h.get('what_should_be_true_if_correct', '')}",
+            f"       How to disprove: {h.get('how_to_disprove', '')}",
+            "",
+        ])
+    lines.extend([
+        "D. Verification checklist",
+        *_md_bullets(plan.get("verification_checklist") or plan.get("verification_steps") or []),
         "",
-        "Evidence:",
-        *(f"- {e}" for e in (plan.get("evidence") or [])),
+        "E. Minimal fix strategy",
+        *_md_bullets(plan.get("minimal_fix_strategy") or []),
         "",
-        "What to inspect first:",
-        *_md_bullets(
-            plan.get("inspect_first") or plan.get("suggested_files_to_inspect") or [],
-            "- Entry points and top import hubs",
-        ),
-        "",
-        "Verification:",
-        *_md_bullets(plan.get("verification_steps") or []),
+        "F. Risks of fixing incorrectly",
+        *_md_bullets(plan.get("risks_of_incorrect_fix") or [plan.get("risk_if_fixed", "")]),
         "",
         "Relevant dependencies:",
         f"- Outbound: {', '.join(deps.get('outbound') or []) or 'none'}",
         f"- Inbound: {', '.join(deps.get('inbound') or []) or 'none'}",
         "",
-        f"Risk if fixed incorrectly: {plan.get('risk_if_fixed', '')}",
-        "",
-        f"Confidence: {plan.get('confidence', 'low')}",
+        f"Overall confidence: {plan.get('confidence', 'low')}",
     ])
     lim = plan.get("limitations") or []
     if lim:
