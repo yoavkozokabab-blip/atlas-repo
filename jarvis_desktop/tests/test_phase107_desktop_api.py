@@ -36,7 +36,8 @@ def scanned(tmp_path):
 # --- health / select ---------------------------------------------------
 def test_health_shape():
     h = api.health()
-    assert h["status"] == "ok" and h["product"] == "JARVIS"
+    assert h.get("ok") is True and h["status"] == "ok"
+    assert h.get("product")
     assert "version" in h and "repository_open" in h
 
 
@@ -151,4 +152,7 @@ def test_all_documented_routes_are_dispatchable():
     assert ("POST", "/api/repositories/estimate") in documented
     assert ("GET", "/api/repositories/current/hierarchy-graph") in documented
     assert ("POST", "/api/system/browse-folder") in documented
-    assert len(documented) == 27
+    assert ("POST", "/api/planning/change") in documented
+    assert ("POST", "/api/planning/investigate") in documented
+    assert ("POST", "/api/planning/impact") in documented
+    assert len(documented) == 30
