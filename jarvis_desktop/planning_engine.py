@@ -1023,6 +1023,7 @@ def build_implementation_prompts(plan: Dict[str, Any], ctx: Dict[str, Any]) -> D
         "limitations": plan.get("limitations") or [],
         "domain": dk_block,
         "domain_steps": plan.get("domain_implementation_steps") or [],
+        "domain_prompt_section": plan.get("domain_prompt_section") or "",
     }
     return {
         "claude": _prompt_claude_change(shared),
@@ -1046,6 +1047,7 @@ def build_investigation_prompts(plan: Dict[str, Any], ctx: Dict[str, Any]) -> Di
         "fix_strategy": plan.get("minimal_fix_strategy") or [],
         "domain": plan.get("domain_knowledge") or {},
         "domain_failure_modes": plan.get("domain_failure_modes") or [],
+        "domain_prompt_section": plan.get("domain_prompt_section") or "",
     }
     return {
         "claude": _prompt_claude_investigate(shared),
@@ -1058,17 +1060,19 @@ def _prompt_claude_change(s: Dict[str, Any]) -> str:
     files = "\n".join(f"- {p}" for p in s["files"]) or "- (none matched — start from entry points)"
     risks = "\n".join(f"- {r}" for r in s["risks"][:6]) or "- Review coupling on listed modules"
     domain = s.get("domain") or {}
-    domain_block = ""
-    if domain.get("applied"):
+    domain_block = (s.get("domain_prompt_section") or "").strip()
+    if not domain_block and domain.get("applied"):
         k_risks = "\n".join(f"- {r}" for r in (domain.get("knowledge_risks") or [])[:8])
         steps = "\n".join(f"- {x}" for x in (s.get("domain_steps") or [])[:8])
         domain_block = (
-            f"\n## Domain concept: {domain.get('concept_name')} ({domain.get('concept_title')})\n"
+            f"\n## DOMAIN KNOWLEDGE\n"
+            f"**Concept:** {domain.get('concept_name')} ({domain.get('concept_title')})\n"
             f"{domain.get('concept_understanding', '')}\n\n"
-            f"Why this matters: {domain.get('why_this_matters', '')}\n\n"
-            f"### Knowledge-backed risks\n{k_risks}\n\n"
-            f"### Recommended implementation steps\n{steps}\n"
+            f"### Risks\n{k_risks}\n\n"
+            f"### Implementation steps\n{steps}\n"
         )
+    if domain_block:
+        domain_block = "\n" + domain_block + "\n"
     return (
         f"You are planning a change in `{s['repo']}` — do not implement yet.\n\n"
         f"## Goal\n{s['goal']}\n\n"
@@ -1123,15 +1127,9 @@ def _prompt_claude_investigate(s: Dict[str, Any]) -> str:
         )
     hyp_block = "\n".join(hyp_lines) or "- No grounded hypothesis — gather a trace or error first."
     fix = "\n".join(f"- {x}" for x in (s.get("fix_strategy") or [])) or "- Confirm root cause before fixing."
-    domain = s.get("domain") or {}
-    domain_block = ""
-    if domain.get("applied"):
-        modes = "\n".join(f"- {m}" for m in (s.get("domain_failure_modes") or domain.get("domain_failure_modes") or [])[:6])
-        domain_block = (
-            f"\n## Domain concept: {domain.get('concept_name')} ({domain.get('concept_title')})\n"
-            f"{domain.get('concept_understanding', '')}\n\n"
-            f"### Trading/domain failure modes to check\n{modes}\n"
-        )
+    domain_block = (s.get("domain_prompt_section") or "").strip()
+    if domain_block:
+        domain_block = "\n" + domain_block + "\n"
     return (
         f"You are a senior engineer investigating a symptom in `{s['repo']}`. "
         f"Prove which hypothesis is true before fixing — cite evidence, do not guess.\n\n"

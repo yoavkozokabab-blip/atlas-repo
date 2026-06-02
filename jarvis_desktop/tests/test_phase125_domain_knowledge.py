@@ -215,8 +215,8 @@ def test_build_observability(infra_scan):
 
 def test_prompt_exports_include_domain_risks(trading_scan):
     res = api.plan_change("add ema indicator")
-    assert "Domain concept" in res["prompts"]["claude"]
-    assert "Knowledge-backed risks" in res["prompts"]["claude"]
+    assert "DOMAIN KNOWLEDGE" in res["prompts"]["claude"]
+    assert "Risks" in res["prompts"]["claude"]
 
 
 def test_no_hallucinated_paths_on_unknown_repo(tmp_path):

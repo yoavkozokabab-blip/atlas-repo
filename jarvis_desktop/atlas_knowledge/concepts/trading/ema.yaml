@@ -1,0 +1,58 @@
+concept_id: ema
+name: EMA
+title: Exponential Moving Average
+domain: trading
+category: indicator
+feature_type: indicator
+confidence: high
+aliases:
+  - ema
+  - exponential moving average
+  - exp moving average
+  - moving average ema
+description: >
+  A trend-smoothing indicator over a price series using exponential weighting
+  on recent observations. Common formula uses smoothing factor alpha = 2/(N+1)
+  for span N. Requires warmup of at least N bars before values stabilize.
+requirements:
+  - OHLCV (or chosen price field) time series aligned to decision bars
+  - Configurable period/span propagated from config to calculator and strategy
+  - Sufficient historical bars for warmup before signal evaluation
+common_implementations:
+  - Dedicated indicators module or TA library wrapper
+  - Strategy signal layer consuming EMA series
+  - Shared calculator used by backtest and live/paper paths
+risks:
+  - Lookahead bias if future or incomplete bar data is used
+  - Insufficient warmup producing NaN or misleading early values
+  - Backtest vs live/paper using different price fields or bar timing
+  - Period mismatch between config files and code defaults
+  - NaN propagation suppressing signals without explicit guards
+failure_modes:
+  - EMA differs between backtest and paper due to forming bars in live
+  - Signals never fire because warmup window is too short
+  - Wrong price source (close vs typical vs last trade)
+verification:
+  - Compare EMA series to pandas.Series.ewm or published fixture values
+  - Assert first valid index respects documented warmup rule
+  - Prove no bar timestamp after signal time influences the value
+  - Run backtest/live parity on identical historical bar stream
+testing:
+  - Unit test EMA formula on fixed OHLCV fixture
+  - Integration test strategy entries gated on EMA condition
+  - Regression test signal timestamps before/after indicator change
+related_concepts:
+  - rsi
+  - indicator_backtest_live
+  - backtest_live_divergence
+references:
+  - "https://en.wikipedia.org/wiki/exponential_smoothing"
+  - atlas://trading/indicators/ema
+path_keywords:
+  - indicator
+  - ema
+  - moving
+  - average
+  - signal
+  - strategy
+  - backtest

@@ -1,0 +1,57 @@
+concept_id: jwt
+name: JWT
+title: JSON Web Token
+domain: security
+category: authentication
+feature_type: auth
+confidence: high
+aliases:
+  - jwt
+  - json web token
+  - bearer token
+  - access token jwt
+description: >
+  Compact signed claims (RFC 7519) for stateless authentication. Structure is
+  header.payload.signature. Validate algorithm allow-list, signature, exp/nbf,
+  issuer, and audience before trusting claims.
+requirements:
+  - Signing key or JWKS for asymmetric algorithms (RS256, ES256)
+  - Short-lived access tokens and optional refresh token flow
+  - Secure storage on client (httpOnly cookie or secure storage)
+common_implementations:
+  - Auth middleware validating Authorization Bearer header
+  - Login endpoint issuing access + refresh tokens
+  - JWKS endpoint for key rotation
+risks:
+  - Algorithm confusion (accepting none/HS when expecting RS)
+  - Long-lived tokens without rotation
+  - Storing secrets in client localStorage (XSS exfiltration)
+  - Missing exp validation or clock skew issues
+  - Replay if tokens are not bound to client context
+failure_modes:
+  - Token accepted after user revoked (no server-side denylist)
+  - Refresh token reuse without rotation detection
+  - Leaked signing key compromises all sessions
+verification:
+  - Reject tampered payload (signature mismatch)
+  - Reject expired and not-yet-valid tokens
+  - Verify iss/aud match configuration
+  - Test refresh rotation and reuse detection
+testing:
+  - Unit tests for claim validation edge cases
+  - Integration tests for login, refresh, protected routes
+  - Security tests for alg-none and key confusion attacks
+related_concepts:
+  - oauth2
+  - authentication
+  - rbac
+references:
+  - "RFC 7519 - JSON Web Token (JWT)"
+  - "RFC 8725 - JWT Best Current Practices"
+path_keywords:
+  - auth
+  - jwt
+  - token
+  - session
+  - middleware
+  - login

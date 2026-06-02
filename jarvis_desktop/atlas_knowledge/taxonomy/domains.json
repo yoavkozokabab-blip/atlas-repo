@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "domains": {
+    "software_architecture": {
+      "label": "Software Architecture",
+      "categories": ["pattern", "principle", "style", "symptom"]
+    },
+    "backend": {
+      "label": "Backend Engineering",
+      "categories": ["api", "service", "middleware", "pattern"]
+    },
+    "frontend": {
+      "label": "Frontend Engineering",
+      "categories": ["ui", "state", "routing", "performance"]
+    },
+    "databases": {
+      "label": "Databases",
+      "categories": ["sql", "nosql", "migration", "index", "transaction"]
+    },
+    "cloud": {
+      "label": "Cloud",
+      "categories": ["aws", "gcp", "azure", "serverless", "storage"]
+    },
+    "devops": {
+      "label": "DevOps",
+      "categories": ["ci_cd", "container", "orchestration", "iac"]
+    },
+    "networking": {
+      "label": "Networking",
+      "categories": ["protocol", "dns", "load_balancing", "security"]
+    },
+    "security": {
+      "label": "Security",
+      "categories": ["auth", "crypto", "vulnerability", "hardening"]
+    },
+    "authentication": {
+      "label": "Authentication",
+      "categories": ["session", "token", "oauth", "identity"]
+    },
+    "authorization": {
+      "label": "Authorization",
+      "categories": ["rbac", "abac", "policy", "permission"]
+    },
+    "apis": {
+      "label": "APIs",
+      "categories": ["rest", "graphql", "grpc", "versioning"]
+    },
+    "messaging": {
+      "label": "Messaging Systems",
+      "categories": ["queue", "pubsub", "stream", "event"]
+    },
+    "distributed_systems": {
+      "label": "Distributed Systems",
+      "categories": ["consensus", "replication", "partition", "saga"]
+    },
+    "observability": {
+      "label": "Observability",
+      "categories": ["logging", "metrics", "tracing", "alerting"]
+    },
+    "data_engineering": {
+      "label": "Data Engineering",
+      "categories": ["etl", "pipeline", "warehouse", "streaming"]
+    },
+    "machine_learning": {
+      "label": "Machine Learning",
+      "categories": ["training", "inference", "feature", "evaluation"]
+    },
+    "ai_infrastructure": {
+      "label": "AI Infrastructure",
+      "categories": ["llm", "embedding", "rag", "gpu"]
+    },
+    "mobile": {
+      "label": "Mobile Development",
+      "categories": ["ios", "android", "react_native", "offline"]
+    },
+    "trading": {
+      "label": "Trading Systems",
+      "categories": ["indicator", "execution", "risk", "symptom"]
+    },
+    "quant_finance": {
+      "label": "Quantitative Finance",
+      "categories": ["pricing", "portfolio", "backtest", "market_data"]
+    },
+    "testing": {
+      "label": "Testing",
+      "categories": ["unit", "integration", "e2e", "property"]
+    },
+    "build_systems": {
+      "label": "Build Systems",
+      "categories": ["compile", "package", "monorepo", "cache"]
+    },
+    "ci_cd": {
+      "label": "CI/CD",
+      "categories": ["pipeline", "deploy", "artifact", "gate"]
+    },
+    "performance": {
+      "label": "Performance Engineering",
+      "categories": ["latency", "throughput", "profiling", "caching"]
+    },
+    "web_backend": {
+      "label": "Web Backend",
+      "categories": ["auth", "billing", "api", "infra"]
+    },
+    "infra": {
+      "label": "Infrastructure / DevOps",
+      "categories": ["observability", "queue", "logging"]
+    },
+    "general": {
+      "label": "General",
+      "categories": ["feature", "unknown"]
+    }
+  }
+}

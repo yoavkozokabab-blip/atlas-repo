@@ -1258,18 +1258,27 @@ function renderLimitations(items) {
 function renderDomainKnowledge(dk) {
   if (!dk || !dk.applied) return "";
   const roles = dk.file_roles || {};
-  const risks = (dk.knowledge_risks || []).slice(0, 8);
+  const risks = (dk.knowledge_risks || dk.risks || []).slice(0, 8);
+  const failures = (dk.failure_modes || dk.domain_failure_modes || []).slice(0, 6);
+  const verify = (dk.verification || []).slice(0, 5);
+  const testing = (dk.testing || []).slice(0, 4);
+  const source = dk.source || "local";
   const tag = (p) => `<span class="tag" onclick="investigateFile(${JSON.stringify(p)})">${esc(p)}</span>`;
   return `
     <div class="domain-panel glass">
       <div class="domain-head">
         <span class="domain-concept">${esc(dk.concept_name)} — ${esc(dk.concept_title || "")}</span>
         <span class="pill">${esc(dk.domain_label || dk.domain)}</span>
+        <span class="pill">${esc(source)} knowledge</span>
       </div>
       <p class="muted tiny"><b>Concept confidence:</b> ${esc(dk.concept_confidence)} · <b>Repo mapping:</b> ${esc(dk.repo_mapping_confidence)}</p>
-      <p class="domain-why">${esc(dk.why_this_matters || dk.concept_understanding || "")}</p>
-      ${risks.length ? `<div class="report-section"><div class="report-label">Knowledge-backed risks</div><ul class="clean tiny">${risks.map(r => `<li>${esc(r)}</li>`).join("")}</ul></div>` : ""}
-      <div class="report-section"><div class="report-label">File roles</div>
+      <p class="domain-why"><b>Meaning:</b> ${esc(dk.concept_understanding || dk.meaning || "")}</p>
+      ${dk.why_this_matters ? `<p class="muted tiny">${esc(dk.why_this_matters)}</p>` : ""}
+      ${risks.length ? `<div class="report-section"><div class="report-label">Risks</div><ul class="clean tiny">${risks.map(r => `<li>${esc(r)}</li>`).join("")}</ul></div>` : ""}
+      ${failures.length ? `<div class="report-section"><div class="report-label">Failure modes</div><ul class="clean tiny">${failures.map(r => `<li>${esc(r)}</li>`).join("")}</ul></div>` : ""}
+      ${verify.length ? `<div class="report-section"><div class="report-label">Verification</div><ul class="clean tiny">${verify.map(r => `<li>${esc(r)}</li>`).join("")}</ul></div>` : ""}
+      ${testing.length ? `<div class="report-section"><div class="report-label">Testing</div><ul class="clean tiny">${testing.map(r => `<li>${esc(r)}</li>`).join("")}</ul></div>` : ""}
+      <div class="report-section"><div class="report-label">Repository mapping</div>
         <p class="muted tiny">Must inspect</p><div class="taglist">${(roles.must_inspect || []).map(tag).join("") || '<span class="muted tiny">—</span>'}</div>
         <p class="muted tiny">Likely modify</p><div class="taglist">${(roles.likely_modify || []).map(tag).join("") || '<span class="muted tiny">—</span>'}</div>
         <p class="muted tiny">Verify only</p><div class="taglist">${(roles.verify_only || []).map(tag).join("") || '<span class="muted tiny">—</span>'}</div>

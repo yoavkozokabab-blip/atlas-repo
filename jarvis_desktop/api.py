@@ -31,7 +31,7 @@ from . import analytics
 from . import graph_build
 from . import planning_engine
 
-PRODUCT_VERSION = "phase125-domain-knowledge-layer"
+PRODUCT_VERSION = "phase127-atlas-knowledge-engine"
 CHARS_PER_TOKEN = 4.0
 GRAPH_DISPLAY_CAP = 5000
 GRAPH_DEFAULT_HIERARCHY_THRESHOLD = 1000
