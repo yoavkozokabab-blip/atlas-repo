@@ -1,0 +1,447 @@
+{
+  "ok": true,
+  "repo_path": "C:\\J.A.R.V.I.S\\django",
+  "scan_result": {
+    "ok": true,
+    "repo_path": "C:\\J.A.R.V.I.S\\django",
+    "repo_name": "django",
+    "demo_mode": false,
+    "file_count": 6868,
+    "files_discovered": 2918,
+    "module_count": 911,
+    "subsystem_count": 9,
+    "dependency_edges": 2916,
+    "unresolved_imports": 1422,
+    "unresolved_calls": 48412,
+    "graph_scope": "production",
+    "degraded": false,
+    "import_cycle_count": 11419,
+    "top_hubs": [
+      {
+        "module": "django.conf",
+        "fan_in": 151,
+        "path": "django/conf/__init__.py"
+      },
+      {
+        "module": "django.core.exceptions",
+        "fan_in": 149,
+        "path": "django/core/exceptions.py"
+      },
+      {
+        "module": "django.db",
+        "fan_in": 147,
+        "path": "django/db/__init__.py"
+      },
+      {
+        "module": "django.utils.functional",
+        "fan_in": 114,
+        "path": "django/utils/functional.py"
+      },
+      {
+        "module": "django.utils.translation",
+        "fan_in": 114,
+        "path": "django/utils/translation/__init__.py"
+      },
+      {
+        "module": "django.apps",
+        "fan_in": 74,
+        "path": "django/apps/__init__.py"
+      },
+      {
+        "module": "django.db.models",
+        "fan_in": 60,
+        "path": "django/db/models/__init__.py"
+      },
+      {
+        "module": "django.core",
+        "fan_in": 53,
+        "path": "django/core/__init__.py"
+      }
+    ],
+    "top_risks": [
+      {
+        "module": "django.conf",
+        "path": "django/conf/__init__.py",
+        "score": 163.18,
+        "reasons": [
+          "import fan-in=151 (deduped importers)",
+          "import fan-out=4 (deduped targets)",
+          "import-cycle member",
+          "loc=389 (gated)"
+        ],
+        "subsystem": "django"
+      },
+      {
+        "module": "django.db",
+        "path": "django/db/__init__.py",
+        "score": 152.18,
+        "reasons": [
+          "import fan-in=146 (deduped importers)",
+          "import fan-out=3 (deduped targets)",
+          "loc=63 (gated)",
+          "no AST test import/call reference"
+        ],
+        "subsystem": "django"
+      },
+      {
+        "module": "django.core.exceptions",
+        "path": "django/core/exceptions.py",
+        "score": 150.38,
+        "reasons": [
+          "import fan-in=149 (deduped importers)",
+          "import fan-out=1 (deduped targets)",
+          "loc=265 (gated)",
+          "test reference binds"
+        ],
+        "subsystem": "django"
+      },
+      {
+        "module": "django.utils.functional",
+        "path": "django/utils/functional.py",
+        "score": 115.41,
+        "reasons": [
+          "import fan-in=114 (deduped importers)",
+          "loc=455 (gated)",
+          "test reference binds",
+          "subsystem cross fan-in=3"
+        ],
+        "subsystem": "django"
+      },
+      {
+        "module": "django.utils.translation",
+        "path": "django/utils/translation/__init__.py",
+        "score": 101.65,
+        "reasons": [
+          "import fan-in=95 (deduped importers)",
+          "import fan-out=3 (deduped targets)",
+          "loc=302 (gated)",
+          "no AST test import/call reference"
+        ],
+        "subsystem": "django"
+      },
+      {
+        "module": "django.apps",
+        "path": "django/apps/__init__.py",
+        "score": 79.71,
+        "reasons": [
+          "import fan-in=74 (deduped importers)",
+          "import fan-out=2 (deduped targets)",
+          "loc=4 (gated)",
+          "no AST test import/call reference"
+        ],
+        "subsystem": "django"
+      }
+    ],
+    "top_risk_module": "django.conf",
+    "top_risk_score": 163.18,
+    "role_counts": {
+      "config": 29,
+      "unknown": 3104,
+      "general_doc": 719,
+      "production_code": 935,
+      "test": 2027,
+      "generated": 1,
+      "architecture_doc": 3,
+      "dataset": 50
+    },
+    "scan_duration_seconds": 4336.57,
+    "scanned_at": "2026-06-02T13:59:46",
+    "validation_warnings": [],
+    "suggested_next_actions": [
+      "Explore the dependency graph in Command Center",
+      "Ask Copilot: What does this repository do?",
+      "Ask Copilot: What are the top architectural risks?",
+      "Ask Copilot: What breaks if I change django/conf/__init__.py?",
+      "Ask Copilot: Show import cycles",
+      "Export a compact Claude/Codex/Cursor context packet"
+    ],
+    "scope": {
+      "mode": "entire_repo",
+      "folder": "",
+      "include_patterns": [],
+      "exclude_patterns": [],
+      "manual_massive_mode": false
+    },
+    "cache": {
+      "hit": false,
+      "signature": "b384c290cab09035b7311a284b913f62d803d1b0a27462b9c4b84b82eb29887a"
+    },
+    "compact_token_estimate": 410,
+    "verbose_token_estimate": 547,
+    "massive_mode": false,
+    "massive_reason": {
+      "files": false,
+      "modules": false,
+      "size": false,
+      "manual": false
+    },
+    "estimate": {
+      "ok": true,
+      "path": "C:\\J.A.R.V.I.S\\django",
+      "scope": {
+        "mode": "entire_repo",
+        "folder": "",
+        "include_patterns": [],
+        "exclude_patterns": [],
+        "manual_massive_mode": false
+      },
+      "total_files": 6939,
+      "code_files": 2960,
+      "estimated_modules": 1924,
+      "repo_size_bytes": 45420588,
+      "repo_size_mb": 43.32,
+      "languages": {
+        ".py": 2915,
+        ".js": 45
+      },
+      "ignored_folders": [
+        ".cache",
+        ".env",
+        ".git",
+        ".gradle",
+        ".idea",
+        ".jarvis",
+        ".jarvis_builder",
+        ".mypy_cache",
+        ".next",
+        ".pytest_cache",
+        ".pytest_tmp",
+        ".tox",
+        ".venv",
+        ".vscode",
+        "__pycache__",
+        "backups",
+        "build",
+        "coverage",
+        "data",
+        "dist",
+        "env",
+        "htmlcov",
+        "node_modules",
+        "site-packages",
+        "target",
+        "tests_tmp",
+        "vendor",
+        "venv"
+      ],
+      "likely_scan_time_seconds": 25,
+      "suggested_scopes": [
+        "entire_repo",
+        "backend",
+        "frontend",
+        "python_only"
+      ],
+      "massive_mode_auto": false
+    }
+  },
+  "scan_status": {
+    "ok": true,
+    "job": {
+      "id": "scan-1780393649296",
+      "cancelled": false,
+      "stage": "completed"
+    },
+    "perf_available": true,
+    "scan_complete": true
+  },
+  "performance": {
+    "repo_path": "C:\\J.A.R.V.I.S\\django",
+    "scope": {
+      "mode": "entire_repo",
+      "folder": "",
+      "include_patterns": [],
+      "exclude_patterns": [],
+      "manual_massive_mode": false
+    },
+    "cache_hit": false,
+    "started_at": 1780393649.469167,
+    "finished_at": 1780397986.0755715,
+    "total_duration_ms": 4336606,
+    "events": [
+      {
+        "stage": "pre_scan_estimate",
+        "start_time": 1780393648.5490162,
+        "end_time": 1780393649.2965393,
+        "duration_ms": 748,
+        "memory_rss_bytes": null,
+        "cache_hit": false,
+        "files_seen": 6939,
+        "code_files": 2960,
+        "modules": 1924,
+        "edges": 0,
+        "output_size_bytes": 803
+      },
+      {
+        "stage": "validate_repository_path",
+        "start_time": 1780393648.3160577,
+        "end_time": 1780393648.5490003,
+        "duration_ms": 233,
+        "memory_rss_bytes": null,
+        "cache_hit": false,
+        "files_seen": 6939,
+        "code_files": 2960,
+        "modules": 0,
+        "edges": 0,
+        "output_size_bytes": 122
+      },
+      {
+        "stage": "building_dependency_graph",
+        "start_time": 1780393649.4698756,
+        "end_time": 1780397972.0897152,
+        "duration_ms": 4322620,
+        "memory_rss_bytes": null,
+        "cache_hit": false,
+        "files_seen": 6939,
+        "code_files": 2960,
+        "modules": 911,
+        "edges": 2916,
+        "output_size_bytes": 18926785
+      },
+      {
+        "stage": "indexing_repository",
+        "start_time": 1780397972.1868927,
+        "end_time": 1780397973.5934098,
+        "duration_ms": 1407,
+        "memory_rss_bytes": null,
+        "cache_hit": false,
+        "files_seen": 6868,
+        "code_files": 6868,
+        "modules": 911,
+        "edges": 2916,
+        "output_size_bytes": 169
+      },
+      {
+        "stage": "detecting_architectural_risks",
+        "start_time": 1780397973.5951624,
+        "end_time": 1780397986.0292118,
+        "duration_ms": 12434,
+        "memory_rss_bytes": null,
+        "cache_hit": false,
+        "files_seen": 6868,
+        "code_files": 6868,
+        "modules": 911,
+        "edges": 2916,
+        "output_size_bytes": 1556404
+      },
+      {
+        "stage": "extracting_architecture",
+        "start_time": 1780397986.0438416,
+        "end_time": 1780397986.0438418,
+        "duration_ms": 0,
+        "memory_rss_bytes": null,
+        "cache_hit": false,
+        "files_seen": 6868,
+        "code_files": 6868,
+        "modules": 911,
+        "edges": 2916,
+        "output_size_bytes": 2196
+      },
+      {
+        "stage": "extracting_contracts",
+        "start_time": 1780397986.0443194,
+        "end_time": 1780397986.0443194,
+        "duration_ms": 0,
+        "memory_rss_bytes": null,
+        "cache_hit": false,
+        "files_seen": 6868,
+        "code_files": 6868,
+        "modules": 911,
+        "edges": 2916,
+        "output_size_bytes": 0,
+        "note": "desktop stage marker (no dedicated backend contract extraction step)"
+      },
+      {
+        "stage": "generating_verification_evidence",
+        "start_time": 1780397986.044691,
+        "end_time": 1780397986.0446916,
+        "duration_ms": 0,
+        "memory_rss_bytes": null,
+        "cache_hit": false,
+        "files_seen": 6868,
+        "code_files": 6868,
+        "modules": 911,
+        "edges": 2916,
+        "output_size_bytes": 0,
+        "note": "desktop stage marker (no dedicated backend verification-evidence step)"
+      },
+      {
+        "stage": "building_ai_context_packets",
+        "start_time": 1780397986.0450463,
+        "end_time": 1780397986.0452518,
+        "duration_ms": 0,
+        "memory_rss_bytes": null,
+        "cache_hit": false,
+        "files_seen": 6868,
+        "code_files": 6868,
+        "modules": 911,
+        "edges": 2916,
+        "output_size_bytes": 7056,
+        "packet_count": 4,
+        "packet_stats": [
+          {
+            "target": "claude",
+            "packet": "compact",
+            "duration_ms": 0,
+            "estimated_tokens": 410,
+            "text_size_bytes": 1644
+          },
+          {
+            "target": "claude",
+            "packet": "verbose",
+            "duration_ms": 0,
+            "estimated_tokens": 547,
+            "text_size_bytes": 2190
+          },
+          {
+            "target": "codex",
+            "packet": "compact",
+            "duration_ms": 0,
+            "estimated_tokens": 404,
+            "text_size_bytes": 1618
+          },
+          {
+            "target": "cursor",
+            "packet": "compact",
+            "duration_ms": 0,
+            "estimated_tokens": 400,
+            "text_size_bytes": 1604
+          }
+        ],
+        "slowest_packet": {
+          "target": "claude",
+          "packet": "compact",
+          "duration_ms": 0,
+          "estimated_tokens": 410,
+          "text_size_bytes": 1644
+        },
+        "serial_generation": true
+      },
+      {
+        "stage": "final_summary_serialization",
+        "start_time": 1780397986.0456474,
+        "end_time": 1780397986.0456767,
+        "duration_ms": 0,
+        "memory_rss_bytes": null,
+        "cache_hit": false,
+        "files_seen": 6868,
+        "code_files": 6868,
+        "modules": 911,
+        "edges": 2916,
+        "output_size_bytes": 4784
+      },
+      {
+        "stage": "graph_payload_preparation",
+        "start_time": 1780397986.0461063,
+        "end_time": 1780397986.0750647,
+        "duration_ms": 29,
+        "memory_rss_bytes": null,
+        "cache_hit": false,
+        "files_seen": 6868,
+        "code_files": 6868,
+        "modules": 911,
+        "edges": 2916,
+        "output_size_bytes": 3794
+      }
+    ]
+  }
+}

@@ -1,9 +1,11 @@
 """Cross-file interprocedural resolution (Phase 93C — infrastructure only).
 
 Builds an ephemeral, project-scoped cross-file call graph from an explicit import
-table (no name-only guessing). Resolves ONLY:
-- a directly-imported function name call ``func()``  (single candidate), and
-- a ``module.func()`` call through an imported module handle (single candidate).
+table and callable export index (no name-only guessing). Resolves ONLY:
+- a directly-imported callable symbol call ``func()`` (single candidate),
+- a ``module.func()`` call through an imported module handle (single candidate),
+- an explicit, unambiguous package ``__init__.py`` re-export, and
+- a project class constructor only when it has an explicit ``__init__`` method.
 Everything else is UNRESOLVED, with an explicit reason (star / ambiguous /
 third-party / symbol-not-found / shadowed / dynamic).
 
@@ -17,10 +19,13 @@ from __future__ import annotations
 import ast
 from typing import Any, Dict, List, Optional, Tuple
 
-from . import callgraph, imports, module_map
+from . import callgraph, export_index, imports, module_map
 
 # Feature flag — set to False to remove ALL cross-file behavior.
 CROSS_FILE_ENABLED = True
+
+# Phase 94E — explicit callable module exports and package re-exports.
+EXPORT_INDEX_ENABLED = True
 
 # safety caps (degrade to no cross-file context if exceeded)
 _MAX_FILES = 5000
@@ -103,11 +108,27 @@ def build_project_context(files: List[Tuple[str, str]]) -> Optional[Dict[str, An
             continue
     if not parsed:
         return None
+    return build_project_context_from_parsed(parsed)
 
-    mm = module_map.build_module_map([rel for rel, _ in parsed])
 
-    # project index: module_dotted -> {func_name: (file, qualname)} (module-level only)
-    index: Dict[str, Dict[str, Tuple[str, str]]] = {}
+def build_project_context_from_parsed(
+    parsed: List[Tuple[str, ast.AST]],
+    mm: Optional[Dict[str, Any]] = None,
+) -> Optional[Dict[str, Any]]:
+    """Build cross-file context from already-parsed module trees (no re-parse)."""
+    if not CROSS_FILE_ENABLED:
+        return None
+    if len(parsed) > _MAX_FILES:
+        return None
+    if not parsed:
+        return None
+
+    if mm is None:
+        mm = module_map.build_module_map([rel for rel, _ in parsed])
+
+    # Legacy module-level function index remains available as an instant
+    # rollback path for the additive Phase 94E export index.
+    legacy_index: Dict[str, Dict[str, Tuple[str, str]]] = {}
     qn_by_file: Dict[str, Dict[ast.AST, str]] = {}
     total_funcs = 0
     for rel, tree in parsed:
@@ -119,9 +140,15 @@ def build_project_context(files: List[Tuple[str, str]]) -> Optional[Dict[str, An
             continue
         for child in ast.iter_child_nodes(tree):
             if isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef)):
-                index.setdefault(mod, {})[child.name] = (rel, child.name)
+                legacy_index.setdefault(mod, {})[child.name] = (rel, child.name)
     if total_funcs > _MAX_FUNCTIONS:
         return None
+    export_data = (
+        export_index.build_export_index(parsed, mm)
+        if EXPORT_INDEX_ENABLED
+        else {"exports": legacy_index, "ambiguous": {}}
+    )
+    index = export_data["exports"]
 
     resolved: List[Dict[str, Any]] = []
     per_file_out: Dict[str, List[Dict[str, Any]]] = {rel: [] for rel, _ in parsed}
@@ -178,6 +205,8 @@ def build_project_context(files: List[Tuple[str, str]]) -> Optional[Dict[str, An
         "enabled": True,
         "per_file": per_file,
         "module_map": dict(mm["path_to_module"]),
+        "export_index": index,
+        "export_ambiguous": export_data["ambiguous"],
         "resolved_edges": resolved,
         "usage_global": {f"{cf}::{cq}": dict(agg) for (cf, cq), agg in usage_global.items()},
     }

@@ -255,6 +255,37 @@ function pushRecent(p) {
 const STAGES = ["Indexing repository", "Building dependency graph", "Extracting architecture",
   "Detecting architectural risks", "Extracting contracts", "Generating verification evidence", "Building AI context packets"];
 
+const STAGE_LABEL_INDEX = {};
+STAGES.forEach((label, i) => { STAGE_LABEL_INDEX[label] = i; });
+
+function applyScanStatus(status) {
+  if (!status || !status.ok) return;
+  const label = status.stage_label || "";
+  const pct = status.progress_pct || 0;
+  setBar(pct);
+  let idx = STAGE_LABEL_INDEX[label];
+  if (idx === undefined) {
+    const partial = STAGES.findIndex(s => label.startsWith(s));
+    idx = partial >= 0 ? partial : 0;
+  }
+  STAGES.forEach((_, i) => {
+    if (i < idx) setStage(i, "done");
+    else if (i === idx) setStage(i, "run");
+    else setStage(i, "todo");
+  });
+  const lbl = $("st" + idx)?.querySelector(".lbl");
+  if (lbl && label && label !== STAGES[idx]) lbl.textContent = label;
+}
+
+async function pollScanProgress(stopRef) {
+  while (!stopRef.stop) {
+    const status = await api("/api/repositories/current/scan-status");
+    applyScanStatus(status);
+    if (status.scan_complete) break;
+    await sleep(400);
+  }
+}
+
 async function scanFlow() {
   const validation = await validateRepoPath(true);
   if (!validation) return;
@@ -268,11 +299,15 @@ async function scanFlow() {
   showScanPanel("running");
   $("stages").innerHTML = STAGES.map((s, i) => `<div class="stage todo" id="st${i}"><span class="dot"></span><span class="lbl">${s}</span></div>`).join("");
   renderScanSkeleton();
-  let stage = 0; setStage(0, "run"); setBar(4);
-  const timer = setInterval(() => { if (stage < STAGES.length - 1) { setStage(stage, "done"); stage++; setStage(stage, "run"); setBar(8 + stage * 12); } }, 850);
+  setStage(0, "run"); setBar(4);
+  const pollRef = { stop: false };
+  const pollTask = pollScanProgress(pollRef);
 
   const scan = await api("/api/repositories/scan", "POST", { path, scope: readScopeConfig() });
-  clearInterval(timer);
+  pollRef.stop = true;
+  await pollTask;
+  const finalStatus = await api("/api/repositories/current/scan-status");
+  applyScanStatus(finalStatus);
   STAGES.forEach((_, i) => setStage(i, "done")); setBar(100); $("scanPct").textContent = "100%";
   if (!scan.ok) {
     showScanFailed(scan.error || "Scan failed", scan.code);
@@ -280,9 +315,15 @@ async function scanFlow() {
     return;
   }
   updateMassiveBadge(!!scan.massive_mode);
-  if (scan.massive_mode) {
+  if (scan.full_graph_pending) {
+    $("scanModeInfo").style.display = "block";
+    $("scanModeInfo").textContent = "Import-level graph ready (~" + (scan.module_count || 0) + " modules). Full module graph can be built on demand from Command Center.";
+  } else if (scan.massive_mode) {
     $("scanModeInfo").style.display = "block";
     $("scanModeInfo").textContent = "Massive Repository Mode enabled. Starting with architecture overview is recommended.";
+  } else if (scan.degraded) {
+    $("scanModeInfo").style.display = "block";
+    $("scanModeInfo").textContent = "Graph built in degraded/partial mode — some edges may be missing.";
   } else {
     $("scanModeInfo").style.display = "none";
   }

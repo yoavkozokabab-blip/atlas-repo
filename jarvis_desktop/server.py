@@ -58,7 +58,15 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
         ("GET", "/api/analytics/summary"): lambda _body, _query: api.analytics_overview(),
         ("POST", "/api/repositories/scan"): lambda body, _query: api.scan_repository(body.get("path"), body.get("scope")),
         ("GET", "/api/repositories/current/scan-status"): lambda _body, _query: api.scan_status(),
+        ("GET", "/api/repositories/current/scan-performance"): lambda _body, _query: api.current_scan_performance(),
         ("POST", "/api/repositories/current/cancel-scan"): lambda _body, _query: api.cancel_scan(),
+        ("POST", "/api/repositories/current/build-full-graph"): lambda _body, _query: api.build_full_module_graph(),
+        ("POST", "/api/repositories/diagnostics/scan"): lambda body, _query: api.run_scan_diagnostic(
+            str(body.get("path", "")),
+            scope=body.get("scope"),
+            output_path=str(body.get("output_path", "")) or None,
+            timeout_sec=float(body.get("timeout_sec")) if body.get("timeout_sec") is not None else None,
+        ),
         ("GET", "/api/repositories/current/summary"): lambda _body, _query: api.current_summary(),
         ("GET", "/api/repositories/current/graph"): lambda _body, query: api.current_graph(
             str(query.get("view", "module")),

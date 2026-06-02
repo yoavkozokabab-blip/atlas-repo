@@ -1,0 +1,206 @@
+{
+  "elapsed_sec": 15.05,
+  "scan_ok": true,
+  "graph_detail": "imports",
+  "graph_build": {
+    "detail": "imports",
+    "time_budget_sec": 60.0,
+    "lazy_full": true,
+    "tier": "massive",
+    "elapsed_sec": 1.298,
+    "timed_out": false,
+    "partial": false
+  },
+  "modules": 911,
+  "degraded": false,
+  "perf_stages": [
+    {
+      "stage": "pre_scan_estimate",
+      "start_time": 1780398201.8579886,
+      "end_time": 1780398202.487584,
+      "duration_ms": 630,
+      "memory_rss_bytes": null,
+      "cache_hit": false,
+      "files_seen": 6939,
+      "code_files": 2960,
+      "modules": 1924,
+      "edges": 0,
+      "output_size_bytes": 803
+    },
+    {
+      "stage": "validate_repository_path",
+      "start_time": 1780398201.6489925,
+      "end_time": 1780398201.8579772,
+      "duration_ms": 209,
+      "memory_rss_bytes": null,
+      "cache_hit": false,
+      "files_seen": 6939,
+      "code_files": 2960,
+      "modules": 0,
+      "edges": 0,
+      "output_size_bytes": 122
+    },
+    {
+      "stage": "building_dependency_graph",
+      "start_time": 1780398202.6564372,
+      "end_time": 1780398203.954506,
+      "duration_ms": 1298,
+      "memory_rss_bytes": null,
+      "cache_hit": false,
+      "files_seen": 6939,
+      "code_files": 2960,
+      "modules": 911,
+      "edges": 2916,
+      "output_size_bytes": 1118760,
+      "graph_detail": "imports",
+      "graph_tier": "massive",
+      "graph_timed_out": false,
+      "graph_partial": false
+    },
+    {
+      "stage": "indexing_repository",
+      "start_time": 1780398203.959527,
+      "end_time": 1780398205.227153,
+      "duration_ms": 1268,
+      "memory_rss_bytes": null,
+      "cache_hit": false,
+      "files_seen": 6868,
+      "code_files": 6868,
+      "modules": 911,
+      "edges": 2916,
+      "output_size_bytes": 169
+    },
+    {
+      "stage": "detecting_architectural_risks",
+      "start_time": 1780398205.2277317,
+      "end_time": 1780398216.6821573,
+      "duration_ms": 11454,
+      "memory_rss_bytes": null,
+      "cache_hit": false,
+      "files_seen": 6868,
+      "code_files": 6868,
+      "modules": 911,
+      "edges": 2916,
+      "output_size_bytes": 1078860
+    },
+    {
+      "stage": "extracting_architecture",
+      "start_time": 1780398216.6878202,
+      "end_time": 1780398216.6878202,
+      "duration_ms": 0,
+      "memory_rss_bytes": null,
+      "cache_hit": false,
+      "files_seen": 6868,
+      "code_files": 6868,
+      "modules": 911,
+      "edges": 2916,
+      "output_size_bytes": 2196
+    },
+    {
+      "stage": "extracting_contracts",
+      "start_time": 1780398216.6881247,
+      "end_time": 1780398216.6881247,
+      "duration_ms": 0,
+      "memory_rss_bytes": null,
+      "cache_hit": false,
+      "files_seen": 6868,
+      "code_files": 6868,
+      "modules": 911,
+      "edges": 2916,
+      "output_size_bytes": 0,
+      "note": "desktop stage marker (no dedicated backend contract extraction step)"
+    },
+    {
+      "stage": "generating_verification_evidence",
+      "start_time": 1780398216.6883688,
+      "end_time": 1780398216.6883688,
+      "duration_ms": 0,
+      "memory_rss_bytes": null,
+      "cache_hit": false,
+      "files_seen": 6868,
+      "code_files": 6868,
+      "modules": 911,
+      "edges": 2916,
+      "output_size_bytes": 0,
+      "note": "desktop stage marker (no dedicated backend verification-evidence step)"
+    },
+    {
+      "stage": "building_ai_context_packets",
+      "start_time": 1780398216.6886077,
+      "end_time": 1780398216.6887422,
+      "duration_ms": 0,
+      "memory_rss_bytes": null,
+      "cache_hit": false,
+      "files_seen": 6868,
+      "code_files": 6868,
+      "modules": 911,
+      "edges": 2916,
+      "output_size_bytes": 7044,
+      "packet_count": 4,
+      "packet_stats": [
+        {
+          "target": "claude",
+          "packet": "compact",
+          "duration_ms": 0,
+          "estimated_tokens": 410,
+          "text_size_bytes": 1641
+        },
+        {
+          "target": "claude",
+          "packet": "verbose",
+          "duration_ms": 0,
+          "estimated_tokens": 546,
+          "text_size_bytes": 2187
+        },
+        {
+          "target": "codex",
+          "packet": "compact",
+          "duration_ms": 0,
+          "estimated_tokens": 403,
+          "text_size_bytes": 1615
+        },
+        {
+          "target": "cursor",
+          "packet": "compact",
+          "duration_ms": 0,
+          "estimated_tokens": 400,
+          "text_size_bytes": 1601
+        }
+      ],
+      "slowest_packet": {
+        "target": "claude",
+        "packet": "compact",
+        "duration_ms": 0,
+        "estimated_tokens": 410,
+        "text_size_bytes": 1641
+      },
+      "serial_generation": true
+    },
+    {
+      "stage": "final_summary_serialization",
+      "start_time": 1780398216.6890156,
+      "end_time": 1780398216.689038,
+      "duration_ms": 0,
+      "memory_rss_bytes": null,
+      "cache_hit": false,
+      "files_seen": 6868,
+      "code_files": 6868,
+      "modules": 911,
+      "edges": 2916,
+      "output_size_bytes": 4778
+    },
+    {
+      "stage": "graph_payload_preparation",
+      "start_time": 1780398216.689327,
+      "end_time": 1780398216.70079,
+      "duration_ms": 11,
+      "memory_rss_bytes": null,
+      "cache_hit": false,
+      "files_seen": 6868,
+      "code_files": 6868,
+      "modules": 911,
+      "edges": 2916,
+      "output_size_bytes": 3794
+    }
+  ]
+}

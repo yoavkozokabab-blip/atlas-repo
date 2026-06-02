@@ -28,8 +28,9 @@ from builder_core import architectural_risk, repository_understanding
 from builder_core.bug_intelligence import depgraph
 
 from . import analytics
+from . import graph_build
 
-PRODUCT_VERSION = "phase112-installer-demo"
+PRODUCT_VERSION = "phase115b-graph-performance"
 CHARS_PER_TOKEN = 4.0
 GRAPH_DISPLAY_CAP = 5000
 RISK_RANK_TOP = 5000
@@ -87,6 +88,25 @@ _STATE: Dict[str, Any] = {
     "last_scope": {"mode": "entire_repo"},
     "scan_cache": {},
     "scan_job": {"id": None, "cancelled": False, "stage": "idle"},
+    "scan_perf": None,
+    "scan_perf_live": None,
+    "graph_detail_level": None,
+    "full_graph_pending": False,
+}
+
+# Backend stage → (progress %, UI label) for real scan progress reporting.
+_SCAN_STAGE_PROGRESS: Dict[str, Tuple[int, str]] = {
+    "discovering_files": (8, "Indexing repository"),
+    "building_graph": (42, "Building dependency graph"),
+    "indexing_modules": (52, "Indexing repository"),
+    "ranking_risks": (68, "Detecting architectural risks"),
+    "extracting_architecture": (76, "Extracting architecture"),
+    "extracting_contracts": (82, "Extracting contracts"),
+    "generating_evidence": (86, "Generating verification evidence"),
+    "generating_summary": (92, "Building AI context packets"),
+    "completed": (100, "Complete"),
+    "cancel_requested": (0, "Cancelling"),
+    "idle": (0, "Idle"),
 }
 
 
@@ -95,6 +115,59 @@ _STATE: Dict[str, Any] = {
 # --------------------------------------------------------------------------
 def estimate_tokens(text: str) -> int:
     return max(0, round(len(text or "") / CHARS_PER_TOKEN))
+
+
+def _safe_rss_bytes() -> Optional[int]:
+    try:
+        import resource  # type: ignore
+
+        rss = int(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
+        # Linux reports KiB, macOS bytes. Use a conservative heuristic.
+        return rss * 1024 if rss < 10_000_000 else rss
+    except Exception:
+        return None
+
+
+class _StageRecorder:
+    """Lightweight stage timing recorder for scan diagnostics."""
+
+    def __init__(self, *, repo_path: str, scope: Dict[str, Any], cache_hit: bool) -> None:
+        self.started_at = time.time()
+        self.repo_path = repo_path
+        self.scope = scope
+        self.cache_hit = cache_hit
+        self.events: List[Dict[str, Any]] = []
+
+    def mark(self, stage: str, start_ts: float, end_ts: float, **meta: Any) -> None:
+        payload = {
+            "stage": stage,
+            "start_time": start_ts,
+            "end_time": end_ts,
+            "duration_ms": int(round((end_ts - start_ts) * 1000)),
+            "memory_rss_bytes": _safe_rss_bytes(),
+            "cache_hit": self.cache_hit,
+        }
+        payload.update(meta)
+        self.events.append(payload)
+        _STATE["scan_perf_live"] = {
+            "repo_path": self.repo_path,
+            "scope": self.scope,
+            "cache_hit": self.cache_hit,
+            "started_at": self.started_at,
+            "events": list(self.events),
+        }
+
+    def snapshot(self) -> Dict[str, Any]:
+        finished = time.time()
+        return {
+            "repo_path": self.repo_path,
+            "scope": self.scope,
+            "cache_hit": self.cache_hit,
+            "started_at": self.started_at,
+            "finished_at": finished,
+            "total_duration_ms": int(round((finished - self.started_at) * 1000)),
+            "events": self.events,
+        }
 
 
 def _read(path: str) -> str:
@@ -509,7 +582,9 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
     """Run the real Builder Core scan (graph + light index + risk ranking)."""
     repo = os.path.abspath(path or _STATE.get("path") or ".")
     scope_data = _scope_from_input(scope)
+    t_validate_start = time.time()
     validation = validate_repository_path(repo)
+    t_validate_end = time.time()
     if not validation.get("ok"):
         return {
             "ok": False,
@@ -520,7 +595,9 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
     repo = validation["path"]
     _STATE["demo_mode"] = _is_demo_path(repo)
     _STATE["last_scope"] = scope_data
+    t_estimate_start = time.time()
     estimate = pre_scan_estimate(repo, scope_data)
+    t_estimate_end = time.time()
     scan_job = _STATE.get("scan_job") or {"id": None, "cancelled": False, "stage": "idle"}
     previous_stage = scan_job.get("stage", "idle")
     if previous_stage in {"idle", "completed"}:
@@ -531,6 +608,27 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
     signature = _scan_signature(repo, scope_data)
     cache = _STATE.setdefault("scan_cache", {})
     cached = cache.get(signature)
+    recorder = _StageRecorder(repo_path=repo, scope=scope_data, cache_hit=bool(cached))
+    recorder.mark(
+        "pre_scan_estimate",
+        t_estimate_start,
+        t_estimate_end,
+        files_seen=estimate.get("total_files", 0),
+        code_files=estimate.get("code_files", 0),
+        modules=estimate.get("estimated_modules", 0),
+        edges=0,
+        output_size_bytes=len(_json.dumps(estimate, default=str)),
+    )
+    recorder.mark(
+        "validate_repository_path",
+        t_validate_start,
+        t_validate_end,
+        files_seen=validation.get("total_files", 0),
+        code_files=validation.get("code_files", 0),
+        modules=0,
+        edges=0,
+        output_size_bytes=len(_json.dumps(validation, default=str)),
+    )
     if cached:
         _STATE.update(
             {
@@ -543,6 +641,17 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
         )
         _STATE["scan"]["cache"] = {"hit": True, "signature": signature}
         _STATE["scan_job"]["stage"] = "completed"
+        recorder.mark(
+            "cache_restore",
+            time.time(),
+            time.time(),
+            files_seen=_STATE["scan"].get("file_count", 0),
+            code_files=_STATE["scan"].get("file_count", 0),
+            modules=_STATE["scan"].get("module_count", 0),
+            edges=_STATE["scan"].get("dependency_edges", 0),
+            output_size_bytes=len(_json.dumps(_STATE["scan"], default=str)),
+        )
+        _STATE["scan_perf"] = recorder.snapshot()
         track_analytics_event("scan_completed", demo=bool(_STATE.get("demo_mode")), cache_hit=True)
         return _STATE["scan"]
     started = time.time()
@@ -550,22 +659,93 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
     if _STATE["scan_job"].get("cancelled"):
         return {"ok": False, "error": "Scan cancelled.", "code": "scan_cancelled"}
     _STATE["scan_job"]["stage"] = "building_graph"
-    graph = depgraph.build_graph(repo)               # production scope (Phase 100G)
+    massive_mode_pre = bool(scope_data.get("manual_massive_mode")) or bool(estimate.get("massive_mode_auto"))
+
+    def _on_graph_progress(phase: str, current: int, total: int) -> None:
+        job = _STATE.get("scan_job") or {}
+        job["graph_phase"] = phase
+        job["graph_progress"] = {"current": current, "total": max(total, 1)}
+        _STATE["scan_job"] = job
+
+    t_graph_start = time.time()
+    graph = graph_build.build_scan_graph(
+        repo,
+        massive_mode=massive_mode_pre,
+        code_files=int(estimate.get("code_files", 0)),
+        estimated_modules=int(estimate.get("estimated_modules", 0)),
+        on_progress=_on_graph_progress,
+    )
+    t_graph_end = time.time()
+    build_meta = graph.get("jarvis_graph_build") or {}
+    _STATE["graph_detail_level"] = graph.get("graph_detail") or build_meta.get("detail")
+    _STATE["full_graph_pending"] = bool(build_meta.get("lazy_full"))
+    graph_nodes = [n for n in graph.get("nodes", []) if n.get("type") == "module"]
+    graph_edges = [e for e in graph.get("edges", []) if e.get("type") == "imports" and e.get("resolved")]
+    recorder.mark(
+        "building_dependency_graph",
+        t_graph_start,
+        t_graph_end,
+        files_seen=estimate.get("total_files", 0),
+        code_files=estimate.get("code_files", 0),
+        modules=len(graph_nodes),
+        edges=len(graph_edges),
+        output_size_bytes=len(_json.dumps(graph, default=str)),
+        graph_detail=graph.get("graph_detail"),
+        graph_tier=build_meta.get("tier"),
+        graph_timed_out=bool(graph.get("jarvis_timed_out")),
+        graph_partial=bool(graph.get("jarvis_partial")),
+    )
     if _STATE["scan_job"].get("cancelled"):
         return {"ok": False, "error": "Scan cancelled.", "code": "scan_cancelled"}
     _STATE["scan_job"]["stage"] = "indexing_modules"
+    t_index_start = time.time()
     index = _light_index(repo, scope_data)
+    t_index_end = time.time()
+    recorder.mark(
+        "indexing_repository",
+        t_index_start,
+        t_index_end,
+        files_seen=len(index.get("files", [])),
+        code_files=len(index.get("files", [])),
+        modules=len(graph_nodes),
+        edges=len(graph_edges),
+        output_size_bytes=len(_json.dumps(index.get("stats", {}), default=str)),
+    )
     module_nodes = [n for n in graph.get("nodes", []) if n.get("type") == "module"]
     module_count = len(module_nodes)
+    _STATE["scan_job"]["stage"] = "extracting_architecture"
+    _STATE["scan_job"]["stage"] = "ranking_risks"
     try:
-        _STATE["scan_job"]["stage"] = "ranking_risks"
+        t_risk_start = time.time()
         risks = architectural_risk.rank_modules(
             index,
             graph,
             top=min(RISK_RANK_TOP, max(module_count, 12)),
         )
+        t_risk_end = time.time()
+        recorder.mark(
+            "detecting_architectural_risks",
+            t_risk_start,
+            t_risk_end,
+            files_seen=len(index.get("files", [])),
+            code_files=len(index.get("files", [])),
+            modules=module_count,
+            edges=len(graph_edges),
+            output_size_bytes=len(_json.dumps(risks, default=str)),
+        )
     except Exception as exc:  # never crash the product on a risk-engine edge case
         risks = {"ranked_modules": [], "error": f"{type(exc).__name__}: {exc}"}
+        recorder.mark(
+            "detecting_architectural_risks",
+            time.time(),
+            time.time(),
+            files_seen=len(index.get("files", [])),
+            code_files=len(index.get("files", [])),
+            modules=module_count,
+            edges=len(graph_edges),
+            output_size_bytes=len(_json.dumps(risks, default=str)),
+            error=str(exc),
+        )
 
     stats = graph.get("statistics", {})
     diag = graph.get("scope_diagnostics", {})
@@ -603,6 +783,9 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
         "unresolved_imports": unresolved.get("imports_external", 0),
         "unresolved_calls": unresolved.get("calls_unresolved", 0),
         "graph_scope": graph.get("graph_scope"),
+        "graph_detail": graph.get("graph_detail") or build_meta.get("detail"),
+        "graph_build": build_meta,
+        "full_graph_pending": bool(build_meta.get("lazy_full")),
         "degraded": bool(graph.get("degraded")),
         "import_cycle_count": stats.get("import_cycles") and len(stats["import_cycles"]) or 0,
         "top_hubs": top_hubs,
@@ -618,11 +801,77 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
         "cache": {"hit": False, "signature": signature},
     }
     scan["suggested_next_actions"] = _scan_next_actions(scan)
+    recorder.mark(
+        "extracting_architecture",
+        time.time(),
+        time.time(),
+        files_seen=len(index.get("files", [])),
+        code_files=len(index.get("files", [])),
+        modules=module_count,
+        edges=len(import_edges),
+        output_size_bytes=len(_json.dumps({"top_hubs": top_hubs, "top_risks": top_risks}, default=str)),
+    )
+    recorder.mark(
+        "extracting_contracts",
+        time.time(),
+        time.time(),
+        files_seen=len(index.get("files", [])),
+        code_files=len(index.get("files", [])),
+        modules=module_count,
+        edges=len(import_edges),
+        output_size_bytes=0,
+        note="desktop stage marker (no dedicated backend contract extraction step)",
+    )
+    recorder.mark(
+        "generating_verification_evidence",
+        time.time(),
+        time.time(),
+        files_seen=len(index.get("files", [])),
+        code_files=len(index.get("files", [])),
+        modules=module_count,
+        edges=len(import_edges),
+        output_size_bytes=0,
+        note="desktop stage marker (no dedicated backend verification-evidence step)",
+    )
     # token estimate for the compact AI-context packet built from this scan
     _STATE.update({"path": repo, "scan": scan, "graph": graph, "index": index, "risks": risks})
     _STATE["scan_job"]["stage"] = "generating_summary"
-    scan["compact_token_estimate"] = estimate_tokens(_render_context("claude", "compact"))
-    scan["verbose_token_estimate"] = estimate_tokens(_render_context("claude", "verbose"))
+    t_packet_all_start = time.time()
+    packet_stats: List[Dict[str, Any]] = []
+    for target, packet in (("claude", "compact"), ("claude", "verbose"), ("codex", "compact"), ("cursor", "compact")):
+        t_packet_start = time.time()
+        text = _render_context(target, packet)
+        tokens = estimate_tokens(text)
+        t_packet_end = time.time()
+        packet_stats.append(
+            {
+                "target": target,
+                "packet": packet,
+                "duration_ms": int(round((t_packet_end - t_packet_start) * 1000)),
+                "estimated_tokens": tokens,
+                "text_size_bytes": len(text.encode("utf-8", errors="ignore")),
+            }
+        )
+        if target == "claude" and packet == "compact":
+            scan["compact_token_estimate"] = tokens
+        if target == "claude" and packet == "verbose":
+            scan["verbose_token_estimate"] = tokens
+    t_packet_all_end = time.time()
+    slowest_packet = max(packet_stats, key=lambda item: item["duration_ms"]) if packet_stats else None
+    recorder.mark(
+        "building_ai_context_packets",
+        t_packet_all_start,
+        t_packet_all_end,
+        files_seen=len(index.get("files", [])),
+        code_files=len(index.get("files", [])),
+        modules=module_count,
+        edges=len(import_edges),
+        output_size_bytes=sum(item["text_size_bytes"] for item in packet_stats),
+        packet_count=len(packet_stats),
+        packet_stats=packet_stats,
+        slowest_packet=slowest_packet,
+        serial_generation=True,
+    )
     _STATE["scan"]["compact_token_estimate"] = scan["compact_token_estimate"]
     massive_mode = bool(scope_data.get("manual_massive_mode")) or bool(estimate.get("massive_mode_auto"))
     _STATE["scan"]["massive_mode"] = massive_mode
@@ -633,6 +882,32 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
         "manual": bool(scope_data.get("manual_massive_mode")),
     }
     _STATE["scan"]["estimate"] = estimate
+    t_summary_start = time.time()
+    summary_snapshot = current_summary()
+    t_summary_end = time.time()
+    recorder.mark(
+        "final_summary_serialization",
+        t_summary_start,
+        t_summary_end,
+        files_seen=scan.get("file_count", 0),
+        code_files=scan.get("file_count", 0),
+        modules=scan.get("module_count", 0),
+        edges=scan.get("dependency_edges", 0),
+        output_size_bytes=len(_json.dumps(summary_snapshot, default=str)),
+    )
+    t_graph_payload_start = time.time()
+    graph_snapshot = current_graph("subsystem")
+    t_graph_payload_end = time.time()
+    recorder.mark(
+        "graph_payload_preparation",
+        t_graph_payload_start,
+        t_graph_payload_end,
+        files_seen=scan.get("file_count", 0),
+        code_files=scan.get("file_count", 0),
+        modules=graph_snapshot.get("total_modules", 0),
+        edges=graph_snapshot.get("total_edges", 0),
+        output_size_bytes=len(_json.dumps(graph_snapshot, default=str)),
+    )
     cache[signature] = {
         "scan": _STATE["scan"],
         "graph": graph,
@@ -641,6 +916,7 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
         "cached_at": time.time(),
     }
     _STATE["scan_job"]["stage"] = "completed"
+    _STATE["scan_perf"] = recorder.snapshot()
     track_analytics_event(
         "scan_completed",
         demo=bool(_STATE.get("demo_mode")),
@@ -703,8 +979,71 @@ def current_summary() -> Dict[str, Any]:
 
 
 def scan_status() -> Dict[str, Any]:
-    job = _STATE.get("scan_job") or {"id": None, "cancelled": False, "stage": "idle"}
-    return {"ok": True, "job": job}
+    job = dict(_STATE.get("scan_job") or {"id": None, "cancelled": False, "stage": "idle"})
+    perf = _STATE.get("scan_perf")
+    stage = str(job.get("stage") or "idle")
+    pct, label = _SCAN_STAGE_PROGRESS.get(stage, (0, stage.replace("_", " ").title()))
+    if stage == "building_graph" and job.get("graph_progress"):
+        gp = job["graph_progress"]
+        total = max(int(gp.get("total") or 1), 1)
+        current = int(gp.get("current") or 0)
+        sub = min(1.0, current / total)
+        pct = int(18 + sub * 30)
+        phase = str(job.get("graph_phase") or "")
+        if phase:
+            label = f"Building dependency graph ({phase})"
+    return {
+        "ok": True,
+        "job": job,
+        "stage": stage,
+        "stage_label": label,
+        "progress_pct": pct,
+        "perf_available": bool(perf),
+        "scan_complete": stage == "completed",
+        "graph_detail_level": _STATE.get("graph_detail_level"),
+        "full_graph_pending": bool(_STATE.get("full_graph_pending")),
+    }
+
+
+def build_full_module_graph() -> Dict[str, Any]:
+    """Lazy full module graph build (massive repos start with import-only graph)."""
+    repo = _STATE.get("path")
+    scan = _STATE.get("scan")
+    if not repo or not scan:
+        return {"ok": False, "error": "No repository scanned yet."}
+    if not _STATE.get("full_graph_pending") and _STATE.get("graph_detail_level") == depgraph.DETAIL_FULL:
+        return {"ok": True, "already_full": True, "graph_detail": depgraph.DETAIL_FULL}
+
+    def _on_graph_progress(phase: str, current: int, total: int) -> None:
+        job = _STATE.setdefault("scan_job", {"id": None, "cancelled": False, "stage": "idle"})
+        job["stage"] = "building_graph"
+        job["graph_phase"] = phase
+        job["graph_progress"] = {"current": current, "total": max(total, 1)}
+
+    started = time.time()
+    graph = graph_build.build_full_module_graph(repo, on_progress=_on_graph_progress)
+    elapsed = round(time.time() - started, 2)
+    _STATE["graph"] = graph
+    _STATE["graph_detail_level"] = graph.get("graph_detail", depgraph.DETAIL_FULL)
+    _STATE["full_graph_pending"] = False
+    if scan.get("ok"):
+        module_nodes = [n for n in graph.get("nodes", []) if n.get("type") == "module"]
+        import_edges = [e for e in graph.get("edges", []) if e.get("type") == "imports" and e.get("resolved")]
+        scan["module_count"] = len(module_nodes)
+        scan["dependency_edges"] = len(import_edges)
+        scan["graph_scope"] = graph.get("graph_scope")
+        scan["degraded"] = bool(graph.get("degraded"))
+        scan["full_graph_pending"] = False
+        scan["graph_detail"] = _STATE["graph_detail_level"]
+        scan["graph_build_full_elapsed_sec"] = elapsed
+    return {
+        "ok": True,
+        "graph_detail": _STATE["graph_detail_level"],
+        "degraded": bool(graph.get("degraded")),
+        "jarvis_timed_out": bool(graph.get("jarvis_timed_out")),
+        "elapsed_sec": elapsed,
+        "module_count": len([n for n in graph.get("nodes", []) if n.get("type") == "module"]),
+    }
 
 
 def cancel_scan() -> Dict[str, Any]:
@@ -713,6 +1052,61 @@ def cancel_scan() -> Dict[str, Any]:
     if job.get("stage") != "completed":
         job["stage"] = "cancel_requested"
     return {"ok": True, "cancelled": True, "job": job}
+
+
+def current_scan_performance() -> Dict[str, Any]:
+    perf = _STATE.get("scan_perf")
+    if not perf:
+        return {"ok": False, "error": "No scan performance data available yet."}
+    return {"ok": True, "performance": perf}
+
+
+def run_scan_diagnostic(
+    repo_path: str,
+    *,
+    scope: Optional[Dict[str, Any]] = None,
+    output_path: Optional[str] = None,
+    timeout_sec: Optional[float] = None,
+) -> Dict[str, Any]:
+    """One-shot scan diagnostic that emits a performance JSON report."""
+    import threading
+
+    output_path = output_path or os.path.join("reports", "phase115a_django_scan_performance_metrics.json")
+    holder: Dict[str, Any] = {"result": None, "error": None}
+
+    def _run() -> None:
+        try:
+            holder["result"] = scan_repository(repo_path, scope)
+        except Exception as exc:  # pragma: no cover - diagnostic guard
+            holder["error"] = f"{type(exc).__name__}: {exc}"
+
+    worker = threading.Thread(target=_run, name="scan-diagnostic", daemon=True)
+    worker.start()
+    if timeout_sec and timeout_sec > 0:
+        worker.join(timeout=timeout_sec)
+    else:
+        worker.join()
+
+    timed_out = worker.is_alive()
+    result = holder["result"] if isinstance(holder.get("result"), dict) else {"ok": False, "error": holder.get("error") or "scan did not complete"}
+    status = scan_status()
+    payload = {
+        "ok": bool(result.get("ok")),
+        "timed_out": timed_out,
+        "timeout_sec": timeout_sec,
+        "repo_path": os.path.abspath(repo_path),
+        "scan_result": result,
+        "scan_status": status,
+        "performance": _STATE.get("scan_perf"),
+        "performance_live": _STATE.get("scan_perf_live"),
+    }
+    abs_output = output_path
+    if not os.path.isabs(abs_output):
+        abs_output = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", output_path))
+    os.makedirs(os.path.dirname(abs_output), exist_ok=True)
+    with open(abs_output, "w", encoding="utf-8") as fh:
+        _json.dump(payload, fh, indent=2, ensure_ascii=False)
+    return {"ok": True, "output_path": abs_output, "scan_ok": bool(result.get("ok")), "timed_out": timed_out}
 
 
 def _subsystem_for_path(path: str, index: Dict[str, Any]) -> str:

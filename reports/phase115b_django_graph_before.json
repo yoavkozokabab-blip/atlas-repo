@@ -1,0 +1,13 @@
+{
+  "source": "phase115a_django_scan_performance_metrics.json",
+  "repo_path": "C:\\J.A.R.V.I.S\\django",
+  "timed_out": true,
+  "timeout_sec": 900,
+  "scan_complete": false,
+  "backend_stage_at_timeout": "building_graph",
+  "measured_stages_ms": {
+    "validate_repository_path": 307,
+    "pre_scan_estimate": 900
+  },
+  "notes": "Full module graph build did not complete within 900s; UI showed synthetic ~80% while backend was still in building_graph."
+}

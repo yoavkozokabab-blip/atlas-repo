@@ -13,7 +13,8 @@ from __future__ import annotations
 import ast
 import json
 import os
-from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
+import time
+from typing import Any, Callable, Dict, Iterable, List, Optional, Set, Tuple
 
 from . import callgraph, cross_file, imports, module_map
 
@@ -33,6 +34,11 @@ PRODUCTION_SCOPE = "production"
 FULL_SCOPE = "full"
 DEGRADED_SCOPE = "degraded"
 GRAPH_SCOPES = (PRODUCTION_SCOPE, FULL_SCOPE)
+
+# Phase 115B — graph detail tiers (import-only vs full interprocedural graph).
+DETAIL_FULL = "full"
+DETAIL_IMPORTS = "imports"
+DETAIL_LEVELS = (DETAIL_FULL, DETAIL_IMPORTS)
 
 
 def _production_scope_filter(
@@ -184,16 +190,250 @@ def _class_parent(rel: str, qual: str) -> str:
     return node_id("module", rel)
 
 
+def _deadline_exceeded(deadline: Optional[float]) -> bool:
+    return deadline is not None and time.monotonic() >= deadline
+
+
+def _append_module_import_edges(
+    rel: str,
+    tree: ast.AST,
+    mod_nid: str,
+    mm: Dict[str, Any],
+    edges: List[Dict[str, Any]],
+    unresolved: Dict[str, List[Dict[str, Any]]],
+) -> None:
+    """Append resolved/unresolved import edges for one module (shared by full + imports detail)."""
+    for node in getattr(tree, "body", []):
+        line = getattr(node, "lineno", 1)
+        if isinstance(node, ast.Import):
+            for alias in node.names:
+                target_mod = alias.name
+                tgt_path = mm["module_to_path"].get(target_mod)
+                if tgt_path is not None:
+                    edges.append({
+                        "type": "imports",
+                        "from": mod_nid,
+                        "to": node_id("module", tgt_path),
+                        "line": line,
+                        "resolved": True,
+                        "target_module": target_mod,
+                    })
+                else:
+                    unresolved["imports_external"].append({
+                        "from_module": rel,
+                        "line": line,
+                        "target": target_mod,
+                        "reason": "third_party_or_unknown_module",
+                    })
+        elif isinstance(node, ast.ImportFrom):
+            level = node.level or 0
+            if level == 0:
+                base = node.module
+            else:
+                base_pkg = imports._base_pkg_for_relative(_file_package(rel), level)
+                if base_pkg is None:
+                    continue
+                if node.module:
+                    base = f"{base_pkg}.{node.module}" if base_pkg else node.module
+                else:
+                    for alias in node.names:
+                        if alias.name == "*":
+                            continue
+                        sub = f"{base_pkg}.{alias.name}" if base_pkg else alias.name
+                        tgt_path = mm["module_to_path"].get(sub)
+                        if tgt_path is not None:
+                            edges.append({
+                                "type": "imports",
+                                "from": mod_nid,
+                                "to": node_id("module", tgt_path),
+                                "line": line,
+                                "resolved": True,
+                                "target_module": sub,
+                            })
+                        else:
+                            unresolved["imports_external"].append({
+                                "from_module": rel,
+                                "line": line,
+                                "target": sub,
+                                "reason": "third_party_or_unknown_module",
+                            })
+                    continue
+            if base is None:
+                continue
+            tgt_path = mm["module_to_path"].get(base)
+            if tgt_path is not None:
+                edges.append({
+                    "type": "imports",
+                    "from": mod_nid,
+                    "to": node_id("module", tgt_path),
+                    "line": line,
+                    "resolved": True,
+                    "target_module": base,
+                })
+            else:
+                for alias in node.names:
+                    if alias.name == "*":
+                        unresolved["imports_external"].append({
+                            "from_module": rel,
+                            "line": line,
+                            "target": base,
+                            "reason": "star_import",
+                        })
+                    else:
+                        unresolved["imports_external"].append({
+                            "from_module": rel,
+                            "line": line,
+                            "target": f"{base}.{alias.name}",
+                            "reason": "third_party_or_unknown_module",
+                        })
+
+
+def _finalize_graph(
+    root: str,
+    nodes: Dict[str, Dict[str, Any]],
+    edges: List[Dict[str, Any]],
+    unresolved: Dict[str, List[Dict[str, Any]]],
+    parse_errors: List[str],
+    *,
+    partial: bool = False,
+    timed_out: bool = False,
+    detail: str = DETAIL_FULL,
+) -> Dict[str, Any]:
+    edge_list = _dedupe_edges(edges)
+    node_list = [nodes[k] for k in sorted(nodes)]
+    stats = compute_statistics(node_list, edge_list, unresolved)
+    out: Dict[str, Any] = {
+        "schema_version": GRAPH_SCHEMA_VERSION,
+        "repository_root": root,
+        "nodes": node_list,
+        "edges": edge_list,
+        "unresolved": unresolved,
+        "statistics": stats,
+        "parse_errors": sorted(parse_errors),
+        "graph_detail": detail,
+    }
+    if partial or timed_out:
+        out["jarvis_partial"] = True
+        out["degraded"] = True
+        out["degraded_reason"] = "time_budget_exceeded" if timed_out else "partial_build"
+    if timed_out:
+        out["jarvis_timed_out"] = True
+    return out
+
+
+def _build_imports_detail_graph(
+    root: str,
+    file_list: List[Tuple[str, str]],
+    *,
+    deadline: Optional[float] = None,
+    on_progress: Optional[Callable[[str, int, int], None]] = None,
+) -> Dict[str, Any]:
+    """Module-level import graph only — no call/cross-file/reference expansion."""
+    repo_nid = node_id("repository", root)
+    nodes: Dict[str, Dict[str, Any]] = {
+        repo_nid: {
+            "id": repo_nid,
+            "type": "repository",
+            "root": root,
+            "python_files": len(file_list),
+        }
+    }
+    edges: List[Dict[str, Any]] = []
+    unresolved: Dict[str, List[Dict[str, Any]]] = {
+        "imports_external": [],
+        "calls_unresolved": [],
+        "references_unresolved": [],
+    }
+    parse_errors: List[str] = []
+    parsed: List[Tuple[str, ast.AST]] = []
+    text_by_rel = dict(file_list)
+    total = len(file_list)
+
+    for idx, (rel, text) in enumerate(file_list):
+        if _deadline_exceeded(deadline):
+            return _finalize_graph(
+                root, nodes, edges, unresolved, parse_errors,
+                partial=True, timed_out=True, detail=DETAIL_IMPORTS,
+            )
+        if on_progress and idx % 50 == 0:
+            on_progress("parse_imports", idx, total)
+        try:
+            parsed.append((rel, ast.parse(text)))
+        except SyntaxError as exc:
+            parse_errors.append(rel)
+            mod_nid = node_id("module", rel)
+            nodes[mod_nid] = {
+                "id": mod_nid,
+                "type": "module",
+                "path": rel,
+                "dotted": module_map.path_to_dotted(rel),
+                "is_package": rel.endswith("__init__.py"),
+                "parse_ok": False,
+                "line_count": _line_count(text),
+                "parse_error": f"{type(exc).__name__}: {exc.msg}",
+            }
+            edges.append({
+                "type": "contains",
+                "from": repo_nid,
+                "to": mod_nid,
+                "line": 1,
+                "resolved": True,
+            })
+
+    mm = module_map.build_module_map([rel for rel, _ in parsed])
+    for idx, (rel, tree) in enumerate(parsed):
+        if _deadline_exceeded(deadline):
+            return _finalize_graph(
+                root, nodes, edges, unresolved, parse_errors,
+                partial=True, timed_out=True, detail=DETAIL_IMPORTS,
+            )
+        if on_progress and idx % 50 == 0:
+            on_progress("import_edges", idx, len(parsed))
+        text = text_by_rel.get(rel, "")
+        mod_nid = node_id("module", rel)
+        dotted = mm["path_to_module"].get(rel) or module_map.path_to_dotted(rel)
+        nodes[mod_nid] = {
+            "id": mod_nid,
+            "type": "module",
+            "path": rel,
+            "dotted": dotted,
+            "is_package": rel.endswith("__init__.py"),
+            "parse_ok": True,
+            "line_count": _line_count(text),
+        }
+        edges.append({
+            "type": "contains",
+            "from": repo_nid,
+            "to": mod_nid,
+            "line": 1,
+            "resolved": True,
+        })
+        _append_module_import_edges(rel, tree, mod_nid, mm, edges, unresolved)
+
+    if on_progress:
+        on_progress("import_edges", len(parsed), len(parsed))
+    return _finalize_graph(root, nodes, edges, unresolved, parse_errors, detail=DETAIL_IMPORTS)
+
+
 def build_graph_from_files(
     repository_root: str,
     files: Iterable[Tuple[str, str]],
+    *,
+    detail: str = DETAIL_FULL,
+    deadline: Optional[float] = None,
+    on_progress: Optional[Callable[[str, int, int], None]] = None,
 ) -> Dict[str, Any]:
     """Build a dependency graph from ``(rel_path, text)`` pairs."""
     root = os.path.abspath(repository_root).replace("\\", "/")
     file_list = sorted((rel.replace("\\", "/"), text) for rel, text in files)
     if len(file_list) > _MAX_FILES:
         return _degraded_graph(root, "too_many_files", len(file_list))
+    if detail == DETAIL_IMPORTS:
+        return _build_imports_detail_graph(
+            root, file_list, deadline=deadline, on_progress=on_progress,
+        )
 
+    text_by_rel = dict(file_list)
     nodes: Dict[str, Dict[str, Any]] = {}
     edges: List[Dict[str, Any]] = []
     unresolved: Dict[str, List[Dict[str, Any]]] = {
@@ -212,7 +452,15 @@ def build_graph_from_files(
 
     parsed: List[Tuple[str, ast.AST]] = []
     parse_errors: List[str] = []
-    for rel, text in file_list:
+    total_files = len(file_list)
+    for idx, (rel, text) in enumerate(file_list):
+        if _deadline_exceeded(deadline):
+            return _finalize_graph(
+                root, nodes, edges, unresolved, parse_errors,
+                partial=True, timed_out=True, detail=DETAIL_FULL,
+            )
+        if on_progress and idx % 25 == 0:
+            on_progress("parse", idx, total_files)
         try:
             parsed.append((rel, ast.parse(text)))
         except SyntaxError as exc:
@@ -239,15 +487,25 @@ def build_graph_from_files(
     mm = module_map.build_module_map([rel for rel, _ in parsed])
     fn_index, cls_index = _build_indexes(parsed, mm)
 
-    total_funcs = sum(len(callgraph._compute_qualnames(tree)) for _, tree in parsed)
+    qualnames_by_rel: Dict[str, Dict[ast.AST, str]] = {
+        rel: callgraph._compute_qualnames(tree) for rel, tree in parsed
+    }
+    total_funcs = sum(len(qn) for qn in qualnames_by_rel.values())
     if total_funcs > _MAX_FUNCTIONS:
         return _degraded_graph(root, "too_many_functions", total_funcs)
 
-    project_context = cross_file.build_project_context(list(parsed)) or {}
+    project_context = cross_file.build_project_context_from_parsed(parsed, mm) or {}
     cross_edges = project_context.get("resolved_edges", [])
 
-    for rel, tree in parsed:
-        text = dict(file_list)[rel]
+    for file_idx, (rel, tree) in enumerate(parsed):
+        if _deadline_exceeded(deadline):
+            return _finalize_graph(
+                root, nodes, edges, unresolved, parse_errors,
+                partial=True, timed_out=True, detail=DETAIL_FULL,
+            )
+        if on_progress and file_idx % 10 == 0:
+            on_progress("expand", file_idx, len(parsed))
+        text = text_by_rel[rel]
         mod_nid = node_id("module", rel)
         dotted = mm["path_to_module"].get(rel) or module_map.path_to_dotted(rel)
         nodes[mod_nid] = {
@@ -267,7 +525,7 @@ def build_graph_from_files(
             "resolved": True,
         })
 
-        qn_map = callgraph._compute_qualnames(tree)
+        qn_map = qualnames_by_rel[rel]
         struct_qn = _compute_structure_qualnames(tree)
         class_nodes: Dict[str, str] = {}
         function_nodes: Dict[str, str] = {}
@@ -341,89 +599,7 @@ def build_graph_from_files(
             })
 
         it = imports.build_import_table(tree, _file_package(rel))
-        for node in getattr(tree, "body", []):
-            line = getattr(node, "lineno", 1)
-            if isinstance(node, ast.Import):
-                for alias in node.names:
-                    target_mod = alias.name
-                    tgt_path = mm["module_to_path"].get(target_mod)
-                    if tgt_path is not None:
-                        edges.append({
-                            "type": "imports",
-                            "from": mod_nid,
-                            "to": node_id("module", tgt_path),
-                            "line": line,
-                            "resolved": True,
-                            "target_module": target_mod,
-                        })
-                    else:
-                        unresolved["imports_external"].append({
-                            "from_module": rel,
-                            "line": line,
-                            "target": target_mod,
-                            "reason": "third_party_or_unknown_module",
-                        })
-            elif isinstance(node, ast.ImportFrom):
-                level = node.level or 0
-                if level == 0:
-                    base = node.module
-                else:
-                    base_pkg = imports._base_pkg_for_relative(_file_package(rel), level)
-                    if base_pkg is None:
-                        continue
-                    if node.module:
-                        base = f"{base_pkg}.{node.module}" if base_pkg else node.module
-                    else:
-                        for alias in node.names:
-                            if alias.name == "*":
-                                continue
-                            sub = f"{base_pkg}.{alias.name}" if base_pkg else alias.name
-                            tgt_path = mm["module_to_path"].get(sub)
-                            if tgt_path is not None:
-                                edges.append({
-                                    "type": "imports",
-                                    "from": mod_nid,
-                                    "to": node_id("module", tgt_path),
-                                    "line": line,
-                                    "resolved": True,
-                                    "target_module": sub,
-                                })
-                            else:
-                                unresolved["imports_external"].append({
-                                    "from_module": rel,
-                                    "line": line,
-                                    "target": sub,
-                                    "reason": "third_party_or_unknown_module",
-                                })
-                        continue
-                if base is None:
-                    continue
-                tgt_path = mm["module_to_path"].get(base)
-                if tgt_path is not None:
-                    edges.append({
-                        "type": "imports",
-                        "from": mod_nid,
-                        "to": node_id("module", tgt_path),
-                        "line": line,
-                        "resolved": True,
-                        "target_module": base,
-                    })
-                else:
-                    for alias in node.names:
-                        if alias.name == "*":
-                            unresolved["imports_external"].append({
-                                "from_module": rel,
-                                "line": line,
-                                "target": base,
-                                "reason": "star_import",
-                            })
-                        else:
-                            unresolved["imports_external"].append({
-                                "from_module": rel,
-                                "line": line,
-                                "target": f"{base}.{alias.name}",
-                                "reason": "third_party_or_unknown_module",
-                            })
+        _append_module_import_edges(rel, tree, mod_nid, mm, edges, unresolved)
 
         cg = callgraph.build_call_graph(tree, rel)
         for caller_qual, callees in sorted(cg.get("edges", {}).items()):
@@ -537,19 +713,9 @@ def build_graph_from_files(
                         "kind": "decorator",
                     })
 
-    edge_list = _dedupe_edges(edges)
-    node_list = [nodes[k] for k in sorted(nodes)]
-    stats = compute_statistics(node_list, edge_list, unresolved)
-
-    return {
-        "schema_version": GRAPH_SCHEMA_VERSION,
-        "repository_root": root,
-        "nodes": node_list,
-        "edges": edge_list,
-        "unresolved": unresolved,
-        "statistics": stats,
-        "parse_errors": sorted(parse_errors),
-    }
+    if on_progress:
+        on_progress("expand", len(parsed), len(parsed))
+    return _finalize_graph(root, nodes, edges, unresolved, parse_errors, detail=DETAIL_FULL)
 
 
 def _degraded_graph(root: str, reason: str, count: int) -> Dict[str, Any]:
@@ -628,7 +794,14 @@ def compute_statistics(
             call_targets[edge["to"]] = call_targets.get(edge["to"], 0) + 1
 
     components = _largest_components(nodes, edges)
-    import_cycles = _import_cycles(edges)
+    import_edges = [e for e in edges if e.get("type") == "imports" and e.get("resolved")]
+    # Cycle enumeration is exponential on dense import graphs; skip on large repos.
+    if len(import_edges) > 3000:
+        import_cycles: List[List[str]] = []
+    elif len(import_edges) > 800:
+        import_cycles = _import_cycles_bounded(import_edges, max_cycles=80)
+    else:
+        import_cycles = _import_cycles(edges)
 
     return {
         "node_counts": node_counts,
@@ -694,6 +867,50 @@ def _largest_components(
     return [{"root": root, "size": size} for root, size in ranked[:10]]
 
 
+def _import_cycles_bounded(
+    import_edges: List[Dict[str, Any]],
+    *,
+    max_cycles: int = 120,
+) -> List[List[str]]:
+    """Collect import cycles up to ``max_cycles`` (avoids blow-up on huge repos)."""
+    if max_cycles <= 0:
+        return []
+    adj: Dict[str, Set[str]] = {}
+    for edge in import_edges:
+        adj.setdefault(edge["from"], set()).add(edge["to"])
+    cycles: List[List[str]] = []
+    seen: Set[Tuple[str, ...]] = set()
+    stack: List[str] = []
+    on_stack: Set[str] = set()
+
+    def dfs(node: str) -> bool:
+        if len(cycles) >= max_cycles:
+            return True
+        on_stack.add(node)
+        stack.append(node)
+        for nxt in sorted(adj.get(node, ())):
+            if nxt in on_stack:
+                idx = stack.index(nxt)
+                cycle = stack[idx:] + [nxt]
+                key = tuple(cycle)
+                if key not in seen:
+                    seen.add(key)
+                    cycles.append(cycle)
+                    if len(cycles) >= max_cycles:
+                        return True
+            elif nxt not in on_stack and dfs(nxt):
+                return True
+        stack.pop()
+        on_stack.remove(node)
+        return False
+
+    for start in sorted(adj):
+        if dfs(start):
+            break
+    cycles.sort(key=lambda c: c[0])
+    return cycles
+
+
 def _import_cycles(edges: List[Dict[str, Any]]) -> List[List[str]]:
     adj: Dict[str, Set[str]] = {}
     for edge in edges:
@@ -733,6 +950,9 @@ def build_graph(
     *,
     scope: str = PRODUCTION_SCOPE,
     include_tests: bool = False,
+    detail: str = DETAIL_FULL,
+    time_budget_sec: Optional[float] = None,
+    on_progress: Optional[Callable[[str, int, int], None]] = None,
 ) -> Dict[str, Any]:
     """Build a dependency graph under ``repository_root``.
 
@@ -758,15 +978,35 @@ def build_graph(
             root_abs, candidates, include_tests=include_tests
         )
 
+    deadline = (
+        time.monotonic() + float(time_budget_sec)
+        if time_budget_sec is not None and time_budget_sec > 0
+        else None
+    )
     files: List[Tuple[str, str]] = []
+    timed_out_reading = False
     for abs_path, rel in kept:
+        if _deadline_exceeded(deadline):
+            timed_out_reading = True
+            break
         try:
             with open(abs_path, "r", encoding="utf-8-sig", errors="ignore") as handle:
                 files.append((rel.replace("\\", "/"), handle.read()))
         except OSError:
             continue
 
-    graph = build_graph_from_files(repository_root, files)
+    graph = build_graph_from_files(
+        repository_root,
+        files,
+        detail=detail,
+        deadline=deadline,
+        on_progress=on_progress,
+    )
+    if timed_out_reading and not graph.get("jarvis_timed_out"):
+        graph["jarvis_timed_out"] = True
+        graph["jarvis_partial"] = True
+        graph["degraded"] = True
+        graph["degraded_reason"] = "time_budget_exceeded"
     degraded = bool(graph.get("degraded"))
     graph["graph_scope"] = (
         DEGRADED_SCOPE if degraded else (FULL_SCOPE if scope == FULL_SCOPE else PRODUCTION_SCOPE)
@@ -781,6 +1021,8 @@ def build_graph(
         "degraded": degraded,
         "cap_files": _MAX_FILES,
         "cap_functions": _MAX_FUNCTIONS,
+        "graph_detail": detail,
+        "time_budget_sec": time_budget_sec,
     }
     return graph
 
