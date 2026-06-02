@@ -1,10 +1,22 @@
 "use strict";
 
-/** Phase 111/116B — Cinematic 3D repository universe (visualization only). */
+/** Phase 111/116B/121F — Cinematic 3D repository universe (visualization only). */
 const JARVIS_UNIVERSE = (() => {
   const LARGE_GRAPH_THRESHOLD = 1000;
   const HOVER_NEIGHBOR_CAP = 100;
   const SELECT_NEIGHBOR_CAP = 250;
+  const MODULE_VISUAL_MIN = 5.5;
+  const MODULE_VISUAL_MAX = 28;
+  /** Phase 121F — force native ForceGraph spheres for module view (custom meshes were invisible in UI). */
+  const MODULE_FORCE_VISIBLE = true;
+  const MODULE_FORCE_MIN_RADIUS = 5;
+  const MODULE_FORCE_MAX_RADIUS = 16;
+  const MODULE_NODE_REL_SIZE = 7;
+  const MODULE_MIN_RADIUS = 1.85;
+  const MODULE_MAX_RADIUS = 22;
+  const SUBSYSTEM_MIN_RADIUS = 4;
+  const SUBSYSTEM_MAX_RADIUS = 28;
+  const SCENE_SCALE_DIVISOR = 82;
 
   const U = {
     fg: null,
@@ -30,16 +42,227 @@ const JARVIS_UNIVERSE = (() => {
     lastHoverId: null,
     perfEnabled: false,
     subsystemView: false,
+    sceneNodeScale: 1,
+    forceVisibleModule: false,
+    nodeSizing: null,
+    renderDiagnostics: null,
   };
+
+  function shouldForceVisibleModuleNodes(data, nodes) {
+    if (!MODULE_FORCE_VISIBLE) return false;
+    const view = (data?.view || "").toLowerCase();
+    if (view && view !== "module") return false;
+    if (nodes.some(isSubsystemNode)) return false;
+    return true;
+  }
+
+  /**
+   * Phase 123 — bounds-aware node sizing.
+   *
+   * The previous bug: node display radius was capped at ~16 units while the
+   * galaxy coordinates spread nodes across hundreds of units. Fit to those
+   * bounds, the spheres became sub-pixel dots so only the edge lines were
+   * visible. Here we scale every node's radius to a fraction of the graph's
+   * spatial spread, so nodes are ALWAYS clearly larger than the edges, and
+   * important (high fan-in / hub) modules are visibly larger than leaves.
+   */
+  function computeSpatialBounds(nodes) {
+    let maxR = 1;
+    for (const n of nodes || []) {
+      const x = n.galaxy_x ?? n.x ?? 0;
+      const y = n.galaxy_y ?? n.y ?? 0;
+      const z = n.galaxy_z ?? n.z ?? 0;
+      maxR = Math.max(maxR, Math.hypot(x, y, z));
+    }
+    return maxR;
+  }
+
+  function nodeImportance(node) {
+    // 0..1 importance from coupling + risk + provided visual size.
+    const fi = node.fan_in || 0;
+    const fo = node.fan_out || 0;
+    const coupling = Math.log1p(fi * 1.6 + fo);
+    const couplingNorm = Math.min(1, coupling / Math.log1p(60));
+    const riskNorm = Math.min(1, (node.risk_score || 0) / 80);
+    let imp = 0.55 * couplingNorm + 0.45 * riskNorm;
+    if (node.is_hub) imp = Math.max(imp, 0.7);
+    return Math.max(0, Math.min(1, imp));
+  }
+
+  function buildNodeSizing(nodes, subsystemView) {
+    const bounds = computeSpatialBounds(nodes);
+    // Largest node ~1/9 of the spread; smallest ~1/34, with absolute floors so
+    // tiny/empty graphs still render visible spheres.
+    const minR = Math.max(subsystemView ? 7 : 5, bounds / (subsystemView ? 22 : 34));
+    const maxR = Math.max(minR + 4, bounds / (subsystemView ? 7 : 9));
+    U.nodeSizing = { bounds, minR, maxR, subsystemView };
+    return U.nodeSizing;
+  }
+
+  function nativeDisplayRadius(node) {
+    const s = U.nodeSizing || { minR: 5, maxR: 16 };
+    const imp = subsystemNodeImportance(node);
+    const r = s.minR + (s.maxR - s.minR) * imp;
+    return Number.isFinite(r) && r > 0 ? r : s.minR;
+  }
+
+  function subsystemNodeImportance(node) {
+    if (isSubsystemNode(node)) {
+      const mc = node.module_count || node.visual_size || node.size || 1;
+      return Math.max(0.25, Math.min(1, Math.log1p(mc) / Math.log1p(60)));
+    }
+    return nodeImportance(node);
+  }
+
+  /** nodeVal so that built-in sphere display radius == nativeDisplayRadius (relSize=1). */
+  function nativeNodeVal(node) {
+    const r = nativeDisplayRadius(node);
+    return Math.max(0.001, Math.pow(r, 3));
+  }
+
+  // ----------------------------------------------------------------------
+  // Phase 124 — explicit OPAQUE node spheres.
+  //
+  // ForceGraph3D's built-in node spheres rendered as near-invisible dots in
+  // practice (lit material + fog + camera distance washed them out, leaving a
+  // spiderweb of edges). We bypass that entirely: each node is an OPAQUE,
+  // UNLIT MeshBasicMaterial sphere with `fog:false`, so its colour is constant
+  // and bright at any distance and never fades into the background. This is the
+  // bulletproof path — a human sees actual balls.
+  // ----------------------------------------------------------------------
+  function baseNodeColorHex(node) {
+    if (node.in_cycle) return 0x9a7bff;             // purple — cycle member
+    const pct = U.riskPercentiles;
+    if (pct?.top1?.has(node.id)) return 0xff5c7a;   // red/pink — highest risk
+    if (pct?.top5?.has(node.id)) return 0xffc24b;   // amber — elevated risk
+    if (node.is_hub) return 0x3ef0ff;               // cyan — hub
+    if (isSubsystemNode(node)) return 0x5b9eff;     // blue — subsystem
+    return 0x6f93ff;                                // bright blue — normal module
+  }
+
+  function makeNodeMesh(node) {
+    if (typeof THREE === "undefined" || !node?.id) return null;
+    const r = nativeDisplayRadius(node);
+    const color = baseNodeColorHex(node);
+    const geo = new THREE.SphereGeometry(r, 18, 14);
+    const mat = new THREE.MeshBasicMaterial({
+      color,
+      transparent: false,
+      opacity: 1,
+      fog: false,        // never fade into the background
+      depthWrite: true,
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.userData.nodeId = node.id;
+    mesh.userData.baseColor = color;
+    mesh.renderOrder = 2;
+    node.__nodeMesh = mesh;
+    return mesh;
+  }
+
+  function _dimColor(hex) {
+    if (typeof THREE === "undefined") return hex;
+    return new THREE.Color(hex).multiplyScalar(0.32).getHex();
+  }
+
+  /** Recolour/scale custom node meshes for hover, selection, focus-dim and blast. */
+  function refreshNodeMeshColors() {
+    if (!U.fg || typeof THREE === "undefined") return;
+    const focus = U.highlightState.focus;
+    const hasFocus = focus.size > 0;
+    const hoverId = U.highlightState.hoverId;
+    const selId = U.highlightState.selectedId;
+    const blastTarget = U.blastTargetId;
+    const blastSet = U.blastRadiusIds ? new Set(U.blastRadiusIds) : null;
+    const graph = U.fg.graphData();
+    for (const n of graph.nodes || []) {
+      const mesh = n.__nodeMesh || n.__threeObj;
+      if (!mesh || !mesh.material) continue;
+      const base = mesh.userData.baseColor ?? baseNodeColorHex(n);
+      let col = base;
+      let scale = 1;
+      if (blastSet && blastSet.has(n.id)) col = 0xff8a44;
+      if (blastTarget === n.id) { col = 0xff2244; scale = 1.5; }
+      if (selId === n.id) { col = 0xffffff; scale = 1.6; }
+      else if (hoverId === n.id) { col = 0xbdf2ff; scale = 1.32; }
+      else if (hasFocus && !focus.has(n.id)) { col = _dimColor(base); }
+      mesh.material.color.set(col);
+      mesh.scale.setScalar(scale);
+    }
+  }
+
+  /** nodeVal for built-in spheres: display radius ≈ cbrt(val) * nodeRelSize */
+  function moduleForceVal(node) {
+    const visual = moduleVisualSize(node);
+    const hub = node.is_hub ? 1.22 : 1;
+    const desired = Math.max(
+      MODULE_FORCE_MIN_RADIUS,
+      4.2 + Math.sqrt(visual) * 0.75 * hub
+    );
+    const capped = Math.min(MODULE_FORCE_MAX_RADIUS, desired);
+    const rel = MODULE_NODE_REL_SIZE;
+    const val = Math.pow(capped / rel, 3);
+    return Number.isFinite(val) && val > 0 ? val : Math.pow(MODULE_FORCE_MIN_RADIUS / rel, 3);
+  }
+
+  function moduleForceDisplayRadius(nodeVal) {
+    const v = Number(nodeVal);
+    if (!Number.isFinite(v) || v <= 0) return MODULE_FORCE_MIN_RADIUS;
+    return Math.cbrt(v) * MODULE_NODE_REL_SIZE;
+  }
 
   function isSubsystemNode(node) {
     return node?.graph_view === "subsystem" || String(node?.id || "").startsWith("subsystem:");
   }
 
+  function moduleVisualSize(node) {
+    const fi = node.fan_in || 0;
+    const fo = node.fan_out || 0;
+    const raw = node.visual_size || node.size || (6 + Math.log1p(fi + fo + 1) * 2.85);
+    return Math.max(MODULE_VISUAL_MIN, Math.min(MODULE_VISUAL_MAX, raw));
+  }
+
+  function computeSceneNodeScale(nodes, subsystemView) {
+    if (subsystemView || !(nodes || []).length) return 1;
+    let maxR = 48;
+    for (const n of nodes) {
+      const x = n.galaxy_x ?? n.x ?? 0;
+      const y = n.galaxy_y ?? n.y ?? 0;
+      const z = n.galaxy_z ?? n.z ?? 0;
+      maxR = Math.max(maxR, Math.hypot(x, y, z));
+    }
+    return Math.max(1.15, Math.min(6.5, maxR / SCENE_SCALE_DIVISOR));
+  }
+
+  function moduleNodeScale(node) {
+    const visual = moduleVisualSize(node);
+    const hubMul = node.is_hub ? Math.min(2.6, 1.05 + Math.sqrt(visual) * 0.14) : 1.0;
+    const scene = U.sceneNodeScale || 1;
+    const radius = scene * hubMul * (0.95 + Math.sqrt(visual) * 0.42);
+    const safe = Number.isFinite(radius) ? radius : MODULE_MIN_RADIUS;
+    return Math.max(MODULE_MIN_RADIUS, Math.min(MODULE_MAX_RADIUS, safe));
+  }
+
   function subsystemNodeScale(node) {
-    const hubScale = Math.min(2.5, Math.max(1.0, node.hub_scale || 1.25));
-    const visual = Math.min(14, node.visual_size || node.size || 6);
-    return hubScale * 0.38 * Math.sqrt(visual);
+    const hubScale = Math.min(3.2, Math.max(1.15, node.hub_scale || 1.35));
+    const visual = Math.min(18, node.visual_size || node.size || 8);
+    const scene = Math.max(1, (U.sceneNodeScale || 1) * 0.9);
+    const radius = scene * hubScale * (0.72 + Math.sqrt(visual) * 0.38);
+    const safe = Number.isFinite(radius) ? radius : SUBSYSTEM_MIN_RADIUS;
+    return Math.max(SUBSYSTEM_MIN_RADIUS, Math.min(SUBSYSTEM_MAX_RADIUS, safe));
+  }
+
+  function graphSpatialRadius(nodes) {
+    let maxR = 40;
+    for (const n of nodes || []) {
+      const x = n.x ?? n.galaxy_x ?? 0;
+      const y = n.y ?? n.galaxy_y ?? 0;
+      const z = n.z ?? n.galaxy_z ?? 0;
+      const nodeR = U.nodeSizing ? nativeDisplayRadius(n)
+        : (isSubsystemNode(n) ? subsystemNodeScale(n) : moduleNodeScale(n));
+      maxR = Math.max(maxR, Math.hypot(x, y, z) + nodeR * 1.5);
+    }
+    return maxR;
   }
 
   function enablePerfLogging(on) {
@@ -135,6 +358,7 @@ const JARVIS_UNIVERSE = (() => {
     } else {
       fg.nodeLabel("");
     }
+    refreshNodeMeshColors();
     if (typeof fg.refresh === "function") fg.refresh();
   }
 
@@ -162,11 +386,38 @@ const JARVIS_UNIVERSE = (() => {
       const active = U.highlightState.focus.size > 0
         && (U.highlightState.focus.has(sid) || U.highlightState.focus.has(tid));
       const w = l.weight || 1;
-      if (l.bridge) return active ? 1.1 + w * 0.3 : 0.35 + w * 0.12;
-      return active ? 0.85 + w * 0.22 : 0.08 + w * 0.05;
+      if (l.bridge) return active ? 1.4 + w * 0.35 : 0.2 + w * 0.08;
+      return active ? 1.05 + w * 0.28 : 0.06 + w * 0.04;
+    });
+    fg.nodeOpacity((n) => {
+      if (!n) return 0;
+      if (U.forceVisibleModule) {
+        if (U.highlightState.focus.size === 0) return 1.0;
+        return U.highlightState.focus.has(n.id) ? 1.0 : 0.55;
+      }
+      if (U.highlightState.focus.size === 0) {
+        return isSubsystemNode(n) ? 0.92 : 1.0;
+      }
+      return U.highlightState.focus.has(n.id) ? 1.0 : 0.22;
+    });
+    fg.linkOpacity((l) => {
+      if (!showEdges()) return 0;
+      const [sid, tid] = linkEndpoints(l);
+      const active = U.highlightState.focus.size > 0
+        && (U.highlightState.focus.has(sid) || U.highlightState.focus.has(tid));
+      const base = l.bridge ? 0.5 : (l.opacity || 0.18);
+      if (U.highlightState.focus.size === 0) return base;
+      return active ? Math.min(0.95, base + 0.4) : 0.04;
     });
     fg.linkDirectionalParticles((l) => {
-      if (!showEdges() || U.largeGraph) return 0;
+      if (!showEdges()) return 0;
+      const [sid, tid] = linkEndpoints(l);
+      const active = U.highlightState.focus.size > 0
+        && (U.highlightState.focus.has(sid) || U.highlightState.focus.has(tid));
+      const pulseCtx = U.highlightState.selectedId || U.highlightState.hoverId
+        || U.pulseNodes.has(sid) || U.pulseNodes.has(tid);
+      if (active && pulseCtx) return l.bridge ? 4 : 3;
+      if (U.largeGraph) return 0;
       if (l.bridge) return 4;
       return (l.weight || 1) > 2.5 ? 2 : 0;
     });
@@ -199,14 +450,16 @@ const JARVIS_UNIVERSE = (() => {
   }
 
   function nodeColor(n, active, blast) {
+    const dim = U.highlightState.focus.size > 0 && !active;
     if (blast?.target === n.id) return "#ff2244";
     if (blast?.affected?.has(n.id)) return "#ff8a44";
-    if (n.in_cycle) return active ? "#d4b8ff" : "#9a7bff";
+    if (n.in_cycle) return active ? "#d4b8ff" : dim ? "#4a3868" : "#9a7bff";
     const pct = U.riskPercentiles;
-    if (pct?.top1?.has(n.id)) return active ? "#ff9db0" : "#ff5c7a";
-    if (pct?.top5?.has(n.id)) return active ? "#ffe08a" : "#ffc24b";
-    if (n.is_hub) return active ? "#8af0ff" : "#3ef0ff";
-    return active ? "#9eb8ff" : "#5b76c8";
+    if (pct?.top1?.has(n.id)) return active ? "#ff9db0" : dim ? "#6a3040" : "#ff5c7a";
+    if (pct?.top5?.has(n.id)) return active ? "#ffe08a" : dim ? "#6a5528" : "#ffc24b";
+    if (n.is_hub) return active ? "#8af0ff" : dim ? "#1a4850" : "#3ef0ff";
+    if (isSubsystemNode(n)) return active ? "#7ec8ff" : dim ? "#2a3d58" : "#5b9eff";
+    return active ? "#9eb8ff" : dim ? "#2a3558" : "#5b76c8";
   }
 
   function linkColor(link, active, bridge) {
@@ -229,28 +482,36 @@ const JARVIS_UNIVERSE = (() => {
   }
 
   function sphereNodeObject(node) {
+    if (U.forceVisibleModule) return null;
     if (typeof THREE === "undefined") return null;
+    if (!node?.id) return null;
     const group = new THREE.Group();
     group.userData.nodeId = node.id;
     const subsystem = isSubsystemNode(node);
-    const scale = subsystem
-      ? subsystemNodeScale(node)
-      : (node.is_hub ? (node.hub_scale || 2.4) : 1) * Math.sqrt(node.size || 4) * 0.22;
+    const scale = subsystem ? subsystemNodeScale(node) : moduleNodeScale(node);
+    if (!Number.isFinite(scale) || scale <= 0) return null;
     const geo = subsystem || node.is_hub
       ? new THREE.IcosahedronGeometry(subsystem ? scale : scale * 1.15, subsystem ? 0 : 1)
       : new THREE.SphereGeometry(scale, 16, 12);
     const color = new THREE.Color(nodeColor(node, false, null));
     const topRisk = subsystem && (node.risk_rank <= 3 || U.riskPercentiles?.top5?.has(node.id));
+    const selected = U.highlightState.selectedId === node.id;
+    const emissiveScale = U.pulseNodes.has(node.id) ? 0.65
+      : selected ? 0.52
+      : topRisk ? 0.38
+      : subsystem ? 0.22
+      : node.is_hub ? 0.48
+      : 0.28;
     const mat = new THREE.MeshPhongMaterial({
       color,
-      emissive: color.clone().multiplyScalar(
-        U.pulseNodes.has(node.id) ? 0.55 : topRisk ? 0.28 : subsystem ? 0.14 : node.is_hub ? 0.35 : 0.12
-      ),
-      transparent: true,
-      opacity: subsystem ? (topRisk ? 0.9 : 0.72) : 0.94,
-      shininess: subsystem ? 55 : node.is_hub ? 90 : 40,
+      emissive: color.clone().multiplyScalar(emissiveScale),
+      transparent: false,
+      opacity: 1,
+      shininess: subsystem ? 65 : node.is_hub ? 100 : 52,
+      depthWrite: true,
     });
     const mesh = new THREE.Mesh(geo, mat);
+    mesh.renderOrder = 2;
     group.add(mesh);
 
     if (node.in_cycle) {
@@ -269,28 +530,112 @@ const JARVIS_UNIVERSE = (() => {
       group.add(outline);
     } else if (node.is_hub && !subsystem) {
       const ring = new THREE.Mesh(
-        new THREE.TorusGeometry(scale * 1.8, scale * 0.08, 8, 24),
-        new THREE.MeshBasicMaterial({ color: 0x3ef0ff, transparent: true, opacity: 0.45 })
+        new THREE.TorusGeometry(scale * 2.0, scale * 0.1, 8, 28),
+        new THREE.MeshBasicMaterial({ color: 0x3ef0ff, transparent: true, opacity: 0.55 })
       );
       ring.rotation.x = Math.PI / 2;
       group.add(ring);
     }
 
+    const glow = new THREE.Mesh(
+      new THREE.SphereGeometry(scale * 1.22, 10, 8),
+      new THREE.MeshBasicMaterial({
+        color: color.getHex(),
+        transparent: true,
+        opacity: subsystem ? 0.12 : node.is_hub ? 0.18 : 0.1,
+        depthWrite: false,
+      })
+    );
+    glow.renderOrder = 1;
+    group.add(glow);
+
     group.userData.mesh = mesh;
+    group.userData.glow = glow;
     group.userData.baseEmissive = mat.emissive.clone();
     return group;
+  }
+
+  function measureNodeDisplayRadius(threeObj) {
+    if (!threeObj) return 0;
+    let r = 0;
+    if (threeObj.geometry?.parameters?.radius != null) {
+      r = threeObj.geometry.parameters.radius;
+    }
+    const sx = threeObj.scale?.x ?? 1;
+    const sy = threeObj.scale?.y ?? 1;
+    const sz = threeObj.scale?.z ?? 1;
+    const scale = Math.max(sx, sy, sz);
+    if (threeObj.type === "Group" && threeObj.children?.length) {
+      for (const child of threeObj.children) {
+        const cr = measureNodeDisplayRadius(child);
+        if (cr > r) r = cr;
+      }
+      return r;
+    }
+    return r * scale;
+  }
+
+  function auditRenderedMeshes(fg, graphNodes) {
+    const nodes = graphNodes || fg?.graphData()?.nodes || [];
+    let meshCount = 0;
+    let minR = Infinity;
+    let maxR = 0;
+    const missing = [];
+    for (const n of nodes) {
+      const obj = n.__threeObj;
+      if (!obj) {
+        missing.push(n.id);
+        continue;
+      }
+      meshCount += 1;
+      const r = measureNodeDisplayRadius(obj);
+      if (Number.isFinite(r) && r > 0) {
+        minR = Math.min(minR, r);
+        maxR = Math.max(maxR, r);
+      }
+    }
+    if (!Number.isFinite(minR)) minR = 0;
+    const diag = {
+      nodes: nodes.length,
+      meshes: meshCount,
+      minRadius: Math.round(minR * 100) / 100,
+      maxRadius: Math.round(maxR * 100) / 100,
+      forceVisibleModule: !!U.forceVisibleModule,
+      missingMeshes: missing.length,
+    };
+    U.renderDiagnostics = diag;
+    console.info("[Atlas graph] render audit", diag);
+    if (meshCount !== nodes.length) {
+      console.warn(
+        `[Atlas graph] rendered_node_meshes (${meshCount}) !== graph.nodes.length (${nodes.length})`
+      );
+    }
+    if (U.forceVisibleModule && meshCount > 0 && minR < MODULE_FORCE_MIN_RADIUS - 0.5) {
+      console.warn(`[Atlas graph] node_radius_min ${minR} < ${MODULE_FORCE_MIN_RADIUS}`);
+    }
+    return diag;
   }
 
   function setupScene(fg) {
     if (typeof THREE === "undefined") return;
     const scene = fg.scene();
-    scene.fog = new THREE.FogExp2(0x070b14, 0.0028);
-    const amb = new THREE.AmbientLight(0x334466, 0.85);
-    const key = new THREE.PointLight(0x3ef0ff, 1.2, 900);
+    // Phase 124 — very light fog so edges recede slightly but nodes (fog:false)
+    // and the scene never wash out. Heavy fog previously hid the graph.
+    scene.fog = new THREE.FogExp2(0x070b14, 0.00035);
+    const amb = new THREE.AmbientLight(0x446688, 1.05);
+    const key = new THREE.PointLight(0x3ef0ff, 1.45, 12000);
     key.position.set(120, 80, 160);
-    const fill = new THREE.PointLight(0x9a7bff, 0.7, 700);
+    const fill = new THREE.PointLight(0x9a7bff, 0.85, 12000);
     fill.position.set(-140, -60, -80);
     scene.add(amb, key, fill);
+    try {
+      const cam = fg.camera();
+      if (cam) {
+        cam.near = 0.8;
+        cam.far = 25000;
+        cam.updateProjectionMatrix?.();
+      }
+    } catch (e) { /* optional */ }
   }
 
   function setupControls(fg) {
@@ -317,8 +662,8 @@ const JARVIS_UNIVERSE = (() => {
       const charge = fg.d3Force("charge");
       if (charge?.strength) {
         charge.strength(subsystem
-          ? -140 - Math.min(220, nodes.length * 5)
-          : -55 - Math.min(140, nodes.length * 0.06));
+          ? -180 - Math.min(280, nodes.length * 6)
+          : -85 - Math.min(200, nodes.length * 0.09));
       }
       const linkForce = fg.d3Force("link");
       if (linkForce?.distance) {
@@ -331,13 +676,16 @@ const JARVIS_UNIVERSE = (() => {
         fg.d3Force("x", d3.forceX(n => n.galaxy_x || 0).strength(pull));
         fg.d3Force("y", d3.forceY(n => n.galaxy_y || 0).strength(pull));
         if (d3.forceZ) fg.d3Force("z", d3.forceZ(n => n.galaxy_z || 0).strength(subsystem ? 0.08 : 0.04));
-        if (subsystem && d3.forceCollide) {
-          fg.d3Force("collide", d3.forceCollide(n => {
-            const hs = Math.min(2.5, Math.max(1.0, n.hub_scale || 1.2));
-            return 6 + hs * Math.sqrt(Math.min(n.visual_size || n.size || 6, 14)) * 1.1;
-          }).strength(0.85).iterations(2));
-        } else {
-          fg.d3Force("collide", null);
+        if (d3.forceCollide) {
+          if (subsystem) {
+            fg.d3Force("collide", d3.forceCollide(n => nativeDisplayRadius(n) * 1.12)
+              .strength(0.85).iterations(2));
+          } else if (nodes.length <= 1500) {
+            fg.d3Force("collide", d3.forceCollide(n => nativeDisplayRadius(n) * 1.1)
+              .strength(0.3).iterations(1));
+          } else {
+            fg.d3Force("collide", null);
+          }
         }
       }
     } catch (e) { /* force hooks vary by build */ }
@@ -419,13 +767,18 @@ const JARVIS_UNIVERSE = (() => {
   function fitGraphCamera(fg, nodes) {
     if (!fg || !nodes?.length) return;
     const subsystem = U.subsystemView;
-    const dist = subsystem
-      ? 110 + Math.sqrt(nodes.length) * 22
-      : 170 + Math.sqrt(nodes.length) * 16;
+    const bounds = graphSpatialRadius(nodes);
+    // Phase 124 — tighter fit so node spheres are clearly visible at default zoom
+    // (previous multiplier pushed the camera back until nodes looked like dots).
+    const dist = Math.max(
+      subsystem ? 80 : 95,
+      bounds * 1.35 + Math.sqrt(nodes.length) * (subsystem ? 10 : 6)
+    );
+    const lookY = subsystem ? 0 : bounds * 0.04;
     fg.cameraPosition(
-      { x: dist * 0.35, y: dist * 0.22, z: dist },
-      { x: 0, y: 0, z: 0 },
-      subsystem ? 600 : 1200
+      { x: dist * 0.38, y: dist * 0.26 + lookY, z: dist * 0.92 },
+      { x: 0, y: lookY, z: 0 },
+      subsystem ? 700 : 1100
     );
   }
 
@@ -454,6 +807,11 @@ const JARVIS_UNIVERSE = (() => {
     const links = data.links.map(l => ({ ...l }));
     U.subsystemView = data.view === "subsystem" || data.graph_view === "subsystem"
       || nodes.some(n => isSubsystemNode(n));
+    U.sceneNodeScale = computeSceneNodeScale(nodes, U.subsystemView);
+    // Phase 123 — native ForceGraph spheres for ALL views, sized to the spatial
+    // spread so nodes are reliably visible (visibility > custom-mesh beauty).
+    U.forceVisibleModule = true;
+    buildNodeSizing(nodes, U.subsystemView);
     U.riskPercentiles = computePercentiles(nodes);
     const t0 = performance.now();
 
@@ -462,17 +820,6 @@ const JARVIS_UNIVERSE = (() => {
       .backgroundColor("rgba(0,0,0,0)")
       .showNavInfo(false)
       .nodeLabel(n => (U.subsystemView && n ? `${n.label || n.id} · ${n.module_count ?? 0}` : ""))
-      .nodeThreeObject(n => sphereNodeObject(n))
-      .nodeThreeObjectExtend(false)
-      .nodeVal(n => {
-        if (isSubsystemNode(n)) {
-          const hs = Math.min(2.5, Math.max(1.0, n.hub_scale || 1.25));
-          return hs * Math.sqrt(Math.min(n.visual_size || n.size || 6, 14));
-        }
-        return (n.is_hub ? (n.hub_scale || 2.2) : 1) * (n.size || 4);
-      })
-      .nodeOpacity(n => (isSubsystemNode(n) ? 0.78 : 0.95))
-      .linkOpacity(0.72)
       .linkCurvature(0.12)
       .linkDirectionalArrowLength(0)
       .onNodeClick(n => callbacks.onNodeClick?.(n))
@@ -485,6 +832,12 @@ const JARVIS_UNIVERSE = (() => {
       })
       .width(host.clientWidth)
       .height(host.clientHeight);
+
+    // Phase 124 — explicit opaque spheres (bulletproof visibility). nodeVal still
+    // feeds the force layout / spacing; the visible body is our MeshBasicMaterial.
+    fg.nodeThreeObject(n => makeNodeMesh(n))
+      .nodeThreeObjectExtend(false)
+      .nodeVal(n => nativeNodeVal(n));
 
     U.fg = fg;
     setupScene(fg);
@@ -511,16 +864,19 @@ const JARVIS_UNIVERSE = (() => {
         U.highlightState = { hoverId: null, selectedId: null, focus: new Set() };
         installGraphAccessors(fg);
         syncHighlightVisuals(fg);
+        const renderDiagnostics = auditRenderedMeshes(fg, mergedNodes);
         const perf = {
           loadMs: Math.round(performance.now() - t0),
           nodes: mergedNodes.length,
           links: mergedLinks.length,
           largeGraph: U.largeGraph,
           adjacencyBuilt: U.adj.neighbors.size,
+          forceVisibleModule: U.forceVisibleModule,
+          renderDiagnostics,
         };
         callbacks.onLoaded?.(perf);
         fitGraphCamera(fg, mergedNodes);
-        if (!U.largeGraph) startPulseLoop(fg);
+        if (!U.largeGraph && !U.forceVisibleModule) startPulseLoop(fg);
         startCameraDrift(fg);
       }
     }
@@ -617,6 +973,10 @@ const JARVIS_UNIVERSE = (() => {
     U.lastHoverId = null;
     U.fg = null;
     U.subsystemView = false;
+    U.sceneNodeScale = 1;
+    U.forceVisibleModule = false;
+    U.nodeSizing = null;
+    U.renderDiagnostics = null;
     U.blastRadiusIds = null;
     U.blastTargetId = null;
     U.accessorsInstalled = false;
@@ -777,6 +1137,11 @@ const JARVIS_UNIVERSE = (() => {
     toggleScreenshotMode,
     animateCounter,
     renderTimeline,
+    getRenderDiagnostics() {
+      return U.renderDiagnostics;
+    },
+    MODULE_FORCE_VISIBLE,
+    MODULE_FORCE_MIN_RADIUS,
     get fg() { return U.fg; },
   };
 })();

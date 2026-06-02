@@ -8,6 +8,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <!-- 3D dependency graph (Three.js under the hood). Falls back gracefully if offline. -->
+  <!-- Phase 124: expose a global THREE so custom OPAQUE node spheres render.
+       Without this, makeNodeMesh() returns null and ForceGraph falls back to
+       washed-out default spheres (the "invisible nodes / spiderweb" bug). -->
+  <script src="https://unpkg.com/three@0.157.0/build/three.min.js"></script>
   <script src="https://unpkg.com/3d-force-graph@1.73.4/dist/3d-force-graph.min.js"></script>
 </head>
 <body>
@@ -156,44 +160,49 @@
       <div class="center-grid">
         <aside class="panel glass left" id="leftPanel"></aside>
         <div class="graph-stage">
-          <div class="graph-head">
-            <h3>Repository Map</h3>
-            <div class="graph-controls">
-              <div class="hierarchy-bar">
-                <div id="hierarchyBreadcrumb" class="muted tiny">Repository</div>
-                <button class="btn small ghost" type="button" onclick="backToOverview()">Back to overview</button>
+          <div class="map-header">
+            <div class="map-titlebar">
+              <div class="map-title-left">
+                <h3>Repository Map</h3>
+                <span class="map-repo" id="mapRepoName"></span>
+                <span class="map-health-badge" id="mapHealthBadge"></span>
               </div>
-              <details class="graph-advanced-toolbar">
-                <summary class="btn small ghost">Advanced</summary>
-                <div class="graph-toolbar">
-                  <button class="btn small ghost" type="button" onclick="resetGraphView()" title="Reset camera to default position">Reset View</button>
-                  <button class="btn small tour-btn" type="button" onclick="startRepositoryTour()">Tour Repository</button>
-                  <button class="btn small ghost" type="button" onclick="exportDemoBundle()">Export Bundle</button>
-                  <button class="btn small ghost" type="button" onclick="exportGraphPNG()">PNG</button>
-                  <button class="btn small ghost" type="button" onclick="exportGraphSVG()">SVG</button>
-                  <button class="btn small ghost" id="screenshotBtn" type="button" onclick="toggleScreenshotMode()">Screenshot</button>
+              <div class="graph-controls">
+                <div class="graph-toggle" role="radiogroup" aria-label="Graph view">
+                  <label><input type="radio" name="graphView" value="module" checked onchange="setGraphView('module')"> Module</label>
+                  <label><input type="radio" name="graphView" value="subsystem" onchange="setGraphView('subsystem')"> Architecture</label>
+                  <label><input type="radio" name="graphView" value="hierarchy" onchange="setGraphView('hierarchy')"> Hierarchy</label>
                 </div>
-              </details>
-              <div class="graph-toggle" role="radiogroup" aria-label="Graph view">
-                <label><input type="radio" name="graphView" value="module" checked onchange="setGraphView('module')"> Module graph</label>
-                <label><input type="radio" name="graphView" value="subsystem" onchange="setGraphView('subsystem')"> Architecture overview</label>
-                <label><input type="radio" name="graphView" value="hierarchy" onchange="setGraphView('hierarchy')"> Hierarchy</label>
+                <button class="btn small ghost" type="button" onclick="resetGraphView()" title="Reset camera to default position">Reset View</button>
+                <details class="graph-advanced-toolbar">
+                  <summary class="btn small ghost">Advanced ▾</summary>
+                  <div class="graph-toolbar glass">
+                    <label class="graph-toggle edge-toggle"><input type="checkbox" id="showEdges" checked onchange="toggleGraphEdges()"> Show edges</label>
+                    <button class="btn small tour-btn" type="button" onclick="startRepositoryTour()">Tour Repository</button>
+                    <button class="btn small ghost" type="button" onclick="exportDemoBundle()">Export Bundle</button>
+                    <button class="btn small ghost" type="button" onclick="exportGraphPNG()">PNG</button>
+                    <button class="btn small ghost" type="button" onclick="exportGraphSVG()">SVG</button>
+                    <button class="btn small ghost" id="screenshotBtn" type="button" onclick="toggleScreenshotMode()">Screenshot</button>
+                  </div>
+                </details>
               </div>
-              <label class="graph-toggle edge-toggle"><input type="checkbox" id="showEdges" checked onchange="toggleGraphEdges()"> Show edges</label>
-              <span class="muted" id="graphMeta"></span>
+            </div>
+            <div class="map-metrics glass" id="graphScaleHeader" aria-label="Graph metrics"></div>
+            <div class="map-breadcrumb" id="mapBreadcrumb" style="display:none">
+              <div id="hierarchyBreadcrumb" class="muted tiny">Repository</div>
+              <button class="btn small ghost" type="button" onclick="backToOverview()">Back to overview</button>
               <span class="muted tiny" id="hierarchyCounts"></span>
             </div>
+            <div class="map-warning" id="graphWarning" style="display:none"></div>
+            <div class="map-massive" id="massiveModeBanner" style="display:none" role="status">
+              <span class="mmb-title">Massive Mode</span>
+              <span class="mmb-reason muted tiny" id="massiveModeReason">enabled due to repository size</span>
+              <button class="btn small primary" type="button" id="showFullModuleGraphBtn" onclick="showFullModuleGraph()">Show full module graph</button>
+            </div>
           </div>
-          <div class="scan-path glass" id="graphWarning" style="display:none"></div>
-          <div class="massive-mode-banner glass" id="massiveModeBanner" style="display:none" role="status">
-            <div class="mmb-title">Massive Repository Mode Active</div>
-            <p class="mmb-reason muted tiny" id="massiveModeReason">Reason: Repository size exceeds threshold</p>
-            <p class="muted tiny">Graph optimized for navigation — switch views below or open the full module graph.</p>
-            <button class="btn small primary" type="button" id="showFullModuleGraphBtn" onclick="showFullModuleGraph()">Show Full Module Graph</button>
-          </div>
+          <span class="muted tiny" id="graphMeta" style="display:none"></span>
           <div class="graph-mode-badge" id="graphModeBadge" style="display:none" aria-live="polite">Module Graph</div>
-          <div class="graph-scale-header glass" id="graphScaleHeader" aria-label="Graph mode metrics"></div>
-          <p class="graph-entity-summary" id="graphEntitySummary" aria-live="polite"></p>
+          <p class="graph-entity-summary" id="graphEntitySummary" style="display:none" aria-live="polite"></p>
           <div class="graph-render-diagnostics glass" id="graphRenderDiagnostics" style="display:none" aria-live="polite"></div>
           <div id="graph3d"></div>
           <div class="module-browse-panel glass" id="moduleBrowsePanel" style="display:none" aria-label="Module list fallback">
