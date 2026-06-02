@@ -30,7 +30,7 @@ from builder_core.bug_intelligence import depgraph
 from . import analytics
 from . import graph_build
 
-PRODUCT_VERSION = "phase115b-graph-performance"
+PRODUCT_VERSION = "phase116-typescript-graph"
 CHARS_PER_TOKEN = 4.0
 GRAPH_DISPLAY_CAP = 5000
 RISK_RANK_TOP = 5000
@@ -115,6 +115,22 @@ _SCAN_STAGE_PROGRESS: Dict[str, Tuple[int, str]] = {
 # --------------------------------------------------------------------------
 def estimate_tokens(text: str) -> int:
     return max(0, round(len(text or "") / CHARS_PER_TOKEN))
+
+
+_JS_TS_EXTS = (".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs")
+
+
+def _annotate_multilang_risk_signals(risks: Dict[str, Any]) -> Dict[str, Any]:
+    """Mark Python-only risk channels unavailable for JS/TS modules (not zero)."""
+    for row in risks.get("ranked_modules", []):
+        path = str(row.get("path") or "")
+        if any(path.endswith(ext) for ext in _JS_TS_EXTS):
+            row["signal_availability"] = {
+                "contract_evidence": "unavailable",
+                "static_findings": "unavailable",
+                "test_evidence": "unavailable",
+            }
+    return risks
 
 
 def _safe_rss_bytes() -> Optional[int]:
@@ -722,6 +738,7 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
             graph,
             top=min(RISK_RANK_TOP, max(module_count, 12)),
         )
+        risks = _annotate_multilang_risk_signals(risks)
         t_risk_end = time.time()
         recorder.mark(
             "detecting_architectural_risks",
@@ -786,6 +803,8 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
         "graph_detail": graph.get("graph_detail") or build_meta.get("detail"),
         "graph_build": build_meta,
         "full_graph_pending": bool(build_meta.get("lazy_full")),
+        "language_breakdown": graph.get("language_breakdown")
+        or graph_build._language_breakdown(graph),
         "degraded": bool(graph.get("degraded")),
         "import_cycle_count": stats.get("import_cycles") and len(stats["import_cycles"]) or 0,
         "top_hubs": top_hubs,
@@ -975,6 +994,7 @@ def current_summary() -> Dict[str, Any]:
         "massive_reason": scan.get("massive_reason", {}),
         "scope": scan.get("scope", {"mode": "entire_repo"}),
         "cache": scan.get("cache", {"hit": False}),
+        "language_breakdown": scan.get("language_breakdown", {}),
     }
 
 

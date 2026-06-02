@@ -1,0 +1,26 @@
+{
+  "elapsed_sec": 9.07,
+  "module_count": 8144,
+  "dependency_edges": 13224,
+  "language_breakdown": {
+    "python_modules": 0,
+    "typescript_modules": 8108,
+    "javascript_modules": 36,
+    "external_package_imports": 232,
+    "unresolved_imports": 69039
+  },
+  "graph_build": {
+    "detail": "imports",
+    "time_budget_sec": 60.0,
+    "lazy_full": true,
+    "tier": "massive",
+    "elapsed_sec": 4.733,
+    "timed_out": false,
+    "partial": false,
+    "js_candidates": 8147,
+    "js_files_kept": 8144
+  },
+  "degraded": false,
+  "graph_nodes": 6,
+  "graph_links": 2
+}

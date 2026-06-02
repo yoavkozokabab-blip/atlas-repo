@@ -324,6 +324,9 @@ async function scanFlow() {
   } else if (scan.degraded) {
     $("scanModeInfo").style.display = "block";
     $("scanModeInfo").textContent = "Graph built in degraded/partial mode — some edges may be missing.";
+  } else if (!scan.module_count && (scan.code_files || scan.file_count || 0) > 0) {
+    $("scanModeInfo").style.display = "block";
+    $("scanModeInfo").textContent = "This repository uses languages not yet supported for dependency extraction.";
   } else {
     $("scanModeInfo").style.display = "none";
   }
@@ -339,8 +342,11 @@ async function cancelCurrentScan() {
   if (res.ok) toast("Cancel requested", "success");
 }
 function metricGrid(s) {
+  const lb = s.language_breakdown || {};
   const M = [
     ["files discovered", s.files_discovered], ["modules indexed", s.module_count],
+    ["typescript modules", lb.typescript_modules], ["javascript modules", lb.javascript_modules],
+    ["python modules", lb.python_modules], ["external packages", lb.external_package_imports],
     ["subsystems", s.subsystem_count], ["dependency edges", s.dependency_edges],
     ["unresolved imports", s.unresolved_imports], ["import cycles", s.import_cycle_count],
     ["graph scope", s.graph_scope || "—"], ["compact tokens", s.compact_token_estimate],
