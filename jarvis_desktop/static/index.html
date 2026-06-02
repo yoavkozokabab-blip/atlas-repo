@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JARVIS — Repository Intelligence Platform</title>
+  <title>ATLAS — Repository Intelligence Platform</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
@@ -18,7 +18,7 @@
   <header class="topbar glass">
     <div class="brand" onclick="go('home')">
       <span class="logo-mark">◈</span>
-      <span class="logo-text">JARVIS</span>
+      <span class="logo-text">ATLAS</span>
       <span class="logo-sub">Repository Intelligence Platform</span>
     </div>
     <nav class="nav" id="nav">
@@ -26,6 +26,8 @@
       <button data-view="scan" onclick="go('scan')">Scan</button>
       <button data-view="center" data-lock="1" onclick="go('center')">Command Center</button>
       <button data-view="intel" data-lock="1" onclick="go('intel')">Intelligence</button>
+      <button data-view="build" data-lock="1" onclick="go('build')">Build</button>
+      <button data-view="investigate" data-lock="1" onclick="go('investigate')">Investigate</button>
       <button data-view="impact" data-lock="1" onclick="go('impact')">Impact</button>
       <button data-view="bug" data-lock="1" onclick="go('bug')">Bug Hunt</button>
       <button data-view="export" data-lock="1" onclick="go('export')">AI Export</button>
@@ -44,12 +46,23 @@
     <!-- ===================== SCREEN 1: HOME ===================== -->
     <section class="view active" id="view-home">
       <div class="hero">
-        <h1 class="hero-title">JARVIS</h1>
+        <h1 class="hero-title">ATLAS</h1>
         <p class="hero-sub">Repository Intelligence Platform</p>
-        <p class="hero-pitch">JARVIS prepares your codebase for AI. It doesn't replace
-          Claude, Codex, or Cursor — it makes them understand your repository
-          <b>faster, cheaper, and with better evidence.</b></p>
-        <h2 class="ask">What would you like to do today?</h2>
+        <p class="hero-headline">Map your repository before your AI reads it.</p>
+        <p class="hero-subheadline">Atlas scans architecture, dependencies, risks and impact,<br>then exports context for Claude, Codex and Cursor.</p>
+        <div class="steps-row">
+          <div class="step"><div class="step-num">1</div><h3>Choose repo</h3><p>Browse or paste your project folder path.</p></div>
+          <div class="step-arrow">→</div>
+          <div class="step"><div class="step-num">2</div><h3>Scan architecture</h3><p>Atlas indexes modules, edges, and architectural risks locally.</p></div>
+          <div class="step-arrow">→</div>
+          <div class="step"><div class="step-num">3</div><h3>Ask Atlas or export</h3><p>Explore the graph, ask Copilot, or copy context for Claude.</p></div>
+        </div>
+        <div class="home-actions">
+          <button class="btn primary big" type="button" id="browseHomBtn" onclick="browseRepoFolder()">Browse Repository</button>
+          <button class="btn ghost big" type="button" onclick="loadDemoMode()">Try Demo</button>
+          <button class="btn ghost big tour-launch" type="button" onclick="startProductTour()">Watch Product Tour</button>
+        </div>
+        <h2 class="ask">Or explore by task</h2>
         <div class="cards">
           <div class="card glass" onclick="go('intel')"><div class="ci">🧭</div><h3>Understand this repository</h3><p>Subsystems, entry points, runtime flow.</p></div>
           <div class="card glass" onclick="go('center')"><div class="ci">⚠️</div><h3>Find architectural risks</h3><p>Hubs, fan-in, cycles, risk ranking.</p></div>
@@ -61,11 +74,11 @@
 
         <div class="repo-pick glass">
           <label for="repoPath">Repository folder</label>
-          <p class="muted tiny picker-help">Paste the full path to your project root. JARVIS analyzes dependencies, risk, and structure locally — no cloud upload.</p>
+          <p class="muted tiny picker-help">Paste the full path to your project root. Atlas analyzes dependencies, risk, and structure locally — no cloud upload.</p>
           <div class="pick-row">
             <input id="repoPath" type="text" placeholder="C:\projects\my-app  or  /home/dev/my-app" value="" autocomplete="off" />
-            <button class="btn ghost" id="browseRepoBtn" type="button" onclick="browseRepoFolder()">Browse</button>
-            <button class="btn ghost" type="button" onclick="validateRepoPath()">Validate</button>
+            <button class="btn browse-btn" id="browseRepoBtn" type="button" onclick="browseRepoFolder()">Browse</button>
+            <button class="btn ghost" type="button" onclick="validateRepoPath(true)">Validate</button>
           </div>
           <div class="path-error" id="pathError" style="display:none"></div>
           <div class="path-ok muted tiny" id="pathOk" style="display:none"></div>
@@ -90,9 +103,7 @@
             <div id="preScanEstimate" class="muted tiny"></div>
           </div>
           <div class="pick-actions">
-            <button class="btn primary big" type="button" onclick="scanFlow()">⟳ Scan Repository</button>
-            <button class="btn ghost big" type="button" onclick="loadDemoMode()">Try Demo</button>
-            <button class="btn ghost big tour-launch" type="button" onclick="startProductTour()">Start Product Tour</button>
+            <button class="btn primary big" type="button" id="scanBtn" disabled onclick="scanFlow()">⟳ Scan Repository</button>
           </div>
           <div class="demo-pack glass">
             <label>Demo repository size</label>
@@ -156,9 +167,10 @@
                 <button class="btn small ghost" type="button" onclick="backToOverview()">Back to overview</button>
               </div>
               <div class="graph-toolbar">
+                <button class="btn small ghost" type="button" onclick="resetGraphView()" title="Reset camera to default position">Reset View</button>
                 <button class="btn small tour-btn" type="button" onclick="startRepositoryTour()">Tour Repository</button>
                 <button class="btn small tour-btn" type="button" onclick="startProductTour()">Start Product Tour</button>
-                <button class="btn small ghost" type="button" onclick="exportDemoBundle()">Export Demo Bundle</button>
+                <button class="btn small ghost" type="button" onclick="exportDemoBundle()">Export Bundle</button>
                 <button class="btn small ghost" type="button" onclick="exportGraphPNG()">PNG</button>
                 <button class="btn small ghost" type="button" onclick="exportGraphSVG()">SVG</button>
                 <button class="btn small ghost" id="screenshotBtn" type="button" onclick="toggleScreenshotMode()">Screenshot</button>
@@ -187,13 +199,25 @@
             <p id="productTourNarration" class="muted"></p>
             <button class="btn small ghost" type="button" onclick="stopProductTour()">Stop tour</button>
           </div>
-          <div class="presentation-badge" id="presentationBadge" style="display:none">JARVIS · Repository Intelligence</div>
+          <div class="graph-legend glass" id="graphLegend">
+            <div class="legend-item"><div class="legend-dot" style="background:#3ef0ff"></div><span>Normal</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#ffc24b"></div><span>Elevated risk</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#ff5c7a"></div><span>High risk</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#9a7bff"></div><span>Cycle</span></div>
+          </div>
+          <div class="presentation-badge" id="presentationBadge" style="display:none">ATLAS · Repository Intelligence</div>
           <div class="timeline-panel glass" id="timelinePanel"></div>
         </div>
         <aside class="panel glass right">
           <div class="inspector-wrap" id="moduleInspector">
             <h3>Module Inspector</h3>
             <p class="muted tiny">Click a node to inspect module evidence, imports, and blast radius.</p>
+          </div>
+          <div class="inspector-quick" id="inspectorQuick" style="display:none">
+            <button class="btn small ghost" onclick="copyInspectorPath()">Copy path</button>
+            <button class="btn small ghost" onclick="genInspectorPrompt('claude')">Claude</button>
+            <button class="btn small ghost" onclick="genInspectorPrompt('codex')">Codex</button>
+            <button class="btn small ghost" onclick="genInspectorPrompt('cursor')">Cursor</button>
           </div>
           <h3>AI Copilot</h3>
           <div class="copilot">
@@ -241,6 +265,30 @@
       <div id="intelBody" class="intel-body"></div>
     </section>
 
+    <!-- ===================== SCREEN: BUILD (CHANGE PLANNER) ===================== -->
+    <section class="view" id="view-build">
+      <h2 class="vh">Build — Change Planner</h2>
+      <p class="muted tiny" style="margin:-8px 4px 14px">Planning only — Atlas does not generate or apply code. Export prompts for Claude, Codex, or Cursor.</p>
+      <div class="io glass">
+        <label>What do you want to add or change?</label>
+        <textarea id="buildRequest" rows="4" placeholder="e.g. Add user authentication&#10;Add Stripe billing&#10;Add Redis caching"></textarea>
+        <button class="btn primary" onclick="runChangePlan()">Generate Change Plan</button>
+      </div>
+      <div id="buildOut" class="out"></div>
+    </section>
+
+    <!-- ===================== SCREEN: INVESTIGATE (SYMPTOM ENGINE) ===================== -->
+    <section class="view" id="view-investigate">
+      <h2 class="vh">Investigate — Symptom Engine</h2>
+      <p class="muted tiny" style="margin:-8px 4px 14px">Describe behavior in plain language. Atlas suggests where to look — with confidence and evidence, not fake certainty.</p>
+      <div class="io glass">
+        <label>What is going wrong?</label>
+        <textarea id="investigateSymptom" rows="5" placeholder="e.g. The backtest is better than paper trading&#10;Telegram alerts are delayed&#10;Dashboard numbers are wrong"></textarea>
+        <button class="btn primary" onclick="runInvestigationPlan()">Generate Investigation Plan</button>
+      </div>
+      <div id="investigateOut" class="out"></div>
+    </section>
+
     <!-- ===================== SCREEN 5: IMPACT SIMULATOR ===================== -->
     <section class="view" id="view-impact">
       <h2 class="vh">Impact Simulator</h2>
@@ -257,6 +305,16 @@
     <!-- ===================== SCREEN 6: BUG INVESTIGATION ===================== -->
     <section class="view" id="view-bug">
       <h2 class="vh">Bug Investigation</h2>
+      <div class="bug-hint glass">
+        <div class="bug-hint-title">Works best with</div>
+        <ul class="clean">
+          <li>Stack traces with file paths and line numbers</li>
+          <li>Module or file names — e.g. <code>builder_core/ask.py</code></li>
+          <li>Error messages and exception class names</li>
+          <li>Module names visible in the dependency graph</li>
+        </ul>
+        <p class="muted tiny" style="margin:8px 0 0">Natural-language symptom descriptions may have limited match precision. If no match is found, Atlas will suggest investigation prompts.</p>
+      </div>
       <div class="io glass">
         <label>Paste a stack trace or describe the bug</label>
         <textarea id="bugText" rows="6" placeholder="Traceback (most recent call last):&#10;  File &quot;builder_core/ask.py&quot;, line 42 …"></textarea>
@@ -270,6 +328,10 @@
       <h2 class="vh">AI Context Export</h2>
       <div class="export-grid">
         <div class="glass controls">
+          <div class="export-why">
+            <div class="export-why-title">Why this helps</div>
+            <p>Atlas gives your AI assistant repository context before it starts guessing. Compact packets reduce token cost; verbose packets include full architectural evidence.</p>
+          </div>
           <label>Target</label>
           <div class="seg" id="segTarget">
             <button class="active" data-v="claude">Claude</button>
@@ -302,15 +364,14 @@
 
   <div id="onboarding" class="onboarding" style="display:none">
     <div class="onboarding-card glass">
-      <h2>Welcome to JARVIS</h2>
-      <p class="muted">JARVIS prepares your codebase for AI assistants — locally, with evidence-backed structure.</p>
+      <h2>Welcome to ATLAS</h2>
+      <p class="muted">Atlas maps your repository's architecture so your AI assistant understands it — locally, with evidence-backed structure.</p>
       <ol class="onboard-steps">
-        <li><b>What JARVIS does</b> — Maps dependencies, architectural risk, and subsystems from your repo.</li>
-        <li><b>Step 1: Choose repository</b> — Paste your project folder path or try Demo Mode.</li>
-        <li><b>Step 2: Scan</b> — Builder Core indexes modules and import edges (runs on your machine).</li>
-        <li><b>Step 3: Explore graph</b> — 3D dependency view with risk coloring.</li>
-        <li><b>Step 4: Ask Copilot</b> — Grounded answers about risk, impact, and architecture.</li>
-        <li><b>Step 5: Export prompt</b> — Copy compact context for Claude, Codex, or Cursor.</li>
+        <li><b>Choose repository</b> — Browse for your project folder or paste the path directly.</li>
+        <li><b>Scan</b> — Atlas indexes modules, import edges, and risk signals on your machine.</li>
+        <li><b>Explore graph</b> — 3D dependency view with risk coloring by subsystem and module.</li>
+        <li><b>Ask Copilot</b> — Grounded answers about risk, impact, and architecture — no external API.</li>
+        <li><b>Export context</b> — Copy compact packets for Claude, Codex, or Cursor.</li>
       </ol>
       <div class="onboard-actions">
         <button class="btn primary" onclick="dismissOnboarding(false)">Get started</button>

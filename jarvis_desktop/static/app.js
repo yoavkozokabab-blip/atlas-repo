@@ -6,9 +6,10 @@ const STATE = {
   demoMode: false, tourStops: null, screenshotMode: false, demoPack: "small", productTourActive: false,
   massiveMode: false, lastEstimate: null, hierarchy: { level: "subsystem", subsystem: "", package: "", module: "" },
 };
-const RECENT_KEY = "jarvis_recent_repos";
-const ONBOARDING_KEY = "jarvis_onboarding_done_v1";
-const DEMO_PACK_KEY = "jarvis_demo_pack_v1";
+const RECENT_KEY = "atlas_recent_repos";
+const LEGACY_RECENT_KEY = "jarvis_recent_repos";
+const ONBOARDING_KEY = "atlas_onboarding_done_v1";
+const DEMO_PACK_KEY = "atlas_demo_pack_v1";
 
 function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
@@ -115,7 +116,7 @@ function showScanFailed(message, code) {
     empty_path: ["Enter the full path to your project folder.", "Example: C:\\dev\\my-app"],
     not_found: ["Check spelling and drive letter.", "Use Validate before scanning."],
     no_code_files: ["Choose a folder that contains source files.", "Try Demo Mode to explore without a repo."],
-    permission_denied: ["Run JARVIS Desktop with read access to the folder.", "Avoid system-protected directories."],
+    permission_denied: ["Run Atlas Desktop with read access to the folder.", "Avoid system-protected directories."],
   };
   $("scanFailedHints").innerHTML = (hints[code] || ["Try Demo Mode or pick a different folder."]).map(h => `<li>${h}</li>`).join("");
 }
@@ -142,6 +143,7 @@ async function validateRepoPath(showToast) {
   $("pathError").style.display = "none";
   $("pathOk").style.display = "none";
   if (!path) {
+    updateScanBtnState(false);
     $("pathError").style.display = "block";
     $("pathError").textContent = "Enter a folder path first.";
     if (showToast) toast("Enter a folder path", "error");
@@ -149,11 +151,13 @@ async function validateRepoPath(showToast) {
   }
   const res = await api("/api/repositories/validate", "POST", { path });
   if (!res.ok) {
+    updateScanBtnState(false);
     $("pathError").style.display = "block";
     $("pathError").textContent = res.error || "Invalid path";
     if (showToast) toast("✗ " + (res.error || "Invalid path"), "error");
     return null;
   }
+  updateScanBtnState(true);
   $("pathOk").style.display = "block";
   $("pathOk").textContent = `✓ ${res.name} — ${res.code_files} code file(s) found`;
   if (res.warnings?.length) {
@@ -201,6 +205,13 @@ async function browseRepoFolder() {
   }
 }
 
+function updateScanBtnState(enabled) {
+  const btn = $("scanBtn");
+  if (!btn) return;
+  if (enabled) btn.removeAttribute("disabled");
+  else btn.setAttribute("disabled", "");
+}
+
 function focusCopilot() { go("center"); setTimeout(() => $("askInput")?.focus(), 120); }
 
 function finishScanSession(scan, pathLabel) {
@@ -220,7 +231,7 @@ async function loadDemoMode(pack) {
   const packId = pack || STATE.demoPack || "small";
   go("scan");
   showScanPanel("running");
-  $("scanPath").textContent = `Loading JARVIS demo (${packId})…`;
+  $("scanPath").textContent = `Loading Atlas demo (${packId})…`;
   renderScanSkeleton();
   setBar(30);
   const scan = await api("/api/demo/load", "POST", { pack: packId });
@@ -283,9 +294,17 @@ function selectRecentPath(p) {
 
 /* ---------------- Recent repos ---------------- */
 function loadRecent() {
-  let list = []; try { list = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]"); } catch (e) {}
+  let list = [];
+  try { list = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]"); } catch (e) {}
+  // Migrate from legacy key on first load
+  if (!list.length) {
+    try {
+      const legacy = JSON.parse(localStorage.getItem(LEGACY_RECENT_KEY) || "[]");
+      if (legacy.length) { list = legacy; localStorage.setItem(RECENT_KEY, JSON.stringify(list)); }
+    } catch (e) {}
+  }
   const box = $("recentList");
-  if (!list.length) { box.innerHTML = '<span class="muted">None yet — scan a repo to populate this.</span>'; return; }
+  if (!list.length) { box.innerHTML = '<span class="muted">None yet — scan a repository to populate this.</span>'; return; }
   box.innerHTML = list.map(p => `<span class="rr" title="${p}" onclick="selectRecentPath(${JSON.stringify(p)})">${p.split(/[\\/]/).pop() || p}</span>`).join("");
 }
 function pushRecent(p) {
@@ -626,9 +645,20 @@ function renderCopilotAnswer(res) {
   $("copilotActionWrap").style.display = res.suggested_action ? "block" : "none";
   $("copilotAction").textContent = res.suggested_action || "";
   const limits = (res.limitations || []).filter(Boolean);
-  $("copilotOut").innerHTML = limits.length
-    ? `<span class="muted">Limitations: ${limits.join(" · ")}</span>`
-    : `<span class="muted">Confidence: ${res.confidence || "medium"}</span>`;
+  const noMatch = (res.answer || "").toLowerCase().includes("no match") || (res.answer || "").length < 20;
+  if (noMatch) {
+    $("copilotOut").innerHTML = `<span class="muted">I need a more specific file, module, or symptom to answer precisely.</span>
+      <div class="suggest" style="margin-top:8px">
+        <div class="sg" onclick="askQuestion('What are the top architectural risks?')">Ask about top risks</div>
+        <div class="sg" onclick="askQuestion('What breaks if I change the top hub module?')">Ask what breaks if a file changes</div>
+        <div class="sg" onclick="askQuestion('Explain the main subsystems')">Explain a subsystem</div>
+        <div class="sg" onclick="askQuestion('Generate a Claude prompt for this repo')">Generate AI context</div>
+      </div>`;
+  } else {
+    $("copilotOut").innerHTML = limits.length
+      ? `<span class="muted">Limitations: ${limits.join(" · ")}</span>`
+      : `<span class="muted">Confidence: ${res.confidence || "medium"}</span>`;
+  }
   if (res.graph_highlight) JARVIS_UNIVERSE.highlightBlastRadius(res.graph_highlight);
 }
 
@@ -662,6 +692,7 @@ function build3DGraph(data) {
     onBackgroundClick: () => {
       STATE.selectedNode = null;
       $("selectedNodeCard").style.display = "none";
+      if ($("inspectorQuick")) $("inspectorQuick").style.display = "none";
       renderModuleInspectorPlaceholder();
       if (STATE.summary) $("suggest").innerHTML = renderCopilotSuggestions(STATE.summary);
     },
@@ -742,6 +773,7 @@ function showNode(n) {
   $("selectedNodeCard").innerHTML = `<h4>Selected: ${n.label}</h4>
     <div class="muted tiny">${n.path || ""} · ${n.subsystem || ""} · fan-in ${n.fan_in}</div>`;
   if (STATE.summary) $("suggest").innerHTML = renderCopilotSuggestions(STATE.summary);
+  if ($("inspectorQuick")) $("inspectorQuick").style.display = n.path ? "flex" : "none";
   renderModuleInspector(n);
   JARVIS_UNIVERSE.refreshHighlight(n);
   JARVIS_UNIVERSE.flyToNode(n, 1100);
@@ -771,14 +803,14 @@ function stopRepositoryTour() {
 function exportGraphPNG() {
   const url = JARVIS_UNIVERSE.exportPNG(2);
   if (!url) { toast("Export failed"); return; }
-  JARVIS_UNIVERSE.downloadDataUrl(url, `jarvis-universe-${Date.now()}.png`);
+  JARVIS_UNIVERSE.downloadDataUrl(url, `atlas-universe-${Date.now()}.png`);
   toast("PNG exported ✓", "success");
 }
 
 function exportGraphSVG() {
   const svg = JARVIS_UNIVERSE.exportSVG();
   if (!svg) { toast("SVG export failed"); return; }
-  JARVIS_UNIVERSE.downloadText(svg, `jarvis-universe-${Date.now()}.svg`, "image/svg+xml");
+  JARVIS_UNIVERSE.downloadText(svg, `atlas-universe-${Date.now()}.svg`, "image/svg+xml");
   toast("SVG exported ✓", "success");
 }
 
@@ -802,6 +834,28 @@ function exitPresentationMode() {
   if (STATE.screenshotMode) toggleScreenshotMode();
 }
 
+function resetGraphView() {
+  if (typeof JARVIS_UNIVERSE?.resetGraphView === "function") {
+    JARVIS_UNIVERSE.resetGraphView();
+    return;
+  }
+  if (JARVIS_UNIVERSE?.fg) {
+    JARVIS_UNIVERSE.fg.cameraPosition({ x: 0, y: 0, z: 600 }, { x: 0, y: 0, z: 0 }, 800);
+  }
+}
+
+function copyInspectorPath() {
+  const node = STATE.selectedNode;
+  if (!node?.path) { toast("No module selected"); return; }
+  copyText(node.path, "Path copied");
+}
+
+function genInspectorPrompt(target) {
+  const node = STATE.selectedNode;
+  if (!node?.path) { toast("No module selected"); return; }
+  askQuestion(`Generate a ${target} prompt for module ${node.path}`);
+}
+
 async function exportDemoBundle() {
   const res = await api("/api/demo/export-bundle", "POST", {});
   if (!res.ok) { toast("✗ " + (res.error || "Export failed")); return; }
@@ -811,7 +865,7 @@ async function exportDemoBundle() {
   const blob = new Blob([bytes], { type: "application/zip" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = res.filename || "jarvis_demo_bundle.zip";
+  a.download = res.filename || "atlas_demo_bundle.zip";
   a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 3000);
   toast("Demo bundle exported ✓", "success");
@@ -900,6 +954,116 @@ async function renderIntel() {
     <div class="glass ib full"><h3>Recommended next questions</h3><ul class="clean">${(sum.recommended_questions||[]).map(q=>`<li>${q}</li>`).join("")}</ul></div>`;
 }
 
+/* ---------------- Build (Change Planner) ---------------- */
+function esc(s) { return String(s || "").replace(/</g, "&lt;"); }
+
+function renderLimitations(items) {
+  const list = items || [];
+  if (!list.length) return "";
+  return `<h3 style="font-size:13px;color:var(--amber);margin-top:14px">Limitations</h3><ul class="clean">${list.map(x => `<li>${esc(x)}</li>`).join("")}</ul>`;
+}
+
+async function runChangePlan() {
+  const request = $("buildRequest")?.value.trim();
+  if (!request) { toast("Describe the change you want"); return; }
+  const r = await api("/api/planning/change", "POST", { request });
+  const out = $("buildOut");
+  if (!r.ok) {
+    out.innerHTML = `<div class="glass ocard muted">${esc(r.error || "Plan failed")}</div>`;
+    return;
+  }
+  STATE.buildResult = r;
+  const p = r.plan || {};
+  const prompts = r.prompts || {};
+  out.innerHTML = `
+    <div class="glass ocard">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h3 style="margin:0">Change Plan</h3>
+        <span class="lvl ${p.confidence?.includes('high') ? 'low' : 'medium'}">confidence: ${esc(p.confidence)}</span>
+      </div>
+      <p class="muted tiny" style="margin:8px 0">Size: <b>${esc(p.estimated_change_size)}</b> · Intent: ${esc(p.intent)}</p>
+      <pre class="code" style="max-height:320px;overflow:auto">${esc(r.formatted || "")}</pre>
+      <h3 style="font-size:13px;color:var(--cyan);margin-top:14px">Evidence</h3>
+      <ul class="clean">${(p.evidence || []).map(e => `<li>${esc(e)}</li>`).join("")}</ul>
+      ${renderLimitations(r.limitations)}
+      <h3 style="font-size:13px;color:var(--cyan);margin-top:16px">Export implementation prompts</h3>
+      <div class="copy-row">
+        <button class="btn small" onclick="copyBuildPrompt('claude')">Copy Claude</button>
+        <button class="btn small" onclick="copyBuildPrompt('codex')">Copy Codex</button>
+        <button class="btn small" onclick="copyBuildPrompt('cursor')">Copy Cursor</button>
+      </div>
+      <details style="margin-top:12px"><summary class="muted tiny">Preview Claude prompt</summary>
+        <pre class="code">${esc(prompts.claude || "")}</pre></details>
+      <h3 style="font-size:13px;color:var(--cyan);margin-top:18px">Impact simulation (optional)</h3>
+      <div class="pick-row">
+        <input id="buildImpactTarget" type="text" placeholder="module path to simulate blast radius" value="${esc((p.files_to_inspect_first || [])[0] || "")}" />
+        <button class="btn ghost" onclick="runBuildImpact()">Simulate</button>
+      </div>
+      <div id="buildImpactOut"></div>
+    </div>`;
+}
+
+function copyBuildPrompt(tool) {
+  const text = STATE.buildResult?.prompts?.[tool] || "";
+  if (!text) { toast("Generate a plan first"); return; }
+  copyText(text, `Copied ${tool} prompt`);
+}
+
+async function runBuildImpact() {
+  const target = $("buildImpactTarget")?.value.trim();
+  if (!target) { toast("Enter a file or module"); return; }
+  const r = await api("/api/planning/impact", "POST", { target });
+  const host = $("buildImpactOut");
+  if (!host) return;
+  if (!r.ok) { host.innerHTML = `<p class="muted tiny">${esc(r.error)}</p>`; return; }
+  const sim = r.simulation || {};
+  host.innerHTML = `
+    <div class="glass" style="margin-top:10px;padding:12px">
+      <p><b>Risk:</b> ${esc(sim.risk_level)} · <b>Affected files:</b> ${(sim.potentially_affected_modules || []).length}</p>
+      <div class="taglist">${(sim.potentially_affected_modules || []).slice(0, 12).map(f => `<span class="tag">${esc(f)}</span>`).join("")}</div>
+      <ul class="clean tiny">${(sim.recommended_verification || []).map(v => `<li>${esc(v)}</li>`).join("")}</ul>
+    </div>`;
+}
+
+/* ---------------- Investigate (Symptom Engine) ---------------- */
+async function runInvestigationPlan() {
+  const symptom = $("investigateSymptom")?.value.trim();
+  if (!symptom) { toast("Describe the symptom"); return; }
+  const r = await api("/api/planning/investigate", "POST", { symptom });
+  const out = $("investigateOut");
+  if (!r.ok) {
+    out.innerHTML = `<div class="glass ocard muted">${esc(r.error || "Investigation failed")}</div>`;
+    return;
+  }
+  STATE.investigateResult = r;
+  const p = r.plan || {};
+  const prompts = r.prompts || {};
+  out.innerHTML = `
+    <div class="glass ocard">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h3 style="margin:0">Investigation Plan</h3>
+        <span class="lvl ${p.confidence === 'high' ? 'low' : 'medium'}">confidence: ${esc(p.confidence)}</span>
+      </div>
+      <pre class="code" style="max-height:280px;overflow:auto">${esc(r.formatted || "")}</pre>
+      <div class="taglist" style="margin:10px 0">${(p.likely_modules || []).map(m => `<span class="tag">${esc(m)}</span>`).join("") || '<span class="muted">No grounded module match</span>'}</div>
+      ${renderLimitations(r.limitations)}
+      <h3 style="font-size:13px;color:var(--cyan);margin-top:14px">Export prompts</h3>
+      <div class="copy-row">
+        <button class="btn small" onclick="copyInvestigatePrompt('claude')">Copy Claude</button>
+        <button class="btn small" onclick="copyInvestigatePrompt('codex')">Copy Codex</button>
+        <button class="btn small" onclick="copyInvestigatePrompt('cursor')">Copy Cursor</button>
+      </div>
+      <details style="margin-top:12px"><summary class="muted tiny">Preview Claude prompt</summary>
+        <pre class="code">${esc(prompts.claude || "")}</pre></details>
+    </div>`;
+}
+
+function copyInvestigatePrompt(tool) {
+  const text = STATE.investigateResult?.prompts?.[tool] || "";
+  if (!text) { toast("Generate a plan first"); return; }
+  copyText(text, `Copied ${tool} prompt`);
+}
+
 /* ---------------- Impact ---------------- */
 async function runImpact() {
   const target = $("impactTarget").value.trim();
@@ -939,14 +1103,16 @@ async function runBug() {
   const out = $("bugOut");
   if (!r.ok) { out.innerHTML = `<div class="glass ocard muted">${r.error||''}</div>`; return; }
   const conf = r.confidence || "low";
+  const noModules = !(r.likely_modules||[]).length;
   out.innerHTML = `
     <div class="glass ocard">
       <div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">Likely source modules</h3><span class="lvl ${conf==='high'?'low':conf==='medium'?'medium':'unknown'}">confidence: ${conf}</span></div>
-      ${r.mock?'<p class="muted tiny" style="margin-top:6px"><span class="pill warn">heuristic / TODO</span> Semantic localization + verification wiring is future work.</p>':''}
-      <div class="taglist" style="margin:12px 0">${(r.likely_modules||[]).map(m=>`<span class="tag">${m}</span>`).join("") || '<span class="muted">no match — add a file path or module name</span>'}</div>
+      ${r.mock?'<p class="muted tiny" style="margin-top:6px"><span class="pill warn">heuristic</span> Exact localization works best with file paths or module names from the graph.</p>':''}
+      <div class="taglist" style="margin:12px 0">${(r.likely_modules||[]).map(m=>`<span class="tag">${m}</span>`).join("") || (noModules ? `<span class="muted">No module match found. Try including a file path or error type from your stack trace.</span>` : '')}</div>
+      ${noModules ? `<div class="suggest" style="margin:12px 0"><div class="sg" onclick="$('askInput').value='What modules are most likely involved in: '+${JSON.stringify($('bugText')?.value||'this bug')};go('center');sendCopilotQuestion()">Send to Copilot</div><div class="sg" onclick="go('center');askQuestion('What are the top architectural risks?')">Ask about top risks</div></div>` : ''}
       <h3 style="font-size:13px;color:var(--cyan)">Evidence</h3>
       <ul class="clean">${(r.evidence||[]).map(e=>`<li>${e}</li>`).join("")}</ul>
-      <h3 style="font-size:13px;color:var(--cyan);margin-top:14px">Suggested investigation prompt</h3>
+      <h3 style="font-size:13px;color:var(--cyan);margin-top:14px">Investigation prompt</h3>
       <pre class="code">${(r.suggested_prompt||"").replace(/</g,"&lt;")}</pre>
       <button class="btn small" onclick="copyText(${JSON.stringify(r.suggested_prompt||"")}, 'Prompt copied')">Copy prompt</button>
     </div>`;
@@ -979,7 +1145,7 @@ function saveExport() {
   if (!STATE._exportText) { toast("Nothing to save"); return; }
   const blob = new Blob([STATE._exportText], { type: "text/plain" });
   const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
-  a.download = `jarvis_context_${STATE.exportTarget}_${STATE.exportPacket}.txt`; a.click(); toast("Prompt saved ✓");
+  a.download = `atlas_context_${STATE.exportTarget}_${STATE.exportPacket}.txt`; a.click(); toast("Prompt saved ✓");
 }
 
 /* ---------------- Boot ---------------- */
@@ -1000,6 +1166,7 @@ function saveExport() {
     updateTelemetryWarning(h);
     if (h.repository_open) {
       unlockNav();
+      updateScanBtnState(true);
       STATE.summary = await api("/api/repositories/current/summary");
       updateTelemetryWarning(STATE.summary);
       updateRepoChip(h.repo_name || STATE.summary?.repo_name, h.demo_mode);

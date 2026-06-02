@@ -29,8 +29,9 @@ from builder_core.bug_intelligence import depgraph
 
 from . import analytics
 from . import graph_build
+from . import planning_engine
 
-PRODUCT_VERSION = "phase116f-analytics-isolation"
+PRODUCT_VERSION = "phase120-change-planner-investigation"
 CHARS_PER_TOKEN = 4.0
 GRAPH_DISPLAY_CAP = 5000
 RISK_RANK_TOP = 5000
@@ -262,8 +263,9 @@ def health() -> Dict[str, Any]:
     scan = _STATE.get("scan") or {}
     telemetry = analytics.status_snapshot()
     return {
+        "ok": True,
         "status": "ok",
-        "product": "JARVIS",
+        "product": "ATLAS",
         "tagline": "Repository Intelligence Platform",
         "version": PRODUCT_VERSION,
         "repository_open": bool(scan),
@@ -602,7 +604,7 @@ def load_demo_mode(pack: str = "small") -> Dict[str, Any]:
     _STATE["demo_mode"] = True
     result["demo_mode"] = True
     result["demo_pack"] = pack_id
-    result["repo_name"] = f"JARVIS Demo - {label}"
+    result["repo_name"] = f"Atlas Demo — {label}"
     result["repo_path"] = demo_path
     _STATE["scan"]["demo_mode"] = True
     _STATE["scan"]["demo_pack"] = pack_id
@@ -1940,6 +1942,44 @@ def _impact_mock(target: str, reason: str) -> Dict[str, Any]:
         "recommended_tests": ["Run the module's own tests and its direct importers' tests."],
         "recommended_prompt": f"Analyze the blast radius of changing `{target}` and list the tests to run.",
     }
+
+
+def _planning_context() -> Dict[str, Any]:
+    ctx = planning_engine.repository_context_from_state(_STATE)
+    if _STATE.get("scan"):
+        summary = current_summary()
+        if summary.get("ok"):
+            ctx["summary"] = summary
+            ctx["entry_points"] = summary.get("entry_points") or ctx.get("entry_points")
+            ctx["subsystems"] = summary.get("subsystems") or ctx.get("subsystems")
+            ctx["explanation"] = summary.get("explanation") or ctx.get("explanation")
+    return ctx
+
+
+def plan_change(request: str) -> Dict[str, Any]:
+    """Generate a grounded change plan and implementation prompts (no code generation)."""
+    result = planning_engine.plan_change(request, _planning_context())
+    if result.get("ok"):
+        plan = result["plan"]
+        result["formatted"] = planning_engine.format_change_plan_markdown(plan)
+        track_analytics_event("change_plan_created", intent=plan.get("intent"), confidence=plan.get("confidence"))
+    return result
+
+
+def investigate_symptom(symptom: str) -> Dict[str, Any]:
+    """Symptom-based investigation plan (natural language, not trace-only)."""
+    result = planning_engine.investigate_symptom(symptom, _planning_context())
+    if result.get("ok"):
+        plan = result["plan"]
+        result["formatted"] = planning_engine.format_investigation_plan_markdown(plan)
+        track_analytics_event("investigation_plan_created", intent=plan.get("intent"), confidence=plan.get("confidence"))
+    return result
+
+
+def change_impact_simulation(target: str) -> Dict[str, Any]:
+    """Part D — enriched blast-radius simulation for a module or file."""
+    payload = impact(target)
+    return planning_engine.simulate_change_impact(target, payload, _planning_context())
 
 
 def bug_investigation(text: str) -> Dict[str, Any]:

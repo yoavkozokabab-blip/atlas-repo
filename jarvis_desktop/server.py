@@ -91,6 +91,9 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
         ("GET", "/api/repositories/current/module"): lambda _body, query: api.module_inspector(str(query.get("target", ""))),
         ("GET", "/api/repositories/current/risks"): lambda _body, _query: api.current_risks(),
         ("POST", "/api/impact"): lambda body, _query: api.impact(str(body.get("target", ""))),
+        ("POST", "/api/planning/change"): lambda body, _query: api.plan_change(str(body.get("request", ""))),
+        ("POST", "/api/planning/investigate"): lambda body, _query: api.investigate_symptom(str(body.get("symptom", ""))),
+        ("POST", "/api/planning/impact"): lambda body, _query: api.change_impact_simulation(str(body.get("target", ""))),
         ("POST", "/api/bug-investigation"): lambda body, _query: api.bug_investigation(str(body.get("text", ""))),
         ("POST", "/api/context/export"): lambda body, _query: api.context_export(
             str(body.get("target", "claude")),
@@ -134,7 +137,7 @@ def route_is_registered(method: str, path: str) -> bool:
 # stdlib HTTP handler (default runtime)
 # --------------------------------------------------------------------------
 class JarvisHandler(BaseHTTPRequestHandler):
-    server_version = "JARVISDesktop/112"
+    server_version = "AtlasDesktop/119"
 
     def log_message(self, *args: Any) -> None:  # quiet console
         pass
@@ -210,7 +213,7 @@ class JarvisHandler(BaseHTTPRequestHandler):
 def run(host: str = "127.0.0.1", port: int = 8777, *, open_browser: bool = True) -> None:
     httpd = ThreadingHTTPServer((host, port), JarvisHandler)
     url = f"http://{host}:{port}/"
-    print(f"  JARVIS Desktop — Repository Intelligence Platform")
+    print(f"  ATLAS — Repository Intelligence Platform")
     print(f"  Serving at {url}  (Ctrl+C to stop)")
     if open_browser:
         try:
@@ -235,7 +238,7 @@ def create_fastapi_app():  # pragma: no cover - exercised only when fastapi pres
     from fastapi.responses import JSONResponse, FileResponse
     from fastapi.staticfiles import StaticFiles
 
-    app = FastAPI(title="JARVIS Desktop", version=api.PRODUCT_VERSION)
+    app = FastAPI(title="Atlas — Repository Intelligence Platform", version=api.PRODUCT_VERSION)
 
     async def _body(request: Request) -> Dict[str, Any]:
         try:
@@ -341,6 +344,18 @@ def create_fastapi_app():  # pragma: no cover - exercised only when fastapi pres
     @app.post("/api/impact")
     async def _impact(request: Request):
         return api.impact(str((await _body(request)).get("target", "")))
+
+    @app.post("/api/planning/change")
+    async def _plan_change(request: Request):
+        return api.plan_change(str((await _body(request)).get("request", "")))
+
+    @app.post("/api/planning/investigate")
+    async def _plan_investigate(request: Request):
+        return api.investigate_symptom(str((await _body(request)).get("symptom", "")))
+
+    @app.post("/api/planning/impact")
+    async def _plan_impact(request: Request):
+        return api.change_impact_simulation(str((await _body(request)).get("target", "")))
 
     @app.post("/api/bug-investigation")
     async def _bug(request: Request):
