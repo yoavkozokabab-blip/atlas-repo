@@ -30,10 +30,12 @@ from builder_core.bug_intelligence import depgraph
 from . import analytics
 from . import graph_build
 
-PRODUCT_VERSION = "phase116-typescript-graph"
+PRODUCT_VERSION = "phase116f-analytics-isolation"
 CHARS_PER_TOKEN = 4.0
 GRAPH_DISPLAY_CAP = 5000
 RISK_RANK_TOP = 5000
+UNRESOLVED_IMPORT_PARTIAL_MIN = 100
+UNRESOLVED_IMPORT_PARTIAL_RATIO = 0.35
 MASSIVE_FILES_THRESHOLD = 20_000
 MASSIVE_MODULES_THRESHOLD = 5_000
 MASSIVE_SIZE_THRESHOLD_BYTES = 1_000_000_000
@@ -258,6 +260,7 @@ def _short(node_id: str) -> str:
 # --------------------------------------------------------------------------
 def health() -> Dict[str, Any]:
     scan = _STATE.get("scan") or {}
+    telemetry = analytics.status_snapshot()
     return {
         "status": "ok",
         "product": "JARVIS",
@@ -266,6 +269,7 @@ def health() -> Dict[str, Any]:
         "repository_open": bool(scan),
         "demo_mode": bool(_STATE.get("demo_mode")),
         "repo_name": scan.get("repo_name"),
+        **telemetry,
     }
 
 
@@ -300,6 +304,20 @@ def list_demo_packs() -> Dict[str, Any]:
 
 def track_analytics_event(event: str, **properties: Any) -> Dict[str, Any]:
     return analytics.track_event(event, product=PRODUCT_VERSION, **properties)
+
+
+def _attach_analytics_status(payload: Dict[str, Any]) -> Dict[str, Any]:
+    """Merge telemetry status into API payloads without affecting scan success."""
+    snap = analytics.status_snapshot()
+    payload["analytics_status"] = snap["analytics_status"]
+    if snap["analytics_status"] == "degraded":
+        warning = snap["telemetry_warning"]
+        payload["telemetry_warning"] = warning
+        warnings = list(payload.get("warnings") or [])
+        if warning and warning not in warnings:
+            warnings.append(warning)
+        payload["warnings"] = warnings
+    return payload
 
 
 def analytics_overview() -> Dict[str, Any]:
@@ -591,7 +609,7 @@ def load_demo_mode(pack: str = "small") -> Dict[str, Any]:
     _STATE["scan"]["repo_name"] = result["repo_name"]
     _STATE["scan"]["repo_path"] = demo_path
     track_analytics_event("demo_loaded", pack=pack_id, modules=result.get("module_count", 0))
-    return result
+    return _attach_analytics_status(result)
 
 
 def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
@@ -669,7 +687,7 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
         )
         _STATE["scan_perf"] = recorder.snapshot()
         track_analytics_event("scan_completed", demo=bool(_STATE.get("demo_mode")), cache_hit=True)
-        return _STATE["scan"]
+        return _attach_analytics_status(_STATE["scan"])
     started = time.time()
 
     if _STATE["scan_job"].get("cancelled"):
@@ -787,6 +805,7 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
 
     duration = round(time.time() - started, 2)
     top_risk = top_risks[0] if top_risks else {}
+    language_breakdown = graph.get("language_breakdown") or graph_build._language_breakdown(graph)
     scan = {
         "ok": True,
         "repo_path": repo,
@@ -797,14 +816,16 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
         "module_count": len(module_nodes),
         "subsystem_count": len(index["subsystems"]),
         "dependency_edges": len(import_edges),
+        "resolved_imports": language_breakdown.get("resolved_imports", len(import_edges)),
         "unresolved_imports": unresolved.get("imports_external", 0),
+        "external_package_imports": language_breakdown.get("external_package_imports", 0),
+        "unresolved_ratio": language_breakdown.get("unresolved_ratio", 0.0),
         "unresolved_calls": unresolved.get("calls_unresolved", 0),
         "graph_scope": graph.get("graph_scope"),
         "graph_detail": graph.get("graph_detail") or build_meta.get("detail"),
         "graph_build": build_meta,
         "full_graph_pending": bool(build_meta.get("lazy_full")),
-        "language_breakdown": graph.get("language_breakdown")
-        or graph_build._language_breakdown(graph),
+        "language_breakdown": language_breakdown,
         "degraded": bool(graph.get("degraded")),
         "import_cycle_count": stats.get("import_cycles") and len(stats["import_cycles"]) or 0,
         "top_hubs": top_hubs,
@@ -944,7 +965,7 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
         cache_hit=False,
         massive_mode=massive_mode,
     )
-    return scan
+    return _attach_analytics_status(scan)
 
 
 def current_summary() -> Dict[str, Any]:
@@ -975,6 +996,7 @@ def current_summary() -> Dict[str, Any]:
         "degraded": scan["degraded"],
         "risk_score": _repo_risk_score(),
         "graph_health": _graph_health(scan),
+        **analytics.status_snapshot(),
         "token_savings": _token_savings(scan),
         "subsystems": [
             {
@@ -1238,14 +1260,37 @@ def _apply_galaxy_layout(nodes: List[Dict[str, Any]], links: List[Dict[str, Any]
     }
 
 
+def _subsystem_visual_size(module_count: int, risk_score: float = 0.0, *, top_risk: bool = False) -> Dict[str, float]:
+    """Log-scaled, clamped sizes for subsystem hubs (readable, never giant blobs)."""
+    base = 4.0
+    log_part = math.log1p(max(0, int(module_count)))
+    visual = base + log_part * 1.35
+    visual = max(5.0, min(14.0, visual))
+    hub_scale = max(1.15, min(2.5, 1.1 + log_part * 0.2))
+    if top_risk:
+        hub_scale = min(2.5, hub_scale + 0.12)
+    return {
+        "size": round(visual, 2),
+        "visual_size": round(visual, 2),
+        "hub_scale": round(hub_scale, 2),
+    }
+
+
 def _apply_subsystem_galaxy_layout(nodes: List[Dict[str, Any]], links: List[Dict[str, Any]]) -> Dict[str, Any]:
     """Galaxy ring for collapsed subsystem view."""
     n_nodes = max(len(nodes), 1)
-    radius = 70.0 + min(90.0, n_nodes * 4.0)
+    radius = 90.0 + min(110.0, n_nodes * 6.5)
     for index, node in enumerate(sorted(nodes, key=lambda item: (-item.get("module_count", 0), item.get("label", "")))):
         angle = (2.0 * math.pi * index) / n_nodes
         node["is_hub"] = True
-        node["hub_scale"] = round(2.5 + min(3.0, (node.get("module_count") or 0) * 0.05), 2)
+        vis = _subsystem_visual_size(
+            int(node.get("module_count") or 0),
+            float(node.get("risk_score") or 0),
+            top_risk=str(node.get("risk_tier", "")) in {"critical", "high"},
+        )
+        node["size"] = vis["size"]
+        node["visual_size"] = vis["visual_size"]
+        node["hub_scale"] = vis["hub_scale"]
         node["cluster_id"] = node.get("subsystem") or node.get("label")
         node["galaxy_x"] = round(radius * math.cos(angle), 2)
         node["galaxy_y"] = round(radius * math.sin(angle), 2)
@@ -1504,7 +1549,15 @@ def _subsystem_graph_payload(
             max_score=max_score,
             in_cycle=sub["in_cycle"],
         )
-        sub["size"] = round(4.0 + min(28.0, sub["risk_score"] * 0.25 + sub["module_count"] * 0.6), 2)
+        vis = _subsystem_visual_size(
+            int(sub["module_count"]),
+            float(sub["risk_score"]),
+            top_risk=rank <= 3,
+        )
+        sub["size"] = vis["size"]
+        sub["visual_size"] = vis["visual_size"]
+        sub["hub_scale"] = vis["hub_scale"]
+        sub["graph_view"] = "subsystem"
         sub["importers_count"] = sub["fan_in"]
         sub["imported_modules_count"] = sub["fan_out"]
 
@@ -1533,9 +1586,12 @@ def _subsystem_graph_payload(
         }
         for (src, dst), count in sorted(edge_weights.items(), key=lambda item: (-item[1], item[0]))
     ]
+    for node in nodes:
+        node.setdefault("graph_view", "subsystem")
     layout = _apply_subsystem_galaxy_layout(nodes, links)
     return {
         "view": "subsystem",
+        "graph_view": "subsystem",
         "node_count": len(nodes),
         "link_count": len(links),
         "total_modules": module_payload["total_modules"],
@@ -2090,14 +2146,31 @@ def _repo_risk_score() -> int:
 
 
 def _graph_health(scan: Dict[str, Any]) -> Dict[str, Any]:
+    resolved = int(scan.get("resolved_imports", scan.get("dependency_edges", 0)) or 0)
+    unresolved = int(scan.get("unresolved_imports", 0) or 0)
+    external = int(scan.get("external_package_imports", 0) or 0)
+    total = resolved + unresolved
+    ratio = round(unresolved / total, 4) if total else 0.0
+    unresolved_high = (
+        unresolved >= UNRESOLVED_IMPORT_PARTIAL_MIN
+        and ratio >= UNRESOLVED_IMPORT_PARTIAL_RATIO
+    )
+    graph_partial = bool(scan.get("degraded")) or unresolved_high
+    label = "partial" if graph_partial else (
+        "healthy" if scan.get("import_cycle_count", 0) <= 4 else "watch"
+    )
     return {
         "scope": scan["graph_scope"],
-        "degraded": scan["degraded"],
+        "degraded": graph_partial,
         "modules": scan["module_count"],
         "edges": scan["dependency_edges"],
         "import_cycles": scan.get("import_cycle_count", 0),
-        "unresolved_imports": scan.get("unresolved_imports", 0),
-        "label": "healthy" if (not scan["degraded"] and scan.get("import_cycle_count", 0) <= 4) else "watch",
+        "resolved_imports": resolved,
+        "unresolved_imports": unresolved,
+        "external_package_imports": external,
+        "unresolved_ratio": ratio,
+        "notice": "Graph is partial: many imports could not be resolved." if unresolved_high else "",
+        "label": label,
     }
 
 

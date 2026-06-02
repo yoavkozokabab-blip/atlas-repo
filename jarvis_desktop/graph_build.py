@@ -54,12 +54,30 @@ def _language_breakdown(graph: Dict[str, Any]) -> Dict[str, Any]:
             js += 1
         else:
             py += 1
+    resolved_imports = sum(
+        1
+        for edge in graph.get("edges", [])
+        if edge.get("type") == "imports" and edge.get("resolved")
+    )
+    unresolved_imports = int(
+        graph.get("unresolved_import_count")
+        or (graph.get("statistics", {}).get("unresolved_counts", {}) or {}).get("imports_external")
+        or 0
+    )
+    import_total = resolved_imports + unresolved_imports
     return {
         "python_modules": py,
         "typescript_modules": ts,
         "javascript_modules": js,
-        "external_package_imports": int(graph.get("external_package_count") or 0),
-        "unresolved_imports": int(graph.get("unresolved_import_count") or 0),
+        "external_packages": int(graph.get("external_package_count") or 0),
+        "external_package_imports": int(
+            graph.get("external_package_import_count")
+            or graph.get("external_package_count")
+            or 0
+        ),
+        "resolved_imports": resolved_imports,
+        "unresolved_imports": unresolved_imports,
+        "unresolved_ratio": round(unresolved_imports / import_total, 4) if import_total else 0.0,
     }
 
 
@@ -132,10 +150,8 @@ def merge_graphs(py_graph: Dict[str, Any], js_graph: Optional[Dict[str, Any]]) -
         "jarvis_timed_out": bool(py_graph.get("jarvis_timed_out")) or bool(js_graph.get("jarvis_timed_out")),
         "jarvis_partial": bool(py_graph.get("jarvis_partial")) or bool(js_graph.get("jarvis_partial")),
         "external_package_count": int(js_graph.get("external_package_count") or 0),
-        "unresolved_import_count": (
-            int(py_graph.get("unresolved_import_count") or 0)
-            + int(js_graph.get("unresolved_import_count") or 0)
-        ),
+        "external_package_import_count": int(js_graph.get("external_package_import_count") or 0),
+        "unresolved_import_count": len(unresolved["imports_external"]),
     }
     merged["language_breakdown"] = _language_breakdown(merged)
     return merged

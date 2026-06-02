@@ -1,0 +1,102 @@
+{
+  "repo_path": "C:\\J.A.R.V.I.S\\fastapi",
+  "scan_time_sec": 2.132,
+  "cache_hit": false,
+  "ok": true,
+  "error": null,
+  "files_discovered": 1120,
+  "file_count": 2753,
+  "code_files": null,
+  "module_count": 73,
+  "dependency_edges": 159,
+  "subsystem_count": 7,
+  "graph_health": {
+    "scope": "production",
+    "degraded": true,
+    "modules": 73,
+    "edges": 159,
+    "import_cycles": 15,
+    "resolved_imports": 159,
+    "unresolved_imports": 560,
+    "external_package_imports": 0,
+    "unresolved_ratio": 0.7789,
+    "notice": "Graph is partial: many imports could not be resolved.",
+    "label": "partial"
+  },
+  "unresolved_imports": 560,
+  "resolved_imports": 159,
+  "unresolved_ratio": 0.7789,
+  "external_package_imports": 0,
+  "import_cycle_count": 15,
+  "graph_scope": "production",
+  "degraded": false,
+  "language_breakdown": {
+    "python_modules": 73,
+    "typescript_modules": 0,
+    "javascript_modules": 0,
+    "external_packages": 0,
+    "external_package_imports": 0,
+    "resolved_imports": 159,
+    "unresolved_imports": 560,
+    "unresolved_ratio": 0.7789
+  },
+  "analytics_status": "ok",
+  "top_risks": [
+    {
+      "module": "module:fastapi/_compat/__init__.py",
+      "score": 18.78,
+      "tier": null,
+      "fan_in": null
+    },
+    {
+      "module": "module:fastapi/__init__.py",
+      "score": 17.2,
+      "tier": null,
+      "fan_in": null
+    },
+    {
+      "module": "module:fastapi/applications.py",
+      "score": 16.85,
+      "tier": null,
+      "fan_in": null
+    },
+    {
+      "module": "module:fastapi/openapi/utils.py",
+      "score": 15.11,
+      "tier": null,
+      "fan_in": null
+    },
+    {
+      "module": "module:fastapi/utils.py",
+      "score": 14.67,
+      "tier": null,
+      "fan_in": null
+    },
+    {
+      "module": "module:fastapi/security/oauth2.py",
+      "score": 13.14,
+      "tier": null,
+      "fan_in": null
+    },
+    {
+      "module": "module:fastapi/routing.py",
+      "score": 12.0,
+      "tier": null,
+      "fan_in": null
+    },
+    {
+      "module": "module:fastapi/dependencies/utils.py",
+      "score": 11.12,
+      "tier": null,
+      "fan_in": null
+    }
+  ],
+  "nonproduction_sample_check": {
+    "module_paths_in_graph": 73,
+    "doc_or_example_paths_in_graph": [
+      "fastapi/openapi/docs.py",
+      "scripts/docs.py"
+    ],
+    "doc_or_example_count": 2
+  }
+}

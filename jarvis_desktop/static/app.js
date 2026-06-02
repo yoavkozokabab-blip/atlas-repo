@@ -12,6 +12,20 @@ const DEMO_PACK_KEY = "jarvis_demo_pack_v1";
 
 function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
+const TELEMETRY_WARNING_TEXT = "Telemetry unavailable. Repository analysis unaffected.";
+
+function updateTelemetryWarning(source) {
+  const el = $("telemetryWarning");
+  if (!el) return;
+  const degraded = source && (source.analytics_status === "degraded" || source.telemetry_warning);
+  if (degraded) {
+    el.style.display = "block";
+    el.textContent = source.telemetry_warning || TELEMETRY_WARNING_TEXT;
+  } else {
+    el.style.display = "none";
+  }
+}
+
 async function trackAnalytics(event, props) {
   try {
     await api("/api/analytics/event", "POST", { event, ...(props || {}) });
@@ -195,6 +209,7 @@ function finishScanSession(scan, pathLabel) {
   STATE.graph = null;
   STATE.graph3d = null;
   STATE.graphPerf = null;
+  updateTelemetryWarning(scan);
   updateRepoChip(scan.repo_name, scan.demo_mode);
   unlockNav();
   renderScanSuccess(scan);
@@ -374,9 +389,11 @@ function metricGrid(s) {
   const M = [
     ["files discovered", s.files_discovered], ["modules indexed", s.module_count],
     ["typescript modules", lb.typescript_modules], ["javascript modules", lb.javascript_modules],
-    ["python modules", lb.python_modules], ["external packages", lb.external_package_imports],
+    ["python modules", lb.python_modules], ["external package imports", lb.external_package_imports],
     ["subsystems", s.subsystem_count], ["dependency edges", s.dependency_edges],
-    ["unresolved imports", s.unresolved_imports], ["import cycles", s.import_cycle_count],
+    ["resolved imports", s.resolved_imports], ["unresolved imports", s.unresolved_imports],
+    ["unresolved ratio", s.unresolved_ratio == null ? null : `${(s.unresolved_ratio * 100).toFixed(1)}%`],
+    ["import cycles", s.import_cycle_count],
     ["graph scope", s.graph_scope || "—"], ["compact tokens", s.compact_token_estimate],
   ];
   return M.map(([l, v]) => `<div class="metric"><div class="mv">${v === undefined || v === null ? "—" : v}</div><div class="ml">${l}</div></div>`).join("");
@@ -404,6 +421,8 @@ function setGraphView(view) {
     STATE.hierarchy = { level: "subsystem", subsystem: "", package: "", module: "" };
   }
   STATE.graph = null;
+  STATE.graph3d = null;
+  STATE.graphPerf = null;
   document.querySelectorAll('input[name="graphView"]').forEach(el => {
     el.checked = el.value === view;
   });
@@ -479,9 +498,10 @@ async function renderCenter() {
     $("hierarchyBreadcrumb").textContent = "Repository";
     $("hierarchyCounts").textContent = "";
   }
-  if (graph.render_warning) {
+  const graphWarning = [graph.render_warning, sum.graph_health?.notice].filter(Boolean).join(" ");
+  if (graphWarning) {
     $("graphWarning").style.display = "block";
-    $("graphWarning").textContent = graph.render_warning;
+    $("graphWarning").textContent = graphWarning;
   } else {
     $("graphWarning").style.display = "none";
   }
@@ -495,15 +515,30 @@ async function renderCenter() {
 }
 
 function renderHealthCockpit(sum) {
+  updateTelemetryWarning(sum);
   const sav = sum.token_savings || {};
   const gh = sum.graph_health || {};
+  const graphNotice = gh.notice
+    ? `<div class="cockpit-card wide"><div class="cc-label">Graph coverage</div><div class="cc-val" style="font-size:13px;color:var(--amber)">${gh.notice}</div></div>`
+    : "";
+  const tel = sum.analytics_status === "degraded"
+    ? `<div class="cockpit-card wide"><div class="cc-label">Telemetry</div><div class="cc-val" style="font-size:13px;color:var(--amber)">${sum.telemetry_warning || TELEMETRY_WARNING_TEXT}</div></div>`
+    : "";
   $("leftPanel").innerHTML = `
     <h3>Health Cockpit</h3>
+    ${tel}
+    ${graphNotice}
     <div class="cockpit-grid">
       <div class="cockpit-card risk"><div class="cc-label">Risk score</div><div class="cc-val" id="ccRisk">${sum.risk_score}</div></div>
       <div class="cockpit-card"><div class="cc-label">Graph health</div><div class="cc-val" id="ccHealth" style="font-size:16px;color:${gh.label === 'healthy' ? 'var(--green)' : 'var(--amber)'}">${gh.label || "—"}</div></div>
       <div class="cockpit-card warn"><div class="cc-label">Import cycles</div><div class="cc-val" id="ccCycles">${gh.import_cycles ?? 0}</div></div>
       <div class="cockpit-card"><div class="cc-label">Token savings</div><div class="cc-val" id="ccSavings">${sav.reduction_percent || 0}%</div></div>
+    </div>
+    <div class="cockpit-grid">
+      <div class="cockpit-card"><div class="cc-label">Resolved imports</div><div class="cc-val">${gh.resolved_imports ?? 0}</div></div>
+      <div class="cockpit-card warn"><div class="cc-label">Unresolved imports</div><div class="cc-val">${gh.unresolved_imports ?? 0}</div></div>
+      <div class="cockpit-card"><div class="cc-label">External package imports</div><div class="cc-val">${gh.external_package_imports ?? 0}</div></div>
+      <div class="cockpit-card"><div class="cc-label">Unresolved ratio</div><div class="cc-val">${((gh.unresolved_ratio ?? 0) * 100).toFixed(1)}%</div></div>
     </div>
     <div class="cockpit-card"><div class="cc-label">Blast radius hub</div><div class="cc-val" style="font-size:14px;color:#eaf0ff">${(sum.top_hubs?.[0]?.module || "—").split(".").pop()}</div>
       <div class="muted tiny">${sum.top_hubs?.[0]?.fan_in ?? 0} direct importers</div></div>
@@ -962,9 +997,11 @@ function saveExport() {
   });
   try {
     const h = await api("/api/health");
+    updateTelemetryWarning(h);
     if (h.repository_open) {
       unlockNav();
       STATE.summary = await api("/api/repositories/current/summary");
+      updateTelemetryWarning(STATE.summary);
       updateRepoChip(h.repo_name || STATE.summary?.repo_name, h.demo_mode);
       updateMassiveBadge(!!STATE.summary?.massive_mode);
     }

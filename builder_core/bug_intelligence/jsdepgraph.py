@@ -73,11 +73,15 @@ def _is_test_path(rel_posix: str, filename: str) -> bool:
 
 
 def is_production_js_file(rel_posix: str) -> bool:
+    from .. import repository_understanding as ru
+
     parts = rel_posix.replace("\\", "/").split("/")
     if any(seg in SKIP_DIRS for seg in parts):
         return False
     filename = parts[-1] if parts else rel_posix
-    return not _is_test_path(rel_posix, filename)
+    if _is_test_path(rel_posix, filename):
+        return False
+    return ru.classify_file_role(rel_posix, os.path.splitext(filename)[1]) == "production_code"
 
 
 def collect_js_ts_files(root: str) -> List[Tuple[str, str]]:
@@ -338,6 +342,9 @@ def build_graph_from_files(
         "js_graph": True,
         "language_counts": lang_counts,
         "external_package_count": len(external_packages),
+        "external_package_import_count": sum(
+            1 for item in unresolved_external if _is_external(str(item.get("target") or ""))
+        ),
         "unresolved_import_count": len(unresolved_external),
         "scope_diagnostics": {
             "requested_scope": "production",

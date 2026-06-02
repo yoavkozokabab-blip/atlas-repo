@@ -41,6 +41,27 @@ DETAIL_IMPORTS = "imports"
 DETAIL_LEVELS = (DETAIL_FULL, DETAIL_IMPORTS)
 
 
+def _canonical_cycle(cycle: Iterable[str]) -> Tuple[str, ...]:
+    """Canonical cycle identity independent of start position and direction."""
+    nodes = list(cycle)
+    if len(nodes) > 1 and nodes[0] == nodes[-1]:
+        nodes = nodes[:-1]
+    if not nodes:
+        return tuple()
+    rotations = [tuple(nodes[index:] + nodes[:index]) for index in range(len(nodes))]
+    reversed_nodes = list(reversed(nodes))
+    rotations.extend(
+        tuple(reversed_nodes[index:] + reversed_nodes[:index])
+        for index in range(len(reversed_nodes))
+    )
+    return min(rotations)
+
+
+def _closed_cycle(cycle: Iterable[str]) -> List[str]:
+    key = _canonical_cycle(cycle)
+    return [*key, key[0]] if key else []
+
+
 def _production_scope_filter(
     root_abs: str,
     candidates: List[Tuple[str, str]],
@@ -68,7 +89,7 @@ def _production_scope_filter(
         if allowed_role and not in_data_tree:
             kept.append((abs_path, rel_posix))
         else:
-            key = "dataset_tree" if (in_data_tree and role == "production_code") else role
+            key = "dataset_tree" if in_data_tree else role
             excluded[key] = excluded.get(key, 0) + 1
     return kept, excluded
 
@@ -892,10 +913,10 @@ def _import_cycles_bounded(
             if nxt in on_stack:
                 idx = stack.index(nxt)
                 cycle = stack[idx:] + [nxt]
-                key = tuple(cycle)
+                key = _canonical_cycle(cycle)
                 if key not in seen:
                     seen.add(key)
-                    cycles.append(cycle)
+                    cycles.append(_closed_cycle(key))
                     if len(cycles) >= max_cycles:
                         return True
             elif nxt not in on_stack and dfs(nxt):
@@ -930,10 +951,10 @@ def _import_cycles(edges: List[Dict[str, Any]]) -> List[List[str]]:
             if nxt in on_stack:
                 idx = stack.index(nxt)
                 cycle = stack[idx:] + [nxt]
-                key = tuple(cycle)
+                key = _canonical_cycle(cycle)
                 if key not in seen:
                     seen.add(key)
-                    cycles.append(cycle)
+                    cycles.append(_closed_cycle(key))
             elif nxt not in on_stack:
                 dfs(nxt)
         stack.pop()

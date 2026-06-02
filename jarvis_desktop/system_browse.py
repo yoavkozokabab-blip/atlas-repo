@@ -19,6 +19,9 @@ def _pick_folder_native() -> str:
     root.withdraw()
     try:
         root.attributes("-topmost", True)
+        root.lift()
+        root.focus_force()
+        root.update_idletasks()
         root.update()
         return str(
             filedialog.askdirectory(

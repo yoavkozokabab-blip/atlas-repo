@@ -1,0 +1,95 @@
+{
+  "repo_path": "C:\\J.A.R.V.I.S\\django",
+  "scan_time_sec": 14.337,
+  "cache_hit": false,
+  "ok": true,
+  "error": null,
+  "files_discovered": 929,
+  "file_count": 6868,
+  "code_files": null,
+  "module_count": 929,
+  "dependency_edges": 2916,
+  "subsystem_count": 9,
+  "graph_health": {
+    "scope": "production",
+    "degraded": false,
+    "modules": 929,
+    "edges": 2916,
+    "import_cycles": 80,
+    "resolved_imports": 2916,
+    "unresolved_imports": 1377,
+    "external_package_imports": 0,
+    "unresolved_ratio": 0.3208,
+    "notice": "",
+    "label": "watch"
+  },
+  "unresolved_imports": 1377,
+  "resolved_imports": 2916,
+  "unresolved_ratio": 0.3208,
+  "external_package_imports": 0,
+  "import_cycle_count": 80,
+  "graph_scope": "production",
+  "degraded": false,
+  "language_breakdown": {
+    "python_modules": 907,
+    "typescript_modules": 0,
+    "javascript_modules": 22,
+    "external_packages": 0,
+    "external_package_imports": 0,
+    "resolved_imports": 2916,
+    "unresolved_imports": 1377,
+    "unresolved_ratio": 0.3208
+  },
+  "analytics_status": "ok",
+  "top_risks": [
+    {
+      "module": "module:django/conf/__init__.py",
+      "score": 163.18,
+      "tier": null,
+      "fan_in": null
+    },
+    {
+      "module": "module:django/db/__init__.py",
+      "score": 152.18,
+      "tier": null,
+      "fan_in": null
+    },
+    {
+      "module": "module:django/core/exceptions.py",
+      "score": 150.38,
+      "tier": null,
+      "fan_in": null
+    },
+    {
+      "module": "module:django/utils/functional.py",
+      "score": 115.41,
+      "tier": null,
+      "fan_in": null
+    },
+    {
+      "module": "module:django/utils/translation/__init__.py",
+      "score": 101.65,
+      "tier": null,
+      "fan_in": null
+    },
+    {
+      "module": "module:django/apps/__init__.py",
+      "score": 79.71,
+      "tier": null,
+      "fan_in": null
+    },
+    {
+      "module": "module:django/db/models/__init__.py",
+      "score": 70.63,
+      "tier": null,
+      "fan_in": null
+    },
+    {
+      "module": "module:django/core/__init__.py",
+      "score": 58.0,
+      "tier": null,
+      "fan_in": null
+    }
+  ],
+  "nonproduction_sample_check": null
+}

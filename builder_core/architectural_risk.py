@@ -90,6 +90,11 @@ def _canonical_cycle(cycle: Sequence[str]) -> Tuple[str, ...]:
     if not nodes:
         return tuple(cycle)
     rotations = [tuple(nodes[i:] + nodes[:i]) for i in range(len(nodes))]
+    reversed_nodes = list(reversed(nodes))
+    rotations.extend(
+        tuple(reversed_nodes[i:] + reversed_nodes[:i])
+        for i in range(len(reversed_nodes))
+    )
     return min(rotations)
 
 

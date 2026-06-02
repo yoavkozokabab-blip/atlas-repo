@@ -34,6 +34,8 @@ body{
 .nav button.active{color:#fff;background:linear-gradient(180deg,rgba(62,240,255,.18),rgba(154,123,255,.12));border-color:rgba(62,240,255,.35);box-shadow:0 0 18px rgba(62,240,255,.15)}
 .nav button[data-lock="1"]{opacity:.4}
 .repo-chip{font-size:12px;color:var(--cyan);border:1px solid rgba(62,240,255,.3);padding:6px 12px;border-radius:20px;background:rgba(62,240,255,.06);white-space:nowrap;max-width:260px;overflow:hidden;text-overflow:ellipsis}
+.telemetry-banner{position:relative;z-index:19;margin:-4px 14px 10px;padding:10px 16px;border-radius:12px;border-color:rgba(255,194,75,.35);
+  color:var(--amber);font-size:13px;text-align:center;background:rgba(255,194,75,.08);box-shadow:0 0 24px rgba(255,194,75,.08)}
 
 #app{position:relative;z-index:1;padding:6px 22px 60px}
 .view{display:none;animation:fade .4s ease} .view.active{display:block}

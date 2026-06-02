@@ -52,11 +52,17 @@ _BENCHMARK_PARTS = {
     "holdout",
     "quixbugs",
 }
-_DATASET_PARTS = {"data", "dataset", "datasets", "fixtures", "samples"}
+_DATASET_PARTS = {
+    "data", "dataset", "datasets", "fixtures", "samples", "testdata", "test_data",
+}
+_DOCUMENTATION_CODE_PARTS = {
+    "doc", "docs", "docs_src", "documentation", "example", "examples",
+    "tutorial", "tutorials",
+}
 _GENERATED_PARTS = {
     ".cache", ".mypy_cache", ".next", ".pytest_cache", ".pytest_tmp", "__pycache__",
     "backups", "build", "coverage", "dist", "generated", "htmlcov", "node_modules",
-    "site-packages", "target", "tests_tmp", "vendor",
+    "site-packages", "target", "tests_tmp", "vendor", "generated_snippets",
 }
 _TEST_PARTS = {"__tests__", "spec", "test", "tests"}
 _ENTRY_NAMES = (
@@ -113,6 +119,10 @@ def classify_file_role(
         return "benchmark"
     if "reports" in dirs:
         return "report_history"
+    if ext in _CODE_EXTS and dirs & _DOCUMENTATION_CODE_PARTS:
+        return "general_doc"
+    if ext in _CODE_EXTS and dirs & _DATASET_PARTS:
+        return "dataset"
     if dirs & _DATASET_PARTS and ext in {".csv", ".json", ".jsonl", ".tsv", ".txt"}:
         return "dataset"
     if name == "readme_architecture.md" or (

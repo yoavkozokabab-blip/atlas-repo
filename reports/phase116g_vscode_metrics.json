@@ -1,0 +1,95 @@
+{
+  "repo_path": "C:\\J.A.R.V.I.S\\vscode",
+  "scan_time_sec": 6.359,
+  "cache_hit": false,
+  "ok": true,
+  "error": null,
+  "files_discovered": 7551,
+  "file_count": 14871,
+  "code_files": null,
+  "module_count": 7551,
+  "dependency_edges": 13224,
+  "subsystem_count": 13,
+  "graph_health": {
+    "scope": "production",
+    "degraded": true,
+    "modules": 7551,
+    "edges": 13224,
+    "import_cycles": 0,
+    "resolved_imports": 13224,
+    "unresolved_imports": 67164,
+    "external_package_imports": 3459,
+    "unresolved_ratio": 0.8355,
+    "notice": "Graph is partial: many imports could not be resolved.",
+    "label": "partial"
+  },
+  "unresolved_imports": 67164,
+  "resolved_imports": 13224,
+  "unresolved_ratio": 0.8355,
+  "external_package_imports": 3459,
+  "import_cycle_count": 0,
+  "graph_scope": "production",
+  "degraded": false,
+  "language_breakdown": {
+    "python_modules": 0,
+    "typescript_modules": 7519,
+    "javascript_modules": 32,
+    "external_packages": 231,
+    "external_package_imports": 3459,
+    "resolved_imports": 13224,
+    "unresolved_imports": 67164,
+    "unresolved_ratio": 0.8355
+  },
+  "analytics_status": "ok",
+  "top_risks": [
+    {
+      "module": "module:extensions/copilot/src/platform/log/common/logService",
+      "score": 335.07,
+      "tier": null,
+      "fan_in": null
+    },
+    {
+      "module": "module:extensions/copilot/src/util/vs/platform/instantiation/common/instantiation",
+      "score": 334.31,
+      "tier": null,
+      "fan_in": null
+    },
+    {
+      "module": "module:extensions/copilot/src/util/vs/base/common/lifecycle",
+      "score": 277.4,
+      "tier": null,
+      "fan_in": null
+    },
+    {
+      "module": "module:extensions/copilot/src/util/vs/base/common/uri",
+      "score": 241.91,
+      "tier": null,
+      "fan_in": null
+    },
+    {
+      "module": "module:extensions/copilot/src/vscodeTypes",
+      "score": 219.25,
+      "tier": null,
+      "fan_in": null
+    },
+    {
+      "module": "module:extensions/copilot/src/platform/configuration/common/configurationService",
+      "score": 217.85,
+      "tier": null,
+      "fan_in": null
+    },
+    {
+      "module": "module:extensions/copilot/src/util/common/services",
+      "score": 200.49,
+      "tier": null,
+      "fan_in": null
+    },
+    {
+      "module": "module:extensions/copilot/src/util/vs/base/common/cancellation",
+      "score": 195.12,
+      "tier": null,
+      "fan_in": null
+    }
+  ],
+  "nonproduction_sample_check": null
+}
