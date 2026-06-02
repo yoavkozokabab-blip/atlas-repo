@@ -10,6 +10,14 @@ import re
 from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
 
 from . import domain_knowledge as dk
+from .evidence_engine import (
+    EvidenceStore,
+    analyze_concept,
+    analyze_investigation,
+    apply_to_build_plan,
+    apply_to_investigation_plan,
+)
+from .evidence_engine.evidence_builder import merge_file_roles_with_evidence
 
 # Feature intents → search terms for path/module matching (deterministic heuristics).
 _FEATURE_SPECS: Dict[str, Dict[str, Any]] = {
@@ -500,6 +508,44 @@ def _confidence_label(score_count: int, top_score: float, intent: str) -> str:
     return "low"
 
 
+def _repository_evidence_bundle(ctx: Dict[str, Any], classification: Any) -> Optional[Any]:
+    raw = ctx.get("evidence_store") or {}
+    if not raw or not classification.concept_id:
+        return None
+    store = EvidenceStore.from_dict(raw)
+    rec = classification.record
+    return analyze_concept(
+        store,
+        concept_id=classification.concept_id,
+        concept_name=(rec.name if rec else classification.concept_id),
+        category=(rec.category if rec else ""),
+        domain=(rec.domain if rec else ""),
+        path_keywords=list(rec.path_keywords) if rec else [],
+    )
+
+
+def _investigation_evidence_bundle(ctx: Dict[str, Any], symptom: str, classification: Any) -> Optional[Any]:
+    raw = ctx.get("evidence_store") or {}
+    if not raw:
+        return None
+    store = EvidenceStore.from_dict(raw)
+    lower = (symptom or "").lower()
+    trading_symptom = any(k in lower for k in ("backtest", "paper", "live", "slippage", "fill"))
+    if classification.concept_id in ("backtest_live_divergence", "indicator_backtest_live") or trading_symptom:
+        return analyze_investigation(store, concept_id=classification.concept_id or "backtest_live_divergence", symptom=symptom)
+    rec = classification.record
+    if rec:
+        return analyze_concept(
+            store,
+            concept_id=classification.concept_id,
+            concept_name=rec.name,
+            category=rec.category,
+            domain=rec.domain,
+            path_keywords=list(rec.path_keywords),
+        )
+    return analyze_investigation(store, symptom=symptom)
+
+
 def repository_context_from_state(state: Dict[str, Any]) -> Dict[str, Any]:
     scan = state.get("scan") or {}
     summary = state.get("summary") or {}
@@ -508,6 +554,8 @@ def repository_context_from_state(state: Dict[str, Any]) -> Dict[str, Any]:
         "graph": state.get("graph"),
         "index": state.get("index"),
         "risks": state.get("risks"),
+        "evidence_store": state.get("evidence_store") or {},
+        "repo_path": state.get("path") or scan.get("repo_path") or "",
         "repo_name": scan.get("repo_name") or summary.get("repo_name") or "repository",
         "entry_points": summary.get("entry_points") or scan.get("entry_points") or [],
         "subsystems": summary.get("subsystems") or [],
@@ -605,7 +653,12 @@ def plan_change(request: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
         "limitations": limitations,
     }
     roles = dk.map_concept_to_repository(build_class, modules, risks_map, scored_paths=matched_paths)
+    evidence_bundle = _repository_evidence_bundle(ctx, build_class)
+    if evidence_bundle:
+        roles = merge_file_roles_with_evidence(roles, evidence_bundle)
     dk.enrich_build_plan(plan, build_class, roles)
+    if evidence_bundle:
+        apply_to_build_plan(plan, evidence_bundle)
     if build_class.concept_id:
         limitations = list(plan.get("limitations") or [])
         limitations.extend(build_class.unknowns)
@@ -878,7 +931,12 @@ def investigate_symptom(symptom: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
         "limitations": limitations,
     }
     roles = dk.map_concept_to_repository(inv_class, modules, risks_map, scored_paths=likely_modules)
+    inv_evidence = _investigation_evidence_bundle(ctx, text, inv_class)
+    if inv_evidence:
+        roles = merge_file_roles_with_evidence(roles, inv_evidence)
     dk.enrich_investigation_plan(plan, inv_class, roles)
+    if inv_evidence:
+        apply_to_investigation_plan(plan, inv_evidence)
     if inv_class.concept_id:
         limitations = list(plan.get("limitations") or [])
         limitations.extend(inv_class.unknowns)
@@ -1220,6 +1278,33 @@ def format_change_plan_markdown(plan: Dict[str, Any]) -> str:
                 *_md_bullets(plan.get("domain_implementation_steps") or []),
                 "",
             ])
+    repo_ev = plan.get("repository_evidence") or {}
+    if repo_ev:
+        lines.extend([
+            "REPOSITORY EVIDENCE",
+            "===================",
+            f"Status: {repo_ev.get('status')}",
+            f"Evidence score: {repo_ev.get('confidence_score', 0)}/100",
+            "",
+            "Found:",
+            *_md_bullets(repo_ev.get("found") or [], "- (none)"),
+            "",
+            "Missing:",
+            *_md_bullets(repo_ev.get("missing") or [], "- (none flagged)"),
+            "",
+        ])
+        if repo_ev.get("recommended_insertion"):
+            lines.extend([
+                f"Recommended insertion: `{repo_ev.get('recommended_insertion')}`",
+                repo_ev.get("recommended_insertion_reason") or "",
+                "",
+            ])
+        for fe in (repo_ev.get("file_evidences") or [])[:5]:
+            lines.append(
+                f"- `{fe.get('path')}` — score {fe.get('evidence_score', 0):.0f}/100 — "
+                f"{', '.join((fe.get('matching_symbols') or [])[:3]) or 'symbols matched'}"
+            )
+        lines.append("")
     lines.extend([
         "Files to inspect first:",
         *_md_bullets(plan.get("files_to_inspect_first") or [], "- (none matched — provide more context)"),
@@ -1290,6 +1375,20 @@ def format_investigation_plan_markdown(plan: Dict[str, Any]) -> str:
             f"   {dk_block.get('integration_note', '')}",
             "",
         ])
+    repo_ev = plan.get("repository_evidence") or {}
+    if repo_ev:
+        lines.extend([
+            "A3. Repository evidence",
+            f"   Status: {repo_ev.get('status')}",
+            f"   Evidence score: {repo_ev.get('confidence_score', 0)}/100",
+            "   Found:",
+            *(f"     - {x}" for x in (repo_ev.get("found") or [])[:6]),
+            "   Missing:",
+            *(f"     - {x}" for x in (repo_ev.get("missing") or [])[:4]),
+        ])
+        if repo_ev.get("recommended_insertion"):
+            lines.append(f"   Recommended insertion: `{repo_ev.get('recommended_insertion')}`")
+        lines.append("")
     lines.extend([
         "B. Most likely root cause",
         f"   {plan.get('most_likely_root_cause') or plan.get('most_likely_source') or '(not localizable yet)'}",

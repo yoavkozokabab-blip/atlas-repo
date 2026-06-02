@@ -30,6 +30,7 @@ from builder_core.bug_intelligence import depgraph
 from . import analytics
 from . import graph_build
 from . import planning_engine
+from .evidence_engine import build_evidence_store
 
 PRODUCT_VERSION = "phase127-atlas-knowledge-engine"
 CHARS_PER_TOKEN = 4.0
@@ -631,6 +632,19 @@ def load_demo_mode(pack: str = "small") -> Dict[str, Any]:
     return _attach_analytics_status(result)
 
 
+def _build_evidence_store_for_scan(repo: str) -> Dict[str, Any]:
+    """AST symbol index + call graph for evidence-backed planning (Phase 129)."""
+    graph = _STATE.get("graph")
+    index = _STATE.get("index")
+    if not graph and not index:
+        return {}
+    try:
+        store = build_evidence_store(repo, graph, index)
+        return store.to_dict()
+    except Exception:
+        return {}
+
+
 def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     """Run the real Builder Core scan (graph + light index + risk ranking)."""
     repo = os.path.abspath(path or _STATE.get("path") or ".")
@@ -690,6 +704,7 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
                 "graph": cached["graph"],
                 "index": cached["index"],
                 "risks": cached["risks"],
+                "evidence_store": cached.get("evidence_store") or {},
             }
         )
         _STATE["scan"]["cache"] = {"hit": True, "signature": signature}
@@ -890,10 +905,24 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
         modules=module_count,
         edges=len(import_edges),
         output_size_bytes=0,
-        note="desktop stage marker (no dedicated backend verification-evidence step)",
+        note="building AST symbol index and call graph for evidence engine",
     )
-    # token estimate for the compact AI-context packet built from this scan
     _STATE.update({"path": repo, "scan": scan, "graph": graph, "index": index, "risks": risks})
+    t_evidence_start = time.time()
+    evidence_store = _build_evidence_store_for_scan(repo)
+    _STATE["evidence_store"] = evidence_store
+    t_evidence_end = time.time()
+    recorder.mark(
+        "building_evidence_index",
+        t_evidence_start,
+        t_evidence_end,
+        files_seen=len(index.get("files", [])),
+        code_files=len(index.get("files", [])),
+        modules=module_count,
+        edges=len(import_edges),
+        output_size_bytes=len(_json.dumps(evidence_store, default=str)) if evidence_store else 0,
+        symbol_count=(evidence_store.get("symbol_index") or {}).get("symbol_count", 0),
+    )
     _STATE["scan_job"]["stage"] = "generating_summary"
     t_packet_all_start = time.time()
     packet_stats: List[Dict[str, Any]] = []
@@ -972,6 +1001,7 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
         "graph": graph,
         "index": index,
         "risks": risks,
+        "evidence_store": _STATE.get("evidence_store") or {},
         "cached_at": time.time(),
     }
     _STATE["scan_job"]["stage"] = "completed"

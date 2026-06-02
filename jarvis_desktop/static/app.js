@@ -1255,6 +1255,23 @@ function renderLimitations(items) {
   return `<h3 style="font-size:13px;color:var(--amber);margin-top:14px">Limitations</h3><ul class="clean">${list.map(x => `<li>${esc(x)}</li>`).join("")}</ul>`;
 }
 
+function renderRepositoryEvidence(rev) {
+  if (!rev || !rev.status) return "";
+  const files = (rev.file_evidences || []).slice(0, 5);
+  return `
+    <div class="domain-panel glass evidence-panel">
+      <div class="domain-head">
+        <span class="domain-concept">Repository Evidence</span>
+        <span class="pill quality-source">${esc(rev.status)}</span>
+        <span class="pill">Score ${esc(rev.confidence_score)}/100</span>
+      </div>
+      ${rev.found?.length ? `<div class="report-section"><div class="report-label">Found</div><ul class="clean tiny">${rev.found.slice(0, 6).map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}
+      ${rev.missing?.length ? `<div class="report-section"><div class="report-label">Missing</div><ul class="clean tiny">${rev.missing.slice(0, 4).map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}
+      ${rev.recommended_insertion ? `<p class="muted tiny"><b>Recommended insertion:</b> <span class="tag" onclick="investigateFile(${JSON.stringify(rev.recommended_insertion)})">${esc(rev.recommended_insertion)}</span></p>` : ""}
+      ${files.length ? `<div class="report-section"><div class="report-label">Evidence by file</div><ul class="clean tiny">${files.map(f => `<li><span class="tag" onclick="investigateFile(${JSON.stringify(f.path)})">${esc(f.path)}</span> — ${esc(f.evidence_score)}/100 · ${esc((f.matching_symbols || []).slice(0, 2).join(", "))}</li>`).join("")}</ul></div>` : ""}
+    </div>`;
+}
+
 function renderDomainKnowledge(dk) {
   if (!dk || !dk.applied) return "";
   const roles = dk.file_roles || {};
@@ -1310,6 +1327,7 @@ async function runChangePlan() {
       </div>
       <p class="muted tiny" style="margin:8px 0">Size: <b>${esc(p.estimated_change_size)}</b> · Risk: <b>${esc(p.risk_level)}</b> · Intent: ${esc(p.intent)}</p>
       ${renderDomainKnowledge(p.domain_knowledge)}
+      ${renderRepositoryEvidence(p.repository_evidence || p.domain_knowledge?.repository_evidence)}
       <div class="plan-grid">
         <div class="report-section"><div class="report-label">Affected systems</div><div class="taglist">${(p.affected_systems || p.likely_affected_subsystems || []).map(s => `<span class="tag">${esc(s)}</span>`).join("") || '<span class="muted tiny">none matched</span>'}</div></div>
         <div class="report-section"><div class="report-label">Entry points</div><div class="taglist">${(p.entry_points || []).map(s => `<span class="tag">${esc(s)}</span>`).join("") || '<span class="muted tiny">none detected</span>'}</div></div>
@@ -1386,6 +1404,7 @@ async function runInvestigationPlan() {
         <p>${esc(p.symptom_summary || p.symptom || "")}</p>
       </div>
       ${renderDomainKnowledge(p.domain_knowledge)}
+      ${renderRepositoryEvidence(p.repository_evidence || p.domain_knowledge?.repository_evidence)}
       ${(p.domain_failure_modes || []).length ? `<div class="report-section"><div class="report-label">Domain failure modes</div><ul class="clean">${p.domain_failure_modes.map(m => `<li>${esc(m)}</li>`).join("")}</ul></div>` : ""}
       <div class="report-section">
         <div class="report-label">Most likely root cause</div>
