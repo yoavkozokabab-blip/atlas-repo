@@ -89,7 +89,7 @@ class TestAtlasBranding:
         html = _html()
         assert 'class="steps-row"' in html
         assert "Scan architecture" in html
-        assert "Ask Atlas or export" in html
+        assert "Plan, investigate, export" in html
 
     def test_home_actions_present(self):
         html = _html()
@@ -438,10 +438,11 @@ class TestModuleInspector:
 # --------------------------------------------------------------------------
 
 class TestUIStructure:
-    def test_bug_hint_section_present(self):
+    def test_investigate_bug_section_present(self):
         html = _html()
-        assert 'class="bug-hint' in html
-        assert "Works best with" in html
+        assert 'id="view-investigate"' in html
+        assert "Investigate Bug" in html
+        assert "traceback" in html.lower() or "stack trace" in html.lower()
 
     def test_export_why_section_present(self):
         html = _html()

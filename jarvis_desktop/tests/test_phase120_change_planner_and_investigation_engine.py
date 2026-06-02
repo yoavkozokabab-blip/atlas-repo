@@ -159,6 +159,39 @@ def test_planning_routes_registered():
     assert ("POST", "/api/planning/impact") in routes
 
 
+def test_investigation_graph_module_count_symptom(planner_scan):
+    res = api.investigate_symptom("scan graph shows wrong module count")
+    assert res["ok"]
+    plan = res["plan"]
+    assert plan["intent"] == "graph_module_count"
+    assert "BUG INVESTIGATION PLAN" in res["formatted"]
+    assert plan.get("logical_hypothesis")
+    assert plan.get("verification_steps")
+
+
+def test_change_plan_includes_actionable_fields(planner_scan):
+    res = api.plan_change("Add user authentication with login sessions")
+    plan = res["plan"]
+    assert plan.get("files_likely_to_change")
+    assert plan.get("implementation_order")
+    assert plan.get("verification_plan")
+    assert plan.get("risk_level") in {"low", "medium", "high"}
+
+
+def test_impact_direct_only_label(planner_scan):
+    res = api.impact("auth/login.py")
+    assert res["ok"]
+    assert res.get("impact_scope") == "direct_only"
+    assert res.get("transitive_available") is False
+
+
+def test_token_savings_hidden_from_cockpit_by_default(planner_scan):
+    summary = api.current_summary()
+    sav = summary.get("token_savings") or {}
+    assert sav.get("verified") is False
+    assert sav.get("show_in_cockpit") is False
+
+
 def test_formatters_include_headers():
     plan = {
         "goal": "Add auth",
@@ -172,6 +205,23 @@ def test_formatters_include_headers():
         "estimated_change_size": "Small",
         "confidence": "medium",
     }
+    inv = {
+        "symptom": "dashboard pnl is wrong",
+        "likely_modules": ["ui/dashboard.py"],
+        "most_likely_source": "ui/dashboard.py",
+        "why": "test",
+        "logical_hypothesis": "test hypothesis",
+        "evidence": ["e1"],
+        "confidence": "medium",
+        "inspect_first": ["ui/dashboard.py"],
+        "verification_steps": ["step1"],
+        "risk_if_fixed": "risk",
+        "limitations": ["lim"],
+    }
+    inv_text = planning_engine.format_investigation_plan_markdown(inv)
+    assert "BUG INVESTIGATION PLAN" in inv_text
+    assert "Symptom:" in inv_text
+
     text = planning_engine.format_change_plan_markdown(plan)
     assert "CHANGE PLAN" in text
     assert "Goal: Add auth" in text

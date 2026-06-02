@@ -10,6 +10,180 @@ const RECENT_KEY = "atlas_recent_repos";
 const LEGACY_RECENT_KEY = "jarvis_recent_repos";
 const ONBOARDING_KEY = "atlas_onboarding_done_v1";
 const DEMO_PACK_KEY = "atlas_demo_pack_v1";
+const GRAPH_HIERARCHY_THRESHOLD = 1000;
+const ATLAS_SHOW_GRAPH_DEBUG = false;
+const NAV_ALIASES = { intel: "center", bug: "investigate", map: "center", "command-center": "center" };
+
+function resolveDefaultGraphView(moduleCount) {
+  return (moduleCount || 0) >= GRAPH_HIERARCHY_THRESHOLD ? "hierarchy" : "module";
+}
+
+function graphModeTitle(view, graph) {
+  if (view === "module") return "Module Graph";
+  if (view === "subsystem") return "Architecture Overview";
+  return "Hierarchy View";
+}
+
+function graphUnderlyingTotals(sum, graph) {
+  return {
+    modules: graph?.total_modules ?? sum?.module_count ?? 0,
+    edges: graph?.total_edges ?? sum?.dependency_edges ?? 0,
+  };
+}
+
+function graphVisibleCounts(graph) {
+  return {
+    nodes: graph?.node_count ?? (graph?.nodes || []).length,
+    links: graph?.link_count ?? (graph?.links || []).length,
+  };
+}
+
+function formatEntitySummary(view, graph, totals) {
+  const vis = graphVisibleCounts(graph);
+  const x = vis.nodes;
+  const y = totals.modules;
+  if (view === "module") {
+    return `Showing ${x.toLocaleString()} of ${y.toLocaleString()} modules`;
+  }
+  if (view === "subsystem") {
+    const kind = graph?.architecture_clusters ? "architecture subsystems" : "subsystems";
+    return `Showing ${x.toLocaleString()} ${kind} representing ${y.toLocaleString()} modules`;
+  }
+  const level = graph?.level || "subsystem";
+  if (level === "package") {
+    return `Showing ${x.toLocaleString()} packages in this subsystem (${y.toLocaleString()} modules in repository)`;
+  }
+  if (level === "module") {
+    return `Showing ${x.toLocaleString()} modules in this package (${y.toLocaleString()} modules in repository)`;
+  }
+  return `Showing ${x.toLocaleString()} top-level hierarchy nodes representing ${y.toLocaleString()} modules`;
+}
+
+function graphViewToastMessage(view, graph, totals) {
+  const vis = graphVisibleCounts(graph);
+  if (view === "module") {
+    return `Viewing Module Graph (${vis.nodes.toLocaleString()} modules)`;
+  }
+  if (view === "subsystem") {
+    const kind = graph?.architecture_clusters ? "architecture subsystems" : "subsystems";
+    return `Viewing Architecture Overview (${vis.nodes.toLocaleString()} ${kind})`;
+  }
+  const level = graph?.level || "subsystem";
+  if (level === "package") return `Viewing Hierarchy — packages (${vis.nodes.toLocaleString()} nodes)`;
+  if (level === "module") return `Viewing Hierarchy — modules (${vis.nodes.toLocaleString()} nodes)`;
+  return `Viewing Hierarchy (${vis.nodes.toLocaleString()} top-level nodes)`;
+}
+
+function massiveModeReasonText(sum) {
+  const r = sum?.massive_reason || {};
+  if (r.manual) return "Manually enabled for this scan";
+  if (r.modules) return "Module count exceeds threshold";
+  if (r.files) return "File count exceeds threshold";
+  if (r.size) return "Repository size exceeds threshold";
+  return "Repository exceeds massive-mode limits";
+}
+
+function renderGraphModeMetrics(sum, graph) {
+  const view = STATE.graphView || "module";
+  const totals = graphUnderlyingTotals(sum, graph);
+  const vis = graphVisibleCounts(graph);
+  const badge = $("graphModeBadge");
+  if (badge) {
+    badge.style.display = "block";
+    badge.textContent = graphModeTitle(view, graph);
+    badge.className = `graph-mode-badge mode-${view}`;
+  }
+  const host = $("graphScaleHeader");
+  if (host) {
+    const risk = sum?.risk_score ?? 0;
+    const cycles = sum?.graph_health?.import_cycles ?? 0;
+    if (view === "module") {
+      host.innerHTML = `
+        <div class="scale-row">
+          <div class="scale-row-title">Visible</div>
+          <div class="scale-stat"><span class="scale-num">${vis.nodes.toLocaleString()}</span><span class="scale-lbl">modules</span></div>
+          <div class="scale-stat"><span class="scale-num">${vis.links.toLocaleString()}</span><span class="scale-lbl">dependencies</span></div>
+          <div class="scale-stat"><span class="scale-num">${risk}</span><span class="scale-lbl">risk score</span></div>
+          <div class="scale-stat"><span class="scale-num">${cycles}</span><span class="scale-lbl">cycles</span></div>
+        </div>`;
+    } else if (view === "subsystem") {
+      const linkLbl = graph?.architecture_clusters ? "cluster links" : "subsystem links";
+      host.innerHTML = `
+        <div class="scale-row">
+          <div class="scale-row-title">Visible</div>
+          <div class="scale-stat"><span class="scale-num">${vis.nodes.toLocaleString()}</span><span class="scale-lbl">subsystems</span></div>
+          <div class="scale-stat"><span class="scale-num">${vis.links.toLocaleString()}</span><span class="scale-lbl">${linkLbl}</span></div>
+        </div>
+        <div class="scale-row underlying">
+          <div class="scale-row-title">Underlying repository</div>
+          <div class="scale-stat"><span class="scale-num">${totals.modules.toLocaleString()}</span><span class="scale-lbl">modules</span></div>
+          <div class="scale-stat"><span class="scale-num">${totals.edges.toLocaleString()}</span><span class="scale-lbl">dependencies</span></div>
+        </div>`;
+    } else {
+      const levelLbl = graph?.level === "package" ? "packages" : graph?.level === "module" ? "modules" : "top-level nodes";
+      host.innerHTML = `
+        <div class="scale-row">
+          <div class="scale-row-title">Visible</div>
+          <div class="scale-stat"><span class="scale-num">${vis.nodes.toLocaleString()}</span><span class="scale-lbl">${levelLbl}</span></div>
+          <div class="scale-stat"><span class="scale-num">${vis.links.toLocaleString()}</span><span class="scale-lbl">links</span></div>
+        </div>
+        <div class="scale-row underlying">
+          <div class="scale-row-title">Underlying repository</div>
+          <div class="scale-stat"><span class="scale-num">${totals.modules.toLocaleString()}</span><span class="scale-lbl">modules</span></div>
+          <div class="scale-stat"><span class="scale-num">${totals.edges.toLocaleString()}</span><span class="scale-lbl">dependencies</span></div>
+        </div>`;
+    }
+  }
+  const summaryEl = $("graphEntitySummary");
+  if (summaryEl) summaryEl.textContent = formatEntitySummary(view, graph, totals);
+  renderMassiveModeBanner(sum, graph);
+  renderGraphRenderDiagnostics(STATE.graphPerf);
+}
+
+function renderGraphRenderDiagnostics(perf) {
+  const el = $("graphRenderDiagnostics");
+  if (!el) return;
+  if (!ATLAS_SHOW_GRAPH_DEBUG) {
+    el.style.display = "none";
+    return;
+  }
+  const view = STATE.graphView || "module";
+  const d = perf?.renderDiagnostics || JARVIS_UNIVERSE.getRenderDiagnostics?.();
+  if (!d || view !== "module") {
+    el.style.display = "none";
+    return;
+  }
+  el.style.display = "block";
+  const ok = d.meshes === d.nodes;
+  el.innerHTML = `
+    <div><b>Nodes:</b> ${d.nodes}</div>
+    <div><b>Meshes:</b> ${d.meshes}${ok ? "" : " ⚠"}</div>
+    <div><b>Min radius:</b> ${d.minRadius}</div>
+    <div><b>Max radius:</b> ${d.maxRadius}</div>
+    <div class="muted tiny">${d.forceVisibleModule ? "force-visible mode" : "custom mesh"}</div>`;
+}
+
+function renderMassiveModeBanner(sum, graph) {
+  const banner = $("massiveModeBanner");
+  if (!banner) return;
+  const massive = !!(sum?.massive_mode || graph?.massive_mode);
+  if (!massive) {
+    banner.style.display = "none";
+    return;
+  }
+  banner.style.display = "block";
+  const reasonEl = $("massiveModeReason");
+  if (reasonEl) reasonEl.textContent = `Reason: ${massiveModeReasonText(sum)}`;
+  const btn = $("showFullModuleGraphBtn");
+  if (btn) {
+    const onModule = (STATE.graphView || "module") === "module";
+    btn.style.display = onModule ? "none" : "inline-block";
+  }
+}
+
+function showFullModuleGraph() {
+  setGraphView("module");
+}
 
 function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
@@ -220,6 +394,11 @@ function finishScanSession(scan, pathLabel) {
   STATE.graph = null;
   STATE.graph3d = null;
   STATE.graphPerf = null;
+  STATE.graphView = resolveDefaultGraphView(scan?.module_count);
+  STATE._graphViewUserPicked = false;
+  document.querySelectorAll('input[name="graphView"]').forEach(el => {
+    el.checked = el.value === STATE.graphView;
+  });
   updateTelemetryWarning(scan);
   updateRepoChip(scan.repo_name, scan.demo_mode);
   unlockNav();
@@ -273,16 +452,19 @@ function selectDemoPack(id) {
 }
 
 function go(view) {
+  view = NAV_ALIASES[view] || view;
   document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
   const el = $("view-" + view); if (el) el.classList.add("active");
-  document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("active", b.dataset.view === view));
+  document.querySelectorAll("#nav button").forEach(b => {
+    const target = NAV_ALIASES[b.dataset.view] || b.dataset.view;
+    b.classList.toggle("active", target === view);
+  });
   window.scrollTo({ top: 0, behavior: "smooth" });
   if (view === "center") {
     trackAnalytics("graph_opened");
     setTimeout(renderCenter, 60);
   }
   if (view === "home") renderDemoPackPicker();
-  if (view === "intel") renderIntel();
   if (view === "export") refreshExport();
 }
 function unlockNav() { document.querySelectorAll('#nav button[data-lock="1"]').forEach(b => b.removeAttribute("data-lock")); }
@@ -379,7 +561,7 @@ async function scanFlow() {
   updateMassiveBadge(!!scan.massive_mode);
   if (scan.full_graph_pending) {
     $("scanModeInfo").style.display = "block";
-    $("scanModeInfo").textContent = "Import-level graph ready (~" + (scan.module_count || 0) + " modules). Full module graph can be built on demand from Command Center.";
+    $("scanModeInfo").textContent = "Import-level graph ready (~" + (scan.module_count || 0) + " modules). Open Repository Map for the full module graph.";
   } else if (scan.massive_mode) {
     $("scanModeInfo").style.display = "block";
     $("scanModeInfo").textContent = "Massive Repository Mode enabled. Starting with architecture overview is recommended.";
@@ -396,6 +578,9 @@ async function scanFlow() {
   STATE.summary = await api("/api/repositories/current/summary");
   finishScanSession(scan, sel.path);
   toast("Scan complete ✓", "success");
+  if ((scan.module_count || 0) < GRAPH_HIERARCHY_THRESHOLD) {
+    toast(`Opening Module Graph (${(scan.module_count || 0).toLocaleString()} modules)`, "success");
+  }
 }
 function setStage(i, cls) { const el = $("st" + i); if (el) el.className = "stage " + cls; }
 function setBar(pct) { $("scanBar").style.width = pct + "%"; $("scanPct").textContent = Math.round(pct) + "%"; }
@@ -434,8 +619,10 @@ async function fetchGraphPayload() {
   return api(`/api/repositories/current/graph?view=${encodeURIComponent(view)}`);
 }
 
-function setGraphView(view) {
+function setGraphView(view, options = {}) {
   STATE.graphView = view;
+  if (!options.silent) STATE._pendingGraphViewToast = view;
+  if (!options.preserveUserPick) STATE._graphViewUserPicked = true;
   if (view === "hierarchy") {
     STATE.hierarchy = { level: "subsystem", subsystem: "", package: "", module: "" };
   }
@@ -477,24 +664,22 @@ function navigateHierarchy(level, parent = "") {
     const parentText = String(parent || "");
     STATE.hierarchy = { level: "module", subsystem: STATE.hierarchy.subsystem || "", package: parentText, module: "" };
   }
+  STATE._pendingGraphViewToast = "hierarchy";
   STATE.graph = null;
   renderCenter();
 }
 
 function backToOverview() {
-  setGraphView("subsystem");
+  const modules = STATE.summary?.module_count ?? STATE.graph?.total_modules ?? 0;
+  setGraphView(resolveDefaultGraphView(modules));
 }
 
 function updateGraphMeta(data, perf) {
   const sum = STATE.summary || {};
   const perfText = perf && perf.loadMs != null ? ` · loaded ${perf.loadMs}ms` : "";
-  const capText = data.total_modules > data.node_count
-    ? ` · showing ${data.node_count}/${data.total_modules} modules`
-    : "";
-  const clusterText = data.cluster_count ? ` · ${data.cluster_count} galaxies · ${data.bridge_link_count || 0} bridges` : "";
   const cacheText = (STATE.summary?.cache?.hit || STATE.graph?.cache?.hit) ? " · cache hit" : "";
-  $("graphMeta").textContent =
-    `${data.view || STATE.graphView} · ${data.node_count} nodes · ${data.link_count} edges · ${sum.graph_scope || data.graph_scope || ""}${clusterText}${capText}${cacheText}${perfText}`;
+  const scopeText = sum.graph_scope || data.graph_scope || "";
+  $("graphMeta").textContent = [scopeText, cacheText, perfText].filter(Boolean).join(" · ");
 }
 
 async function renderCenter() {
@@ -526,39 +711,101 @@ async function renderCenter() {
   }
   STATE.tourStops = graph.tour_stops || [];
   STATE.riskPercentiles = computeRiskPercentiles(graph.nodes || []);
+  renderGraphModeMetrics(sum, graph);
   updateGraphMeta(graph, STATE.graphPerf);
+  if (STATE._pendingGraphViewToast) {
+    const totals = graphUnderlyingTotals(sum, graph);
+    toast(graphViewToastMessage(STATE._pendingGraphViewToast, graph, totals), "success");
+    STATE._pendingGraphViewToast = null;
+  }
   const timeline = await api("/api/repositories/current/timeline");
   JARVIS_UNIVERSE.renderTimeline($("timelinePanel"), timeline);
   renderModuleInspectorPlaceholder();
+  renderArchitectureSummary(sum);
+  renderModuleBrowsePanel(graph, sum);
   build3DGraph(graph);
+}
+
+function renderArchitectureSummary(sum) {
+  const host = $("architectureSummary");
+  if (!host || !sum?.ok) return;
+  const subsystems = (sum.subsystems || []).slice(0, 8);
+  host.innerHTML = `
+    <h3 style="margin-top:16px">Architecture</h3>
+    <p class="muted tiny" style="margin:4px 0 8px">${esc((sum.explanation || "").slice(0, 280))}${(sum.explanation || "").length > 280 ? "…" : ""}</p>
+    <div class="taglist">${subsystems.map(s => `<span class="tag" title="${esc((s.dependencies || []).join(", "))}">${esc(s.name)} · ${s.production_files || 0}</span>`).join("") || '<span class="muted tiny">—</span>'}</div>
+    <p class="muted tiny" style="margin-top:8px">Entry: ${esc((sum.entry_points || []).slice(0, 3).join(", ") || "none detected")}</p>`;
+}
+
+function renderModuleBrowsePanel(graph, sum) {
+  const panel = $("moduleBrowsePanel");
+  const list = $("moduleBrowseList");
+  if (!panel || !list) return;
+  const view = STATE.graphView || "module";
+  const nodes = (graph?.nodes || []).filter(n => n.type === "module" && n.path);
+  const showList = view === "module" && nodes.length > 0;
+  panel.style.display = showList ? "block" : "none";
+  if (!showList) return;
+  const totals = graphUnderlyingTotals(sum, graph);
+  const summary = $("moduleBrowseSummary");
+  if (summary) summary.textContent = `Top hubs · ${nodes.length.toLocaleString()} visible of ${totals.modules.toLocaleString()} modules`;
+  const ranked = [...nodes].sort((a, b) => (b.fan_in || 0) - (a.fan_in || 0) || (b.risk_score || 0) - (a.risk_score || 0));
+  STATE.moduleBrowseNodes = ranked;
+  filterModuleBrowseList();
+}
+
+function filterModuleBrowseList() {
+  const list = $("moduleBrowseList");
+  if (!list || !STATE.moduleBrowseNodes) return;
+  const q = ($("moduleBrowseFilter")?.value || "").trim().toLowerCase();
+  const items = STATE.moduleBrowseNodes.filter(n => !q || (n.path || "").toLowerCase().includes(q)).slice(0, 80);
+  list.innerHTML = items.map(n => {
+    const path = n.path || "";
+    const fan = n.fan_in || 0;
+    const risk = n.risk_score || 0;
+    return `<li><button type="button" class="mbp-item" onclick="selectModuleFromList(${JSON.stringify(path)})">${esc(path)} <span class="muted">fan-in ${fan} · risk ${risk}</span></button></li>`;
+  }).join("") || '<li class="muted tiny">No modules match filter</li>';
+}
+
+function selectModuleFromList(path) {
+  if (!path || !STATE.graph) return;
+  const node = (STATE.graph.nodes || []).find(n => n.path === path);
+  if (node) JARVIS_UNIVERSE.focusNode?.(node.id) || JARVIS_UNIVERSE.onNodeClick?.(node);
 }
 
 function renderHealthCockpit(sum) {
   updateTelemetryWarning(sum);
   const sav = sum.token_savings || {};
   const gh = sum.graph_health || {};
+  const showTokenSavings = sav.show_in_cockpit === true && sav.verified === true;
+  const ratioNote = gh.unresolved_ratio_note || "Internal unresolved ÷ (resolved + unresolved internal)";
   const graphNotice = gh.notice
     ? `<div class="cockpit-card wide"><div class="cc-label">Graph coverage</div><div class="cc-val" style="font-size:13px;color:var(--amber)">${gh.notice}</div></div>`
     : "";
   const tel = sum.analytics_status === "degraded"
     ? `<div class="cockpit-card wide"><div class="cc-label">Telemetry</div><div class="cc-val" style="font-size:13px;color:var(--amber)">${sum.telemetry_warning || TELEMETRY_WARNING_TEXT}</div></div>`
     : "";
+  const tokenCard = showTokenSavings
+    ? `<div class="cockpit-card"><div class="cc-label">Token savings (verified)</div><div class="cc-val" id="ccSavings">${sav.reduction_percent || 0}%</div></div>`
+    : "";
   $("leftPanel").innerHTML = `
     <h3>Health Cockpit</h3>
     ${tel}
     ${graphNotice}
+    <div id="architectureSummary"></div>
     <div class="cockpit-grid">
       <div class="cockpit-card risk"><div class="cc-label">Risk score</div><div class="cc-val" id="ccRisk">${sum.risk_score}</div></div>
       <div class="cockpit-card"><div class="cc-label">Graph health</div><div class="cc-val" id="ccHealth" style="font-size:16px;color:${gh.label === 'healthy' ? 'var(--green)' : 'var(--amber)'}">${gh.label || "—"}</div></div>
       <div class="cockpit-card warn"><div class="cc-label">Import cycles</div><div class="cc-val" id="ccCycles">${gh.import_cycles ?? 0}</div></div>
-      <div class="cockpit-card"><div class="cc-label">Token savings</div><div class="cc-val" id="ccSavings">${sav.reduction_percent || 0}%</div></div>
+      ${tokenCard}
     </div>
     <div class="cockpit-grid">
       <div class="cockpit-card"><div class="cc-label">Resolved imports</div><div class="cc-val">${gh.resolved_imports ?? 0}</div></div>
-      <div class="cockpit-card warn"><div class="cc-label">Unresolved imports</div><div class="cc-val">${gh.unresolved_imports ?? 0}</div></div>
-      <div class="cockpit-card"><div class="cc-label">External package imports</div><div class="cc-val">${gh.external_package_imports ?? 0}</div></div>
-      <div class="cockpit-card"><div class="cc-label">Unresolved ratio</div><div class="cc-val">${((gh.unresolved_ratio ?? 0) * 100).toFixed(1)}%</div></div>
+      <div class="cockpit-card warn"><div class="cc-label">Unresolved imports</div><div class="cc-val" title="Internal imports only">${gh.unresolved_imports ?? 0}</div></div>
+      <div class="cockpit-card"><div class="cc-label">External package imports</div><div class="cc-val" title="Not counted in unresolved ratio">${gh.external_package_imports ?? 0}</div></div>
+      <div class="cockpit-card"><div class="cc-label">Unresolved ratio</div><div class="cc-val" title="${esc(ratioNote)}">${((gh.unresolved_ratio ?? 0) * 100).toFixed(1)}%</div></div>
     </div>
+    <p class="muted tiny" style="margin:4px 0 10px">${esc(ratioNote)}</p>
     <div class="cockpit-card"><div class="cc-label">Blast radius hub</div><div class="cc-val" style="font-size:14px;color:#eaf0ff">${(sum.top_hubs?.[0]?.module || "—").split(".").pop()}</div>
       <div class="muted tiny">${sum.top_hubs?.[0]?.fan_in ?? 0} direct importers</div></div>
     <div class="cockpit-card"><div class="cc-label">Repository modules</div><div class="cc-val" id="ccModules">${sum.module_count}</div></div>
@@ -569,7 +816,8 @@ function renderHealthCockpit(sum) {
   JARVIS_UNIVERSE.animateCounter($("ccRisk"), sum.risk_score, 800);
   JARVIS_UNIVERSE.animateCounter($("ccModules"), sum.module_count, 900);
   JARVIS_UNIVERSE.animateCounter($("ccCycles"), gh.import_cycles ?? 0, 700);
-  JARVIS_UNIVERSE.animateCounter($("ccSavings"), sav.reduction_percent || 0, 900);
+  if (showTokenSavings && $("ccSavings")) JARVIS_UNIVERSE.animateCounter($("ccSavings"), sav.reduction_percent || 0, 900);
+  renderArchitectureSummary(sum);
 }
 function riskColor(s) { return s >= 60 ? "var(--red)" : s >= 35 ? "var(--amber)" : s >= 15 ? "var(--cyan)" : "var(--green)"; }
 
@@ -686,6 +934,22 @@ function build3DGraph(data) {
         handleHierarchyClick(n);
         return;
       }
+      if (STATE.graphView === "subsystem" && (n.expandable || STATE.graph?.architecture_clusters)) {
+        STATE.graphView = "hierarchy";
+        STATE._graphViewUserPicked = true;
+        STATE.hierarchy = {
+          level: "package",
+          subsystem: n.label || n.subsystem || "",
+          package: "",
+          module: "",
+        };
+        STATE.graph = null;
+        document.querySelectorAll('input[name="graphView"]').forEach(el => {
+          el.checked = el.value === "hierarchy";
+        });
+        renderCenter();
+        return;
+      }
       showNode(n);
     },
     onNodeHover: n => { STATE.hoverNodeId = n ? n.id : null; }, // lightweight; inspector on click only
@@ -700,6 +964,7 @@ function build3DGraph(data) {
     onLoaded: perf => {
       STATE.graphPerf = perf;
       updateGraphMeta(data, perf);
+      renderGraphRenderDiagnostics(perf);
     },
   });
 }
@@ -935,26 +1200,7 @@ async function copyContext(target) {
   copyText(text, `Copied ${target} context`);
 }
 
-/* ---------------- Project Intelligence ---------------- */
-async function renderIntel() {
-  const sum = STATE.summary || (STATE.summary = await api("/api/repositories/current/summary"));
-  const body = $("intelBody");
-  if (!sum.ok) {
-    body.innerHTML = emptyStateHtml("Scan required", "Project Intelligence needs a scanned repository or Demo Mode.", "Try Demo Mode", "loadDemoMode()");
-    return;
-  }
-  const flow = ["entry point", "→", "subsystems", "→", "core hubs", "→", "actions"].map(x => x === "→" ? '<span class="ar">→</span>' : `<span class="fn">${x}</span>`).join("");
-  body.innerHTML = `
-    <div class="glass ib full"><h3>Plain-English explanation</h3><p>${sum.explanation}</p></div>
-    <div class="glass ib"><h3>Subsystem map</h3><div class="taglist">${sum.subsystems.map(s=>`<span class="tag" title="${(s.dependencies||[]).join(', ')}">${s.name} · ${s.production_files}</span>`).join("")}</div></div>
-    <div class="glass ib"><h3>Entry points</h3><div class="taglist">${(sum.entry_points||[]).map(e=>`<span class="tag">${e}</span>`).join("") || '<span class="muted">none detected</span>'}</div></div>
-    <div class="glass ib full"><h3>Runtime flow (high level)</h3><div class="flow">${flow}</div><p class="muted tiny" style="margin-top:10px">Derived from subsystem dependencies; exact runtime branches are configuration-dependent.</p></div>
-    <div class="glass ib"><h3>Major modules (import hubs)</h3><ul class="clean">${sum.top_hubs.map(h=>`<li>${h.module} <span class="muted">← ${h.fan_in} importers</span></li>`).join("")}</ul></div>
-    <div class="glass ib"><h3>Architecture risks</h3><ul class="clean">${sum.top_risks.map(r=>`<li><b style="color:${riskColor(r.score)}">${(r.module||'').split('.').pop()}</b> <span class="muted">(${r.score}) — ${(r.reasons||[]).slice(0,2).join(', ')}</span></li>`).join("")}</ul></div>
-    <div class="glass ib full"><h3>Recommended next questions</h3><ul class="clean">${(sum.recommended_questions||[]).map(q=>`<li>${q}</li>`).join("")}</ul></div>`;
-}
-
-/* ---------------- Build (Change Planner) ---------------- */
+/* ---------------- Build Plan ---------------- */
 function esc(s) { return String(s || "").replace(/</g, "&lt;"); }
 
 function renderLimitations(items) {
@@ -1044,8 +1290,12 @@ async function runInvestigationPlan() {
         <h3 style="margin:0">Investigation Plan</h3>
         <span class="lvl ${p.confidence === 'high' ? 'low' : 'medium'}">confidence: ${esc(p.confidence)}</span>
       </div>
-      <pre class="code" style="max-height:280px;overflow:auto">${esc(r.formatted || "")}</pre>
+      <pre class="code" style="max-height:320px;overflow:auto">${esc(r.formatted || "")}</pre>
+      ${p.most_likely_source ? `<p class="muted tiny"><b>Most likely source:</b> ${esc(p.most_likely_source)}</p>` : ""}
+      ${p.logical_hypothesis ? `<p class="muted tiny"><b>Hypothesis:</b> ${esc(p.logical_hypothesis)}</p>` : ""}
       <div class="taglist" style="margin:10px 0">${(p.likely_modules || []).map(m => `<span class="tag">${esc(m)}</span>`).join("") || '<span class="muted">No grounded module match</span>'}</div>
+      ${(p.verification_steps || []).length ? `<h3 style="font-size:13px;color:var(--cyan);margin-top:12px">Verification</h3><ul class="clean">${p.verification_steps.map(v => `<li>${esc(v)}</li>`).join("")}</ul>` : ""}
+      ${p.risk_if_fixed ? `<p class="muted tiny"><b>Risk if fixed incorrectly:</b> ${esc(p.risk_if_fixed)}</p>` : ""}
       ${renderLimitations(r.limitations)}
       <h3 style="font-size:13px;color:var(--cyan);margin-top:14px">Export prompts</h3>
       <div class="copy-row">
@@ -1078,11 +1328,15 @@ async function runImpact() {
     });
     go("center");
   }
-  const mockTag = r.mock ? `<span class="pill warn">heuristic / TODO</span>` : "";
+  const mockTag = r.mock ? `<span class="pill warn">heuristic / target not in graph</span>` : "";
+  const scopeTag = r.impact_scope === "direct_only"
+    ? `<span class="pill">direct impact only</span>`
+    : "";
   out.innerHTML = `
     <div class="glass ocard">
-      <div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">Impact of changing <span style="color:var(--cyan)">${r.target}</span></h3><span class="lvl ${r.risk_level}">${r.risk_level} risk</span></div>
-      <p class="muted tiny" style="margin:8px 0 14px">${r.note || ""} ${mockTag}</p>
+      <div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">Impact of changing <span style="color:var(--cyan)">${esc(r.target)}</span></h3><span class="lvl ${r.risk_level}">${r.risk_level} risk</span></div>
+      <p class="muted tiny" style="margin:8px 0 14px">${esc(r.note || "")} ${scopeTag} ${mockTag}</p>
+      ${r.transitive_available === false ? '<p class="muted tiny">Transitive importers are not computed — only direct importers listed below.</p>' : ""}
       <div class="stat"><span>Affected files</span><b>${r.affected_file_count||0}</b></div>
       <div class="taglist" style="margin:10px 0">${(r.affected_files||[]).slice(0,24).map(f=>`<span class="tag">${f}</span>`).join("") || '<span class="muted">none resolved</span>'}</div>
       <h3 style="font-size:13px;color:var(--cyan)">Affected subsystems</h3>
@@ -1092,29 +1346,6 @@ async function runImpact() {
       <h3 style="font-size:13px;color:var(--cyan);margin-top:16px">Recommended Claude/Codex prompt</h3>
       <pre class="code">${(r.recommended_prompt||"").replace(/</g,"&lt;")}</pre>
       <button class="btn small" onclick="copyText(${JSON.stringify(r.recommended_prompt||"")}, 'Prompt copied')">Copy prompt</button>
-    </div>`;
-}
-
-/* ---------------- Bug investigation ---------------- */
-async function runBug() {
-  const text = $("bugText").value.trim();
-  if (!text) { toast("Paste a trace or describe the bug"); return; }
-  const r = await api("/api/bug-investigation", "POST", { text });
-  const out = $("bugOut");
-  if (!r.ok) { out.innerHTML = `<div class="glass ocard muted">${r.error||''}</div>`; return; }
-  const conf = r.confidence || "low";
-  const noModules = !(r.likely_modules||[]).length;
-  out.innerHTML = `
-    <div class="glass ocard">
-      <div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">Likely source modules</h3><span class="lvl ${conf==='high'?'low':conf==='medium'?'medium':'unknown'}">confidence: ${conf}</span></div>
-      ${r.mock?'<p class="muted tiny" style="margin-top:6px"><span class="pill warn">heuristic</span> Exact localization works best with file paths or module names from the graph.</p>':''}
-      <div class="taglist" style="margin:12px 0">${(r.likely_modules||[]).map(m=>`<span class="tag">${m}</span>`).join("") || (noModules ? `<span class="muted">No module match found. Try including a file path or error type from your stack trace.</span>` : '')}</div>
-      ${noModules ? `<div class="suggest" style="margin:12px 0"><div class="sg" onclick="$('askInput').value='What modules are most likely involved in: '+${JSON.stringify($('bugText')?.value||'this bug')};go('center');sendCopilotQuestion()">Send to Copilot</div><div class="sg" onclick="go('center');askQuestion('What are the top architectural risks?')">Ask about top risks</div></div>` : ''}
-      <h3 style="font-size:13px;color:var(--cyan)">Evidence</h3>
-      <ul class="clean">${(r.evidence||[]).map(e=>`<li>${e}</li>`).join("")}</ul>
-      <h3 style="font-size:13px;color:var(--cyan);margin-top:14px">Investigation prompt</h3>
-      <pre class="code">${(r.suggested_prompt||"").replace(/</g,"&lt;")}</pre>
-      <button class="btn small" onclick="copyText(${JSON.stringify(r.suggested_prompt||"")}, 'Prompt copied')">Copy prompt</button>
     </div>`;
 }
 

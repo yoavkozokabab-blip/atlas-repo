@@ -110,6 +110,23 @@ body{
 .gauge{margin:10px 0 4px}
 .gauge .gv{font-family:Orbitron;font-size:34px}
 .graph-stage{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:radial-gradient(700px 400px at 60% 10%, rgba(30,46,90,.4), rgba(8,12,22,.7));display:flex;flex-direction:column}
+.graph-mode-badge{position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);z-index:5;font-family:Orbitron;font-size:15px;letter-spacing:2px;text-transform:uppercase;padding:12px 28px;border-radius:999px;pointer-events:none;text-align:center;border:1px solid rgba(62,240,255,.45);background:rgba(8,14,28,.78);color:var(--cyan);box-shadow:0 0 32px rgba(62,240,255,.2)}
+.graph-mode-badge.mode-module{color:var(--cyan);border-color:rgba(62,240,255,.5)}
+.graph-mode-badge.mode-subsystem{color:#b8a0ff;border-color:rgba(154,123,255,.55);box-shadow:0 0 28px rgba(154,123,255,.18)}
+.graph-mode-badge.mode-hierarchy{color:var(--amber);border-color:rgba(255,194,75,.5);box-shadow:0 0 28px rgba(255,194,75,.15)}
+.massive-mode-banner{position:absolute;top:108px;left:16px;right:16px;z-index:4;padding:12px 16px;pointer-events:auto;border-color:rgba(255,154,75,.45)}
+.massive-mode-banner .mmb-title{font-family:Orbitron;font-size:12px;letter-spacing:1px;color:#ff9a4b;margin-bottom:4px}
+.massive-mode-banner .btn{margin-top:8px}
+.graph-scale-header{position:absolute;top:56px;left:50%;transform:translateX(-50%);z-index:4;display:flex;flex-direction:column;gap:8px;padding:10px 20px;pointer-events:none;border:1px solid rgba(62,240,255,.22);box-shadow:0 0 28px rgba(62,240,255,.12);max-width:min(96vw,720px)}
+.graph-scale-header .scale-row{display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+.graph-scale-header .scale-row-title{width:100%;text-align:center;font-size:10px;letter-spacing:.8px;color:var(--muted);text-transform:uppercase;margin-bottom:2px}
+.graph-scale-header .scale-stat{display:flex;flex-direction:column;align-items:center;min-width:64px}
+.graph-scale-header .scale-num{font-family:Orbitron;font-size:18px;color:var(--cyan);line-height:1.1;text-shadow:0 0 16px rgba(62,240,255,.35)}
+.graph-scale-header .scale-row.underlying .scale-num{font-size:15px;color:#9eb8ff}
+.graph-scale-header .scale-lbl{font-size:10px;letter-spacing:.6px;color:var(--muted);text-transform:uppercase;margin-top:3px}
+.graph-entity-summary{position:absolute;top:148px;left:50%;transform:translateX(-50%);z-index:4;margin:0;font-size:12px;color:#c7d2f5;text-align:center;max-width:90%;pointer-events:none;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+.graph-render-diagnostics{position:absolute;top:168px;right:16px;z-index:4;padding:8px 12px;font-size:11px;line-height:1.5;color:#dff6ff;pointer-events:none;border-color:rgba(62,240,255,.35);font-family:ui-monospace,monospace}
+.graph-render-diagnostics b{color:var(--cyan);font-weight:600}
 .graph-head{position:absolute;top:12px;left:16px;right:16px;z-index:3;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;pointer-events:none}
 .graph-head h3{font-family:Orbitron;letter-spacing:1px;font-size:13px;margin:0;color:#eaf0ff;text-shadow:0 0 20px rgba(62,240,255,.35)}
 .graph-controls{display:flex;flex-direction:column;align-items:flex-end;gap:6px;pointer-events:auto}
@@ -150,7 +167,7 @@ body{
 .cockpit-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
 .cockpit-hubs{margin-top:8px;font-size:12px}
 .cockpit-hubs li{margin:4px 0;color:#c7d2f5}
-body.screenshot-mode .topbar,body.screenshot-mode .panel,body.screenshot-mode .graph-head,body.screenshot-mode .timeline-panel,body.screenshot-mode .tour-panel,body.screenshot-mode .product-tour-panel{display:none!important}
+body.screenshot-mode .topbar,body.screenshot-mode .panel,body.screenshot-mode .graph-head,body.screenshot-mode .graph-scale-header,body.screenshot-mode .graph-mode-badge,body.screenshot-mode .graph-entity-summary,body.screenshot-mode .graph-render-diagnostics,body.screenshot-mode .massive-mode-banner,body.screenshot-mode .timeline-panel,body.screenshot-mode .tour-panel,body.screenshot-mode .product-tour-panel{display:none!important}
 body.screenshot-mode .center-grid{grid-template-columns:1fr;height:100vh}
 body.screenshot-mode .graph-stage{border:none;border-radius:0;height:100vh}
 body.screenshot-mode #graph3d{min-height:100vh}
@@ -303,5 +320,16 @@ ul.clean{margin:0;padding-left:18px;line-height:1.9;color:#c7d2f5}
 .export-why{padding:12px 14px;border:1px solid rgba(62,240,255,.2);border-radius:12px;background:rgba(62,240,255,.05);margin-bottom:4px}
 .export-why-title{font-size:11px;letter-spacing:.8px;color:var(--cyan);text-transform:uppercase;margin-bottom:6px}
 .export-why p{margin:0;font-size:12px;color:#aab7e0;line-height:1.5}
+
+/* Module browse fallback (readable when graph is secondary) */
+.module-browse-panel{max-height:220px;overflow:hidden;margin-top:8px;padding:10px 12px}
+.mbp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.mbp-head h4{margin:0;font-size:13px;color:var(--cyan)}
+.mbp-filter{width:100%;margin-bottom:8px;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:rgba(0,0,0,.25);color:#eaf0ff;font-size:12px}
+.mbp-list{max-height:140px;overflow:auto;margin:0}
+.mbp-item{background:none;border:none;color:#c7d2f5;text-align:left;padding:4px 0;cursor:pointer;font-size:11px;width:100%}
+.mbp-item:hover{color:var(--cyan)}
+.graph-advanced-toolbar summary{cursor:pointer;list-style:none}
+.graph-advanced-toolbar .graph-toolbar{margin-top:8px}
 
 @media(max-width:1100px){.cards{grid-template-columns:1fr 1fr}.center-grid{grid-template-columns:1fr;height:auto}.scan-wrap,.export-grid,.intel-body{grid-template-columns:1fr}#graph3d{height:480px}.steps-row{flex-direction:column;gap:8px}.step-arrow{transform:rotate(90deg)}}

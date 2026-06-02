@@ -31,10 +31,27 @@ from . import analytics
 from . import graph_build
 from . import planning_engine
 
-PRODUCT_VERSION = "phase120-change-planner-investigation"
+PRODUCT_VERSION = "phase122-atlas-product-hardening"
 CHARS_PER_TOKEN = 4.0
 GRAPH_DISPLAY_CAP = 5000
+GRAPH_DEFAULT_HIERARCHY_THRESHOLD = 1000
 RISK_RANK_TOP = 5000
+MODULE_VISUAL_SIZE_MIN = 5.5
+MODULE_VISUAL_SIZE_MAX = 28.0
+MODULE_HUB_FAN_IN_MIN = 8
+
+ARCHITECTURE_CLUSTER_PATTERNS: List[Tuple[str, Tuple[str, ...]]] = [
+    ("Core", ("core", "foundation", "kernel", "base/common")),
+    ("Platform", ("platform", "base", "common")),
+    ("Workbench", ("workbench",)),
+    ("Editor", ("editor", "monaco", "vs/editor")),
+    ("Extension Host", ("extension", "extensions", "ext_host", "extensionhost")),
+    ("Services", ("services", "service")),
+    ("Terminal", ("terminal", "xterm", "pty")),
+    ("Testing", ("testing", "test/", "/test")),
+    ("Debug", ("debug", "debugger")),
+    ("Shared", ("shared", "util", "utils")),
+]
 UNRESOLVED_IMPORT_PARTIAL_MIN = 100
 UNRESOLVED_IMPORT_PARTIAL_RATIO = 0.35
 MASSIVE_FILES_THRESHOLD = 20_000
@@ -1198,8 +1215,48 @@ def _risk_tier(
     return "normal"
 
 
+def _module_visual_metrics(
+    fan_in: int,
+    fan_out: int,
+    *,
+    risk_score: float = 0.0,
+    rank: Optional[int] = None,
+) -> Dict[str, Any]:
+    """Log-scaled module presence for 3D graph (Phase 121B)."""
+    connectivity = math.log1p(max(0, fan_in) + max(0, fan_out) + 1)
+    visual = 6.0 + connectivity * 2.85
+    visual = max(MODULE_VISUAL_SIZE_MIN, min(MODULE_VISUAL_SIZE_MAX, visual))
+    is_hub = fan_in >= MODULE_HUB_FAN_IN_MIN or (rank is not None and rank <= 12)
+    hub_scale = 1.0
+    if is_hub:
+        hub_scale = min(3.4, 1.35 + connectivity * 0.38)
+    return {
+        "size": round(visual, 2),
+        "visual_size": round(visual, 2),
+        "hub_scale": round(hub_scale, 2),
+        "is_hub": is_hub,
+    }
+
+
+def _architecture_cluster_name(subsystem: str) -> str:
+    low = str(subsystem or "(root)").lower().replace("\\", "/")
+    for label, patterns in ARCHITECTURE_CLUSTER_PATTERNS:
+        if any(pat in low for pat in patterns):
+            return label
+    segment = low.split("/")[0].split(".")[0].strip()
+    if segment and segment not in {"(root)", "root", ""}:
+        return segment.replace("_", " ").title()
+    return subsystem or "(root)"
+
+
+def _graph_recommended_view(total_modules: int) -> str:
+    if total_modules >= GRAPH_DEFAULT_HIERARCHY_THRESHOLD:
+        return "hierarchy"
+    return "module"
+
+
 def _apply_galaxy_layout(nodes: List[Dict[str, Any]], links: List[Dict[str, Any]]) -> Dict[str, Any]:
-    """Visualization-only cluster positions: subsystem galaxies orbiting a center."""
+    """Galaxy layout: subsystem anchor hubs with modules orbiting; leaves on outer rings."""
     clusters: Dict[str, List[Dict[str, Any]]] = {}
     for node in nodes:
         sub = str(node.get("subsystem") or "(root)")
@@ -1208,26 +1265,40 @@ def _apply_galaxy_layout(nodes: List[Dict[str, Any]], links: List[Dict[str, Any]
     cluster_names = sorted(clusters.keys(), key=lambda name: (-len(clusters[name]), name))
     cluster_meta: List[Dict[str, Any]] = []
     n_clusters = max(len(cluster_names), 1)
-    orbit_radius = 90.0 + min(120.0, n_clusters * 6.5)
+    orbit_radius = 120.0 + min(160.0, n_clusters * 8.5)
 
     for index, name in enumerate(cluster_names):
-        members = clusters[name]
+        members = sorted(
+            clusters[name],
+            key=lambda item: (-item.get("fan_in", 0), -item.get("risk_score", 0), item.get("label", "")),
+        )
         angle = (2.0 * math.pi * index) / n_clusters
         cx = orbit_radius * math.cos(angle)
         cy = orbit_radius * math.sin(angle)
-        cz = ((index % 3) - 1) * 28.0
+        cz = ((index % 3) - 1) * 32.0
 
-        hub = max(members, key=lambda item: (item.get("fan_in", 0), item.get("risk_score", 0)))
+        for node in members:
+            node["is_hub"] = False
+
+        hub = members[0]
         hub["is_hub"] = True
-        hub["hub_scale"] = round(2.2 + min(2.8, len(members) * 0.04), 2)
+        hub["hub_scale"] = round(max(hub.get("hub_scale", 1.0), 2.4 + min(3.2, len(members) * 0.05)), 2)
 
-        inner_radius = 10.0 + min(48.0, math.sqrt(len(members)) * 5.5)
-        for j, node in enumerate(sorted(members, key=lambda item: item.get("label", ""))):
-            ring_angle = (2.0 * math.pi * j) / max(len(members), 1)
-            depth = ((j % 5) - 2) * 5.5
+        inner_radius = 14.0 + min(56.0, math.sqrt(len(members)) * 6.5)
+        n_members = max(len(members), 1)
+        for j, node in enumerate(members):
+            if j == 0:
+                ring_radius = 0.0
+                ring_angle = 0.0
+            else:
+                ring = 1 + (j - 1) // max(1, n_members // 5)
+                ring_radius = inner_radius * (1.0 + ring * 0.62)
+                ring_angle = (2.0 * math.pi * (j - 1)) / max(n_members - 1, 1)
+            depth = ((j % 5) - 2) * 6.5
             node["cluster_id"] = name
-            node["galaxy_x"] = round(cx + inner_radius * math.cos(ring_angle), 2)
-            node["galaxy_y"] = round(cy + inner_radius * math.sin(ring_angle), 2)
+            node["galaxy_role"] = "hub" if j == 0 else ("leaf" if j >= n_members * 0.75 else "orbit")
+            node["galaxy_x"] = round(cx + ring_radius * math.cos(ring_angle), 2)
+            node["galaxy_y"] = round(cy + ring_radius * math.sin(ring_angle), 2)
             node["galaxy_z"] = round(cz + depth, 2)
 
         cluster_meta.append(
@@ -1458,7 +1529,7 @@ def _module_graph_payload(
                 "risk_rank": rank,
                 "risk_tier": tier,
                 "in_cycle": in_cycle,
-                "size": round(2.5 + min(22.0, score * 0.22 + fi * 0.08), 2),
+                **_module_visual_metrics(fi, fo, risk_score=score, rank=rank),
             }
         )
 
@@ -1506,6 +1577,8 @@ def _subsystem_graph_payload(
     graph: Dict[str, Any],
     index: Dict[str, Any],
     risks: Dict[str, Any],
+    *,
+    architecture_clusters: bool = False,
 ) -> Dict[str, Any]:
     """Collapse modules into subsystem hubs using real cross-subsystem import edges."""
     module_payload = _module_graph_payload(graph, index, risks)
@@ -1514,13 +1587,14 @@ def _subsystem_graph_payload(
     subsystem_nodes: Dict[str, Dict[str, Any]] = {}
     for node in module_payload["nodes"]:
         sub = node["subsystem"]
+        group_key = _architecture_cluster_name(sub) if architecture_clusters else sub
         bucket = subsystem_nodes.setdefault(
-            sub,
+            group_key,
             {
-                "id": f"subsystem:{sub}",
-                "label": sub,
-                "path": sub,
-                "subsystem": sub,
+                "id": f"subsystem:{group_key}",
+                "label": group_key,
+                "path": group_key,
+                "subsystem": group_key,
                 "fan_in": 0,
                 "fan_out": 0,
                 "importers_count": 0,
@@ -1540,6 +1614,10 @@ def _subsystem_graph_payload(
         bucket["fan_out"] += node["fan_out"]
         bucket["risk_score"] = max(bucket["risk_score"], node["risk_score"])
         bucket["in_cycle"] = bucket["in_cycle"] or node["in_cycle"]
+        if architecture_clusters:
+            subs = bucket.setdefault("member_subsystems", set())
+            if isinstance(subs, set):
+                subs.add(sub)
 
     max_score = max((n["risk_score"] for n in subsystem_nodes.values()), default=0.0)
     ranked_subs = sorted(subsystem_nodes.values(), key=lambda s: (-s["risk_score"], s["label"]))
@@ -1562,6 +1640,10 @@ def _subsystem_graph_payload(
         sub["graph_view"] = "subsystem"
         sub["importers_count"] = sub["fan_in"]
         sub["imported_modules_count"] = sub["fan_out"]
+        if architecture_clusters and isinstance(sub.get("member_subsystems"), set):
+            sub["member_subsystems"] = sorted(sub["member_subsystems"])
+            sub["expandable"] = True
+            sub["overview_hint"] = "Click to drill into packages and modules"
 
     edge_weights: Dict[tuple[str, str], int] = {}
     for edge in graph.get("edges", []):
@@ -1571,7 +1653,8 @@ def _subsystem_graph_payload(
         dst = module_by_id.get(edge["to"])
         if not src or not dst:
             continue
-        src_sub, dst_sub = src["subsystem"], dst["subsystem"]
+        src_sub = _architecture_cluster_name(src["subsystem"]) if architecture_clusters else src["subsystem"]
+        dst_sub = _architecture_cluster_name(dst["subsystem"]) if architecture_clusters else dst["subsystem"]
         if src_sub == dst_sub:
             continue
         key = (src_sub, dst_sub)
@@ -1594,6 +1677,7 @@ def _subsystem_graph_payload(
     return {
         "view": "subsystem",
         "graph_view": "subsystem",
+        "architecture_clusters": architecture_clusters,
         "node_count": len(nodes),
         "link_count": len(links),
         "total_modules": module_payload["total_modules"],
@@ -1614,19 +1698,26 @@ def current_graph(view: str = "module", force_module: bool = False) -> Dict[str,
     mode = (view or "module").strip().lower()
     scan = _STATE.get("scan") or {}
     is_massive = bool(scan.get("massive_mode"))
-    if is_massive and mode == "module" and not force_module:
-        mode = "subsystem"
-    payload = (
-        _subsystem_graph_payload(graph, index, risks)
-        if mode == "subsystem"
-        else _module_graph_payload(graph, index, risks)
-    )
+    total_modules = sum(1 for n in graph.get("nodes", []) if n.get("type") == "module")
+    recommended = _graph_recommended_view(total_modules)
+    cluster_overview = is_massive or total_modules >= GRAPH_DEFAULT_HIERARCHY_THRESHOLD
+    if mode == "subsystem":
+        payload = _subsystem_graph_payload(
+            graph, index, risks, architecture_clusters=cluster_overview
+        )
+    else:
+        payload = _module_graph_payload(graph, index, risks)
     tour_stops = _build_tour_stops(payload["nodes"], payload["links"], scan, index)
     render_warning = ""
-    if is_massive and payload.get("total_modules", 0) > GRAPH_DISPLAY_CAP:
+    if payload.get("total_modules", 0) > GRAPH_DISPLAY_CAP and payload["view"] == "module":
         render_warning = (
-            "This repository is too large to visualize all modules at once. "
-            "Start with architecture overview."
+            f"Showing top {GRAPH_DISPLAY_CAP:,} modules by risk (of {payload['total_modules']:,}). "
+            "Use Hierarchy or Architecture overview to explore the full repository."
+        )
+    elif total_modules >= GRAPH_DEFAULT_HIERARCHY_THRESHOLD and mode == "module" and not force_module:
+        render_warning = (
+            f"Large repository ({total_modules:,} modules) — Hierarchy view is recommended; "
+            "use Module graph here for the full codebase."
         )
     return {
         "ok": True,
@@ -1644,8 +1735,10 @@ def current_graph(view: str = "module", force_module: bool = False) -> Dict[str,
         "total_edges": payload["total_edges"],
         "display_cap": GRAPH_DISPLAY_CAP,
         "massive_mode": is_massive,
+        "recommended_view": recommended,
         "render_warning": render_warning,
-        "defaulted_to_subsystem": bool(is_massive and (view or "module").strip().lower() == "module" and not force_module),
+        "defaulted_to_subsystem": False,
+        "architecture_clusters": bool(payload.get("architecture_clusters")),
         "nodes": payload["nodes"],
         "links": payload["links"],
     }
@@ -1924,7 +2017,9 @@ def impact(target: str) -> Dict[str, Any]:
         "affected_subsystems": affected_subsystems,
         "recommended_tests": _recommended_tests(node.get("path", ""), affected_subsystems),
         "recommended_prompt": _impact_prompt(node.get("path", ""), fan_in, affected_subsystems),
-        "note": "Static reverse-import impact (resolved edges only); dynamic dispatch not counted.",
+        "impact_scope": "direct_only",
+        "transitive_available": False,
+        "note": "Direct importers only (resolved import edges). Transitive blast radius is not computed in this release.",
     }
 
 
@@ -2209,6 +2304,10 @@ def _graph_health(scan: Dict[str, Any]) -> Dict[str, Any]:
         "unresolved_imports": unresolved,
         "external_package_imports": external,
         "unresolved_ratio": ratio,
+        "unresolved_ratio_note": (
+            "Unresolved internal imports ÷ (resolved + unresolved internal). "
+            "External package imports are tracked separately and do not inflate this ratio."
+        ),
         "notice": "Graph is partial: many imports could not be resolved." if unresolved_high else "",
         "label": label,
     }
@@ -2220,11 +2319,14 @@ def _token_savings(scan: Dict[str, Any]) -> Dict[str, Any]:
     avg_module_tokens = 600
     naive = scan["module_count"] * avg_module_tokens
     compact = scan.get("compact_token_estimate", 0) or 1
+    reduction = round(100 * (naive - compact) / naive, 1) if naive else 0
     return {
         "naive_read_estimate": naive,
         "compact_packet_tokens": compact,
-        "reduction_percent": round(100 * (naive - compact) / naive, 1) if naive else 0,
-        "note": "Estimate only (chars/4). The compact packet replaces broad repo reading.",
+        "reduction_percent": reduction,
+        "verified": False,
+        "show_in_cockpit": False,
+        "note": "Unverified estimate (module_count × 600 vs compact packet chars/4). Not shown in cockpit to avoid misleading savings claims.",
     }
 
 

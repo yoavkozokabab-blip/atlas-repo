@@ -24,13 +24,11 @@
     <nav class="nav" id="nav">
       <button data-view="home" class="active" onclick="go('home')">Home</button>
       <button data-view="scan" onclick="go('scan')">Scan</button>
-      <button data-view="center" data-lock="1" onclick="go('center')">Command Center</button>
-      <button data-view="intel" data-lock="1" onclick="go('intel')">Intelligence</button>
-      <button data-view="build" data-lock="1" onclick="go('build')">Build</button>
-      <button data-view="investigate" data-lock="1" onclick="go('investigate')">Investigate</button>
+      <button data-view="center" data-lock="1" onclick="go('center')">Repository Map</button>
+      <button data-view="build" data-lock="1" onclick="go('build')">Build Plan</button>
+      <button data-view="investigate" data-lock="1" onclick="go('investigate')">Investigate Bug</button>
       <button data-view="impact" data-lock="1" onclick="go('impact')">Impact</button>
-      <button data-view="bug" data-lock="1" onclick="go('bug')">Bug Hunt</button>
-      <button data-view="export" data-lock="1" onclick="go('export')">AI Export</button>
+      <button data-view="export" data-lock="1" onclick="go('export')">Export</button>
     </nav>
     <div class="repo-chip" id="repoChip">No repository</div>
     <span class="demo-badge" id="demoBadge" style="display:none">Demo Mode</span>
@@ -55,7 +53,7 @@
           <div class="step-arrow">→</div>
           <div class="step"><div class="step-num">2</div><h3>Scan architecture</h3><p>Atlas indexes modules, edges, and architectural risks locally.</p></div>
           <div class="step-arrow">→</div>
-          <div class="step"><div class="step-num">3</div><h3>Ask Atlas or export</h3><p>Explore the graph, ask Copilot, or copy context for Claude.</p></div>
+          <div class="step"><div class="step-num">3</div><h3>Plan, investigate, export</h3><p>Build plans, debug symptoms, analyze impact, export prompts for Claude or Cursor.</p></div>
         </div>
         <div class="home-actions">
           <button class="btn primary big" type="button" id="browseHomBtn" onclick="browseRepoFolder()">Browse Repository</button>
@@ -64,12 +62,11 @@
         </div>
         <h2 class="ask">Or explore by task</h2>
         <div class="cards">
-          <div class="card glass" onclick="go('intel')"><div class="ci">🧭</div><h3>Understand this repository</h3><p>Subsystems, entry points, runtime flow.</p></div>
-          <div class="card glass" onclick="go('center')"><div class="ci">⚠️</div><h3>Find architectural risks</h3><p>Hubs, fan-in, cycles, risk ranking.</p></div>
-          <div class="card glass" onclick="go('impact')"><div class="ci">🌐</div><h3>Analyze impact of a change</h3><p>Blast radius before you edit.</p></div>
-          <div class="card glass" onclick="go('bug')"><div class="ci">🐞</div><h3>Investigate a bug</h3><p>Localize from a trace or description.</p></div>
-          <div class="card glass" onclick="go('impact')"><div class="ci">✅</div><h3>Verify a planned fix</h3><p>Tests and modules to check.</p></div>
-          <div class="card glass accent" onclick="go('export')"><div class="ci">✨</div><h3>Prepare context for Claude/Codex/Cursor</h3><p>Compact, token-cheap repo packets.</p></div>
+          <div class="card glass" onclick="go('center')"><div class="ci">🧭</div><h3>Understand this repository</h3><p>Architecture summary, hubs, risks, module map.</p></div>
+          <div class="card glass" onclick="go('build')"><div class="ci">🛠</div><h3>Plan a feature change</h3><p>Grounded files, tests, and implementation order.</p></div>
+          <div class="card glass" onclick="go('investigate')"><div class="ci">🐞</div><h3>Investigate a bug</h3><p>Symptom → likely files, hypothesis, verification.</p></div>
+          <div class="card glass" onclick="go('impact')"><div class="ci">🌐</div><h3>Analyze impact of a change</h3><p>Direct importers and tests before you edit.</p></div>
+          <div class="card glass accent" onclick="go('export')"><div class="ci">✨</div><h3>Export context for Claude/Cursor</h3><p>Accurate compact or verbose context packets.</p></div>
         </div>
 
         <div class="repo-pick glass">
@@ -160,24 +157,26 @@
         <aside class="panel glass left" id="leftPanel"></aside>
         <div class="graph-stage">
           <div class="graph-head">
-            <h3>Repository Universe</h3>
+            <h3>Repository Map</h3>
             <div class="graph-controls">
               <div class="hierarchy-bar">
                 <div id="hierarchyBreadcrumb" class="muted tiny">Repository</div>
                 <button class="btn small ghost" type="button" onclick="backToOverview()">Back to overview</button>
               </div>
-              <div class="graph-toolbar">
-                <button class="btn small ghost" type="button" onclick="resetGraphView()" title="Reset camera to default position">Reset View</button>
-                <button class="btn small tour-btn" type="button" onclick="startRepositoryTour()">Tour Repository</button>
-                <button class="btn small tour-btn" type="button" onclick="startProductTour()">Start Product Tour</button>
-                <button class="btn small ghost" type="button" onclick="exportDemoBundle()">Export Bundle</button>
-                <button class="btn small ghost" type="button" onclick="exportGraphPNG()">PNG</button>
-                <button class="btn small ghost" type="button" onclick="exportGraphSVG()">SVG</button>
-                <button class="btn small ghost" id="screenshotBtn" type="button" onclick="toggleScreenshotMode()">Screenshot</button>
-              </div>
+              <details class="graph-advanced-toolbar">
+                <summary class="btn small ghost">Advanced</summary>
+                <div class="graph-toolbar">
+                  <button class="btn small ghost" type="button" onclick="resetGraphView()" title="Reset camera to default position">Reset View</button>
+                  <button class="btn small tour-btn" type="button" onclick="startRepositoryTour()">Tour Repository</button>
+                  <button class="btn small ghost" type="button" onclick="exportDemoBundle()">Export Bundle</button>
+                  <button class="btn small ghost" type="button" onclick="exportGraphPNG()">PNG</button>
+                  <button class="btn small ghost" type="button" onclick="exportGraphSVG()">SVG</button>
+                  <button class="btn small ghost" id="screenshotBtn" type="button" onclick="toggleScreenshotMode()">Screenshot</button>
+                </div>
+              </details>
               <div class="graph-toggle" role="radiogroup" aria-label="Graph view">
                 <label><input type="radio" name="graphView" value="module" checked onchange="setGraphView('module')"> Module graph</label>
-                <label><input type="radio" name="graphView" value="subsystem" onchange="setGraphView('subsystem')"> Subsystem graph</label>
+                <label><input type="radio" name="graphView" value="subsystem" onchange="setGraphView('subsystem')"> Architecture overview</label>
                 <label><input type="radio" name="graphView" value="hierarchy" onchange="setGraphView('hierarchy')"> Hierarchy</label>
               </div>
               <label class="graph-toggle edge-toggle"><input type="checkbox" id="showEdges" checked onchange="toggleGraphEdges()"> Show edges</label>
@@ -186,7 +185,22 @@
             </div>
           </div>
           <div class="scan-path glass" id="graphWarning" style="display:none"></div>
+          <div class="massive-mode-banner glass" id="massiveModeBanner" style="display:none" role="status">
+            <div class="mmb-title">Massive Repository Mode Active</div>
+            <p class="mmb-reason muted tiny" id="massiveModeReason">Reason: Repository size exceeds threshold</p>
+            <p class="muted tiny">Graph optimized for navigation — switch views below or open the full module graph.</p>
+            <button class="btn small primary" type="button" id="showFullModuleGraphBtn" onclick="showFullModuleGraph()">Show Full Module Graph</button>
+          </div>
+          <div class="graph-mode-badge" id="graphModeBadge" style="display:none" aria-live="polite">Module Graph</div>
+          <div class="graph-scale-header glass" id="graphScaleHeader" aria-label="Graph mode metrics"></div>
+          <p class="graph-entity-summary" id="graphEntitySummary" aria-live="polite"></p>
+          <div class="graph-render-diagnostics glass" id="graphRenderDiagnostics" style="display:none" aria-live="polite"></div>
           <div id="graph3d"></div>
+          <div class="module-browse-panel glass" id="moduleBrowsePanel" style="display:none" aria-label="Module list fallback">
+            <div class="mbp-head"><h4>Module list</h4><span class="muted tiny" id="moduleBrowseSummary"></span></div>
+            <input type="search" id="moduleBrowseFilter" class="mbp-filter" placeholder="Filter modules…" oninput="filterModuleBrowseList()" />
+            <ul class="clean mbp-list" id="moduleBrowseList"></ul>
+          </div>
           <div class="tour-panel glass" id="tourPanel" style="display:none">
             <div class="tour-step" id="tourStep">Step 1/5</div>
             <h4 id="tourTitle">Tour</h4>
@@ -259,15 +273,9 @@
       </div>
     </section>
 
-    <!-- ===================== SCREEN 4: PROJECT INTELLIGENCE ===================== -->
-    <section class="view" id="view-intel">
-      <h2 class="vh">Project Intelligence</h2>
-      <div id="intelBody" class="intel-body"></div>
-    </section>
-
-    <!-- ===================== SCREEN: BUILD (CHANGE PLANNER) ===================== -->
+    <!-- ===================== SCREEN: BUILD PLAN ===================== -->
     <section class="view" id="view-build">
-      <h2 class="vh">Build — Change Planner</h2>
+      <h2 class="vh">Build Plan</h2>
       <p class="muted tiny" style="margin:-8px 4px 14px">Planning only — Atlas does not generate or apply code. Export prompts for Claude, Codex, or Cursor.</p>
       <div class="io glass">
         <label>What do you want to add or change?</label>
@@ -277,13 +285,13 @@
       <div id="buildOut" class="out"></div>
     </section>
 
-    <!-- ===================== SCREEN: INVESTIGATE (SYMPTOM ENGINE) ===================== -->
+    <!-- ===================== SCREEN: INVESTIGATE BUG ===================== -->
     <section class="view" id="view-investigate">
-      <h2 class="vh">Investigate — Symptom Engine</h2>
-      <p class="muted tiny" style="margin:-8px 4px 14px">Describe behavior in plain language. Atlas suggests where to look — with confidence and evidence, not fake certainty.</p>
+      <h2 class="vh">Investigate Bug</h2>
+      <p class="muted tiny" style="margin:-8px 4px 14px">Describe a symptom or paste a stack trace. Atlas returns grounded files, a logical hypothesis, and verification steps — not fake certainty.</p>
       <div class="io glass">
         <label>What is going wrong?</label>
-        <textarea id="investigateSymptom" rows="5" placeholder="e.g. The backtest is better than paper trading&#10;Telegram alerts are delayed&#10;Dashboard numbers are wrong"></textarea>
+        <textarea id="investigateSymptom" rows="6" placeholder="e.g. The backtest is better than paper trading&#10;Dashboard PnL is wrong&#10;Scan graph shows wrong module count&#10;&#10;Or paste a traceback with file paths…"></textarea>
         <button class="btn primary" onclick="runInvestigationPlan()">Generate Investigation Plan</button>
       </div>
       <div id="investigateOut" class="out"></div>
@@ -302,30 +310,9 @@
       <div id="impactOut" class="out"></div>
     </section>
 
-    <!-- ===================== SCREEN 6: BUG INVESTIGATION ===================== -->
-    <section class="view" id="view-bug">
-      <h2 class="vh">Bug Investigation</h2>
-      <div class="bug-hint glass">
-        <div class="bug-hint-title">Works best with</div>
-        <ul class="clean">
-          <li>Stack traces with file paths and line numbers</li>
-          <li>Module or file names — e.g. <code>builder_core/ask.py</code></li>
-          <li>Error messages and exception class names</li>
-          <li>Module names visible in the dependency graph</li>
-        </ul>
-        <p class="muted tiny" style="margin:8px 0 0">Natural-language symptom descriptions may have limited match precision. If no match is found, Atlas will suggest investigation prompts.</p>
-      </div>
-      <div class="io glass">
-        <label>Paste a stack trace or describe the bug</label>
-        <textarea id="bugText" rows="6" placeholder="Traceback (most recent call last):&#10;  File &quot;builder_core/ask.py&quot;, line 42 …"></textarea>
-        <button class="btn primary" onclick="runBug()">Investigate</button>
-      </div>
-      <div id="bugOut" class="out"></div>
-    </section>
-
-    <!-- ===================== SCREEN 7: AI CONTEXT EXPORT ===================== -->
+    <!-- ===================== SCREEN: EXPORT ===================== -->
     <section class="view" id="view-export">
-      <h2 class="vh">AI Context Export</h2>
+      <h2 class="vh">Export</h2>
       <div class="export-grid">
         <div class="glass controls">
           <div class="export-why">

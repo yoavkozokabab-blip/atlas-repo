@@ -81,8 +81,86 @@ _SYMPTOM_SPECS: Dict[str, Dict[str, Any]] = {
         "triggers": ("position close", "closes fail", "close order", "exit position"),
         "search": ("position", "close", "order", "execution", "trade", "risk"),
         "why": "Intermittent close failures often involve order routing, state machines, or broker adapters.",
+        "hypothesis": "Order state, venue rules, or partial-fill handling may reject or delay close requests.",
+        "verify": (
+            "Reproduce with a single symbol and capture order lifecycle logs.",
+            "Compare close path vs open path (same adapter, different state transitions).",
+        ),
+        "risk_if_fixed": "Overly aggressive retries could duplicate closes or violate risk limits.",
+    },
+    "dashboard_pnl": {
+        "triggers": ("pnl", "profit and loss", "dashboard pnl", "wrong pnl", "pnl is wrong"),
+        "search": ("pnl", "profit", "loss", "equity", "balance", "dashboard", "metric", "portfolio"),
+        "why": "PnL mismatches often come from position accounting, mark-to-market sources, or UI aggregation.",
+        "hypothesis": "Stale marks, double-counted fills, or inconsistent fee/slippage treatment between layers.",
+        "verify": (
+            "Trace PnL from raw fills → position ledger → API → dashboard widget.",
+            "Compare paper/live vs backtest PnL components on the same date range.",
+        ),
+        "risk_if_fixed": "Fixing display-only bugs can hide real accounting errors; verify ledger first.",
+    },
+    "graph_module_count": {
+        "triggers": (
+            "module count",
+            "wrong module",
+            "scan graph",
+            "graph shows wrong",
+            "atlas graph",
+            "repository map",
+        ),
+        "search": ("graph", "scan", "module", "index", "universe", "import", "dependency"),
+        "why": "Graph/module count issues usually involve scan scope, production filters, or overview vs module view.",
+        "hypothesis": "UI may show architecture overview or partial graph while totals reflect full scan.",
+        "verify": (
+            "Confirm scan scope (entire repo vs folder) and production filter settings.",
+            "Switch to Module Graph and compare visible count to summary module_count.",
+        ),
+        "risk_if_fixed": "Forcing full module graph on huge repos may degrade performance — use hierarchy when appropriate.",
     },
 }
+
+
+def _path_symbols(path: str) -> List[str]:
+    """Best-effort symbols from a file path (no AST — avoids hallucinated class names)."""
+    base = (path or "").replace("\\", "/").split("/")[-1]
+    if "." in base:
+        stem = base.rsplit(".", 1)[0]
+    else:
+        stem = base
+    out: List[str] = []
+    if stem and stem not in {"__init__", "index", "main"}:
+        out.append(stem)
+    return out
+
+
+def _risk_level_from_fan_in(fan_in: int, risk_score: float) -> str:
+    if fan_in >= 25 or risk_score >= 60:
+        return "high"
+    if fan_in >= 6 or risk_score >= 35:
+        return "medium"
+    return "low"
+
+
+def _implementation_order(paths: List[str], graph: Optional[Dict[str, Any]]) -> List[str]:
+    """Leaf-ish modules first (lower fan-in), then hubs — static heuristic only."""
+    if not paths or not graph:
+        return list(paths)
+    nodes = {n.get("path"): n for n in _production_modules(graph)}
+    ordered = sorted(
+        paths,
+        key=lambda p: (int((nodes.get(p) or {}).get("fan_in", 0) or 0), p),
+    )
+    return ordered
+
+
+def _files_likely_to_break(inbound_paths: List[str], risks_map: Dict[str, Dict[str, Any]]) -> List[str]:
+    scored: List[Tuple[int, str]] = []
+    for path in inbound_paths:
+        row = risks_map.get(path) or {}
+        fan = int(row.get("fan_in", 0) or 0)
+        scored.append((fan + int(row.get("total_score", 0) or 0), path))
+    scored.sort(key=lambda x: (-x[0], x[1]))
+    return [p for _, p in scored[:10]]
 
 
 def _subsystem_of(path: str) -> str:
@@ -234,9 +312,24 @@ def plan_change(request: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
     limitations: List[str] = []
     if not matched_paths:
         limitations.append("No production modules matched this request by path keyword — inspect entry points and hubs manually.")
+        limitations.append("Provide subsystem names, file paths, or a narrower feature description and re-run.")
     if intent == "general":
         limitations.append("Request did not match a known feature pattern; results are keyword-based only.")
     limitations.append("Static import graph only — runtime plugins and dynamic imports may be missing.")
+
+    top_node = scored[0][1] if scored else {}
+    risk_level = _risk_level_from_fan_in(
+        int(top_node.get("fan_in", 0) or 0),
+        float((risks_map.get(top_node.get("path", "")) or {}).get("total_score", 0) or 0),
+    )
+    likely_break = _files_likely_to_break(inbound, risks_map)
+    verification_plan = [
+        "Read files_to_inspect_first and confirm the change boundary matches the goal.",
+        "Run tests_likely_affected before and after the change.",
+        "Re-scan or refresh impact on the highest fan-in file you touch.",
+    ]
+    if likely_break:
+        verification_plan.append(f"Smoke-test direct importers: {', '.join(likely_break[:3])}")
 
     plan = {
         "goal": goal,
@@ -245,6 +338,8 @@ def plan_change(request: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
         "likely_affected_subsystems": subsystems,
         "entry_points": entry_points,
         "files_to_inspect_first": matched_paths[:8],
+        "files_likely_to_change": matched_paths[:8],
+        "files_likely_to_break": likely_break,
         "dependencies_involved": {
             "outbound_imports": outbound,
             "inbound_importers": inbound,
@@ -252,6 +347,9 @@ def plan_change(request: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
         "architectural_risks": arch_risks[:10],
         "tests_likely_affected": tests,
         "estimated_change_size": _estimate_size(len(matched_paths) or 1),
+        "risk_level": risk_level,
+        "implementation_order": _implementation_order(matched_paths[:12], graph),
+        "verification_plan": verification_plan,
         "confidence": confidence,
         "evidence": _change_evidence(scored[:8], intent),
         "limitations": limitations,
@@ -324,13 +422,29 @@ def investigate_symptom(symptom: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
     outbound, inbound = _graph_neighbors(graph, matched_ids) if graph else ([], [])
 
     why = spec.get("why", "Keyword overlap between the symptom and indexed module paths.")
+    logical_hypothesis = spec.get(
+        "hypothesis",
+        "Behavior may diverge between code paths that share names but differ in timing, I/O, or configuration.",
+    )
     evidence: List[str] = [f"Symptom intent: {intent}", why]
     for score, node in scored[:5]:
-        evidence.append(f"`{node.get('path')}` matched (score {score:.1f})")
+        path = node.get("path") or ""
+        fan = node.get("fan_in", 0)
+        evidence.append(f"`{path}` matched (score {score:.1f}, fan-in {fan})")
+    if outbound:
+        evidence.append(f"Outbound imports (sample): {', '.join(outbound[:6])}")
+    if inbound:
+        evidence.append(f"Inbound importers (sample): {', '.join(inbound[:6])}")
+        if len(inbound) >= 5:
+            evidence.append("High blast radius: many direct importers on matched modules.")
     if explicit_paths:
         evidence.append(f"Explicit path mention in symptom: {', '.join(explicit_paths)}")
     if not likely_modules:
         evidence.append("No production module paths matched — investigation stays hypothesis-level.")
+
+    likely_symbols: List[str] = []
+    for path in likely_modules[:6]:
+        likely_symbols.extend(_path_symbols(path))
 
     confidence = "high" if explicit_paths else _confidence_label(len(likely_modules), scored[0][0] if scored else 0, intent)
     limitations = [
@@ -340,15 +454,30 @@ def investigate_symptom(symptom: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
     if not likely_modules:
         limitations.append("Atlas cannot localize this symptom without stronger anchors (file paths, error types, or subsystem names).")
 
+    verify_steps = list(spec.get("verify", ()))
+    verify_steps.extend(_suggested_questions(intent, likely_modules)[:3])
+    inspect_first = likely_modules[:5] or explicit_paths[:5]
+    risk_if_fixed = spec.get(
+        "risk_if_fixed",
+        "A narrow fix may mask upstream data or configuration issues — validate with tests before shipping.",
+    )
+
     questions = _suggested_questions(intent, likely_modules)
     plan = {
         "symptom": text,
         "intent": intent,
         "likely_modules": likely_modules,
+        "likely_files": likely_modules,
+        "likely_symbols": sorted(set(likely_symbols))[:12],
+        "most_likely_source": likely_modules[0] if likely_modules else None,
         "why": why,
+        "logical_hypothesis": logical_hypothesis,
         "relevant_dependencies": {"outbound": outbound, "inbound": inbound},
         "evidence": evidence,
         "confidence": confidence,
+        "inspect_first": inspect_first,
+        "verification_steps": verify_steps[:8],
+        "risk_if_fixed": risk_if_fixed,
         "suggested_files_to_inspect": likely_modules[:8],
         "suggested_questions": questions,
         "limitations": limitations,
@@ -546,6 +675,11 @@ def _prompt_cursor_investigate(s: Dict[str, Any]) -> str:
     )
 
 
+def _md_bullets(items: Iterable[str], empty_line: str = "- (none)") -> List[str]:
+    rows = [f"- {x}" for x in items if x]
+    return rows or [empty_line]
+
+
 def format_change_plan_markdown(plan: Dict[str, Any]) -> str:
     deps = plan.get("dependencies_involved") or {}
     lines = [
@@ -554,60 +688,90 @@ def format_change_plan_markdown(plan: Dict[str, Any]) -> str:
         "",
         f"Goal: {plan.get('goal', '')}",
         "",
-        "Likely affected modules:",
-        *(f"- {m}" for m in (plan.get("likely_affected_modules") or [])[:15]),
+        "Files to inspect first:",
+        *_md_bullets(plan.get("files_to_inspect_first") or [], "- (none matched — provide more context)"),
+        "",
+        "Files likely to change:",
+        *_md_bullets((plan.get("files_likely_to_change") or plan.get("likely_affected_modules") or [])[:12]),
+        "",
+        "Files likely to break (direct importers / high coupling):",
+        *_md_bullets(plan.get("files_likely_to_break") or [], "- (none identified from graph)"),
         "",
         "Likely affected subsystems:",
-        *(f"- {s}" for s in (plan.get("likely_affected_subsystems") or [])),
+        *_md_bullets(plan.get("likely_affected_subsystems") or [], "- (unknown)"),
         "",
         "Entry points:",
-        *(f"- {e}" for e in (plan.get("entry_points") or [])),
-        "",
-        "Files to inspect first:",
-        *(f"- {f}" for f in (plan.get("files_to_inspect_first") or [])),
+        *_md_bullets(plan.get("entry_points") or [], "- (none detected)"),
         "",
         "Dependencies involved:",
         f"- Outbound: {', '.join(deps.get('outbound_imports') or []) or 'none'}",
         f"- Inbound: {', '.join(deps.get('inbound_importers') or []) or 'none'}",
         "",
+        "Implementation order (static heuristic):",
+        *_md_bullets(plan.get("implementation_order") or []),
+        "",
+        "Tests to add/update:",
+        *_md_bullets(plan.get("tests_likely_affected") or []),
+        "",
+        "Verification plan:",
+        *_md_bullets(plan.get("verification_plan") or []),
+        "",
         "Architectural risks:",
-        *(f"- {r}" for r in (plan.get("architectural_risks") or [])),
+        *_md_bullets(plan.get("architectural_risks") or [], "- Review coupling on listed modules"),
         "",
-        "Tests likely affected:",
-        *(f"- {t}" for t in (plan.get("tests_likely_affected") or [])),
-        "",
+        f"Risk level: {plan.get('risk_level', 'unknown')}",
         f"Estimated change size: {plan.get('estimated_change_size', 'Unknown')}",
         f"Confidence: {plan.get('confidence', 'low')}",
     ]
+    lim = plan.get("limitations") or []
+    if lim:
+        lines.extend(["", "Limitations:", *(f"- {x}" for x in lim)])
     return "\n".join(lines)
 
 
 def format_investigation_plan_markdown(plan: Dict[str, Any]) -> str:
     deps = plan.get("relevant_dependencies") or {}
+    symbols = plan.get("likely_symbols") or []
     lines = [
-        "INVESTIGATION PLAN",
-        "==================",
+        "BUG INVESTIGATION PLAN",
+        "======================",
         "",
         f"Symptom: {plan.get('symptom', '')}",
         "",
-        "Likely modules:",
-        *(f"- {m}" for m in (plan.get("likely_modules") or [])),
+        f"Most likely source: {plan.get('most_likely_source') or '(no grounded module — see limitations)'}",
         "",
+        "Likely files:",
+        *_md_bullets(plan.get("likely_modules") or [], "- (none matched)"),
+        "",
+    ]
+    if symbols:
+        lines.extend(["Likely symbols (from filenames only):", *(f"- {s}" for s in symbols), ""])
+    lines.extend([
         f"Why: {plan.get('why', '')}",
+        "",
+        f"Possible logical cause: {plan.get('logical_hypothesis', '')}",
+        "",
+        "Evidence:",
+        *(f"- {e}" for e in (plan.get("evidence") or [])),
+        "",
+        "What to inspect first:",
+        *_md_bullets(
+            plan.get("inspect_first") or plan.get("suggested_files_to_inspect") or [],
+            "- Entry points and top import hubs",
+        ),
+        "",
+        "Verification:",
+        *_md_bullets(plan.get("verification_steps") or []),
         "",
         "Relevant dependencies:",
         f"- Outbound: {', '.join(deps.get('outbound') or []) or 'none'}",
         f"- Inbound: {', '.join(deps.get('inbound') or []) or 'none'}",
         "",
-        "Evidence:",
-        *(f"- {e}" for e in (plan.get("evidence") or [])),
+        f"Risk if fixed incorrectly: {plan.get('risk_if_fixed', '')}",
         "",
         f"Confidence: {plan.get('confidence', 'low')}",
-        "",
-        "Suggested files to inspect:",
-        *(f"- {f}" for f in (plan.get("suggested_files_to_inspect") or [])),
-        "",
-        "Suggested questions:",
-        *(f"- {q}" for q in (plan.get("suggested_questions") or [])),
-    ]
+    ])
+    lim = plan.get("limitations") or []
+    if lim:
+        lines.extend(["", "Limitations:", *(f"- {x}" for x in lim)])
     return "\n".join(lines)
