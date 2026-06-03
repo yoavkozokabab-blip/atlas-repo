@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Admin usage | ATLAS</title><link rel="stylesheet" href="marketing.css" />
+<style>
+  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--s2);margin-top:var(--s3)}
+  .scard{border:1px solid var(--line-2);border-radius:var(--r);padding:var(--s2) var(--s3);background:var(--bg-soft)}
+  .scard .num{font-size:1.7rem;font-weight:700}
+  .scard .lbl{color:var(--muted);font-size:.82rem;text-transform:uppercase;letter-spacing:.04em}
+  table.admin{width:100%;border-collapse:collapse;margin-top:var(--s2)}
+  table.admin th,table.admin td{text-align:left;padding:.45em .6em;border-bottom:1px solid var(--line);font-size:.92rem}
+  table.admin th{color:var(--muted);font-weight:600}
+  .deny{padding:var(--s3);border:1px solid var(--line-2);border-radius:var(--r);background:var(--bg-soft);color:var(--ink-2)}
+  h2{margin-top:var(--s4)}
+  .muted{color:var(--muted)}
+</style>
+</head><body data-billing-page="admin">
+<div class="bg-aura"></div>
+<header class="mnav"><div class="wrap row"><a class="mlogo" href="landing.html"><span class="mk">A</span> ATLAS</a>
+<nav class="mlinks"><a href="index.html">Open App</a><a href="usage.html">My usage</a><a href="pricing.html">Plans</a></nav></div></header>
+<main class="info-page"><div class="wrap info-shell">
+  <span class="eyebrow"><span class="dot"></span> Admin · local</span>
+  <h1>Usage dashboard</h1>
+  <p class="muted">Aggregated, local-only product usage. No payments, no external data. <span id="genLine"></span></p>
+  <div id="adminBody"><p class="muted">Loading…</p></div>
+  <p class="flag-note muted" id="flagNote" style="margin-top:var(--s3);font-size:.8rem"></p>
+</div></main>
+<script src="billing.js"></script>
+</body></html>

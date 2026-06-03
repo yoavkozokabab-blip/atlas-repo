@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Your usage | ATLAS</title><link rel="stylesheet" href="marketing.css" />
+<style>
+  .usage-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--s2);margin-top:var(--s3)}
+  .ucard{border:1px solid var(--line-2);border-radius:var(--r);padding:var(--s2) var(--s3);background:var(--bg-soft)}
+  .ucard .num{font-size:1.8rem;font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .ucard .lbl{color:var(--muted);font-size:.85rem;text-transform:uppercase;letter-spacing:.04em}
+  .limit-row{display:flex;justify-content:space-between;padding:.4em 0;border-bottom:1px solid var(--line);color:var(--ink-2)}
+  .bar{height:7px;border-radius:5px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:.3em}
+  .bar > span{display:block;height:100%;background:var(--grad)}
+  .upgrade{margin-top:var(--s3);padding:var(--s2) var(--s3);border:1px solid var(--accent);border-radius:var(--r);background:rgba(154,139,255,.07)}
+  .muted{color:var(--muted)}
+</style>
+</head><body data-billing-page="usage">
+<div class="bg-aura"></div>
+<header class="mnav"><div class="wrap row"><a class="mlogo" href="landing.html"><span class="mk">A</span> ATLAS</a>
+<nav class="mlinks"><a href="index.html">Open App</a><a href="pricing.html">Plans</a></nav></div></header>
+<main class="info-page"><div class="wrap info-shell">
+  <span class="eyebrow"><span class="dot"></span> Your account</span>
+  <h1>Usage &amp; plan</h1>
+  <p class="muted" id="planLine">Loading…</p>
+  <div id="usageCards" class="usage-grid"></div>
+  <h2>Current limits</h2>
+  <div id="limits"></div>
+  <div id="upgrade"></div>
+  <p class="flag-note muted" id="flagNote" style="margin-top:var(--s3);font-size:.8rem"></p>
+</div></main>
+<script src="billing.js"></script>
+</body></html>

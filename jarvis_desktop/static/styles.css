@@ -448,3 +448,7 @@ ul.clean{margin:0;padding-left:18px;line-height:1.9;color:#c7d2f5}
 .timeline-panel{flex:none}
 
 @media(max-width:1100px){.cards{grid-template-columns:1fr 1fr}.center-grid{grid-template-columns:1fr;height:auto}.scan-wrap,.export-grid,.intel-body{grid-template-columns:1fr}#graph3d{height:480px;flex:none}.steps-row{flex-direction:column;gap:8px}.step-arrow{transform:rotate(90deg)}}
+
+.billing-nav{display:inline-flex;gap:6px;align-items:center;margin-left:4px}
+.nav-link{color:var(--muted);font-size:13px;padding:6px 10px;text-decoration:none;border-radius:8px}
+.nav-link:hover{color:#eaf0ff;background:rgba(255,255,255,.06)}

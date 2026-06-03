@@ -1,0 +1,266 @@
+"""Phase 137A — usage event recording and dashboard aggregations."""
+
+from __future__ import annotations
+
+import hashlib
+import os
+import time
+from collections import defaultdict
+from typing import Any, Dict, List, Optional
+
+from .estimator import estimate_repo_cost
+from .limits import check_limit, enforcement_enabled
+from .models import EVENT_TYPES, UsageEvent
+from .plans import get_plan, list_plans, pricing_payload
+from .store import UsageStore, default_store
+
+
+def billing_ui_enabled() -> bool:
+    return os.environ.get("ATLAS_BILLING_UI_ENABLED", "").strip().lower() in ("1", "true", "yes")
+
+
+def current_context(store: Optional[UsageStore] = None) -> Dict[str, Any]:
+    st = store or default_store()
+    user = st.ensure_local_user()
+    return {
+        "user_id": user.id,
+        "workspace_id": user.workspace_id,
+        "plan": user.plan,
+        "is_admin": user.is_admin,
+    }
+
+
+def repo_id_from_path(repo_path: str) -> str:
+    norm = os.path.abspath(repo_path or "").replace("\\", "/").lower()
+    if not norm:
+        return ""
+    return hashlib.sha256(norm.encode("utf-8")).hexdigest()[:16]
+
+
+def record_event(
+    event_type: str,
+    *,
+    user_id: str = "",
+    workspace_id: str = "",
+    repo_id: str = "",
+    repo_path: str = "",
+    repo_name: str = "",
+    files_count: int = 0,
+    modules_count: int = 0,
+    edges_count: int = 0,
+    symbols_count: int = 0,
+    scan_duration_seconds: float = 0.0,
+    estimated_token_equivalent: int = 0,
+    plan: str = "FREE",
+    ok: bool = True,
+    meta: Optional[Dict[str, Any]] = None,
+    store: Optional[UsageStore] = None,
+) -> Dict[str, Any]:
+    """Append a usage event; never raises."""
+    if event_type not in EVENT_TYPES:
+        return {"ok": False, "error": f"unknown event_type: {event_type}"}
+    st = store or default_store()
+    ctx = current_context(st)
+    est = estimate_repo_cost(
+        files_count, modules_count, edges_count, symbols_count, scan_duration_seconds
+    )
+    tok = estimated_token_equivalent or est["token_equivalent_estimate"]
+    event = UsageEvent(
+        user_id=user_id or ctx["user_id"],
+        workspace_id=workspace_id or ctx["workspace_id"],
+        event_type=event_type,
+        repo_id=repo_id or repo_id_from_path(repo_path),
+        repo_path=repo_path,
+        repo_name=repo_name,
+        files_count=files_count,
+        modules_count=modules_count,
+        edges_count=edges_count,
+        symbols_count=symbols_count,
+        scan_duration_seconds=scan_duration_seconds,
+        estimated_token_equivalent=tok,
+        plan=(plan or ctx["plan"]).upper(),
+        ok=ok,
+        meta=dict(meta or {}),
+    )
+    saved = st.record(event)
+    return {"ok": saved, "event": event.to_dict(), "estimate": est}
+
+
+def record_from_scan(
+    event_type: str,
+    scan: Dict[str, Any],
+    *,
+    repo_path: str = "",
+    symbols_count: int = 0,
+    ok: bool = True,
+    meta: Optional[Dict[str, Any]] = None,
+    store: Optional[UsageStore] = None,
+) -> Dict[str, Any]:
+    path = repo_path or scan.get("repo_path") or ""
+    return record_event(
+        event_type,
+        repo_path=path,
+        repo_name=scan.get("repo_name") or os.path.basename(path) or "",
+        files_count=int(scan.get("file_count") or 0),
+        modules_count=int(scan.get("module_count") or 0),
+        edges_count=int(scan.get("dependency_edges") or 0),
+        symbols_count=symbols_count,
+        scan_duration_seconds=float(scan.get("scan_duration_seconds") or 0),
+        ok=ok,
+        meta=meta,
+        store=store,
+    )
+
+
+def _month_start_ts() -> float:
+    lt = time.localtime()
+    return time.mktime((lt.tm_year, lt.tm_mon, 1, 0, 0, 0, 0, 0, -1))
+
+
+def _events_this_month(events: List[UsageEvent]) -> List[UsageEvent]:
+    start = _month_start_ts()
+    out: List[UsageEvent] = []
+    for ev in events:
+        try:
+            ts = time.strptime(ev.created_at, "%Y-%m-%dT%H:%M:%S")
+            if time.mktime(ts) >= start:
+                out.append(ev)
+        except ValueError:
+            out.append(ev)
+    return out
+
+
+def _aggregate(events: List[UsageEvent]) -> Dict[str, Any]:
+    repos: Dict[str, Dict[str, Any]] = {}
+    by_type: Dict[str, int] = defaultdict(int)
+    total_tokens = 0
+    scans_ok = 0
+    scans_fail = 0
+    slowest: List[Dict[str, Any]] = []
+
+    for ev in events:
+        by_type[ev.event_type] += 1
+        total_tokens += int(ev.estimated_token_equivalent or 0)
+        rid = ev.repo_id or repo_id_from_path(ev.repo_path)
+        if rid:
+            row = repos.setdefault(
+                rid,
+                {
+                    "repo_id": rid,
+                    "repo_name": ev.repo_name,
+                    "repo_path": ev.repo_path,
+                    "files_count": ev.files_count,
+                    "modules_count": ev.modules_count,
+                    "edges_count": ev.edges_count,
+                    "events": 0,
+                    "token_equivalent": 0,
+                },
+            )
+            row["events"] += 1
+            row["token_equivalent"] += int(ev.estimated_token_equivalent or 0)
+            row["files_count"] = max(row["files_count"], ev.files_count)
+            row["modules_count"] = max(row["modules_count"], ev.modules_count)
+        if ev.event_type == "scan_completed":
+            if ev.ok:
+                scans_ok += 1
+            else:
+                scans_fail += 1
+            slowest.append(
+                {
+                    "repo_name": ev.repo_name,
+                    "repo_path": ev.repo_path,
+                    "duration_sec": ev.scan_duration_seconds,
+                    "files_count": ev.files_count,
+                    "ok": ev.ok,
+                }
+            )
+
+    largest = sorted(repos.values(), key=lambda r: (-r["files_count"], -r["modules_count"]))[:8]
+    slowest.sort(key=lambda r: -float(r.get("duration_sec") or 0))
+    return {
+        "event_counts": dict(by_type),
+        "repositories_tracked": len(repos),
+        "token_equivalent_total": total_tokens,
+        "scans_completed": scans_ok,
+        "scans_failed": scans_fail,
+        "largest_repos": largest,
+        "slowest_scans": slowest[:8],
+    }
+
+
+def usage_me_summary(store: Optional[UsageStore] = None) -> Dict[str, Any]:
+    st = store or default_store()
+    user = st.ensure_local_user()
+    plan = get_plan(user.plan)
+    month = _events_this_month(st.all_events())
+    mine = [e for e in month if e.user_id == user.id]
+    agg = _aggregate(mine)
+    scans_used = agg["event_counts"].get("scan_completed", 0)
+    exports_used = agg["event_counts"].get("export_created", 0)
+    repos_seen = len({e.repo_id for e in mine if e.repo_id})
+
+    limits = plan.get("limits") or {}
+    return {
+        "ok": True,
+        "billing_ui_enabled": billing_ui_enabled(),
+        "enforcement_enabled": enforcement_enabled(),
+        "user": user.to_dict(),
+        "plan": plan,
+        "usage": {
+            "scans_used": scans_used,
+            "exports_used": exports_used,
+            "repositories_used": repos_seen,
+            "build_plans": agg["event_counts"].get("build_plan_created", 0),
+            "investigations": agg["event_counts"].get("investigation_created", 0),
+            "impacts": agg["event_counts"].get("impact_created", 0),
+            "repository_map_opens": agg["event_counts"].get("repository_map_opened", 0),
+            "token_equivalent_total": agg["token_equivalent_total"],
+        },
+        "limits": limits,
+        "limit_checks": {
+            "scans": check_limit(user.plan, "max_scans_per_month", scans_used),
+            "exports": check_limit(user.plan, "max_exports_per_month", exports_used),
+            "repositories": check_limit(user.plan, "max_repositories", repos_seen),
+        },
+        "largest_repos": agg["largest_repos"],
+        "upgrade_note": "Upgrade placeholders only — no payment collection in this build.",
+    }
+
+
+def usage_admin_summary(store: Optional[UsageStore] = None, *, is_admin: bool = False) -> Dict[str, Any]:
+    if not is_admin:
+        return {"ok": False, "error": "Admin access required.", "code": "forbidden"}
+    st = store or default_store()
+    month = _events_this_month(st.all_events())
+    agg = _aggregate(month)
+    users = st.ensure_local_user()
+    by_plan: Dict[str, int] = defaultdict(int)
+    by_plan[users.plan] += 1
+    return {
+        "ok": True,
+        "billing_ui_enabled": billing_ui_enabled(),
+        "mock_users": 1,
+        "total_events": len(month),
+        "total_scans": agg["event_counts"].get("scan_completed", 0),
+        "failed_scans": agg["scans_failed"],
+        "total_exports": agg["event_counts"].get("export_created", 0),
+        "token_equivalent_total": agg["token_equivalent_total"],
+        "usage_by_plan": dict(by_plan),
+        "largest_repos": agg["largest_repos"],
+        "slowest_scans": agg["slowest_scans"],
+        "highest_usage_repos": sorted(
+            agg["largest_repos"],
+            key=lambda r: -int(r.get("token_equivalent") or 0),
+        )[:8],
+        "event_counts": agg["event_counts"],
+    }
+
+
+def plans_api() -> Dict[str, Any]:
+    return {"ok": True, "plans": list_plans(), "enforcement_enabled": enforcement_enabled()}
+
+
+def pricing_api() -> Dict[str, Any]:
+    payload = pricing_payload()
+    payload["billing_ui_enabled"] = billing_ui_enabled()
+    return payload

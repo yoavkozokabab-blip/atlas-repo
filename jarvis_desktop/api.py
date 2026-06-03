@@ -31,8 +31,9 @@ from . import analytics
 from . import graph_build
 from . import planning_engine
 from .evidence_engine import build_evidence_store
+from . import usage as usage_tracking
 
-PRODUCT_VERSION = "phase127-atlas-knowledge-engine"
+PRODUCT_VERSION = "phase137a-usage-billing-ready"
 CHARS_PER_TOKEN = 4.0
 GRAPH_DISPLAY_CAP = 5000
 GRAPH_DEFAULT_HIERARCHY_THRESHOLD = 1000
@@ -298,8 +299,60 @@ def health() -> Dict[str, Any]:
         "repository_open": bool(scan),
         "demo_mode": bool(_STATE.get("demo_mode")),
         "repo_name": scan.get("repo_name"),
+        "billing_ui_enabled": usage_tracking.billing_ui_enabled(),
+        "usage_enforcement_enabled": usage_tracking.enforcement_enabled(),
         **telemetry,
     }
+
+
+def _usage_symbols_count() -> int:
+    store = _STATE.get("evidence_store") or {}
+    return int((store.get("symbol_index") or {}).get("symbol_count") or 0)
+
+
+def _record_usage(event_type: str, **meta: Any) -> None:
+    """Best-effort usage telemetry — never raises."""
+    try:
+        scan = _STATE.get("scan") or {}
+        usage_tracking.record_from_scan(
+            event_type,
+            scan,
+            repo_path=_STATE.get("path") or scan.get("repo_path") or "",
+            symbols_count=_usage_symbols_count(),
+            meta=meta or None,
+        )
+    except Exception:
+        pass
+
+
+def usage_me() -> Dict[str, Any]:
+    return usage_tracking.usage_me_summary()
+
+
+def usage_admin() -> Dict[str, Any]:
+    ctx = usage_tracking.current_context()
+    admin = ctx.get("is_admin") or os.environ.get("ATLAS_ADMIN", "").strip().lower() in ("1", "true", "yes")
+    return usage_tracking.usage_admin_summary(is_admin=admin)
+
+
+def usage_plans() -> Dict[str, Any]:
+    return usage_tracking.plans_api()
+
+
+def usage_pricing() -> Dict[str, Any]:
+    return usage_tracking.pricing_api()
+
+
+def usage_post_event(body: Dict[str, Any]) -> Dict[str, Any]:
+    event_type = str(body.get("event_type") or body.get("event") or "")
+    scan = _STATE.get("scan") or {}
+    return usage_tracking.record_from_scan(
+        event_type,
+        scan,
+        repo_path=str(body.get("repo_path") or _STATE.get("path") or scan.get("repo_path") or ""),
+        symbols_count=int(body.get("symbols_count") or _usage_symbols_count()),
+        meta={k: v for k, v in body.items() if k not in ("event_type", "event")},
+    )
 
 
 def demo_repo_path(pack: str = "small") -> str:
@@ -730,8 +783,14 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
         )
         _STATE["scan_perf"] = recorder.snapshot()
         track_analytics_event("scan_completed", demo=bool(_STATE.get("demo_mode")), cache_hit=True)
+        _record_usage("scan_completed", cache_hit=True)
         return _attach_analytics_status(_STATE["scan"])
     started = time.time()
+    usage_tracking.record_event(
+        "scan_started",
+        repo_path=repo,
+        repo_name=os.path.basename(repo) or repo,
+    )
 
     if _STATE["scan_job"].get("cancelled"):
         return {"ok": False, "error": "Scan cancelled.", "code": "scan_cancelled"}
@@ -1024,6 +1083,7 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
         cache_hit=False,
         massive_mode=massive_mode,
     )
+    _record_usage("scan_completed", cache_hit=False, massive_mode=massive_mode)
     return _attach_analytics_status(scan)
 
 
@@ -2222,6 +2282,7 @@ def plan_change(request: str) -> Dict[str, Any]:
         plan = result["plan"]
         result["formatted"] = planning_engine.format_change_plan_markdown(plan)
         track_analytics_event("change_plan_created", intent=plan.get("intent"), confidence=plan.get("confidence"))
+        _record_usage("build_plan_created", intent=plan.get("intent"))
     return result
 
 
@@ -2232,6 +2293,7 @@ def investigate_symptom(symptom: str) -> Dict[str, Any]:
         plan = result["plan"]
         result["formatted"] = planning_engine.format_investigation_plan_markdown(plan)
         track_analytics_event("investigation_plan_created", intent=plan.get("intent"), confidence=plan.get("confidence"))
+        _record_usage("investigation_created", intent=plan.get("intent"))
     return result
 
 
@@ -2267,6 +2329,7 @@ def change_impact_simulation(target: str) -> Dict[str, Any]:
     ]
     _augment_impact_with_architecture(res)
     track_analytics_event("impact_analyzed", risk_level=res.get("risk_level"), confidence=res.get("confidence"))
+    _record_usage("impact_created", target=target, risk_level=res.get("risk_level"))
     return res
 
 
@@ -2378,6 +2441,7 @@ def context_export(target: str = "claude", packet: str = "compact", *, track: bo
     text = _render_context(target, packet)
     if track:
         track_analytics_event("export_created", target=target, packet=packet)
+        _record_usage("export_created", target=target, packet=packet)
     return {
         "ok": True,
         "target": target,

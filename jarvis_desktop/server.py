@@ -17,6 +17,7 @@ from urllib.parse import parse_qs, urlparse
 from typing import Any, Callable, Dict, Tuple
 
 from . import api, system_browse
+from .billing import service as billing_service
 
 STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 RouteHandler = Callable[[Dict[str, Any], Dict[str, str]], Dict[str, Any]]
@@ -66,6 +67,9 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
     def _planning_impact(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
         return api.change_impact_simulation(str(body.get("target", "")))
 
+    def _usage_event(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+        return api.usage_post_event(body)
+
     return {
         ("GET", "/api/health"): lambda _body, _query: api.health(),
         ("POST", "/api/system/browse-folder"): lambda _body, _query: system_browse.browse_folder(),
@@ -111,6 +115,16 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
             str(body.get("packet", "compact")),
         ),
         ("POST", "/api/copilot/ask"): _copilot,
+        # Phase 137A — usage / billing-ready (local/mock, no Stripe)
+        ("GET", "/api/usage/me"): lambda _body, _query: api.usage_me(),
+        ("GET", "/api/usage/admin"): lambda _body, _query: api.usage_admin(),
+        ("GET", "/api/plans"): lambda _body, _query: api.usage_plans(),
+        ("GET", "/api/pricing"): lambda _body, _query: api.usage_pricing(),
+        ("POST", "/api/usage/event"): _usage_event,
+        ("GET", "/api/billing/config"): lambda _body, _query: billing_service.billing_config(),
+        ("GET", "/api/billing/plans"): lambda _body, _query: api.usage_plans(),
+        ("GET", "/api/billing/usage"): lambda _body, _query: api.usage_me(),
+        ("GET", "/api/billing/admin"): lambda _body, _query: api.usage_admin(),
     }
 
 
@@ -135,7 +149,10 @@ def dispatch(
     try:
         if handler is None:
             return 404, {"ok": False, "error": f"Unknown endpoint: {method} {path}"}
-        return 200, handler(body, query)
+        result = handler(body, query)
+        # Phase 137A: record product usage (local/mock). Never affects the response.
+        billing_service.record_from_dispatch(path, result, body)
+        return 200, result
     except Exception as exc:  # never 500 the desktop app silently
         return 500, {"ok": False, "error": f"{type(exc).__name__}: {exc}"}
 
@@ -388,6 +405,26 @@ def create_fastapi_app():  # pragma: no cover - exercised only when fastapi pres
             str(b.get("packet", "compact")),
             node_context=b.get("node_context"),
         )
+
+    @app.get("/api/usage/me")
+    def _usage_me():
+        return api.usage_me()
+
+    @app.get("/api/usage/admin")
+    def _usage_admin():
+        return api.usage_admin()
+
+    @app.get("/api/plans")
+    def _plans():
+        return api.usage_plans()
+
+    @app.get("/api/pricing")
+    def _pricing():
+        return api.usage_pricing()
+
+    @app.post("/api/usage/event")
+    async def _usage_event_route(request: Request):
+        return api.usage_post_event(await _body(request))
 
     @app.get("/")
     def _index():

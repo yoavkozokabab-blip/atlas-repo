@@ -460,11 +460,20 @@ function go(view) {
   window.scrollTo({ top: 0, behavior: "smooth" });
   if (view === "center") {
     trackAnalytics("graph_opened");
+    api("/api/usage/event", "POST", { event_type: "repository_map_opened" }).catch(function () {});
     setTimeout(renderCenter, 60);
   }
   if (view === "home") renderDemoPackPicker();
   if (view === "export") refreshExport();
 }
+function applyBillingNav(enabled, isAdmin) {
+  const nav = $("billingNav");
+  if (nav) nav.style.display = enabled ? "inline-flex" : "none";
+  document.querySelectorAll(".billing-admin").forEach(el => {
+    el.style.display = enabled && isAdmin ? "" : "none";
+  });
+}
+
 function unlockNav() { document.querySelectorAll('#nav button[data-lock="1"]').forEach(b => b.removeAttribute("data-lock")); }
 
 function selectRecentPath(p) {
@@ -1680,6 +1689,13 @@ function saveExport() {
   try {
     const h = await api("/api/health");
     updateTelemetryWarning(h);
+    applyBillingNav(!!h.billing_ui_enabled, true);
+    if (h.billing_ui_enabled) {
+      try {
+        const me = await api("/api/usage/me");
+        applyBillingNav(true, !!(me.user && me.user.role === "admin"));
+      } catch (e) {}
+    }
     if (h.repository_open) {
       unlockNav();
       updateScanBtnState(true);
