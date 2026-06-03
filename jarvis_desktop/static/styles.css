@@ -328,6 +328,24 @@ ul.clean{margin:0;padding-left:18px;line-height:1.9;color:#c7d2f5}
 .impact-card .taglist .tag{cursor:pointer}
 .impact-card .taglist .tag:hover{border-color:rgba(62,240,255,.5);color:#fff}
 
+/* Phase 135 — Impact summary cards (above the file lists) */
+.impact-summary-card{border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:12px 0;background:rgba(8,12,22,.5)}
+.impact-summary-card.semantic{border-color:rgba(62,240,255,.3);box-shadow:0 0 22px rgba(62,240,255,.07)}
+.impact-summary-card.blast{border-color:rgba(154,123,255,.28)}
+.isc-label{font-size:10px;letter-spacing:.8px;color:var(--cyan);text-transform:uppercase;margin-bottom:6px}
+.impact-summary-card.blast .isc-label{color:var(--violet)}
+.isc-title{font-size:17px;font-weight:700;color:#eaf0ff;display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.isc-sub{font-size:11px;color:var(--muted);margin:6px 0 4px;text-transform:uppercase;letter-spacing:.4px}
+.tag.sym{font-family:ui-monospace,monospace;color:var(--violet);border-color:rgba(154,123,255,.35);background:rgba(154,123,255,.06);cursor:default}
+.blast-metrics{display:flex;gap:26px;flex-wrap:wrap;align-items:flex-end}
+.blast-metric{display:flex;flex-direction:column;gap:2px}
+.bm-num{font-family:Orbitron,sans-serif;font-size:30px;line-height:1;color:#eaf0ff}
+.bm-lbl{font-size:10px;letter-spacing:.5px;color:var(--muted);text-transform:uppercase}
+.impact-arch-summary{font-size:14px;line-height:1.55;color:#dce6ff;padding:12px 14px;margin:12px 0;
+  border-left:3px solid var(--cyan);background:rgba(62,240,255,.05);border-radius:0 10px 10px 0}
+.impact-showall{margin-top:8px}
+.impact-showall summary{cursor:pointer}
+
 /* Phase 123 — Investigation report + hypothesis cards */
 .report-section{margin:14px 0}
 .report-label{font-size:11px;letter-spacing:.7px;color:var(--cyan);text-transform:uppercase;margin-bottom:7px}

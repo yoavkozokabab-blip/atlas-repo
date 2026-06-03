@@ -923,6 +923,19 @@ function renderCopilotAnswer(res) {
   $("copilotRisk").textContent = `${res.risk_level || "unknown"} risk`;
   $("copilotRisk").className = `lvl ${res.risk_level || "unknown"}`;
   $("copilotAnswer").textContent = res.answer || "";
+  // Phase 135 — show semantic + blast-radius + architecture summary cards above
+  // the answer when the Copilot routed to impact analysis.
+  const impSum = $("copilotImpactSummary");
+  if (impSum) {
+    if (res.mode === "impact" && (res.semantic_label || res.architectural_blast_radius != null)) {
+      impSum.style.display = "block";
+      impSum.innerHTML = impactSemanticCard(res) + impactBlastCard(res)
+        + `<div class="impact-arch-summary">${esc(impactArchSummary(res))}</div>`;
+    } else {
+      impSum.style.display = "none";
+      impSum.innerHTML = "";
+    }
+  }
   const evidence = res.evidence || [];
   $("copilotEvidenceWrap").style.display = evidence.length ? "block" : "none";
   $("copilotEvidence").innerHTML = evidence.map(item => `<li>${item}</li>`).join("");
@@ -1495,30 +1508,114 @@ async function runImpact() {
   const rl = r.risk_level || "unknown";
   const conf = r.confidence || "medium";
   const mockTag = r.mock ? `<span class="pill warn">target not in graph — heuristic</span>` : "";
-  const tagify = arr => (arr && arr.length)
-    ? arr.slice(0, 18).map(f => `<span class="tag" role="button" onclick="impactInspect(${JSON.stringify(f)})">${esc(f)}</span>`).join("")
-    : '<span class="muted tiny">none</span>';
   const list = (arr, n) => (arr || []).slice(0, n || 8).map(t => `<li>${esc(t)}</li>`).join("") || '<li class="muted">—</li>';
+  const dirN = (r.direct_impact || []).length;
+  const indN = (r.indirect_impact || []).length;
+  // Phase 135 — summary cards ABOVE the file lists; lists capped at 10 with a
+  // collapsible "show all" so a first-time user understands the answer fast.
   out.innerHTML = `
     <div class="glass ocard impact-card">
       <div class="impact-head">
         <h3 style="margin:0">Impact of changing <span class="mono">${esc(r.target)}</span></h3>
         <div class="impact-badges"><span class="lvl ${rl}">${rl} risk</span><span class="pill">confidence ${esc(conf)}</span>${mockTag}</div>
       </div>
-      <div class="report-section"><div class="report-label">Direct impact — importers</div><div class="taglist">${tagify(r.direct_impact)}</div></div>
-      <div class="report-section"><div class="report-label">Indirect impact — transitive</div><div class="taglist">${tagify(r.indirect_impact)}</div></div>
-      <div class="report-section"><div class="report-label">What may break</div><div class="taglist">${tagify(r.what_may_break)}</div></div>
+      ${impactSemanticCard(r)}
+      ${impactBlastCard(r)}
+      <div class="impact-arch-summary">${esc(impactArchSummary(r))}</div>
+      <div class="report-section"><div class="report-label">Direct impact — importers (${dirN})</div>${impactModuleTags(r.direct_impact)}</div>
+      <div class="report-section"><div class="report-label">Indirect impact — transitive (${indN})</div>${impactModuleTags(r.indirect_impact)}</div>
       <div class="report-section"><div class="report-label">Tests to run</div><ul class="clean">${list(r.tests_likely_affected)}</ul></div>
-      <div class="report-section"><div class="report-label">Risks of an incorrect change</div><ul class="clean">${list(r.risks_of_incorrect_fix, 5)}</ul></div>
       <div class="report-section"><div class="report-label">Safe rollback / verification</div><ul class="clean">${list(r.recommended_verification)}</ul></div>
-      <details style="margin-top:6px"><summary class="muted tiny">Probably safe (untouched) + evidence</summary>
-        <ul class="clean tiny">${list(r.what_probably_wont_break, 6)}</ul>
-        <ul class="clean tiny">${list(r.evidence, 6)}</ul></details>
+      <details style="margin-top:6px"><summary class="muted tiny">What may break · risks · probably-safe · evidence</summary>
+        <div class="report-label" style="margin-top:8px">What may break</div>${impactModuleTags(r.what_may_break, 12)}
+        <div class="report-label" style="margin-top:8px">Risks of an incorrect change</div><ul class="clean tiny">${list(r.risks_of_incorrect_fix, 5)}</ul>
+        <div class="report-label" style="margin-top:8px">Probably safe (untouched)</div><ul class="clean tiny">${list(r.what_probably_wont_break, 6)}</ul>
+        <div class="report-label" style="margin-top:8px">Evidence</div><ul class="clean tiny">${list(r.evidence, 6)}</ul></details>
       <div class="copy-row" style="margin-top:12px">
         <button class="btn small" onclick="copyImpactPrompt()">Copy AI prompt</button>
         <button class="btn small ghost" onclick="go('center')">Show on graph</button>
       </div>
     </div>`;
+}
+
+/* ---- Phase 135 — Impact summary cards (presentation only) ---- */
+function _impactTag(f) {
+  return `<span class="tag" role="button" onclick="impactInspect(${JSON.stringify(f)})">${esc(f)}</span>`;
+}
+
+function impactModuleTags(arr, n) {
+  arr = arr || [];
+  n = n || 10;
+  if (!arr.length) return '<div class="taglist"><span class="muted tiny">none</span></div>';
+  const top = arr.slice(0, n).map(_impactTag).join("");
+  const rest = arr.slice(n);
+  let html = `<div class="taglist">${top}</div>`;
+  if (rest.length) {
+    html += `<details class="impact-showall"><summary class="muted tiny">Show all ${arr.length} impacted modules (+${rest.length} more)</summary>`
+      + `<div class="taglist" style="margin-top:6px">${rest.map(_impactTag).join("")}</div></details>`;
+  }
+  return html;
+}
+
+function impactSemanticCard(r) {
+  if (!r.semantic_label) return "";
+  const mods = (r.resolved_modules || []).slice(0, 8);
+  const syms = (r.resolved_symbols || [])
+    .map(s => (typeof s === "string" ? s : (s.qualname || s.name))).filter(Boolean);
+  const uniqSyms = [...new Set(syms)].slice(0, 8);
+  return `<div class="impact-summary-card semantic">
+    <div class="isc-label">Semantic target</div>
+    <div class="isc-title">${esc(r.semantic_label)}<span class="pill">confidence ${esc(r.confidence || "medium")}</span></div>
+    <div class="isc-sub">Resolved to ${(r.resolved_modules || []).length} module(s):</div>
+    <div class="taglist">${mods.map(_impactTag).join("") || '<span class="muted tiny">—</span>'}</div>
+    ${uniqSyms.length ? `<div class="isc-sub" style="margin-top:8px">Key symbols:</div><div class="taglist">${uniqSyms.map(s => `<span class="tag sym">${esc(s)}</span>`).join("")}</div>` : ""}
+  </div>`;
+}
+
+function impactBlastCard(r) {
+  const arch = r.architecture || {};
+  const blast = r.architectural_blast_radius ?? arch.architectural_blast_radius ?? 0;
+  const dir = (r.direct_impact || []).length;
+  const ind = (r.indirect_impact || []).length;
+  const rl = r.risk_level || "unknown";
+  const c = riskColor(rl === "high" ? 70 : rl === "medium" ? 40 : 12);
+  return `<div class="impact-summary-card blast">
+    <div class="isc-label">Blast radius</div>
+    <div class="blast-metrics">
+      <div class="blast-metric"><span class="bm-num" style="color:${c}">${blast}</span><span class="bm-lbl">architectural blast radius</span></div>
+      <div class="blast-metric"><span class="bm-num">${dir}</span><span class="bm-lbl">direct importers</span></div>
+      <div class="blast-metric"><span class="bm-num">${ind}</span><span class="bm-lbl">transitive impact</span></div>
+    </div>
+  </div>`;
+}
+
+function _humanList(arr) {
+  if (!arr.length) return "";
+  if (arr.length === 1) return arr[0];
+  return arr.slice(0, -1).join(", ") + " and " + arr[arr.length - 1];
+}
+
+function impactArchSummary(r) {
+  const arch = r.architecture || {};
+  const repo = (STATE.summary && STATE.summary.repo_name) ? STATE.summary.repo_name.replace(/[-_]/g, " ") : "";
+  const subj = r.semantic_label || ((r.target || "").split(/[\\/]/).pop());
+  const subjFull = repo ? `the ${repo} ${subj}` : subj;
+  const subs = (arch.subsystems_impacted || r.affected_subsystems || [])
+    .map(s => String(s).split("/").pop()).filter(Boolean);
+  const uniq = [...new Set(subs)].slice(0, 5);
+  const subsTxt = uniq.length ? _humanList(uniq) : "multiple";
+  const blast = r.architectural_blast_radius ?? arch.architectural_blast_radius ?? 0;
+  let reason;
+  if (arch.runtime_criticality) {
+    reason = "Blast radius is high because it sits on a runtime boundary that many components communicate through.";
+  } else if (blast >= 12 || r.risk_level === "high") {
+    reason = `Blast radius is high (${blast} importers across ${uniq.length || "several"} subsystem(s)).`;
+  } else if (blast >= 4) {
+    reason = `Blast radius is moderate (${blast} importer(s)).`;
+  } else {
+    reason = `Blast radius is contained (${blast} importer(s)).`;
+  }
+  return `Changing ${subjFull} affects ${subsTxt} ${uniq.length === 1 ? "subsystem" : "subsystems"}. ${reason}`;
 }
 
 function impactInspect(path) {
