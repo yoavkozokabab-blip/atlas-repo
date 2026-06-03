@@ -1,0 +1,7 @@
+{"ts": 1780498664.944903, "event": "scan_completed", "product": "phase127-atlas-knowledge-engine", "demo": false, "modules": 9709, "edges": 36013, "cache_hit": false, "massive_mode": true}
+{"ts": 1780498679.046748, "event": "copilot_question", "product": "phase127-atlas-knowledge-engine", "mode": "impact"}
+{"ts": 1780498679.055905, "event": "copilot_question", "product": "phase127-atlas-knowledge-engine", "mode": "impact"}
+{"ts": 1780498679.0632436, "event": "copilot_question", "product": "phase127-atlas-knowledge-engine", "mode": "impact"}
+{"ts": 1780498681.4099436, "event": "change_plan_created", "product": "phase127-atlas-knowledge-engine", "intent": "general", "confidence": "medium"}
+{"ts": 1780498682.0826883, "event": "change_plan_created", "product": "phase127-atlas-knowledge-engine", "intent": "general", "confidence": "medium"}
+{"ts": 1780498683.4091935, "event": "investigation_plan_created", "product": "phase127-atlas-knowledge-engine", "intent": "general", "confidence": "medium"}

@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-31T14:42:37.313568+00:00",
+  "updated_at": "2026-06-03T09:53:23.334109+00:00",
   "overall": "ok",
   "issues": [],
   "event_loop": {
@@ -7,39 +7,55 @@
     "warn_after_seconds": 5.0
   },
   "threads": {
-    "total": 6,
-    "jarvis_total": 4,
+    "total": 8,
+    "jarvis_total": 6,
     "jarvis_by_name": {
+      "jarvis-runtime-monitor": 1,
+      "jarvis-worker-runtime-0": 1,
+      "jarvis-worker-runtime-1": 1,
       "jarvis-idle-proactive": 1,
       "jarvis-health-monitor": 1,
-      "jarvis-watchdog": 1,
-      "jarvis-overlay-queue": 1
+      "jarvis-watchdog": 1
     },
     "jarvis_threads": [
       {
+        "name": "jarvis-runtime-monitor",
+        "ident": 28652,
+        "daemon": true,
+        "alive": true,
+        "frame": "threading.py:wait:363"
+      },
+      {
+        "name": "jarvis-worker-runtime-0",
+        "ident": 36200,
+        "daemon": true,
+        "alive": true,
+        "frame": "threading.py:wait:359"
+      },
+      {
+        "name": "jarvis-worker-runtime-1",
+        "ident": 33704,
+        "daemon": true,
+        "alive": true,
+        "frame": "threading.py:wait:359"
+      },
+      {
         "name": "jarvis-idle-proactive",
-        "ident": 25648,
+        "ident": 38060,
         "daemon": true,
         "alive": true,
         "frame": "threading.py:wait:363"
       },
       {
         "name": "jarvis-health-monitor",
-        "ident": 34812,
+        "ident": 20276,
         "daemon": true,
         "alive": true,
         "frame": "threading.py:wait:363"
       },
       {
         "name": "jarvis-watchdog",
-        "ident": 29632,
-        "daemon": true,
-        "alive": true,
-        "frame": "threading.py:wait:363"
-      },
-      {
-        "name": "jarvis-overlay-queue",
-        "ident": 4064,
+        "ident": 17828,
         "daemon": true,
         "alive": true,
         "frame": "threading.py:wait:363"
@@ -51,7 +67,7 @@
   "recoveries": [],
   "heartbeats_age_seconds": {},
   "memory": {
-    "rss_mb": 215.34,
+    "rss_mb": 523.56,
     "growth_window_seconds": 300.0,
     "growth_mb": 0.0,
     "growth_mb_per_minute": 0.0,

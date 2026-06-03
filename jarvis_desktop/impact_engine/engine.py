@@ -22,7 +22,12 @@ from __future__ import annotations
 import os
 from typing import Any, Dict, List, Optional, Set, Tuple
 
-from .target_resolver import resolve_architecture_symbol, resolve_concept_target
+from .target_resolver import (
+    find_symbols,
+    resolve_architecture_symbol,
+    resolve_concept_target,
+    resolve_semantic_target,
+)
 
 _MAX_AFFECTED = 24
 _MAX_TRANSITIVE_DEPTH = 3
@@ -180,6 +185,33 @@ def _risk_phrases(target_path: str, affected_paths: List[str]) -> List[str]:
     return out[:8]
 
 
+def _blast_from_seeds(
+    seed_ids: List[str],
+    nodes: Dict[str, Dict[str, Any]],
+    importers: Dict[str, Set[str]],
+    imports: Dict[str, Set[str]],
+    *,
+    depth: int = _MAX_TRANSITIVE_DEPTH,
+) -> Tuple[List[str], List[str], List[str], List[str]]:
+    """Return (direct_ids, indirect_ids, forward_ids, seed_paths) unioned across seeds."""
+    direct: Set[str] = set()
+    indirect: Set[str] = set()
+    forward: Set[str] = set()
+    seed_paths: List[str] = []
+    for sid in seed_ids:
+        if sid not in nodes:
+            continue
+        seed_paths.append(_norm(nodes[sid]["path"]))
+        d = set(importers.get(sid, set()))
+        direct |= d
+        trans = _bfs_importers(sid, importers, depth)
+        for nid in trans:
+            if nid not in d:
+                indirect.add(nid)
+        forward |= imports.get(sid, set())
+    return sorted(direct), sorted(indirect), sorted(forward), seed_paths
+
+
 def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     graph = state.get("graph") or {}
     index = state.get("index")
@@ -196,22 +228,39 @@ def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict
         }
 
     evidence_store = state.get("evidence_store")
-    found = _find_target(nodes, target)
+    semantic_payload: Optional[Dict[str, Any]] = None
+    resolved_modules: List[str] = []
+    resolved_symbols: List[Dict[str, Any]] = []
     semantic_label = ""
     semantic_candidates: List[str] = []
+
+    found = _find_target(nodes, target)
     if not found:
-        semantic = resolve_concept_target(
+        semantic_payload = resolve_semantic_target(
             nodes, target, graph, evidence_store=evidence_store
         )
-        if semantic:
-            tid, tnode, semantic_label, semantic_candidates = semantic
-            found = (tid, tnode)
+        if semantic_payload:
+            semantic_label = semantic_payload.get("label") or semantic_payload.get("concept") or ""
+            resolved_modules = list(semantic_payload.get("module_paths") or [])
+            resolved_symbols = list(semantic_payload.get("symbols") or [])
+            semantic_candidates = resolved_modules
+            primary_nid = semantic_payload.get("primary_node_id")
+            primary_node = semantic_payload.get("primary_node") or {}
+            if primary_nid in nodes:
+                found = (primary_nid, nodes[primary_nid])
+            elif semantic_payload.get("primary_path"):
+                found = _find_target(nodes, semantic_payload["primary_path"])
+            if not found and primary_node.get("path"):
+                # Synthetic node id for graph-less symbol-only path.
+                found = (primary_nid, primary_node)
         else:
             sym_paths = resolve_architecture_symbol(target, nodes, evidence_store)
             if sym_paths:
                 found = _find_target(nodes, sym_paths[0])
                 semantic_candidates = sym_paths
+                resolved_modules = sym_paths
                 semantic_label = f"architecture symbol `{target}`"
+                resolved_symbols = find_symbols(evidence_store, (target,))
     if not found:
         return {
             "ok": True, "mock": True, "target": target,
@@ -229,14 +278,57 @@ def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict
     tsub = _subsystem(tpath)
     importers, imports = _reverse_forward_maps(graph)
 
-    # 1. Direct importers
-    direct_ids = sorted(importers.get(tid, set()))
-    # 2. Transitive importers (indirect)
-    trans = _bfs_importers(tid, importers, _MAX_TRANSITIVE_DEPTH)
-    indirect_ids = sorted(i for i in trans if i not in set(direct_ids))
-    # 3. Forward deps (what the target imports — may break contract-wise)
-    forward_ids = sorted(imports.get(tid, set()))
-    # 4. Same-subsystem siblings + their importers (subsystem-level blast)
+    seed_ids: List[str] = []
+    if semantic_payload:
+        for mod in semantic_payload.get("modules") or []:
+            nid = mod.get("node_id")
+            if nid and nid in nodes and nid not in seed_ids:
+                seed_ids.append(nid)
+        for path in semantic_payload.get("module_paths") or []:
+            match = next((i for i, n in nodes.items() if _norm(n.get("path")) == _norm(path)), None)
+            if match and match not in seed_ids:
+                seed_ids.append(match)
+    if tid in nodes and tid not in seed_ids:
+        seed_ids.insert(0, tid)
+    elif tid not in nodes:
+        if seed_ids:
+            tid = seed_ids[0]
+            tnode = nodes[tid]
+            tpath = _norm(tnode.get("path"))
+            tsub = _subsystem(tpath)
+        else:
+            return {
+                "ok": True,
+                "mock": True,
+                "target": target,
+                "semantic_label": semantic_label,
+                "resolved_modules": resolved_modules,
+                "resolved_symbols": resolved_symbols,
+                "reason": "Semantic concept resolved but module is outside the production graph.",
+                "direct_impact": [],
+                "indirect_impact": [],
+                "affected_files": resolved_modules[:_MAX_AFFECTED],
+                "potentially_affected_modules": resolved_modules,
+                "tests_likely_affected": [],
+                "risks_of_incorrect_fix": [f"Concept `{semantic_label}` maps to modules not in graph scope."],
+                "confidence": "low",
+                "evidence": [f"Resolved modules: {', '.join(resolved_modules[:6])}"],
+                "recommended_verification": ["Confirm scan scope includes the resolved modules."],
+                "architectural_blast_radius": max(0, len(resolved_modules) - 1),
+            }
+
+    if seed_ids:
+        direct_ids, indirect_ids, forward_ids, seed_paths = _blast_from_seeds(
+            seed_ids, nodes, importers, imports
+        )
+    else:
+        direct_ids = sorted(importers.get(tid, set()))
+        trans = _bfs_importers(tid, importers, _MAX_TRANSITIVE_DEPTH)
+        indirect_ids = sorted(i for i in trans if i not in set(direct_ids))
+        forward_ids = sorted(imports.get(tid, set()))
+        seed_paths = [tpath]
+
+    # Same-subsystem siblings + their importers (subsystem-level blast)
     sibling_ids = [nid for nid, n in nodes.items()
                    if nid != tid and _subsystem(n.get("path")) == tsub]
     sibling_importer_ids: Set[str] = set()
@@ -252,11 +344,11 @@ def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict
     sibling_paths = paths(sibling_ids)
     sib_importer_paths = [p for p in paths(sorted(sibling_importer_ids)) if p != tpath]
 
-    # Combined affected set (the target + everything plausibly coupled), capped.
-    ordered: List[str] = [tpath]
-    for group in (direct_paths, sibling_paths, indirect_paths, sib_importer_paths, forward_paths):
+    # Combined affected set (seeds + importers + siblings), capped.
+    ordered: List[str] = []
+    for group in (seed_paths if semantic_payload else [tpath], resolved_modules, direct_paths, sibling_paths, indirect_paths, sib_importer_paths, forward_paths):
         for p in group:
-            if p not in ordered:
+            if p and p not in ordered:
                 ordered.append(p)
     affected = ordered[:_MAX_AFFECTED]
 
@@ -306,11 +398,15 @@ def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict
         f"{len(sibling_paths)} sibling module(s) in the same subsystem.",
     ]
     if semantic_label:
-        evidence.insert(0, f"Semantic target resolved ({semantic_label}) → `{tpath}`.")
-        for cp in semantic_candidates[:4]:
-            if cp != tpath and cp not in affected:
-                affected.append(cp)
-        affected = affected[:_MAX_AFFECTED]
+        sym_names = [s.get("qualname") for s in resolved_symbols[:6] if s.get("qualname")]
+        sym_note = f" symbols: {', '.join(sym_names)}" if sym_names else ""
+        evidence.insert(
+            0,
+            f"Semantic concept `{semantic_label}` → {len(resolved_modules)} module(s), "
+            f"{len(resolved_symbols)} symbol(s){sym_note}. Primary: `{tpath}`.",
+        )
+        if len(resolved_modules) > 1:
+            evidence.insert(1, "Resolved modules: " + ", ".join(resolved_modules[:8]))
     if direct_paths:
         evidence.append("Direct importers: " + ", ".join(direct_paths[:6]))
 
@@ -341,6 +437,10 @@ def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict
         "ok": True,
         "target": tpath,
         "target_node_id": tid,
+        "semantic_concept": semantic_payload.get("concept") if semantic_payload else "",
+        "semantic_label": semantic_label,
+        "resolved_modules": resolved_modules,
+        "resolved_symbols": resolved_symbols,
         "risk_level": risk_level,
         "confidence": confidence,
         "direct_impact": direct_paths,

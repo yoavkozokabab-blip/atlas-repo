@@ -87455,3 +87455,5 @@
 {"event": "latency", "payload": {"bucket": "le_50ms", "duration_ms": 40.0, "labels": {"intent": "show_jarvis_status", "source": "wakeword"}, "metric": "voice.execute"}, "ts": "2026-05-31T14:49:20.869488+00:00"}
 {"event": "latency", "payload": {"bucket": "le_500ms", "duration_ms": 480.0, "labels": {"intent": "show_jarvis_status", "source": "wakeword"}, "metric": "voice.first_response"}, "ts": "2026-05-31T14:49:20.869995+00:00"}
 {"event": "latency", "payload": {"bucket": "le_25ms", "duration_ms": 0.003, "labels": {"intent": "show_jarvis_status", "source": "wakeword"}, "metric": "voice.after_speech_end"}, "ts": "2026-05-31T14:49:20.870506+00:00"}
+{"event": "overlay.fps", "payload": {"fps": 0.06}, "ts": "2026-06-03T09:53:24.584595+00:00"}
+{"event": "overlay.fps", "payload": {"fps": 21.23}, "ts": "2026-06-03T09:53:29.625424+00:00"}

@@ -2248,6 +2248,11 @@ def change_impact_simulation(target: str) -> Dict[str, Any]:
     res["simulation"] = {
         "potentially_affected_modules": res.get("affected_files", []),
         "potentially_affected_subsystems": res.get("affected_subsystems", []),
+        "resolved_modules": res.get("resolved_modules", []),
+        "resolved_symbols": res.get("resolved_symbols", []),
+        "semantic_concept": res.get("semantic_concept", ""),
+        "semantic_label": res.get("semantic_label", ""),
+        "architectural_blast_radius": res.get("architectural_blast_radius"),
         "risk_level": res.get("risk_level", "unknown"),
         "recommended_verification": res.get("recommended_verification", []),
         "tests_likely_affected": res.get("tests_likely_affected", []),
@@ -2822,6 +2827,7 @@ def _copilot_envelope(
     limitations: Optional[List[str]] = None,
     packet: str = "compact",
     graph_highlight: Optional[Dict[str, Any]] = None,
+    extra: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     payload = {
         "ok": True,
@@ -2838,6 +2844,8 @@ def _copilot_envelope(
     }
     if graph_highlight:
         payload["graph_highlight"] = graph_highlight
+    if extra:
+        payload.update(extra)
     return payload
 
 
@@ -2854,9 +2862,10 @@ def classify_copilot_question(question: str) -> str:
         return "cycles"
     if any(token in q for token in ("who imports", "importers", "imported by", "imports this")):
         return "dependency"
-    if any(token in q for token in ("what breaks", "blast radius", "impact of", "if i change", "what tests")):
+    if any(token in q for token in ("what breaks", "blast radius", "impact of", "if i change", "what tests",
+                                    "what depends on", "what happens if", "get rid of")):
         return "impact"
-    if "change " in q or "changing " in q:
+    if any(verb in q for verb in ("change ", "changing ", "remove ", "removing ", "delete ", "deleting ", "disable ")):
         return "impact"
     if any(token in q for token in ("risk", "dangerous", "bottleneck", "architectural risk")):
         return "risk"
@@ -3057,56 +3066,112 @@ def _answer_risk(packet: str) -> Dict[str, Any]:
     )
 
 
+# Phase 134.2 — strip the question wrapper so the SEMANTIC resolver receives the
+# bare concept ("event bus"), not the whole sentence ("what breaks if I remove…").
+_IMPACT_CONCEPT_PATTERNS = (
+    r"what breaks if i (?:remove|delete|drop|change|disable|get rid of)\s+(.+)",
+    r"what happens if i (?:remove|delete|change|disable|drop)\s+(.+)",
+    r"impact of (?:changing|removing|deleting|disabling)\s+(.+)",
+    r"blast radius of\s+(.+)",
+    r"what depends on\s+(.+)",
+    r"what tests?(?: cover| are affected by| break)?\s+(.+)",
+    r"(?:remove|delete|change|disable|drop|get rid of)\s+(.+)",
+)
+
+
+def _extract_impact_concept(question: str) -> str:
+    q = (question or "").strip().rstrip("?.! ").lower()
+    for pat in _IMPACT_CONCEPT_PATTERNS:
+        m = re.search(pat, q)
+        if m:
+            concept = m.group(1).strip(" `'\"")
+            concept = re.sub(r"^(the|a|an|our|my)\s+", "", concept).strip()
+            return concept
+    return ""
+
+
 def _answer_impact(question: str, node_context: Optional[Dict[str, Any]], packet: str) -> Dict[str, Any]:
-    target = _resolve_module_path(question, node_context)
-    if not target:
+    # Candidate seeds, in priority order: an explicit file/module path, then the
+    # bare architecture concept text. Each is fed to the impact engine, which runs
+    # exact lookup -> semantic concept resolution -> architecture-symbol resolution.
+    literal = _resolve_module_path(question, node_context)
+    concept = _extract_impact_concept(question)
+    seeds: List[str] = []
+    for s in (literal, concept):
+        if s and s not in seeds:
+            seeds.append(s)
+    res: Optional[Dict[str, Any]] = None
+    for seed in seeds:
+        r = change_impact_simulation(seed)
+        if r.get("ok") and not r.get("mock"):
+            res = r
+            break
+    if res is None:
         return _copilot_envelope(
             "impact",
-            "Name a file or module to analyze (for example `config.py` or `core/logger.py`).",
+            "Name a file, module, or architecture concept to analyze "
+            "(for example `core.py`, `websocket support`, or `event bus`).",
             confidence="low",
-            suggested_action="Ask: What breaks if I change config.py?",
-            limitations=["No target path could be resolved from the question."],
+            suggested_action="Ask: What breaks if I remove the event bus?",
+            limitations=["No file, module, or known architecture concept could be resolved."],
             packet=packet,
         )
-    payload = impact(target)
-    if payload.get("mock"):
-        return _copilot_envelope(
-            "impact",
-            f"Could not resolve `{target}` in the production graph ({payload.get('reason', 'unknown')}).",
-            files=[target],
-            risk_level="unknown",
-            suggested_prompt=payload.get("recommended_prompt", ""),
-            suggested_action="Verify the path exists in the scanned repository.",
-            confidence="low",
-            limitations=[payload.get("todo", ""), payload.get("reason", "")],
-            packet=packet,
-        )
-    answer = (
-        f"Changing `{payload['target']}` affects {payload['affected_file_count']} direct importer(s) "
-        f"across subsystems: {', '.join(payload.get('affected_subsystems') or []) or 'none'}."
-    )
-    highlight_ids = [payload.get("target_node_id")] + (payload.get("affected_node_ids") or [])
+
+    target = res.get("target") or ""
+    sem = res.get("semantic_label") or ""
+    resolved_modules = res.get("resolved_modules") or []
+    resolved_symbols = res.get("resolved_symbols") or []
+    direct = res.get("direct_impact") or []
+    indirect = res.get("indirect_impact") or []
+    affected = res.get("affected_files") or []
+    subs = res.get("affected_subsystems") or []
+    arch_block = res.get("architecture") or {}
+    blast = res.get("architectural_blast_radius") or arch_block.get("architectural_blast_radius") or 0
+    conf_expl = res.get("confidence_explanation") or arch_block.get("confidence_explanation") or ""
+
+    if sem:
+        related = f" + {len(resolved_modules) - 1} related module(s)" if len(resolved_modules) > 1 else ""
+        header = f"Removing **{sem}** (resolved to `{target}`{related})"
+    else:
+        header = f"Changing `{target}`"
+    answer = (f"{header} affects {len(direct)} direct + {len(indirect)} transitive importer(s) "
+              f"across {len(subs)} subsystem(s).")
+    # Append the explanation only when it adds context (runtime/config/semantic),
+    # not the generic count restatement.
+    if conf_expl and (sem or "runtime" in conf_expl.lower() or "config" in conf_expl.lower()):
+        answer += " " + conf_expl
+
+    highlight_ids = [res.get("target_node_id")] + (res.get("affected_node_ids") or [])
     highlight_ids = [item for item in highlight_ids if item]
     return _copilot_envelope(
         "impact",
         answer,
-        evidence=[
-            f"fan_in={payload.get('fan_in', 0)}",
-            payload.get("note", ""),
-        ],
-        files=(payload.get("affected_files") or [])[:20],
-        risk_level=str(payload.get("risk_level", "unknown")),
-        suggested_prompt=str(payload.get("recommended_prompt", "")),
+        evidence=(res.get("evidence") or [])[:8],
+        files=(affected or resolved_modules)[:20],
+        risk_level=str(res.get("risk_level", "unknown")),
+        suggested_prompt=str(res.get("recommended_prompt", "")) or _impact_prompt(target, len(direct), subs),
         suggested_action="Run the recommended tests before merging the change.",
-        confidence="high" if payload.get("affected_file_count") else "medium",
-        limitations=["Direct importers only; transitive impact engine (Phase 94B) not wired."],
+        confidence=str(res.get("confidence", "medium")),
+        limitations=res.get("limitations") or [],
         packet=packet,
         graph_highlight={
             "kind": "blast_radius",
-            "target_node_id": payload.get("target_node_id"),
-            "target_path": payload.get("target"),
+            "target_node_id": res.get("target_node_id"),
+            "target_path": target,
             "node_ids": highlight_ids[:80],
-            "affected_node_ids": payload.get("affected_node_ids") or [],
+            "affected_node_ids": res.get("affected_node_ids") or [],
+        },
+        extra={
+            "semantic_label": sem,
+            "resolved_modules": resolved_modules,
+            "resolved_symbols": resolved_symbols,
+            "direct_impact": direct,
+            "indirect_impact": indirect,
+            "architectural_blast_radius": blast,
+            "confidence_explanation": conf_expl,
+            "target": target,
+            "risky_areas": res.get("risky_areas") or arch_block.get("risky_areas") or [],
+            "safe_areas": res.get("safe_areas") or arch_block.get("safe_areas") or [],
         },
     )
 
