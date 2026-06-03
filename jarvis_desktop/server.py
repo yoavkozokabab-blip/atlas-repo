@@ -118,6 +118,7 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
         # Phase 137A — usage / billing-ready (local/mock, no Stripe)
         ("GET", "/api/usage/me"): lambda _body, _query: api.usage_me(),
         ("GET", "/api/usage/admin"): lambda _body, _query: api.usage_admin(),
+        ("GET", "/api/usage/admin_summary"): lambda _body, _query: api.usage_admin(),
         ("GET", "/api/plans"): lambda _body, _query: api.usage_plans(),
         ("GET", "/api/pricing"): lambda _body, _query: api.usage_pricing(),
         ("POST", "/api/usage/event"): _usage_event,
@@ -412,6 +413,10 @@ def create_fastapi_app():  # pragma: no cover - exercised only when fastapi pres
 
     @app.get("/api/usage/admin")
     def _usage_admin():
+        return api.usage_admin()
+
+    @app.get("/api/usage/admin_summary")
+    def _usage_admin_summary():
         return api.usage_admin()
 
     @app.get("/api/plans")

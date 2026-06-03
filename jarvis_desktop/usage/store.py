@@ -96,7 +96,7 @@ class UsageStore:
         if not raw:
             user = LocalUser(
                 id="user_local_owner",
-                role="admin" if admin_flag else "admin",
+                role="admin" if admin_flag else "user",
                 plan="FREE",
             )
             self._write_json(self.users_path, {"local_owner": user.to_dict()})

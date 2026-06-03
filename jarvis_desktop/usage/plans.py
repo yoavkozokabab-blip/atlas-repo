@@ -11,7 +11,7 @@ PLANS: Dict[str, Dict[str, Any]] = {
         "price_display": "$0",
         "billing_period": "month",
         "tagline": "Explore Atlas on a few repositories locally.",
-        "cta": "Get started",
+        "cta": "Start local",
         "availability": "Available during private beta",
         "features": [
             "1 workspace",
@@ -62,7 +62,7 @@ PLANS: Dict[str, Dict[str, Any]] = {
         "price_display": "Coming soon",
         "billing_period": "month",
         "tagline": "Shared workspaces and admin visibility.",
-        "cta": "Contact us",
+        "cta": "Request access",
         "availability": "Private beta — contact us",
         "features": [
             "200 repositories",

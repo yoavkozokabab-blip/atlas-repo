@@ -1,31 +1,25 @@
 <!DOCTYPE html>
 <html lang="en"><head>
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Pricing | ATLAS</title><link rel="stylesheet" href="marketing.css" />
-<style>
-  .plan-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--s3);margin-top:var(--s4)}
-  .plan-card{border:1px solid var(--line-2);border-radius:var(--r-lg);padding:var(--s3);background:var(--bg-soft);display:flex;flex-direction:column}
-  .plan-card.featured{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
-  .plan-card h3{margin:.2em 0 .1em;font-size:1.4rem}
-  .plan-price{font-size:1.6rem;font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-  .plan-tag{color:var(--muted);font-size:.92rem;min-height:2.6em}
-  .plan-feat{list-style:none;padding:0;margin:var(--s2) 0;flex:1}
-  .plan-feat li{padding:.28em 0;border-bottom:1px solid var(--line);font-size:.94rem;color:var(--ink-2)}
-  .plan-feat li::before{content:"✓ ";color:var(--good)}
-  .plan-avail{font-size:.82rem;color:var(--faint);margin:.4em 0 .8em}
-  .soon-banner{margin-top:var(--s3);padding:var(--s2) var(--s3);border:1px dashed var(--line-2);border-radius:var(--r);color:var(--ink-2);background:rgba(154,139,255,.06)}
-  .flag-note{font-size:.8rem;color:var(--faint);margin-top:var(--s2)}
-</style>
+<title>Pricing | ATLAS</title>
+<link rel="stylesheet" href="marketing.css" />
+<link rel="stylesheet" href="billing.css" />
 </head><body data-billing-page="pricing">
 <div class="bg-aura"></div>
 <header class="mnav"><div class="wrap row"><a class="mlogo" href="landing.html"><span class="mk">A</span> ATLAS</a>
 <nav class="mlinks"><a href="landing.html">Home</a><a href="roadmap.html">Roadmap</a><a href="contact.html">Contact</a><a href="index.html" class="btn ghost">Open App</a></nav></div></header>
-<main class="info-page"><div class="wrap info-shell">
+<main class="info-page"><div class="wrap info-shell billing-shell">
   <span class="eyebrow"><span class="dot"></span> Private beta</span>
   <h1>Atlas plans</h1>
-  <p>Atlas is local-first repository intelligence. Pricing is being finalised during the private beta — these tiers describe where the product is heading. <strong>No payment is collected today.</strong></p>
-  <div class="soon-banner">🚧 <strong>Coming soon / private beta.</strong> Plans are not yet purchasable. Join the waitlist or contact us and we'll reach out.</div>
-  <div id="planGrid" class="plan-grid"><p class="plan-tag">Loading plans…</p></div>
+  <p>Atlas is local-first repository intelligence. Compare tiers below — <strong>no payment is collected today.</strong> Pricing is a private-beta preview only.</p>
+  <div class="preview-note">No payment is collected today. Pricing is private-beta preview. CTAs route to local app, beta signup, or contact — never checkout.</div>
+  <div id="planGrid" class="plan-grid" data-render-target="pricing-plans">
+    <div class="plan-card" data-plan-id="FREE"><h3>Free</h3></div>
+    <div class="plan-card" data-plan-id="PRO"><h3>Pro</h3></div>
+    <div class="plan-card" data-plan-id="TEAM"><h3>Team</h3></div>
+    <div class="plan-card" data-plan-id="ENTERPRISE"><h3>Enterprise</h3></div>
+  </div>
+  <p class="preview-note muted" id="pricingNote"></p>
   <p class="flag-note" id="flagNote"></p>
 </div></main>
 <script src="billing.js"></script>

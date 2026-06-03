@@ -112,6 +112,62 @@ def record_from_scan(
     )
 
 
+def _atlas_compute_units(events: List[UsageEvent]) -> float:
+    total = 0.0
+    for ev in events:
+        est = estimate_repo_cost(
+            ev.files_count,
+            ev.modules_count,
+            ev.edges_count,
+            ev.symbols_count,
+            ev.scan_duration_seconds,
+        )
+        total += float(est.get("scan_units") or 0)
+    return round(total, 2)
+
+
+def _recent_events(events: List[UsageEvent], limit: int = 12) -> List[Dict[str, Any]]:
+    rows = sorted(events, key=lambda e: e.created_at, reverse=True)[:limit]
+    out: List[Dict[str, Any]] = []
+    for ev in rows:
+        out.append(
+            {
+                "id": ev.id,
+                "event_type": ev.event_type,
+                "repo_name": ev.repo_name,
+                "repo_path": ev.repo_path,
+                "files_count": ev.files_count,
+                "scan_duration_seconds": ev.scan_duration_seconds,
+                "estimated_token_equivalent": ev.estimated_token_equivalent,
+                "created_at": ev.created_at,
+                "ok": ev.ok,
+            }
+        )
+    return out
+
+
+def _high_usage_users(events: List[UsageEvent], limit: int = 8) -> List[Dict[str, Any]]:
+    by_user: Dict[str, Dict[str, Any]] = {}
+    for ev in events:
+        key = ev.user_id or "unknown"
+        row = by_user.setdefault(
+            key,
+            {
+                "user_id": key,
+                "workspace_id": ev.workspace_id,
+                "plan": ev.plan,
+                "events": 0,
+                "token_equivalent": 0,
+            },
+        )
+        row["events"] += 1
+        row["token_equivalent"] += int(ev.estimated_token_equivalent or 0)
+        row["workspace_id"] = ev.workspace_id or row["workspace_id"]
+        row["plan"] = ev.plan or row["plan"]
+    ranked = sorted(by_user.values(), key=lambda r: (-r["token_equivalent"], -r["events"]))
+    return ranked[:limit]
+
+
 def _month_start_ts() -> float:
     lt = time.localtime()
     return time.mktime((lt.tm_year, lt.tm_mon, 1, 0, 0, 0, 0, 0, -1))
@@ -198,24 +254,42 @@ def usage_me_summary(store: Optional[UsageStore] = None) -> Dict[str, Any]:
     scans_used = agg["event_counts"].get("scan_completed", 0)
     exports_used = agg["event_counts"].get("export_created", 0)
     repos_seen = len({e.repo_id for e in mine if e.repo_id})
+    atlas_units = _atlas_compute_units(mine)
+    token_total = int(agg["token_equivalent_total"] or 0)
 
     limits = plan.get("limits") or {}
+    usage_counts = {
+        "scans_used": scans_used,
+        "exports_used": exports_used,
+        "repositories_used": repos_seen,
+        "build_plans": agg["event_counts"].get("build_plan_created", 0),
+        "investigations": agg["event_counts"].get("investigation_created", 0),
+        "impacts": agg["event_counts"].get("impact_created", 0),
+        "repository_map_opens": agg["event_counts"].get("repository_map_opened", 0),
+        "token_equivalent_total": token_total,
+        "atlas_compute_units": atlas_units,
+    }
+    has_activity = any(
+        int(usage_counts[k] or 0) > 0
+        for k in (
+            "scans_used",
+            "exports_used",
+            "repositories_used",
+            "build_plans",
+            "investigations",
+            "impacts",
+            "repository_map_opens",
+        )
+    )
     return {
         "ok": True,
         "billing_ui_enabled": billing_ui_enabled(),
         "enforcement_enabled": enforcement_enabled(),
+        "billing_status": "local_preview",
+        "payments_active": False,
         "user": user.to_dict(),
         "plan": plan,
-        "usage": {
-            "scans_used": scans_used,
-            "exports_used": exports_used,
-            "repositories_used": repos_seen,
-            "build_plans": agg["event_counts"].get("build_plan_created", 0),
-            "investigations": agg["event_counts"].get("investigation_created", 0),
-            "impacts": agg["event_counts"].get("impact_created", 0),
-            "repository_map_opens": agg["event_counts"].get("repository_map_opened", 0),
-            "token_equivalent_total": agg["token_equivalent_total"],
-        },
+        "usage": usage_counts,
         "limits": limits,
         "limit_checks": {
             "scans": check_limit(user.plan, "max_scans_per_month", scans_used),
@@ -223,36 +297,63 @@ def usage_me_summary(store: Optional[UsageStore] = None) -> Dict[str, Any]:
             "repositories": check_limit(user.plan, "max_repositories", repos_seen),
         },
         "largest_repos": agg["largest_repos"],
+        "recent_events": _recent_events(mine),
+        "estimated_token_equivalent": token_total,
+        "estimated_atlas_compute_units": atlas_units,
+        "has_usage_data": has_activity,
+        "empty_state_message": (
+            ""
+            if has_activity
+            else "No usage recorded yet. Run a scan or generate a Build Plan to populate this dashboard."
+        ),
         "upgrade_note": "Upgrade placeholders only — no payment collection in this build.",
     }
 
 
 def usage_admin_summary(store: Optional[UsageStore] = None, *, is_admin: bool = False) -> Dict[str, Any]:
     if not is_admin:
-        return {"ok": False, "error": "Admin access required.", "code": "forbidden"}
+        return {
+            "ok": False,
+            "error": "Admin dashboard is disabled. Start Atlas with ATLAS_ADMIN=1 to view local usage analytics.",
+            "code": "admin_disabled",
+            "admin_enabled": False,
+        }
     st = store or default_store()
     month = _events_this_month(st.all_events())
     agg = _aggregate(month)
     users = st.ensure_local_user()
     by_plan: Dict[str, int] = defaultdict(int)
     by_plan[users.plan] += 1
+    token_total = int(agg["token_equivalent_total"] or 0)
+    atlas_units = _atlas_compute_units(month)
+    counts = agg["event_counts"]
     return {
         "ok": True,
+        "admin_enabled": True,
         "billing_ui_enabled": billing_ui_enabled(),
         "mock_users": 1,
         "total_events": len(month),
-        "total_scans": agg["event_counts"].get("scan_completed", 0),
+        "total_scans": counts.get("scan_completed", 0),
+        "total_repositories": agg["repositories_tracked"],
+        "total_build_plans": counts.get("build_plan_created", 0),
+        "total_investigations": counts.get("investigation_created", 0),
+        "total_impacts": counts.get("impact_created", 0),
+        "total_exports": counts.get("export_created", 0),
         "failed_scans": agg["scans_failed"],
-        "total_exports": agg["event_counts"].get("export_created", 0),
-        "token_equivalent_total": agg["token_equivalent_total"],
+        "token_equivalent_total": token_total,
+        "estimated_token_equivalent": token_total,
+        "estimated_atlas_compute_units": atlas_units,
         "usage_by_plan": dict(by_plan),
+        "largest_repositories": agg["largest_repos"],
         "largest_repos": agg["largest_repos"],
         "slowest_scans": agg["slowest_scans"],
+        "high_usage_users": _high_usage_users(month),
         "highest_usage_repos": sorted(
             agg["largest_repos"],
             key=lambda r: -int(r.get("token_equivalent") or 0),
         )[:8],
-        "event_counts": agg["event_counts"],
+        "recent_events": _recent_events(month, limit=20),
+        "event_counts": counts,
     }
 
 

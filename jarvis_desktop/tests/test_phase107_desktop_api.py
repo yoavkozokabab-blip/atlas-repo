@@ -155,4 +155,8 @@ def test_all_documented_routes_are_dispatchable():
     assert ("POST", "/api/planning/change") in documented
     assert ("POST", "/api/planning/investigate") in documented
     assert ("POST", "/api/planning/impact") in documented
-    assert len(documented) == 30
+    assert ("GET", "/api/usage/me") in documented
+    assert ("GET", "/api/usage/admin") in documented
+    assert ("GET", "/api/usage/admin_summary") in documented
+    assert ("GET", "/api/pricing") in documented
+    assert len(documented) == 40
