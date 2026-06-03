@@ -1,0 +1,27 @@
+{
+  "test": "Repository Map node-rendering visual smoke test",
+  "phase": 132,
+  "date": "2026-06-02",
+  "method": "Real Chromium (Claude preview harness) loaded three@0.157 + 3d-force-graph@1.73.4 and rendered the EXACT app technique: opaque MeshBasicMaterial spheres via nodeThreeObject, fog:false, radius scaled to spatial spread.",
+  "source_page": "jarvis_desktop/static/graph_smoke.html",
+  "result": {
+    "forceGraph": true,
+    "three": true,
+    "nodes": 30,
+    "meshes": 30,
+    "minRadius": 7.8,
+    "maxRadius": 22.2,
+    "containerW": 1280,
+    "containerH": 720,
+    "pass": true
+  },
+  "assertions": {
+    "ForceGraph3D loaded": true,
+    "global THREE exists": true,
+    "rendered mesh count > 0": true,
+    "mesh count == node count": true,
+    "min radius >= 3px (no sub-pixel nodes)": true,
+    "container has nonzero size": true
+  },
+  "visual_confirmation": "Identical technique was screenshotted in Phase 124 showing distinct coloured spheres (red/pink high-risk, cyan hub, blue normal, purple cycle, white selected). The live WebGL screenshot could not be re-captured through the preview harness this run (renderer keeps the capture pipeline busy); the programmatic audit above is the authoritative pass signal, and graph_smoke.html lets a human open the page and see the spheres directly."
+}

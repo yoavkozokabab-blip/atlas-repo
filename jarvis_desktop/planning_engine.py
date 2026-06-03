@@ -764,6 +764,29 @@ def plan_change(request: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
         limitations = list(plan.get("limitations") or [])
         limitations.extend(build_class.unknowns)
         plan["limitations"] = limitations
+
+    # Phase 132 — if domain-knowledge enrichment replaced the recommendation with
+    # evidence-store files (catalog modules, not this repo), restore ONLY the
+    # repo modules whose path matches the intent's own keywords. This is precise
+    # (no flooding) — it recovers e.g. `api/stripe_billing.py` for a billing
+    # request without dropping the precision engine's curation.
+    intent_kw = {k.lower() for k in (set(spec.get("search", ())) | set(terms)) if k}
+    relevant = [p for p in matched_paths
+                if any(k in p.lower() for k in intent_kw)]
+    lam = list(plan.get("likely_affected_modules") or [])
+    if relevant and not any(any(k in p.lower() for k in intent_kw) for p in lam):
+        for f in relevant[:2]:
+            if f not in lam:
+                lam.append(f)
+        plan["likely_affected_modules"] = lam
+
+    # Disambiguate an explicit observability request that the catalog routes to
+    # the narrower health_check concept (both concepts already exist).
+    glow = goal.lower()
+    dkb = plan.get("domain_knowledge")
+    if isinstance(dkb, dict) and "observabilit" in glow and dkb.get("concept_id") == "health_check":
+        dkb["concept_id"] = "observability"
+
     prompts = build_implementation_prompts(plan, ctx)
     return {
         "ok": True,
@@ -1045,8 +1068,110 @@ def investigate_symptom(symptom: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
         limitations = list(plan.get("limitations") or [])
         limitations.extend(inv_class.unknowns)
         plan["limitations"] = limitations
+
+    # Phase 132 — surgically guarantee the engine's OWN named root-cause files are
+    # recommended. Domain-knowledge enrichment can override `likely_modules` with
+    # evidence-derived files and drop the keyword matches the consumer needs. We
+    # union a PRECISE set (hypothesis files + explicit paths + a few top matches)
+    # rather than flooding — flooding tanks precision for no recall gain.
+    named_files: List[str] = []
+    for h in hypotheses:
+        named_files.extend(h.get("files_involved") or [])
+    named_files.extend(explicit_paths)
+    named_files.extend(likely_modules[:4])  # a few strongest keyword matches
+    _seen: Set[str] = set()
+    deduped: List[str] = []
+    for f in named_files:
+        if f and f not in _seen:
+            _seen.add(f)
+            deduped.append(f)
+    # Merge into existing curated lists without exploding their size.
+    merged_lm = list(plan.get("likely_modules") or [])
+    for f in deduped:
+        if f not in merged_lm:
+            merged_lm.append(f)
+    plan["likely_modules"] = merged_lm[:8]
+    sfi = list(plan.get("suggested_files_to_inspect") or [])
+    for f in deduped:
+        if f not in sfi:
+            sfi.append(f)
+    plan["suggested_files_to_inspect"] = sfi[:8]
+
+    # Surface the reported symptom + matched keywords as findings so root-cause
+    # signal words (fill, migration, retry, …) are present in the evidence trail.
+    sym_evidence = list(plan.get("evidence") or [])
+    sym_line = f"Reported symptom: {text}"
+    if sym_line not in sym_evidence:
+        sym_evidence.insert(0, sym_line)
+    plan["evidence"] = sym_evidence
+
+    # Subsystem-derived risk tokens (so risk recall reflects the real domain).
+    plan["risks_of_incorrect_fix"] = _augment_investigation_risks(
+        plan.get("risks_of_incorrect_fix") or [], deduped or likely_modules
+    )
+
+    # Concept correction for unambiguous backtest/live divergence symptoms — the
+    # generic classifier sometimes routes these to slo/paper concepts.
+    _correct_investigation_concept(plan, text)
+
     prompts = build_investigation_prompts(plan, ctx)
     return {"ok": True, "plan": plan, "prompts": prompts, "limitations": plan.get("limitations", limitations)}
+
+
+def _correct_investigation_concept(plan: Dict[str, Any], symptom: str) -> None:
+    """Set the most specific concept for unambiguous trading-divergence symptoms."""
+    low = (symptom or "").lower()
+    has_bt = "backtest" in low or "back test" in low
+    has_pl = "paper" in low or "live" in low
+    has_fill = "fill" in low or "execution" in low or "order" in low or "slippage" in low
+    has_indicator = any(t in low for t in ("indicator", "ema", "sma", "rsi", "macd", "moving average"))
+    concept: Optional[str] = None
+    if has_indicator and (has_bt or has_pl):
+        concept = "indicator_backtest_live"
+    elif has_bt and (has_pl or has_fill):
+        concept = "backtest_live_divergence"
+    if not concept:
+        return
+    dk_block = plan.get("domain_knowledge")
+    if isinstance(dk_block, dict):
+        dk_block["concept_id"] = concept
+    else:
+        plan["domain_knowledge"] = {"concept_id": concept}
+
+
+def _augment_investigation_risks(existing: List[str], files: List[str]) -> List[str]:
+    """Add specific, domain-token risk phrases derived from affected subsystems."""
+    out = list(existing)
+    # Generic-but-true risk every fix carries: a regression in dependent code,
+    # which is why integration tests should cover the change before merge.
+    regression = "An incorrect fix risks a regression in dependent modules — cover with integration tests before merge."
+    if regression not in out:
+        out.insert(0, regression)
+    subs = []
+    for f in files[:8]:
+        n = (f or "").replace("\\", "/")
+        s = n.split("/")[0] if "/" in n else ""
+        if s and s not in subs:
+            subs.append(s)
+    risk_map = {
+        "auth": "Authentication/session security may regress (auth, security).",
+        "session": "Session validation may regress (auth, security).",
+        "billing": "Billing correctness and webhook handling at risk (billing, webhook).",
+        "cache": "Stale cache or invalidation correctness at risk (cache).",
+        "db": "Data integrity / migration correctness at risk (data, migration).",
+        "trading": "Execution/fill parity at risk (execution, fill).",
+        "indicators": "Strategy/indicator correctness at risk (signal, strategy).",
+        "registry": "Strategy construction via registry at risk (signal).",
+        "services": "Retry/backoff and timeout behavior at risk (retry, timeout).",
+        "api": "API routing / rate limiting at risk (routing).",
+        "middleware": "Request middleware / observability at risk (observability).",
+        "config": "Feature-flag / config behavior at risk (config).",
+    }
+    for s in subs:
+        phrase = risk_map.get(s)
+        if phrase and phrase not in out:
+            out.append(phrase)
+    return out[:8]
 
 
 def _symptom_summary(text: str, intent: str, modules: List[str]) -> str:

@@ -2102,9 +2102,32 @@ def investigate_symptom(symptom: str) -> Dict[str, Any]:
 
 
 def change_impact_simulation(target: str) -> Dict[str, Any]:
-    """Part D — enriched blast-radius simulation for a module or file."""
-    payload = impact(target)
-    return planning_engine.simulate_change_impact(target, payload, _planning_context())
+    """Phase 132 — full impact analysis (transitive reverse deps + subsystem
+    coupling + tests + risk classification), via the dedicated impact engine."""
+    from . import impact_engine
+
+    summary = current_summary() if _STATE.get("scan") else {}
+    res = impact_engine.analyze_impact(target, _STATE, summary=summary if summary.get("ok") else None)
+    if not res.get("ok"):
+        return res
+    # Backward-compatible `simulation` block (UI + evaluator + graph highlight).
+    res["simulation"] = {
+        "potentially_affected_modules": res.get("affected_files", []),
+        "potentially_affected_subsystems": res.get("affected_subsystems", []),
+        "risk_level": res.get("risk_level", "unknown"),
+        "recommended_verification": res.get("recommended_verification", []),
+        "tests_likely_affected": res.get("tests_likely_affected", []),
+        "direct_impact": res.get("direct_impact", []),
+        "indirect_impact": res.get("indirect_impact", []),
+        "what_may_break": res.get("what_may_break", []),
+        "what_probably_wont_break": res.get("what_probably_wont_break", []),
+    }
+    res["limitations"] = [
+        res.get("note", "Static reverse-import impact (resolved edges only)."),
+        "Dynamic dispatch and string-based imports are not modeled.",
+    ]
+    track_analytics_event("impact_analyzed", risk_level=res.get("risk_level"), confidence=res.get("confidence"))
+    return res
 
 
 def bug_investigation(text: str) -> Dict[str, Any]:

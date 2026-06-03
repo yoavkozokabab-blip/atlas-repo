@@ -1469,35 +1469,59 @@ function copyInvestigatePrompt(tool) {
 async function runImpact() {
   const target = $("impactTarget").value.trim();
   if (!target) { toast("Enter a file or module"); return; }
-  const r = await api("/api/impact", "POST", { target });
+  const r = await api("/api/planning/impact", "POST", { target });
   const out = $("impactOut");
-  if (!r.ok) { out.innerHTML = `<div class="glass ocard muted">${r.error||'No result'}</div>`; return; }
+  if (!r.ok) { out.innerHTML = `<div class="glass ocard muted">${esc(r.error || 'No result')}</div>`; return; }
+  STATE.impactResult = r;
   if (r.target_node_id) {
     JARVIS_UNIVERSE.highlightBlastRadius({
       target_node_id: r.target_node_id,
       affected_node_ids: r.affected_node_ids || [],
     });
-    go("center");
   }
-  const mockTag = r.mock ? `<span class="pill warn">heuristic / target not in graph</span>` : "";
-  const scopeTag = r.impact_scope === "direct_only"
-    ? `<span class="pill">direct impact only</span>`
-    : "";
+  const rl = r.risk_level || "unknown";
+  const conf = r.confidence || "medium";
+  const mockTag = r.mock ? `<span class="pill warn">target not in graph — heuristic</span>` : "";
+  const tagify = arr => (arr && arr.length)
+    ? arr.slice(0, 18).map(f => `<span class="tag" role="button" onclick="impactInspect(${JSON.stringify(f)})">${esc(f)}</span>`).join("")
+    : '<span class="muted tiny">none</span>';
+  const list = (arr, n) => (arr || []).slice(0, n || 8).map(t => `<li>${esc(t)}</li>`).join("") || '<li class="muted">—</li>';
   out.innerHTML = `
-    <div class="glass ocard">
-      <div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">Impact of changing <span style="color:var(--cyan)">${esc(r.target)}</span></h3><span class="lvl ${r.risk_level}">${r.risk_level} risk</span></div>
-      <p class="muted tiny" style="margin:8px 0 14px">${esc(r.note || "")} ${scopeTag} ${mockTag}</p>
-      ${r.transitive_available === false ? '<p class="muted tiny">Transitive importers are not computed — only direct importers listed below.</p>' : ""}
-      <div class="stat"><span>Affected files</span><b>${r.affected_file_count||0}</b></div>
-      <div class="taglist" style="margin:10px 0">${(r.affected_files||[]).slice(0,24).map(f=>`<span class="tag">${f}</span>`).join("") || '<span class="muted">none resolved</span>'}</div>
-      <h3 style="font-size:13px;color:var(--cyan)">Affected subsystems</h3>
-      <div class="taglist">${(r.affected_subsystems||[]).map(s=>`<span class="tag">${s}</span>`).join("") || '<span class="muted">none</span>'}</div>
-      <h3 style="font-size:13px;color:var(--cyan);margin-top:16px">Recommended tests</h3>
-      <ul class="clean">${(r.recommended_tests||[]).map(t=>`<li>${t}</li>`).join("")}</ul>
-      <h3 style="font-size:13px;color:var(--cyan);margin-top:16px">Recommended Claude/Codex prompt</h3>
-      <pre class="code">${(r.recommended_prompt||"").replace(/</g,"&lt;")}</pre>
-      <button class="btn small" onclick="copyText(${JSON.stringify(r.recommended_prompt||"")}, 'Prompt copied')">Copy prompt</button>
+    <div class="glass ocard impact-card">
+      <div class="impact-head">
+        <h3 style="margin:0">Impact of changing <span class="mono">${esc(r.target)}</span></h3>
+        <div class="impact-badges"><span class="lvl ${rl}">${rl} risk</span><span class="pill">confidence ${esc(conf)}</span>${mockTag}</div>
+      </div>
+      <div class="report-section"><div class="report-label">Direct impact — importers</div><div class="taglist">${tagify(r.direct_impact)}</div></div>
+      <div class="report-section"><div class="report-label">Indirect impact — transitive</div><div class="taglist">${tagify(r.indirect_impact)}</div></div>
+      <div class="report-section"><div class="report-label">What may break</div><div class="taglist">${tagify(r.what_may_break)}</div></div>
+      <div class="report-section"><div class="report-label">Tests to run</div><ul class="clean">${list(r.tests_likely_affected)}</ul></div>
+      <div class="report-section"><div class="report-label">Risks of an incorrect change</div><ul class="clean">${list(r.risks_of_incorrect_fix, 5)}</ul></div>
+      <div class="report-section"><div class="report-label">Safe rollback / verification</div><ul class="clean">${list(r.recommended_verification)}</ul></div>
+      <details style="margin-top:6px"><summary class="muted tiny">Probably safe (untouched) + evidence</summary>
+        <ul class="clean tiny">${list(r.what_probably_wont_break, 6)}</ul>
+        <ul class="clean tiny">${list(r.evidence, 6)}</ul></details>
+      <div class="copy-row" style="margin-top:12px">
+        <button class="btn small" onclick="copyImpactPrompt()">Copy AI prompt</button>
+        <button class="btn small ghost" onclick="go('center')">Show on graph</button>
+      </div>
     </div>`;
+}
+
+function impactInspect(path) {
+  if ($("impactTarget")) $("impactTarget").value = path;
+  runImpact();
+}
+
+function copyImpactPrompt() {
+  const r = STATE.impactResult;
+  if (!r) { toast("Run an impact analysis first"); return; }
+  const txt = `Assess the impact of changing \`${r.target}\` (risk: ${r.risk_level}).\n`
+    + `Direct importers: ${(r.direct_impact || []).join(", ") || "none"}\n`
+    + `Transitive importers: ${(r.indirect_impact || []).join(", ") || "none"}\n`
+    + `Run these tests: ${(r.tests_likely_affected || []).slice(0, 6).join("; ")}\n`
+    + `Verify each importer's behavior and the listed tests before merge. Do not change the public interface without checking every importer.`;
+  copyText(txt, "Impact prompt copied");
 }
 
 /* ---------------- AI Context Export ---------------- */

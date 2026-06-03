@@ -320,6 +320,14 @@ ul.clean{margin:0;padding-left:18px;line-height:1.9;color:#c7d2f5}
 .bug-hint-title{font-size:11px;letter-spacing:.8px;color:var(--violet);text-transform:uppercase;margin-bottom:8px}
 .bug-hint code{font-family:ui-monospace,monospace;color:var(--cyan);font-size:11px}
 
+/* Phase 132 — Impact analysis card */
+.impact-card .impact-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.impact-card .impact-head h3{font-size:15px}
+.impact-badges{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.impact-card .mono{font-family:ui-monospace,monospace;color:var(--cyan)}
+.impact-card .taglist .tag{cursor:pointer}
+.impact-card .taglist .tag:hover{border-color:rgba(62,240,255,.5);color:#fff}
+
 /* Phase 123 — Investigation report + hypothesis cards */
 .report-section{margin:14px 0}
 .report-label{font-size:11px;letter-spacing:.7px;color:var(--cyan);text-transform:uppercase;margin-bottom:7px}
