@@ -88,7 +88,7 @@ def test_evidence_store_built_on_scan(evidence_scan):
 
 def test_ema_finds_indicator_insertion(evidence_scan):
     store = EvidenceStore.from_dict(api._STATE["evidence_store"])
-    bundle = analyze_concept(store, concept_id="ema", concept_name="EMA", category="indicator", domain="trading")
+    bundle, _precision = analyze_concept(store, concept_id="ema", concept_name="EMA", category="indicator", domain="trading")
     assert bundle.status in ("Partially Implemented", "Implemented")
     assert any("SMA" in f or "register" in f.lower() for f in bundle.found)
     assert any("ema" in m.lower() or "exponential" in m.lower() for m in bundle.missing)
@@ -98,7 +98,7 @@ def test_ema_finds_indicator_insertion(evidence_scan):
 
 def test_circuit_breaker_finds_http_boundary(evidence_scan):
     store = EvidenceStore.from_dict(api._STATE["evidence_store"])
-    bundle = analyze_concept(store, concept_id="circuit_breaker", concept_name="Circuit Breaker")
+    bundle, _ = analyze_concept(store, concept_id="circuit_breaker", concept_name="Circuit Breaker")
     assert any("http" in f.lower() or "retry" in f.lower() or "fetch" in f.lower() for f in bundle.found)
     assert "http_client" in bundle.recommended_insertion
     assert bundle.status == "Partially Implemented"
@@ -106,14 +106,14 @@ def test_circuit_breaker_finds_http_boundary(evidence_scan):
 
 def test_tracing_finds_middleware_logging(evidence_scan):
     store = EvidenceStore.from_dict(api._STATE["evidence_store"])
-    bundle = analyze_concept(store, concept_id="distributed_tracing", concept_name="Distributed Tracing")
+    bundle, _ = analyze_concept(store, concept_id="distributed_tracing", concept_name="Distributed Tracing")
     assert any("request" in f.lower() or "logging" in f.lower() for f in bundle.found)
     assert "middleware" in bundle.recommended_insertion
 
 
 def test_retry_finds_retry_loop(evidence_scan):
     store = EvidenceStore.from_dict(api._STATE["evidence_store"])
-    bundle = analyze_concept(store, concept_id="retry_backoff", concept_name="Retry with Backoff")
+    bundle, _ = analyze_concept(store, concept_id="retry_backoff", concept_name="Retry with Backoff")
     assert any(
         "retry" in f.lower() or "attempt" in f.lower() or "sleep" in f.lower() or "fetch" in f.lower()
         for f in bundle.found
@@ -123,14 +123,14 @@ def test_retry_finds_retry_loop(evidence_scan):
 
 def test_feature_flags_find_config(evidence_scan):
     store = EvidenceStore.from_dict(api._STATE["evidence_store"])
-    bundle = analyze_concept(store, concept_id="feature_flags", concept_name="Feature Flags")
+    bundle, _ = analyze_concept(store, concept_id="feature_flags", concept_name="Feature Flags")
     assert any("feature" in f.lower() or "FEATURE" in f for f in bundle.found)
     assert "feature_flags" in bundle.recommended_insertion
 
 
 def test_authentication_finds_auth_boundary(evidence_scan):
     store = EvidenceStore.from_dict(api._STATE["evidence_store"])
-    bundle = analyze_concept(store, concept_id="jwt", concept_name="JWT", category="authentication", domain="security")
+    bundle, _ = analyze_concept(store, concept_id="jwt", concept_name="JWT", category="authentication", domain="security")
     assert any("jwt" in f.lower() or "auth" in f.lower() for f in bundle.found)
     assert "auth" in bundle.recommended_insertion
 

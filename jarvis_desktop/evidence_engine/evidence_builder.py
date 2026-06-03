@@ -13,6 +13,12 @@ from .implementation_detector import (
     pick_insertion_point,
     resolve_detector,
 )
+from .precision_engine import (
+    PrecisionResult,
+    apply_precision_to_impact,
+    apply_precision_to_plan,
+    rank_files,
+)
 from .symbol_index import SymbolIndex, build_symbol_index
 
 
@@ -85,7 +91,9 @@ def analyze_concept(
     category: str = "",
     domain: str = "",
     path_keywords: Optional[List[str]] = None,
-) -> RepositoryEvidenceBundle:
+    heuristic_paths: Optional[List[str]] = None,
+    graph: Optional[Dict[str, Any]] = None,
+) -> Tuple[RepositoryEvidenceBundle, PrecisionResult]:
     detector = resolve_detector(concept_id, category=category, domain=domain)
     keywords = list(path_keywords or [])
     if detector:
@@ -103,15 +111,26 @@ def analyze_concept(
         )
 
     file_evidences = file_evidences_from_detection(detection, store.symbol_index)
-    insertion, insertion_reason = pick_insertion_point(detection, file_evidences, store.symbol_index)
+    insertion, insertion_reason = pick_insertion_point(
+        detection, file_evidences, store.symbol_index, concept_id=concept_id
+    )
 
-    if file_evidences:
-        confidence = min(100.0, file_evidences[0].evidence_score)
-    elif detection.found_labels:
-        confidence = 45.0
-    else:
-        confidence = 10.0
+    precision = rank_files(
+        store.symbol_index,
+        store.call_graph,
+        detection,
+        concept_keywords=keywords,
+        heuristic_paths=(heuristic_paths or [])[:8],
+        graph=graph,
+        insertion_path=insertion,
+    )
 
+    if precision.insertion_path:
+        insertion = precision.insertion_path
+    elif precision.tier1:
+        insertion = precision.tier1[0]
+
+    confidence = precision.insertion_confidence
     if detection.status == "Implemented":
         confidence = max(confidence, 75.0)
     elif detection.status == "Partially Implemented" and insertion:
@@ -127,12 +146,13 @@ def analyze_concept(
 
     summary_parts = [
         f"Status: {detection.status}",
-        f"Found {len(detection.found_labels)} implementation signal(s)",
+        f"Insertion confidence: {precision.insertion_confidence:.0f}/100",
+        f"Tier-1 files: {len(precision.tier1)}",
     ]
     if detection.missing_labels:
         summary_parts.append(f"Missing: {', '.join(detection.missing_labels[:3])}")
 
-    return RepositoryEvidenceBundle(
+    bundle = RepositoryEvidenceBundle(
         concept_id=concept_id,
         concept_name=concept_name or concept_id,
         status=detection.status,
@@ -141,10 +161,13 @@ def analyze_concept(
         recommended_insertion=insertion,
         recommended_insertion_reason=insertion_reason,
         confidence_score=confidence,
-        file_evidences=file_evidences[:10],
+        insertion_confidence=precision.insertion_confidence,
+        file_evidences=precision.file_evidences[:10],
         call_paths=call_paths[:6],
         evidence_summary=" · ".join(summary_parts),
+        recommendation_tiers=precision.to_dict(),
     )
+    return bundle, precision
 
 
 def analyze_investigation(
@@ -152,9 +175,15 @@ def analyze_investigation(
     *,
     concept_id: str = "backtest_live_divergence",
     symptom: str = "",
-) -> RepositoryEvidenceBundle:
+    heuristic_paths: Optional[List[str]] = None,
+    graph: Optional[Dict[str, Any]] = None,
+) -> Tuple[RepositoryEvidenceBundle, PrecisionResult]:
     lower = (symptom or "").lower()
-    if any(k in lower for k in ("backtest", "paper", "live", "slippage", "fill")):
+    if concept_id == "indicator_backtest_live" or (
+        "indicator" in lower and any(k in lower for k in ("backtest", "paper", "live"))
+    ):
+        concept_id = "indicator_backtest_live"
+    elif any(k in lower for k in ("backtest", "paper", "live", "slippage", "fill", "timing", "sim")):
         concept_id = "backtest_live_divergence"
     return analyze_concept(
         store,
@@ -162,62 +191,73 @@ def analyze_investigation(
         concept_name="Backtest vs live divergence",
         category="symptom",
         domain="trading",
+        heuristic_paths=heuristic_paths,
+        graph=graph,
     )
 
 
 def merge_file_roles_with_evidence(
     roles: Any,
     bundle: RepositoryEvidenceBundle,
+    precision: Optional[PrecisionResult] = None,
 ) -> Any:
-    """Reorder RepoFileRoles using evidence scores (evidence-first, not path-name-first)."""
+    """Apply evidence-tier file roles (precision-first, no heuristic merge)."""
     from ..atlas_knowledge.engine import RepoFileRoles
 
     if not isinstance(roles, RepoFileRoles):
         return roles
 
-    ranked_paths = [fe.path for fe in bundle.file_evidences]
-    if bundle.recommended_insertion and bundle.recommended_insertion not in ranked_paths:
-        ranked_paths.insert(0, bundle.recommended_insertion)
-
-    must = list(dict.fromkeys(ranked_paths + roles.must_inspect))[:8]
-    likely = list(dict.fromkeys(ranked_paths + roles.likely_modify))[:8]
-    verify = list(roles.verify_only)
+    tiers = precision or None
+    if tiers is None and bundle.recommendation_tiers:
+        t = bundle.recommendation_tiers
+        tier1 = list(t.get("tier1_strong_evidence") or [])
+        tier2 = list(t.get("tier2_supporting") or [])
+        tier3 = list(t.get("tier3_verify_only") or [])
+    elif tiers:
+        tier1, tier2, tier3 = tiers.tier1, tiers.tier2, tiers.tier3
+    else:
+        tier1 = [fe.path for fe in bundle.file_evidences[:5]]
+        tier2 = []
+        tier3 = list(roles.verify_only)
 
     note = roles.integration_note
     if bundle.recommended_insertion:
+        ins_conf = bundle.insertion_confidence or bundle.confidence_score
         note = (
-            f"Insertion supported by AST evidence ({bundle.confidence_score:.0f}/100): "
-            f"`{bundle.recommended_insertion}`. {bundle.recommended_insertion_reason}"
+            f"Insertion confidence {ins_conf:.0f}/100 — `{bundle.recommended_insertion}`. "
+            f"{bundle.recommended_insertion_reason}"
         )
 
     return RepoFileRoles(
-        must_inspect=must[:6],
-        likely_modify=likely[:6],
-        verify_only=verify[:6],
+        must_inspect=tier1[:5],
+        likely_modify=tier2[:8],
+        verify_only=[],
         do_not_touch=list(roles.do_not_touch),
         dedicated_module_found=roles.dedicated_module_found or bool(bundle.found),
         integration_note=note,
     )
 
 
-def apply_to_build_plan(plan: Dict[str, Any], bundle: RepositoryEvidenceBundle) -> None:
+def apply_to_build_plan(
+    plan: Dict[str, Any],
+    bundle: RepositoryEvidenceBundle,
+    precision: Optional[PrecisionResult] = None,
+) -> None:
     plan["repository_evidence"] = bundle.to_dict()
     plan["evidence_confidence"] = bundle.confidence_score
+    plan["insertion_confidence"] = bundle.insertion_confidence
 
-    if bundle.recommended_insertion:
-        inspect = list(dict.fromkeys([bundle.recommended_insertion] + (plan.get("files_to_inspect_first") or [])))
-        plan["files_to_inspect_first"] = inspect[:8]
-        change = list(dict.fromkeys([bundle.recommended_insertion] + (plan.get("files_likely_to_change") or [])))
-        plan["files_likely_to_change"] = change[:8]
-
-    if bundle.file_evidences:
-        order = [fe.path for fe in sorted(bundle.file_evidences, key=lambda x: -x.evidence_score)]
-        existing = plan.get("implementation_order") or []
-        plan["implementation_order"] = list(dict.fromkeys(order + existing))[:12]
+    if precision:
+        apply_precision_to_plan(plan, precision)
+    else:
+        if bundle.recommended_insertion:
+            plan["files_to_inspect_first"] = [bundle.recommended_insertion]
+            plan["files_likely_to_change"] = [bundle.recommended_insertion]
 
     evidence_lines = [
         f"Implementation status: {bundle.status}",
-        f"Evidence score: {bundle.confidence_score:.0f}/100",
+        f"Insertion confidence: {bundle.insertion_confidence:.0f}/100",
+        f"Tier-1 (strong evidence): {', '.join((precision.tier1 if precision else [])[:3]) or 'n/a'}",
     ]
     if bundle.found:
         evidence_lines.append("Found: " + "; ".join(bundle.found[:4]))
@@ -225,42 +265,52 @@ def apply_to_build_plan(plan: Dict[str, Any], bundle: RepositoryEvidenceBundle) 
         evidence_lines.append("Missing: " + "; ".join(bundle.missing[:4]))
     if bundle.recommended_insertion:
         evidence_lines.append(f"Recommended insertion: `{bundle.recommended_insertion}`")
-    plan["evidence"] = evidence_lines + list(plan.get("evidence") or [])[:6]
+    plan["evidence"] = evidence_lines + list(plan.get("evidence") or [])[:4]
+
+    if bundle.file_evidences and precision:
+        order = [fe.path for fe in precision.file_evidences]
+        plan["implementation_order"] = order[:10]
 
     dk = plan.get("domain_knowledge") or {}
     if dk.get("applied"):
-        dk["repository_evidence"] = bundle.to_dict()
-        dk["file_evidence_summary"] = [
-            {
-                "path": fe.path,
-                "score": fe.evidence_score,
-                "symbols": fe.matching_symbols[:4],
-                "reason": fe.reason_selected,
-            }
-            for fe in bundle.file_evidences[:6]
-        ]
+        dk["repository_evidence"] = plan["repository_evidence"]
+        dk["insertion_confidence"] = bundle.insertion_confidence
+        if bundle.concept_id:
+            dk["concept_id"] = bundle.concept_id
         plan["domain_knowledge"] = dk
         plan["knowledge_engine"] = dk
 
 
-def apply_to_investigation_plan(plan: Dict[str, Any], bundle: RepositoryEvidenceBundle) -> None:
+def apply_to_investigation_plan(
+    plan: Dict[str, Any],
+    bundle: RepositoryEvidenceBundle,
+    precision: Optional[PrecisionResult] = None,
+) -> None:
     plan["repository_evidence"] = bundle.to_dict()
     plan["evidence_confidence"] = bundle.confidence_score
+    plan["insertion_confidence"] = bundle.insertion_confidence
 
     if bundle.found:
-        plan["evidence"] = [f"Evidence: {x}" for x in bundle.found[:6]] + list(plan.get("evidence") or [])[:4]
+        plan["evidence"] = [f"Evidence: {x}" for x in bundle.found[:6]] + list(plan.get("evidence") or [])[:3]
         plan["most_likely_root_cause"] = bundle.found[0]
-        if bundle.confidence_score >= 60:
+        if bundle.insertion_confidence >= 60:
             plan["confidence"] = "high"
-        elif bundle.confidence_score >= 35:
+        elif bundle.insertion_confidence >= 35:
             plan["confidence"] = "medium"
+
+    if precision:
+        apply_precision_to_plan(plan, precision, investigate=True)
 
     for hyp in plan.get("hypotheses") or []:
         if bundle.found and "slippage" in (hyp.get("title") or "").lower():
             hyp["evidence"] = [f"Repository evidence: {bundle.found[0]}"] + list(hyp.get("evidence") or [])
-            hyp["confidence"] = "high" if bundle.confidence_score >= 55 else hyp.get("confidence")
+            hyp["confidence"] = "high" if bundle.insertion_confidence >= 55 else hyp.get("confidence")
 
     dk = plan.get("domain_knowledge") or {}
     if dk.get("applied"):
-        dk["repository_evidence"] = bundle.to_dict()
+        dk["repository_evidence"] = plan["repository_evidence"]
         plan["domain_knowledge"] = dk
+
+
+def apply_impact_precision(plan: Dict[str, Any], target: str, graph: Optional[Dict[str, Any]] = None) -> None:
+    apply_precision_to_impact(plan, target, graph)

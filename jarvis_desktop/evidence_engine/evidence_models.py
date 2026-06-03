@@ -79,9 +79,11 @@ class RepositoryEvidenceBundle:
     recommended_insertion: str = ""
     recommended_insertion_reason: str = ""
     confidence_score: float = 0.0
+    insertion_confidence: float = 0.0
     file_evidences: List[FileEvidence] = field(default_factory=list)
     call_paths: List[str] = field(default_factory=list)
     evidence_summary: str = ""
+    recommendation_tiers: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -93,9 +95,11 @@ class RepositoryEvidenceBundle:
             "recommended_insertion": self.recommended_insertion,
             "recommended_insertion_reason": self.recommended_insertion_reason,
             "confidence_score": round(self.confidence_score, 1),
+            "insertion_confidence": round(self.insertion_confidence, 1),
             "file_evidences": [fe.to_dict() for fe in self.file_evidences],
             "call_paths": list(self.call_paths),
             "evidence_summary": self.evidence_summary,
+            "recommendation_tiers": dict(self.recommendation_tiers),
         }
 
     @classmethod
@@ -110,7 +114,9 @@ class RepositoryEvidenceBundle:
             recommended_insertion=raw.get("recommended_insertion") or "",
             recommended_insertion_reason=raw.get("recommended_insertion_reason") or "",
             confidence_score=float(raw.get("confidence_score") or 0),
+            insertion_confidence=float(raw.get("insertion_confidence") or 0),
             file_evidences=fes,
             call_paths=list(raw.get("call_paths") or []),
             evidence_summary=raw.get("evidence_summary") or "",
+            recommendation_tiers=dict(raw.get("recommendation_tiers") or {}),
         )

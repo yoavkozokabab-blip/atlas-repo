@@ -33,7 +33,13 @@ def _sym_label(sym: SymbolRecord) -> str:
 def _score_file(path: str, symbols: List[SymbolRecord], patterns: List[str]) -> FileEvidence:
     sym_names = [_sym_label(s) for s in symbols]
     patterns_hit = [p for p in patterns if any(p.lower() in n.lower() for n in sym_names + [path])]
-    score = min(100.0, 20.0 + len(symbols) * 12.0 + len(patterns_hit) * 8.0)
+    impl_boost = 0.0
+    for s in symbols:
+        if s.kind in ("registry", "factory", "middleware", "interface", "protocol"):
+            impl_boost += 8.0
+        if "register" in s.name.lower():
+            impl_boost += 6.0
+    score = min(100.0, 20.0 + len(symbols) * 12.0 + len(patterns_hit) * 8.0 + impl_boost)
     return FileEvidence(
         path=path,
         evidence_score=score,
@@ -206,10 +212,22 @@ def detect_oauth2(index: SymbolIndex, cg: CallGraph, _kw: List[str]) -> Detectio
         "oauth2",
         index,
         cg,
-        found_patterns=["oauth", "authorize", "token", "pkce", "client_id"],
+        found_patterns=["oauth", "authorize", "token", "pkce", "client_id", "login", "session"],
         missing_patterns=["authorization code flow", "token refresh"],
-        target_patterns=["oauth", "authorize"],
-        insertion_patterns=("auth", "oauth", "security"),
+        target_patterns=["oauth", "authorize", "login"],
+        insertion_patterns=("auth", "oauth", "login", "security"),
+    )
+
+
+def detect_idempotency_key(index: SymbolIndex, cg: CallGraph, _kw: List[str]) -> DetectionResult:
+    return _detect(
+        "idempotency_key",
+        index,
+        cg,
+        found_patterns=["idempotency", "idempotent", "order", "execution", "place_order", "execute_order"],
+        missing_patterns=["idempotency key store", "dedupe token"],
+        target_patterns=["idempotency", "idempotent", "order"],
+        insertion_patterns=("order", "execution", "service", "trading"),
     )
 
 
@@ -273,6 +291,48 @@ def detect_queues(index: SymbolIndex, cg: CallGraph, _kw: List[str]) -> Detectio
     )
 
 
+def detect_indicator_backtest_live(index: SymbolIndex, cg: CallGraph, _kw: List[str]) -> DetectionResult:
+    """Investigation detector — indicator computation differs between backtest and live."""
+    indicator_syms = index.find_in_source(
+        ["sma", "indicator", "moving_average", "compute", "warmup", "lookahead"]
+    )
+    pipeline_syms = index.find_in_source(["pipeline", "signal", "run_signals"])
+    found: List[str] = []
+    missing: List[str] = []
+
+    sma = [s for s in indicator_syms if "sma" in (s.name + s.qualname).lower() or "indicator" in s.kind]
+    if sma:
+        found.append(f"Indicator implementation: {_sym_label(sma[0])}")
+    else:
+        missing.append("Indicator module (SMA/EMA)")
+
+    pipe = [s for s in pipeline_syms if "pipeline" in s.file_path.lower() or "run_signal" in s.name.lower()]
+    if pipe:
+        found.append(f"Signal pipeline: {_sym_label(pipe[0])}")
+    else:
+        missing.append("Signal pipeline wiring")
+
+    warmup = [s for s in indicator_syms if "warmup" in (s.name + s.qualname).lower()]
+    if warmup:
+        found.append(f"Warmup handling: {_sym_label(warmup[0])}")
+    else:
+        missing.append("Warmup / bar alignment check")
+
+    status = ImplementationStatus.PARTIAL.value if found else ImplementationStatus.NOT_FOUND.value
+    if len(found) >= 2:
+        status = ImplementationStatus.IMPLEMENTED.value
+
+    return DetectionResult(
+        concept_id="indicator_backtest_live",
+        status=status,
+        found_labels=found,
+        missing_labels=missing or ["Compare indicator compute path backtest vs live"],
+        matched_symbols=indicator_syms + pipeline_syms,
+        search_patterns=["indicator", "sma", "pipeline", "signal", "warmup"],
+        insertion_patterns=("indicator", "signal", "pipeline", "sma"),
+    )
+
+
 def detect_backtest_divergence(index: SymbolIndex, cg: CallGraph, _kw: List[str]) -> DetectionResult:
     """Investigation detector — compare execution config symbols across backtest/paper."""
     backtest_syms = index.find_in_source(["backtest", "slippage", "fill_model", "fill model"])
@@ -320,6 +380,30 @@ def detect_backtest_divergence(index: SymbolIndex, cg: CallGraph, _kw: List[str]
     )
 
 
+def detect_slippage_model(index: SymbolIndex, cg: CallGraph, _kw: List[str]) -> DetectionResult:
+    return _detect(
+        "slippage_model",
+        index,
+        cg,
+        found_patterns=["slippage", "fill_model", "fill model", "backtest_config", "paper_config"],
+        missing_patterns=["configurable slippage"],
+        target_patterns=["slippage"],
+        insertion_patterns=("backtest", "paper", "config", "trading"),
+    )
+
+
+def detect_health_check(index: SymbolIndex, cg: CallGraph, _kw: List[str]) -> DetectionResult:
+    return _detect(
+        "health_check",
+        index,
+        cg,
+        found_patterns=["health", "routes", "endpoint", "status"],
+        missing_patterns=["health check endpoint"],
+        target_patterns=["health"],
+        insertion_patterns=("routes", "api", "health"),
+    )
+
+
 DETECTORS: Dict[str, DetectorFn] = {
     "ema": detect_ema,
     "circuit_breaker": detect_circuit_breaker,
@@ -329,6 +413,7 @@ DETECTORS: Dict[str, DetectorFn] = {
     "authentication": detect_authentication,
     "jwt": detect_jwt,
     "oauth2": detect_oauth2,
+    "idempotency_key": detect_idempotency_key,
     "rate_limiting": detect_rate_limiting,
     "structured_logging": detect_logging,
     "webhook_receiver": detect_webhooks,
@@ -336,7 +421,9 @@ DETECTORS: Dict[str, DetectorFn] = {
     "database_migration": detect_database,
     "retry_queue": detect_queues,
     "backtest_live_divergence": detect_backtest_divergence,
-    "indicator_backtest_live": detect_backtest_divergence,
+    "indicator_backtest_live": detect_indicator_backtest_live,
+    "slippage_model": detect_slippage_model,
+    "health_check": detect_health_check,
 }
 
 
@@ -371,6 +458,8 @@ def pick_insertion_point(
     detection: DetectionResult,
     file_evidences: List[FileEvidence],
     index: SymbolIndex,
+    *,
+    concept_id: str = "",
 ) -> Tuple[str, str]:
     if not file_evidences:
         candidates = index.files_with_pattern(detection.insertion_patterns)
@@ -378,8 +467,47 @@ def pick_insertion_point(
             return candidates[0], "No direct symbol match — nearest structural pattern in repo"
         return "", "No AST evidence for insertion point"
 
+    ranked: List[Tuple[float, str]] = []
     for fe in file_evidences:
-        if any(p in fe.path.lower() for p in detection.insertion_patterns):
-            return fe.path, f"Evidence score {fe.evidence_score:.0f}/100 — {fe.reason_selected}"
-    top = file_evidences[0]
-    return top.path, f"Highest evidence score {top.evidence_score:.0f}/100 — {top.reason_selected}"
+        score = fe.evidence_score
+        pl = fe.path.lower()
+        for pat in detection.insertion_patterns:
+            if pat in pl:
+                score += 18.0
+        if concept_id in ("stripe_billing",) and "webhook" in pl and "billing" not in pl:
+            score -= 25.0
+        if concept_id in ("circuit_breaker", "retry_backoff") and ("client" in pl or "http" in pl):
+            score += 15.0
+        if concept_id in ("rate_limiting",) and "rate" in pl:
+            score += 20.0
+        if concept_id in ("distributed_tracing", "structured_logging") and "middleware" in pl:
+            score += 15.0
+        if concept_id in ("ema",) and ("registry" in pl or "indicator" in pl):
+            score += 12.0
+        if concept_id in ("slippage_model", "backtest_live_divergence") and (
+            "_config" in pl or pl.endswith("config.py")
+        ):
+            score += 28.0
+        if concept_id in ("slippage_model", "backtest_live_divergence") and (
+            "engine" in pl or pl.endswith("paper_trading.py")
+        ):
+            score -= 22.0
+        if concept_id == "indicator_backtest_live" and ("indicators/" in pl or "/sma" in pl):
+            score += 40.0
+        if concept_id == "indicator_backtest_live" and ("signal" in pl or "pipeline" in pl):
+            score += 22.0
+        if concept_id == "indicator_backtest_live" and "registry/signal" in pl:
+            score -= 25.0
+        if concept_id == "health_check" and ("routes" in pl or "/api/" in pl):
+            score += 30.0
+        if concept_id == "retry_backoff" and ("http_client" in pl or "client" in pl):
+            score += 25.0
+        if concept_id in ("oauth2", "authentication", "jwt") and pl.startswith("auth/"):
+            score += 30.0
+        if concept_id == "idempotency_key" and ("order" in pl or "execution" in pl):
+            score += 22.0
+        ranked.append((score, fe.path))
+    ranked.sort(key=lambda x: (-x[0], x[1]))
+    top = ranked[0]
+    fe = next(f for f in file_evidences if f.path == top[1])
+    return top[1], f"Evidence score {top[0]:.0f}/100 — {fe.reason_selected}"

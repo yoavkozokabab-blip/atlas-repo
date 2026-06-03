@@ -17,7 +17,7 @@ from .evidence_engine import (
     apply_to_build_plan,
     apply_to_investigation_plan,
 )
-from .evidence_engine.evidence_builder import merge_file_roles_with_evidence
+from .evidence_engine.evidence_builder import merge_file_roles_with_evidence, apply_impact_precision
 
 # Feature intents → search terms for path/module matching (deterministic heuristics).
 _FEATURE_SPECS: Dict[str, Dict[str, Any]] = {
@@ -508,31 +508,120 @@ def _confidence_label(score_count: int, top_score: float, intent: str) -> str:
     return "low"
 
 
-def _repository_evidence_bundle(ctx: Dict[str, Any], classification: Any) -> Optional[Any]:
+def _repository_evidence_bundle(
+    ctx: Dict[str, Any],
+    classification: Any,
+    *,
+    heuristic_paths: Optional[List[str]] = None,
+    intent: str = "",
+    goal: str = "",
+) -> Optional[Tuple[Any, Any]]:
     raw = ctx.get("evidence_store") or {}
-    if not raw or not classification.concept_id:
+    if not raw:
         return None
     store = EvidenceStore.from_dict(raw)
     rec = classification.record
+    concept_id = classification.concept_id or ""
+    gl = (goal or "").lower()
+    if "indicator" in gl and ("pipeline" in gl or "signal" in gl):
+        concept_id = "ema"
+    elif "idempotency" in gl or "idempotent" in gl:
+        concept_id = "idempotency_key"
+    elif "health check" in gl or "health endpoint" in gl:
+        concept_id = "health_check"
+    elif "slippage" in gl:
+        concept_id = "slippage_model"
+    elif "circuit breaker" in gl:
+        concept_id = "circuit_breaker"
+    elif "rate limit" in gl:
+        concept_id = "rate_limiting"
+    elif "ema" in gl or "moving average" in gl:
+        concept_id = "ema"
+    if not concept_id and intent:
+        intent_map = {
+            "authentication": "authentication",
+            "billing": "stripe_billing",
+            "logging": "structured_logging",
+            "redis": "redis_cache",
+            "caching": "redis_cache",
+        }
+        concept_id = intent_map.get(intent, "")
+    if not concept_id:
+        if "health check" in gl or "health endpoint" in gl:
+            concept_id = "health_check"
+        elif "idempotency" in gl or "idempotent" in gl:
+            concept_id = "idempotency_key"
+        elif "slippage" in gl:
+            concept_id = "slippage_model"
+        elif "circuit breaker" in gl:
+            concept_id = "circuit_breaker"
+        elif "rate limit" in gl:
+            concept_id = "rate_limiting"
+        elif "ema" in gl or "moving average" in gl:
+            concept_id = "ema"
+    if not concept_id:
+        return None
+    rec_name = rec.name if rec else concept_id.replace("_", " ").title()
+    rec_category = rec.category if rec else ""
+    rec_domain = rec.domain if rec else ""
+    rec_keywords = list(rec.path_keywords) if rec else []
+    if concept_id == "ema" and not any(k in rec_keywords for k in ("indicator", "signal", "registry")):
+        rec_keywords.extend(["indicator", "signal", "registry", "pipeline"])
+    if concept_id == "idempotency_key" and not any(k in rec_keywords for k in ("order", "execution")):
+        rec_keywords.extend(["order", "execution", "trading"])
     return analyze_concept(
         store,
-        concept_id=classification.concept_id,
-        concept_name=(rec.name if rec else classification.concept_id),
-        category=(rec.category if rec else ""),
-        domain=(rec.domain if rec else ""),
-        path_keywords=list(rec.path_keywords) if rec else [],
+        concept_id=concept_id,
+        concept_name=rec_name,
+        category=rec_category,
+        domain=rec_domain,
+        path_keywords=rec_keywords,
+        heuristic_paths=heuristic_paths,
+        graph=ctx.get("graph"),
     )
 
 
-def _investigation_evidence_bundle(ctx: Dict[str, Any], symptom: str, classification: Any) -> Optional[Any]:
+def _investigation_evidence_bundle(
+    ctx: Dict[str, Any],
+    symptom: str,
+    classification: Any,
+    *,
+    heuristic_paths: Optional[List[str]] = None,
+) -> Optional[Tuple[Any, Any]]:
     raw = ctx.get("evidence_store") or {}
     if not raw:
         return None
     store = EvidenceStore.from_dict(raw)
     lower = (symptom or "").lower()
     trading_symptom = any(k in lower for k in ("backtest", "paper", "live", "slippage", "fill"))
+    indicator_symptom = "indicator" in lower and trading_symptom
+    if indicator_symptom:
+        return analyze_investigation(
+            store,
+            concept_id="indicator_backtest_live",
+            symptom=symptom,
+            heuristic_paths=heuristic_paths,
+            graph=ctx.get("graph"),
+        )
+    if "duplicate" in lower and "order" in lower:
+        return analyze_concept(
+            store,
+            concept_id="idempotency_key",
+            concept_name="Idempotency",
+            category="reliability",
+            domain="backend",
+            path_keywords=["order", "execution", "idempotency"],
+            heuristic_paths=heuristic_paths,
+            graph=ctx.get("graph"),
+        )
     if classification.concept_id in ("backtest_live_divergence", "indicator_backtest_live") or trading_symptom:
-        return analyze_investigation(store, concept_id=classification.concept_id or "backtest_live_divergence", symptom=symptom)
+        return analyze_investigation(
+            store,
+            concept_id=classification.concept_id or "backtest_live_divergence",
+            symptom=symptom,
+            heuristic_paths=heuristic_paths,
+            graph=ctx.get("graph"),
+        )
     rec = classification.record
     if rec:
         return analyze_concept(
@@ -542,8 +631,15 @@ def _investigation_evidence_bundle(ctx: Dict[str, Any], symptom: str, classifica
             category=rec.category,
             domain=rec.domain,
             path_keywords=list(rec.path_keywords),
+            heuristic_paths=heuristic_paths,
+            graph=ctx.get("graph"),
         )
-    return analyze_investigation(store, symptom=symptom)
+    return analyze_investigation(
+        store,
+        symptom=symptom,
+        heuristic_paths=heuristic_paths,
+        graph=ctx.get("graph"),
+    )
 
 
 def repository_context_from_state(state: Dict[str, Any]) -> Dict[str, Any]:
@@ -653,12 +749,17 @@ def plan_change(request: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
         "limitations": limitations,
     }
     roles = dk.map_concept_to_repository(build_class, modules, risks_map, scored_paths=matched_paths)
-    evidence_bundle = _repository_evidence_bundle(ctx, build_class)
-    if evidence_bundle:
-        roles = merge_file_roles_with_evidence(roles, evidence_bundle)
+    evidence_result = _repository_evidence_bundle(
+        ctx, build_class, heuristic_paths=matched_paths, intent=intent, goal=goal
+    )
+    if evidence_result:
+        evidence_bundle, precision = evidence_result
+        roles = merge_file_roles_with_evidence(roles, evidence_bundle, precision)
     dk.enrich_build_plan(plan, build_class, roles)
-    if evidence_bundle:
-        apply_to_build_plan(plan, evidence_bundle)
+    if evidence_result:
+        evidence_bundle, precision = evidence_result
+        apply_to_build_plan(plan, evidence_bundle, precision)
+        plan["heuristic_candidates"] = matched_paths
     if build_class.concept_id:
         limitations = list(plan.get("limitations") or [])
         limitations.extend(build_class.unknowns)
@@ -931,12 +1032,15 @@ def investigate_symptom(symptom: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
         "limitations": limitations,
     }
     roles = dk.map_concept_to_repository(inv_class, modules, risks_map, scored_paths=likely_modules)
-    inv_evidence = _investigation_evidence_bundle(ctx, text, inv_class)
-    if inv_evidence:
-        roles = merge_file_roles_with_evidence(roles, inv_evidence)
+    inv_result = _investigation_evidence_bundle(ctx, text, inv_class, heuristic_paths=likely_modules)
+    if inv_result:
+        inv_bundle, inv_precision = inv_result
+        roles = merge_file_roles_with_evidence(roles, inv_bundle, inv_precision)
     dk.enrich_investigation_plan(plan, inv_class, roles)
-    if inv_evidence:
-        apply_to_investigation_plan(plan, inv_evidence)
+    if inv_result:
+        inv_bundle, inv_precision = inv_result
+        apply_to_investigation_plan(plan, inv_bundle, inv_precision)
+        plan["heuristic_candidates"] = likely_modules
     if inv_class.concept_id:
         limitations = list(plan.get("limitations") or [])
         limitations.extend(inv_class.unknowns)
@@ -1035,7 +1139,7 @@ def simulate_change_impact(target: str, impact_payload: Dict[str, Any], ctx: Dic
     ]
     if impact_payload.get("mock"):
         verification.append("Impact data is heuristic — confirm targets exist in the production graph.")
-    return {
+    result = {
         **impact_payload,
         "simulation": {
             "potentially_affected_modules": affected_files,
@@ -1051,6 +1155,27 @@ def simulate_change_impact(target: str, impact_payload: Dict[str, Any], ctx: Dic
             "Dynamic dispatch and string-based imports are not modeled.",
         ],
     }
+    tgt = (impact_payload.get("target") or target or "").lower()
+    impact_risks: List[str] = [
+        f"Direct importers of `{impact_payload.get('target') or target}` ({fan_in} modules) may break.",
+    ]
+    if "auth" in tgt:
+        impact_risks.extend(["Security boundary change on authentication paths", "Session validation may regress"])
+    if "registry" in tgt or "indicator" in tgt:
+        impact_risks.extend(["Signal pipeline registration may break", "Downstream indicator consumers affected"])
+    if "redis" in tgt or "cache" in tgt:
+        impact_risks.extend(["Cache availability and stale data risk", "Session/cache coherency"])
+    if "webhook" in tgt or "stripe" in tgt:
+        impact_risks.extend(["Billing webhook delivery risk", "Payment state desync"])
+    result["architectural_risks"] = impact_risks[:8]
+    tests = list(result["simulation"].get("tests_likely_affected") or [])
+    if "auth" in tgt and not any("auth" in t.lower() for t in tests):
+        tests.append("Auth/session integration tests for protected routes")
+    if ("registry" in tgt or "indicator" in tgt) and not any("indicator" in t.lower() for t in tests):
+        tests.append("Indicator registry and signal pipeline tests")
+    result["simulation"]["tests_likely_affected"] = tests[:8]
+    apply_impact_precision(result, impact_payload.get("target") or target, ctx.get("graph"))
+    return result
 
 
 def build_implementation_prompts(plan: Dict[str, Any], ctx: Dict[str, Any]) -> Dict[str, str]:
