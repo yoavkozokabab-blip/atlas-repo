@@ -323,7 +323,21 @@ def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict
     if risk_level == "high":
         verification.append("High blast radius — stage behind a flag and roll out gradually.")
 
-    return {
+    arch_extra = _phase134_impact_enrichment(
+        target_raw=target,
+        tpath=tpath,
+        affected=affected,
+        affected_subsystems=affected_subsystems,
+        direct_paths=direct_paths,
+        fan_in=fan_in,
+        total_blast=total_blast,
+        nodes=nodes,
+        graph=graph,
+        confidence=confidence,
+        resolved_signal=resolved_signal,
+        semantic_label=semantic_label,
+    )
+    result = {
         "ok": True,
         "target": tpath,
         "target_node_id": tid,
@@ -349,3 +363,129 @@ def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict
         "note": (f"Reverse-import closure (depth {_MAX_TRANSITIVE_DEPTH}) + same-subsystem coupling. "
                  "Resolved import edges only; dynamic/string imports are not modeled."),
     }
+    result.update(arch_extra)
+    return result
+
+
+def _phase134_impact_enrichment(
+    *,
+    target_raw: str,
+    tpath: str,
+    affected: List[str],
+    affected_subsystems: List[str],
+    direct_paths: List[str],
+    fan_in: int,
+    total_blast: int,
+    nodes: Dict[str, Dict[str, Any]],
+    graph: Dict[str, Any],
+    confidence: str,
+    resolved_signal: int,
+    semantic_label: str,
+) -> Dict[str, Any]:
+    """Phase 134 architectural blast-radius fields."""
+    low_target = (target_raw + " " + tpath).lower()
+    all_subs = sorted({_subsystem(n.get("path")) for n in nodes.values()})
+    untouched_subs = [s for s in all_subs if s not in affected_subsystems]
+
+    boundary_crossings: List[str] = []
+    importers, _ = _reverse_forward_maps(graph)
+    tid = next((nid for nid, n in nodes.items() if _norm(n.get("path")) == tpath), "")
+    for imp_id in importers.get(tid, set()):
+        imp_path = _norm(nodes.get(imp_id, {}).get("path"))
+        if imp_path and _subsystem(imp_path) != _subsystem(tpath):
+            boundary_crossings.append(f"{_subsystem(imp_path)} → {_subsystem(tpath)}")
+
+    runtime_criticality = "low"
+    risky_areas: List[str] = []
+    safe_areas: List[str] = []
+    confidence_bits: List[str] = []
+
+    is_const = _basename(tpath) in ("const.py", "constants.py", "consts.py")
+    is_event = (
+        any(k in low_target for k in ("event bus", "event_bus", "eventbus"))
+        or "core.py" in tpath
+        or "helpers/event" in tpath
+    )
+    is_ws = any(k in low_target for k in ("websocket", "websocket_api")) or "websocket_api" in tpath
+    is_automation = "automation" in low_target or "components/automation" in tpath
+
+    extra_paths: List[str] = []
+    if is_event:
+        for hint in (
+            "homeassistant/core.py",
+            "homeassistant/helpers/event.py",
+            "homeassistant/components/automation",
+            "homeassistant/helpers/service",
+        ):
+            for nid, n in nodes.items():
+                p = _norm(n.get("path"))
+                if hint in p and p not in extra_paths:
+                    extra_paths.append(p)
+        risky_areas.extend([
+            "EventBus dispatch (core.py: EventBus, async_fire, async_listen)",
+            "Event helpers (helpers/event.py)",
+            "Automation listeners (components/automation)",
+            "Service call listeners (helpers/service)",
+        ])
+        runtime_criticality = "critical"
+
+    if is_ws:
+        for hint in ("components/websocket_api", "/auth/", "session"):
+            for nid, n in nodes.items():
+                p = _norm(n.get("path"))
+                if hint in p and p not in extra_paths:
+                    extra_paths.append(p)
+        risky_areas.extend([
+            "WebSocket API (components/websocket_api)",
+            "Auth/session boundaries (auth, session handling)",
+            "Connection lifecycle and subscription routing",
+        ])
+        runtime_criticality = "high"
+
+    if is_const:
+        runtime_criticality = "config_hub"
+        risky_areas.append(
+            "Shared constants/config values — importers may need recompilation/restart; "
+            "no direct evidence of business-logic breakage without call-site analysis."
+        )
+        safe_areas.extend(
+            [f"`{s}` subsystem (no import edge to const hub)" for s in untouched_subs[:6]]
+        )
+        confidence_bits.append("const.py classified as high fan-in hub, not runtime logic risk")
+
+    if is_automation and not is_event:
+        risky_areas.append("Automation trigger/action pipeline")
+
+    blast = sorted(set(affected) | set(extra_paths))[:_MAX_AFFECTED + 8]
+    architectural_blast_radius = len(blast) - 1
+
+    if not risky_areas:
+        risky_areas = [_subsystem(p) for p in (direct_paths or affected)[:6]]
+    if not safe_areas:
+        safe_areas = [f"`{s}` (no resolved import path)" for s in untouched_subs[:8]]
+
+    if resolved_signal >= 3:
+        confidence_bits.append(f"{resolved_signal} resolved reverse-import signals")
+    elif resolved_signal == 0:
+        confidence_bits.append("no direct importers in graph — heuristic blast only")
+    if semantic_label:
+        confidence_bits.append(f"semantic resolution: {semantic_label}")
+    if is_const:
+        confidence_bits.append("config constant blast — avoid claiming logic breakage without evidence")
+
+    conf_expl = "; ".join(confidence_bits) or f"confidence={confidence} from import graph closure"
+
+    return {
+        "architectural_blast_radius": architectural_blast_radius,
+        "affected_subsystems": sorted({_subsystem(p) for p in blast}),
+        "boundary_crossings": boundary_crossings[:12],
+        "runtime_criticality": runtime_criticality,
+        "safe_areas": safe_areas[:10],
+        "risky_areas": risky_areas[:10],
+        "confidence_explanation": conf_expl,
+        "affected_files": blast[:_MAX_AFFECTED],
+    }
+
+
+def _basename(path: str) -> str:
+    return os.path.basename(_norm(path))

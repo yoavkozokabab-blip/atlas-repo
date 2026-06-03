@@ -830,20 +830,20 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
     import_edges = [e for e in graph.get("edges", []) if e.get("type") == "imports" and e.get("resolved")]
     unresolved = stats.get("unresolved_counts", {})
 
-    top_hubs = [
+    top_hubs = risks.get("top_hubs") or [
         {"module": h.get("dotted") or h.get("path"), "fan_in": h.get("count", 0), "path": h.get("path")}
         for h in stats.get("top_imported_modules", [])[:8]
     ]
-    ranked = risks.get("ranked_modules", [])
-    top_risks = [
+    top_risks = risks.get("top_risks") or [
         {
             "module": r.get("label"),
             "path": r.get("path"),
-            "score": r.get("total_score"),
-            "reasons": r.get("signals", [])[:4],
+            "score": r.get("risk_score", r.get("total_score")),
+            "reasons": r.get("risk_reasons", r.get("signals", []))[:4],
+            "risk_components": r.get("risk_components", {}),
             "subsystem": r.get("subsystem"),
         }
-        for r in ranked[:6]
+        for r in (risks.get("ranked_modules") or [])[:6]
     ]
 
     duration = round(time.time() - started, 2)
@@ -917,6 +917,7 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
         note="building AST symbol index and call graph for evidence engine",
     )
     _STATE.update({"path": repo, "scan": scan, "graph": graph, "index": index, "risks": risks})
+    _merge_phase134_scan_fields(scan, graph, index, risks)
     t_evidence_start = time.time()
     evidence_store = _build_evidence_store_for_scan(repo)
     _STATE["evidence_store"] = evidence_store
@@ -1026,6 +1027,54 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
     return _attach_analytics_status(scan)
 
 
+def _merge_phase134_scan_fields(
+    scan: Dict[str, Any],
+    graph: Dict[str, Any],
+    index: Dict[str, Any],
+    risks: Dict[str, Any],
+) -> None:
+    """Populate Repository Map fields from architecture + risk engines."""
+    try:
+        from . import architecture as _arch
+
+        arch = _arch.analyze(graph, index=index, risks=risks)
+    except Exception:
+        arch = {"ok": False}
+    _STATE["architecture"] = {**arch, "_sig": id(graph)}
+    if arch.get("ok"):
+        scan["top_hubs"] = arch.get("top_hubs", scan.get("top_hubs"))[:8]
+        scan["top_risks"] = arch.get("top_risks", scan.get("top_risks"))[:8]
+        scan["top_boundaries"] = arch.get("top_boundaries", [])[:8]
+        scan["top_cycles"] = arch.get("top_cycles", arch.get("cycles", []))[:8]
+        scan["unresolved_breakdown"] = (arch.get("unresolved") or {}).get("buckets", {})
+        scan["graph_health_reason"] = arch.get("graph_health_reason", "")
+        scan["architecture_summary"] = arch.get("architecture_summary", {})
+        top_risk = scan["top_risks"][0] if scan.get("top_risks") else {}
+        scan["top_risk_module"] = top_risk.get("module") or top_risk.get("path") or ""
+        scan["top_risk_score"] = top_risk.get("score", 0)
+    if risks.get("ranked_modules"):
+        scan["risk_components_sample"] = (risks["ranked_modules"][0].get("risk_components") or {})
+
+
+def _architecture_analysis() -> Dict[str, Any]:
+    """Compute (and cache on _STATE) the architectural intelligence analysis."""
+    cached = _STATE.get("architecture")
+    if cached and cached.get("_sig") == id(_STATE.get("graph")):
+        return cached
+    graph = _STATE.get("graph")
+    if not graph:
+        return {"ok": False}
+    try:
+        from . import architecture as _arch
+
+        result = _arch.analyze(graph, index=_STATE.get("index"), risks=_STATE.get("risks"))
+    except Exception as exc:  # never break the summary on an analysis edge case
+        result = {"ok": False, "error": f"{type(exc).__name__}: {exc}"}
+    result["_sig"] = id(graph)
+    _STATE["architecture"] = result
+    return result
+
+
 def current_summary() -> Dict[str, Any]:
     scan = _STATE.get("scan")
     if not scan:
@@ -1041,6 +1090,12 @@ def current_summary() -> Dict[str, Any]:
         for ef in s.get("entry_files", [])[:2]:
             if ef not in entry_points:
                 entry_points.append(ef)
+    arch = _architecture_analysis()
+    arch_ok = bool(arch.get("ok"))
+    # Phase 134 — Top Hubs (depended-on) vs Top Risks (dangerous-to-change) come
+    # from the architecture analyzer and are separated by construction.
+    top_hubs = arch["top_hubs"][:8] if arch_ok else scan["top_hubs"]
+    top_risks = arch["top_risks"][:8] if arch_ok else scan["top_risks"]
     return {
         "ok": True,
         "repo_name": scan["repo_name"],
@@ -1053,7 +1108,8 @@ def current_summary() -> Dict[str, Any]:
         "graph_scope": scan["graph_scope"],
         "degraded": scan["degraded"],
         "risk_score": _repo_risk_score(),
-        "graph_health": _graph_health(scan),
+        "graph_health": _graph_health(scan, arch if arch_ok else None),
+        "architecture": _architecture_summary(arch) if arch_ok else {"ok": False},
         **analytics.status_snapshot(),
         "token_savings": _token_savings(scan),
         "subsystems": [
@@ -1066,8 +1122,15 @@ def current_summary() -> Dict[str, Any]:
             for s in prod[:14]
         ],
         "entry_points": entry_points,
-        "top_hubs": scan["top_hubs"],
-        "top_risks": scan["top_risks"],
+        "top_hubs": top_hubs,
+        "top_risks": top_risks,
+        "top_boundaries": (scan.get("top_boundaries") or arch.get("top_boundaries", []))[:8] if arch_ok else [],
+        "top_cycles": (scan.get("top_cycles") or arch.get("top_cycles", []))[:8] if arch_ok else [],
+        "unresolved_breakdown": scan.get("unresolved_breakdown") or (
+            (arch.get("unresolved") or {}).get("buckets", {}) if arch_ok else {}
+        ),
+        "graph_health_reason": scan.get("graph_health_reason") or arch.get("graph_health_reason", ""),
+        "architecture_summary": scan.get("architecture_summary") or arch.get("architecture_summary", {}),
         "explanation": _plain_english(scan, prod, entry_points),
         "recommended_questions": _recommended_questions(scan),
         "massive_mode": bool(scan.get("massive_mode")),
@@ -2197,8 +2260,70 @@ def change_impact_simulation(target: str) -> Dict[str, Any]:
         res.get("note", "Static reverse-import impact (resolved edges only)."),
         "Dynamic dispatch and string-based imports are not modeled.",
     ]
+    _augment_impact_with_architecture(res)
     track_analytics_event("impact_analyzed", risk_level=res.get("risk_level"), confidence=res.get("confidence"))
     return res
+
+
+def _augment_impact_with_architecture(res: Dict[str, Any]) -> None:
+    """Phase 134 — add architectural blast-radius reasoning to an impact result."""
+    arch = _architecture_analysis()
+    if not arch.get("ok"):
+        return
+    mbp = arch.get("modules_by_path", {})
+    tinfo = mbp.get(res.get("target") or "", {})
+    affected = res.get("affected_files", []) or []
+    direct = res.get("direct_impact", []) or []
+    indirect = res.get("indirect_impact", []) or []
+
+    def _layer(p: str) -> str:
+        n = (p or "").replace("\\", "/")
+        parts = n.split("/")
+        if len(parts) >= 3 and parts[1] in ("components", "integrations", "plugins"):
+            return "/".join(parts[:3])
+        return "/".join(parts[:2]) if len(parts) >= 2 else (parts[0] if parts else "")
+
+    layers = sorted({_layer(p) for p in affected if p})
+    risky = [p for p in affected
+             if mbp.get(p, {}).get("is_runtime_boundary") or (mbp.get(p, {}).get("risk_score", 0) >= 45)]
+    runtime_crit = bool(tinfo.get("is_runtime_boundary"))
+    is_config = bool(tinfo.get("is_config"))
+
+    if runtime_crit:
+        conf_expl = ("Target is on a runtime boundary (event/state/request/auth path); "
+                     "changes can alter live behavior across many subsystems.")
+    elif is_config:
+        conf_expl = ("Target is a config/constants hub: blast radius is mostly recompiles, "
+                     "imports and tests — direct runtime-logic breakage is unlikely unless "
+                     "specific constant values are depended on.")
+    else:
+        conf_expl = (f"{len(direct)} direct + {len(indirect)} transitive importer(s) across "
+                     f"{len(layers)} subsystem(s); behavioral risk scales with that coupling.")
+
+    res["architecture"] = {
+        "architectural_blast_radius": len(set(direct) | set(indirect)),
+        "boundary_crossing_subsystems": len(layers),
+        "subsystems_impacted": layers[:12],
+        "runtime_criticality": runtime_crit,
+        "target_patterns": tinfo.get("patterns", []),
+        "target_risk_score": tinfo.get("risk_score"),
+        "target_risk_components": tinfo.get("risk_components", {}),
+        "is_config_hub": is_config,
+        "risky_areas": risky[:10],
+        "safe_areas": res.get("what_probably_wont_break", []),
+        "confidence_explanation": conf_expl,
+    }
+    # Also expose at top level for consumers that read them directly.
+    res["risky_areas"] = risky[:10]
+    res["safe_areas"] = res.get("what_probably_wont_break", [])
+    res["architectural_blast_radius"] = len(set(direct) | set(indirect))
+    res["confidence_explanation"] = conf_expl
+    if is_config:
+        res.setdefault("risks_of_incorrect_fix", [])
+        msg = ("High fan-in config/constants module — many tests affected, but behavioral "
+               "breakage is unlikely unless specific constant values are relied on.")
+        if msg not in res["risks_of_incorrect_fix"]:
+            res["risks_of_incorrect_fix"].insert(0, msg)
 
 
 def bug_investigation(text: str) -> Dict[str, Any]:
@@ -2404,26 +2529,81 @@ def _repo_risk_score() -> int:
     return int(round(top))
 
 
-def _graph_health(scan: Dict[str, Any]) -> Dict[str, Any]:
+def _architecture_summary(arch: Dict[str, Any]) -> Dict[str, Any]:
+    """Repository Map architectural surfaces (Phase 134)."""
+    u = arch.get("unresolved", {}) or {}
+    # Architectural hotspots = modules high on >= 2 distinct risk dimensions.
+    hotspots: List[Dict[str, Any]] = []
+    for r in arch.get("top_risks", []):
+        comps = r.get("components", {}) or {}
+        strong = [k for k, v in comps.items() if v >= 0.5]
+        if len(strong) >= 2:
+            hotspots.append({"path": r["path"], "score": r["score"],
+                             "dimensions": strong, "patterns": r.get("patterns", [])})
+    return {
+        "ok": True,
+        "top_boundaries": arch.get("top_boundaries", [])[:6],
+        "cycles": arch.get("cycles", [])[:6],
+        "cycle_count": len(arch.get("cycles", [])),
+        "patterns": {k: v for k, v in list(arch.get("patterns", {}).items())[:14]},
+        "dynamic_zones": arch.get("dynamic_zones", [])[:12],
+        "hotspots": hotspots[:8],
+        "hubs_risks_identical": arch.get("hubs_risks_identical"),
+        "hubs_risks_overlap": arch.get("hubs_risks_overlap"),
+        "unresolved_breakdown": {
+            "buckets": u.get("buckets", {}),
+            "internal_unresolved": u.get("internal_unresolved", 0),
+            "external_unresolved": u.get("external_unresolved", 0),
+            "dynamic_import_count": u.get("dynamic_import_count", u.get("dynamic_optional", 0)),
+            "samples": u.get("samples", {}),
+            "note": u.get("note", ""),
+        },
+        "architecture_summary": arch.get("architecture_summary", {}),
+        "graph_health_reason": arch.get("graph_health_reason", ""),
+    }
+
+
+def _graph_health(scan: Dict[str, Any], arch: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     resolved = int(scan.get("resolved_imports", scan.get("dependency_edges", 0)) or 0)
     unresolved = int(scan.get("unresolved_imports", 0) or 0)
     external = int(scan.get("external_package_imports", 0) or 0)
     total = resolved + unresolved
     ratio = round(unresolved / total, 4) if total else 0.0
-    unresolved_high = (
-        unresolved >= UNRESOLVED_IMPORT_PARTIAL_MIN
-        and ratio >= UNRESOLVED_IMPORT_PARTIAL_RATIO
-    )
-    graph_partial = bool(scan.get("degraded")) or unresolved_high
-    label = "partial" if graph_partial else (
-        "healthy" if scan.get("import_cycle_count", 0) <= 4 else "watch"
-    )
-    return {
+
+    # Phase 134 — health is driven by INTERNAL unresolved imports, not external
+    # packages / stdlib / dynamic integration imports (which are expected and not
+    # graph defects). Home Assistant has tens of thousands of external/dynamic
+    # imports but a near-complete internal graph; it must not be flagged "partial"
+    # for that reason.
+    internal_unres = external_unres = dynamic_unres = None
+    internal_ratio = None
+    if arch and arch.get("ok"):
+        u = arch.get("unresolved", {}) or {}
+        internal_unres = int(u.get("internal_unresolved", 0))
+        external_unres = int(u.get("external_unresolved", 0))
+        dynamic_unres = int(u.get("dynamic_import_count", u.get("dynamic_optional", 0)))
+        internal_total = resolved + internal_unres
+        internal_ratio = round(internal_unres / internal_total, 4) if internal_total else 0.0
+        unresolved_high = internal_unres >= 50 and internal_ratio >= 0.15
+    else:
+        unresolved_high = (
+            unresolved >= UNRESOLVED_IMPORT_PARTIAL_MIN
+            and ratio >= UNRESOLVED_IMPORT_PARTIAL_RATIO
+        )
+
+    cycles = scan.get("import_cycle_count", 0)
+    if arch and arch.get("ok"):
+        cycles = len(arch.get("cycles", [])) or cycles
+    # A degraded SCOPE that is actually a complete import-level graph is not unhealthy.
+    truly_degraded = bool(scan.get("degraded")) and scan.get("graph_detail") != "imports"
+    graph_partial = truly_degraded or unresolved_high
+    label = "partial" if graph_partial else ("healthy" if cycles <= 4 else "watch")
+    out = {
         "scope": scan["graph_scope"],
         "degraded": graph_partial,
         "modules": scan["module_count"],
         "edges": scan["dependency_edges"],
-        "import_cycles": scan.get("import_cycle_count", 0),
+        "import_cycles": cycles,
         "resolved_imports": resolved,
         "unresolved_imports": unresolved,
         "external_package_imports": external,
@@ -2441,13 +2621,35 @@ def _graph_health(scan: Dict[str, Any]) -> Dict[str, Any]:
             "High values are normal for apps with many dependencies."
         ),
         "external_label": "external + stdlib imports",
-        "notice": (
+        "label": label,
+    }
+    if internal_unres is not None:
+        out["unresolved_internal"] = internal_unres
+        out["unresolved_external"] = external_unres
+        out["unresolved_dynamic_optional"] = dynamic_unres
+        out["unresolved_internal_ratio"] = internal_ratio
+        out["health_basis"] = "internal_unresolved"
+        out["notice"] = (
+            (f"Graph health reflects {internal_unres} unresolved INTERNAL import(s) "
+             f"({internal_ratio:.0%} of internal imports). The {external_unres} external/"
+             "stdlib import(s) are expected dependencies, not defects.")
+            if unresolved_high else
+            (f"Internal graph is reliable: {internal_unres} unresolved internal import(s). "
+             f"The {external_unres} external/stdlib import(s) are normal dependencies.")
+        )
+        out["reliable"] = not unresolved_high
+        out["reason"] = scan.get("graph_health_reason") or out.get("notice", "")
+        out["partial_reason"] = (
+            "Many internal imports are unresolved — some internal edges may be missing."
+            if unresolved_high else ""
+        )
+    else:
+        out["notice"] = (
             "Many imports point outside the internal module set (third-party packages, "
             "standard library, or unresolved internal imports). Common for dependency-heavy "
             "apps — internal architecture may still be fully mapped."
-        ) if unresolved_high else "",
-        "label": label,
-    }
+        ) if unresolved_high else ""
+    return out
 
 
 def _token_savings(scan: Dict[str, Any]) -> Dict[str, Any]:

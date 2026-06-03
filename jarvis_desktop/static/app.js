@@ -751,10 +751,23 @@ function renderArchitectureSummary(sum) {
   const host = $("architectureSummary");
   if (!host || !sum?.ok) return;
   const subsystems = (sum.subsystems || []).slice(0, 8);
+  const arch = sum.architecture || {};
+  const u = arch.unresolved_breakdown || {};
+  const buckets = u.buckets || sum.unresolved_breakdown || {};
+  const internal = u.internal_unresolved ?? 0;
+  const boundaries = (sum.top_boundaries || arch.top_boundaries || []).slice(0, 4);
+  const areas = sum.architecture_summary?.areas || arch.architecture_summary?.areas || {};
+  const areaTags = ["components", "helpers", "core", "auth", "config_entries"]
+    .filter(k => (areas[k] || 0) > 0)
+    .map(k => `<span class="tag">${esc(k)}</span>`).join("");
   host.innerHTML = `
     <h3 style="margin-top:16px">Architecture</h3>
     <p class="muted tiny" style="margin:4px 0 8px">${esc((sum.explanation || "").slice(0, 280))}${(sum.explanation || "").length > 280 ? "…" : ""}</p>
     <div class="taglist">${subsystems.map(s => `<span class="tag" title="${esc((s.dependencies || []).join(", "))}">${esc(s.name)} · ${s.production_files || 0}</span>`).join("") || '<span class="muted tiny">—</span>'}</div>
+    ${areaTags ? `<div class="taglist" style="margin-top:6px">${areaTags}</div>` : ""}
+    ${boundaries.length ? `<p class="muted tiny" style="margin-top:6px">Boundaries: ${boundaries.map(b => esc((b.module || b.path || "").split("/").pop())).join(", ")}</p>` : ""}
+    ${internal ? `<p class="muted tiny">Internal unresolved imports: <b>${internal}</b> (graph health driver)</p>` : ""}
+    ${Object.keys(buckets).length ? `<p class="muted tiny">Unresolved: ${Object.entries(buckets).filter(([,v]) => v).slice(0,5).map(([k,v]) => `${k} ${v}`).join(" · ")}</p>` : ""}
     <p class="muted tiny" style="margin-top:8px">Entry: ${esc((sum.entry_points || []).slice(0, 3).join(", ") || "none detected")}</p>`;
 }
 
@@ -827,18 +840,18 @@ function renderHealthCockpit(sum) {
     </div>
     <div class="cockpit-grid">
       <div class="cockpit-card"><div class="cc-label">Resolved imports</div><div class="cc-val">${gh.resolved_imports ?? 0}</div></div>
-      <div class="cockpit-card warn"><div class="cc-label">Unresolved imports</div><div class="cc-val" title="Internal imports only">${gh.unresolved_imports ?? 0}</div></div>
-      <div class="cockpit-card"><div class="cc-label">External package imports</div><div class="cc-val" title="Not counted in unresolved ratio">${gh.external_package_imports ?? 0}</div></div>
-      <div class="cockpit-card"><div class="cc-label">Unresolved ratio</div><div class="cc-val" title="${esc(ratioNote)}">${((gh.unresolved_ratio ?? 0) * 100).toFixed(1)}%</div></div>
+      <div class="cockpit-card warn"><div class="cc-label">Unresolved internal</div><div class="cc-val" title="Internal imports that did not resolve — the real graph-completeness signal">${gh.unresolved_internal ?? gh.unresolved_imports ?? 0}</div></div>
+      <div class="cockpit-card"><div class="cc-label">External / stdlib</div><div class="cc-val" title="Third-party + standard library imports — expected, not defects">${gh.unresolved_external ?? gh.external_package_imports ?? 0}</div></div>
+      <div class="cockpit-card"><div class="cc-label">Dynamic / optional</div><div class="cc-val" title="Dynamic or optional imports (e.g. plugin loading) — not statically resolvable">${gh.unresolved_dynamic_optional ?? 0}</div></div>
     </div>
-    <p class="muted tiny" style="margin:4px 0 10px">${esc(ratioNote)}</p>
-    <div class="cockpit-card"><div class="cc-label">Blast radius hub</div><div class="cc-val" style="font-size:14px;color:#eaf0ff">${(sum.top_hubs?.[0]?.module || "—").split(".").pop()}</div>
+    <p class="muted tiny" style="margin:4px 0 10px">${esc(gh.notice || ratioNote)}</p>
+    <div class="cockpit-card"><div class="cc-label">Most depended-on (hub)</div><div class="cc-val" style="font-size:14px;color:#eaf0ff">${(sum.top_hubs?.[0]?.module || "—").split(/[./\\]/).pop()}</div>
       <div class="muted tiny">${sum.top_hubs?.[0]?.fan_in ?? 0} direct importers</div></div>
     <div class="cockpit-card"><div class="cc-label">Repository modules</div><div class="cc-val" id="ccModules">${sum.module_count}</div></div>
-    <h3 style="margin-top:14px">Top risks</h3>
-    <ul class="clean cockpit-hubs">${(sum.top_risks || []).slice(0, 5).map(r => `<li><b style="color:${riskColor(r.score)}">${(r.module || "").split(".").pop()}</b> <span class="muted">${r.score}</span></li>`).join("")}</ul>
-    <h3 style="margin-top:14px">Top hubs</h3>
-    <ul class="clean cockpit-hubs">${(sum.top_hubs || []).slice(0, 5).map(h => `<li>${h.module} <span class="muted">← ${h.fan_in}</span></li>`).join("")}</ul>`;
+    <h3 style="margin-top:14px" title="Architectural risk: coupling, boundaries, cycles & runtime criticality — not just fan-in">Riskiest to change</h3>
+    <ul class="clean cockpit-hubs">${(sum.top_risks || []).slice(0, 5).map(r => `<li><b style="color:${riskColor(r.score)}">${(r.module || r.path || "").split(/[./\\]/).pop()}</b> <span class="muted">${r.score ?? ""}</span></li>`).join("")}</ul>
+    <h3 style="margin-top:14px" title="Heavily depended-on modules (high fan-in)">Most depended-on</h3>
+    <ul class="clean cockpit-hubs">${(sum.top_hubs || []).slice(0, 5).map(h => `<li>${(h.module || h.path || "").split(/[./\\]/).pop()} <span class="muted">← ${h.fan_in}</span></li>`).join("")}</ul>`;
   JARVIS_UNIVERSE.animateCounter($("ccRisk"), sum.risk_score, 800);
   JARVIS_UNIVERSE.animateCounter($("ccModules"), sum.module_count, 900);
   JARVIS_UNIVERSE.animateCounter($("ccCycles"), gh.import_cycles ?? 0, 700);

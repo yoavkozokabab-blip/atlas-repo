@@ -86,9 +86,11 @@ def test_ui_shows_partial_graph_warning_and_resolution_metrics():
     assert "Graph is partial: many imports could not be resolved." not in app
     assert "sum.graph_health?.notice" in app
     assert "Resolved imports" in app
-    assert "Unresolved imports" in app
-    assert "External package imports" in app
-    assert "Unresolved ratio" in app
+    # Phase 134 — the cockpit now splits unresolved into internal vs external/stdlib
+    # vs dynamic/optional (clearer than a single ambiguous "Unresolved imports").
+    assert "Unresolved internal" in app
+    assert "External / stdlib" in app
+    assert "Dynamic / optional" in app
 
 
 def test_native_picker_requests_foreground_window(monkeypatch):

@@ -17,8 +17,8 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 
 from . import repository_understanding as ru
 
-SCHEMA_VERSION = 2
-ENGINE_VERSION = "phase102b-v1"
+SCHEMA_VERSION = 3
+ENGINE_VERSION = "phase134-v1"
 
 # Score weights (frozen for benchmark reproducibility).
 WEIGHT_FAN_IN = 1.0
@@ -38,6 +38,21 @@ WEIGHT_STATIC_MEDIUM = 0.75
 WEIGHT_STATIC_LOW = 0.35
 WEIGHT_STATIC_CAP = 4.0
 WEIGHT_SUBSYSTEM_CROSS_FAN_IN = 2.0
+
+# Phase 134 — architectural risk components (not raw degree centrality).
+PHASE134_WEIGHTS = {
+    "fan_in": 0.08,
+    "fan_out": 0.06,
+    "subsystem_crossing": 0.14,
+    "bridge_score": 0.12,
+    "cycle_score": 0.10,
+    "unresolved_internal_score": 0.08,
+    "dynamic_import_score": 0.06,
+    "runtime_boundary_score": 0.14,
+    "god_module_score": 0.10,
+    "public_api_score": 0.06,
+    "config_constant_score": 0.06,
+}
 
 # Blast-radius / safety-gap gate for LOC (isolated large files must not dominate).
 MIN_FAN_IN_FOR_LOC = 1
@@ -472,6 +487,130 @@ def _blast_radius_or_safety_gap(
     )
 
 
+def _bridge_scores(
+    graph: Dict[str, Any],
+    pair_counts: Dict[Tuple[str, str], int],
+) -> Dict[str, float]:
+    """Modules touching many distinct subsystems (architectural bridges)."""
+    nodes_by_id = {node["id"]: node for node in graph.get("nodes", [])}
+    touched: Dict[str, Set[str]] = {}
+    for (from_id, to_id), _ in pair_counts.items():
+        fp = nodes_by_id.get(from_id, {}).get("path") or ""
+        tp = nodes_by_id.get(to_id, {}).get("path") or ""
+        if not fp or not tp:
+            continue
+        fs, ts = _subsystem_name(fp), _subsystem_name(tp)
+        if fs == ts:
+            continue
+        touched.setdefault(from_id, set()).add(ts)
+        touched.setdefault(to_id, set()).add(fs)
+    max_touch = max((len(v) for v in touched.values()), default=1)
+    return {
+        mid: min(1.0, len(subs) / max(3, max_touch))
+        for mid, subs in touched.items()
+    }
+
+
+def _unresolved_internal_by_path(graph: Dict[str, Any]) -> Dict[str, int]:
+    try:
+        from . import unresolved_imports as ui
+
+        payload = ui.classify_graph_unresolved(graph)
+        counts: Dict[str, int] = {}
+        for entry in payload.get("entries") or []:
+            label = entry.get("classification")
+            if label not in ("internal_missing", "relative_resolution_issue"):
+                continue
+            path = (entry.get("from_module") or "").replace("\\", "/")
+            if path:
+                counts[path] = counts.get(path, 0) + 1
+        return counts
+    except Exception:
+        return {}
+
+
+def _norm01(value: float, cap: float) -> float:
+    if cap <= 0:
+        return 0.0
+    return min(1.0, value / cap)
+
+
+def _phase134_components(
+    *,
+    fan_in: int,
+    fan_out: int,
+    subsystem_cross: int,
+    bridge: float,
+    in_cycle: bool,
+    unresolved_internal: int,
+    dynamic_import: bool,
+    runtime_boundary: bool,
+    god_module: bool,
+    public_api: bool,
+    config_constant: bool,
+    max_fan_in: int,
+    max_fan_out: int,
+    max_cross: int,
+) -> Tuple[Dict[str, float], float, List[str], str]:
+    components = {
+        "fan_in": round(_norm01(fan_in, max(1, max_fan_in)) * 100, 2),
+        "fan_out": round(_norm01(fan_out, max(1, max_fan_out)) * 100, 2),
+        "subsystem_crossing": round(_norm01(subsystem_cross, max(1, max_cross)) * 100, 2),
+        "bridge_score": round(bridge * 100, 2),
+        "cycle_score": 100.0 if in_cycle else 0.0,
+        "unresolved_internal_score": round(_norm01(unresolved_internal, 8) * 100, 2),
+        "dynamic_import_score": 100.0 if dynamic_import else 0.0,
+        "runtime_boundary_score": 100.0 if runtime_boundary else 0.0,
+        "god_module_score": 100.0 if god_module else 0.0,
+        "public_api_score": 100.0 if public_api else 0.0,
+        "config_constant_score": 100.0 if config_constant else 0.0,
+    }
+    weighted = sum(
+        (components[k] / 100.0) * PHASE134_WEIGHTS[k] for k in PHASE134_WEIGHTS
+    )
+    if config_constant:
+        weighted *= 0.55
+    risk_score = round(weighted * 100, 2)
+    reasons: List[str] = []
+    for key, val in sorted(components.items(), key=lambda kv: -kv[1]):
+        if val >= 40:
+            reasons.append(f"{key.replace('_', ' ')}={val:.0f}")
+    if config_constant and fan_in >= 3:
+        reasons.append("config/const hub (high fan-in, low logic-risk)")
+    if not reasons:
+        reasons.append("low composite architectural risk")
+    confidence = "high"
+    if unresolved_internal >= 3:
+        confidence = "medium"
+    if unresolved_internal >= 8 or (dynamic_import and unresolved_internal):
+        confidence = "low"
+    return components, risk_score, reasons[:6], confidence
+
+
+def compute_top_hubs(
+    graph: Dict[str, Any],
+    *,
+    top: int = 8,
+) -> List[Dict[str, Any]]:
+    """Fan-in hubs only — not architectural risk ranking."""
+    fan_in, fan_out, _ = _dedupe_import_edges(graph)
+    nodes = {n["id"]: n for n in graph.get("nodes", []) if n.get("type") == "module"}
+    rows = []
+    for mid, fi in fan_in.items():
+        node = nodes.get(mid, {})
+        path = node.get("path") or ""
+        rows.append({
+            "module": node.get("dotted") or path or mid,
+            "path": path,
+            "fan_in": fi,
+            "fan_out": fan_out.get(mid, 0),
+            "hub_score": fi,
+            "reason": f"depended on by {fi} module(s)",
+        })
+    rows.sort(key=lambda r: (-r["fan_in"], r["path"]))
+    return rows[:top]
+
+
 def _build_rank_diagnostics(
     *,
     breakdown: Dict[str, float],
@@ -529,7 +668,12 @@ def rank_modules(
     fan_in, fan_out, pair_counts = _dedupe_import_edges(graph)
     cycle_modules, import_cycles = _canonical_import_cycles(graph)
     subsystem_fan_in = _subsystem_cross_fan_in(graph, pair_counts)
+    bridge_by_id = _bridge_scores(graph, pair_counts)
+    unresolved_by_path = _unresolved_internal_by_path(graph)
     churn_map = dict(index.get("churn") or {})
+    max_fi = max(fan_in.values(), default=1)
+    max_fo = max(fan_out.values(), default=1)
+    max_cross = max(subsystem_fan_in.values(), default=1)
 
     module_nodes = [n for n in graph.get("nodes", []) if n.get("type") == "module"]
     module_paths = [n.get("path") or "" for n in module_nodes if n.get("path")]
@@ -574,6 +718,35 @@ def rank_modules(
             WEIGHT_SUBSYSTEM_CROSS_FAN_IN
             if subsystem_fan_in.get(subsystem, 0) >= 2
             else 0.0
+        )
+        cross_count = subsystem_fan_in.get(subsystem, 0)
+        stem = _module_stem(path)
+        config_constant = stem in ("const", "constants", "consts") or "/const.py" in path.replace("\\", "/")
+        public_api = stem == "__init__" or path.endswith("/__init__.py")
+        runtime_boundary = any(
+            m in path.replace("\\", "/").lower()
+            for m in ("/core.py", "helpers/event.py", "websocket_api", "/auth/", "config_entries")
+        )
+        god_module = fi >= max(8, int(max_fi * 0.85)) and fo >= max(4, int(max_fo * 0.5)) and line_count >= 300
+        uint = unresolved_by_path.get(path.replace("\\", "/"), 0)
+        source_snip = _read_module_source(index, path) or ""
+        dynamic_import = "importlib" in source_snip or "__import__" in source_snip
+
+        risk_components, risk_score, risk_reasons, risk_confidence = _phase134_components(
+            fan_in=fi,
+            fan_out=fo,
+            subsystem_cross=cross_count,
+            bridge=bridge_by_id.get(module_id, 0.0),
+            in_cycle=in_cycle,
+            unresolved_internal=uint,
+            dynamic_import=dynamic_import,
+            runtime_boundary=runtime_boundary,
+            god_module=god_module,
+            public_api=public_api,
+            config_constant=config_constant,
+            max_fan_in=max_fi,
+            max_fan_out=max_fo,
+            max_cross=max_cross,
         )
 
         breakdown = {
@@ -639,6 +812,11 @@ def rank_modules(
                 "subsystem_role": subsystems_by_name.get(subsystem, {}).get("role", role),
                 "file_role": role,
                 "total_score": total,
+                "risk_score": risk_score,
+                "risk_reasons": risk_reasons,
+                "risk_components": risk_components,
+                "risk_confidence": risk_confidence,
+                "hub_score": fi,
                 "score_breakdown": breakdown,
                 "rank_diagnostics": diagnostics,
                 "signals": signals,
@@ -656,9 +834,23 @@ def rank_modules(
             }
         )
 
-    ranked_rows.sort(key=lambda row: (-row["total_score"], row["label"]))
+    ranked_rows.sort(key=lambda row: (-row["risk_score"], -row["total_score"], row["label"]))
     for position, row in enumerate(ranked_rows[: max(0, top)], 1):
         row["rank"] = position
+
+    top_hubs = compute_top_hubs(graph, top=top)
+    top_risks = [
+        {
+            "module": r["label"],
+            "path": r["path"],
+            "score": r["risk_score"],
+            "reasons": r.get("risk_reasons", [])[:4],
+            "risk_components": r.get("risk_components", {}),
+            "risk_confidence": r.get("risk_confidence"),
+            "subsystem": r.get("subsystem"),
+        }
+        for r in ranked_rows[: max(0, top)]
+    ]
 
     return {
         "schema_version": SCHEMA_VERSION,
@@ -670,6 +862,8 @@ def rank_modules(
         "import_cycles_canonical": [list(cycle) for cycle in import_cycles],
         "deduped_import_pairs": len(pair_counts),
         "modules_considered": len(module_nodes),
+        "top_hubs": top_hubs,
+        "top_risks": top_risks,
         "ranked_modules": ranked_rows[: max(0, top)],
     }
 
