@@ -1,0 +1,1701 @@
+{
+  "generated": "2026-06-04 00:08:23",
+  "concepts": [
+    "authentication",
+    "authorization",
+    "caching",
+    "configuration",
+    "database",
+    "routing",
+    "middleware",
+    "logging",
+    "events",
+    "messaging",
+    "background_jobs",
+    "scheduling",
+    "state_management",
+    "plugins",
+    "extensions",
+    "websockets",
+    "api_layer",
+    "persistence",
+    "validation",
+    "serialization"
+  ],
+  "results": [
+    {
+      "id": "home_assistant",
+      "display": "Home Assistant",
+      "language": "python",
+      "available": true,
+      "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\home_assistant",
+      "modules": 9709,
+      "concepts": [
+        {
+          "concept": "authentication",
+          "phrase": "authentication",
+          "expected_subsystem": "auth / identity",
+          "prompt": "what breaks if I remove authentication",
+          "resolved": true,
+          "category": null,
+          "label": "authentication",
+          "modules": [
+            "homeassistant/auth/auth_store.py",
+            "homeassistant/auth/__init__.py",
+            "homeassistant/auth/providers/__init__.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 homeassistant/auth/auth_store.py, homeassistant/auth/__init__.py, homeassistant/auth/providers/__init__.py"
+        },
+        {
+          "concept": "authorization",
+          "phrase": "authorization",
+          "expected_subsystem": "access control / permissions",
+          "prompt": "what breaks if I remove authorization",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `authorization`",
+          "modules": [
+            "homeassistant/components/actron_air/config_flow.py",
+            "homeassistant/components/aladdin_connect/application_credentials.py",
+            "homeassistant/components/alexa/errors.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 homeassistant/components/actron_air/config_flow.py, homeassistant/components/aladdin_connect/application_credentials.py, homeassistant/components/alexa/errors.py"
+        },
+        {
+          "concept": "caching",
+          "phrase": "caching",
+          "expected_subsystem": "cache layer",
+          "prompt": "what breaks if I remove caching",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `caching`",
+          "modules": [
+            "homeassistant/components/anthropic/config_flow.py",
+            "homeassistant/components/anthropic/const.py",
+            "homeassistant/components/anthropic/entity.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 homeassistant/components/anthropic/config_flow.py, homeassistant/components/anthropic/const.py, homeassistant/components/anthropic/entity.py"
+        },
+        {
+          "concept": "configuration",
+          "phrase": "configuration",
+          "expected_subsystem": "config system",
+          "prompt": "what breaks if I remove configuration",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `configuration`",
+          "modules": [
+            "homeassistant/backup_restore.py",
+            "homeassistant/components/airgradient/button.py",
+            "homeassistant/components/airgradient/config_flow.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 homeassistant/backup_restore.py, homeassistant/components/airgradient/button.py, homeassistant/components/airgradient/config_flow.py"
+        },
+        {
+          "concept": "database",
+          "phrase": "the database layer",
+          "expected_subsystem": "persistence / database",
+          "prompt": "what breaks if I remove the database layer",
+          "resolved": true,
+          "category": null,
+          "label": "recorder/database",
+          "modules": [
+            "homeassistant/components/recorder/db_schema.py",
+            "homeassistant/components/recorder/__init__.py",
+            "homeassistant/components/recorder/util.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 homeassistant/components/recorder/db_schema.py, homeassistant/components/recorder/__init__.py, homeassistant/components/recorder/util.py"
+        },
+        {
+          "concept": "routing",
+          "phrase": "routing",
+          "expected_subsystem": "router / URL dispatch",
+          "prompt": "what breaks if I remove routing",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "middleware",
+          "phrase": "middleware",
+          "expected_subsystem": "middleware pipeline",
+          "prompt": "what breaks if I remove middleware",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "logging",
+          "phrase": "the logging layer",
+          "expected_subsystem": "logging subsystem",
+          "prompt": "what breaks if I remove the logging layer",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "events",
+          "phrase": "the event system",
+          "expected_subsystem": "event bus / dispatcher",
+          "prompt": "what breaks if I remove the event system",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "messaging",
+          "phrase": "messaging",
+          "expected_subsystem": "message queue / pub-sub",
+          "prompt": "what breaks if I remove messaging",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `messaging`",
+          "modules": [
+            "homeassistant/components/azure_service_bus/notify.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 homeassistant/components/azure_service_bus/notify.py"
+        },
+        {
+          "concept": "background_jobs",
+          "phrase": "background jobs",
+          "expected_subsystem": "task / worker queue",
+          "prompt": "what breaks if I remove background jobs",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "scheduling",
+          "phrase": "scheduling",
+          "expected_subsystem": "scheduler",
+          "prompt": "what breaks if I remove scheduling",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "state_management",
+          "phrase": "state management",
+          "expected_subsystem": "state store",
+          "prompt": "what breaks if I remove state management",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "plugins",
+          "phrase": "the plugin system",
+          "expected_subsystem": "plugin loader",
+          "prompt": "what breaks if I remove the plugin system",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "extensions",
+          "phrase": "extensions",
+          "expected_subsystem": "extension system",
+          "prompt": "what breaks if I remove extensions",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `extensions`",
+          "modules": [
+            "homeassistant/components/amazon_polly/tts.py",
+            "homeassistant/helpers/template/extensions/__init__.py",
+            "homeassistant/helpers/template/extensions/areas.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 homeassistant/components/amazon_polly/tts.py, homeassistant/helpers/template/extensions/__init__.py, homeassistant/helpers/template/extensions/areas.py"
+        },
+        {
+          "concept": "websockets",
+          "phrase": "websocket support",
+          "expected_subsystem": "websocket transport",
+          "prompt": "what breaks if I remove websocket support",
+          "resolved": true,
+          "category": null,
+          "label": "websocket support",
+          "modules": [
+            "homeassistant/components/websocket_api/__init__.py",
+            "homeassistant/components/websocket_api/const.py",
+            "homeassistant/components/websocket_api/connection.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 homeassistant/components/websocket_api/__init__.py, homeassistant/components/websocket_api/const.py, homeassistant/components/websocket_api/connection.py"
+        },
+        {
+          "concept": "api_layer",
+          "phrase": "the api layer",
+          "expected_subsystem": "API / endpoint layer",
+          "prompt": "what breaks if I remove the api layer",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "persistence",
+          "phrase": "persistence",
+          "expected_subsystem": "ORM / storage",
+          "prompt": "what breaks if I remove persistence",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "validation",
+          "phrase": "request validation",
+          "expected_subsystem": "input validation",
+          "prompt": "what breaks if I remove request validation",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "serialization",
+          "phrase": "serialization",
+          "expected_subsystem": "(de)serialization layer",
+          "prompt": "what breaks if I remove serialization",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `serialization`",
+          "modules": [
+            "homeassistant/helpers/template/extensions/serialization.py"
+          ],
+          "confidence": "medium",
+          "actual": "resolved \u2192 homeassistant/helpers/template/extensions/serialization.py"
+        }
+      ],
+      "status": "ok",
+      "resolved_count": 9,
+      "scan_seconds": 445.1
+    },
+    {
+      "id": "django",
+      "display": "Django",
+      "language": "python",
+      "available": true,
+      "path": "C:\\J.A.R.V.I.S\\django",
+      "modules": 929,
+      "concepts": [
+        {
+          "concept": "authentication",
+          "phrase": "authentication",
+          "expected_subsystem": "auth / identity",
+          "prompt": "what breaks if I remove authentication",
+          "resolved": true,
+          "category": null,
+          "label": "authentication",
+          "modules": [
+            "django/contrib/auth/__init__.py",
+            "django/contrib/auth/migrations/0011_update_proxy_permissions.py",
+            "django/contrib/auth/hashers.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 django/contrib/auth/__init__.py, django/contrib/auth/migrations/0011_update_proxy_permissions.py, django/contrib/auth/hashers.py"
+        },
+        {
+          "concept": "authorization",
+          "phrase": "authorization",
+          "expected_subsystem": "access control / permissions",
+          "prompt": "what breaks if I remove authorization",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "caching",
+          "phrase": "caching",
+          "expected_subsystem": "cache layer",
+          "prompt": "what breaks if I remove caching",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "configuration",
+          "phrase": "configuration",
+          "expected_subsystem": "config system",
+          "prompt": "what breaks if I remove configuration",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "database",
+          "phrase": "the database layer",
+          "expected_subsystem": "persistence / database",
+          "prompt": "what breaks if I remove the database layer",
+          "resolved": true,
+          "category": null,
+          "label": "recorder/database",
+          "modules": [
+            "django/contrib/messages/storage/base.py",
+            "django/core/files/storage/__init__.py",
+            "django/contrib/messages/storage/__init__.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 django/contrib/messages/storage/base.py, django/core/files/storage/__init__.py, django/contrib/messages/storage/__init__.py"
+        },
+        {
+          "concept": "routing",
+          "phrase": "routing",
+          "expected_subsystem": "router / URL dispatch",
+          "prompt": "what breaks if I remove routing",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "middleware",
+          "phrase": "middleware",
+          "expected_subsystem": "middleware pipeline",
+          "prompt": "what breaks if I remove middleware",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `middleware`",
+          "modules": [
+            "django/contrib/admindocs/middleware.py",
+            "django/contrib/auth/__init__.py",
+            "django/contrib/auth/apps.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 django/contrib/admindocs/middleware.py, django/contrib/auth/__init__.py, django/contrib/auth/apps.py"
+        },
+        {
+          "concept": "logging",
+          "phrase": "the logging layer",
+          "expected_subsystem": "logging subsystem",
+          "prompt": "what breaks if I remove the logging layer",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "events",
+          "phrase": "the event system",
+          "expected_subsystem": "event bus / dispatcher",
+          "prompt": "what breaks if I remove the event system",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "messaging",
+          "phrase": "messaging",
+          "expected_subsystem": "message queue / pub-sub",
+          "prompt": "what breaks if I remove messaging",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "background_jobs",
+          "phrase": "background jobs",
+          "expected_subsystem": "task / worker queue",
+          "prompt": "what breaks if I remove background jobs",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "scheduling",
+          "phrase": "scheduling",
+          "expected_subsystem": "scheduler",
+          "prompt": "what breaks if I remove scheduling",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "state_management",
+          "phrase": "state management",
+          "expected_subsystem": "state store",
+          "prompt": "what breaks if I remove state management",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "plugins",
+          "phrase": "the plugin system",
+          "expected_subsystem": "plugin loader",
+          "prompt": "what breaks if I remove the plugin system",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "extensions",
+          "phrase": "extensions",
+          "expected_subsystem": "extension system",
+          "prompt": "what breaks if I remove extensions",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `extensions`",
+          "modules": [
+            "django/contrib/gis/db/backends/postgis/adapter.py",
+            "django/contrib/postgres/search.py",
+            "django/core/management/commands/makemessages.py"
+          ],
+          "confidence": "medium",
+          "actual": "resolved \u2192 django/contrib/gis/db/backends/postgis/adapter.py, django/contrib/postgres/search.py, django/core/management/commands/makemessages.py"
+        },
+        {
+          "concept": "websockets",
+          "phrase": "websocket support",
+          "expected_subsystem": "websocket transport",
+          "prompt": "what breaks if I remove websocket support",
+          "resolved": true,
+          "category": null,
+          "label": "websocket support",
+          "modules": [
+            "django/contrib/auth/__init__.py",
+            "django/contrib/auth/admin.py",
+            "django/contrib/auth/apps.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 django/contrib/auth/__init__.py, django/contrib/auth/admin.py, django/contrib/auth/apps.py"
+        },
+        {
+          "concept": "api_layer",
+          "phrase": "the api layer",
+          "expected_subsystem": "API / endpoint layer",
+          "prompt": "what breaks if I remove the api layer",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "persistence",
+          "phrase": "persistence",
+          "expected_subsystem": "ORM / storage",
+          "prompt": "what breaks if I remove persistence",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `persistence`",
+          "modules": [
+            "django/db/models/fields/generated.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 django/db/models/fields/generated.py"
+        },
+        {
+          "concept": "validation",
+          "phrase": "request validation",
+          "expected_subsystem": "input validation",
+          "prompt": "what breaks if I remove request validation",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "serialization",
+          "phrase": "serialization",
+          "expected_subsystem": "(de)serialization layer",
+          "prompt": "what breaks if I remove serialization",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `serialization`",
+          "modules": [
+            "django/contrib/gis/serializers/geojson.py",
+            "django/core/serializers/base.py",
+            "django/core/serializers/json.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 django/contrib/gis/serializers/geojson.py, django/core/serializers/base.py, django/core/serializers/json.py"
+        }
+      ],
+      "status": "ok",
+      "resolved_count": 7,
+      "scan_seconds": 27.7
+    },
+    {
+      "id": "fastapi",
+      "display": "FastAPI",
+      "language": "python",
+      "available": true,
+      "path": "C:\\J.A.R.V.I.S\\fastapi",
+      "modules": 73,
+      "concepts": [
+        {
+          "concept": "authentication",
+          "phrase": "authentication",
+          "expected_subsystem": "auth / identity",
+          "prompt": "what breaks if I remove authentication",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "authorization",
+          "phrase": "authorization",
+          "expected_subsystem": "access control / permissions",
+          "prompt": "what breaks if I remove authorization",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `authorization`",
+          "modules": [
+            "fastapi/openapi/models.py",
+            "fastapi/security/__init__.py",
+            "fastapi/security/http.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 fastapi/openapi/models.py, fastapi/security/__init__.py, fastapi/security/http.py"
+        },
+        {
+          "concept": "caching",
+          "phrase": "caching",
+          "expected_subsystem": "cache layer",
+          "prompt": "what breaks if I remove caching",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "configuration",
+          "phrase": "configuration",
+          "expected_subsystem": "config system",
+          "prompt": "what breaks if I remove configuration",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "database",
+          "phrase": "the database layer",
+          "expected_subsystem": "persistence / database",
+          "prompt": "what breaks if I remove the database layer",
+          "resolved": true,
+          "category": null,
+          "label": "recorder/database",
+          "modules": [
+            "scripts/playwright/sql_databases/image01.py",
+            "scripts/playwright/sql_databases/image02.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 scripts/playwright/sql_databases/image01.py, scripts/playwright/sql_databases/image02.py"
+        },
+        {
+          "concept": "routing",
+          "phrase": "routing",
+          "expected_subsystem": "router / URL dispatch",
+          "prompt": "what breaks if I remove routing",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `routing`",
+          "modules": [
+            "fastapi/__init__.py",
+            "fastapi/applications.py",
+            "fastapi/openapi/utils.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 fastapi/__init__.py, fastapi/applications.py, fastapi/openapi/utils.py"
+        },
+        {
+          "concept": "middleware",
+          "phrase": "middleware",
+          "expected_subsystem": "middleware pipeline",
+          "prompt": "what breaks if I remove middleware",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `middleware`",
+          "modules": [
+            "fastapi/applications.py",
+            "fastapi/middleware/__init__.py",
+            "fastapi/middleware/asyncexitstack.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 fastapi/applications.py, fastapi/middleware/__init__.py, fastapi/middleware/asyncexitstack.py"
+        },
+        {
+          "concept": "logging",
+          "phrase": "the logging layer",
+          "expected_subsystem": "logging subsystem",
+          "prompt": "what breaks if I remove the logging layer",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "events",
+          "phrase": "the event system",
+          "expected_subsystem": "event bus / dispatcher",
+          "prompt": "what breaks if I remove the event system",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "messaging",
+          "phrase": "messaging",
+          "expected_subsystem": "message queue / pub-sub",
+          "prompt": "what breaks if I remove messaging",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "background_jobs",
+          "phrase": "background jobs",
+          "expected_subsystem": "task / worker queue",
+          "prompt": "what breaks if I remove background jobs",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "scheduling",
+          "phrase": "scheduling",
+          "expected_subsystem": "scheduler",
+          "prompt": "what breaks if I remove scheduling",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "state_management",
+          "phrase": "state management",
+          "expected_subsystem": "state store",
+          "prompt": "what breaks if I remove state management",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "plugins",
+          "phrase": "the plugin system",
+          "expected_subsystem": "plugin loader",
+          "prompt": "what breaks if I remove the plugin system",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "extensions",
+          "phrase": "extensions",
+          "expected_subsystem": "extension system",
+          "prompt": "what breaks if I remove extensions",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `extensions`",
+          "modules": [
+            "fastapi/applications.py",
+            "fastapi/background.py",
+            "fastapi/openapi/models.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 fastapi/applications.py, fastapi/background.py, fastapi/openapi/models.py"
+        },
+        {
+          "concept": "websockets",
+          "phrase": "websocket support",
+          "expected_subsystem": "websocket transport",
+          "prompt": "what breaks if I remove websocket support",
+          "resolved": true,
+          "category": null,
+          "label": "websocket support",
+          "modules": [
+            "fastapi/websockets.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 fastapi/websockets.py"
+        },
+        {
+          "concept": "api_layer",
+          "phrase": "the api layer",
+          "expected_subsystem": "API / endpoint layer",
+          "prompt": "what breaks if I remove the api layer",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "persistence",
+          "phrase": "persistence",
+          "expected_subsystem": "ORM / storage",
+          "prompt": "what breaks if I remove persistence",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "validation",
+          "phrase": "request validation",
+          "expected_subsystem": "input validation",
+          "prompt": "what breaks if I remove request validation",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "serialization",
+          "phrase": "serialization",
+          "expected_subsystem": "(de)serialization layer",
+          "prompt": "what breaks if I remove serialization",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `serialization`",
+          "modules": [
+            "fastapi/_compat/v2.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 fastapi/_compat/v2.py"
+        }
+      ],
+      "status": "ok",
+      "resolved_count": 7,
+      "scan_seconds": 9.1
+    },
+    {
+      "id": "vscode",
+      "display": "VS Code",
+      "language": "typescript",
+      "available": true,
+      "path": "C:\\J.A.R.V.I.S\\vscode",
+      "modules": 7551,
+      "concepts": [
+        {
+          "concept": "authentication",
+          "phrase": "authentication",
+          "expected_subsystem": "auth / identity",
+          "prompt": "what breaks if I remove authentication",
+          "resolved": true,
+          "category": null,
+          "label": "authentication",
+          "modules": [
+            "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts",
+            "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts",
+            "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts, extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts, extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts"
+        },
+        {
+          "concept": "authorization",
+          "phrase": "authorization",
+          "expected_subsystem": "access control / permissions",
+          "prompt": "what breaks if I remove authorization",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "caching",
+          "phrase": "caching",
+          "expected_subsystem": "cache layer",
+          "prompt": "what breaks if I remove caching",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `caching`",
+          "modules": [
+            "extensions/copilot/src/platform/parser/node/parserWithCaching.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 extensions/copilot/src/platform/parser/node/parserWithCaching.ts"
+        },
+        {
+          "concept": "configuration",
+          "phrase": "configuration",
+          "expected_subsystem": "config system",
+          "prompt": "what breaks if I remove configuration",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `configuration`",
+          "modules": [
+            "extensions/configuration-editing/src/browser/net.ts",
+            "extensions/configuration-editing/src/configurationEditingMain.ts",
+            "extensions/configuration-editing/src/extensionsProposals.ts"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 extensions/configuration-editing/src/browser/net.ts, extensions/configuration-editing/src/configurationEditingMain.ts, extensions/configuration-editing/src/extensionsProposals.ts"
+        },
+        {
+          "concept": "database",
+          "phrase": "the database layer",
+          "expected_subsystem": "persistence / database",
+          "prompt": "what breaks if I remove the database layer",
+          "resolved": true,
+          "category": null,
+          "label": "recorder/database",
+          "modules": [
+            "extensions/copilot/src/extension/byok/vscode-node/byokStorageService.ts",
+            "extensions/copilot/src/platform/embeddings/common/embeddingsStorage.ts",
+            "extensions/microsoft-authentication/src/betterSecretStorage.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 extensions/copilot/src/extension/byok/vscode-node/byokStorageService.ts, extensions/copilot/src/platform/embeddings/common/embeddingsStorage.ts, extensions/microsoft-authentication/src/betterSecretStorage.ts"
+        },
+        {
+          "concept": "routing",
+          "phrase": "routing",
+          "expected_subsystem": "router / URL dispatch",
+          "prompt": "what breaks if I remove routing",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `routing`",
+          "modules": [
+            "extensions/copilot/src/extension/chatSessions/claude/vscode-node/routingClaudeAgentSdkLoaderService.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 extensions/copilot/src/extension/chatSessions/claude/vscode-node/routingClaudeAgentSdkLoaderService.ts"
+        },
+        {
+          "concept": "middleware",
+          "phrase": "middleware",
+          "expected_subsystem": "middleware pipeline",
+          "prompt": "what breaks if I remove middleware",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `middleware`",
+          "modules": [
+            "extensions/copilot/src/shared-fetch-utils/common/middleware/authBlockedMiddleware.ts",
+            "extensions/copilot/src/shared-fetch-utils/common/middleware/etagMiddleware.ts",
+            "extensions/copilot/src/shared-fetch-utils/common/middleware/serverErrorBackoffMiddleware.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 extensions/copilot/src/shared-fetch-utils/common/middleware/authBlockedMiddleware.ts, extensions/copilot/src/shared-fetch-utils/common/middleware/etagMiddleware.ts, extensions/copilot/src/shared-fetch-utils/common/middleware/serverErrorBackoffMiddleware.ts"
+        },
+        {
+          "concept": "logging",
+          "phrase": "the logging layer",
+          "expected_subsystem": "logging subsystem",
+          "prompt": "what breaks if I remove the logging layer",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "events",
+          "phrase": "the event system",
+          "expected_subsystem": "event bus / dispatcher",
+          "prompt": "what breaks if I remove the event system",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "messaging",
+          "phrase": "messaging",
+          "expected_subsystem": "message queue / pub-sub",
+          "prompt": "what breaks if I remove messaging",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `messaging`",
+          "modules": [
+            "extensions/markdown-language-features/preview-src/messaging.ts",
+            "extensions/markdown-language-features/types/previewMessaging.d.ts",
+            "src/vs/workbench/api/common/extHostWebviewMessaging.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 extensions/markdown-language-features/preview-src/messaging.ts, extensions/markdown-language-features/types/previewMessaging.d.ts, src/vs/workbench/api/common/extHostWebviewMessaging.ts"
+        },
+        {
+          "concept": "background_jobs",
+          "phrase": "background jobs",
+          "expected_subsystem": "task / worker queue",
+          "prompt": "what breaks if I remove background jobs",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "scheduling",
+          "phrase": "scheduling",
+          "expected_subsystem": "scheduler",
+          "prompt": "what breaks if I remove scheduling",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "state_management",
+          "phrase": "state management",
+          "expected_subsystem": "state store",
+          "prompt": "what breaks if I remove state management",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "plugins",
+          "phrase": "the plugin system",
+          "expected_subsystem": "plugin loader",
+          "prompt": "what breaks if I remove the plugin system",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "extensions",
+          "phrase": "extensions",
+          "expected_subsystem": "extension system",
+          "prompt": "what breaks if I remove extensions",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `extensions`",
+          "modules": [
+            "extensions/configuration-editing/src/browser/net.ts",
+            "extensions/configuration-editing/src/configurationEditingMain.ts",
+            "extensions/configuration-editing/src/extensionsProposals.ts"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 extensions/configuration-editing/src/browser/net.ts, extensions/configuration-editing/src/configurationEditingMain.ts, extensions/configuration-editing/src/extensionsProposals.ts"
+        },
+        {
+          "concept": "websockets",
+          "phrase": "websocket support",
+          "expected_subsystem": "websocket transport",
+          "prompt": "what breaks if I remove websocket support",
+          "resolved": true,
+          "category": null,
+          "label": "websocket support",
+          "modules": [
+            "extensions/copilot/src/extension/chat/vscode-node/sessionTranscriptService.ts",
+            "extensions/copilot/src/extension/chatSessionContext/vscode-node/chatSessionContextProvider.ts",
+            "extensions/copilot/src/extension/chatSessions/claude/common/claudeAgentSdkLoaderService.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 extensions/copilot/src/extension/chat/vscode-node/sessionTranscriptService.ts, extensions/copilot/src/extension/chatSessionContext/vscode-node/chatSessionContextProvider.ts, extensions/copilot/src/extension/chatSessions/claude/common/claudeAgentSdkLoaderService.ts"
+        },
+        {
+          "concept": "api_layer",
+          "phrase": "the api layer",
+          "expected_subsystem": "API / endpoint layer",
+          "prompt": "what breaks if I remove the api layer",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "persistence",
+          "phrase": "persistence",
+          "expected_subsystem": "ORM / storage",
+          "prompt": "what breaks if I remove persistence",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "validation",
+          "phrase": "request validation",
+          "expected_subsystem": "input validation",
+          "prompt": "what breaks if I remove request validation",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "serialization",
+          "phrase": "serialization",
+          "expected_subsystem": "(de)serialization layer",
+          "prompt": "what breaks if I remove serialization",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `serialization`",
+          "modules": [
+            "src/vs/workbench/contrib/searchEditor/browser/searchEditorSerialization.ts"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 src/vs/workbench/contrib/searchEditor/browser/searchEditorSerialization.ts"
+        }
+      ],
+      "status": "ok",
+      "resolved_count": 10,
+      "scan_seconds": 92.2
+    },
+    {
+      "id": "atlas_self",
+      "display": "Atlas (local_jarvis)",
+      "language": "python",
+      "available": true,
+      "path": "C:\\J.A.R.V.I.S\\local_jarvis",
+      "modules": 10693,
+      "concepts": [
+        {
+          "concept": "authentication",
+          "phrase": "authentication",
+          "expected_subsystem": "auth / identity",
+          "prompt": "what breaks if I remove authentication",
+          "resolved": true,
+          "category": null,
+          "label": "authentication",
+          "modules": [
+            "external_repos/home_assistant/homeassistant/auth/auth_store.py",
+            "external_repos/home_assistant/homeassistant/auth/providers/__init__.py",
+            "external_repos/home_assistant/homeassistant/auth/providers/homeassistant.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 external_repos/home_assistant/homeassistant/auth/auth_store.py, external_repos/home_assistant/homeassistant/auth/providers/__init__.py, external_repos/home_assistant/homeassistant/auth/providers/homeassistant.py"
+        },
+        {
+          "concept": "authorization",
+          "phrase": "authorization",
+          "expected_subsystem": "access control / permissions",
+          "prompt": "what breaks if I remove authorization",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `authorization`",
+          "modules": [
+            "external_repos/home_assistant/homeassistant/components/actron_air/config_flow.py",
+            "external_repos/home_assistant/homeassistant/components/aladdin_connect/application_credentials.py",
+            "external_repos/home_assistant/homeassistant/components/alexa/errors.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 external_repos/home_assistant/homeassistant/components/actron_air/config_flow.py, external_repos/home_assistant/homeassistant/components/aladdin_connect/application_credentials.py, external_repos/home_assistant/homeassistant/components/alexa/errors.py"
+        },
+        {
+          "concept": "caching",
+          "phrase": "caching",
+          "expected_subsystem": "cache layer",
+          "prompt": "what breaks if I remove caching",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `caching`",
+          "modules": [
+            "external_repos/home_assistant/homeassistant/components/anthropic/config_flow.py",
+            "external_repos/home_assistant/homeassistant/components/anthropic/const.py",
+            "external_repos/home_assistant/homeassistant/components/anthropic/entity.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 external_repos/home_assistant/homeassistant/components/anthropic/config_flow.py, external_repos/home_assistant/homeassistant/components/anthropic/const.py, external_repos/home_assistant/homeassistant/components/anthropic/entity.py"
+        },
+        {
+          "concept": "configuration",
+          "phrase": "configuration",
+          "expected_subsystem": "config system",
+          "prompt": "what breaks if I remove configuration",
+          "resolved": true,
+          "category": null,
+          "label": "",
+          "modules": [
+            "actions/apps.py",
+            "actions/assistant_actions.py",
+            "actions/capabilities.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 actions/apps.py, actions/assistant_actions.py, actions/capabilities.py"
+        },
+        {
+          "concept": "database",
+          "phrase": "the database layer",
+          "expected_subsystem": "persistence / database",
+          "prompt": "what breaks if I remove the database layer",
+          "resolved": true,
+          "category": null,
+          "label": "recorder/database",
+          "modules": [
+            "external_repos/home_assistant/homeassistant/components/recorder/db_schema.py",
+            "external_repos/home_assistant/homeassistant/components/recorder/models/database.py",
+            "external_repos/home_assistant/homeassistant/components/recorder/util.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 external_repos/home_assistant/homeassistant/components/recorder/db_schema.py, external_repos/home_assistant/homeassistant/components/recorder/models/database.py, external_repos/home_assistant/homeassistant/components/recorder/util.py"
+        },
+        {
+          "concept": "routing",
+          "phrase": "routing",
+          "expected_subsystem": "router / URL dispatch",
+          "prompt": "what breaks if I remove routing",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `routing`",
+          "modules": [
+            "actions/registry.py",
+            "actions/voice_audio_actions.py",
+            "agents/__init__.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 actions/registry.py, actions/voice_audio_actions.py, agents/__init__.py"
+        },
+        {
+          "concept": "middleware",
+          "phrase": "middleware",
+          "expected_subsystem": "middleware pipeline",
+          "prompt": "what breaks if I remove middleware",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "logging",
+          "phrase": "the logging layer",
+          "expected_subsystem": "logging subsystem",
+          "prompt": "what breaks if I remove the logging layer",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "events",
+          "phrase": "the event system",
+          "expected_subsystem": "event bus / dispatcher",
+          "prompt": "what breaks if I remove the event system",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "messaging",
+          "phrase": "messaging",
+          "expected_subsystem": "message queue / pub-sub",
+          "prompt": "what breaks if I remove messaging",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "background_jobs",
+          "phrase": "background jobs",
+          "expected_subsystem": "task / worker queue",
+          "prompt": "what breaks if I remove background jobs",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "scheduling",
+          "phrase": "scheduling",
+          "expected_subsystem": "scheduler",
+          "prompt": "what breaks if I remove scheduling",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "state_management",
+          "phrase": "state management",
+          "expected_subsystem": "state store",
+          "prompt": "what breaks if I remove state management",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "plugins",
+          "phrase": "the plugin system",
+          "expected_subsystem": "plugin loader",
+          "prompt": "what breaks if I remove the plugin system",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "extensions",
+          "phrase": "extensions",
+          "expected_subsystem": "extension system",
+          "prompt": "what breaks if I remove extensions",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `extensions`",
+          "modules": [
+            "actions/code_search.py",
+            "conversation/memory_runtime.py",
+            "external_repos/home_assistant/homeassistant/components/amazon_polly/tts.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 actions/code_search.py, conversation/memory_runtime.py, external_repos/home_assistant/homeassistant/components/amazon_polly/tts.py"
+        },
+        {
+          "concept": "websockets",
+          "phrase": "websocket support",
+          "expected_subsystem": "websocket transport",
+          "prompt": "what breaks if I remove websocket support",
+          "resolved": true,
+          "category": null,
+          "label": "websocket support",
+          "modules": [
+            "external_repos/home_assistant/homeassistant/components/websocket_api/const.py",
+            "external_repos/home_assistant/homeassistant/components/websocket_api/connection.py",
+            "external_repos/home_assistant/homeassistant/components/websocket_api/decorators.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 external_repos/home_assistant/homeassistant/components/websocket_api/const.py, external_repos/home_assistant/homeassistant/components/websocket_api/connection.py, external_repos/home_assistant/homeassistant/components/websocket_api/decorators.py"
+        },
+        {
+          "concept": "api_layer",
+          "phrase": "the api layer",
+          "expected_subsystem": "API / endpoint layer",
+          "prompt": "what breaks if I remove the api layer",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "persistence",
+          "phrase": "persistence",
+          "expected_subsystem": "ORM / storage",
+          "prompt": "what breaks if I remove persistence",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `persistence`",
+          "modules": [
+            "brain/router.py",
+            "reliability/async_persistence.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 brain/router.py, reliability/async_persistence.py"
+        },
+        {
+          "concept": "validation",
+          "phrase": "request validation",
+          "expected_subsystem": "input validation",
+          "prompt": "what breaks if I remove request validation",
+          "resolved": true,
+          "category": null,
+          "label": "",
+          "modules": [
+            "scripts/run_phase661_strict_validation.py",
+            "validation/__init__.py",
+            "validation/framework.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 scripts/run_phase661_strict_validation.py, validation/__init__.py, validation/framework.py"
+        },
+        {
+          "concept": "serialization",
+          "phrase": "serialization",
+          "expected_subsystem": "(de)serialization layer",
+          "prompt": "what breaks if I remove serialization",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `serialization`",
+          "modules": [
+            "external_repos/home_assistant/homeassistant/helpers/template/extensions/serialization.py"
+          ],
+          "confidence": "medium",
+          "actual": "resolved \u2192 external_repos/home_assistant/homeassistant/helpers/template/extensions/serialization.py"
+        }
+      ],
+      "status": "ok",
+      "resolved_count": 11,
+      "scan_seconds": 910.3
+    },
+    {
+      "id": "quixbugs",
+      "display": "QuixBugs",
+      "language": "python",
+      "available": true,
+      "path": "C:\\repos\\quixbugs",
+      "modules": 4,
+      "concepts": [
+        {
+          "concept": "authentication",
+          "phrase": "authentication",
+          "expected_subsystem": "auth / identity",
+          "prompt": "what breaks if I remove authentication",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "authorization",
+          "phrase": "authorization",
+          "expected_subsystem": "access control / permissions",
+          "prompt": "what breaks if I remove authorization",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "caching",
+          "phrase": "caching",
+          "expected_subsystem": "cache layer",
+          "prompt": "what breaks if I remove caching",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "configuration",
+          "phrase": "configuration",
+          "expected_subsystem": "config system",
+          "prompt": "what breaks if I remove configuration",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "database",
+          "phrase": "the database layer",
+          "expected_subsystem": "persistence / database",
+          "prompt": "what breaks if I remove the database layer",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "routing",
+          "phrase": "routing",
+          "expected_subsystem": "router / URL dispatch",
+          "prompt": "what breaks if I remove routing",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "middleware",
+          "phrase": "middleware",
+          "expected_subsystem": "middleware pipeline",
+          "prompt": "what breaks if I remove middleware",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "logging",
+          "phrase": "the logging layer",
+          "expected_subsystem": "logging subsystem",
+          "prompt": "what breaks if I remove the logging layer",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "events",
+          "phrase": "the event system",
+          "expected_subsystem": "event bus / dispatcher",
+          "prompt": "what breaks if I remove the event system",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "messaging",
+          "phrase": "messaging",
+          "expected_subsystem": "message queue / pub-sub",
+          "prompt": "what breaks if I remove messaging",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "background_jobs",
+          "phrase": "background jobs",
+          "expected_subsystem": "task / worker queue",
+          "prompt": "what breaks if I remove background jobs",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "scheduling",
+          "phrase": "scheduling",
+          "expected_subsystem": "scheduler",
+          "prompt": "what breaks if I remove scheduling",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "state_management",
+          "phrase": "state management",
+          "expected_subsystem": "state store",
+          "prompt": "what breaks if I remove state management",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "plugins",
+          "phrase": "the plugin system",
+          "expected_subsystem": "plugin loader",
+          "prompt": "what breaks if I remove the plugin system",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "extensions",
+          "phrase": "extensions",
+          "expected_subsystem": "extension system",
+          "prompt": "what breaks if I remove extensions",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "websockets",
+          "phrase": "websocket support",
+          "expected_subsystem": "websocket transport",
+          "prompt": "what breaks if I remove websocket support",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "api_layer",
+          "phrase": "the api layer",
+          "expected_subsystem": "API / endpoint layer",
+          "prompt": "what breaks if I remove the api layer",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "persistence",
+          "phrase": "persistence",
+          "expected_subsystem": "ORM / storage",
+          "prompt": "what breaks if I remove persistence",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "validation",
+          "phrase": "request validation",
+          "expected_subsystem": "input validation",
+          "prompt": "what breaks if I remove request validation",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "serialization",
+          "phrase": "serialization",
+          "expected_subsystem": "(de)serialization layer",
+          "prompt": "what breaks if I remove serialization",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        }
+      ],
+      "status": "ok",
+      "resolved_count": 0,
+      "scan_seconds": 0.8
+    }
+  ]
+}

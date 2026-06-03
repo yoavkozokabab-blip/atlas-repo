@@ -1,0 +1,776 @@
+{
+  "id": "vscode",
+  "display": "VS Code",
+  "language": "typescript",
+  "framework": "Electron IDE",
+  "category": "typescript",
+  "available": true,
+  "path": "C:\\J.A.R.V.I.S\\vscode",
+  "scan": {
+    "module_count": 7551,
+    "edges": 13224,
+    "subsystem_count": 226,
+    "files": 14871,
+    "massive_mode": true,
+    "graph_detail": "imports",
+    "scan_seconds": 78.8
+  },
+  "status": "ok",
+  "scores": {
+    "understanding": 100.0,
+    "impact": 62.0,
+    "investigation": 100.0,
+    "build": 100.0,
+    "overall": 88.6
+  },
+  "understanding": {
+    "score": 100.0,
+    "components": {
+      "graph_built": 20.0,
+      "explanation": 15.0,
+      "subsystems": 15.0,
+      "entry_points": 10.0,
+      "runtime_boundaries": 15.0,
+      "top_risks": 10.0,
+      "hubs_vs_risks_separated": 15.0
+    },
+    "module_count": 7551,
+    "edges": 13224
+  },
+  "impact": {
+    "score": 62.0,
+    "resolution_rate": 0.667,
+    "fallback_rate": 0.333,
+    "resolved": 6,
+    "total": 9
+  },
+  "investigation": {
+    "score": 100.0,
+    "grounded_rate": 1.0,
+    "clean_rate": 1.0,
+    "avg_modules": 5.4
+  },
+  "build": {
+    "score": 100.0,
+    "with_modules": 4,
+    "total": 4
+  },
+  "impact_samples": [
+    {
+      "prompt": "what breaks if I remove authentication",
+      "concept": "authentication",
+      "response": {
+        "answer": "Removing **authentication** (resolved to `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts` + 7 related module(s)) affects 17 direct + 75 transitive importer(s) across 2 subsystem(s). Target is on a runtime boundary (event/state/request/auth path); changes can alter live behavior across many subsystems.",
+        "mode": "impact",
+        "semantic_label": "authentication",
+        "resolved_modules": [
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts",
+          "extensions/copilot/src/extension/chatSessions/claude/common/claudeToolPermissionService.ts",
+          "src/vs/platform/agentHost/common/agentHostPermissionService.ts",
+          "src/vs/platform/agentHost/node/sessionPermissions.ts",
+          "src/vs/workbench/contrib/chat/common/chatPermissionStorageKeys.ts",
+          "src/vs/workbench/services/agentHost/common/agentHostPermissionService.ts"
+        ],
+        "direct_impact": [
+          "extensions/copilot/src/extension/chatSessions/claude/node/claudeCodeAgent.ts",
+          "extensions/copilot/src/extension/chatSessions/vscode-node/chatSessions.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/completionsServiceBridges.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/extension/src/codeReferencing/citationManager.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/extension/src/codeReferencing/index.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/extension/src/codeReferencing/outputChannel.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/experiments/defaultExpFilters.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/experiments/features.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/networkConfiguration.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/openai/fetch.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/openai/fetch.fake.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/openai/model.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/postInsertion.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/snippy/network.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/telemetry/userConfig.ts",
+          "extensions/copilot/src/lib/node/chatLibMain.ts"
+        ],
+        "indirect_impact": [
+          "extensions/copilot/src/extension/chatSessions/vscode-node/claudeChatSessionContentProvider.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/bridge/src/completionsTelemetryServiceBridge.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/completionsServiceBridges.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/extension/src/codeReferencing/citationManager.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/extension/src/codeReferencing/codeReferenceEngagementTracker.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/extension/src/copilotCompletionFeedbackTracker.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/extension/src/copilotPanel/copilotListDocument.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/extension/src/ghostText/ghostTextProvider.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/extension/src/lib/copilotPanel/panel.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/extension/src/lib/panelShared/common.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/extension/src/lib/panelShared/panelTypes.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/extension/src/modelPicker.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/extension/src/panelShared/baseListDocument.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/extension/src/statusBar.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/extension/src/statusBarPicker.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/completionNotifier.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/diagnostics.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/experiments/defaultExpFilters.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/experiments/expConfig.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/experiments/features.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/experiments/featuresService.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/experiments/filters.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/experiments/similarFileOptionsProvider.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/experiments/similarFileOptionsProviderCpp.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/ghostText/asyncCompletions.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/ghostText/cacheUtils.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/ghostText/completionsCache.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/ghostText/completionsFromNetwork.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/ghostText/configBlockMode.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/ghostText/copilotCompletion.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/ghostText/current.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/ghostText/ghostText.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/ghostText/ghostTextStrategy.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/ghostText/last.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/ghostText/normalizeIndent.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/ghostText/requestContext.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/ghostText/streamedCompletionSplitter.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/ghostText/telemetry.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/inlineCompletion.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/logger.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/openai/config.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/openai/fetch.fake.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/openai/model.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/openai/openai.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/postInsertion.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/prompt/completionsPromptFactory/cascadingPromptFactory.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/prompt/completionsPromptFactory/completionsPromptFactory.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/prompt/completionsPromptFactory/componentsCompletionsPromptFactory.tsx",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/prompt/components/contextProviderBridge.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/prompt/components/similarFiles.tsx",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/prompt/contextProviderRegistry.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/prompt/contextProviderRegistryCSharp.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/prompt/contextProviderRegistryCpp.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/prompt/contextProviderRegistryMultiLanguage.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/prompt/contextProviderRegistryTs.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/prompt/contextProviders/traits.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/prompt/prompt.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/prompt/similarFiles/compositeRelatedFilesProvider.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/prompt/similarFiles/neighborFiles.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/prompt/similarFiles/relatedFiles.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/snippy/connectionState.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/snippy/handlePostInsertion.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/snippy/index.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/snippy/telemetryHandlers.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/suggestions/suggestions.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/telemetry.ts",
+          "extensions/copilot/src/extension/completions/vscode-node/completionsCoreContribution.ts",
+          "extensions/copilot/src/extension/completions/vscode-node/copilotInlineCompletionItemProviderService.ts",
+          "extensions/copilot/src/extension/conversation/vscode-node/conversationFeature.ts",
+          "extensions/copilot/src/extension/extension/vscode-node/contributions.ts",
+          "extensions/copilot/src/extension/extension/vscode-node/extension.ts",
+          "extensions/copilot/src/extension/extension/vscode-node/services.ts",
+          "extensions/copilot/src/extension/inlineEdits/vscode-node/jointInlineCompletionProvider.ts",
+          "extensions/copilot/src/extension/inlineEdits/vscode-node/similarFilesContext.ts",
+          "extensions/copilot/src/lib/node/chatLibMain.ts"
+        ],
+        "architectural_blast_radius": 84,
+        "confidence": "high",
+        "files": [
+          "extensions/copilot/src/extension/chatSessions/claude/common/claudeToolPermissionService.ts",
+          "extensions/copilot/src/extension/chatSessions/claude/node/claudeCodeAgent.ts",
+          "extensions/copilot/src/extension/chatSessions/vscode-node/chatSessions.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/completionsServiceBridges.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/extension/src/codeReferencing/citationManager.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/extension/src/codeReferencing/index.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/extension/src/codeReferencing/outputChannel.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/experiments/defaultExpFilters.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/experiments/features.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/networkConfiguration.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/openai/fetch.fake.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/openai/fetch.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/openai/model.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/postInsertion.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/snippy/network.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/telemetry/userConfig.ts",
+          "extensions/copilot/src/lib/node/chatLibMain.ts"
+        ]
+      }
+    },
+    {
+      "prompt": "what breaks if I remove caching",
+      "concept": "caching",
+      "response": {
+        "answer": "Removing **architecture symbol `caching`** (resolved to `extensions/copilot/src/platform/parser/node/parserWithCaching.ts`) affects 4 direct + 34 transitive importer(s) across 1 subsystem(s). 4 direct + 34 transitive importer(s) across 2 subsystem(s); behavioral risk scales with that coupling.",
+        "mode": "impact",
+        "semantic_label": "architecture symbol `caching`",
+        "resolved_modules": [
+          "extensions/copilot/src/platform/parser/node/parserWithCaching.ts"
+        ],
+        "direct_impact": [
+          "extensions/copilot/src/platform/parser/node/docGenParsing.ts",
+          "extensions/copilot/src/platform/parser/node/parserImpl.ts",
+          "extensions/copilot/src/platform/parser/node/structure.ts",
+          "extensions/copilot/src/platform/parser/node/testGenParsing.ts"
+        ],
+        "indirect_impact": [
+          "extensions/copilot/src/extension/context/node/resolvers/fixSelection.ts",
+          "extensions/copilot/src/extension/context/node/resolvers/selectionContextHelpers.ts",
+          "extensions/copilot/src/extension/extension/vscode-node/services.ts",
+          "extensions/copilot/src/extension/inlineChat/vscode-node/inlineChatCommands.ts",
+          "extensions/copilot/src/extension/intents/node/testIntent/summarizedDocumentWithSelection.tsx",
+          "extensions/copilot/src/extension/intents/node/testIntent/testFromSrcInvocation.tsx",
+          "extensions/copilot/src/extension/intents/node/testIntent/testFromTestInvocation.tsx",
+          "extensions/copilot/src/extension/linkify/vscode-node/findWord.ts",
+          "extensions/copilot/src/extension/linkify/vscode-node/symbolLinkifier.ts",
+          "extensions/copilot/src/extension/prompt/node/definitionAroundCursor.tsx",
+          "extensions/copilot/src/extension/prompt/node/testExample.tsx",
+          "extensions/copilot/src/extension/prompts/node/codeMapper/codeMapperPrompt.tsx",
+          "extensions/copilot/src/extension/prompts/node/feedback/currentChange.tsx",
+          "extensions/copilot/src/extension/prompts/node/inline/diagnosticsContext.tsx",
+          "extensions/copilot/src/extension/prompts/node/inline/inlineChatEditCodePrompt.tsx",
+          "extensions/copilot/src/extension/prompts/node/inline/inlineChatFix3Prompt.tsx",
+          "extensions/copilot/src/extension/prompts/node/inline/inlineChatGenerateCodePrompt.tsx",
+          "extensions/copilot/src/extension/prompts/node/inline/inlineChatNotebookEditPrompt.tsx",
+          "extensions/copilot/src/extension/prompts/node/inline/inlineChatNotebookFixPrompt.tsx",
+          "extensions/copilot/src/extension/prompts/node/inline/inlineChatNotebookGeneratePrompt.tsx",
+          "extensions/copilot/src/extension/prompts/node/inline/promptingSummarizedDocument.ts",
+          "extensions/copilot/src/extension/prompts/node/inline/summarizedDocument/summarizeDocumentHelpers.ts",
+          "extensions/copilot/src/extension/prompts/node/panel/definitionAtPosition.tsx",
+          "extensions/copilot/src/extension/prompts/node/panel/referencesAtPosition.tsx",
+          "extensions/copilot/src/extension/prompts/node/panel/symbolAtCursor.tsx",
+          "extensions/copilot/src/extension/prompts/node/panel/symbolDefinitions.tsx",
+          "extensions/copilot/src/extension/renameSuggestions/node/renameSuggestionsPrompt.tsx",
+          "extensions/copilot/src/extension/testing/node/setupTestsFileManager.tsx",
+          "extensions/copilot/src/extension/tools/node/findTestsFilesTool.tsx",
+          "extensions/copilot/src/extension/workspaceSemanticSearch/node/semanticSearchTextSearchProvider.ts",
+          "extensions/copilot/src/platform/parser/node/parserService.ts",
+          "extensions/copilot/src/platform/parser/node/parserServiceImpl.ts",
+          "extensions/copilot/src/platform/parser/node/parserWorker.ts",
+          "extensions/copilot/src/platform/scopeSelection/vscode-node/scopeSelectionImpl.ts"
+        ],
+        "architectural_blast_radius": 38,
+        "confidence": "high",
+        "files": [
+          "extensions/configuration-editing/src/browser/net.ts",
+          "extensions/configuration-editing/src/configurationEditingMain.ts",
+          "extensions/configuration-editing/src/extensionsProposals.ts",
+          "extensions/configuration-editing/src/importExportProfiles.ts",
+          "extensions/configuration-editing/src/node/net.ts",
+          "extensions/configuration-editing/src/settingsDocumentHelper.ts",
+          "extensions/configuration-editing/src/typings/ref.d.ts",
+          "extensions/copilot/.eslintplugin/index.ts",
+          "extensions/copilot/.eslintplugin/no-bad-gdpr-comment.ts",
+          "extensions/copilot/.eslintplugin/no-funny-filename.ts",
+          "extensions/copilot/.eslintplugin/no-gdpr-event-name-mismatch.ts",
+          "extensions/copilot/.eslintplugin/no-instanceof-uri.ts",
+          "extensions/copilot/.eslintplugin/no-missing-linebreak.ts",
+          "extensions/copilot/.eslintplugin/no-nls-localize.ts",
+          "extensions/copilot/.eslintplugin/no-restricted-copilot-pr-string.ts",
+          "extensions/copilot/.eslintplugin/no-runtime-import.ts",
+          "extensions/copilot/.eslintplugin/no-test-imports.ts",
+          "extensions/copilot/.eslintplugin/no-test-only.ts",
+          "extensions/copilot/.eslintplugin/no-unlayered-files.ts",
+          "extensions/copilot/src/platform/parser/node/docGenParsing.ts"
+        ]
+      }
+    },
+    {
+      "prompt": "what breaks if I remove configuration",
+      "concept": "configuration",
+      "response": {
+        "answer": "Removing **architecture symbol `configuration`** (resolved to `extensions/configuration-editing/src/browser/net.ts` + 94 related module(s)) affects 0 direct + 0 transitive importer(s) across 1 subsystem(s). Target is a config/constants hub: blast radius is mostly recompiles, imports and tests \u2014 direct runtime-logic breakage is unlikely unless specific constant values are depended on.",
+        "mode": "impact",
+        "semantic_label": "architecture symbol `configuration`",
+        "resolved_modules": [
+          "extensions/configuration-editing/src/browser/net.ts",
+          "extensions/configuration-editing/src/configurationEditingMain.ts",
+          "extensions/configuration-editing/src/extensionsProposals.ts",
+          "extensions/configuration-editing/src/importExportProfiles.ts",
+          "extensions/configuration-editing/src/node/net.ts",
+          "extensions/configuration-editing/src/settingsDocumentHelper.ts",
+          "extensions/configuration-editing/src/typings/ref.d.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/networkConfiguration.ts",
+          "extensions/copilot/src/extension/configuration/vscode-node/configurationMigration.ts",
+          "extensions/copilot/src/extension/prompt/vscode-node/devContainerConfigurationServiceImpl.ts",
+          "extensions/copilot/src/platform/configuration/common/configurationService.ts",
+          "extensions/copilot/src/platform/configuration/common/defaultsOnlyConfigurationService.ts",
+          "extensions/copilot/src/platform/configuration/common/jsonSchema.ts",
+          "extensions/copilot/src/platform/configuration/common/jsonSchemaDraft7.ts",
+          "extensions/copilot/src/platform/configuration/common/validator.ts",
+          "extensions/copilot/src/platform/configuration/vscode/configurationServiceImpl.ts",
+          "extensions/copilot/src/platform/devcontainer/common/devContainerConfigurationService.ts",
+          "extensions/typescript-language-features/src/commands/goToProjectConfiguration.ts",
+          "extensions/typescript-language-features/src/configuration/configuration.ts",
+          "extensions/typescript-language-features/src/configuration/configuration.browser.ts",
+          "extensions/typescript-language-features/src/configuration/configuration.electron.ts",
+          "extensions/typescript-language-features/src/configuration/documentSelector.ts",
+          "extensions/typescript-language-features/src/configuration/fileSchemes.ts",
+          "extensions/typescript-language-features/src/configuration/languageDescription.ts",
+          "extensions/typescript-language-features/src/configuration/languageIds.ts",
+          "extensions/typescript-language-features/src/configuration/schemes.ts",
+          "extensions/typescript-language-features/src/languageFeatures/fileConfigurationManager.ts",
+          "extensions/typescript-language-features/src/utils/configuration.ts",
+          "src/vs/editor/browser/config/editorConfiguration.ts",
+          "src/vs/editor/common/config/editorConfiguration.ts",
+          "src/vs/editor/common/config/editorConfigurationSchema.ts",
+          "src/vs/editor/common/languages/languageConfiguration.ts",
+          "src/vs/editor/common/languages/languageConfigurationRegistry.ts",
+          "src/vs/editor/common/languages/supports/languageBracketsConfiguration.ts",
+          "src/vs/editor/common/services/textResourceConfiguration.ts",
+          "src/vs/editor/common/services/textResourceConfigurationService.ts",
+          "src/vs/platform/agentHost/node/agentConfigurationService.ts",
+          "src/vs/platform/configuration/common/configuration.ts",
+          "src/vs/platform/configuration/common/configurationModels.ts",
+          "src/vs/platform/configuration/common/configurationRegistry.ts",
+          "src/vs/platform/configuration/common/configurationService.ts",
+          "src/vs/platform/configuration/common/configurations.ts",
+          "src/vs/platform/sandbox/common/terminalSandboxRuntimeConfigurationPerOperation.ts",
+          "src/vs/platform/terminal/common/terminalPlatformConfiguration.ts",
+          "src/vs/sessions/contrib/configuration/browser/configuration.contribution.ts",
+          "src/vs/sessions/services/configuration/browser/configurationService.ts",
+          "src/vs/workbench/api/browser/mainThreadConfiguration.ts",
+          "src/vs/workbench/api/common/configurationExtensionPoint.ts",
+          "src/vs/workbench/api/common/extHostConfiguration.ts",
+          "src/vs/workbench/browser/parts/editor/editorConfiguration.ts",
+          "src/vs/workbench/common/configuration.ts",
+          "src/vs/workbench/contrib/accessibility/browser/accessibilityConfiguration.ts",
+          "src/vs/workbench/contrib/chat/browser/languageModelsConfigurationService.ts",
+          "src/vs/workbench/contrib/chat/common/languageModelsConfiguration.ts",
+          "src/vs/workbench/contrib/codeEditor/common/languageConfigurationExtensionPoint.ts",
+          "src/vs/workbench/contrib/comments/common/commentsConfiguration.ts",
+          "src/vs/workbench/contrib/debug/browser/debugConfigurationManager.ts",
+          "src/vs/workbench/contrib/dropOrPasteInto/browser/configurationSchema.ts",
+          "src/vs/workbench/contrib/externalUriOpener/common/configuration.ts",
+          "src/vs/workbench/contrib/mcp/browser/mcpCommandsAddConfiguration.ts",
+          "src/vs/workbench/contrib/mcp/common/mcpConfiguration.ts",
+          "src/vs/workbench/contrib/tasks/common/taskConfiguration.ts",
+          "src/vs/workbench/contrib/terminal/browser/terminalConfigurationService.ts",
+          "src/vs/workbench/contrib/terminal/common/terminalConfiguration.ts",
+          "src/vs/workbench/contrib/terminalContrib/accessibility/common/terminalAccessibilityConfiguration.ts",
+          "src/vs/workbench/contrib/terminalContrib/autoReplies/common/terminalAutoRepliesConfiguration.ts",
+          "src/vs/workbench/contrib/terminalContrib/chatAgentTools/common/terminalChatAgentToolsConfiguration.ts",
+          "src/vs/workbench/contrib/terminalContrib/commandGuide/common/terminalCommandGuideConfiguration.ts",
+          "src/vs/workbench/contrib/terminalContrib/inlineHint/common/terminalInitialHintConfiguration.ts",
+          "src/vs/workbench/contrib/terminalContrib/notification/common/terminalNotificationConfiguration.ts",
+          "src/vs/workbench/contrib/terminalContrib/stickyScroll/common/terminalStickyScrollConfiguration.ts",
+          "src/vs/workbench/contrib/terminalContrib/suggest/common/terminalSuggestConfiguration.ts",
+          "src/vs/workbench/contrib/terminalContrib/typeAhead/common/terminalTypeAheadConfiguration.ts",
+          "src/vs/workbench/contrib/testing/browser/testingConfigurationUi.ts",
+          "src/vs/workbench/contrib/testing/common/configuration.ts",
+          "src/vs/workbench/services/configuration/browser/configuration.ts",
+          "src/vs/workbench/services/configuration/browser/configurationService.ts",
+          "src/vs/workbench/services/configuration/common/configuration.ts",
+          "src/vs/workbench/services/configuration/common/configurationCache.ts",
+          "src/vs/workbench/services/configuration/common/configurationEditing.ts",
+          "src/vs/workbench/services/configuration/common/configurationModels.ts",
+          "src/vs/workbench/services/configuration/common/jsonEditing.ts",
+          "src/vs/workbench/services/configuration/common/jsonEditingService.ts",
+          "src/vs/workbench/services/configurationResolver/browser/baseConfigurationResolverService.ts",
+          "src/vs/workbench/services/configurationResolver/browser/configurationResolverService.ts",
+          "src/vs/workbench/services/configurationResolver/common/configurationResolver.ts",
+          "src/vs/workbench/services/configurationResolver/common/configurationResolverExpression.ts",
+          "src/vs/workbench/services/configurationResolver/common/configurationResolverSchema.ts",
+          "src/vs/workbench/services/configurationResolver/common/configurationResolverUtils.ts",
+          "src/vs/workbench/services/configurationResolver/common/variableResolver.ts",
+          "src/vs/workbench/services/configurationResolver/electron-browser/configurationResolverService.ts",
+          "src/vs/workbench/services/filesConfiguration/common/filesConfigurationService.ts",
+          "src/vs/workbench/services/themes/common/themeConfiguration.ts",
+          "src/vscode-dts/vscode.proposed.agentsWindowConfiguration.d.ts",
+          "src/vscode-dts/vscode.proposed.contribDebugCreateConfiguration.d.ts"
+        ],
+        "direct_impact": [],
+        "indirect_impact": [],
+        "architectural_blast_radius": 0,
+        "confidence": "low",
+        "files": [
+          "extensions/configuration-editing/src/browser/net.ts",
+          "extensions/configuration-editing/src/configurationEditingMain.ts",
+          "extensions/configuration-editing/src/extensionsProposals.ts",
+          "extensions/configuration-editing/src/importExportProfiles.ts",
+          "extensions/configuration-editing/src/node/net.ts",
+          "extensions/configuration-editing/src/settingsDocumentHelper.ts",
+          "extensions/configuration-editing/src/typings/ref.d.ts",
+          "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/networkConfiguration.ts",
+          "extensions/copilot/src/extension/configuration/vscode-node/configurationMigration.ts",
+          "extensions/copilot/src/extension/prompt/vscode-node/devContainerConfigurationServiceImpl.ts",
+          "extensions/copilot/src/platform/configuration/common/configurationService.ts",
+          "extensions/copilot/src/platform/configuration/common/defaultsOnlyConfigurationService.ts",
+          "extensions/copilot/src/platform/configuration/common/jsonSchema.ts",
+          "extensions/copilot/src/platform/configuration/common/jsonSchemaDraft7.ts",
+          "extensions/copilot/src/platform/configuration/common/validator.ts",
+          "extensions/copilot/src/platform/configuration/vscode/configurationServiceImpl.ts",
+          "extensions/copilot/src/platform/devcontainer/common/devContainerConfigurationService.ts",
+          "extensions/typescript-language-features/src/commands/goToProjectConfiguration.ts",
+          "extensions/typescript-language-features/src/configuration/configuration.browser.ts",
+          "extensions/typescript-language-features/src/configuration/configuration.electron.ts"
+        ]
+      }
+    },
+    {
+      "prompt": "what breaks if I remove the logging layer",
+      "concept": "the logging layer",
+      "response": {
+        "answer": "Name a file, module, or architecture concept to analyze (for example `core.py`, `websocket support`, or `event bus`).",
+        "mode": "impact",
+        "semantic_label": null,
+        "resolved_modules": null,
+        "direct_impact": null,
+        "indirect_impact": null,
+        "architectural_blast_radius": null,
+        "confidence": "low",
+        "files": []
+      }
+    }
+  ],
+  "investigation_samples": [
+    {
+      "symptom": "duplicate events are being fired",
+      "response": {
+        "plan": {
+          "likely_modules": [
+            "extensions/copilot/test/simulation/fixtures/fixing/python/pyright_no_to_string_member.py",
+            "src/vs/platform/agentHost/node/claude/claudeMapSessionEvents.ts",
+            "extensions/copilot/src/extension/prompts/node/base/promptRenderer.ts",
+            "extensions/copilot/src/extension/tools/common/toolNames.ts",
+            "extensions/copilot/src/platform/authentication/common/authentication.ts"
+          ],
+          "hypotheses": [
+            {
+              "title": "Defect originates in `src/vs/platform/agentHost/node/claude/claudeMapSessionEvents.ts`",
+              "confidence": "low",
+              "why_it_fits": "`src/vs/platform/agentHost/node/claude/claudeMapSessionEvents.ts` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`src/vs/platform/agentHost/node/claude/claudeMapSessionEvents.ts` \u2014 fan-in 0, risk 4.34",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "src/vs/platform/agentHost/node/claude/claudeMapSessionEvents.ts"
+              ],
+              "what_to_inspect": [
+                "src/vs/platform/agentHost/node/claude/claudeMapSessionEvents.ts"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `src/vs/platform/agentHost/node/claude/claudeMapSessionEvents.ts` directly.",
+              "how_to_disprove": "Add a focused test around `src/vs/platform/agentHost/node/claude/claudeMapSessionEvents.ts`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `extensions/copilot/src/extension/prompts/node/base/promptRenderer.ts`",
+              "confidence": "low",
+              "why_it_fits": "`extensions/copilot/src/extension/prompts/node/base/promptRenderer.ts` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`extensions/copilot/src/extension/prompts/node/base/promptRenderer.ts` \u2014 fan-in 0, risk 101.49",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "extensions/copilot/src/extension/prompts/node/base/promptRenderer.ts"
+              ],
+              "what_to_inspect": [
+                "extensions/copilot/src/extension/prompts/node/base/promptRenderer.ts"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `extensions/copilot/src/extension/prompts/node/base/promptRenderer.ts` directly.",
+              "how_to_disprove": "Add a focused test around `extensions/copilot/src/extension/prompts/node/base/promptRenderer.ts`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `extensions/copilot/src/extension/tools/common/toolNames.ts`",
+              "confidence": "low",
+              "why_it_fits": "`extensions/copilot/src/extension/tools/common/toolNames.ts` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`extensions/copilot/src/extension/tools/common/toolNames.ts` \u2014 fan-in 0, risk 111.94",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "extensions/copilot/src/extension/tools/common/toolNames.ts"
+              ],
+              "what_to_inspect": [
+                "extensions/copilot/src/extension/tools/common/toolNames.ts"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `extensions/copilot/src/extension/tools/common/toolNames.ts` directly.",
+              "how_to_disprove": "Add a focused test around `extensions/copilot/src/extension/tools/common/toolNames.ts`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `extensions/copilot/src/platform/authentication/common/authentication.ts`",
+              "confidence": "low",
+              "why_it_fits": "`extensions/copilot/src/platform/authentication/common/authentication.ts` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`extensions/copilot/src/platform/authentication/common/authentication.ts` \u2014 fan-in 0, risk 106.88",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "extensions/copilot/src/platform/authentication/common/authentication.ts"
+              ],
+              "what_to_inspect": [
+                "extensions/copilot/src/platform/authentication/common/authentication.ts"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `extensions/copilot/src/platform/authentication/common/authentication.ts` directly.",
+              "how_to_disprove": "Add a focused test around `extensions/copilot/src/platform/authentication/common/authentication.ts`; if it passes with the symptom inputs, the cause is elsewhere."
+            }
+          ],
+          "most_likely_root_cause": "evaluateSmallerThan in `extensions/copilot/test/simulation/fixtures/fixing/python/pyright_no_to_string_member.py`",
+          "intent": "general"
+        }
+      }
+    },
+    {
+      "symptom": "websocket connections keep disconnecting",
+      "response": {
+        "plan": {
+          "likely_modules": [
+            "src/vs/platform/agentHost/browser/webSocketClientTransport.ts",
+            "src/vs/sessions/contrib/tunnelHost/electron-browser/toggleRemoteConnectionsActionViewItem.ts",
+            "src/vs/platform/meteredConnection/browser/meteredConnectionService.ts",
+            "src/vs/platform/meteredConnection/electron-browser/meteredConnectionService.ts"
+          ],
+          "hypotheses": [
+            {
+              "title": "Defect originates in `src/vs/platform/agentHost/browser/webSocketClientTransport.ts`",
+              "confidence": "low",
+              "why_it_fits": "`src/vs/platform/agentHost/browser/webSocketClientTransport.ts` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`src/vs/platform/agentHost/browser/webSocketClientTransport.ts` \u2014 fan-in 0, risk 3.4",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "src/vs/platform/agentHost/browser/webSocketClientTransport.ts"
+              ],
+              "what_to_inspect": [
+                "src/vs/platform/agentHost/browser/webSocketClientTransport.ts"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `src/vs/platform/agentHost/browser/webSocketClientTransport.ts` directly.",
+              "how_to_disprove": "Add a focused test around `src/vs/platform/agentHost/browser/webSocketClientTransport.ts`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `src/vs/sessions/contrib/tunnelHost/electron-browser/toggleRemoteConnectionsActionViewItem.ts`",
+              "confidence": "low",
+              "why_it_fits": "`src/vs/sessions/contrib/tunnelHost/electron-browser/toggleRemoteConnectionsActionViewItem.ts` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`src/vs/sessions/contrib/tunnelHost/electron-browser/toggleRemoteConnectionsActionViewItem.ts` \u2014 fan-in 0, risk 3.32",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "src/vs/sessions/contrib/tunnelHost/electron-browser/toggleRemoteConnectionsActionViewItem.ts"
+              ],
+              "what_to_inspect": [
+                "src/vs/sessions/contrib/tunnelHost/electron-browser/toggleRemoteConnectionsActionViewItem.ts"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `src/vs/sessions/contrib/tunnelHost/electron-browser/toggleRemoteConnectionsActionViewItem.ts` directly.",
+              "how_to_disprove": "Add a focused test around `src/vs/sessions/contrib/tunnelHost/electron-browser/toggleRemoteConnectionsActionViewItem.ts`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `src/vs/platform/meteredConnection/browser/meteredConnectionService.ts`",
+              "confidence": "low",
+              "why_it_fits": "`src/vs/platform/meteredConnection/browser/meteredConnectionService.ts` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`src/vs/platform/meteredConnection/browser/meteredConnectionService.ts` \u2014 fan-in 0, risk 0",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "src/vs/platform/meteredConnection/browser/meteredConnectionService.ts"
+              ],
+              "what_to_inspect": [
+                "src/vs/platform/meteredConnection/browser/meteredConnectionService.ts"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `src/vs/platform/meteredConnection/browser/meteredConnectionService.ts` directly.",
+              "how_to_disprove": "Add a focused test around `src/vs/platform/meteredConnection/browser/meteredConnectionService.ts`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `src/vs/platform/meteredConnection/electron-browser/meteredConnectionService.ts`",
+              "confidence": "low",
+              "why_it_fits": "`src/vs/platform/meteredConnection/electron-browser/meteredConnectionService.ts` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`src/vs/platform/meteredConnection/electron-browser/meteredConnectionService.ts` \u2014 fan-in 0, risk 0",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "src/vs/platform/meteredConnection/electron-browser/meteredConnectionService.ts"
+              ],
+              "what_to_inspect": [
+                "src/vs/platform/meteredConnection/electron-browser/meteredConnectionService.ts"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `src/vs/platform/meteredConnection/electron-browser/meteredConnectionService.ts` directly.",
+              "how_to_disprove": "Add a focused test around `src/vs/platform/meteredConnection/electron-browser/meteredConnectionService.ts`; if it passes with the symptom inputs, the cause is elsewhere."
+            }
+          ],
+          "most_likely_root_cause": "Defect originates in `src/vs/platform/agentHost/browser/webSocketClientTransport.ts`",
+          "intent": "general"
+        }
+      }
+    },
+    {
+      "symptom": "authentication fails intermittently",
+      "response": {
+        "plan": {
+          "likely_modules": [
+            "extensions/copilot/src/platform/parser/test/node/fixtures/try.py",
+            "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts",
+            "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts",
+            "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts",
+            "extensions/copilot/src/platform/authentication/common/authentication.ts"
+          ],
+          "hypotheses": [
+            {
+              "title": "Defect originates in `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts`",
+              "confidence": "low",
+              "why_it_fits": "`extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts` \u2014 fan-in 0, risk 16.89",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts"
+              ],
+              "what_to_inspect": [
+                "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts` directly.",
+              "how_to_disprove": "Add a focused test around `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts`",
+              "confidence": "low",
+              "why_it_fits": "`extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts` \u2014 fan-in 0, risk 9.73",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts"
+              ],
+              "what_to_inspect": [
+                "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts` directly.",
+              "how_to_disprove": "Add a focused test around `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts`",
+              "confidence": "low",
+              "why_it_fits": "`extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts` \u2014 fan-in 0, risk 4.4",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts"
+              ],
+              "what_to_inspect": [
+                "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts` directly.",
+              "how_to_disprove": "Add a focused test around `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `extensions/copilot/src/platform/authentication/common/authentication.ts`",
+              "confidence": "low",
+              "why_it_fits": "`extensions/copilot/src/platform/authentication/common/authentication.ts` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`extensions/copilot/src/platform/authentication/common/authentication.ts` \u2014 fan-in 0, risk 106.88",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "extensions/copilot/src/platform/authentication/common/authentication.ts"
+              ],
+              "what_to_inspect": [
+                "extensions/copilot/src/platform/authentication/common/authentication.ts"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `extensions/copilot/src/platform/authentication/common/authentication.ts` directly.",
+              "how_to_disprove": "Add a focused test around `extensions/copilot/src/platform/authentication/common/authentication.ts`; if it passes with the symptom inputs, the cause is elsewhere."
+            }
+          ],
+          "most_likely_root_cause": "paramiko.common.MSG_USERAUTH_REQUEST() in `extensions/copilot/src/platform/parser/test/node/fixtures/try.py`",
+          "intent": "general"
+        }
+      }
+    }
+  ],
+  "build_samples": [
+    {
+      "request": "add distributed tracing",
+      "response": {
+        "plan": {
+          "likely_affected_modules": [
+            "extensions/copilot/src/extension/completions-core/vscode-node/prompt/src/test/testdata/example.py"
+          ],
+          "implementation_order": [
+            "extensions/copilot/src/extension/completions-core/vscode-node/prompt/src/test/testdata/example.py"
+          ],
+          "tests_required": [
+            "Unit/integration tests covering `extensions/typescript-language-features/src/logging/tracer.ts` (e.g. test_tracer*)",
+            "Unit/integration tests covering `extensions/copilot/src/shared-fetch-utils/common/middleware/etagMiddleware.ts` (e.g. test_etagMiddleware*)",
+            "Unit/integration tests covering `extensions/copilot/src/shared-fetch-utils/common/middleware/authBlockedMiddleware.ts` (e.g. test_authBlockedMiddleware*)",
+            "Unit/integration tests covering `extensions/copilot/src/shared-fetch-utils/common/middleware/serverErrorBackoffMiddleware.ts` (e.g. test_serverErrorBackoffMiddleware*)",
+            "Subsystem regression: extensions",
+            "Project CI / full test suite before merge",
+            "Assert required fields on log lines",
+            "Synthetic probe alerts"
+          ],
+          "rollback_plan": [
+            "Make the change on a feature branch; keep `main` deployable.",
+            "Commit in small, revertible steps so any single commit can be `git revert`-ed cleanly.",
+            "Before editing, note the current behavior of: extensions/typescript-language-features/src/logging/tracer.ts, extensions/copilot/src/shared-fetch-utils/common/middleware/etagMiddleware.ts, extensions/copilot/src/shared-fetch-utils/common/middleware/authBlockedMiddleware.ts.",
+            "Keep DB migrations backward-compatible (additive) so the old code still runs if you roll back."
+          ],
+          "intent": "general"
+        }
+      }
+    },
+    {
+      "request": "add rate limiting",
+      "response": {
+        "plan": {
+          "likely_affected_modules": [
+            "extensions/copilot/src/platform/parser/test/node/fixtures/try.py",
+            "src/vs/workbench/contrib/chat/browser/widget/chatContentParts/chatAnonymousRateLimitedPart.ts"
+          ],
+          "implementation_order": [
+            "extensions/copilot/src/platform/parser/test/node/fixtures/try.py"
+          ],
+          "tests_required": [
+            "Unit/integration tests covering `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts` (e.g. test_copilotTokenManager*)",
+            "Unit/integration tests covering `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts` (e.g. test_copilotTokenNotifier*)",
+            "Unit/integration tests covering `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts` (e.g. test_orgs*)",
+            "Unit/integration tests covering `src/vs/workbench/contrib/chat/browser/widget/chatContentParts/chatAnonymousRateLimitedPart.ts` (e.g. test_chatAnonymousRateLimitedPart*)",
+            "Subsystem regression: extensions, src",
+            "Project CI / full test suite before merge",
+            "Integration tests with realistic payloads",
+            "Contract tests for error codes"
+          ],
+          "rollback_plan": [
+            "Make the change on a feature branch; keep `main` deployable.",
+            "Commit in small, revertible steps so any single commit can be `git revert`-ed cleanly.",
+            "Before editing, note the current behavior of: extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts, extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts, extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts.",
+            "Keep DB migrations backward-compatible (additive) so the old code still runs if you roll back."
+          ],
+          "intent": "general"
+        }
+      }
+    }
+  ],
+  "failures": [
+    {
+      "repository": "vscode",
+      "scenario": "what breaks if I remove the logging layer",
+      "expected": "concept resolves to modules",
+      "actual": "fallback / no target",
+      "root_cause": "concept absent from repo or not in resolver map",
+      "subsystem": "target_resolver / impact_engine",
+      "category": "semantic_routing_failure"
+    },
+    {
+      "repository": "vscode",
+      "scenario": "what breaks if I remove the extension host",
+      "expected": "concept resolves to modules",
+      "actual": "fallback / no target",
+      "root_cause": "concept absent from repo or not in resolver map",
+      "subsystem": "target_resolver / impact_engine",
+      "category": "semantic_routing_failure"
+    },
+    {
+      "repository": "vscode",
+      "scenario": "what breaks if I remove the command registry",
+      "expected": "concept resolves to modules",
+      "actual": "fallback / no target",
+      "root_cause": "concept absent from repo or not in resolver map",
+      "subsystem": "target_resolver / impact_engine",
+      "category": "semantic_routing_failure"
+    }
+  ],
+  "elapsed_seconds": 81.4
+}

@@ -1,0 +1,619 @@
+{
+  "id": "django",
+  "display": "Django",
+  "language": "python",
+  "framework": "web framework",
+  "category": "python",
+  "available": true,
+  "path": "C:\\J.A.R.V.I.S\\django",
+  "scan": {
+    "module_count": 929,
+    "edges": 2916,
+    "subsystem_count": 9,
+    "files": 6868,
+    "massive_mode": false,
+    "graph_detail": "imports",
+    "scan_seconds": 19.4
+  },
+  "status": "ok",
+  "scores": {
+    "understanding": 100.0,
+    "impact": 65.1,
+    "investigation": 100.0,
+    "build": 100.0,
+    "overall": 89.5
+  },
+  "understanding": {
+    "score": 100.0,
+    "components": {
+      "graph_built": 20.0,
+      "explanation": 15.0,
+      "subsystems": 15.0,
+      "entry_points": 10.0,
+      "runtime_boundaries": 15.0,
+      "top_risks": 10.0,
+      "hubs_vs_risks_separated": 15.0
+    },
+    "module_count": 929,
+    "edges": 2916
+  },
+  "impact": {
+    "score": 65.1,
+    "resolution_rate": 0.667,
+    "fallback_rate": 0.333,
+    "resolved": 6,
+    "total": 9
+  },
+  "investigation": {
+    "score": 100.0,
+    "grounded_rate": 1.0,
+    "clean_rate": 1.0,
+    "avg_modules": 8.0
+  },
+  "build": {
+    "score": 100.0,
+    "with_modules": 4,
+    "total": 4
+  },
+  "impact_samples": [
+    {
+      "prompt": "what breaks if I remove authentication",
+      "concept": "authentication",
+      "response": {
+        "answer": "Removing **authentication** (resolved to `django/contrib/auth/__init__.py` + 23 related module(s)) affects 27 direct + 41 transitive importer(s) across 1 subsystem(s). Target is on a runtime boundary (event/state/request/auth path); changes can alter live behavior across many subsystems.",
+        "mode": "impact",
+        "semantic_label": "authentication",
+        "resolved_modules": [
+          "django/contrib/auth/__init__.py",
+          "django/contrib/auth/migrations/0011_update_proxy_permissions.py",
+          "django/contrib/auth/hashers.py",
+          "django/contrib/auth/models.py",
+          "django/contrib/auth/decorators.py",
+          "django/contrib/auth/forms.py",
+          "django/contrib/auth/management/__init__.py",
+          "django/contrib/auth/password_validation.py",
+          "django/contrib/auth/signals.py",
+          "django/contrib/auth/tokens.py",
+          "django/contrib/auth/views.py",
+          "django/contrib/auth/backends.py",
+          "django/contrib/auth/base_user.py",
+          "django/contrib/auth/checks.py",
+          "django/contrib/auth/templatetags/auth.py",
+          "django/contrib/auth/validators.py",
+          "django/contrib/auth/admin.py",
+          "django/contrib/auth/apps.py",
+          "django/contrib/auth/context_processors.py",
+          "django/contrib/auth/handlers/__init__.py",
+          "django/contrib/auth/handlers/modwsgi.py",
+          "django/contrib/auth/management/commands/__init__.py",
+          "django/contrib/auth/management/commands/changepassword.py",
+          "django/contrib/auth/management/commands/createsuperuser.py"
+        ],
+        "direct_impact": [
+          "django/contrib/admin/forms.py",
+          "django/contrib/admin/options.py",
+          "django/contrib/admin/sites.py",
+          "django/contrib/admin/utils.py",
+          "django/contrib/admin/views/decorators.py",
+          "django/contrib/admindocs/views.py",
+          "django/contrib/auth/__init__.py",
+          "django/contrib/auth/admin.py",
+          "django/contrib/auth/apps.py",
+          "django/contrib/auth/backends.py",
+          "django/contrib/auth/base_user.py",
+          "django/contrib/auth/checks.py",
+          "django/contrib/auth/decorators.py",
+          "django/contrib/auth/forms.py",
+          "django/contrib/auth/management/__init__.py",
+          "django/contrib/auth/management/commands/changepassword.py",
+          "django/contrib/auth/management/commands/createsuperuser.py",
+          "django/contrib/auth/middleware.py",
+          "django/contrib/auth/migrations/0001_initial.py",
+          "django/contrib/auth/migrations/0004_alter_user_username_opts.py",
+          "django/contrib/auth/migrations/0007_alter_validators_add_error_messages.py",
+          "django/contrib/auth/migrations/0008_alter_user_username_max_length.py",
+          "django/contrib/auth/mixins.py",
+          "django/contrib/auth/models.py",
+          "django/contrib/auth/templatetags/auth.py",
+          "django/contrib/auth/urls.py",
+          "django/contrib/auth/views.py"
+        ],
+        "indirect_impact": [
+          "django/contrib/admin/__init__.py",
+          "django/contrib/admin/actions.py",
+          "django/contrib/admin/apps.py",
+          "django/contrib/admin/checks.py",
+          "django/contrib/admin/decorators.py",
+          "django/contrib/admin/filters.py",
+          "django/contrib/admin/forms.py",
+          "django/contrib/admin/helpers.py",
+          "django/contrib/admin/migrations/0001_initial.py",
+          "django/contrib/admin/models.py",
+          "django/contrib/admin/options.py",
+          "django/contrib/admin/sites.py",
+          "django/contrib/admin/templatetags/admin_filters.py",
+          "django/contrib/admin/templatetags/admin_list.py",
+          "django/contrib/admin/templatetags/admin_urls.py",
+          "django/contrib/admin/utils.py",
+          "django/contrib/admin/views/decorators.py",
+          "django/contrib/admin/views/main.py",
+          "django/contrib/admindocs/views.py",
+          "django/contrib/auth/admin.py",
+          "django/contrib/auth/apps.py",
+          "django/contrib/auth/backends.py",
+          "django/contrib/auth/base_user.py",
+          "django/contrib/auth/checks.py",
+          "django/contrib/auth/decorators.py",
+          "django/contrib/auth/forms.py",
+          "django/contrib/auth/management/__init__.py",
+          "django/contrib/auth/management/commands/changepassword.py",
+          "django/contrib/auth/management/commands/createsuperuser.py",
+          "django/contrib/auth/middleware.py",
+          "django/contrib/auth/migrations/0001_initial.py",
+          "django/contrib/auth/migrations/0004_alter_user_username_opts.py",
+          "django/contrib/auth/migrations/0007_alter_validators_add_error_messages.py",
+          "django/contrib/auth/migrations/0008_alter_user_username_max_length.py",
+          "django/contrib/auth/mixins.py",
+          "django/contrib/auth/models.py",
+          "django/contrib/auth/urls.py",
+          "django/contrib/auth/views.py",
+          "django/contrib/contenttypes/admin.py",
+          "django/contrib/gis/admin/__init__.py",
+          "django/contrib/gis/admin/options.py"
+        ],
+        "architectural_blast_radius": 43,
+        "confidence": "high",
+        "files": [
+          "django/contrib/auth/__init__.py",
+          "django/contrib/auth/admin.py",
+          "django/contrib/auth/apps.py",
+          "django/contrib/auth/backends.py",
+          "django/contrib/auth/base_user.py",
+          "django/contrib/auth/checks.py",
+          "django/contrib/auth/context_processors.py",
+          "django/contrib/auth/decorators.py",
+          "django/contrib/auth/forms.py",
+          "django/contrib/auth/handlers/__init__.py",
+          "django/contrib/auth/handlers/modwsgi.py",
+          "django/contrib/auth/hashers.py",
+          "django/contrib/auth/management/__init__.py",
+          "django/contrib/auth/management/commands/__init__.py",
+          "django/contrib/auth/management/commands/changepassword.py",
+          "django/contrib/auth/management/commands/createsuperuser.py",
+          "django/contrib/auth/migrations/0011_update_proxy_permissions.py",
+          "django/contrib/auth/models.py",
+          "django/contrib/auth/password_validation.py",
+          "django/contrib/auth/signals.py"
+        ]
+      }
+    },
+    {
+      "prompt": "what breaks if I remove caching",
+      "concept": "caching",
+      "response": {
+        "answer": "Name a file, module, or architecture concept to analyze (for example `core.py`, `websocket support`, or `event bus`).",
+        "mode": "impact",
+        "semantic_label": null,
+        "resolved_modules": null,
+        "direct_impact": null,
+        "indirect_impact": null,
+        "architectural_blast_radius": null,
+        "confidence": "low",
+        "files": []
+      }
+    },
+    {
+      "prompt": "what breaks if I remove configuration",
+      "concept": "configuration",
+      "response": {
+        "answer": "Name a file, module, or architecture concept to analyze (for example `core.py`, `websocket support`, or `event bus`).",
+        "mode": "impact",
+        "semantic_label": null,
+        "resolved_modules": null,
+        "direct_impact": null,
+        "indirect_impact": null,
+        "architectural_blast_radius": null,
+        "confidence": "low",
+        "files": []
+      }
+    },
+    {
+      "prompt": "what breaks if I remove the logging layer",
+      "concept": "the logging layer",
+      "response": {
+        "answer": "Name a file, module, or architecture concept to analyze (for example `core.py`, `websocket support`, or `event bus`).",
+        "mode": "impact",
+        "semantic_label": null,
+        "resolved_modules": null,
+        "direct_impact": null,
+        "indirect_impact": null,
+        "architectural_blast_radius": null,
+        "confidence": "low",
+        "files": []
+      }
+    }
+  ],
+  "investigation_samples": [
+    {
+      "symptom": "duplicate events are being fired",
+      "response": {
+        "plan": {
+          "likely_modules": [
+            "django/core/checks/registry.py",
+            "django/db/models/signals.py",
+            "django/apps/registry.py",
+            "django/contrib/auth/signals.py",
+            "django/core/signals.py",
+            "django/conf/__init__.py",
+            "django/core/exceptions.py",
+            "django/db/__init__.py"
+          ],
+          "hypotheses": [
+            {
+              "title": "Defect originates in `django/conf/__init__.py`",
+              "confidence": "low",
+              "why_it_fits": "`django/conf/__init__.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`django/conf/__init__.py` \u2014 fan-in 0, risk 163.18",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "django/conf/__init__.py"
+              ],
+              "what_to_inspect": [
+                "django/conf/__init__.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `django/conf/__init__.py` directly.",
+              "how_to_disprove": "Add a focused test around `django/conf/__init__.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `django/core/exceptions.py`",
+              "confidence": "low",
+              "why_it_fits": "`django/core/exceptions.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`django/core/exceptions.py` \u2014 fan-in 0, risk 150.38",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "django/core/exceptions.py"
+              ],
+              "what_to_inspect": [
+                "django/core/exceptions.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `django/core/exceptions.py` directly.",
+              "how_to_disprove": "Add a focused test around `django/core/exceptions.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `django/db/__init__.py`",
+              "confidence": "low",
+              "why_it_fits": "`django/db/__init__.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`django/db/__init__.py` \u2014 fan-in 0, risk 152.18",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "django/db/__init__.py"
+              ],
+              "what_to_inspect": [
+                "django/db/__init__.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `django/db/__init__.py` directly.",
+              "how_to_disprove": "Add a focused test around `django/db/__init__.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `django/utils/functional.py`",
+              "confidence": "low",
+              "why_it_fits": "`django/utils/functional.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`django/utils/functional.py` \u2014 fan-in 0, risk 115.41",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "django/utils/functional.py"
+              ],
+              "what_to_inspect": [
+                "django/utils/functional.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `django/utils/functional.py` directly.",
+              "how_to_disprove": "Add a focused test around `django/utils/functional.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            }
+          ],
+          "most_likely_root_cause": "django.utils.text.smart_split() in `django/contrib/admin/options.py`",
+          "intent": "general"
+        }
+      }
+    },
+    {
+      "symptom": "websocket connections keep disconnecting",
+      "response": {
+        "plan": {
+          "likely_modules": [
+            "django/conf/urls/i18n.py",
+            "django/contrib/auth/views.py",
+            "django/core/handlers/wsgi.py",
+            "django/contrib/admin/options.py",
+            "django/contrib/admin/sites.py",
+            "django/core/servers/basehttp.py",
+            "django/contrib/auth/handlers/modwsgi.py",
+            "django/http/__init__.py"
+          ],
+          "hypotheses": [
+            {
+              "title": "Defect originates in `django/contrib/auth/views.py`",
+              "confidence": "low",
+              "why_it_fits": "`django/contrib/auth/views.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`django/contrib/auth/views.py` \u2014 fan-in 0, risk 9.56",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "django/contrib/auth/views.py"
+              ],
+              "what_to_inspect": [
+                "django/contrib/auth/views.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `django/contrib/auth/views.py` directly.",
+              "how_to_disprove": "Add a focused test around `django/contrib/auth/views.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `django/contrib/auth/handlers/modwsgi.py`",
+              "confidence": "low",
+              "why_it_fits": "`django/contrib/auth/handlers/modwsgi.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`django/contrib/auth/handlers/modwsgi.py` \u2014 fan-in 0, risk 1.32",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "django/contrib/auth/handlers/modwsgi.py"
+              ],
+              "what_to_inspect": [
+                "django/contrib/auth/handlers/modwsgi.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `django/contrib/auth/handlers/modwsgi.py` directly.",
+              "how_to_disprove": "Add a focused test around `django/contrib/auth/handlers/modwsgi.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `django/http/__init__.py`",
+              "confidence": "low",
+              "why_it_fits": "`django/http/__init__.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`django/http/__init__.py` \u2014 fan-in 0, risk 50.15",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "django/http/__init__.py"
+              ],
+              "what_to_inspect": [
+                "django/http/__init__.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `django/http/__init__.py` directly.",
+              "how_to_disprove": "Add a focused test around `django/http/__init__.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `django/contrib/auth/__init__.py`",
+              "confidence": "low",
+              "why_it_fits": "`django/contrib/auth/__init__.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`django/contrib/auth/__init__.py` \u2014 fan-in 0, risk 29.96",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "django/contrib/auth/__init__.py"
+              ],
+              "what_to_inspect": [
+                "django/contrib/auth/__init__.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `django/contrib/auth/__init__.py` directly.",
+              "how_to_disprove": "Add a focused test around `django/contrib/auth/__init__.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            }
+          ],
+          "most_likely_root_cause": "django.urls.include in `django/conf/urls/__init__.py`",
+          "intent": "general"
+        }
+      }
+    },
+    {
+      "symptom": "authentication fails intermittently",
+      "response": {
+        "plan": {
+          "likely_modules": [
+            "django/contrib/auth/middleware.py",
+            "django/contrib/auth/__init__.py",
+            "django/core/checks/security/sessions.py",
+            "django/middleware/csrf.py",
+            "django/contrib/sessions/middleware.py",
+            "django/middleware/cache.py",
+            "django/contrib/auth/migrations/0005_alter_user_last_login_null.py",
+            "django/contrib/auth/signals.py"
+          ],
+          "hypotheses": [
+            {
+              "title": "Defect originates in `django/contrib/auth/migrations/0005_alter_user_last_login_null.py`",
+              "confidence": "low",
+              "why_it_fits": "`django/contrib/auth/migrations/0005_alter_user_last_login_null.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`django/contrib/auth/migrations/0005_alter_user_last_login_null.py` \u2014 fan-in 0, risk 5.38",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "django/contrib/auth/migrations/0005_alter_user_last_login_null.py"
+              ],
+              "what_to_inspect": [
+                "django/contrib/auth/migrations/0005_alter_user_last_login_null.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `django/contrib/auth/migrations/0005_alter_user_last_login_null.py` directly.",
+              "how_to_disprove": "Add a focused test around `django/contrib/auth/migrations/0005_alter_user_last_login_null.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `django/contrib/auth/signals.py`",
+              "confidence": "low",
+              "why_it_fits": "`django/contrib/auth/signals.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`django/contrib/auth/signals.py` \u2014 fan-in 0, risk 2.86",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "django/contrib/auth/signals.py"
+              ],
+              "what_to_inspect": [
+                "django/contrib/auth/signals.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `django/contrib/auth/signals.py` directly.",
+              "how_to_disprove": "Add a focused test around `django/contrib/auth/signals.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `django/contrib/auth/__init__.py`",
+              "confidence": "low",
+              "why_it_fits": "`django/contrib/auth/__init__.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`django/contrib/auth/__init__.py` \u2014 fan-in 0, risk 29.96",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "django/contrib/auth/__init__.py"
+              ],
+              "what_to_inspect": [
+                "django/contrib/auth/__init__.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `django/contrib/auth/__init__.py` directly.",
+              "how_to_disprove": "Add a focused test around `django/contrib/auth/__init__.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `django/contrib/auth/management/__init__.py`",
+              "confidence": "low",
+              "why_it_fits": "`django/contrib/auth/management/__init__.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`django/contrib/auth/management/__init__.py` \u2014 fan-in 0, risk 10.68",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "django/contrib/auth/management/__init__.py"
+              ],
+              "what_to_inspect": [
+                "django/contrib/auth/management/__init__.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `django/contrib/auth/management/__init__.py` directly.",
+              "how_to_disprove": "Add a focused test around `django/contrib/auth/management/__init__.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            }
+          ],
+          "most_likely_root_cause": "django.contrib.auth.forms.AuthenticationForm() in `django/contrib/admin/forms.py`",
+          "intent": "general"
+        }
+      }
+    }
+  ],
+  "build_samples": [
+    {
+      "request": "add distributed tracing",
+      "response": {
+        "plan": {
+          "likely_affected_modules": [
+            "django/middleware/http.py",
+            "django/middleware/csrf.py",
+            "django/contrib/auth/middleware.py",
+            "django/contrib/sessions/middleware.py",
+            "django/middleware/cache.py",
+            "django/middleware/common.py",
+            "django/middleware/security.py",
+            "django/http/request.py"
+          ],
+          "implementation_order": [
+            "django/middleware/http.py",
+            "django/middleware/csrf.py",
+            "django/contrib/auth/middleware.py",
+            "django/contrib/sessions/middleware.py",
+            "django/middleware/cache.py"
+          ],
+          "tests_required": [
+            "Unit/integration tests covering `django/http/__init__.py` (e.g. test___init__*)",
+            "Unit/integration tests covering `django/middleware/csrf.py` (e.g. test_csrf*)",
+            "Unit/integration tests covering `django/http/response.py` (e.g. test_response*)",
+            "Unit/integration tests covering `django/http/request.py` (e.g. test_request*)",
+            "Subsystem regression: django",
+            "Project CI / full test suite before merge",
+            "Assert required fields on log lines",
+            "Synthetic probe alerts"
+          ],
+          "rollback_plan": [
+            "Make the change on a feature branch; keep `main` deployable.",
+            "Commit in small, revertible steps so any single commit can be `git revert`-ed cleanly.",
+            "Before editing, note the current behavior of: django/http/__init__.py, django/middleware/csrf.py, django/http/response.py.",
+            "Keep DB migrations backward-compatible (additive) so the old code still runs if you roll back."
+          ],
+          "intent": "general"
+        }
+      }
+    },
+    {
+      "request": "add rate limiting",
+      "response": {
+        "plan": {
+          "likely_affected_modules": [
+            "django/contrib/auth/middleware.py",
+            "django/core/management/commands/migrate.py",
+            "django/middleware/csrf.py",
+            "django/middleware/http.py",
+            "django/db/models/fields/generated.py",
+            "django/contrib/sessions/middleware.py",
+            "django/middleware/cache.py",
+            "django/middleware/common.py"
+          ],
+          "implementation_order": [
+            "django/contrib/auth/middleware.py",
+            "django/core/management/commands/migrate.py",
+            "django/middleware/csrf.py",
+            "django/middleware/http.py",
+            "django/db/models/fields/generated.py"
+          ],
+          "tests_required": [
+            "Unit/integration tests covering `django/http/__init__.py` (e.g. test___init__*)",
+            "Unit/integration tests covering `django/contrib/auth/migrations/0007_alter_validators_add_error_messages.py` (e.g. test_0007_alter_validators_add_error_messages*)",
+            "Unit/integration tests covering `django/http/response.py` (e.g. test_response*)",
+            "Unit/integration tests covering `django/http/request.py` (e.g. test_request*)",
+            "Subsystem regression: django",
+            "Project CI / full test suite before merge",
+            "Integration tests with realistic payloads",
+            "Contract tests for error codes"
+          ],
+          "rollback_plan": [
+            "Make the change on a feature branch; keep `main` deployable.",
+            "Commit in small, revertible steps so any single commit can be `git revert`-ed cleanly.",
+            "Before editing, note the current behavior of: django/http/__init__.py, django/contrib/auth/migrations/0007_alter_validators_add_error_messages.py, django/http/response.py.",
+            "Keep DB migrations backward-compatible (additive) so the old code still runs if you roll back."
+          ],
+          "intent": "general"
+        }
+      }
+    }
+  ],
+  "failures": [
+    {
+      "repository": "django",
+      "scenario": "what breaks if I remove caching",
+      "expected": "concept resolves to modules",
+      "actual": "fallback / no target",
+      "root_cause": "concept absent from repo or not in resolver map",
+      "subsystem": "target_resolver / impact_engine",
+      "category": "semantic_routing_failure"
+    },
+    {
+      "repository": "django",
+      "scenario": "what breaks if I remove configuration",
+      "expected": "concept resolves to modules",
+      "actual": "fallback / no target",
+      "root_cause": "concept absent from repo or not in resolver map",
+      "subsystem": "target_resolver / impact_engine",
+      "category": "semantic_routing_failure"
+    },
+    {
+      "repository": "django",
+      "scenario": "what breaks if I remove the logging layer",
+      "expected": "concept resolves to modules",
+      "actual": "fallback / no target",
+      "root_cause": "concept absent from repo or not in resolver map",
+      "subsystem": "target_resolver / impact_engine",
+      "category": "semantic_routing_failure"
+    }
+  ],
+  "elapsed_seconds": 22.3
+}

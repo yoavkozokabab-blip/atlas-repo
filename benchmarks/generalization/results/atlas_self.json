@@ -1,0 +1,1029 @@
+{
+  "id": "atlas_self",
+  "display": "Atlas (local_jarvis)",
+  "language": "python",
+  "framework": "desktop tool",
+  "category": "python",
+  "available": true,
+  "path": "C:\\J.A.R.V.I.S\\local_jarvis",
+  "scan": {
+    "module_count": 10680,
+    "edges": 14940,
+    "subsystem_count": 51,
+    "files": 33237,
+    "massive_mode": true,
+    "graph_detail": "imports",
+    "scan_seconds": 724.6
+  },
+  "status": "ok",
+  "scores": {
+    "understanding": 100.0,
+    "impact": 48.2,
+    "investigation": 100.0,
+    "build": 100.0,
+    "overall": 84.5
+  },
+  "understanding": {
+    "score": 100.0,
+    "components": {
+      "graph_built": 20.0,
+      "explanation": 15.0,
+      "subsystems": 15.0,
+      "entry_points": 10.0,
+      "runtime_boundaries": 15.0,
+      "top_risks": 10.0,
+      "hubs_vs_risks_separated": 15.0
+    },
+    "module_count": 10680,
+    "edges": 14940
+  },
+  "impact": {
+    "score": 48.2,
+    "resolution_rate": 0.5,
+    "fallback_rate": 0.5,
+    "resolved": 4,
+    "total": 8
+  },
+  "investigation": {
+    "score": 100.0,
+    "grounded_rate": 1.0,
+    "clean_rate": 1.0,
+    "avg_modules": 8.0
+  },
+  "build": {
+    "score": 100.0,
+    "with_modules": 4,
+    "total": 4
+  },
+  "impact_samples": [
+    {
+      "prompt": "what breaks if I remove authentication",
+      "concept": "authentication",
+      "response": {
+        "answer": "Removing **authentication** (resolved to `external_repos/home_assistant/homeassistant/auth/auth_store.py` + 23 related module(s)) affects 15 direct + 8 transitive importer(s) across 1 subsystem(s). Target is on a runtime boundary (event/state/request/auth path); changes can alter live behavior across many subsystems.",
+        "mode": "impact",
+        "semantic_label": "authentication",
+        "resolved_modules": [
+          "external_repos/home_assistant/homeassistant/auth/auth_store.py",
+          "external_repos/home_assistant/homeassistant/auth/providers/__init__.py",
+          "external_repos/home_assistant/homeassistant/auth/providers/homeassistant.py",
+          "external_repos/home_assistant/homeassistant/auth/__init__.py",
+          "external_repos/home_assistant/homeassistant/auth/providers/command_line.py",
+          "external_repos/home_assistant/homeassistant/auth/providers/insecure_example.py",
+          "external_repos/home_assistant/homeassistant/auth/providers/trusted_networks.py",
+          "external_repos/home_assistant/homeassistant/auth/permissions/types.py",
+          "external_repos/home_assistant/homeassistant/auth/permissions/const.py",
+          "external_repos/home_assistant/homeassistant/auth/permissions/models.py",
+          "external_repos/home_assistant/homeassistant/auth/permissions/__init__.py",
+          "external_repos/home_assistant/homeassistant/auth/permissions/util.py",
+          "external_repos/home_assistant/homeassistant/auth/permissions/entities.py",
+          "external_repos/home_assistant/homeassistant/auth/permissions/merge.py",
+          "external_repos/home_assistant/homeassistant/auth/permissions/events.py",
+          "external_repos/home_assistant/homeassistant/auth/permissions/system_policies.py",
+          "external_repos/home_assistant/homeassistant/auth/models.py",
+          "external_repos/home_assistant/homeassistant/auth/const.py",
+          "external_repos/home_assistant/homeassistant/auth/jwt_wrapper.py",
+          "external_repos/home_assistant/homeassistant/auth/mfa_modules/__init__.py",
+          "external_repos/home_assistant/homeassistant/auth/mfa_modules/insecure_example.py",
+          "external_repos/home_assistant/homeassistant/auth/mfa_modules/notify.py",
+          "external_repos/home_assistant/homeassistant/auth/mfa_modules/totp.py",
+          "external_repos/home_assistant/homeassistant/components/auth/indieauth.py"
+        ],
+        "direct_impact": [
+          "external_repos/home_assistant/homeassistant/auth/__init__.py",
+          "external_repos/home_assistant/homeassistant/auth/auth_store.py",
+          "external_repos/home_assistant/homeassistant/auth/models.py",
+          "external_repos/home_assistant/homeassistant/auth/permissions/__init__.py",
+          "external_repos/home_assistant/homeassistant/auth/permissions/entities.py",
+          "external_repos/home_assistant/homeassistant/auth/permissions/merge.py",
+          "external_repos/home_assistant/homeassistant/auth/permissions/system_policies.py",
+          "external_repos/home_assistant/homeassistant/auth/permissions/util.py",
+          "external_repos/home_assistant/homeassistant/auth/providers/__init__.py",
+          "external_repos/home_assistant/homeassistant/auth/providers/command_line.py",
+          "external_repos/home_assistant/homeassistant/auth/providers/homeassistant.py",
+          "external_repos/home_assistant/homeassistant/auth/providers/insecure_example.py",
+          "external_repos/home_assistant/homeassistant/auth/providers/trusted_networks.py",
+          "external_repos/home_assistant/homeassistant/components/auth/__init__.py",
+          "external_repos/home_assistant/homeassistant/components/auth/login_flow.py"
+        ],
+        "indirect_impact": [
+          "external_repos/home_assistant/homeassistant/auth/__init__.py",
+          "external_repos/home_assistant/homeassistant/auth/auth_store.py",
+          "external_repos/home_assistant/homeassistant/auth/models.py",
+          "external_repos/home_assistant/homeassistant/auth/providers/__init__.py",
+          "external_repos/home_assistant/homeassistant/auth/providers/command_line.py",
+          "external_repos/home_assistant/homeassistant/auth/providers/homeassistant.py",
+          "external_repos/home_assistant/homeassistant/auth/providers/insecure_example.py",
+          "external_repos/home_assistant/homeassistant/auth/providers/trusted_networks.py"
+        ],
+        "architectural_blast_radius": 15,
+        "confidence": "high",
+        "files": [
+          "external_repos/home_assistant/homeassistant/auth/__init__.py",
+          "external_repos/home_assistant/homeassistant/auth/auth_store.py",
+          "external_repos/home_assistant/homeassistant/auth/const.py",
+          "external_repos/home_assistant/homeassistant/auth/jwt_wrapper.py",
+          "external_repos/home_assistant/homeassistant/auth/mfa_modules/__init__.py",
+          "external_repos/home_assistant/homeassistant/auth/mfa_modules/insecure_example.py",
+          "external_repos/home_assistant/homeassistant/auth/mfa_modules/notify.py",
+          "external_repos/home_assistant/homeassistant/auth/mfa_modules/totp.py",
+          "external_repos/home_assistant/homeassistant/auth/models.py",
+          "external_repos/home_assistant/homeassistant/auth/permissions/__init__.py",
+          "external_repos/home_assistant/homeassistant/auth/permissions/const.py",
+          "external_repos/home_assistant/homeassistant/auth/permissions/entities.py",
+          "external_repos/home_assistant/homeassistant/auth/permissions/events.py",
+          "external_repos/home_assistant/homeassistant/auth/permissions/merge.py",
+          "external_repos/home_assistant/homeassistant/auth/permissions/models.py",
+          "external_repos/home_assistant/homeassistant/auth/permissions/system_policies.py",
+          "external_repos/home_assistant/homeassistant/auth/permissions/types.py",
+          "external_repos/home_assistant/homeassistant/auth/permissions/util.py",
+          "external_repos/home_assistant/homeassistant/auth/providers/__init__.py",
+          "external_repos/home_assistant/homeassistant/auth/providers/command_line.py"
+        ]
+      }
+    },
+    {
+      "prompt": "what breaks if I remove caching",
+      "concept": "caching",
+      "response": {
+        "answer": "Removing **architecture symbol `caching`** (resolved to `external_repos/home_assistant/homeassistant/components/anthropic/config_flow.py` + 11 related module(s)) affects 0 direct + 0 transitive importer(s) across 1 subsystem(s). Target is a config/constants hub: blast radius is mostly recompiles, imports and tests \u2014 direct runtime-logic breakage is unlikely unless specific constant values are depended on.",
+        "mode": "impact",
+        "semantic_label": "architecture symbol `caching`",
+        "resolved_modules": [
+          "external_repos/home_assistant/homeassistant/components/anthropic/config_flow.py",
+          "external_repos/home_assistant/homeassistant/components/anthropic/const.py",
+          "external_repos/home_assistant/homeassistant/components/anthropic/entity.py",
+          "external_repos/home_assistant/homeassistant/components/geocaching/__init__.py",
+          "external_repos/home_assistant/homeassistant/components/geocaching/application_credentials.py",
+          "external_repos/home_assistant/homeassistant/components/geocaching/config_flow.py",
+          "external_repos/home_assistant/homeassistant/components/geocaching/const.py",
+          "external_repos/home_assistant/homeassistant/components/geocaching/coordinator.py",
+          "external_repos/home_assistant/homeassistant/components/geocaching/entity.py",
+          "external_repos/home_assistant/homeassistant/components/geocaching/models.py",
+          "external_repos/home_assistant/homeassistant/components/geocaching/oauth.py",
+          "external_repos/home_assistant/homeassistant/components/geocaching/sensor.py"
+        ],
+        "direct_impact": [],
+        "indirect_impact": [],
+        "architectural_blast_radius": 0,
+        "confidence": "low",
+        "files": [
+          "external_repos/home_assistant/.prettierrc.js",
+          "external_repos/home_assistant/homeassistant/__init__.py",
+          "external_repos/home_assistant/homeassistant/__main__.py",
+          "external_repos/home_assistant/homeassistant/auth/__init__.py",
+          "external_repos/home_assistant/homeassistant/auth/auth_store.py",
+          "external_repos/home_assistant/homeassistant/auth/const.py",
+          "external_repos/home_assistant/homeassistant/auth/jwt_wrapper.py",
+          "external_repos/home_assistant/homeassistant/auth/mfa_modules/__init__.py",
+          "external_repos/home_assistant/homeassistant/auth/mfa_modules/insecure_example.py",
+          "external_repos/home_assistant/homeassistant/auth/mfa_modules/notify.py",
+          "external_repos/home_assistant/homeassistant/auth/mfa_modules/totp.py",
+          "external_repos/home_assistant/homeassistant/auth/models.py",
+          "external_repos/home_assistant/homeassistant/components/anthropic/config_flow.py",
+          "external_repos/home_assistant/homeassistant/components/anthropic/const.py",
+          "external_repos/home_assistant/homeassistant/components/anthropic/entity.py",
+          "external_repos/home_assistant/homeassistant/components/geocaching/__init__.py",
+          "external_repos/home_assistant/homeassistant/components/geocaching/application_credentials.py",
+          "external_repos/home_assistant/homeassistant/components/geocaching/config_flow.py",
+          "external_repos/home_assistant/homeassistant/components/geocaching/const.py",
+          "external_repos/home_assistant/homeassistant/components/geocaching/coordinator.py"
+        ]
+      }
+    },
+    {
+      "prompt": "what breaks if I remove configuration",
+      "concept": "configuration",
+      "response": {
+        "answer": "Changing `config.py` affects 206 direct + 197 transitive importer(s) across 5 subsystem(s). Target is a config/constants hub: blast radius is mostly recompiles, imports and tests \u2014 direct runtime-logic breakage is unlikely unless specific constant values are depended on.",
+        "mode": "impact",
+        "semantic_label": "",
+        "resolved_modules": [],
+        "direct_impact": [
+          "actions/apps.py",
+          "actions/assistant_actions.py",
+          "actions/capabilities.py",
+          "actions/code_search.py",
+          "actions/filesystem.py",
+          "actions/knowledge_actions.py",
+          "actions/log_utils.py",
+          "actions/memory_actions.py",
+          "actions/powershell.py",
+          "actions/productivity_actions.py",
+          "actions/runtime_actions.py",
+          "actions/session_memory_actions.py",
+          "actions/study_actions.py",
+          "actions/task_actions.py",
+          "actions/trading_dashboard.py",
+          "actions/trading_loop.py",
+          "actions/trading_reports.py",
+          "actions/vision_actions.py",
+          "actions/workspace_actions.py",
+          "alpha/mode.py",
+          "alpha/session_log.py",
+          "approvals/inbox.py",
+          "apps/app_registry.py",
+          "artifacts/builder.py",
+          "assistant/confidence_tracking.py",
+          "assistant/continuity_engine.py",
+          "assistant/contradiction_engine.py",
+          "assistant/conversation_state.py",
+          "assistant/evidence_collector.py",
+          "assistant/experiment_engine.py",
+          "assistant/explain_rules.py",
+          "assistant/hypothesis_engine.py",
+          "assistant/idle_proactive.py",
+          "assistant/intelligence_timeline.py",
+          "assistant/investigation_cycles.py",
+          "assistant/investigation_graph.py",
+          "assistant/investigation_scheduler.py",
+          "assistant/notifications.py",
+          "assistant/operational_suggestions.py",
+          "assistant/proactive_assistant.py",
+          "assistant/proactive_monitor.py",
+          "assistant/project_intelligence.py",
+          "assistant/root_cause_engine.py",
+          "assistant/verification_plans.py",
+          "brain/aliases.py",
+          "brain/command_grammar.py",
+          "brain/intent_classifier.py",
+          "brain/llm_intent_classifier.py",
+          "brain/llm_tool_router.py",
+          "brain/memory.py",
+          "brain/preferences.py",
+          "brain/prompts.py",
+          "brain/router.py",
+          "browser/dom_read.py",
+          "browser/memory.py",
+          "browser/runtime.py",
+          "computer_control/desktop_controller.py",
+          "computer_control/guided.py",
+          "computer_control/safety.py",
+          "conversation/context_store.py",
+          "conversation/latency_hints.py",
+          "conversation/response_enhancer.py",
+          "conversation/semantic_stream/action_planner.py",
+          "conversation/semantic_stream/confidence_tracker.py",
+          "conversation/semantic_stream/engine.py",
+          "conversation/semantic_stream/interruption_handler.py",
+          "conversation/semantic_stream/profiling.py",
+          "conversation/semantic_stream/reformulation.py",
+          "conversation/suggestion_engine.py",
+          "core/confirmation.py",
+          "core/event_bus.py",
+          "core/logger.py",
+          "core/security.py",
+          "core/session.py",
+          "desktop/control_runtime.py",
+          "desktop/memory.py",
+          "desktop/ocr_pipeline.py",
+          "desktop/vision_runtime.py",
+          "diagnostics/collectors.py",
+          "diagnostics/command_audit.py",
+          "integrations/ollama_client.py",
+          "investigation/blocker_trends.py",
+          "investigation/divergence_clustering.py",
+          "investigation/execution_cleanup.py",
+          "investigation/execution_flow.py",
+          "investigation/execution_investigation.py",
+          "investigation/fixture_builder.py",
+          "investigation/historical_validation.py",
+          "investigation/patch_apply.py",
+          "investigation/patch_simulation.py",
+          "investigation/price_integrity.py",
+          "investigation/replay_engine.py",
+          "investigation/replay_snapshot.py",
+          "language/hybrid_understanding.py",
+          "language/semantic_intent.py",
+          "language/semantic_llm.py",
+          "language/vocabulary.py",
+          "memory/project_indexer.py",
+          "memory/repair.py",
+          "memory/semantic_runtime.py",
+          "memory/session_memory.py",
+          "memory/store.py",
+          "memory/task_memory.py",
+          "operating/project_io.py",
+          "operating/workspace_context.py",
+          "operational/trading_operations.py",
+          "operational/trading_operations_dashboard.py",
+          "phase45_investigation.py",
+          "project_intelligence/evidence.py",
+          "providers/daily_summary_provider.py",
+          "providers/readonly_integrations.py",
+          "reliability/async_persistence.py",
+          "reliability/coding_health.py",
+          "reliability/desktop_health.py",
+          "reliability/hardening_core.py",
+          "reliability/jarvis_status.py",
+          "reliability/startup_health.py",
+          "reliability/voice_health.py",
+          "runtime/background_tasks.py",
+          "runtime/dashboard_health.py",
+          "runtime/execution_trust.py",
+          "runtime/healing_engine.py",
+          "runtime/task_lifecycle.py",
+          "scripts/smoke_phase59.py",
+          "scripts/smoke_phase591_live_session.py",
+          "scripts/smoke_phase592_speech_output.py",
+          "services/autostart.py",
+          "services/health.py",
+          "services/high_performance_runtime.py",
+          "services/observability.py",
+          "services/runtime_monitor.py",
+          "services/watchdog.py",
+          "skills/base.py",
+          "task_agent/comparison_reports.py",
+          "task_agent/executor.py",
+          "task_agent/experiment_planner.py",
+          "task_agent/patch_apply.py",
+          "task_agent/patch_proposals.py",
+          "task_agent/queue.py",
+          "task_agent/reports.py",
+          "task_agent/safety.py",
+          "task_agent/trading_deep_review.py",
+          "ui/overlay_app.py",
+          "ui/overlay_presence.py",
+          "ui/overlay_state.py",
+          "ui/quiet_mode.py",
+          "validation/framework.py",
+          "validation/scenarios_desktop.py",
+          "validation/scenarios_integrations.py",
+          "validation/scenarios_memory.py",
+          "validation/scenarios_multistep.py",
+          "validation/scenarios_voice.py",
+          "validation/strict_framework.py",
+          "validation/strict_graders.py",
+          "vision/active_window.py",
+          "vision/context_engine.py",
+          "vision/ocr.py",
+          "vision/redaction.py",
+          "vision/screen_analyzer.py",
+          "vision/screen_capture.py",
+          "vision/screen_ocr.py",
+          "vision/screen_redaction.py",
+          "vision/screen_understanding.py",
+          "voice/audio_devices.py",
+          "voice/audio_route_prove.py",
+          "voice/audio_status.py",
+          "voice/auto_tune.py",
+          "voice/fast_voice.py",
+          "voice/microphone.py",
+          "voice/privacy.py",
+          "voice/real_voice_conversation.py",
+          "voice/speech_controller.py",
+          "voice/streaming_stt/intent_prefetch.py",
+          "voice/streaming_stt/session_policy.py",
+          "voice/streaming_stt/stream_session.py",
+          "voice/streaming_stt/transcribe.py",
+          "voice/stt_directml.py",
+          "voice/stt_engines/deepgram_local_engine.py",
+          "voice/stt_engines/onnx_whisper_engine.py",
+          "voice/stt_engines/parakeet_engine.py",
+          "voice/stt_engines/registry.py",
+          "voice/stt_engines/whisper_cpp_engine.py",
+          "voice/stt_handling.py",
+          "voice/stt_stack/audio_enhance.py",
+          "voice/stt_stack/intent_correction.py",
+          "voice/stt_stack/language_detect.py",
+          "voice/stt_stack/multipass.py",
+          "voice/stt_stack/partial_stream.py",
+          "voice/stt_stack/retry_pipeline.py",
+          "voice/stt_stack/stt_controller.py",
+          "voice/stt_stack/transcript_repair.py",
+          "voice/stt_stack/voice_fingerprint.py",
+          "voice/transcriber.py",
+          "voice/tts.py",
+          "voice/tts_pyttsx3.py",
+          "voice/tts_status.py",
+          "voice/tts_subprocess.py",
+          "voice/voice_calibration.py",
+          "voice/voice_stack_store.py",
+          "voice/wake_greeting.py",
+          "voice/wakeword.py",
+          "voice/wakeword_loop.py",
+          "websites/registry.py",
+          "websites/safety.py",
+          "workflows/registry.py",
+          "workflows/runner.py"
+        ],
+        "indirect_impact": [
+          "actions/app_actions.py",
+          "actions/approval_inbox_actions.py",
+          "actions/auto_tune_actions.py",
+          "actions/computer_control_actions.py",
+          "actions/diagnostics_actions.py",
+          "actions/latency_actions.py",
+          "actions/operating_layer_actions.py",
+          "actions/overlay_quiet_actions.py",
+          "actions/phase45_actions.py",
+          "actions/phase49_actions.py",
+          "actions/phase50_actions.py",
+          "actions/phase51_actions.py",
+          "actions/phase52_actions.py",
+          "actions/phase53_actions.py",
+          "actions/phase54_actions.py",
+          "actions/phase55_actions.py",
+          "actions/phase56_actions.py",
+          "actions/phase57_actions.py",
+          "actions/phase58_actions.py",
+          "actions/phase59_actions.py",
+          "actions/phase68_alpha_actions.py",
+          "actions/project_intelligence_actions.py",
+          "actions/registry.py",
+          "actions/service_actions.py",
+          "actions/stt_actions.py",
+          "actions/stt_stack_actions.py",
+          "actions/trading_logs.py",
+          "actions/tts_actions.py",
+          "actions/voice_audio_actions.py",
+          "actions/voice_stack_actions.py",
+          "actions/website_actions.py",
+          "actions/workflow_actions.py",
+          "agents/health_monitor_agent.py",
+          "agents/registry.py",
+          "agents/runtime_wiring.py",
+          "alpha/__init__.py",
+          "alpha/notifications_filter.py",
+          "alpha/report.py",
+          "alpha/safety.py",
+          "apps/__init__.py",
+          "apps/launcher.py",
+          "assistant/continuous_monitor.py",
+          "assistant/engineering_execution.py",
+          "assistant/intelligence_summary.py",
+          "assistant/plan_rules.py",
+          "assistant/root_cause_summary.py",
+          "autonomy/__init__.py",
+          "autonomy/audit.py",
+          "autonomy/executor.py",
+          "autonomy/memory.py",
+          "brain/command_parser.py",
+          "brain/realtime_understanding.py",
+          "brain/tool_router_audit.py",
+          "brain/voice_grammar.py",
+          "computer_control/app_focus.py",
+          "computer_control/clipboard_actions.py",
+          "computer_control/window_actions.py",
+          "conversation/__init__.py",
+          "conversation/emotional_speech.py",
+          "conversation/human_runtime.py",
+          "conversation/llm_streaming.py",
+          "conversation/memory_runtime.py",
+          "conversation/semantic_stream/__init__.py",
+          "core/app.py",
+          "core/persistent_json.py",
+          "core/runtime_bootstrap.py",
+          "core/startup_validation.py",
+          "core/thread_registry.py",
+          "diagnostics/__init__.py",
+          "diagnostics/engine.py",
+          "investigation/causality_trace.py",
+          "investigation/hypothesis_verifier.py",
+          "investigation/replay_diff.py",
+          "investigation/replay_report.py",
+          "investigation/replay_timeline.py",
+          "investigation/symbol_replay.py",
+          "language/__init__.py",
+          "memory/__init__.py",
+          "memory/graph.py",
+          "operational/unified_state.py",
+          "project_intelligence/__init__.py",
+          "project_intelligence/engine.py",
+          "project_intelligence/retrieval.py",
+          "project_intelligence/summarizer.py",
+          "reliability/browser_health.py",
+          "reliability/desktop_vision_health.py",
+          "reliability/integrations_health.py",
+          "reliability/memory_health.py",
+          "reliability/performance_health.py",
+          "reliability/product_readiness.py",
+          "reliability/system_health.py",
+          "scripts/gen_phase80_samples.py",
+          "scripts/run_phase661_strict_validation.py",
+          "scripts/smoke_audio_debug_startup.py",
+          "scripts/smoke_audio_direct_backend.py",
+          "scripts/smoke_phase46_5.py",
+          "scripts/smoke_phase46_6.py",
+          "scripts/smoke_phase47.py",
+          "scripts/smoke_phase48.py",
+          "scripts/smoke_phase48_1.py",
+          "scripts/smoke_phase48_2.py",
+          "scripts/smoke_phase49_50.py",
+          "scripts/smoke_phase51.py",
+          "scripts/smoke_phase52.py",
+          "scripts/smoke_phase53.py",
+          "scripts/smoke_phase54.py",
+          "scripts/smoke_phase55.py",
+          "scripts/smoke_phase55_1.py",
+          "scripts/smoke_phase56.py",
+          "scripts/smoke_phase57.py",
+          "scripts/smoke_phase58.py",
+          "scripts/smoke_phase60_voice_session.py",
+          "scripts/smoke_pyttsx3_completion.py",
+          "scripts/smoke_pyttsx3_completion_false_failure.py",
+          "scripts/smoke_pyttsx3_runloop.py",
+          "services/__init__.py",
+          "services/watchdog_runtime.py",
+          "skills/__init__.py",
+          "skills/code_skill.py",
+          "skills/computer_control_skill.py",
+          "skills/diagnostics_skill.py",
+          "skills/files_skill.py",
+          "skills/memory_skill.py",
+          "skills/productivity_skill.py",
+          "skills/registry.py",
+          "skills/services_skill.py",
+          "skills/system_skill.py",
+          "skills/trading_skill.py",
+          "skills/vision_skill.py",
+          "skills/websites_skill.py",
+          "skills/workflows_skill.py",
+          "task_agent/approvals.py",
+          "task_agent/planner.py",
+          "task_agent/report_templates.py",
+          "task_agent/session.py",
+          "tools/__init__.py",
+          "tools/audit.py",
+          "tools/catalog.py",
+          "tools/registry.py",
+          "tooluse/__init__.py",
+          "tooluse/audit.py",
+          "tooluse/executor.py",
+          "ui/console_modal.py",
+          "ui/notifications.py",
+          "ui/operator_console.py",
+          "ui/overlay_hud.py",
+          "ui/overlay_voice_status.py",
+          "ui/tray_app.py",
+          "validation/run_all.py",
+          "validation/run_all_strict.py",
+          "validation/scenarios_browser.py",
+          "validation/scenarios_coding.py",
+          "validation/scenarios_recovery.py",
+          "vision/__init__.py",
+          "vision/window_info.py",
+          "voice/audio_routing.py",
+          "voice/audio_runtime_init.py",
+          "voice/backend_manager.py",
+          "voice/backend_verification.py",
+          "voice/continuous_mic.py",
+          "voice/duplex_runtime.py",
+          "voice/human_conversation.py",
+          "voice/human_interruption.py",
+          "voice/interruption_manager.py",
+          "voice/latency_tracker.py",
+          "voice/preemptive_tts.py",
+          "voice/providers/__init__.py",
+          "voice/providers/elevenlabs_websocket.py",
+          "voice/providers/provider_health.py",
+          "voice/providers/registry.py",
+          "voice/providers/streaming_base.py",
+          "voice/pyttsx3_completion.py",
+          "voice/pyttsx3_lifecycle.py",
+          "voice/realtime_tts.py",
+          "voice/stable_wake_trace.py",
+          "voice/streaming_pipeline.py",
+          "voice/streaming_player.py",
+          "voice/streaming_stt/__init__.py",
+          "voice/streaming_stt/early_response.py",
+          "voice/streaming_stt/incremental_decode.py",
+          "voice/stt_benchmark.py",
+          "voice/stt_engines/__init__.py",
+          "voice/stt_stack/__init__.py",
+          "voice/tts_backend.py",
+          "voice/tts_benchmark.py",
+          "voice/tts_edge.py",
+          "voice/tts_output_policy.py",
+          "voice/tts_playback_trace.py",
+          "voice/tts_policy_trace.py",
+          "voice/tts_startup.py",
+          "voice/tts_watchdog.py",
+          "voice/voice_command_guard.py",
+          "voice/voice_loop.py",
+          "voice/windows_audio_routing.py",
+          "websites/__init__.py",
+          "websites/launcher.py",
+          "workflows/__init__.py"
+        ],
+        "architectural_blast_radius": 403,
+        "confidence": "high",
+        "files": [
+          "actions/apps.py",
+          "actions/assistant_actions.py",
+          "actions/capabilities.py",
+          "actions/code_search.py",
+          "actions/filesystem.py",
+          "actions/knowledge_actions.py",
+          "actions/log_utils.py",
+          "actions/memory_actions.py",
+          "actions/powershell.py",
+          "actions/productivity_actions.py",
+          "actions/runtime_actions.py",
+          "actions/session_memory_actions.py",
+          "actions/study_actions.py",
+          "actions/task_actions.py",
+          "actions/trading_dashboard.py",
+          "actions/trading_loop.py",
+          "actions/trading_reports.py",
+          "actions/vision_actions.py",
+          "actions/workspace_actions.py",
+          "alpha/mode.py"
+        ]
+      }
+    },
+    {
+      "prompt": "what breaks if I remove the logging layer",
+      "concept": "the logging layer",
+      "response": {
+        "answer": "Name a file, module, or architecture concept to analyze (for example `core.py`, `websocket support`, or `event bus`).",
+        "mode": "impact",
+        "semantic_label": null,
+        "resolved_modules": null,
+        "direct_impact": null,
+        "indirect_impact": null,
+        "architectural_blast_radius": null,
+        "confidence": "low",
+        "files": []
+      }
+    }
+  ],
+  "investigation_samples": [
+    {
+      "symptom": "duplicate events are being fired",
+      "response": {
+        "plan": {
+          "likely_modules": [
+            "actions/registry.py",
+            "agents/registry.py",
+            "apps/app_registry.py",
+            "core/thread_registry.py",
+            "actions/website_actions.py",
+            "core/runtime_bootstrap.py",
+            "external_repos/home_assistant/homeassistant/helpers/event.py",
+            "external_repos/home_assistant/homeassistant/components/recorder/core.py"
+          ],
+          "hypotheses": [
+            {
+              "title": "Defect originates in `external_repos/home_assistant/homeassistant/helpers/event.py`",
+              "confidence": "low",
+              "why_it_fits": "`external_repos/home_assistant/homeassistant/helpers/event.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`external_repos/home_assistant/homeassistant/helpers/event.py` \u2014 fan-in 0, risk 16.72",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "external_repos/home_assistant/homeassistant/helpers/event.py"
+              ],
+              "what_to_inspect": [
+                "external_repos/home_assistant/homeassistant/helpers/event.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `external_repos/home_assistant/homeassistant/helpers/event.py` directly.",
+              "how_to_disprove": "Add a focused test around `external_repos/home_assistant/homeassistant/helpers/event.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `external_repos/home_assistant/homeassistant/components/recorder/core.py`",
+              "confidence": "low",
+              "why_it_fits": "`external_repos/home_assistant/homeassistant/components/recorder/core.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`external_repos/home_assistant/homeassistant/components/recorder/core.py` \u2014 fan-in 0, risk 14.26",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "external_repos/home_assistant/homeassistant/components/recorder/core.py"
+              ],
+              "what_to_inspect": [
+                "external_repos/home_assistant/homeassistant/components/recorder/core.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `external_repos/home_assistant/homeassistant/components/recorder/core.py` directly.",
+              "how_to_disprove": "Add a focused test around `external_repos/home_assistant/homeassistant/components/recorder/core.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `external_repos/home_assistant/homeassistant/components/stream/core.py`",
+              "confidence": "low",
+              "why_it_fits": "`external_repos/home_assistant/homeassistant/components/stream/core.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`external_repos/home_assistant/homeassistant/components/stream/core.py` \u2014 fan-in 0, risk 8.44",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "external_repos/home_assistant/homeassistant/components/stream/core.py"
+              ],
+              "what_to_inspect": [
+                "external_repos/home_assistant/homeassistant/components/stream/core.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `external_repos/home_assistant/homeassistant/components/stream/core.py` directly.",
+              "how_to_disprove": "Add a focused test around `external_repos/home_assistant/homeassistant/components/stream/core.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `external_repos/home_assistant/homeassistant/core.py`",
+              "confidence": "low",
+              "why_it_fits": "`external_repos/home_assistant/homeassistant/core.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`external_repos/home_assistant/homeassistant/core.py` \u2014 fan-in 0, risk 7.0",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "external_repos/home_assistant/homeassistant/core.py"
+              ],
+              "what_to_inspect": [
+                "external_repos/home_assistant/homeassistant/core.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `external_repos/home_assistant/homeassistant/core.py` directly.",
+              "how_to_disprove": "Add a focused test around `external_repos/home_assistant/homeassistant/core.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            }
+          ],
+          "most_likely_root_cause": "FindLiveBacktestMismatchAction in `actions/operating_layer_actions.py`",
+          "intent": "general"
+        }
+      }
+    },
+    {
+      "symptom": "websocket connections keep disconnecting",
+      "response": {
+        "plan": {
+          "likely_modules": [
+            "actions/app_actions.py",
+            "autonomy/provider.py",
+            "agents/browser_agent.py",
+            "browser/runtime.py",
+            "agents/operator_agent.py",
+            "external_repos/home_assistant/homeassistant/components/application_credentials/__init__.py",
+            "external_repos/home_assistant/homeassistant/components/zha/websocket_api.py",
+            "external_repos/home_assistant/homeassistant/components/websocket_api/const.py"
+          ],
+          "hypotheses": [
+            {
+              "title": "Defect originates in `external_repos/home_assistant/homeassistant/components/zha/websocket_api.py`",
+              "confidence": "low",
+              "why_it_fits": "`external_repos/home_assistant/homeassistant/components/zha/websocket_api.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`external_repos/home_assistant/homeassistant/components/zha/websocket_api.py` \u2014 fan-in 0, risk 8.19",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "external_repos/home_assistant/homeassistant/components/zha/websocket_api.py"
+              ],
+              "what_to_inspect": [
+                "external_repos/home_assistant/homeassistant/components/zha/websocket_api.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `external_repos/home_assistant/homeassistant/components/zha/websocket_api.py` directly.",
+              "how_to_disprove": "Add a focused test around `external_repos/home_assistant/homeassistant/components/zha/websocket_api.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `external_repos/home_assistant/homeassistant/components/websocket_api/const.py`",
+              "confidence": "low",
+              "why_it_fits": "`external_repos/home_assistant/homeassistant/components/websocket_api/const.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`external_repos/home_assistant/homeassistant/components/websocket_api/const.py` \u2014 fan-in 0, risk 8.12",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "external_repos/home_assistant/homeassistant/components/websocket_api/const.py"
+              ],
+              "what_to_inspect": [
+                "external_repos/home_assistant/homeassistant/components/websocket_api/const.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `external_repos/home_assistant/homeassistant/components/websocket_api/const.py` directly.",
+              "how_to_disprove": "Add a focused test around `external_repos/home_assistant/homeassistant/components/websocket_api/const.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `external_repos/home_assistant/homeassistant/components/websocket_api/connection.py`",
+              "confidence": "low",
+              "why_it_fits": "`external_repos/home_assistant/homeassistant/components/websocket_api/connection.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`external_repos/home_assistant/homeassistant/components/websocket_api/connection.py` \u2014 fan-in 0, risk 7.36",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "external_repos/home_assistant/homeassistant/components/websocket_api/connection.py"
+              ],
+              "what_to_inspect": [
+                "external_repos/home_assistant/homeassistant/components/websocket_api/connection.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `external_repos/home_assistant/homeassistant/components/websocket_api/connection.py` directly.",
+              "how_to_disprove": "Add a focused test around `external_repos/home_assistant/homeassistant/components/websocket_api/connection.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `external_repos/home_assistant/homeassistant/components/hassio/websocket_api.py`",
+              "confidence": "low",
+              "why_it_fits": "`external_repos/home_assistant/homeassistant/components/hassio/websocket_api.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`external_repos/home_assistant/homeassistant/components/hassio/websocket_api.py` \u2014 fan-in 0, risk 6.61",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "external_repos/home_assistant/homeassistant/components/hassio/websocket_api.py"
+              ],
+              "what_to_inspect": [
+                "external_repos/home_assistant/homeassistant/components/hassio/websocket_api.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `external_repos/home_assistant/homeassistant/components/hassio/websocket_api.py` directly.",
+              "how_to_disprove": "Add a focused test around `external_repos/home_assistant/homeassistant/components/hassio/websocket_api.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            }
+          ],
+          "most_likely_root_cause": "__future__.annotations in `actions/app_actions.py`",
+          "intent": "general"
+        }
+      }
+    },
+    {
+      "symptom": "authentication fails intermittently",
+      "response": {
+        "plan": {
+          "likely_modules": [
+            "actions/registry.py",
+            "actions/session_memory_actions.py",
+            "external_repos/home_assistant/homeassistant/auth/auth_store.py",
+            "external_repos/home_assistant/homeassistant/auth/providers/__init__.py",
+            "external_repos/home_assistant/homeassistant/auth/providers/command_line.py",
+            "external_repos/home_assistant/homeassistant/auth/providers/homeassistant.py",
+            "external_repos/home_assistant/homeassistant/components/auth/login_flow.py",
+            "external_repos/home_assistant/homeassistant/auth/models.py"
+          ],
+          "hypotheses": [
+            {
+              "title": "Defect originates in `external_repos/home_assistant/homeassistant/auth/auth_store.py`",
+              "confidence": "low",
+              "why_it_fits": "`external_repos/home_assistant/homeassistant/auth/auth_store.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`external_repos/home_assistant/homeassistant/auth/auth_store.py` \u2014 fan-in 0, risk 8.03",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "external_repos/home_assistant/homeassistant/auth/auth_store.py"
+              ],
+              "what_to_inspect": [
+                "external_repos/home_assistant/homeassistant/auth/auth_store.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `external_repos/home_assistant/homeassistant/auth/auth_store.py` directly.",
+              "how_to_disprove": "Add a focused test around `external_repos/home_assistant/homeassistant/auth/auth_store.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `external_repos/home_assistant/homeassistant/components/auth/login_flow.py`",
+              "confidence": "low",
+              "why_it_fits": "`external_repos/home_assistant/homeassistant/components/auth/login_flow.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`external_repos/home_assistant/homeassistant/components/auth/login_flow.py` \u2014 fan-in 0, risk 5.22",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "external_repos/home_assistant/homeassistant/components/auth/login_flow.py"
+              ],
+              "what_to_inspect": [
+                "external_repos/home_assistant/homeassistant/components/auth/login_flow.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `external_repos/home_assistant/homeassistant/components/auth/login_flow.py` directly.",
+              "how_to_disprove": "Add a focused test around `external_repos/home_assistant/homeassistant/components/auth/login_flow.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `external_repos/home_assistant/homeassistant/auth/models.py`",
+              "confidence": "low",
+              "why_it_fits": "`external_repos/home_assistant/homeassistant/auth/models.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`external_repos/home_assistant/homeassistant/auth/models.py` \u2014 fan-in 0, risk 11.01",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "external_repos/home_assistant/homeassistant/auth/models.py"
+              ],
+              "what_to_inspect": [
+                "external_repos/home_assistant/homeassistant/auth/models.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `external_repos/home_assistant/homeassistant/auth/models.py` directly.",
+              "how_to_disprove": "Add a focused test around `external_repos/home_assistant/homeassistant/auth/models.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `external_repos/home_assistant/homeassistant/auth/permissions/types.py`",
+              "confidence": "low",
+              "why_it_fits": "`external_repos/home_assistant/homeassistant/auth/permissions/types.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`external_repos/home_assistant/homeassistant/auth/permissions/types.py` \u2014 fan-in 0, risk 8.05",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "external_repos/home_assistant/homeassistant/auth/permissions/types.py"
+              ],
+              "what_to_inspect": [
+                "external_repos/home_assistant/homeassistant/auth/permissions/types.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `external_repos/home_assistant/homeassistant/auth/permissions/types.py` directly.",
+              "how_to_disprove": "Add a focused test around `external_repos/home_assistant/homeassistant/auth/permissions/types.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            }
+          ],
+          "most_likely_root_cause": "auth_store in `external_repos/home_assistant/homeassistant/auth/__init__.py`",
+          "intent": "general"
+        }
+      }
+    }
+  ],
+  "build_samples": [
+    {
+      "request": "add distributed tracing",
+      "response": {
+        "plan": {
+          "likely_affected_modules": [
+            "actions/phase45_actions.py",
+            "external_repos/home_assistant/homeassistant/bootstrap.py"
+          ],
+          "implementation_order": [
+            "actions/phase45_actions.py",
+            "external_repos/home_assistant/homeassistant/bootstrap.py"
+          ],
+          "tests_required": [
+            "Unit/integration tests covering `external_repos/home_assistant/homeassistant/components/trace/websocket_api.py` (e.g. test_websocket_api*)",
+            "Unit/integration tests covering `external_repos/home_assistant/homeassistant/components/http/__init__.py` (e.g. test___init__*)",
+            "Unit/integration tests covering `external_repos/home_assistant/homeassistant/components/zha/websocket_api.py` (e.g. test_websocket_api*)",
+            "Unit/integration tests covering `external_repos/home_assistant/homeassistant/components/websocket_api/const.py` (e.g. test_const*)",
+            "Subsystem regression: external_repos",
+            "Project CI / full test suite before merge",
+            "Assert required fields on log lines",
+            "Synthetic probe alerts"
+          ],
+          "rollback_plan": [
+            "Make the change on a feature branch; keep `main` deployable.",
+            "Commit in small, revertible steps so any single commit can be `git revert`-ed cleanly.",
+            "Before editing, note the current behavior of: external_repos/home_assistant/homeassistant/components/trace/websocket_api.py, external_repos/home_assistant/homeassistant/components/http/__init__.py, external_repos/home_assistant/homeassistant/components/zha/websocket_api.py.",
+            "Keep DB migrations backward-compatible (additive) so the old code still runs if you roll back."
+          ],
+          "intent": "general"
+        }
+      }
+    },
+    {
+      "request": "add rate limiting",
+      "response": {
+        "plan": {
+          "likely_affected_modules": [
+            "actions/registry.py",
+            "external_repos/home_assistant/homeassistant/components/amazon_polly/tts.py",
+            "actions/operating_layer_actions.py",
+            "external_repos/home_assistant/homeassistant/components/aladdin_connect/api.py"
+          ],
+          "implementation_order": [
+            "actions/registry.py",
+            "external_repos/home_assistant/homeassistant/components/amazon_polly/tts.py",
+            "actions/operating_layer_actions.py",
+            "external_repos/home_assistant/homeassistant/components/aladdin_connect/api.py"
+          ],
+          "tests_required": [
+            "Unit/integration tests covering `external_repos/home_assistant/homeassistant/components/aladdin_connect/api.py` (e.g. test_api*)",
+            "Unit/integration tests covering `external_repos/home_assistant/homeassistant/components/http/__init__.py` (e.g. test___init__*)",
+            "Unit/integration tests covering `external_repos/home_assistant/homeassistant/components/zha/websocket_api.py` (e.g. test_websocket_api*)",
+            "Unit/integration tests covering `external_repos/home_assistant/homeassistant/components/websocket_api/const.py` (e.g. test_const*)",
+            "Subsystem regression: external_repos",
+            "Project CI / full test suite before merge",
+            "Integration tests with realistic payloads",
+            "Contract tests for error codes"
+          ],
+          "rollback_plan": [
+            "Make the change on a feature branch; keep `main` deployable.",
+            "Commit in small, revertible steps so any single commit can be `git revert`-ed cleanly.",
+            "Before editing, note the current behavior of: external_repos/home_assistant/homeassistant/components/aladdin_connect/api.py, external_repos/home_assistant/homeassistant/components/http/__init__.py, external_repos/home_assistant/homeassistant/components/zha/websocket_api.py.",
+            "Keep DB migrations backward-compatible (additive) so the old code still runs if you roll back."
+          ],
+          "intent": "general"
+        }
+      }
+    }
+  ],
+  "failures": [
+    {
+      "repository": "atlas_self",
+      "scenario": "what breaks if I remove the logging layer",
+      "expected": "concept resolves to modules",
+      "actual": "fallback / no target",
+      "root_cause": "concept absent from repo or not in resolver map",
+      "subsystem": "target_resolver / impact_engine",
+      "category": "semantic_routing_failure"
+    },
+    {
+      "repository": "atlas_self",
+      "scenario": "what breaks if I remove the impact engine",
+      "expected": "concept resolves to modules",
+      "actual": "fallback / no target",
+      "root_cause": "concept absent from repo or not in resolver map",
+      "subsystem": "target_resolver / impact_engine",
+      "category": "semantic_routing_failure"
+    },
+    {
+      "repository": "atlas_self",
+      "scenario": "what breaks if I remove the planning engine",
+      "expected": "concept resolves to modules",
+      "actual": "fallback / no target",
+      "root_cause": "concept absent from repo or not in resolver map",
+      "subsystem": "target_resolver / impact_engine",
+      "category": "semantic_routing_failure"
+    },
+    {
+      "repository": "atlas_self",
+      "scenario": "what breaks if I remove the architecture analyzer",
+      "expected": "concept resolves to modules",
+      "actual": "fallback / no target",
+      "root_cause": "concept absent from repo or not in resolver map",
+      "subsystem": "target_resolver / impact_engine",
+      "category": "semantic_routing_failure"
+    }
+  ],
+  "elapsed_seconds": 738.3
+}

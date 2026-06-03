@@ -1,0 +1,285 @@
+{
+  "id": "home_assistant",
+  "display": "Home Assistant",
+  "language": "python",
+  "available": true,
+  "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\home_assistant",
+  "modules": 9709,
+  "concepts": [
+    {
+      "concept": "authentication",
+      "phrase": "authentication",
+      "expected_subsystem": "auth / identity",
+      "prompt": "what breaks if I remove authentication",
+      "resolved": true,
+      "category": null,
+      "label": "authentication",
+      "modules": [
+        "homeassistant/auth/auth_store.py",
+        "homeassistant/auth/__init__.py",
+        "homeassistant/auth/providers/__init__.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 homeassistant/auth/auth_store.py, homeassistant/auth/__init__.py, homeassistant/auth/providers/__init__.py"
+    },
+    {
+      "concept": "authorization",
+      "phrase": "authorization",
+      "expected_subsystem": "access control / permissions",
+      "prompt": "what breaks if I remove authorization",
+      "resolved": true,
+      "category": null,
+      "label": "architecture symbol `authorization`",
+      "modules": [
+        "homeassistant/components/actron_air/config_flow.py",
+        "homeassistant/components/aladdin_connect/application_credentials.py",
+        "homeassistant/components/alexa/errors.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 homeassistant/components/actron_air/config_flow.py, homeassistant/components/aladdin_connect/application_credentials.py, homeassistant/components/alexa/errors.py"
+    },
+    {
+      "concept": "caching",
+      "phrase": "caching",
+      "expected_subsystem": "cache layer",
+      "prompt": "what breaks if I remove caching",
+      "resolved": true,
+      "category": null,
+      "label": "architecture symbol `caching`",
+      "modules": [
+        "homeassistant/components/anthropic/config_flow.py",
+        "homeassistant/components/anthropic/const.py",
+        "homeassistant/components/anthropic/entity.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 homeassistant/components/anthropic/config_flow.py, homeassistant/components/anthropic/const.py, homeassistant/components/anthropic/entity.py"
+    },
+    {
+      "concept": "configuration",
+      "phrase": "configuration",
+      "expected_subsystem": "config system",
+      "prompt": "what breaks if I remove configuration",
+      "resolved": true,
+      "category": null,
+      "label": "architecture symbol `configuration`",
+      "modules": [
+        "homeassistant/backup_restore.py",
+        "homeassistant/components/airgradient/button.py",
+        "homeassistant/components/airgradient/config_flow.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 homeassistant/backup_restore.py, homeassistant/components/airgradient/button.py, homeassistant/components/airgradient/config_flow.py"
+    },
+    {
+      "concept": "database",
+      "phrase": "the database layer",
+      "expected_subsystem": "persistence / database",
+      "prompt": "what breaks if I remove the database layer",
+      "resolved": true,
+      "category": null,
+      "label": "recorder/database",
+      "modules": [
+        "homeassistant/components/recorder/db_schema.py",
+        "homeassistant/components/recorder/__init__.py",
+        "homeassistant/components/recorder/util.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 homeassistant/components/recorder/db_schema.py, homeassistant/components/recorder/__init__.py, homeassistant/components/recorder/util.py"
+    },
+    {
+      "concept": "routing",
+      "phrase": "routing",
+      "expected_subsystem": "router / URL dispatch",
+      "prompt": "what breaks if I remove routing",
+      "resolved": false,
+      "category": "semantic_routing_failure",
+      "label": null,
+      "modules": [],
+      "confidence": "low",
+      "actual": "fallback \u2014 no target"
+    },
+    {
+      "concept": "middleware",
+      "phrase": "middleware",
+      "expected_subsystem": "middleware pipeline",
+      "prompt": "what breaks if I remove middleware",
+      "resolved": false,
+      "category": "semantic_routing_failure",
+      "label": null,
+      "modules": [],
+      "confidence": "low",
+      "actual": "fallback \u2014 no target"
+    },
+    {
+      "concept": "logging",
+      "phrase": "the logging layer",
+      "expected_subsystem": "logging subsystem",
+      "prompt": "what breaks if I remove the logging layer",
+      "resolved": false,
+      "category": "semantic_routing_failure",
+      "label": null,
+      "modules": [],
+      "confidence": "low",
+      "actual": "fallback \u2014 no target"
+    },
+    {
+      "concept": "events",
+      "phrase": "the event system",
+      "expected_subsystem": "event bus / dispatcher",
+      "prompt": "what breaks if I remove the event system",
+      "resolved": false,
+      "category": "semantic_routing_failure",
+      "label": null,
+      "modules": [],
+      "confidence": "low",
+      "actual": "fallback \u2014 no target"
+    },
+    {
+      "concept": "messaging",
+      "phrase": "messaging",
+      "expected_subsystem": "message queue / pub-sub",
+      "prompt": "what breaks if I remove messaging",
+      "resolved": true,
+      "category": null,
+      "label": "architecture symbol `messaging`",
+      "modules": [
+        "homeassistant/components/azure_service_bus/notify.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 homeassistant/components/azure_service_bus/notify.py"
+    },
+    {
+      "concept": "background_jobs",
+      "phrase": "background jobs",
+      "expected_subsystem": "task / worker queue",
+      "prompt": "what breaks if I remove background jobs",
+      "resolved": false,
+      "category": "semantic_routing_failure",
+      "label": null,
+      "modules": [],
+      "confidence": "low",
+      "actual": "fallback \u2014 no target"
+    },
+    {
+      "concept": "scheduling",
+      "phrase": "scheduling",
+      "expected_subsystem": "scheduler",
+      "prompt": "what breaks if I remove scheduling",
+      "resolved": false,
+      "category": "semantic_routing_failure",
+      "label": null,
+      "modules": [],
+      "confidence": "low",
+      "actual": "fallback \u2014 no target"
+    },
+    {
+      "concept": "state_management",
+      "phrase": "state management",
+      "expected_subsystem": "state store",
+      "prompt": "what breaks if I remove state management",
+      "resolved": false,
+      "category": "semantic_routing_failure",
+      "label": null,
+      "modules": [],
+      "confidence": "low",
+      "actual": "fallback \u2014 no target"
+    },
+    {
+      "concept": "plugins",
+      "phrase": "the plugin system",
+      "expected_subsystem": "plugin loader",
+      "prompt": "what breaks if I remove the plugin system",
+      "resolved": false,
+      "category": "semantic_routing_failure",
+      "label": null,
+      "modules": [],
+      "confidence": "low",
+      "actual": "fallback \u2014 no target"
+    },
+    {
+      "concept": "extensions",
+      "phrase": "extensions",
+      "expected_subsystem": "extension system",
+      "prompt": "what breaks if I remove extensions",
+      "resolved": true,
+      "category": null,
+      "label": "architecture symbol `extensions`",
+      "modules": [
+        "homeassistant/components/amazon_polly/tts.py",
+        "homeassistant/helpers/template/extensions/__init__.py",
+        "homeassistant/helpers/template/extensions/areas.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 homeassistant/components/amazon_polly/tts.py, homeassistant/helpers/template/extensions/__init__.py, homeassistant/helpers/template/extensions/areas.py"
+    },
+    {
+      "concept": "websockets",
+      "phrase": "websocket support",
+      "expected_subsystem": "websocket transport",
+      "prompt": "what breaks if I remove websocket support",
+      "resolved": true,
+      "category": null,
+      "label": "websocket support",
+      "modules": [
+        "homeassistant/components/websocket_api/__init__.py",
+        "homeassistant/components/websocket_api/const.py",
+        "homeassistant/components/websocket_api/connection.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 homeassistant/components/websocket_api/__init__.py, homeassistant/components/websocket_api/const.py, homeassistant/components/websocket_api/connection.py"
+    },
+    {
+      "concept": "api_layer",
+      "phrase": "the api layer",
+      "expected_subsystem": "API / endpoint layer",
+      "prompt": "what breaks if I remove the api layer",
+      "resolved": false,
+      "category": "semantic_routing_failure",
+      "label": null,
+      "modules": [],
+      "confidence": "low",
+      "actual": "fallback \u2014 no target"
+    },
+    {
+      "concept": "persistence",
+      "phrase": "persistence",
+      "expected_subsystem": "ORM / storage",
+      "prompt": "what breaks if I remove persistence",
+      "resolved": false,
+      "category": "semantic_routing_failure",
+      "label": null,
+      "modules": [],
+      "confidence": "low",
+      "actual": "fallback \u2014 no target"
+    },
+    {
+      "concept": "validation",
+      "phrase": "request validation",
+      "expected_subsystem": "input validation",
+      "prompt": "what breaks if I remove request validation",
+      "resolved": false,
+      "category": "semantic_routing_failure",
+      "label": null,
+      "modules": [],
+      "confidence": "low",
+      "actual": "fallback \u2014 no target"
+    },
+    {
+      "concept": "serialization",
+      "phrase": "serialization",
+      "expected_subsystem": "(de)serialization layer",
+      "prompt": "what breaks if I remove serialization",
+      "resolved": true,
+      "category": null,
+      "label": "architecture symbol `serialization`",
+      "modules": [
+        "homeassistant/helpers/template/extensions/serialization.py"
+      ],
+      "confidence": "medium",
+      "actual": "resolved \u2192 homeassistant/helpers/template/extensions/serialization.py"
+    }
+  ],
+  "status": "ok",
+  "resolved_count": 9,
+  "scan_seconds": 445.1
+}

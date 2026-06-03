@@ -1,0 +1,543 @@
+{
+  "id": "quixbugs",
+  "display": "QuixBugs",
+  "language": "python",
+  "framework": "algorithms corpus",
+  "category": "python",
+  "available": true,
+  "path": "C:\\repos\\quixbugs",
+  "scan": {
+    "module_count": 4,
+    "edges": 0,
+    "subsystem_count": 9,
+    "files": 365,
+    "massive_mode": false,
+    "graph_detail": "full",
+    "scan_seconds": 0.9
+  },
+  "status": "ok",
+  "scores": {
+    "understanding": 65.0,
+    "impact": 12.3,
+    "investigation": 100.0,
+    "build": 81.2,
+    "overall": 61.2
+  },
+  "understanding": {
+    "score": 65.0,
+    "components": {
+      "graph_built": 0.0,
+      "explanation": 15.0,
+      "subsystems": 15.0,
+      "entry_points": 10.0,
+      "runtime_boundaries": 0.0,
+      "top_risks": 10.0,
+      "hubs_vs_risks_separated": 15.0
+    },
+    "module_count": 4,
+    "edges": 0
+  },
+  "impact": {
+    "score": 12.3,
+    "resolution_rate": 0.143,
+    "fallback_rate": 0.857,
+    "resolved": 1,
+    "total": 7
+  },
+  "investigation": {
+    "score": 100.0,
+    "grounded_rate": 1.0,
+    "clean_rate": 1.0,
+    "avg_modules": 4.0
+  },
+  "build": {
+    "score": 81.2,
+    "with_modules": 1,
+    "total": 4
+  },
+  "impact_samples": [
+    {
+      "prompt": "what breaks if I remove authentication",
+      "concept": "authentication",
+      "response": {
+        "answer": "Name a file, module, or architecture concept to analyze (for example `core.py`, `websocket support`, or `event bus`).",
+        "mode": "impact",
+        "semantic_label": null,
+        "resolved_modules": null,
+        "direct_impact": null,
+        "indirect_impact": null,
+        "architectural_blast_radius": null,
+        "confidence": "low",
+        "files": []
+      }
+    },
+    {
+      "prompt": "what breaks if I remove caching",
+      "concept": "caching",
+      "response": {
+        "answer": "Name a file, module, or architecture concept to analyze (for example `core.py`, `websocket support`, or `event bus`).",
+        "mode": "impact",
+        "semantic_label": null,
+        "resolved_modules": null,
+        "direct_impact": null,
+        "indirect_impact": null,
+        "architectural_blast_radius": null,
+        "confidence": "low",
+        "files": []
+      }
+    },
+    {
+      "prompt": "what breaks if I remove configuration",
+      "concept": "configuration",
+      "response": {
+        "answer": "Name a file, module, or architecture concept to analyze (for example `core.py`, `websocket support`, or `event bus`).",
+        "mode": "impact",
+        "semantic_label": null,
+        "resolved_modules": null,
+        "direct_impact": null,
+        "indirect_impact": null,
+        "architectural_blast_radius": null,
+        "confidence": "low",
+        "files": []
+      }
+    },
+    {
+      "prompt": "what breaks if I remove the logging layer",
+      "concept": "the logging layer",
+      "response": {
+        "answer": "Name a file, module, or architecture concept to analyze (for example `core.py`, `websocket support`, or `event bus`).",
+        "mode": "impact",
+        "semantic_label": null,
+        "resolved_modules": null,
+        "direct_impact": null,
+        "indirect_impact": null,
+        "architectural_blast_radius": null,
+        "confidence": "low",
+        "files": []
+      }
+    }
+  ],
+  "investigation_samples": [
+    {
+      "symptom": "duplicate events are being fired",
+      "response": {
+        "plan": {
+          "likely_modules": [
+            "tester.py",
+            "conftest.py",
+            "python_testcases/node.py",
+            "python_testcases/load_testdata.py"
+          ],
+          "hypotheses": [
+            {
+              "title": "Defect originates in `tester.py`",
+              "confidence": "low",
+              "why_it_fits": "`tester.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`tester.py` \u2014 fan-in 0, risk 3.2",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "tester.py"
+              ],
+              "what_to_inspect": [
+                "tester.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `tester.py` directly.",
+              "how_to_disprove": "Add a focused test around `tester.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `conftest.py`",
+              "confidence": "low",
+              "why_it_fits": "`conftest.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`conftest.py` \u2014 fan-in 0, risk 3.03",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "conftest.py"
+              ],
+              "what_to_inspect": [
+                "conftest.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `conftest.py` directly.",
+              "how_to_disprove": "Add a focused test around `conftest.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `python_testcases/node.py`",
+              "confidence": "low",
+              "why_it_fits": "`python_testcases/node.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`python_testcases/node.py` \u2014 fan-in 0, risk 3.03",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "python_testcases/node.py"
+              ],
+              "what_to_inspect": [
+                "python_testcases/node.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `python_testcases/node.py` directly.",
+              "how_to_disprove": "Add a focused test around `python_testcases/node.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `python_testcases/load_testdata.py`",
+              "confidence": "low",
+              "why_it_fits": "`python_testcases/load_testdata.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`python_testcases/load_testdata.py` \u2014 fan-in 0, risk 3.02",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "python_testcases/load_testdata.py"
+              ],
+              "what_to_inspect": [
+                "python_testcases/load_testdata.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `python_testcases/load_testdata.py` directly.",
+              "how_to_disprove": "Add a focused test around `python_testcases/load_testdata.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            }
+          ],
+          "most_likely_root_cause": "Defect originates in `tester.py`",
+          "intent": "general"
+        }
+      }
+    },
+    {
+      "symptom": "websocket connections keep disconnecting",
+      "response": {
+        "plan": {
+          "likely_modules": [
+            "tester.py",
+            "conftest.py",
+            "python_testcases/node.py",
+            "python_testcases/load_testdata.py"
+          ],
+          "hypotheses": [
+            {
+              "title": "Defect originates in `tester.py`",
+              "confidence": "low",
+              "why_it_fits": "`tester.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`tester.py` \u2014 fan-in 0, risk 3.2",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "tester.py"
+              ],
+              "what_to_inspect": [
+                "tester.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `tester.py` directly.",
+              "how_to_disprove": "Add a focused test around `tester.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `conftest.py`",
+              "confidence": "low",
+              "why_it_fits": "`conftest.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`conftest.py` \u2014 fan-in 0, risk 3.03",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "conftest.py"
+              ],
+              "what_to_inspect": [
+                "conftest.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `conftest.py` directly.",
+              "how_to_disprove": "Add a focused test around `conftest.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `python_testcases/node.py`",
+              "confidence": "low",
+              "why_it_fits": "`python_testcases/node.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`python_testcases/node.py` \u2014 fan-in 0, risk 3.03",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "python_testcases/node.py"
+              ],
+              "what_to_inspect": [
+                "python_testcases/node.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `python_testcases/node.py` directly.",
+              "how_to_disprove": "Add a focused test around `python_testcases/node.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `python_testcases/load_testdata.py`",
+              "confidence": "low",
+              "why_it_fits": "`python_testcases/load_testdata.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`python_testcases/load_testdata.py` \u2014 fan-in 0, risk 3.02",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "python_testcases/load_testdata.py"
+              ],
+              "what_to_inspect": [
+                "python_testcases/load_testdata.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `python_testcases/load_testdata.py` directly.",
+              "how_to_disprove": "Add a focused test around `python_testcases/load_testdata.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            }
+          ],
+          "most_likely_root_cause": "Defect originates in `tester.py`",
+          "intent": "general"
+        }
+      }
+    },
+    {
+      "symptom": "authentication fails intermittently",
+      "response": {
+        "plan": {
+          "likely_modules": [
+            "tester.py",
+            "conftest.py",
+            "python_testcases/node.py",
+            "python_testcases/load_testdata.py"
+          ],
+          "hypotheses": [
+            {
+              "title": "Defect originates in `tester.py`",
+              "confidence": "low",
+              "why_it_fits": "`tester.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`tester.py` \u2014 fan-in 0, risk 3.2",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "tester.py"
+              ],
+              "what_to_inspect": [
+                "tester.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `tester.py` directly.",
+              "how_to_disprove": "Add a focused test around `tester.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `conftest.py`",
+              "confidence": "low",
+              "why_it_fits": "`conftest.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`conftest.py` \u2014 fan-in 0, risk 3.03",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "conftest.py"
+              ],
+              "what_to_inspect": [
+                "conftest.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `conftest.py` directly.",
+              "how_to_disprove": "Add a focused test around `conftest.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `python_testcases/node.py`",
+              "confidence": "low",
+              "why_it_fits": "`python_testcases/node.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`python_testcases/node.py` \u2014 fan-in 0, risk 3.03",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "python_testcases/node.py"
+              ],
+              "what_to_inspect": [
+                "python_testcases/node.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `python_testcases/node.py` directly.",
+              "how_to_disprove": "Add a focused test around `python_testcases/node.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            },
+            {
+              "title": "Defect originates in `python_testcases/load_testdata.py`",
+              "confidence": "low",
+              "why_it_fits": "`python_testcases/load_testdata.py` scored highest on keyword overlap with the symptom.",
+              "evidence": [
+                "`python_testcases/load_testdata.py` \u2014 fan-in 0, risk 3.02",
+                "Matched symptom keywords in the module path/index."
+              ],
+              "files_involved": [
+                "python_testcases/load_testdata.py"
+              ],
+              "what_to_inspect": [
+                "python_testcases/load_testdata.py"
+              ],
+              "what_should_be_true_if_correct": "The failing behavior is reproducible by exercising `python_testcases/load_testdata.py` directly.",
+              "how_to_disprove": "Add a focused test around `python_testcases/load_testdata.py`; if it passes with the symptom inputs, the cause is elsewhere."
+            }
+          ],
+          "most_likely_root_cause": "Defect originates in `tester.py`",
+          "intent": "general"
+        }
+      }
+    }
+  ],
+  "build_samples": [
+    {
+      "request": "add distributed tracing",
+      "response": {
+        "plan": {
+          "likely_affected_modules": [],
+          "implementation_order": [
+            "conftest.py",
+            "python_testcases/load_testdata.py",
+            "python_testcases/node.py",
+            "tester.py"
+          ],
+          "tests_required": [
+            "Unit/integration tests covering `tester.py` (e.g. test_tester*)",
+            "Unit/integration tests covering `conftest.py` (e.g. test_conftest*)",
+            "Unit/integration tests covering `python_testcases/node.py` (e.g. test_node*)",
+            "Unit/integration tests covering `python_testcases/load_testdata.py` (e.g. test_load_testdata*)",
+            "Subsystem regression: (root), python_testcases",
+            "Project CI / full test suite before merge",
+            "Assert required fields on log lines",
+            "Synthetic probe alerts"
+          ],
+          "rollback_plan": [
+            "Make the change on a feature branch; keep `main` deployable.",
+            "Commit in small, revertible steps so any single commit can be `git revert`-ed cleanly.",
+            "Before editing, note the current behavior of: tester.py, conftest.py, python_testcases/node.py.",
+            "Keep DB migrations backward-compatible (additive) so the old code still runs if you roll back."
+          ],
+          "intent": "general"
+        }
+      }
+    },
+    {
+      "request": "add rate limiting",
+      "response": {
+        "plan": {
+          "likely_affected_modules": [],
+          "implementation_order": [
+            "conftest.py",
+            "python_testcases/load_testdata.py",
+            "python_testcases/node.py",
+            "tester.py"
+          ],
+          "tests_required": [
+            "Unit/integration tests covering `tester.py` (e.g. test_tester*)",
+            "Unit/integration tests covering `conftest.py` (e.g. test_conftest*)",
+            "Unit/integration tests covering `python_testcases/node.py` (e.g. test_node*)",
+            "Unit/integration tests covering `python_testcases/load_testdata.py` (e.g. test_load_testdata*)",
+            "Subsystem regression: (root), python_testcases",
+            "Project CI / full test suite before merge",
+            "Integration tests with realistic payloads",
+            "Contract tests for error codes"
+          ],
+          "rollback_plan": [
+            "Make the change on a feature branch; keep `main` deployable.",
+            "Commit in small, revertible steps so any single commit can be `git revert`-ed cleanly.",
+            "Before editing, note the current behavior of: tester.py, conftest.py, python_testcases/node.py.",
+            "Keep DB migrations backward-compatible (additive) so the old code still runs if you roll back."
+          ],
+          "intent": "general"
+        }
+      }
+    }
+  ],
+  "failures": [
+    {
+      "repository": "quixbugs",
+      "scenario": "repository_understanding",
+      "expected": ">=30 modules indexed",
+      "actual": "4 modules",
+      "root_cause": "graph sparse/degraded for this layout",
+      "subsystem": "graph build",
+      "category": "graph_failure"
+    },
+    {
+      "repository": "quixbugs",
+      "scenario": "runtime_boundaries",
+      "expected": "boundary modules identified",
+      "actual": "none",
+      "root_cause": "no cross-subsystem boundaries detected for this layout",
+      "subsystem": "architecture analyzer",
+      "category": "architecture_failure"
+    },
+    {
+      "repository": "quixbugs",
+      "scenario": "what breaks if I remove authentication",
+      "expected": "concept resolves to modules",
+      "actual": "fallback / no target",
+      "root_cause": "concept absent from repo or not in resolver map",
+      "subsystem": "target_resolver / impact_engine",
+      "category": "semantic_routing_failure"
+    },
+    {
+      "repository": "quixbugs",
+      "scenario": "what breaks if I remove caching",
+      "expected": "concept resolves to modules",
+      "actual": "fallback / no target",
+      "root_cause": "concept absent from repo or not in resolver map",
+      "subsystem": "target_resolver / impact_engine",
+      "category": "semantic_routing_failure"
+    },
+    {
+      "repository": "quixbugs",
+      "scenario": "what breaks if I remove configuration",
+      "expected": "concept resolves to modules",
+      "actual": "fallback / no target",
+      "root_cause": "concept absent from repo or not in resolver map",
+      "subsystem": "target_resolver / impact_engine",
+      "category": "semantic_routing_failure"
+    },
+    {
+      "repository": "quixbugs",
+      "scenario": "what breaks if I remove the logging layer",
+      "expected": "concept resolves to modules",
+      "actual": "fallback / no target",
+      "root_cause": "concept absent from repo or not in resolver map",
+      "subsystem": "target_resolver / impact_engine",
+      "category": "semantic_routing_failure"
+    },
+    {
+      "repository": "quixbugs",
+      "scenario": "what breaks if I remove the database layer",
+      "expected": "concept resolves to modules",
+      "actual": "fallback / no target",
+      "root_cause": "concept absent from repo or not in resolver map",
+      "subsystem": "target_resolver / impact_engine",
+      "category": "semantic_routing_failure"
+    },
+    {
+      "repository": "quixbugs",
+      "scenario": "what breaks if I remove the graph algorithms",
+      "expected": "concept resolves to modules",
+      "actual": "fallback / no target",
+      "root_cause": "concept absent from repo or not in resolver map",
+      "subsystem": "target_resolver / impact_engine",
+      "category": "semantic_routing_failure"
+    },
+    {
+      "repository": "quixbugs",
+      "scenario": "add distributed tracing",
+      "expected": "affected modules",
+      "actual": "none",
+      "root_cause": "no module matched the build concept in this repo",
+      "subsystem": "planning_engine",
+      "category": "build_plan_failure"
+    },
+    {
+      "repository": "quixbugs",
+      "scenario": "add rate limiting",
+      "expected": "affected modules",
+      "actual": "none",
+      "root_cause": "no module matched the build concept in this repo",
+      "subsystem": "planning_engine",
+      "category": "build_plan_failure"
+    },
+    {
+      "repository": "quixbugs",
+      "scenario": "add audit logging",
+      "expected": "affected modules",
+      "actual": "none",
+      "root_cause": "no module matched the build concept in this repo",
+      "subsystem": "planning_engine",
+      "category": "build_plan_failure"
+    }
+  ],
+  "elapsed_seconds": 1.6
+}
