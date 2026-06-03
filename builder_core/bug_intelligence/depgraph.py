@@ -454,13 +454,16 @@ def build_graph_from_files(
     # (1 module / 0 edges) instead of a useful import-level map. The file cap only
     # protects the expensive FULL detail (call graph + cross-file references).
     if detail == DETAIL_IMPORTS:
+        # Phase 133B — a complete import-level graph is NOT degraded just because it
+        # is over the FULL-detail file cap. ``_build_imports_detail_graph`` only sets
+        # degraded/partial when it genuinely hits the deadline or parser failures.
+        # The over-cap fact is recorded informationally (``import_level_capped``)
+        # without flagging the graph degraded.
         graph = _build_imports_detail_graph(
             root, file_list, deadline=deadline, on_progress=on_progress,
         )
         if len(file_list) > _MAX_FILES:
-            graph["degraded"] = True
-            graph.setdefault("degraded_reason", "import_level_over_cap")
-            graph["degraded_count"] = len(file_list)
+            graph["import_level_file_count"] = len(file_list)
         return graph
     if len(file_list) > _MAX_FILES:
         return _degraded_graph(root, "too_many_files", len(file_list))

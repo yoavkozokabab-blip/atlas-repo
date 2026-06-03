@@ -10,7 +10,10 @@ from builder_core.bug_intelligence import depgraph, jsdepgraph
 
 # Time budgets (seconds) for graph construction during desktop scan.
 BUDGET_PRESCAN_MAX_SEC = 5.0
-BUDGET_HIERARCHY_IMPORTS_SEC = 60.0
+# Phase 133 — import-level graph is cheap (~16s for ~9.7k warm files) but cold-disk
+# reads on huge repos (Home Assistant, 26k files) can be much slower; give enough
+# budget to index thousands of modules rather than timing out at a few hundred.
+BUDGET_HIERARCHY_IMPORTS_SEC = 150.0
 BUDGET_FULL_MODULE_SEC = 180.0
 BUDGET_JS_TS_SEC = 55.0
 
