@@ -171,8 +171,22 @@ def is_indexable(rel_path: str, ext: str, *, project_root: str | None = None) ->
 
 
 def _subsystem_name(rel_path: str) -> str:
+    """Stable subsystem key — deeper grouping for large Python monorepos."""
     parts = rel_path.replace("\\", "/").split("/")
-    return parts[0] if len(parts) > 1 else "(root)"
+    if len(parts) <= 1:
+        return "(root)"
+    # homeassistant/components/<domain>/... -> per-integration subsystem
+    if len(parts) >= 3 and parts[0] == "homeassistant" and parts[1] == "components":
+        return "/".join(parts[:3])
+    # homeassistant/<area>/... (auth, helpers, loader, ...)
+    if len(parts) >= 2 and parts[0] == "homeassistant":
+        return "/".join(parts[:2])
+    # Generic src/pkg layout
+    if len(parts) >= 3 and parts[0] in ("src", "lib", "app", "pkg"):
+        return "/".join(parts[:3])
+    if len(parts) >= 2 and parts[0] in ("src", "lib", "app", "pkg"):
+        return "/".join(parts[:2])
+    return parts[0]
 
 
 def _dominant_role(files: Iterable[Dict[str, Any]]) -> str:

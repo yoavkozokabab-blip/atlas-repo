@@ -126,6 +126,12 @@ def _concept_path_boost(path: str, concept_id: str, keywords: List[str]) -> floa
         boost += 18.0
     if concept_id == "idempotency_key" and ("order" in pl or "execution" in pl):
         boost += 16.0
+    try:
+        from .architecture_patterns import build_plan_path_boost
+
+        boost += build_plan_path_boost(path, concept_id)
+    except ImportError:
+        pass
     if "registry" in pl and concept_id not in REGISTRY_OK_CONCEPTS:
         if not any(k in pl for k in keywords if len(k) > 3):
             boost -= 20.0

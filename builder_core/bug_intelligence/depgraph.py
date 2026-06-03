@@ -447,12 +447,23 @@ def build_graph_from_files(
     """Build a dependency graph from ``(rel_path, text)`` pairs."""
     root = os.path.abspath(repository_root).replace("\\", "/")
     file_list = sorted((rel.replace("\\", "/"), text) for rel, text in files)
-    if len(file_list) > _MAX_FILES:
-        return _degraded_graph(root, "too_many_files", len(file_list))
+    # Phase 133 — the import-level graph is cheap (one ``ast.parse`` + import-edge
+    # pass per file) and is already bounded by ``deadline``. It must therefore run
+    # BEFORE the FULL-detail file cap; otherwise huge real repositories (e.g. Home
+    # Assistant, ~9.7k production files) collapsed to an empty degraded graph
+    # (1 module / 0 edges) instead of a useful import-level map. The file cap only
+    # protects the expensive FULL detail (call graph + cross-file references).
     if detail == DETAIL_IMPORTS:
-        return _build_imports_detail_graph(
+        graph = _build_imports_detail_graph(
             root, file_list, deadline=deadline, on_progress=on_progress,
         )
+        if len(file_list) > _MAX_FILES:
+            graph["degraded"] = True
+            graph.setdefault("degraded_reason", "import_level_over_cap")
+            graph["degraded_count"] = len(file_list)
+        return graph
+    if len(file_list) > _MAX_FILES:
+        return _degraded_graph(root, "too_many_files", len(file_list))
 
     text_by_rel = dict(file_list)
     nodes: Dict[str, Dict[str, Any]] = {}

@@ -43,8 +43,9 @@ def test_final_algo_trader_module_payload_matches_stored_graph():
     assert module["node_count"] == stored
     assert module["node_count"] == scan["module_count"]
     assert overview["node_count"] < module["node_count"]
-    assert overview["node_count"] == 11
     assert overview.get("architecture_clusters") is True
+    # Phase 133: overview may expose more than legacy ~11 clusters when subsystems are granular.
+    assert overview["node_count"] <= max(20, module["node_count"] // 2)
 
 
 def test_massive_mode_triggered_by_size_not_module_count():

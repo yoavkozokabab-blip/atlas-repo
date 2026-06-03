@@ -439,19 +439,112 @@ def _production_modules(graph: Optional[Dict[str, Any]]) -> List[Dict[str, Any]]
     return [n for n in graph.get("nodes", []) if n.get("type") == "module" and n.get("path")]
 
 
+# Phase 133 — real-repo hardening. Runtime/system symptoms must never localize to
+# config/dotfiles/lockfiles/docs. These markers identify non-runtime files.
+_CONFIG_PATH_MARKERS = (
+    ".prettierrc", ".prettierignore", ".eslintrc", "eslint.config", ".editorconfig",
+    "package.json", "package-lock.json", "yarn.lock", "pnpm-lock", "pyproject.toml",
+    "setup.cfg", "setup.py", "tox.ini", "mypy.ini", ".flake8", ".pre-commit",
+    ".gitignore", ".gitattributes", ".dockerignore", "dockerfile", "requirements",
+    ".github/", "/docs/", "/.vscode/", "/.devcontainer/", ".md", ".rst", ".txt",
+    ".cfg", ".lock", ".toml", "/script/", "/scripts/",
+)
+
+# Runtime/system symptom hints — when present, config/dotfiles are penalized hard.
+_RUNTIME_SYMPTOM_HINTS = (
+    "duplicate", "event", "websocket", "disconnect", "memory", "leak", "slow",
+    "loading", "trigger", "twice", "auth", "session", "cache", "database",
+    "deadlock", "timeout", "race", "hang", "crash", "fire", "listener", "dispatch",
+    "integration", "automation", "recorder", "state", "fail", "error", "exception",
+)
+
+# Symptom keyword groups -> (path-substring, boost) so concept symptoms land on the
+# right architecture files even when the path doesn't literally contain the keyword.
+_RUNTIME_BOOSTS: Tuple[Tuple[Tuple[str, ...], Tuple[Tuple[str, float], ...]], ...] = (
+    (("duplicate", "event", "fire", "listener", "dispatch", "emit", "fired"),
+     (("/core.py", 9), ("/helpers/event.py", 9), ("/helpers/dispatcher.py", 8),
+      ("eventbus", 9), ("components/automation", 6), ("/helpers/trigger", 6))),
+    (("websocket", "disconnect", " ws ", "socket"),
+     (("websocket_api", 10), ("/http/", 4), ("/auth/", 4), ("/components/api", 5))),
+    (("integration", "setup", "config entry", "config_entry", "loading"),
+     (("config_entries.py", 9), ("/loader.py", 8), ("/setup.py", 7), ("/bootstrap.py", 5))),
+    (("auth", "session", "login", "token", "jwt"),
+     (("/auth/", 9), ("auth_store", 7), ("auth_provider", 7))),
+    (("recorder", "database", " db ", "sql", "sqlite", "postgres"),
+     (("components/recorder", 10), ("/db.py", 6))),
+    (("automation", "trigger twice"),
+     (("components/automation", 9), ("/helpers/trigger", 7), ("/helpers/script", 6))),
+)
+
+
+# Build-request concept boosts — distributed tracing / rate limiting etc. must land
+# on request lifecycle / API / websocket / logging boundaries, not random async files.
+_BUILD_BOOSTS: Tuple[Tuple[Tuple[str, ...], Tuple[Tuple[str, float], ...]], ...] = (
+    (("tracing", "trace", "observability", "telemetry", "instrument"),
+     (("/http/", 8), ("websocket_api", 8), ("/helpers/event.py", 6), ("/middleware", 8),
+      ("/core.py", 6), ("logging", 7), ("/setup.py", 4), ("config_entries.py", 4))),
+    (("rate limit", "rate-limit", "ratelimit", "throttle", "throttling"),
+     (("/http/", 9), ("websocket_api", 9), ("/auth/", 7), ("/api.py", 7),
+      ("/components/api", 7), ("/helpers/aiohttp", 5))),
+    (("cache", "caching"),
+     (("/helpers/storage.py", 7), ("components/recorder", 5), ("/core.py", 4))),
+    (("websocket", "ws api"),
+     (("websocket_api", 10), ("/http/", 5))),
+    (("auth", "authentication", "login"),
+     (("/auth/", 9), ("auth_store", 6), ("auth_provider", 6))),
+)
+
+
+def _build_boosts_for_text(text: str) -> List[Tuple[str, float]]:
+    low = (text or "").lower()
+    out: List[Tuple[str, float]] = []
+    for triggers, boosts in _BUILD_BOOSTS:
+        if any(t in low for t in triggers):
+            out.extend(boosts)
+    return out
+
+
+def _is_runtime_symptom(text: str) -> bool:
+    low = (text or "").lower()
+    return any(h in low for h in _RUNTIME_SYMPTOM_HINTS)
+
+
+def _is_config_path(path: str) -> bool:
+    p = (path or "").lower().replace("\\", "/")
+    return any(m in p for m in _CONFIG_PATH_MARKERS)
+
+
+def _boosts_for_text(text: str) -> List[Tuple[str, float]]:
+    low = (text or "").lower()
+    out: List[Tuple[str, float]] = []
+    for triggers, boosts in _RUNTIME_BOOSTS:
+        if any(t in low for t in triggers):
+            out.extend(boosts)
+    return out
+
+
 def _score_modules(
     modules: List[Dict[str, Any]],
     terms: Set[str],
     risks_by_path: Dict[str, Dict[str, Any]],
+    *,
+    runtime: bool = False,
+    boosts: Optional[List[Tuple[str, float]]] = None,
 ) -> List[Tuple[float, Dict[str, Any]]]:
     scored: List[Tuple[float, Dict[str, Any]]] = []
     for node in modules:
         path = node.get("path") or ""
         p = path.lower().replace("\\", "/")
+        # Severe penalty: runtime/system symptoms never localize to config/dotfiles.
+        if runtime and _is_config_path(p):
+            continue
         score = 0.0
         for term in terms:
             if term in p:
                 score += 3.0
+        for kw, amount in (boosts or ()):
+            if kw.lower() in p:
+                score += amount
         risk = risks_by_path.get(path) or {}
         score += min(5.0, float(risk.get("total_score", 0) or 0) / 20.0)
         score += min(3.0, float(node.get("fan_in", 0) or 0) / 10.0)
@@ -675,7 +768,9 @@ def plan_change(request: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
     extra_terms = set(spec.get("search", ())) | terms | dk.search_terms_for_classification(build_class)
     modules = _production_modules(graph)
     risks_map = _risks_map(ctx.get("risks"))
-    scored = _score_modules(modules, extra_terms, risks_map)
+    scored = _score_modules(
+        modules, extra_terms, risks_map, boosts=_build_boosts_for_text(goal)
+    )
 
     matched_paths = [node["path"] for _, node in scored[:12]]
     matched_ids = {node["id"] for _, node in scored[:12]}
@@ -963,8 +1058,18 @@ def investigate_symptom(symptom: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
 
     modules = _production_modules(graph)
     risks_map = _risks_map(ctx.get("risks"))
-    scored = _score_modules(modules, search_terms, risks_map)
+    runtime = _is_runtime_symptom(text)
+    scored = _score_modules(
+        modules, search_terms, risks_map,
+        runtime=runtime, boosts=_boosts_for_text(text),
+    )
+    # If a runtime symptom matched nothing after penalising config files, retry
+    # without the term filter so we still surface real source modules (never dotfiles).
+    if runtime and not scored:
+        scored = _score_modules(modules, set(), risks_map, runtime=True, boosts=_boosts_for_text(text))
     for path in explicit_paths:
+        if _is_config_path(path) and runtime:
+            continue
         if path not in [n.get("path") for _, n in scored]:
             node = next((n for n in modules if n.get("path") == path), None)
             if node:

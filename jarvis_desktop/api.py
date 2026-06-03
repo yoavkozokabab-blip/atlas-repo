@@ -22,7 +22,7 @@ import os
 import re
 import time
 import zipfile
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 from builder_core import architectural_risk, repository_understanding
 from builder_core.bug_intelligence import depgraph
@@ -42,8 +42,17 @@ MODULE_VISUAL_SIZE_MAX = 28.0
 MODULE_HUB_FAN_IN_MIN = 8
 
 ARCHITECTURE_CLUSTER_PATTERNS: List[Tuple[str, Tuple[str, ...]]] = [
-    ("Core", ("core", "foundation", "kernel", "base/common")),
-    ("Platform", ("platform", "base", "common")),
+    ("Event Bus", ("/core.py", "homeassistant/core", "helpers/event", "eventbus")),
+    ("WebSocket", ("websocket_api", "components/websocket", "/websocket")),
+    ("Auth", ("homeassistant/auth", "/auth/", "auth_store", "auth_provider")),
+    ("Automations", ("components/automation", "/automation/")),
+    ("Recorder", ("components/recorder", "/recorder/")),
+    ("Config Entries", ("config_entries", "config_entry")),
+    ("HTTP API", ("components/http", "components/api", "/http/")),
+    ("Components", ("homeassistant/components/", "components/")),
+    ("Helpers", ("homeassistant/helpers/", "/helpers/")),
+    ("Core", ("/core/", "homeassistant/core", "foundation", "kernel")),
+    ("Platform", ("platform", "base/common")),
     ("Workbench", ("workbench",)),
     ("Editor", ("editor", "monaco", "vs/editor")),
     ("Extension Host", ("extension", "extensions", "ext_host", "extensionhost")),
@@ -1220,7 +1229,12 @@ def _subsystem_for_path(path: str, index: Dict[str, Any]) -> str:
                     best = name
     if best:
         return best
-    return normalized.split("/")[0] if "/" in normalized else "(root)"
+    parts = normalized.split("/")
+    if len(parts) >= 3 and parts[0] == "homeassistant" and parts[1] == "components":
+        return "/".join(parts[:3])
+    if len(parts) >= 2 and parts[0] == "homeassistant":
+        return "/".join(parts[:2])
+    return parts[0] if parts else "(root)"
 
 
 def _risk_lookup(risks: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
@@ -1268,13 +1282,68 @@ def _module_visual_metrics(
     }
 
 
+def _architecture_pattern_matches(pattern: str, path_or_sub: str) -> bool:
+    """Match cluster patterns on path segments, not naive substrings (avoids 'core' in unrelated names)."""
+    low = str(path_or_sub or "").lower().replace("\\", "/")
+    pat = pattern.lower()
+    if pat.startswith("/"):
+        return pat in low or low.endswith(pat.rstrip("/"))
+    if "/" in pat:
+        return pat in low
+    segments = [s for s in low.split("/") if s]
+    return any(seg == pat or seg.startswith(pat + "_") for seg in segments)
+
+
+def _subsystem_view_use_architecture_clusters(
+    scan: Dict[str, Any],
+    index: Dict[str, Any],
+    total_modules: int,
+    *,
+    mode: str,
+    is_massive: bool,
+    graph: Optional[Dict[str, Any]] = None,
+) -> bool:
+    """Mega-clusters for large repos unless the index has HA-style component subsystems."""
+    if mode != "subsystem":
+        return is_massive or total_modules >= GRAPH_DEFAULT_HIERARCHY_THRESHOLD
+    subs = (index or {}).get("subsystems") or []
+    component_subs = sum(
+        1
+        for s in subs
+        if str(s.get("name", "")).replace("\\", "/").startswith("homeassistant/components/")
+    )
+    # Home Assistant: keep per-integration subsystems (hundreds of nodes), not 5 mega-buckets.
+    if component_subs >= 15:
+        return False
+    unique_labels: Set[str] = set()
+    for s in subs:
+        name = str(s.get("name", "")).replace("\\", "/")
+        if name:
+            unique_labels.add(name)
+    if graph:
+        for node in graph.get("nodes", []):
+            if node.get("type") == "module" and node.get("path"):
+                unique_labels.add(_subsystem_for_path(node["path"], index))
+    label_count = len(unique_labels)
+    if is_massive or total_modules >= GRAPH_DEFAULT_HIERARCHY_THRESHOLD:
+        return True
+    if label_count > 35:
+        return True
+    return False
+
+
 def _architecture_cluster_name(subsystem: str) -> str:
     low = str(subsystem or "(root)").lower().replace("\\", "/")
     for label, patterns in ARCHITECTURE_CLUSTER_PATTERNS:
-        if any(pat in low for pat in patterns):
+        if any(_architecture_pattern_matches(pat, low) for pat in patterns):
             return label
-    segment = low.split("/")[0].split(".")[0].strip()
-    if segment and segment not in {"(root)", "root", ""}:
+    parts = [p for p in low.split("/") if p and p not in {"(root)", "root"}]
+    if len(parts) >= 3:
+        return parts[-1].replace("_", " ").title()
+    if len(parts) >= 2:
+        return parts[-1].replace("_", " ").title()
+    segment = parts[0] if parts else ""
+    if segment:
         return segment.replace("_", " ").title()
     return subsystem or "(root)"
 
@@ -1730,7 +1799,9 @@ def current_graph(view: str = "module", force_module: bool = False) -> Dict[str,
     is_massive = bool(scan.get("massive_mode"))
     total_modules = sum(1 for n in graph.get("nodes", []) if n.get("type") == "module")
     recommended = _graph_recommended_view(total_modules)
-    cluster_overview = is_massive or total_modules >= GRAPH_DEFAULT_HIERARCHY_THRESHOLD
+    cluster_overview = _subsystem_view_use_architecture_clusters(
+        scan, index, total_modules, mode=mode, is_massive=is_massive, graph=graph
+    )
     if mode == "subsystem":
         payload = _subsystem_graph_payload(
             graph, index, risks, architecture_clusters=cluster_overview

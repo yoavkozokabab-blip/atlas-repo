@@ -22,6 +22,8 @@ from __future__ import annotations
 import os
 from typing import Any, Dict, List, Optional, Set, Tuple
 
+from .target_resolver import resolve_architecture_symbol, resolve_concept_target
+
 _MAX_AFFECTED = 24
 _MAX_TRANSITIVE_DEPTH = 3
 
@@ -98,7 +100,7 @@ def _find_target(nodes: Dict[str, Dict[str, Any]], target: str) -> Optional[Tupl
         if p.endswith("/" + t) or n.get("dotted") == target:
             return nid, n
     base = os.path.basename(t)
-    if base:
+    if base and ("/" in t or "." in base):
         for nid, n in nodes.items():
             if os.path.basename(_norm(n.get("path"))) == base:
                 return nid, n
@@ -193,7 +195,23 @@ def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict
             "recommended_verification": ["Scan the repository, then re-run impact on a real file path."],
         }
 
+    evidence_store = state.get("evidence_store")
     found = _find_target(nodes, target)
+    semantic_label = ""
+    semantic_candidates: List[str] = []
+    if not found:
+        semantic = resolve_concept_target(
+            nodes, target, graph, evidence_store=evidence_store
+        )
+        if semantic:
+            tid, tnode, semantic_label, semantic_candidates = semantic
+            found = (tid, tnode)
+        else:
+            sym_paths = resolve_architecture_symbol(target, nodes, evidence_store)
+            if sym_paths:
+                found = _find_target(nodes, sym_paths[0])
+                semantic_candidates = sym_paths
+                semantic_label = f"architecture symbol `{target}`"
     if not found:
         return {
             "ok": True, "mock": True, "target": target,
@@ -287,6 +305,12 @@ def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict
         f"{len(indirect_paths)} transitive importer(s) within depth {_MAX_TRANSITIVE_DEPTH}.",
         f"{len(sibling_paths)} sibling module(s) in the same subsystem.",
     ]
+    if semantic_label:
+        evidence.insert(0, f"Semantic target resolved ({semantic_label}) → `{tpath}`.")
+        for cp in semantic_candidates[:4]:
+            if cp != tpath and cp not in affected:
+                affected.append(cp)
+        affected = affected[:_MAX_AFFECTED]
     if direct_paths:
         evidence.append("Direct importers: " + ", ".join(direct_paths[:6]))
 
