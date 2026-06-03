@@ -1,28 +1,28 @@
 # Phase 130 — Repository Understanding Validation
 
-Generated: 2026-06-03 00:55:29
+Generated: 2026-06-03 10:02:21
 
 ## Executive summary
 
-- **Scenarios run:** 50
+- **Scenarios run:** 50 (reference repo `atlas_reference`, optional external repos excluded)
 - **Executed successfully:** 50
-- **Mean Atlas score:** 63.8/100
+- **Mean Atlas score:** 86.3/100
 
 ## Category breakdown
 
 | Category | Count | Mean Atlas score | File precision | File recall |
 |----------|-------|------------------|----------------|-------------|
-| feature_addition | 20 | 68.4 | 0.126 | 1.0 |
-| bug_investigation | 20 | 63.1 | 0.106 | 0.9 |
-| impact_analysis | 10 | 55.8 | 1.0 | 0.733 |
+| feature_addition | 20 | 82.8 | 0.804 | 0.95 |
+| bug_investigation | 20 | 86.0 | 0.301 | 0.975 |
+| impact_analysis | 10 | 94.0 | 0.883 | 0.967 |
 
 ## Score dimensions (averages over successful runs)
 
-- **Repository Understanding:** 65.4/100
-- **Knowledge Understanding:** 84.0/100
-- **Evidence Quality:** 56.3/100
-- **Investigation Quality:** 83.7/100
-- **Impact Analysis Quality:** 65.2/100
+- **Repository Understanding:** 85.8/100
+- **Knowledge Understanding:** 94.0/100
+- **Evidence Quality:** 56.0/100
+- **Investigation Quality:** 96.1/100
+- **Impact Analysis Quality:** 89.2/100
 
 ## Sample scenario results
 
@@ -30,8 +30,8 @@ Generated: 2026-06-03 00:55:29
 
 **Prompt:** add EMA indicator with configurable period
 
-**Atlas score:** 85.7/100
-**File precision / recall:** 0.21 / 1.00
+**Atlas score:** 94.3/100
+**File precision / recall:** 0.75 / 1.00
 **Insertion correct:** Yes
 **Concept:** ema (expected `ema`)
 
@@ -39,8 +39,8 @@ Generated: 2026-06-03 00:55:29
 
 **Prompt:** add feature flags for gradual rollout
 
-**Atlas score:** 90.4/100
-**File precision / recall:** 0.08 / 1.00
+**Atlas score:** 97.5/100
+**File precision / recall:** 1.00 / 1.00
 **Insertion correct:** Yes
 **Concept:** feature_flags (expected `feature_flags`)
 
@@ -48,8 +48,8 @@ Generated: 2026-06-03 00:55:29
 
 **Prompt:** Add Stripe billing and subscriptions
 
-**Atlas score:** 69.3/100
-**File precision / recall:** 0.15 / 1.00
+**Atlas score:** 70.7/100
+**File precision / recall:** 1.00 / 0.50
 **Insertion correct:** No
 **Concept:** stripe_billing (expected `stripe_billing`)
 
@@ -57,17 +57,17 @@ Generated: 2026-06-03 00:55:29
 
 **Prompt:** Add circuit breaker for outbound HTTP calls
 
-**Atlas score:** 68.1/100
-**File precision / recall:** 0.07 / 1.00
-**Insertion correct:** No
+**Atlas score:** 85.7/100
+**File precision / recall:** 1.00 / 1.00
+**Insertion correct:** Yes
 **Concept:** circuit_breaker (expected `circuit_breaker`)
 
 ### feat_005_distributed_tracing — `atlas_reference`
 
 **Prompt:** add distributed tracing with span propagation
 
-**Atlas score:** 84.1/100
-**File precision / recall:** 0.14 / 1.00
+**Atlas score:** 92.2/100
+**File precision / recall:** 1.00 / 1.00
 **Insertion correct:** Yes
 **Concept:** distributed_tracing (expected `distributed_tracing`)
 
@@ -75,8 +75,8 @@ Generated: 2026-06-03 00:55:29
 
 **Prompt:** add API rate limiting middleware
 
-**Atlas score:** 60.8/100
-**File precision / recall:** 0.14 / 1.00
+**Atlas score:** 73.1/100
+**File precision / recall:** 1.00 / 1.00
 **Insertion correct:** No
 **Concept:** rate_limiting (expected `rate_limiting`)
 
@@ -84,37 +84,34 @@ Generated: 2026-06-03 00:55:29
 
 **Prompt:** configure JWT bearer authentication
 
-**Atlas score:** 45.8/100
-**File precision / recall:** 0.12 / 1.00
-**Insertion correct:** No
+**Atlas score:** 68.5/100
+**File precision / recall:** 0.67 / 1.00
+**Insertion correct:** Yes
 **Concept:** authentication (expected `jwt`)
 
 ### feat_008_oauth2 — `atlas_reference`
 
 **Prompt:** Add OAuth2 authorization code flow with PKCE
 
-**Atlas score:** 52.5/100
-**File precision / recall:** 0.14 / 1.00
-**Insertion correct:** No
+**Atlas score:** 86.8/100
+**File precision / recall:** 0.67 / 1.00
+**Insertion correct:** Yes
 **Concept:** oauth2 (expected `oauth2`)
 
 ## Repository evidence audit
 
 - `feat_003_stripe_billing` — **incorrect_insertion_point**: got `billing/stripe_webhooks.py` expected one of ['billing/stripe_billing.py']
-- `feat_004_circuit_breaker` — **incorrect_insertion_point**: got `cache/redis_client.py` expected one of ['services/http_client.py']
 - `feat_006_rate_limiting` — **incorrect_insertion_point**: got `api/routes.py` expected one of ['api/rate_limit.py']
-- `feat_007_jwt` — **incorrect_insertion_point**: got `auth/login.py` expected one of ['auth/middleware.py']
-- `feat_008_oauth2` — **incorrect_insertion_point**: got `api/routes.py` expected one of ['auth/login.py']
 - `feat_011_db_migration` — **incorrect_insertion_point**: got `db/postgres.py` expected one of ['db/migrations/001_initial.py']
 - `feat_013_structured_logging` — **incorrect_insertion_point**: got `auth/login.py` expected one of ['middleware/request_logging.py']
-- `feat_018_auth_sessions` — **incorrect_insertion_point**: got `auth/login.py` expected one of ['auth/middleware.py']
 - `feat_019_paper_trading` — **incorrect_insertion_point**: got `registry/signal_registry.py` expected one of ['trading/paper_trading.py']
-- `feat_020_slippage_model` — **incorrect_insertion_point**: got `registry/signal_registry.py` expected one of ['trading/backtest_config.py']
-- `inv_001_backtest_paper` — **incorrect_insertion_point**: got `trading/paper_trading.py` expected one of ['trading/backtest_config.py']
-- `inv_002_duplicate_orders` — **incorrect_insertion_point**: got `registry/signal_registry.py` expected one of ['trading/order_service.py']
 - `inv_004_stale_cache` — **incorrect_insertion_point**: got `cache/redis_client.py` expected one of ['cache/cache_layer.py']
-- `inv_005_auth_bypass` — **incorrect_insertion_point**: got `auth/login.py` expected one of ['auth/middleware.py']
-- `inv_006_slippage_mismatch` — **incorrect_insertion_point**: got `trading/paper_trading.py` expected one of ['trading/backtest_config.py']
+- `inv_008_rate_limit_429` — **incorrect_insertion_point**: got `api/routes.py` expected one of ['api/rate_limit.py']
+- `inv_010_session_expired` — **incorrect_insertion_point**: got `auth/middleware.py` expected one of ['auth/session.py']
+- `inv_014_missing_traces` — **incorrect_insertion_point**: got `middleware/request_logging.py` expected one of ['middleware/tracing.py']
+- `inv_017_order_fill_delay` — **incorrect_insertion_point**: got `trading/backtest_config.py` expected one of ['trading/execution.py']
+- `inv_018_cache_invalidation` — **incorrect_insertion_point**: got `cache/redis_client.py` expected one of ['cache/cache_layer.py']
+- `inv_019_migration_failure` — **incorrect_insertion_point**: got `db/postgres.py` expected one of ['db/migrations/001_initial.py']
 
 ## Failure analysis (sample)
 
@@ -124,12 +121,6 @@ Generated: 2026-06-03 00:55:29
 - **Expected:** n/a
 - **Missing:** n/a
 
-### feat_004_circuit_breaker
-- **Why:** Incorrect insertion point
-- **Evidence used:** cach
-- **Expected:** http
-- **Missing:** Aioh
-
 ### feat_006_rate_limiting
 - **Why:** Incorrect insertion point
 - **Evidence used:** rate
@@ -137,22 +128,10 @@ Generated: 2026-06-03 00:55:29
 - **Missing:** Limi
 
 ### feat_007_jwt
-- **Why:** Incorrect insertion point
-- **Evidence used:** auth
-- **Expected:** n/a
-- **Missing:** Pass
-
-### feat_007_jwt
 - **Why:** Wrong concept identified
 - **Evidence used:** auth
 - **Expected:** jwt
 - **Missing:** jwt
-
-### feat_008_oauth2
-- **Why:** Incorrect insertion point
-- **Evidence used:** n/a
-- **Expected:** n/a
-- **Missing:** Auth
 
 ### feat_011_db_migration
 - **Why:** Incorrect insertion point
@@ -166,29 +145,47 @@ Generated: 2026-06-03 00:55:29
 - **Expected:** requ
 - **Missing:** Corr
 
-### feat_016_signal_pipeline
-- **Why:** Wrong concept identified
-- **Evidence used:** ci_c
-- **Expected:** ema
-- **Missing:** ema
-
-### feat_018_auth_sessions
-- **Why:** Incorrect insertion point
-- **Evidence used:** auth
-- **Expected:** n/a
-- **Missing:** Pass
-
 ### feat_019_paper_trading
 - **Why:** Incorrect insertion point
 - **Evidence used:** SMAI
 - **Expected:** n/a
 - **Missing:** Ema,
 
-### feat_020_slippage_model
+### inv_002_duplicate_orders
+- **Why:** Wrong concept identified
+- **Evidence used:** ema
+- **Expected:** retr
+- **Missing:** retr
+
+### inv_004_stale_cache
 - **Why:** Incorrect insertion point
-- **Evidence used:** SMAI
-- **Expected:** slip
-- **Missing:** Ema,
+- **Evidence used:** cach
+- **Expected:** cach
+- **Missing:** n/a
+
+### inv_008_rate_limit_429
+- **Why:** Incorrect insertion point
+- **Evidence used:** rate
+- **Expected:** rate
+- **Missing:** Limi
+
+### inv_010_session_expired
+- **Why:** Incorrect insertion point
+- **Evidence used:** auth
+- **Expected:** sess
+- **Missing:** Pass
+
+### inv_014_missing_traces
+- **Why:** Incorrect insertion point
+- **Evidence used:** requ
+- **Expected:** trac
+- **Missing:** Corr
+
+### inv_017_order_fill_delay
+- **Why:** Incorrect insertion point
+- **Evidence used:** Slip
+- **Expected:** fill
+- **Missing:** Side
 
 ## Competitive evaluation (manual)
 
