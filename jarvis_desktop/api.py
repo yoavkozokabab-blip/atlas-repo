@@ -121,9 +121,28 @@ _STATE: Dict[str, Any] = {
     "scan_job": {"id": None, "cancelled": False, "stage": "idle"},
     "scan_perf": None,
     "scan_perf_live": None,
+    "workflow_perf": {},
     "graph_detail_level": None,
     "full_graph_pending": False,
 }
+
+
+def _record_workflow_timing(name: str, started: float) -> None:
+    """Phase 139 — last-run timings for beta performance dashboard."""
+    _STATE.setdefault("workflow_perf", {})[name] = {
+        "duration_ms": int(round((time.time() - started) * 1000)),
+        "at": time.strftime("%Y-%m-%dT%H:%M:%S"),
+    }
+
+
+def _evidence_coverage() -> Dict[str, Any]:
+    store = _STATE.get("evidence_store") or {}
+    sym = store.get("symbol_index") or {}
+    return {
+        "symbol_count": int(sym.get("symbol_count") or 0),
+        "files_with_symbols": len(sym.get("files") or {}),
+        "call_graph_edges": len((store.get("call_graph") or {}).get("edges") or []),
+    }
 
 # Backend stage → (progress %, UI label) for real scan progress reporting.
 _SCAN_STAGE_PROGRESS: Dict[str, Tuple[int, str]] = {
@@ -1198,6 +1217,35 @@ def current_summary() -> Dict[str, Any]:
         "scope": scan.get("scope", {"mode": "entire_repo"}),
         "cache": scan.get("cache", {"hit": False}),
         "language_breakdown": scan.get("language_breakdown", {}),
+        "scan_duration_seconds": scan.get("scan_duration_seconds"),
+        "evidence_coverage": _evidence_coverage(),
+    }
+
+
+def beta_system_health() -> Dict[str, Any]:
+    """Phase 139 — consolidated system health for the beta dashboard."""
+    summary = current_summary()
+    if not summary.get("ok"):
+        return {"ok": False, "error": summary.get("error") or "No repository scanned yet."}
+    gh = summary.get("graph_health") or {}
+    ev = summary.get("evidence_coverage") or {}
+    perf = _STATE.get("scan_perf") or {}
+    return {
+        "ok": True,
+        "repo_name": summary.get("repo_name"),
+        "demo_mode": summary.get("demo_mode"),
+        "indexed_files": summary.get("file_count"),
+        "modules": summary.get("module_count"),
+        "edges": summary.get("dependency_edges"),
+        "unresolved_imports": gh.get("unresolved_internal") or gh.get("unresolved_imports") or 0,
+        "scan_duration_seconds": summary.get("scan_duration_seconds"),
+        "graph_quality": gh.get("label") or "unknown",
+        "graph_health": gh,
+        "evidence_coverage": ev,
+        "scan_performance": perf,
+        "workflow_performance": dict(_STATE.get("workflow_perf") or {}),
+        "degraded": summary.get("degraded"),
+        "massive_mode": summary.get("massive_mode"),
     }
 
 
@@ -2277,7 +2325,9 @@ def _planning_context() -> Dict[str, Any]:
 
 def plan_change(request: str) -> Dict[str, Any]:
     """Generate a grounded change plan and implementation prompts (no code generation)."""
+    t0 = time.time()
     result = planning_engine.plan_change(request, _planning_context())
+    _record_workflow_timing("build_plan", t0)
     if result.get("ok"):
         plan = result["plan"]
         result["formatted"] = planning_engine.format_change_plan_markdown(plan)
@@ -2288,7 +2338,9 @@ def plan_change(request: str) -> Dict[str, Any]:
 
 def investigate_symptom(symptom: str) -> Dict[str, Any]:
     """Symptom-based investigation plan (natural language, not trace-only)."""
+    t0 = time.time()
     result = planning_engine.investigate_symptom(symptom, _planning_context())
+    _record_workflow_timing("investigation", t0)
     if result.get("ok"):
         plan = result["plan"]
         result["formatted"] = planning_engine.format_investigation_plan_markdown(plan)
@@ -2303,7 +2355,9 @@ def change_impact_simulation(target: str) -> Dict[str, Any]:
     from . import impact_engine
 
     summary = current_summary() if _STATE.get("scan") else {}
+    t0 = time.time()
     res = impact_engine.analyze_impact(target, _STATE, summary=summary if summary.get("ok") else None)
+    _record_workflow_timing("impact", t0)
     if not res.get("ok"):
         return res
     # Backward-compatible `simulation` block (UI + evaluator + graph highlight).

@@ -40,7 +40,7 @@
       </span>
     </nav>
     <div class="repo-chip" id="repoChip">No repository</div>
-    <span class="demo-badge" id="demoBadge" style="display:none">Demo Mode</span>
+    <span class="demo-badge" id="demoBadge" style="display:none">Sample repository</span>
     <span class="demo-badge massive" id="massiveBadge" style="display:none">Massive Repository Mode</span>
   </header>
 
@@ -66,7 +66,7 @@
         </div>
         <div class="home-actions">
           <button class="btn primary big" type="button" id="browseHomBtn" onclick="browseRepoFolder()">Browse Repository</button>
-          <button class="btn ghost big" type="button" onclick="loadDemoMode()">Try Demo</button>
+          <button class="btn ghost big" type="button" onclick="loadDemoMode()">Load Sample Repository</button>
           <button class="btn ghost big tour-launch" type="button" onclick="startProductTour()">Watch Product Tour</button>
         </div>
         <h2 class="ask">Or explore by task</h2>
@@ -112,13 +112,13 @@
             <button class="btn primary big" type="button" id="scanBtn" disabled onclick="scanFlow()">⟳ Scan Repository</button>
           </div>
           <div class="demo-pack glass">
-            <label>Demo repository size</label>
-            <p class="muted tiny">Instant wow — no folder path required. Pick a bundled codebase size.</p>
+            <label>Sample repository size</label>
+            <p class="muted tiny">Explore Atlas instantly — no folder path required. Pick a bundled sample codebase.</p>
             <div id="demoPackList" class="demo-pack-grid"></div>
           </div>
           <div class="recent">
             <span class="recent-title">Recent repositories</span>
-            <div id="recentList" class="recent-list"><span class="muted">None yet — scan a repo or use Demo Mode.</span></div>
+            <div id="recentList" class="recent-list"><span class="muted">No history yet — scan a repository or load a sample to populate this list.</span></div>
           </div>
         </div>
       </div>
@@ -155,7 +155,7 @@
         <ul class="clean" id="scanFailedHints"></ul>
         <div class="success-buttons">
           <button class="btn primary" onclick="go('home')">Choose another folder</button>
-          <button class="btn ghost" onclick="loadDemoMode()">Try Demo Mode</button>
+          <button class="btn ghost" onclick="loadDemoMode()">Load Sample Repository</button>
         </div>
       </div>
     </section>
@@ -294,10 +294,10 @@
       <p class="muted tiny" style="margin:-8px 4px 14px">Planning only — Atlas does not generate or apply code. Export prompts for Claude, Codex, or Cursor.</p>
       <div class="io glass">
         <label>What do you want to add or change?</label>
-        <textarea id="buildRequest" rows="4" placeholder="e.g. Add user authentication&#10;Add Stripe billing&#10;Add Redis caching"></textarea>
+        <textarea id="buildRequest" rows="4" placeholder="e.g. Add user authentication&#10;Add request rate limiting&#10;Add audit logging"></textarea>
         <button class="btn primary" onclick="runChangePlan()">Generate Change Plan</button>
       </div>
-      <div id="buildOut" class="out"></div>
+      <div id="buildOut" class="out"><div class="glass empty-panel muted">Scan a repository or load a sample to generate a grounded change plan.</div></div>
     </section>
 
     <!-- ===================== SCREEN: INVESTIGATE BUG ===================== -->
@@ -309,7 +309,7 @@
         <textarea id="investigateSymptom" rows="6" placeholder="e.g. The backtest is better than paper trading&#10;Dashboard PnL is wrong&#10;Scan graph shows wrong module count&#10;&#10;Or paste a traceback with file paths…"></textarea>
         <button class="btn primary" onclick="runInvestigationPlan()">Generate Investigation Plan</button>
       </div>
-      <div id="investigateOut" class="out"></div>
+      <div id="investigateOut" class="out"><div class="glass empty-panel muted">Describe a symptom after scanning — Atlas suggests files and verification steps.</div></div>
     </section>
 
     <!-- ===================== SCREEN 5: IMPACT SIMULATOR ===================== -->
@@ -322,7 +322,7 @@
           <button class="btn primary" onclick="runImpact()">Simulate Impact</button>
         </div>
       </div>
-      <div id="impactOut" class="out"></div>
+      <div id="impactOut" class="out"><div class="glass empty-panel muted">Enter a module path after scanning to see blast radius and affected tests.</div></div>
     </section>
 
     <!-- ===================== SCREEN: EXPORT ===================== -->
@@ -366,18 +366,18 @@
 
   <div id="onboarding" class="onboarding" style="display:none">
     <div class="onboarding-card glass">
+      <p class="onboard-eyebrow">Private beta · ~60 second tour</p>
       <h2>Welcome to ATLAS</h2>
-      <p class="muted">Atlas maps your repository's architecture so your AI assistant understands it — locally, with evidence-backed structure.</p>
-      <ol class="onboard-steps">
-        <li><b>Choose repository</b> — Browse for your project folder or paste the path directly.</li>
-        <li><b>Scan</b> — Atlas indexes modules, import edges, and risk signals on your machine.</li>
-        <li><b>Explore graph</b> — 3D dependency view with risk coloring by subsystem and module.</li>
-        <li><b>Ask Copilot</b> — Grounded answers about risk, impact, and architecture — no external API.</li>
-        <li><b>Export context</b> — Copy compact packets for Claude, Codex, or Cursor.</li>
-      </ol>
+      <p class="muted">Map your repository locally, then plan changes, investigate bugs, and analyze impact — without sending code to the cloud.</p>
+      <div class="onboard-steps-grid">
+        <div class="onboard-step-card"><span class="onboard-num">1</span><b>Select repository</b><p class="muted tiny">Browse your project folder or load a built-in sample.</p></div>
+        <div class="onboard-step-card"><span class="onboard-num">2</span><b>Scan</b><p class="muted tiny">Atlas indexes files, modules, imports, and risks on your machine.</p></div>
+        <div class="onboard-step-card"><span class="onboard-num">3</span><b>Repository Map</b><p class="muted tiny">Explore dependencies, hubs, and architecture in 3D.</p></div>
+        <div class="onboard-step-card"><span class="onboard-num">4</span><b>Build · Investigate · Impact</b><p class="muted tiny">Grounded plans and blast-radius analysis for your next change.</p></div>
+      </div>
       <div class="onboard-actions">
-        <button class="btn primary" onclick="dismissOnboarding(false)">Get started</button>
-        <button class="btn ghost" onclick="loadDemoMode(); dismissOnboarding(true)">Try Demo Mode</button>
+        <button class="btn primary" onclick="onboardingLoadSample()">Load Sample Repository</button>
+        <button class="btn ghost" onclick="dismissOnboarding(false)">Use my own repository</button>
       </div>
     </div>
   </div>

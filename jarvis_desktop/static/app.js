@@ -8,7 +8,8 @@ const STATE = {
 };
 const RECENT_KEY = "atlas_recent_repos";
 const LEGACY_RECENT_KEY = "jarvis_recent_repos";
-const ONBOARDING_KEY = "atlas_onboarding_done_v1";
+const ONBOARDING_KEY = "atlas_onboarding_v2_done";
+const WORKFLOW_HINT_KEY = "atlas_workflow_examples_seen";
 const DEMO_PACK_KEY = "atlas_demo_pack_v1";
 const GRAPH_HIERARCHY_THRESHOLD = 1000;
 const ATLAS_SHOW_GRAPH_DEBUG = false;
@@ -259,9 +260,14 @@ function readScopeConfig() {
 }
 
 function dismissOnboarding(skipDemo) {
-  localStorage.setItem(ONBOARDING_KEY, "1");
+  try { localStorage.setItem(ONBOARDING_KEY, "1"); } catch (e) {}
   $("onboarding").style.display = "none";
   if (!skipDemo) go("home");
+}
+
+function onboardingLoadSample() {
+  dismissOnboarding(true);
+  loadDemoMode("small");
 }
 
 function maybeShowOnboarding() {
@@ -269,6 +275,54 @@ function maybeShowOnboarding() {
     if (localStorage.getItem(ONBOARDING_KEY) === "1") return;
   } catch (e) {}
   $("onboarding").style.display = "grid";
+}
+
+function workflowEmptyHtml(title, body, primaryLabel, primaryFn, secondaryLabel, secondaryFn) {
+  return `<div class="glass empty-panel">
+    <h3 style="margin:0 0 8px">${title}</h3>
+    <p class="muted" style="margin:0 0 14px">${body}</p>
+    <div class="success-buttons">
+      <button class="btn primary" type="button" onclick="${primaryFn}">${primaryLabel}</button>
+      ${secondaryLabel ? `<button class="btn ghost" type="button" onclick="${secondaryFn}">${secondaryLabel}</button>` : ""}
+    </div>
+  </div>`;
+}
+
+function renderWorkflowGate(view) {
+  const map = {
+    build: { el: "buildOut", title: "Build Plan needs a scan", body: "Scan your repository or load a sample, then describe what you want to add or change.", primary: "Load Sample Repository", fn: "loadDemoMode()", secondary: "Go to Home", fn2: "go('home')" },
+    investigate: { el: "investigateOut", title: "Investigation needs a scan", body: "Describe a symptom after Atlas has indexed your codebase.", primary: "Load Sample Repository", fn: "loadDemoMode()", secondary: "Go to Home", fn2: "go('home')" },
+    impact: { el: "impactOut", title: "Impact analysis needs a scan", body: "Enter a file or module path after scanning to see blast radius.", primary: "Load Sample Repository", fn: "loadDemoMode()", secondary: "Go to Home", fn2: "go('home')" },
+  };
+  const spec = map[view];
+  if (!spec) return false;
+  const host = $(spec.el);
+  if (!host) return false;
+  host.innerHTML = workflowEmptyHtml(spec.title, spec.body, spec.primary, spec.fn, spec.secondary, spec.fn2);
+  return true;
+}
+
+function renderWorkflowQuickStarts(view) {
+  if (!STATE.summary?.ok) return;
+  const examples = {
+    build: { text: "Add structured logging to API handlers", target: "buildRequest", run: "runChangePlan" },
+    investigate: { text: "API requests fail intermittently under load", target: "investigateSymptom", run: "runInvestigationPlan" },
+    impact: { text: "core/util.py", target: "impactTarget", run: "runImpact" },
+  };
+  const ex = examples[view];
+  if (!ex) return;
+  const io = document.querySelector(`#view-${view} .io`);
+  if (!io || io.querySelector(".workflow-examples")) return;
+  const box = document.createElement("div");
+  box.className = "workflow-examples glass";
+  box.innerHTML = `<span class="muted tiny">Try an example:</span>
+    <button class="btn small ghost" type="button">${esc(ex.text)}</button>`;
+  box.querySelector("button").onclick = function () {
+    const field = $(ex.target);
+    if (field) field.value = ex.text;
+    window[ex.run]();
+  };
+  io.appendChild(box);
 }
 
 function showScanPanel(which) {
@@ -283,19 +337,32 @@ function renderScanSkeleton() {
 
 function showScanFailed(message, code) {
   showScanPanel("failed");
-  $("scanFailedMsg").textContent = message || "Scan failed.";
-  const hints = {
-    empty_path: ["Enter the full path to your project folder.", "Example: C:\\dev\\my-app"],
-    not_found: ["Check spelling and drive letter.", "Use Validate before scanning."],
-    no_code_files: ["Choose a folder that contains source files.", "Try Demo Mode to explore without a repo."],
-    permission_denied: ["Run Atlas Desktop with read access to the folder.", "Avoid system-protected directories."],
+  const friendly = {
+    empty_path: "No folder path was provided.",
+    not_found: "Atlas could not find that folder on disk.",
+    no_code_files: "This folder has no recognizable source files.",
+    permission_denied: "Atlas does not have permission to read this folder.",
+    partial_graph: "Scan finished but the dependency graph is incomplete.",
+    symbols_missing: "Some files were indexed without symbol evidence.",
   };
-  $("scanFailedHints").innerHTML = (hints[code] || ["Try Demo Mode or pick a different folder."]).map(h => `<li>${h}</li>`).join("");
+  $("scanFailedMsg").textContent = friendly[code] || message || "The scan could not complete.";
+  const hints = {
+    empty_path: ["Enter the full path to your project root (not a single file).", "Example: C:\\dev\\my-app"],
+    not_found: ["Check spelling and drive letter.", "Click Validate before scanning."],
+    no_code_files: ["Choose a folder that contains .py, .ts, .js, or similar source files.", "Load a sample repository to explore Atlas first."],
+    permission_denied: ["Run Atlas from an account that can read the folder.", "Avoid Windows system folders and protected drives."],
+    partial_graph: ["Open Repository Map — partial graphs still support Build and Impact.", "Try a narrower scan scope (backend or Python only)."],
+    symbols_missing: ["Build Plan and Investigation may have fewer file anchors.", "Re-scan after fixing syntax errors in key entry files."],
+  };
+  $("scanFailedHints").innerHTML = (hints[code] || [
+    "Load a sample repository to see Atlas working end-to-end.",
+    "Pick a different folder or adjust scan scope.",
+  ]).map(h => `<li>${h}</li>`).join("");
 }
 
 function renderScanSuccess(scan) {
   showScanPanel("success");
-  const demo = scan.demo_mode ? " · Demo Mode" : "";
+  const demo = scan.demo_mode ? " · Sample repository" : "";
   $("scanSuccessSub").textContent = `${scan.repo_name || "Repository"} indexed in ${scan.scan_duration_seconds || "?"}s${demo}`;
   $("scanSuccessMetrics").innerHTML = [
     ["Files indexed", scan.file_count],
@@ -387,7 +454,8 @@ function updateScanBtnState(enabled) {
 function focusCopilot() { go("center"); setTimeout(() => $("askInput")?.focus(), 120); }
 
 function finishScanSession(scan, pathLabel) {
-  if (pathLabel && !scan.demo_mode) pushRecent(pathLabel);
+  if (pathLabel && !scan.demo_mode) pushRecent(pathLabel, scan);
+  else if (scan.demo_mode) pushRecent(scan.repo_path || "Atlas Demo", scan);
   STATE.summary = null;
   STATE.graph = null;
   STATE.graph3d = null;
@@ -401,6 +469,18 @@ function finishScanSession(scan, pathLabel) {
   updateRepoChip(scan.repo_name, scan.demo_mode);
   unlockNav();
   renderScanSuccess(scan);
+  try {
+    if (localStorage.getItem(ONBOARDING_KEY) !== "1") {
+      localStorage.setItem(ONBOARDING_KEY, "1");
+      $("onboarding").style.display = "none";
+    }
+  } catch (e) {}
+  if (scan.demo_mode || scan.module_count) {
+    setTimeout(function () {
+      go("center");
+      toast("Repository Map ready — try Build, Investigate, or Impact in the nav", "success");
+    }, scan.demo_mode ? 400 : 1200);
+  }
 }
 
 async function loadDemoMode(pack) {
@@ -426,7 +506,7 @@ async function renderDemoPackPicker() {
   if (!host) return;
   const res = await api("/api/demo/packs");
   if (!res.ok || !(res.packs || []).length) {
-    host.innerHTML = `<span class="muted tiny">Demo packs unavailable.</span>`;
+    host.innerHTML = `<span class="muted tiny">Sample repositories unavailable — restart Atlas or check your install.</span>`;
     return;
   }
   let selected = STATE.demoPack || "small";
@@ -465,6 +545,10 @@ function go(view) {
   }
   if (view === "home") renderDemoPackPicker();
   if (view === "export") refreshExport();
+  if (view === "build" || view === "investigate" || view === "impact") {
+    if (!STATE.summary?.ok) renderWorkflowGate(view);
+    else renderWorkflowQuickStarts(view);
+  }
 }
 function applyBillingNav(enabled, isAdmin) {
   const nav = $("billingNav");
@@ -482,24 +566,64 @@ function selectRecentPath(p) {
 }
 
 /* ---------------- Recent repos ---------------- */
+function normalizeRecentEntry(raw) {
+  if (!raw) return null;
+  if (typeof raw === "string") return { path: raw, name: raw.split(/[\\/]/).pop() || raw, scanned_at: "", files: 0, modules: 0, duration_sec: 0, size_mb: 0 };
+  return {
+    path: raw.path || "",
+    name: raw.name || (raw.path || "").split(/[\\/]/).pop() || raw.path,
+    scanned_at: raw.scanned_at || "",
+    files: raw.files || 0,
+    modules: raw.modules || 0,
+    duration_sec: raw.duration_sec || 0,
+    size_mb: raw.size_mb || 0,
+  };
+}
+
 function loadRecent() {
   let list = [];
   try { list = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]"); } catch (e) {}
-  // Migrate from legacy key on first load
   if (!list.length) {
     try {
       const legacy = JSON.parse(localStorage.getItem(LEGACY_RECENT_KEY) || "[]");
-      if (legacy.length) { list = legacy; localStorage.setItem(RECENT_KEY, JSON.stringify(list)); }
+      if (legacy.length) { list = legacy.map(normalizeRecentEntry).filter(Boolean); localStorage.setItem(RECENT_KEY, JSON.stringify(list)); }
     } catch (e) {}
   }
+  list = list.map(normalizeRecentEntry).filter(e => e && e.path);
   const box = $("recentList");
-  if (!list.length) { box.innerHTML = '<span class="muted">None yet — scan a repository to populate this.</span>'; return; }
-  box.innerHTML = list.map(p => `<span class="rr" title="${p}" onclick="selectRecentPath(${JSON.stringify(p)})">${p.split(/[\\/]/).pop() || p}</span>`).join("");
+  if (!box) return;
+  if (!list.length) {
+    box.innerHTML = '<span class="muted">No history yet — scan a repository or load a sample to populate this list.</span>';
+    return;
+  }
+  box.innerHTML = list.map(entry => {
+    const when = entry.scanned_at ? entry.scanned_at.replace("T", " ").slice(0, 16) : "last session";
+    const meta = `${entry.files || "—"} files · ${entry.modules || "—"} modules · ${entry.duration_sec || "—"}s scan`;
+    return `<button type="button" class="recent-card" title="${esc(entry.path)}" onclick="selectRecentPath(${JSON.stringify(entry.path)})">
+      <span class="recent-name">${esc(entry.name)}</span>
+      <span class="recent-meta muted tiny">${esc(meta)}</span>
+      <span class="recent-when muted tiny">${esc(when)}</span>
+    </button>`;
+  }).join("");
 }
-function pushRecent(p) {
-  let list = []; try { list = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]"); } catch (e) {}
-  list = [p, ...list.filter(x => x !== p)].slice(0, 6);
-  localStorage.setItem(RECENT_KEY, JSON.stringify(list)); loadRecent();
+
+function pushRecent(p, scan) {
+  if (!p) return;
+  const entry = {
+    path: p,
+    name: (scan && scan.repo_name) || p.split(/[\\/]/).pop() || p,
+    scanned_at: new Date().toISOString().slice(0, 19),
+    files: scan?.file_count || 0,
+    modules: scan?.module_count || 0,
+    duration_sec: scan?.scan_duration_seconds || 0,
+    size_mb: scan?.repo_size_mb || STATE.lastEstimate?.repo_size_mb || 0,
+  };
+  let list = [];
+  try { list = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]"); } catch (e) {}
+  list = list.map(normalizeRecentEntry).filter(e => e && e.path);
+  list = [entry, ...list.filter(x => x.path !== p)].slice(0, 8);
+  try { localStorage.setItem(RECENT_KEY, JSON.stringify(list)); } catch (e) {}
+  loadRecent();
 }
 
 /* ---------------- Scan flow ---------------- */
@@ -561,7 +685,8 @@ async function scanFlow() {
   applyScanStatus(finalStatus);
   STAGES.forEach((_, i) => setStage(i, "done")); setBar(100); $("scanPct").textContent = "100%";
   if (!scan.ok) {
-    showScanFailed(scan.error || "Scan failed", scan.code);
+    const code = scan.code || (scan.degraded ? "partial_graph" : "");
+    showScanFailed(scan.error || "Scan failed", code);
     toast("✗ Scan failed", "error");
     return;
   }
@@ -692,8 +817,8 @@ function updateGraphMeta(data, perf) {
 async function renderCenter() {
   const sum = STATE.summary || (STATE.summary = await api("/api/repositories/current/summary"));
   if (!sum.ok) {
-    $("leftPanel").innerHTML = emptyStateHtml("No repository scanned", "Scan a folder or load Demo Mode to explore the dependency graph.", "Go to Home", "go('home')");
-    $("graph3d").innerHTML = emptyStateHtml("Graph unavailable", "Complete a scan to render the dependency graph.", "Try Demo Mode", "loadDemoMode()");
+    $("leftPanel").innerHTML = emptyStateHtml("No repository scanned", "Scan a folder or load a sample repository to explore the dependency graph.", "Go to Home", "go('home')");
+    $("graph3d").innerHTML = emptyStateHtml("Graph unavailable", "Complete a scan to render the dependency graph.", "Load Sample Repository", "loadDemoMode()");
     $("suggest").innerHTML = "";
     $("moduleInspector").innerHTML = `<h3>Module Inspector</h3><p class="muted tiny">Scan a repository first.</p>`;
     JARVIS_UNIVERSE.renderTimeline($("timelinePanel"), null);
@@ -821,51 +946,93 @@ function selectModuleFromList(path) {
   if (node) showNode(node);
 }
 
-function renderHealthCockpit(sum) {
+function formatMs(ms) {
+  if (ms == null || ms === "") return "—";
+  const n = Number(ms);
+  if (!isFinite(n)) return "—";
+  if (n < 1000) return n + " ms";
+  return (n / 1000).toFixed(1) + " s";
+}
+
+function renderPerformancePanel(health) {
+  const host = $("perfPanel");
+  if (!host) return;
+  if (!health || !health.ok) {
+    host.innerHTML = `<p class="muted tiny">Performance timings appear after your first scan and workflow run.</p>`;
+    return;
+  }
+  const scanPerf = health.scan_performance || {};
+  const events = scanPerf.events || [];
+  const byStage = {};
+  events.forEach(ev => { byStage[ev.stage] = ev.duration_ms; });
+  const wf = health.workflow_performance || {};
+  host.innerHTML = `
+    <div class="perf-grid">
+      <div class="perf-row"><span>Total scan</span><b>${formatMs(scanPerf.total_duration_ms)}</b></div>
+      <div class="perf-row"><span>Graph build</span><b>${formatMs(byStage.building_graph || byStage.building_dependency_graph)}</b></div>
+      <div class="perf-row"><span>Evidence index</span><b>${formatMs(byStage.building_evidence_index)}</b></div>
+      <div class="perf-row"><span>Build plan</span><b>${formatMs((wf.build_plan || {}).duration_ms)}</b></div>
+      <div class="perf-row"><span>Investigation</span><b>${formatMs((wf.investigation || {}).duration_ms)}</b></div>
+      <div class="perf-row"><span>Impact analysis</span><b>${formatMs((wf.impact || {}).duration_ms)}</b></div>
+    </div>`;
+}
+
+async function renderSystemHealth(sum) {
   updateTelemetryWarning(sum);
   const sav = sum.token_savings || {};
   const gh = sum.graph_health || {};
+  const ev = sum.evidence_coverage || {};
   const showTokenSavings = sav.show_in_cockpit === true && sav.verified === true;
   const ratioNote = gh.unresolved_ratio_note || "Internal unresolved ÷ (resolved + unresolved internal)";
   const graphNotice = gh.notice
-    ? `<div class="cockpit-card wide"><div class="cc-label">Graph coverage</div><div class="cc-val" style="font-size:13px;color:var(--amber)">${gh.notice}</div></div>`
+    ? `<div class="cockpit-card wide"><div class="cc-label">Graph note</div><div class="cc-val" style="font-size:13px;color:var(--amber)">${esc(gh.notice)}</div></div>`
     : "";
   const tel = sum.analytics_status === "degraded"
-    ? `<div class="cockpit-card wide"><div class="cc-label">Telemetry</div><div class="cc-val" style="font-size:13px;color:var(--amber)">${sum.telemetry_warning || TELEMETRY_WARNING_TEXT}</div></div>`
+    ? `<div class="cockpit-card wide"><div class="cc-label">Telemetry</div><div class="cc-val" style="font-size:13px;color:var(--amber)">${esc(sum.telemetry_warning || TELEMETRY_WARNING_TEXT)}</div></div>`
     : "";
   const tokenCard = showTokenSavings
     ? `<div class="cockpit-card"><div class="cc-label">Token savings (verified)</div><div class="cc-val" id="ccSavings">${sav.reduction_percent || 0}%</div></div>`
     : "";
+  const healthColor = gh.label === "healthy" ? "var(--green)" : "var(--amber)";
   $("leftPanel").innerHTML = `
-    <h3>Health Cockpit</h3>
+    <h3>System Health</h3>
+    <p class="muted tiny" style="margin:0 0 10px">Local scan quality for <b>${esc(sum.repo_name || "repository")}</b></p>
     ${tel}
     ${graphNotice}
-    <div id="architectureSummary"></div>
     <div class="cockpit-grid">
+      <div class="cockpit-card"><div class="cc-label">Indexed files</div><div class="cc-val">${(sum.file_count || 0).toLocaleString()}</div></div>
+      <div class="cockpit-card"><div class="cc-label">Modules</div><div class="cc-val" id="ccModules">${(sum.module_count || 0).toLocaleString()}</div></div>
+      <div class="cockpit-card"><div class="cc-label">Edges</div><div class="cc-val">${(sum.dependency_edges || 0).toLocaleString()}</div></div>
+      <div class="cockpit-card warn"><div class="cc-label">Unresolved imports</div><div class="cc-val">${gh.unresolved_internal ?? gh.unresolved_imports ?? 0}</div></div>
+      <div class="cockpit-card"><div class="cc-label">Scan duration</div><div class="cc-val" style="font-size:16px">${sum.scan_duration_seconds != null ? sum.scan_duration_seconds + "s" : "—"}</div></div>
+      <div class="cockpit-card"><div class="cc-label">Graph quality</div><div class="cc-val" id="ccHealth" style="font-size:16px;color:${healthColor}">${gh.label || "—"}</div></div>
+    </div>
+    <div class="cockpit-grid">
+      <div class="cockpit-card"><div class="cc-label">Symbols indexed</div><div class="cc-val">${(ev.symbol_count || 0).toLocaleString()}</div></div>
+      <div class="cockpit-card"><div class="cc-label">Files w/ symbols</div><div class="cc-val">${ev.files_with_symbols || 0}</div></div>
       <div class="cockpit-card risk"><div class="cc-label">Risk score</div><div class="cc-val" id="ccRisk">${sum.risk_score}</div></div>
-      <div class="cockpit-card"><div class="cc-label">Graph health</div><div class="cc-val" id="ccHealth" style="font-size:16px;color:${gh.label === 'healthy' ? 'var(--green)' : 'var(--amber)'}">${gh.label || "—"}</div></div>
       <div class="cockpit-card warn"><div class="cc-label">Import cycles</div><div class="cc-val" id="ccCycles">${gh.import_cycles ?? 0}</div></div>
       ${tokenCard}
     </div>
-    <div class="cockpit-grid">
-      <div class="cockpit-card"><div class="cc-label">Resolved imports</div><div class="cc-val">${gh.resolved_imports ?? 0}</div></div>
-      <div class="cockpit-card warn"><div class="cc-label">Unresolved internal</div><div class="cc-val" title="Internal imports that did not resolve — the real graph-completeness signal">${gh.unresolved_internal ?? gh.unresolved_imports ?? 0}</div></div>
-      <div class="cockpit-card"><div class="cc-label">External / stdlib</div><div class="cc-val" title="Third-party + standard library imports — expected, not defects">${gh.unresolved_external ?? gh.external_package_imports ?? 0}</div></div>
-      <div class="cockpit-card"><div class="cc-label">Dynamic / optional</div><div class="cc-val" title="Dynamic or optional imports (e.g. plugin loading) — not statically resolvable">${gh.unresolved_dynamic_optional ?? 0}</div></div>
-    </div>
     <p class="muted tiny" style="margin:4px 0 10px">${esc(gh.notice || ratioNote)}</p>
-    <div class="cockpit-card"><div class="cc-label">Most depended-on (hub)</div><div class="cc-val" style="font-size:14px;color:#eaf0ff">${(sum.top_hubs?.[0]?.module || "—").split(/[./\\]/).pop()}</div>
-      <div class="muted tiny">${sum.top_hubs?.[0]?.fan_in ?? 0} direct importers</div></div>
-    <div class="cockpit-card"><div class="cc-label">Repository modules</div><div class="cc-val" id="ccModules">${sum.module_count}</div></div>
+    <h3 style="margin-top:12px">Performance</h3>
+    <div id="perfPanel"><p class="muted tiny">Loading timings…</p></div>
+    <div id="architectureSummary"></div>
     <h3 style="margin-top:14px" title="Architectural risk: coupling, boundaries, cycles & runtime criticality — not just fan-in">Riskiest to change</h3>
-    <ul class="clean cockpit-hubs">${(sum.top_risks || []).slice(0, 5).map(r => `<li><b style="color:${riskColor(r.score)}">${(r.module || r.path || "").split(/[./\\]/).pop()}</b> <span class="muted">${r.score ?? ""}</span></li>`).join("")}</ul>
+    <ul class="clean cockpit-hubs">${(sum.top_risks || []).slice(0, 5).map(r => `<li><b style="color:${riskColor(r.score)}">${(r.module || r.path || "").split(/[./\\]/).pop()}</b> <span class="muted">${r.score ?? ""}</span></li>`).join("") || '<li class="muted tiny">Scan more modules to populate risk ranking.</li>'}</ul>
     <h3 style="margin-top:14px" title="Heavily depended-on modules (high fan-in)">Most depended-on</h3>
-    <ul class="clean cockpit-hubs">${(sum.top_hubs || []).slice(0, 5).map(h => `<li>${(h.module || h.path || "").split(/[./\\]/).pop()} <span class="muted">← ${h.fan_in}</span></li>`).join("")}</ul>`;
+    <ul class="clean cockpit-hubs">${(sum.top_hubs || []).slice(0, 5).map(h => `<li>${(h.module || h.path || "").split(/[./\\]/).pop()} <span class="muted">← ${h.fan_in}</span></li>`).join("") || '<li class="muted tiny">No hub data yet.</li>'}</ul>`;
   JARVIS_UNIVERSE.animateCounter($("ccRisk"), sum.risk_score, 800);
   JARVIS_UNIVERSE.animateCounter($("ccModules"), sum.module_count, 900);
   JARVIS_UNIVERSE.animateCounter($("ccCycles"), gh.import_cycles ?? 0, 700);
   if (showTokenSavings && $("ccSavings")) JARVIS_UNIVERSE.animateCounter($("ccSavings"), sav.reduction_percent || 0, 900);
   renderArchitectureSummary(sum);
+  const health = await api("/api/repositories/current/system-health");
+  renderPerformancePanel(health);
+}
+
+function renderHealthCockpit(sum) {
+  renderSystemHealth(sum);
 }
 function riskColor(s) { return s >= 60 ? "var(--red)" : s >= 35 ? "var(--amber)" : s >= 15 ? "var(--cyan)" : "var(--green)"; }
 
@@ -1348,7 +1515,7 @@ async function runChangePlan() {
   const r = await api("/api/planning/change", "POST", { request });
   const out = $("buildOut");
   if (!r.ok) {
-    out.innerHTML = `<div class="glass ocard muted">${esc(r.error || "Plan failed")}</div>`;
+    out.innerHTML = `<div class="glass empty-panel"><h3 style="margin:0">Could not generate plan</h3><p class="muted">${esc(r.error || "Plan failed")}</p><p class="muted tiny">Try a more specific request or pick a module from the Repository Map.</p></div>`;
     return;
   }
   STATE.buildResult = r;
@@ -1422,7 +1589,7 @@ async function runInvestigationPlan() {
   const r = await api("/api/planning/investigate", "POST", { symptom });
   const out = $("investigateOut");
   if (!r.ok) {
-    out.innerHTML = `<div class="glass ocard muted">${esc(r.error || "Investigation failed")}</div>`;
+    out.innerHTML = `<div class="glass empty-panel"><h3 style="margin:0">Investigation could not run</h3><p class="muted">${esc(r.error || "Investigation failed")}</p><p class="muted tiny">Include a file path, error message, or subsystem name for better grounding.</p></div>`;
     return;
   }
   STATE.investigateResult = r;
@@ -1506,7 +1673,10 @@ async function runImpact() {
   if (!target) { toast("Enter a file or module"); return; }
   const r = await api("/api/planning/impact", "POST", { target });
   const out = $("impactOut");
-  if (!r.ok) { out.innerHTML = `<div class="glass ocard muted">${esc(r.error || 'No result')}</div>`; return; }
+  if (!r.ok) {
+    out.innerHTML = `<div class="glass empty-panel"><h3 style="margin:0">Impact could not be analyzed</h3><p class="muted">${esc(r.error || "No result")}</p><p class="muted tiny">Use a path from the graph or an architecture concept (e.g. authentication, routing).</p></div>`;
+    return;
+  }
   STATE.impactResult = r;
   if (r.target_node_id) {
     JARVIS_UNIVERSE.highlightBlastRadius({
@@ -1653,7 +1823,7 @@ function wireSeg(id, key) {
 async function refreshExport() {
   const sum = STATE.summary || await api("/api/repositories/current/summary");
   if (!sum.ok) {
-    $("exportPreview").innerHTML = emptyStateHtml("Export unavailable", "Scan a repository or load Demo Mode to build an AI context packet.", "Try Demo Mode", "loadDemoMode()");
+    $("exportPreview").innerHTML = emptyStateHtml("Export unavailable", "Scan a repository or load a sample to build an AI context packet.", "Load Sample Repository", "loadDemoMode()");
     $("tokEst").textContent = "—";
     $("previewMeta").textContent = "Scan required";
     return;

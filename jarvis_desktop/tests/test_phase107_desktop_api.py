@@ -159,4 +159,5 @@ def test_all_documented_routes_are_dispatchable():
     assert ("GET", "/api/usage/admin") in documented
     assert ("GET", "/api/usage/admin_summary") in documented
     assert ("GET", "/api/pricing") in documented
-    assert len(documented) == 40
+    assert ("GET", "/api/repositories/current/system-health") in documented
+    assert len(documented) == 41
