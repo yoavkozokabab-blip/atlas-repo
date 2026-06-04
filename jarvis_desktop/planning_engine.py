@@ -56,6 +56,11 @@ _FEATURE_SPECS: Dict[str, Dict[str, Any]] = {
         "search": ("redis", "queue", "broker", "celery"),
         "risks": ("Connection pooling and key naming conventions matter at scale.",),
     },
+    "rate_limiting": {
+        "triggers": ("rate limit", "rate limiting", "ratelimit", "throttle", "throttling", "429"),
+        "search": ("rate", "limit", "throttle", "middleware", "api", "http", "gateway"),
+        "risks": ("Rate limits must apply consistently across HTTP and websocket entry points.",),
+    },
 }
 
 _SYMPTOM_SPECS: Dict[str, Dict[str, Any]] = {
@@ -169,6 +174,35 @@ _SYMPTOM_SPECS: Dict[str, Dict[str, Any]] = {
                 "keywords": ("ui", "view", "dashboard", "component", "render", "template"),
                 "should_be_true": "The API response value equals what the widget renders.",
                 "disprove": "Compare the raw API payload to the rendered number; equal ⇒ UI binding is fine.",
+            },
+        ),
+    },
+    "duplicate_events": {
+        "triggers": (
+            "duplicate event",
+            "duplicate events",
+            "events fired",
+            "event fired",
+            "fired twice",
+            "double fire",
+            "double emit",
+        ),
+        "search": ("event", "dispatch", "listener", "emit", "bus", "handler", "hub", "ring"),
+        "why": "Duplicate event delivery usually involves dispatchers, listeners, or handlers firing more than once.",
+        "hypotheses": (
+            {
+                "title": "Event handler registered twice",
+                "why": "Startup or hot-reload can attach the same listener twice so one event runs two handlers.",
+                "keywords": ("listener", "handler", "register", "subscribe", "dispatch"),
+                "should_be_true": "Each event type has at most one active handler registration per process.",
+                "disprove": "Log handler registration count at startup; if one per event, look elsewhere.",
+            },
+            {
+                "title": "Dispatcher retries or fan-out without deduplication",
+                "why": "A bus may emit to all subscribers and also retry, producing duplicate side effects.",
+                "keywords": ("dispatch", "bus", "emit", "publish", "fan"),
+                "should_be_true": "Each logical event id is processed at-most-once downstream.",
+                "disprove": "Trace one event id through the bus; single downstream receipt disproves fan-out duplication.",
             },
         ),
     },
@@ -463,7 +497,8 @@ _RUNTIME_SYMPTOM_HINTS = (
 _RUNTIME_BOOSTS: Tuple[Tuple[Tuple[str, ...], Tuple[Tuple[str, float], ...]], ...] = (
     (("duplicate", "event", "fire", "listener", "dispatch", "emit", "fired"),
      (("/core.py", 9), ("/helpers/event.py", 9), ("/helpers/dispatcher.py", 8),
-      ("eventbus", 9), ("components/automation", 6), ("/helpers/trigger", 6))),
+      ("eventbus", 9), ("components/automation", 6), ("/helpers/trigger", 6),
+      ("core/hub", 10), ("/ring/", 8), ("hub.py", 9))),
     (("websocket", "disconnect", " ws ", "socket"),
      (("websocket_api", 10), ("/http/", 4), ("/auth/", 4), ("/components/api", 5))),
     (("integration", "setup", "config entry", "config_entry", "loading"),
@@ -514,6 +549,53 @@ def _is_config_path(path: str) -> bool:
     return any(m in p for m in _CONFIG_PATH_MARKERS)
 
 
+_TRADING_SYMPTOM_MARKERS = (
+    "backtest", "paper trad", "live trad", "slippage", "fill", "broker",
+    "indicator", " moving average", " order book", "execution parity",
+)
+
+
+def _symptom_mentions_trading(text: str) -> bool:
+    low = (text or "").lower()
+    return any(m in low for m in _TRADING_SYMPTOM_MARKERS) or re.search(r"\bema\b", low) is not None
+
+
+def _coerce_investigation_classification(symptom: str, classification: Any) -> Any:
+    """Block spurious trading/indicator concepts on event-bus style symptoms."""
+    low = (symptom or "").lower()
+    if "duplicate" in low and "event" in low and "order" not in low:
+        rec = dk.get_engine().get("pub_sub")
+        if rec:
+            return dk.ConceptClassification(
+                concept_id="pub_sub",
+                concept_name=rec.name,
+                concept_title=rec.title or rec.name,
+                domain=rec.domain,
+                domain_label=dk.get_engine().domain_label(rec.domain),
+                feature_type=rec.feature_type or rec.category,
+                concept_confidence="high",
+                repo_mapping_confidence="low",
+                unknowns=[],
+                architecture_pattern="event → dispatcher/listener → handlers",
+                record=rec,
+            )
+    if classification.record and classification.record.domain == "trading":
+        if not _symptom_mentions_trading(symptom):
+            return dk.ConceptClassification(
+                concept_id=None,
+                concept_name="",
+                concept_title="",
+                domain="",
+                domain_label="",
+                feature_type="general",
+                concept_confidence="low",
+                repo_mapping_confidence="low",
+                unknowns=list(classification.unknowns)
+                + ["Trading concept suppressed — symptom lacks trading/backtest terms."],
+            )
+    return classification
+
+
 def _boosts_for_text(text: str) -> List[Tuple[str, float]]:
     low = (text or "").lower()
     out: List[Tuple[str, float]] = []
@@ -530,6 +612,7 @@ def _score_modules(
     *,
     runtime: bool = False,
     boosts: Optional[List[Tuple[str, float]]] = None,
+    symptom_text: str = "",
 ) -> List[Tuple[float, Dict[str, Any]]]:
     scored: List[Tuple[float, Dict[str, Any]]] = []
     for node in modules:
@@ -548,6 +631,9 @@ def _score_modules(
         risk = risks_by_path.get(path) or {}
         score += min(5.0, float(risk.get("total_score", 0) or 0) / 20.0)
         score += min(3.0, float(node.get("fan_in", 0) or 0) / 10.0)
+        if runtime and not _symptom_mentions_trading(symptom_text):
+            if any(tok in p for tok in ("trading", "backtest", "paper", "broker", "/indicator", "ema")):
+                score -= 8.0
         if score > 0:
             scored.append((score, node))
     scored.sort(key=lambda item: (-item[0], item[1].get("path", "")))
@@ -686,6 +772,17 @@ def _investigation_evidence_bundle(
         return None
     store = EvidenceStore.from_dict(raw)
     lower = (symptom or "").lower()
+    if "duplicate" in lower and "event" in lower and "order" not in lower:
+        return analyze_concept(
+            store,
+            concept_id="pub_sub",
+            concept_name="Pub/Sub",
+            category="messaging",
+            domain="messaging",
+            path_keywords=["event", "dispatch", "listener", "emit", "bus", "handler", "hub"],
+            heuristic_paths=heuristic_paths,
+            graph=ctx.get("graph"),
+        )
     trading_symptom = any(k in lower for k in ("backtest", "paper", "live", "slippage", "fill"))
     indicator_symptom = "indicator" in lower and trading_symptom
     if indicator_symptom:
@@ -1043,8 +1140,11 @@ def investigate_symptom(symptom: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
     if not graph and not index:
         return {"ok": False, "error": "No repository scanned yet."}
 
-    inv_class = dk.classify_request(text, mode="investigate")
+    inv_class = _coerce_investigation_classification(text, dk.classify_request(text, mode="investigate"))
     intent, terms = _detect_intent(text, _SYMPTOM_SPECS)
+    low = text.lower()
+    if "duplicate" in low and "event" in low and "order" not in low:
+        intent = "duplicate_events"
     spec = _SYMPTOM_SPECS.get(intent, {})
     search_terms = set(spec.get("search", ())) | terms | dk.search_terms_for_classification(inv_class)
 
@@ -1061,12 +1161,14 @@ def investigate_symptom(symptom: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
     runtime = _is_runtime_symptom(text)
     scored = _score_modules(
         modules, search_terms, risks_map,
-        runtime=runtime, boosts=_boosts_for_text(text),
+        runtime=runtime, boosts=_boosts_for_text(text), symptom_text=text,
     )
     # If a runtime symptom matched nothing after penalising config files, retry
     # without the term filter so we still surface real source modules (never dotfiles).
     if runtime and not scored:
-        scored = _score_modules(modules, set(), risks_map, runtime=True, boosts=_boosts_for_text(text))
+        scored = _score_modules(
+            modules, set(), risks_map, runtime=True, boosts=_boosts_for_text(text), symptom_text=text,
+        )
     for path in explicit_paths:
         if _is_config_path(path) and runtime:
             continue
@@ -1235,13 +1337,18 @@ def _correct_investigation_concept(plan: Dict[str, Any], symptom: str) -> None:
         concept = "indicator_backtest_live"
     elif has_bt and (has_pl or has_fill):
         concept = "backtest_live_divergence"
+    if "duplicate" in low and "event" in low and "order" not in low:
+        concept = "pub_sub"
     if not concept:
         return
     dk_block = plan.get("domain_knowledge")
     if isinstance(dk_block, dict):
         dk_block["concept_id"] = concept
+        if concept == "pub_sub":
+            dk_block["domain"] = "messaging"
+            dk_block["concept_name"] = "Pub/Sub"
     else:
-        plan["domain_knowledge"] = {"concept_id": concept}
+        plan["domain_knowledge"] = {"concept_id": concept, "domain": "messaging", "concept_name": "Pub/Sub"}
 
 
 def _augment_investigation_risks(existing: List[str], files: List[str]) -> List[str]:

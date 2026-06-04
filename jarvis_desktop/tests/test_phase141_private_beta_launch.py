@@ -28,10 +28,10 @@ def test_beta_diagnostics_endpoint():
     assert diag["repository"]["demo_mode"] is True
 
 
-def test_health_reports_phase141_version():
+def test_health_reports_product_version():
     _, h = server.dispatch("GET", "/api/health")
     assert h["ok"] is True
-    assert "phase141" in h["version"]
+    assert h["version"] == api.PRODUCT_VERSION
 
 
 def test_workflow_runs_for_markdown_bundle_context():
@@ -39,7 +39,7 @@ def test_workflow_runs_for_markdown_bundle_context():
     assert plan["ok"] and plan.get("formatted")
     _, inv = server.dispatch("POST", "/api/planning/investigate", {"symptom": "wrong output"})
     assert inv["ok"] and inv.get("formatted")
-    _, imp = server.dispatch("POST", "/api/planning/impact", {"target": "core/util.py"})
+    _, imp = server.dispatch("POST", "/api/planning/impact", {"target": "core/hub.py"})
     assert imp["ok"]
 
 
@@ -57,6 +57,8 @@ def test_launch_ui_assets():
     assert "beta_diagnostics" not in beta
     assert "/api/system/diagnostics" in beta
     assert "openReportIssue" in fb
+    assert "Save locally" in fb
+    assert "Send feedback" not in fb
     assert "What Atlas does" in about
     assert "What Atlas does not do" in about
 

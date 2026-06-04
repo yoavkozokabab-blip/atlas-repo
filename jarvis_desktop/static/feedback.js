@@ -1,10 +1,8 @@
 "use strict";
-/* JARVIS feedback widget (Phase 113C) — self-injecting "Send Feedback" button +
-   modal. Categories: Bug · Confusing UI · Missing feature · General. Stores locally
-   (localStorage 'jarvis_feedback'); exports all feedback as JSON. Drop-in: just
-   add <script src="feedback.js"></script> to any page (incl. the app). */
+/* Atlas feedback widget — stored locally only (no remote destination unless configured). */
 (function () {
   const KEY = "jarvis_feedback";
+  const REMOTE_FEEDBACK_URL = ""; // optional future hook; leave empty for local-only beta
   const CATS = [
     { id: "bug", label: "Bug", icon: "🐞" },
     { id: "confusing_ui", label: "Confusing UI", icon: "🧭" },
@@ -56,12 +54,12 @@
     }
     const bg = document.createElement("div"); bg.className = "fb-bg"; bg.id = "fbBg";
     bg.innerHTML = `<div class="fb-modal" onclick="event.stopPropagation()">
-      <h3>Send feedback</h3><p class="s">Help shape Atlas. Stored locally on this device.</p>
+      <h3>Save feedback locally</h3><p class="s">Saved on this device only. Nothing is uploaded unless a support URL is configured.</p>
       <div class="fb-cats" id="fbCats">${CATS.map(c => `<div class="fb-cat" data-c="${c.id}"><span>${c.icon}</span>${c.label}</div>`).join("")}</div>
-      <textarea id="fbMsg" rows="4" placeholder="What happened, or what would make JARVIS better?"></textarea>
+      <textarea id="fbMsg" rows="4" placeholder="What happened, or what would make Atlas better?"></textarea>
       <div class="fb-err" id="fbErr">Please write a short message.</div>
-      <input id="fbEmail" type="email" placeholder="Email (optional — only if you want a reply)" />
-      <div class="fb-act"><button class="fb-primary" id="fbSend">Send feedback</button><button class="fb-ghost" id="fbCancel">Cancel</button></div>
+      <input id="fbEmail" type="email" placeholder="Email (optional — stored locally with your note)" />
+      <div class="fb-act"><button class="fb-primary" id="fbSend">Save locally</button><button class="fb-ghost" id="fbCancel">Cancel</button></div>
     </div>`;
     bg.onclick = close; document.body.appendChild(bg);
     bg.querySelectorAll(".fb-cat").forEach(el => el.onclick = () => {
@@ -82,7 +80,7 @@
     if (context && context.diagnostics) {
       const ta = document.getElementById("fbMsg");
       if (ta && !ta.value.trim()) {
-        ta.value = "Describe the issue here. Diagnostics are attached automatically when you send.";
+        ta.value = "Describe the issue here. Diagnostics stay on this device unless you export them.";
       }
     }
     document.getElementById("fbBg").classList.add("on");
@@ -108,18 +106,19 @@
       page: (location.pathname.split("/").pop() || "app"),
       user_agent: navigator.userAgent, ts: new Date().toISOString(),
       context: pendingContext || undefined,
+      destination: REMOTE_FEEDBACK_URL || "local",
     };
     pendingContext = null;
     const n = save(entry);
-    try { if (typeof track === "function") track("feedback_submit", { category: selected }); } catch (e) {}
+    try { if (typeof track === "function") track("feedback_saved_local", { category: selected }); } catch (e) {}
     close();
     document.getElementById("fbMsg").value = ""; document.getElementById("fbEmail").value = "";
-    toast("Thanks — feedback saved (" + n + " total).");
+    toast("Saved locally (" + n + " note" + (n === 1 ? "" : "s") + " on this device).");
   }
   function exportJSON() {
     const data = JSON.stringify({ exported_at: new Date().toISOString(), count: list().length, feedback: list() }, null, 2);
     const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([data], { type: "application/json" }));
-    a.download = "jarvis_feedback.json"; a.click(); toast("Exported " + list().length + " items");
+    a.download = "atlas_feedback.json"; a.click(); toast("Exported " + list().length + " local notes");
   }
 
   window.JarvisFeedback = { open, close, submit, list, exportJSON, openReportIssue, count: () => list().length, categories: CATS };

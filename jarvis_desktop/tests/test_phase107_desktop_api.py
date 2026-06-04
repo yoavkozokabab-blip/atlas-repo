@@ -115,7 +115,8 @@ def test_context_export_shape_and_targets(scanned):
         res = api.context_export(target, "compact")
         assert res["ok"] and res["target"] == target and res["packet"] == "compact"
         assert res["estimated_tokens"] > 0 and isinstance(res["text"], str)
-        assert "JARVIS REPOSITORY CONTEXT" in res["text"]
+        assert "ATLAS REPOSITORY CONTEXT" in res["text"]
+        assert "JARVIS REPOSITORY CONTEXT" not in res["text"]
         assert "UNCERTAINTY" in res["text"]            # uncertainty never hidden
     compact = api.context_export("claude", "compact")["estimated_tokens"]
     verbose = api.context_export("claude", "verbose")["estimated_tokens"]

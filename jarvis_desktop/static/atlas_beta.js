@@ -239,7 +239,7 @@ async function runGuidedAction(action) {
   }
   if (action === "impact_example") {
     const hub = (STATE.summary && STATE.summary.top_hubs && STATE.summary.top_hubs[0]) || {};
-    const target = hub.path || hub.module || "core/util.py";
+    const target = hub.path || hub.module || "core/hub.py";
     if (typeof go === "function") go("impact");
     const field = $("impactTarget");
     if (field) field.value = target;

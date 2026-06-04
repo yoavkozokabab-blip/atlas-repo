@@ -23,10 +23,9 @@ def billing_data_dir() -> str:
     override = os.environ.get("ATLAS_BILLING_DATA_DIR", "").strip()
     if override:
         return os.path.abspath(override)
-    base = os.environ.get("JARVIS_DESKTOP_DATA", "").strip()
-    if base:
-        return os.path.join(os.path.abspath(base), "billing")
-    return os.path.join(os.path.expanduser("~"), ".jarvis_desktop", "billing")
+    from jarvis_desktop.data_paths import desktop_data_dir
+
+    return os.path.join(desktop_data_dir(), "billing")
 
 
 class Store:

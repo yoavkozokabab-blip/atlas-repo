@@ -26,10 +26,15 @@ def static_dir() -> Path:
 
 
 def data_dir() -> str:
-    override = os.environ.get("JARVIS_DESKTOP_DATA", "").strip()
-    if override:
-        return os.path.abspath(override)
-    return os.path.join(os.path.expanduser("~"), ".jarvis_desktop")
+    from .data_paths import desktop_data_dir
+
+    return desktop_data_dir()
+
+
+def data_dir_diagnostics() -> Dict[str, Any]:
+    from .data_paths import desktop_data_dir_info
+
+    return desktop_data_dir_info()
 
 
 def launcher_log_path() -> str:
@@ -90,7 +95,10 @@ def _check_directories() -> Dict[str, Any]:
         "label": "Required directories",
         "ok": ok,
         "detail": "present" if ok else "; ".join(problems),
-        "hint": None if ok else "Repair the installation or reinstall from Atlas_Setup.exe.",
+        "hint": None if ok else (
+            "Atlas could not write app data. Close other Atlas instances, check disk space, "
+            "or set JARVIS_DESKTOP_DATA to a writable folder."
+        ),
     }
 
 
@@ -120,6 +128,7 @@ def startup_checks() -> Dict[str, Any]:
         "checks": checks,
         "repo_root": str(_REPO_ROOT),
         "data_dir": data_dir(),
+        "data_dir_info": data_dir_diagnostics(),
     }
 
 
@@ -158,6 +167,7 @@ def environment_status() -> Dict[str, Any]:
             "executable": sys.executable,
             "cwd": os.getcwd(),
             "data_dir": data_dir(),
+            "data_dir_info": data_dir_diagnostics(),
             "launcher_log": launcher_log_path(),
         },
     }

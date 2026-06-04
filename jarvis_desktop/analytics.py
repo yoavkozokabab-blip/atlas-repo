@@ -84,10 +84,9 @@ def status_snapshot() -> Dict[str, Any]:
 
 
 def analytics_data_dir() -> str:
-    override = os.environ.get("JARVIS_DESKTOP_DATA", "").strip()
-    if override:
-        return os.path.abspath(override)
-    return os.path.join(os.path.expanduser("~"), ".jarvis_desktop")
+    from .data_paths import desktop_data_dir
+
+    return desktop_data_dir()
 
 
 def analytics_file_path() -> str:

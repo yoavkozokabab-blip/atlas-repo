@@ -105,7 +105,11 @@ class KnowledgeEngine:
             a = alias.lower().strip()
             if not a:
                 continue
-            if a in norm:
+            if len(a) <= 4:
+                if re.search(rf"\b{re.escape(a)}\b", norm):
+                    hits.append(a)
+                    score += 2.0 + min(len(a) / 10.0, 3.0)
+            elif a in norm:
                 hits.append(a)
                 score += 2.0 + min(len(a) / 10.0, 3.0)
             elif len(a) > 4 and re.search(rf"\b{re.escape(a)}\b", norm):

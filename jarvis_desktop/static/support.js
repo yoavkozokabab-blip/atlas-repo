@@ -29,7 +29,7 @@ function renderChecks(startup) {
     host.innerHTML = '<p class="muted tiny">No checks returned.</p>';
     return;
   }
-  host.innerHTML = checks.map(c => {
+  let html = checks.map(c => {
     const cls = c.ok ? "ok" : (c.id === "optional" ? "warn" : "fail");
     return `<div class="support-check ${cls}">
       <span class="support-check-label">${esc(c.label)}</span>
@@ -37,6 +37,14 @@ function renderChecks(startup) {
       ${c.hint && !c.ok ? `<p class="support-hint">${esc(c.hint)}</p>` : ""}
     </div>`;
   }).join("");
+  if (startup && startup.data_dir) {
+    const fb = startup.data_dir_info && startup.data_dir_info.fallback;
+    html += `<div class="support-check ok">
+      <span class="support-check-label">Data directory</span>
+      <span class="support-check-detail">${esc(startup.data_dir)}${fb ? " (fallback: " + esc(fb) + ")" : ""}</span>
+    </div>`;
+  }
+  host.innerHTML = html;
 }
 
 function renderScanHealth(health) {

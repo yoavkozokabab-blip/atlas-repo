@@ -19,10 +19,9 @@ def usage_data_dir() -> str:
     legacy = os.environ.get("ATLAS_BILLING_DATA_DIR", "").strip()
     if legacy:
         return os.path.abspath(legacy)
-    base = os.environ.get("JARVIS_DESKTOP_DATA", "").strip()
-    if base:
-        return os.path.join(os.path.abspath(base), "usage")
-    return os.path.join(os.path.expanduser("~"), ".jarvis_desktop", "usage")
+    from jarvis_desktop.data_paths import desktop_data_dir
+
+    return os.path.join(desktop_data_dir(), "usage")
 
 
 class UsageStore:

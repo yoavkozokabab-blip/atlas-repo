@@ -57,7 +57,7 @@ def test_workflow_performance_recorded():
         {"symptom": "API requests fail intermittently"},
     )
     assert inv["ok"] is True
-    _, impact = server.dispatch("POST", "/api/planning/impact", {"target": "core/util.py"})
+    _, impact = server.dispatch("POST", "/api/planning/impact", {"target": "core/hub.py"})
     assert impact["ok"] is True
     _, health = server.dispatch("GET", "/api/repositories/current/system-health")
     wf = health["workflow_performance"]

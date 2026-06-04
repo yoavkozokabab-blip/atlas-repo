@@ -307,7 +307,7 @@ function renderWorkflowQuickStarts(view) {
   const examples = {
     build: { text: "Add structured logging to API handlers", target: "buildRequest", run: "runChangePlan" },
     investigate: { text: "API requests fail intermittently under load", target: "investigateSymptom", run: "runInvestigationPlan" },
-    impact: { text: "core/util.py", target: "impactTarget", run: "runImpact" },
+    impact: { text: "core/hub.py", target: "impactTarget", run: "runImpact" },
   };
   const ex = examples[view];
   if (!ex) return;

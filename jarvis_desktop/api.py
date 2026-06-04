@@ -34,7 +34,7 @@ from . import reliability
 from .evidence_engine import build_evidence_store
 from . import usage as usage_tracking
 
-PRODUCT_VERSION = "phase146-beta-polish"
+PRODUCT_VERSION = "phase146b-true-beta-blocker-fixes"
 CHARS_PER_TOKEN = 4.0
 GRAPH_DISPLAY_CAP = 5000
 GRAPH_DEFAULT_HIERARCHY_THRESHOLD = 1000
@@ -1309,7 +1309,17 @@ def beta_diagnostics() -> Dict[str, Any]:
         "scan_performance_ms": perf.get("total_duration_ms"),
         "workflow_performance": dict(_STATE.get("workflow_perf") or {}),
         "scope": scan.get("scope") or _STATE.get("last_scope"),
+        "data_dir": _desktop_data_dir_for_diagnostics(),
     }
+
+
+def _desktop_data_dir_for_diagnostics() -> Dict[str, Any]:
+    try:
+        from .install_support import data_dir, data_dir_diagnostics
+
+        return {"path": data_dir(), **data_dir_diagnostics()}
+    except Exception:
+        return {"path": "", "fallback": None, "override_env": False}
 
 
 def beta_system_health() -> Dict[str, Any]:
@@ -2945,9 +2955,9 @@ def _plain_english(scan: Dict[str, Any], prod: List[Dict[str, Any]], entries: Li
 # Context packet rendering (the product's core value)
 # --------------------------------------------------------------------------
 _TARGET_PREAMBLE = {
-    "claude": "You are assisting with the repository below. Use this precomputed JARVIS repository intelligence as ground truth; read cited files only when you need detail.",
-    "codex": "Repository context for Codex. Treat the JARVIS facts below as verified structure; do not re-derive them by scanning the whole repo.",
-    "cursor": "Cursor workspace context. JARVIS has pre-analyzed this repo; use these facts to navigate and answer with fewer reads.",
+    "claude": "You are assisting with the repository below. Use this precomputed Atlas repository intelligence as ground truth; read cited files only when you need detail.",
+    "codex": "Repository context for Codex. Treat the Atlas facts below as verified structure; do not re-derive them by scanning the whole repo.",
+    "cursor": "Cursor workspace context. Atlas has pre-analyzed this repo; use these facts to navigate and answer with fewer reads.",
 }
 
 
@@ -2977,7 +2987,7 @@ def _render_context(target: str, packet: str) -> str:
     lines = [
         _TARGET_PREAMBLE[target],
         "",
-        f"# JARVIS REPOSITORY CONTEXT — {scan['repo_name']}  ({packet})",
+        f"# ATLAS REPOSITORY CONTEXT — {scan['repo_name']}  ({packet})",
         f"scope={scan['graph_scope']} degraded={scan['degraded']}",
         f"modules={scan['module_count']} subsystems={scan['subsystem_count']} "
         f"edges={scan['dependency_edges']} cycles={scan.get('import_cycle_count',0)}",
