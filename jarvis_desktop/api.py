@@ -313,7 +313,7 @@ def health() -> Dict[str, Any]:
     return {
         "ok": True,
         "status": "ok",
-        "product": "SYRON",
+        "product": "ATLAS",
         "tagline": "Repository Intelligence Platform",
         "version": PRODUCT_VERSION,
         "repository_open": bool(scan),
@@ -704,7 +704,7 @@ def load_demo_mode(pack: str = "small") -> Dict[str, Any]:
     _STATE["demo_mode"] = True
     result["demo_mode"] = True
     result["demo_pack"] = pack_id
-    result["repo_name"] = f"Syron Demo — {label}"
+    result["repo_name"] = f"Atlas Demo — {label}"
     result["repo_path"] = demo_path
     _STATE["scan"]["demo_mode"] = True
     _STATE["scan"]["demo_pack"] = pack_id
@@ -1283,7 +1283,7 @@ def beta_diagnostics() -> Dict[str, Any]:
     perf = _STATE.get("scan_perf") or {}
     return {
         "ok": True,
-        "product": "SYRON",
+        "product": "ATLAS",
         "version": PRODUCT_VERSION,
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "repository": {

@@ -10,7 +10,7 @@ PLANS: Dict[str, Dict[str, Any]] = {
         "name": "Free",
         "price_display": "$0",
         "billing_period": "month",
-        "tagline": "Explore Syron on a few repositories locally.",
+        "tagline": "Explore Atlas on a few repositories locally.",
         "cta": "Start local",
         "availability": "Available during private beta",
         "features": [
@@ -125,7 +125,7 @@ def pricing_payload() -> Dict[str, Any]:
         "payment_provider": None,
         "checkout_enabled": False,
         "note": (
-            "Syron compute is priced in token-equivalent units for planning only. "
+            "Atlas compute is priced in token-equivalent units for planning only. "
             "No Stripe connection — join beta or contact us."
         ),
         "plans": list_plans(),

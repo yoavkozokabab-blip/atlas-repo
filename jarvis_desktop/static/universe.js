@@ -604,14 +604,14 @@ const JARVIS_UNIVERSE = (() => {
       missingMeshes: missing.length,
     };
     U.renderDiagnostics = diag;
-    console.info("[Syron graph] render audit", diag);
+    console.info("[Atlas graph] render audit", diag);
     if (meshCount !== nodes.length) {
       console.warn(
-        `[Syron graph] rendered_node_meshes (${meshCount}) !== graph.nodes.length (${nodes.length})`
+        `[Atlas graph] rendered_node_meshes (${meshCount}) !== graph.nodes.length (${nodes.length})`
       );
     }
     if (U.forceVisibleModule && meshCount > 0 && minR < MODULE_FORCE_MIN_RADIUS - 0.5) {
-      console.warn(`[Syron graph] node_radius_min ${minR} < ${MODULE_FORCE_MIN_RADIUS}`);
+      console.warn(`[Atlas graph] node_radius_min ${minR} < ${MODULE_FORCE_MIN_RADIUS}`);
     }
     return diag;
   }

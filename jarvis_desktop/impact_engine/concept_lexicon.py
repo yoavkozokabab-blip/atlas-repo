@@ -1,6 +1,6 @@
 """Phase 137 — framework-agnostic concept lexicon + generic concept resolver.
 
-Phase 136 proved Syron's impact concept resolution was Home-Assistant-biased: a
+Phase 136 proved Atlas's impact concept resolution was Home-Assistant-biased: a
 hand-curated ``CONCEPT_TARGET_MAP`` only knew HA's subsystems, so cross-cutting
 concepts (logging, events, background jobs, scheduling, state management,
 plugins, api layer, …) resolved at 0% on every non-HA repo.
@@ -11,7 +11,7 @@ catalogue. It is used as a FALLBACK when the curated map misses, so Home
 Assistant's tuned answers are preserved while every other repository gains
 coverage.
 
-No Syron behaviour here is repo-specific: a concept resolves only if the repo
+No Atlas behaviour here is repo-specific: a concept resolves only if the repo
 actually contains matching modules/symbols. If a repo genuinely lacks a concept
 (e.g. FastAPI has no caching layer), resolution honestly returns nothing.
 """

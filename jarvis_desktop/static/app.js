@@ -291,7 +291,7 @@ function workflowEmptyHtml(title, body, primaryLabel, primaryFn, secondaryLabel,
 function renderWorkflowGate(view) {
   const map = {
     build: { el: "buildOut", title: "Build Plan needs a scan", body: "Scan your repository or load a sample, then describe what you want to add or change.", primary: "Load Sample Repository", fn: "loadDemoMode()", secondary: "Go to Home", fn2: "go('home')" },
-    investigate: { el: "investigateOut", title: "Investigation needs a scan", body: "Describe a symptom after Syron has indexed your codebase.", primary: "Load Sample Repository", fn: "loadDemoMode()", secondary: "Go to Home", fn2: "go('home')" },
+    investigate: { el: "investigateOut", title: "Investigation needs a scan", body: "Describe a symptom after Atlas has indexed your codebase.", primary: "Load Sample Repository", fn: "loadDemoMode()", secondary: "Go to Home", fn2: "go('home')" },
     impact: { el: "impactOut", title: "Impact analysis needs a scan", body: "Enter a file or module path after scanning to see blast radius.", primary: "Load Sample Repository", fn: "loadDemoMode()", secondary: "Go to Home", fn2: "go('home')" },
   };
   const spec = map[view];
@@ -339,9 +339,9 @@ function showScanFailed(message, code) {
   showScanPanel("failed");
   const friendly = {
     empty_path: "No folder path was provided.",
-    not_found: "Syron could not find that folder on disk.",
+    not_found: "Atlas could not find that folder on disk.",
     no_code_files: "This folder has no recognizable source files.",
-    permission_denied: "Syron does not have permission to read this folder.",
+    permission_denied: "Atlas does not have permission to read this folder.",
     partial_graph: "Scan finished but the dependency graph is incomplete.",
     symbols_missing: "Some files were indexed without symbol evidence.",
   };
@@ -349,13 +349,13 @@ function showScanFailed(message, code) {
   const hints = {
     empty_path: ["Enter the full path to your project root (not a single file).", "Example: C:\\dev\\my-app"],
     not_found: ["Check spelling and drive letter.", "Click Validate before scanning."],
-    no_code_files: ["Choose a folder that contains .py, .ts, .js, or similar source files.", "Load a sample repository to explore Syron first."],
-    permission_denied: ["Run Syron from an account that can read the folder.", "Avoid Windows system folders and protected drives."],
+    no_code_files: ["Choose a folder that contains .py, .ts, .js, or similar source files.", "Load a sample repository to explore Atlas first."],
+    permission_denied: ["Run Atlas from an account that can read the folder.", "Avoid Windows system folders and protected drives."],
     partial_graph: ["Open Repository Map — partial graphs still support Build and Impact.", "Try a narrower scan scope (backend or Python only)."],
     symbols_missing: ["Build Plan and Investigation may have fewer file anchors.", "Re-scan after fixing syntax errors in key entry files."],
   };
   $("scanFailedHints").innerHTML = (hints[code] || [
-    "Load a sample repository to see Syron working end-to-end.",
+    "Load a sample repository to see Atlas working end-to-end.",
     "Pick a different folder or adjust scan scope.",
   ]).map(h => `<li>${h}</li>`).join("");
 }
@@ -455,7 +455,7 @@ function focusCopilot() { go("center"); setTimeout(() => $("askInput")?.focus(),
 
 function finishScanSession(scan, pathLabel) {
   if (pathLabel && !scan.demo_mode) pushRecent(pathLabel, scan);
-  else if (scan.demo_mode) pushRecent(scan.repo_path || "Syron Demo", scan);
+  else if (scan.demo_mode) pushRecent(scan.repo_path || "Atlas Demo", scan);
   STATE.summary = null;
   STATE.graph = null;
   STATE.graph3d = null;
@@ -489,7 +489,7 @@ async function loadDemoMode(pack) {
   const packId = pack || STATE.demoPack || "small";
   go("scan");
   showScanPanel("running");
-  $("scanPath").textContent = `Loading Syron demo (${packId})…`;
+  $("scanPath").textContent = `Loading Atlas demo (${packId})…`;
   renderScanSkeleton();
   setBar(30);
   const scan = await api("/api/demo/load", "POST", { pack: packId });
@@ -507,7 +507,7 @@ async function renderDemoPackPicker() {
   if (!host) return;
   const res = await api("/api/demo/packs");
   if (!res.ok || !(res.packs || []).length) {
-    host.innerHTML = `<span class="muted tiny">Sample repositories unavailable — restart Syron or check your install.</span>`;
+    host.innerHTML = `<span class="muted tiny">Sample repositories unavailable — restart Atlas or check your install.</span>`;
     return;
   }
   let selected = STATE.demoPack || "small";
@@ -1327,14 +1327,14 @@ function stopRepositoryTour() {
 function exportGraphPNG() {
   const url = JARVIS_UNIVERSE.exportPNG(2);
   if (!url) { toast("Export failed"); return; }
-  JARVIS_UNIVERSE.downloadDataUrl(url, `syron-universe-${Date.now()}.png`);
+  JARVIS_UNIVERSE.downloadDataUrl(url, `atlas-universe-${Date.now()}.png`);
   toast("PNG exported ✓", "success");
 }
 
 function exportGraphSVG() {
   const svg = JARVIS_UNIVERSE.exportSVG();
   if (!svg) { toast("SVG export failed"); return; }
-  JARVIS_UNIVERSE.downloadText(svg, `syron-universe-${Date.now()}.svg`, "image/svg+xml");
+  JARVIS_UNIVERSE.downloadText(svg, `atlas-universe-${Date.now()}.svg`, "image/svg+xml");
   toast("SVG exported ✓", "success");
 }
 

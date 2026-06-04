@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SYRON — Repository Intelligence Platform</title>
+  <title>ATLAS — Repository Intelligence Platform</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
@@ -22,7 +22,7 @@
   <header class="topbar glass">
     <div class="brand" onclick="go('home')">
       <span class="logo-mark">◈</span>
-      <span class="logo-text">SYRON</span>
+      <span class="logo-text">ATLAS</span>
       <span class="logo-sub">Repository Intelligence Platform</span>
     </div>
     <nav class="nav" id="nav">
@@ -59,14 +59,14 @@
     <!-- ===================== SCREEN 1: HOME ===================== -->
     <section class="view active" id="view-home">
       <div class="hero">
-        <h1 class="hero-title">SYRON</h1>
+        <h1 class="hero-title">ATLAS</h1>
         <p class="hero-sub">Repository Intelligence Platform</p>
         <p class="hero-headline">Map your repository before your AI reads it.</p>
-        <p class="hero-subheadline">Syron scans architecture, dependencies, risks and impact,<br>then exports context for Claude, Codex and Cursor.</p>
+        <p class="hero-subheadline">Atlas scans architecture, dependencies, risks and impact,<br>then exports context for Claude, Codex and Cursor.</p>
         <div class="steps-row">
           <div class="step"><div class="step-num">1</div><h3>Choose repo</h3><p>Browse or paste your project folder path.</p></div>
           <div class="step-arrow">→</div>
-          <div class="step"><div class="step-num">2</div><h3>Scan architecture</h3><p>Syron indexes modules, edges, and architectural risks locally.</p></div>
+          <div class="step"><div class="step-num">2</div><h3>Scan architecture</h3><p>Atlas indexes modules, edges, and architectural risks locally.</p></div>
           <div class="step-arrow">→</div>
           <div class="step"><div class="step-num">3</div><h3>Plan, investigate, export</h3><p>Build plans, debug symptoms, analyze impact, export prompts for Claude or Cursor.</p></div>
         </div>
@@ -87,7 +87,7 @@
 
         <div class="repo-pick glass">
           <label for="repoPath">Repository folder</label>
-          <p class="muted tiny picker-help">Paste the full path to your project root. Syron analyzes dependencies, risk, and structure locally — no cloud upload.</p>
+          <p class="muted tiny picker-help">Paste the full path to your project root. Atlas analyzes dependencies, risk, and structure locally — no cloud upload.</p>
           <div class="pick-row">
             <input id="repoPath" type="text" placeholder="C:\projects\my-app  or  /home/dev/my-app" value="" autocomplete="off" />
             <button class="btn browse-btn" id="browseRepoBtn" type="button" onclick="browseRepoFolder()">Browse</button>
@@ -120,7 +120,7 @@
           </div>
           <div class="demo-pack glass">
             <label>Sample repository size</label>
-            <p class="muted tiny">Explore Syron instantly — no folder path required. Pick a bundled sample codebase.</p>
+            <p class="muted tiny">Explore Atlas instantly — no folder path required. Pick a bundled sample codebase.</p>
             <div id="demoPackList" class="demo-pack-grid"></div>
           </div>
           <div class="recent">
@@ -240,7 +240,7 @@
             <div class="legend-item"><div class="legend-dot" style="background:#ff5c7a"></div><span>High risk</span></div>
             <div class="legend-item"><div class="legend-dot" style="background:#9a7bff"></div><span>Cycle</span></div>
           </div>
-          <div class="presentation-badge" id="presentationBadge" style="display:none">SYRON · Repository Intelligence</div>
+          <div class="presentation-badge" id="presentationBadge" style="display:none">ATLAS · Repository Intelligence</div>
           <div class="timeline-panel glass" id="timelinePanel"></div>
         </div>
         <aside class="panel glass right">
@@ -298,7 +298,7 @@
     <!-- ===================== SCREEN: BUILD PLAN ===================== -->
     <section class="view" id="view-build">
       <h2 class="vh">Build Plan</h2>
-      <p class="muted tiny" style="margin:-8px 4px 14px">Planning only — Syron does not generate or apply code. Export prompts for Claude, Codex, or Cursor.</p>
+      <p class="muted tiny" style="margin:-8px 4px 14px">Planning only — Atlas does not generate or apply code. Export prompts for Claude, Codex, or Cursor.</p>
       <div class="io glass">
         <label>What do you want to add or change?</label>
         <textarea id="buildRequest" rows="4" placeholder="e.g. Add user authentication&#10;Add request rate limiting&#10;Add audit logging"></textarea>
@@ -313,7 +313,7 @@
     <!-- ===================== SCREEN: INVESTIGATE BUG ===================== -->
     <section class="view" id="view-investigate">
       <h2 class="vh">Investigate Bug</h2>
-      <p class="muted tiny" style="margin:-8px 4px 14px">Describe a symptom or paste a stack trace. Syron returns grounded files, a logical hypothesis, and verification steps — not fake certainty.</p>
+      <p class="muted tiny" style="margin:-8px 4px 14px">Describe a symptom or paste a stack trace. Atlas returns grounded files, a logical hypothesis, and verification steps — not fake certainty.</p>
       <div class="io glass">
         <label>What is going wrong?</label>
         <textarea id="investigateSymptom" rows="6" placeholder="e.g. The backtest is better than paper trading&#10;Dashboard PnL is wrong&#10;Scan graph shows wrong module count&#10;&#10;Or paste a traceback with file paths…"></textarea>
@@ -322,7 +322,7 @@
       <div class="workflow-toolbar glass" id="investigateToolbar" style="display:none">
         <button class="btn small ghost" type="button" onclick="downloadWorkflowMarkdownBundle()">Export markdown bundle</button>
       </div>
-      <div id="investigateOut" class="out"><div class="glass empty-panel muted">Describe a symptom after scanning — Syron suggests files and verification steps.</div></div>
+      <div id="investigateOut" class="out"><div class="glass empty-panel muted">Describe a symptom after scanning — Atlas suggests files and verification steps.</div></div>
     </section>
 
     <!-- ===================== SCREEN 5: IMPACT SIMULATOR ===================== -->
@@ -348,7 +348,7 @@
         <div class="glass controls">
           <div class="export-why">
             <div class="export-why-title">Why this helps</div>
-            <p>Syron gives your AI assistant repository context before it starts guessing. Compact packets reduce token cost; verbose packets include full architectural evidence.</p>
+            <p>Atlas gives your AI assistant repository context before it starts guessing. Compact packets reduce token cost; verbose packets include full architectural evidence.</p>
           </div>
           <label>Target</label>
           <div class="seg" id="segTarget">
@@ -384,14 +384,14 @@
   <div id="welcomeScreen" class="welcome-screen" style="display:none">
     <div class="welcome-card glass">
       <p class="onboard-eyebrow">Private beta</p>
-      <h1 class="welcome-title">Welcome to Syron</h1>
+      <h1 class="welcome-title">Welcome to Atlas</h1>
       <p class="muted welcome-lead">Repository intelligence on your machine — map architecture, plan changes, investigate bugs, and analyze impact before your AI assistant reads the codebase.</p>
       <div class="welcome-actions">
         <button class="btn primary big" type="button" onclick="welcomeLoadSample()">Load Sample Repository</button>
         <button class="btn ghost big" type="button" onclick="welcomeStartWalkthrough()">Guided Walkthrough</button>
         <button class="btn ghost big" type="button" onclick="dismissWelcomeScreen(true)">Use my own repository</button>
       </div>
-      <p class="muted tiny welcome-foot">No account required · analysis stays local · <a href="about.html" class="welcome-link">About Syron</a></p>
+      <p class="muted tiny welcome-foot">No account required · analysis stays local · <a href="about.html" class="welcome-link">About Atlas</a></p>
     </div>
   </div>
 
@@ -407,8 +407,8 @@
 
   <div id="aboutAtlasModal" class="about-modal" style="display:none" onclick="closeAboutAtlas()">
     <div class="about-card glass" onclick="event.stopPropagation()">
-      <h2>About Syron</h2>
-      <h3>What Syron does</h3>
+      <h2>About Atlas</h2>
+      <h3>What Atlas does</h3>
       <ul class="clean about-list">
         <li>Scans your repository locally — files, modules, imports, and dependency edges</li>
         <li>Maps architecture and risk in an interactive Repository Map</li>
@@ -416,7 +416,7 @@
         <li>Exports compact context packets for Claude, Codex, and Cursor</li>
         <li>Stores feedback and diagnostics on your device for beta support</li>
       </ul>
-      <h3>What Syron does not do</h3>
+      <h3>What Atlas does not do</h3>
       <ul class="clean about-list muted">
         <li>Does not upload your source code to the cloud for analysis</li>
         <li>Does not apply patches, run git commands, or edit files automatically</li>
@@ -434,11 +434,11 @@
   <div id="onboarding" class="onboarding" style="display:none">
     <div class="onboarding-card glass">
       <p class="onboard-eyebrow">Private beta · ~60 second tour</p>
-      <h2>Welcome to SYRON</h2>
+      <h2>Welcome to ATLAS</h2>
       <p class="muted">Map your repository locally, then plan changes, investigate bugs, and analyze impact — without sending code to the cloud.</p>
       <div class="onboard-steps-grid">
         <div class="onboard-step-card"><span class="onboard-num">1</span><b>Select repository</b><p class="muted tiny">Browse your project folder or load a built-in sample.</p></div>
-        <div class="onboard-step-card"><span class="onboard-num">2</span><b>Scan</b><p class="muted tiny">Syron indexes files, modules, imports, and risks on your machine.</p></div>
+        <div class="onboard-step-card"><span class="onboard-num">2</span><b>Scan</b><p class="muted tiny">Atlas indexes files, modules, imports, and risks on your machine.</p></div>
         <div class="onboard-step-card"><span class="onboard-num">3</span><b>Repository Map</b><p class="muted tiny">Explore dependencies, hubs, and architecture in 3D.</p></div>
         <div class="onboard-step-card"><span class="onboard-num">4</span><b>Build · Investigate · Impact</b><p class="muted tiny">Grounded plans and blast-radius analysis for your next change.</p></div>
       </div>

@@ -1,7 +1,7 @@
 """Phase 140 — scan reliability: degraded-scan detection, failure taxonomy, retry.
 
 Reliability hardening only — no new intelligence, concepts, billing or UI. This
-module classifies the *outcome* of a scan so Syron can:
+module classifies the *outcome* of a scan so Atlas can:
 
   * detect a degraded scan immediately (0 modules, 0 edges, partial/timed-out
     graph, unresolved-import explosion) and surface a warning,

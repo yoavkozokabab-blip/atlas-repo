@@ -1,4 +1,4 @@
-"""Syron architectural intelligence (Phase 134)."""
+"""Atlas architectural intelligence (Phase 134)."""
 
 from .analyzer import analyze, classify_unresolved
 

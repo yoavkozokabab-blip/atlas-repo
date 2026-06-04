@@ -1,4 +1,4 @@
-"""Phase 137A — Syron compute / token-equivalent estimation (not real OpenAI tokens)."""
+"""Phase 137A — Atlas compute / token-equivalent estimation (not real OpenAI tokens)."""
 
 from __future__ import annotations
 
@@ -24,7 +24,7 @@ def estimate_repo_cost(
     symbols: int,
     duration: float,
 ) -> Dict[str, Any]:
-    """Estimate Syron compute units for a repository operation."""
+    """Estimate Atlas compute units for a repository operation."""
     f = max(int(files or 0), 0)
     m = max(int(modules or 0), 0)
     e = max(int(edges or 0), 0)
@@ -54,7 +54,7 @@ def estimate_repo_cost(
     return {
         "scan_units": scan_units,
         "token_equivalent_estimate": token_equivalent,
-        "token_equivalent_label": "Syron compute units (token-equivalent estimate — not billed OpenAI tokens)",
+        "token_equivalent_label": "Atlas compute units (token-equivalent estimate — not billed OpenAI tokens)",
         "size_tier": tier,
         "recommended_plan": recommended,
     }

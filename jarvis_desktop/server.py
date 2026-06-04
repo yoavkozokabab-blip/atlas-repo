@@ -174,7 +174,7 @@ def route_is_registered(method: str, path: str) -> bool:
 # stdlib HTTP handler (default runtime)
 # --------------------------------------------------------------------------
 class JarvisHandler(BaseHTTPRequestHandler):
-    server_version = "SyronDesktop/119"
+    server_version = "AtlasDesktop/119"
 
     def log_message(self, *args: Any) -> None:  # quiet console
         pass
@@ -282,7 +282,7 @@ def create_fastapi_app():  # pragma: no cover - exercised only when fastapi pres
     from fastapi.responses import JSONResponse, FileResponse
     from fastapi.staticfiles import StaticFiles
 
-    app = FastAPI(title="Syron — Repository Intelligence Platform", version=api.PRODUCT_VERSION)
+    app = FastAPI(title="Atlas — Repository Intelligence Platform", version=api.PRODUCT_VERSION)
 
     async def _body(request: Request) -> Dict[str, Any]:
         try:

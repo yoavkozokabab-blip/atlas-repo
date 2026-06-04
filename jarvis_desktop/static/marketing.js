@@ -1,5 +1,5 @@
 "use strict";
-/* Syron marketing layer — waitlist, counts, reveals, mock screenshots, analytics.
+/* Atlas marketing layer — waitlist, counts, reveals, mock screenshots, analytics.
    Stores locally (localStorage) with a backend-ready interface. No external calls. */
 
 const WAITLIST_BASE = 127;          // configurable placeholder ("127 developers waiting")
@@ -10,7 +10,7 @@ const ATLAS_LINKS = Object.freeze({
   x: "",
   discord: "",
 });
-const ATLAS_LINK_UNAVAILABLE = "Coming soon — official Syron link not configured yet.";
+const ATLAS_LINK_UNAVAILABLE = "Coming soon — official Atlas link not configured yet.";
 
 /* ---------- storage (swap these two for a real API later) ---------- */
 function getSignups() { try { return JSON.parse(localStorage.getItem(WL_KEY) || "[]"); } catch (e) { return []; } }

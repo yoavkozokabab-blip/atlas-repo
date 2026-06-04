@@ -1,6 +1,6 @@
 """Phase 137A — billing-ready data models (plain dataclasses, JSON-serializable).
 
-These describe WHO uses Syron, WHAT they scanned, and HOW MUCH — the inputs a
+These describe WHO uses Atlas, WHAT they scanned, and HOW MUCH — the inputs a
 future pricing/billing system would need. They carry no behaviour beyond
 (de)serialization; persistence lives in :mod:`store`, plan catalogue in
 :mod:`plans`.

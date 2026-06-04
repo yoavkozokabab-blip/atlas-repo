@@ -1,4 +1,4 @@
-"""Phase 122 — Syron product hardening: navigation, metrics honesty, grounded flows."""
+"""Phase 122 — Atlas product hardening: navigation, metrics honesty, grounded flows."""
 
 from __future__ import annotations
 
@@ -60,7 +60,7 @@ def test_module_browse_panel_present():
 
 def test_product_version_atlas_hardening_lineage():
     assert "phase12" in api.PRODUCT_VERSION
-    assert "syron" in api.PRODUCT_VERSION or "domain" in api.PRODUCT_VERSION
+    assert "atlas" in api.PRODUCT_VERSION or "domain" in api.PRODUCT_VERSION
 
 
 def test_investigation_grounded_paths_only(planner_scan):

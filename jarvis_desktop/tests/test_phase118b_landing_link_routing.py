@@ -91,7 +91,7 @@ def test_static_information_pages_are_atlas_branded_and_navigate_home() -> None:
     for name, title in STATIC_PAGES.items():
         html = _read(name)
         assert "<title>" + title in html
-        assert "SYRON" in html
+        assert "ATLAS" in html
         assert 'href="landing.html"' in html or 'href="landing.html#waitlist"' in html
 
 
@@ -117,7 +117,7 @@ def test_unconfigured_social_links_use_visible_coming_soon_behavior() -> None:
         assert f"openAtlasSocial('{social}')" in html
         assert f'{social}: ""' in js
     assert "const ATLAS_LINKS" in js
-    assert "Coming soon — official Syron link not configured yet." in js
+    assert "Coming soon — official Atlas link not configured yet." in js
     assert "openAtlasSocial" in js
 
 
