@@ -212,7 +212,7 @@ export default function Home() {
             </div>
             <div className="console-body">
               <p className="prompt">User</p>
-              <p className="command">"JARVIS, review the latest patch and show failing tests."</p>
+              <p className="command">&quot;JARVIS, review the latest patch and show failing tests.&quot;</p>
               <div className="event-list">
                 {demoEvents.map(([phase, detail, time]) => (
                   <div className="event-row" key={phase}>
