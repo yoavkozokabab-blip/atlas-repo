@@ -468,6 +468,7 @@ function finishScanSession(scan, pathLabel) {
   updateTelemetryWarning(scan);
   updateRepoChip(scan.repo_name, scan.demo_mode);
   unlockNav();
+  updateWorkflowToolbars();
   renderScanSuccess(scan);
   try {
     if (localStorage.getItem(ONBOARDING_KEY) !== "1") {
@@ -559,6 +560,14 @@ function applyBillingNav(enabled, isAdmin) {
 }
 
 function unlockNav() { document.querySelectorAll('#nav button[data-lock="1"]').forEach(b => b.removeAttribute("data-lock")); }
+
+function updateWorkflowToolbars() {
+  const on = !!STATE.summary?.ok;
+  ["buildToolbar", "investigateToolbar", "impactToolbar"].forEach(id => {
+    const el = $(id);
+    if (el) el.style.display = on ? "flex" : "none";
+  });
+}
 
 function selectRecentPath(p) {
   $("repoPath").value = p;
@@ -1029,6 +1038,8 @@ async function renderSystemHealth(sum) {
   renderArchitectureSummary(sum);
   const health = await api("/api/repositories/current/system-health");
   renderPerformancePanel(health);
+  const diagBtn = $("copyDiagnosticsBtn");
+  if (diagBtn) diagBtn.style.display = "inline-block";
 }
 
 function renderHealthCockpit(sum) {
@@ -1557,6 +1568,7 @@ async function runChangePlan() {
         <button class="btn ghost" onclick="runBuildImpact()">Simulate</button>
       </div>
       <div id="buildImpactOut"></div>
+      ${typeof workflowFeedbackHtml === "function" ? workflowFeedbackHtml("build") : ""}
     </div>`;
 }
 
@@ -1628,6 +1640,7 @@ async function runInvestigationPlan() {
       </div>
       <details style="margin-top:12px"><summary class="muted tiny">Preview full report (markdown)</summary>
         <pre class="code">${esc(r.formatted || "")}</pre></details>
+      ${typeof workflowFeedbackHtml === "function" ? workflowFeedbackHtml("investigate") : ""}
     </div>`;
 }
 
@@ -1714,6 +1727,7 @@ async function runImpact() {
         <button class="btn small" onclick="copyImpactPrompt()">Copy AI prompt</button>
         <button class="btn small ghost" onclick="go('center')">Show on graph</button>
       </div>
+      ${typeof workflowFeedbackHtml === "function" ? workflowFeedbackHtml("impact") : ""}
     </div>`;
 }
 
@@ -1846,7 +1860,7 @@ function saveExport() {
 /* ---------------- Boot ---------------- */
 (async function boot() {
   loadRecent();
-  maybeShowOnboarding();
+  updateWorkflowToolbars();
   renderDemoPackPicker();
   wireSeg("segTarget", "exportTarget"); wireSeg("segPacket", "exportPacket");
   $("askInput").addEventListener("keydown", e => { if (e.key === "Enter") sendCopilotQuestion(); });

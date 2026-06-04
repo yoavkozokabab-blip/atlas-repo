@@ -30,10 +30,11 @@ from builder_core.bug_intelligence import depgraph
 from . import analytics
 from . import graph_build
 from . import planning_engine
+from . import reliability
 from .evidence_engine import build_evidence_store
 from . import usage as usage_tracking
 
-PRODUCT_VERSION = "phase137a-usage-billing-ready"
+PRODUCT_VERSION = "phase141-private-beta-launch"
 CHARS_PER_TOKEN = 4.0
 GRAPH_DISPLAY_CAP = 5000
 GRAPH_DEFAULT_HIERARCHY_THRESHOLD = 1000
@@ -836,6 +837,25 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
     _STATE["full_graph_pending"] = bool(build_meta.get("lazy_full"))
     graph_nodes = [n for n in graph.get("nodes", []) if n.get("type") == "module"]
     graph_edges = [e for e in graph.get("edges", []) if e.get("type") == "imports" and e.get("resolved")]
+    # Phase 140 — safe transient retry. A massive-mode build that yields 0 modules
+    # from a large file set is a known cold-cache flake (observed on VS Code). One
+    # rebuild is side-effect-free (re-reads the same files) and recovers it.
+    _STATE.pop("scan_retry", None)
+    if not graph_nodes and int(estimate.get("code_files", 0)) > 500 and not _STATE["scan_job"].get("cancelled"):
+        graph = graph_build.build_scan_graph(
+            repo,
+            massive_mode=massive_mode_pre,
+            code_files=int(estimate.get("code_files", 0)),
+            estimated_modules=int(estimate.get("estimated_modules", 0)),
+            on_progress=_on_graph_progress,
+        )
+        t_graph_end = time.time()
+        build_meta = graph.get("jarvis_graph_build") or {}
+        _STATE["graph_detail_level"] = graph.get("graph_detail") or build_meta.get("detail")
+        _STATE["full_graph_pending"] = bool(build_meta.get("lazy_full"))
+        graph_nodes = [n for n in graph.get("nodes", []) if n.get("type") == "module"]
+        graph_edges = [e for e in graph.get("edges", []) if e.get("type") == "imports" and e.get("resolved")]
+        _STATE["scan_retry"] = {"reason": "zero_module_scan", "recovered": bool(graph_nodes)}
     recorder.mark(
         "building_dependency_graph",
         t_graph_start,
@@ -961,6 +981,13 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
         "scope": scope_data,
         "cache": {"hit": False, "signature": signature},
     }
+    # Phase 140 — reliability assessment + immediate degraded-scan warnings.
+    _assessment = reliability.classify_scan(scan)
+    if _STATE.get("scan_retry"):
+        _assessment["retried"] = True
+        _assessment["retry_recovered"] = bool(_STATE["scan_retry"].get("recovered"))
+    scan["reliability"] = _assessment
+    scan["health_warnings"] = _assessment.get("warnings", [])
     scan["suggested_next_actions"] = _scan_next_actions(scan)
     recorder.mark(
         "extracting_architecture",
@@ -1219,6 +1246,43 @@ def current_summary() -> Dict[str, Any]:
         "language_breakdown": scan.get("language_breakdown", {}),
         "scan_duration_seconds": scan.get("scan_duration_seconds"),
         "evidence_coverage": _evidence_coverage(),
+    }
+
+
+def beta_diagnostics() -> Dict[str, Any]:
+    """Phase 141 — support bundle: version, scan stats, repository size."""
+    scan = _STATE.get("scan") or {}
+    summary = current_summary()
+    gh = (summary.get("graph_health") or {}) if summary.get("ok") else {}
+    perf = _STATE.get("scan_perf") or {}
+    return {
+        "ok": True,
+        "product": "ATLAS",
+        "version": PRODUCT_VERSION,
+        "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "repository": {
+            "name": scan.get("repo_name"),
+            "path": _STATE.get("path"),
+            "demo_mode": bool(_STATE.get("demo_mode")),
+            "demo_pack": scan.get("demo_pack"),
+            "size_mb": scan.get("repo_size_mb"),
+            "massive_mode": bool(scan.get("massive_mode")),
+        },
+        "scan_statistics": {
+            "file_count": int(scan.get("file_count") or 0),
+            "module_count": int(scan.get("module_count") or 0),
+            "dependency_edges": int(scan.get("dependency_edges") or 0),
+            "subsystem_count": int(scan.get("subsystem_count") or 0),
+            "scan_duration_seconds": scan.get("scan_duration_seconds"),
+            "graph_quality": gh.get("label"),
+            "unresolved_internal": gh.get("unresolved_internal") or gh.get("unresolved_imports"),
+            "import_cycles": gh.get("import_cycles"),
+            "cache_hit": bool((scan.get("cache") or {}).get("hit")),
+        },
+        "evidence_coverage": summary.get("evidence_coverage") or _evidence_coverage(),
+        "scan_performance_ms": perf.get("total_duration_ms"),
+        "workflow_performance": dict(_STATE.get("workflow_perf") or {}),
+        "scope": scan.get("scope") or _STATE.get("last_scope"),
     }
 
 

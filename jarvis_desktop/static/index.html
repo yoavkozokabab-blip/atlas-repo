@@ -42,6 +42,11 @@
     <div class="repo-chip" id="repoChip">No repository</div>
     <span class="demo-badge" id="demoBadge" style="display:none">Sample repository</span>
     <span class="demo-badge massive" id="massiveBadge" style="display:none">Massive Repository Mode</span>
+    <div class="topbar-actions">
+      <button class="btn ghost small" type="button" onclick="showAboutAtlas()">About</button>
+      <button class="btn ghost small" type="button" onclick="copyBetaDiagnostics()" title="Copy version and scan stats for support">Diagnostics</button>
+      <button class="btn ghost small report-issue-btn" type="button" onclick="openReportIssue()">Report Issue</button>
+    </div>
   </header>
 
   <div id="telemetryWarning" class="telemetry-banner glass" style="display:none" role="status">
@@ -67,7 +72,8 @@
         <div class="home-actions">
           <button class="btn primary big" type="button" id="browseHomBtn" onclick="browseRepoFolder()">Browse Repository</button>
           <button class="btn ghost big" type="button" onclick="loadDemoMode()">Load Sample Repository</button>
-          <button class="btn ghost big tour-launch" type="button" onclick="startProductTour()">Watch Product Tour</button>
+          <button class="btn ghost big tour-launch" type="button" onclick="startGuidedWalkthrough()">Guided Walkthrough</button>
+          <button class="btn ghost big tour-launch" type="button" onclick="startProductTour()">Product Tour (auto)</button>
         </div>
         <h2 class="ask">Or explore by task</h2>
         <div class="cards">
@@ -297,6 +303,9 @@
         <textarea id="buildRequest" rows="4" placeholder="e.g. Add user authentication&#10;Add request rate limiting&#10;Add audit logging"></textarea>
         <button class="btn primary" onclick="runChangePlan()">Generate Change Plan</button>
       </div>
+      <div class="workflow-toolbar glass" id="buildToolbar" style="display:none">
+        <button class="btn small ghost" type="button" onclick="downloadWorkflowMarkdownBundle()">Export markdown bundle</button>
+      </div>
       <div id="buildOut" class="out"><div class="glass empty-panel muted">Scan a repository or load a sample to generate a grounded change plan.</div></div>
     </section>
 
@@ -308,6 +317,9 @@
         <label>What is going wrong?</label>
         <textarea id="investigateSymptom" rows="6" placeholder="e.g. The backtest is better than paper trading&#10;Dashboard PnL is wrong&#10;Scan graph shows wrong module count&#10;&#10;Or paste a traceback with file paths…"></textarea>
         <button class="btn primary" onclick="runInvestigationPlan()">Generate Investigation Plan</button>
+      </div>
+      <div class="workflow-toolbar glass" id="investigateToolbar" style="display:none">
+        <button class="btn small ghost" type="button" onclick="downloadWorkflowMarkdownBundle()">Export markdown bundle</button>
       </div>
       <div id="investigateOut" class="out"><div class="glass empty-panel muted">Describe a symptom after scanning — Atlas suggests files and verification steps.</div></div>
     </section>
@@ -321,6 +333,9 @@
           <input id="impactTarget" type="text" placeholder="e.g. config.py  or  builder_core/ask.py" />
           <button class="btn primary" onclick="runImpact()">Simulate Impact</button>
         </div>
+      </div>
+      <div class="workflow-toolbar glass" id="impactToolbar" style="display:none">
+        <button class="btn small ghost" type="button" onclick="downloadWorkflowMarkdownBundle()">Export markdown bundle</button>
       </div>
       <div id="impactOut" class="out"><div class="glass empty-panel muted">Enter a module path after scanning to see blast radius and affected tests.</div></div>
     </section>
@@ -349,6 +364,7 @@
           <div class="copy-row">
             <button class="btn primary" onclick="copyExport()">Copy to clipboard</button>
             <button class="btn ghost" onclick="saveExport()">Save prompt</button>
+            <button class="btn ghost" onclick="downloadWorkflowMarkdownBundle()">Export workflow markdown</button>
             <button class="btn ghost" onclick="exportDemoBundle()">Export Demo Bundle</button>
           </div>
           <p class="muted tiny">Token numbers are estimates (chars/4). No API keys required — copy & paste into your tool.</p>
@@ -363,6 +379,56 @@
   </main>
 
   <button class="btn ghost screenshot-exit" id="screenshotExitBtn" type="button" onclick="exitPresentationMode()">Exit screenshot</button>
+
+  <div id="welcomeScreen" class="welcome-screen" style="display:none">
+    <div class="welcome-card glass">
+      <p class="onboard-eyebrow">Private beta</p>
+      <h1 class="welcome-title">Welcome to Atlas</h1>
+      <p class="muted welcome-lead">Repository intelligence on your machine — map architecture, plan changes, investigate bugs, and analyze impact before your AI assistant reads the codebase.</p>
+      <div class="welcome-actions">
+        <button class="btn primary big" type="button" onclick="welcomeLoadSample()">Load Sample Repository</button>
+        <button class="btn ghost big" type="button" onclick="welcomeStartWalkthrough()">Guided Walkthrough</button>
+        <button class="btn ghost big" type="button" onclick="dismissWelcomeScreen(true)">Use my own repository</button>
+      </div>
+      <p class="muted tiny welcome-foot">No account required · analysis stays local · <a href="about.html" class="welcome-link">About Atlas</a></p>
+    </div>
+  </div>
+
+  <div id="guidedWalkthroughPanel" class="guided-walkthrough glass" style="display:none">
+    <div class="tour-step" id="guidedTourStep">Step 1 / 8</div>
+    <h4 id="guidedTourTitle">Welcome</h4>
+    <p id="guidedTourText" class="muted tiny"></p>
+    <div class="guided-tour-actions">
+      <button class="btn small primary" type="button" onclick="guidedWalkthroughNext()">Next</button>
+      <button class="btn small ghost" type="button" onclick="stopGuidedWalkthrough()">Skip tour</button>
+    </div>
+  </div>
+
+  <div id="aboutAtlasModal" class="about-modal" style="display:none" onclick="closeAboutAtlas()">
+    <div class="about-card glass" onclick="event.stopPropagation()">
+      <h2>About Atlas</h2>
+      <h3>What Atlas does</h3>
+      <ul class="clean about-list">
+        <li>Scans your repository locally — files, modules, imports, and dependency edges</li>
+        <li>Maps architecture and risk in an interactive Repository Map</li>
+        <li>Generates grounded <b>Build Plans</b>, <b>Investigations</b>, and <b>Impact</b> analysis</li>
+        <li>Exports compact context packets for Claude, Codex, and Cursor</li>
+        <li>Stores feedback and diagnostics on your device for beta support</li>
+      </ul>
+      <h3>What Atlas does not do</h3>
+      <ul class="clean about-list muted">
+        <li>Does not upload your source code to the cloud for analysis</li>
+        <li>Does not apply patches, run git commands, or edit files automatically</li>
+        <li>Does not replace your IDE, test runner, or production monitoring</li>
+        <li>Does not guarantee correct root cause — investigations are ranked hypotheses</li>
+        <li>Does not require an API key for core repository scanning</li>
+      </ul>
+      <div class="success-buttons">
+        <button class="btn primary" type="button" onclick="closeAboutAtlas()">Close</button>
+        <a class="btn ghost" href="about.html">Full about page</a>
+      </div>
+    </div>
+  </div>
 
   <div id="onboarding" class="onboarding" style="display:none">
     <div class="onboarding-card glass">
@@ -385,5 +451,8 @@
   <div id="toast" class="toast"></div>
   <script src="universe.js"></script>
   <script src="app.js"></script>
+  <script src="feedback.js"></script>
+  <script>document.body.dataset.fbHideButton = "1";</script>
+  <script src="atlas_beta.js"></script>
 </body>
 </html>

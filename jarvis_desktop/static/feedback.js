@@ -12,6 +12,7 @@
     { id: "general", label: "General feedback", icon: "💬" },
   ];
   let selected = "general";
+  let pendingContext = null;
 
   function list() { try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch (e) { return []; } }
   function save(entry) { const l = list(); l.push(entry); localStorage.setItem(KEY, JSON.stringify(l)); return l.length; }
@@ -55,7 +56,7 @@
     }
     const bg = document.createElement("div"); bg.className = "fb-bg"; bg.id = "fbBg";
     bg.innerHTML = `<div class="fb-modal" onclick="event.stopPropagation()">
-      <h3>Send feedback</h3><p class="s">Help shape JARVIS. Stored locally on this device.</p>
+      <h3>Send feedback</h3><p class="s">Help shape Atlas. Stored locally on this device.</p>
       <div class="fb-cats" id="fbCats">${CATS.map(c => `<div class="fb-cat" data-c="${c.id}"><span>${c.icon}</span>${c.label}</div>`).join("")}</div>
       <textarea id="fbMsg" rows="4" placeholder="What happened, or what would make JARVIS better?"></textarea>
       <div class="fb-err" id="fbErr">Please write a short message.</div>
@@ -70,7 +71,31 @@
     document.getElementById("fbSend").onclick = submit;
     document.getElementById("fbCancel").onclick = close;
   }
-  function open() { inject(); document.getElementById("fbBg").classList.add("on"); }
+  function open(presetCategory, context) {
+    inject();
+    if (presetCategory) {
+      selected = presetCategory;
+      const bg = document.getElementById("fbBg");
+      if (bg) bg.querySelectorAll(".fb-cat").forEach(x => x.classList.toggle("sel", x.dataset.c === presetCategory));
+    }
+    pendingContext = context || null;
+    if (context && context.diagnostics) {
+      const ta = document.getElementById("fbMsg");
+      if (ta && !ta.value.trim()) {
+        ta.value = "Describe the issue here. Diagnostics are attached automatically when you send.";
+      }
+    }
+    document.getElementById("fbBg").classList.add("on");
+  }
+  async function openReportIssue(context) {
+    const ctx = context || {};
+    if (!ctx.diagnostics) {
+      try {
+        if (typeof api === "function") ctx.diagnostics = await api("/api/system/diagnostics");
+      } catch (e) {}
+    }
+    open("bug", ctx);
+  }
   function close() { const b = document.getElementById("fbBg"); if (b) b.classList.remove("on"); }
   function submit() {
     const msg = (document.getElementById("fbMsg").value || "").trim();
@@ -82,7 +107,9 @@
       email: (document.getElementById("fbEmail").value || "").trim(),
       page: (location.pathname.split("/").pop() || "app"),
       user_agent: navigator.userAgent, ts: new Date().toISOString(),
+      context: pendingContext || undefined,
     };
+    pendingContext = null;
     const n = save(entry);
     try { if (typeof track === "function") track("feedback_submit", { category: selected }); } catch (e) {}
     close();
@@ -95,6 +122,6 @@
     a.download = "jarvis_feedback.json"; a.click(); toast("Exported " + list().length + " items");
   }
 
-  window.JarvisFeedback = { open, close, submit, list, exportJSON, count: () => list().length, categories: CATS };
+  window.JarvisFeedback = { open, close, submit, list, exportJSON, openReportIssue, count: () => list().length, categories: CATS };
   if (document.readyState !== "loading") inject(); else document.addEventListener("DOMContentLoaded", inject);
 })();

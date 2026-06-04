@@ -473,3 +473,23 @@ ul.clean{margin:0;padding-left:18px;line-height:1.9;color:#c7d2f5}
   border-radius:10px;background:rgba(8,12,22,.4);font-size:12.5px}
 .perf-row b{font-family:Orbitron;color:var(--cyan);font-size:13px}
 @media(max-width:700px){.onboard-steps-grid{grid-template-columns:1fr}}
+
+/* Phase 141 — private beta launch */
+.topbar-actions{display:flex;gap:6px;align-items:center;margin-left:8px;flex-wrap:wrap}
+.report-issue-btn{border-color:rgba(255,92,122,.35);color:#ffb3c0}
+.welcome-screen{position:fixed;inset:0;z-index:110;background:rgba(4,8,18,.88);display:grid;place-items:center;padding:24px}
+.welcome-card{max-width:560px;padding:32px;text-align:center}
+.welcome-title{font-family:Orbitron;font-size:28px;margin:8px 0 12px;letter-spacing:2px}
+.welcome-lead{line-height:1.6;margin-bottom:22px}
+.welcome-actions{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.welcome-link{color:var(--cyan)}
+.guided-walkthrough{position:fixed;right:18px;bottom:18px;z-index:95;max-width:320px;padding:16px 18px}
+.guided-tour-actions{display:flex;gap:8px;margin-top:12px}
+.workflow-feedback{display:flex;align-items:center;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);flex-wrap:wrap}
+.workflow-toolbar{display:flex;gap:8px;margin:0 auto 12px;max-width:1000px;padding:10px 14px;justify-content:flex-end}
+.about-modal{position:fixed;inset:0;z-index:105;background:rgba(4,8,18,.82);display:grid;place-items:center;padding:24px}
+.about-card{max-width:560px;padding:28px;max-height:85vh;overflow:auto}
+.about-card h2{font-family:Orbitron;margin:0 0 14px}
+.about-card h3{font-size:13px;color:var(--cyan);margin:16px 0 8px;font-family:Orbitron;letter-spacing:.5px}
+.about-list{font-size:13.5px;line-height:1.55;color:#c7d2f5}
+.about-list li{margin-bottom:6px}

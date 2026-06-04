@@ -85,6 +85,7 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
         ("GET", "/api/repositories/current/scan-status"): lambda _body, _query: api.scan_status(),
         ("GET", "/api/repositories/current/scan-performance"): lambda _body, _query: api.current_scan_performance(),
         ("GET", "/api/repositories/current/system-health"): lambda _body, _query: api.beta_system_health(),
+        ("GET", "/api/system/diagnostics"): lambda _body, _query: api.beta_diagnostics(),
         ("POST", "/api/repositories/current/cancel-scan"): lambda _body, _query: api.cancel_scan(),
         ("POST", "/api/repositories/current/build-full-graph"): lambda _body, _query: api.build_full_module_graph(),
         ("POST", "/api/repositories/diagnostics/scan"): lambda body, _query: api.run_scan_diagnostic(
@@ -346,6 +347,10 @@ def create_fastapi_app():  # pragma: no cover - exercised only when fastapi pres
     @app.get("/api/repositories/current/system-health")
     def _system_health():
         return api.beta_system_health()
+
+    @app.get("/api/system/diagnostics")
+    def _beta_diagnostics():
+        return api.beta_diagnostics()
 
     @app.post("/api/repositories/current/cancel-scan")
     def _cancel_scan():
