@@ -1,0 +1,72 @@
+{
+  "repo_id": "airflow",
+  "name": "Airflow",
+  "tier": 2,
+  "language": "Python",
+  "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\airflow",
+  "url": "https://github.com/apache/airflow.git",
+  "commit": "7d95a3c",
+  "measurement_source": "phase152b_live",
+  "status": "measured",
+  "repo_size": {
+    "total_files_on_disk": 12868,
+    "code_files_counted": 8376,
+    "code_loc": 1602058,
+    "code_chars": 62760087,
+    "source_token_estimate": 15690021
+  },
+  "scan_metrics": {
+    "files": 12341,
+    "loc": 1602058,
+    "modules": 4332,
+    "edges": 835,
+    "subsystems": 33,
+    "cycles": 30,
+    "unresolved_imports": 31640,
+    "unresolved_ratio": 0.9743,
+    "graph_health": null,
+    "degraded_status": false,
+    "partial_graph": false
+  },
+  "performance": {
+    "scan_duration_sec": 87.6,
+    "graph_build_duration_sec": 6.369,
+    "evidence_build_duration_sec": null,
+    "impact_duration_sec": 0.215,
+    "investigation_duration_sec": 0.622,
+    "build_plan_duration_sec": 0.395,
+    "compact_export_duration_sec": 0.001
+  },
+  "quality": {
+    "repository_understanding_score": 80,
+    "impact_score": 100,
+    "investigation_score": 90,
+    "build_plan_score": 100,
+    "overall_score": 92.5
+  },
+  "context_economics": {
+    "raw_repository_token_estimate": 15690021,
+    "atlas_compact_context_token_estimate": 641,
+    "token_reduction_pct": 100.0,
+    "estimated_tokens_avoided": 15689380
+  },
+  "reliability": {
+    "scan_success": true,
+    "retry_count": 0,
+    "timeout": false,
+    "zero_module_scan": false,
+    "partial_graph": false,
+    "memory_pressure_warning": false
+  },
+  "sample_outputs": {
+    "impact_ok": true,
+    "impact_target": "airflow-core/src/airflow/timetables/interval.py",
+    "impact_confidence": "high",
+    "investigation_ok": true,
+    "build_plan_ok": true
+  },
+  "errors": [],
+  "failure_taxonomy": [
+    "unresolved_import_explosion"
+  ]
+}

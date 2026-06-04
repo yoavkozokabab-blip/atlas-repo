@@ -1,0 +1,65 @@
+{
+  "repo_id": "fastapi",
+  "name": "FastAPI",
+  "tier": 1,
+  "language": "Python",
+  "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\fastapi",
+  "url": "https://github.com/fastapi/fastapi.git",
+  "commit": "3d2aace",
+  "status": "measured",
+  "measurement_source": "overnight_validation_existing_2026-06-04",
+  "repo_size": {
+    "total_files_on_disk": 2977,
+    "code_files_counted": 1124,
+    "code_loc": 93796,
+    "code_chars": 3825295,
+    "source_token_estimate": 956323
+  },
+  "scan_metrics": {
+    "files": 2753,
+    "loc": 93796,
+    "modules": 73,
+    "edges": 159,
+    "subsystems": 2,
+    "cycles": 15,
+    "unresolved_imports": 560,
+    "unresolved_ratio": 0.7789,
+    "graph_health": null,
+    "degraded_status": false,
+    "partial_graph": false
+  },
+  "performance": {
+    "scan_duration_sec": 2.934,
+    "graph_build_duration_sec": 0.001,
+    "evidence_build_duration_sec": null,
+    "impact_duration_sec": 0.009,
+    "investigation_duration_sec": 0.424,
+    "build_plan_duration_sec": 0.075,
+    "compact_export_duration_sec": 0.001
+  },
+  "quality": {
+    "repository_understanding_score": 90,
+    "impact_score": 100,
+    "investigation_score": 90,
+    "build_plan_score": 60,
+    "overall_score": 85.0
+  },
+  "context_economics": {
+    "raw_repository_token_estimate": 956323,
+    "atlas_compact_context_token_estimate": 325,
+    "token_reduction_pct": 99.97,
+    "estimated_tokens_avoided": 955998
+  },
+  "reliability": {
+    "scan_success": true,
+    "retry_count": 0,
+    "timeout": false,
+    "zero_module_scan": false,
+    "partial_graph": false,
+    "memory_pressure_warning": false
+  },
+  "errors": [],
+  "failure_taxonomy": [
+    "none"
+  ]
+}

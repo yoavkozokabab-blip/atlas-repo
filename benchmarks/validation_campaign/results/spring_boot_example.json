@@ -1,0 +1,73 @@
+{
+  "repo_id": "spring_boot_example",
+  "name": "Spring Boot example",
+  "tier": 4,
+  "language": "Java",
+  "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\spring_boot_example",
+  "url": "https://github.com/spring-projects/spring-petclinic.git",
+  "commit": "753d35c",
+  "measurement_source": "phase152b_live",
+  "status": "measured",
+  "repo_size": {
+    "total_files_on_disk": 127,
+    "code_files_counted": 47,
+    "code_loc": 3818,
+    "code_chars": 123022,
+    "source_token_estimate": 30755
+  },
+  "scan_metrics": {
+    "files": 122,
+    "loc": 3818,
+    "modules": 0,
+    "edges": 0,
+    "subsystems": 13,
+    "cycles": 0,
+    "unresolved_imports": 0,
+    "unresolved_ratio": 0.0,
+    "graph_health": null,
+    "degraded_status": false,
+    "partial_graph": false
+  },
+  "performance": {
+    "scan_duration_sec": 0.061,
+    "graph_build_duration_sec": 0.013,
+    "evidence_build_duration_sec": null,
+    "impact_duration_sec": 0.003,
+    "investigation_duration_sec": 0.333,
+    "build_plan_duration_sec": 0.074,
+    "compact_export_duration_sec": 0.001
+  },
+  "quality": {
+    "repository_understanding_score": 10,
+    "impact_score": 70,
+    "investigation_score": 90,
+    "build_plan_score": 75,
+    "overall_score": 61.0
+  },
+  "context_economics": {
+    "raw_repository_token_estimate": 30755,
+    "atlas_compact_context_token_estimate": 162,
+    "token_reduction_pct": 99.47,
+    "estimated_tokens_avoided": 30593
+  },
+  "reliability": {
+    "scan_success": true,
+    "retry_count": 0,
+    "timeout": false,
+    "zero_module_scan": true,
+    "partial_graph": false,
+    "memory_pressure_warning": false
+  },
+  "sample_outputs": {
+    "impact_ok": true,
+    "impact_target": "controller routing",
+    "impact_confidence": "low",
+    "investigation_ok": true,
+    "build_plan_ok": true
+  },
+  "errors": [],
+  "failure_taxonomy": [
+    "graph_failure",
+    "language_support_gap"
+  ]
+}

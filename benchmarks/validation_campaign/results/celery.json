@@ -1,0 +1,72 @@
+{
+  "repo_id": "celery",
+  "name": "Celery",
+  "tier": 2,
+  "language": "Python",
+  "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\celery",
+  "url": "https://github.com/celery/celery.git",
+  "commit": "aa4c3b1",
+  "measurement_source": "phase152b_live",
+  "status": "measured",
+  "repo_size": {
+    "total_files_on_disk": 821,
+    "code_files_counted": 416,
+    "code_loc": 100156,
+    "code_chars": 3489553,
+    "source_token_estimate": 872388
+  },
+  "scan_metrics": {
+    "files": 810,
+    "loc": 100156,
+    "modules": 215,
+    "edges": 575,
+    "subsystems": 11,
+    "cycles": 0,
+    "unresolved_imports": 1035,
+    "unresolved_ratio": 0.6429,
+    "graph_health": null,
+    "degraded_status": false,
+    "partial_graph": false
+  },
+  "performance": {
+    "scan_duration_sec": 5.282,
+    "graph_build_duration_sec": 2.003,
+    "evidence_build_duration_sec": null,
+    "impact_duration_sec": 0.015,
+    "investigation_duration_sec": 0.367,
+    "build_plan_duration_sec": 0.157,
+    "compact_export_duration_sec": 0.001
+  },
+  "quality": {
+    "repository_understanding_score": 90,
+    "impact_score": 70,
+    "investigation_score": 90,
+    "build_plan_score": 100,
+    "overall_score": 86.0
+  },
+  "context_economics": {
+    "raw_repository_token_estimate": 872388,
+    "atlas_compact_context_token_estimate": 416,
+    "token_reduction_pct": 99.95,
+    "estimated_tokens_avoided": 871972
+  },
+  "reliability": {
+    "scan_success": true,
+    "retry_count": 0,
+    "timeout": false,
+    "zero_module_scan": false,
+    "partial_graph": false,
+    "memory_pressure_warning": false
+  },
+  "sample_outputs": {
+    "impact_ok": true,
+    "impact_target": "task dispatch",
+    "impact_confidence": "low",
+    "investigation_ok": true,
+    "build_plan_ok": true
+  },
+  "errors": [],
+  "failure_taxonomy": [
+    "none"
+  ]
+}

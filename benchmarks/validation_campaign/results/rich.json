@@ -1,0 +1,65 @@
+{
+  "repo_id": "rich",
+  "name": "Rich",
+  "tier": 2,
+  "language": "Python",
+  "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\rich",
+  "url": "https://github.com/Textualize/rich.git",
+  "commit": "46cebbb",
+  "status": "measured",
+  "measurement_source": "overnight_validation_existing_2026-06-04",
+  "repo_size": {
+    "total_files_on_disk": 553,
+    "code_files_counted": 213,
+    "code_loc": 45787,
+    "code_chars": 1687147,
+    "source_token_estimate": 421786
+  },
+  "scan_metrics": {
+    "files": 531,
+    "loc": 45787,
+    "modules": 106,
+    "edges": 313,
+    "subsystems": 3,
+    "cycles": 0,
+    "unresolved_imports": 581,
+    "unresolved_ratio": 0.6499,
+    "graph_health": null,
+    "degraded_status": false,
+    "partial_graph": false
+  },
+  "performance": {
+    "scan_duration_sec": 2.787,
+    "graph_build_duration_sec": 0.002,
+    "evidence_build_duration_sec": null,
+    "impact_duration_sec": 0.005,
+    "investigation_duration_sec": 0.354,
+    "build_plan_duration_sec": 0.086,
+    "compact_export_duration_sec": 0.001
+  },
+  "quality": {
+    "repository_understanding_score": 90,
+    "impact_score": 100,
+    "investigation_score": 90,
+    "build_plan_score": 60,
+    "overall_score": 85.0
+  },
+  "context_economics": {
+    "raw_repository_token_estimate": 421786,
+    "atlas_compact_context_token_estimate": 359,
+    "token_reduction_pct": 99.91,
+    "estimated_tokens_avoided": 421427
+  },
+  "reliability": {
+    "scan_success": true,
+    "retry_count": 0,
+    "timeout": false,
+    "zero_module_scan": false,
+    "partial_graph": false,
+    "memory_pressure_warning": false
+  },
+  "errors": [],
+  "failure_taxonomy": [
+    "none"
+  ]
+}

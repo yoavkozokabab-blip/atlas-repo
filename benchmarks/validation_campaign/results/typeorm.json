@@ -1,0 +1,72 @@
+{
+  "repo_id": "typeorm",
+  "name": "TypeORM",
+  "tier": 3,
+  "language": "TypeScript",
+  "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\typeorm",
+  "url": "https://github.com/typeorm/typeorm.git",
+  "commit": "883ed8e",
+  "measurement_source": "phase152b_live",
+  "status": "measured",
+  "repo_size": {
+    "total_files_on_disk": 3749,
+    "code_files_counted": 3555,
+    "code_loc": 304244,
+    "code_chars": 10668298,
+    "source_token_estimate": 2667074
+  },
+  "scan_metrics": {
+    "files": 3738,
+    "loc": 304244,
+    "modules": 569,
+    "edges": 2735,
+    "subsystems": 323,
+    "cycles": 80,
+    "unresolved_imports": 288,
+    "unresolved_ratio": 0.0953,
+    "graph_health": null,
+    "degraded_status": false,
+    "partial_graph": false
+  },
+  "performance": {
+    "scan_duration_sec": 2.362,
+    "graph_build_duration_sec": 0.543,
+    "evidence_build_duration_sec": null,
+    "impact_duration_sec": 0.004,
+    "investigation_duration_sec": 0.305,
+    "build_plan_duration_sec": 0.066,
+    "compact_export_duration_sec": 0.001
+  },
+  "quality": {
+    "repository_understanding_score": 100,
+    "impact_score": 70,
+    "investigation_score": 90,
+    "build_plan_score": 100,
+    "overall_score": 88.5
+  },
+  "context_economics": {
+    "raw_repository_token_estimate": 2667074,
+    "atlas_compact_context_token_estimate": 542,
+    "token_reduction_pct": 99.98,
+    "estimated_tokens_avoided": 2666532
+  },
+  "reliability": {
+    "scan_success": true,
+    "retry_count": 0,
+    "timeout": false,
+    "zero_module_scan": false,
+    "partial_graph": false,
+    "memory_pressure_warning": false
+  },
+  "sample_outputs": {
+    "impact_ok": true,
+    "impact_target": "repository pattern",
+    "impact_confidence": "low",
+    "investigation_ok": true,
+    "build_plan_ok": true
+  },
+  "errors": [],
+  "failure_taxonomy": [
+    "none"
+  ]
+}

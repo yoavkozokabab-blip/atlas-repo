@@ -1,0 +1,65 @@
+{
+  "repo_id": "pydantic",
+  "name": "Pydantic",
+  "tier": 2,
+  "language": "Python",
+  "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\pydantic",
+  "url": "https://github.com/pydantic/pydantic.git",
+  "commit": "d5d2f4a",
+  "status": "measured",
+  "measurement_source": "overnight_validation_existing_2026-06-04",
+  "repo_size": {
+    "total_files_on_disk": 771,
+    "code_files_counted": 535,
+    "code_loc": 169560,
+    "code_chars": 7269263,
+    "source_token_estimate": 1817315
+  },
+  "scan_metrics": {
+    "files": 714,
+    "loc": 169560,
+    "modules": 113,
+    "edges": 330,
+    "subsystems": 5,
+    "cycles": 330,
+    "unresolved_imports": 1538,
+    "unresolved_ratio": 0.8233,
+    "graph_health": null,
+    "degraded_status": false,
+    "partial_graph": false
+  },
+  "performance": {
+    "scan_duration_sec": 7.096,
+    "graph_build_duration_sec": 0.003,
+    "evidence_build_duration_sec": null,
+    "impact_duration_sec": 0.007,
+    "investigation_duration_sec": 0.457,
+    "build_plan_duration_sec": 0.095,
+    "compact_export_duration_sec": 0.001
+  },
+  "quality": {
+    "repository_understanding_score": 90,
+    "impact_score": 100,
+    "investigation_score": 90,
+    "build_plan_score": 60,
+    "overall_score": 85.0
+  },
+  "context_economics": {
+    "raw_repository_token_estimate": 1817315,
+    "atlas_compact_context_token_estimate": 400,
+    "token_reduction_pct": 99.98,
+    "estimated_tokens_avoided": 1816915
+  },
+  "reliability": {
+    "scan_success": true,
+    "retry_count": 0,
+    "timeout": false,
+    "zero_module_scan": false,
+    "partial_graph": false,
+    "memory_pressure_warning": false
+  },
+  "errors": [],
+  "failure_taxonomy": [
+    "unresolved_import_explosion"
+  ]
+}

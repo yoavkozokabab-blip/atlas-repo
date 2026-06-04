@@ -1,0 +1,65 @@
+{
+  "repo_id": "nestjs",
+  "name": "NestJS",
+  "tier": 3,
+  "language": "TypeScript",
+  "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\nestjs",
+  "url": "https://github.com/nestjs/nest.git",
+  "commit": "3f76403",
+  "status": "measured",
+  "measurement_source": "overnight_validation_existing_2026-06-04",
+  "repo_size": {
+    "total_files_on_disk": 2125,
+    "code_files_counted": 1724,
+    "code_loc": 102169,
+    "code_chars": 3381945,
+    "source_token_estimate": 845486
+  },
+  "scan_metrics": {
+    "files": 2123,
+    "loc": 102169,
+    "modules": 1276,
+    "edges": 2310,
+    "subsystems": 7,
+    "cycles": 80,
+    "unresolved_imports": 1813,
+    "unresolved_ratio": 0.4397,
+    "graph_health": null,
+    "degraded_status": false,
+    "partial_graph": false
+  },
+  "performance": {
+    "scan_duration_sec": 3.218,
+    "graph_build_duration_sec": 0.023,
+    "evidence_build_duration_sec": null,
+    "impact_duration_sec": 0.014,
+    "investigation_duration_sec": 0.414,
+    "build_plan_duration_sec": 0.075,
+    "compact_export_duration_sec": 0.001
+  },
+  "quality": {
+    "repository_understanding_score": 90,
+    "impact_score": 100,
+    "investigation_score": 90,
+    "build_plan_score": 60,
+    "overall_score": 85.0
+  },
+  "context_economics": {
+    "raw_repository_token_estimate": 845486,
+    "atlas_compact_context_token_estimate": 522,
+    "token_reduction_pct": 99.94,
+    "estimated_tokens_avoided": 844964
+  },
+  "reliability": {
+    "scan_success": true,
+    "retry_count": 0,
+    "timeout": false,
+    "zero_module_scan": false,
+    "partial_graph": false,
+    "memory_pressure_warning": false
+  },
+  "errors": [],
+  "failure_taxonomy": [
+    "none"
+  ]
+}
