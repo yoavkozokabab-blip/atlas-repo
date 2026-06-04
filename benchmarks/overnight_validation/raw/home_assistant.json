@@ -1,0 +1,97 @@
+{
+  "repo_id": "home_assistant",
+  "name": "Home Assistant",
+  "tier": 1,
+  "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\home_assistant",
+  "url": "https://github.com/home-assistant/core.git",
+  "status": "measured",
+  "commit": "f04b0ee2c6d",
+  "errors": [],
+  "repo_size": {
+    "total_files_on_disk": 25948,
+    "code_files_counted": 17477,
+    "code_loc": 2766687,
+    "code_chars": 108602851,
+    "source_token_estimate": 27150712
+  },
+  "scan_metrics": {
+    "files": 25893,
+    "loc": 2766687,
+    "modules": 9709,
+    "edges": 36013,
+    "subsystems": 14,
+    "cycles": 0,
+    "unresolved_imports": 59473,
+    "unresolved_internal": null,
+    "unresolved_external": null,
+    "unresolved_ratio": 0.6228,
+    "graph_health_label": null,
+    "graph_scope": "production"
+  },
+  "time_metrics": {
+    "scan_duration_sec": 494.804,
+    "summary_duration_sec": 0.001,
+    "repository_map_duration_sec": 13.768,
+    "impact_duration_sec": 0.973,
+    "investigation_duration_sec": 3.117,
+    "build_plan_duration_sec": 2.794,
+    "compact_export_duration_sec": 0.002,
+    "verbose_export_duration_sec": 0.003
+  },
+  "quality_metrics": {
+    "understanding_score": 90,
+    "impact_score": 100,
+    "investigation_score": 90,
+    "build_score": 60,
+    "overall_score": 85.0
+  },
+  "token_economics": {
+    "atlas_context_size_chars": 5244,
+    "atlas_compact_packet_size_chars": 2535,
+    "atlas_context_tokens_est": 1311,
+    "atlas_compact_tokens_est": 634,
+    "atlas_internal_token_reduction_pct": 51.64,
+    "source_token_estimate_capped_for_baseline": 200000,
+    "with_atlas_required_context_tokens_est": 634,
+    "without_atlas_required_context_tokens_est": 200000,
+    "atlas_vs_no_atlas_reduction_pct": 99.68,
+    "conservative_without_atlas_context_tokens_est": 50000,
+    "conservative_with_atlas_context_tokens_est": 634,
+    "conservative_context_reduction_pct": 98.73
+  },
+  "llm_comparison": {
+    "without_atlas_required_context_tokens_est": 200000,
+    "with_atlas_required_context_tokens_est": 634,
+    "context_reduction_pct": 99.68,
+    "manual_impact_seconds_est": 7200.0,
+    "manual_investigation_seconds_est": 7200.0,
+    "impact_analysis_speedup_post_scan_est": 7399.79,
+    "investigation_speedup_post_scan_est": 2309.91,
+    "scan_cost_reduction_note": "No scan-cost reduction claimed for first run; Atlas adds scan time, then reduces repeated context assembly and query time."
+  },
+  "selected_impact_target": "homeassistant/const.py",
+  "sample_outputs": {
+    "impact_ok": true,
+    "impact_risk_level": "high",
+    "impact_affected_count": 24,
+    "investigation_ok": true,
+    "build_ok": true,
+    "summary_ok": true,
+    "map_ok": true
+  },
+  "failures": [],
+  "process_exit_code": 0,
+  "process_duration_sec": 519.388,
+  "llm_comparison_conservative": {
+    "without_atlas_required_context_tokens_est": 50000,
+    "with_atlas_required_context_tokens_est": 634,
+    "context_reduction_pct": 98.73,
+    "manual_impact_seconds_est": 3600.0,
+    "atlas_impact_effective_seconds_est": 60.0,
+    "impact_analysis_speedup_post_scan_est": 20.0,
+    "manual_investigation_seconds_est": 3600.0,
+    "atlas_investigation_effective_seconds_est": 90.0,
+    "investigation_speedup_post_scan_est": 20.0,
+    "notes": "Conservative: assumes focused manual context, 60s impact-review floor, 90s investigation-review floor, and 20x speedup cap."
+  }
+}

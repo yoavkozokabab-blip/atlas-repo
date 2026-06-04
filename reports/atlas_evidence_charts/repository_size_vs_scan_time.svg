@@ -1,0 +1,57 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='1120' height='650' viewBox='0 0 1120 650'>
+<rect width='100%' height='100%' fill='#0b1020'/>
+<text x='95' y='34' fill='#f4f7fb' font-family='Inter,Segoe UI,Arial' font-size='24' font-weight='700'>Repository Size vs Scan Time</text>
+<text x='95' y='58' fill='#99a7bd' font-family='Inter,Segoe UI,Arial' font-size='13'>Files use log scale; scan time is direct Atlas API wall-clock time.</text>
+<line x1='95' y1='560' x2='1060' y2='560' stroke='#334155'/>
+<line x1='95' y1='80' x2='95' y2='560' stroke='#334155'/>
+<line x1='467.1' y1='560' x2='467.1' y2='565' stroke='#64748b'/>
+<text x='467.1' y='584' text-anchor='middle' fill='#99a7bd' font-family='Inter,Segoe UI,Arial' font-size='11'>1,000 files</text>
+<line x1='879.1' y1='560' x2='879.1' y2='565' stroke='#64748b'/>
+<text x='879.1' y='584' text-anchor='middle' fill='#99a7bd' font-family='Inter,Segoe UI,Arial' font-size='11'>10,000 files</text>
+<line x1='90' y1='560.0' x2='95' y2='560.0' stroke='#64748b'/>
+<text x='83' y='564.0' text-anchor='end' fill='#99a7bd' font-family='Inter,Segoe UI,Arial' font-size='11'>0s</text>
+<line x1='90' y1='515.1' x2='95' y2='515.1' stroke='#64748b'/>
+<text x='83' y='519.1' text-anchor='end' fill='#99a7bd' font-family='Inter,Segoe UI,Arial' font-size='11'>50s</text>
+<line x1='90' y1='470.2' x2='95' y2='470.2' stroke='#64748b'/>
+<text x='83' y='474.2' text-anchor='end' fill='#99a7bd' font-family='Inter,Segoe UI,Arial' font-size='11'>100s</text>
+<line x1='90' y1='335.4' x2='95' y2='335.4' stroke='#64748b'/>
+<text x='83' y='339.4' text-anchor='end' fill='#99a7bd' font-family='Inter,Segoe UI,Arial' font-size='11'>250s</text>
+<line x1='90' y1='110.9' x2='95' y2='110.9' stroke='#64748b'/>
+<text x='83' y='114.9' text-anchor='end' fill='#99a7bd' font-family='Inter,Segoe UI,Arial' font-size='11'>500s</text>
+<circle cx='1049.3' cy='115.6' r='7' fill='#ffb86b' opacity='0.9'/>
+<text x='1057.3' y='108.6' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='11'>Home Assistant</text>
+<circle cx='811.9' cy='540.7' r='5' fill='#41d1ff' opacity='0.9'/>
+<text x='819.9' y='533.7' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='11'>Django</text>
+<circle cx='648.3' cy='557.4' r='5' fill='#41d1ff' opacity='0.9'/>
+<text x='656.3' y='550.4' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='11'>FastAPI</text>
+<circle cx='950.3' cy='530.1' r='5' fill='#41d1ff' opacity='0.9'/>
+<text x='958.3' y='523.1' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='11'>VS Code</text>
+<circle cx='286.7' cy='559.8' r='5' fill='#41d1ff' opacity='0.9'/>
+<text x='294.7' y='552.8' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='11'>QuixBugs</text>
+<circle cx='95.0' cy='559.5' r='5' fill='#41d1ff' opacity='0.9'/>
+<text x='103.0' y='552.5' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='11'>Requests</text>
+<circle cx='204.1' cy='559.4' r='5' fill='#41d1ff' opacity='0.9'/>
+<text x='212.1' y='552.4' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='11'>Flask</text>
+<circle cx='419.4' cy='558.6' r='5' fill='#41d1ff' opacity='0.9'/>
+<text x='427.4' y='551.6' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='11'>Typer</text>
+<circle cx='353.8' cy='557.5' r='5' fill='#41d1ff' opacity='0.9'/>
+<text x='361.8' y='550.5' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='11'>Rich</text>
+<circle cx='406.8' cy='553.6' r='5' fill='#41d1ff' opacity='0.9'/>
+<text x='414.8' y='546.6' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='11'>Pydantic</text>
+<circle cx='327.4' cy='559.5' r='5' fill='#41d1ff' opacity='0.9'/>
+<text x='335.4' y='552.5' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='11'>SQLModel</text>
+<circle cx='650.0' cy='536.1' r='5' fill='#41d1ff' opacity='0.9'/>
+<text x='658.0' y='529.1' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='11'>LangChain</text>
+<circle cx='598.6' cy='536.2' r='5' fill='#41d1ff' opacity='0.9'/>
+<text x='606.6' y='529.2' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='11'>OpenBB</text>
+<circle cx='578.7' cy='559.2' r='5' fill='#41d1ff' opacity='0.9'/>
+<text x='586.7' y='552.2' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='11'>Qdrant</text>
+<circle cx='1060.0' cy='521.5' r='5' fill='#41d1ff' opacity='0.9'/>
+<text x='1068.0' y='514.5' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='11'>Next.js</text>
+<circle cx='809.4' cy='554.3' r='5' fill='#41d1ff' opacity='0.9'/>
+<text x='817.4' y='547.3' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='11'>React</text>
+<circle cx='601.8' cy='557.1' r='5' fill='#41d1ff' opacity='0.9'/>
+<text x='609.8' y='550.1' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='11'>NestJS</text>
+<text x='577.5' y='618' text-anchor='middle' fill='#99a7bd' font-family='Inter,Segoe UI,Arial' font-size='12'>Repository files (log scale)</text>
+<text x='18' y='320.0' transform='rotate(-90 18 320.0)' text-anchor='middle' fill='#99a7bd' font-family='Inter,Segoe UI,Arial' font-size='12'>Scan seconds</text>
+</svg>

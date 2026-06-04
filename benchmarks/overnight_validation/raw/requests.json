@@ -1,0 +1,97 @@
+{
+  "repo_id": "requests",
+  "name": "Requests",
+  "tier": 2,
+  "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\requests",
+  "url": "https://github.com/psf/requests.git",
+  "status": "measured",
+  "commit": "3be097d",
+  "errors": [],
+  "repo_size": {
+    "total_files_on_disk": 130,
+    "code_files_counted": 37,
+    "code_loc": 9812,
+    "code_chars": 407299,
+    "source_token_estimate": 101824
+  },
+  "scan_metrics": {
+    "files": 125,
+    "loc": 9812,
+    "modules": 20,
+    "edges": 66,
+    "subsystems": 14,
+    "cycles": 0,
+    "unresolved_imports": 185,
+    "unresolved_internal": null,
+    "unresolved_external": null,
+    "unresolved_ratio": 0.7371,
+    "graph_health_label": null,
+    "graph_scope": "production"
+  },
+  "time_metrics": {
+    "scan_duration_sec": 0.509,
+    "summary_duration_sec": 0.0,
+    "repository_map_duration_sec": 0.001,
+    "impact_duration_sec": 0.005,
+    "investigation_duration_sec": 0.446,
+    "build_plan_duration_sec": 0.078,
+    "compact_export_duration_sec": 0.001,
+    "verbose_export_duration_sec": 0.001
+  },
+  "quality_metrics": {
+    "understanding_score": 90,
+    "impact_score": 100,
+    "investigation_score": 90,
+    "build_score": 60,
+    "overall_score": 85.0
+  },
+  "token_economics": {
+    "atlas_context_size_chars": 3119,
+    "atlas_compact_packet_size_chars": 1738,
+    "atlas_context_tokens_est": 780,
+    "atlas_compact_tokens_est": 434,
+    "atlas_internal_token_reduction_pct": 44.36,
+    "source_token_estimate_capped_for_baseline": 101824,
+    "with_atlas_required_context_tokens_est": 434,
+    "without_atlas_required_context_tokens_est": 101824,
+    "atlas_vs_no_atlas_reduction_pct": 99.57,
+    "conservative_without_atlas_context_tokens_est": 8000,
+    "conservative_with_atlas_context_tokens_est": 434,
+    "conservative_context_reduction_pct": 94.58
+  },
+  "llm_comparison": {
+    "without_atlas_required_context_tokens_est": 101824,
+    "with_atlas_required_context_tokens_est": 434,
+    "context_reduction_pct": 99.57,
+    "manual_impact_seconds_est": 300.0,
+    "manual_investigation_seconds_est": 420.0,
+    "impact_analysis_speedup_post_scan_est": 60000.0,
+    "investigation_speedup_post_scan_est": 941.7,
+    "scan_cost_reduction_note": "No scan-cost reduction claimed for first run; Atlas adds scan time, then reduces repeated context assembly and query time."
+  },
+  "selected_impact_target": "src/requests/compat.py",
+  "sample_outputs": {
+    "impact_ok": true,
+    "impact_risk_level": "high",
+    "impact_affected_count": 19,
+    "investigation_ok": true,
+    "build_ok": true,
+    "summary_ok": true,
+    "map_ok": true
+  },
+  "failures": [],
+  "process_exit_code": 0,
+  "process_duration_sec": 1.224,
+  "llm_comparison_conservative": {
+    "without_atlas_required_context_tokens_est": 8000,
+    "with_atlas_required_context_tokens_est": 434,
+    "context_reduction_pct": 94.58,
+    "manual_impact_seconds_est": 300.0,
+    "atlas_impact_effective_seconds_est": 60.0,
+    "impact_analysis_speedup_post_scan_est": 5.0,
+    "manual_investigation_seconds_est": 420.0,
+    "atlas_investigation_effective_seconds_est": 90.0,
+    "investigation_speedup_post_scan_est": 4.67,
+    "notes": "Conservative: assumes focused manual context, 60s impact-review floor, 90s investigation-review floor, and 20x speedup cap."
+  }
+}

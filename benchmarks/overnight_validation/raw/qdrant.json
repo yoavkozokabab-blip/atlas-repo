@@ -1,0 +1,103 @@
+{
+  "repo_id": "qdrant",
+  "name": "Qdrant",
+  "tier": 3,
+  "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\qdrant",
+  "url": "https://github.com/qdrant/qdrant.git",
+  "status": "measured",
+  "commit": "44ad62f",
+  "errors": [],
+  "repo_size": {
+    "total_files_on_disk": 1874,
+    "code_files_counted": 1607,
+    "code_loc": 369844,
+    "code_chars": 14432356,
+    "source_token_estimate": 3608089
+  },
+  "scan_metrics": {
+    "files": 1866,
+    "loc": 369844,
+    "modules": 4,
+    "edges": 0,
+    "subsystems": 14,
+    "cycles": 0,
+    "unresolved_imports": 21,
+    "unresolved_internal": null,
+    "unresolved_external": null,
+    "unresolved_ratio": 1.0,
+    "graph_health_label": null,
+    "graph_scope": "production"
+  },
+  "time_metrics": {
+    "scan_duration_sec": 0.946,
+    "summary_duration_sec": 0.0,
+    "repository_map_duration_sec": 0.0,
+    "impact_duration_sec": 0.006,
+    "investigation_duration_sec": 0.353,
+    "build_plan_duration_sec": 0.056,
+    "compact_export_duration_sec": 0.001,
+    "verbose_export_duration_sec": 0.001
+  },
+  "quality_metrics": {
+    "understanding_score": 75,
+    "impact_score": 100,
+    "investigation_score": 90,
+    "build_score": 60,
+    "overall_score": 81.25
+  },
+  "token_economics": {
+    "atlas_context_size_chars": 3621,
+    "atlas_compact_packet_size_chars": 1955,
+    "atlas_context_tokens_est": 905,
+    "atlas_compact_tokens_est": 489,
+    "atlas_internal_token_reduction_pct": 45.97,
+    "source_token_estimate_capped_for_baseline": 200000,
+    "with_atlas_required_context_tokens_est": 489,
+    "without_atlas_required_context_tokens_est": 200000,
+    "atlas_vs_no_atlas_reduction_pct": 99.76,
+    "conservative_without_atlas_context_tokens_est": 50000,
+    "conservative_with_atlas_context_tokens_est": 489,
+    "conservative_context_reduction_pct": 99.02
+  },
+  "llm_comparison": {
+    "without_atlas_required_context_tokens_est": 200000,
+    "with_atlas_required_context_tokens_est": 489,
+    "context_reduction_pct": 99.76,
+    "manual_impact_seconds_est": 840.18,
+    "manual_investigation_seconds_est": 1026.86,
+    "impact_analysis_speedup_post_scan_est": 140030.0,
+    "investigation_speedup_post_scan_est": 2908.95,
+    "scan_cost_reduction_note": "No scan-cost reduction claimed for first run; Atlas adds scan time, then reduces repeated context assembly and query time."
+  },
+  "selected_impact_target": "lib/edge/publish/amalgamate.py",
+  "sample_outputs": {
+    "impact_ok": true,
+    "impact_risk_level": "low",
+    "impact_affected_count": 2,
+    "investigation_ok": true,
+    "build_ok": true,
+    "summary_ok": true,
+    "map_ok": true
+  },
+  "failures": [
+    {
+      "category": "graph_failure",
+      "reason": "graph has <=1 module or no edges"
+    }
+  ],
+  "process_exit_code": 0,
+  "process_duration_sec": 12.992,
+  "stderr_tail": "n_test.rs:180: SyntaxWarning: invalid decimal literal\nlib/collection/tests/integration/grouping_test.rs:154: SyntaxWarning: invalid decimal literal\nlib/collection/tests/integration/grouping_test.rs:154: SyntaxWarning: invalid decimal literal\nlib/collection/tests/integration/grouping_test.rs:154: SyntaxWarning: invalid decimal literal\nlib/segment/src/segment/tests/mod.rs:67: SyntaxWarning: invalid decimal literal\nlib/segment/src/segment/tests/mod.rs:71: SyntaxWarning: invalid decimal literal\nlib/segment/src/segment/tests/mod.rs:73: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/fail_recovery_test.rs:21: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/fail_recovery_test.rs:24: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/fail_recovery_test.rs:29: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/fail_recovery_test.rs:36: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/fail_recovery_test.rs:46: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/fail_recovery_test.rs:56: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/fail_recovery_test.rs:67: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/nested_filtering_test.rs:131: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/nested_filtering_test.rs:132: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/nested_filtering_test.rs:139: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/nested_filtering_test.rs:176: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/nested_filtering_test.rs:177: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/nested_filtering_test.rs:178: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/nested_filtering_test.rs:211: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/nested_filtering_test.rs:216: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/nested_filtering_test.rs:247: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/nested_filtering_test.rs:258: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/segment_builder_test.rs:59: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/segment_builder_test.rs:100: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/segment_builder_test.rs:137: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/segment_builder_test.rs:180: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/segment_tests.rs:31: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/segment_tests.rs:48: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/segment_tests.rs:50: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/segment_tests.rs:67: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/segment_tests.rs:84: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/segment_tests.rs:101: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/segment_tests.rs:103: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/segment_tests.rs:125: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/segment_tests.rs:146: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/segment_tests.rs:159: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/segment_tests.rs:179: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/segment_tests.rs:204: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/segment_tests.rs:205: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/segment_tests.rs:225: SyntaxWarning: invalid decimal literal\nlib/segment/tests/integration/sparse_vector_index_search_tests.rs:792: SyntaxWarning: invalid decimal literal",
+  "llm_comparison_conservative": {
+    "without_atlas_required_context_tokens_est": 50000,
+    "with_atlas_required_context_tokens_est": 489,
+    "context_reduction_pct": 99.02,
+    "manual_impact_seconds_est": 300.0,
+    "atlas_impact_effective_seconds_est": 60.0,
+    "impact_analysis_speedup_post_scan_est": 5.0,
+    "manual_investigation_seconds_est": 420.0,
+    "atlas_investigation_effective_seconds_est": 90.0,
+    "investigation_speedup_post_scan_est": 4.67,
+    "notes": "Conservative: assumes focused manual context, 60s impact-review floor, 90s investigation-review floor, and 20x speedup cap."
+  }
+}

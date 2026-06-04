@@ -1,0 +1,57 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='1120' height='650' viewBox='0 0 1120 650'>
+<rect width='100%' height='100%' fill='#0b1020'/>
+<text x='170' y='34' fill='#f4f7fb' font-family='Inter,Segoe UI,Arial' font-size='24' font-weight='700'>Conservative Token Reduction by Repository</text>
+<text x='170' y='58' fill='#99a7bd' font-family='Inter,Segoe UI,Arial' font-size='13'>No-Atlas baseline: focused manual context = 5% source tokens, bounded 8k-50k.</text>
+<text x='158' y='90.8' text-anchor='end' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='12'>FastAPI</text>
+<rect x='170' y='74.0' width='874.0' height='24.7' rx='4' fill='#41d1ff' opacity='0.88'/>
+<text x='1052.0' y='90.8' fill='#f4f7fb' font-family='Inter,Segoe UI,Arial' font-size='12'>99.32%</text>
+<text x='158' y='121.5' text-anchor='end' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='12'>Django</text>
+<rect x='170' y='104.7' width='873.2' height='24.7' rx='4' fill='#8ad7ff' opacity='0.88'/>
+<text x='1051.2' y='121.5' fill='#f4f7fb' font-family='Inter,Segoe UI,Arial' font-size='12'>99.23%</text>
+<text x='158' y='152.2' text-anchor='end' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='12'>Pydantic</text>
+<rect x='170' y='135.4' width='873.0' height='24.7' rx='4' fill='#41d1ff' opacity='0.88'/>
+<text x='1051.0' y='152.2' fill='#f4f7fb' font-family='Inter,Segoe UI,Arial' font-size='12'>99.20%</text>
+<text x='158' y='182.9' text-anchor='end' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='12'>LangChain</text>
+<rect x='170' y='166.1' width='872.9' height='24.7' rx='4' fill='#8ad7ff' opacity='0.88'/>
+<text x='1050.9' y='182.9' fill='#f4f7fb' font-family='Inter,Segoe UI,Arial' font-size='12'>99.19%</text>
+<text x='158' y='213.6' text-anchor='end' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='12'>React</text>
+<rect x='170' y='196.8' width='871.6' height='24.7' rx='4' fill='#41d1ff' opacity='0.88'/>
+<text x='1049.6' y='213.6' fill='#f4f7fb' font-family='Inter,Segoe UI,Arial' font-size='12'>99.04%</text>
+<text x='158' y='244.3' text-anchor='end' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='12'>Qdrant</text>
+<rect x='170' y='227.5' width='871.4' height='24.7' rx='4' fill='#8ad7ff' opacity='0.88'/>
+<text x='1049.4' y='244.3' fill='#f4f7fb' font-family='Inter,Segoe UI,Arial' font-size='12'>99.02%</text>
+<text x='158' y='275.0' text-anchor='end' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='12'>OpenBB</text>
+<rect x='170' y='258.2' width='870.8' height='24.7' rx='4' fill='#41d1ff' opacity='0.88'/>
+<text x='1048.8' y='275.0' fill='#f4f7fb' font-family='Inter,Segoe UI,Arial' font-size='12'>98.96%</text>
+<text x='158' y='305.7' text-anchor='end' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='12'>Next.js</text>
+<rect x='170' y='288.9' width='869.6' height='24.7' rx='4' fill='#8ad7ff' opacity='0.88'/>
+<text x='1047.6' y='305.7' fill='#f4f7fb' font-family='Inter,Segoe UI,Arial' font-size='12'>98.82%</text>
+<text x='158' y='336.4' text-anchor='end' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='12'>NestJS</text>
+<rect x='170' y='319.6' width='869.2' height='24.7' rx='4' fill='#41d1ff' opacity='0.88'/>
+<text x='1047.2' y='336.4' fill='#f4f7fb' font-family='Inter,Segoe UI,Arial' font-size='12'>98.77%</text>
+<text x='158' y='367.2' text-anchor='end' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='12'>Home Assistant</text>
+<rect x='170' y='350.4' width='868.8' height='24.7' rx='4' fill='#8ad7ff' opacity='0.88'/>
+<text x='1046.8' y='367.2' fill='#f4f7fb' font-family='Inter,Segoe UI,Arial' font-size='12'>98.73%</text>
+<text x='158' y='397.9' text-anchor='end' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='12'>VS Code</text>
+<rect x='170' y='381.1' width='868.1' height='24.7' rx='4' fill='#41d1ff' opacity='0.88'/>
+<text x='1046.1' y='397.9' fill='#f4f7fb' font-family='Inter,Segoe UI,Arial' font-size='12'>98.65%</text>
+<text x='158' y='428.6' text-anchor='end' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='12'>Rich</text>
+<rect x='170' y='411.8' width='865.0' height='24.7' rx='4' fill='#8ad7ff' opacity='0.88'/>
+<text x='1043.0' y='428.6' fill='#f4f7fb' font-family='Inter,Segoe UI,Arial' font-size='12'>98.30%</text>
+<text x='158' y='459.3' text-anchor='end' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='12'>Typer</text>
+<rect x='170' y='442.5' width='855.4' height='24.7' rx='4' fill='#41d1ff' opacity='0.88'/>
+<text x='1033.4' y='459.3' fill='#f4f7fb' font-family='Inter,Segoe UI,Arial' font-size='12'>97.20%</text>
+<text x='158' y='490.0' text-anchor='end' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='12'>SQLModel</text>
+<rect x='170' y='473.2' width='844.7' height='24.7' rx='4' fill='#8ad7ff' opacity='0.88'/>
+<text x='1022.7' y='490.0' fill='#f4f7fb' font-family='Inter,Segoe UI,Arial' font-size='12'>95.99%</text>
+<text x='158' y='520.7' text-anchor='end' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='12'>QuixBugs</text>
+<rect x='170' y='503.9' width='836.0' height='24.7' rx='4' fill='#41d1ff' opacity='0.88'/>
+<text x='1014.0' y='520.7' fill='#f4f7fb' font-family='Inter,Segoe UI,Arial' font-size='12'>95%</text>
+<text x='158' y='551.4' text-anchor='end' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='12'>Requests</text>
+<rect x='170' y='534.6' width='832.3' height='24.7' rx='4' fill='#8ad7ff' opacity='0.88'/>
+<text x='1010.3' y='551.4' fill='#f4f7fb' font-family='Inter,Segoe UI,Arial' font-size='12'>94.58%</text>
+<text x='158' y='582.1' text-anchor='end' fill='#d7e2f2' font-family='Inter,Segoe UI,Arial' font-size='12'>Flask</text>
+<rect x='170' y='565.3' width='830.6' height='24.7' rx='4' fill='#41d1ff' opacity='0.88'/>
+<text x='1008.6' y='582.1' fill='#f4f7fb' font-family='Inter,Segoe UI,Arial' font-size='12'>94.39%</text>
+<text x='170' y='628' fill='#718096' font-family='Inter,Segoe UI,Arial' font-size='11'>Generated from benchmarks/overnight_validation/aggregate_results.json</text>
+</svg>

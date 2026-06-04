@@ -1,0 +1,16 @@
+{
+  "repo_id": "atlas_self",
+  "name": "Atlas self",
+  "tier": 1,
+  "path": "C:\\J.A.R.V.I.S\\local_jarvis",
+  "status": "timeout",
+  "process_duration_sec": 2400.084,
+  "failures": [
+    {
+      "category": "performance_failure",
+      "reason": "per-repository timeout after 2400s"
+    }
+  ],
+  "stdout_tail": "",
+  "stderr_tail": ""
+}

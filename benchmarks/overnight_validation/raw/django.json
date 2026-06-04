@@ -1,0 +1,97 @@
+{
+  "repo_id": "django",
+  "name": "Django",
+  "tier": 1,
+  "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\django",
+  "url": "https://github.com/django/django.git",
+  "status": "measured",
+  "commit": "4bbc27c",
+  "errors": [],
+  "repo_size": {
+    "total_files_on_disk": 6991,
+    "code_files_counted": 2964,
+    "code_loc": 457152,
+    "code_chars": 19371501,
+    "source_token_estimate": 4842875
+  },
+  "scan_metrics": {
+    "files": 6870,
+    "loc": 457152,
+    "modules": 929,
+    "edges": 2915,
+    "subsystems": 3,
+    "cycles": 80,
+    "unresolved_imports": 1377,
+    "unresolved_internal": null,
+    "unresolved_external": null,
+    "unresolved_ratio": 0.3208,
+    "graph_health_label": null,
+    "graph_scope": "production"
+  },
+  "time_metrics": {
+    "scan_duration_sec": 21.467,
+    "summary_duration_sec": 0.0,
+    "repository_map_duration_sec": 0.013,
+    "impact_duration_sec": 0.026,
+    "investigation_duration_sec": 0.586,
+    "build_plan_duration_sec": 0.249,
+    "compact_export_duration_sec": 0.001,
+    "verbose_export_duration_sec": 0.002
+  },
+  "quality_metrics": {
+    "understanding_score": 90,
+    "impact_score": 100,
+    "investigation_score": 90,
+    "build_score": 60,
+    "overall_score": 85.0
+  },
+  "token_economics": {
+    "atlas_context_size_chars": 1979,
+    "atlas_compact_packet_size_chars": 1541,
+    "atlas_context_tokens_est": 495,
+    "atlas_compact_tokens_est": 385,
+    "atlas_internal_token_reduction_pct": 22.22,
+    "source_token_estimate_capped_for_baseline": 200000,
+    "with_atlas_required_context_tokens_est": 385,
+    "without_atlas_required_context_tokens_est": 200000,
+    "atlas_vs_no_atlas_reduction_pct": 99.81,
+    "conservative_without_atlas_context_tokens_est": 50000,
+    "conservative_with_atlas_context_tokens_est": 385,
+    "conservative_context_reduction_pct": 99.23
+  },
+  "llm_comparison": {
+    "without_atlas_required_context_tokens_est": 200000,
+    "with_atlas_required_context_tokens_est": 385,
+    "context_reduction_pct": 99.81,
+    "manual_impact_seconds_est": 3232.13,
+    "manual_investigation_seconds_est": 3943.54,
+    "impact_analysis_speedup_post_scan_est": 124312.69,
+    "investigation_speedup_post_scan_est": 6729.59,
+    "scan_cost_reduction_note": "No scan-cost reduction claimed for first run; Atlas adds scan time, then reduces repeated context assembly and query time."
+  },
+  "selected_impact_target": "django/conf/__init__.py",
+  "sample_outputs": {
+    "impact_ok": true,
+    "impact_risk_level": "high",
+    "impact_affected_count": 24,
+    "investigation_ok": true,
+    "build_ok": true,
+    "summary_ok": true,
+    "map_ok": true
+  },
+  "failures": [],
+  "process_exit_code": 0,
+  "process_duration_sec": 28.868,
+  "llm_comparison_conservative": {
+    "without_atlas_required_context_tokens_est": 50000,
+    "with_atlas_required_context_tokens_est": 385,
+    "context_reduction_pct": 99.23,
+    "manual_impact_seconds_est": 825.58,
+    "atlas_impact_effective_seconds_est": 60.0,
+    "impact_analysis_speedup_post_scan_est": 13.76,
+    "manual_investigation_seconds_est": 1024.0,
+    "atlas_investigation_effective_seconds_est": 90.0,
+    "investigation_speedup_post_scan_est": 11.38,
+    "notes": "Conservative: assumes focused manual context, 60s impact-review floor, 90s investigation-review floor, and 20x speedup cap."
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "repo_id": "nestjs",
+  "name": "NestJS",
+  "tier": 3,
+  "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\nestjs",
+  "url": "https://github.com/nestjs/nest.git",
+  "status": "measured",
+  "commit": "3f76403",
+  "errors": [],
+  "repo_size": {
+    "total_files_on_disk": 2125,
+    "code_files_counted": 1724,
+    "code_loc": 102169,
+    "code_chars": 3381945,
+    "source_token_estimate": 845486
+  },
+  "scan_metrics": {
+    "files": 2123,
+    "loc": 102169,
+    "modules": 1276,
+    "edges": 2310,
+    "subsystems": 7,
+    "cycles": 80,
+    "unresolved_imports": 1813,
+    "unresolved_internal": null,
+    "unresolved_external": null,
+    "unresolved_ratio": 0.4397,
+    "graph_health_label": null,
+    "graph_scope": "production"
+  },
+  "time_metrics": {
+    "scan_duration_sec": 3.218,
+    "summary_duration_sec": 0.0,
+    "repository_map_duration_sec": 0.023,
+    "impact_duration_sec": 0.014,
+    "investigation_duration_sec": 0.414,
+    "build_plan_duration_sec": 0.075,
+    "compact_export_duration_sec": 0.001,
+    "verbose_export_duration_sec": 0.001
+  },
+  "quality_metrics": {
+    "understanding_score": 90,
+    "impact_score": 100,
+    "investigation_score": 90,
+    "build_score": 60,
+    "overall_score": 85.0
+  },
+  "token_economics": {
+    "atlas_context_size_chars": 2833,
+    "atlas_compact_packet_size_chars": 2089,
+    "atlas_context_tokens_est": 708,
+    "atlas_compact_tokens_est": 522,
+    "atlas_internal_token_reduction_pct": 26.27,
+    "source_token_estimate_capped_for_baseline": 200000,
+    "with_atlas_required_context_tokens_est": 522,
+    "without_atlas_required_context_tokens_est": 200000,
+    "atlas_vs_no_atlas_reduction_pct": 99.74,
+    "conservative_without_atlas_context_tokens_est": 42274,
+    "conservative_with_atlas_context_tokens_est": 522,
+    "conservative_context_reduction_pct": 98.77
+  },
+  "llm_comparison": {
+    "without_atlas_required_context_tokens_est": 200000,
+    "with_atlas_required_context_tokens_est": 522,
+    "context_reduction_pct": 99.74,
+    "manual_impact_seconds_est": 1131.57,
+    "manual_investigation_seconds_est": 1374.01,
+    "impact_analysis_speedup_post_scan_est": 80826.43,
+    "investigation_speedup_post_scan_est": 3318.86,
+    "scan_cost_reduction_note": "No scan-cost reduction claimed for first run; Atlas adds scan time, then reduces repeated context assembly and query time."
+  },
+  "selected_impact_target": "packages/core/injector/instance-wrapper.ts",
+  "sample_outputs": {
+    "impact_ok": true,
+    "impact_risk_level": "high",
+    "impact_affected_count": 24,
+    "investigation_ok": true,
+    "build_ok": true,
+    "summary_ok": true,
+    "map_ok": true
+  },
+  "failures": [],
+  "process_exit_code": 0,
+  "process_duration_sec": 7.938,
+  "llm_comparison_conservative": {
+    "without_atlas_required_context_tokens_est": 42274,
+    "with_atlas_required_context_tokens_est": 522,
+    "context_reduction_pct": 98.77,
+    "manual_impact_seconds_est": 523.49,
+    "atlas_impact_effective_seconds_est": 60.0,
+    "impact_analysis_speedup_post_scan_est": 8.72,
+    "manual_investigation_seconds_est": 641.3,
+    "atlas_investigation_effective_seconds_est": 90.0,
+    "investigation_speedup_post_scan_est": 7.13,
+    "notes": "Conservative: assumes focused manual context, 60s impact-review floor, 90s investigation-review floor, and 20x speedup cap."
+  }
+}

@@ -1,0 +1,146 @@
+[
+  {
+    "repo_id": "home_assistant",
+    "name": "Home Assistant",
+    "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\home_assistant",
+    "available": true,
+    "url": "https://github.com/home-assistant/core.git",
+    "commit": ""
+  },
+  {
+    "repo_id": "django",
+    "name": "Django",
+    "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\django",
+    "available": true,
+    "url": "https://github.com/django/django.git",
+    "commit": ""
+  },
+  {
+    "repo_id": "fastapi",
+    "name": "FastAPI",
+    "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\fastapi",
+    "available": true,
+    "url": "https://github.com/fastapi/fastapi.git",
+    "commit": ""
+  },
+  {
+    "repo_id": "vscode",
+    "name": "VS Code",
+    "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\vscode",
+    "available": true,
+    "url": "https://github.com/microsoft/vscode.git",
+    "commit": ""
+  },
+  {
+    "repo_id": "atlas_self",
+    "name": "Atlas self",
+    "path": "C:\\J.A.R.V.I.S\\local_jarvis",
+    "available": true,
+    "url": "local workspace",
+    "commit": ""
+  },
+  {
+    "repo_id": "quixbugs",
+    "name": "QuixBugs",
+    "path": "C:\\Repos\\QuixBugs",
+    "available": true,
+    "url": "https://github.com/jkoppel/QuixBugs.git",
+    "commit": ""
+  },
+  {
+    "repo_id": "requests",
+    "name": "Requests",
+    "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\requests",
+    "available": true,
+    "url": "https://github.com/psf/requests.git",
+    "commit": ""
+  },
+  {
+    "repo_id": "flask",
+    "name": "Flask",
+    "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\flask",
+    "available": true,
+    "url": "https://github.com/pallets/flask.git",
+    "commit": ""
+  },
+  {
+    "repo_id": "typer",
+    "name": "Typer",
+    "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\typer",
+    "available": true,
+    "url": "https://github.com/fastapi/typer.git",
+    "commit": ""
+  },
+  {
+    "repo_id": "rich",
+    "name": "Rich",
+    "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\rich",
+    "available": true,
+    "url": "https://github.com/Textualize/rich.git",
+    "commit": ""
+  },
+  {
+    "repo_id": "pydantic",
+    "name": "Pydantic",
+    "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\pydantic",
+    "available": true,
+    "url": "https://github.com/pydantic/pydantic.git",
+    "commit": ""
+  },
+  {
+    "repo_id": "sqlmodel",
+    "name": "SQLModel",
+    "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\sqlmodel",
+    "available": true,
+    "url": "https://github.com/fastapi/sqlmodel.git",
+    "commit": ""
+  },
+  {
+    "repo_id": "langchain",
+    "name": "LangChain",
+    "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\langchain",
+    "available": true,
+    "url": "https://github.com/langchain-ai/langchain.git",
+    "commit": ""
+  },
+  {
+    "repo_id": "openbb",
+    "name": "OpenBB",
+    "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\openbb",
+    "available": true,
+    "url": "https://github.com/OpenBB-finance/OpenBB.git",
+    "commit": ""
+  },
+  {
+    "repo_id": "qdrant",
+    "name": "Qdrant",
+    "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\qdrant",
+    "available": true,
+    "url": "https://github.com/qdrant/qdrant.git",
+    "commit": ""
+  },
+  {
+    "repo_id": "nextjs",
+    "name": "Next.js",
+    "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\nextjs",
+    "available": true,
+    "url": "https://github.com/vercel/next.js.git",
+    "commit": ""
+  },
+  {
+    "repo_id": "react",
+    "name": "React",
+    "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\react",
+    "available": true,
+    "url": "https://github.com/facebook/react.git",
+    "commit": ""
+  },
+  {
+    "repo_id": "nestjs",
+    "name": "NestJS",
+    "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\nestjs",
+    "available": true,
+    "url": "https://github.com/nestjs/nest.git",
+    "commit": ""
+  }
+]
