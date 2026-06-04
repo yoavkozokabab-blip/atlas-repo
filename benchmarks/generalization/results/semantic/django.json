@@ -27,36 +27,48 @@
       "phrase": "authorization",
       "expected_subsystem": "access control / permissions",
       "prompt": "what breaks if I remove authorization",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "authorization",
+      "modules": [
+        "django/contrib/auth/migrations/0011_update_proxy_permissions.py",
+        "django/contrib/auth/__init__.py",
+        "django/contrib/auth/models.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 django/contrib/auth/migrations/0011_update_proxy_permissions.py, django/contrib/auth/__init__.py, django/contrib/auth/models.py"
     },
     {
       "concept": "caching",
       "phrase": "caching",
       "expected_subsystem": "cache layer",
       "prompt": "what breaks if I remove caching",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "caching",
+      "modules": [
+        "django/middleware/cache.py",
+        "django/contrib/sessions/backends/cache.py",
+        "django/core/cache/__init__.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 django/middleware/cache.py, django/contrib/sessions/backends/cache.py, django/core/cache/__init__.py"
     },
     {
       "concept": "configuration",
       "phrase": "configuration",
       "expected_subsystem": "config system",
       "prompt": "what breaks if I remove configuration",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "configuration",
+      "modules": [
+        "django/contrib/admin/options.py",
+        "django/conf/global_settings.py",
+        "django/db/models/options.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 django/contrib/admin/options.py, django/conf/global_settings.py, django/db/models/options.py"
     },
     {
       "concept": "database",
@@ -79,12 +91,16 @@
       "phrase": "routing",
       "expected_subsystem": "router / URL dispatch",
       "prompt": "what breaks if I remove routing",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "routing",
+      "modules": [
+        "django/core/checks/urls.py",
+        "django/contrib/admindocs/urls.py",
+        "django/contrib/auth/urls.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 django/core/checks/urls.py, django/contrib/admindocs/urls.py, django/contrib/auth/urls.py"
     },
     {
       "concept": "middleware",
@@ -93,98 +109,125 @@
       "prompt": "what breaks if I remove middleware",
       "resolved": true,
       "category": null,
-      "label": "architecture symbol `middleware`",
+      "label": "middleware",
       "modules": [
         "django/contrib/admindocs/middleware.py",
-        "django/contrib/auth/__init__.py",
-        "django/contrib/auth/apps.py"
+        "django/contrib/auth/middleware.py",
+        "django/contrib/flatpages/middleware.py"
       ],
-      "confidence": "low",
-      "actual": "resolved \u2192 django/contrib/admindocs/middleware.py, django/contrib/auth/__init__.py, django/contrib/auth/apps.py"
+      "confidence": "high",
+      "actual": "resolved \u2192 django/contrib/admindocs/middleware.py, django/contrib/auth/middleware.py, django/contrib/flatpages/middleware.py"
     },
     {
       "concept": "logging",
       "phrase": "the logging layer",
       "expected_subsystem": "logging subsystem",
       "prompt": "what breaks if I remove the logging layer",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "logging",
+      "modules": [
+        "django/utils/log.py",
+        "django/contrib/admin/templatetags/log.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 django/utils/log.py, django/contrib/admin/templatetags/log.py"
     },
     {
       "concept": "events",
       "phrase": "the event system",
       "expected_subsystem": "event bus / dispatcher",
       "prompt": "what breaks if I remove the event system",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "events",
+      "modules": [
+        "django/dispatch/dispatcher.py",
+        "django/core/signals.py",
+        "django/db/models/signals.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 django/dispatch/dispatcher.py, django/core/signals.py, django/db/models/signals.py"
     },
     {
       "concept": "messaging",
       "phrase": "messaging",
       "expected_subsystem": "message queue / pub-sub",
       "prompt": "what breaks if I remove messaging",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "messaging",
+      "modules": [
+        "django/core/mail/message.py",
+        "django/contrib/messages/storage/base.py",
+        "django/contrib/messages/__init__.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 django/core/mail/message.py, django/contrib/messages/storage/base.py, django/contrib/messages/__init__.py"
     },
     {
       "concept": "background_jobs",
       "phrase": "background jobs",
       "expected_subsystem": "task / worker queue",
       "prompt": "what breaks if I remove background jobs",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "background jobs",
+      "modules": [
+        "django/tasks/base.py",
+        "django/tasks/signals.py",
+        "django/tasks/backends/base.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 django/tasks/base.py, django/tasks/signals.py, django/tasks/backends/base.py"
     },
     {
       "concept": "scheduling",
       "phrase": "scheduling",
       "expected_subsystem": "scheduler",
       "prompt": "what breaks if I remove scheduling",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "scheduling",
+      "modules": [
+        "django/db/backends/postgresql/psycopg_any.py",
+        "django/contrib/postgres/fields/ranges.py",
+        "django/contrib/postgres/forms/ranges.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 django/db/backends/postgresql/psycopg_any.py, django/contrib/postgres/fields/ranges.py, django/contrib/postgres/forms/ranges.py"
     },
     {
       "concept": "state_management",
       "phrase": "state management",
       "expected_subsystem": "state store",
       "prompt": "what breaks if I remove state management",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "state management",
+      "modules": [
+        "django/db/migrations/state.py",
+        "django/contrib/gis/geos/geometry.py",
+        "django/db/backends/base/base.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 django/db/migrations/state.py, django/contrib/gis/geos/geometry.py, django/db/backends/base/base.py"
     },
     {
       "concept": "plugins",
       "phrase": "the plugin system",
       "expected_subsystem": "plugin loader",
       "prompt": "what breaks if I remove the plugin system",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "plugins",
+      "modules": [
+        "django/apps/registry.py",
+        "django/core/checks/registry.py",
+        "django/db/backends/base/base.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 django/apps/registry.py, django/core/checks/registry.py, django/db/backends/base/base.py"
     },
     {
       "concept": "extensions",
@@ -193,14 +236,14 @@
       "prompt": "what breaks if I remove extensions",
       "resolved": true,
       "category": null,
-      "label": "architecture symbol `extensions`",
+      "label": "extensions",
       "modules": [
-        "django/contrib/gis/db/backends/postgis/adapter.py",
-        "django/contrib/postgres/search.py",
-        "django/core/management/commands/makemessages.py"
+        "django/db/backends/postgresql/psycopg_any.py",
+        "django/core/management/utils.py",
+        "django/core/validators.py"
       ],
-      "confidence": "medium",
-      "actual": "resolved \u2192 django/contrib/gis/db/backends/postgis/adapter.py, django/contrib/postgres/search.py, django/core/management/commands/makemessages.py"
+      "confidence": "high",
+      "actual": "resolved \u2192 django/db/backends/postgresql/psycopg_any.py, django/core/management/utils.py, django/core/validators.py"
     },
     {
       "concept": "websockets",
@@ -223,12 +266,16 @@
       "phrase": "the api layer",
       "expected_subsystem": "API / endpoint layer",
       "prompt": "what breaks if I remove the api layer",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "api layer",
+      "modules": [
+        "django/contrib/messages/api.py",
+        "django/contrib/auth/views.py",
+        "django/contrib/staticfiles/views.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 django/contrib/messages/api.py, django/contrib/auth/views.py, django/contrib/staticfiles/views.py"
     },
     {
       "concept": "persistence",
@@ -237,24 +284,30 @@
       "prompt": "what breaks if I remove persistence",
       "resolved": true,
       "category": null,
-      "label": "architecture symbol `persistence`",
+      "label": "persistence",
       "modules": [
-        "django/db/models/fields/generated.py"
+        "django/contrib/staticfiles/storage.py",
+        "django/db/models/expressions.py",
+        "django/db/models/fields/__init__.py"
       ],
       "confidence": "high",
-      "actual": "resolved \u2192 django/db/models/fields/generated.py"
+      "actual": "resolved \u2192 django/contrib/staticfiles/storage.py, django/db/models/expressions.py, django/db/models/fields/__init__.py"
     },
     {
       "concept": "validation",
       "phrase": "request validation",
       "expected_subsystem": "input validation",
       "prompt": "what breaks if I remove request validation",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "validation",
+      "modules": [
+        "django/core/validators.py",
+        "django/contrib/gis/db/models/fields.py",
+        "django/db/backends/base/schema.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 django/core/validators.py, django/contrib/gis/db/models/fields.py, django/db/backends/base/schema.py"
     },
     {
       "concept": "serialization",
@@ -263,17 +316,17 @@
       "prompt": "what breaks if I remove serialization",
       "resolved": true,
       "category": null,
-      "label": "architecture symbol `serialization`",
+      "label": "serialization",
       "modules": [
-        "django/contrib/gis/serializers/geojson.py",
-        "django/core/serializers/base.py",
-        "django/core/serializers/json.py"
+        "django/core/serializers/json.py",
+        "django/core/serializers/jsonl.py",
+        "django/core/serializers/xml_serializer.py"
       ],
-      "confidence": "low",
-      "actual": "resolved \u2192 django/contrib/gis/serializers/geojson.py, django/core/serializers/base.py, django/core/serializers/json.py"
+      "confidence": "high",
+      "actual": "resolved \u2192 django/core/serializers/json.py, django/core/serializers/jsonl.py, django/core/serializers/xml_serializer.py"
     }
   ],
   "status": "ok",
-  "resolved_count": 7,
-  "scan_seconds": 27.7
+  "resolved_count": 20,
+  "scan_seconds": 26.3
 }

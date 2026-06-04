@@ -4,7 +4,7 @@
   "language": "python",
   "available": true,
   "path": "C:\\J.A.R.V.I.S\\local_jarvis",
-  "modules": 10693,
+  "modules": 26666,
   "concepts": [
     {
       "concept": "authentication",
@@ -15,12 +15,12 @@
       "category": null,
       "label": "authentication",
       "modules": [
-        "external_repos/home_assistant/homeassistant/auth/auth_store.py",
-        "external_repos/home_assistant/homeassistant/auth/providers/__init__.py",
-        "external_repos/home_assistant/homeassistant/auth/providers/homeassistant.py"
+        "external_repos/home_assistant/homeassistant/auth/permissions/types.py",
+        "external_repos/home_assistant/homeassistant/auth/permissions/const.py",
+        "external_repos/home_assistant/homeassistant/auth/permissions/models.py"
       ],
       "confidence": "high",
-      "actual": "resolved \u2192 external_repos/home_assistant/homeassistant/auth/auth_store.py, external_repos/home_assistant/homeassistant/auth/providers/__init__.py, external_repos/home_assistant/homeassistant/auth/providers/homeassistant.py"
+      "actual": "resolved \u2192 external_repos/home_assistant/homeassistant/auth/permissions/types.py, external_repos/home_assistant/homeassistant/auth/permissions/const.py, external_repos/home_assistant/homeassistant/auth/permissions/models.py"
     },
     {
       "concept": "authorization",
@@ -29,14 +29,14 @@
       "prompt": "what breaks if I remove authorization",
       "resolved": true,
       "category": null,
-      "label": "architecture symbol `authorization`",
+      "label": "authorization",
       "modules": [
-        "external_repos/home_assistant/homeassistant/components/actron_air/config_flow.py",
-        "external_repos/home_assistant/homeassistant/components/aladdin_connect/application_credentials.py",
-        "external_repos/home_assistant/homeassistant/components/alexa/errors.py"
+        "external_repos/django/django/contrib/auth/migrations/0011_update_proxy_permissions.py",
+        "external_repos/nestjs/integration/scopes/src/circular-transient/guards/request-scoped.guard.ts",
+        "external_repos/nestjs/integration/scopes/src/transient/guards/request-scoped.guard.ts"
       ],
-      "confidence": "low",
-      "actual": "resolved \u2192 external_repos/home_assistant/homeassistant/components/actron_air/config_flow.py, external_repos/home_assistant/homeassistant/components/aladdin_connect/application_credentials.py, external_repos/home_assistant/homeassistant/components/alexa/errors.py"
+      "confidence": "high",
+      "actual": "resolved \u2192 external_repos/django/django/contrib/auth/migrations/0011_update_proxy_permissions.py, external_repos/nestjs/integration/scopes/src/circular-transient/guards/request-scoped.guard.ts, external_repos/nestjs/integration/scopes/src/transient/guards/request-scoped.guard.ts"
     },
     {
       "concept": "caching",
@@ -45,14 +45,14 @@
       "prompt": "what breaks if I remove caching",
       "resolved": true,
       "category": null,
-      "label": "architecture symbol `caching`",
+      "label": "caching",
       "modules": [
-        "external_repos/home_assistant/homeassistant/components/anthropic/config_flow.py",
-        "external_repos/home_assistant/homeassistant/components/anthropic/const.py",
-        "external_repos/home_assistant/homeassistant/components/anthropic/entity.py"
+        "external_repos/django/django/contrib/sessions/backends/cache.py",
+        "external_repos/nextjs/packages/next/src/client/components/segment-cache/cache.ts",
+        "external_repos/nextjs/packages/next/src/client/components/segment-cache/lru.ts"
       ],
-      "confidence": "low",
-      "actual": "resolved \u2192 external_repos/home_assistant/homeassistant/components/anthropic/config_flow.py, external_repos/home_assistant/homeassistant/components/anthropic/const.py, external_repos/home_assistant/homeassistant/components/anthropic/entity.py"
+      "confidence": "high",
+      "actual": "resolved \u2192 external_repos/django/django/contrib/sessions/backends/cache.py, external_repos/nextjs/packages/next/src/client/components/segment-cache/cache.ts, external_repos/nextjs/packages/next/src/client/components/segment-cache/lru.ts"
     },
     {
       "concept": "configuration",
@@ -93,110 +93,142 @@
       "prompt": "what breaks if I remove routing",
       "resolved": true,
       "category": null,
-      "label": "architecture symbol `routing`",
+      "label": "routing",
       "modules": [
-        "actions/registry.py",
-        "actions/voice_audio_actions.py",
-        "agents/__init__.py"
+        "external_repos/nextjs/packages/next/src/shared/lib/router/router.ts",
+        "external_repos/vscode/src/vs/platform/url/common/url.ts",
+        "external_repos/vscode/src/vs/platform/url/electron-main/url.ts"
       ],
       "confidence": "high",
-      "actual": "resolved \u2192 actions/registry.py, actions/voice_audio_actions.py, agents/__init__.py"
+      "actual": "resolved \u2192 external_repos/nextjs/packages/next/src/shared/lib/router/router.ts, external_repos/vscode/src/vs/platform/url/common/url.ts, external_repos/vscode/src/vs/platform/url/electron-main/url.ts"
     },
     {
       "concept": "middleware",
       "phrase": "middleware",
       "expected_subsystem": "middleware pipeline",
       "prompt": "what breaks if I remove middleware",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "middleware",
+      "modules": [
+        "external_repos/django/django/contrib/admindocs/middleware.py",
+        "external_repos/django/django/contrib/auth/middleware.py",
+        "external_repos/django/django/contrib/flatpages/middleware.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 external_repos/django/django/contrib/admindocs/middleware.py, external_repos/django/django/contrib/auth/middleware.py, external_repos/django/django/contrib/flatpages/middleware.py"
     },
     {
       "concept": "logging",
       "phrase": "the logging layer",
       "expected_subsystem": "logging subsystem",
       "prompt": "what breaks if I remove the logging layer",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "logging",
+      "modules": [
+        "core/logger.py",
+        "external_repos/vscode/extensions/typescript-language-features/src/logging/logger.ts",
+        "external_repos/vscode/extensions/copilot/src/util/vs/base/common/observableInternal/logging/logging.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 core/logger.py, external_repos/vscode/extensions/typescript-language-features/src/logging/logger.ts, external_repos/vscode/extensions/copilot/src/util/vs/base/common/observableInternal/logging/logging.ts"
     },
     {
       "concept": "events",
       "phrase": "the event system",
       "expected_subsystem": "event bus / dispatcher",
       "prompt": "what breaks if I remove the event system",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "events",
+      "modules": [
+        "external_repos/django/django/dispatch/dispatcher.py",
+        "external_repos/nextjs/packages/next/src/compiled/events/events.js",
+        "external_repos/django/django/contrib/auth/signals.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 external_repos/django/django/dispatch/dispatcher.py, external_repos/nextjs/packages/next/src/compiled/events/events.js, external_repos/django/django/contrib/auth/signals.py"
     },
     {
       "concept": "messaging",
       "phrase": "messaging",
       "expected_subsystem": "message queue / pub-sub",
       "prompt": "what breaks if I remove messaging",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "messaging",
+      "modules": [
+        "external_repos/nestjs/integration/microservices/src/kafka/kafka.controller.ts",
+        "external_repos/nestjs/integration/microservices/src/kafka/kafka.messages.controller.ts",
+        "external_repos/nestjs/integration/microservices/src/mqtt/mqtt-broadcast.controller.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 external_repos/nestjs/integration/microservices/src/kafka/kafka.controller.ts, external_repos/nestjs/integration/microservices/src/kafka/kafka.messages.controller.ts, external_repos/nestjs/integration/microservices/src/mqtt/mqtt-broadcast.controller.ts"
     },
     {
       "concept": "background_jobs",
       "phrase": "background jobs",
       "expected_subsystem": "task / worker queue",
       "prompt": "what breaks if I remove background jobs",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "background jobs",
+      "modules": [
+        "external_repos/home_assistant/homeassistant/components/ai_task/task.py",
+        "task_agent/queue.py",
+        "external_repos/vscode/extensions/copilot/src/platform/tasks/common/tasksService.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 external_repos/home_assistant/homeassistant/components/ai_task/task.py, task_agent/queue.py, external_repos/vscode/extensions/copilot/src/platform/tasks/common/tasksService.ts"
     },
     {
       "concept": "scheduling",
       "phrase": "scheduling",
       "expected_subsystem": "scheduler",
       "prompt": "what breaks if I remove scheduling",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "scheduling",
+      "modules": [
+        "external_repos/react/packages/scheduler/src/forks/Scheduler.js",
+        "external_repos/react/packages/scheduler/src/SchedulerPriorities.js",
+        "external_repos/nextjs/packages/next/src/lib/scheduler.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 external_repos/react/packages/scheduler/src/forks/Scheduler.js, external_repos/react/packages/scheduler/src/SchedulerPriorities.js, external_repos/nextjs/packages/next/src/lib/scheduler.ts"
     },
     {
       "concept": "state_management",
       "phrase": "state management",
       "expected_subsystem": "state store",
       "prompt": "what breaks if I remove state management",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "state management",
+      "modules": [
+        "external_repos/react/compiler/apps/playground/lib/stores/store.ts",
+        "external_repos/vscode/src/vs/platform/agentHost/common/state/protocol/channels-changeset/reducer.ts",
+        "external_repos/vscode/src/vs/platform/agentHost/common/state/protocol/channels-changeset/state.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 external_repos/react/compiler/apps/playground/lib/stores/store.ts, external_repos/vscode/src/vs/platform/agentHost/common/state/protocol/channels-changeset/reducer.ts, external_repos/vscode/src/vs/platform/agentHost/common/state/protocol/channels-changeset/state.ts"
     },
     {
       "concept": "plugins",
       "phrase": "the plugin system",
       "expected_subsystem": "plugin loader",
       "prompt": "what breaks if I remove the plugin system",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "plugins",
+      "modules": [
+        "external_repos/vscode/extensions/typescript-language-features/src/tsServer/plugins.ts",
+        "actions/registry.py",
+        "external_repos/vscode/extensions/typescript-language-features/src/tsServer/pluginPathsProvider.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 external_repos/vscode/extensions/typescript-language-features/src/tsServer/plugins.ts, actions/registry.py, external_repos/vscode/extensions/typescript-language-features/src/tsServer/pluginPathsProvider.ts"
     },
     {
       "concept": "extensions",
@@ -205,14 +237,14 @@
       "prompt": "what breaks if I remove extensions",
       "resolved": true,
       "category": null,
-      "label": "architecture symbol `extensions`",
+      "label": "extensions",
       "modules": [
-        "actions/code_search.py",
-        "conversation/memory_runtime.py",
-        "external_repos/home_assistant/homeassistant/components/amazon_polly/tts.py"
+        "external_repos/vscode/extensions/copilot/src/extension/extension/vscode/extension.ts",
+        "external_repos/vscode/extensions/git-base/src/api/extension.ts",
+        "external_repos/vscode/extensions/git/src/api/extension.ts"
       ],
       "confidence": "high",
-      "actual": "resolved \u2192 actions/code_search.py, conversation/memory_runtime.py, external_repos/home_assistant/homeassistant/components/amazon_polly/tts.py"
+      "actual": "resolved \u2192 external_repos/vscode/extensions/copilot/src/extension/extension/vscode/extension.ts, external_repos/vscode/extensions/git-base/src/api/extension.ts, external_repos/vscode/extensions/git/src/api/extension.ts"
     },
     {
       "concept": "websockets",
@@ -235,12 +267,16 @@
       "phrase": "the api layer",
       "expected_subsystem": "API / endpoint layer",
       "prompt": "what breaks if I remove the api layer",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "api layer",
+      "modules": [
+        "external_repos/nextjs/packages/next/src/api/router.ts",
+        "jarvis_desktop/demo/medium_repo/api/routes.py",
+        "staging/jarvis_desktop/demo/medium_repo/api/routes.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 external_repos/nextjs/packages/next/src/api/router.ts, jarvis_desktop/demo/medium_repo/api/routes.py, staging/jarvis_desktop/demo/medium_repo/api/routes.py"
     },
     {
       "concept": "persistence",
@@ -249,13 +285,14 @@
       "prompt": "what breaks if I remove persistence",
       "resolved": true,
       "category": null,
-      "label": "architecture symbol `persistence`",
+      "label": "persistence",
       "modules": [
-        "brain/router.py",
-        "reliability/async_persistence.py"
+        "external_repos/vscode/src/vs/base/parts/storage/common/storage.ts",
+        "external_repos/vscode/src/vs/base/parts/storage/node/storage.ts",
+        "external_repos/vscode/src/vs/platform/storage/common/storage.ts"
       ],
       "confidence": "high",
-      "actual": "resolved \u2192 brain/router.py, reliability/async_persistence.py"
+      "actual": "resolved \u2192 external_repos/vscode/src/vs/base/parts/storage/common/storage.ts, external_repos/vscode/src/vs/base/parts/storage/node/storage.ts, external_repos/vscode/src/vs/platform/storage/common/storage.ts"
     },
     {
       "concept": "validation",
@@ -280,15 +317,17 @@
       "prompt": "what breaks if I remove serialization",
       "resolved": true,
       "category": null,
-      "label": "architecture symbol `serialization`",
+      "label": "serialization",
       "modules": [
-        "external_repos/home_assistant/homeassistant/helpers/template/extensions/serialization.py"
+        "external_repos/django/django/core/serializers/json.py",
+        "external_repos/django/django/contrib/postgres/serializers.py",
+        "external_repos/django/django/contrib/sessions/serializers.py"
       ],
-      "confidence": "medium",
-      "actual": "resolved \u2192 external_repos/home_assistant/homeassistant/helpers/template/extensions/serialization.py"
+      "confidence": "high",
+      "actual": "resolved \u2192 external_repos/django/django/core/serializers/json.py, external_repos/django/django/contrib/postgres/serializers.py, external_repos/django/django/contrib/sessions/serializers.py"
     }
   ],
   "status": "ok",
-  "resolved_count": 11,
-  "scan_seconds": 910.3
+  "resolved_count": 20,
+  "scan_seconds": 3532.9
 }

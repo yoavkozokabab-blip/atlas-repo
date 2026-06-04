@@ -5,6 +5,8 @@ from __future__ import annotations
 import os
 from typing import Any, Dict, List, Optional, Set, Tuple
 
+from .concept_lexicon import LEXICON, match_concept, score_module_for_concept
+
 # Concept phrase -> resolution spec (longest match wins).
 CONCEPT_TARGET_MAP: Dict[str, Dict[str, Any]] = {
     "websocket support": {
@@ -215,7 +217,9 @@ def resolve_semantic_target(
     """Resolve a natural-language architecture concept to real modules + symbols."""
     key = _match_concept_key(query)
     if not key:
-        return None
+        # Phase 137 — fall back to the framework-agnostic lexicon so concepts not
+        # in the HA-tuned catalogue still resolve from the repo's own structure.
+        return resolve_generic_concept(nodes, query, graph, evidence_store=evidence_store)
 
     spec = CONCEPT_TARGET_MAP[key]
     kws = tuple(spec.get("keywords") or ())
@@ -309,6 +313,97 @@ def resolve_semantic_target(
         "symbols": symbol_records[:32],
         "symbol_names": sorted({s["qualname"] for s in symbol_records}),
         "related_paths": list(related),
+    }
+
+
+def _concept_label(concept_id: str) -> str:
+    return concept_id.replace("_", " ")
+
+
+# Minimum score for a module to count as a generic-concept match (a filename
+# word or directory hit). Below this the signal is too weak to be trustworthy.
+_GENERIC_MIN_SCORE = 50
+
+
+def resolve_generic_concept(
+    nodes: Dict[str, Dict[str, Any]],
+    query: str,
+    graph: Optional[Dict[str, Any]] = None,
+    *,
+    evidence_store: Optional[Dict[str, Any]] = None,
+) -> Optional[Dict[str, Any]]:
+    """Phase 137 — resolve a cross-cutting concept from the repository's OWN
+    structure (filenames, directories, mined symbols). Framework-agnostic: a
+    concept resolves only if matching modules actually exist, so repos that lack
+    a concept honestly resolve to nothing."""
+    concept_id = match_concept(query)
+    if not concept_id:
+        return None
+    spec = LEXICON[concept_id]
+    label = _concept_label(concept_id)
+    syms = tuple(spec.get("symbols") or ())
+
+    fan_in = _fan_in_map(graph or {})
+    symbol_records = _symbols_for_patterns(evidence_store, syms)
+    symbol_files = {_norm(s["file_path"]) for s in symbol_records if s.get("file_path")}
+
+    scored: List[Tuple[int, str, Dict[str, Any]]] = []
+    for nid, n in nodes.items():
+        p = _norm(n.get("path"))
+        if not p:
+            continue
+        score = score_module_for_concept(
+            p, spec, symbol_file=(p in symbol_files), fan_in=fan_in.get(nid, 0)
+        )
+        if score >= _GENERIC_MIN_SCORE:
+            scored.append((score, nid, n))
+
+    # Symbol-only files (not in the module graph) when nothing matched by path.
+    if not scored and symbol_files:
+        for fp in symbol_files:
+            scored.append((70, fp, {"path": fp, "dotted": "", "id": fp}))
+
+    if not scored:
+        return None
+
+    scored.sort(key=lambda x: (-x[0], _norm(x[2].get("path"))))
+    modules_out: List[Dict[str, Any]] = []
+    for score, nid, n in scored[:24]:
+        path = _norm(n.get("path"))
+        modules_out.append({
+            "path": path,
+            "node_id": nid if nid in nodes else None,
+            "dotted": n.get("dotted") or "",
+            "score": score,
+            "fan_in": fan_in.get(nid, 0) if nid in nodes else 0,
+            "is_anchor": score >= 110 or path in symbol_files,
+        })
+
+    # Confidence reflects how strong the strongest signal is (a filename match is
+    # high-confidence; a weak directory-only hit is low).
+    top = modules_out[0]["score"] if modules_out else 0
+    confidence = "high" if top >= 110 else ("medium-high" if top >= 70 else "medium")
+
+    primary = modules_out[0] if modules_out else {}
+    primary_nid = primary.get("node_id") or primary.get("path")
+    primary_node = nodes.get(
+        primary_nid,
+        {"path": primary.get("path"), "dotted": primary.get("dotted"), "id": primary_nid},
+    )
+    return {
+        "concept": concept_id,
+        "label": label,
+        "query": query,
+        "primary_path": primary.get("path") or "",
+        "primary_node_id": primary_nid,
+        "primary_node": primary_node,
+        "modules": modules_out,
+        "module_paths": [m["path"] for m in modules_out if m.get("path")],
+        "symbols": symbol_records[:32],
+        "symbol_names": sorted({s["qualname"] for s in symbol_records}),
+        "related_paths": [],
+        "confidence": confidence,
+        "generic": True,
     }
 
 

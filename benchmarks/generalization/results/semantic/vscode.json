@@ -27,12 +27,16 @@
       "phrase": "authorization",
       "expected_subsystem": "access control / permissions",
       "prompt": "what breaks if I remove authorization",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "authorization",
+      "modules": [
+        "src/vs/base/common/policy.ts",
+        "src/vs/platform/policy/common/policy.ts",
+        "src/vs/workbench/services/policies/browser/accountPolicyGate.contribution.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 src/vs/base/common/policy.ts, src/vs/platform/policy/common/policy.ts, src/vs/workbench/services/policies/browser/accountPolicyGate.contribution.ts"
     },
     {
       "concept": "caching",
@@ -41,12 +45,14 @@
       "prompt": "what breaks if I remove caching",
       "resolved": true,
       "category": null,
-      "label": "architecture symbol `caching`",
+      "label": "caching",
       "modules": [
-        "extensions/copilot/src/platform/parser/node/parserWithCaching.ts"
+        "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/helpers/cache.ts",
+        "extensions/copilot/src/util/vs/base/common/cache.ts",
+        "extensions/copilot/src/util/common/cache.ts"
       ],
       "confidence": "high",
-      "actual": "resolved \u2192 extensions/copilot/src/platform/parser/node/parserWithCaching.ts"
+      "actual": "resolved \u2192 extensions/copilot/src/extension/completions-core/vscode-node/lib/src/helpers/cache.ts, extensions/copilot/src/util/vs/base/common/cache.ts, extensions/copilot/src/util/common/cache.ts"
     },
     {
       "concept": "configuration",
@@ -55,14 +61,14 @@
       "prompt": "what breaks if I remove configuration",
       "resolved": true,
       "category": null,
-      "label": "architecture symbol `configuration`",
+      "label": "configuration",
       "modules": [
-        "extensions/configuration-editing/src/browser/net.ts",
-        "extensions/configuration-editing/src/configurationEditingMain.ts",
-        "extensions/configuration-editing/src/extensionsProposals.ts"
+        "extensions/typescript-language-features/src/configuration/configuration.ts",
+        "src/vs/platform/configuration/common/configuration.ts",
+        "src/vs/workbench/contrib/chat/common/promptSyntax/config/config.ts"
       ],
-      "confidence": "low",
-      "actual": "resolved \u2192 extensions/configuration-editing/src/browser/net.ts, extensions/configuration-editing/src/configurationEditingMain.ts, extensions/configuration-editing/src/extensionsProposals.ts"
+      "confidence": "high",
+      "actual": "resolved \u2192 extensions/typescript-language-features/src/configuration/configuration.ts, src/vs/platform/configuration/common/configuration.ts, src/vs/workbench/contrib/chat/common/promptSyntax/config/config.ts"
     },
     {
       "concept": "database",
@@ -87,12 +93,14 @@
       "prompt": "what breaks if I remove routing",
       "resolved": true,
       "category": null,
-      "label": "architecture symbol `routing`",
+      "label": "routing",
       "modules": [
-        "extensions/copilot/src/extension/chatSessions/claude/vscode-node/routingClaudeAgentSdkLoaderService.ts"
+        "src/vs/platform/url/common/url.ts",
+        "src/vs/platform/url/electron-main/url.ts",
+        "src/vs/platform/url/common/urlService.ts"
       ],
       "confidence": "high",
-      "actual": "resolved \u2192 extensions/copilot/src/extension/chatSessions/claude/vscode-node/routingClaudeAgentSdkLoaderService.ts"
+      "actual": "resolved \u2192 src/vs/platform/url/common/url.ts, src/vs/platform/url/electron-main/url.ts, src/vs/platform/url/common/urlService.ts"
     },
     {
       "concept": "middleware",
@@ -101,7 +109,7 @@
       "prompt": "what breaks if I remove middleware",
       "resolved": true,
       "category": null,
-      "label": "architecture symbol `middleware`",
+      "label": "middleware",
       "modules": [
         "extensions/copilot/src/shared-fetch-utils/common/middleware/authBlockedMiddleware.ts",
         "extensions/copilot/src/shared-fetch-utils/common/middleware/etagMiddleware.ts",
@@ -115,24 +123,32 @@
       "phrase": "the logging layer",
       "expected_subsystem": "logging subsystem",
       "prompt": "what breaks if I remove the logging layer",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "logging",
+      "modules": [
+        "extensions/typescript-language-features/src/logging/logger.ts",
+        "extensions/copilot/src/util/vs/base/common/observableInternal/logging/logging.ts",
+        "src/vs/base/common/observableInternal/logging/logging.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 extensions/typescript-language-features/src/logging/logger.ts, extensions/copilot/src/util/vs/base/common/observableInternal/logging/logging.ts, src/vs/base/common/observableInternal/logging/logging.ts"
     },
     {
       "concept": "events",
       "phrase": "the event system",
       "expected_subsystem": "event bus / dispatcher",
       "prompt": "what breaks if I remove the event system",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "events",
+      "modules": [
+        "extensions/copilot/src/util/vs/base/common/event.ts",
+        "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/util/event.ts",
+        "extensions/markdown-language-features/preview-src/events.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 extensions/copilot/src/util/vs/base/common/event.ts, extensions/copilot/src/extension/completions-core/vscode-node/lib/src/util/event.ts, extensions/markdown-language-features/preview-src/events.ts"
     },
     {
       "concept": "messaging",
@@ -141,62 +157,78 @@
       "prompt": "what breaks if I remove messaging",
       "resolved": true,
       "category": null,
-      "label": "architecture symbol `messaging`",
+      "label": "messaging",
       "modules": [
         "extensions/markdown-language-features/preview-src/messaging.ts",
-        "extensions/markdown-language-features/types/previewMessaging.d.ts",
-        "src/vs/workbench/api/common/extHostWebviewMessaging.ts"
+        "src/vs/editor/contrib/message/browser/messageController.ts",
+        "extensions/copilot/src/platform/endpoint/node/messagesApi.ts"
       ],
       "confidence": "high",
-      "actual": "resolved \u2192 extensions/markdown-language-features/preview-src/messaging.ts, extensions/markdown-language-features/types/previewMessaging.d.ts, src/vs/workbench/api/common/extHostWebviewMessaging.ts"
+      "actual": "resolved \u2192 extensions/markdown-language-features/preview-src/messaging.ts, src/vs/editor/contrib/message/browser/messageController.ts, extensions/copilot/src/platform/endpoint/node/messagesApi.ts"
     },
     {
       "concept": "background_jobs",
       "phrase": "background jobs",
       "expected_subsystem": "task / worker queue",
       "prompt": "what breaks if I remove background jobs",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "background jobs",
+      "modules": [
+        "src/vs/workbench/contrib/tasks/common/tasks.ts",
+        "extensions/copilot/src/platform/tasks/common/tasksService.ts",
+        "extensions/copilot/src/platform/tasks/vscode/tasksService.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 src/vs/workbench/contrib/tasks/common/tasks.ts, extensions/copilot/src/platform/tasks/common/tasksService.ts, extensions/copilot/src/platform/tasks/vscode/tasksService.ts"
     },
     {
       "concept": "scheduling",
       "phrase": "scheduling",
       "expected_subsystem": "scheduler",
       "prompt": "what breaks if I remove scheduling",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "scheduling",
+      "modules": [
+        "src/vs/workbench/services/timer/browser/timerService.ts",
+        "src/vs/workbench/services/timer/electron-browser/timerService.ts",
+        "extensions/copilot/src/util/common/time.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 src/vs/workbench/services/timer/browser/timerService.ts, src/vs/workbench/services/timer/electron-browser/timerService.ts, extensions/copilot/src/util/common/time.ts"
     },
     {
       "concept": "state_management",
       "phrase": "state management",
       "expected_subsystem": "state store",
       "prompt": "what breaks if I remove state management",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "state management",
+      "modules": [
+        "src/vs/platform/agentHost/common/state/protocol/channels-changeset/reducer.ts",
+        "src/vs/platform/agentHost/common/state/protocol/channels-changeset/state.ts",
+        "src/vs/platform/agentHost/common/state/protocol/channels-otlp/state.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 src/vs/platform/agentHost/common/state/protocol/channels-changeset/reducer.ts, src/vs/platform/agentHost/common/state/protocol/channels-changeset/state.ts, src/vs/platform/agentHost/common/state/protocol/channels-otlp/state.ts"
     },
     {
       "concept": "plugins",
       "phrase": "the plugin system",
       "expected_subsystem": "plugin loader",
       "prompt": "what breaks if I remove the plugin system",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "plugins",
+      "modules": [
+        "extensions/typescript-language-features/src/tsServer/plugins.ts",
+        "extensions/typescript-language-features/src/tsServer/pluginPathsProvider.ts",
+        "src/vs/workbench/contrib/chat/common/plugins/pluginGitCommandService.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 extensions/typescript-language-features/src/tsServer/plugins.ts, extensions/typescript-language-features/src/tsServer/pluginPathsProvider.ts, src/vs/workbench/contrib/chat/common/plugins/pluginGitCommandService.ts"
     },
     {
       "concept": "extensions",
@@ -205,14 +237,14 @@
       "prompt": "what breaks if I remove extensions",
       "resolved": true,
       "category": null,
-      "label": "architecture symbol `extensions`",
+      "label": "extensions",
       "modules": [
-        "extensions/configuration-editing/src/browser/net.ts",
-        "extensions/configuration-editing/src/configurationEditingMain.ts",
-        "extensions/configuration-editing/src/extensionsProposals.ts"
+        "extensions/copilot/src/extension/extension/vscode/extension.ts",
+        "extensions/git-base/src/api/extension.ts",
+        "extensions/git/src/api/extension.ts"
       ],
-      "confidence": "low",
-      "actual": "resolved \u2192 extensions/configuration-editing/src/browser/net.ts, extensions/configuration-editing/src/configurationEditingMain.ts, extensions/configuration-editing/src/extensionsProposals.ts"
+      "confidence": "high",
+      "actual": "resolved \u2192 extensions/copilot/src/extension/extension/vscode/extension.ts, extensions/git-base/src/api/extension.ts, extensions/git/src/api/extension.ts"
     },
     {
       "concept": "websockets",
@@ -235,36 +267,48 @@
       "phrase": "the api layer",
       "expected_subsystem": "API / endpoint layer",
       "prompt": "what breaks if I remove the api layer",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "api layer",
+      "modules": [
+        "extensions/typescript-language-features/src/tsServer/api.ts",
+        "extensions/copilot/src/platform/inlineCompletions/common/api.ts",
+        "extensions/copilot/src/extension/api/vscode/api.d.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 extensions/typescript-language-features/src/tsServer/api.ts, extensions/copilot/src/platform/inlineCompletions/common/api.ts, extensions/copilot/src/extension/api/vscode/api.d.ts"
     },
     {
       "concept": "persistence",
       "phrase": "persistence",
       "expected_subsystem": "ORM / storage",
       "prompt": "what breaks if I remove persistence",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "persistence",
+      "modules": [
+        "src/vs/base/parts/storage/common/storage.ts",
+        "src/vs/base/parts/storage/node/storage.ts",
+        "src/vs/platform/storage/common/storage.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 src/vs/base/parts/storage/common/storage.ts, src/vs/base/parts/storage/node/storage.ts, src/vs/platform/storage/common/storage.ts"
     },
     {
       "concept": "validation",
       "phrase": "request validation",
       "expected_subsystem": "input validation",
       "prompt": "what breaks if I remove request validation",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "validation",
+      "modules": [
+        "extensions/copilot/src/platform/configuration/common/validator.ts",
+        "extensions/css-language-features/server/src/utils/validation.ts",
+        "extensions/html-language-features/server/src/utils/validation.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 extensions/copilot/src/platform/configuration/common/validator.ts, extensions/css-language-features/server/src/utils/validation.ts, extensions/html-language-features/server/src/utils/validation.ts"
     },
     {
       "concept": "serialization",
@@ -273,15 +317,17 @@
       "prompt": "what breaks if I remove serialization",
       "resolved": true,
       "category": null,
-      "label": "architecture symbol `serialization`",
+      "label": "serialization",
       "modules": [
-        "src/vs/workbench/contrib/searchEditor/browser/searchEditorSerialization.ts"
+        "extensions/ipynb/src/serializers.ts",
+        "src/vs/base/common/json.ts",
+        "extensions/json-language-features/client/src/jsonClient.ts"
       ],
-      "confidence": "low",
-      "actual": "resolved \u2192 src/vs/workbench/contrib/searchEditor/browser/searchEditorSerialization.ts"
+      "confidence": "high",
+      "actual": "resolved \u2192 extensions/ipynb/src/serializers.ts, src/vs/base/common/json.ts, extensions/json-language-features/client/src/jsonClient.ts"
     }
   ],
   "status": "ok",
-  "resolved_count": 10,
-  "scan_seconds": 92.2
+  "resolved_count": 20,
+  "scan_seconds": 43.6
 }

@@ -18,6 +18,21 @@ GENERIC_IMPACT_CONCEPTS = [
 
 IMPACT_PROMPT_TEMPLATE = "what breaks if I remove {concept}"
 
+# Phase 137 — the cross-cutting concepts that resolved at 0% coverage across ALL
+# repositories in Phase 136 (HA-tuned resolver knew none of them). The generic
+# concept resolver (impact_engine/concept_lexicon.py) targets exactly these.
+# Added as explicit benchmark coverage so regressions here are caught; probed by
+# the semantic probe and asserted by test_phase137_semantic_generalization.
+PHASE137_ZERO_COVERAGE_CONCEPTS = [
+    "the logging layer",
+    "the event system",
+    "background jobs",
+    "scheduling",
+    "state management",
+    "the plugin system",
+    "the api layer",
+]
+
 # 3 — Investigation symptoms (runtime/system behavior).
 INVESTIGATION_SYMPTOMS = [
     "duplicate events are being fired",

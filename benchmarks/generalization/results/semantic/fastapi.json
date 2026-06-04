@@ -25,38 +25,46 @@
       "prompt": "what breaks if I remove authorization",
       "resolved": true,
       "category": null,
-      "label": "architecture symbol `authorization`",
+      "label": "authorization",
       "modules": [
-        "fastapi/openapi/models.py",
-        "fastapi/security/__init__.py",
+        "fastapi/_compat/shared.py",
+        "fastapi/security/oauth2.py",
         "fastapi/security/http.py"
       ],
       "confidence": "high",
-      "actual": "resolved \u2192 fastapi/openapi/models.py, fastapi/security/__init__.py, fastapi/security/http.py"
+      "actual": "resolved \u2192 fastapi/_compat/shared.py, fastapi/security/oauth2.py, fastapi/security/http.py"
     },
     {
       "concept": "caching",
       "phrase": "caching",
       "expected_subsystem": "cache layer",
       "prompt": "what breaks if I remove caching",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "caching",
+      "modules": [
+        "fastapi/_compat/v2.py",
+        "fastapi/_compat/__init__.py",
+        "fastapi/dependencies/models.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 fastapi/_compat/v2.py, fastapi/_compat/__init__.py, fastapi/dependencies/models.py"
     },
     {
       "concept": "configuration",
       "phrase": "configuration",
       "expected_subsystem": "config system",
       "prompt": "what breaks if I remove configuration",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "configuration",
+      "modules": [
+        "fastapi/_compat/v2.py",
+        "fastapi/openapi/models.py",
+        "scripts/contributors.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 fastapi/_compat/v2.py, fastapi/openapi/models.py, scripts/contributors.py"
     },
     {
       "concept": "database",
@@ -80,14 +88,14 @@
       "prompt": "what breaks if I remove routing",
       "resolved": true,
       "category": null,
-      "label": "architecture symbol `routing`",
+      "label": "routing",
       "modules": [
-        "fastapi/__init__.py",
-        "fastapi/applications.py",
-        "fastapi/openapi/utils.py"
+        "fastapi/routing.py",
+        "fastapi/_compat/v2.py",
+        "fastapi/_compat/__init__.py"
       ],
       "confidence": "high",
-      "actual": "resolved \u2192 fastapi/__init__.py, fastapi/applications.py, fastapi/openapi/utils.py"
+      "actual": "resolved \u2192 fastapi/routing.py, fastapi/_compat/v2.py, fastapi/_compat/__init__.py"
     },
     {
       "concept": "middleware",
@@ -96,26 +104,30 @@
       "prompt": "what breaks if I remove middleware",
       "resolved": true,
       "category": null,
-      "label": "architecture symbol `middleware`",
+      "label": "middleware",
       "modules": [
-        "fastapi/applications.py",
+        "fastapi/middleware/asyncexitstack.py",
         "fastapi/middleware/__init__.py",
-        "fastapi/middleware/asyncexitstack.py"
+        "fastapi/middleware/cors.py"
       ],
       "confidence": "high",
-      "actual": "resolved \u2192 fastapi/applications.py, fastapi/middleware/__init__.py, fastapi/middleware/asyncexitstack.py"
+      "actual": "resolved \u2192 fastapi/middleware/asyncexitstack.py, fastapi/middleware/__init__.py, fastapi/middleware/cors.py"
     },
     {
       "concept": "logging",
       "phrase": "the logging layer",
       "expected_subsystem": "logging subsystem",
       "prompt": "what breaks if I remove the logging layer",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "logging",
+      "modules": [
+        "fastapi/logger.py",
+        "fastapi/openapi/models.py",
+        "fastapi/dependencies/utils.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 fastapi/logger.py, fastapi/openapi/models.py, fastapi/dependencies/utils.py"
     },
     {
       "concept": "events",
@@ -134,24 +146,30 @@
       "phrase": "messaging",
       "expected_subsystem": "message queue / pub-sub",
       "prompt": "what breaks if I remove messaging",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "messaging",
+      "modules": [
+        "fastapi/routing.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 fastapi/routing.py"
     },
     {
       "concept": "background_jobs",
       "phrase": "background jobs",
       "expected_subsystem": "task / worker queue",
       "prompt": "what breaks if I remove background jobs",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "background jobs",
+      "modules": [
+        "fastapi/background.py",
+        "fastapi/__init__.py",
+        "fastapi/dependencies/utils.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 fastapi/background.py, fastapi/__init__.py, fastapi/dependencies/utils.py"
     },
     {
       "concept": "scheduling",
@@ -196,14 +214,14 @@
       "prompt": "what breaks if I remove extensions",
       "resolved": true,
       "category": null,
-      "label": "architecture symbol `extensions`",
+      "label": "extensions",
       "modules": [
-        "fastapi/applications.py",
-        "fastapi/background.py",
-        "fastapi/openapi/models.py"
+        "fastapi/openapi/models.py",
+        "fastapi/param_functions.py",
+        "fastapi/background.py"
       ],
       "confidence": "high",
-      "actual": "resolved \u2192 fastapi/applications.py, fastapi/background.py, fastapi/openapi/models.py"
+      "actual": "resolved \u2192 fastapi/openapi/models.py, fastapi/param_functions.py, fastapi/background.py"
     },
     {
       "concept": "websockets",
@@ -224,36 +242,48 @@
       "phrase": "the api layer",
       "expected_subsystem": "API / endpoint layer",
       "prompt": "what breaks if I remove the api layer",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "api layer",
+      "modules": [
+        "fastapi/openapi/utils.py",
+        "fastapi/openapi/models.py",
+        "fastapi/exceptions.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 fastapi/openapi/utils.py, fastapi/openapi/models.py, fastapi/exceptions.py"
     },
     {
       "concept": "persistence",
       "phrase": "persistence",
       "expected_subsystem": "ORM / storage",
       "prompt": "what breaks if I remove persistence",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "persistence",
+      "modules": [
+        "fastapi/openapi/models.py",
+        "scripts/contributors.py",
+        "scripts/docs.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 fastapi/openapi/models.py, scripts/contributors.py, scripts/docs.py"
     },
     {
       "concept": "validation",
       "phrase": "request validation",
       "expected_subsystem": "input validation",
       "prompt": "what breaks if I remove request validation",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
-      "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "resolved": true,
+      "category": null,
+      "label": "validation",
+      "modules": [
+        "fastapi/params.py",
+        "fastapi/_compat/v2.py",
+        "fastapi/exceptions.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 fastapi/params.py, fastapi/_compat/v2.py, fastapi/exceptions.py"
     },
     {
       "concept": "serialization",
@@ -262,15 +292,17 @@
       "prompt": "what breaks if I remove serialization",
       "resolved": true,
       "category": null,
-      "label": "architecture symbol `serialization`",
+      "label": "serialization",
       "modules": [
-        "fastapi/_compat/v2.py"
+        "fastapi/encoders.py",
+        "fastapi/_compat/v2.py",
+        "fastapi/_compat/__init__.py"
       ],
       "confidence": "high",
-      "actual": "resolved \u2192 fastapi/_compat/v2.py"
+      "actual": "resolved \u2192 fastapi/encoders.py, fastapi/_compat/v2.py, fastapi/_compat/__init__.py"
     }
   ],
   "status": "ok",
-  "resolved_count": 7,
-  "scan_seconds": 9.1
+  "resolved_count": 15,
+  "scan_seconds": 3.9
 }

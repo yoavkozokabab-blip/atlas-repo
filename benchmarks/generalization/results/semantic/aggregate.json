@@ -1,5 +1,5 @@
 {
-  "generated": "2026-06-04 00:08:23",
+  "generated": "2026-06-04 03:28:25",
   "concepts": [
     "authentication",
     "authorization",
@@ -54,14 +54,14 @@
           "prompt": "what breaks if I remove authorization",
           "resolved": true,
           "category": null,
-          "label": "architecture symbol `authorization`",
+          "label": "authorization",
           "modules": [
-            "homeassistant/components/actron_air/config_flow.py",
-            "homeassistant/components/aladdin_connect/application_credentials.py",
-            "homeassistant/components/alexa/errors.py"
+            "homeassistant/auth/permissions/system_policies.py",
+            "homeassistant/auth/auth_store.py",
+            "homeassistant/auth/permissions/__init__.py"
           ],
-          "confidence": "low",
-          "actual": "resolved \u2192 homeassistant/components/actron_air/config_flow.py, homeassistant/components/aladdin_connect/application_credentials.py, homeassistant/components/alexa/errors.py"
+          "confidence": "high",
+          "actual": "resolved \u2192 homeassistant/auth/permissions/system_policies.py, homeassistant/auth/auth_store.py, homeassistant/auth/permissions/__init__.py"
         },
         {
           "concept": "caching",
@@ -70,14 +70,14 @@
           "prompt": "what breaks if I remove caching",
           "resolved": true,
           "category": null,
-          "label": "architecture symbol `caching`",
+          "label": "caching",
           "modules": [
-            "homeassistant/components/anthropic/config_flow.py",
-            "homeassistant/components/anthropic/const.py",
-            "homeassistant/components/anthropic/entity.py"
+            "homeassistant/components/alarm_control_panel/__init__.py",
+            "homeassistant/components/binary_sensor/__init__.py",
+            "homeassistant/auth/models.py"
           ],
-          "confidence": "low",
-          "actual": "resolved \u2192 homeassistant/components/anthropic/config_flow.py, homeassistant/components/anthropic/const.py, homeassistant/components/anthropic/entity.py"
+          "confidence": "high",
+          "actual": "resolved \u2192 homeassistant/components/alarm_control_panel/__init__.py, homeassistant/components/binary_sensor/__init__.py, homeassistant/auth/models.py"
         },
         {
           "concept": "configuration",
@@ -86,14 +86,14 @@
           "prompt": "what breaks if I remove configuration",
           "resolved": true,
           "category": null,
-          "label": "architecture symbol `configuration`",
+          "label": "configuration",
           "modules": [
-            "homeassistant/backup_restore.py",
-            "homeassistant/components/airgradient/button.py",
-            "homeassistant/components/airgradient/config_flow.py"
+            "homeassistant/components/backup/config.py",
+            "homeassistant/components/alexa/config.py",
+            "homeassistant/components/axis/hub/config.py"
           ],
           "confidence": "high",
-          "actual": "resolved \u2192 homeassistant/backup_restore.py, homeassistant/components/airgradient/button.py, homeassistant/components/airgradient/config_flow.py"
+          "actual": "resolved \u2192 homeassistant/components/backup/config.py, homeassistant/components/alexa/config.py, homeassistant/components/axis/hub/config.py"
         },
         {
           "concept": "database",
@@ -116,48 +116,64 @@
           "phrase": "routing",
           "expected_subsystem": "router / URL dispatch",
           "prompt": "what breaks if I remove routing",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "routing",
+          "modules": [
+            "homeassistant/components/asuswrt/router.py",
+            "homeassistant/components/freebox/router.py",
+            "homeassistant/components/netgear/router.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 homeassistant/components/asuswrt/router.py, homeassistant/components/freebox/router.py, homeassistant/components/netgear/router.py"
         },
         {
           "concept": "middleware",
           "phrase": "middleware",
           "expected_subsystem": "middleware pipeline",
           "prompt": "what breaks if I remove middleware",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "middleware",
+          "modules": [
+            "homeassistant/auth/models.py",
+            "homeassistant/components/alexa_devices/coordinator.py",
+            "homeassistant/components/automation/__init__.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 homeassistant/auth/models.py, homeassistant/components/alexa_devices/coordinator.py, homeassistant/components/automation/__init__.py"
         },
         {
           "concept": "logging",
           "phrase": "the logging layer",
           "expected_subsystem": "logging subsystem",
           "prompt": "what breaks if I remove the logging layer",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "logging",
+          "modules": [
+            "homeassistant/util/logging.py",
+            "pylint/plugins/pylint_home_assistant/checkers/logger.py",
+            "homeassistant/components/alexa_devices/coordinator.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 homeassistant/util/logging.py, pylint/plugins/pylint_home_assistant/checkers/logger.py, homeassistant/components/alexa_devices/coordinator.py"
         },
         {
           "concept": "events",
           "phrase": "the event system",
           "expected_subsystem": "event bus / dispatcher",
           "prompt": "what breaks if I remove the event system",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "events",
+          "modules": [
+            "homeassistant/components/bang_olufsen/event.py",
+            "homeassistant/helpers/event.py",
+            "homeassistant/components/nest/events.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 homeassistant/components/bang_olufsen/event.py, homeassistant/helpers/event.py, homeassistant/components/nest/events.py"
         },
         {
           "concept": "messaging",
@@ -166,60 +182,78 @@
           "prompt": "what breaks if I remove messaging",
           "resolved": true,
           "category": null,
-          "label": "architecture symbol `messaging`",
+          "label": "messaging",
           "modules": [
-            "homeassistant/components/azure_service_bus/notify.py"
+            "homeassistant/helpers/service_info/mqtt.py",
+            "script/hassfest/mqtt.py",
+            "homeassistant/components/lg_thinq/mqtt.py"
           ],
-          "confidence": "low",
-          "actual": "resolved \u2192 homeassistant/components/azure_service_bus/notify.py"
+          "confidence": "high",
+          "actual": "resolved \u2192 homeassistant/helpers/service_info/mqtt.py, script/hassfest/mqtt.py, homeassistant/components/lg_thinq/mqtt.py"
         },
         {
           "concept": "background_jobs",
           "phrase": "background jobs",
           "expected_subsystem": "task / worker queue",
           "prompt": "what breaks if I remove background jobs",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "background jobs",
+          "modules": [
+            "homeassistant/components/ai_task/task.py",
+            "homeassistant/components/recorder/tasks.py",
+            "homeassistant/components/hassio/jobs.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 homeassistant/components/ai_task/task.py, homeassistant/components/recorder/tasks.py, homeassistant/components/hassio/jobs.py"
         },
         {
           "concept": "scheduling",
           "phrase": "scheduling",
           "expected_subsystem": "scheduler",
           "prompt": "what breaks if I remove scheduling",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "scheduling",
+          "modules": [
+            "homeassistant/components/schedule/const.py",
+            "homeassistant/components/schedule/__init__.py",
+            "homeassistant/components/schedule/condition.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 homeassistant/components/schedule/const.py, homeassistant/components/schedule/__init__.py, homeassistant/components/schedule/condition.py"
         },
         {
           "concept": "state_management",
           "phrase": "state management",
           "expected_subsystem": "state store",
           "prompt": "what breaks if I remove state management",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "state management",
+          "modules": [
+            "homeassistant/components/backup/store.py",
+            "homeassistant/components/google/store.py",
+            "homeassistant/components/homeassistant/triggers/state.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 homeassistant/components/backup/store.py, homeassistant/components/google/store.py, homeassistant/components/homeassistant/triggers/state.py"
         },
         {
           "concept": "plugins",
           "phrase": "the plugin system",
           "expected_subsystem": "plugin loader",
           "prompt": "what breaks if I remove the plugin system",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "plugins",
+          "modules": [
+            "homeassistant/helpers/registry.py",
+            "homeassistant/components/group/registry.py",
+            "homeassistant/components/matter/addon.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 homeassistant/helpers/registry.py, homeassistant/components/group/registry.py, homeassistant/components/matter/addon.py"
         },
         {
           "concept": "extensions",
@@ -228,14 +262,14 @@
           "prompt": "what breaks if I remove extensions",
           "resolved": true,
           "category": null,
-          "label": "architecture symbol `extensions`",
+          "label": "extensions",
           "modules": [
-            "homeassistant/components/amazon_polly/tts.py",
-            "homeassistant/helpers/template/extensions/__init__.py",
-            "homeassistant/helpers/template/extensions/areas.py"
+            "homeassistant/helpers/template/extensions/base.py",
+            "pylint/plugins/pylint_home_assistant/checkers/type_hints/models.py",
+            "pylint/plugins/pylint_home_assistant/helpers/integration.py"
           ],
-          "confidence": "low",
-          "actual": "resolved \u2192 homeassistant/components/amazon_polly/tts.py, homeassistant/helpers/template/extensions/__init__.py, homeassistant/helpers/template/extensions/areas.py"
+          "confidence": "high",
+          "actual": "resolved \u2192 homeassistant/helpers/template/extensions/base.py, pylint/plugins/pylint_home_assistant/checkers/type_hints/models.py, pylint/plugins/pylint_home_assistant/helpers/integration.py"
         },
         {
           "concept": "websockets",
@@ -258,36 +292,48 @@
           "phrase": "the api layer",
           "expected_subsystem": "API / endpoint layer",
           "prompt": "what breaks if I remove the api layer",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "api layer",
+          "modules": [
+            "homeassistant/components/asuswrt/router.py",
+            "homeassistant/components/hassio/handler.py",
+            "homeassistant/components/zwave_me/controller.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 homeassistant/components/asuswrt/router.py, homeassistant/components/hassio/handler.py, homeassistant/components/zwave_me/controller.py"
         },
         {
           "concept": "persistence",
           "phrase": "persistence",
           "expected_subsystem": "ORM / storage",
           "prompt": "what breaks if I remove persistence",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "persistence",
+          "modules": [
+            "homeassistant/components/abode/entity.py",
+            "homeassistant/components/advantage_air/entity.py",
+            "homeassistant/components/alexa_devices/entity.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 homeassistant/components/abode/entity.py, homeassistant/components/advantage_air/entity.py, homeassistant/components/alexa_devices/entity.py"
         },
         {
           "concept": "validation",
           "phrase": "request validation",
           "expected_subsystem": "input validation",
           "prompt": "what breaks if I remove request validation",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "validation",
+          "modules": [
+            "homeassistant/components/mqtt/schemas.py",
+            "homeassistant/components/template/schemas.py",
+            "homeassistant/components/knx/schema.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 homeassistant/components/mqtt/schemas.py, homeassistant/components/template/schemas.py, homeassistant/components/knx/schema.py"
         },
         {
           "concept": "serialization",
@@ -296,17 +342,19 @@
           "prompt": "what breaks if I remove serialization",
           "resolved": true,
           "category": null,
-          "label": "architecture symbol `serialization`",
+          "label": "serialization",
           "modules": [
-            "homeassistant/helpers/template/extensions/serialization.py"
+            "homeassistant/util/json.py",
+            "script/hassfest/serializer.py",
+            "homeassistant/components/knx/schema.py"
           ],
-          "confidence": "medium",
-          "actual": "resolved \u2192 homeassistant/helpers/template/extensions/serialization.py"
+          "confidence": "high",
+          "actual": "resolved \u2192 homeassistant/util/json.py, script/hassfest/serializer.py, homeassistant/components/knx/schema.py"
         }
       ],
       "status": "ok",
-      "resolved_count": 9,
-      "scan_seconds": 445.1
+      "resolved_count": 20,
+      "scan_seconds": 569.8
     },
     {
       "id": "django",
@@ -337,36 +385,48 @@
           "phrase": "authorization",
           "expected_subsystem": "access control / permissions",
           "prompt": "what breaks if I remove authorization",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "authorization",
+          "modules": [
+            "django/contrib/auth/migrations/0011_update_proxy_permissions.py",
+            "django/contrib/auth/__init__.py",
+            "django/contrib/auth/models.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 django/contrib/auth/migrations/0011_update_proxy_permissions.py, django/contrib/auth/__init__.py, django/contrib/auth/models.py"
         },
         {
           "concept": "caching",
           "phrase": "caching",
           "expected_subsystem": "cache layer",
           "prompt": "what breaks if I remove caching",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "caching",
+          "modules": [
+            "django/middleware/cache.py",
+            "django/contrib/sessions/backends/cache.py",
+            "django/core/cache/__init__.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 django/middleware/cache.py, django/contrib/sessions/backends/cache.py, django/core/cache/__init__.py"
         },
         {
           "concept": "configuration",
           "phrase": "configuration",
           "expected_subsystem": "config system",
           "prompt": "what breaks if I remove configuration",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "configuration",
+          "modules": [
+            "django/contrib/admin/options.py",
+            "django/conf/global_settings.py",
+            "django/db/models/options.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 django/contrib/admin/options.py, django/conf/global_settings.py, django/db/models/options.py"
         },
         {
           "concept": "database",
@@ -389,12 +449,16 @@
           "phrase": "routing",
           "expected_subsystem": "router / URL dispatch",
           "prompt": "what breaks if I remove routing",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "routing",
+          "modules": [
+            "django/core/checks/urls.py",
+            "django/contrib/admindocs/urls.py",
+            "django/contrib/auth/urls.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 django/core/checks/urls.py, django/contrib/admindocs/urls.py, django/contrib/auth/urls.py"
         },
         {
           "concept": "middleware",
@@ -403,98 +467,125 @@
           "prompt": "what breaks if I remove middleware",
           "resolved": true,
           "category": null,
-          "label": "architecture symbol `middleware`",
+          "label": "middleware",
           "modules": [
             "django/contrib/admindocs/middleware.py",
-            "django/contrib/auth/__init__.py",
-            "django/contrib/auth/apps.py"
+            "django/contrib/auth/middleware.py",
+            "django/contrib/flatpages/middleware.py"
           ],
-          "confidence": "low",
-          "actual": "resolved \u2192 django/contrib/admindocs/middleware.py, django/contrib/auth/__init__.py, django/contrib/auth/apps.py"
+          "confidence": "high",
+          "actual": "resolved \u2192 django/contrib/admindocs/middleware.py, django/contrib/auth/middleware.py, django/contrib/flatpages/middleware.py"
         },
         {
           "concept": "logging",
           "phrase": "the logging layer",
           "expected_subsystem": "logging subsystem",
           "prompt": "what breaks if I remove the logging layer",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "logging",
+          "modules": [
+            "django/utils/log.py",
+            "django/contrib/admin/templatetags/log.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 django/utils/log.py, django/contrib/admin/templatetags/log.py"
         },
         {
           "concept": "events",
           "phrase": "the event system",
           "expected_subsystem": "event bus / dispatcher",
           "prompt": "what breaks if I remove the event system",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "events",
+          "modules": [
+            "django/dispatch/dispatcher.py",
+            "django/core/signals.py",
+            "django/db/models/signals.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 django/dispatch/dispatcher.py, django/core/signals.py, django/db/models/signals.py"
         },
         {
           "concept": "messaging",
           "phrase": "messaging",
           "expected_subsystem": "message queue / pub-sub",
           "prompt": "what breaks if I remove messaging",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "messaging",
+          "modules": [
+            "django/core/mail/message.py",
+            "django/contrib/messages/storage/base.py",
+            "django/contrib/messages/__init__.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 django/core/mail/message.py, django/contrib/messages/storage/base.py, django/contrib/messages/__init__.py"
         },
         {
           "concept": "background_jobs",
           "phrase": "background jobs",
           "expected_subsystem": "task / worker queue",
           "prompt": "what breaks if I remove background jobs",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "background jobs",
+          "modules": [
+            "django/tasks/base.py",
+            "django/tasks/signals.py",
+            "django/tasks/backends/base.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 django/tasks/base.py, django/tasks/signals.py, django/tasks/backends/base.py"
         },
         {
           "concept": "scheduling",
           "phrase": "scheduling",
           "expected_subsystem": "scheduler",
           "prompt": "what breaks if I remove scheduling",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "scheduling",
+          "modules": [
+            "django/db/backends/postgresql/psycopg_any.py",
+            "django/contrib/postgres/fields/ranges.py",
+            "django/contrib/postgres/forms/ranges.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 django/db/backends/postgresql/psycopg_any.py, django/contrib/postgres/fields/ranges.py, django/contrib/postgres/forms/ranges.py"
         },
         {
           "concept": "state_management",
           "phrase": "state management",
           "expected_subsystem": "state store",
           "prompt": "what breaks if I remove state management",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "state management",
+          "modules": [
+            "django/db/migrations/state.py",
+            "django/contrib/gis/geos/geometry.py",
+            "django/db/backends/base/base.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 django/db/migrations/state.py, django/contrib/gis/geos/geometry.py, django/db/backends/base/base.py"
         },
         {
           "concept": "plugins",
           "phrase": "the plugin system",
           "expected_subsystem": "plugin loader",
           "prompt": "what breaks if I remove the plugin system",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "plugins",
+          "modules": [
+            "django/apps/registry.py",
+            "django/core/checks/registry.py",
+            "django/db/backends/base/base.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 django/apps/registry.py, django/core/checks/registry.py, django/db/backends/base/base.py"
         },
         {
           "concept": "extensions",
@@ -503,14 +594,14 @@
           "prompt": "what breaks if I remove extensions",
           "resolved": true,
           "category": null,
-          "label": "architecture symbol `extensions`",
+          "label": "extensions",
           "modules": [
-            "django/contrib/gis/db/backends/postgis/adapter.py",
-            "django/contrib/postgres/search.py",
-            "django/core/management/commands/makemessages.py"
+            "django/db/backends/postgresql/psycopg_any.py",
+            "django/core/management/utils.py",
+            "django/core/validators.py"
           ],
-          "confidence": "medium",
-          "actual": "resolved \u2192 django/contrib/gis/db/backends/postgis/adapter.py, django/contrib/postgres/search.py, django/core/management/commands/makemessages.py"
+          "confidence": "high",
+          "actual": "resolved \u2192 django/db/backends/postgresql/psycopg_any.py, django/core/management/utils.py, django/core/validators.py"
         },
         {
           "concept": "websockets",
@@ -533,12 +624,16 @@
           "phrase": "the api layer",
           "expected_subsystem": "API / endpoint layer",
           "prompt": "what breaks if I remove the api layer",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "api layer",
+          "modules": [
+            "django/contrib/messages/api.py",
+            "django/contrib/auth/views.py",
+            "django/contrib/staticfiles/views.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 django/contrib/messages/api.py, django/contrib/auth/views.py, django/contrib/staticfiles/views.py"
         },
         {
           "concept": "persistence",
@@ -547,24 +642,30 @@
           "prompt": "what breaks if I remove persistence",
           "resolved": true,
           "category": null,
-          "label": "architecture symbol `persistence`",
+          "label": "persistence",
           "modules": [
-            "django/db/models/fields/generated.py"
+            "django/contrib/staticfiles/storage.py",
+            "django/db/models/expressions.py",
+            "django/db/models/fields/__init__.py"
           ],
           "confidence": "high",
-          "actual": "resolved \u2192 django/db/models/fields/generated.py"
+          "actual": "resolved \u2192 django/contrib/staticfiles/storage.py, django/db/models/expressions.py, django/db/models/fields/__init__.py"
         },
         {
           "concept": "validation",
           "phrase": "request validation",
           "expected_subsystem": "input validation",
           "prompt": "what breaks if I remove request validation",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "validation",
+          "modules": [
+            "django/core/validators.py",
+            "django/contrib/gis/db/models/fields.py",
+            "django/db/backends/base/schema.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 django/core/validators.py, django/contrib/gis/db/models/fields.py, django/db/backends/base/schema.py"
         },
         {
           "concept": "serialization",
@@ -573,19 +674,19 @@
           "prompt": "what breaks if I remove serialization",
           "resolved": true,
           "category": null,
-          "label": "architecture symbol `serialization`",
+          "label": "serialization",
           "modules": [
-            "django/contrib/gis/serializers/geojson.py",
-            "django/core/serializers/base.py",
-            "django/core/serializers/json.py"
+            "django/core/serializers/json.py",
+            "django/core/serializers/jsonl.py",
+            "django/core/serializers/xml_serializer.py"
           ],
-          "confidence": "low",
-          "actual": "resolved \u2192 django/contrib/gis/serializers/geojson.py, django/core/serializers/base.py, django/core/serializers/json.py"
+          "confidence": "high",
+          "actual": "resolved \u2192 django/core/serializers/json.py, django/core/serializers/jsonl.py, django/core/serializers/xml_serializer.py"
         }
       ],
       "status": "ok",
-      "resolved_count": 7,
-      "scan_seconds": 27.7
+      "resolved_count": 20,
+      "scan_seconds": 43.5
     },
     {
       "id": "fastapi",
@@ -614,38 +715,46 @@
           "prompt": "what breaks if I remove authorization",
           "resolved": true,
           "category": null,
-          "label": "architecture symbol `authorization`",
+          "label": "authorization",
           "modules": [
-            "fastapi/openapi/models.py",
-            "fastapi/security/__init__.py",
+            "fastapi/_compat/shared.py",
+            "fastapi/security/oauth2.py",
             "fastapi/security/http.py"
           ],
           "confidence": "high",
-          "actual": "resolved \u2192 fastapi/openapi/models.py, fastapi/security/__init__.py, fastapi/security/http.py"
+          "actual": "resolved \u2192 fastapi/_compat/shared.py, fastapi/security/oauth2.py, fastapi/security/http.py"
         },
         {
           "concept": "caching",
           "phrase": "caching",
           "expected_subsystem": "cache layer",
           "prompt": "what breaks if I remove caching",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "caching",
+          "modules": [
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/__init__.py",
+            "fastapi/dependencies/models.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 fastapi/_compat/v2.py, fastapi/_compat/__init__.py, fastapi/dependencies/models.py"
         },
         {
           "concept": "configuration",
           "phrase": "configuration",
           "expected_subsystem": "config system",
           "prompt": "what breaks if I remove configuration",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "configuration",
+          "modules": [
+            "fastapi/_compat/v2.py",
+            "fastapi/openapi/models.py",
+            "scripts/contributors.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 fastapi/_compat/v2.py, fastapi/openapi/models.py, scripts/contributors.py"
         },
         {
           "concept": "database",
@@ -669,14 +778,14 @@
           "prompt": "what breaks if I remove routing",
           "resolved": true,
           "category": null,
-          "label": "architecture symbol `routing`",
+          "label": "routing",
           "modules": [
-            "fastapi/__init__.py",
-            "fastapi/applications.py",
-            "fastapi/openapi/utils.py"
+            "fastapi/routing.py",
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/__init__.py"
           ],
           "confidence": "high",
-          "actual": "resolved \u2192 fastapi/__init__.py, fastapi/applications.py, fastapi/openapi/utils.py"
+          "actual": "resolved \u2192 fastapi/routing.py, fastapi/_compat/v2.py, fastapi/_compat/__init__.py"
         },
         {
           "concept": "middleware",
@@ -685,26 +794,30 @@
           "prompt": "what breaks if I remove middleware",
           "resolved": true,
           "category": null,
-          "label": "architecture symbol `middleware`",
+          "label": "middleware",
           "modules": [
-            "fastapi/applications.py",
+            "fastapi/middleware/asyncexitstack.py",
             "fastapi/middleware/__init__.py",
-            "fastapi/middleware/asyncexitstack.py"
+            "fastapi/middleware/cors.py"
           ],
           "confidence": "high",
-          "actual": "resolved \u2192 fastapi/applications.py, fastapi/middleware/__init__.py, fastapi/middleware/asyncexitstack.py"
+          "actual": "resolved \u2192 fastapi/middleware/asyncexitstack.py, fastapi/middleware/__init__.py, fastapi/middleware/cors.py"
         },
         {
           "concept": "logging",
           "phrase": "the logging layer",
           "expected_subsystem": "logging subsystem",
           "prompt": "what breaks if I remove the logging layer",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "logging",
+          "modules": [
+            "fastapi/logger.py",
+            "fastapi/openapi/models.py",
+            "fastapi/dependencies/utils.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 fastapi/logger.py, fastapi/openapi/models.py, fastapi/dependencies/utils.py"
         },
         {
           "concept": "events",
@@ -723,24 +836,30 @@
           "phrase": "messaging",
           "expected_subsystem": "message queue / pub-sub",
           "prompt": "what breaks if I remove messaging",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "messaging",
+          "modules": [
+            "fastapi/routing.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 fastapi/routing.py"
         },
         {
           "concept": "background_jobs",
           "phrase": "background jobs",
           "expected_subsystem": "task / worker queue",
           "prompt": "what breaks if I remove background jobs",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "background jobs",
+          "modules": [
+            "fastapi/background.py",
+            "fastapi/__init__.py",
+            "fastapi/dependencies/utils.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 fastapi/background.py, fastapi/__init__.py, fastapi/dependencies/utils.py"
         },
         {
           "concept": "scheduling",
@@ -785,14 +904,14 @@
           "prompt": "what breaks if I remove extensions",
           "resolved": true,
           "category": null,
-          "label": "architecture symbol `extensions`",
+          "label": "extensions",
           "modules": [
-            "fastapi/applications.py",
-            "fastapi/background.py",
-            "fastapi/openapi/models.py"
+            "fastapi/openapi/models.py",
+            "fastapi/param_functions.py",
+            "fastapi/background.py"
           ],
           "confidence": "high",
-          "actual": "resolved \u2192 fastapi/applications.py, fastapi/background.py, fastapi/openapi/models.py"
+          "actual": "resolved \u2192 fastapi/openapi/models.py, fastapi/param_functions.py, fastapi/background.py"
         },
         {
           "concept": "websockets",
@@ -813,36 +932,48 @@
           "phrase": "the api layer",
           "expected_subsystem": "API / endpoint layer",
           "prompt": "what breaks if I remove the api layer",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "api layer",
+          "modules": [
+            "fastapi/openapi/utils.py",
+            "fastapi/openapi/models.py",
+            "fastapi/exceptions.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 fastapi/openapi/utils.py, fastapi/openapi/models.py, fastapi/exceptions.py"
         },
         {
           "concept": "persistence",
           "phrase": "persistence",
           "expected_subsystem": "ORM / storage",
           "prompt": "what breaks if I remove persistence",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "persistence",
+          "modules": [
+            "fastapi/openapi/models.py",
+            "scripts/contributors.py",
+            "scripts/docs.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 fastapi/openapi/models.py, scripts/contributors.py, scripts/docs.py"
         },
         {
           "concept": "validation",
           "phrase": "request validation",
           "expected_subsystem": "input validation",
           "prompt": "what breaks if I remove request validation",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "validation",
+          "modules": [
+            "fastapi/params.py",
+            "fastapi/_compat/v2.py",
+            "fastapi/exceptions.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 fastapi/params.py, fastapi/_compat/v2.py, fastapi/exceptions.py"
         },
         {
           "concept": "serialization",
@@ -851,17 +982,669 @@
           "prompt": "what breaks if I remove serialization",
           "resolved": true,
           "category": null,
-          "label": "architecture symbol `serialization`",
+          "label": "serialization",
           "modules": [
-            "fastapi/_compat/v2.py"
+            "fastapi/encoders.py",
+            "fastapi/_compat/v2.py",
+            "fastapi/_compat/__init__.py"
           ],
           "confidence": "high",
-          "actual": "resolved \u2192 fastapi/_compat/v2.py"
+          "actual": "resolved \u2192 fastapi/encoders.py, fastapi/_compat/v2.py, fastapi/_compat/__init__.py"
         }
       ],
       "status": "ok",
-      "resolved_count": 7,
-      "scan_seconds": 9.1
+      "resolved_count": 15,
+      "scan_seconds": 9.9
+    },
+    {
+      "id": "langchain",
+      "display": "LangChain",
+      "language": "python",
+      "available": true,
+      "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\langchain",
+      "modules": 1689,
+      "concepts": [
+        {
+          "concept": "authentication",
+          "phrase": "authentication",
+          "expected_subsystem": "auth / identity",
+          "prompt": "what breaks if I remove authentication",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "authorization",
+          "phrase": "authorization",
+          "expected_subsystem": "access control / permissions",
+          "prompt": "what breaks if I remove authorization",
+          "resolved": true,
+          "category": null,
+          "label": "authorization",
+          "modules": [
+            "libs/core/langchain_core/_security/_policy.py",
+            "libs/core/langchain_core/_api/deprecation.py",
+            "libs/core/langchain_core/_security/__init__.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 libs/core/langchain_core/_security/_policy.py, libs/core/langchain_core/_api/deprecation.py, libs/core/langchain_core/_security/__init__.py"
+        },
+        {
+          "concept": "caching",
+          "phrase": "caching",
+          "expected_subsystem": "cache layer",
+          "prompt": "what breaks if I remove caching",
+          "resolved": true,
+          "category": null,
+          "label": "caching",
+          "modules": [
+            "libs/langchain/langchain_classic/cache.py",
+            "libs/langchain/langchain_classic/embeddings/cache.py",
+            "libs/langchain/langchain_classic/schema/cache.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 libs/langchain/langchain_classic/cache.py, libs/langchain/langchain_classic/embeddings/cache.py, libs/langchain/langchain_classic/schema/cache.py"
+        },
+        {
+          "concept": "configuration",
+          "phrase": "configuration",
+          "expected_subsystem": "config system",
+          "prompt": "what breaks if I remove configuration",
+          "resolved": true,
+          "category": null,
+          "label": "configuration",
+          "modules": [
+            "libs/core/langchain_core/runnables/config.py",
+            "libs/langchain/langchain_classic/schema/runnable/config.py",
+            "libs/langchain/langchain_classic/smith/evaluation/config.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 libs/core/langchain_core/runnables/config.py, libs/langchain/langchain_classic/schema/runnable/config.py, libs/langchain/langchain_classic/smith/evaluation/config.py"
+        },
+        {
+          "concept": "database",
+          "phrase": "the database layer",
+          "expected_subsystem": "persistence / database",
+          "prompt": "what breaks if I remove the database layer",
+          "resolved": true,
+          "category": null,
+          "label": "recorder/database",
+          "modules": [
+            "libs/langchain/langchain_classic/chains/elasticsearch_database/__init__.py",
+            "libs/langchain/langchain_classic/chains/elasticsearch_database/base.py",
+            "libs/langchain/langchain_classic/chains/elasticsearch_database/prompts.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 libs/langchain/langchain_classic/chains/elasticsearch_database/__init__.py, libs/langchain/langchain_classic/chains/elasticsearch_database/base.py, libs/langchain/langchain_classic/chains/elasticsearch_database/prompts.py"
+        },
+        {
+          "concept": "routing",
+          "phrase": "routing",
+          "expected_subsystem": "router / URL dispatch",
+          "prompt": "what breaks if I remove routing",
+          "resolved": true,
+          "category": null,
+          "label": "routing",
+          "modules": [
+            "libs/langchain/langchain_classic/chains/router/embedding_router.py",
+            "libs/langchain/langchain_classic/chains/router/llm_router.py",
+            "libs/core/langchain_core/runnables/router.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 libs/langchain/langchain_classic/chains/router/embedding_router.py, libs/langchain/langchain_classic/chains/router/llm_router.py, libs/core/langchain_core/runnables/router.py"
+        },
+        {
+          "concept": "middleware",
+          "phrase": "middleware",
+          "expected_subsystem": "middleware pipeline",
+          "prompt": "what breaks if I remove middleware",
+          "resolved": true,
+          "category": null,
+          "label": "middleware",
+          "modules": [
+            "libs/langchain_v1/langchain/agents/middleware/__init__.py",
+            "libs/langchain_v1/langchain/agents/middleware/_execution.py",
+            "libs/langchain_v1/langchain/agents/middleware/_redaction.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 libs/langchain_v1/langchain/agents/middleware/__init__.py, libs/langchain_v1/langchain/agents/middleware/_execution.py, libs/langchain_v1/langchain/agents/middleware/_redaction.py"
+        },
+        {
+          "concept": "logging",
+          "phrase": "the logging layer",
+          "expected_subsystem": "logging subsystem",
+          "prompt": "what breaks if I remove the logging layer",
+          "resolved": true,
+          "category": null,
+          "label": "logging",
+          "modules": [
+            "libs/langchain/langchain_classic/agents/format_scratchpad/log.py",
+            "libs/langchain/langchain_classic/callbacks/tracers/logging.py",
+            "libs/langchain/langchain_classic/callbacks/mlflow_callback.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 libs/langchain/langchain_classic/agents/format_scratchpad/log.py, libs/langchain/langchain_classic/callbacks/tracers/logging.py, libs/langchain/langchain_classic/callbacks/mlflow_callback.py"
+        },
+        {
+          "concept": "events",
+          "phrase": "the event system",
+          "expected_subsystem": "event bus / dispatcher",
+          "prompt": "what breaks if I remove the event system",
+          "resolved": true,
+          "category": null,
+          "label": "events",
+          "modules": [
+            "libs/core/langchain_core/_api/beta_decorator.py",
+            "libs/core/langchain_core/_api/deprecation.py",
+            "libs/core/langchain_core/language_models/_compat_bridge.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 libs/core/langchain_core/_api/beta_decorator.py, libs/core/langchain_core/_api/deprecation.py, libs/core/langchain_core/language_models/_compat_bridge.py"
+        },
+        {
+          "concept": "messaging",
+          "phrase": "messaging",
+          "expected_subsystem": "message queue / pub-sub",
+          "prompt": "what breaks if I remove messaging",
+          "resolved": true,
+          "category": null,
+          "label": "messaging",
+          "modules": [
+            "libs/core/langchain_core/prompts/message.py",
+            "libs/core/langchain_core/messages/__init__.py",
+            "libs/core/langchain_core/messages/ai.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 libs/core/langchain_core/prompts/message.py, libs/core/langchain_core/messages/__init__.py, libs/core/langchain_core/messages/ai.py"
+        },
+        {
+          "concept": "background_jobs",
+          "phrase": "background jobs",
+          "expected_subsystem": "task / worker queue",
+          "prompt": "what breaks if I remove background jobs",
+          "resolved": true,
+          "category": null,
+          "label": "background jobs",
+          "modules": [
+            "libs/langchain/langchain_classic/embeddings/cloudflare_workersai.py",
+            "libs/core/langchain_core/caches.py",
+            "libs/core/langchain_core/chat_history.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 libs/langchain/langchain_classic/embeddings/cloudflare_workersai.py, libs/core/langchain_core/caches.py, libs/core/langchain_core/chat_history.py"
+        },
+        {
+          "concept": "scheduling",
+          "phrase": "scheduling",
+          "expected_subsystem": "scheduler",
+          "prompt": "what breaks if I remove scheduling",
+          "resolved": true,
+          "category": null,
+          "label": "scheduling",
+          "modules": [
+            "libs/langchain/langchain_classic/retrievers/time_weighted_retriever.py",
+            "libs/langchain/langchain_classic/tools/slack/schedule_message.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 libs/langchain/langchain_classic/retrievers/time_weighted_retriever.py, libs/langchain/langchain_classic/tools/slack/schedule_message.py"
+        },
+        {
+          "concept": "state_management",
+          "phrase": "state management",
+          "expected_subsystem": "state store",
+          "prompt": "what breaks if I remove state management",
+          "resolved": true,
+          "category": null,
+          "label": "state management",
+          "modules": [
+            "libs/core/langchain_core/stores.py",
+            "libs/core/langchain_core/example_selectors/semantic_similarity.py",
+            "libs/core/langchain_core/indexing/api.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 libs/core/langchain_core/stores.py, libs/core/langchain_core/example_selectors/semantic_similarity.py, libs/core/langchain_core/indexing/api.py"
+        },
+        {
+          "concept": "plugins",
+          "phrase": "the plugin system",
+          "expected_subsystem": "plugin loader",
+          "prompt": "what breaks if I remove the plugin system",
+          "resolved": true,
+          "category": null,
+          "label": "plugins",
+          "modules": [
+            "libs/langchain/langchain_classic/document_loaders/parsers/registry.py",
+            "libs/langchain/langchain_classic/tools/plugin.py",
+            "libs/core/langchain_core/callbacks/manager.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 libs/langchain/langchain_classic/document_loaders/parsers/registry.py, libs/langchain/langchain_classic/tools/plugin.py, libs/core/langchain_core/callbacks/manager.py"
+        },
+        {
+          "concept": "extensions",
+          "phrase": "extensions",
+          "expected_subsystem": "extension system",
+          "prompt": "what breaks if I remove extensions",
+          "resolved": true,
+          "category": null,
+          "label": "extensions",
+          "modules": [
+            "libs/core/langchain_core/caches.py",
+            "libs/core/langchain_core/callbacks/base.py",
+            "libs/core/langchain_core/callbacks/file.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 libs/core/langchain_core/caches.py, libs/core/langchain_core/callbacks/base.py, libs/core/langchain_core/callbacks/file.py"
+        },
+        {
+          "concept": "websockets",
+          "phrase": "websocket support",
+          "expected_subsystem": "websocket transport",
+          "prompt": "what breaks if I remove websocket support",
+          "resolved": true,
+          "category": null,
+          "label": "websocket support",
+          "modules": [
+            "libs/core/langchain_core/chat_sessions.py",
+            "libs/langchain/langchain_classic/tools/multion/close_session.py",
+            "libs/langchain/langchain_classic/tools/multion/create_session.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 libs/core/langchain_core/chat_sessions.py, libs/langchain/langchain_classic/tools/multion/close_session.py, libs/langchain/langchain_classic/tools/multion/create_session.py"
+        },
+        {
+          "concept": "api_layer",
+          "phrase": "the api layer",
+          "expected_subsystem": "API / endpoint layer",
+          "prompt": "what breaks if I remove the api layer",
+          "resolved": true,
+          "category": null,
+          "label": "api layer",
+          "modules": [
+            "libs/core/langchain_core/runnables/router.py",
+            "libs/langchain/langchain_classic/agents/agent_toolkits/openapi/planner_prompt.py",
+            "libs/langchain/langchain_classic/chains/api/openapi/chain.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 libs/core/langchain_core/runnables/router.py, libs/langchain/langchain_classic/agents/agent_toolkits/openapi/planner_prompt.py, libs/langchain/langchain_classic/chains/api/openapi/chain.py"
+        },
+        {
+          "concept": "persistence",
+          "phrase": "persistence",
+          "expected_subsystem": "ORM / storage",
+          "prompt": "what breaks if I remove persistence",
+          "resolved": true,
+          "category": null,
+          "label": "persistence",
+          "modules": [
+            "libs/core/langchain_core/language_models/chat_model_stream.py",
+            "libs/langchain/langchain_classic/storage/_lc_store.py",
+            "libs/langchain/langchain_classic/memory/entity.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 libs/core/langchain_core/language_models/chat_model_stream.py, libs/langchain/langchain_classic/storage/_lc_store.py, libs/langchain/langchain_classic/memory/entity.py"
+        },
+        {
+          "concept": "validation",
+          "phrase": "request validation",
+          "expected_subsystem": "input validation",
+          "prompt": "what breaks if I remove request validation",
+          "resolved": true,
+          "category": null,
+          "label": "validation",
+          "modules": [
+            "libs/langchain/langchain_classic/schema/callbacks/tracers/schemas.py",
+            "libs/core/langchain_core/load/validators.py",
+            "libs/core/langchain_core/runnables/schema.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 libs/langchain/langchain_classic/schema/callbacks/tracers/schemas.py, libs/core/langchain_core/load/validators.py, libs/core/langchain_core/runnables/schema.py"
+        },
+        {
+          "concept": "serialization",
+          "phrase": "serialization",
+          "expected_subsystem": "(de)serialization layer",
+          "prompt": "what breaks if I remove serialization",
+          "resolved": true,
+          "category": null,
+          "label": "serialization",
+          "modules": [
+            "libs/core/langchain_core/output_parsers/json.py",
+            "libs/core/langchain_core/runnables/schema.py",
+            "libs/core/langchain_core/utils/json.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 libs/core/langchain_core/output_parsers/json.py, libs/core/langchain_core/runnables/schema.py, libs/core/langchain_core/utils/json.py"
+        }
+      ],
+      "status": "ok",
+      "resolved_count": 19,
+      "scan_seconds": 32.8
+    },
+    {
+      "id": "openbb",
+      "display": "OpenBB",
+      "language": "python",
+      "available": true,
+      "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\openbb",
+      "modules": 1062,
+      "concepts": [
+        {
+          "concept": "authentication",
+          "phrase": "authentication",
+          "expected_subsystem": "auth / identity",
+          "prompt": "what breaks if I remove authentication",
+          "resolved": true,
+          "category": null,
+          "label": "authentication",
+          "modules": [
+            "openbb_platform/core/openbb_core/api/auth/user.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 openbb_platform/core/openbb_core/api/auth/user.py"
+        },
+        {
+          "concept": "authorization",
+          "phrase": "authorization",
+          "expected_subsystem": "access control / permissions",
+          "prompt": "what breaks if I remove authorization",
+          "resolved": true,
+          "category": null,
+          "label": "authorization",
+          "modules": [
+            "openbb_platform/extensions/mcp_server/openbb_mcp_server/app/auth.py",
+            "openbb_platform/core/openbb_core/api/app_loader.py",
+            "openbb_platform/core/openbb_core/api/exception_handlers.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 openbb_platform/extensions/mcp_server/openbb_mcp_server/app/auth.py, openbb_platform/core/openbb_core/api/app_loader.py, openbb_platform/core/openbb_core/api/exception_handlers.py"
+        },
+        {
+          "concept": "caching",
+          "phrase": "caching",
+          "expected_subsystem": "cache layer",
+          "prompt": "what breaks if I remove caching",
+          "resolved": true,
+          "category": null,
+          "label": "caching",
+          "modules": [
+            "openbb_platform/core/openbb_core/provider/utils/lru.py",
+            "openbb_platform/core/openbb_core/provider/registry.py",
+            "openbb_platform/core/openbb_core/app/command_runner.py"
+          ],
+          "confidence": "medium",
+          "actual": "resolved \u2192 openbb_platform/core/openbb_core/provider/utils/lru.py, openbb_platform/core/openbb_core/provider/registry.py, openbb_platform/core/openbb_core/app/command_runner.py"
+        },
+        {
+          "concept": "configuration",
+          "phrase": "configuration",
+          "expected_subsystem": "config system",
+          "prompt": "what breaks if I remove configuration",
+          "resolved": true,
+          "category": null,
+          "label": "configuration",
+          "modules": [
+            "cli/openbb_cli/models/settings.py",
+            "openbb_platform/core/openbb_core/app/model/preferences.py",
+            "openbb_platform/extensions/mcp_server/openbb_mcp_server/models/settings.py"
+          ],
+          "confidence": "medium",
+          "actual": "resolved \u2192 cli/openbb_cli/models/settings.py, openbb_platform/core/openbb_core/app/model/preferences.py, openbb_platform/extensions/mcp_server/openbb_mcp_server/models/settings.py"
+        },
+        {
+          "concept": "database",
+          "phrase": "the database layer",
+          "expected_subsystem": "persistence / database",
+          "prompt": "what breaks if I remove the database layer",
+          "resolved": true,
+          "category": null,
+          "label": "recorder/database",
+          "modules": [
+            "openbb_platform/providers/finra/openbb_finra/utils/data_storage.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 openbb_platform/providers/finra/openbb_finra/utils/data_storage.py"
+        },
+        {
+          "concept": "routing",
+          "phrase": "routing",
+          "expected_subsystem": "router / URL dispatch",
+          "prompt": "what breaks if I remove routing",
+          "resolved": true,
+          "category": null,
+          "label": "routing",
+          "modules": [
+            "openbb_platform/providers/congress_gov/openbb_congress_gov/router/congress_gov_router.py",
+            "openbb_platform/core/openbb_core/app/router.py",
+            "openbb_platform/providers/federal_reserve/openbb_federal_reserve/router.py"
+          ],
+          "confidence": "medium",
+          "actual": "resolved \u2192 openbb_platform/providers/congress_gov/openbb_congress_gov/router/congress_gov_router.py, openbb_platform/core/openbb_core/app/router.py, openbb_platform/providers/federal_reserve/openbb_federal_reserve/router.py"
+        },
+        {
+          "concept": "middleware",
+          "phrase": "middleware",
+          "expected_subsystem": "middleware pipeline",
+          "prompt": "what breaks if I remove middleware",
+          "resolved": true,
+          "category": null,
+          "label": "middleware",
+          "modules": [
+            "openbb_platform/extensions/platform_api/openbb_platform_api/utils/api.py",
+            "cli/openbb_cli/controllers/base_controller.py",
+            "cli/openbb_cli/controllers/cli_controller.py"
+          ],
+          "confidence": "medium",
+          "actual": "resolved \u2192 openbb_platform/extensions/platform_api/openbb_platform_api/utils/api.py, cli/openbb_cli/controllers/base_controller.py, cli/openbb_cli/controllers/cli_controller.py"
+        },
+        {
+          "concept": "logging",
+          "phrase": "the logging layer",
+          "expected_subsystem": "logging subsystem",
+          "prompt": "what breaks if I remove the logging layer",
+          "resolved": true,
+          "category": null,
+          "label": "logging",
+          "modules": [
+            "openbb_platform/core/openbb_core/app/logs/logging_service.py",
+            "openbb_platform/core/openbb_core/app/logs/models/logging_settings.py",
+            "openbb_platform/core/openbb_core/app/logs/formatters/formatter_with_exceptions.py"
+          ],
+          "confidence": "medium",
+          "actual": "resolved \u2192 openbb_platform/core/openbb_core/app/logs/logging_service.py, openbb_platform/core/openbb_core/app/logs/models/logging_settings.py, openbb_platform/core/openbb_core/app/logs/formatters/formatter_with_exceptions.py"
+        },
+        {
+          "concept": "events",
+          "phrase": "the event system",
+          "expected_subsystem": "event bus / dispatcher",
+          "prompt": "what breaks if I remove the event system",
+          "resolved": true,
+          "category": null,
+          "label": "events",
+          "modules": [
+            "openbb_platform/core/openbb_core/app/static/package_builder.py",
+            "openbb_platform/extensions/mcp_server/openbb_mcp_server/app/app.py",
+            "openbb_platform/obbject_extensions/charting/openbb_charting/core/dummy_backend.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 openbb_platform/core/openbb_core/app/static/package_builder.py, openbb_platform/extensions/mcp_server/openbb_mcp_server/app/app.py, openbb_platform/obbject_extensions/charting/openbb_charting/core/dummy_backend.py"
+        },
+        {
+          "concept": "messaging",
+          "phrase": "messaging",
+          "expected_subsystem": "message queue / pub-sub",
+          "prompt": "what breaks if I remove messaging",
+          "resolved": true,
+          "category": null,
+          "label": "messaging",
+          "modules": [
+            "openbb_platform/core/openbb_core/provider/standard_models/consumer_price_index.py",
+            "openbb_platform/providers/fred/openbb_fred/models/consumer_price_index.py",
+            "openbb_platform/providers/imf/openbb_imf/models/consumer_price_index.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 openbb_platform/core/openbb_core/provider/standard_models/consumer_price_index.py, openbb_platform/providers/fred/openbb_fred/models/consumer_price_index.py, openbb_platform/providers/imf/openbb_imf/models/consumer_price_index.py"
+        },
+        {
+          "concept": "background_jobs",
+          "phrase": "background jobs",
+          "expected_subsystem": "task / worker queue",
+          "prompt": "what breaks if I remove background jobs",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "scheduling",
+          "phrase": "scheduling",
+          "expected_subsystem": "scheduler",
+          "prompt": "what breaks if I remove scheduling",
+          "resolved": true,
+          "category": null,
+          "label": "scheduling",
+          "modules": [
+            "openbb_platform/core/openbb_core/provider/utils/exchange_utils.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 openbb_platform/core/openbb_core/provider/utils/exchange_utils.py"
+        },
+        {
+          "concept": "state_management",
+          "phrase": "state management",
+          "expected_subsystem": "state store",
+          "prompt": "what breaks if I remove state management",
+          "resolved": true,
+          "category": null,
+          "label": "state management",
+          "modules": [
+            "cli/openbb_cli/argparse_translator/argparse_argument.py",
+            "cli/openbb_cli/config/completer.py",
+            "openbb_platform/providers/finra/openbb_finra/utils/data_storage.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 cli/openbb_cli/argparse_translator/argparse_argument.py, cli/openbb_cli/config/completer.py, openbb_platform/providers/finra/openbb_finra/utils/data_storage.py"
+        },
+        {
+          "concept": "plugins",
+          "phrase": "the plugin system",
+          "expected_subsystem": "plugin loader",
+          "prompt": "what breaks if I remove the plugin system",
+          "resolved": true,
+          "category": null,
+          "label": "plugins",
+          "modules": [
+            "openbb_platform/obbject_extensions/charting/openbb_charting/core/plotly_ta/plugins/custom_indicators_plugin.py",
+            "openbb_platform/obbject_extensions/charting/openbb_charting/core/plotly_ta/plugins/momentum_plugin.py",
+            "openbb_platform/obbject_extensions/charting/openbb_charting/core/plotly_ta/plugins/overlap_plugin.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 openbb_platform/obbject_extensions/charting/openbb_charting/core/plotly_ta/plugins/custom_indicators_plugin.py, openbb_platform/obbject_extensions/charting/openbb_charting/core/plotly_ta/plugins/momentum_plugin.py, openbb_platform/obbject_extensions/charting/openbb_charting/core/plotly_ta/plugins/overlap_plugin.py"
+        },
+        {
+          "concept": "extensions",
+          "phrase": "extensions",
+          "expected_subsystem": "extension system",
+          "prompt": "what breaks if I remove extensions",
+          "resolved": true,
+          "category": null,
+          "label": "extensions",
+          "modules": [
+            "openbb_platform/core/openbb_core/app/model/extension.py",
+            "openbb_platform/core/openbb_core/app/extension_loader.py",
+            "openbb_platform/extensions/mcp_server/openbb_mcp_server/app/app.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 openbb_platform/core/openbb_core/app/model/extension.py, openbb_platform/core/openbb_core/app/extension_loader.py, openbb_platform/extensions/mcp_server/openbb_mcp_server/app/app.py"
+        },
+        {
+          "concept": "websockets",
+          "phrase": "websocket support",
+          "expected_subsystem": "websocket transport",
+          "prompt": "what breaks if I remove websocket support",
+          "resolved": true,
+          "category": null,
+          "label": "websocket support",
+          "modules": [
+            "cli/openbb_cli/session.py",
+            "openbb_platform/core/openbb_core/api/auth/user.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 cli/openbb_cli/session.py, openbb_platform/core/openbb_core/api/auth/user.py"
+        },
+        {
+          "concept": "api_layer",
+          "phrase": "the api layer",
+          "expected_subsystem": "API / endpoint layer",
+          "prompt": "what breaks if I remove the api layer",
+          "resolved": true,
+          "category": null,
+          "label": "api layer",
+          "modules": [
+            "cli/openbb_cli/controllers/base_controller.py",
+            "cli/openbb_cli/controllers/base_platform_controller.py",
+            "cli/openbb_cli/controllers/cli_controller.py"
+          ],
+          "confidence": "medium",
+          "actual": "resolved \u2192 cli/openbb_cli/controllers/base_controller.py, cli/openbb_cli/controllers/base_platform_controller.py, cli/openbb_cli/controllers/cli_controller.py"
+        },
+        {
+          "concept": "persistence",
+          "phrase": "persistence",
+          "expected_subsystem": "ORM / storage",
+          "prompt": "what breaks if I remove persistence",
+          "resolved": true,
+          "category": null,
+          "label": "persistence",
+          "modules": [
+            "openbb_platform/providers/imf/openbb_imf/models/indicator_metadata.py",
+            "openbb_platform/providers/finra/openbb_finra/utils/data_storage.py",
+            "cli/openbb_cli/models/settings.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 openbb_platform/providers/imf/openbb_imf/models/indicator_metadata.py, openbb_platform/providers/finra/openbb_finra/utils/data_storage.py, cli/openbb_cli/models/settings.py"
+        },
+        {
+          "concept": "validation",
+          "phrase": "request validation",
+          "expected_subsystem": "input validation",
+          "prompt": "what breaks if I remove request validation",
+          "resolved": true,
+          "category": null,
+          "label": "validation",
+          "modules": [
+            "openbb_platform/core/openbb_core/provider/standard_models/form_13FHR.py",
+            "openbb_platform/obbject_extensions/charting/openbb_charting/query_params.py",
+            "openbb_platform/providers/sec/openbb_sec/utils/statement_schema/_schema.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 openbb_platform/core/openbb_core/provider/standard_models/form_13FHR.py, openbb_platform/obbject_extensions/charting/openbb_charting/query_params.py, openbb_platform/providers/sec/openbb_sec/utils/statement_schema/_schema.py"
+        },
+        {
+          "concept": "serialization",
+          "phrase": "serialization",
+          "expected_subsystem": "(de)serialization layer",
+          "prompt": "what breaks if I remove serialization",
+          "resolved": true,
+          "category": null,
+          "label": "serialization",
+          "modules": [
+            "openbb_platform/core/openbb_core/api/router/commands.py",
+            "openbb_platform/core/openbb_core/api/router/coverage.py",
+            "openbb_platform/core/openbb_core/app/command_runner.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 openbb_platform/core/openbb_core/api/router/commands.py, openbb_platform/core/openbb_core/api/router/coverage.py, openbb_platform/core/openbb_core/app/command_runner.py"
+        }
+      ],
+      "status": "ok",
+      "resolved_count": 19,
+      "scan_seconds": 33.9
     },
     {
       "id": "vscode",
@@ -892,12 +1675,16 @@
           "phrase": "authorization",
           "expected_subsystem": "access control / permissions",
           "prompt": "what breaks if I remove authorization",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "authorization",
+          "modules": [
+            "src/vs/base/common/policy.ts",
+            "src/vs/platform/policy/common/policy.ts",
+            "src/vs/workbench/services/policies/browser/accountPolicyGate.contribution.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 src/vs/base/common/policy.ts, src/vs/platform/policy/common/policy.ts, src/vs/workbench/services/policies/browser/accountPolicyGate.contribution.ts"
         },
         {
           "concept": "caching",
@@ -906,12 +1693,14 @@
           "prompt": "what breaks if I remove caching",
           "resolved": true,
           "category": null,
-          "label": "architecture symbol `caching`",
+          "label": "caching",
           "modules": [
-            "extensions/copilot/src/platform/parser/node/parserWithCaching.ts"
+            "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/helpers/cache.ts",
+            "extensions/copilot/src/util/vs/base/common/cache.ts",
+            "extensions/copilot/src/util/common/cache.ts"
           ],
           "confidence": "high",
-          "actual": "resolved \u2192 extensions/copilot/src/platform/parser/node/parserWithCaching.ts"
+          "actual": "resolved \u2192 extensions/copilot/src/extension/completions-core/vscode-node/lib/src/helpers/cache.ts, extensions/copilot/src/util/vs/base/common/cache.ts, extensions/copilot/src/util/common/cache.ts"
         },
         {
           "concept": "configuration",
@@ -920,14 +1709,14 @@
           "prompt": "what breaks if I remove configuration",
           "resolved": true,
           "category": null,
-          "label": "architecture symbol `configuration`",
+          "label": "configuration",
           "modules": [
-            "extensions/configuration-editing/src/browser/net.ts",
-            "extensions/configuration-editing/src/configurationEditingMain.ts",
-            "extensions/configuration-editing/src/extensionsProposals.ts"
+            "extensions/typescript-language-features/src/configuration/configuration.ts",
+            "src/vs/platform/configuration/common/configuration.ts",
+            "src/vs/workbench/contrib/chat/common/promptSyntax/config/config.ts"
           ],
-          "confidence": "low",
-          "actual": "resolved \u2192 extensions/configuration-editing/src/browser/net.ts, extensions/configuration-editing/src/configurationEditingMain.ts, extensions/configuration-editing/src/extensionsProposals.ts"
+          "confidence": "high",
+          "actual": "resolved \u2192 extensions/typescript-language-features/src/configuration/configuration.ts, src/vs/platform/configuration/common/configuration.ts, src/vs/workbench/contrib/chat/common/promptSyntax/config/config.ts"
         },
         {
           "concept": "database",
@@ -952,12 +1741,14 @@
           "prompt": "what breaks if I remove routing",
           "resolved": true,
           "category": null,
-          "label": "architecture symbol `routing`",
+          "label": "routing",
           "modules": [
-            "extensions/copilot/src/extension/chatSessions/claude/vscode-node/routingClaudeAgentSdkLoaderService.ts"
+            "src/vs/platform/url/common/url.ts",
+            "src/vs/platform/url/electron-main/url.ts",
+            "src/vs/platform/url/common/urlService.ts"
           ],
           "confidence": "high",
-          "actual": "resolved \u2192 extensions/copilot/src/extension/chatSessions/claude/vscode-node/routingClaudeAgentSdkLoaderService.ts"
+          "actual": "resolved \u2192 src/vs/platform/url/common/url.ts, src/vs/platform/url/electron-main/url.ts, src/vs/platform/url/common/urlService.ts"
         },
         {
           "concept": "middleware",
@@ -966,7 +1757,7 @@
           "prompt": "what breaks if I remove middleware",
           "resolved": true,
           "category": null,
-          "label": "architecture symbol `middleware`",
+          "label": "middleware",
           "modules": [
             "extensions/copilot/src/shared-fetch-utils/common/middleware/authBlockedMiddleware.ts",
             "extensions/copilot/src/shared-fetch-utils/common/middleware/etagMiddleware.ts",
@@ -974,6 +1765,1283 @@
           ],
           "confidence": "high",
           "actual": "resolved \u2192 extensions/copilot/src/shared-fetch-utils/common/middleware/authBlockedMiddleware.ts, extensions/copilot/src/shared-fetch-utils/common/middleware/etagMiddleware.ts, extensions/copilot/src/shared-fetch-utils/common/middleware/serverErrorBackoffMiddleware.ts"
+        },
+        {
+          "concept": "logging",
+          "phrase": "the logging layer",
+          "expected_subsystem": "logging subsystem",
+          "prompt": "what breaks if I remove the logging layer",
+          "resolved": true,
+          "category": null,
+          "label": "logging",
+          "modules": [
+            "extensions/typescript-language-features/src/logging/logger.ts",
+            "extensions/copilot/src/util/vs/base/common/observableInternal/logging/logging.ts",
+            "src/vs/base/common/observableInternal/logging/logging.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 extensions/typescript-language-features/src/logging/logger.ts, extensions/copilot/src/util/vs/base/common/observableInternal/logging/logging.ts, src/vs/base/common/observableInternal/logging/logging.ts"
+        },
+        {
+          "concept": "events",
+          "phrase": "the event system",
+          "expected_subsystem": "event bus / dispatcher",
+          "prompt": "what breaks if I remove the event system",
+          "resolved": true,
+          "category": null,
+          "label": "events",
+          "modules": [
+            "extensions/copilot/src/util/vs/base/common/event.ts",
+            "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/util/event.ts",
+            "extensions/markdown-language-features/preview-src/events.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 extensions/copilot/src/util/vs/base/common/event.ts, extensions/copilot/src/extension/completions-core/vscode-node/lib/src/util/event.ts, extensions/markdown-language-features/preview-src/events.ts"
+        },
+        {
+          "concept": "messaging",
+          "phrase": "messaging",
+          "expected_subsystem": "message queue / pub-sub",
+          "prompt": "what breaks if I remove messaging",
+          "resolved": true,
+          "category": null,
+          "label": "messaging",
+          "modules": [
+            "extensions/markdown-language-features/preview-src/messaging.ts",
+            "src/vs/editor/contrib/message/browser/messageController.ts",
+            "extensions/copilot/src/platform/endpoint/node/messagesApi.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 extensions/markdown-language-features/preview-src/messaging.ts, src/vs/editor/contrib/message/browser/messageController.ts, extensions/copilot/src/platform/endpoint/node/messagesApi.ts"
+        },
+        {
+          "concept": "background_jobs",
+          "phrase": "background jobs",
+          "expected_subsystem": "task / worker queue",
+          "prompt": "what breaks if I remove background jobs",
+          "resolved": true,
+          "category": null,
+          "label": "background jobs",
+          "modules": [
+            "src/vs/workbench/contrib/tasks/common/tasks.ts",
+            "extensions/copilot/src/platform/tasks/common/tasksService.ts",
+            "extensions/copilot/src/platform/tasks/vscode/tasksService.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 src/vs/workbench/contrib/tasks/common/tasks.ts, extensions/copilot/src/platform/tasks/common/tasksService.ts, extensions/copilot/src/platform/tasks/vscode/tasksService.ts"
+        },
+        {
+          "concept": "scheduling",
+          "phrase": "scheduling",
+          "expected_subsystem": "scheduler",
+          "prompt": "what breaks if I remove scheduling",
+          "resolved": true,
+          "category": null,
+          "label": "scheduling",
+          "modules": [
+            "src/vs/workbench/services/timer/browser/timerService.ts",
+            "src/vs/workbench/services/timer/electron-browser/timerService.ts",
+            "extensions/copilot/src/util/common/time.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 src/vs/workbench/services/timer/browser/timerService.ts, src/vs/workbench/services/timer/electron-browser/timerService.ts, extensions/copilot/src/util/common/time.ts"
+        },
+        {
+          "concept": "state_management",
+          "phrase": "state management",
+          "expected_subsystem": "state store",
+          "prompt": "what breaks if I remove state management",
+          "resolved": true,
+          "category": null,
+          "label": "state management",
+          "modules": [
+            "src/vs/platform/agentHost/common/state/protocol/channels-changeset/reducer.ts",
+            "src/vs/platform/agentHost/common/state/protocol/channels-changeset/state.ts",
+            "src/vs/platform/agentHost/common/state/protocol/channels-otlp/state.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 src/vs/platform/agentHost/common/state/protocol/channels-changeset/reducer.ts, src/vs/platform/agentHost/common/state/protocol/channels-changeset/state.ts, src/vs/platform/agentHost/common/state/protocol/channels-otlp/state.ts"
+        },
+        {
+          "concept": "plugins",
+          "phrase": "the plugin system",
+          "expected_subsystem": "plugin loader",
+          "prompt": "what breaks if I remove the plugin system",
+          "resolved": true,
+          "category": null,
+          "label": "plugins",
+          "modules": [
+            "extensions/typescript-language-features/src/tsServer/plugins.ts",
+            "extensions/typescript-language-features/src/tsServer/pluginPathsProvider.ts",
+            "src/vs/workbench/contrib/chat/common/plugins/pluginGitCommandService.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 extensions/typescript-language-features/src/tsServer/plugins.ts, extensions/typescript-language-features/src/tsServer/pluginPathsProvider.ts, src/vs/workbench/contrib/chat/common/plugins/pluginGitCommandService.ts"
+        },
+        {
+          "concept": "extensions",
+          "phrase": "extensions",
+          "expected_subsystem": "extension system",
+          "prompt": "what breaks if I remove extensions",
+          "resolved": true,
+          "category": null,
+          "label": "extensions",
+          "modules": [
+            "extensions/copilot/src/extension/extension/vscode/extension.ts",
+            "extensions/git-base/src/api/extension.ts",
+            "extensions/git/src/api/extension.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 extensions/copilot/src/extension/extension/vscode/extension.ts, extensions/git-base/src/api/extension.ts, extensions/git/src/api/extension.ts"
+        },
+        {
+          "concept": "websockets",
+          "phrase": "websocket support",
+          "expected_subsystem": "websocket transport",
+          "prompt": "what breaks if I remove websocket support",
+          "resolved": true,
+          "category": null,
+          "label": "websocket support",
+          "modules": [
+            "extensions/copilot/src/extension/chat/vscode-node/sessionTranscriptService.ts",
+            "extensions/copilot/src/extension/chatSessionContext/vscode-node/chatSessionContextProvider.ts",
+            "extensions/copilot/src/extension/chatSessions/claude/common/claudeAgentSdkLoaderService.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 extensions/copilot/src/extension/chat/vscode-node/sessionTranscriptService.ts, extensions/copilot/src/extension/chatSessionContext/vscode-node/chatSessionContextProvider.ts, extensions/copilot/src/extension/chatSessions/claude/common/claudeAgentSdkLoaderService.ts"
+        },
+        {
+          "concept": "api_layer",
+          "phrase": "the api layer",
+          "expected_subsystem": "API / endpoint layer",
+          "prompt": "what breaks if I remove the api layer",
+          "resolved": true,
+          "category": null,
+          "label": "api layer",
+          "modules": [
+            "extensions/typescript-language-features/src/tsServer/api.ts",
+            "extensions/copilot/src/platform/inlineCompletions/common/api.ts",
+            "extensions/copilot/src/extension/api/vscode/api.d.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 extensions/typescript-language-features/src/tsServer/api.ts, extensions/copilot/src/platform/inlineCompletions/common/api.ts, extensions/copilot/src/extension/api/vscode/api.d.ts"
+        },
+        {
+          "concept": "persistence",
+          "phrase": "persistence",
+          "expected_subsystem": "ORM / storage",
+          "prompt": "what breaks if I remove persistence",
+          "resolved": true,
+          "category": null,
+          "label": "persistence",
+          "modules": [
+            "src/vs/base/parts/storage/common/storage.ts",
+            "src/vs/base/parts/storage/node/storage.ts",
+            "src/vs/platform/storage/common/storage.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 src/vs/base/parts/storage/common/storage.ts, src/vs/base/parts/storage/node/storage.ts, src/vs/platform/storage/common/storage.ts"
+        },
+        {
+          "concept": "validation",
+          "phrase": "request validation",
+          "expected_subsystem": "input validation",
+          "prompt": "what breaks if I remove request validation",
+          "resolved": true,
+          "category": null,
+          "label": "validation",
+          "modules": [
+            "extensions/copilot/src/platform/configuration/common/validator.ts",
+            "extensions/css-language-features/server/src/utils/validation.ts",
+            "extensions/html-language-features/server/src/utils/validation.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 extensions/copilot/src/platform/configuration/common/validator.ts, extensions/css-language-features/server/src/utils/validation.ts, extensions/html-language-features/server/src/utils/validation.ts"
+        },
+        {
+          "concept": "serialization",
+          "phrase": "serialization",
+          "expected_subsystem": "(de)serialization layer",
+          "prompt": "what breaks if I remove serialization",
+          "resolved": true,
+          "category": null,
+          "label": "serialization",
+          "modules": [
+            "extensions/ipynb/src/serializers.ts",
+            "src/vs/base/common/json.ts",
+            "extensions/json-language-features/client/src/jsonClient.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 extensions/ipynb/src/serializers.ts, src/vs/base/common/json.ts, extensions/json-language-features/client/src/jsonClient.ts"
+        }
+      ],
+      "status": "ok",
+      "resolved_count": 20,
+      "scan_seconds": 85.7
+    },
+    {
+      "id": "nextjs",
+      "display": "Next.js",
+      "language": "typescript",
+      "available": true,
+      "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\nextjs",
+      "modules": 3114,
+      "concepts": [
+        {
+          "concept": "authentication",
+          "phrase": "authentication",
+          "expected_subsystem": "auth / identity",
+          "prompt": "what breaks if I remove authentication",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "authorization",
+          "phrase": "authorization",
+          "expected_subsystem": "access control / permissions",
+          "prompt": "what breaks if I remove authorization",
+          "resolved": true,
+          "category": null,
+          "label": "authorization",
+          "modules": [
+            "evals/evals/agent-033-forbidden-auth/app/lib/auth.ts",
+            "scripts/release-github-auth.js"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 evals/evals/agent-033-forbidden-auth/app/lib/auth.ts, scripts/release-github-auth.js"
+        },
+        {
+          "concept": "caching",
+          "phrase": "caching",
+          "expected_subsystem": "cache layer",
+          "prompt": "what breaks if I remove caching",
+          "resolved": true,
+          "category": null,
+          "label": "caching",
+          "modules": [
+            "packages/next/src/client/components/segment-cache/cache.ts",
+            "packages/next/src/client/components/segment-cache/lru.ts",
+            "packages/next/cache.js"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/next/src/client/components/segment-cache/cache.ts, packages/next/src/client/components/segment-cache/lru.ts, packages/next/cache.js"
+        },
+        {
+          "concept": "configuration",
+          "phrase": "configuration",
+          "expected_subsystem": "config system",
+          "prompt": "what breaks if I remove configuration",
+          "resolved": true,
+          "category": null,
+          "label": "configuration",
+          "modules": [
+            "packages/next/src/server/config.ts",
+            "packages/next/src/server/typescript/rules/config.ts",
+            "turbo/generators/config.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/next/src/server/config.ts, packages/next/src/server/typescript/rules/config.ts, turbo/generators/config.ts"
+        },
+        {
+          "concept": "database",
+          "phrase": "the database layer",
+          "expected_subsystem": "persistence / database",
+          "prompt": "what breaks if I remove the database layer",
+          "resolved": true,
+          "category": null,
+          "label": "recorder/database",
+          "modules": [
+            "packages/next/src/server/app-render/work-unit-async-storage.external.ts",
+            "packages/next/src/server/app-render/work-async-storage.external.ts",
+            "packages/next/src/telemetry/storage.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/next/src/server/app-render/work-unit-async-storage.external.ts, packages/next/src/server/app-render/work-async-storage.external.ts, packages/next/src/telemetry/storage.ts"
+        },
+        {
+          "concept": "routing",
+          "phrase": "routing",
+          "expected_subsystem": "router / URL dispatch",
+          "prompt": "what breaks if I remove routing",
+          "resolved": true,
+          "category": null,
+          "label": "routing",
+          "modules": [
+            "packages/next/src/shared/lib/router/router.ts",
+            "packages/next/src/shared/lib/router/utils/route-regex.ts",
+            "packages/next/src/shared/lib/router/utils/interception-routes.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/next/src/shared/lib/router/router.ts, packages/next/src/shared/lib/router/utils/route-regex.ts, packages/next/src/shared/lib/router/utils/interception-routes.ts"
+        },
+        {
+          "concept": "middleware",
+          "phrase": "middleware",
+          "expected_subsystem": "middleware pipeline",
+          "prompt": "what breaks if I remove middleware",
+          "resolved": true,
+          "category": null,
+          "label": "middleware",
+          "modules": [
+            "packages/next-routing/src/middleware.ts",
+            "packages/next/src/compiled/@mswjs/interceptors/ClientRequest/index.js",
+            "packages/next/src/next-devtools/server/middleware-response.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/next-routing/src/middleware.ts, packages/next/src/compiled/@mswjs/interceptors/ClientRequest/index.js, packages/next/src/next-devtools/server/middleware-response.ts"
+        },
+        {
+          "concept": "logging",
+          "phrase": "the logging layer",
+          "expected_subsystem": "logging subsystem",
+          "prompt": "what breaks if I remove the logging layer",
+          "resolved": true,
+          "category": null,
+          "label": "logging",
+          "modules": [
+            ".github/actions/next-stats-action/src/util/logger.js",
+            "packages/next/src/server/dev/browser-logs/file-logger.ts",
+            "packages/next/src/server/dev/browser-logs/receive-logs.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 .github/actions/next-stats-action/src/util/logger.js, packages/next/src/server/dev/browser-logs/file-logger.ts, packages/next/src/server/dev/browser-logs/receive-logs.ts"
+        },
+        {
+          "concept": "events",
+          "phrase": "the event system",
+          "expected_subsystem": "event bus / dispatcher",
+          "prompt": "what breaks if I remove the event system",
+          "resolved": true,
+          "category": null,
+          "label": "events",
+          "modules": [
+            "packages/next/src/compiled/events/events.js",
+            "packages/next/src/telemetry/events/index.ts",
+            "packages/next/src/telemetry/events/build.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/next/src/compiled/events/events.js, packages/next/src/telemetry/events/index.ts, packages/next/src/telemetry/events/build.ts"
+        },
+        {
+          "concept": "messaging",
+          "phrase": "messaging",
+          "expected_subsystem": "message queue / pub-sub",
+          "prompt": "what breaks if I remove messaging",
+          "resolved": true,
+          "category": null,
+          "label": "messaging",
+          "modules": [
+            "packages/next/src/next-devtools/dev-overlay/components/errors/error-message/error-message.tsx",
+            "packages/next/src/next-devtools/dev-overlay/components/errors/error-message/error-message.stories.tsx",
+            "packages/next/src/server/dev/messages.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/next/src/next-devtools/dev-overlay/components/errors/error-message/error-message.tsx, packages/next/src/next-devtools/dev-overlay/components/errors/error-message/error-message.stories.tsx, packages/next/src/server/dev/messages.ts"
+        },
+        {
+          "concept": "background_jobs",
+          "phrase": "background jobs",
+          "expected_subsystem": "task / worker queue",
+          "prompt": "what breaks if I remove background jobs",
+          "resolved": true,
+          "category": null,
+          "label": "background jobs",
+          "modules": [
+            "packages/next/src/lib/worker.ts",
+            "packages/next/src/export/worker.ts",
+            "turbopack/crates/turbopack-node/js/src/worker_thread/taskChannel.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/next/src/lib/worker.ts, packages/next/src/export/worker.ts, turbopack/crates/turbopack-node/js/src/worker_thread/taskChannel.ts"
+        },
+        {
+          "concept": "scheduling",
+          "phrase": "scheduling",
+          "expected_subsystem": "scheduler",
+          "prompt": "what breaks if I remove scheduling",
+          "resolved": true,
+          "category": null,
+          "label": "scheduling",
+          "modules": [
+            "packages/next/src/lib/scheduler.ts",
+            "packages/next/src/client/components/segment-cache/scheduler.ts",
+            "packages/next/src/compiled/scheduler/cjs/scheduler-unstable_mock.development.js"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/next/src/lib/scheduler.ts, packages/next/src/client/components/segment-cache/scheduler.ts, packages/next/src/compiled/scheduler/cjs/scheduler-unstable_mock.development.js"
+        },
+        {
+          "concept": "state_management",
+          "phrase": "state management",
+          "expected_subsystem": "state store",
+          "prompt": "what breaks if I remove state management",
+          "resolved": true,
+          "category": null,
+          "label": "state management",
+          "modules": [
+            "packages/next/src/client/components/router-reducer/reducers/navigate-reducer.ts",
+            "packages/next/src/client/components/router-reducer/reducers/refresh-reducer.ts",
+            "packages/next/src/client/components/router-reducer/reducers/committed-state.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/next/src/client/components/router-reducer/reducers/navigate-reducer.ts, packages/next/src/client/components/router-reducer/reducers/refresh-reducer.ts, packages/next/src/client/components/router-reducer/reducers/committed-state.ts"
+        },
+        {
+          "concept": "plugins",
+          "phrase": "the plugin system",
+          "expected_subsystem": "plugin loader",
+          "prompt": "what breaks if I remove the plugin system",
+          "resolved": true,
+          "category": null,
+          "label": "plugins",
+          "modules": [
+            "packages/next/src/telemetry/events/plugins.ts",
+            "packages/next/src/compiled/react-server-dom-webpack-experimental/plugin.js",
+            "packages/next/src/compiled/react-server-dom-webpack/plugin.js"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/next/src/telemetry/events/plugins.ts, packages/next/src/compiled/react-server-dom-webpack-experimental/plugin.js, packages/next/src/compiled/react-server-dom-webpack/plugin.js"
+        },
+        {
+          "concept": "extensions",
+          "phrase": "extensions",
+          "expected_subsystem": "extension system",
+          "prompt": "what breaks if I remove extensions",
+          "resolved": true,
+          "category": null,
+          "label": "extensions",
+          "modules": [
+            "packages/next/src/server/lib/router-utils/instrumentation-node-extensions.ts",
+            "turbopack/crates/turbopack-ecmascript-runtime/js/src/shared/runtime/dev-extensions.ts",
+            "packages/eslint-plugin-next/src/utils/define-rule.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/next/src/server/lib/router-utils/instrumentation-node-extensions.ts, turbopack/crates/turbopack-ecmascript-runtime/js/src/shared/runtime/dev-extensions.ts, packages/eslint-plugin-next/src/utils/define-rule.ts"
+        },
+        {
+          "concept": "websockets",
+          "phrase": "websocket support",
+          "expected_subsystem": "websocket transport",
+          "prompt": "what breaks if I remove websocket support",
+          "resolved": true,
+          "category": null,
+          "label": "websocket support",
+          "modules": [
+            "packages/next/src/telemetry/events/session-stopped.ts",
+            "packages/next/src/client/dev/hot-reloader/pages/websocket.ts",
+            "turbopack/crates/turbopack-cli/js/src/entry/websocket.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/next/src/telemetry/events/session-stopped.ts, packages/next/src/client/dev/hot-reloader/pages/websocket.ts, turbopack/crates/turbopack-cli/js/src/entry/websocket.ts"
+        },
+        {
+          "concept": "api_layer",
+          "phrase": "the api layer",
+          "expected_subsystem": "API / endpoint layer",
+          "prompt": "what breaks if I remove the api layer",
+          "resolved": true,
+          "category": null,
+          "label": "api layer",
+          "modules": [
+            "packages/next/src/api/router.ts",
+            "packages/next/src/client/router.ts",
+            "packages/next/src/shared/lib/router/router.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/next/src/api/router.ts, packages/next/src/client/router.ts, packages/next/src/shared/lib/router/router.ts"
+        },
+        {
+          "concept": "persistence",
+          "phrase": "persistence",
+          "expected_subsystem": "ORM / storage",
+          "prompt": "what breaks if I remove persistence",
+          "resolved": true,
+          "category": null,
+          "label": "persistence",
+          "modules": [
+            "packages/next/src/telemetry/storage.ts",
+            "packages/next/src/server/async-storage/request-store.ts",
+            "packages/next/src/server/async-storage/draft-mode-provider.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/next/src/telemetry/storage.ts, packages/next/src/server/async-storage/request-store.ts, packages/next/src/server/async-storage/draft-mode-provider.ts"
+        },
+        {
+          "concept": "validation",
+          "phrase": "request validation",
+          "expected_subsystem": "input validation",
+          "prompt": "what breaks if I remove request validation",
+          "resolved": true,
+          "category": null,
+          "label": "validation",
+          "modules": [
+            "packages/next/src/server/request/params.ts",
+            "packages/next/src/server/app-render/instant-validation/instant-validation-error.ts",
+            "packages/next/src/server/app-render/instant-validation/instant-validation.tsx"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/next/src/server/request/params.ts, packages/next/src/server/app-render/instant-validation/instant-validation-error.ts, packages/next/src/server/app-render/instant-validation/instant-validation.tsx"
+        },
+        {
+          "concept": "serialization",
+          "phrase": "serialization",
+          "expected_subsystem": "(de)serialization layer",
+          "prompt": "what breaks if I remove serialization",
+          "resolved": true,
+          "category": null,
+          "label": "serialization",
+          "modules": [
+            "turbopack/packages/devlow-bench/src/interfaces/json.ts",
+            "packages/next/src/shared/lib/encode-uri-path.ts",
+            "packages/next/src/server/lib/encode-cache-tag.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 turbopack/packages/devlow-bench/src/interfaces/json.ts, packages/next/src/shared/lib/encode-uri-path.ts, packages/next/src/server/lib/encode-cache-tag.ts"
+        }
+      ],
+      "status": "ok",
+      "resolved_count": 19,
+      "scan_seconds": 33.1
+    },
+    {
+      "id": "react",
+      "display": "React",
+      "language": "typescript",
+      "available": true,
+      "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\react",
+      "modules": 1717,
+      "concepts": [
+        {
+          "concept": "authentication",
+          "phrase": "authentication",
+          "expected_subsystem": "auth / identity",
+          "prompt": "what breaks if I remove authentication",
+          "resolved": true,
+          "category": null,
+          "label": "authentication",
+          "modules": [
+            "packages/react-devtools-shared/src/frontend/utils/withPermissionsCheck.js"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 packages/react-devtools-shared/src/frontend/utils/withPermissionsCheck.js"
+        },
+        {
+          "concept": "authorization",
+          "phrase": "authorization",
+          "expected_subsystem": "access control / permissions",
+          "prompt": "what breaks if I remove authorization",
+          "resolved": true,
+          "category": null,
+          "label": "authorization",
+          "modules": [
+            "packages/react-devtools-shared/src/errors/PermissionNotGrantedError.js"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 packages/react-devtools-shared/src/errors/PermissionNotGrantedError.js"
+        },
+        {
+          "concept": "caching",
+          "phrase": "caching",
+          "expected_subsystem": "cache layer",
+          "prompt": "what breaks if I remove caching",
+          "resolved": true,
+          "category": null,
+          "label": "caching",
+          "modules": [
+            "packages/react-cache/src/LRU.js",
+            "packages/react-devtools-shared/src/devtools/cache.js",
+            "packages/react-devtools-shared/src/devtools/views/ErrorBoundary/cache.js"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/react-cache/src/LRU.js, packages/react-devtools-shared/src/devtools/cache.js, packages/react-devtools-shared/src/devtools/views/ErrorBoundary/cache.js"
+        },
+        {
+          "concept": "configuration",
+          "phrase": "configuration",
+          "expected_subsystem": "config system",
+          "prompt": "what breaks if I remove configuration",
+          "resolved": true,
+          "category": null,
+          "label": "configuration",
+          "modules": [
+            "packages/react-devtools-shared/src/devtools/views/Settings/SettingsContext.js",
+            "packages/react-devtools-shared/src/devtools/views/Settings/SettingsModalContext.js",
+            "packages/react-devtools-shared/src/devtools/views/Settings/SettingsModal.js"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/react-devtools-shared/src/devtools/views/Settings/SettingsContext.js, packages/react-devtools-shared/src/devtools/views/Settings/SettingsModalContext.js, packages/react-devtools-shared/src/devtools/views/Settings/SettingsModal.js"
+        },
+        {
+          "concept": "database",
+          "phrase": "the database layer",
+          "expected_subsystem": "persistence / database",
+          "prompt": "what breaks if I remove the database layer",
+          "resolved": true,
+          "category": null,
+          "label": "recorder/database",
+          "modules": [
+            "packages/react-devtools-shared/src/storage.js"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/react-devtools-shared/src/storage.js"
+        },
+        {
+          "concept": "routing",
+          "phrase": "routing",
+          "expected_subsystem": "router / URL dispatch",
+          "prompt": "what breaks if I remove routing",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "middleware",
+          "phrase": "middleware",
+          "expected_subsystem": "middleware pipeline",
+          "prompt": "what breaks if I remove middleware",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "logging",
+          "phrase": "the logging layer",
+          "expected_subsystem": "logging subsystem",
+          "prompt": "what breaks if I remove the logging layer",
+          "resolved": true,
+          "category": null,
+          "label": "logging",
+          "modules": [
+            "packages/react-devtools-shared/src/Logger.js",
+            "scripts/eslint-rules/no-production-logging.js"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/react-devtools-shared/src/Logger.js, scripts/eslint-rules/no-production-logging.js"
+        },
+        {
+          "concept": "events",
+          "phrase": "the event system",
+          "expected_subsystem": "event bus / dispatcher",
+          "prompt": "what breaks if I remove the event system",
+          "resolved": true,
+          "category": null,
+          "label": "events",
+          "modules": [
+            "packages/react-dom-bindings/src/events/EventSystemFlags.js",
+            "packages/react-dom-bindings/src/events/EventRegistry.js",
+            "packages/react-dom-bindings/src/events/EventListener.js"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/react-dom-bindings/src/events/EventSystemFlags.js, packages/react-dom-bindings/src/events/EventRegistry.js, packages/react-dom-bindings/src/events/EventListener.js"
+        },
+        {
+          "concept": "messaging",
+          "phrase": "messaging",
+          "expected_subsystem": "message queue / pub-sub",
+          "prompt": "what breaks if I remove messaging",
+          "resolved": true,
+          "category": null,
+          "label": "messaging",
+          "modules": [
+            "compiler/apps/playground/components/Message.tsx",
+            "packages/react-devtools-extensions/src/contentScripts/messages.js",
+            "compiler/apps/playground/lib/stores/messages.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 compiler/apps/playground/components/Message.tsx, packages/react-devtools-extensions/src/contentScripts/messages.js, compiler/apps/playground/lib/stores/messages.ts"
+        },
+        {
+          "concept": "background_jobs",
+          "phrase": "background jobs",
+          "expected_subsystem": "task / worker queue",
+          "prompt": "what breaks if I remove background jobs",
+          "resolved": true,
+          "category": null,
+          "label": "background jobs",
+          "modules": [
+            "packages/react-devtools-timeline/src/import-worker/importFile.worker.js",
+            "scripts/tasks/generate-changelog/utils.js",
+            "packages/react-devtools-extensions/src/background/setExtensionIconAndPopup.js"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/react-devtools-timeline/src/import-worker/importFile.worker.js, scripts/tasks/generate-changelog/utils.js, packages/react-devtools-extensions/src/background/setExtensionIconAndPopup.js"
+        },
+        {
+          "concept": "scheduling",
+          "phrase": "scheduling",
+          "expected_subsystem": "scheduler",
+          "prompt": "what breaks if I remove scheduling",
+          "resolved": true,
+          "category": null,
+          "label": "scheduling",
+          "modules": [
+            "packages/scheduler/src/forks/Scheduler.js",
+            "packages/scheduler/src/SchedulerPriorities.js",
+            "packages/scheduler/src/SchedulerFeatureFlags.js"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/scheduler/src/forks/Scheduler.js, packages/scheduler/src/SchedulerPriorities.js, packages/scheduler/src/SchedulerFeatureFlags.js"
+        },
+        {
+          "concept": "state_management",
+          "phrase": "state management",
+          "expected_subsystem": "state store",
+          "prompt": "what breaks if I remove state management",
+          "resolved": true,
+          "category": null,
+          "label": "state management",
+          "modules": [
+            "compiler/apps/playground/lib/stores/store.ts",
+            "packages/react-devtools-shared/src/devtools/store.js",
+            "compiler/apps/playground/lib/stores/index.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 compiler/apps/playground/lib/stores/store.ts, packages/react-devtools-shared/src/devtools/store.js, compiler/apps/playground/lib/stores/index.ts"
+        },
+        {
+          "concept": "plugins",
+          "phrase": "the plugin system",
+          "expected_subsystem": "plugin loader",
+          "prompt": "what breaks if I remove the plugin system",
+          "resolved": true,
+          "category": null,
+          "label": "plugins",
+          "modules": [
+            "scripts/rollup/plugins/closure-plugin.js",
+            "scripts/rollup/plugins/external-runtime-plugin.js",
+            "scripts/rollup/plugins/sizes-plugin.js"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 scripts/rollup/plugins/closure-plugin.js, scripts/rollup/plugins/external-runtime-plugin.js, scripts/rollup/plugins/sizes-plugin.js"
+        },
+        {
+          "concept": "extensions",
+          "phrase": "extensions",
+          "expected_subsystem": "extension system",
+          "prompt": "what breaks if I remove extensions",
+          "resolved": true,
+          "category": null,
+          "label": "extensions",
+          "modules": [
+            "compiler/packages/react-forgive/client/src/extension.ts",
+            "packages/react-dom-bindings/src/events/plugins/FormActionEventPlugin.js",
+            "packages/react-dom-bindings/src/events/plugins/BeforeInputEventPlugin.js"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 compiler/packages/react-forgive/client/src/extension.ts, packages/react-dom-bindings/src/events/plugins/FormActionEventPlugin.js, packages/react-dom-bindings/src/events/plugins/BeforeInputEventPlugin.js"
+        },
+        {
+          "concept": "websockets",
+          "phrase": "websocket support",
+          "expected_subsystem": "websocket transport",
+          "prompt": "what breaks if I remove websocket support",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "api_layer",
+          "phrase": "the api layer",
+          "expected_subsystem": "API / endpoint layer",
+          "prompt": "what breaks if I remove the api layer",
+          "resolved": true,
+          "category": null,
+          "label": "api layer",
+          "modules": [
+            "packages/react-devtools-shared/src/devtools/views/Button.js",
+            "packages/react-devtools-shared/src/devtools/views/ButtonIcon.js",
+            "packages/react-devtools-shared/src/devtools/views/context.js"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/react-devtools-shared/src/devtools/views/Button.js, packages/react-devtools-shared/src/devtools/views/ButtonIcon.js, packages/react-devtools-shared/src/devtools/views/context.js"
+        },
+        {
+          "concept": "persistence",
+          "phrase": "persistence",
+          "expected_subsystem": "ORM / storage",
+          "prompt": "what breaks if I remove persistence",
+          "resolved": true,
+          "category": null,
+          "label": "persistence",
+          "modules": [
+            "compiler/apps/playground/lib/stores/store.ts",
+            "packages/react-devtools-shared/src/devtools/store.js",
+            "packages/react-devtools-shared/src/storage.js"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 compiler/apps/playground/lib/stores/store.ts, packages/react-devtools-shared/src/devtools/store.js, packages/react-devtools-shared/src/storage.js"
+        },
+        {
+          "concept": "validation",
+          "phrase": "request validation",
+          "expected_subsystem": "input validation",
+          "prompt": "what breaks if I remove request validation",
+          "resolved": true,
+          "category": null,
+          "label": "validation",
+          "modules": [
+            "compiler/packages/babel-plugin-react-compiler/src/Validation/ValidateSourceLocations.ts",
+            "compiler/packages/babel-plugin-react-compiler/src/Validation/ValidateContextVariableLValues.ts",
+            "compiler/packages/babel-plugin-react-compiler/src/Validation/ValidateExhaustiveDependencies.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 compiler/packages/babel-plugin-react-compiler/src/Validation/ValidateSourceLocations.ts, compiler/packages/babel-plugin-react-compiler/src/Validation/ValidateContextVariableLValues.ts, compiler/packages/babel-plugin-react-compiler/src/Validation/ValidateExhaustiveDependencies.ts"
+        },
+        {
+          "concept": "serialization",
+          "phrase": "serialization",
+          "expected_subsystem": "(de)serialization layer",
+          "prompt": "what breaks if I remove serialization",
+          "resolved": true,
+          "category": null,
+          "label": "serialization",
+          "modules": [
+            "scripts/release/build-release-locally-commands/add-build-info-json.js"
+          ],
+          "confidence": "medium",
+          "actual": "resolved \u2192 scripts/release/build-release-locally-commands/add-build-info-json.js"
+        }
+      ],
+      "status": "ok",
+      "resolved_count": 17,
+      "scan_seconds": 9.4
+    },
+    {
+      "id": "nestjs",
+      "display": "NestJS",
+      "language": "typescript",
+      "available": true,
+      "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\nestjs",
+      "modules": 1276,
+      "concepts": [
+        {
+          "concept": "authentication",
+          "phrase": "authentication",
+          "expected_subsystem": "auth / identity",
+          "prompt": "what breaks if I remove authentication",
+          "resolved": true,
+          "category": null,
+          "label": "authentication",
+          "modules": [
+            "sample/19-auth-jwt/src/auth/auth.service.ts",
+            "sample/19-auth-jwt/src/auth/constants.ts",
+            "sample/19-auth-jwt/src/auth/decorators/public.decorator.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 sample/19-auth-jwt/src/auth/auth.service.ts, sample/19-auth-jwt/src/auth/constants.ts, sample/19-auth-jwt/src/auth/decorators/public.decorator.ts"
+        },
+        {
+          "concept": "authorization",
+          "phrase": "authorization",
+          "expected_subsystem": "access control / permissions",
+          "prompt": "what breaks if I remove authorization",
+          "resolved": true,
+          "category": null,
+          "label": "authorization",
+          "modules": [
+            "integration/scopes/src/circular-transient/guards/request-scoped.guard.ts",
+            "integration/scopes/src/transient/guards/request-scoped.guard.ts",
+            "integration/graphql-code-first/src/common/guards/auth.guard.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 integration/scopes/src/circular-transient/guards/request-scoped.guard.ts, integration/scopes/src/transient/guards/request-scoped.guard.ts, integration/graphql-code-first/src/common/guards/auth.guard.ts"
+        },
+        {
+          "concept": "caching",
+          "phrase": "caching",
+          "expected_subsystem": "cache layer",
+          "prompt": "what breaks if I remove caching",
+          "resolved": true,
+          "category": null,
+          "label": "caching",
+          "modules": [
+            "sample/20-cache/src/common/http-cache.interceptor.ts",
+            "packages/core/inspector/interfaces/enhancer-metadata-cache-entry.interface.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 sample/20-cache/src/common/http-cache.interceptor.ts, packages/core/inspector/interfaces/enhancer-metadata-cache-entry.interface.ts"
+        },
+        {
+          "concept": "configuration",
+          "phrase": "configuration",
+          "expected_subsystem": "config system",
+          "prompt": "what breaks if I remove configuration",
+          "resolved": true,
+          "category": null,
+          "label": "configuration",
+          "modules": [
+            "sample/25-dynamic-modules/src/config/config.service.ts",
+            "sample/25-dynamic-modules/src/config/config.module.ts",
+            "sample/25-dynamic-modules/src/config/interfaces/config-options.interface.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 sample/25-dynamic-modules/src/config/config.service.ts, sample/25-dynamic-modules/src/config/config.module.ts, sample/25-dynamic-modules/src/config/interfaces/config-options.interface.ts"
+        },
+        {
+          "concept": "database",
+          "phrase": "the database layer",
+          "expected_subsystem": "persistence / database",
+          "prompt": "what breaks if I remove the database layer",
+          "resolved": true,
+          "category": null,
+          "label": "recorder/database",
+          "modules": [
+            "integration/inspector/src/database/dto/create-database.dto.ts",
+            "integration/inspector/src/database/database.service.ts",
+            "integration/inspector/src/database/dto/update-database.dto.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 integration/inspector/src/database/dto/create-database.dto.ts, integration/inspector/src/database/database.service.ts, integration/inspector/src/database/dto/update-database.dto.ts"
+        },
+        {
+          "concept": "routing",
+          "phrase": "routing",
+          "expected_subsystem": "router / URL dispatch",
+          "prompt": "what breaks if I remove routing",
+          "resolved": true,
+          "category": null,
+          "label": "routing",
+          "modules": [
+            "packages/core/router/router-proxy.ts",
+            "packages/core/router/interfaces/exclude-route-metadata.interface.ts",
+            "packages/core/router/interfaces/route-path-metadata.interface.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/core/router/router-proxy.ts, packages/core/router/interfaces/exclude-route-metadata.interface.ts, packages/core/router/interfaces/route-path-metadata.interface.ts"
+        },
+        {
+          "concept": "middleware",
+          "phrase": "middleware",
+          "expected_subsystem": "middleware pipeline",
+          "prompt": "what breaks if I remove middleware",
+          "resolved": true,
+          "category": null,
+          "label": "middleware",
+          "modules": [
+            "packages/common/interfaces/middleware/middleware-consumer.interface.ts",
+            "integration/scopes/src/circular-transient/interceptors/logging.interceptor.ts",
+            "integration/scopes/src/transient/interceptors/logging.interceptor.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/common/interfaces/middleware/middleware-consumer.interface.ts, integration/scopes/src/circular-transient/interceptors/logging.interceptor.ts, integration/scopes/src/transient/interceptors/logging.interceptor.ts"
+        },
+        {
+          "concept": "logging",
+          "phrase": "the logging layer",
+          "expected_subsystem": "logging subsystem",
+          "prompt": "what breaks if I remove the logging layer",
+          "resolved": true,
+          "category": null,
+          "label": "logging",
+          "modules": [
+            "packages/common/services/logger.service.ts",
+            "integration/scopes/src/nested-transient/transient-logger.service.ts",
+            "integration/scopes/src/circular-transient/interceptors/logging.interceptor.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/common/services/logger.service.ts, integration/scopes/src/nested-transient/transient-logger.service.ts, integration/scopes/src/circular-transient/interceptors/logging.interceptor.ts"
+        },
+        {
+          "concept": "events",
+          "phrase": "the event system",
+          "expected_subsystem": "event bus / dispatcher",
+          "prompt": "what breaks if I remove the event system",
+          "resolved": true,
+          "category": null,
+          "label": "events",
+          "modules": [
+            "packages/microservices/events/tcp.events.ts",
+            "packages/microservices/events/mqtt.events.ts",
+            "packages/microservices/events/nats.events.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/microservices/events/tcp.events.ts, packages/microservices/events/mqtt.events.ts, packages/microservices/events/nats.events.ts"
+        },
+        {
+          "concept": "messaging",
+          "phrase": "messaging",
+          "expected_subsystem": "message queue / pub-sub",
+          "prompt": "what breaks if I remove messaging",
+          "resolved": true,
+          "category": null,
+          "label": "messaging",
+          "modules": [
+            "integration/microservices/src/kafka/kafka.controller.ts",
+            "integration/microservices/src/kafka/kafka.messages.controller.ts",
+            "integration/microservices/src/mqtt/mqtt-broadcast.controller.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 integration/microservices/src/kafka/kafka.controller.ts, integration/microservices/src/kafka/kafka.messages.controller.ts, integration/microservices/src/mqtt/mqtt-broadcast.controller.ts"
+        },
+        {
+          "concept": "background_jobs",
+          "phrase": "background jobs",
+          "expected_subsystem": "task / worker queue",
+          "prompt": "what breaks if I remove background jobs",
+          "resolved": true,
+          "category": null,
+          "label": "background jobs",
+          "modules": [
+            "sample/27-scheduling/src/tasks/tasks.module.ts",
+            "sample/27-scheduling/src/tasks/tasks.service.ts",
+            "tools/gulp/tasks/clean.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 sample/27-scheduling/src/tasks/tasks.module.ts, sample/27-scheduling/src/tasks/tasks.service.ts, tools/gulp/tasks/clean.ts"
+        },
+        {
+          "concept": "scheduling",
+          "phrase": "scheduling",
+          "expected_subsystem": "scheduler",
+          "prompt": "what breaks if I remove scheduling",
+          "resolved": true,
+          "category": null,
+          "label": "architecture symbol `scheduling`",
+          "modules": [
+            "sample/27-scheduling/src/app.module.ts",
+            "sample/27-scheduling/src/main.ts",
+            "sample/27-scheduling/src/tasks/tasks.module.ts"
+          ],
+          "confidence": "medium",
+          "actual": "resolved \u2192 sample/27-scheduling/src/app.module.ts, sample/27-scheduling/src/main.ts, sample/27-scheduling/src/tasks/tasks.module.ts"
+        },
+        {
+          "concept": "state_management",
+          "phrase": "state management",
+          "expected_subsystem": "state store",
+          "prompt": "what breaks if I remove state management",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "plugins",
+          "phrase": "the plugin system",
+          "expected_subsystem": "plugin loader",
+          "prompt": "what breaks if I remove the plugin system",
+          "resolved": true,
+          "category": null,
+          "label": "plugins",
+          "modules": [
+            "sample/12-graphql-schema-first/src/common/plugins/logging.plugin.ts",
+            "sample/23-graphql-code-first/src/common/plugins/complexity.plugin.ts",
+            "sample/23-graphql-code-first/src/common/plugins/logging.plugin.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 sample/12-graphql-schema-first/src/common/plugins/logging.plugin.ts, sample/23-graphql-code-first/src/common/plugins/complexity.plugin.ts, sample/23-graphql-code-first/src/common/plugins/logging.plugin.ts"
+        },
+        {
+          "concept": "extensions",
+          "phrase": "extensions",
+          "expected_subsystem": "extension system",
+          "prompt": "what breaks if I remove extensions",
+          "resolved": true,
+          "category": null,
+          "label": "extensions",
+          "modules": [
+            "sample/12-graphql-schema-first/src/common/plugins/logging.plugin.ts",
+            "sample/23-graphql-code-first/src/common/plugins/complexity.plugin.ts",
+            "sample/23-graphql-code-first/src/common/plugins/logging.plugin.ts"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 sample/12-graphql-schema-first/src/common/plugins/logging.plugin.ts, sample/23-graphql-code-first/src/common/plugins/complexity.plugin.ts, sample/23-graphql-code-first/src/common/plugins/logging.plugin.ts"
+        },
+        {
+          "concept": "websockets",
+          "phrase": "websocket support",
+          "expected_subsystem": "websocket transport",
+          "prompt": "what breaks if I remove websocket support",
+          "resolved": true,
+          "category": null,
+          "label": "websocket support",
+          "modules": [
+            "sample/19-auth-jwt/src/auth/auth.controller.ts",
+            "sample/19-auth-jwt/src/auth/auth.guard.ts",
+            "sample/19-auth-jwt/src/auth/auth.module.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 sample/19-auth-jwt/src/auth/auth.controller.ts, sample/19-auth-jwt/src/auth/auth.guard.ts, sample/19-auth-jwt/src/auth/auth.module.ts"
+        },
+        {
+          "concept": "api_layer",
+          "phrase": "the api layer",
+          "expected_subsystem": "API / endpoint layer",
+          "prompt": "what breaks if I remove the api layer",
+          "resolved": true,
+          "category": null,
+          "label": "api layer",
+          "modules": [
+            "packages/common/interfaces/controllers/controller-metadata.interface.ts",
+            "packages/common/interfaces/controllers/controller.interface.ts",
+            "packages/common/interfaces/controllers/index.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/common/interfaces/controllers/controller-metadata.interface.ts, packages/common/interfaces/controllers/controller.interface.ts, packages/common/interfaces/controllers/index.ts"
+        },
+        {
+          "concept": "persistence",
+          "phrase": "persistence",
+          "expected_subsystem": "ORM / storage",
+          "prompt": "what breaks if I remove persistence",
+          "resolved": true,
+          "category": null,
+          "label": "persistence",
+          "modules": [
+            "sample/31-graphql-federation-code-first/posts-application/src/posts/models/post.model.ts",
+            "sample/31-graphql-federation-code-first/posts-application/src/posts/models/user.model.ts",
+            "integration/microservices/src/kafka/entities/user.entity.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 sample/31-graphql-federation-code-first/posts-application/src/posts/models/post.model.ts, sample/31-graphql-federation-code-first/posts-application/src/posts/models/user.model.ts, integration/microservices/src/kafka/entities/user.entity.ts"
+        },
+        {
+          "concept": "validation",
+          "phrase": "request validation",
+          "expected_subsystem": "input validation",
+          "prompt": "what breaks if I remove request validation",
+          "resolved": true,
+          "category": null,
+          "label": "validation",
+          "modules": [
+            "sample/06-mongoose/src/cats/schemas/cat.schema.ts",
+            "integration/mongoose/src/cats/schemas/cat.schema.ts",
+            "sample/14-mongoose-base/src/cats/schemas/cat.schema.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 sample/06-mongoose/src/cats/schemas/cat.schema.ts, integration/mongoose/src/cats/schemas/cat.schema.ts, sample/14-mongoose-base/src/cats/schemas/cat.schema.ts"
+        },
+        {
+          "concept": "serialization",
+          "phrase": "serialization",
+          "expected_subsystem": "(de)serialization layer",
+          "prompt": "what breaks if I remove serialization",
+          "resolved": true,
+          "category": null,
+          "label": "serialization",
+          "modules": [
+            "packages/microservices/serializers/kafka-request.serializer.ts",
+            "packages/common/serializer/class-serializer.interfaces.ts",
+            "packages/microservices/serializers/identity.serializer.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 packages/microservices/serializers/kafka-request.serializer.ts, packages/common/serializer/class-serializer.interfaces.ts, packages/microservices/serializers/identity.serializer.ts"
+        }
+      ],
+      "status": "ok",
+      "resolved_count": 19,
+      "scan_seconds": 4.9
+    },
+    {
+      "id": "qdrant",
+      "display": "Qdrant",
+      "language": "rust",
+      "available": true,
+      "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\qdrant",
+      "modules": 4,
+      "concepts": [
+        {
+          "concept": "authentication",
+          "phrase": "authentication",
+          "expected_subsystem": "auth / identity",
+          "prompt": "what breaks if I remove authentication",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "authorization",
+          "phrase": "authorization",
+          "expected_subsystem": "access control / permissions",
+          "prompt": "what breaks if I remove authorization",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "caching",
+          "phrase": "caching",
+          "expected_subsystem": "cache layer",
+          "prompt": "what breaks if I remove caching",
+          "resolved": true,
+          "category": null,
+          "label": "caching",
+          "modules": [
+            "tools/smaps-view.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 tools/smaps-view.py"
+        },
+        {
+          "concept": "configuration",
+          "phrase": "configuration",
+          "expected_subsystem": "config system",
+          "prompt": "what breaks if I remove configuration",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "database",
+          "phrase": "the database layer",
+          "expected_subsystem": "persistence / database",
+          "prompt": "what breaks if I remove the database layer",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "routing",
+          "phrase": "routing",
+          "expected_subsystem": "router / URL dispatch",
+          "prompt": "what breaks if I remove routing",
+          "resolved": true,
+          "category": null,
+          "label": "routing",
+          "modules": [
+            "lib/edge/publish/amalgamate.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 lib/edge/publish/amalgamate.py"
+        },
+        {
+          "concept": "middleware",
+          "phrase": "middleware",
+          "expected_subsystem": "middleware pipeline",
+          "prompt": "what breaks if I remove middleware",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
         },
         {
           "concept": "logging",
@@ -1004,16 +3072,12 @@
           "phrase": "messaging",
           "expected_subsystem": "message queue / pub-sub",
           "prompt": "what breaks if I remove messaging",
-          "resolved": true,
-          "category": null,
-          "label": "architecture symbol `messaging`",
-          "modules": [
-            "extensions/markdown-language-features/preview-src/messaging.ts",
-            "extensions/markdown-language-features/types/previewMessaging.d.ts",
-            "src/vs/workbench/api/common/extHostWebviewMessaging.ts"
-          ],
-          "confidence": "high",
-          "actual": "resolved \u2192 extensions/markdown-language-features/preview-src/messaging.ts, extensions/markdown-language-features/types/previewMessaging.d.ts, src/vs/workbench/api/common/extHostWebviewMessaging.ts"
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
         },
         {
           "concept": "background_jobs",
@@ -1068,44 +3132,38 @@
           "phrase": "extensions",
           "expected_subsystem": "extension system",
           "prompt": "what breaks if I remove extensions",
-          "resolved": true,
-          "category": null,
-          "label": "architecture symbol `extensions`",
-          "modules": [
-            "extensions/configuration-editing/src/browser/net.ts",
-            "extensions/configuration-editing/src/configurationEditingMain.ts",
-            "extensions/configuration-editing/src/extensionsProposals.ts"
-          ],
-          "confidence": "low",
-          "actual": "resolved \u2192 extensions/configuration-editing/src/browser/net.ts, extensions/configuration-editing/src/configurationEditingMain.ts, extensions/configuration-editing/src/extensionsProposals.ts"
-        },
-        {
-          "concept": "websockets",
-          "phrase": "websocket support",
-          "expected_subsystem": "websocket transport",
-          "prompt": "what breaks if I remove websocket support",
-          "resolved": true,
-          "category": null,
-          "label": "websocket support",
-          "modules": [
-            "extensions/copilot/src/extension/chat/vscode-node/sessionTranscriptService.ts",
-            "extensions/copilot/src/extension/chatSessionContext/vscode-node/chatSessionContextProvider.ts",
-            "extensions/copilot/src/extension/chatSessions/claude/common/claudeAgentSdkLoaderService.ts"
-          ],
-          "confidence": "high",
-          "actual": "resolved \u2192 extensions/copilot/src/extension/chat/vscode-node/sessionTranscriptService.ts, extensions/copilot/src/extension/chatSessionContext/vscode-node/chatSessionContextProvider.ts, extensions/copilot/src/extension/chatSessions/claude/common/claudeAgentSdkLoaderService.ts"
-        },
-        {
-          "concept": "api_layer",
-          "phrase": "the api layer",
-          "expected_subsystem": "API / endpoint layer",
-          "prompt": "what breaks if I remove the api layer",
           "resolved": false,
           "category": "semantic_routing_failure",
           "label": null,
           "modules": [],
           "confidence": "low",
           "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "websockets",
+          "phrase": "websocket support",
+          "expected_subsystem": "websocket transport",
+          "prompt": "what breaks if I remove websocket support",
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
+          "confidence": "low",
+          "actual": "fallback \u2014 no target"
+        },
+        {
+          "concept": "api_layer",
+          "phrase": "the api layer",
+          "expected_subsystem": "API / endpoint layer",
+          "prompt": "what breaks if I remove the api layer",
+          "resolved": true,
+          "category": null,
+          "label": "api layer",
+          "modules": [
+            "tools/smaps-view.py"
+          ],
+          "confidence": "low",
+          "actual": "resolved \u2192 tools/smaps-view.py"
         },
         {
           "concept": "persistence",
@@ -1136,19 +3194,17 @@
           "phrase": "serialization",
           "expected_subsystem": "(de)serialization layer",
           "prompt": "what breaks if I remove serialization",
-          "resolved": true,
-          "category": null,
-          "label": "architecture symbol `serialization`",
-          "modules": [
-            "src/vs/workbench/contrib/searchEditor/browser/searchEditorSerialization.ts"
-          ],
+          "resolved": false,
+          "category": "semantic_routing_failure",
+          "label": null,
+          "modules": [],
           "confidence": "low",
-          "actual": "resolved \u2192 src/vs/workbench/contrib/searchEditor/browser/searchEditorSerialization.ts"
+          "actual": "fallback \u2014 no target"
         }
       ],
       "status": "ok",
-      "resolved_count": 10,
-      "scan_seconds": 92.2
+      "resolved_count": 3,
+      "scan_seconds": 1.4
     },
     {
       "id": "atlas_self",
@@ -1156,7 +3212,7 @@
       "language": "python",
       "available": true,
       "path": "C:\\J.A.R.V.I.S\\local_jarvis",
-      "modules": 10693,
+      "modules": 26666,
       "concepts": [
         {
           "concept": "authentication",
@@ -1167,12 +3223,12 @@
           "category": null,
           "label": "authentication",
           "modules": [
-            "external_repos/home_assistant/homeassistant/auth/auth_store.py",
-            "external_repos/home_assistant/homeassistant/auth/providers/__init__.py",
-            "external_repos/home_assistant/homeassistant/auth/providers/homeassistant.py"
+            "external_repos/home_assistant/homeassistant/auth/permissions/types.py",
+            "external_repos/home_assistant/homeassistant/auth/permissions/const.py",
+            "external_repos/home_assistant/homeassistant/auth/permissions/models.py"
           ],
           "confidence": "high",
-          "actual": "resolved \u2192 external_repos/home_assistant/homeassistant/auth/auth_store.py, external_repos/home_assistant/homeassistant/auth/providers/__init__.py, external_repos/home_assistant/homeassistant/auth/providers/homeassistant.py"
+          "actual": "resolved \u2192 external_repos/home_assistant/homeassistant/auth/permissions/types.py, external_repos/home_assistant/homeassistant/auth/permissions/const.py, external_repos/home_assistant/homeassistant/auth/permissions/models.py"
         },
         {
           "concept": "authorization",
@@ -1181,14 +3237,14 @@
           "prompt": "what breaks if I remove authorization",
           "resolved": true,
           "category": null,
-          "label": "architecture symbol `authorization`",
+          "label": "authorization",
           "modules": [
-            "external_repos/home_assistant/homeassistant/components/actron_air/config_flow.py",
-            "external_repos/home_assistant/homeassistant/components/aladdin_connect/application_credentials.py",
-            "external_repos/home_assistant/homeassistant/components/alexa/errors.py"
+            "external_repos/django/django/contrib/auth/migrations/0011_update_proxy_permissions.py",
+            "external_repos/nestjs/integration/scopes/src/circular-transient/guards/request-scoped.guard.ts",
+            "external_repos/nestjs/integration/scopes/src/transient/guards/request-scoped.guard.ts"
           ],
-          "confidence": "low",
-          "actual": "resolved \u2192 external_repos/home_assistant/homeassistant/components/actron_air/config_flow.py, external_repos/home_assistant/homeassistant/components/aladdin_connect/application_credentials.py, external_repos/home_assistant/homeassistant/components/alexa/errors.py"
+          "confidence": "high",
+          "actual": "resolved \u2192 external_repos/django/django/contrib/auth/migrations/0011_update_proxy_permissions.py, external_repos/nestjs/integration/scopes/src/circular-transient/guards/request-scoped.guard.ts, external_repos/nestjs/integration/scopes/src/transient/guards/request-scoped.guard.ts"
         },
         {
           "concept": "caching",
@@ -1197,14 +3253,14 @@
           "prompt": "what breaks if I remove caching",
           "resolved": true,
           "category": null,
-          "label": "architecture symbol `caching`",
+          "label": "caching",
           "modules": [
-            "external_repos/home_assistant/homeassistant/components/anthropic/config_flow.py",
-            "external_repos/home_assistant/homeassistant/components/anthropic/const.py",
-            "external_repos/home_assistant/homeassistant/components/anthropic/entity.py"
+            "external_repos/django/django/contrib/sessions/backends/cache.py",
+            "external_repos/nextjs/packages/next/src/client/components/segment-cache/cache.ts",
+            "external_repos/nextjs/packages/next/src/client/components/segment-cache/lru.ts"
           ],
-          "confidence": "low",
-          "actual": "resolved \u2192 external_repos/home_assistant/homeassistant/components/anthropic/config_flow.py, external_repos/home_assistant/homeassistant/components/anthropic/const.py, external_repos/home_assistant/homeassistant/components/anthropic/entity.py"
+          "confidence": "high",
+          "actual": "resolved \u2192 external_repos/django/django/contrib/sessions/backends/cache.py, external_repos/nextjs/packages/next/src/client/components/segment-cache/cache.ts, external_repos/nextjs/packages/next/src/client/components/segment-cache/lru.ts"
         },
         {
           "concept": "configuration",
@@ -1245,110 +3301,142 @@
           "prompt": "what breaks if I remove routing",
           "resolved": true,
           "category": null,
-          "label": "architecture symbol `routing`",
+          "label": "routing",
           "modules": [
-            "actions/registry.py",
-            "actions/voice_audio_actions.py",
-            "agents/__init__.py"
+            "external_repos/nextjs/packages/next/src/shared/lib/router/router.ts",
+            "external_repos/vscode/src/vs/platform/url/common/url.ts",
+            "external_repos/vscode/src/vs/platform/url/electron-main/url.ts"
           ],
           "confidence": "high",
-          "actual": "resolved \u2192 actions/registry.py, actions/voice_audio_actions.py, agents/__init__.py"
+          "actual": "resolved \u2192 external_repos/nextjs/packages/next/src/shared/lib/router/router.ts, external_repos/vscode/src/vs/platform/url/common/url.ts, external_repos/vscode/src/vs/platform/url/electron-main/url.ts"
         },
         {
           "concept": "middleware",
           "phrase": "middleware",
           "expected_subsystem": "middleware pipeline",
           "prompt": "what breaks if I remove middleware",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "middleware",
+          "modules": [
+            "external_repos/django/django/contrib/admindocs/middleware.py",
+            "external_repos/django/django/contrib/auth/middleware.py",
+            "external_repos/django/django/contrib/flatpages/middleware.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 external_repos/django/django/contrib/admindocs/middleware.py, external_repos/django/django/contrib/auth/middleware.py, external_repos/django/django/contrib/flatpages/middleware.py"
         },
         {
           "concept": "logging",
           "phrase": "the logging layer",
           "expected_subsystem": "logging subsystem",
           "prompt": "what breaks if I remove the logging layer",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "logging",
+          "modules": [
+            "core/logger.py",
+            "external_repos/vscode/extensions/typescript-language-features/src/logging/logger.ts",
+            "external_repos/vscode/extensions/copilot/src/util/vs/base/common/observableInternal/logging/logging.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 core/logger.py, external_repos/vscode/extensions/typescript-language-features/src/logging/logger.ts, external_repos/vscode/extensions/copilot/src/util/vs/base/common/observableInternal/logging/logging.ts"
         },
         {
           "concept": "events",
           "phrase": "the event system",
           "expected_subsystem": "event bus / dispatcher",
           "prompt": "what breaks if I remove the event system",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "events",
+          "modules": [
+            "external_repos/django/django/dispatch/dispatcher.py",
+            "external_repos/nextjs/packages/next/src/compiled/events/events.js",
+            "external_repos/django/django/contrib/auth/signals.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 external_repos/django/django/dispatch/dispatcher.py, external_repos/nextjs/packages/next/src/compiled/events/events.js, external_repos/django/django/contrib/auth/signals.py"
         },
         {
           "concept": "messaging",
           "phrase": "messaging",
           "expected_subsystem": "message queue / pub-sub",
           "prompt": "what breaks if I remove messaging",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "messaging",
+          "modules": [
+            "external_repos/nestjs/integration/microservices/src/kafka/kafka.controller.ts",
+            "external_repos/nestjs/integration/microservices/src/kafka/kafka.messages.controller.ts",
+            "external_repos/nestjs/integration/microservices/src/mqtt/mqtt-broadcast.controller.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 external_repos/nestjs/integration/microservices/src/kafka/kafka.controller.ts, external_repos/nestjs/integration/microservices/src/kafka/kafka.messages.controller.ts, external_repos/nestjs/integration/microservices/src/mqtt/mqtt-broadcast.controller.ts"
         },
         {
           "concept": "background_jobs",
           "phrase": "background jobs",
           "expected_subsystem": "task / worker queue",
           "prompt": "what breaks if I remove background jobs",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "background jobs",
+          "modules": [
+            "external_repos/home_assistant/homeassistant/components/ai_task/task.py",
+            "task_agent/queue.py",
+            "external_repos/vscode/extensions/copilot/src/platform/tasks/common/tasksService.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 external_repos/home_assistant/homeassistant/components/ai_task/task.py, task_agent/queue.py, external_repos/vscode/extensions/copilot/src/platform/tasks/common/tasksService.ts"
         },
         {
           "concept": "scheduling",
           "phrase": "scheduling",
           "expected_subsystem": "scheduler",
           "prompt": "what breaks if I remove scheduling",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "scheduling",
+          "modules": [
+            "external_repos/react/packages/scheduler/src/forks/Scheduler.js",
+            "external_repos/react/packages/scheduler/src/SchedulerPriorities.js",
+            "external_repos/nextjs/packages/next/src/lib/scheduler.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 external_repos/react/packages/scheduler/src/forks/Scheduler.js, external_repos/react/packages/scheduler/src/SchedulerPriorities.js, external_repos/nextjs/packages/next/src/lib/scheduler.ts"
         },
         {
           "concept": "state_management",
           "phrase": "state management",
           "expected_subsystem": "state store",
           "prompt": "what breaks if I remove state management",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "state management",
+          "modules": [
+            "external_repos/react/compiler/apps/playground/lib/stores/store.ts",
+            "external_repos/vscode/src/vs/platform/agentHost/common/state/protocol/channels-changeset/reducer.ts",
+            "external_repos/vscode/src/vs/platform/agentHost/common/state/protocol/channels-changeset/state.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 external_repos/react/compiler/apps/playground/lib/stores/store.ts, external_repos/vscode/src/vs/platform/agentHost/common/state/protocol/channels-changeset/reducer.ts, external_repos/vscode/src/vs/platform/agentHost/common/state/protocol/channels-changeset/state.ts"
         },
         {
           "concept": "plugins",
           "phrase": "the plugin system",
           "expected_subsystem": "plugin loader",
           "prompt": "what breaks if I remove the plugin system",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "plugins",
+          "modules": [
+            "external_repos/vscode/extensions/typescript-language-features/src/tsServer/plugins.ts",
+            "actions/registry.py",
+            "external_repos/vscode/extensions/typescript-language-features/src/tsServer/pluginPathsProvider.ts"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 external_repos/vscode/extensions/typescript-language-features/src/tsServer/plugins.ts, actions/registry.py, external_repos/vscode/extensions/typescript-language-features/src/tsServer/pluginPathsProvider.ts"
         },
         {
           "concept": "extensions",
@@ -1357,14 +3445,14 @@
           "prompt": "what breaks if I remove extensions",
           "resolved": true,
           "category": null,
-          "label": "architecture symbol `extensions`",
+          "label": "extensions",
           "modules": [
-            "actions/code_search.py",
-            "conversation/memory_runtime.py",
-            "external_repos/home_assistant/homeassistant/components/amazon_polly/tts.py"
+            "external_repos/vscode/extensions/copilot/src/extension/extension/vscode/extension.ts",
+            "external_repos/vscode/extensions/git-base/src/api/extension.ts",
+            "external_repos/vscode/extensions/git/src/api/extension.ts"
           ],
           "confidence": "high",
-          "actual": "resolved \u2192 actions/code_search.py, conversation/memory_runtime.py, external_repos/home_assistant/homeassistant/components/amazon_polly/tts.py"
+          "actual": "resolved \u2192 external_repos/vscode/extensions/copilot/src/extension/extension/vscode/extension.ts, external_repos/vscode/extensions/git-base/src/api/extension.ts, external_repos/vscode/extensions/git/src/api/extension.ts"
         },
         {
           "concept": "websockets",
@@ -1387,12 +3475,16 @@
           "phrase": "the api layer",
           "expected_subsystem": "API / endpoint layer",
           "prompt": "what breaks if I remove the api layer",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
-          "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "resolved": true,
+          "category": null,
+          "label": "api layer",
+          "modules": [
+            "external_repos/nextjs/packages/next/src/api/router.ts",
+            "jarvis_desktop/demo/medium_repo/api/routes.py",
+            "staging/jarvis_desktop/demo/medium_repo/api/routes.py"
+          ],
+          "confidence": "high",
+          "actual": "resolved \u2192 external_repos/nextjs/packages/next/src/api/router.ts, jarvis_desktop/demo/medium_repo/api/routes.py, staging/jarvis_desktop/demo/medium_repo/api/routes.py"
         },
         {
           "concept": "persistence",
@@ -1401,13 +3493,14 @@
           "prompt": "what breaks if I remove persistence",
           "resolved": true,
           "category": null,
-          "label": "architecture symbol `persistence`",
+          "label": "persistence",
           "modules": [
-            "brain/router.py",
-            "reliability/async_persistence.py"
+            "external_repos/vscode/src/vs/base/parts/storage/common/storage.ts",
+            "external_repos/vscode/src/vs/base/parts/storage/node/storage.ts",
+            "external_repos/vscode/src/vs/platform/storage/common/storage.ts"
           ],
           "confidence": "high",
-          "actual": "resolved \u2192 brain/router.py, reliability/async_persistence.py"
+          "actual": "resolved \u2192 external_repos/vscode/src/vs/base/parts/storage/common/storage.ts, external_repos/vscode/src/vs/base/parts/storage/node/storage.ts, external_repos/vscode/src/vs/platform/storage/common/storage.ts"
         },
         {
           "concept": "validation",
@@ -1432,17 +3525,19 @@
           "prompt": "what breaks if I remove serialization",
           "resolved": true,
           "category": null,
-          "label": "architecture symbol `serialization`",
+          "label": "serialization",
           "modules": [
-            "external_repos/home_assistant/homeassistant/helpers/template/extensions/serialization.py"
+            "external_repos/django/django/core/serializers/json.py",
+            "external_repos/django/django/contrib/postgres/serializers.py",
+            "external_repos/django/django/contrib/sessions/serializers.py"
           ],
-          "confidence": "medium",
-          "actual": "resolved \u2192 external_repos/home_assistant/homeassistant/helpers/template/extensions/serialization.py"
+          "confidence": "high",
+          "actual": "resolved \u2192 external_repos/django/django/core/serializers/json.py, external_repos/django/django/contrib/postgres/serializers.py, external_repos/django/django/contrib/sessions/serializers.py"
         }
       ],
       "status": "ok",
-      "resolved_count": 11,
-      "scan_seconds": 910.3
+      "resolved_count": 20,
+      "scan_seconds": 3532.9
     },
     {
       "id": "quixbugs",
@@ -1493,12 +3588,14 @@
           "phrase": "configuration",
           "expected_subsystem": "config system",
           "prompt": "what breaks if I remove configuration",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
+          "resolved": true,
+          "category": null,
+          "label": "configuration",
+          "modules": [
+            "conftest.py"
+          ],
           "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "actual": "resolved \u2192 conftest.py"
         },
         {
           "concept": "database",
@@ -1517,12 +3614,14 @@
           "phrase": "routing",
           "expected_subsystem": "router / URL dispatch",
           "prompt": "what breaks if I remove routing",
-          "resolved": false,
-          "category": "semantic_routing_failure",
-          "label": null,
-          "modules": [],
+          "resolved": true,
+          "category": null,
+          "label": "routing",
+          "modules": [
+            "python_testcases/load_testdata.py"
+          ],
           "confidence": "low",
-          "actual": "fallback \u2014 no target"
+          "actual": "resolved \u2192 python_testcases/load_testdata.py"
         },
         {
           "concept": "middleware",
@@ -1694,8 +3793,8 @@
         }
       ],
       "status": "ok",
-      "resolved_count": 0,
-      "scan_seconds": 0.8
+      "resolved_count": 2,
+      "scan_seconds": 0.2
     }
   ]
 }

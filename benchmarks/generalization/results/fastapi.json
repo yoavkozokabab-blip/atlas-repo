@@ -13,15 +13,15 @@
     "files": 2753,
     "massive_mode": false,
     "graph_detail": "full",
-    "scan_seconds": 2.9
+    "scan_seconds": 9.5
   },
   "status": "ok",
   "scores": {
     "understanding": 93.0,
-    "impact": 23.2,
+    "impact": 85.8,
     "investigation": 100.0,
     "build": 100.0,
-    "overall": 75.2
+    "overall": 94.0
   },
   "understanding": {
     "score": 93.0,
@@ -38,10 +38,10 @@
     "edges": 159
   },
   "impact": {
-    "score": 23.2,
-    "resolution_rate": 0.25,
-    "fallback_rate": 0.75,
-    "resolved": 2,
+    "score": 85.8,
+    "resolution_rate": 0.875,
+    "fallback_rate": 0.125,
+    "resolved": 7,
     "total": 8
   },
   "investigation": {
@@ -75,45 +75,223 @@
       "prompt": "what breaks if I remove caching",
       "concept": "caching",
       "response": {
-        "answer": "Name a file, module, or architecture concept to analyze (for example `core.py`, `websocket support`, or `event bus`).",
+        "answer": "Removing **caching** (resolved to `fastapi/_compat/v2.py` + 4 related module(s)) affects 11 direct + 19 transitive importer(s) across 2 subsystem(s). 11 direct + 19 transitive importer(s) across 19 subsystem(s); behavioral risk scales with that coupling.",
         "mode": "impact",
-        "semantic_label": null,
-        "resolved_modules": null,
-        "direct_impact": null,
-        "indirect_impact": null,
-        "architectural_blast_radius": null,
-        "confidence": "low",
-        "files": []
+        "semantic_label": "caching",
+        "resolved_modules": [
+          "fastapi/_compat/v2.py",
+          "fastapi/_compat/__init__.py",
+          "fastapi/dependencies/models.py",
+          "fastapi/dependencies/utils.py",
+          "scripts/translate.py"
+        ],
+        "direct_impact": [
+          "fastapi/_compat/__init__.py",
+          "fastapi/_compat/v2.py",
+          "fastapi/dependencies/models.py",
+          "fastapi/dependencies/utils.py",
+          "fastapi/encoders.py",
+          "fastapi/openapi/models.py",
+          "fastapi/openapi/utils.py",
+          "fastapi/param_functions.py",
+          "fastapi/params.py",
+          "fastapi/routing.py",
+          "fastapi/utils.py"
+        ],
+        "indirect_impact": [
+          "fastapi/__init__.py",
+          "fastapi/applications.py",
+          "fastapi/dependencies/models.py",
+          "fastapi/dependencies/utils.py",
+          "fastapi/encoders.py",
+          "fastapi/exception_handlers.py",
+          "fastapi/openapi/docs.py",
+          "fastapi/openapi/models.py",
+          "fastapi/openapi/utils.py",
+          "fastapi/param_functions.py",
+          "fastapi/params.py",
+          "fastapi/routing.py",
+          "fastapi/security/__init__.py",
+          "fastapi/security/api_key.py",
+          "fastapi/security/base.py",
+          "fastapi/security/http.py",
+          "fastapi/security/oauth2.py",
+          "fastapi/security/open_id_connect_url.py",
+          "fastapi/utils.py"
+        ],
+        "architectural_blast_radius": 21,
+        "confidence": "high",
+        "files": [
+          "fastapi/__init__.py",
+          "fastapi/__main__.py",
+          "fastapi/_compat/__init__.py",
+          "fastapi/_compat/shared.py",
+          "fastapi/_compat/v2.py",
+          "fastapi/applications.py",
+          "fastapi/background.py",
+          "fastapi/cli.py",
+          "fastapi/concurrency.py",
+          "fastapi/datastructures.py",
+          "fastapi/dependencies/__init__.py",
+          "fastapi/dependencies/models.py",
+          "fastapi/dependencies/utils.py",
+          "fastapi/encoders.py",
+          "fastapi/exception_handlers.py",
+          "fastapi/exceptions.py",
+          "fastapi/logger.py",
+          "fastapi/openapi/models.py",
+          "fastapi/openapi/utils.py",
+          "fastapi/param_functions.py"
+        ]
       }
     },
     {
       "prompt": "what breaks if I remove configuration",
       "concept": "configuration",
       "response": {
-        "answer": "Name a file, module, or architecture concept to analyze (for example `core.py`, `websocket support`, or `event bus`).",
+        "answer": "Removing **configuration** (resolved to `fastapi/_compat/v2.py` + 9 related module(s)) affects 9 direct + 19 transitive importer(s) across 2 subsystem(s). 9 direct + 19 transitive importer(s) across 17 subsystem(s); behavioral risk scales with that coupling.",
         "mode": "impact",
-        "semantic_label": null,
-        "resolved_modules": null,
-        "direct_impact": null,
-        "indirect_impact": null,
-        "architectural_blast_radius": null,
-        "confidence": "low",
-        "files": []
+        "semantic_label": "configuration",
+        "resolved_modules": [
+          "fastapi/_compat/v2.py",
+          "fastapi/openapi/models.py",
+          "scripts/contributors.py",
+          "scripts/deploy_docs_status.py",
+          "scripts/docs.py",
+          "scripts/label_approved.py",
+          "scripts/notify_translations.py",
+          "scripts/people.py",
+          "scripts/sponsors.py",
+          "scripts/topic_repos.py"
+        ],
+        "direct_impact": [
+          "fastapi/_compat/__init__.py",
+          "fastapi/openapi/utils.py",
+          "fastapi/param_functions.py",
+          "fastapi/params.py",
+          "fastapi/security/api_key.py",
+          "fastapi/security/base.py",
+          "fastapi/security/http.py",
+          "fastapi/security/oauth2.py",
+          "fastapi/security/open_id_connect_url.py"
+        ],
+        "indirect_impact": [
+          "fastapi/__init__.py",
+          "fastapi/applications.py",
+          "fastapi/dependencies/models.py",
+          "fastapi/dependencies/utils.py",
+          "fastapi/encoders.py",
+          "fastapi/exception_handlers.py",
+          "fastapi/openapi/docs.py",
+          "fastapi/openapi/models.py",
+          "fastapi/openapi/utils.py",
+          "fastapi/param_functions.py",
+          "fastapi/params.py",
+          "fastapi/routing.py",
+          "fastapi/security/__init__.py",
+          "fastapi/security/api_key.py",
+          "fastapi/security/base.py",
+          "fastapi/security/http.py",
+          "fastapi/security/oauth2.py",
+          "fastapi/security/open_id_connect_url.py",
+          "fastapi/utils.py"
+        ],
+        "architectural_blast_radius": 20,
+        "confidence": "high",
+        "files": [
+          "fastapi/__init__.py",
+          "fastapi/__main__.py",
+          "fastapi/_compat/__init__.py",
+          "fastapi/_compat/shared.py",
+          "fastapi/_compat/v2.py",
+          "fastapi/applications.py",
+          "fastapi/background.py",
+          "fastapi/openapi/models.py",
+          "fastapi/openapi/utils.py",
+          "fastapi/param_functions.py",
+          "fastapi/params.py",
+          "fastapi/security/api_key.py",
+          "fastapi/security/base.py",
+          "fastapi/security/http.py",
+          "fastapi/security/oauth2.py",
+          "fastapi/security/open_id_connect_url.py",
+          "scripts/contributors.py",
+          "scripts/deploy_docs_status.py",
+          "scripts/docs.py",
+          "scripts/label_approved.py"
+        ]
       }
     },
     {
       "prompt": "what breaks if I remove the logging layer",
       "concept": "the logging layer",
       "response": {
-        "answer": "Name a file, module, or architecture concept to analyze (for example `core.py`, `websocket support`, or `event bus`).",
+        "answer": "Removing **logging** (resolved to `fastapi/logger.py` + 3 related module(s)) affects 13 direct + 16 transitive importer(s) across 1 subsystem(s). 13 direct + 16 transitive importer(s) across 15 subsystem(s); behavioral risk scales with that coupling.",
         "mode": "impact",
-        "semantic_label": null,
-        "resolved_modules": null,
-        "direct_impact": null,
-        "indirect_impact": null,
-        "architectural_blast_radius": null,
-        "confidence": "low",
-        "files": []
+        "semantic_label": "logging",
+        "resolved_modules": [
+          "fastapi/logger.py",
+          "fastapi/openapi/models.py",
+          "fastapi/dependencies/utils.py",
+          "fastapi/applications.py"
+        ],
+        "direct_impact": [
+          "fastapi/__init__.py",
+          "fastapi/applications.py",
+          "fastapi/dependencies/utils.py",
+          "fastapi/openapi/models.py",
+          "fastapi/openapi/utils.py",
+          "fastapi/param_functions.py",
+          "fastapi/params.py",
+          "fastapi/routing.py",
+          "fastapi/security/api_key.py",
+          "fastapi/security/base.py",
+          "fastapi/security/http.py",
+          "fastapi/security/oauth2.py",
+          "fastapi/security/open_id_connect_url.py"
+        ],
+        "indirect_impact": [
+          "fastapi/__init__.py",
+          "fastapi/applications.py",
+          "fastapi/dependencies/models.py",
+          "fastapi/dependencies/utils.py",
+          "fastapi/exception_handlers.py",
+          "fastapi/openapi/utils.py",
+          "fastapi/param_functions.py",
+          "fastapi/params.py",
+          "fastapi/routing.py",
+          "fastapi/security/__init__.py",
+          "fastapi/security/api_key.py",
+          "fastapi/security/base.py",
+          "fastapi/security/http.py",
+          "fastapi/security/oauth2.py",
+          "fastapi/security/open_id_connect_url.py",
+          "fastapi/utils.py"
+        ],
+        "architectural_blast_radius": 17,
+        "confidence": "high",
+        "files": [
+          "fastapi/__init__.py",
+          "fastapi/__main__.py",
+          "fastapi/_compat/__init__.py",
+          "fastapi/_compat/shared.py",
+          "fastapi/_compat/v2.py",
+          "fastapi/applications.py",
+          "fastapi/background.py",
+          "fastapi/cli.py",
+          "fastapi/concurrency.py",
+          "fastapi/datastructures.py",
+          "fastapi/dependencies/__init__.py",
+          "fastapi/dependencies/models.py",
+          "fastapi/dependencies/utils.py",
+          "fastapi/logger.py",
+          "fastapi/openapi/models.py",
+          "fastapi/openapi/utils.py",
+          "fastapi/param_functions.py",
+          "fastapi/params.py",
+          "fastapi/routing.py",
+          "fastapi/security/api_key.py"
+        ]
       }
     }
   ],
@@ -470,52 +648,7 @@
       "root_cause": "concept absent from repo or not in resolver map",
       "subsystem": "target_resolver / impact_engine",
       "category": "semantic_routing_failure"
-    },
-    {
-      "repository": "fastapi",
-      "scenario": "what breaks if I remove caching",
-      "expected": "concept resolves to modules",
-      "actual": "fallback / no target",
-      "root_cause": "concept absent from repo or not in resolver map",
-      "subsystem": "target_resolver / impact_engine",
-      "category": "semantic_routing_failure"
-    },
-    {
-      "repository": "fastapi",
-      "scenario": "what breaks if I remove configuration",
-      "expected": "concept resolves to modules",
-      "actual": "fallback / no target",
-      "root_cause": "concept absent from repo or not in resolver map",
-      "subsystem": "target_resolver / impact_engine",
-      "category": "semantic_routing_failure"
-    },
-    {
-      "repository": "fastapi",
-      "scenario": "what breaks if I remove the logging layer",
-      "expected": "concept resolves to modules",
-      "actual": "fallback / no target",
-      "root_cause": "concept absent from repo or not in resolver map",
-      "subsystem": "target_resolver / impact_engine",
-      "category": "semantic_routing_failure"
-    },
-    {
-      "repository": "fastapi",
-      "scenario": "what breaks if I remove dependency injection",
-      "expected": "concept resolves to modules",
-      "actual": "fallback / no target",
-      "root_cause": "concept absent from repo or not in resolver map",
-      "subsystem": "target_resolver / impact_engine",
-      "category": "semantic_routing_failure"
-    },
-    {
-      "repository": "fastapi",
-      "scenario": "what breaks if I remove request validation",
-      "expected": "concept resolves to modules",
-      "actual": "fallback / no target",
-      "root_cause": "concept absent from repo or not in resolver map",
-      "subsystem": "target_resolver / impact_engine",
-      "category": "semantic_routing_failure"
     }
   ],
-  "elapsed_seconds": 3.5
+  "elapsed_seconds": 10.5
 }

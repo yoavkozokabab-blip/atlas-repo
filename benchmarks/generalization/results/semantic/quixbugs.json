@@ -47,12 +47,14 @@
       "phrase": "configuration",
       "expected_subsystem": "config system",
       "prompt": "what breaks if I remove configuration",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
+      "resolved": true,
+      "category": null,
+      "label": "configuration",
+      "modules": [
+        "conftest.py"
+      ],
       "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "actual": "resolved \u2192 conftest.py"
     },
     {
       "concept": "database",
@@ -71,12 +73,14 @@
       "phrase": "routing",
       "expected_subsystem": "router / URL dispatch",
       "prompt": "what breaks if I remove routing",
-      "resolved": false,
-      "category": "semantic_routing_failure",
-      "label": null,
-      "modules": [],
+      "resolved": true,
+      "category": null,
+      "label": "routing",
+      "modules": [
+        "python_testcases/load_testdata.py"
+      ],
       "confidence": "low",
-      "actual": "fallback \u2014 no target"
+      "actual": "resolved \u2192 python_testcases/load_testdata.py"
     },
     {
       "concept": "middleware",
@@ -248,6 +252,6 @@
     }
   ],
   "status": "ok",
-  "resolved_count": 0,
-  "scan_seconds": 0.8
+  "resolved_count": 2,
+  "scan_seconds": 0.2
 }

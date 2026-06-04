@@ -3167,7 +3167,14 @@ def _answer_impact(question: str, node_context: Optional[Dict[str, Any]], packet
     res: Optional[Dict[str, Any]] = None
     for seed in seeds:
         r = change_impact_simulation(seed)
-        if r.get("ok") and not r.get("mock"):
+        if not r.get("ok"):
+            continue
+        if not r.get("mock"):
+            res = r
+            break
+        # Phase 137 — generic concept resolution may land on modules outside the
+        # production import graph (TS layouts, extension folders). Still usable.
+        if r.get("resolved_modules") or r.get("affected_files"):
             res = r
             break
     if res is None:

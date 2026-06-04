@@ -51,6 +51,14 @@ def run_repo(resolved: "registry.ResolvedRepo") -> Dict[str, Any]:
     _reset_state()
     try:
         scan = api.scan_repository(str(resolved.path))
+        # Massive-mode (very large, e.g. VS Code) import-graph builds are
+        # occasionally degenerate (0 modules from thousands of files) due to a
+        # cold-cache timing flake. A repo with many files but an empty module
+        # graph cannot resolve anything; retry once with fresh state so the
+        # measurement reflects Atlas, not a transient scan miss.
+        if scan.get("ok") and not scan.get("module_count") and (scan.get("file_count") or 0) > 500:
+            _reset_state()
+            scan = api.scan_repository(str(resolved.path))
     except Exception as exc:  # scan crash is itself a finding
         base.update({"status": "scan_crash", "error": f"{type(exc).__name__}: {exc}",
                      "traceback": traceback.format_exc()[-1500:],
