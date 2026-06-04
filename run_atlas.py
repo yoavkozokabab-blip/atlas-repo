@@ -10,6 +10,19 @@ import argparse
 import sys
 
 
+def _frozen_launch() -> bool:
+    return bool(getattr(sys, "frozen", False))
+
+
+def _launcher_log(message: str) -> None:
+    try:
+        from jarvis_desktop.install_support import append_launcher_log
+
+        append_launcher_log(message)
+    except Exception:
+        pass
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Atlas Repository Intelligence — launcher")
     ap.add_argument("--host", default="127.0.0.1")
@@ -26,14 +39,21 @@ def main() -> int:
     append_launcher_log(f"startup ready={checks.get('ready')}")
 
     if not checks.get("ready"):
-        print("\n  Atlas — startup check found issues:\n")
-        for item in checks.get("checks") or []:
-            if item.get("ok") or item.get("id") == "optional":
-                continue
-            print(f"    ✗ {item.get('label')}: {item.get('detail')}")
-            if item.get("hint"):
-                print(f"      → {item.get('hint')}")
-        print("\n  Opening Atlas Support so you can fix or export diagnostics.\n")
+        if _frozen_launch():
+            _launcher_log("startup not ready: " + str(checks.get("data_dir")))
+            for item in checks.get("checks") or []:
+                if item.get("ok") or item.get("id") == "optional":
+                    continue
+                _launcher_log(f"check fail {item.get('label')}: {item.get('detail')}")
+        else:
+            print("\n  Atlas — startup check found issues:\n")
+            for item in checks.get("checks") or []:
+                if item.get("ok") or item.get("id") == "optional":
+                    continue
+                print(f"    ✗ {item.get('label')}: {item.get('detail')}")
+                if item.get("hint"):
+                    print(f"      → {item.get('hint')}")
+            print("\n  Opening Atlas Support so you can fix or export diagnostics.\n")
         args.support = True
 
     open_path = "/support.html" if args.support else "/"
@@ -54,7 +74,10 @@ def main() -> int:
             uvicorn.run(server.create_fastapi_app(), host=args.host, port=args.port)
             return 0
         except Exception as exc:
-            print(f"  FastAPI unavailable ({exc}); using built-in server.")
+            if not _frozen_launch():
+                print(f"  FastAPI unavailable ({exc}); using built-in server.")
+            else:
+                _launcher_log(f"FastAPI unavailable ({exc}); using built-in server.")
 
     server.run(
         host=args.host,

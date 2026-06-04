@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>JARVIS — Demo Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="marketing.css" />
+<script src="https://unpkg.com/3d-force-graph@1.73.4/dist/3d-force-graph.min.js"></script>
+<style>
+  /* Cinematic recording mode — full bleed, zero chrome, clean branding */
+  html,body{height:100%;overflow:hidden;background:#05050a}
+  #stage{position:fixed;inset:0}
+  #graph{position:absolute;inset:0}
+  #vignette{position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(120% 90% at 50% 45%, transparent 55%, rgba(3,3,7,.85) 100%)}
+  /* Brand corner */
+  .brandmark{position:absolute;top:30px;left:34px;z-index:6;display:flex;align-items:center;gap:11px;opacity:.92}
+  .brandmark .mk{width:30px;height:30px;border-radius:9px;background:var(--grad);display:grid;place-items:center;color:#0a0a12;font-weight:800;font-size:17px;box-shadow:0 6px 26px rgba(120,110,255,.5)}
+  .brandmark .nm{font-weight:800;font-size:19px;letter-spacing:-.01em}
+  .brandmark .nm small{display:block;font-weight:500;font-size:11px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase}
+  /* Scene captions */
+  #scene{position:absolute;left:0;right:0;bottom:9%;z-index:6;text-align:center;pointer-events:none;
+    opacity:0;transition:opacity .9s ease, transform .9s ease;transform:translateY(14px)}
+  #scene.show{opacity:1;transform:none}
+  #scene .kicker{font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+  #scene .title{font-size:clamp(30px,4.4vw,52px);font-weight:800;letter-spacing:-.025em;margin:0 auto;max-width:18ch;line-height:1.08}
+  #scene .sub{font-size:clamp(15px,1.8vw,19px);color:var(--ink-2);max-width:60ch;margin:14px auto 0}
+  /* Floating data card (clean, no debug) */
+  #datacard{position:absolute;top:50%;right:5%;transform:translateY(-50%) translateX(30px);z-index:6;width:330px;
+    opacity:0;transition:.7s;pointer-events:none;
+    border:1px solid var(--line-2);border-radius:18px;background:rgba(12,12,22,.78);backdrop-filter:blur(16px);
+    padding:22px;box-shadow:0 30px 90px rgba(0,0,0,.6)}
+  #datacard.show{opacity:1;transform:translateY(-50%)}
+  #datacard h4{margin:0 0 14px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+  #datacard .drow{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+  #datacard .drow:last-child{border-bottom:none}
+  #datacard .drow b{font-size:16px}
+  #datacard .pillbar{height:7px;border-radius:6px;background:var(--grad);margin-top:3px}
+  /* Title card */
+  #titlecard{position:absolute;inset:0;z-index:7;display:grid;place-items:center;background:radial-gradient(900px 500px at 50% 40%, rgba(120,110,255,.16), #05050a 70%);
+    transition:opacity 1s ease}
+  #titlecard.hide{opacity:0;pointer-events:none}
+  #titlecard .big{text-align:center}
+  #titlecard h1{font-size:clamp(46px,8vw,104px);font-weight:800;letter-spacing:-.04em;margin:0}
+  #titlecard p{font-size:clamp(16px,2vw,22px);color:var(--ink-2);margin:18px 0 34px}
+  /* Controls (hidden during recording) */
+  #controls{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);z-index:8;display:flex;gap:12px;
+    transition:opacity .5s} #controls.hide{opacity:0;pointer-events:none}
+  #hint{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);z-index:8;color:var(--faint);font-size:12px}
+  .exitlink{position:absolute;top:30px;right:34px;z-index:8;color:var(--muted);font-size:13px;transition:.5s}
+  .exitlink.hide{opacity:0}
+  /* progress dots */
+  #dots{position:absolute;top:34px;left:50%;transform:translateX(-50%);z-index:6;display:flex;gap:8px;opacity:0;transition:.5s}
+  #dots.show{opacity:.8} #dots .d{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.2)}
+  #dots .d.on{background:var(--accent);box-shadow:0 0 10px var(--accent)}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="graph"></div>
+  <div id="vignette"></div>
+  <div class="brandmark"><span class="mk">◈</span><span class="nm">JARVIS<small>Repository Intelligence</small></span></div>
+  <a class="exitlink" href="landing.html">Esc to exit</a>
+  <div id="dots"></div>
+
+  <div id="scene"><div class="kicker" id="sceneKicker"></div><h2 class="title" id="sceneTitle"></h2><p class="sub" id="sceneSub"></p></div>
+
+  <div id="datacard"><h4 id="dcHead"></h4><div id="dcBody"></div></div>
+
+  <div id="titlecard">
+    <div class="big">
+      <h1><span class="grad-text">JARVIS</span></h1>
+      <p>Prepare your codebase for AI</p>
+      <button class="btn primary lg" id="startBtn" onclick="startDemo()">▶ Start Demo</button>
+    </div>
+  </div>
+
+  <div id="controls">
+    <button class="btn primary" onclick="startDemo()">▶ Start Demo</button>
+    <button class="btn ghost" onclick="restartDemo()">↺ Restart</button>
+    <select id="packSel" class="btn ghost" style="padding:10px 12px"></select>
+  </div>
+  <div id="hint">Press <span class="kbd">Space</span> to start · <span class="kbd">R</span> restart · <span class="kbd">Esc</span> exit · designed for screen recording</div>
+</div>
+
+<div class="mtoast" id="mtoast"></div>
+<script src="marketing.js"></script>
+<script src="feedback.js"></script>
+<script src="studio.js"></script>
+</body>
+</html>

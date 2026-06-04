@@ -1,0 +1,52 @@
+concept_id: feature_flags
+name: Feature Flags
+title: Feature Flags
+domain: backend
+category: release
+feature_type: release
+concept_quality_score: source_backed
+confidence: high
+aliases:
+- feature flag
+- feature toggle
+- launchdarkly
+description: Runtime configuration to enable features per user/tenant without redeploy.
+when_to_use: Gradual rollouts and kill switches for risky changes.
+requirements:
+- Clear ownership of Feature Flags in the architecture
+implementation_strategies: &id001
+- Validate at boundary
+- Idempotent writes where applicable
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Contract drift between clients and server
+- Unhandled edge cases on partial failure
+- N+1 queries
+- Unbounded payload size
+- Hot-spot endpoints
+security_risks: []
+performance_risks:
+- N+1 queries
+- Unbounded payload size
+- Hot-spot endpoints
+failure_modes:
+- 500s under load without backpressure
+- Inconsistent error shapes for clients
+verification:
+- Flag off path tested
+- Default-safe values on failure
+- OpenAPI/contract tests
+- Load test critical endpoints
+testing:
+- Integration tests with realistic payloads
+- Contract tests for error codes
+related_concepts: []
+references:
+- https://martinfowler.com/articles/feature-toggles.html
+path_keywords:
+- feature
+- flags
+- feature
+- flags
+investigate_only: false

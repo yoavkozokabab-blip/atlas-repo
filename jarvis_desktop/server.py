@@ -257,8 +257,9 @@ def run(
     httpd = ThreadingHTTPServer((host, port), JarvisHandler)
     path = start_path if start_path.startswith("/") else f"/{start_path}"
     url = f"http://{host}:{port}{path}"
-    print(f"  ATLAS — Repository Intelligence Platform")
-    print(f"  Serving at http://{host}:{port}/  (Ctrl+C to stop)")
+    if not getattr(__import__("sys"), "frozen", False):
+        print(f"  ATLAS — Repository Intelligence Platform")
+        print(f"  Serving at http://{host}:{port}/  (Ctrl+C to stop)")
     if open_browser:
         try:
             import webbrowser
@@ -268,7 +269,8 @@ def run(
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
-        print("\n  Stopped.")
+        if not getattr(__import__("sys"), "frozen", False):
+            print("\n  Stopped.")
     finally:
         httpd.server_close()
 

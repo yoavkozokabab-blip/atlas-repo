@@ -1,0 +1,55 @@
+concept_id: openai_api
+name: OpenAI API Integration
+title: OpenAI API Integration
+domain: ai_infrastructure
+category: llm
+feature_type: llm
+concept_quality_score: source_backed
+confidence: high
+aliases:
+- openai api
+- chat completions
+- gpt api
+description: HTTP API for LLM completions, embeddings, and tools.
+when_to_use: When product requires OpenAI models; handle keys, rate limits, and timeouts.
+requirements:
+- Clear ownership of OpenAI API Integration in the architecture
+implementation_strategies: &id001
+- Validate at boundary
+- Idempotent writes where applicable
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Contract drift between clients and server
+- Unhandled edge cases on partial failure
+- API key leakage
+- Prompt injection via user content
+- N+1 queries
+- Unbounded payload size
+- Hot-spot endpoints
+security_risks:
+- API key leakage
+- Prompt injection via user content
+performance_risks:
+- N+1 queries
+- Unbounded payload size
+- Hot-spot endpoints
+failure_modes:
+- 500s under load without backpressure
+- Inconsistent error shapes for clients
+verification:
+- OpenAPI/contract tests
+- Load test critical endpoints
+testing:
+- Integration tests with realistic payloads
+- Contract tests for error codes
+related_concepts: []
+references:
+- https://platform.openai.com/docs/api-reference
+path_keywords:
+- openai
+- api
+- openai
+- api
+- integration
+investigate_only: false

@@ -1,0 +1,46 @@
+concept_id: pod_disruption_budget
+name: Pod Disruption Budget
+title: Pod Disruption Budget
+domain: cloud
+category: k8s
+feature_type: k8s
+concept_quality_score: curated_deep
+confidence: medium
+aliases:
+- pdb
+- pod disruption budget
+description: Maintain min available during drains.
+when_to_use: HA services.
+requirements:
+- Clear ownership of Pod Disruption Budget in the architecture
+implementation_strategies: &id001
+- Infrastructure as code
+- Separate env accounts
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Misconfigured IAM
+- Public exposure
+- Over-privileged roles
+- Secrets in environment variables
+security_risks:
+- Over-privileged roles
+- Secrets in environment variables
+performance_risks: []
+failure_modes:
+- Deploy succeeds but health checks fail
+- Autoscaling lag during spike
+verification:
+- Least-privilege IAM review
+- Disaster recovery drill
+testing:
+- IaC plan/apply in CI
+- Smoke test after deploy
+related_concepts: []
+references:
+- atlas://curated/cloud/pod_disruption_budget
+path_keywords:
+- pod
+- pdb
+- pod disruption budget
+investigate_only: false

@@ -1,0 +1,55 @@
+concept_id: ema
+name: EMA
+title: EMA
+domain: trading
+category: indicator
+feature_type: indicator
+concept_quality_score: source_backed
+confidence: high
+aliases:
+- ema
+- exponential moving average
+- moving average ema
+description: Exponentially weighted moving average; alpha=2/(N+1) for span N; needs
+  warmup of N bars.
+when_to_use: Trend filtering and signal gating on price series; require identical
+  bar semantics in backtest and live.
+requirements:
+- Clear ownership of EMA in the architecture
+implementation_strategies: &id001
+- Single source of truth for bar timestamps
+- Shared calculator for sim/live
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Lookahead bias
+- Backtest/live divergence
+- O(n) per recompute on large universes if not vectorized
+security_risks: []
+performance_risks:
+- O(n) per recompute on large universes if not vectorized
+failure_modes:
+- Signals on NaN indicators
+- Fill model mismatch vs live
+verification:
+- Fixture compare vs reference
+- Warmup bar count
+- No lookahead at signal time
+- Parity test on fixed bar stream
+- Compare to reference implementation
+testing:
+- Unit tests on indicator fixtures
+- Paper/backtest reconciliation
+related_concepts:
+- rsi
+- indicator_backtest_live
+- backtest_live_divergence
+references:
+- https://pandas.pydata.org/docs/reference/api/pandas.Series.ewm.html
+path_keywords:
+- indicator
+- ema
+- signal
+- strategy
+- backtest
+investigate_only: false

@@ -1,0 +1,52 @@
+concept_id: authentication
+name: Authentication
+title: Authentication
+domain: authentication
+category: auth
+feature_type: auth
+concept_quality_score: source_backed
+confidence: high
+aliases:
+- authentication
+- auth
+- login
+- sign in
+description: Verify identity (who you are) before authorization.
+when_to_use: Every user-facing app with protected resources.
+requirements:
+- Clear ownership of Authentication in the architecture
+implementation_strategies: &id001
+- Validate at boundary
+- Idempotent writes where applicable
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Contract drift between clients and server
+- Unhandled edge cases on partial failure
+- N+1 queries
+- Unbounded payload size
+- Hot-spot endpoints
+security_risks: []
+performance_risks:
+- N+1 queries
+- Unbounded payload size
+- Hot-spot endpoints
+failure_modes:
+- 500s under load without backpressure
+- Inconsistent error shapes for clients
+verification:
+- OpenAPI/contract tests
+- Load test critical endpoints
+testing:
+- Integration tests with realistic payloads
+- Contract tests for error codes
+related_concepts:
+- oauth2
+- jwt
+- rbac
+references:
+- https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
+path_keywords:
+- authentication
+- authentication
+investigate_only: false

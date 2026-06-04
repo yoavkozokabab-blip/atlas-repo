@@ -1,0 +1,49 @@
+concept_id: csrf_protection
+name: CSRF Protection
+title: CSRF Protection
+domain: security
+category: web
+feature_type: web
+concept_quality_score: source_backed
+confidence: high
+aliases:
+- csrf
+- cross site request forgery
+description: Prevent browsers from executing state-changing requests without intent.
+when_to_use: Cookie-session web apps with form POST.
+requirements:
+- Clear ownership of CSRF Protection in the architecture
+implementation_strategies: &id001
+- Fail closed on validation errors
+- Centralize auth middleware
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Broken trust boundary
+- Credential leakage
+- Token/session theft
+- Privilege escalation
+- Replay attacks
+security_risks:
+- Token/session theft
+- Privilege escalation
+- Replay attacks
+performance_risks: []
+failure_modes:
+- Auth bypass on misconfigured middleware
+- Stale permissions after role change
+verification:
+- Threat-model critical paths
+- Validate negative tests for unauthorized access
+testing:
+- AuthZ matrix tests
+- Session fixation/replay tests
+related_concepts: []
+references:
+- https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html
+path_keywords:
+- csrf
+- protection
+- csrf
+- protection
+investigate_only: false

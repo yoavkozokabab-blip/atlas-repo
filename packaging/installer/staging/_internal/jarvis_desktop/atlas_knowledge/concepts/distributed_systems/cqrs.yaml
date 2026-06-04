@@ -1,0 +1,45 @@
+concept_id: cqrs
+name: CQRS
+title: CQRS
+domain: distributed_systems
+category: pattern
+feature_type: pattern
+concept_quality_score: source_backed
+confidence: high
+aliases:
+- cqrs
+- command query separation
+description: Separate write (commands) and read (queries) models.
+when_to_use: High read/write asymmetry; pairs with event sourcing often.
+requirements:
+- Clear ownership of CQRS in the architecture
+implementation_strategies: &id001
+- Timeouts + bulkheads
+- Outbox/inbox for cross-service consistency
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Cascading failures
+- Split-brain
+- Retry storms
+- Queue backlog
+security_risks: []
+performance_risks:
+- Retry storms
+- Queue backlog
+failure_modes:
+- Duplicate side effects on retry
+- Partial failure leaves inconsistent state
+verification:
+- Chaos/fault injection on dependencies
+- Idempotency key audit
+testing:
+- Failure injection tests
+- Idempotent handler tests
+related_concepts: []
+references:
+- https://martinfowler.com/bliki/CQRS.html
+path_keywords:
+- cqrs
+- cqrs
+investigate_only: false

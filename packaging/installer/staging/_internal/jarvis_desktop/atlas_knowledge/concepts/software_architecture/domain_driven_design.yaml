@@ -1,0 +1,45 @@
+concept_id: domain_driven_design
+name: Domain-Driven Design
+title: Domain-Driven Design
+domain: software_architecture
+category: ddd
+feature_type: ddd
+concept_quality_score: source_backed
+confidence: high
+aliases:
+- ddd
+- domain driven design
+- bounded context
+description: Model software around domain language and bounded contexts.
+when_to_use: Complex business domains with evolving rules.
+requirements:
+- Clear ownership of Domain-Driven Design in the architecture
+implementation_strategies: &id001
+- Explicit boundaries
+- Document architectural decisions
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Accidental complexity
+- Unclear module boundaries
+security_risks: []
+performance_risks: []
+failure_modes:
+- Circular dependencies
+- God modules
+verification:
+- Architecture fitness functions
+- Dependency rule tests
+testing:
+- ArchUnit-style constraints
+- Contract tests between modules
+related_concepts: []
+references:
+- https://www.domainlanguage.com/ddd/
+path_keywords:
+- domain
+- driven
+- design
+- domain-driven
+- design
+investigate_only: false

@@ -1,0 +1,49 @@
+concept_id: connection_pooling
+name: Connection Pooling
+title: Connection Pooling
+domain: databases
+category: pool
+feature_type: pool
+concept_quality_score: source_backed
+confidence: high
+aliases:
+- connection pool
+- pgbouncer
+description: Reuse DB connections to avoid handshake overhead.
+when_to_use: Every app server talking to PostgreSQL/MySQL.
+requirements:
+- Clear ownership of Connection Pooling in the architecture
+implementation_strategies: &id001
+- Migrations additive-first
+- Explicit transaction boundaries
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Data corruption
+- Lock contention
+- Missing indexes
+- Long-running transactions
+- Connection pool exhaustion
+security_risks: []
+performance_risks:
+- Missing indexes
+- Long-running transactions
+- Connection pool exhaustion
+failure_modes:
+- Migration lock on large tables
+- Deadlocks under concurrent updates
+verification:
+- Explain plans for hot queries
+- Migration rollback drill
+testing:
+- Migration up/down tests
+- Concurrency tests on hot rows
+related_concepts: []
+references:
+- https://www.postgresql.org/docs/current/runtime-config-connection.html
+path_keywords:
+- connection
+- pooling
+- connection
+- pooling
+investigate_only: false

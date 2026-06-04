@@ -1,0 +1,44 @@
+concept_id: trace_sampling
+name: Trace Sampling
+title: Trace Sampling
+domain: observability
+category: tracing
+feature_type: tracing
+concept_quality_score: curated_deep
+confidence: medium
+aliases:
+- trace sampling
+description: Sample traces to control cost while keeping errors.
+when_to_use: High-traffic services.
+requirements:
+- Clear ownership of Trace Sampling in the architecture
+implementation_strategies: &id001
+- Correlation IDs on all requests
+- RED metrics for SLIs
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Blind spots during incidents
+- PII in logs
+- High-cardinality metrics
+- Log volume cost
+security_risks: []
+performance_risks:
+- High-cardinality metrics
+- Log volume cost
+failure_modes:
+- Alerts fire without actionable context
+- Missing correlation across services
+verification:
+- Trace a single request end-to-end
+- Redact secrets in log samples
+testing:
+- Assert required fields on log lines
+- Synthetic probe alerts
+related_concepts: []
+references:
+- atlas://curated/observability/trace_sampling
+path_keywords:
+- trace
+- trace sampling
+investigate_only: false

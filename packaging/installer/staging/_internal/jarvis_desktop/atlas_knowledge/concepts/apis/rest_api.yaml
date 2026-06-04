@@ -1,0 +1,51 @@
+concept_id: rest_api
+name: REST API
+title: REST API
+domain: apis
+category: rest
+feature_type: rest
+concept_quality_score: source_backed
+confidence: high
+aliases:
+- rest
+- restful
+- http api
+description: Resource-oriented HTTP API using verbs, status codes, and representations.
+when_to_use: Default for public HTTP integrations; document with OpenAPI.
+requirements:
+- Clear ownership of REST API in the architecture
+implementation_strategies: &id001
+- Versioning strategy
+- Pagination and limits
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Breaking clients on change
+- Chatty APIs
+- Overserialized payloads
+security_risks: []
+performance_risks:
+- Chatty APIs
+- Overserialized payloads
+failure_modes:
+- Undocumented error codes
+- Version skew
+verification:
+- Consumer-driven contracts
+- Backward compatibility checklist
+testing:
+- Contract tests
+- Load tests on gateway
+related_concepts:
+- graphql_api
+- grpc_api
+- api_versioning
+references:
+- https://www.iana.org/assignments/http-methods
+- https://openapi.org/specification
+path_keywords:
+- rest
+- api
+- rest
+- api
+investigate_only: false

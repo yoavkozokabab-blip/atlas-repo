@@ -1,0 +1,49 @@
+concept_id: caching_http
+name: HTTP Caching
+title: HTTP Caching
+domain: performance
+category: cache
+feature_type: cache
+concept_quality_score: curated_deep
+confidence: medium
+aliases:
+- http cache
+- cache-control
+- etag
+description: Cache responses with Cache-Control and validators.
+when_to_use: Read-heavy public GET endpoints.
+requirements:
+- Clear ownership of HTTP Caching in the architecture
+implementation_strategies: &id001
+- Validate at boundary
+- Idempotent writes where applicable
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Contract drift between clients and server
+- Unhandled edge cases on partial failure
+- N+1 queries
+- Unbounded payload size
+- Hot-spot endpoints
+security_risks: []
+performance_risks:
+- N+1 queries
+- Unbounded payload size
+- Hot-spot endpoints
+failure_modes:
+- 500s under load without backpressure
+- Inconsistent error shapes for clients
+verification:
+- OpenAPI/contract tests
+- Load test critical endpoints
+testing:
+- Integration tests with realistic payloads
+- Contract tests for error codes
+related_concepts: []
+references:
+- atlas://curated/performance/caching_http
+path_keywords:
+- caching
+- http cache
+- cache-control
+investigate_only: false
