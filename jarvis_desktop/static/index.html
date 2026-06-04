@@ -62,19 +62,21 @@
         <h1 class="hero-title">ATLAS</h1>
         <p class="hero-sub">Repository Intelligence Platform</p>
         <p class="hero-headline">Map your repository before your AI reads it.</p>
-        <p class="hero-subheadline">Atlas scans architecture, dependencies, risks and impact,<br>then exports context for Claude, Codex and Cursor.</p>
+        <p class="hero-subheadline">Atlas scans architecture, dependencies, and risk on your machine,<br>then helps you plan changes and export context for Claude, Codex, or Cursor.</p>
+        <div class="beta-notice glass" role="note">
+          <b>Planning only</b> — Atlas maps your code and prepares grounded plans. It does not edit files, run tests, or write patches for you.
+        </div>
         <div class="steps-row">
-          <div class="step"><div class="step-num">1</div><h3>Choose repo</h3><p>Browse or paste your project folder path.</p></div>
+          <div class="step"><div class="step-num">1</div><h3>Load sample</h3><p>Try Atlas in under a minute — no folder path needed.</p></div>
           <div class="step-arrow">→</div>
-          <div class="step"><div class="step-num">2</div><h3>Scan architecture</h3><p>Atlas indexes modules, edges, and architectural risks locally.</p></div>
+          <div class="step"><div class="step-num">2</div><h3>Build Plan</h3><p>Describe a change; get files, order, and tests to run.</p></div>
           <div class="step-arrow">→</div>
-          <div class="step"><div class="step-num">3</div><h3>Plan, investigate, export</h3><p>Build plans, debug symptoms, analyze impact, export prompts for Claude or Cursor.</p></div>
+          <div class="step"><div class="step-num">3</div><h3>Your repo</h3><p>Scan your project when ready — skip node_modules and .git.</p></div>
         </div>
         <div class="home-actions">
-          <button class="btn primary big" type="button" id="browseHomBtn" onclick="browseRepoFolder()">Browse Repository</button>
-          <button class="btn ghost big" type="button" onclick="loadDemoMode()">Load Sample Repository</button>
-          <button class="btn ghost big tour-launch" type="button" onclick="startGuidedWalkthrough()">Guided Walkthrough</button>
-          <button class="btn ghost big tour-launch" type="button" onclick="startProductTour()">Product Tour (auto)</button>
+          <button class="btn primary big" type="button" onclick="loadDemoMode()">Load Sample Repository</button>
+          <button class="btn ghost big" type="button" onclick="startGuidedWalkthrough()">Guided Walkthrough</button>
+          <button class="btn ghost big" type="button" id="browseHomBtn" onclick="browseRepoFolder()">Scan my repository</button>
         </div>
         <h2 class="ask">Or explore by task</h2>
         <div class="cards">
@@ -87,7 +89,7 @@
 
         <div class="repo-pick glass">
           <label for="repoPath">Repository folder</label>
-          <p class="muted tiny picker-help">Paste the full path to your project root. Atlas analyzes dependencies, risk, and structure locally — no cloud upload.</p>
+          <p class="muted tiny picker-help">Paste your <b>project root</b> (not <code>node_modules</code> or <code>.git</code>). Atlas runs locally — your code is not uploaded. New here? Use <b>Load Sample Repository</b> above first.</p>
           <div class="pick-row">
             <input id="repoPath" type="text" placeholder="C:\projects\my-app  or  /home/dev/my-app" value="" autocomplete="off" />
             <button class="btn browse-btn" id="browseRepoBtn" type="button" onclick="browseRepoFolder()">Browse</button>
@@ -148,12 +150,13 @@
         <p class="muted" id="scanSuccessSub"></p>
         <div class="success-grid" id="scanSuccessMetrics"></div>
         <div class="success-risk" id="scanSuccessRisk"></div>
+        <div id="scanReliabilityNotice" style="display:none"></div>
         <h4 class="success-actions-title">Suggested next steps</h4>
         <ul class="clean" id="scanSuccessActions"></ul>
         <div class="success-buttons">
-          <button class="btn primary" onclick="go('center')">Explore graph</button>
+          <button class="btn primary" onclick="goToFirstBuildPlan()">Try your first Build Plan</button>
+          <button class="btn ghost" onclick="go('center')">Explore Repository Map</button>
           <button class="btn ghost" onclick="focusCopilot()">Ask Copilot</button>
-          <button class="btn ghost" onclick="go('export')">Export AI prompt</button>
         </div>
       </div>
       <div id="scanFailed" class="scan-result glass fail" style="display:none">
@@ -298,7 +301,10 @@
     <!-- ===================== SCREEN: BUILD PLAN ===================== -->
     <section class="view" id="view-build">
       <h2 class="vh">Build Plan</h2>
-      <p class="muted tiny" style="margin:-8px 4px 14px">Planning only — Atlas does not generate or apply code. Export prompts for Claude, Codex, or Cursor.</p>
+      <p class="muted tiny" style="margin:-8px 4px 14px">Describe what you want to add or change. Atlas lists affected files, implementation order, and tests — then you implement (or paste the export into your AI assistant).</p>
+      <div id="firstBuildBanner" class="beta-notice glass" style="display:none">
+        <b>First Build Plan</b> — keep the example below or type your own feature, then click <b>Generate Change Plan</b>.
+      </div>
       <div class="io glass">
         <label>What do you want to add or change?</label>
         <textarea id="buildRequest" rows="4" placeholder="e.g. Add user authentication&#10;Add request rate limiting&#10;Add audit logging"></textarea>
@@ -307,7 +313,7 @@
       <div class="workflow-toolbar glass" id="buildToolbar" style="display:none">
         <button class="btn small ghost" type="button" onclick="downloadWorkflowMarkdownBundle()">Export markdown bundle</button>
       </div>
-      <div id="buildOut" class="out"><div class="glass empty-panel muted">Scan a repository or load a sample to generate a grounded change plan.</div></div>
+      <div id="buildOut" class="out"><div class="glass empty-panel"><h3 style="margin:0 0 8px">Build Plan needs a scanned repository</h3><p class="muted" style="margin:0">Load the sample repository (about 60 seconds) or scan your own folder from Home.</p><div class="success-buttons" style="margin-top:14px"><button class="btn primary" type="button" onclick="loadDemoMode()">Load Sample Repository</button></div></div></div>
     </section>
 
     <!-- ===================== SCREEN: INVESTIGATE BUG ===================== -->
@@ -327,7 +333,8 @@
 
     <!-- ===================== SCREEN 5: IMPACT SIMULATOR ===================== -->
     <section class="view" id="view-impact">
-      <h2 class="vh">Impact Simulator</h2>
+      <h2 class="vh">Impact Analysis</h2>
+      <p class="muted tiny" style="margin:-8px 4px 14px">See which files import your target — files that may break if you change it (blast radius).</p>
       <div class="io glass">
         <label>What file or module do you want to change?</label>
         <div class="pick-row">
@@ -349,6 +356,7 @@
           <div class="export-why">
             <div class="export-why-title">Why this helps</div>
             <p>Atlas gives your AI assistant repository context before it starts guessing. Compact packets reduce token cost; verbose packets include full architectural evidence.</p>
+            <p class="muted tiny" style="margin-top:10px"><b>After you copy:</b> paste into a new chat in Claude, Codex, or Cursor, then ask your assistant to implement or review using that context.</p>
           </div>
           <label>Target</label>
           <div class="seg" id="segTarget">
@@ -385,7 +393,8 @@
     <div class="welcome-card glass">
       <p class="onboard-eyebrow">Private beta</p>
       <h1 class="welcome-title">Welcome to Atlas</h1>
-      <p class="muted welcome-lead">Repository intelligence on your machine — map architecture, plan changes, investigate bugs, and analyze impact before your AI assistant reads the codebase.</p>
+      <p class="muted welcome-lead">Atlas maps your repository on your machine and prepares grounded <b>Build Plans</b> for your AI tools. It does <b>not</b> write or apply code for you.</p>
+      <p class="muted tiny">Fastest start: load the sample, then generate your first Build Plan in about a minute.</p>
       <div class="welcome-actions">
         <button class="btn primary big" type="button" onclick="welcomeLoadSample()">Load Sample Repository</button>
         <button class="btn ghost big" type="button" onclick="welcomeStartWalkthrough()">Guided Walkthrough</button>
@@ -455,5 +464,6 @@
   <script src="feedback.js"></script>
   <script>document.body.dataset.fbHideButton = "1";</script>
   <script src="atlas_beta.js"></script>
+  <script src="atlas_polish.js"></script>
 </body>
 </html>

@@ -290,7 +290,7 @@ function workflowEmptyHtml(title, body, primaryLabel, primaryFn, secondaryLabel,
 
 function renderWorkflowGate(view) {
   const map = {
-    build: { el: "buildOut", title: "Build Plan needs a scan", body: "Scan your repository or load a sample, then describe what you want to add or change.", primary: "Load Sample Repository", fn: "loadDemoMode()", secondary: "Go to Home", fn2: "go('home')" },
+    build: { el: "buildOut", title: "Build Plan needs a scan", body: "Load the sample repository first (about 60 seconds), then describe what you want to add or change.", primary: "Load Sample Repository", fn: "loadDemoMode()", secondary: "Go to Home", fn2: "go('home')" },
     investigate: { el: "investigateOut", title: "Investigation needs a scan", body: "Describe a symptom after Atlas has indexed your codebase.", primary: "Load Sample Repository", fn: "loadDemoMode()", secondary: "Go to Home", fn2: "go('home')" },
     impact: { el: "impactOut", title: "Impact analysis needs a scan", body: "Enter a file or module path after scanning to see blast radius.", primary: "Load Sample Repository", fn: "loadDemoMode()", secondary: "Go to Home", fn2: "go('home')" },
   };
@@ -351,7 +351,8 @@ function showScanFailed(message, code) {
     not_found: ["Check spelling and drive letter.", "Click Validate before scanning."],
     no_code_files: ["Choose a folder that contains .py, .ts, .js, or similar source files.", "Load a sample repository to explore Atlas first."],
     permission_denied: ["Run Atlas from an account that can read the folder.", "Avoid Windows system folders and protected drives."],
-    partial_graph: ["Open Repository Map — partial graphs still support Build and Impact.", "Try a narrower scan scope (backend or Python only)."],
+    partial_graph: ["You can still run Build Plan — some files may have fewer links.", "For your own repo: try scan scope “Only backend” or “Only Python”."],
+    not_directory: ["Choose the repository root folder, not a single file.", "Use Browse or paste the parent directory path."],
     symbols_missing: ["Build Plan and Investigation may have fewer file anchors.", "Re-scan after fixing syntax errors in key entry files."],
   };
   $("scanFailedHints").innerHTML = (hints[code] || [
@@ -374,7 +375,9 @@ function renderScanSuccess(scan) {
   $("scanSuccessRisk").innerHTML = risk
     ? `<b style="color:${riskColor(risk.score)}">Top risk:</b> ${risk.module || risk.path} (score ${risk.score})`
     : `<span class="muted">No architectural risk ranking available.</span>`;
-  $("scanSuccessActions").innerHTML = (scan.suggested_next_actions || []).map(a => `<li>${a}</li>`).join("");
+  $("scanSuccessActions").innerHTML = (scan.suggested_next_actions || []).map(a => `<li>${a}</li>`).join("") ||
+    "<li>Generate a Build Plan for a feature you want to add</li><li>Explore the Repository Map</li>";
+  if (typeof renderScanReliabilityNotice === "function") renderScanReliabilityNotice(scan);
 }
 
 async function validateRepoPath(showToast) {
@@ -392,8 +395,9 @@ async function validateRepoPath(showToast) {
   if (!res.ok) {
     updateScanBtnState(false);
     $("pathError").style.display = "block";
-    $("pathError").textContent = res.error || "Invalid path";
-    if (showToast) toast("✗ " + (res.error || "Invalid path"), "error");
+    const msg = typeof friendlyValidateMessage === "function" ? friendlyValidateMessage(res) : (res.error || "Invalid path");
+    $("pathError").textContent = msg;
+    if (showToast) toast("✗ " + msg, "error");
     return null;
   }
   updateScanBtnState(true);
@@ -476,10 +480,11 @@ function finishScanSession(scan, pathLabel) {
       $("onboarding").style.display = "none";
     }
   } catch (e) {}
-  if (scan.demo_mode || scan.module_count) {
+  if (typeof promptFirstBuildPlanAfterScan === "function") promptFirstBuildPlanAfterScan(scan);
+  else if (scan.demo_mode || scan.module_count) {
     setTimeout(function () {
       go("center");
-      toast("Repository Map ready — try Build, Investigate, or Impact in the nav", "success");
+      toast("Repository Map ready — try Build Plan next", "success");
     }, scan.demo_mode ? 400 : 1200);
   }
 }
@@ -548,8 +553,19 @@ function go(view) {
   if (view === "export") refreshExport();
   if (view === "build" || view === "investigate" || view === "impact") {
     if (!STATE.summary?.ok) renderWorkflowGate(view);
-    else renderWorkflowQuickStarts(view);
+    else {
+      renderWorkflowQuickStarts(view);
+      if (view === "build") showFirstBuildBannerIfNeeded();
+    }
   }
+}
+
+function showFirstBuildBannerIfNeeded() {
+  const banner = $("firstBuildBanner");
+  if (!banner || !STATE.summary?.ok) return;
+  let done = false;
+  try { done = localStorage.getItem("atlas_first_build_plan_done") === "1"; } catch (e) {}
+  banner.style.display = done ? "none" : "block";
 }
 function applyBillingNav(enabled, isAdmin) {
   const nav = $("billingNav");
@@ -1530,6 +1546,7 @@ async function runChangePlan() {
     return;
   }
   STATE.buildResult = r;
+  if (typeof markFirstBuildPlanDone === "function") markFirstBuildPlanDone();
   const p = r.plan || {};
   const prompts = r.prompts || {};
   out.innerHTML = `

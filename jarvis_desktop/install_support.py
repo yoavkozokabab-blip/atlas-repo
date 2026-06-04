@@ -61,7 +61,7 @@ def _check_imports() -> Dict[str, Any]:
         "label": "Atlas modules",
         "ok": ok,
         "detail": "ready" if ok else "; ".join(missing[:3]),
-        "hint": None if ok else "Reinstall Atlas or run from the folder that contains jarvis_desktop.",
+        "hint": None if ok else "Reinstall Atlas or run from the folder that contains jarvis_desktop. Do not pip install the monorepo requirements.txt.",
     }
 
 

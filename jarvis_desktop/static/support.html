@@ -22,7 +22,18 @@
   </header>
   <main id="app" class="support-page">
     <h2 class="vh">Support &amp; diagnostics</h2>
-    <p class="muted tiny support-lead">Check environment status, fix common issues, and export a support bundle — no source code included.</p>
+    <p class="muted tiny support-lead">Check environment status, fix common issues, and export a support bundle — no source code included. New users: start with <b>Load Sample Repository</b> on Home, then <b>Build Plan</b>.</p>
+
+    <section class="glass support-card">
+      <h3>Common fixes (beta)</h3>
+      <ul class="clean support-faq tiny">
+        <li><b>App won’t start</b> — Install Python 3.10+. On Windows use <code>Launch Atlas.bat</code>. On Mac/Linux use <code>python3 run_atlas.py</code> (not <code>py -3</code>).</li>
+        <li><b>pip install failed</b> — Do <b>not</b> run the monorepo <code>requirements.txt</code>. Atlas desktop needs no pip packages for the built-in server.</li>
+        <li><b>Scan never finishes</b> — Avoid scanning <code>node_modules</code>, <code>.git</code>, or <code>.venv</code>. Use scan scope on Home.</li>
+        <li><b>Empty or odd results</b> — Try Load Sample Repository first; then Rebuild index below.</li>
+        <li><b>“It won’t write code”</b> — Expected. Atlas plans and exports context; you or your AI assistant implements changes.</li>
+      </ul>
+    </section>
 
     <div class="support-grid">
       <section class="glass support-card">

@@ -183,10 +183,10 @@ function maybeShowWelcomeScreen() {
 }
 
 const GUIDED_STEPS = [
-  { title: "Welcome", text: "Atlas maps your repository locally — then helps you plan changes, investigate bugs, and analyze impact.", action: null },
+  { title: "Welcome", text: "Atlas prepares grounded Build Plans for your AI tools. It maps code locally and does not write patches for you.", action: null },
   { title: "Sample repository", text: "We'll load a small bundled codebase so you can explore without cloning anything.", action: "load_sample" },
   { title: "Repository Map", text: "The 3D map shows modules, dependencies, and architectural risk. Click nodes to inspect them.", view: "center", action: "wait_map" },
-  { title: "Build Plan", text: "Describe a feature change. Atlas returns grounded files, order, and tests — planning only, no code writes.", view: "build", action: "build_example" },
+  { title: "Your first Build Plan", text: "We will load a sample repo and generate a plan — affected files, order, and tests. You implement the change (or paste the export into Claude/Cursor).", view: "build", action: "build_example" },
   { title: "Investigate", text: "Paste a symptom or traceback. Atlas ranks hypotheses and verification steps.", view: "investigate", action: "investigate_example" },
   { title: "Impact", text: "Enter a file or module to see blast radius before you edit.", view: "impact", action: "impact_example" },
   { title: "Export", text: "Download Build, Investigation, and Impact as one markdown file, or copy AI context packets.", view: "export", action: null },

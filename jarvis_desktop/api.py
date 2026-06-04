@@ -34,7 +34,7 @@ from . import reliability
 from .evidence_engine import build_evidence_store
 from . import usage as usage_tracking
 
-PRODUCT_VERSION = "phase143-one-click-installer"
+PRODUCT_VERSION = "phase146-beta-polish"
 CHARS_PER_TOKEN = 4.0
 GRAPH_DISPLAY_CAP = 5000
 GRAPH_DEFAULT_HIERARCHY_THRESHOLD = 1000

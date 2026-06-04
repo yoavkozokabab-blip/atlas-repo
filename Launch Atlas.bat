@@ -8,6 +8,7 @@ if exist "%~dp0Atlas.exe" (
 )
 echo.
 echo   Starting Atlas...
+echo   (No pip install needed — double-click Launch Atlas after Python 3.10+)
 echo.
 py -3 run_atlas.py %*
 if errorlevel 1 (
