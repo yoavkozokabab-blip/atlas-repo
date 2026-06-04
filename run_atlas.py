@@ -1,7 +1,19 @@
-"""Launch Atlas — one-click desktop entry (Phase 143).
+"""Launch Atlas — one-click desktop entry (Phase 143, refreshed Phase 155).
 
-No terminal knowledge required: double-click Launch Atlas.bat or run:
-    py -3 run_atlas.py
+No terminal knowledge required.
+
+Install modes
+-------------
+* Windows beta (installer): double-click the Atlas desktop/Start-menu shortcut.
+  No Python is required — the installer ships a self-contained Atlas.exe.
+* Source mode (developers): Python 3.10+ is required. Run:
+      py -3 run_atlas.py        (Windows)
+      python3 run_atlas.py      (macOS / Linux)
+
+Atlas opens your browser automatically and shows a clean loading screen while
+the local server starts. If startup fails, Atlas opens the Support page with a
+plain-language explanation, "Copy diagnostics", and "Open support bundle" — it
+never shows a raw traceback to a normal user.
 """
 
 from __future__ import annotations

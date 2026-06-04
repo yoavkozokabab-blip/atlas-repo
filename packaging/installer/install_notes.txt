@@ -1,0 +1,29 @@
+Atlas — Windows beta
+====================
+
+Thanks for trying Atlas.
+
+What you should know
+--------------------
+* Windows beta. Atlas runs as a local desktop app on your machine.
+* No Python required. This installer is self-contained — you do NOT need to
+  install Python to use Atlas.
+* Source mode (developers only): if you instead run Atlas from source code,
+  you need Python 3.10 or newer.
+
+What happens on first launch
+----------------------------
+* Atlas starts a local server and opens your browser automatically.
+* You'll see a clean loading screen while it starts.
+* If anything goes wrong, Atlas opens a Support page with a plain-language
+  explanation, "Copy diagnostics", and "Open support bundle". It never shows a
+  raw error trace.
+
+Getting value in under 5 minutes
+--------------------------------
+1. Click "Load Sample Repository".
+2. Read the success screen.
+3. Click "Generate your first Change Plan".
+4. Click "Copy for Claude / Cursor / Codex" and paste it into your AI tool.
+
+Atlas plans and explains changes; it does not edit your files for you.

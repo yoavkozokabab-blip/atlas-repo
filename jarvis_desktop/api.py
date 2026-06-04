@@ -576,7 +576,96 @@ def validate_repository_path(path: str) -> Dict[str, Any]:
         "total_files": total_files,
         "code_files": code_files,
         "warnings": warnings,
+        "broad_warnings": broad_folder_warnings(abspath, total_files=total_files),
     }
+
+
+# Folders that almost never correspond to a single project root.
+_BROAD_DESKTOP_LIKE = {"desktop", "downloads", "documents", "onedrive"}
+# Large-file threshold above which a single scan is likely to be slow/noisy.
+_BROAD_FILE_COUNT = 20000
+
+
+def broad_folder_warnings(
+    path: str,
+    *,
+    total_files: Optional[int] = None,
+    child_names: Optional[List[str]] = None,
+    nested_git_count: Optional[int] = None,
+) -> List[str]:
+    """Plain-language warnings when a chosen folder looks too broad to scan.
+
+    Pure and dependency-free so it is easy to test. The filesystem is only
+    consulted when ``child_names`` / ``nested_git_count`` are not supplied.
+    """
+    warnings: List[str] = []
+    raw = (path or "").strip()
+    if not raw:
+        return warnings
+    abspath = os.path.abspath(os.path.expanduser(raw))
+    norm = abspath.replace("\\", "/").rstrip("/")
+    base = os.path.basename(norm).lower()
+
+    # Drive root (C:\, D:\) or filesystem root (/).
+    drive, tail = os.path.splitdrive(abspath)
+    is_drive_root = abspath in ("/", os.sep) or (bool(drive) and tail in ("", "/", "\\", os.sep))
+    if is_drive_root:
+        warnings.append(
+            "This is a drive root. Scanning an entire drive is very slow — choose your project folder instead."
+        )
+
+    if base in _BROAD_DESKTOP_LIKE:
+        warnings.append(
+            f"This looks like your {base.capitalize()} folder, which usually mixes many unrelated files. "
+            "Pick a single project folder."
+        )
+
+    if "external_repos" in [seg.lower() for seg in norm.split("/")]:
+        warnings.append(
+            "external_repos holds many unrelated projects. Scan one project at a time for clean results."
+        )
+
+    if child_names is None:
+        try:
+            child_names = os.listdir(abspath)
+        except OSError:
+            child_names = []
+    lower_children = {str(c).lower() for c in (child_names or [])}
+
+    if "node_modules" in lower_children:
+        warnings.append(
+            "This folder contains node_modules. Atlas skips it, but confirm you selected your project root "
+            "and not an install tree."
+        )
+
+    if nested_git_count is None:
+        nested_git_count = _count_nested_git_projects(abspath, child_names)
+    if (nested_git_count or 0) >= 2:
+        warnings.append(
+            "This folder contains several sub-projects with their own .git history. "
+            "Scan one project at a time instead of the whole workspace."
+        )
+
+    if total_files is not None and total_files >= _BROAD_FILE_COUNT:
+        warnings.append(
+            f"Very large file count (~{total_files:,} files). Scanning may be slow — "
+            "consider a subfolder or a narrower scan scope."
+        )
+
+    return warnings
+
+
+def _count_nested_git_projects(abspath: str, child_names: Optional[List[str]]) -> int:
+    """Count immediate sub-folders that look like their own git repository."""
+    count = 0
+    for name in child_names or []:
+        sub = os.path.join(abspath, str(name))
+        try:
+            if os.path.isdir(sub) and os.path.isdir(os.path.join(sub, ".git")):
+                count += 1
+        except OSError:
+            continue
+    return count
 
 
 def pre_scan_estimate(path: str, scope: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:

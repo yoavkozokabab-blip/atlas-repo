@@ -22,7 +22,16 @@
   </header>
   <main id="app" class="support-page">
     <h2 class="vh">Support &amp; diagnostics</h2>
-    <p class="muted tiny support-lead">Check environment status, fix common issues, and export a support bundle — no source code included. New users: start with <b>Load Sample Repository</b> on Home, then <b>Build Plan</b>.</p>
+    <p class="muted tiny support-lead">Something went wrong, or you want to check Atlas? You're in the right place. Nothing here is uploaded — reports stay on your device unless you send them yourself. New users: start with <b>Load Sample Repository</b> on Home, then <b>Generate your first Change Plan</b>.</p>
+
+    <section class="glass support-card">
+      <h3>Install notes</h3>
+      <ul class="clean support-faq tiny">
+        <li><b>Windows beta</b> — Atlas ships as a Windows desktop app. Launch it from the Start menu or desktop shortcut.</li>
+        <li><b>No Python required (installer)</b> — If you used <code>Atlas_Setup.exe</code>, everything is bundled. You do not need to install Python.</li>
+        <li><b>Source mode (developers)</b> — If you run Atlas from source, you need <b>Python 3.10+</b>. Use <code>py -3 run_atlas.py</code> on Windows or <code>python3 run_atlas.py</code> on macOS/Linux.</li>
+      </ul>
+    </section>
 
     <section class="glass support-card">
       <h3>Common fixes (beta)</h3>
@@ -50,12 +59,13 @@
 
     <section class="glass support-card support-actions-card">
       <h3>Recovery actions</h3>
+      <p class="muted tiny" style="margin:0 0 10px">These run on your machine. Diagnostics and the support bundle are saved locally — Atlas does not send them anywhere.</p>
       <div class="success-buttons">
         <button class="btn primary" type="button" onclick="supportRebuildIndex()">Rebuild index</button>
         <button class="btn ghost" type="button" onclick="supportClearCache()">Clear cache</button>
         <button class="btn ghost" type="button" onclick="supportResetOnboarding()">Reset onboarding</button>
-        <button class="btn ghost" type="button" onclick="supportCopyDiagnostics()">Export diagnostics (JSON)</button>
-        <button class="btn ghost" type="button" onclick="supportDownloadBundle()">Download support bundle (.zip)</button>
+        <button class="btn ghost" type="button" onclick="supportCopyDiagnostics()">Copy diagnostics</button>
+        <button class="btn ghost" type="button" onclick="supportDownloadBundle()">Open support bundle</button>
       </div>
       <p class="muted tiny" style="margin-top:12px" id="supportActionMsg"></p>
     </section>

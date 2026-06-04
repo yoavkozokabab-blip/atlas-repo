@@ -19,6 +19,9 @@ DisableProgramGroupPage=yes
 OutputDir=output
 OutputBaseFilename=Atlas_Setup
 SetupIconFile=assets\atlas.ico
+; Phase 155 — show plain-language beta + install notes before installing.
+InfoBeforeFile=install_notes.txt
+AppComments=Atlas (Windows beta). Self-contained — no Python required to use the installer.
 UninstallDisplayIcon={app}\{#MyAppExeName}
 Compression=lzma2
 SolidCompression=yes

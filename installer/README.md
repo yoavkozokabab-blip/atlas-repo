@@ -2,6 +2,17 @@
 
 Produces **`Atlas_Setup.exe`** — a self-contained Windows installer for first-time beta users.
 
+## Install notes (read me first)
+
+- **Windows beta.** Atlas currently ships as a Windows desktop app.
+- **No Python required (installer).** If you install with `Atlas_Setup.exe`, everything is
+  bundled in `Atlas.exe`. You do **not** need to install Python.
+- **Source mode (developers).** If you run Atlas from source, you need **Python 3.10+**
+  (`py -3 run_atlas.py` on Windows, `python3 run_atlas.py` on macOS/Linux).
+- Atlas opens your browser automatically and shows a clean loading screen while the local
+  server starts. If startup fails, Atlas opens the **Support** page with a plain-language
+  message, **Copy diagnostics**, and **Open support bundle** — never a raw traceback.
+
 ## Requirements
 
 - **Python 3.10+** on the build machine (same as runtime)
@@ -27,12 +38,15 @@ Output: `installer/output/Atlas_Setup.exe`
 - Adds **Uninstall** entry in Windows Settings → Apps
 - Does **not** require cloud accounts or API keys
 
-## First run (3-minute wow path)
+## First run (under 5 minutes)
 
-1. Double-click **Launch Atlas** from Desktop or Start Menu
-2. Click **Load Sample Repository** or **Guided Walkthrough**
-3. Open **Support** from the top bar if anything fails
-3. Explore the 3D graph, ask Copilot, export context
+1. Launch **Atlas** from Desktop or Start Menu — your browser opens automatically.
+2. Click **Load Sample Repository** (no folder path, no setup).
+3. Read the success screen: *“Atlas understood the sample repository.”*
+4. Click **Generate your first Change Plan**.
+5. Click **Copy for Claude / Cursor / Codex** and paste the prompt into your AI tool.
+
+Open **Quickstart** (top bar) or **Support** if anything is unclear or fails.
 
 ## Clean uninstall
 

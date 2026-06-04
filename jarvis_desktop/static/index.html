@@ -18,6 +18,16 @@
   <div id="bg-grid"></div>
   <div id="bg-glow"></div>
 
+  <!-- Clean loading screen shown while the local server / UI initializes -->
+  <div id="bootSplash" class="boot-splash">
+    <div class="boot-splash-inner glass">
+      <span class="boot-logo">◈</span>
+      <h1>ATLAS</h1>
+      <p class="muted">Starting your local codebase intelligence…</p>
+      <div class="boot-spinner" aria-hidden="true"></div>
+    </div>
+  </div>
+
   <!-- Top bar -->
   <header class="topbar glass">
     <div class="brand" onclick="go('home')">
@@ -28,11 +38,11 @@
     <nav class="nav" id="nav">
       <button data-view="home" class="active" onclick="go('home')">Home</button>
       <button data-view="scan" onclick="go('scan')">Scan</button>
-      <button data-view="center" data-lock="1" onclick="go('center')">Repository Map</button>
-      <button data-view="build" data-lock="1" onclick="go('build')">Build Plan</button>
+      <button data-view="center" data-lock="1" onclick="go('center')">Codebase Map</button>
+      <button data-view="build" data-lock="1" onclick="go('build')">Change Plan</button>
       <button data-view="investigate" data-lock="1" onclick="go('investigate')">Investigate Bug</button>
-      <button data-view="impact" data-lock="1" onclick="go('impact')">Impact</button>
-      <button data-view="export" data-lock="1" onclick="go('export')">Export</button>
+      <button data-view="impact" data-lock="1" onclick="go('impact')">What breaks?</button>
+      <button data-view="export" data-lock="1" onclick="go('export')">Send to AI</button>
       <span class="billing-nav" id="billingNav" style="display:none">
         <a class="nav-link" href="usage.html">Usage</a>
         <a class="nav-link" href="pricing.html">Pricing</a>
@@ -43,10 +53,16 @@
     <span class="demo-badge" id="demoBadge" style="display:none">Sample repository</span>
     <span class="demo-badge massive" id="massiveBadge" style="display:none">Massive Repository Mode</span>
     <div class="topbar-actions">
-      <a class="btn ghost small" href="support.html">Support</a>
-      <button class="btn ghost small" type="button" onclick="showAboutAtlas()">About</button>
-      <button class="btn ghost small" type="button" onclick="copyBetaDiagnostics()" title="Copy version and scan stats for support">Diagnostics</button>
-      <button class="btn ghost small report-issue-btn" type="button" onclick="openReportIssue()">Report Issue</button>
+      <a class="btn ghost small" href="quickstart.html">Quickstart</a>
+      <details class="help-menu">
+        <summary class="btn ghost small">Help &amp; more ▾</summary>
+        <div class="help-menu-pop glass">
+          <button class="btn ghost small" type="button" onclick="showAboutAtlas()">About Atlas</button>
+          <a class="btn ghost small" href="support.html">Support</a>
+          <button class="btn ghost small" type="button" onclick="copyBetaDiagnostics()" title="Copy version and scan stats — stays on your device">Copy diagnostics</button>
+          <button class="btn ghost small report-issue-btn" type="button" onclick="openReportIssue()">Report an issue</button>
+        </div>
+      </details>
     </div>
   </header>
 
@@ -69,27 +85,34 @@
         <div class="steps-row">
           <div class="step"><div class="step-num">1</div><h3>Load sample</h3><p>Try Atlas in under a minute — no folder path needed.</p></div>
           <div class="step-arrow">→</div>
-          <div class="step"><div class="step-num">2</div><h3>Build Plan</h3><p>Describe a change; get files, order, and tests to run.</p></div>
+          <div class="step"><div class="step-num">2</div><h3>Change Plan</h3><p>Describe a change; get files, order, and tests to run.</p></div>
           <div class="step-arrow">→</div>
-          <div class="step"><div class="step-num">3</div><h3>Your repo</h3><p>Scan your project when ready — skip node_modules and .git.</p></div>
+          <div class="step"><div class="step-num">3</div><h3>Send to AI</h3><p>Copy a ready prompt into Claude, Cursor, or Codex.</p></div>
         </div>
         <div class="home-actions">
           <button class="btn primary big" type="button" onclick="loadDemoMode()">Load Sample Repository</button>
-          <button class="btn ghost big" type="button" onclick="startGuidedWalkthrough()">Guided Walkthrough</button>
-          <button class="btn ghost big" type="button" id="browseHomBtn" onclick="browseRepoFolder()">Scan my repository</button>
+          <button class="btn ghost big" type="button" id="browseHomBtn" onclick="browseRepoFolder()">Scan My Repository</button>
+          <a class="btn ghost big" href="quickstart.html">Open Quickstart</a>
         </div>
-        <h2 class="ask">Or explore by task</h2>
-        <div class="cards">
-          <div class="card glass" onclick="go('center')"><div class="ci">🧭</div><h3>Understand this repository</h3><p>Architecture summary, hubs, risks, module map.</p></div>
-          <div class="card glass" onclick="go('build')"><div class="ci">🛠</div><h3>Plan a feature change</h3><p>Grounded files, tests, and implementation order.</p></div>
-          <div class="card glass" onclick="go('investigate')"><div class="ci">🐞</div><h3>Investigate a bug</h3><p>Symptom → likely files, hypothesis, verification.</p></div>
-          <div class="card glass" onclick="go('impact')"><div class="ci">🌐</div><h3>Analyze impact of a change</h3><p>Direct importers and tests before you edit.</p></div>
-          <div class="card glass accent" onclick="go('export')"><div class="ci">✨</div><h3>Export context for Claude/Cursor</h3><p>Accurate compact or verbose context packets.</p></div>
-        </div>
+        <p class="muted tiny home-actions-help">New to Atlas? <b>Load Sample Repository</b> is the fastest way to see it work — no setup, no folder path. You can <a href="#" onclick="startGuidedWalkthrough();return false;">take the guided walkthrough</a> any time.</p>
+        <details class="home-explore">
+          <summary class="ask">Or explore by task</summary>
+          <div class="cards">
+            <div class="card glass" onclick="go('center')"><div class="ci">🧭</div><h3>Understand this codebase</h3><p>Architecture summary, hubs, risks, module map.</p></div>
+            <div class="card glass" onclick="go('build')"><div class="ci">🛠</div><h3>Plan a feature change</h3><p>Grounded files, tests, and implementation order.</p></div>
+            <div class="card glass" onclick="go('investigate')"><div class="ci">🐞</div><h3>Investigate a bug</h3><p>Symptom → likely files, hypothesis, verification.</p></div>
+            <div class="card glass" onclick="go('impact')"><div class="ci">🌐</div><h3>See what breaks</h3><p>Direct importers and tests before you edit.</p></div>
+            <div class="card glass accent" onclick="go('export')"><div class="ci">✨</div><h3>Send context to Claude/Cursor</h3><p>Accurate compact or verbose context packets.</p></div>
+          </div>
+        </details>
 
         <div class="repo-pick glass">
-          <label for="repoPath">Repository folder</label>
-          <p class="muted tiny picker-help">Paste your <b>project root</b> (not <code>node_modules</code> or <code>.git</code>). Atlas runs locally — your code is not uploaded. New here? Use <b>Load Sample Repository</b> above first.</p>
+          <label for="repoPath">Choose a folder to scan</label>
+          <p class="muted tiny picker-help">Atlas runs locally — your code is never uploaded.</p>
+          <div class="folder-guidance">
+            <p class="muted tiny"><span class="guide-ok">✓ Recommended</span> your project root — the folder that holds your source code.</p>
+            <p class="muted tiny"><span class="guide-avoid">✗ Avoid</span> <code>node_modules</code>, <code>.git</code>, your whole C: drive, Desktop/Downloads, or <code>external_repos</code>.</p>
+          </div>
           <div class="pick-row">
             <input id="repoPath" type="text" placeholder="C:\projects\my-app  or  /home/dev/my-app" value="" autocomplete="off" />
             <button class="btn browse-btn" id="browseRepoBtn" type="button" onclick="browseRepoFolder()">Browse</button>
@@ -97,26 +120,29 @@
           </div>
           <div class="path-error" id="pathError" style="display:none"></div>
           <div class="path-ok muted tiny" id="pathOk" style="display:none"></div>
-          <div class="scope-wrap">
-            <label>Scan scope</label>
-            <div class="scope-grid">
-              <select id="scopeMode">
-                <option value="entire_repo">Entire repository</option>
-                <option value="folder">Specific folder</option>
-                <option value="python_only">Only Python</option>
-                <option value="backend">Only backend</option>
-                <option value="frontend">Only frontend</option>
-                <option value="custom">Custom patterns</option>
-              </select>
-              <input id="scopeFolder" type="text" placeholder="folder path (for Specific folder)" />
+          <details class="scope-advanced">
+            <summary class="muted tiny">Advanced scan options</summary>
+            <div class="scope-wrap">
+              <label>Scan scope</label>
+              <div class="scope-grid">
+                <select id="scopeMode">
+                  <option value="entire_repo">Entire repository</option>
+                  <option value="folder">Specific folder</option>
+                  <option value="python_only">Only Python</option>
+                  <option value="backend">Only backend</option>
+                  <option value="frontend">Only frontend</option>
+                  <option value="custom">Custom patterns</option>
+                </select>
+                <input id="scopeFolder" type="text" placeholder="folder path (for Specific folder)" />
+              </div>
+              <div class="scope-grid">
+                <input id="scopeInclude" type="text" placeholder="include patterns, comma-separated (custom)" />
+                <input id="scopeExclude" type="text" placeholder="exclude patterns, comma-separated (custom)" />
+              </div>
+              <label class="graph-toggle edge-toggle"><input type="checkbox" id="manualMassiveMode"> Force Massive Repository Mode</label>
+              <div id="preScanEstimate" class="muted tiny"></div>
             </div>
-            <div class="scope-grid">
-              <input id="scopeInclude" type="text" placeholder="include patterns, comma-separated (custom)" />
-              <input id="scopeExclude" type="text" placeholder="exclude patterns, comma-separated (custom)" />
-            </div>
-            <label class="graph-toggle edge-toggle"><input type="checkbox" id="manualMassiveMode"> Force Massive Repository Mode</label>
-            <div id="preScanEstimate" class="muted tiny"></div>
-          </div>
+          </details>
           <div class="pick-actions">
             <button class="btn primary big" type="button" id="scanBtn" disabled onclick="scanFlow()">⟳ Scan Repository</button>
           </div>
@@ -146,7 +172,7 @@
         <div class="scan-foot"><div class="bar"><div class="bar-fill" id="scanBar"></div></div><span id="scanPct">0%</span><button class="btn ghost small" type="button" onclick="cancelCurrentScan()">Cancel scan</button></div>
       </div>
       <div id="scanSuccess" class="scan-result glass" style="display:none">
-        <h3>Scan complete</h3>
+        <h3 id="scanSuccessTitle">Atlas understood your repository.</h3>
         <p class="muted" id="scanSuccessSub"></p>
         <div class="success-grid" id="scanSuccessMetrics"></div>
         <div class="success-risk" id="scanSuccessRisk"></div>
@@ -154,8 +180,8 @@
         <h4 class="success-actions-title">Suggested next steps</h4>
         <ul class="clean" id="scanSuccessActions"></ul>
         <div class="success-buttons">
-          <button class="btn primary" onclick="goToFirstBuildPlan()">Try your first Build Plan</button>
-          <button class="btn ghost" onclick="go('center')">Explore Repository Map</button>
+          <button class="btn primary big" onclick="goToFirstBuildPlan()">Generate your first Change Plan</button>
+          <button class="btn ghost" onclick="go('center')">Explore Codebase Map</button>
           <button class="btn ghost" onclick="focusCopilot()">Ask Copilot</button>
         </div>
       </div>
@@ -178,7 +204,7 @@
           <div class="map-header">
             <div class="map-titlebar">
               <div class="map-title-left">
-                <h3>Repository Map</h3>
+                <h3>Codebase Map</h3>
                 <span class="map-repo" id="mapRepoName"></span>
                 <span class="map-health-badge" id="mapHealthBadge"></span>
               </div>
@@ -298,12 +324,13 @@
       </div>
     </section>
 
-    <!-- ===================== SCREEN: BUILD PLAN ===================== -->
+    <!-- ===================== SCREEN: CHANGE PLAN ===================== -->
     <section class="view" id="view-build">
-      <h2 class="vh">Build Plan</h2>
-      <p class="muted tiny" style="margin:-8px 4px 14px">Describe what you want to add or change. Atlas lists affected files, implementation order, and tests — then you implement (or paste the export into your AI assistant).</p>
+      <h2 class="vh">Change Plan</h2>
+      <p class="muted tiny" style="margin:-8px 4px 14px">Describe what you want to add or change. Atlas lists affected files, implementation order, and tests — then sends a ready prompt to your AI coding tool.</p>
+      <div id="readyState"></div>
       <div id="firstBuildBanner" class="beta-notice glass" style="display:none">
-        <b>First Build Plan</b> — keep the example below or type your own feature, then click <b>Generate Change Plan</b>.
+        <b>Your first Change Plan</b> — keep the example below or type your own feature, then click <b>Generate Change Plan</b>.
       </div>
       <div class="io glass">
         <label>What do you want to add or change?</label>
@@ -311,9 +338,9 @@
         <button class="btn primary" onclick="runChangePlan()">Generate Change Plan</button>
       </div>
       <div class="workflow-toolbar glass" id="buildToolbar" style="display:none">
-        <button class="btn small ghost" type="button" onclick="downloadWorkflowMarkdownBundle()">Export markdown bundle</button>
+        <button class="btn small ghost" type="button" onclick="downloadWorkflowMarkdownBundle()">Download Markdown</button>
       </div>
-      <div id="buildOut" class="out"><div class="glass empty-panel"><h3 style="margin:0 0 8px">Build Plan needs a scanned repository</h3><p class="muted" style="margin:0">Load the sample repository (about 60 seconds) or scan your own folder from Home.</p><div class="success-buttons" style="margin-top:14px"><button class="btn primary" type="button" onclick="loadDemoMode()">Load Sample Repository</button></div></div></div>
+      <div id="buildOut" class="out"><div class="glass empty-panel"><h3 style="margin:0 0 8px">Scan a repository first.</h3><p class="muted" style="margin:0 0 14px">Atlas needs a codebase to plan against. Load the bundled sample (about 60 seconds) or scan your own folder.</p><div class="success-buttons"><button class="btn primary" type="button" onclick="go('home')">Scan Repository</button><button class="btn ghost" type="button" onclick="loadDemoMode()">Load Sample Repository</button></div></div></div>
     </section>
 
     <!-- ===================== SCREEN: INVESTIGATE BUG ===================== -->
@@ -326,39 +353,39 @@
         <button class="btn primary" onclick="runInvestigationPlan()">Generate Investigation Plan</button>
       </div>
       <div class="workflow-toolbar glass" id="investigateToolbar" style="display:none">
-        <button class="btn small ghost" type="button" onclick="downloadWorkflowMarkdownBundle()">Export markdown bundle</button>
+        <button class="btn small ghost" type="button" onclick="downloadWorkflowMarkdownBundle()">Download Markdown</button>
       </div>
-      <div id="investigateOut" class="out"><div class="glass empty-panel muted">Describe a symptom after scanning — Atlas suggests files and verification steps.</div></div>
+      <div id="investigateOut" class="out"><div class="glass empty-panel"><h3 style="margin:0 0 8px">Scan a repository first.</h3><p class="muted" style="margin:0 0 14px">Describe a symptom after scanning — Atlas suggests files and verification steps.</p><div class="success-buttons"><button class="btn primary" type="button" onclick="go('home')">Scan Repository</button><button class="btn ghost" type="button" onclick="loadDemoMode()">Load Sample Repository</button></div></div></div>
     </section>
 
-    <!-- ===================== SCREEN 5: IMPACT SIMULATOR ===================== -->
+    <!-- ===================== SCREEN 5: WHAT BREAKS? ===================== -->
     <section class="view" id="view-impact">
-      <h2 class="vh">Impact Analysis</h2>
+      <h2 class="vh">What breaks?</h2>
       <p class="muted tiny" style="margin:-8px 4px 14px">See which files import your target — files that may break if you change it (blast radius).</p>
       <div class="io glass">
         <label>What file or module do you want to change?</label>
         <div class="pick-row">
           <input id="impactTarget" type="text" placeholder="e.g. config.py  or  builder_core/ask.py" />
-          <button class="btn primary" onclick="runImpact()">Simulate Impact</button>
+          <button class="btn primary" onclick="runImpact()">Show what breaks</button>
         </div>
       </div>
       <div class="workflow-toolbar glass" id="impactToolbar" style="display:none">
-        <button class="btn small ghost" type="button" onclick="downloadWorkflowMarkdownBundle()">Export markdown bundle</button>
+        <button class="btn small ghost" type="button" onclick="downloadWorkflowMarkdownBundle()">Download Markdown</button>
       </div>
-      <div id="impactOut" class="out"><div class="glass empty-panel muted">Enter a module path after scanning to see blast radius and affected tests.</div></div>
+      <div id="impactOut" class="out"><div class="glass empty-panel"><h3 style="margin:0 0 8px">Scan a repository first.</h3><p class="muted" style="margin:0 0 14px">Enter a module path after scanning to see blast radius and affected tests.</p><div class="success-buttons"><button class="btn primary" type="button" onclick="go('home')">Scan Repository</button><button class="btn ghost" type="button" onclick="loadDemoMode()">Load Sample Repository</button></div></div></div>
     </section>
 
-    <!-- ===================== SCREEN: EXPORT ===================== -->
+    <!-- ===================== SCREEN: SEND TO AI ===================== -->
     <section class="view" id="view-export">
-      <h2 class="vh">Export</h2>
+      <h2 class="vh">Send to AI</h2>
       <div class="export-grid">
         <div class="glass controls">
           <div class="export-why">
-            <div class="export-why-title">Why this helps</div>
+            <div class="export-why-title">Send this to your AI coding tool</div>
             <p>Atlas gives your AI assistant repository context before it starts guessing. Compact packets reduce token cost; verbose packets include full architectural evidence.</p>
-            <p class="muted tiny" style="margin-top:10px"><b>After you copy:</b> paste into a new chat in Claude, Codex, or Cursor, then ask your assistant to implement or review using that context.</p>
+            <p class="muted tiny" style="margin-top:10px"><b>Next step:</b> paste this into Claude, Cursor, or Codex and ask it to implement the plan.</p>
           </div>
-          <label>Target</label>
+          <label>Target tool</label>
           <div class="seg" id="segTarget">
             <button class="active" data-v="claude">Claude</button>
             <button data-v="codex">Codex</button>
@@ -371,12 +398,12 @@
           </div>
           <div class="tok-est"><span class="muted">Estimated tokens</span><span class="tok-big" id="tokEst">—</span></div>
           <div class="copy-row">
-            <button class="btn primary" onclick="copyExport()">Copy to clipboard</button>
-            <button class="btn ghost" onclick="saveExport()">Save prompt</button>
-            <button class="btn ghost" onclick="downloadWorkflowMarkdownBundle()">Export workflow markdown</button>
+            <button class="btn primary" id="copyExportBtn" onclick="copyExport()">Copy for Claude</button>
+            <button class="btn ghost" onclick="saveExport()">Download Markdown</button>
+            <button class="btn ghost" onclick="downloadWorkflowMarkdownBundle()">Download workflow Markdown</button>
             <button class="btn ghost" onclick="exportDemoBundle()">Export Demo Bundle</button>
           </div>
-          <p class="muted tiny">Token numbers are estimates (chars/4). No API keys required — copy & paste into your tool.</p>
+          <p class="muted tiny">Token numbers are estimates (chars/4). No API keys required — copy &amp; paste into your tool.</p>
         </div>
         <div class="glass preview">
           <div class="preview-head"><span>Context preview</span><span class="muted" id="previewMeta"></span></div>
@@ -393,8 +420,8 @@
     <div class="welcome-card glass">
       <p class="onboard-eyebrow">Private beta</p>
       <h1 class="welcome-title">Welcome to Atlas</h1>
-      <p class="muted welcome-lead">Atlas maps your repository on your machine and prepares grounded <b>Build Plans</b> for your AI tools. It does <b>not</b> write or apply code for you.</p>
-      <p class="muted tiny">Fastest start: load the sample, then generate your first Build Plan in about a minute.</p>
+      <p class="muted welcome-lead">Atlas maps your codebase on your machine and prepares grounded <b>Change Plans</b> you can send to your AI coding tool. It does <b>not</b> write or apply code for you.</p>
+      <p class="muted tiny">Fastest start: load the sample, then generate your first Change Plan in about a minute.</p>
       <div class="welcome-actions">
         <button class="btn primary big" type="button" onclick="welcomeLoadSample()">Load Sample Repository</button>
         <button class="btn ghost big" type="button" onclick="welcomeStartWalkthrough()">Guided Walkthrough</button>
@@ -419,10 +446,10 @@
       <h2>About Atlas</h2>
       <h3>What Atlas does</h3>
       <ul class="clean about-list">
-        <li>Scans your repository locally — files, modules, imports, and dependency edges</li>
-        <li>Maps architecture and risk in an interactive Repository Map</li>
-        <li>Generates grounded <b>Build Plans</b>, <b>Investigations</b>, and <b>Impact</b> analysis</li>
-        <li>Exports compact context packets for Claude, Codex, and Cursor</li>
+        <li>Scans your codebase locally — files, modules, imports, and dependency edges</li>
+        <li>Maps architecture and risk in an interactive Codebase Map</li>
+        <li>Generates grounded <b>Change Plans</b>, <b>Investigations</b>, and <b>What breaks?</b> analysis</li>
+        <li>Sends ready-to-use context to Claude, Codex, and Cursor</li>
         <li>Stores feedback and diagnostics on your device for beta support</li>
       </ul>
       <h3>What Atlas does not do</h3>
@@ -448,8 +475,8 @@
       <div class="onboard-steps-grid">
         <div class="onboard-step-card"><span class="onboard-num">1</span><b>Select repository</b><p class="muted tiny">Browse your project folder or load a built-in sample.</p></div>
         <div class="onboard-step-card"><span class="onboard-num">2</span><b>Scan</b><p class="muted tiny">Atlas indexes files, modules, imports, and risks on your machine.</p></div>
-        <div class="onboard-step-card"><span class="onboard-num">3</span><b>Repository Map</b><p class="muted tiny">Explore dependencies, hubs, and architecture in 3D.</p></div>
-        <div class="onboard-step-card"><span class="onboard-num">4</span><b>Build · Investigate · Impact</b><p class="muted tiny">Grounded plans and blast-radius analysis for your next change.</p></div>
+        <div class="onboard-step-card"><span class="onboard-num">3</span><b>Codebase Map</b><p class="muted tiny">Explore dependencies, hubs, and architecture in 3D.</p></div>
+        <div class="onboard-step-card"><span class="onboard-num">4</span><b>Change Plan · Investigate · What breaks?</b><p class="muted tiny">Grounded plans and blast-radius analysis for your next change.</p></div>
       </div>
       <div class="onboard-actions">
         <button class="btn primary" onclick="onboardingLoadSample()">Load Sample Repository</button>
@@ -465,5 +492,6 @@
   <script>document.body.dataset.fbHideButton = "1";</script>
   <script src="atlas_beta.js"></script>
   <script src="atlas_polish.js"></script>
+  <script src="atlas_zero_friction.js"></script>
 </body>
 </html>

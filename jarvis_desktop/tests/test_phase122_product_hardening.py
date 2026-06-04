@@ -31,13 +31,14 @@ def planner_scan(tmp_path):
 
 
 def test_simplified_nav_labels():
+    # Phase 155 — nav labels were de-jargoned for first-time users.
     html = INDEX.read_text(encoding="utf-8")
     for label in (
-        "Repository Map",
-        "Build Plan",
+        "Codebase Map",
+        "Change Plan",
         "Investigate Bug",
-        "Impact",
-        "Export",
+        "What breaks?",
+        "Send to AI",
     ):
         assert label in html
     for removed in ("Command Center", "Bug Hunt", "data-view=\"intel\"", "data-view=\"bug\""):

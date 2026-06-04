@@ -25,17 +25,14 @@ function markFirstBuildPlanDone() {
 
 function promptFirstBuildPlanAfterScan(scan) {
   if (!scan || !scan.ok) return;
+  // Phase 155 — do NOT auto-jump. Let the success screen land so the user
+  // clearly sees what Atlas understood, then chooses "Generate your first
+  // Change Plan" themselves.
   let done = false;
   try { done = localStorage.getItem(FIRST_BUILD_KEY) === "1"; } catch (e) {}
   if (done) return;
-  if (scan.demo_mode) {
-    setTimeout(function () {
-      goToFirstBuildPlan();
-    }, 900);
-    return;
-  }
   if (typeof toast === "function") {
-    toast("Next: open Build Plan and describe a change you want to make", "success");
+    toast("Next: click \u201cGenerate your first Change Plan\u201d", "success");
   }
 }
 

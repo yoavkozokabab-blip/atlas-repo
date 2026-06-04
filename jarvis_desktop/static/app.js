@@ -290,9 +290,9 @@ function workflowEmptyHtml(title, body, primaryLabel, primaryFn, secondaryLabel,
 
 function renderWorkflowGate(view) {
   const map = {
-    build: { el: "buildOut", title: "Build Plan needs a scan", body: "Load the sample repository first (about 60 seconds), then describe what you want to add or change.", primary: "Load Sample Repository", fn: "loadDemoMode()", secondary: "Go to Home", fn2: "go('home')" },
-    investigate: { el: "investigateOut", title: "Investigation needs a scan", body: "Describe a symptom after Atlas has indexed your codebase.", primary: "Load Sample Repository", fn: "loadDemoMode()", secondary: "Go to Home", fn2: "go('home')" },
-    impact: { el: "impactOut", title: "Impact analysis needs a scan", body: "Enter a file or module path after scanning to see blast radius.", primary: "Load Sample Repository", fn: "loadDemoMode()", secondary: "Go to Home", fn2: "go('home')" },
+    build: { el: "buildOut", title: "Scan a repository first.", body: "Atlas needs a codebase to plan against. Scan your own folder, or load the bundled sample (about 60 seconds).", primary: "Scan Repository", fn: "go('home')", secondary: "Load Sample Repository", fn2: "loadDemoMode()" },
+    investigate: { el: "investigateOut", title: "Scan a repository first.", body: "Describe a symptom after Atlas has indexed your codebase.", primary: "Scan Repository", fn: "go('home')", secondary: "Load Sample Repository", fn2: "loadDemoMode()" },
+    impact: { el: "impactOut", title: "Scan a repository first.", body: "Enter a file or module path after scanning to see blast radius.", primary: "Scan Repository", fn: "go('home')", secondary: "Load Sample Repository", fn2: "loadDemoMode()" },
   };
   const spec = map[view];
   if (!spec) return false;
@@ -363,6 +363,8 @@ function showScanFailed(message, code) {
 
 function renderScanSuccess(scan) {
   showScanPanel("success");
+  const titleEl = $("scanSuccessTitle");
+  if (titleEl) titleEl.textContent = scan.demo_mode ? "Atlas understood the sample repository." : "Atlas understood your repository.";
   const demo = scan.demo_mode ? " · Sample repository" : "";
   $("scanSuccessSub").textContent = `${scan.repo_name || "Repository"} indexed in ${scan.scan_duration_seconds || "?"}s${demo}`;
   $("scanSuccessMetrics").innerHTML = [
@@ -376,7 +378,7 @@ function renderScanSuccess(scan) {
     ? `<b style="color:${riskColor(risk.score)}">Top risk:</b> ${risk.module || risk.path} (score ${risk.score})`
     : `<span class="muted">No architectural risk ranking available.</span>`;
   $("scanSuccessActions").innerHTML = (scan.suggested_next_actions || []).map(a => `<li>${a}</li>`).join("") ||
-    "<li>Generate a Build Plan for a feature you want to add</li><li>Explore the Repository Map</li>";
+    "<li>Generate your first Change Plan for a feature you want to add</li><li>Explore the Codebase Map</li>";
   if (typeof renderScanReliabilityNotice === "function") renderScanReliabilityNotice(scan);
 }
 
@@ -689,6 +691,15 @@ async function pollScanProgress(stopRef) {
 async function scanFlow() {
   const validation = await validateRepoPath(true);
   if (!validation) return;
+  const broad = validation.broad_warnings || [];
+  if (broad.length && typeof atlasShowBroadFolderModal === "function") {
+    atlasShowBroadFolderModal(broad, function () { executeScanFlow(validation); });
+    return;
+  }
+  return executeScanFlow(validation);
+}
+
+async function executeScanFlow(validation) {
   const path = validation.path;
   const sel = await api("/api/repositories/select", "POST", { path });
   if (!sel.ok) { toast("✗ " + (sel.error || "Invalid path"), "error"); return; }
@@ -842,8 +853,8 @@ function updateGraphMeta(data, perf) {
 async function renderCenter() {
   const sum = STATE.summary || (STATE.summary = await api("/api/repositories/current/summary"));
   if (!sum.ok) {
-    $("leftPanel").innerHTML = emptyStateHtml("No repository scanned", "Scan a folder or load a sample repository to explore the dependency graph.", "Go to Home", "go('home')");
-    $("graph3d").innerHTML = emptyStateHtml("Graph unavailable", "Complete a scan to render the dependency graph.", "Load Sample Repository", "loadDemoMode()");
+    $("leftPanel").innerHTML = emptyStateHtml("Scan a repository first.", "Scan a folder or load a sample to explore the dependency map.", "Scan Repository", "go('home')");
+    $("graph3d").innerHTML = emptyStateHtml("Scan a repository first.", "Complete a scan to render the dependency map.", "Scan Repository", "go('home')");
     $("suggest").innerHTML = "";
     $("moduleInspector").innerHTML = `<h3>Module Inspector</h3><p class="muted tiny">Scan a repository first.</p>`;
     JARVIS_UNIVERSE.renderTimeline($("timelinePanel"), null);
@@ -1547,6 +1558,7 @@ async function runChangePlan() {
   }
   STATE.buildResult = r;
   if (typeof markFirstBuildPlanDone === "function") markFirstBuildPlanDone();
+  if (typeof afterChangePlanSuccess === "function") afterChangePlanSuccess();
   const p = r.plan || {};
   const prompts = r.prompts || {};
   out.innerHTML = `
@@ -1571,15 +1583,10 @@ async function runChangePlan() {
         <ul class="clean tiny">${(p.evidence || []).map(e => `<li>${esc(e)}</li>`).join("")}</ul>
       </details>
       ${renderLimitations(r.limitations)}
-      <h3 style="font-size:13px;color:var(--cyan);margin-top:16px">Export implementation prompts</h3>
-      <div class="copy-row">
-        <button class="btn small" onclick="copyBuildPrompt('claude')">Copy Claude</button>
-        <button class="btn small" onclick="copyBuildPrompt('codex')">Copy Codex</button>
-        <button class="btn small" onclick="copyBuildPrompt('cursor')">Copy Cursor</button>
-      </div>
-      <details style="margin-top:12px"><summary class="muted tiny">Preview Claude prompt</summary>
+      ${typeof sendToAiPanel === "function" ? sendToAiPanel("build") : ""}
+      <details style="margin-top:12px"><summary class="muted tiny">Preview raw planning prompt</summary>
         <pre class="code">${esc(prompts.claude || "")}</pre></details>
-      <h3 style="font-size:13px;color:var(--cyan);margin-top:18px">Impact simulation (optional)</h3>
+      <h3 style="font-size:13px;color:var(--cyan);margin-top:18px">What breaks? simulation (optional)</h3>
       <div class="pick-row">
         <input id="buildImpactTarget" type="text" placeholder="module path to simulate blast radius" value="${esc((p.files_to_inspect_first || [])[0] || "")}" />
         <button class="btn ghost" onclick="runBuildImpact()">Simulate</button>
@@ -1649,12 +1656,7 @@ async function runInvestigationPlan() {
       ${(p.minimal_fix_strategy || []).length ? `<div class="report-section"><div class="report-label">Minimal fix strategy</div><ul class="clean">${p.minimal_fix_strategy.map(v => `<li>${esc(v)}</li>`).join("")}</ul></div>` : ""}
       ${(p.risks_of_incorrect_fix || []).length ? `<div class="report-section"><div class="report-label">Risks of fixing incorrectly</div><ul class="clean">${p.risks_of_incorrect_fix.map(v => `<li>${esc(v)}</li>`).join("")}</ul></div>` : ""}
       ${renderLimitations(r.limitations)}
-      <h3 style="font-size:13px;color:var(--cyan);margin-top:16px">Export investigation prompt</h3>
-      <div class="copy-row">
-        <button class="btn small" onclick="copyInvestigatePrompt('claude')">Copy Claude</button>
-        <button class="btn small" onclick="copyInvestigatePrompt('codex')">Copy Codex</button>
-        <button class="btn small" onclick="copyInvestigatePrompt('cursor')">Copy Cursor</button>
-      </div>
+      ${typeof sendToAiPanel === "function" ? sendToAiPanel("investigate") : ""}
       <details style="margin-top:12px"><summary class="muted tiny">Preview full report (markdown)</summary>
         <pre class="code">${esc(r.formatted || "")}</pre></details>
       ${typeof workflowFeedbackHtml === "function" ? workflowFeedbackHtml("investigate") : ""}
@@ -1740,9 +1742,9 @@ async function runImpact() {
         <div class="report-label" style="margin-top:8px">Risks of an incorrect change</div><ul class="clean tiny">${list(r.risks_of_incorrect_fix, 5)}</ul>
         <div class="report-label" style="margin-top:8px">Probably safe (untouched)</div><ul class="clean tiny">${list(r.what_probably_wont_break, 6)}</ul>
         <div class="report-label" style="margin-top:8px">Evidence</div><ul class="clean tiny">${list(r.evidence, 6)}</ul></details>
+      ${typeof sendToAiPanel === "function" ? sendToAiPanel("impact") : ""}
       <div class="copy-row" style="margin-top:12px">
-        <button class="btn small" onclick="copyImpactPrompt()">Copy AI prompt</button>
-        <button class="btn small ghost" onclick="go('center')">Show on graph</button>
+        <button class="btn small ghost" onclick="go('center')">Show on map</button>
       </div>
       ${typeof workflowFeedbackHtml === "function" ? workflowFeedbackHtml("impact") : ""}
     </div>`;
@@ -1851,10 +1853,18 @@ function wireSeg(id, key) {
     b.classList.add("active"); STATE[key] = b.dataset.v; refreshExport();
   });
 }
+const EXPORT_TARGET_LABEL = { claude: "Claude", codex: "Codex", cursor: "Cursor" };
+
+function updateCopyExportLabel() {
+  const btn = $("copyExportBtn");
+  if (btn) btn.textContent = `Copy for ${EXPORT_TARGET_LABEL[STATE.exportTarget] || "Claude"}`;
+}
+
 async function refreshExport() {
+  updateCopyExportLabel();
   const sum = STATE.summary || await api("/api/repositories/current/summary");
   if (!sum.ok) {
-    $("exportPreview").innerHTML = emptyStateHtml("Export unavailable", "Scan a repository or load a sample to build an AI context packet.", "Load Sample Repository", "loadDemoMode()");
+    $("exportPreview").innerHTML = emptyStateHtml("Scan a repository first.", "Scan a folder or load a sample to build an AI context packet.", "Scan Repository", "go('home')");
     $("tokEst").textContent = "—";
     $("previewMeta").textContent = "Scan required";
     return;
