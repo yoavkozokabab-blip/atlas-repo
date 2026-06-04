@@ -1,4 +1,4 @@
-"""Domain knowledge facade — delegates to Atlas Knowledge Engine (Phase 127).
+"""Domain knowledge facade — delegates to Syron Knowledge Engine (Phase 127).
 
 Backward-compatible API for planning_engine and tests.
 """

@@ -74,7 +74,7 @@ function impactResultMarkdown(r) {
 
 function buildWorkflowMarkdownBundle() {
   const parts = [
-    "# Atlas workflow export",
+    "# Syron workflow export",
     "",
     `Generated: ${new Date().toISOString()}`,
     `Repository: ${(STATE.summary && STATE.summary.repo_name) || "—"}`,
@@ -100,7 +100,7 @@ function buildWorkflowMarkdownBundle() {
 
 function downloadWorkflowMarkdownBundle() {
   const text = buildWorkflowMarkdownBundle();
-  const repo = ((STATE.summary && STATE.summary.repo_name) || "atlas").replace(/[^\w.-]+/g, "_");
+  const repo = ((STATE.summary && STATE.summary.repo_name) || "syron").replace(/[^\w.-]+/g, "_");
   const blob = new Blob([text], { type: "text/markdown" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
@@ -183,11 +183,11 @@ function maybeShowWelcomeScreen() {
 }
 
 const GUIDED_STEPS = [
-  { title: "Welcome", text: "Atlas maps your repository locally — then helps you plan changes, investigate bugs, and analyze impact.", action: null },
+  { title: "Welcome", text: "Syron maps your repository locally — then helps you plan changes, investigate bugs, and analyze impact.", action: null },
   { title: "Sample repository", text: "We'll load a small bundled codebase so you can explore without cloning anything.", action: "load_sample" },
   { title: "Repository Map", text: "The 3D map shows modules, dependencies, and architectural risk. Click nodes to inspect them.", view: "center", action: "wait_map" },
-  { title: "Build Plan", text: "Describe a feature change. Atlas returns grounded files, order, and tests — planning only, no code writes.", view: "build", action: "build_example" },
-  { title: "Investigate", text: "Paste a symptom or traceback. Atlas ranks hypotheses and verification steps.", view: "investigate", action: "investigate_example" },
+  { title: "Build Plan", text: "Describe a feature change. Syron returns grounded files, order, and tests — planning only, no code writes.", view: "build", action: "build_example" },
+  { title: "Investigate", text: "Paste a symptom or traceback. Syron ranks hypotheses and verification steps.", view: "investigate", action: "investigate_example" },
   { title: "Impact", text: "Enter a file or module to see blast radius before you edit.", view: "impact", action: "impact_example" },
   { title: "Export", text: "Download Build, Investigation, and Impact as one markdown file, or copy AI context packets.", view: "export", action: null },
   { title: "You're ready", text: "Scan your own repository from Home, or keep exploring the sample. Use Report Issue if something breaks.", action: "done" },

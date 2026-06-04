@@ -34,7 +34,7 @@ from . import reliability
 from .evidence_engine import build_evidence_store
 from . import usage as usage_tracking
 
-PRODUCT_VERSION = "phase141-private-beta-launch"
+PRODUCT_VERSION = "phase143-one-click-installer"
 CHARS_PER_TOKEN = 4.0
 GRAPH_DISPLAY_CAP = 5000
 GRAPH_DEFAULT_HIERARCHY_THRESHOLD = 1000
@@ -313,7 +313,7 @@ def health() -> Dict[str, Any]:
     return {
         "ok": True,
         "status": "ok",
-        "product": "ATLAS",
+        "product": "SYRON",
         "tagline": "Repository Intelligence Platform",
         "version": PRODUCT_VERSION,
         "repository_open": bool(scan),
@@ -704,7 +704,7 @@ def load_demo_mode(pack: str = "small") -> Dict[str, Any]:
     _STATE["demo_mode"] = True
     result["demo_mode"] = True
     result["demo_pack"] = pack_id
-    result["repo_name"] = f"Atlas Demo — {label}"
+    result["repo_name"] = f"Syron Demo — {label}"
     result["repo_path"] = demo_path
     _STATE["scan"]["demo_mode"] = True
     _STATE["scan"]["demo_pack"] = pack_id
@@ -1249,6 +1249,32 @@ def current_summary() -> Dict[str, Any]:
     }
 
 
+def startup_status() -> Dict[str, Any]:
+    """Phase 143 — environment checks for launcher / support UI."""
+    from .install_support import environment_status
+
+    return environment_status()
+
+
+def clear_scan_cache() -> Dict[str, Any]:
+    from .install_support import clear_scan_cache as _clear
+
+    return _clear()
+
+
+def rebuild_repository_index(*, rescan: bool = True) -> Dict[str, Any]:
+    from .install_support import rebuild_index
+
+    return rebuild_index(rescan=rescan)
+
+
+def export_support_bundle() -> Dict[str, Any]:
+    """Phase 143 — zip diagnostics + scan metadata + logs (no source code)."""
+    from .install_support import export_support_bundle as _export
+
+    return _export()
+
+
 def beta_diagnostics() -> Dict[str, Any]:
     """Phase 141 — support bundle: version, scan stats, repository size."""
     scan = _STATE.get("scan") or {}
@@ -1257,7 +1283,7 @@ def beta_diagnostics() -> Dict[str, Any]:
     perf = _STATE.get("scan_perf") or {}
     return {
         "ok": True,
-        "product": "ATLAS",
+        "product": "SYRON",
         "version": PRODUCT_VERSION,
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "repository": {

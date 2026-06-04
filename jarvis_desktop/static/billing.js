@@ -117,7 +117,7 @@
     grid.innerHTML = "";
     var plans = (data && data.plans) || [];
     if (!plans.length) {
-      grid.appendChild(el("div", "empty-state", "Plan catalogue is loading from your local Atlas instance. Restart the desktop server if this persists."));
+      grid.appendChild(el("div", "empty-state", "Plan catalogue is loading from your local Syron instance. Restart the desktop server if this persists."));
       return;
     }
     var note = document.getElementById("pricingNote");
@@ -172,7 +172,7 @@
       cards.innerHTML = "";
       if (empty) {
         empty.style.display = "block";
-        empty.textContent = "Usage dashboard will appear after Atlas records local activity. Run a scan or generate a Build Plan to populate metrics.";
+        empty.textContent = "Usage dashboard will appear after Syron records local activity. Run a scan or generate a Build Plan to populate metrics.";
       }
       return;
     }
@@ -212,7 +212,7 @@
       ["Investigations", usage.investigations],
       ["Impact analyses", usage.impacts],
       ["Exports", usage.exports_used],
-      ["Atlas compute units", usage.atlas_compute_units || usage.token_equivalent_total],
+      ["Syron compute units", usage.atlas_compute_units || usage.token_equivalent_total],
       ["Token-equivalent est.", usage.token_equivalent_total]
     ].forEach(function (s) { cards.appendChild(metricCard(s[0], s[1])); });
 
@@ -315,8 +315,8 @@
 
     if (!d || d.ok !== true) {
       var msg = (d && d.code === "admin_disabled")
-        ? "Admin dashboard is disabled. Start Atlas with ATLAS_ADMIN=1 to view local usage analytics."
-        : "Admin dashboard requires local admin access. Start Atlas with ATLAS_ADMIN=1.";
+        ? "Admin dashboard is disabled. Start Syron with ATLAS_ADMIN=1 to view local usage analytics."
+        : "Admin dashboard requires local admin access. Start Syron with ATLAS_ADMIN=1.";
       body.appendChild(el("div", "deny", msg));
       return;
     }
@@ -334,7 +334,7 @@
       ["Impact analyses", d.total_impacts],
       ["Exports", d.total_exports],
       ["Failed scans", d.failed_scans],
-      ["Atlas compute units", d.estimated_atlas_compute_units || d.token_equivalent_total],
+      ["Syron compute units", d.estimated_atlas_compute_units || d.token_equivalent_total],
       ["Token-equivalent est.", d.estimated_token_equivalent || d.token_equivalent_total],
       ["Mock users", d.mock_users || 1]
     ].forEach(function (s) {
@@ -359,7 +359,7 @@
       })));
 
     body.appendChild(el("h2", "section-title", "Highest usage users / workspaces"));
-    body.appendChild(tbl(["User", "Workspace", "Plan", "Events", "Atlas units"],
+    body.appendChild(tbl(["User", "Workspace", "Plan", "Events", "Syron units"],
       (d.high_usage_users || []).map(function (r) {
         return [r.user_id, r.workspace_id, r.plan, fmtNum(r.events), fmtNum(r.token_equivalent)];
       })));

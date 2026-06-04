@@ -314,7 +314,7 @@ def usage_admin_summary(store: Optional[UsageStore] = None, *, is_admin: bool = 
     if not is_admin:
         return {
             "ok": False,
-            "error": "Admin dashboard is disabled. Start Atlas with ATLAS_ADMIN=1 to view local usage analytics.",
+            "error": "Admin dashboard is disabled. Start Syron with ATLAS_ADMIN=1 to view local usage analytics.",
             "code": "admin_disabled",
             "admin_enabled": False,
         }

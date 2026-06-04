@@ -57,8 +57,8 @@ def test_launch_ui_assets():
     assert "beta_diagnostics" not in beta
     assert "/api/system/diagnostics" in beta
     assert "openReportIssue" in fb
-    assert "What Atlas does" in about
-    assert "What Atlas does not do" in about
+    assert "What Syron does" in about
+    assert "What Syron does not do" in about
 
 
 def test_launch_report_exists():

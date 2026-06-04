@@ -1,7 +1,7 @@
-"""Phase 119 — Atlas desktop product polish tests.
+"""Phase 119 — Syron desktop product polish tests.
 
 Covers:
-- Atlas branding on main page (title, logo text)
+- Syron branding on main page (title, logo text)
 - All API routes are registered (no missing endpoints)
 - Scan success UI payload fields
 - Partial graph warning in summary
@@ -49,21 +49,21 @@ def _js() -> str:
 
 
 # --------------------------------------------------------------------------
-# Atlas branding
+# Syron branding
 # --------------------------------------------------------------------------
 
 class TestAtlasBranding:
     def test_title_says_atlas(self):
         html = _html()
-        assert "<title>ATLAS" in html, "Page title should start with ATLAS"
+        assert "<title>SYRON" in html, "Page title should start with SYRON"
 
     def test_logo_text_is_atlas(self):
         html = _html()
-        assert 'class="logo-text">ATLAS<' in html, "Logo text should be ATLAS"
+        assert 'class="logo-text">SYRON<' in html, "Logo text should be SYRON"
 
     def test_hero_title_is_atlas(self):
         html = _html()
-        assert 'class="hero-title">ATLAS<' in html, "Hero title should be ATLAS"
+        assert 'class="hero-title">SYRON<' in html, "Hero title should be SYRON"
 
     def test_no_jarvis_in_title(self):
         html = _html()
@@ -71,11 +71,11 @@ class TestAtlasBranding:
 
     def test_onboarding_says_atlas(self):
         html = _html()
-        assert "Welcome to ATLAS" in html
+        assert "Welcome to SYRON" in html
 
     def test_presentation_badge_says_atlas(self):
         html = _html()
-        assert "ATLAS · Repository Intelligence" in html
+        assert "SYRON · Repository Intelligence" in html
 
     def test_hero_headline_present(self):
         html = _html()
@@ -104,14 +104,14 @@ class TestAtlasBranding:
     def test_js_export_filename_atlas(self):
         js = _js()
         assert 'atlas_context_' in js
-        assert 'atlas-universe-' in js
+        assert 'syron-universe-' in js
 
     def test_js_demo_load_message_atlas(self):
         js = _js()
-        assert "Loading Atlas demo" in js
+        assert "Loading Syron demo" in js
 
     def test_server_version_atlas(self):
-        assert "AtlasDesktop" in server.JarvisHandler.server_version
+        assert "SyronDesktop" in server.JarvisHandler.server_version
 
 
 # --------------------------------------------------------------------------

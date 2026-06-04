@@ -56,7 +56,7 @@
     }
     const bg = document.createElement("div"); bg.className = "fb-bg"; bg.id = "fbBg";
     bg.innerHTML = `<div class="fb-modal" onclick="event.stopPropagation()">
-      <h3>Send feedback</h3><p class="s">Help shape Atlas. Stored locally on this device.</p>
+      <h3>Send feedback</h3><p class="s">Help shape Syron. Stored locally on this device.</p>
       <div class="fb-cats" id="fbCats">${CATS.map(c => `<div class="fb-cat" data-c="${c.id}"><span>${c.icon}</span>${c.label}</div>`).join("")}</div>
       <textarea id="fbMsg" rows="4" placeholder="What happened, or what would make JARVIS better?"></textarea>
       <div class="fb-err" id="fbErr">Please write a short message.</div>

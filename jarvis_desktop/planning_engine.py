@@ -343,7 +343,7 @@ _SYMPTOM_SPECS: Dict[str, Dict[str, Any]] = {
             "wrong module",
             "scan graph",
             "graph shows wrong",
-            "atlas graph",
+            "syron graph",
             "repository map",
         ),
         "search": ("graph", "scan", "module", "index", "universe", "import", "dependency"),
@@ -1110,7 +1110,7 @@ def investigate_symptom(symptom: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
         "Only indexed production-scope modules are considered.",
     ]
     if not likely_modules:
-        limitations.append("Atlas cannot localize this symptom without stronger anchors (file paths, error types, or subsystem names).")
+        limitations.append("Syron cannot localize this symptom without stronger anchors (file paths, error types, or subsystem names).")
 
     verify_steps = list(spec.get("verify", ()))
     verify_steps.extend(_suggested_questions(intent, likely_modules)[:3])
@@ -1499,7 +1499,7 @@ def _prompt_claude_change(s: Dict[str, Any]) -> str:
         f"## Dependencies\nOutbound: {', '.join(s['deps_out'][:8]) or 'none listed'}\n"
         f"Inbound importers: {', '.join(s['deps_in'][:8]) or 'none listed'}\n\n"
         f"## Expected behavior\nProduce an implementation plan only: steps, interfaces to extend, tests to add. "
-        f"Estimated size: {s['size']}. Atlas confidence: {s['confidence']}.\n\n"
+        f"Estimated size: {s['size']}. Syron confidence: {s['confidence']}.\n\n"
         f"## Limitations\n" + "\n".join(f"- {x}" for x in s["limitations"])
     )
 
@@ -1550,7 +1550,7 @@ def _prompt_claude_investigate(s: Dict[str, Any]) -> str:
         f"Prove which hypothesis is true before fixing — cite evidence, do not guess.\n\n"
         f"## Symptom\n{s['symptom']}\n\n"
         f"{domain_block}"
-        f"## Atlas's most likely root cause\n{s.get('root_cause','')}\n\n"
+        f"## Syron's most likely root cause\n{s.get('root_cause','')}\n\n"
         f"## Ranked hypotheses (disprove top-down)\n{hyp_block}\n\n"
         f"## Minimal fix strategy\n{fix}\n\n"
         f"## Questions to answer\n{qs}\n\n"
@@ -1574,7 +1574,7 @@ def _prompt_cursor_investigate(s: Dict[str, Any]) -> str:
     return (
         f"@workspace Investigate: {s['symptom']}\n"
         f"Inspect: {', '.join(s['modules'][:5]) or 'search repo for symptom keywords'}\n"
-        f"Atlas rationale: {s['why']}\n"
+        f"Syron rationale: {s['why']}\n"
         f"Work through: {s['questions'][0] if s['questions'] else 'repro steps?'}\n"
         f"State confidence and unknowns — no fake file paths."
     )

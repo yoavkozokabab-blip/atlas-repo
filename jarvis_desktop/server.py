@@ -86,6 +86,12 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
         ("GET", "/api/repositories/current/scan-performance"): lambda _body, _query: api.current_scan_performance(),
         ("GET", "/api/repositories/current/system-health"): lambda _body, _query: api.beta_system_health(),
         ("GET", "/api/system/diagnostics"): lambda _body, _query: api.beta_diagnostics(),
+        ("GET", "/api/system/startup-status"): lambda _body, _query: api.startup_status(),
+        ("POST", "/api/system/clear-cache"): lambda _body, _query: api.clear_scan_cache(),
+        ("POST", "/api/system/rebuild-index"): lambda body, _query: api.rebuild_repository_index(
+            rescan=body.get("rescan", True) is not False
+        ),
+        ("POST", "/api/system/support-bundle"): lambda _body, _query: api.export_support_bundle(),
         ("POST", "/api/repositories/current/cancel-scan"): lambda _body, _query: api.cancel_scan(),
         ("POST", "/api/repositories/current/build-full-graph"): lambda _body, _query: api.build_full_module_graph(),
         ("POST", "/api/repositories/diagnostics/scan"): lambda body, _query: api.run_scan_diagnostic(
@@ -168,7 +174,7 @@ def route_is_registered(method: str, path: str) -> bool:
 # stdlib HTTP handler (default runtime)
 # --------------------------------------------------------------------------
 class JarvisHandler(BaseHTTPRequestHandler):
-    server_version = "AtlasDesktop/119"
+    server_version = "SyronDesktop/119"
 
     def log_message(self, *args: Any) -> None:  # quiet console
         pass
@@ -241,11 +247,18 @@ class JarvisHandler(BaseHTTPRequestHandler):
             self._send_json(404, {"ok": False, "error": "not found"})
 
 
-def run(host: str = "127.0.0.1", port: int = 8777, *, open_browser: bool = True) -> None:
+def run(
+    host: str = "127.0.0.1",
+    port: int = 8777,
+    *,
+    open_browser: bool = True,
+    start_path: str = "/",
+) -> None:
     httpd = ThreadingHTTPServer((host, port), JarvisHandler)
-    url = f"http://{host}:{port}/"
+    path = start_path if start_path.startswith("/") else f"/{start_path}"
+    url = f"http://{host}:{port}{path}"
     print(f"  ATLAS — Repository Intelligence Platform")
-    print(f"  Serving at {url}  (Ctrl+C to stop)")
+    print(f"  Serving at http://{host}:{port}/  (Ctrl+C to stop)")
     if open_browser:
         try:
             import webbrowser
@@ -269,7 +282,7 @@ def create_fastapi_app():  # pragma: no cover - exercised only when fastapi pres
     from fastapi.responses import JSONResponse, FileResponse
     from fastapi.staticfiles import StaticFiles
 
-    app = FastAPI(title="Atlas — Repository Intelligence Platform", version=api.PRODUCT_VERSION)
+    app = FastAPI(title="Syron — Repository Intelligence Platform", version=api.PRODUCT_VERSION)
 
     async def _body(request: Request) -> Dict[str, Any]:
         try:
