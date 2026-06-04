@@ -365,6 +365,23 @@ def create_fastapi_app():  # pragma: no cover - exercised only when fastapi pres
     def _beta_diagnostics():
         return api.beta_diagnostics()
 
+    @app.get("/api/system/startup-status")
+    def _startup_status():
+        return api.startup_status()
+
+    @app.post("/api/system/clear-cache")
+    def _clear_cache():
+        return api.clear_scan_cache()
+
+    @app.post("/api/system/rebuild-index")
+    async def _rebuild_index(request: Request):
+        body = await _body(request)
+        return api.rebuild_repository_index(rescan=body.get("rescan", True) is not False)
+
+    @app.post("/api/system/support-bundle")
+    def _support_bundle():
+        return api.export_support_bundle()
+
     @app.post("/api/repositories/current/cancel-scan")
     def _cancel_scan():
         return api.cancel_scan()

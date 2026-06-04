@@ -1,9 +1,9 @@
-; JARVIS Desktop — Windows installer (Inno Setup 6)
-#define MyAppName "JARVIS Desktop"
+; Atlas — Windows installer (Inno Setup 6, Phase 143)
+#define MyAppName "Atlas"
 #define MyAppVersion "1.0.0"
-#define MyAppPublisher "JARVIS"
-#define MyAppURL "https://github.com/jarvis"
-#define MyAppExeName "JARVIS Desktop.bat"
+#define MyAppPublisher "Atlas"
+#define MyAppURL "https://github.com/atlas"
+#define MyAppExeName "Launch Atlas.bat"
 
 [Setup]
 AppId={{A7B4E2C1-9F3D-4A8B-8C2E-1D5F6A9B0C3E}
@@ -11,11 +11,11 @@ AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
-DefaultDirName={autopf}\JARVIS Desktop
+DefaultDirName={autopf}\Atlas
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir=..\installer\output
-OutputBaseFilename=JARVIS_Setup
+OutputBaseFilename=Atlas_Setup
 SetupIconFile=assets\jarvis.ico
 UninstallDisplayIcon={app}\assets\jarvis.ico
 Compression=lzma2

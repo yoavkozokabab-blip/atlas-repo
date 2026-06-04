@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atlas — Support &amp; diagnostics</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="bg-grid"></div>
+  <div id="bg-glow"></div>
+  <header class="topbar glass">
+    <div class="brand" onclick="location.href='index.html'">
+      <span class="logo-mark">◈</span>
+      <span class="logo-text">ATLAS</span>
+      <span class="logo-sub">Support</span>
+    </div>
+    <div class="topbar-actions">
+      <a class="btn ghost small" href="index.html">Open Atlas</a>
+    </div>
+  </header>
+  <main id="app" class="support-page">
+    <h2 class="vh">Support &amp; diagnostics</h2>
+    <p class="muted tiny support-lead">Check environment status, fix common issues, and export a support bundle — no source code included.</p>
+
+    <div class="support-grid">
+      <section class="glass support-card">
+        <h3>Environment</h3>
+        <div id="envChecks" class="support-checks"><p class="muted tiny">Loading…</p></div>
+      </section>
+      <section class="glass support-card">
+        <h3>Atlas version</h3>
+        <p class="support-version" id="atlasVersion">—</p>
+        <h3 style="margin-top:16px">Scan health</h3>
+        <div id="scanHealth" class="muted tiny">—</div>
+      </section>
+    </div>
+
+    <section class="glass support-card support-actions-card">
+      <h3>Recovery actions</h3>
+      <div class="success-buttons">
+        <button class="btn primary" type="button" onclick="supportRebuildIndex()">Rebuild index</button>
+        <button class="btn ghost" type="button" onclick="supportClearCache()">Clear cache</button>
+        <button class="btn ghost" type="button" onclick="supportResetOnboarding()">Reset onboarding</button>
+        <button class="btn ghost" type="button" onclick="supportCopyDiagnostics()">Export diagnostics (JSON)</button>
+        <button class="btn ghost" type="button" onclick="supportDownloadBundle()">Download support bundle (.zip)</button>
+      </div>
+      <p class="muted tiny" style="margin-top:12px" id="supportActionMsg"></p>
+    </section>
+  </main>
+  <div id="toast" class="toast"></div>
+  <script src="support.js"></script>
+</body>
+</html>

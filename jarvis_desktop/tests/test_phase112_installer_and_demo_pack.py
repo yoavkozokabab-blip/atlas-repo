@@ -101,6 +101,8 @@ def test_installer_files_exist():
     assert (root / "installer" / "jarvis.iss").is_file()
     assert (root / "installer" / "README.md").is_file()
     assert (root / "installer_build.ps1").is_file()
+    assert (root / "Launch Atlas.bat").is_file()
+    assert (root / "run_atlas.py").is_file()
 
 
 def test_frontend_phase112_markers():

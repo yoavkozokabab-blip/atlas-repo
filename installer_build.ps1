@@ -50,7 +50,11 @@ $CopyItems = @(
     "jarvis_desktop",
     "builder_core",
     "run_jarvis_desktop.py",
-    "run_jarvis_desktop.bat"
+    "run_jarvis_desktop.bat",
+    "run_atlas.py",
+    "Launch Atlas.bat",
+    "Atlas.bat",
+    "Launch Atlas.vbs"
 )
 foreach ($item in $CopyItems) {
     $src = Join-Path $Root $item
@@ -58,13 +62,17 @@ foreach ($item in $CopyItems) {
     Copy-Item $src (Join-Path $Staging $item) -Recurse -Force
 }
 
-# Launcher
-$Launcher = @'
+# Launchers (Atlas primary; JARVIS legacy alias)
+Copy-Item (Join-Path $Root "Launch Atlas.bat") (Join-Path $Staging "Launch Atlas.bat") -Force
+Copy-Item (Join-Path $Root "Atlas.bat") (Join-Path $Staging "Atlas.bat") -Force
+Copy-Item (Join-Path $Root "Launch Atlas.vbs") (Join-Path $Staging "Launch Atlas.vbs") -Force
+$LegacyLauncher = @'
 @echo off
 cd /d "%~dp0"
-py -3 run_jarvis_desktop.py %*
+call "Launch Atlas.bat" %*
 '@
-Set-Content -Path (Join-Path $Staging "JARVIS Desktop.bat") -Value $Launcher -Encoding ASCII
+Set-Content -Path (Join-Path $Staging "JARVIS Desktop.bat") -Value $LegacyLauncher -Encoding ASCII
+Set-Content -Path (Join-Path $Staging "Atlas Desktop.bat") -Value $LegacyLauncher -Encoding ASCII
 
 New-Item -ItemType Directory -Path (Join-Path $Staging "assets") -Force | Out-Null
 Copy-Item $IconPath (Join-Path $Staging "assets\jarvis.ico") -Force

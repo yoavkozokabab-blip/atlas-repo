@@ -1,6 +1,6 @@
-# JARVIS Desktop Windows Installer
+# Atlas Windows Installer
 
-Produces **`JARVIS_Setup.exe`** — a self-contained Windows installer for first-time users.
+Produces **`Atlas_Setup.exe`** — a self-contained Windows installer for first-time beta users.
 
 ## Requirements
 
@@ -16,12 +16,12 @@ From `local_jarvis/`:
 .\installer_build.ps1
 ```
 
-Output: `installer/output/JARVIS_Setup.exe`
+Output: `installer/output/Atlas_Setup.exe`
 
 ## What the installer does
 
-- Copies JARVIS Desktop (app, demo packs, launcher) to `%LocalAppData%\Programs\JARVIS Desktop` or chosen folder
-- Creates **Start Menu** shortcut
+- Copies Atlas (app, demo packs, launchers) to `%LocalAppData%\Programs\Atlas` or chosen folder
+- Creates **Start Menu** shortcut **Launch Atlas**
 - Creates **Desktop** shortcut (optional task, enabled by default)
 - Registers **app icon** (`assets/jarvis.ico`)
 - Adds **Uninstall** entry in Windows Settings → Apps
@@ -29,8 +29,9 @@ Output: `installer/output/JARVIS_Setup.exe`
 
 ## First run (3-minute wow path)
 
-1. Launch **JARVIS Desktop** from Desktop or Start Menu
-2. Click **Try Demo** or **Start Product Tour**
+1. Double-click **Launch Atlas** from Desktop or Start Menu
+2. Click **Load Sample Repository** or **Guided Walkthrough**
+3. Open **Support** from the top bar if anything fails
 3. Explore the 3D graph, ask Copilot, export context
 
 ## Clean uninstall
