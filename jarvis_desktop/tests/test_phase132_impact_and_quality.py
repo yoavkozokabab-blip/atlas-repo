@@ -57,9 +57,12 @@ class TestImpactEngine:
         assert "auth" in risk_blob or "security" in risk_blob
 
     def test_missing_target_is_graceful(self, ref_scan):
+        # Phase 161 — unresolved target returns ok=False (no fake blast radius),
+        # not an ok=true mock. The failure must still be graceful (no traceback).
         r = impact_engine.analyze_impact("does/not/exist.py", api._STATE)
-        assert r["ok"]
-        assert r.get("mock") is True
+        assert r["ok"] is False
+        assert r.get("mock") is not True
+        assert r.get("status") in ("target_not_resolved", "no_graph", "target_outside_graph_scope")
         assert "Traceback" not in str(r.get("reason", ""))
 
     def test_change_impact_simulation_wires_engine(self, ref_scan):

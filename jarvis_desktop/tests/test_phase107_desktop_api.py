@@ -97,8 +97,10 @@ def test_impact_real_and_mock(scanned):
     assert real["ok"] and real["fan_in"] >= 3
     assert real["risk_level"] in ("low", "medium", "high")
     assert "recommended_prompt" in real and "recommended_tests" in real
+    # Phase 161 — unresolved target must NOT fake success (no ok=true mock).
     miss = api.impact("does/not/exist.py")
-    assert miss["ok"] and miss.get("mock") is True and "todo" in miss
+    assert miss["ok"] is False and miss.get("mock") is not True
+    assert miss.get("status") == "target_not_resolved"
 
 
 def test_bug_investigation_shape(scanned):

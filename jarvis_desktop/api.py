@@ -2494,18 +2494,24 @@ def impact(target: str) -> Dict[str, Any]:
 
 
 def _impact_mock(target: str, reason: str) -> Dict[str, Any]:
-    # MOCK / TODO: wire Phase 94B transitive impact engine for full blast radius.
+    # P161 — Impact hardening: never fake success or a blast radius when the
+    # target is not resolved. Return ok=False with an honest, actionable status
+    # instead of a mock=True payload that looks like a real result.
     return {
-        "ok": True,
-        "mock": True,
-        "todo": "Wire Phase 94B impact engine for transitive closure.",
+        "ok": False,
+        "mock": False,
+        "status": "target_not_resolved",
+        "unresolved": True,
         "target": target,
         "reason": reason,
+        "error": f"Unable to resolve target: {target}. {reason}",
         "risk_level": "unknown",
         "affected_files": [],
         "affected_subsystems": [],
-        "recommended_tests": ["Run the module's own tests and its direct importers' tests."],
-        "recommended_prompt": f"Analyze the blast radius of changing `{target}` and list the tests to run.",
+        "next_steps": [
+            "Use an exact file or module path from the Codebase Map.",
+            "Re-scan the repository if the file was added recently.",
+        ],
     }
 
 
@@ -2919,7 +2925,38 @@ def _graph_health(scan: Dict[str, Any], arch: Optional[Dict[str, Any]] = None) -
     truly_degraded = bool(scan.get("degraded")) and scan.get("graph_detail") != "imports"
     graph_partial = truly_degraded or unresolved_high
     label = "partial" if graph_partial else ("healthy" if cycles <= 4 else "watch")
+
+    # P161 — Graph health truth: a repository where Atlas scanned many files but
+    # built almost no modules (e.g. Kubernetes: 24k files / 3 modules) must NEVER
+    # report "healthy". Take the WORSE of the summary label and the reliability
+    # assessment, and propagate the unified vocabulary {healthy, partial,
+    # degraded, unsupported}.
+    try:
+        from . import reliability as _rel
+
+        _rel_cat = _rel.classify_scan(scan).get("category") or _rel.OK
+        _UNIFIED = {
+            _rel.OK: "healthy",
+            _rel.PARTIAL_GRAPH: "partial",
+            _rel.UNRESOLVED_EXPLOSION: "partial",
+            _rel.ZERO_EDGE_GRAPH: "degraded",
+            _rel.ZERO_MODULE_SCAN: "degraded",
+            _rel.TIMEOUT: "degraded",
+            _rel.MEMORY_PRESSURE: "degraded",
+            _rel.SCAN_CRASH: "degraded",
+            _rel.SCAN_FAILED: "degraded",
+            _rel.UNSUPPORTED_LANGUAGE: "unsupported",
+            _rel.EMPTY_REPO: "empty",
+        }
+        _rel_label = _UNIFIED.get(_rel_cat, label)
+        _SEVERITY = {"healthy": 0, "watch": 1, "partial": 2, "empty": 2, "degraded": 3, "unsupported": 4}
+        if _SEVERITY.get(_rel_label, 0) > _SEVERITY.get(label, 0):
+            label = _rel_label
+        graph_partial = graph_partial or label in ("partial", "degraded", "unsupported")
+    except Exception:
+        _rel_cat = ""
     out = {
+        "reliability_category": _rel_cat,
         "scope": scan["graph_scope"],
         "degraded": graph_partial,
         "modules": scan["module_count"],

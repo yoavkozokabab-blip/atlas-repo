@@ -90,7 +90,8 @@ def test_degraded_scans_emit_warnings():
 def test_every_category_is_in_taxonomy():
     cats = {rel.OK, rel.SCAN_CRASH, rel.SCAN_FAILED, rel.ZERO_MODULE_SCAN,
             rel.ZERO_EDGE_GRAPH, rel.PARTIAL_GRAPH, rel.TIMEOUT,
-            rel.UNRESOLVED_EXPLOSION, rel.MEMORY_PRESSURE, rel.EMPTY_REPO}
+            rel.UNRESOLVED_EXPLOSION, rel.MEMORY_PRESSURE, rel.EMPTY_REPO,
+            rel.UNSUPPORTED_LANGUAGE}
     # fault set is a coherent subset
     assert rel.FAULT_CATEGORIES <= cats
     assert rel.OK not in rel.FAULT_CATEGORIES
