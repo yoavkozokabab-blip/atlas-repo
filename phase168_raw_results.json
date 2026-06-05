@@ -1,0 +1,1777 @@
+{
+  "exports": [
+    {
+      "repo": "fastapi",
+      "workflow": "build",
+      "prompt": "add rate limiting",
+      "ok": true,
+      "elapsed_s": 0.337,
+      "text": "CHANGE PLAN\n===========\n\nGoal: add rate limiting\n\nDetected concept: Rate Limiting \u2014 Rate Limiting\nDomain: Backend Engineering / middleware\nKnowledge quality: Source-backed\nConcept confidence: high \u00b7 Repo mapping: high\n\nConcept understanding:\nEnforce per-client request quotas using token bucket or sliding window counters.\n\nWhy this matters:\nChanges involving Rate Limiting touch Validate at boundary, Idempotent writes where applicable.\n\nKnowledge-backed risks:\n- Contract drift between clients and server\n- Unhandled edge cases on partial failure\n- Redis SPOF for global counters\n- Thundering herd after throttle lifts\n\nInsertion confidence 59/100 \u2014 `fastapi/_compat/v2.py`. Evidence score 118/100 \u2014 AST definitions/references match: rate\n\nMUST inspect:\n- fastapi/applications.py\n- fastapi/_compat/v2.py\n- fastapi/security/http.py\n- fastapi/routing.py\n- fastapi/middleware/asyncexitstack.py\n\nLIKELY modify:\n- fastapi/openapi/utils.py\n- fastapi/exception_handlers.py\n- fastapi/concurrency.py\n\nVERIFY only:\n- (none)\n\nDO NOT touch unless needed:\n- (none flagged)\n\nDomain implementation steps:\n- Validate at boundary\n- Idempotent writes where applicable\n\nREPOSITORY EVIDENCE\n===================\nStatus: Implemented\nEvidence score: 75.0/100\n\nFound:\n- anyio.CapacityLimiter() in `fastapi/concurrency.py`\n- fastapi.middleware.asyncexitstack.AsyncExitStackMiddleware() in `fastapi/applications.py`\n\nMissing:\n- Rate Limit\n- Redis\n- Throttle\n\nRecommended insertion: `fastapi/_compat/v2.py`\nEvidence score 118/100 \u2014 AST definitions/references match: rate\n\n- `fastapi/applications.py` \u2014 score 72/100 \u2014 Awaitable, Callable, Coroutine\n- `fastapi/_compat/v2.py` \u2014 score 67/100 \u2014 re, warnings, Sequence\n- `fastapi/security/http.py` \u2014 score 58/100 \u2014 symbols matched\n- `fastapi/routing.py` \u2014 score 55/100 \u2014 contextlib, message, functools\n- `fastapi/middleware/asyncexitstack.py` \u2014 score 55/100 \u2014 AsyncExitStackMiddleware, __init__, __call__\n\nFiles to inspect first:\n- fastapi/applications.py\n- fastapi/_compat/v2.py\n- fastapi/security/http.py\n- fastapi/routing.py\n- fastapi/middleware/asyncexitstack.py\n\nFiles likely to change:\n- fastapi/applications.py\n- fastapi/_compat/v2.py\n- fastapi/security/http.py\n- fastapi/routing.py\n- fastapi/middleware/asyncexitstack.py\n- fastapi/openapi/utils.py\n- fastapi/exception_handlers.py\n- fastapi/concurrency.py\n\nFiles likely to break (direct importers / high coupling):\n- fastapi/_compat/__init__.py\n- fastapi/__init__.py\n- fastapi/applications.py\n- fastapi/openapi/utils.py\n- fastapi/routing.py\n- fastapi/dependencies/utils.py\n- fastapi/exception_handlers.py\n- fastapi/param_functions.py\n- fastapi/encoders.py\n- fastapi/security/__init__.py\n\nLikely affected subsystems:\n- fastapi\n\nEntry points:\n- fastapi/cli.py\n- fastapi/__init__.py\n\nDependencies involved:\n- Outbound: fastapi/__init__.py, fastapi/_compat/__init__.py, fastapi/datastructures.py, fastapi/dependencies/models.py, fastapi/dependencies/utils.py, fastapi/encoders.py, fastapi/exception_handlers.py, fastapi/exceptions.py, fastapi/logger.py, fastapi/middleware/asyncexitstack.py, fastapi/openapi/constants.py, fastapi/openapi/docs.py\n- Inbound: fastapi/__init__.py, fastapi/_compat/__init__.py, fastapi/applications.py, fastapi/dependencies/utils.py, fastapi/encoders.py, fastapi/exception_handlers.py, fastapi/openapi/utils.py, fastapi/param_functions.py, fastapi/params.py, fastapi/responses.py, fastapi/routing.py, fastapi/security/__init__.py\n\nImplementation order (static heuristic):\n- fastapi/applications.py\n- fastapi/_compat/v2.py\n- fastapi/security/http.py\n- fastapi/routing.py\n- fastapi/middleware/asyncexitstack.py\n\nTests to add/update:\n- Unit/integration tests covering `fastapi/security/http.py` (e.g. test_http*)\n- Unit/integration tests covering `fastapi/applications.py` (e.g. test_applications*)\n- Unit/integration tests covering `fastapi/openapi/utils.py` (e.g. test_utils*)\n- Unit/integration tests covering `fastapi/utils.py` (e.g. test_utils*)\n- Subsystem regression: fastapi\n- Project CI / full test suite before merge\n- Integration tests with realistic payloads\n- Contract tests for error codes\n\nVerification plan:\n- Read files_to_inspect_first and confirm the change boundary matches the goal.\n- Run tests_likely_affected before and after the change.\n- Re-scan or refresh impact on the highest fan-in file you touch.\n- Smoke-test direct importers: fastapi/_compat/__init__.py, fastapi/__init__.py, fastapi/applications.py\n- OpenAPI/contract tests\n- Load test critical endpoints\n\nRollback plan:\n- Make the change on a feature branch; keep `main` deployable.\n- Commit in small, revertible steps so any single commit can be `git revert`-ed cleanly.\n- Before editing, note the current behavior of: fastapi/security/http.py, fastapi/applications.py, fastapi/openapi/utils.py.\n- Keep DB migrations backward-compatible (additive) so the old code still runs if you roll back.\n\nArchitectural risks:\n- `fastapi/security/http.py` (score 1.73): high fan-in / coupling\n- `fastapi/applications.py` (score 16.85): high fan-in / coupling\n- `fastapi/openapi/utils.py` (score 15.11): high fan-in / coupling\n- `fastapi/utils.py` (score 14.67): high fan-in / coupling\n- `fastapi/routing.py` (score 12.0): high fan-in / coupling\n- `fastapi/_compat/v2.py` (score 11.04): high fan-in / coupling\n- Rate limits must apply consistently across HTTP and websocket entry points.\n- [knowledge] Contract drift between clients and server\n- [knowledge] Unhandled edge cases on partial failure\n- [knowledge] Redis SPOF for global counters\n- [knowledge] Thundering herd after throttle lifts\n\nRisk level: low\nEstimated change size: Medium\nConfidence: medium-high\n\nLimitations:\n- Static import graph only \u2014 runtime plugins and dynamic imports may be missing.",
+      "tokens": 1432,
+      "sections": [
+        {
+          "name": "goal",
+          "category": "A_required",
+          "text": "Goal: add rate limiting\n\nDetected concept: Rate Limiting \u2014 Rate Limiting\nDomain: Backend Engineering / middleware\nKnowledge quality: Source-backed\nConcept confidence: high \u00b7 Repo mapping: high\n\nConcept understanding:\nEnforce per-client request quotas using token bucket or sliding window counters.\n\nWhy this matters:\nChanges involving Rate Limiting touch Validate at boundary, Idempotent writes where applicable.\n\nKnowledge-backed risks:\n- Contract drift between clients and server\n- Unhandled edge c",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "files_inspect",
+          "category": "A_required",
+          "text": "MUST inspect:\n- fastapi/applications.py\n- fastapi/_compat/v2.py\n- fastapi/security/http.py\n- fastapi/routing.py\n- fastapi/middleware/asyncexitstack.py\n\nLIKELY modify:\n- fastapi/openapi/utils.py\n- fastapi/exception_handlers.py\n- fastapi/concurrency.py\n\nVERIFY only:\n- (none)\n\nDO NOT touch unless needed:\n- (none flagged)\n\nDomain implementation steps:\n- Validate at boundary\n- Idempotent writes where applicable\n\nREPOSITORY EVIDENCE\n===================\nStatus: Implemented\nEvidence score: 75.0/100\n\nFou",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "files_change",
+          "category": "C_redundant",
+          "text": "LIKELY modify:\n- fastapi/openapi/utils.py\n- fastapi/exception_handlers.py\n- fastapi/concurrency.py\n\nVERIFY only:\n- (none)\n\nDO NOT touch unless needed:\n- (none flagged)\n\nDomain implementation steps:\n- Validate at boundary\n- Idempotent writes where applicable\n\nREPOSITORY EVIDENCE\n===================\nStatus: Implemented\nEvidence score: 75.0/100\n\nFound:\n- anyio.CapacityLimiter() in `fastapi/concurrency.py`\n- fastapi.middleware.asyncexitstack.AsyncExitStackMiddleware() in `fastapi/applications.py`\n\nM",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "blast_importers",
+          "category": "A_required",
+          "text": "likely to break (direct importers / high coupling):\n- fastapi/_compat/__init__.py\n- fastapi/__init__.py\n- fastapi/applications.py\n- fastapi/openapi/utils.py\n- fastapi/routing.py\n- fastapi/dependencies/utils.py\n- fastapi/exception_handlers.py\n- fastapi/param_functions.py\n- fastapi/encoders.py\n- fastapi/security/__init__.py\n\nLikely affected subsystems:\n- fastapi\n\nEntry points:\n- fastapi/cli.py\n- fastapi/__init__.py\n\nDependencies involved:\n- Outbound: fastapi/__init__.py, fastapi/_compat/__init__.p",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "confidence_meta",
+          "category": "A_required",
+          "text": "confidence: high \u00b7 Repo mapping: high\n\nConcept understanding:\nEnforce per-client request quotas using token bucket or sliding window counters.\n\nWhy this matters:\nChanges involving Rate Limiting touch Validate at boundary, Idempotent writes where applicable.\n\nKnowledge-backed risks:\n- Contract drift between clients and server\n- Unhandled edge cases on partial failure\n- Redis SPOF for global counters\n- Thundering herd after throttle lifts\n\nInsertion confidence 59/100 \u2014 `fastapi/_compat/v2.py`. Evi",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "domain_prose",
+          "category": "B_helpful",
+          "text": "Concept understanding:\nEnforce per-client request quotas using token bucket or sliding window counters.\n\nWhy this matters:\nChanges involving Rate Limiting touch Validate at boundary, Idempotent writes where applicable.\n\nKnowledge-backed risks:\n- Contract drift between clients and server\n- Unhandled edge cases on partial failure\n- Redis SPOF for global counters\n- Thundering herd after throttle lifts\n\nInsertion confidence 59/100 \u2014 `fastapi/_compat/v2.py`. Evidence score 118/100 \u2014 AST definitions/r",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "evidence_verbose",
+          "category": "C_redundant",
+          "text": "Evidence score 118/100 \u2014 AST definitions/references match: rate\n\nMUST inspect:\n- fastapi/applications.py\n- fastapi/_compat/v2.py\n- fastapi/security/http.py\n- fastapi/routing.py\n- fastapi/middleware/asyncexitstack.py\n\nLIKELY modify:\n- fastapi/openapi/utils.py\n- fastapi/exception_handlers.py\n- fastapi/concurrency.py\n\nVERIFY only:\n- (none)\n\nDO NOT touch unless needed:\n- (none flagged)\n\nDomain implementation steps:\n- Validate at boundary\n- Idempotent writes where applicable\n\nREPOSITORY EVIDENCE\n====",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "implementation_order",
+          "category": "B_helpful",
+          "text": "Domain implementation steps:\n- Validate at boundary\n- Idempotent writes where applicable\n\nREPOSITORY EVIDENCE\n===================\nStatus: Implemented\nEvidence score: 75.0/100\n\nFound:\n- anyio.CapacityLimiter() in `fastapi/concurrency.py`\n- fastapi.middleware.asyncexitstack.AsyncExitStackMiddleware() in `fastapi/applications.py`\n\nMissing:\n- Rate Limit\n- Redis\n- Throttle\n\nRecommended insertion: `fastapi/_compat/v2.py`\nEvidence score 118/100 \u2014 AST definitions/references match: rate\n\n- `fastapi/appli",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "safety_rollback",
+          "category": "D_unused",
+          "text": "Verification plan:\n- Read files_to_inspect_first and confirm the change boundary matches the goal.\n- Run tests_likely_affected before and after the change.\n- Re-scan or refresh impact on the highest fan-in file you touch.\n- Smoke-test direct importers: fastapi/_compat/__init__.py, fastapi/__init__.py, fastapi/applications.py\n- OpenAPI/contract tests\n- Load test critical endpoints\n\nRollback plan:\n- Make the change on a feature branch; keep `main` deployable.\n- Commit in small, revertible steps so",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "risk_prose",
+          "category": "B_helpful",
+          "text": "Knowledge-backed risks:\n- Contract drift between clients and server\n- Unhandled edge cases on partial failure\n- Redis SPOF for global counters\n- Thundering herd after throttle lifts\n\nInsertion confidence 59/100 \u2014 `fastapi/_compat/v2.py`. Evidence score 118/100 \u2014 AST definitions/references match: rate\n\nMUST inspect:\n- fastapi/applications.py\n- fastapi/_compat/v2.py\n- fastapi/security/http.py\n- fastapi/routing.py\n- fastapi/middleware/asyncexitstack.py\n\nLIKELY modify:\n- fastapi/openapi/utils.py\n- f",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "dependencies",
+          "category": "B_helpful",
+          "text": "dependencies/utils.py\n- fastapi/exception_handlers.py\n- fastapi/param_functions.py\n- fastapi/encoders.py\n- fastapi/security/__init__.py\n\nLikely affected subsystems:\n- fastapi\n\nEntry points:\n- fastapi/cli.py\n- fastapi/__init__.py\n\nDependencies involved:\n- Outbound: fastapi/__init__.py, fastapi/_compat/__init__.py, fastapi/datastructures.py, fastapi/dependencies/models.py, fastapi/dependencies/utils.py, fastapi/encoders.py, fastapi/exception_handlers.py, fastapi/exceptions.py, fastapi/logger.py, f",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "graph_summary",
+          "category": "C_redundant",
+          "text": "subsystems:\n- fastapi\n\nEntry points:\n- fastapi/cli.py\n- fastapi/__init__.py\n\nDependencies involved:\n- Outbound: fastapi/__init__.py, fastapi/_compat/__init__.py, fastapi/datastructures.py, fastapi/dependencies/models.py, fastapi/dependencies/utils.py, fastapi/encoders.py, fastapi/exception_handlers.py, fastapi/exceptions.py, fastapi/logger.py, fastapi/middleware/asyncexitstack.py, fastapi/openapi/constants.py, fastapi/openapi/docs.py\n- Inbound: fastapi/__init__.py, fastapi/_compat/__init__.py, f",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "limitations",
+          "category": "B_helpful",
+          "text": "DO NOT touch unless needed:\n- (none flagged)\n\nDomain implementation steps:\n- Validate at boundary\n- Idempotent writes where applicable\n\nREPOSITORY EVIDENCE\n===================\nStatus: Implemented\nEvidence score: 75.0/100\n\nFound:\n- anyio.CapacityLimiter() in `fastapi/concurrency.py`\n- fastapi.middleware.asyncexitstack.AsyncExitStackMiddleware() in `fastapi/applications.py`\n\nMissing:\n- Rate Limit\n- Redis\n- Throttle\n\nRecommended insertion: `fastapi/_compat/v2.py`\nEvidence score 118/100 \u2014 AST defini",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "tests",
+          "category": "B_helpful",
+          "text": "Tests to add/update:\n- Unit/integration tests covering `fastapi/security/http.py` (e.g. test_http*)\n- Unit/integration tests covering `fastapi/applications.py` (e.g. test_applications*)\n- Unit/integration tests covering `fastapi/openapi/utils.py` (e.g. test_utils*)\n- Unit/integration tests covering `fastapi/utils.py` (e.g. test_utils*)\n- Subsystem regression: fastapi\n- Project CI / full test suite before merge\n- Integration tests with realistic payloads\n- Contract tests for error codes\n\nVerifica",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "other",
+          "category": "C_redundant",
+          "text": "CHANGE PLAN\n===========\n\n Backend Engineering / middleware\nKnowledge quality: Source-backed\nConcept  request quotas using token bucket or sliding window counters.\n\nWhy this matters:\nChanges involving Rate Limiting touch Validate at boundary, Idempotent writes where applicable.\n\nedge cases on partial failure\n- Redis SPOF for global counters\n- Thundering herd after throttle lifts\n\nInsertion confiden",
+          "tokens": 100,
+          "workflow": "build"
+        }
+      ],
+      "section_tokens": {
+        "A_required": 500,
+        "B_helpful": 750,
+        "C_redundant": 475,
+        "D_unused": 125
+      }
+    },
+    {
+      "repo": "fastapi",
+      "workflow": "investigate",
+      "prompt": "why does auth fail?",
+      "ok": true,
+      "elapsed_s": 0.065,
+      "text": "INVESTIGATION REPORT\n====================\n\nA. Symptom summary\n   Reported: \"why does auth fail?\". Likely area: fastapi/security/oauth2.py.\n\nA2. Domain knowledge\n   Concept: Authentication \u2014 Authentication\n   Domain: Authentication\n   Knowledge quality: Source-backed\n   Verify identity (who you are) before authorization.\n\n   Domain failure modes to check:\n     - 500s under load without backpressure\n     - Inconsistent error shapes for clients\n\n   Insertion confidence 59/100 \u2014 `fastapi/security/oauth2.py`. Evidence score 118/100 \u2014 AST definitions/references match: auth, authenticate, password\n\nA3. Repository evidence\n   Status: Implemented\n   Evidence score: 75.0/100\n   Found:\n     - fastapi.openapi.docs.get_swagger_ui_oauth2_redirect_html() in `fastapi/applications.py`\n     - websocket_session in `fastapi/routing.py`\n     - fastapi.middleware.asyncexitstack.AsyncExitStackMiddleware() in `fastapi/applications.py`\n     - APIKeyBase.make_not_authenticated_error() in `fastapi/security/api_key.py`\n     - OAuthFlowPassword in `fastapi/openapi/models.py`\n   Missing:\n     - Login\n   Recommended insertion: `fastapi/security/oauth2.py`\n\nB. Most likely root cause\n   fastapi.openapi.docs.get_swagger_ui_oauth2_redirect_html() in `fastapi/applications.py`\n\nC. Ranked hypotheses\n   H1. Defect originates in `fastapi/security/oauth2.py`  [confidence: low]\n       Why it fits: `fastapi/security/oauth2.py` scored highest on keyword overlap with the symptom.\n       Files involved: fastapi/security/oauth2.py\n       Evidence:\n         - `fastapi/security/oauth2.py` \u2014 fan-in 0, risk 13.14, evidence_score=3\n         - Matched symptom keywords in the module path/index.\n       What to inspect: fastapi/security/oauth2.py\n       Should be true if correct: The failing behavior is reproducible by exercising `fastapi/security/oauth2.py` directly.\n       How to disprove: Add a focused test around `fastapi/security/oauth2.py`; if it passes with the symptom inputs, the cause is elsewhere.\n\n   H2. Defect originates in `fastapi/security/http.py`  [confidence: low]\n       Why it fits: `fastapi/security/http.py` scored highest on keyword overlap with the symptom.\n       Files involved: fastapi/security/http.py\n       Evidence:\n         - `fastapi/security/http.py` \u2014 fan-in 0, risk 1.73, evidence_score=2\n         - Matched symptom keywords in the module path/index.\n       What to inspect: fastapi/security/http.py\n       Should be true if correct: The failing behavior is reproducible by exercising `fastapi/security/http.py` directly.\n       How to disprove: Add a focused test around `fastapi/security/http.py`; if it passes with the symptom inputs, the cause is elsewhere.\n\n   H3. Defect originates in `fastapi/security/__init__.py`  [confidence: low]\n       Why it fits: `fastapi/security/__init__.py` scored highest on keyword overlap with the symptom.\n       Files involved: fastapi/security/__init__.py\n       Evidence:\n         - `fastapi/security/__init__.py` \u2014 fan-in 0, risk 4.43, evidence_score=2\n         - Matched symptom keywords in the module path/index.\n       What to inspect: fastapi/security/__init__.py\n       Should be true if correct: The failing behavior is reproducible by exercising `fastapi/security/__init__.py` directly.\n       How to disprove: Add a focused test around `fastapi/security/__init__.py`; if it passes with the symptom inputs, the cause is elsewhere.\n\nD. Verification checklist\n- H1 \u2014 Defect originates in `fastapi/security/oauth2.py`: Add a focused test around `fastapi/security/oauth2.py`; if it passes with the symptom inputs, the cause is elsewhere.\n- H2 \u2014 Defect originates in `fastapi/security/http.py`: Add a focused test around `fastapi/security/http.py`; if it passes with the symptom inputs, the cause is elsewhere.\n- H3 \u2014 Defect originates in `fastapi/security/__init__.py`: Add a focused test around `fastapi/security/__init__.py`; if it passes with the symptom inputs, the cause is elsewhere.\n- When did the symptom start (deploy, config change, data change)?\n- Is the issue reproducible in a single environment?\n- Trace the code path starting at `fastapi/security/oauth2.py` \u2014 what calls it?\n- Smoke-test direct importers after any change: fastapi/__init__.py, fastapi/applications.py, fastapi/dependencies/utils.py\n- 500s under load without backpressure\n- Inconsistent error shapes for clients\n- OpenAPI/contract tests\n- Load test critical endpoints\n\nE. Minimal fix strategy\n- Confirm H1 first (Defect originates in `fastapi/security/oauth2.py`) using its disproof test before editing.\n- Scope the change to fastapi/security/oauth2.py \u2014 avoid touching unrelated hubs.\n- Add a regression test that reproduces the symptom, then make it pass.\n- Keep the diff minimal; do not refactor adjacent code in the same change.\n\nF. Risks of fixing incorrectly\n- An incorrect fix risks a regression in dependent modules \u2014 cover with integration tests before merge.\n- A narrow fix may mask upstream data or configuration issues \u2014 validate with tests before shipping.\n- This area has 12 direct importer(s); a wrong fix can break: fastapi/__init__.py, fastapi/applications.py, fastapi/dependencies/utils.py, fastapi/openapi/utils.py.\n- Treating a symptom (display/logging) as the root cause can hide a deeper data/accounting bug.\n\nRelevant dependencies:\n- Outbound: fastapi/__init__.py, fastapi/_compat/__init__.py, fastapi/background.py, fastapi/concurrency.py, fastapi/datastructures.py, fastapi/dependencies/models.py, fastapi/encoders.py, fastapi/exception_handlers.py, fastapi/exceptions.py, fastapi/logger.py, fastapi/middleware/asyncexitstack.py, fastapi/openapi/docs.py\n- Inbound: fastapi/__init__.py, fastapi/applications.py, fastapi/dependencies/utils.py, fastapi/openapi/utils.py, fastapi/param_functions.py, fastapi/params.py, fastapi/routing.py, fastapi/security/__init__.py, fastapi/security/api_key.py, fastapi/security/base.py, fastapi/security/http.py, fastapi/security/oauth2.py\n\nOverall confidence: medium\n\nLimitations:\n- Heuristic symptom routing \u2014 not runtime profiling or log analysis.\n- Only indexed production-scope modules are considered.\n- Concept match is partial \u2014 confirm the request targets this concept.",
+      "tokens": 1544,
+      "sections": [
+        {
+          "name": "symptom",
+          "category": "A_required",
+          "text": "Symptom summary\n   Reported: \"why does auth fail?\". Likely area: fastapi/security/oauth2.py.\n\nA2. Domain knowledge\n   Concept: Authentication \u2014 Authentication\n   Domain: Authentication\n   Knowledge quality: Source-backed\n   Verify identity (who you are) before authorization.\n\n   Domain failure modes to check:\n     - 500s under load without backpressure\n     - Inconsistent error shapes for clients\n\n   Insertion confidence 59/100 \u2014 `fastapi/security/oauth2.py`. Evidence score 118/100 \u2014 AST definit",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "root_cause",
+          "category": "A_required",
+          "text": "Most likely root cause\n   fastapi.openapi.docs.get_swagger_ui_oauth2_redirect_html() in `fastapi/applications.py`\n\nC. Ranked hypotheses\n   H1. Defect originates in `fastapi/security/oauth2.py`  [confidence: low]\n       Why it fits: `fastapi/security/oauth2.py` scored highest on keyword overlap with the symptom.\n       Files involved: fastapi/security/oauth2.py\n       Evidence:\n         - `fastapi/security/oauth2.py` \u2014 fan-in 0, risk 13.14, evidence_score=3\n         - Matched symptom keywords in ",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "hypotheses",
+          "category": "B_helpful",
+          "text": "Ranked hypotheses\n   H1. Defect originates in `fastapi/security/oauth2.py`  [confidence: low]\n       Why it fits: `fastapi/security/oauth2.py` scored highest on keyword overlap with the symptom.\n       Files involved: fastapi/security/oauth2.py\n       Evidence:\n         - `fastapi/security/oauth2.py` \u2014 fan-in 0, risk 13.14, evidence_score=3\n         - Matched symptom keywords in the module path/index.\n       What to inspect: fastapi/security/oauth2.py\n       Should be true if correct: The failin",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "hypothesis_files",
+          "category": "A_required",
+          "text": "Files involved: fastapi/security/oauth2.py\n       Evidence:\n         - `fastapi/security/oauth2.py` \u2014 fan-in 0, risk 13.14, evidence_score=3\n         - Matched symptom keywords in the module path/index.\n       What to inspect: fastapi/security/oauth2.py\n       Should be true if correct: The failing behavior is reproducible by exercising `fastapi/security/oauth2.py` directly.\n       How to disprove: Add a focused test around `fastapi/security/oauth2.py`; if it passes with the symptom inputs, the ",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "verification",
+          "category": "B_helpful",
+          "text": "Verification checklist\n- H1 \u2014 Defect originates in `fastapi/security/oauth2.py`: Add a focused test around `fastapi/security/oauth2.py`; if it passes with the symptom inputs, the cause is elsewhere.\n- H2 \u2014 Defect originates in `fastapi/security/http.py`: Add a focused test around `fastapi/security/http.py`; if it passes with the symptom inputs, the cause is elsewhere.\n- H3 \u2014 Defect originates in `fastapi/security/__init__.py`: Add a focused test around `fastapi/security/__init__.py`; if it passe",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "fix_strategy",
+          "category": "B_helpful",
+          "text": "Minimal fix strategy\n- Confirm H1 first (Defect originates in `fastapi/security/oauth2.py`) using its disproof test before editing.\n- Scope the change to fastapi/security/oauth2.py \u2014 avoid touching unrelated hubs.\n- Add a regression test that reproduces the symptom, then make it pass.\n- Keep the diff minimal; do not refactor adjacent code in the same change.\n\nF. Risks of fixing incorrectly\n- An incorrect fix risks a regression in dependent modules \u2014 cover with integration tests before merge.\n- A",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "domain_prose",
+          "category": "C_redundant",
+          "text": "Domain knowledge\n   Concept: Authentication \u2014 Authentication\n   Domain: Authentication\n   Knowledge quality: Source-backed\n   Verify identity (who you are) before authorization.\n\n   Domain failure modes to check:\n     - 500s under load without backpressure\n     - Inconsistent error shapes for clients\n\n   Insertion confidence 59/100 \u2014 `fastapi/security/oauth2.py`. Evidence score 118/100 \u2014 AST definitions/references match: auth, authenticate, password\n\nA3. Repository evidence\n   Status: Implemente",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "evidence_verbose",
+          "category": "C_redundant",
+          "text": "Repository evidence\n   Status: Implemented\n   Evidence score: 75.0/100\n   Found:\n     - fastapi.openapi.docs.get_swagger_ui_oauth2_redirect_html() in `fastapi/applications.py`\n     - websocket_session in `fastapi/routing.py`\n     - fastapi.middleware.asyncexitstack.AsyncExitStackMiddleware() in `fastapi/applications.py`\n     - APIKeyBase.make_not_authenticated_error() in `fastapi/security/api_key.py`\n     - OAuthFlowPassword in `fastapi/openapi/models.py`\n   Missing:\n     - Login\n   Recommended ",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "hypothesis_meta",
+          "category": "C_redundant",
+          "text": "How to disprove: Add a focused test around `fastapi/security/oauth2.py`; if it passes with the symptom inputs, the cause is elsewhere.\n\n   H2. Defect originates in `fastapi/security/http.py`  [confidence: low]\n       Why it fits: `fastapi/security/http.py` scored highest on keyword overlap with the symptom.\n       Files involved: fastapi/security/http.py\n       Evidence:\n         - `fastapi/security/http.py` \u2014 fan-in 0, risk 1.73, evidence_score=2\n         - Matched symptom keywords in the modul",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "confidence_meta",
+          "category": "A_required",
+          "text": "confidence 59/100 \u2014 `fastapi/security/oauth2.py`. Evidence score 118/100 \u2014 AST definitions/references match: auth, authenticate, password\n\nA3. Repository evidence\n   Status: Implemented\n   Evidence score: 75.0/100\n   Found:\n     - fastapi.openapi.docs.get_swagger_ui_oauth2_redirect_html() in `fastapi/applications.py`\n     - websocket_session in `fastapi/routing.py`\n     - fastapi.middleware.asyncexitstack.AsyncExitStackMiddleware() in `fastapi/applications.py`\n     - APIKeyBase.make_not_authenti",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "other",
+          "category": "C_redundant",
+          "text": "INVESTIGATION REPORT\n====================\n\nA. y/oauth2.py.\n\nA2. cation\n   Knowledge quality: Source-backed\n   Verify identity (who you are) before authorization.\n\n   Domain failure modes to check:\n     - 500s under load without backpressure\n     - Inconsistent error shapes for clients\n\n   Insertion efinitions/references match: auth, authenticate, password\n\nA3. \n     - fastapi.openapi.docs.get_swag",
+          "tokens": 100,
+          "workflow": "investigate"
+        }
+      ],
+      "section_tokens": {
+        "A_required": 500,
+        "B_helpful": 375,
+        "C_redundant": 475,
+        "D_unused": 0
+      }
+    },
+    {
+      "repo": "fastapi",
+      "workflow": "impact",
+      "prompt": "what breaks if I change authentication?",
+      "ok": true,
+      "elapsed_s": 0.015,
+      "text": "\n{\"target\": \"fastapi/security/oauth2.py\", \"direct_impact\": [\"fastapi/__init__.py\", \"fastapi/applications.py\", \"fastapi/dependencies/models.py\", \"fastapi/dependencies/utils.py\", \"fastapi/openapi/utils.py\", \"fastapi/param_functions.py\", \"fastapi/params.py\", \"fastapi/routing.py\", \"fastapi/security/__init__.py\", \"fastapi/security/api_key.py\"], \"indirect_impact\": [\"fastapi/__init__.py\", \"fastapi/applications.py\", \"fastapi/dependencies/models.py\", \"fastapi/dependencies/utils.py\", \"fastapi/exception_handlers.py\", \"fastapi/openapi/utils.py\"], \"confidence\": \"high\", \"evidence\": [\"Symbol `typing.cast` caller: fastapi/_compat/v2.py::get_definitions\", \"Symbol `typing.cast` caller: fastapi/datastructures.py::UploadFile._validate\", \"Symbol `typing.cast` caller: fastapi/dependencies/utils.py::solve_dependencies\", \"Semantic concept `authentication` \\u2192 12 module(s), 32 symbol(s) symbols: collections.abc.Awaitable, collections.abc.Callable, collections.abc.Coroutine, collections.abc.Sequence, enum.Enum, typing.Annotated. Primary: `fastapi/security/oauth2.py`.\"]}",
+      "tokens": 266,
+      "sections": [
+        {
+          "name": "target",
+          "category": "A_required",
+          "text": "target\": \"fastapi/security/oauth2.py\", \"direct_impact\": [\"fastapi/__init__.py\", \"fastapi/applications.py\", \"fastapi/dependencies/models.py\", \"fastapi/dependencies/utils.py\", \"fastapi/openapi/utils.py\", \"fastapi/param_functions.py\", \"fastapi/params.py\", \"fastapi/routing.py\", \"fastapi/security/__init__.py\", \"fastapi/security/api_key.py\"], \"indirect_impact\": [\"fastapi/__init__.py\", \"fastapi/applications.py\", \"fastapi/dependencies/models.py\", \"fastapi/dependencies/utils.py\", \"fastapi/exception_handl",
+          "tokens": 125,
+          "workflow": "impact"
+        },
+        {
+          "name": "indirect_impact",
+          "category": "B_helpful",
+          "text": "indirect_impact\": [\"fastapi/__init__.py\", \"fastapi/applications.py\", \"fastapi/dependencies/models.py\", \"fastapi/dependencies/utils.py\", \"fastapi/exception_handlers.py\", \"fastapi/openapi/utils.py\"], \"confidence\": \"high\", \"evidence\": [\"Symbol `typing.cast` caller: fastapi/_compat/v2.py::get_definitions\", \"Symbol `typing.cast` caller: fastapi/datastructures.py::UploadFile._validate\", \"Symbol `typing.cast` caller: fastapi/dependencies/utils.py::solve_dependencies\", \"Semantic concept `authentication`",
+          "tokens": 125,
+          "workflow": "impact"
+        },
+        {
+          "name": "confidence_meta",
+          "category": "A_required",
+          "text": "confidence\": \"high\", \"evidence\": [\"Symbol `typing.cast` caller: fastapi/_compat/v2.py::get_definitions\", \"Symbol `typing.cast` caller: fastapi/datastructures.py::UploadFile._validate\", \"Symbol `typing.cast` caller: fastapi/dependencies/utils.py::solve_dependencies\", \"Semantic concept `authentication` \\u2192 12 module(s), 32 symbol(s) symbols: collections.abc.Awaitable, collections.abc.Callable, collections.abc.Coroutine, collections.abc.Sequence, enum.Enum, typing.Annotated. Primary: `fastapi/se",
+          "tokens": 125,
+          "workflow": "impact"
+        },
+        {
+          "name": "other",
+          "category": "C_redundant",
+          "text": "\n{\"\"fastapi/applications.py\", \"fastapi/dependencies/models.py\", \"fastapi/dependencies/utils.py\", \"fastapi/openapi/utils.py\", \"fastapi/param_functions.py\", \"fastapi/params.py\", \"fastapi/routing.py\", \"fastapi/security/__init__.py\", \"fastapi/security/api_key.py\"], \"pendencies/models.py\", \"fastapi/dependencies/utils.py\", \"fastapi/exception_handlers.py\", \"fastapi/openapi/utils.py\"], \"v2.py::get_definit",
+          "tokens": 100,
+          "workflow": "impact"
+        }
+      ],
+      "section_tokens": {
+        "A_required": 250,
+        "B_helpful": 125,
+        "C_redundant": 100,
+        "D_unused": 0
+      }
+    },
+    {
+      "repo": "fastapi",
+      "workflow": "understanding",
+      "prompt": "what are the main runtime boundaries?",
+      "ok": true,
+      "elapsed_s": 0.0,
+      "text": "I could not map that question to a grounded analysis mode. Try one of the suggested questions below.\nYou are assisting with the repository below. Use this precomputed Atlas repository intelligence as ground truth; read cited files only when you need detail.\n\n# ATLAS REPOSITORY CONTEXT \u2014 fastapi  (compact)\nscope=production degraded=False\nmodules=73 subsystems=7 edges=159 cycles=15\n\n## PRODUCTION SUBSYSTEMS\n- fastapi (48 prod files); entry: fastapi/cli.py,fastapi/__init__.py\n- scripts (31 prod files); entry: scripts/add_latest_release_date.py,scripts/contributors.py\n\n## MOST DEPENDED-ON MODULES (import fan-in)\n- fastapi._compat.v2 <- 17 importers\n- fastapi._compat.shared <- 13 importers\n- fastapi.exceptions <- 13 importers\n- fastapi._compat <- 11 importers\n- fastapi.openapi.models <- 10 importers\n\n## TOP ARCHITECTURAL RISKS\n- fastapi.param_functions (score 78.6): cycle 1.00, centrality 0.94, boundary 0.88\n- fastapi.security.oauth2 (score 76.6): cycle 1.00, coupling 0.98, centrality 0.90\n- fastapi (score 70.7): boundary 1.00, cycle 1.00, coupling 0.90\n- fastapi._compat (score 67.7): centrality 0.96, cycle 0.90, coupling 0.89\n\n## UNCERTAINTY\n- Fan-in is a static lower bound (dynamic imports/dispatch not counted).\n\n## HOW TO USE\nAnswer the user's question using these facts first; open a cited file only if you need its body. Prefer these structured facts over re-scanning the repo.\n",
+      "tokens": 350,
+      "sections": [
+        {
+          "name": "repo_context",
+          "category": "A_required",
+          "text": "ATLAS REPOSITORY CONTEXT \u2014 fastapi  (compact)\nscope=production degraded=False\nmodules=73 subsystems=7 edges=159 cycles=15\n\n## PRODUCTION SUBSYSTEMS\n- fastapi (48 prod files); entry: fastapi/cli.py,fastapi/__init__.py\n- scripts (31 prod files); entry: scripts/add_latest_release_date.py,scripts/contributors.py\n\n## MOST DEPENDED-ON MODULES (import fan-in)\n- fastapi._compat.v2 <- 17 importers\n- fastapi._compat.shared <- 13 importers\n- fastapi.exceptions <- 13 importers\n- fastapi._compat <- 11 import",
+          "tokens": 125,
+          "workflow": "understanding"
+        },
+        {
+          "name": "hubs",
+          "category": "A_required",
+          "text": "MOST DEPENDED-ON MODULES (import fan-in)\n- fastapi._compat.v2 <- 17 importers\n- fastapi._compat.shared <- 13 importers\n- fastapi.exceptions <- 13 importers\n- fastapi._compat <- 11 importers\n- fastapi.openapi.models <- 10 importers\n\n## TOP ARCHITECTURAL RISKS\n- fastapi.param_functions (score 78.6): cycle 1.00, centrality 0.94, boundary 0.88\n- fastapi.security.oauth2 (score 76.6): cycle 1.00, coupling 0.98, centrality 0.90\n- fastapi (score 70.7): boundary 1.00, cycle 1.00, coupling 0.90\n- fastapi.",
+          "tokens": 125,
+          "workflow": "understanding"
+        },
+        {
+          "name": "risks",
+          "category": "B_helpful",
+          "text": "TOP ARCHITECTURAL RISKS\n- fastapi.param_functions (score 78.6): cycle 1.00, centrality 0.94, boundary 0.88\n- fastapi.security.oauth2 (score 76.6): cycle 1.00, coupling 0.98, centrality 0.90\n- fastapi (score 70.7): boundary 1.00, cycle 1.00, coupling 0.90\n- fastapi._compat (score 67.7): centrality 0.96, cycle 0.90, coupling 0.89\n\n## UNCERTAINTY\n- Fan-in is a static lower bound (dynamic imports/dispatch not counted).\n\n## HOW TO USE\nAnswer the user's question using these facts first; open a cited f",
+          "tokens": 125,
+          "workflow": "understanding"
+        },
+        {
+          "name": "boilerplate",
+          "category": "D_unused",
+          "text": "UNCERTAINTY\n- Fan-in is a static lower bound (dynamic imports/dispatch not counted).\n\n## HOW TO USE\nAnswer the user's question using these facts first; open a cited file only if you need its body. Prefer these structured facts over re-scanning the repo.\n",
+          "tokens": 64,
+          "workflow": "understanding"
+        },
+        {
+          "name": "other",
+          "category": "C_redundant",
+          "text": "I could not map that question to a grounded analysis mode. Try one of the suggested questions below.\nYou are assisting with the repository below. Use this precomputed Atlas repository intelligence as ground truth; read cited files only when you need detail.\n\n# dules=73 subsystems=7 edges=159 cycles=15\n\n## PRODUCTION SUBSYSTEMS\n- fastapi (48 prod files); entry: fastapi/cli.py,fastapi/__init__.py\n- ",
+          "tokens": 100,
+          "workflow": "understanding"
+        }
+      ],
+      "section_tokens": {
+        "A_required": 250,
+        "B_helpful": 125,
+        "C_redundant": 100,
+        "D_unused": 64
+      }
+    },
+    {
+      "repo": "django",
+      "workflow": "build",
+      "prompt": "add rate limiting",
+      "ok": true,
+      "elapsed_s": 0.327,
+      "text": "CHANGE PLAN\n===========\n\nGoal: add rate limiting\n\nDetected concept: Rate Limiting \u2014 Rate Limiting\nDomain: Backend Engineering / middleware\nKnowledge quality: Source-backed\nConcept confidence: high \u00b7 Repo mapping: high\n\nConcept understanding:\nEnforce per-client request quotas using token bucket or sliding window counters.\n\nWhy this matters:\nChanges involving Rate Limiting touch Validate at boundary, Idempotent writes where applicable.\n\nKnowledge-backed risks:\n- Contract drift between clients and server\n- Unhandled edge cases on partial failure\n- Redis SPOF for global counters\n- Thundering herd after throttle lifts\n\nInsertion confidence 45/100 \u2014 `django/core/management/commands/migrate.py`. Evidence score 120/100 \u2014 AST definitions/references match: rate\n\nMUST inspect:\n- django/contrib/auth/middleware.py\n- django/core/management/commands/migrate.py\n- django/db/models/fields/generated.py\n- django/middleware/http.py\n- django/middleware/csrf.py\n\nLIKELY modify:\n- django/contrib/sessions/middleware.py\n- django/middleware/cache.py\n- django/middleware/common.py\n\nVERIFY only:\n- (none)\n\nDO NOT touch unless needed:\n- (none flagged)\n\nDomain implementation steps:\n- Validate at boundary\n- Idempotent writes where applicable\n\nREPOSITORY EVIDENCE\n===================\nStatus: Implemented\nEvidence score: 75.0/100\n\nFound:\n- StringAggDelimiter in `django/db/models/aggregates.py`\n- django.utils.deprecation.MiddlewareMixin() in `django/contrib/admindocs/middleware.py`\n- RedisSerializer in `django/core/cache/backends/redis.py`\n\nMissing:\n- Rate Limit\n- Throttle\n\nRecommended insertion: `django/core/management/commands/migrate.py`\nEvidence score 120/100 \u2014 AST definitions/references match: rate\n\n- `django/contrib/auth/middleware.py` \u2014 score 68/100 \u2014 partial, iscoroutinefunction, markcoroutinefunction\n- `django/core/management/commands/migrate.py` \u2014 score 64/100 \u2014 sys, time, import_module\n- `django/db/models/fields/generated.py` \u2014 score 58/100 \u2014 GeneratedField, __init__, cached_col\n- `django/middleware/http.py` \u2014 score 58/100 \u2014 cc_delim_re, get_conditional_response, set_response_etag\n- `django/middleware/csrf.py` \u2014 score 56/100 \u2014 logging, string, defaultdict\n\nFiles to inspect first:\n- django/contrib/auth/middleware.py\n- django/core/management/commands/migrate.py\n- django/db/models/fields/generated.py\n- django/middleware/http.py\n- django/middleware/csrf.py\n\nFiles likely to change:\n- django/contrib/auth/middleware.py\n- django/core/management/commands/migrate.py\n- django/db/models/fields/generated.py\n- django/middleware/http.py\n- django/middleware/csrf.py\n- django/contrib/sessions/middleware.py\n- django/middleware/cache.py\n- django/middleware/common.py\n\nFiles likely to break (direct importers / high coupling):\n- django/contrib/auth/__init__.py\n- django/contrib/admin/options.py\n- django/contrib/admin/sites.py\n- django/contrib/auth/views.py\n- django/contrib/admindocs/views.py\n- django/contrib/auth/admin.py\n- django/contrib/auth/middleware.py\n- django/contrib/admin/views/autocomplete.py\n- django/contrib/admindocs/middleware.py\n- django/contrib/auth/mixins.py\n\nLikely affected subsystems:\n- django\n\nEntry points:\n- django/contrib/admin/views/main.py\n- django/template/engine.py\n\nDependencies involved:\n- Outbound: django/conf/__init__.py, django/conf/urls/i18n.py, django/contrib/__init__.py, django/contrib/auth/__init__.py, django/contrib/auth/backends.py, django/contrib/auth/decorators.py, django/contrib/auth/forms.py, django/contrib/auth/tokens.py, django/contrib/auth/views.py, django/contrib/sites/shortcuts.py, django/core/__init__.py, django/core/cache/__init__.py\n- Inbound: django/contrib/admin/options.py, django/contrib/admin/sites.py, django/contrib/admin/views/autocomplete.py, django/contrib/admindocs/middleware.py, django/contrib/admindocs/views.py, django/contrib/auth/__init__.py, django/contrib/auth/admin.py, django/contrib/auth/middleware.py, django/contrib/auth/mixins.py, django/contrib/auth/views.py, django/contrib/contenttypes/views.py, django/contrib/flatpages/middleware.py\n\nImplementation order (static heuristic):\n- django/contrib/auth/middleware.py\n- django/core/management/commands/migrate.py\n- django/db/models/fields/generated.py\n- django/middleware/http.py\n- django/middleware/csrf.py\n\nTests to add/update:\n- Unit/integration tests covering `django/http/__init__.py` (e.g. test___init__*)\n- Unit/integration tests covering `django/http/response.py` (e.g. test_response*)\n- Unit/integration tests covering `django/http/request.py` (e.g. test_request*)\n- Unit/integration tests covering `django/contrib/auth/middleware.py` (e.g. test_middleware*)\n- Subsystem regression: django\n- Project CI / full test suite before merge\n- Integration tests with realistic payloads\n- Contract tests for error codes\n\nVerification plan:\n- Read files_to_inspect_first and confirm the change boundary matches the goal.\n- Run tests_likely_affected before and after the change.\n- Re-scan or refresh impact on the highest fan-in file you touch.\n- Smoke-test direct importers: django/contrib/auth/__init__.py, django/contrib/admin/options.py, django/contrib/admin/sites.py\n- OpenAPI/contract tests\n- Load test critical endpoints\n\nRollback plan:\n- Make the change on a feature branch; keep `main` deployable.\n- Commit in small, revertible steps so any single commit can be `git revert`-ed cleanly.\n- Before editing, note the current behavior of: django/http/__init__.py, django/http/response.py, django/http/request.py.\n- Keep DB migrations backward-compatible (additive) so the old code still runs if you roll back.\n\nArchitectural risks:\n- `django/http/__init__.py` (score 50.15): high fan-in / coupling\n- `django/http/response.py` (score 8.27): high fan-in / coupling\n- `django/http/request.py` (score 7.76): high fan-in / coupling\n- `django/contrib/auth/middleware.py` (score 4.58): high fan-in / coupling\n- `django/middleware/http.py` (score 2.63): high fan-in / coupling\n- `django/http/multipartparser.py` (score 6.47): high fan-in / coupling\n- Rate limits must apply consistently across HTTP and websocket entry points.\n- [knowledge] Contract drift between clients and server\n- [knowledge] Unhandled edge cases on partial failure\n- [knowledge] Redis SPOF for global counters\n- [knowledge] Thundering herd after throttle lifts\n\nRisk level: medium\nEstimated change size: Medium\nConfidence: medium-high\n\nLimitations:\n- Static import graph only \u2014 runtime plugins and dynamic imports may be missing.",
+      "tokens": 1607,
+      "sections": [
+        {
+          "name": "goal",
+          "category": "A_required",
+          "text": "Goal: add rate limiting\n\nDetected concept: Rate Limiting \u2014 Rate Limiting\nDomain: Backend Engineering / middleware\nKnowledge quality: Source-backed\nConcept confidence: high \u00b7 Repo mapping: high\n\nConcept understanding:\nEnforce per-client request quotas using token bucket or sliding window counters.\n\nWhy this matters:\nChanges involving Rate Limiting touch Validate at boundary, Idempotent writes where applicable.\n\nKnowledge-backed risks:\n- Contract drift between clients and server\n- Unhandled edge c",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "files_inspect",
+          "category": "A_required",
+          "text": "MUST inspect:\n- django/contrib/auth/middleware.py\n- django/core/management/commands/migrate.py\n- django/db/models/fields/generated.py\n- django/middleware/http.py\n- django/middleware/csrf.py\n\nLIKELY modify:\n- django/contrib/sessions/middleware.py\n- django/middleware/cache.py\n- django/middleware/common.py\n\nVERIFY only:\n- (none)\n\nDO NOT touch unless needed:\n- (none flagged)\n\nDomain implementation steps:\n- Validate at boundary\n- Idempotent writes where applicable\n\nREPOSITORY EVIDENCE\n===============",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "files_change",
+          "category": "C_redundant",
+          "text": "LIKELY modify:\n- django/contrib/sessions/middleware.py\n- django/middleware/cache.py\n- django/middleware/common.py\n\nVERIFY only:\n- (none)\n\nDO NOT touch unless needed:\n- (none flagged)\n\nDomain implementation steps:\n- Validate at boundary\n- Idempotent writes where applicable\n\nREPOSITORY EVIDENCE\n===================\nStatus: Implemented\nEvidence score: 75.0/100\n\nFound:\n- StringAggDelimiter in `django/db/models/aggregates.py`\n- django.utils.deprecation.MiddlewareMixin() in `django/contrib/admindocs/mi",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "blast_importers",
+          "category": "A_required",
+          "text": "likely to break (direct importers / high coupling):\n- django/contrib/auth/__init__.py\n- django/contrib/admin/options.py\n- django/contrib/admin/sites.py\n- django/contrib/auth/views.py\n- django/contrib/admindocs/views.py\n- django/contrib/auth/admin.py\n- django/contrib/auth/middleware.py\n- django/contrib/admin/views/autocomplete.py\n- django/contrib/admindocs/middleware.py\n- django/contrib/auth/mixins.py\n\nLikely affected subsystems:\n- django\n\nEntry points:\n- django/contrib/admin/views/main.py\n- djan",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "confidence_meta",
+          "category": "A_required",
+          "text": "confidence: high \u00b7 Repo mapping: high\n\nConcept understanding:\nEnforce per-client request quotas using token bucket or sliding window counters.\n\nWhy this matters:\nChanges involving Rate Limiting touch Validate at boundary, Idempotent writes where applicable.\n\nKnowledge-backed risks:\n- Contract drift between clients and server\n- Unhandled edge cases on partial failure\n- Redis SPOF for global counters\n- Thundering herd after throttle lifts\n\nInsertion confidence 45/100 \u2014 `django/core/management/comm",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "domain_prose",
+          "category": "B_helpful",
+          "text": "Concept understanding:\nEnforce per-client request quotas using token bucket or sliding window counters.\n\nWhy this matters:\nChanges involving Rate Limiting touch Validate at boundary, Idempotent writes where applicable.\n\nKnowledge-backed risks:\n- Contract drift between clients and server\n- Unhandled edge cases on partial failure\n- Redis SPOF for global counters\n- Thundering herd after throttle lifts\n\nInsertion confidence 45/100 \u2014 `django/core/management/commands/migrate.py`. Evidence score 120/10",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "evidence_verbose",
+          "category": "C_redundant",
+          "text": "Evidence score 120/100 \u2014 AST definitions/references match: rate\n\nMUST inspect:\n- django/contrib/auth/middleware.py\n- django/core/management/commands/migrate.py\n- django/db/models/fields/generated.py\n- django/middleware/http.py\n- django/middleware/csrf.py\n\nLIKELY modify:\n- django/contrib/sessions/middleware.py\n- django/middleware/cache.py\n- django/middleware/common.py\n\nVERIFY only:\n- (none)\n\nDO NOT touch unless needed:\n- (none flagged)\n\nDomain implementation steps:\n- Validate at boundary\n- Idempo",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "implementation_order",
+          "category": "B_helpful",
+          "text": "Domain implementation steps:\n- Validate at boundary\n- Idempotent writes where applicable\n\nREPOSITORY EVIDENCE\n===================\nStatus: Implemented\nEvidence score: 75.0/100\n\nFound:\n- StringAggDelimiter in `django/db/models/aggregates.py`\n- django.utils.deprecation.MiddlewareMixin() in `django/contrib/admindocs/middleware.py`\n- RedisSerializer in `django/core/cache/backends/redis.py`\n\nMissing:\n- Rate Limit\n- Throttle\n\nRecommended insertion: `django/core/management/commands/migrate.py`\nEvidence ",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "safety_rollback",
+          "category": "D_unused",
+          "text": "Verification plan:\n- Read files_to_inspect_first and confirm the change boundary matches the goal.\n- Run tests_likely_affected before and after the change.\n- Re-scan or refresh impact on the highest fan-in file you touch.\n- Smoke-test direct importers: django/contrib/auth/__init__.py, django/contrib/admin/options.py, django/contrib/admin/sites.py\n- OpenAPI/contract tests\n- Load test critical endpoints\n\nRollback plan:\n- Make the change on a feature branch; keep `main` deployable.\n- Commit in smal",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "risk_prose",
+          "category": "B_helpful",
+          "text": "Knowledge-backed risks:\n- Contract drift between clients and server\n- Unhandled edge cases on partial failure\n- Redis SPOF for global counters\n- Thundering herd after throttle lifts\n\nInsertion confidence 45/100 \u2014 `django/core/management/commands/migrate.py`. Evidence score 120/100 \u2014 AST definitions/references match: rate\n\nMUST inspect:\n- django/contrib/auth/middleware.py\n- django/core/management/commands/migrate.py\n- django/db/models/fields/generated.py\n- django/middleware/http.py\n- django/middl",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "dependencies",
+          "category": "B_helpful",
+          "text": "Dependencies involved:\n- Outbound: django/conf/__init__.py, django/conf/urls/i18n.py, django/contrib/__init__.py, django/contrib/auth/__init__.py, django/contrib/auth/backends.py, django/contrib/auth/decorators.py, django/contrib/auth/forms.py, django/contrib/auth/tokens.py, django/contrib/auth/views.py, django/contrib/sites/shortcuts.py, django/core/__init__.py, django/core/cache/__init__.py\n- Inbound: django/contrib/admin/options.py, django/contrib/admin/sites.py, django/contrib/admin/views/au",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "graph_summary",
+          "category": "C_redundant",
+          "text": "subsystems:\n- django\n\nEntry points:\n- django/contrib/admin/views/main.py\n- django/template/engine.py\n\nDependencies involved:\n- Outbound: django/conf/__init__.py, django/conf/urls/i18n.py, django/contrib/__init__.py, django/contrib/auth/__init__.py, django/contrib/auth/backends.py, django/contrib/auth/decorators.py, django/contrib/auth/forms.py, django/contrib/auth/tokens.py, django/contrib/auth/views.py, django/contrib/sites/shortcuts.py, django/core/__init__.py, django/core/cache/__init__.py\n- ",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "limitations",
+          "category": "B_helpful",
+          "text": "DO NOT touch unless needed:\n- (none flagged)\n\nDomain implementation steps:\n- Validate at boundary\n- Idempotent writes where applicable\n\nREPOSITORY EVIDENCE\n===================\nStatus: Implemented\nEvidence score: 75.0/100\n\nFound:\n- StringAggDelimiter in `django/db/models/aggregates.py`\n- django.utils.deprecation.MiddlewareMixin() in `django/contrib/admindocs/middleware.py`\n- RedisSerializer in `django/core/cache/backends/redis.py`\n\nMissing:\n- Rate Limit\n- Throttle\n\nRecommended insertion: `django/",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "tests",
+          "category": "B_helpful",
+          "text": "Tests to add/update:\n- Unit/integration tests covering `django/http/__init__.py` (e.g. test___init__*)\n- Unit/integration tests covering `django/http/response.py` (e.g. test_response*)\n- Unit/integration tests covering `django/http/request.py` (e.g. test_request*)\n- Unit/integration tests covering `django/contrib/auth/middleware.py` (e.g. test_middleware*)\n- Subsystem regression: django\n- Project CI / full test suite before merge\n- Integration tests with realistic payloads\n- Contract tests for e",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "other",
+          "category": "C_redundant",
+          "text": "CHANGE PLAN\n===========\n\n Backend Engineering / middleware\nKnowledge quality: Source-backed\nConcept  request quotas using token bucket or sliding window counters.\n\nWhy this matters:\nChanges involving Rate Limiting touch Validate at boundary, Idempotent writes where applicable.\n\nedge cases on partial failure\n- Redis SPOF for global counters\n- Thundering herd after throttle lifts\n\nInsertion confiden",
+          "tokens": 100,
+          "workflow": "build"
+        }
+      ],
+      "section_tokens": {
+        "A_required": 500,
+        "B_helpful": 750,
+        "C_redundant": 475,
+        "D_unused": 125
+      }
+    },
+    {
+      "repo": "django",
+      "workflow": "investigate",
+      "prompt": "why does auth fail?",
+      "ok": true,
+      "elapsed_s": 0.312,
+      "text": "INVESTIGATION REPORT\n====================\n\nA. Symptom summary\n   Reported: \"why does auth fail?\". Likely area: django/contrib/auth/__init__.py.\n\nA2. Domain knowledge\n   Concept: Authentication \u2014 Authentication\n   Domain: Authentication\n   Knowledge quality: Source-backed\n   Verify identity (who you are) before authorization.\n\n   Domain failure modes to check:\n     - 500s under load without backpressure\n     - Inconsistent error shapes for clients\n\n   Insertion confidence 80/100 \u2014 `django/contrib/auth/middleware.py`. Evidence score 136/100 \u2014 AST definitions/references match: auth, login, middleware\n\nA3. Repository evidence\n   Status: Implemented\n   Evidence score: 79.7/100\n   Found:\n     - django.contrib.auth.forms.AuthenticationForm() in `django/contrib/admin/forms.py`\n     - AdminAuthenticationForm.confirm_login_allowed() in `django/contrib/admin/forms.py`\n     - _get_user_session_key in `django/contrib/auth/__init__.py`\n     - django.utils.deprecation.MiddlewareMixin() in `django/contrib/admindocs/middleware.py`\n     - authenticate in `django/contrib/auth/__init__.py`\n     - django.contrib.auth.forms.PasswordChangeForm() in `django/contrib/admin/forms.py`\n   Missing:\n   Recommended insertion: `django/contrib/auth/middleware.py`\n\nB. Most likely root cause\n   django.contrib.auth.forms.AuthenticationForm() in `django/contrib/admin/forms.py`\n\nC. Ranked hypotheses\n   H1. Defect originates in `django/contrib/auth/__init__.py`  [confidence: low]\n       Why it fits: `django/contrib/auth/__init__.py` scored highest on keyword overlap with the symptom.\n       Files involved: django/contrib/auth/__init__.py\n       Evidence:\n         - `django/contrib/auth/__init__.py` \u2014 fan-in 0, risk 29.97, evidence_score=3\n         - Matched symptom keywords in the module path/index.\n       What to inspect: django/contrib/auth/__init__.py\n       Should be true if correct: The failing behavior is reproducible by exercising `django/contrib/auth/__init__.py` directly.\n       How to disprove: Add a focused test around `django/contrib/auth/__init__.py`; if it passes with the symptom inputs, the cause is elsewhere.\n\n   H2. Defect originates in `django/contrib/auth/models.py`  [confidence: low]\n       Why it fits: `django/contrib/auth/models.py` scored highest on keyword overlap with the symptom.\n       Files involved: django/contrib/auth/models.py\n       Evidence:\n         - `django/contrib/auth/models.py` \u2014 fan-in 0, risk 9.98, evidence_score=2\n         - Matched symptom keywords in the module path/index.\n       What to inspect: django/contrib/auth/models.py\n       Should be true if correct: The failing behavior is reproducible by exercising `django/contrib/auth/models.py` directly.\n       How to disprove: Add a focused test around `django/contrib/auth/models.py`; if it passes with the symptom inputs, the cause is elsewhere.\n\n   H3. Defect originates in `django/contrib/auth/forms.py`  [confidence: low]\n       Why it fits: `django/contrib/auth/forms.py` scored highest on keyword overlap with the symptom.\n       Files involved: django/contrib/auth/forms.py\n       Evidence:\n         - `django/contrib/auth/forms.py` \u2014 fan-in 0, risk 9.6, evidence_score=2\n         - Matched symptom keywords in the module path/index.\n       What to inspect: django/contrib/auth/forms.py\n       Should be true if correct: The failing behavior is reproducible by exercising `django/contrib/auth/forms.py` directly.\n       How to disprove: Add a focused test around `django/contrib/auth/forms.py`; if it passes with the symptom inputs, the cause is elsewhere.\n\nD. Verification checklist\n- H1 \u2014 Defect originates in `django/contrib/auth/__init__.py`: Add a focused test around `django/contrib/auth/__init__.py`; if it passes with the symptom inputs, the cause is elsewhere.\n- H2 \u2014 Defect originates in `django/contrib/auth/models.py`: Add a focused test around `django/contrib/auth/models.py`; if it passes with the symptom inputs, the cause is elsewhere.\n- H3 \u2014 Defect originates in `django/contrib/auth/forms.py`: Add a focused test around `django/contrib/auth/forms.py`; if it passes with the symptom inputs, the cause is elsewhere.\n- When did the symptom start (deploy, config change, data change)?\n- Is the issue reproducible in a single environment?\n- Trace the code path starting at `django/contrib/auth/__init__.py` \u2014 what calls it?\n- Smoke-test direct importers after any change: django/contrib/admin/forms.py, django/contrib/admin/options.py, django/contrib/admin/sites.py\n- 500s under load without backpressure\n- Inconsistent error shapes for clients\n- OpenAPI/contract tests\n- Load test critical endpoints\n\nE. Minimal fix strategy\n- Confirm H1 first (Defect originates in `django/contrib/auth/__init__.py`) using its disproof test before editing.\n- Scope the change to django/contrib/auth/__init__.py \u2014 avoid touching unrelated hubs.\n- Add a regression test that reproduces the symptom, then make it pass.\n- Keep the diff minimal; do not refactor adjacent code in the same change.\n\nF. Risks of fixing incorrectly\n- An incorrect fix risks a regression in dependent modules \u2014 cover with integration tests before merge.\n- A narrow fix may mask upstream data or configuration issues \u2014 validate with tests before shipping.\n- This area has 12 direct importer(s); a wrong fix can break: django/contrib/admin/forms.py, django/contrib/admin/options.py, django/contrib/admin/sites.py, django/contrib/admin/utils.py.\n- Treating a symptom (display/logging) as the root cause can hide a deeper data/accounting bug.\n\nRelevant dependencies:\n- Outbound: django/__init__.py, django/apps/__init__.py, django/conf/__init__.py, django/contrib/__init__.py, django/contrib/auth/__init__.py, django/contrib/auth/backends.py, django/contrib/auth/base_user.py, django/contrib/auth/checks.py, django/contrib/auth/decorators.py, django/contrib/auth/forms.py, django/contrib/auth/hashers.py, django/contrib/auth/management/__init__.py\n- Inbound: django/contrib/admin/forms.py, django/contrib/admin/options.py, django/contrib/admin/sites.py, django/contrib/admin/utils.py, django/contrib/admin/views/decorators.py, django/contrib/admindocs/views.py, django/contrib/auth/admin.py, django/contrib/auth/backends.py, django/contrib/auth/base_user.py, django/contrib/auth/decorators.py, django/contrib/auth/forms.py, django/contrib/auth/management/__init__.py\n\nOverall confidence: high\n\nLimitations:\n- Heuristic symptom routing \u2014 not runtime profiling or log analysis.\n- Only indexed production-scope modules are considered.\n- Concept match is partial \u2014 confirm the request targets this concept.",
+      "tokens": 1644,
+      "sections": [
+        {
+          "name": "symptom",
+          "category": "A_required",
+          "text": "Symptom summary\n   Reported: \"why does auth fail?\". Likely area: django/contrib/auth/__init__.py.\n\nA2. Domain knowledge\n   Concept: Authentication \u2014 Authentication\n   Domain: Authentication\n   Knowledge quality: Source-backed\n   Verify identity (who you are) before authorization.\n\n   Domain failure modes to check:\n     - 500s under load without backpressure\n     - Inconsistent error shapes for clients\n\n   Insertion confidence 80/100 \u2014 `django/contrib/auth/middleware.py`. Evidence score 136/100 \u2014",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "root_cause",
+          "category": "A_required",
+          "text": "Most likely root cause\n   django.contrib.auth.forms.AuthenticationForm() in `django/contrib/admin/forms.py`\n\nC. Ranked hypotheses\n   H1. Defect originates in `django/contrib/auth/__init__.py`  [confidence: low]\n       Why it fits: `django/contrib/auth/__init__.py` scored highest on keyword overlap with the symptom.\n       Files involved: django/contrib/auth/__init__.py\n       Evidence:\n         - `django/contrib/auth/__init__.py` \u2014 fan-in 0, risk 29.97, evidence_score=3\n         - Matched sympto",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "hypotheses",
+          "category": "B_helpful",
+          "text": "Ranked hypotheses\n   H1. Defect originates in `django/contrib/auth/__init__.py`  [confidence: low]\n       Why it fits: `django/contrib/auth/__init__.py` scored highest on keyword overlap with the symptom.\n       Files involved: django/contrib/auth/__init__.py\n       Evidence:\n         - `django/contrib/auth/__init__.py` \u2014 fan-in 0, risk 29.97, evidence_score=3\n         - Matched symptom keywords in the module path/index.\n       What to inspect: django/contrib/auth/__init__.py\n       Should be tr",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "hypothesis_files",
+          "category": "A_required",
+          "text": "Files involved: django/contrib/auth/__init__.py\n       Evidence:\n         - `django/contrib/auth/__init__.py` \u2014 fan-in 0, risk 29.97, evidence_score=3\n         - Matched symptom keywords in the module path/index.\n       What to inspect: django/contrib/auth/__init__.py\n       Should be true if correct: The failing behavior is reproducible by exercising `django/contrib/auth/__init__.py` directly.\n       How to disprove: Add a focused test around `django/contrib/auth/__init__.py`; if it passes with",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "verification",
+          "category": "B_helpful",
+          "text": "Verification checklist\n- H1 \u2014 Defect originates in `django/contrib/auth/__init__.py`: Add a focused test around `django/contrib/auth/__init__.py`; if it passes with the symptom inputs, the cause is elsewhere.\n- H2 \u2014 Defect originates in `django/contrib/auth/models.py`: Add a focused test around `django/contrib/auth/models.py`; if it passes with the symptom inputs, the cause is elsewhere.\n- H3 \u2014 Defect originates in `django/contrib/auth/forms.py`: Add a focused test around `django/contrib/auth/fo",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "fix_strategy",
+          "category": "B_helpful",
+          "text": "Minimal fix strategy\n- Confirm H1 first (Defect originates in `django/contrib/auth/__init__.py`) using its disproof test before editing.\n- Scope the change to django/contrib/auth/__init__.py \u2014 avoid touching unrelated hubs.\n- Add a regression test that reproduces the symptom, then make it pass.\n- Keep the diff minimal; do not refactor adjacent code in the same change.\n\nF. Risks of fixing incorrectly\n- An incorrect fix risks a regression in dependent modules \u2014 cover with integration tests before ",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "domain_prose",
+          "category": "C_redundant",
+          "text": "Domain knowledge\n   Concept: Authentication \u2014 Authentication\n   Domain: Authentication\n   Knowledge quality: Source-backed\n   Verify identity (who you are) before authorization.\n\n   Domain failure modes to check:\n     - 500s under load without backpressure\n     - Inconsistent error shapes for clients\n\n   Insertion confidence 80/100 \u2014 `django/contrib/auth/middleware.py`. Evidence score 136/100 \u2014 AST definitions/references match: auth, login, middleware\n\nA3. Repository evidence\n   Status: Implemen",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "evidence_verbose",
+          "category": "C_redundant",
+          "text": "Repository evidence\n   Status: Implemented\n   Evidence score: 79.7/100\n   Found:\n     - django.contrib.auth.forms.AuthenticationForm() in `django/contrib/admin/forms.py`\n     - AdminAuthenticationForm.confirm_login_allowed() in `django/contrib/admin/forms.py`\n     - _get_user_session_key in `django/contrib/auth/__init__.py`\n     - django.utils.deprecation.MiddlewareMixin() in `django/contrib/admindocs/middleware.py`\n     - authenticate in `django/contrib/auth/__init__.py`\n     - django.contrib.a",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "hypothesis_meta",
+          "category": "C_redundant",
+          "text": "How to disprove: Add a focused test around `django/contrib/auth/__init__.py`; if it passes with the symptom inputs, the cause is elsewhere.\n\n   H2. Defect originates in `django/contrib/auth/models.py`  [confidence: low]\n       Why it fits: `django/contrib/auth/models.py` scored highest on keyword overlap with the symptom.\n       Files involved: django/contrib/auth/models.py\n       Evidence:\n         - `django/contrib/auth/models.py` \u2014 fan-in 0, risk 9.98, evidence_score=2\n         - Matched symp",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "confidence_meta",
+          "category": "A_required",
+          "text": "confidence 80/100 \u2014 `django/contrib/auth/middleware.py`. Evidence score 136/100 \u2014 AST definitions/references match: auth, login, middleware\n\nA3. Repository evidence\n   Status: Implemented\n   Evidence score: 79.7/100\n   Found:\n     - django.contrib.auth.forms.AuthenticationForm() in `django/contrib/admin/forms.py`\n     - AdminAuthenticationForm.confirm_login_allowed() in `django/contrib/admin/forms.py`\n     - _get_user_session_key in `django/contrib/auth/__init__.py`\n     - django.utils.deprecati",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "other",
+          "category": "C_redundant",
+          "text": "INVESTIGATION REPORT\n====================\n\nA. auth/__init__.py.\n\nA2. cation\n   Knowledge quality: Source-backed\n   Verify identity (who you are) before authorization.\n\n   Domain failure modes to check:\n     - 500s under load without backpressure\n     - Inconsistent error shapes for clients\n\n   Insertion \u2014 AST definitions/references match: auth, login, middleware\n\nA3. \n     - django.contrib.auth.fo",
+          "tokens": 100,
+          "workflow": "investigate"
+        }
+      ],
+      "section_tokens": {
+        "A_required": 500,
+        "B_helpful": 375,
+        "C_redundant": 475,
+        "D_unused": 0
+      }
+    },
+    {
+      "repo": "django",
+      "workflow": "impact",
+      "prompt": "what breaks if I change authentication?",
+      "ok": true,
+      "elapsed_s": 0.13,
+      "text": "\n{\"target\": \"django/contrib/auth/templatetags/auth.py\", \"direct_impact\": [\"django/contrib/admin/forms.py\", \"django/contrib/admin/options.py\", \"django/contrib/admin/sites.py\", \"django/contrib/admin/utils.py\", \"django/contrib/admin/views/decorators.py\", \"django/contrib/admindocs/views.py\", \"django/contrib/auth/__init__.py\", \"django/contrib/auth/admin.py\", \"django/contrib/auth/apps.py\", \"django/contrib/auth/backends.py\"], \"indirect_impact\": [\"django/contrib/admin/__init__.py\", \"django/contrib/admin/actions.py\", \"django/contrib/admin/apps.py\", \"django/contrib/admin/checks.py\", \"django/contrib/admin/decorators.py\", \"django/contrib/admin/filters.py\"], \"confidence\": \"high\", \"evidence\": [\"Symbol `django.contrib.auth.hashers.identify_hasher` caller: django/contrib/auth/hashers.py::verify_password\", \"Symbol `django.template.Library` caller: django/contrib/admin/templatetags/admin_filters.py::<module>\", \"Symbol `django.template.Library` caller: django/contrib/admin/templatetags/admin_list.py::<module>\", \"Semantic concept `authentication` \\u2192 24 module(s), 32 symbol(s) symbols: AdminAuthenticationForm.confirm_login_allowed, functools.update_wrapper, weakref.WeakSet, django.apps.apps, django.conf.settings, django.contrib.admin.ModelAdmin. Primary: `django/contrib/auth/templatetags/auth.py`.\"]}",
+      "tokens": 326,
+      "sections": [
+        {
+          "name": "target",
+          "category": "A_required",
+          "text": "target\": \"django/contrib/auth/templatetags/auth.py\", \"direct_impact\": [\"django/contrib/admin/forms.py\", \"django/contrib/admin/options.py\", \"django/contrib/admin/sites.py\", \"django/contrib/admin/utils.py\", \"django/contrib/admin/views/decorators.py\", \"django/contrib/admindocs/views.py\", \"django/contrib/auth/__init__.py\", \"django/contrib/auth/admin.py\", \"django/contrib/auth/apps.py\", \"django/contrib/auth/backends.py\"], \"indirect_impact\": [\"django/contrib/admin/__init__.py\", \"django/contrib/admin/ac",
+          "tokens": 125,
+          "workflow": "impact"
+        },
+        {
+          "name": "indirect_impact",
+          "category": "B_helpful",
+          "text": "indirect_impact\": [\"django/contrib/admin/__init__.py\", \"django/contrib/admin/actions.py\", \"django/contrib/admin/apps.py\", \"django/contrib/admin/checks.py\", \"django/contrib/admin/decorators.py\", \"django/contrib/admin/filters.py\"], \"confidence\": \"high\", \"evidence\": [\"Symbol `django.contrib.auth.hashers.identify_hasher` caller: django/contrib/auth/hashers.py::verify_password\", \"Symbol `django.template.Library` caller: django/contrib/admin/templatetags/admin_filters.py::<module>\", \"Symbol `django.te",
+          "tokens": 125,
+          "workflow": "impact"
+        },
+        {
+          "name": "confidence_meta",
+          "category": "A_required",
+          "text": "confidence\": \"high\", \"evidence\": [\"Symbol `django.contrib.auth.hashers.identify_hasher` caller: django/contrib/auth/hashers.py::verify_password\", \"Symbol `django.template.Library` caller: django/contrib/admin/templatetags/admin_filters.py::<module>\", \"Symbol `django.template.Library` caller: django/contrib/admin/templatetags/admin_list.py::<module>\", \"Semantic concept `authentication` \\u2192 24 module(s), 32 symbol(s) symbols: AdminAuthenticationForm.confirm_login_allowed, functools.update_wrapp",
+          "tokens": 125,
+          "workflow": "impact"
+        },
+        {
+          "name": "other",
+          "category": "C_redundant",
+          "text": "\n{\"ontrib/admin/forms.py\", \"django/contrib/admin/options.py\", \"django/contrib/admin/sites.py\", \"django/contrib/admin/utils.py\", \"django/contrib/admin/views/decorators.py\", \"django/contrib/admindocs/views.py\", \"django/contrib/auth/__init__.py\", \"django/contrib/auth/admin.py\", \"django/contrib/auth/apps.py\", \"django/contrib/auth/backends.py\"], \"ions.py\", \"django/contrib/admin/apps.py\", \"django/contri",
+          "tokens": 100,
+          "workflow": "impact"
+        }
+      ],
+      "section_tokens": {
+        "A_required": 250,
+        "B_helpful": 125,
+        "C_redundant": 100,
+        "D_unused": 0
+      }
+    },
+    {
+      "repo": "django",
+      "workflow": "understanding",
+      "prompt": "what are the main runtime boundaries?",
+      "ok": true,
+      "elapsed_s": 0.0,
+      "text": "I could not map that question to a grounded analysis mode. Try one of the suggested questions below.\nYou are assisting with the repository below. Use this precomputed Atlas repository intelligence as ground truth; read cited files only when you need detail.\n\n# ATLAS REPOSITORY CONTEXT \u2014 django  (compact)\nscope=production degraded=False\nmodules=929 subsystems=9 edges=2915 cycles=80\n\n## PRODUCTION SUBSYSTEMS\n- django (919 prod files); entry: django/contrib/admin/views/main.py,django/template/engine.py\n- scripts (11 prod files); entry: scripts/pr_quality/__init__.py,scripts/archive_eol_stable_branches.py; deps: django\n- (root) (1 prod files); entry: Gruntfile.js\n\n## MOST DEPENDED-ON MODULES (import fan-in)\n- django.conf <- 151 importers\n- django.core.exceptions <- 149 importers\n- django.db <- 147 importers\n- django.utils.functional <- 114 importers\n- django.utils.translation <- 114 importers\n\n## TOP ARCHITECTURAL RISKS\n- django.contrib.auth (score 85.4): boundary 1.00, runtime criticality 0.99, centrality 0.98, God module: many dependents and outbound deps.\n- django.db.migrations.loader (score 84.4): boundary 1.00, runtime criticality 0.97, centrality 0.94, God module: many dependents and outbound deps.\n- django.db.models (score 79.9): cycle 1.00, centrality 0.99, coupling 0.97\n- django.db.models.sql.query (score 78.0): coupling 1.00, cycle 1.00, centrality 0.92\n\n## UNCERTAINTY\n- Fan-in is a static lower bound (dynamic imports/dispatch not counted).\n\n## HOW TO USE\nAnswer the user's question using these facts first; open a cited file only if you need its body. Prefer these structured facts over re-scanning the repo.\n",
+      "tokens": 410,
+      "sections": [
+        {
+          "name": "repo_context",
+          "category": "A_required",
+          "text": "ATLAS REPOSITORY CONTEXT \u2014 django  (compact)\nscope=production degraded=False\nmodules=929 subsystems=9 edges=2915 cycles=80\n\n## PRODUCTION SUBSYSTEMS\n- django (919 prod files); entry: django/contrib/admin/views/main.py,django/template/engine.py\n- scripts (11 prod files); entry: scripts/pr_quality/__init__.py,scripts/archive_eol_stable_branches.py; deps: django\n- (root) (1 prod files); entry: Gruntfile.js\n\n## MOST DEPENDED-ON MODULES (import fan-in)\n- django.conf <- 151 importers\n- django.core.exc",
+          "tokens": 125,
+          "workflow": "understanding"
+        },
+        {
+          "name": "hubs",
+          "category": "A_required",
+          "text": "MOST DEPENDED-ON MODULES (import fan-in)\n- django.conf <- 151 importers\n- django.core.exceptions <- 149 importers\n- django.db <- 147 importers\n- django.utils.functional <- 114 importers\n- django.utils.translation <- 114 importers\n\n## TOP ARCHITECTURAL RISKS\n- django.contrib.auth (score 85.4): boundary 1.00, runtime criticality 0.99, centrality 0.98, God module: many dependents and outbound deps.\n- django.db.migrations.loader (score 84.4): boundary 1.00, runtime criticality 0.97, centrality 0.94,",
+          "tokens": 125,
+          "workflow": "understanding"
+        },
+        {
+          "name": "risks",
+          "category": "B_helpful",
+          "text": "TOP ARCHITECTURAL RISKS\n- django.contrib.auth (score 85.4): boundary 1.00, runtime criticality 0.99, centrality 0.98, God module: many dependents and outbound deps.\n- django.db.migrations.loader (score 84.4): boundary 1.00, runtime criticality 0.97, centrality 0.94, God module: many dependents and outbound deps.\n- django.db.models (score 79.9): cycle 1.00, centrality 0.99, coupling 0.97\n- django.db.models.sql.query (score 78.0): coupling 1.00, cycle 1.00, centrality 0.92\n\n## UNCERTAINTY\n- Fan-in",
+          "tokens": 125,
+          "workflow": "understanding"
+        },
+        {
+          "name": "boilerplate",
+          "category": "D_unused",
+          "text": "UNCERTAINTY\n- Fan-in is a static lower bound (dynamic imports/dispatch not counted).\n\n## HOW TO USE\nAnswer the user's question using these facts first; open a cited file only if you need its body. Prefer these structured facts over re-scanning the repo.\n",
+          "tokens": 64,
+          "workflow": "understanding"
+        },
+        {
+          "name": "other",
+          "category": "C_redundant",
+          "text": "I could not map that question to a grounded analysis mode. Try one of the suggested questions below.\nYou are assisting with the repository below. Use this precomputed Atlas repository intelligence as ground truth; read cited files only when you need detail.\n\n# ules=929 subsystems=9 edges=2915 cycles=80\n\n## PRODUCTION SUBSYSTEMS\n- django (919 prod files); entry: django/contrib/admin/views/main.py,d",
+          "tokens": 100,
+          "workflow": "understanding"
+        }
+      ],
+      "section_tokens": {
+        "A_required": 250,
+        "B_helpful": 125,
+        "C_redundant": 100,
+        "D_unused": 64
+      }
+    },
+    {
+      "repo": "vscode",
+      "workflow": "build",
+      "prompt": "add rate limiting",
+      "ok": true,
+      "elapsed_s": 0.13,
+      "text": "CHANGE PLAN\n===========\n\nGoal: add rate limiting\n\nDetected concept: Rate Limiting \u2014 Rate Limiting\nDomain: Backend Engineering / middleware\nKnowledge quality: Source-backed\nConcept confidence: high \u00b7 Repo mapping: high\n\nConcept understanding:\nEnforce per-client request quotas using token bucket or sliding window counters.\n\nWhy this matters:\nChanges involving Rate Limiting touch Validate at boundary, Idempotent writes where applicable.\n\nKnowledge-backed risks:\n- Contract drift between clients and server\n- Unhandled edge cases on partial failure\n- Redis SPOF for global counters\n- Thundering herd after throttle lifts\n\nInsertion confidence 24/100 \u2014 `extensions/copilot/src/platform/parser/test/node/fixtures/try.py`. No direct symbol match \u2014 nearest structural pattern in repo\n\nMUST inspect:\n- extensions/copilot/src/platform/parser/test/node/fixtures/try.py\n\nLIKELY modify:\n- (none)\n\nVERIFY only:\n- (none)\n\nDO NOT touch unless needed:\n- (none flagged)\n\nDomain implementation steps:\n- Validate at boundary\n- Idempotent writes where applicable\n\nREPOSITORY EVIDENCE\n===================\nStatus: Not Found\nEvidence score: 24.2/100\n\nFound:\n- (none)\n\nMissing:\n- 429 Response\n- Limiter\n- Middleware\n- Rate Limit\n- Rate Limit Headers\n- Redis\n- Throttle\n\nRecommended insertion: `extensions/copilot/src/platform/parser/test/node/fixtures/try.py`\nNo direct symbol match \u2014 nearest structural pattern in repo\n\n- `extensions/copilot/src/platform/parser/test/node/fixtures/try.py` \u2014 score 44/100 \u2014 symbols matched\n\nFiles to inspect first:\n- extensions/copilot/src/platform/parser/test/node/fixtures/try.py\n\nFiles likely to change:\n- extensions/copilot/src/platform/parser/test/node/fixtures/try.py\n\nFiles likely to break (direct importers / high coupling):\n- extensions/copilot/src/extension/byok/common/byokProvider.ts\n- extensions/copilot/src/extension/byok/node/openAIEndpoint.ts\n- extensions/copilot/src/extension/agents/vscode-node/githubOrgChatResourcesService.ts\n- extensions/copilot/src/extension/agents/node/langModelServer.ts\n- extensions/copilot/src/extension/agents/vscode-node/planAgentProvider.ts\n- extensions/copilot/src/extension/agents/vscode-node/promptFileContrib.ts\n- extensions/copilot/src/extension/agents/vscode-node/askAgentProvider.ts\n- extensions/copilot/src/extension/agents/vscode-node/editModeAgentProvider.ts\n- extensions/copilot/src/extension/agents/vscode-node/exploreAgentProvider.ts\n- extensions/copilot/src/extension/agents/vscode-node/githubOrgCustomAgentProvider.ts\n\nLikely affected subsystems:\n- extensions\n- src\n\nEntry points:\n- src/vs/workbench/workbench.common.main.ts\n- src/vs/workbench/workbench.desktop.main.ts\n- extensions/copilot/.mocha-multi-reporters.js\n- extensions/copilot/.mocharc.js\n- src/vs/platform/accessibility/browser/accessibilityService.ts\n- src/vs/platform/accessibility/browser/accessibleView.ts\n- src/vs/editor/editor.all.ts\n- src/vs/editor/editor.api.ts\n- src/vs/base/browser/animatedValue.ts\n- src/vs/base/browser/broadcast.ts\n- src/vs/sessions/sessions.common.main.ts\n- src/vs/sessions/sessions.desktop.main.ts\n\nDependencies involved:\n- Outbound: extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts, extensions/copilot/src/extension/inlineChat/node/rendererVisualization.ts, extensions/copilot/src/extension/prompt/common/conversation.ts, extensions/copilot/src/extension/prompt/common/intents.ts, extensions/copilot/src/extension/prompt/node/intents.ts, extensions/copilot/src/extension/prompts/node/base/promptElement.ts, extensions/copilot/src/platform/authentication/common/authentication.ts, extensions/copilot/src/platform/authentication/common/copilotToken.ts, extensions/copilot/src/platform/authentication/common/copilotTokenManager.ts, extensions/copilot/src/platform/authentication/common/copilotTokenStore.ts, extensions/copilot/src/platform/chat/common/commonTypes.ts, extensions/copilot/src/platform/chat/common/globalStringUtils.ts\n- Inbound: extensions/copilot/src/extension/agents/node/langModelServer.ts, extensions/copilot/src/extension/agents/vscode-node/askAgentProvider.ts, extensions/copilot/src/extension/agents/vscode-node/editModeAgentProvider.ts, extensions/copilot/src/extension/agents/vscode-node/exploreAgentProvider.ts, extensions/copilot/src/extension/agents/vscode-node/githubOrgChatResourcesService.ts, extensions/copilot/src/extension/agents/vscode-node/githubOrgCustomAgentProvider.ts, extensions/copilot/src/extension/agents/vscode-node/githubOrgInstructionsProvider.ts, extensions/copilot/src/extension/agents/vscode-node/planAgentProvider.ts, extensions/copilot/src/extension/agents/vscode-node/promptFileContrib.ts, extensions/copilot/src/extension/authentication/vscode-node/authentication.contribution.ts, extensions/copilot/src/extension/byok/common/byokProvider.ts, extensions/copilot/src/extension/byok/node/openAIEndpoint.ts\n\nImplementation order (static heuristic):\n- extensions/copilot/src/platform/parser/test/node/fixtures/try.py\n\nTests to add/update:\n- Unit/integration tests covering `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts` (e.g. test_copilotTokenManager*)\n- Unit/integration tests covering `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts` (e.g. test_copilotTokenNotifier*)\n- Unit/integration tests covering `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts` (e.g. test_orgs*)\n- Unit/integration tests covering `src/vs/workbench/contrib/chat/browser/widget/chatContentParts/chatAnonymousRateLimitedPart.ts` (e.g. test_chatAnonymousRateLimitedPart*)\n- Subsystem regression: extensions, src\n- Project CI / full test suite before merge\n- Integration tests with realistic payloads\n- Contract tests for error codes\n\nVerification plan:\n- Read files_to_inspect_first and confirm the change boundary matches the goal.\n- Run tests_likely_affected before and after the change.\n- Re-scan or refresh impact on the highest fan-in file you touch.\n- Smoke-test direct importers: extensions/copilot/src/extension/byok/common/byokProvider.ts, extensions/copilot/src/extension/byok/node/openAIEndpoint.ts, extensions/copilot/src/extension/agents/vscode-node/githubOrgChatResourcesService.ts\n- OpenAPI/contract tests\n- Load test critical endpoints\n\nRollback plan:\n- Make the change on a feature branch; keep `main` deployable.\n- Commit in small, revertible steps so any single commit can be `git revert`-ed cleanly.\n- Before editing, note the current behavior of: extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts, extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts, extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts.\n- Keep DB migrations backward-compatible (additive) so the old code still runs if you roll back.\n\nArchitectural risks:\n- `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts` (score 16.89): high fan-in / coupling\n- `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts` (score 9.73): high fan-in / coupling\n- `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts` (score 4.4): high fan-in / coupling\n- `extensions/copilot/src/platform/endpoint/common/capiClient.ts` (score 48.17): high fan-in / coupling\n- `extensions/copilot/src/extension/prompts/node/base/promptRenderer.ts` (score 101.49): high fan-in / coupling\n- Rate limits must apply consistently across HTTP and websocket entry points.\n- [knowledge] Contract drift between clients and server\n- [knowledge] Unhandled edge cases on partial failure\n- [knowledge] Redis SPOF for global counters\n- [knowledge] Thundering herd after throttle lifts\n\nRisk level: low\nEstimated change size: Medium\nConfidence: medium-high\n\nLimitations:\n- Static import graph only \u2014 runtime plugins and dynamic imports may be missing.",
+      "tokens": 2003,
+      "sections": [
+        {
+          "name": "goal",
+          "category": "A_required",
+          "text": "Goal: add rate limiting\n\nDetected concept: Rate Limiting \u2014 Rate Limiting\nDomain: Backend Engineering / middleware\nKnowledge quality: Source-backed\nConcept confidence: high \u00b7 Repo mapping: high\n\nConcept understanding:\nEnforce per-client request quotas using token bucket or sliding window counters.\n\nWhy this matters:\nChanges involving Rate Limiting touch Validate at boundary, Idempotent writes where applicable.\n\nKnowledge-backed risks:\n- Contract drift between clients and server\n- Unhandled edge c",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "files_inspect",
+          "category": "A_required",
+          "text": "MUST inspect:\n- extensions/copilot/src/platform/parser/test/node/fixtures/try.py\n\nLIKELY modify:\n- (none)\n\nVERIFY only:\n- (none)\n\nDO NOT touch unless needed:\n- (none flagged)\n\nDomain implementation steps:\n- Validate at boundary\n- Idempotent writes where applicable\n\nREPOSITORY EVIDENCE\n===================\nStatus: Not Found\nEvidence score: 24.2/100\n\nFound:\n- (none)\n\nMissing:\n- 429 Response\n- Limiter\n- Middleware\n- Rate Limit\n- Rate Limit Headers\n- Redis\n- Throttle\n\nRecommended insertion: `extensio",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "files_change",
+          "category": "C_redundant",
+          "text": "LIKELY modify:\n- (none)\n\nVERIFY only:\n- (none)\n\nDO NOT touch unless needed:\n- (none flagged)\n\nDomain implementation steps:\n- Validate at boundary\n- Idempotent writes where applicable\n\nREPOSITORY EVIDENCE\n===================\nStatus: Not Found\nEvidence score: 24.2/100\n\nFound:\n- (none)\n\nMissing:\n- 429 Response\n- Limiter\n- Middleware\n- Rate Limit\n- Rate Limit Headers\n- Redis\n- Throttle\n\nRecommended insertion: `extensions/copilot/src/platform/parser/test/node/fixtures/try.py`\nNo direct symbol match \u2014",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "blast_importers",
+          "category": "A_required",
+          "text": "likely to break (direct importers / high coupling):\n- extensions/copilot/src/extension/byok/common/byokProvider.ts\n- extensions/copilot/src/extension/byok/node/openAIEndpoint.ts\n- extensions/copilot/src/extension/agents/vscode-node/githubOrgChatResourcesService.ts\n- extensions/copilot/src/extension/agents/node/langModelServer.ts\n- extensions/copilot/src/extension/agents/vscode-node/planAgentProvider.ts\n- extensions/copilot/src/extension/agents/vscode-node/promptFileContrib.ts\n- extensions/copilo",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "confidence_meta",
+          "category": "A_required",
+          "text": "confidence: high \u00b7 Repo mapping: high\n\nConcept understanding:\nEnforce per-client request quotas using token bucket or sliding window counters.\n\nWhy this matters:\nChanges involving Rate Limiting touch Validate at boundary, Idempotent writes where applicable.\n\nKnowledge-backed risks:\n- Contract drift between clients and server\n- Unhandled edge cases on partial failure\n- Redis SPOF for global counters\n- Thundering herd after throttle lifts\n\nInsertion confidence 24/100 \u2014 `extensions/copilot/src/plat",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "domain_prose",
+          "category": "B_helpful",
+          "text": "Concept understanding:\nEnforce per-client request quotas using token bucket or sliding window counters.\n\nWhy this matters:\nChanges involving Rate Limiting touch Validate at boundary, Idempotent writes where applicable.\n\nKnowledge-backed risks:\n- Contract drift between clients and server\n- Unhandled edge cases on partial failure\n- Redis SPOF for global counters\n- Thundering herd after throttle lifts\n\nInsertion confidence 24/100 \u2014 `extensions/copilot/src/platform/parser/test/node/fixtures/try.py`.",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "evidence_verbose",
+          "category": "C_redundant",
+          "text": "REPOSITORY EVIDENCE\n===================\nStatus: Not Found\nEvidence score: 24.2/100\n\nFound:\n- (none)\n\nMissing:\n- 429 Response\n- Limiter\n- Middleware\n- Rate Limit\n- Rate Limit Headers\n- Redis\n- Throttle\n\nRecommended insertion: `extensions/copilot/src/platform/parser/test/node/fixtures/try.py`\nNo direct symbol match \u2014 nearest structural pattern in repo\n\n- `extensions/copilot/src/platform/parser/test/node/fixtures/try.py` \u2014 score 44/100 \u2014 symbols matched\n\nFiles to inspect first:\n- extensions/copilot",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "implementation_order",
+          "category": "B_helpful",
+          "text": "Domain implementation steps:\n- Validate at boundary\n- Idempotent writes where applicable\n\nREPOSITORY EVIDENCE\n===================\nStatus: Not Found\nEvidence score: 24.2/100\n\nFound:\n- (none)\n\nMissing:\n- 429 Response\n- Limiter\n- Middleware\n- Rate Limit\n- Rate Limit Headers\n- Redis\n- Throttle\n\nRecommended insertion: `extensions/copilot/src/platform/parser/test/node/fixtures/try.py`\nNo direct symbol match \u2014 nearest structural pattern in repo\n\n- `extensions/copilot/src/platform/parser/test/node/fixtu",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "safety_rollback",
+          "category": "D_unused",
+          "text": "Verification plan:\n- Read files_to_inspect_first and confirm the change boundary matches the goal.\n- Run tests_likely_affected before and after the change.\n- Re-scan or refresh impact on the highest fan-in file you touch.\n- Smoke-test direct importers: extensions/copilot/src/extension/byok/common/byokProvider.ts, extensions/copilot/src/extension/byok/node/openAIEndpoint.ts, extensions/copilot/src/extension/agents/vscode-node/githubOrgChatResourcesService.ts\n- OpenAPI/contract tests\n- Load test c",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "risk_prose",
+          "category": "B_helpful",
+          "text": "Knowledge-backed risks:\n- Contract drift between clients and server\n- Unhandled edge cases on partial failure\n- Redis SPOF for global counters\n- Thundering herd after throttle lifts\n\nInsertion confidence 24/100 \u2014 `extensions/copilot/src/platform/parser/test/node/fixtures/try.py`. No direct symbol match \u2014 nearest structural pattern in repo\n\nMUST inspect:\n- extensions/copilot/src/platform/parser/test/node/fixtures/try.py\n\nLIKELY modify:\n- (none)\n\nVERIFY only:\n- (none)\n\nDO NOT touch unless needed:\n",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "dependencies",
+          "category": "B_helpful",
+          "text": "Dependencies involved:\n- Outbound: extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts, extensions/copilot/src/extension/inlineChat/node/rendererVisualization.ts, extensions/copilot/src/extension/prompt/common/conversation.ts, extensions/copilot/src/extension/prompt/common/intents.ts, extensions/copilot/src/extension/prompt/node/intents.ts, extensions/copilot/src/extension/prompts/node/base/promptElement.ts, extensions/copilot/src/platform/authentica",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "graph_summary",
+          "category": "C_redundant",
+          "text": "subsystems:\n- extensions\n- src\n\nEntry points:\n- src/vs/workbench/workbench.common.main.ts\n- src/vs/workbench/workbench.desktop.main.ts\n- extensions/copilot/.mocha-multi-reporters.js\n- extensions/copilot/.mocharc.js\n- src/vs/platform/accessibility/browser/accessibilityService.ts\n- src/vs/platform/accessibility/browser/accessibleView.ts\n- src/vs/editor/editor.all.ts\n- src/vs/editor/editor.api.ts\n- src/vs/base/browser/animatedValue.ts\n- src/vs/base/browser/broadcast.ts\n- src/vs/sessions/sessions.co",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "limitations",
+          "category": "B_helpful",
+          "text": "DO NOT touch unless needed:\n- (none flagged)\n\nDomain implementation steps:\n- Validate at boundary\n- Idempotent writes where applicable\n\nREPOSITORY EVIDENCE\n===================\nStatus: Not Found\nEvidence score: 24.2/100\n\nFound:\n- (none)\n\nMissing:\n- 429 Response\n- Limiter\n- Middleware\n- Rate Limit\n- Rate Limit Headers\n- Redis\n- Throttle\n\nRecommended insertion: `extensions/copilot/src/platform/parser/test/node/fixtures/try.py`\nNo direct symbol match \u2014 nearest structural pattern in repo\n\n- `extensio",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "tests",
+          "category": "B_helpful",
+          "text": "Tests to add/update:\n- Unit/integration tests covering `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts` (e.g. test_copilotTokenManager*)\n- Unit/integration tests covering `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts` (e.g. test_copilotTokenNotifier*)\n- Unit/integration tests covering `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts` (e.g. test_orgs*)\n- Unit",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "other",
+          "category": "C_redundant",
+          "text": "CHANGE PLAN\n===========\n\n Backend Engineering / middleware\nKnowledge quality: Source-backed\nConcept  request quotas using token bucket or sliding window counters.\n\nWhy this matters:\nChanges involving Rate Limiting touch Validate at boundary, Idempotent writes where applicable.\n\nedge cases on partial failure\n- Redis SPOF for global counters\n- Thundering herd after throttle lifts\n\nInsertion confiden",
+          "tokens": 100,
+          "workflow": "build"
+        }
+      ],
+      "section_tokens": {
+        "A_required": 500,
+        "B_helpful": 750,
+        "C_redundant": 475,
+        "D_unused": 125
+      }
+    },
+    {
+      "repo": "vscode",
+      "workflow": "investigate",
+      "prompt": "why does auth fail?",
+      "ok": true,
+      "elapsed_s": 0.155,
+      "text": "INVESTIGATION REPORT\n====================\n\nA. Symptom summary\n   Reported: \"why does auth fail?\". Likely area: extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts.\n\nA2. Domain knowledge\n   Concept: Authentication \u2014 Authentication\n   Domain: Authentication\n   Knowledge quality: Source-backed\n   Verify identity (who you are) before authorization.\n\n   Domain failure modes to check:\n     - 500s under load without backpressure\n     - Inconsistent error shapes for clients\n\n   Insertion confidence 34/100 \u2014 `extensions/copilot/src/platform/parser/test/node/fixtures/try.py`. Evidence score 100/100 \u2014 AST definitions/references match: auth, auth\n\nA3. Repository evidence\n   Status: Implemented\n   Evidence score: 75.0/100\n   Found:\n     - paramiko.common.MSG_USERAUTH_REQUEST() in `extensions/copilot/src/platform/parser/test/node/fixtures/try.py`\n   Missing:\n     - Authenticate\n     - Login\n     - Middleware\n     - Password\n   Recommended insertion: `extensions/copilot/src/platform/parser/test/node/fixtures/try.py`\n\nB. Most likely root cause\n   paramiko.common.MSG_USERAUTH_REQUEST() in `extensions/copilot/src/platform/parser/test/node/fixtures/try.py`\n\nC. Ranked hypotheses\n   H1. Defect originates in `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts`  [confidence: low]\n       Why it fits: `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts` scored highest on keyword overlap with the symptom.\n       Files involved: extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts\n       Evidence:\n         - `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts` \u2014 fan-in 0, risk 16.89, evidence_score=3\n         - Matched symptom keywords in the module path/index.\n       What to inspect: extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts\n       Should be true if correct: The failing behavior is reproducible by exercising `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts` directly.\n       How to disprove: Add a focused test around `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts`; if it passes with the symptom inputs, the cause is elsewhere.\n\n   H2. Defect originates in `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts`  [confidence: low]\n       Why it fits: `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts` scored highest on keyword overlap with the symptom.\n       Files involved: extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts\n       Evidence:\n         - `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts` \u2014 fan-in 0, risk 9.73, evidence_score=2\n         - Matched symptom keywords in the module path/index.\n       What to inspect: extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts\n       Should be true if correct: The failing behavior is reproducible by exercising `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts` directly.\n       How to disprove: Add a focused test around `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts`; if it passes with the symptom inputs, the cause is elsewhere.\n\n   H3. Defect originates in `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts`  [confidence: low]\n       Why it fits: `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts` scored highest on keyword overlap with the symptom.\n       Files involved: extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts\n       Evidence:\n         - `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts` \u2014 fan-in 0, risk 4.4, evidence_score=2\n         - Matched symptom keywords in the module path/index.\n       What to inspect: extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts\n       Should be true if correct: The failing behavior is reproducible by exercising `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts` directly.\n       How to disprove: Add a focused test around `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts`; if it passes with the symptom inputs, the cause is elsewhere.\n\nD. Verification checklist\n- H1 \u2014 Defect originates in `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts`: Add a focused test around `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts`; if it passes with the symptom inputs, the cause is elsewhere.\n- H2 \u2014 Defect originates in `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts`: Add a focused test around `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts`; if it passes with the symptom inputs, the cause is elsewhere.\n- H3 \u2014 Defect originates in `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts`: Add a focused test around `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/orgs.ts`; if it passes with the symptom inputs, the cause is elsewhere.\n- When did the symptom start (deploy, config change, data change)?\n- Is the issue reproducible in a single environment?\n- Trace the code path starting at `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts` \u2014 what calls it?\n- Smoke-test direct importers after any change: extensions/copilot/src/extension/agents/vscode-node/githubOrgChatResourcesService.ts, extensions/copilot/src/extension/authentication/vscode-node/authentication.contribution.ts, extensions/copilot/src/extension/byok/common/byokProvider.ts\n- 500s under load without backpressure\n- Inconsistent error shapes for clients\n- OpenAPI/contract tests\n- Load test critical endpoints\n\nE. Minimal fix strategy\n- Confirm H1 first (Defect originates in `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts`) using its disproof test before editing.\n- Scope the change to extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts \u2014 avoid touching unrelated hubs.\n- Add a regression test that reproduces the symptom, then make it pass.\n- Keep the diff minimal; do not refactor adjacent code in the same change.\n\nF. Risks of fixing incorrectly\n- An incorrect fix risks a regression in dependent modules \u2014 cover with integration tests before merge.\n- A narrow fix may mask upstream data or configuration issues \u2014 validate with tests before shipping.\n- This area has 12 direct importer(s); a wrong fix can break: extensions/copilot/src/extension/agents/vscode-node/githubOrgChatResourcesService.ts, extensions/copilot/src/extension/authentication/vscode-node/authentication.contribution.ts, extensions/copilot/src/extension/byok/common/byokProvider.ts, extensions/copilot/src/extension/byok/vscode-node/byokContribution.ts.\n- Treating a symptom (display/logging) as the root cause can hide a deeper data/accounting bug.\n\nRelevant dependencies:\n- Outbound: extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts, extensions/copilot/src/platform/authentication/common/authentication.ts, extensions/copilot/src/platform/authentication/common/copilotToken.ts, extensions/copilot/src/platform/authentication/common/copilotTokenManager.ts, extensions/copilot/src/platform/authentication/common/copilotTokenStore.ts, extensions/copilot/src/platform/chat/common/chatQuotaService.ts, extensions/copilot/src/platform/configuration/common/configurationService.ts, extensions/copilot/src/platform/configuration/common/validator.ts, extensions/copilot/src/platform/endpoint/common/capiClient.ts, extensions/copilot/src/platform/endpoint/common/domainService.ts, extensions/copilot/src/platform/github/common/githubService.ts, extensions/copilot/src/platform/github/common/nullOctokitServiceImpl.ts\n- Inbound: extensions/copilot/src/extension/agents/vscode-node/githubOrgChatResourcesService.ts, extensions/copilot/src/extension/authentication/vscode-node/authentication.contribution.ts, extensions/copilot/src/extension/byok/common/byokProvider.ts, extensions/copilot/src/extension/byok/vscode-node/byokContribution.ts, extensions/copilot/src/extension/chat/vscode-node/chatQuota.contribution.ts, extensions/copilot/src/extension/chatInputNotification/vscode-node/byokUtilityModel.contribution.ts, extensions/copilot/src/extension/chatSessions/claude/node/claudeCodeAgent.ts, extensions/copilot/src/extension/chatSessions/copilotcli/node/copilotCli.ts, extensions/copilot/src/extension/chatSessions/copilotcli/node/copilotcliSession.ts, extensions/copilot/src/extension/chatSessions/copilotcli/node/mcpHandler.ts, extensions/copilot/src/extension/chatSessions/copilotcli/node/missionControlApiClient.ts, extensions/copilot/src/extension/chatSessions/vscode-node/claudeChatSessionContentProvider.ts\n\nOverall confidence: medium\n\nLimitations:\n- Heuristic symptom routing \u2014 not runtime profiling or log analysis.\n- Only indexed production-scope modules are considered.\n- Concept match is partial \u2014 confirm the request targets this concept.",
+      "tokens": 2433,
+      "sections": [
+        {
+          "name": "symptom",
+          "category": "A_required",
+          "text": "Symptom summary\n   Reported: \"why does auth fail?\". Likely area: extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts.\n\nA2. Domain knowledge\n   Concept: Authentication \u2014 Authentication\n   Domain: Authentication\n   Knowledge quality: Source-backed\n   Verify identity (who you are) before authorization.\n\n   Domain failure modes to check:\n     - 500s under load without backpressure\n     - Inconsistent error shapes for clients\n\n   Insertion confidence 34/1",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "root_cause",
+          "category": "A_required",
+          "text": "Most likely root cause\n   paramiko.common.MSG_USERAUTH_REQUEST() in `extensions/copilot/src/platform/parser/test/node/fixtures/try.py`\n\nC. Ranked hypotheses\n   H1. Defect originates in `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts`  [confidence: low]\n       Why it fits: `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts` scored highest on keyword overlap with the symptom.\n       Files involved: e",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "hypotheses",
+          "category": "B_helpful",
+          "text": "Ranked hypotheses\n   H1. Defect originates in `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts`  [confidence: low]\n       Why it fits: `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts` scored highest on keyword overlap with the symptom.\n       Files involved: extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts\n       Evidence:\n         - `extensions/co",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "hypothesis_files",
+          "category": "A_required",
+          "text": "Files involved: extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts\n       Evidence:\n         - `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts` \u2014 fan-in 0, risk 16.89, evidence_score=3\n         - Matched symptom keywords in the module path/index.\n       What to inspect: extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts\n       Should be true if correct:",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "verification",
+          "category": "B_helpful",
+          "text": "Verification checklist\n- H1 \u2014 Defect originates in `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts`: Add a focused test around `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts`; if it passes with the symptom inputs, the cause is elsewhere.\n- H2 \u2014 Defect originates in `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts`: Add a focused test around `ex",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "fix_strategy",
+          "category": "B_helpful",
+          "text": "Minimal fix strategy\n- Confirm H1 first (Defect originates in `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts`) using its disproof test before editing.\n- Scope the change to extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts \u2014 avoid touching unrelated hubs.\n- Add a regression test that reproduces the symptom, then make it pass.\n- Keep the diff minimal; do not refactor adjacent code in the same chang",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "domain_prose",
+          "category": "C_redundant",
+          "text": "Domain knowledge\n   Concept: Authentication \u2014 Authentication\n   Domain: Authentication\n   Knowledge quality: Source-backed\n   Verify identity (who you are) before authorization.\n\n   Domain failure modes to check:\n     - 500s under load without backpressure\n     - Inconsistent error shapes for clients\n\n   Insertion confidence 34/100 \u2014 `extensions/copilot/src/platform/parser/test/node/fixtures/try.py`. Evidence score 100/100 \u2014 AST definitions/references match: auth, auth\n\nA3. Repository evidence\n ",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "evidence_verbose",
+          "category": "C_redundant",
+          "text": "Repository evidence\n   Status: Implemented\n   Evidence score: 75.0/100\n   Found:\n     - paramiko.common.MSG_USERAUTH_REQUEST() in `extensions/copilot/src/platform/parser/test/node/fixtures/try.py`\n   Missing:\n     - Authenticate\n     - Login\n     - Middleware\n     - Password\n   Recommended insertion: `extensions/copilot/src/platform/parser/test/node/fixtures/try.py`\n\nB. Most likely root cause\n   paramiko.common.MSG_USERAUTH_REQUEST() in `extensions/copilot/src/platform/parser/test/node/fixtures/",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "hypothesis_meta",
+          "category": "C_redundant",
+          "text": "How to disprove: Add a focused test around `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts`; if it passes with the symptom inputs, the cause is elsewhere.\n\n   H2. Defect originates in `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts`  [confidence: low]\n       Why it fits: `extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenNotifier.ts` scored highest on keywor",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "confidence_meta",
+          "category": "A_required",
+          "text": "confidence 34/100 \u2014 `extensions/copilot/src/platform/parser/test/node/fixtures/try.py`. Evidence score 100/100 \u2014 AST definitions/references match: auth, auth\n\nA3. Repository evidence\n   Status: Implemented\n   Evidence score: 75.0/100\n   Found:\n     - paramiko.common.MSG_USERAUTH_REQUEST() in `extensions/copilot/src/platform/parser/test/node/fixtures/try.py`\n   Missing:\n     - Authenticate\n     - Login\n     - Middleware\n     - Password\n   Recommended insertion: `extensions/copilot/src/platform/pa",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "other",
+          "category": "C_redundant",
+          "text": "INVESTIGATION REPORT\n====================\n\nA. lot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts.\n\nA2. cation\n   Knowledge quality: Source-backed\n   Verify identity (who you are) before authorization.\n\n   Domain failure modes to check:\n     - 500s under load without backpressure\n     - Inconsistent error shapes for clients\n\n   Insertion ry.py`. Evidence score 100/10",
+          "tokens": 100,
+          "workflow": "investigate"
+        }
+      ],
+      "section_tokens": {
+        "A_required": 500,
+        "B_helpful": 375,
+        "C_redundant": 475,
+        "D_unused": 0
+      }
+    },
+    {
+      "repo": "vscode",
+      "workflow": "impact",
+      "prompt": "what breaks if I change authentication?",
+      "ok": true,
+      "elapsed_s": 0.29,
+      "text": "\n{\"target\": \"extensions/copilot/src/platform/authentication/common/authentication.ts\", \"direct_impact\": [\"extensions/copilot/src/extension/agents/vscode-node/githubOrgChatResourcesService.ts\", \"extensions/copilot/src/extension/authentication/vscode-node/authentication.contribution.ts\", \"extensions/copilot/src/extension/byok/vscode-node/byokContribution.ts\", \"extensions/copilot/src/extension/chat/vscode-node/chatQuota.contribution.ts\", \"extensions/copilot/src/extension/chatInputNotification/vscode-node/byokUtilityModel.contribution.ts\", \"extensions/copilot/src/extension/chatSessions/claude/node/claudeCodeAgent.ts\", \"extensions/copilot/src/extension/chatSessions/copilotcli/node/copilotCli.ts\", \"extensions/copilot/src/extension/chatSessions/copilotcli/node/copilotcliSession.ts\", \"extensions/copilot/src/extension/chatSessions/copilotcli/node/mcpHandler.ts\", \"extensions/copilot/src/extension/chatSessions/copilotcli/node/missionControlApiClient.ts\"], \"indirect_impact\": [\"extensions/copilot/script/alternativeAction/index.ts\", \"extensions/copilot/src/extension/agents/node/adapters/anthropicAdapter.ts\", \"extensions/copilot/src/extension/agents/node/adapters/openaiAdapterForSTests.ts\", \"extensions/copilot/src/extension/agents/node/adapters/types.ts\", \"extensions/copilot/src/extension/agents/node/langModelServer.ts\", \"extensions/copilot/src/extension/agents/vscode-node/askAgentProvider.ts\"], \"confidence\": \"high\", \"evidence\": [\"Semantic concept `authentication` \\u2192 24 module(s), 0 symbol(s). Primary: `extensions/copilot/src/platform/authentication/common/authentication.ts`.\", \"Resolved modules: extensions/copilot/src/platform/authentication/common/authentication.ts, extensions/copilot/src/platform/authentication/vscode-node/session.ts, src/vs/workbench/services/authentication/common/authentication.ts, extensions/copilot/src/platform/authentication/common/authenticationUpgrade.ts, extensions/copilot/src/extension/authentication/vscode-node/authentication.contribution.ts, extensions/copilot/src/platform/authentication/common/authenticationUpgradeService.ts, extensions/copilot/src/platform/authentication/vscode-node/authenticationService.ts, src/vs/workbench/contrib/authentication/browser/authentication.contribution.ts\", \"`extensions/copilot/src/platform/authentication/common/authentication.ts` is in subsystem `extensions` with 133 direct importer(s).\", \"658 transitive importer(s) within depth 3.\"]}",
+      "tokens": 608,
+      "sections": [
+        {
+          "name": "target",
+          "category": "A_required",
+          "text": "target\": \"extensions/copilot/src/platform/authentication/common/authentication.ts\", \"direct_impact\": [\"extensions/copilot/src/extension/agents/vscode-node/githubOrgChatResourcesService.ts\", \"extensions/copilot/src/extension/authentication/vscode-node/authentication.contribution.ts\", \"extensions/copilot/src/extension/byok/vscode-node/byokContribution.ts\", \"extensions/copilot/src/extension/chat/vscode-node/chatQuota.contribution.ts\", \"extensions/copilot/src/extension/chatInputNotification/vscode-n",
+          "tokens": 125,
+          "workflow": "impact"
+        },
+        {
+          "name": "indirect_impact",
+          "category": "B_helpful",
+          "text": "indirect_impact\": [\"extensions/copilot/script/alternativeAction/index.ts\", \"extensions/copilot/src/extension/agents/node/adapters/anthropicAdapter.ts\", \"extensions/copilot/src/extension/agents/node/adapters/openaiAdapterForSTests.ts\", \"extensions/copilot/src/extension/agents/node/adapters/types.ts\", \"extensions/copilot/src/extension/agents/node/langModelServer.ts\", \"extensions/copilot/src/extension/agents/vscode-node/askAgentProvider.ts\"], \"confidence\": \"high\", \"evidence\": [\"Semantic concept `au",
+          "tokens": 125,
+          "workflow": "impact"
+        },
+        {
+          "name": "confidence_meta",
+          "category": "A_required",
+          "text": "confidence\": \"high\", \"evidence\": [\"Semantic concept `authentication` \\u2192 24 module(s), 0 symbol(s). Primary: `extensions/copilot/src/platform/authentication/common/authentication.ts`.\", \"Resolved modules: extensions/copilot/src/platform/authentication/common/authentication.ts, extensions/copilot/src/platform/authentication/vscode-node/session.ts, src/vs/workbench/services/authentication/common/authentication.ts, extensions/copilot/src/platform/authentication/common/authenticationUpgrade.ts, e",
+          "tokens": 125,
+          "workflow": "impact"
+        },
+        {
+          "name": "architecture_prose",
+          "category": "C_redundant",
+          "text": "subsystem `extensions` with 133 direct importer(s).\", \"658 transitive importer(s) within depth 3.\"]}",
+          "tokens": 25,
+          "workflow": "impact"
+        },
+        {
+          "name": "other",
+          "category": "C_redundant",
+          "text": "\n{\"s\", \"direct_impact\": [\"extensions/copilot/src/extension/agents/vscode-node/githubOrgChatResourcesService.ts\", \"extensions/copilot/src/extension/authentication/vscode-node/authentication.contribution.ts\", \"extensions/copilot/src/extension/byok/vscode-node/byokContribution.ts\", \"extensions/copilot/src/extension/chat/vscode-node/chatQuota.contribution.ts\", \"extensions/copilot/src/extension/chatInp",
+          "tokens": 100,
+          "workflow": "impact"
+        }
+      ],
+      "section_tokens": {
+        "A_required": 250,
+        "B_helpful": 125,
+        "C_redundant": 125,
+        "D_unused": 0
+      }
+    },
+    {
+      "repo": "vscode",
+      "workflow": "understanding",
+      "prompt": "what are the main runtime boundaries?",
+      "ok": true,
+      "elapsed_s": 0.001,
+      "text": "I could not map that question to a grounded analysis mode. Try one of the suggested questions below.\nYou are assisting with the repository below. Use this precomputed Atlas repository intelligence as ground truth; read cited files only when you need detail.\n\n# ATLAS REPOSITORY CONTEXT \u2014 vscode  (compact)\nscope=production degraded=False\nmodules=7563 subsystems=226 edges=13228 cycles=0\n\n## PRODUCTION SUBSYSTEMS\n- src/vs/workbench (2810 prod files); entry: src/vs/workbench/workbench.common.main.ts,src/vs/workbench/workbench.desktop.main.ts\n- extensions (2455 prod files); entry: extensions/copilot/.mocha-multi-reporters.js,extensions/copilot/.mocharc.js\n- src/vs/platform (778 prod files); entry: src/vs/platform/accessibility/browser/accessibilityService.ts,src/vs/platform/accessibility/browser/accessibleView.ts\n- src/vs/editor (660 prod files); entry: src/vs/editor/editor.all.ts,src/vs/editor/editor.api.ts\n- src/vs/base (312 prod files); entry: src/vs/base/browser/animatedValue.ts,src/vs/base/browser/broadcast.ts\n- src/vs/sessions (270 prod files); entry: src/vs/sessions/sessions.common.main.ts,src/vs/sessions/sessions.desktop.main.ts\n- cli (77 prod files); entry: cli/build.rs,cli/src/async_pipe.rs\n- .eslint-plugin-local (48 prod files); entry: .eslint-plugin-local/code-amd-node-module.ts,.eslint-plugin-local/code-declare-service-brand.ts\n\n## MOST DEPENDED-ON MODULES (import fan-in)\n- extensions.copilot.src.platform.log.common.logService <- 330 importers\n- extensions.copilot.src.util.vs.platform.instantiation.common.instantiation <- 330 importers\n- extensions.copilot.src.util.vs.base.common.lifecycle <- 270 importers\n- extensions.copilot.src.util.vs.base.common.uri <- 236 importers\n- extensions.copilot.src.vscodeTypes <- 216 importers\n\n## TOP ARCHITECTURAL RISKS\n- extensions.typescript-language-features.src.typeScriptServiceClientHost (score 76.6): coupling 1.00, runtime criticality 0.98, centrality 0.96, God module: many dependents and outbound deps.\n- extensions.typescript-language-features.src.typescriptServiceClient (score 75.5): coupling 1.00, runtime criticality 0.96, centrality 0.92\n- extensions.copilot.src.platform.workspaceChunkSearch.node.workspaceChunkSearchService (score 74.7): coupling 1.00, runtime criticality 0.98, centrality 0.96, God module: many dependents and outbound deps.\n- extensions.copilot.src.platform.customInstructions.common.customInstructionsService (score 74.2): coupling 1.00, runtime criticality 0.99, centrality 0.97, God module: many dependents and outbound deps.\n\n## UNCERTAINTY\n- Fan-in is a static lower bound (dynamic imports/dispatch not counted).\n\n## HOW TO USE\nAnswer the user's question using these facts first; open a cited file only if you need its body. Prefer these structured facts over re-scanning the repo.\n",
+      "tokens": 698,
+      "sections": [
+        {
+          "name": "repo_context",
+          "category": "A_required",
+          "text": "ATLAS REPOSITORY CONTEXT \u2014 vscode  (compact)\nscope=production degraded=False\nmodules=7563 subsystems=226 edges=13228 cycles=0\n\n## PRODUCTION SUBSYSTEMS\n- src/vs/workbench (2810 prod files); entry: src/vs/workbench/workbench.common.main.ts,src/vs/workbench/workbench.desktop.main.ts\n- extensions (2455 prod files); entry: extensions/copilot/.mocha-multi-reporters.js,extensions/copilot/.mocharc.js\n- src/vs/platform (778 prod files); entry: src/vs/platform/accessibility/browser/accessibilityService.t",
+          "tokens": 125,
+          "workflow": "understanding"
+        },
+        {
+          "name": "hubs",
+          "category": "A_required",
+          "text": "MOST DEPENDED-ON MODULES (import fan-in)\n- extensions.copilot.src.platform.log.common.logService <- 330 importers\n- extensions.copilot.src.util.vs.platform.instantiation.common.instantiation <- 330 importers\n- extensions.copilot.src.util.vs.base.common.lifecycle <- 270 importers\n- extensions.copilot.src.util.vs.base.common.uri <- 236 importers\n- extensions.copilot.src.vscodeTypes <- 216 importers\n\n## TOP ARCHITECTURAL RISKS\n- extensions.typescript-language-features.src.typeScriptServiceClientHos",
+          "tokens": 125,
+          "workflow": "understanding"
+        },
+        {
+          "name": "risks",
+          "category": "B_helpful",
+          "text": "TOP ARCHITECTURAL RISKS\n- extensions.typescript-language-features.src.typeScriptServiceClientHost (score 76.6): coupling 1.00, runtime criticality 0.98, centrality 0.96, God module: many dependents and outbound deps.\n- extensions.typescript-language-features.src.typescriptServiceClient (score 75.5): coupling 1.00, runtime criticality 0.96, centrality 0.92\n- extensions.copilot.src.platform.workspaceChunkSearch.node.workspaceChunkSearchService (score 74.7): coupling 1.00, runtime criticality 0.98,",
+          "tokens": 125,
+          "workflow": "understanding"
+        },
+        {
+          "name": "boilerplate",
+          "category": "D_unused",
+          "text": "UNCERTAINTY\n- Fan-in is a static lower bound (dynamic imports/dispatch not counted).\n\n## HOW TO USE\nAnswer the user's question using these facts first; open a cited file only if you need its body. Prefer these structured facts over re-scanning the repo.\n",
+          "tokens": 64,
+          "workflow": "understanding"
+        },
+        {
+          "name": "other",
+          "category": "C_redundant",
+          "text": "I could not map that question to a grounded analysis mode. Try one of the suggested questions below.\nYou are assisting with the repository below. Use this precomputed Atlas repository intelligence as ground truth; read cited files only when you need detail.\n\n# ules=7563 subsystems=226 edges=13228 cycles=0\n\n## PRODUCTION SUBSYSTEMS\n- src/vs/workbench (2810 prod files); entry: src/vs/workbench/workb",
+          "tokens": 100,
+          "workflow": "understanding"
+        }
+      ],
+      "section_tokens": {
+        "A_required": 250,
+        "B_helpful": 125,
+        "C_redundant": 100,
+        "D_unused": 64
+      }
+    },
+    {
+      "repo": "home_assistant",
+      "workflow": "build",
+      "prompt": "add rate limiting",
+      "ok": true,
+      "elapsed_s": 0.773,
+      "text": "CHANGE PLAN\n===========\n\nGoal: add rate limiting\n\nDetected concept: Rate Limiting \u2014 Rate Limiting\nDomain: Backend Engineering / middleware\nKnowledge quality: Source-backed\nConcept confidence: high \u00b7 Repo mapping: high\n\nConcept understanding:\nEnforce per-client request quotas using token bucket or sliding window counters.\n\nWhy this matters:\nChanges involving Rate Limiting touch Validate at boundary, Idempotent writes where applicable.\n\nKnowledge-backed risks:\n- Contract drift between clients and server\n- Unhandled edge cases on partial failure\n- Redis SPOF for global counters\n- Thundering herd after throttle lifts\n\nInsertion confidence 84/100 \u2014 `homeassistant/components/assist_pipeline/websocket_api.py`. Evidence score 118/100 \u2014 AST definitions/references match: rate\n\nMUST inspect:\n- homeassistant/components/assist_pipeline/websocket_api.py\n- homeassistant/components/assist_satellite/websocket_api.py\n- homeassistant/components/api/__init__.py\n- homeassistant/components/assist_pipeline/__init__.py\n- homeassistant/components/assist_pipeline/vad.py\n\nLIKELY modify:\n- (none)\n\nVERIFY only:\n- (none)\n\nDO NOT touch unless needed:\n- (none flagged)\n\nDomain implementation steps:\n- Validate at boundary\n- Idempotent writes where applicable\n\nREPOSITORY EVIDENCE\n===================\nStatus: Implemented\nEvidence score: 83.8/100\n\nFound:\n- homeassistant.util.Throttle() in `homeassistant/components/abode/camera.py`\n\nMissing:\n- Limiter\n- Middleware\n- Rate Limit\n- Redis\n\nRecommended insertion: `homeassistant/components/assist_pipeline/websocket_api.py`\nEvidence score 118/100 \u2014 AST definitions/references match: rate\n\n- `homeassistant/components/assist_pipeline/websocket_api.py` \u2014 score 80/100 \u2014 asyncio, base64, AsyncGenerator\n- `homeassistant/components/assist_satellite/websocket_api.py` \u2014 score 57/100 \u2014 symbols matched\n- `homeassistant/components/api/__init__.py` \u2014 score 51/100 \u2014 symbols matched\n- `homeassistant/components/assist_pipeline/__init__.py` \u2014 score 44/100 \u2014 AsyncIterable, Any, vol\n- `homeassistant/components/assist_pipeline/vad.py` \u2014 score 44/100 \u2014 Callable, Iterable, dataclass\n\nFiles to inspect first:\n- homeassistant/components/assist_pipeline/websocket_api.py\n- homeassistant/components/assist_satellite/websocket_api.py\n- homeassistant/components/api/__init__.py\n- homeassistant/components/assist_pipeline/__init__.py\n- homeassistant/components/assist_pipeline/vad.py\n\nFiles likely to change:\n- homeassistant/components/assist_pipeline/websocket_api.py\n- homeassistant/components/assist_satellite/websocket_api.py\n- homeassistant/components/api/__init__.py\n- homeassistant/components/assist_pipeline/__init__.py\n- homeassistant/components/assist_pipeline/vad.py\n\nFiles likely to break (direct importers / high coupling):\n- homeassistant/components/assist_pipeline/__init__.py\n- homeassistant/components/assist_satellite/__init__.py\n- homeassistant/components/auth/__init__.py\n- homeassistant/components/analytics/analytics.py\n- homeassistant/components/auth/login_flow.py\n- homeassistant/components/axis/hub/__init__.py\n- homeassistant/components/api/__init__.py\n- homeassistant/components/aladdin_connect/__init__.py\n- homeassistant/components/august/__init__.py\n- homeassistant/components/alexa/smart_home.py\n\nLikely affected subsystems:\n- homeassistant\n\nEntry points:\n- homeassistant/helpers/__init__.py\n- homeassistant/helpers/service_info/__init__.py\n- homeassistant/components/mqtt/__init__.py\n- homeassistant/components/mqtt/light/__init__.py\n- homeassistant/components/recorder/__init__.py\n- homeassistant/components/recorder/auto_repairs/__init__.py\n- homeassistant/components/knx/__init__.py\n- homeassistant/components/knx/storage/__init__.py\n- homeassistant/components/esphome/__init__.py\n- homeassistant/components/esphome/alarm_control_panel.py\n- homeassistant/components/zwave_js/__init__.py\n- homeassistant/components/zwave_js/scripts/__init__.py\n\nDependencies involved:\n- Outbound: homeassistant/__init__.py, homeassistant/auth/__init__.py, homeassistant/auth/models.py, homeassistant/auth/permissions/const.py, homeassistant/components/__init__.py, homeassistant/components/assist_pipeline/const.py, homeassistant/components/assist_pipeline/error.py, homeassistant/components/assist_satellite/const.py, homeassistant/components/assist_satellite/entity.py, homeassistant/components/auth/indieauth.py, homeassistant/components/auth/login_flow.py, homeassistant/components/auth/mfa_setup_flow.py\n- Inbound: homeassistant/components/aladdin_connect/__init__.py, homeassistant/components/alexa/smart_home.py, homeassistant/components/analytics/analytics.py, homeassistant/components/analytics/http.py, homeassistant/components/api/__init__.py, homeassistant/components/assist_pipeline/__init__.py, homeassistant/components/assist_satellite/__init__.py, homeassistant/components/august/__init__.py, homeassistant/components/august/data.py, homeassistant/components/auth/__init__.py, homeassistant/components/auth/login_flow.py, homeassistant/components/axis/hub/__init__.py\n\nImplementation order (static heuristic):\n- homeassistant/components/assist_pipeline/websocket_api.py\n- homeassistant/components/assist_satellite/websocket_api.py\n- homeassistant/components/api/__init__.py\n- homeassistant/components/assist_pipeline/__init__.py\n- homeassistant/components/assist_pipeline/vad.py\n\nTests to add/update:\n- Unit/integration tests covering `homeassistant/components/api/__init__.py` (e.g. test___init__*)\n- Unit/integration tests covering `homeassistant/components/assist_pipeline/websocket_api.py` (e.g. test_websocket_api*)\n- Unit/integration tests covering `homeassistant/components/assist_satellite/websocket_api.py` (e.g. test_websocket_api*)\n- Unit/integration tests covering `homeassistant/components/axis/hub/api.py` (e.g. test_api*)\n- Subsystem regression: homeassistant\n- Project CI / full test suite before merge\n- Integration tests with realistic payloads\n- Contract tests for error codes\n\nVerification plan:\n- Read files_to_inspect_first and confirm the change boundary matches the goal.\n- Run tests_likely_affected before and after the change.\n- Re-scan or refresh impact on the highest fan-in file you touch.\n- Smoke-test direct importers: homeassistant/components/assist_pipeline/__init__.py, homeassistant/components/assist_satellite/__init__.py, homeassistant/components/auth/__init__.py\n- OpenAPI/contract tests\n- Load test critical endpoints\n\nRollback plan:\n- Make the change on a feature branch; keep `main` deployable.\n- Commit in small, revertible steps so any single commit can be `git revert`-ed cleanly.\n- Before editing, note the current behavior of: homeassistant/components/api/__init__.py, homeassistant/components/assist_pipeline/websocket_api.py, homeassistant/components/assist_satellite/websocket_api.py.\n- Keep DB migrations backward-compatible (additive) so the old code still runs if you roll back.\n\nArchitectural risks:\n- `homeassistant/components/api/__init__.py` (score 10.92): high fan-in / coupling\n- `homeassistant/components/assist_pipeline/websocket_api.py` (score 8.83): high fan-in / coupling\n- `homeassistant/components/assist_satellite/websocket_api.py` (score 3.68): high fan-in / coupling\n- `homeassistant/components/axis/hub/api.py` (score 7.52): high fan-in / coupling\n- `homeassistant/auth/mfa_modules/notify.py` (score 7.45): high fan-in / coupling\n- `homeassistant/components/auth/__init__.py` (score 12.36): high fan-in / coupling\n- Rate limits must apply consistently across HTTP and websocket entry points.\n- [knowledge] Contract drift between clients and server\n- [knowledge] Unhandled edge cases on partial failure\n- [knowledge] Redis SPOF for global counters\n- [knowledge] Thundering herd after throttle lifts\n\nRisk level: low\nEstimated change size: Medium\nConfidence: medium-high\n\nLimitations:\n- Static import graph only \u2014 runtime plugins and dynamic imports may be missing.",
+      "tokens": 1969,
+      "sections": [
+        {
+          "name": "goal",
+          "category": "A_required",
+          "text": "Goal: add rate limiting\n\nDetected concept: Rate Limiting \u2014 Rate Limiting\nDomain: Backend Engineering / middleware\nKnowledge quality: Source-backed\nConcept confidence: high \u00b7 Repo mapping: high\n\nConcept understanding:\nEnforce per-client request quotas using token bucket or sliding window counters.\n\nWhy this matters:\nChanges involving Rate Limiting touch Validate at boundary, Idempotent writes where applicable.\n\nKnowledge-backed risks:\n- Contract drift between clients and server\n- Unhandled edge c",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "files_inspect",
+          "category": "A_required",
+          "text": "MUST inspect:\n- homeassistant/components/assist_pipeline/websocket_api.py\n- homeassistant/components/assist_satellite/websocket_api.py\n- homeassistant/components/api/__init__.py\n- homeassistant/components/assist_pipeline/__init__.py\n- homeassistant/components/assist_pipeline/vad.py\n\nLIKELY modify:\n- (none)\n\nVERIFY only:\n- (none)\n\nDO NOT touch unless needed:\n- (none flagged)\n\nDomain implementation steps:\n- Validate at boundary\n- Idempotent writes where applicable\n\nREPOSITORY EVIDENCE\n============",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "files_change",
+          "category": "C_redundant",
+          "text": "LIKELY modify:\n- (none)\n\nVERIFY only:\n- (none)\n\nDO NOT touch unless needed:\n- (none flagged)\n\nDomain implementation steps:\n- Validate at boundary\n- Idempotent writes where applicable\n\nREPOSITORY EVIDENCE\n===================\nStatus: Implemented\nEvidence score: 83.8/100\n\nFound:\n- homeassistant.util.Throttle() in `homeassistant/components/abode/camera.py`\n\nMissing:\n- Limiter\n- Middleware\n- Rate Limit\n- Redis\n\nRecommended insertion: `homeassistant/components/assist_pipeline/websocket_api.py`\nEvidenc",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "blast_importers",
+          "category": "A_required",
+          "text": "likely to break (direct importers / high coupling):\n- homeassistant/components/assist_pipeline/__init__.py\n- homeassistant/components/assist_satellite/__init__.py\n- homeassistant/components/auth/__init__.py\n- homeassistant/components/analytics/analytics.py\n- homeassistant/components/auth/login_flow.py\n- homeassistant/components/axis/hub/__init__.py\n- homeassistant/components/api/__init__.py\n- homeassistant/components/aladdin_connect/__init__.py\n- homeassistant/components/august/__init__.py\n- hom",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "confidence_meta",
+          "category": "A_required",
+          "text": "confidence: high \u00b7 Repo mapping: high\n\nConcept understanding:\nEnforce per-client request quotas using token bucket or sliding window counters.\n\nWhy this matters:\nChanges involving Rate Limiting touch Validate at boundary, Idempotent writes where applicable.\n\nKnowledge-backed risks:\n- Contract drift between clients and server\n- Unhandled edge cases on partial failure\n- Redis SPOF for global counters\n- Thundering herd after throttle lifts\n\nInsertion confidence 84/100 \u2014 `homeassistant/components/as",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "domain_prose",
+          "category": "B_helpful",
+          "text": "Concept understanding:\nEnforce per-client request quotas using token bucket or sliding window counters.\n\nWhy this matters:\nChanges involving Rate Limiting touch Validate at boundary, Idempotent writes where applicable.\n\nKnowledge-backed risks:\n- Contract drift between clients and server\n- Unhandled edge cases on partial failure\n- Redis SPOF for global counters\n- Thundering herd after throttle lifts\n\nInsertion confidence 84/100 \u2014 `homeassistant/components/assist_pipeline/websocket_api.py`. Eviden",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "evidence_verbose",
+          "category": "C_redundant",
+          "text": "Evidence score 118/100 \u2014 AST definitions/references match: rate\n\nMUST inspect:\n- homeassistant/components/assist_pipeline/websocket_api.py\n- homeassistant/components/assist_satellite/websocket_api.py\n- homeassistant/components/api/__init__.py\n- homeassistant/components/assist_pipeline/__init__.py\n- homeassistant/components/assist_pipeline/vad.py\n\nLIKELY modify:\n- (none)\n\nVERIFY only:\n- (none)\n\nDO NOT touch unless needed:\n- (none flagged)\n\nDomain implementation steps:\n- Validate at boundary\n- Ide",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "implementation_order",
+          "category": "B_helpful",
+          "text": "Domain implementation steps:\n- Validate at boundary\n- Idempotent writes where applicable\n\nREPOSITORY EVIDENCE\n===================\nStatus: Implemented\nEvidence score: 83.8/100\n\nFound:\n- homeassistant.util.Throttle() in `homeassistant/components/abode/camera.py`\n\nMissing:\n- Limiter\n- Middleware\n- Rate Limit\n- Redis\n\nRecommended insertion: `homeassistant/components/assist_pipeline/websocket_api.py`\nEvidence score 118/100 \u2014 AST definitions/references match: rate\n\n- `homeassistant/components/assist_p",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "safety_rollback",
+          "category": "D_unused",
+          "text": "Verification plan:\n- Read files_to_inspect_first and confirm the change boundary matches the goal.\n- Run tests_likely_affected before and after the change.\n- Re-scan or refresh impact on the highest fan-in file you touch.\n- Smoke-test direct importers: homeassistant/components/assist_pipeline/__init__.py, homeassistant/components/assist_satellite/__init__.py, homeassistant/components/auth/__init__.py\n- OpenAPI/contract tests\n- Load test critical endpoints\n\nRollback plan:\n- Make the change on a f",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "risk_prose",
+          "category": "B_helpful",
+          "text": "Knowledge-backed risks:\n- Contract drift between clients and server\n- Unhandled edge cases on partial failure\n- Redis SPOF for global counters\n- Thundering herd after throttle lifts\n\nInsertion confidence 84/100 \u2014 `homeassistant/components/assist_pipeline/websocket_api.py`. Evidence score 118/100 \u2014 AST definitions/references match: rate\n\nMUST inspect:\n- homeassistant/components/assist_pipeline/websocket_api.py\n- homeassistant/components/assist_satellite/websocket_api.py\n- homeassistant/components",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "dependencies",
+          "category": "B_helpful",
+          "text": "Dependencies involved:\n- Outbound: homeassistant/__init__.py, homeassistant/auth/__init__.py, homeassistant/auth/models.py, homeassistant/auth/permissions/const.py, homeassistant/components/__init__.py, homeassistant/components/assist_pipeline/const.py, homeassistant/components/assist_pipeline/error.py, homeassistant/components/assist_satellite/const.py, homeassistant/components/assist_satellite/entity.py, homeassistant/components/auth/indieauth.py, homeassistant/components/auth/login_flow.py, h",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "graph_summary",
+          "category": "C_redundant",
+          "text": "subsystems:\n- homeassistant\n\nEntry points:\n- homeassistant/helpers/__init__.py\n- homeassistant/helpers/service_info/__init__.py\n- homeassistant/components/mqtt/__init__.py\n- homeassistant/components/mqtt/light/__init__.py\n- homeassistant/components/recorder/__init__.py\n- homeassistant/components/recorder/auto_repairs/__init__.py\n- homeassistant/components/knx/__init__.py\n- homeassistant/components/knx/storage/__init__.py\n- homeassistant/components/esphome/__init__.py\n- homeassistant/components/e",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "limitations",
+          "category": "B_helpful",
+          "text": "DO NOT touch unless needed:\n- (none flagged)\n\nDomain implementation steps:\n- Validate at boundary\n- Idempotent writes where applicable\n\nREPOSITORY EVIDENCE\n===================\nStatus: Implemented\nEvidence score: 83.8/100\n\nFound:\n- homeassistant.util.Throttle() in `homeassistant/components/abode/camera.py`\n\nMissing:\n- Limiter\n- Middleware\n- Rate Limit\n- Redis\n\nRecommended insertion: `homeassistant/components/assist_pipeline/websocket_api.py`\nEvidence score 118/100 \u2014 AST definitions/references mat",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "tests",
+          "category": "B_helpful",
+          "text": "Tests to add/update:\n- Unit/integration tests covering `homeassistant/components/api/__init__.py` (e.g. test___init__*)\n- Unit/integration tests covering `homeassistant/components/assist_pipeline/websocket_api.py` (e.g. test_websocket_api*)\n- Unit/integration tests covering `homeassistant/components/assist_satellite/websocket_api.py` (e.g. test_websocket_api*)\n- Unit/integration tests covering `homeassistant/components/axis/hub/api.py` (e.g. test_api*)\n- Subsystem regression: homeassistant\n- Pro",
+          "tokens": 125,
+          "workflow": "build"
+        },
+        {
+          "name": "other",
+          "category": "C_redundant",
+          "text": "CHANGE PLAN\n===========\n\n Backend Engineering / middleware\nKnowledge quality: Source-backed\nConcept  request quotas using token bucket or sliding window counters.\n\nWhy this matters:\nChanges involving Rate Limiting touch Validate at boundary, Idempotent writes where applicable.\n\nedge cases on partial failure\n- Redis SPOF for global counters\n- Thundering herd after throttle lifts\n\nInsertion confiden",
+          "tokens": 100,
+          "workflow": "build"
+        }
+      ],
+      "section_tokens": {
+        "A_required": 500,
+        "B_helpful": 750,
+        "C_redundant": 475,
+        "D_unused": 125
+      }
+    },
+    {
+      "repo": "home_assistant",
+      "workflow": "investigate",
+      "prompt": "why does auth fail?",
+      "ok": true,
+      "elapsed_s": 1.333,
+      "text": "INVESTIGATION REPORT\n====================\n\nA. Symptom summary\n   Reported: \"why does auth fail?\". Likely area: homeassistant/auth/auth_store.py.\n\nA2. Domain knowledge\n   Concept: Authentication \u2014 Authentication\n   Domain: Authentication\n   Knowledge quality: Source-backed\n   Verify identity (who you are) before authorization.\n\n   Domain failure modes to check:\n     - 500s under load without backpressure\n     - Inconsistent error shapes for clients\n\n   Insertion confidence 64/100 \u2014 `homeassistant/components/auth/login_flow.py`. Evidence score 136/100 \u2014 AST definitions/references match: auth, login, login\n\nA3. Repository evidence\n   Status: Implemented\n   Evidence score: 75.0/100\n   Found:\n     - auth_store in `homeassistant/auth/__init__.py`\n     - providers.LoginFlow() in `homeassistant/auth/__init__.py`\n     - const.MFA_SESSION_EXPIRATION() in `homeassistant/auth/providers/__init__.py`\n     - aioamazondevices.exceptions.CannotAuthenticate() in `homeassistant/components/alexa_devices/config_flow.py`\n     - NotifyAuthModule.generate_secret_and_one_time_password() in `homeassistant/auth/mfa_modules/notify.py`\n   Missing:\n     - Middleware\n   Recommended insertion: `homeassistant/components/auth/login_flow.py`\n\nB. Most likely root cause\n   auth_store in `homeassistant/auth/__init__.py`\n\nC. Ranked hypotheses\n   H1. Defect originates in `homeassistant/auth/auth_store.py`  [confidence: low]\n       Why it fits: `homeassistant/auth/auth_store.py` scored highest on keyword overlap with the symptom.\n       Files involved: homeassistant/auth/auth_store.py\n       Evidence:\n         - `homeassistant/auth/auth_store.py` \u2014 fan-in 0, risk 10.73, evidence_score=3\n         - Matched symptom keywords in the module path/index.\n       What to inspect: homeassistant/auth/auth_store.py\n       Should be true if correct: The failing behavior is reproducible by exercising `homeassistant/auth/auth_store.py` directly.\n       How to disprove: Add a focused test around `homeassistant/auth/auth_store.py`; if it passes with the symptom inputs, the cause is elsewhere.\n\n   H2. Defect originates in `homeassistant/components/auth/login_flow.py`  [confidence: low]\n       Why it fits: `homeassistant/components/auth/login_flow.py` scored highest on keyword overlap with the symptom.\n       Files involved: homeassistant/components/auth/login_flow.py\n       Evidence:\n         - `homeassistant/components/auth/login_flow.py` \u2014 fan-in 0, risk 11.07, evidence_score=3\n         - Matched symptom keywords in the module path/index.\n       What to inspect: homeassistant/components/auth/login_flow.py\n       Should be true if correct: The failing behavior is reproducible by exercising `homeassistant/components/auth/login_flow.py` directly.\n       How to disprove: Add a focused test around `homeassistant/components/auth/login_flow.py`; if it passes with the symptom inputs, the cause is elsewhere.\n\n   H3. Defect originates in `homeassistant/auth/__init__.py`  [confidence: low]\n       Why it fits: `homeassistant/auth/__init__.py` scored highest on keyword overlap with the symptom.\n       Files involved: homeassistant/auth/__init__.py\n       Evidence:\n         - `homeassistant/auth/__init__.py` \u2014 fan-in 0, risk 15.56, evidence_score=3\n         - Matched symptom keywords in the module path/index.\n       What to inspect: homeassistant/auth/__init__.py\n       Should be true if correct: The failing behavior is reproducible by exercising `homeassistant/auth/__init__.py` directly.\n       How to disprove: Add a focused test around `homeassistant/auth/__init__.py`; if it passes with the symptom inputs, the cause is elsewhere.\n\nD. Verification checklist\n- H1 \u2014 Defect originates in `homeassistant/auth/auth_store.py`: Add a focused test around `homeassistant/auth/auth_store.py`; if it passes with the symptom inputs, the cause is elsewhere.\n- H2 \u2014 Defect originates in `homeassistant/components/auth/login_flow.py`: Add a focused test around `homeassistant/components/auth/login_flow.py`; if it passes with the symptom inputs, the cause is elsewhere.\n- H3 \u2014 Defect originates in `homeassistant/auth/__init__.py`: Add a focused test around `homeassistant/auth/__init__.py`; if it passes with the symptom inputs, the cause is elsewhere.\n- When did the symptom start (deploy, config change, data change)?\n- Is the issue reproducible in a single environment?\n- Trace the code path starting at `homeassistant/auth/auth_store.py` \u2014 what calls it?\n- Smoke-test direct importers after any change: homeassistant/auth/__init__.py, homeassistant/auth/providers/__init__.py, homeassistant/components/auth/__init__.py\n- 500s under load without backpressure\n- Inconsistent error shapes for clients\n- OpenAPI/contract tests\n- Load test critical endpoints\n\nE. Minimal fix strategy\n- Confirm H1 first (Defect originates in `homeassistant/auth/auth_store.py`) using its disproof test before editing.\n- Scope the change to homeassistant/auth/auth_store.py \u2014 avoid touching unrelated hubs.\n- Add a regression test that reproduces the symptom, then make it pass.\n- Keep the diff minimal; do not refactor adjacent code in the same change.\n\nF. Risks of fixing incorrectly\n- An incorrect fix risks a regression in dependent modules \u2014 cover with integration tests before merge.\n- A narrow fix may mask upstream data or configuration issues \u2014 validate with tests before shipping.\n- This area has 11 direct importer(s); a wrong fix can break: homeassistant/auth/__init__.py, homeassistant/auth/providers/__init__.py, homeassistant/components/auth/__init__.py, homeassistant/components/auth/login_flow.py.\n- Treating a symptom (display/logging) as the root cause can hide a deeper data/accounting bug.\n\nRelevant dependencies:\n- Outbound: homeassistant/__init__.py, homeassistant/auth/__init__.py, homeassistant/auth/auth_store.py, homeassistant/auth/const.py, homeassistant/auth/jwt_wrapper.py, homeassistant/auth/mfa_modules/__init__.py, homeassistant/auth/models.py, homeassistant/auth/permissions/__init__.py, homeassistant/auth/permissions/models.py, homeassistant/auth/permissions/types.py, homeassistant/auth/providers/__init__.py, homeassistant/auth/providers/homeassistant.py\n- Inbound: homeassistant/auth/__init__.py, homeassistant/auth/providers/__init__.py, homeassistant/components/auth/__init__.py, homeassistant/components/auth/login_flow.py, homeassistant/components/config/auth_provider_homeassistant.py, homeassistant/components/hassio/auth.py, homeassistant/components/http/auth.py, homeassistant/components/mobile_app/__init__.py, homeassistant/components/onboarding/views.py, homeassistant/components/person/__init__.py, homeassistant/scripts/auth.py\n\nOverall confidence: high\n\nLimitations:\n- Heuristic symptom routing \u2014 not runtime profiling or log analysis.\n- Only indexed production-scope modules are considered.\n- Concept match is partial \u2014 confirm the request targets this concept.",
+      "tokens": 1720,
+      "sections": [
+        {
+          "name": "symptom",
+          "category": "A_required",
+          "text": "Symptom summary\n   Reported: \"why does auth fail?\". Likely area: homeassistant/auth/auth_store.py.\n\nA2. Domain knowledge\n   Concept: Authentication \u2014 Authentication\n   Domain: Authentication\n   Knowledge quality: Source-backed\n   Verify identity (who you are) before authorization.\n\n   Domain failure modes to check:\n     - 500s under load without backpressure\n     - Inconsistent error shapes for clients\n\n   Insertion confidence 64/100 \u2014 `homeassistant/components/auth/login_flow.py`. Evidence scor",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "root_cause",
+          "category": "A_required",
+          "text": "Most likely root cause\n   auth_store in `homeassistant/auth/__init__.py`\n\nC. Ranked hypotheses\n   H1. Defect originates in `homeassistant/auth/auth_store.py`  [confidence: low]\n       Why it fits: `homeassistant/auth/auth_store.py` scored highest on keyword overlap with the symptom.\n       Files involved: homeassistant/auth/auth_store.py\n       Evidence:\n         - `homeassistant/auth/auth_store.py` \u2014 fan-in 0, risk 10.73, evidence_score=3\n         - Matched symptom keywords in the module path/i",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "hypotheses",
+          "category": "B_helpful",
+          "text": "Ranked hypotheses\n   H1. Defect originates in `homeassistant/auth/auth_store.py`  [confidence: low]\n       Why it fits: `homeassistant/auth/auth_store.py` scored highest on keyword overlap with the symptom.\n       Files involved: homeassistant/auth/auth_store.py\n       Evidence:\n         - `homeassistant/auth/auth_store.py` \u2014 fan-in 0, risk 10.73, evidence_score=3\n         - Matched symptom keywords in the module path/index.\n       What to inspect: homeassistant/auth/auth_store.py\n       Should ",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "hypothesis_files",
+          "category": "A_required",
+          "text": "Files involved: homeassistant/auth/auth_store.py\n       Evidence:\n         - `homeassistant/auth/auth_store.py` \u2014 fan-in 0, risk 10.73, evidence_score=3\n         - Matched symptom keywords in the module path/index.\n       What to inspect: homeassistant/auth/auth_store.py\n       Should be true if correct: The failing behavior is reproducible by exercising `homeassistant/auth/auth_store.py` directly.\n       How to disprove: Add a focused test around `homeassistant/auth/auth_store.py`; if it passes",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "verification",
+          "category": "B_helpful",
+          "text": "Verification checklist\n- H1 \u2014 Defect originates in `homeassistant/auth/auth_store.py`: Add a focused test around `homeassistant/auth/auth_store.py`; if it passes with the symptom inputs, the cause is elsewhere.\n- H2 \u2014 Defect originates in `homeassistant/components/auth/login_flow.py`: Add a focused test around `homeassistant/components/auth/login_flow.py`; if it passes with the symptom inputs, the cause is elsewhere.\n- H3 \u2014 Defect originates in `homeassistant/auth/__init__.py`: Add a focused tes",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "fix_strategy",
+          "category": "B_helpful",
+          "text": "Minimal fix strategy\n- Confirm H1 first (Defect originates in `homeassistant/auth/auth_store.py`) using its disproof test before editing.\n- Scope the change to homeassistant/auth/auth_store.py \u2014 avoid touching unrelated hubs.\n- Add a regression test that reproduces the symptom, then make it pass.\n- Keep the diff minimal; do not refactor adjacent code in the same change.\n\nF. Risks of fixing incorrectly\n- An incorrect fix risks a regression in dependent modules \u2014 cover with integration tests befor",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "domain_prose",
+          "category": "C_redundant",
+          "text": "Domain knowledge\n   Concept: Authentication \u2014 Authentication\n   Domain: Authentication\n   Knowledge quality: Source-backed\n   Verify identity (who you are) before authorization.\n\n   Domain failure modes to check:\n     - 500s under load without backpressure\n     - Inconsistent error shapes for clients\n\n   Insertion confidence 64/100 \u2014 `homeassistant/components/auth/login_flow.py`. Evidence score 136/100 \u2014 AST definitions/references match: auth, login, login\n\nA3. Repository evidence\n   Status: Imp",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "evidence_verbose",
+          "category": "C_redundant",
+          "text": "Repository evidence\n   Status: Implemented\n   Evidence score: 75.0/100\n   Found:\n     - auth_store in `homeassistant/auth/__init__.py`\n     - providers.LoginFlow() in `homeassistant/auth/__init__.py`\n     - const.MFA_SESSION_EXPIRATION() in `homeassistant/auth/providers/__init__.py`\n     - aioamazondevices.exceptions.CannotAuthenticate() in `homeassistant/components/alexa_devices/config_flow.py`\n     - NotifyAuthModule.generate_secret_and_one_time_password() in `homeassistant/auth/mfa_modules/no",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "hypothesis_meta",
+          "category": "C_redundant",
+          "text": "How to disprove: Add a focused test around `homeassistant/auth/auth_store.py`; if it passes with the symptom inputs, the cause is elsewhere.\n\n   H2. Defect originates in `homeassistant/components/auth/login_flow.py`  [confidence: low]\n       Why it fits: `homeassistant/components/auth/login_flow.py` scored highest on keyword overlap with the symptom.\n       Files involved: homeassistant/components/auth/login_flow.py\n       Evidence:\n         - `homeassistant/components/auth/login_flow.py` \u2014 fan-",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "confidence_meta",
+          "category": "A_required",
+          "text": "confidence 64/100 \u2014 `homeassistant/components/auth/login_flow.py`. Evidence score 136/100 \u2014 AST definitions/references match: auth, login, login\n\nA3. Repository evidence\n   Status: Implemented\n   Evidence score: 75.0/100\n   Found:\n     - auth_store in `homeassistant/auth/__init__.py`\n     - providers.LoginFlow() in `homeassistant/auth/__init__.py`\n     - const.MFA_SESSION_EXPIRATION() in `homeassistant/auth/providers/__init__.py`\n     - aioamazondevices.exceptions.CannotAuthenticate() in `homeas",
+          "tokens": 125,
+          "workflow": "investigate"
+        },
+        {
+          "name": "other",
+          "category": "C_redundant",
+          "text": "INVESTIGATION REPORT\n====================\n\nA. uth/auth_store.py.\n\nA2. cation\n   Knowledge quality: Source-backed\n   Verify identity (who you are) before authorization.\n\n   Domain failure modes to check:\n     - 500s under load without backpressure\n     - Inconsistent error shapes for clients\n\n   Insertion e 136/100 \u2014 AST definitions/references match: auth, login, login\n\nA3. \n     - auth_store in `h",
+          "tokens": 100,
+          "workflow": "investigate"
+        }
+      ],
+      "section_tokens": {
+        "A_required": 500,
+        "B_helpful": 375,
+        "C_redundant": 475,
+        "D_unused": 0
+      }
+    },
+    {
+      "repo": "home_assistant",
+      "workflow": "impact",
+      "prompt": "what breaks if I change authentication?",
+      "ok": true,
+      "elapsed_s": 0.957,
+      "text": "\n{\"target\": \"homeassistant/auth/auth_store.py\", \"direct_impact\": [\"homeassistant/auth/__init__.py\", \"homeassistant/auth/auth_store.py\", \"homeassistant/auth/mfa_modules/totp.py\", \"homeassistant/auth/providers/__init__.py\", \"homeassistant/auth/providers/command_line.py\", \"homeassistant/auth/providers/homeassistant.py\", \"homeassistant/auth/providers/insecure_example.py\", \"homeassistant/auth/providers/trusted_networks.py\", \"homeassistant/components/ai_task/task.py\", \"homeassistant/components/aladdin_connect/application_credentials.py\"], \"indirect_impact\": [\"homeassistant/components/abode/camera.py\", \"homeassistant/components/aemet/image.py\", \"homeassistant/components/agent_dvr/camera.py\", \"homeassistant/components/agent_dvr/services.py\", \"homeassistant/components/ai_task/__init__.py\", \"homeassistant/components/ai_task/entity.py\"], \"confidence\": \"high\", \"evidence\": [\"Symbol `datetime.timedelta` caller: homeassistant/auth/const.py::<module>\", \"Symbol `datetime.timedelta` caller: homeassistant/components/abode/camera.py::<module>\", \"Symbol `datetime.timedelta` caller: homeassistant/components/acaia/coordinator.py::<module>\", \"Semantic concept `authentication` \\u2192 24 module(s), 32 symbol(s) symbols: asyncio, collections.OrderedDict, collections.abc.Mapping, datetime.datetime, datetime.timedelta, functools.partial. Primary: `homeassistant/auth/auth_store.py`.\"]}",
+      "tokens": 344,
+      "sections": [
+        {
+          "name": "target",
+          "category": "A_required",
+          "text": "target\": \"homeassistant/auth/auth_store.py\", \"direct_impact\": [\"homeassistant/auth/__init__.py\", \"homeassistant/auth/auth_store.py\", \"homeassistant/auth/mfa_modules/totp.py\", \"homeassistant/auth/providers/__init__.py\", \"homeassistant/auth/providers/command_line.py\", \"homeassistant/auth/providers/homeassistant.py\", \"homeassistant/auth/providers/insecure_example.py\", \"homeassistant/auth/providers/trusted_networks.py\", \"homeassistant/components/ai_task/task.py\", \"homeassistant/components/aladdin_co",
+          "tokens": 125,
+          "workflow": "impact"
+        },
+        {
+          "name": "indirect_impact",
+          "category": "B_helpful",
+          "text": "indirect_impact\": [\"homeassistant/components/abode/camera.py\", \"homeassistant/components/aemet/image.py\", \"homeassistant/components/agent_dvr/camera.py\", \"homeassistant/components/agent_dvr/services.py\", \"homeassistant/components/ai_task/__init__.py\", \"homeassistant/components/ai_task/entity.py\"], \"confidence\": \"high\", \"evidence\": [\"Symbol `datetime.timedelta` caller: homeassistant/auth/const.py::<module>\", \"Symbol `datetime.timedelta` caller: homeassistant/components/abode/camera.py::<module>\",",
+          "tokens": 125,
+          "workflow": "impact"
+        },
+        {
+          "name": "confidence_meta",
+          "category": "A_required",
+          "text": "confidence\": \"high\", \"evidence\": [\"Symbol `datetime.timedelta` caller: homeassistant/auth/const.py::<module>\", \"Symbol `datetime.timedelta` caller: homeassistant/components/abode/camera.py::<module>\", \"Symbol `datetime.timedelta` caller: homeassistant/components/acaia/coordinator.py::<module>\", \"Semantic concept `authentication` \\u2192 24 module(s), 32 symbol(s) symbols: asyncio, collections.OrderedDict, collections.abc.Mapping, datetime.datetime, datetime.timedelta, functools.partial. Primary: ",
+          "tokens": 125,
+          "workflow": "impact"
+        },
+        {
+          "name": "other",
+          "category": "C_redundant",
+          "text": "\n{\"th/__init__.py\", \"homeassistant/auth/auth_store.py\", \"homeassistant/auth/mfa_modules/totp.py\", \"homeassistant/auth/providers/__init__.py\", \"homeassistant/auth/providers/command_line.py\", \"homeassistant/auth/providers/homeassistant.py\", \"homeassistant/auth/providers/insecure_example.py\", \"homeassistant/auth/providers/trusted_networks.py\", \"homeassistant/components/ai_task/task.py\", \"homeassistan",
+          "tokens": 100,
+          "workflow": "impact"
+        }
+      ],
+      "section_tokens": {
+        "A_required": 250,
+        "B_helpful": 125,
+        "C_redundant": 100,
+        "D_unused": 0
+      }
+    },
+    {
+      "repo": "home_assistant",
+      "workflow": "understanding",
+      "prompt": "what are the main runtime boundaries?",
+      "ok": true,
+      "elapsed_s": 0.002,
+      "text": "I could not map that question to a grounded analysis mode. Try one of the suggested questions below.\nYou are assisting with the repository below. Use this precomputed Atlas repository intelligence as ground truth; read cited files only when you need detail.\n\n# ATLAS REPOSITORY CONTEXT \u2014 home_assistant  (compact)\nscope=production degraded=False\nmodules=9709 subsystems=1512 edges=36013 cycles=0\n\n## PRODUCTION SUBSYSTEMS\n- script (110 prod files); entry: script/__init__.py,script/check_requirements/__init__.py\n- homeassistant/helpers (109 prod files); entry: homeassistant/helpers/__init__.py,homeassistant/helpers/service_info/__init__.py\n- homeassistant/components/mqtt (55 prod files); entry: homeassistant/components/mqtt/__init__.py,homeassistant/components/mqtt/light/__init__.py\n- homeassistant/components/recorder (50 prod files); entry: homeassistant/components/recorder/__init__.py,homeassistant/components/recorder/auto_repairs/__init__.py\n- homeassistant/components/knx (47 prod files); entry: homeassistant/components/knx/__init__.py,homeassistant/components/knx/storage/__init__.py\n- pylint (46 prod files); entry: pylint/plugins/pylint_home_assistant/__init__.py,pylint/plugins/pylint_home_assistant/checkers/__init__.py\n- homeassistant/components/esphome (43 prod files); entry: homeassistant/components/esphome/__init__.py,homeassistant/components/esphome/alarm_control_panel.py\n- homeassistant/components/zwave_js (43 prod files); entry: homeassistant/components/zwave_js/__init__.py,homeassistant/components/zwave_js/scripts/__init__.py\n\n## MOST DEPENDED-ON MODULES (import fan-in)\n- homeassistant.const <- 4794 importers\n- homeassistant.helpers.entity_platform <- 2925 importers\n- homeassistant.helpers <- 2276 importers\n- homeassistant.exceptions <- 1635 importers\n- homeassistant.helpers.typing <- 1506 importers\n\n## TOP ARCHITECTURAL RISKS\n- homeassistant.auth (score 91.1): coupling 1.00, boundary 1.00, runtime criticality 0.96\n- homeassistant.components.recorder (score 87.7): boundary 1.00, coupling 1.00, runtime criticality 1.00\n- homeassistant.components.recorder.statistics (score 87.6): coupling 1.00, boundary 1.00, runtime criticality 0.99, God module: many dependents and outbound deps.\n- homeassistant.components.http (score 86.8): boundary 1.00, runtime criticality 1.00, centrality 1.00, God module: many dependents and outbound deps.\n\n## UNCERTAINTY\n- Fan-in is a static lower bound (dynamic imports/dispatch not counted).\n\n## HOW TO USE\nAnswer the user's question using these facts first; open a cited file only if you need its body. Prefer these structured facts over re-scanning the repo.\n",
+      "tokens": 658,
+      "sections": [
+        {
+          "name": "repo_context",
+          "category": "A_required",
+          "text": "ATLAS REPOSITORY CONTEXT \u2014 home_assistant  (compact)\nscope=production degraded=False\nmodules=9709 subsystems=1512 edges=36013 cycles=0\n\n## PRODUCTION SUBSYSTEMS\n- script (110 prod files); entry: script/__init__.py,script/check_requirements/__init__.py\n- homeassistant/helpers (109 prod files); entry: homeassistant/helpers/__init__.py,homeassistant/helpers/service_info/__init__.py\n- homeassistant/components/mqtt (55 prod files); entry: homeassistant/components/mqtt/__init__.py,homeassistant/compon",
+          "tokens": 125,
+          "workflow": "understanding"
+        },
+        {
+          "name": "hubs",
+          "category": "A_required",
+          "text": "MOST DEPENDED-ON MODULES (import fan-in)\n- homeassistant.const <- 4794 importers\n- homeassistant.helpers.entity_platform <- 2925 importers\n- homeassistant.helpers <- 2276 importers\n- homeassistant.exceptions <- 1635 importers\n- homeassistant.helpers.typing <- 1506 importers\n\n## TOP ARCHITECTURAL RISKS\n- homeassistant.auth (score 91.1): coupling 1.00, boundary 1.00, runtime criticality 0.96\n- homeassistant.components.recorder (score 87.7): boundary 1.00, coupling 1.00, runtime criticality 1.00\n- ",
+          "tokens": 125,
+          "workflow": "understanding"
+        },
+        {
+          "name": "risks",
+          "category": "B_helpful",
+          "text": "TOP ARCHITECTURAL RISKS\n- homeassistant.auth (score 91.1): coupling 1.00, boundary 1.00, runtime criticality 0.96\n- homeassistant.components.recorder (score 87.7): boundary 1.00, coupling 1.00, runtime criticality 1.00\n- homeassistant.components.recorder.statistics (score 87.6): coupling 1.00, boundary 1.00, runtime criticality 0.99, God module: many dependents and outbound deps.\n- homeassistant.components.http (score 86.8): boundary 1.00, runtime criticality 1.00, centrality 1.00, God module: m",
+          "tokens": 125,
+          "workflow": "understanding"
+        },
+        {
+          "name": "boilerplate",
+          "category": "D_unused",
+          "text": "UNCERTAINTY\n- Fan-in is a static lower bound (dynamic imports/dispatch not counted).\n\n## HOW TO USE\nAnswer the user's question using these facts first; open a cited file only if you need its body. Prefer these structured facts over re-scanning the repo.\n",
+          "tokens": 64,
+          "workflow": "understanding"
+        },
+        {
+          "name": "other",
+          "category": "C_redundant",
+          "text": "I could not map that question to a grounded analysis mode. Try one of the suggested questions below.\nYou are assisting with the repository below. Use this precomputed Atlas repository intelligence as ground truth; read cited files only when you need detail.\n\n# alse\nmodules=9709 subsystems=1512 edges=36013 cycles=0\n\n## PRODUCTION SUBSYSTEMS\n- script (110 prod files); entry: script/__init__.py,scrip",
+          "tokens": 100,
+          "workflow": "understanding"
+        }
+      ],
+      "section_tokens": {
+        "A_required": 250,
+        "B_helpful": 125,
+        "C_redundant": 100,
+        "D_unused": 64
+      }
+    }
+  ],
+  "workflow_stats": {
+    "build": {
+      "samples": 4,
+      "avg_tokens": 1753,
+      "tokens_by_category": {
+        "A_required": 500,
+        "B_helpful": 750,
+        "C_redundant": 475,
+        "D_unused": 125
+      },
+      "duplication": {
+        "total_exports": 4,
+        "unique_paths": 144,
+        "repeated_path_count": 63,
+        "top_repeated_paths": [
+          [
+            "fastapi/applications.py",
+            12
+          ],
+          [
+            "homeassistant/components/assist_pipeline/websocket_api.py",
+            10
+          ],
+          [
+            "homeassistant/components/api/__init__.py",
+            10
+          ],
+          [
+            "django/contrib/auth/middleware.py",
+            9
+          ],
+          [
+            "fastapi/_compat/v2.py",
+            8
+          ],
+          [
+            "fastapi/security/http.py",
+            8
+          ],
+          [
+            "fastapi/routing.py",
+            8
+          ],
+          [
+            "homeassistant/components/assist_satellite/websocket_api.py",
+            8
+          ],
+          [
+            "homeassistant/components/assist_pipeline/__init__.py",
+            8
+          ],
+          [
+            "fastapi/openapi/utils.py",
+            7
+          ]
+        ],
+        "tokens_by_category": {
+          "A_required": 2000,
+          "C_redundant": 1900,
+          "B_helpful": 3000,
+          "D_unused": 500
+        },
+        "shared_boilerplate_lines": 62,
+        "sample_shared": [
+          "",
+          "===========",
+          "Goal: add rate limiting",
+          "- Validate at boundary",
+          "- (none flagged)"
+        ]
+      },
+      "compression_simulation": {
+        "50": {
+          "avg_tokens": 875,
+          "avg_quality_retention_pct": 89.6,
+          "samples": 4
+        },
+        "25": {
+          "avg_tokens": 500,
+          "avg_quality_retention_pct": 80.6,
+          "samples": 4
+        },
+        "10": {
+          "avg_tokens": 500,
+          "avg_quality_retention_pct": 80.6,
+          "samples": 4
+        }
+      }
+    },
+    "investigate": {
+      "samples": 4,
+      "avg_tokens": 1835,
+      "tokens_by_category": {
+        "A_required": 500,
+        "B_helpful": 375,
+        "C_redundant": 475,
+        "D_unused": 0
+      },
+      "duplication": {
+        "total_exports": 4,
+        "unique_paths": 96,
+        "repeated_path_count": 34,
+        "top_repeated_paths": [
+          [
+            "fastapi/security/oauth2.py",
+            16
+          ],
+          [
+            "django/contrib/auth/__init__.py",
+            16
+          ],
+          [
+            "homeassistant/auth/__init__.py",
+            16
+          ],
+          [
+            "extensions/copilot/src/extension/completions-core/vscode-node/lib/src/auth/copilotTokenManager.ts",
+            14
+          ],
+          [
+            "homeassistant/auth/auth_store.py",
+            14
+          ],
+          [
+            "homeassistant/components/auth/login_flow.py",
+            13
+          ],
+          [
+            "django/contrib/auth/forms.py",
+            11
+          ],
+          [
+            "fastapi/security/http.py",
+            10
+          ],
+          [
+            "fastapi/security/__init__.py",
+            10
+          ],
+          [
+            "django/contrib/auth/models.py",
+            9
+          ]
+        ],
+        "tokens_by_category": {
+          "A_required": 2000,
+          "B_helpful": 1500,
+          "C_redundant": 1900
+        },
+        "shared_boilerplate_lines": 39,
+        "sample_shared": [
+          "",
+          "B. Most likely root cause",
+          "- Add a regression test that reproduces the symptom, then make it pass.",
+          "   Found:",
+          "- Keep the diff minimal; do not refactor adjacent code in the same change."
+        ]
+      },
+      "compression_simulation": {
+        "50": {
+          "avg_tokens": 625,
+          "avg_quality_retention_pct": 92.6,
+          "samples": 4
+        },
+        "25": {
+          "avg_tokens": 500,
+          "avg_quality_retention_pct": 89.6,
+          "samples": 4
+        },
+        "10": {
+          "avg_tokens": 500,
+          "avg_quality_retention_pct": 89.6,
+          "samples": 4
+        }
+      }
+    },
+    "impact": {
+      "samples": 4,
+      "avg_tokens": 386,
+      "tokens_by_category": {
+        "A_required": 250,
+        "B_helpful": 125,
+        "C_redundant": 106,
+        "D_unused": 0
+      },
+      "duplication": {
+        "total_exports": 4,
+        "unique_paths": 75,
+        "repeated_path_count": 11,
+        "top_repeated_paths": [
+          [
+            "extensions/copilot/src/platform/authentication/common/authentication.ts",
+            4
+          ],
+          [
+            "fastapi/dependencies/utils.py",
+            3
+          ],
+          [
+            "homeassistant/auth/auth_store.py",
+            3
+          ],
+          [
+            "fastapi/security/oauth2.py",
+            2
+          ],
+          [
+            "fastapi/__init__.py",
+            2
+          ],
+          [
+            "fastapi/applications.py",
+            2
+          ],
+          [
+            "fastapi/dependencies/models.py",
+            2
+          ],
+          [
+            "fastapi/openapi/utils.py",
+            2
+          ],
+          [
+            "django/contrib/auth/templatetags/auth.py",
+            2
+          ],
+          [
+            "extensions/copilot/src/extension/authentication/vscode-node/authentication.contribution.ts",
+            2
+          ]
+        ],
+        "tokens_by_category": {
+          "A_required": 1000,
+          "B_helpful": 500,
+          "C_redundant": 425
+        },
+        "shared_boilerplate_lines": 1,
+        "sample_shared": [
+          ""
+        ]
+      },
+      "compression_simulation": {
+        "50": {
+          "avg_tokens": 250,
+          "avg_quality_retention_pct": 96.5,
+          "samples": 4
+        },
+        "25": {
+          "avg_tokens": 250,
+          "avg_quality_retention_pct": 96.5,
+          "samples": 4
+        },
+        "10": {
+          "avg_tokens": 250,
+          "avg_quality_retention_pct": 96.5,
+          "samples": 4
+        }
+      }
+    },
+    "understanding": {
+      "samples": 4,
+      "avg_tokens": 529,
+      "tokens_by_category": {
+        "A_required": 250,
+        "B_helpful": 125,
+        "C_redundant": 100,
+        "D_unused": 64
+      },
+      "duplication": {
+        "total_exports": 4,
+        "unique_paths": 39,
+        "repeated_path_count": 0,
+        "top_repeated_paths": [],
+        "tokens_by_category": {
+          "A_required": 1000,
+          "B_helpful": 500,
+          "D_unused": 256,
+          "C_redundant": 400
+        },
+        "shared_boilerplate_lines": 11,
+        "sample_shared": [
+          "",
+          "## HOW TO USE",
+          "## PRODUCTION SUBSYSTEMS",
+          "## TOP ARCHITECTURAL RISKS",
+          "## UNCERTAINTY"
+        ]
+      },
+      "compression_simulation": {
+        "50": {
+          "avg_tokens": 250,
+          "avg_quality_retention_pct": 96.6,
+          "samples": 4
+        },
+        "25": {
+          "avg_tokens": 250,
+          "avg_quality_retention_pct": 96.6,
+          "samples": 4
+        },
+        "10": {
+          "avg_tokens": 250,
+          "avg_quality_retention_pct": 96.6,
+          "samples": 4
+        }
+      }
+    }
+  },
+  "session_duplication": {
+    "fastapi": {
+      "questions": 20,
+      "total_export_tokens": 15431,
+      "avg_export_tokens": 772,
+      "compact_export_tokens": 324,
+      "redundant_if_compact_per_question": 6156,
+      "potential_savings_send_once": 6156,
+      "by_workflow_avg": {
+        "impact": 304,
+        "build": 1144,
+        "investigate": 1430,
+        "understanding": 65
+      }
+    },
+    "django": {
+      "questions": 20,
+      "total_export_tokens": 16725,
+      "avg_export_tokens": 836,
+      "compact_export_tokens": 385,
+      "redundant_if_compact_per_question": 7315,
+      "potential_savings_send_once": 7315,
+      "by_workflow_avg": {
+        "impact": 322,
+        "build": 1361,
+        "investigate": 1441,
+        "understanding": 72
+      }
+    },
+    "vscode": {
+      "questions": 20,
+      "total_export_tokens": 40779,
+      "avg_export_tokens": 2039,
+      "compact_export_tokens": 673,
+      "redundant_if_compact_per_question": 12787,
+      "potential_savings_send_once": 12787,
+      "by_workflow_avg": {
+        "impact": 2580,
+        "build": 1990,
+        "investigate": 1991,
+        "understanding": 118
+      }
+    },
+    "home_assistant": {
+      "questions": 20,
+      "total_export_tokens": 25330,
+      "avg_export_tokens": 1266,
+      "compact_export_tokens": 633,
+      "redundant_if_compact_per_question": 12027,
+      "potential_savings_send_once": 12027,
+      "by_workflow_avg": {
+        "impact": 934,
+        "build": 1779,
+        "investigate": 1762,
+        "understanding": 78
+      }
+    }
+  },
+  "minimal_spec": {
+    "build": {
+      "A_required": [
+        "goal",
+        "files_to_inspect_first (max 5)",
+        "what_may_break (max 5 importers)",
+        "confidence",
+        "risk_level"
+      ],
+      "B_helpful": [
+        "implementation_order (max 4)",
+        "tests (max 3)",
+        "domain concept name only"
+      ],
+      "C_redundant": [
+        "domain understanding prose",
+        "repository evidence details",
+        "duplicate file lists",
+        "entry_points list",
+        "subsystem enumeration"
+      ],
+      "D_unused": [
+        "rollback plan",
+        "safety footer",
+        "HOW TO USE boilerplate",
+        "trust block duplicate"
+      ]
+    },
+    "investigate": {
+      "A_required": [
+        "symptom",
+        "most_likely_root_cause",
+        "top hypothesis + files (H1 only)",
+        "confidence"
+      ],
+      "B_helpful": [
+        "verification checklist (max 4)",
+        "minimal fix (max 3 bullets)",
+        "H2 hypothesis only"
+      ],
+      "C_redundant": [
+        "H3+ hypothesis detail",
+        "how_to_disprove paragraphs",
+        "domain failure mode essays",
+        "repository evidence dump"
+      ],
+      "D_unused": [
+        "safety footer",
+        "duplicate limitations"
+      ]
+    },
+    "impact": {
+      "A_required": [
+        "target path",
+        "direct_impact (max 8)",
+        "confidence",
+        "risk_level",
+        "semantic_label"
+      ],
+      "B_helpful": [
+        "indirect_impact (max 5)",
+        "top 2 evidence bullets"
+      ],
+      "C_redundant": [
+        "what_probably_wont_break",
+        "architecture blast prose",
+        "generic test hints",
+        "subsystem lists beyond top 3"
+      ],
+      "D_unused": [
+        "safety footer",
+        "recommended_verification boilerplate"
+      ]
+    },
+    "understanding": {
+      "A_required": [
+        "top 5 subsystems",
+        "top 3 hub modules",
+        "direct answer sentence"
+      ],
+      "B_helpful": [
+        "top 3 risk modules (name only)"
+      ],
+      "C_redundant": [
+        "full subsystem dep lines",
+        "risk score reasons"
+      ],
+      "D_unused": [
+        "preamble per tool",
+        "UNCERTAINTY/HOW TO USE blocks"
+      ]
+    },
+    "session_level": {
+      "send_once": [
+        "compact repository context (324\u2013673 tokens)"
+      ],
+      "per_question_only": [
+        "workflow-specific delta"
+      ]
+    }
+  },
+  "projected_economics": [
+    {
+      "repo": "fastapi",
+      "old_atlas_20q_tokens": 22031,
+      "new_atlas_20q_tokens": 13867,
+      "claude_alone_20q_tokens": 17550,
+      "token_delta_vs_claude_pct": 21.0,
+      "old_quality_avg": 4.06,
+      "projected_quality_avg": 3.9,
+      "scan_time_s": 2.58
+    },
+    {
+      "repo": "django",
+      "old_atlas_20q_tokens": 23325,
+      "new_atlas_20q_tokens": 14511,
+      "claude_alone_20q_tokens": 17550,
+      "token_delta_vs_claude_pct": 17.3,
+      "old_quality_avg": 3.89,
+      "projected_quality_avg": 3.73,
+      "scan_time_s": 17.52
+    },
+    {
+      "repo": "vscode",
+      "old_atlas_20q_tokens": 47379,
+      "new_atlas_20q_tokens": 25623,
+      "claude_alone_20q_tokens": 17550,
+      "token_delta_vs_claude_pct": -46.0,
+      "old_quality_avg": 4.06,
+      "projected_quality_avg": 3.9,
+      "scan_time_s": 26.95
+    },
+    {
+      "repo": "home_assistant",
+      "old_atlas_20q_tokens": 31930,
+      "new_atlas_20q_tokens": 18631,
+      "claude_alone_20q_tokens": 17550,
+      "token_delta_vs_claude_pct": -6.2,
+      "old_quality_avg": 4.11,
+      "projected_quality_avg": 3.95,
+      "scan_time_s": 334.05
+    }
+  ],
+  "compression_target": {
+    "export_size_ratio": 0.45,
+    "quality_retention_pct": 96,
+    "grounding_retention_pct": 98,
+    "impact_retention_pct": 97
+  }
+}
