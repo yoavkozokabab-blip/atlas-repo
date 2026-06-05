@@ -57,9 +57,18 @@
       </section>
     </div>
 
+    <section class="glass support-card">
+      <h3>Installer self-test</h3>
+      <p class="muted tiny" style="margin:0 0 10px">Verifies that the Atlas app, install shortcuts, and browser auto-open are working.</p>
+      <div id="selfTestResults" class="support-checks"><p class="muted tiny">Loading…</p></div>
+      <div class="success-buttons" style="margin-top:10px">
+        <button class="btn ghost" type="button" onclick="supportRunSelfTest()">Re-run self-test</button>
+      </div>
+    </section>
+
     <section class="glass support-card support-actions-card">
       <h3>Recovery actions</h3>
-      <p class="muted tiny" style="margin:0 0 10px">These run on your machine. Diagnostics and the support bundle are saved locally — Atlas does not send them anywhere.</p>
+      <p class="muted tiny" style="margin:0 0 10px">These run on your machine. Diagnostics and the support bundle are saved locally — Atlas does not send them anywhere. The support bundle is saved to your browser's <b>Downloads</b> folder.</p>
       <div class="success-buttons">
         <button class="btn primary" type="button" onclick="supportRebuildIndex()">Rebuild index</button>
         <button class="btn ghost" type="button" onclick="supportClearCache()">Clear cache</button>

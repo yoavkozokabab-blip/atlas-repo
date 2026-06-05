@@ -1568,7 +1568,8 @@ async function runChangePlan() {
         <span class="lvl ${p.confidence?.includes('high') ? 'low' : 'medium'}">confidence: ${esc(p.confidence)}</span>
       </div>
       <p class="muted tiny" style="margin:8px 0">Size: <b>${esc(p.estimated_change_size)}</b> · Risk: <b>${esc(p.risk_level)}</b> · Intent: ${esc(p.intent)}</p>
-      ${renderDomainKnowledge(p.domain_knowledge)}
+      ${typeof trustBlock === "function" ? trustBlock("build") : ""}
+      <div class="advanced-only">${renderDomainKnowledge(p.domain_knowledge)}</div>
       ${renderRepositoryEvidence(p.repository_evidence || p.domain_knowledge?.repository_evidence)}
       <div class="plan-grid">
         <div class="report-section"><div class="report-label">Affected systems</div><div class="taglist">${(p.affected_systems || p.likely_affected_subsystems || []).map(s => `<span class="tag">${esc(s)}</span>`).join("") || '<span class="muted tiny">none matched</span>'}</div></div>
@@ -1578,13 +1579,13 @@ async function runChangePlan() {
       <div class="report-section"><div class="report-label">What may break (direct importers / high coupling)</div><div class="taglist">${(p.what_may_break || p.files_likely_to_break || []).map(s => `<span class="tag" onclick="investigateFile(${JSON.stringify(s)})">${esc(s)}</span>`).join("") || '<span class="muted tiny">nothing high-risk identified</span>'}</div></div>
       <div class="report-section"><div class="report-label">Tests required</div><ul class="clean">${(p.tests_required || p.tests_likely_affected || []).map(s => `<li>${esc(s)}</li>`).join("")}</ul></div>
       <div class="report-section"><div class="report-label">Rollback plan</div><ul class="clean">${(p.rollback_plan || []).map(s => `<li>${esc(s)}</li>`).join("")}</ul></div>
-      <details style="margin-top:8px"><summary class="muted tiny">Full plan (markdown) + evidence</summary>
+      <details class="advanced-only" style="margin-top:8px"><summary class="muted tiny">Full plan (markdown) + evidence</summary>
         <pre class="code" style="max-height:320px;overflow:auto">${esc(r.formatted || "")}</pre>
         <ul class="clean tiny">${(p.evidence || []).map(e => `<li>${esc(e)}</li>`).join("")}</ul>
       </details>
       ${renderLimitations(r.limitations)}
       ${typeof sendToAiPanel === "function" ? sendToAiPanel("build") : ""}
-      <details style="margin-top:12px"><summary class="muted tiny">Preview raw planning prompt</summary>
+      <details class="advanced-only" style="margin-top:12px"><summary class="muted tiny">Preview raw planning prompt</summary>
         <pre class="code">${esc(prompts.claude || "")}</pre></details>
       <h3 style="font-size:13px;color:var(--cyan);margin-top:18px">What breaks? simulation (optional)</h3>
       <div class="pick-row">
@@ -1641,7 +1642,8 @@ async function runInvestigationPlan() {
         <div class="report-label">Symptom summary</div>
         <p>${esc(p.symptom_summary || p.symptom || "")}</p>
       </div>
-      ${renderDomainKnowledge(p.domain_knowledge)}
+      ${typeof trustBlock === "function" ? trustBlock("investigate") : ""}
+      <div class="advanced-only">${renderDomainKnowledge(p.domain_knowledge)}</div>
       ${renderRepositoryEvidence(p.repository_evidence || p.domain_knowledge?.repository_evidence)}
       ${(p.domain_failure_modes || []).length ? `<div class="report-section"><div class="report-label">Domain failure modes</div><ul class="clean">${p.domain_failure_modes.map(m => `<li>${esc(m)}</li>`).join("")}</ul></div>` : ""}
       <div class="report-section">
@@ -1657,7 +1659,7 @@ async function runInvestigationPlan() {
       ${(p.risks_of_incorrect_fix || []).length ? `<div class="report-section"><div class="report-label">Risks of fixing incorrectly</div><ul class="clean">${p.risks_of_incorrect_fix.map(v => `<li>${esc(v)}</li>`).join("")}</ul></div>` : ""}
       ${renderLimitations(r.limitations)}
       ${typeof sendToAiPanel === "function" ? sendToAiPanel("investigate") : ""}
-      <details style="margin-top:12px"><summary class="muted tiny">Preview full report (markdown)</summary>
+      <details class="advanced-only" style="margin-top:12px"><summary class="muted tiny">Preview full report (markdown)</summary>
         <pre class="code">${esc(r.formatted || "")}</pre></details>
       ${typeof workflowFeedbackHtml === "function" ? workflowFeedbackHtml("investigate") : ""}
     </div>`;
@@ -1730,6 +1732,7 @@ async function runImpact() {
         <h3 style="margin:0">Impact of changing <span class="mono">${esc(r.target)}</span></h3>
         <div class="impact-badges"><span class="lvl ${rl}">${rl} risk</span><span class="pill">confidence ${esc(conf)}</span>${mockTag}</div>
       </div>
+      ${typeof trustBlock === "function" ? trustBlock("impact") : ""}
       ${impactSemanticCard(r)}
       ${impactBlastCard(r)}
       <div class="impact-arch-summary">${esc(impactArchSummary(r))}</div>
@@ -1737,7 +1740,7 @@ async function runImpact() {
       <div class="report-section"><div class="report-label">Indirect impact — transitive (${indN})</div>${impactModuleTags(r.indirect_impact)}</div>
       <div class="report-section"><div class="report-label">Tests to run</div><ul class="clean">${list(r.tests_likely_affected)}</ul></div>
       <div class="report-section"><div class="report-label">Safe rollback / verification</div><ul class="clean">${list(r.recommended_verification)}</ul></div>
-      <details style="margin-top:6px"><summary class="muted tiny">What may break · risks · probably-safe · evidence</summary>
+      <details class="advanced-only" style="margin-top:6px"><summary class="muted tiny">What may break · risks · probably-safe · evidence</summary>
         <div class="report-label" style="margin-top:8px">What may break</div>${impactModuleTags(r.what_may_break, 12)}
         <div class="report-label" style="margin-top:8px">Risks of an incorrect change</div><ul class="clean tiny">${list(r.risks_of_incorrect_fix, 5)}</ul>
         <div class="report-label" style="margin-top:8px">Probably safe (untouched)</div><ul class="clean tiny">${list(r.what_probably_wont_break, 6)}</ul>

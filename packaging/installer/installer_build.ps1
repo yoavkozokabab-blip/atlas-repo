@@ -85,6 +85,30 @@ if (Test-Path (Join-Path $AssetsDir "atlas.ico")) {
 
 Write-Host "Staged: $Staging" -ForegroundColor Green
 
+# Phase 157 — installer self-test (pre-compile): verify the staged payload and
+# that the installer script declares the shortcuts the self-test will look for.
+function Test-StagedInstaller {
+    $issues = @()
+    $stagedExe = Join-Path $Staging "Atlas.exe"
+    if (-not (Test-Path $stagedExe)) { $issues += "missing staged Atlas.exe ($stagedExe)" }
+    $issText = Get-Content -Raw (Join-Path $InstallerDir "Atlas.iss")
+    if ($issText -notmatch "autodesktop") { $issues += "Atlas.iss does not create a desktop shortcut" }
+    if ($issText -notmatch "\{group\}") { $issues += "Atlas.iss does not create a Start menu shortcut" }
+    if ($issText -notmatch "InfoBeforeFile") { $issues += "Atlas.iss does not show beta install notes" }
+    $staticSupport = Join-Path $Staging "_internal\jarvis_desktop\static\support.html"
+    if (-not (Test-Path $staticSupport)) {
+        $staticSupport = Get-ChildItem -Path $Staging -Recurse -Filter "support.html" -ErrorAction SilentlyContinue | Select-Object -First 1
+        if (-not $staticSupport) { $issues += "support.html missing from staged payload" }
+    }
+    if ($issues.Count -gt 0) {
+        Write-Host "Installer self-test FAILED:" -ForegroundColor Red
+        $issues | ForEach-Object { Write-Host "  - $_" -ForegroundColor Red }
+        throw "Installer self-test failed with $($issues.Count) issue(s)."
+    }
+    Write-Host "Installer self-test passed (staged payload + shortcuts + notes)." -ForegroundColor Green
+}
+Test-StagedInstaller
+
 if ($SkipCompile) {
     Write-Host "SkipCompile - staging only." -ForegroundColor Yellow
     exit 0

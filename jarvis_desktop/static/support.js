@@ -64,6 +64,34 @@ function renderScanHealth(health) {
     </ul>`;
 }
 
+function renderSelfTest(result) {
+  const host = $("selfTestResults");
+  if (!host) return;
+  if (!result || !result.ok) {
+    host.innerHTML = `<p class="muted tiny">Self-test unavailable.</p>`;
+    return;
+  }
+  const head = result.ready
+    ? `<p class="support-check ok"><span class="support-check-label">Install looks healthy</span></p>`
+    : `<p class="support-check fail"><span class="support-check-label">Some checks need attention</span></p>`;
+  const rows = (result.checks || []).map(c => {
+    const cls = c.ok ? "ok" : (c.optional ? "warn" : "fail");
+    return `<div class="support-check ${cls}">
+      <span class="support-check-label">${esc(c.label)}</span>
+      <span class="support-check-detail">${esc(c.detail)}</span>
+      ${c.hint && !c.ok ? `<p class="support-hint">${esc(c.hint)}</p>` : ""}
+    </div>`;
+  }).join("");
+  host.innerHTML = head + rows;
+}
+
+async function supportRunSelfTest() {
+  const host = $("selfTestResults");
+  if (host) host.innerHTML = '<p class="muted tiny">Running…</p>';
+  const result = await api("/api/system/self-test");
+  renderSelfTest(result);
+}
+
 async function loadSupportStatus() {
   const env = await api("/api/system/startup-status");
   if (!env.ok) {
@@ -73,6 +101,7 @@ async function loadSupportStatus() {
   $("atlasVersion").textContent = env.version || "—";
   renderChecks(env.startup);
   renderScanHealth(env.scan_health);
+  supportRunSelfTest();
 }
 
 function setActionMsg(msg) {
@@ -141,8 +170,8 @@ async function supportDownloadBundle() {
   a.download = r.filename || "atlas_support_bundle.zip";
   a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 3000);
-  setActionMsg("Downloaded " + (r.filename || "bundle") + " (" + Math.round((r.size_bytes || 0) / 1024) + " KB)");
-  toast("Support bundle downloaded", "success");
+  setActionMsg("Support bundle saved to your Downloads folder: " + (r.filename || "bundle") + " (" + Math.round((r.size_bytes || 0) / 1024) + " KB). Attach it to your support message.");
+  toast("Support bundle saved to Downloads", "success");
 }
 
 window.supportClearCache = supportClearCache;
@@ -150,5 +179,6 @@ window.supportRebuildIndex = supportRebuildIndex;
 window.supportResetOnboarding = supportResetOnboarding;
 window.supportCopyDiagnostics = supportCopyDiagnostics;
 window.supportDownloadBundle = supportDownloadBundle;
+window.supportRunSelfTest = supportRunSelfTest;
 
 loadSupportStatus();

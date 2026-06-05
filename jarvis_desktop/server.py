@@ -87,6 +87,7 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
         ("GET", "/api/repositories/current/system-health"): lambda _body, _query: api.beta_system_health(),
         ("GET", "/api/system/diagnostics"): lambda _body, _query: api.beta_diagnostics(),
         ("GET", "/api/system/startup-status"): lambda _body, _query: api.startup_status(),
+        ("GET", "/api/system/self-test"): lambda _body, _query: api.installer_self_test(),
         ("POST", "/api/system/clear-cache"): lambda _body, _query: api.clear_scan_cache(),
         ("POST", "/api/system/rebuild-index"): lambda body, _query: api.rebuild_repository_index(
             rescan=body.get("rescan", True) is not False
@@ -247,6 +248,16 @@ class JarvisHandler(BaseHTTPRequestHandler):
             self._send_json(404, {"ok": False, "error": "not found"})
 
 
+def _log_launcher(message: str) -> None:
+    """Best-effort local log; never raises."""
+    try:
+        from .install_support import append_launcher_log
+
+        append_launcher_log(message)
+    except Exception:
+        pass
+
+
 def run(
     host: str = "127.0.0.1",
     port: int = 8777,
@@ -261,11 +272,16 @@ def run(
         print(f"  ATLAS — Repository Intelligence Platform")
         print(f"  Serving at http://{host}:{port}/  (Ctrl+C to stop)")
     if open_browser:
+        opened = False
         try:
             import webbrowser
-            webbrowser.open(url)
-        except Exception:
-            pass
+            opened = bool(webbrowser.open(url))
+        except Exception as exc:  # no browser / sandbox
+            _log_launcher(f"browser open failed: {type(exc).__name__}: {exc}")
+        if not opened:
+            _log_launcher(f"browser did not auto-open; visit {url} manually")
+            if not getattr(__import__("sys"), "frozen", False):
+                print(f"  Could not auto-open a browser. Open this URL manually:\n    {url}")
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
@@ -370,6 +386,10 @@ def create_fastapi_app():  # pragma: no cover - exercised only when fastapi pres
     @app.get("/api/system/startup-status")
     def _startup_status():
         return api.startup_status()
+
+    @app.get("/api/system/self-test")
+    def _self_test():
+        return api.installer_self_test()
 
     @app.post("/api/system/clear-cache")
     def _clear_cache():

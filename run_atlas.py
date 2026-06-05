@@ -35,6 +35,35 @@ def _launcher_log(message: str) -> None:
         pass
 
 
+def _run_self_test_cli() -> int:
+    """Run the post-install self-test, write a report file, and return 0/1."""
+    import json
+    import os
+
+    from jarvis_desktop.install_support import (
+        append_launcher_log,
+        data_dir,
+        installer_self_test,
+    )
+
+    result = installer_self_test()
+    try:
+        os.makedirs(data_dir(), exist_ok=True)
+        report = os.path.join(data_dir(), "self_test.json")
+        with open(report, "w", encoding="utf-8") as fh:
+            json.dump(result, fh, indent=2)
+    except OSError:
+        report = "(could not write report)"
+    append_launcher_log(f"self-test cli ready={result.get('ready')} report={report}")
+    if not _frozen_launch():
+        print(f"  Atlas self-test: {'READY' if result.get('ready') else 'ISSUES FOUND'}")
+        for item in result.get("checks") or []:
+            mark = "[ok]" if item.get("ok") else ("[--]" if item.get("optional") else "[X]")
+            print(f"    {mark} {item.get('label')}: {item.get('detail')}")
+        print(f"  Report: {report}")
+    return 0 if result.get("ready") else 1
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Atlas Repository Intelligence — launcher")
     ap.add_argument("--host", default="127.0.0.1")
@@ -42,13 +71,31 @@ def main() -> int:
     ap.add_argument("--no-browser", action="store_true")
     ap.add_argument("--fastapi", action="store_true", help="Use FastAPI/uvicorn if installed.")
     ap.add_argument("--support", action="store_true", help="Open Support & diagnostics page.")
+    ap.add_argument("--self-test", action="store_true", help="Run the installer self-test and exit.")
     args = ap.parse_args()
 
-    from jarvis_desktop.install_support import append_launcher_log, startup_checks
+    if getattr(args, "self_test", False):
+        return _run_self_test_cli()
+
+    from jarvis_desktop.install_support import append_launcher_log, installer_self_test, startup_checks
     from jarvis_desktop import server
 
     checks = startup_checks()
     append_launcher_log(f"startup ready={checks.get('ready')}")
+
+    # Phase 157 — post-install self-test (binary, assets, shortcuts, browser).
+    # Logged locally only; warnings never block launch.
+    try:
+        self_test = installer_self_test()
+        append_launcher_log(
+            "selftest ready={ready} warnings={warns} critical={crit}".format(
+                ready=self_test.get("ready"),
+                warns=",".join(self_test.get("warnings") or []) or "none",
+                crit=",".join(self_test.get("critical_failures") or []) or "none",
+            )
+        )
+    except Exception as exc:  # never block launch on a self-test error
+        append_launcher_log(f"selftest error: {type(exc).__name__}: {exc}")
 
     if not checks.get("ready"):
         if _frozen_launch():

@@ -1345,6 +1345,13 @@ def startup_status() -> Dict[str, Any]:
     return environment_status()
 
 
+def installer_self_test() -> Dict[str, Any]:
+    """Phase 157 — verify the install (binary, assets, shortcuts, browser)."""
+    from .install_support import installer_self_test as _self_test
+
+    return _self_test()
+
+
 def clear_scan_cache() -> Dict[str, Any]:
     from .install_support import clear_scan_cache as _clear
 
@@ -1398,6 +1405,7 @@ def beta_diagnostics() -> Dict[str, Any]:
         "scan_performance_ms": perf.get("total_duration_ms"),
         "workflow_performance": dict(_STATE.get("workflow_perf") or {}),
         "scope": scan.get("scope") or _STATE.get("last_scope"),
+        "reliability": scan.get("reliability") or {},
         "data_dir": _desktop_data_dir_for_diagnostics(),
     }
 
@@ -1434,6 +1442,7 @@ def beta_system_health() -> Dict[str, Any]:
         "scan_performance": perf,
         "workflow_performance": dict(_STATE.get("workflow_perf") or {}),
         "degraded": summary.get("degraded"),
+        "reliability": (_STATE.get("scan") or {}).get("reliability") or {},
         "massive_mode": summary.get("massive_mode"),
     }
 

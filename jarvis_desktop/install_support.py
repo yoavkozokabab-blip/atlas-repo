@@ -132,6 +132,130 @@ def startup_checks() -> Dict[str, Any]:
     }
 
 
+def _frozen() -> bool:
+    return bool(getattr(sys, "frozen", False))
+
+
+def _selftest_executable() -> Dict[str, Any]:
+    """Verify the Atlas application binary (frozen) or launcher (source) exists."""
+    if _frozen():
+        exe = sys.executable or ""
+        ok = bool(exe) and os.path.isfile(exe)
+        name = os.path.basename(exe) if exe else "(unknown)"
+        return {
+            "id": "executable",
+            "label": "Atlas application",
+            "ok": ok,
+            "detail": f"{name}" if ok else "Atlas.exe not found",
+            "hint": None if ok else "Reinstall Atlas — the application binary is missing.",
+        }
+    launcher = _REPO_ROOT / "run_atlas.py"
+    ok = launcher.is_file()
+    return {
+        "id": "executable",
+        "label": "Atlas launcher (source mode)",
+        "ok": ok,
+        "detail": "run_atlas.py present" if ok else "run_atlas.py missing",
+        "hint": None if ok else "Run Atlas from the folder that contains run_atlas.py.",
+    }
+
+
+def _shortcut_locations() -> List[str]:
+    """Best-effort Windows shortcut paths created by the installer."""
+    paths: List[str] = []
+    appdata = os.environ.get("APPDATA")
+    if appdata:
+        paths.append(os.path.join(appdata, "Microsoft", "Windows", "Start Menu", "Programs", "Atlas"))
+    userprofile = os.environ.get("USERPROFILE")
+    if userprofile:
+        paths.append(os.path.join(userprofile, "Desktop", "Atlas.lnk"))
+        paths.append(os.path.join(userprofile, "Desktop", "Launch Atlas.lnk"))
+    public = os.environ.get("PUBLIC")
+    if public:
+        paths.append(os.path.join(public, "Desktop", "Atlas.lnk"))
+    return paths
+
+
+def _selftest_shortcuts() -> Dict[str, Any]:
+    """Check that install shortcuts exist (Windows only; optional / non-fatal)."""
+    if sys.platform != "win32":
+        return {
+            "id": "shortcuts",
+            "label": "Shortcuts",
+            "ok": True,
+            "optional": True,
+            "detail": "n/a on this platform",
+            "hint": None,
+        }
+    found = [p for p in _shortcut_locations() if os.path.exists(p)]
+    ok = bool(found)
+    return {
+        "id": "shortcuts",
+        "label": "Start menu / desktop shortcuts",
+        "ok": ok,
+        # In source mode (not installed) shortcuts won't exist — treat as optional
+        # so the self-test stays green for developers while still reporting status.
+        "optional": not _frozen(),
+        "detail": (found[0] if ok else "no Atlas shortcuts found"),
+        "hint": None if ok else (
+            "Shortcuts were not created. You can still launch Atlas from its install "
+            "folder, or re-run the installer to recreate them."
+        ),
+    }
+
+
+def _selftest_browser() -> Dict[str, Any]:
+    """Verify Atlas can open a browser to show the UI (best-effort, non-fatal)."""
+    detail = ""
+    ok = True
+    try:
+        import webbrowser
+
+        controller = webbrowser.get()
+        detail = f"default browser available ({getattr(controller, 'name', 'system')})"
+    except Exception as exc:  # no registered browser
+        ok = False
+        detail = f"no default browser ({type(exc).__name__})"
+    return {
+        "id": "browser",
+        "label": "Browser auto-open",
+        "ok": ok,
+        "optional": True,
+        "detail": detail,
+        "hint": None if ok else (
+            "Atlas could not detect a default browser. Open http://127.0.0.1:8777/ "
+            "manually in any browser."
+        ),
+    }
+
+
+def installer_self_test(*, check_browser: bool = True) -> Dict[str, Any]:
+    """Phase 157 — post-install self-test.
+
+    Verifies that the Atlas binary/launcher exists, required assets are present,
+    install shortcuts exist (Windows), and a browser can be opened. Optional
+    checks (shortcuts in source mode, browser) never fail the overall result.
+    """
+    checks: List[Dict[str, Any]] = [
+        _selftest_executable(),
+        _check_directories(),
+        _selftest_shortcuts(),
+    ]
+    if check_browser:
+        checks.append(_selftest_browser())
+    critical = [c for c in checks if not c.get("ok") and not c.get("optional")]
+    warnings = [c for c in checks if not c.get("ok") and c.get("optional")]
+    return {
+        "ok": True,
+        "ready": len(critical) == 0,
+        "frozen": _frozen(),
+        "checks": checks,
+        "critical_failures": [c["label"] for c in critical],
+        "warnings": [c["label"] for c in warnings],
+        "data_dir": data_dir(),
+    }
+
+
 def append_launcher_log(message: str) -> None:
     try:
         os.makedirs(data_dir(), exist_ok=True)

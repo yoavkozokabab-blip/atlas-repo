@@ -563,3 +563,27 @@ ul.clean{margin:0;padding-left:18px;line-height:1.9;color:#c7d2f5}
   background:linear-gradient(180deg,rgba(66,245,176,.1),rgba(62,240,255,.05))}
 .ready-title{margin:0 0 4px;font-family:Orbitron;font-weight:700;letter-spacing:1px;color:var(--green)}
 .ready-state .copy-row{margin-top:12px;flex-wrap:wrap}
+
+/* Phase 157 — trust signals + beginner/advanced output */
+body.mode-beginner .advanced-only{display:none !important}
+body.mode-advanced .beginner-only{display:none !important}
+
+.mode-toggle{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.mode-toggle button{background:transparent;border:none;color:var(--muted);padding:6px 12px;font-size:12px;cursor:pointer;transition:.15s}
+.mode-toggle button:hover{color:var(--txt)}
+.mode-toggle button.active{background:linear-gradient(180deg,rgba(62,240,255,.18),rgba(154,123,255,.12));color:#fff}
+
+.trust-block{margin:12px 0;padding:14px 16px;border-radius:14px;border:1px solid rgba(154,123,255,.3);
+  background:linear-gradient(180deg,rgba(154,123,255,.08),rgba(62,240,255,.04))}
+.trust-head{display:flex;align-items:center;gap:10px;justify-content:space-between;flex-wrap:wrap}
+.trust-title{font-size:13.5px;font-weight:600;color:#eaf0ff}
+.trust-reason{margin:8px 0 0;font-size:13px;line-height:1.55;color:#cdd6f5}
+.trust-evidence{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.trust-ev-row{display:flex;gap:10px;align-items:flex-start}
+.trust-ev-label{flex:0 0 78px;font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);padding-top:4px}
+.trust-ev-hint{margin:8px 0 0}
+.tag.sym{border-color:rgba(154,123,255,.4);color:#cbb8ff}
+.conf-badge{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;text-transform:capitalize;white-space:nowrap}
+.conf-badge.conf-high{background:rgba(66,245,176,.16);color:var(--green);border:1px solid rgba(66,245,176,.4)}
+.conf-badge.conf-medium{background:rgba(255,194,75,.14);color:var(--amber);border:1px solid rgba(255,194,75,.38)}
+.conf-badge.conf-low{background:rgba(255,92,122,.14);color:var(--red);border:1px solid rgba(255,92,122,.38)}
