@@ -1,4 +1,4 @@
-"""Phase 140 — scan reliability: degraded-scan detection, failure taxonomy, retry.
+"""Phase 140 / 158 — scan reliability: degraded-scan detection, failure taxonomy, retry.
 
 Reliability hardening only — no new intelligence, concepts, billing or UI. This
 module classifies the *outcome* of a scan so Atlas can:
@@ -7,6 +7,9 @@ module classifies the *outcome* of a scan so Atlas can:
     graph, unresolved-import explosion) and surface a warning,
   * decide whether a failure is a SAFE TRANSIENT one worth retrying once,
   * give every failure a stable taxonomy category for the reliability dashboard.
+
+Phase 158: added unsupported_language_limited — files > threshold but modules < threshold
+means the language is not well-supported; this is NOT reported as "healthy".
 
 Pure functions over the scan-result dict; safe to call anywhere.
 """
@@ -28,12 +31,13 @@ TIMEOUT = "timeout_failure"             # graph build hit its deadline
 UNRESOLVED_EXPLOSION = "unresolved_import_explosion"  # most imports unresolved
 MEMORY_PRESSURE = "memory_pressure"     # peak RSS over budget (harness-measured)
 EMPTY_REPO = "empty_repo"               # genuinely tiny/empty repo (not a fault)
+UNSUPPORTED_LANGUAGE = "unsupported_language_limited"  # P158: many files, few modules
 
 # Categories that represent a real reliability fault (vs. a healthy or
 # legitimately-empty result).
 FAULT_CATEGORIES = frozenset({
     SCAN_CRASH, SCAN_FAILED, ZERO_MODULE_SCAN, ZERO_EDGE_GRAPH, PARTIAL_GRAPH,
-    TIMEOUT, UNRESOLVED_EXPLOSION, MEMORY_PRESSURE,
+    TIMEOUT, UNRESOLVED_EXPLOSION, MEMORY_PRESSURE, UNSUPPORTED_LANGUAGE,
 })
 
 # Only these are safe to retry automatically — transient, side-effect-free.
@@ -45,6 +49,29 @@ _MIN_MODULES_FOR_EDGES = 8   # below this, 0 edges is unremarkable
 _UNRESOLVED_RATIO = 0.85     # fraction of imports unresolved to flag explosion
 _UNRESOLVED_MIN = 50         # absolute unresolved imports to flag explosion
 _MEMORY_BUDGET_MB = 2048     # peak RSS budget for a single scan
+
+# P158 FIX 4 — unsupported language threshold.
+# If a repo has many files but Atlas built almost no modules, the language is
+# outside Atlas's strong coverage (Go, Java, C#, Rust, etc.).
+# These thresholds are intentionally conservative to avoid false positives on
+# repos that genuinely have few modules (e.g. micro-services).
+_LANG_LIMIT_FILES = 1000     # must have more than this many files ...
+_LANG_LIMIT_MODULES = 25     # ... but fewer than this modules → unsupported_language_limited
+
+# Human-readable health labels for the UI (maps category → short label).
+_HEALTH_LABELS: Dict[str, str] = {
+    OK: "healthy",
+    EMPTY_REPO: "empty",
+    PARTIAL_GRAPH: "partial",
+    ZERO_EDGE_GRAPH: "degraded",
+    ZERO_MODULE_SCAN: "degraded",
+    TIMEOUT: "degraded",
+    UNRESOLVED_EXPLOSION: "partial",
+    UNSUPPORTED_LANGUAGE: "unsupported_language_limited",
+    MEMORY_PRESSURE: "degraded",
+    SCAN_CRASH: "failed",
+    SCAN_FAILED: "failed",
+}
 
 
 def _int(v: Any) -> int:
@@ -115,6 +142,22 @@ def classify_scan(scan: Dict[str, Any], *, peak_rss_mb: Optional[float] = None) 
                        [f"Repository has no indexable modules ({files} files)."] if files else [],
                        degraded=False)
 
+    # P158 FIX 4 — large repo with almost no modules means unsupported language.
+    # Must be checked AFTER zero-module (0 modules is a different fault class).
+    if files > _LANG_LIMIT_FILES and modules < _LANG_LIMIT_MODULES:
+        signals.append(
+            f"{files} files scanned but only {modules} graph modules built "
+            f"(ratio {modules/files:.4f})"
+        )
+        warnings.append(
+            f"Atlas scanned {files:,} files but only built {modules} graph modules. "
+            "This repository is currently outside Atlas's strong graph coverage — "
+            "the primary language may not be well-supported (Go, Java, C#, Rust, etc.). "
+            "Build Plan, Investigation, and Impact results will be weak. "
+            "See: Atlas currently has strong support for Python and TypeScript."
+        )
+        return _result(UNSUPPORTED_LANGUAGE, signals, warnings, severity="high")
+
     # Partial / degraded graph.
     if partial or (degraded and detail != "imports"):
         signals.append(f"partial/degraded graph (detail={detail or 'unknown'})")
@@ -168,3 +211,93 @@ def is_retryable(assessment: Dict[str, Any]) -> bool:
 def scan_warnings(scan: Dict[str, Any], *, peak_rss_mb: Optional[float] = None) -> List[str]:
     """Immediate human-readable warnings for a scan (empty if healthy)."""
     return classify_scan(scan, peak_rss_mb=peak_rss_mb).get("warnings", [])
+
+
+def graph_health_label(scan: Dict[str, Any], *, peak_rss_mb: Optional[float] = None) -> str:
+    """Return a short human-readable health label for a scan result.
+
+    Returned values: healthy | partial | degraded | unsupported_language_limited |
+    empty | failed.  Never returns a category that over-represents the quality.
+    """
+    assessment = classify_scan(scan, peak_rss_mb=peak_rss_mb)
+    cat = assessment.get("category") or OK
+    return _HEALTH_LABELS.get(cat, cat)
+
+
+def confidence_cap_for_scan(scan: Dict[str, Any]) -> str:
+    """P158 FIX 6 — Return the maximum confidence Atlas may claim given scan quality.
+
+    This cap should be applied to every plan/investigation/impact result so that
+    a degraded or unsupported-language scan can never produce a 'high' confidence
+    claim.
+
+    Returns: 'high' | 'medium' | 'low'
+    """
+    label = graph_health_label(scan)
+    if label == "healthy":
+        return "high"
+    if label == "partial":
+        # partial graph: some structure but incomplete — cap at medium
+        return "medium"
+    if label == "degraded":
+        # degraded (zero edges, timeout, zero modules): some data but unreliable — cap at medium
+        return "medium"
+    # unsupported_language_limited, failed, empty → low
+    return "low"
+
+
+# Order used to compare confidence levels. Compound labels ("medium-high",
+# "low-medium") are reduced to their strongest component for comparison.
+_CONFIDENCE_ORDER = {"low": 0, "medium": 1, "high": 2}
+
+
+def _confidence_rank(label: str) -> int:
+    """Rank a confidence label (0=low,1=medium,2=high). Compound labels use the
+    strongest component, e.g. 'medium-high' → high, 'low-medium' → medium."""
+    if not label:
+        return 0
+    parts = str(label).split("-")
+    return max(_CONFIDENCE_ORDER.get(p, 0) for p in parts)
+
+
+def _rank_to_label(rank: int) -> str:
+    for name, value in _CONFIDENCE_ORDER.items():
+        if value == rank:
+            return name
+    return "low"
+
+
+def calibrate_confidence_cap(
+    scan: Dict[str, Any],
+    *,
+    evidence_count: int = 0,
+    resolution: str = "resolved",
+) -> str:
+    """Phase 161 — strict confidence ceiling.
+
+    A result may never claim more confidence than ALL of these allow:
+      * graph/scan health (``confidence_cap_for_scan``),
+      * evidence count — 0 signals → low, 1 → at most medium, ≥2 → high allowed,
+      * target/intent resolution — 'unresolved' → low, 'partial' → at most medium.
+
+    High confidence therefore requires a healthy graph, ≥2 grounded evidence
+    signals, and a fully resolved target. Returns 'low' | 'medium' | 'high'.
+    """
+    caps = [_confidence_rank(confidence_cap_for_scan(scan))]
+
+    if evidence_count <= 0:
+        caps.append(_CONFIDENCE_ORDER["low"])
+    elif evidence_count == 1:
+        caps.append(_CONFIDENCE_ORDER["medium"])
+    else:
+        caps.append(_CONFIDENCE_ORDER["high"])
+
+    res = (resolution or "resolved").lower()
+    if res in ("unresolved", "none", "not_resolved"):
+        caps.append(_CONFIDENCE_ORDER["low"])
+    elif res in ("partial", "heuristic", "outside_graph"):
+        caps.append(_CONFIDENCE_ORDER["medium"])
+    else:
+        caps.append(_CONFIDENCE_ORDER["high"])
+
+    return _rank_to_label(min(caps))

@@ -560,9 +560,227 @@ def _symptom_mentions_trading(text: str) -> bool:
     return any(m in low for m in _TRADING_SYMPTOM_MARKERS) or re.search(r"\bema\b", low) is not None
 
 
-def _coerce_investigation_classification(symptom: str, classification: Any) -> Any:
-    """Block spurious trading/indicator concepts on event-bus style symptoms."""
+# ---------------------------------------------------------------------------
+# P158 FIX 1 — Trading domain guardrail
+# ---------------------------------------------------------------------------
+# User must explicitly use at least one of these terms for trading concepts.
+_TRADING_EXPLICIT_TERMS: frozenset = frozenset({
+    "ema", "rsi", "atr", "macd", "sma", "backtest", "backtesting",
+    "paper trading", "paper trad", "live trading", "live trad",
+    "slippage", "strategy", "indicator", "candle", "ohlcv",
+    "position siz", "position close", "stop loss", "fill",
+    "algo trading", "algorithmic trading", "order book", "broker",
+    "signal not trigger", "signal isn",
+})
+
+# Repository path signals — if ANY module path contains one of these, the repo is
+# classified as trading-domain.
+_TRADING_REPO_PATH_SIGNALS: frozenset = frozenset({
+    "trading", "backtest", "strategy", "indicator", "broker",
+    "execution", "ohlcv", "candle", "portfolio", "order_book",
+    "paper_", "live_trade", "signal.py", "registry.py",
+})
+
+
+def _request_mentions_trading_explicitly(text: str) -> bool:
+    """True if user explicitly asked about trading/backtest/indicator concepts.
+
+    Uses word-boundary matching for short terms (ema, rsi, atr, sma, etc.)
+    to avoid false positives from substrings (e.g. 'schema' containing 'ema').
+    """
+    low = (text or "").lower()
+    for t in _TRADING_EXPLICIT_TERMS:
+        if len(t) <= 4:
+            # Short terms: require word boundaries
+            if re.search(rf"\b{re.escape(t)}\b", low):
+                return True
+        else:
+            # Longer phrases: substring match is specific enough
+            if t in low:
+                return True
+    return False
+
+
+def _repo_has_trading_evidence(ctx: Dict[str, Any]) -> bool:
+    """True if the scanned repository has trading-specific module paths."""
+    graph = ctx.get("graph") or {}
+    for node in graph.get("nodes", []):
+        path = (node.get("path") or "").lower().replace("\\", "/")
+        if any(sig in path for sig in _TRADING_REPO_PATH_SIGNALS):
+            return True
+    idx = ctx.get("index") or {}
+    for f in idx.get("files", []):
+        path = (f.get("path") or "").lower().replace("\\", "/")
+        if any(sig in path for sig in _TRADING_REPO_PATH_SIGNALS):
+            return True
+    return False
+
+
+# ---------------------------------------------------------------------------
+# P158 FIX 2 — Root cause evidence: noisy/stdlib module demotions
+# ---------------------------------------------------------------------------
+# Paths that contain these markers are Python stdlib or generic boilerplate;
+# they must never appear as "most likely root cause" for user-facing symptoms.
+_NOISY_MODULE_MARKERS: Tuple[str, ...] = (
+    "__future__", "/re.py", "/os.py", "/sys.py", "/json",
+    "/typing.py", "/collections", "/functools", "/itertools",
+    "/datetime.py", "/pathlib.py", "/math.py", "/copy.py",
+    "/abc.py", "/enum.py", "/dataclasses.py", "/random.py",
+    "/string.py", "/io.py", "/time.py", "/threading.py",
+    "conftest.py", "/test_helper", "/fixtures/", "/playwright/",
+    "pytest", "setup.py", "requirements",
+)
+
+# Maximum confidence level a hypothesis may claim when its only evidence
+# is a path/keyword overlap (no graph edges, no explicit file mentions).
+_ROOT_CAUSE_EVIDENCE_THRESHOLD = 2  # need at least N qualifying evidence signals
+
+# P161 — a hypothesis must reach this 0–100 evidence score before Atlas will
+# present it as the "most likely root cause". Below it, Atlas says
+# "Insufficient evidence." instead of guessing.
+_ROOT_CAUSE_MIN_SCORE_100 = 50
+
+
+def _is_noisy_module(path: str) -> bool:
+    """True if this path is stdlib, boilerplate, or a test helper."""
+    p = (path or "").lower().replace("\\", "/")
+    return any(m in p for m in _NOISY_MODULE_MARKERS)
+
+
+def _root_cause_evidence_score(
+    path: str,
+    symptom: str,
+    *,
+    risks_map: Dict[str, Dict[str, Any]],
+    explicit_paths: List[str],
+    scored_paths: List[str],
+) -> Tuple[int, List[str]]:
+    """Score root-cause evidence quality for a path.
+
+    Returns (score, reasons). A score < _ROOT_CAUSE_EVIDENCE_THRESHOLD means
+    this path must NOT be shown as 'most likely root cause' — only as a weak lead.
+
+    Criteria (each adds 1):
+    1. file explicitly mentioned in symptom
+    2. file is in the top scored paths (keyword match)
+    3. file has relevant risk score (fan-in or risk coupling)
+    4. file tokens overlap substantially with symptom tokens
+    5. file is not a stdlib/noise/generic module
+
+    Stdlib / noise modules get -10 (hard demote).
+    """
+    if not path:
+        return 0, ["empty path"]
+
+    if _is_noisy_module(path):
+        return -10, [f"DEMOTED: stdlib/noise module ({path})"]
+
+    score = 0
+    reasons: List[str] = []
+    p_low = path.lower().replace("\\", "/")
+
+    # Criterion 1: explicitly mentioned
+    if path in explicit_paths:
+        score += 2
+        reasons.append("explicitly mentioned in symptom")
+
+    # Criterion 2: top keyword match
+    if path in (scored_paths or [])[:6]:
+        score += 1
+        reasons.append("top keyword match")
+
+    # Criterion 3: risk coupling
+    risk = risks_map.get(path) or {}
+    fan_in = int(risk.get("fan_in", 0) or 0)
+    total_score = float(risk.get("total_score", 0) or 0)
+    if fan_in >= 3 or total_score >= 10:
+        score += 1
+        reasons.append(f"relevant coupling (fan-in={fan_in}, risk={total_score:.0f})")
+
+    # Criterion 4: symptom token overlap
+    sym_tokens = set(re.findall(r"[a-z][a-z0-9_]{2,}", (symptom or "").lower()))
+    path_tokens = set(re.findall(r"[a-z][a-z0-9_]{2,}", p_low))
+    overlap = sym_tokens & path_tokens
+    overlap -= {"the", "and", "for", "with", "from", "import", "def", "class"}
+    if len(overlap) >= 2:
+        score += 1
+        reasons.append(f"token overlap: {', '.join(sorted(overlap)[:4])}")
+
+    # Criterion 5: is a meaningful module (not config/docs/scripts)
+    if not _is_config_path(path):
+        score += 1
+        reasons.append("runtime/source module")
+
+    return score, reasons
+
+
+def _hypothesis_evidence_score_100(hypothesis: Dict[str, Any]) -> int:
+    """P161 — normalize a hypothesis's grounding into a 0–100 evidence score.
+
+    Combines the strength of grounded (non-noisy) files, the hypothesis
+    confidence, and the number of evidence lines. A hypothesis with no grounded
+    file can never exceed a weak score, so it cannot become a root cause.
+    """
+    files = [f for f in (hypothesis.get("files_involved") or []) if not _is_noisy_module(f)]
+    if not files:
+        return 0
+    score = 0
+    conf = hypothesis.get("confidence")
+    if conf == "high":
+        score += 60
+    elif conf == "medium":
+        score += 38
+    else:
+        score += 14
+    score += min(len(files), 3) * 8           # up to +24 for multiple grounded files
+    score += min(len(hypothesis.get("evidence") or []), 4) * 4  # up to +16 for evidence lines
+    # A raw evidence_score (from generic path) reinforces or undercuts the total.
+    raw = hypothesis.get("evidence_score")
+    if isinstance(raw, (int, float)):
+        if raw < 0:
+            return 0
+        if raw >= _ROOT_CAUSE_EVIDENCE_THRESHOLD:
+            score += 6
+    return max(0, min(100, score))
+
+
+# ---------------------------------------------------------------------------
+# P158 FIX 5 — Build Plan scope pollution: exclude docs/scripts/examples/test-helpers
+# ---------------------------------------------------------------------------
+_SCOPE_POLLUTION_MARKERS: Tuple[str, ...] = (
+    "/scripts/", "/script/", "/docs/", "/doc/",
+    "/examples/", "/example/", "/fixtures/", "/fixture/",
+    "/playwright/", "/e2e/", "/benchmarks/", "/benchmark/",
+    "/test_helper", "/test_helpers/", "/helpers/test",
+    "conftest.py", "generate_demo", "demo_packs",
+    "/migrations/", "/migration/",
+)
+
+
+def _is_scope_polluting(path: str) -> bool:
+    """True if this path is docs, scripts, examples, fixtures, or test helpers.
+
+    These must not appear in Build Plan Tier 1 (implementation files) unless
+    the user's request is explicitly about tests, docs, or scripts.
+    """
+    p = (path or "").lower().replace("\\", "/")
+    return any(m in p for m in _SCOPE_POLLUTION_MARKERS)
+
+
+def _coerce_investigation_classification(
+    symptom: str, classification: Any, ctx: Optional[Dict[str, Any]] = None
+) -> Any:
+    """P158 FIX 1 — Block spurious trading/indicator concepts on non-trading symptoms.
+
+    Trading concepts may only trigger if:
+    1. User explicitly uses trading terms (EMA, RSI, backtest, slippage, etc.), OR
+    2. The scanned repository contains trading-specific module paths.
+
+    Otherwise: suppress, return a general classification, never leak trading knowledge.
+    """
     low = (symptom or "").lower()
+
+    # Explicit routing: duplicate-events → pub_sub (not EMA, not trading)
     if "duplicate" in low and "event" in low and "order" not in low:
         rec = dk.get_engine().get("pub_sub")
         if rec:
@@ -579,8 +797,12 @@ def _coerce_investigation_classification(symptom: str, classification: Any) -> A
                 architecture_pattern="event → dispatcher/listener → handlers",
                 record=rec,
             )
+
+    # P158: Trading domain guardrail — two independent gates (user intent OR repo evidence)
     if classification.record and classification.record.domain == "trading":
-        if not _symptom_mentions_trading(symptom):
+        user_has_trading_intent = _request_mentions_trading_explicitly(symptom)
+        repo_has_trading = _repo_has_trading_evidence(ctx or {})
+        if not user_has_trading_intent and not repo_has_trading:
             return dk.ConceptClassification(
                 concept_id=None,
                 concept_name="",
@@ -590,8 +812,10 @@ def _coerce_investigation_classification(symptom: str, classification: Any) -> A
                 feature_type="general",
                 concept_confidence="low",
                 repo_mapping_confidence="low",
-                unknowns=list(classification.unknowns)
-                + ["Trading concept suppressed — symptom lacks trading/backtest terms."],
+                unknowns=list(classification.unknowns) + [
+                    "Trading concept suppressed — symptom lacks trading/backtest terms "
+                    "and scanned repository has no trading-domain files."
+                ],
             )
     return classification
 
@@ -702,19 +926,24 @@ def _repository_evidence_bundle(
     rec = classification.record
     concept_id = classification.concept_id or ""
     gl = (goal or "").lower()
-    if "indicator" in gl and ("pipeline" in gl or "signal" in gl):
+    # P161 — specialized trading concepts (EMA, slippage) may only be derived
+    # from the goal when the user explicitly asks for trading OR the repository
+    # has trading evidence. This blocks concept leakage (e.g. an unrelated
+    # "signal pipeline" request injecting EMA into a web app).
+    trading_ok = _request_mentions_trading_explicitly(goal) or _repo_has_trading_evidence(ctx)
+    if trading_ok and "indicator" in gl and ("pipeline" in gl or "signal" in gl):
         concept_id = "ema"
     elif "idempotency" in gl or "idempotent" in gl:
         concept_id = "idempotency_key"
     elif "health check" in gl or "health endpoint" in gl:
         concept_id = "health_check"
-    elif "slippage" in gl:
+    elif trading_ok and "slippage" in gl:
         concept_id = "slippage_model"
     elif "circuit breaker" in gl:
         concept_id = "circuit_breaker"
     elif "rate limit" in gl:
         concept_id = "rate_limiting"
-    elif "ema" in gl or "moving average" in gl:
+    elif trading_ok and ("ema" in gl or "moving average" in gl):
         concept_id = "ema"
     if not concept_id and intent:
         intent_map = {
@@ -730,13 +959,13 @@ def _repository_evidence_bundle(
             concept_id = "health_check"
         elif "idempotency" in gl or "idempotent" in gl:
             concept_id = "idempotency_key"
-        elif "slippage" in gl:
+        elif trading_ok and "slippage" in gl:
             concept_id = "slippage_model"
         elif "circuit breaker" in gl:
             concept_id = "circuit_breaker"
         elif "rate limit" in gl:
             concept_id = "rate_limiting"
-        elif "ema" in gl or "moving average" in gl:
+        elif trading_ok and ("ema" in gl or "moving average" in gl):
             concept_id = "ema"
     if not concept_id:
         return None
@@ -832,6 +1061,36 @@ def _investigation_evidence_bundle(
     )
 
 
+def _insufficient_evidence_response(
+    request: str,
+    *,
+    reason: str,
+    checked: List[str],
+    missing: List[str],
+    next_steps: List[str],
+    workflow: str = "plan",
+) -> Dict[str, Any]:
+    """P158 FIX 7 — Honest 'Atlas does not know yet' response.
+
+    Used when the scanned graph or evidence is too weak to produce a trustworthy
+    plan. Never returns fake certainty.
+    """
+    return {
+        "ok": True,
+        "insufficient_evidence": True,
+        "evidence_gap": True,
+        "request": request,
+        "workflow": workflow,
+        "message": "Atlas does not have enough evidence to answer this safely.",
+        "reason": reason,
+        "what_was_checked": checked,
+        "what_was_missing": missing,
+        "how_to_improve": next_steps,
+        "confidence": "low",
+        "limitations": [reason] + missing,
+    }
+
+
 def repository_context_from_state(state: Dict[str, Any]) -> Dict[str, Any]:
     scan = state.get("scan") or {}
     summary = state.get("summary") or {}
@@ -860,6 +1119,21 @@ def plan_change(request: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
         return {"ok": False, "error": "No repository scanned yet."}
 
     build_class = dk.classify_request(goal, mode="build")
+
+    # P158 FIX 1 — Trading domain guardrail for Build Plans.
+    # If the concept is trading but the user didn't mention trading terms
+    # and the repo has no trading evidence, suppress the trading concept.
+    if (build_class.record and build_class.record.domain == "trading"
+            and not _request_mentions_trading_explicitly(goal)
+            and not _repo_has_trading_evidence(ctx)):
+        build_class = dk.ConceptClassification(
+            concept_id=None, concept_name="", concept_title="",
+            domain="", domain_label="", feature_type="general",
+            concept_confidence="low", repo_mapping_confidence="low",
+            unknowns=["Trading concept suppressed — request lacks trading terms "
+                      "and repository has no trading-domain files."],
+        )
+
     intent, terms = _detect_intent(goal, _FEATURE_SPECS)
     spec = _FEATURE_SPECS.get(intent, {})
     extra_terms = set(spec.get("search", ())) | terms | dk.search_terms_for_classification(build_class)
@@ -869,8 +1143,16 @@ def plan_change(request: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
         modules, extra_terms, risks_map, boosts=_build_boosts_for_text(goal)
     )
 
-    matched_paths = [node["path"] for _, node in scored[:12]]
-    matched_ids = {node["id"] for _, node in scored[:12]}
+    all_scored = scored[:20]
+    # P158 FIX 5 — tiered scope: separate clean implementation paths from noise.
+    # Tier 1: clean implementation files (not docs/scripts/examples/test-helpers)
+    # Tier 2: review-only / context (docs, scripts, examples, test helpers)
+    tier1 = [node for _, node in all_scored if not _is_scope_polluting(node.get("path", ""))][:12]
+    tier2 = [node for _, node in all_scored if _is_scope_polluting(node.get("path", ""))][:6]
+    # Use only tier1 for the core plan; expose tier2 separately.
+    matched_paths = [node["path"] for node in tier1]
+    matched_ids = {node["id"] for node in tier1}
+    review_only_paths = [node["path"] for node in tier2]
     subsystems = sorted({_subsystem_of(p) for p in matched_paths})
     outbound, inbound = _graph_neighbors(graph, matched_ids)
 
@@ -891,6 +1173,32 @@ def plan_change(request: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
     tests = _tests_for_change(matched_paths, subsystems)
     top_score = scored[0][0] if scored else 0.0
     confidence = _confidence_label(len(matched_paths), top_score, intent)
+
+    # P158 FIX 6 / P161 — Cap confidence by scan/graph health, evidence count,
+    # and target resolution. High confidence now requires a healthy graph AND
+    # ≥2 grounded modules AND a resolved intent.
+    from jarvis_desktop.reliability import (
+        calibrate_confidence_cap,
+        confidence_cap_for_scan,
+        graph_health_label as _ghl,
+    )
+    scan_data = ctx.get("scan") or {}
+    cap = calibrate_confidence_cap(
+        scan_data,
+        evidence_count=len(matched_paths),
+        resolution="resolved" if matched_paths else "unresolved",
+    )
+    _cap_order = {"low": 0, "medium": 1, "high": 2}
+    confidence_cap_reason = ""
+    if _cap_order.get(cap, 2) < _cap_order.get(confidence.split("-")[-1], 0):
+        confidence = cap
+        reasons = []
+        if confidence_cap_for_scan(scan_data) == cap:
+            reasons.append(f"graph health ({_ghl(scan_data)})")
+        if len(matched_paths) < 2:
+            reasons.append(f"only {len(matched_paths)} grounded module(s)")
+        confidence_cap_reason = "capped to {} by {}".format(cap, ", ".join(reasons) or "weak evidence")
+
     limitations: List[str] = []
     if not matched_paths:
         limitations.append("No production modules matched this request by path keyword — inspect entry points and hubs manually.")
@@ -898,6 +1206,33 @@ def plan_change(request: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
     if intent == "general":
         limitations.append("Request did not match a known feature pattern; results are keyword-based only.")
     limitations.append("Static import graph only — runtime plugins and dynamic imports may be missing.")
+
+    # P158 FIX 7 — Unknown mode: when scan health is unsupported_language, say so.
+    graph_health = _ghl(scan_data)
+    if graph_health == "unsupported_language_limited" and not matched_paths:
+        return _insufficient_evidence_response(
+            goal,
+            reason=(
+                f"Graph health is '{graph_health}'. Atlas scanned the files but built "
+                "almost no graph modules — the primary language is likely outside Atlas's "
+                "strong coverage (Python/TypeScript). Build Plan results would be unreliable."
+            ),
+            checked=[
+                "Scanned repository file index",
+                "Dependency graph modules",
+                f"Intent detection: {intent}",
+            ],
+            missing=[
+                "Sufficient graph modules for reliable path/keyword matching",
+                "Language support for this repository's primary language",
+            ],
+            next_steps=[
+                "Use Atlas on a Python or TypeScript repository for reliable results.",
+                "For other languages, treat any results as experimental and low-confidence.",
+                "Check Repository Map → System Health for graph coverage details.",
+            ],
+            workflow="plan",
+        )
 
     top_node = scored[0][1] if scored else {}
     risk_level = _risk_level_from_fan_in(
@@ -922,6 +1257,18 @@ def plan_change(request: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
         "entry_points": entry_points,
         "files_to_inspect_first": matched_paths[:8],
         "files_likely_to_change": matched_paths[:8],
+        # P158 FIX 5: expose tier2 (review-only scope) separately
+        "files_review_only": review_only_paths[:6],
+        # P161 — explicit precision tiers. Default output is Tier 1 only.
+        "implementation_files": matched_paths[:8],          # Tier 1
+        "review_files": review_only_paths[:6],              # Tier 2
+        "context_files": [p for p in inbound if p not in matched_paths][:8],  # Tier 3
+        "file_tiers": {
+            "tier1_implementation": matched_paths[:8],
+            "tier2_review": review_only_paths[:6],
+            "tier3_context": [p for p in inbound if p not in matched_paths][:8],
+        },
+        "default_tier": "tier1_implementation",
         "files_likely_to_break": likely_break,
         "what_may_break": likely_break,  # Phase 123 alias
         "dependencies_involved": {
@@ -937,6 +1284,8 @@ def plan_change(request: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
         "verification_plan": verification_plan,
         "rollback_plan": _rollback_plan(intent, matched_paths, risk_level),
         "confidence": confidence,
+        "confidence_cap_reason": confidence_cap_reason,
+        "graph_health": graph_health,
         "evidence": _change_evidence(scored[:8], intent),
         "limitations": limitations,
     }
@@ -1046,13 +1395,19 @@ def _build_hypotheses(
     scored: List[Tuple[float, Dict[str, Any]]],
     explicit_paths: List[str],
     risks_map: Dict[str, Dict[str, Any]],
+    symptom: str = "",
 ) -> List[Dict[str, Any]]:
     """Build ranked, evidence-grounded hypotheses for a symptom.
+
+    P158 FIX 2: Applies root-cause evidence scoring to demote noisy/stdlib/weak
+    modules. A hypothesis whose only file is a stdlib module (re, __future__, os)
+    is demoted to 'weak_lead' and must never be called 'most likely root cause'.
 
     Each hypothesis is anchored to real module paths from the scan where possible.
     Hypotheses with more matched files (and explicit path mentions) rank higher.
     """
     candidate_paths = [n.get("path", "") for _, n in scored if n.get("path")]
+    scored_top_paths = [n.get("path", "") for _, n in scored[:12] if n.get("path")]
     templates = list(spec.get("hypotheses", ()))
     hypotheses: List[Dict[str, Any]] = []
 
@@ -1063,7 +1418,8 @@ def _build_hypotheses(
             for ep in explicit_paths:
                 if ep not in files and any(k in ep.lower() for k in tmpl.get("keywords", ())):
                     files.insert(0, ep)
-            files = files[:5]
+            # P158 FIX 2: Filter out noisy stdlib/boilerplate modules from files_involved
+            files = [f for f in files if not _is_noisy_module(f)][:5]
             if files and any(f in explicit_paths for f in files):
                 confidence = "high"
             elif len(files) >= 2:
@@ -1075,9 +1431,17 @@ def _build_hypotheses(
             evidence: List[str] = []
             for f in files:
                 row = risks_map.get(f) or {}
-                evidence.append(
-                    f"`{f}` matches this area (fan-in {row.get('fan_in', 0)}, risk {row.get('total_score', 0)})"
+                ev_score, ev_reasons = _root_cause_evidence_score(
+                    f, symptom, risks_map=risks_map,
+                    explicit_paths=explicit_paths, scored_paths=scored_top_paths
                 )
+                if ev_score < 0:
+                    evidence.append(f"`{f}` — stdlib/noise module (demoted, not a root cause)")
+                else:
+                    evidence.append(
+                        f"`{f}` matches this area (fan-in {row.get('fan_in', 0)}, "
+                        f"risk {row.get('total_score', 0)}, evidence_score={ev_score})"
+                    )
             if not files:
                 evidence.append("No scanned module path matched this area — treat as a lead, not a localization.")
             hypotheses.append({
@@ -1095,20 +1459,30 @@ def _build_hypotheses(
         return hypotheses[:4]
 
     # Generic intent: derive structural hypotheses from the top matched modules.
-    top = [n for _, n in scored[:4] if n.get("path")]
+    # P158 FIX 2: Skip noisy/stdlib modules entirely.
+    top = [n for _, n in scored[:8] if n.get("path") and not _is_noisy_module(n.get("path", ""))][:4]
     for node in top:
         path = node.get("path", "")
         row = risks_map.get(path) or {}
         fan_in = int(node.get("fan_in", 0) or 0)
+        ev_score, _ = _root_cause_evidence_score(
+            path, symptom, risks_map=risks_map,
+            explicit_paths=explicit_paths, scored_paths=scored_top_paths
+        )
+        if ev_score >= _ROOT_CAUSE_EVIDENCE_THRESHOLD:
+            conf = "high" if path in explicit_paths else ("medium" if fan_in >= 6 else "low")
+        else:
+            conf = "low"  # Downgrade: insufficient evidence even if keyword-matched
         hypotheses.append({
             "title": f"Defect originates in `{path}`",
-            "confidence": "high" if path in explicit_paths else ("medium" if fan_in >= 6 else "low"),
+            "confidence": conf,
+            "evidence_score": ev_score,
             "why_it_fits": (
                 f"`{path}` scored highest on keyword overlap with the symptom"
                 + (f" and has high coupling (fan-in {fan_in})." if fan_in >= 6 else ".")
             ),
             "evidence": [
-                f"`{path}` — fan-in {fan_in}, risk {row.get('total_score', node.get('risk_score', 0))}",
+                f"`{path}` — fan-in {fan_in}, risk {row.get('total_score', node.get('risk_score', 0))}, evidence_score={ev_score}",
                 "Matched symptom keywords in the module path/index.",
             ],
             "files_involved": [path],
@@ -1140,7 +1514,15 @@ def investigate_symptom(symptom: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
     if not graph and not index:
         return {"ok": False, "error": "No repository scanned yet."}
 
-    inv_class = _coerce_investigation_classification(text, dk.classify_request(text, mode="investigate"))
+    inv_class = _coerce_investigation_classification(
+        text, dk.classify_request(text, mode="investigate"), ctx
+    )
+
+    # P158 FIX 6+7 — Confidence cap and unknown mode for investigation.
+    from jarvis_desktop.reliability import confidence_cap_for_scan as _cap_fn, graph_health_label as _ghl_inv
+    scan_data_inv = ctx.get("scan") or {}
+    inv_graph_health = _ghl_inv(scan_data_inv)
+
     intent, terms = _detect_intent(text, _SYMPTOM_SPECS)
     low = text.lower()
     if "duplicate" in low and "event" in low and "order" not in low:
@@ -1206,13 +1588,55 @@ def investigate_symptom(symptom: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
     for path in likely_modules[:6]:
         likely_symbols.extend(_path_symbols(path))
 
-    confidence = "high" if explicit_paths else _confidence_label(len(likely_modules), scored[0][0] if scored else 0, intent)
+    base_confidence = "high" if explicit_paths else _confidence_label(len(likely_modules), scored[0][0] if scored else 0, intent)
+    # P158 FIX 6 / P161 — cap confidence by graph health, evidence count, and resolution.
+    from jarvis_desktop.reliability import calibrate_confidence_cap as _calib_inv
+    _inv_evidence = len(likely_modules) + (2 if explicit_paths else 0)
+    inv_cap = _calib_inv(
+        scan_data_inv,
+        evidence_count=_inv_evidence,
+        resolution="resolved" if (explicit_paths or likely_modules) else "unresolved",
+    )
+    _inv_cap_order = {"low": 0, "medium": 1, "high": 2}
+    inv_confidence_cap_reason = ""
+    if _inv_cap_order.get(inv_cap, 2) < _inv_cap_order.get(base_confidence.split("-")[-1], 0):
+        confidence = inv_cap
+        inv_confidence_cap_reason = f"capped to {inv_cap} by graph health ({inv_graph_health}) / evidence"
+    else:
+        confidence = base_confidence
+
     limitations = [
         "Heuristic symptom routing — not runtime profiling or log analysis.",
         "Only indexed production-scope modules are considered.",
     ]
     if not likely_modules:
         limitations.append("Atlas cannot localize this symptom without stronger anchors (file paths, error types, or subsystem names).")
+
+    # P158 FIX 7 — Unknown mode: return honest gap response for unsupported language repos
+    if inv_graph_health == "unsupported_language_limited" and not likely_modules and not explicit_paths:
+        return _insufficient_evidence_response(
+            text,
+            reason=(
+                f"Graph health is '{inv_graph_health}'. Atlas could not build a meaningful "
+                "dependency graph for this repository — the primary language is likely "
+                "outside Atlas's strong coverage. Investigation leads would be unreliable."
+            ),
+            checked=[
+                "Scanned repository file index",
+                "Dependency graph modules",
+                f"Symptom intent: {intent}",
+            ],
+            missing=[
+                "Sufficient graph modules for symptom localization",
+                "Language support for this repository",
+            ],
+            next_steps=[
+                "Use Atlas on a Python or TypeScript repository for reliable investigation.",
+                "Provide an exact file path or stack trace for a best-effort hypothesis.",
+                "Check Repository Map → System Health for graph coverage.",
+            ],
+            workflow="investigate",
+        )
 
     verify_steps = list(spec.get("verify", ()))
     verify_steps.extend(_suggested_questions(intent, likely_modules)[:3])
@@ -1224,11 +1648,37 @@ def investigate_symptom(symptom: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
 
     questions = _suggested_questions(intent, likely_modules)
 
-    # Phase 123 — ranked hypotheses (senior-engineer output).
-    hypotheses = _build_hypotheses(intent, spec, scored, explicit_paths, risks_map)
-    most_likely_root_cause = hypotheses[0]["title"] if hypotheses else (
-        f"Defect likely in {likely_modules[0]}" if likely_modules else "Not localizable from this symptom alone"
-    )
+    # Phase 123 / P158 FIX 2 — ranked hypotheses with evidence scoring.
+    hypotheses = _build_hypotheses(intent, spec, scored, explicit_paths, risks_map, symptom=text)
+
+    # P161 — annotate every hypothesis with a 0–100 evidence score.
+    for _h in hypotheses:
+        _h["evidence_score_100"] = _hypothesis_evidence_score_100(_h)
+
+    # P158 FIX 2 / P161 — most_likely_root_cause only when evidence clears the
+    # 0–100 threshold. Otherwise Atlas says "Insufficient evidence." (Unknown mode).
+    def _hypothesis_is_grounded(h: Dict[str, Any]) -> bool:
+        """True if this hypothesis has real grounded evidence above threshold."""
+        return (
+            bool(h.get("files_involved"))
+            and h.get("evidence_score_100", 0) >= _ROOT_CAUSE_MIN_SCORE_100
+            and not any(_is_noisy_module(f) for f in (h.get("files_involved") or []))
+        )
+
+    grounded_hyps = [h for h in hypotheses if _hypothesis_is_grounded(h)]
+    grounded_hyps.sort(key=lambda h: -h.get("evidence_score_100", 0))
+    if grounded_hyps:
+        most_likely_root_cause = grounded_hyps[0]["title"]
+        root_cause_evidence_score = grounded_hyps[0].get("evidence_score_100", 0)
+    else:
+        best = max((h.get("evidence_score_100", 0) for h in hypotheses), default=0)
+        root_cause_evidence_score = best
+        most_likely_root_cause = (
+            "Insufficient evidence. Atlas did not find enough repository evidence "
+            f"for a strong root cause (best evidence score {best}/100, "
+            f"threshold {_ROOT_CAUSE_MIN_SCORE_100}). Provide a stack trace, error "
+            "message, or exact file path and re-run."
+        )
     symptom_summary = _symptom_summary(text, intent, likely_modules)
     verification_checklist = _verification_checklist(hypotheses, verify_steps, inbound)
     minimal_fix_strategy = _minimal_fix_strategy(hypotheses, likely_modules)
@@ -1240,6 +1690,8 @@ def investigate_symptom(symptom: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
         # Phase 123 senior-engineer structure
         "symptom_summary": symptom_summary,
         "most_likely_root_cause": most_likely_root_cause,
+        "root_cause_evidence_score": root_cause_evidence_score,
+        "root_cause_threshold": _ROOT_CAUSE_MIN_SCORE_100,
         "hypotheses": hypotheses,
         "verification_checklist": verification_checklist,
         "minimal_fix_strategy": minimal_fix_strategy,
@@ -1254,6 +1706,8 @@ def investigate_symptom(symptom: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
         "relevant_dependencies": {"outbound": outbound, "inbound": inbound},
         "evidence": evidence,
         "confidence": confidence,
+        "confidence_cap_reason": inv_confidence_cap_reason,
+        "graph_health": inv_graph_health,
         "inspect_first": inspect_first,
         "verification_steps": verify_steps[:8],
         "risk_if_fixed": risk_if_fixed,

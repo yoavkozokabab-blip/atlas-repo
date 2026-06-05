@@ -28,6 +28,7 @@ from .target_resolver import (
     resolve_concept_target,
     resolve_semantic_target,
 )
+from jarvis_desktop.reliability import confidence_cap_for_scan, graph_health_label
 
 _MAX_AFFECTED = 24
 _MAX_TRANSITIVE_DEPTH = 3
@@ -217,13 +218,17 @@ def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict
     index = state.get("index")
     nodes = _module_nodes(graph)
     if not nodes or not target:
+        # P158 FIX 3: no graph at all → ok=False, status=no_graph. Do not claim success.
         return {
-            "ok": True, "mock": True, "target": target,
-            "reason": "No scanned graph or no target — provide a scanned repository and a file/module.",
+            "ok": False,
+            "status": "no_graph",
+            "target": target or "",
+            "reason": "No scanned repository graph is available. Scan a repository first.",
             "direct_impact": [], "indirect_impact": [], "affected_files": [],
             "potentially_affected_modules": [], "tests_likely_affected": [],
-            "risks_of_incorrect_fix": [f"Cannot assess `{target}` without a scan."],
-            "confidence": "low", "evidence": ["No production graph available."],
+            "risks_of_incorrect_fix": [f"Cannot assess `{target or '(none)'}` without a scan."],
+            "confidence": "low",
+            "evidence": ["No production graph available."],
             "recommended_verification": ["Scan the repository, then re-run impact on a real file path."],
         }
 
@@ -262,15 +267,28 @@ def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict
                 semantic_label = f"architecture symbol `{target}`"
                 resolved_symbols = find_symbols(evidence_store, (target,))
     if not found:
+        # P158 FIX 3: target-not-resolved must be ok=False, not ok=True.
+        # A successful impact result requires a real resolved target in the graph.
         return {
-            "ok": True, "mock": True, "target": target,
-            "reason": "Target not found in the production graph.",
+            "ok": False,
+            "status": "target_not_resolved",
+            "target": target,
+            "reason": (
+                f"Target `{target}` was not found in the production graph. "
+                "Choose an exact file path visible in Repository Map, or check "
+                "that the repository is fully scanned. For Go/Java/C#/Rust repos, "
+                "language support may be limited — see graph health."
+            ),
             "direct_impact": [], "indirect_impact": [], "affected_files": [],
             "potentially_affected_modules": [], "tests_likely_affected": [],
-            "risks_of_incorrect_fix": [f"`{target}` is not in the production import graph; impact is heuristic."],
+            "risks_of_incorrect_fix": [f"`{target}` is not in the production import graph."],
             "confidence": "low",
-            "evidence": [f"No module node matched `{target}`."],
-            "recommended_verification": ["Confirm the path exists and is in scan scope, then re-run."],
+            "evidence": [f"No module node matched `{target}` after path, suffix, dotted, and semantic resolution."],
+            "recommended_verification": [
+                "Confirm the path exists and is within scan scope.",
+                "Use an exact file path (e.g. src/api/routes.py), not a concept name.",
+                "Re-run after scanning if the file was added recently.",
+            ],
         }
 
     tid, tnode = found
@@ -297,24 +315,32 @@ def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict
             tpath = _norm(tnode.get("path"))
             tsub = _subsystem(tpath)
         else:
+            # P158 FIX 3: concept resolved but no real graph node → ok=False.
             return {
-                "ok": True,
-                "mock": True,
+                "ok": False,
+                "status": "target_outside_graph_scope",
                 "target": target,
                 "semantic_label": semantic_label,
                 "resolved_modules": resolved_modules,
                 "resolved_symbols": resolved_symbols,
-                "reason": "Semantic concept resolved but module is outside the production graph.",
+                "reason": (
+                    f"Concept `{semantic_label or target}` was identified but the resolved "
+                    "module(s) are outside the production graph scope. "
+                    "Expand scan scope or use an exact file path."
+                ),
                 "direct_impact": [],
                 "indirect_impact": [],
-                "affected_files": resolved_modules[:_MAX_AFFECTED],
+                "affected_files": [],
                 "potentially_affected_modules": resolved_modules,
                 "tests_likely_affected": [],
                 "risks_of_incorrect_fix": [f"Concept `{semantic_label}` maps to modules not in graph scope."],
                 "confidence": "low",
-                "evidence": [f"Resolved modules: {', '.join(resolved_modules[:6])}"],
-                "recommended_verification": ["Confirm scan scope includes the resolved modules."],
-                "architectural_blast_radius": max(0, len(resolved_modules) - 1),
+                "evidence": [f"Semantic resolution found candidates but none are in the scanned graph: {', '.join(resolved_modules[:6])}"],
+                "recommended_verification": [
+                    "Confirm scan scope includes the target module.",
+                    "Use an exact file path from Repository Map instead of a concept name.",
+                ],
+                "architectural_blast_radius": 0,
             }
 
     if seed_ids:
@@ -383,7 +409,7 @@ def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict
     untouched = sorted({_subsystem(n.get("path")) for n in nodes.values()} - set(affected_subsystems))
     what_probably_wont = [f"`{s}` subsystem (no resolved import path to `{tpath}`)" for s in untouched[:6]]
 
-    # Confidence
+    # Confidence — P158 FIX 6: capped by graph health.
     resolved_signal = len(direct_ids) + len(indirect_ids)
     if resolved_signal >= 3:
         confidence = "high"
@@ -391,6 +417,22 @@ def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict
         confidence = "medium"
     else:
         confidence = "low"
+    scan_data = state.get("scan") or {}
+    # P161 — calibrate confidence by graph health AND evidence count AND target
+    # resolution quality. A resolved target with zero importers is a heuristic
+    # blast only, so it cannot claim more than 'medium'.
+    try:
+        from jarvis_desktop.reliability import calibrate_confidence_cap as _calib
+        _resolution = "resolved" if resolved_signal >= 1 else "heuristic"
+        cap = _calib(scan_data, evidence_count=resolved_signal, resolution=_resolution)
+    except Exception:
+        cap = confidence_cap_for_scan(scan_data)
+    _cap_order = {"low": 0, "medium": 1, "high": 2}
+    if _cap_order.get(cap, 2) < _cap_order.get(confidence, 0):
+        confidence = cap
+        confidence_cap_reason = f"capped to {cap} by graph health ({graph_health_label(scan_data)}) / evidence"
+    else:
+        confidence_cap_reason = ""
 
     evidence = [
         f"`{tpath}` is in subsystem `{tsub}` with {fan_in} direct importer(s).",
@@ -435,6 +477,7 @@ def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict
     )
     result = {
         "ok": True,
+        "status": "resolved",
         "target": tpath,
         "target_node_id": tid,
         "semantic_concept": semantic_payload.get("concept") if semantic_payload else "",
@@ -443,6 +486,8 @@ def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict
         "resolved_symbols": resolved_symbols,
         "risk_level": risk_level,
         "confidence": confidence,
+        "confidence_cap_reason": confidence_cap_reason,
+        "graph_health": graph_health_label(scan_data),
         "direct_impact": direct_paths,
         "indirect_impact": indirect_paths,
         "forward_dependencies": forward_paths,
