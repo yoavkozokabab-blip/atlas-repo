@@ -113,6 +113,95 @@ def _find_target(nodes: Dict[str, Dict[str, Any]], target: str) -> Optional[Tupl
     return None
 
 
+def _exact_graph_target(
+    nodes: Dict[str, Dict[str, Any]], target: str
+) -> Optional[Tuple[str, Dict[str, Any]]]:
+    """Exact module-path match only — no basename, suffix, or concept fallback."""
+    t = _norm(target)
+    if not t:
+        return None
+    for nid, n in nodes.items():
+        if _norm(n.get("path")) == t:
+            return nid, n
+    return None
+
+
+def _is_shallow_impact_graph(scan: Dict[str, Any]) -> bool:
+    """True when the scan graph is too shallow for reliable impact blast radius."""
+    if graph_health_label(scan) == "unsupported_language_limited":
+        return True
+    files = int(scan.get("file_count") or scan.get("files_discovered") or 0)
+    modules = int(scan.get("module_count") or 0)
+    return files > 1000 and modules < 25
+
+
+def _has_meaningful_impact_evidence(
+    node_id: str,
+    importers: Dict[str, Set[str]],
+    imports: Dict[str, Set[str]],
+    evidence_store: Optional[Dict[str, Any]],
+    path: str,
+) -> bool:
+    """Require resolved import edges or indexed symbols for the exact target path."""
+    if importers.get(node_id) or imports.get(node_id):
+        return True
+    if not evidence_store or not path:
+        return False
+    raw = evidence_store.get("symbol_index")
+    if not raw:
+        return False
+    try:
+        from jarvis_desktop.evidence_engine.symbol_index import SymbolIndex
+
+        idx = SymbolIndex.from_dict(raw)
+        return bool(idx.symbols_in_file(path))
+    except Exception:
+        return False
+
+
+def _shallow_graph_impact_refusal(target: str, scan: Dict[str, Any], *, detail: str = "") -> Dict[str, Any]:
+    """Honest refusal for unsupported/shallow graphs — no fake blast radius."""
+    gh = graph_health_label(scan)
+    status = "unsupported_language_limited" if gh == "unsupported_language_limited" else "target_not_resolved"
+    message = (
+        f"Impact analysis is unavailable for `{target}` because repository graph support "
+        f"is too shallow (graph health: {gh}). Atlas scanned the files but could not build "
+        "a meaningful import graph for reliable blast-radius computation. "
+        "Use POST /api/planning/impact with an exact supported-language module path "
+        "after a full scan."
+    )
+    if detail:
+        message = f"{message} {detail}"
+    return {
+        "ok": False,
+        "status": status,
+        "target": target,
+        "reason": message,
+        "message": message,
+        "confidence": "low",
+        "graph_health": gh,
+        "direct_impact": [],
+        "indirect_impact": [],
+        "affected_files": [],
+        "affected_file_count": 0,
+        "affected_subsystems": [],
+        "affected_node_ids": [],
+        "potentially_affected_modules": [],
+        "architectural_blast_radius": 0,
+        "tests_likely_affected": [],
+        "risks_of_incorrect_fix": [
+            f"Cannot assess blast radius for `{target}` on a shallow/unsupported graph.",
+        ],
+        "evidence": [
+            f"Graph health `{gh}` — semantic/concept impact resolution is disabled.",
+        ],
+        "recommended_verification": [
+            "Re-scan after confirming language support (primarily Python import graphs).",
+            "Use an exact file path that exists in the production graph with import edges.",
+        ],
+    }
+
+
 def _reverse_forward_maps(graph: Dict[str, Any]) -> Tuple[Dict[str, Set[str]], Dict[str, Set[str]]]:
     """importers[to] = {from...}; imports[from] = {to...} (resolved import edges)."""
     importers: Dict[str, Set[str]] = {}
@@ -216,6 +305,7 @@ def _blast_from_seeds(
 def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     graph = state.get("graph") or {}
     index = state.get("index")
+    scan_data = state.get("scan") or {}
     nodes = _module_nodes(graph)
     if not nodes or not target:
         # P158 FIX 3: no graph at all → ok=False, status=no_graph. Do not claim success.
@@ -239,8 +329,27 @@ def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict
     semantic_label = ""
     semantic_candidates: List[str] = []
 
-    found = _find_target(nodes, target)
-    if not found:
+    shallow_graph = _is_shallow_impact_graph(scan_data)
+    if shallow_graph:
+        # P164D — shallow/unsupported graphs: exact path + import/symbol evidence only.
+        found = _exact_graph_target(nodes, target)
+        if not found:
+            return _shallow_graph_impact_refusal(target, scan_data)
+        tid, tnode = found
+        importers, imports = _reverse_forward_maps(graph)
+        tpath = _norm(tnode.get("path"))
+        if not _has_meaningful_impact_evidence(tid, importers, imports, evidence_store, tpath):
+            return _shallow_graph_impact_refusal(
+                target,
+                scan_data,
+                detail=(
+                    "Target path is indexed but has no resolved import edges or "
+                    "symbol evidence for impact analysis."
+                ),
+            )
+    else:
+        found = _find_target(nodes, target)
+    if not shallow_graph and not found:
         semantic_payload = resolve_semantic_target(
             nodes, target, graph, evidence_store=evidence_store
         )
@@ -417,7 +526,6 @@ def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict
         confidence = "medium"
     else:
         confidence = "low"
-    scan_data = state.get("scan") or {}
     # P161 — calibrate confidence by graph health AND evidence count AND target
     # resolution quality. A resolved target with zero importers is a heuristic
     # blast only, so it cannot claim more than 'medium'.
