@@ -32,6 +32,34 @@ class CallGraph:
                 deps.update(callees)
         return sorted(deps)
 
+    def callers_of_qual(self, qualname: str, file_path: str = "") -> List[str]:
+        """Return caller keys (file::qual) for a symbol name or qualname."""
+        if not qualname:
+            return []
+        hits: Set[str] = set()
+        for key in (qualname, f"{file_path}::{qualname}" if file_path else ""):
+            if key:
+                hits.update(self.callers.get(key, set()))
+        short = qualname.split(".")[-1]
+        if short != qualname:
+            hits.update(self.callers.get(short, set()))
+        return sorted(hits)
+
+    def callees_of_qual(self, file_path: str, qualname: str = "") -> List[str]:
+        """Return callees invoked from file_path::qualname."""
+        key = f"{file_path.replace(chr(92), '/')}::{qualname or '<module>'}"
+        return sorted(self.callees.get(key, set()))
+
+    def files_calling_into(self, target_file: str) -> List[str]:
+        """Files with any call edge into target_file symbols."""
+        target = target_file.replace("\\", "/")
+        files: Set[str] = set()
+        for callee, callers in self.callers.items():
+            if callee.startswith(target + "::") or target in callee:
+                for caller in callers:
+                    files.add(caller.split("::", 1)[0])
+        return sorted(files)
+
     def data_entry_files(self, index: SymbolIndex) -> List[str]:
         """Files with middleware, handlers, or public API entry symbols."""
         patterns = ("middleware", "handler", "route", "endpoint", "controller", "api")

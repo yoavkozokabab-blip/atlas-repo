@@ -1495,8 +1495,40 @@ function renderLimitations(items) {
   return `<h3 style="font-size:13px;color:var(--amber);margin-top:14px">Limitations</h3><ul class="clean">${list.map(x => `<li>${esc(x)}</li>`).join("")}</ul>`;
 }
 
-function renderRepositoryEvidence(rev) {
-  if (!rev || !rev.status) return "";
+function renderEvidenceSummary(panel, rev) {
+  const ep = panel || rev?.evidence_panel || {};
+  if (!ep || (!ep.matched_symbols?.length && !ep.selected_because?.length && !ep.repository_evidence?.length)) return "";
+  const syms = (ep.matched_symbols || []).slice(0, 6);
+  const refs = (ep.matched_references || []).slice(0, 5);
+  const graph = (ep.graph_support || []).slice(0, 4);
+  const repo = (ep.repository_evidence || []).slice(0, 4);
+  const because = (ep.selected_because || []).slice(0, 5);
+  return `
+    <div class="report-section evidence-summary">
+      <div class="report-label">Evidence Summary</div>
+      ${syms.length ? `<p class="muted tiny"><b>Matched symbols</b></p><ul class="clean tiny">${syms.map(s => `<li><span class="tag sym">${esc(s.qualname || s.name)}</span> — ${esc(s.kind)} in <span class="tag" onclick="investigateFile(${JSON.stringify(s.file_path)})">${esc(s.file_path)}</span></li>`).join("")}</ul>` : ""}
+      ${refs.length ? `<p class="muted tiny"><b>Matched references</b></p><ul class="clean tiny">${refs.map(r => `<li>${esc(r.symbol)} ← ${esc(r.reference)}</li>`).join("")}</ul>` : ""}
+      ${graph.length ? `<p class="muted tiny"><b>Graph support</b></p><ul class="clean tiny">${graph.map(g => `<li>${esc(g)}</li>`).join("")}</ul>` : ""}
+      ${repo.length ? `<p class="muted tiny"><b>Repository evidence</b></p><ul class="clean tiny">${repo.map(r => `<li>${esc(r)}</li>`).join("")}</ul>` : ""}
+      ${because.length ? `<p class="muted tiny"><b>Selected because</b></p><ul class="clean tiny">${because.map(b => `<li>${esc(b)}</li>`).join("")}</ul>` : ""}
+    </div>`;
+}
+
+function renderImplementationWhy(items) {
+  const rows = (items || []).filter(x => x && x.path).slice(0, 8);
+  if (!rows.length) return "";
+  return `
+    <div class="report-section">
+      <div class="report-label">Why these files</div>
+      <ul class="clean tiny">${rows.map(r => `<li><span class="tag" onclick="investigateFile(${JSON.stringify(r.path)})">${esc(r.path)}</span>${r.tier === "review" ? ' <span class="pill">review only</span>' : ""} — ${esc(r.why || "")}</li>`).join("")}</ul>
+    </div>`;
+}
+
+function renderRepositoryEvidence(rev, plan) {
+  if (!rev || !rev.status) {
+    if (plan?.evidence_panel) return renderEvidenceSummary(plan.evidence_panel, null);
+    return "";
+  }
   const files = (rev.file_evidences || []).slice(0, 5);
   return `
     <div class="domain-panel glass evidence-panel">
@@ -1505,10 +1537,11 @@ function renderRepositoryEvidence(rev) {
         <span class="pill quality-source">${esc(rev.status)}</span>
         <span class="pill">Score ${esc(rev.confidence_score)}/100</span>
       </div>
+      ${renderEvidenceSummary(rev.evidence_panel || plan?.evidence_panel, rev)}
       ${rev.found?.length ? `<div class="report-section"><div class="report-label">Found</div><ul class="clean tiny">${rev.found.slice(0, 6).map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}
       ${rev.missing?.length ? `<div class="report-section"><div class="report-label">Missing</div><ul class="clean tiny">${rev.missing.slice(0, 4).map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}
       ${rev.recommended_insertion ? `<p class="muted tiny"><b>Recommended insertion:</b> <span class="tag" onclick="investigateFile(${JSON.stringify(rev.recommended_insertion)})">${esc(rev.recommended_insertion)}</span></p>` : ""}
-      ${files.length ? `<div class="report-section"><div class="report-label">Evidence by file</div><ul class="clean tiny">${files.map(f => `<li><span class="tag" onclick="investigateFile(${JSON.stringify(f.path)})">${esc(f.path)}</span> — ${esc(f.evidence_score)}/100 · ${esc((f.matching_symbols || []).slice(0, 2).join(", "))}</li>`).join("")}</ul></div>` : ""}
+      ${files.length ? `<div class="report-section"><div class="report-label">Evidence by file</div><ul class="clean tiny">${files.map(f => `<li><span class="tag" onclick="investigateFile(${JSON.stringify(f.path)})">${esc(f.path)}</span> — ${esc(f.evidence_score)}/100 · ${esc(f.selected_because || f.reason_selected || (f.matching_symbols || []).slice(0, 2).join(", "))}</li>`).join("")}</ul></div>` : ""}
     </div>`;
 }
 
@@ -1570,7 +1603,8 @@ async function runChangePlan() {
       <p class="muted tiny" style="margin:8px 0">Size: <b>${esc(p.estimated_change_size)}</b> · Risk: <b>${esc(p.risk_level)}</b> · Intent: ${esc(p.intent)}</p>
       ${typeof trustBlock === "function" ? trustBlock("build") : ""}
       <div class="advanced-only">${renderDomainKnowledge(p.domain_knowledge)}</div>
-      ${renderRepositoryEvidence(p.repository_evidence || p.domain_knowledge?.repository_evidence)}
+      ${renderRepositoryEvidence(p.repository_evidence || p.domain_knowledge?.repository_evidence, p)}
+      ${renderImplementationWhy(p.implementation_files_with_why)}
       <div class="plan-grid">
         <div class="report-section"><div class="report-label">Affected systems</div><div class="taglist">${(p.affected_systems || p.likely_affected_subsystems || []).map(s => `<span class="tag">${esc(s)}</span>`).join("") || '<span class="muted tiny">none matched</span>'}</div></div>
         <div class="report-section"><div class="report-label">Entry points</div><div class="taglist">${(p.entry_points || []).map(s => `<span class="tag">${esc(s)}</span>`).join("") || '<span class="muted tiny">none detected</span>'}</div></div>
@@ -1644,7 +1678,7 @@ async function runInvestigationPlan() {
       </div>
       ${typeof trustBlock === "function" ? trustBlock("investigate") : ""}
       <div class="advanced-only">${renderDomainKnowledge(p.domain_knowledge)}</div>
-      ${renderRepositoryEvidence(p.repository_evidence || p.domain_knowledge?.repository_evidence)}
+      ${renderRepositoryEvidence(p.repository_evidence || p.domain_knowledge?.repository_evidence, p)}
       ${(p.domain_failure_modes || []).length ? `<div class="report-section"><div class="report-label">Domain failure modes</div><ul class="clean">${p.domain_failure_modes.map(m => `<li>${esc(m)}</li>`).join("")}</ul></div>` : ""}
       <div class="report-section">
         <div class="report-label">Most likely root cause</div>
@@ -1673,13 +1707,16 @@ function renderHypotheses(hyps) {
     const conf = h.confidence === "high" ? "low" : h.confidence === "low" ? "unknown" : "medium";
     const files = (h.files_involved || []).map(f => `<span class="tag" onclick="investigateFile(${JSON.stringify(f)})" title="Open in impact">${esc(f)}</span>`).join("")
       || '<span class="muted tiny">no grounded file — lead only</span>';
+    const evScore = h.evidence_score_100 ?? h.evidence_score;
     return `
     <div class="hyp-card">
       <div class="hyp-head">
         <span class="hyp-rank">H${i + 1}</span>
         <span class="hyp-title">${esc(h.title)}</span>
         <span class="lvl ${conf}">${esc(h.confidence)}</span>
+        ${evScore != null ? `<span class="pill">evidence ${esc(evScore)}/100</span>` : ""}
       </div>
+      ${h.evidence_reason ? `<p class="muted tiny"><b>Evidence reason:</b> ${esc(h.evidence_reason)}</p>` : ""}
       <p class="hyp-why"><b>Why it fits:</b> ${esc(h.why_it_fits)}</p>
       <div class="hyp-files">${files}</div>
       ${(h.evidence || []).length ? `<ul class="clean tiny hyp-evidence">${h.evidence.map(e => `<li>${esc(e)}</li>`).join("")}</ul>` : ""}
@@ -1735,6 +1772,7 @@ async function runImpact() {
       ${typeof trustBlock === "function" ? trustBlock("impact") : ""}
       ${impactSemanticCard(r)}
       ${impactBlastCard(r)}
+      ${renderEvidenceSummary(r.evidence_panel || r.impact_evidence_panel, null)}
       <div class="impact-arch-summary">${esc(impactArchSummary(r))}</div>
       <div class="report-section"><div class="report-label">Direct impact — importers (${dirN})</div>${impactModuleTags(r.direct_impact)}</div>
       <div class="report-section"><div class="report-label">Indirect impact — transitive (${indN})</div>${impactModuleTags(r.indirect_impact)}</div>

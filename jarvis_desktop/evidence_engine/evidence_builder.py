@@ -19,7 +19,10 @@ from .precision_engine import (
     apply_precision_to_plan,
     rank_files,
 )
+from .symbol_evidence import build_evidence_panel
 from .symbol_index import SymbolIndex, build_symbol_index
+
+IMPLEMENTATION_FILES_MAX = 5
 
 
 @dataclass
@@ -144,10 +147,21 @@ def analyze_concept(
         if entries:
             call_paths.append(f"Request entry: {entries[0]}")
 
+    search_patterns = list(detection.search_patterns or keywords)
+    panel_paths = precision.tier1 or ([insertion] if insertion else [])
+    evidence_panel = build_evidence_panel(
+        store,
+        panel_paths,
+        keywords,
+        patterns=search_patterns,
+        anchor_path=insertion,
+    ).to_dict()
+
     summary_parts = [
         f"Status: {detection.status}",
         f"Insertion confidence: {precision.insertion_confidence:.0f}/100",
         f"Tier-1 files: {len(precision.tier1)}",
+        f"Symbols matched: {len(evidence_panel.get('matched_symbols') or [])}",
     ]
     if detection.missing_labels:
         summary_parts.append(f"Missing: {', '.join(detection.missing_labels[:3])}")
@@ -166,6 +180,7 @@ def analyze_concept(
         call_paths=call_paths[:6],
         evidence_summary=" · ".join(summary_parts),
         recommendation_tiers=precision.to_dict(),
+        evidence_panel=evidence_panel,
     )
     return bundle, precision
 
@@ -185,7 +200,7 @@ def analyze_investigation(
         concept_id = "indicator_backtest_live"
     elif any(k in lower for k in ("backtest", "paper", "live", "slippage", "fill", "timing", "sim")):
         concept_id = "backtest_live_divergence"
-    return analyze_concept(
+    bundle, precision = analyze_concept(
         store,
         concept_id=concept_id,
         concept_name="Backtest vs live divergence",
@@ -194,6 +209,15 @@ def analyze_investigation(
         heuristic_paths=heuristic_paths,
         graph=graph,
     )
+    if symptom:
+        bundle.evidence_panel = build_evidence_panel(
+            store,
+            precision.tier1 or [bundle.recommended_insertion],
+            [symptom],
+            symptom=symptom,
+            anchor_path=bundle.recommended_insertion,
+        ).to_dict()
+    return bundle, precision
 
 
 def merge_file_roles_with_evidence(
@@ -244,11 +268,30 @@ def apply_to_build_plan(
     precision: Optional[PrecisionResult] = None,
 ) -> None:
     plan["repository_evidence"] = bundle.to_dict()
+    plan["evidence_panel"] = bundle.evidence_panel or {}
     plan["evidence_confidence"] = bundle.confidence_score
     plan["insertion_confidence"] = bundle.insertion_confidence
 
     if precision:
         apply_precision_to_plan(plan, precision)
+        tier1 = precision.tier1[:IMPLEMENTATION_FILES_MAX]
+        plan["implementation_files"] = tier1
+        plan["files_to_inspect_first"] = tier1
+        plan["implementation_files_with_why"] = [
+            {
+                "path": fe.path,
+                "why": fe.selected_because or fe.reason_selected,
+                "tier": "implementation",
+            }
+            for fe in (precision.file_evidences or [])[:IMPLEMENTATION_FILES_MAX]
+        ]
+        review = precision.tier2[:6]
+        plan["review_files"] = review
+        plan["files_review_only"] = review
+        plan["implementation_files_with_why"].extend(
+            {"path": p, "why": "Supporting evidence (review before editing)", "tier": "review"}
+            for p in review
+        )
     else:
         if bundle.recommended_insertion:
             plan["files_to_inspect_first"] = [bundle.recommended_insertion]
@@ -287,6 +330,7 @@ def apply_to_investigation_plan(
     precision: Optional[PrecisionResult] = None,
 ) -> None:
     plan["repository_evidence"] = bundle.to_dict()
+    plan["evidence_panel"] = bundle.evidence_panel or {}
     plan["evidence_confidence"] = bundle.confidence_score
     plan["insertion_confidence"] = bundle.insertion_confidence
 
@@ -312,5 +356,25 @@ def apply_to_investigation_plan(
         plan["domain_knowledge"] = dk
 
 
-def apply_impact_precision(plan: Dict[str, Any], target: str, graph: Optional[Dict[str, Any]] = None) -> None:
+def apply_impact_precision(
+    plan: Dict[str, Any],
+    target: str,
+    graph: Optional[Dict[str, Any]] = None,
+    *,
+    evidence_store: Optional[Dict[str, Any]] = None,
+) -> None:
     apply_precision_to_impact(plan, target, graph)
+    if evidence_store and evidence_store.get("symbol_index"):
+        from .symbol_evidence import impact_symbol_blast
+
+        store = EvidenceStore.from_dict(evidence_store)
+        extra_files, extra_reasons, panel = impact_symbol_blast(store, target)
+        if extra_files:
+            merged = list(dict.fromkeys(list(plan.get("affected_files") or []) + extra_files))[:24]
+            plan["affected_files"] = merged
+            plan["potentially_affected_modules"] = merged
+            plan["direct_impact"] = list(dict.fromkeys(list(plan.get("direct_impact") or []) + extra_files[:8]))
+        plan["impact_evidence_panel"] = panel.to_dict()
+        plan["evidence_panel"] = panel.to_dict()
+        if extra_reasons:
+            plan["evidence"] = extra_reasons[:4] + list(plan.get("evidence") or [])

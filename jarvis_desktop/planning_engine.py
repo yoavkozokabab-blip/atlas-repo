@@ -17,7 +17,20 @@ from .evidence_engine import (
     apply_to_build_plan,
     apply_to_investigation_plan,
 )
-from .evidence_engine.evidence_builder import merge_file_roles_with_evidence, apply_impact_precision
+from .evidence_engine.evidence_builder import (
+    IMPLEMENTATION_FILES_MAX,
+    merge_file_roles_with_evidence,
+    apply_impact_precision,
+)
+from .evidence_engine.symbol_evidence import (
+    build_evidence_panel,
+    store_from_ctx,
+    symbol_boost_for_path,
+    why_selected_for_file,
+    file_symbol_evidence,
+)
+
+_HYPOTHESIS_MAX = 3
 
 # Feature intents → search terms for path/module matching (deterministic heuristics).
 _FEATURE_SPECS: Dict[str, Dict[str, Any]] = {
@@ -864,6 +877,45 @@ def _score_modules(
     return scored
 
 
+def _fuse_module_scores(
+    scored: List[Tuple[float, Dict[str, Any]]],
+    ctx: Dict[str, Any],
+    terms: Set[str],
+    *,
+    patterns: Optional[List[str]] = None,
+) -> List[Tuple[float, Dict[str, Any]]]:
+    """Phase 163 — fuse path ranking with symbol + call-graph evidence."""
+    store = store_from_ctx(ctx)
+    if not store:
+        return scored
+    fused: List[Tuple[float, Dict[str, Any]]] = []
+    for score, node in scored:
+        path = node.get("path") or ""
+        sym_boost, _ = symbol_boost_for_path(store, path, terms, patterns)
+        fused.append((score + sym_boost, node))
+    fused.sort(key=lambda item: (-item[0], item[1].get("path", "")))
+    return fused
+
+
+def _implementation_files_with_why(
+    paths: List[str],
+    ctx: Dict[str, Any],
+    terms: Set[str],
+    *,
+    path_reasons: Optional[Dict[str, List[str]]] = None,
+) -> List[Dict[str, str]]:
+    """Explain why each implementation file was selected."""
+    store = store_from_ctx(ctx)
+    out: List[Dict[str, str]] = []
+    for path in paths[:IMPLEMENTATION_FILES_MAX]:
+        why = "Path keyword overlap with request"
+        if store:
+            sym_evs, _ = file_symbol_evidence(store, path, terms)
+            why = why_selected_for_file(path, sym_evs, path_reasons=(path_reasons or {}).get(path))
+        out.append({"path": path, "why": why, "tier": "implementation"})
+    return out
+
+
 def _risks_map(risks: Optional[Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
     out: Dict[str, Dict[str, Any]] = {}
     for row in (risks or {}).get("ranked_modules", []) or []:
@@ -1142,6 +1194,7 @@ def plan_change(request: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
     scored = _score_modules(
         modules, extra_terms, risks_map, boosts=_build_boosts_for_text(goal)
     )
+    scored = _fuse_module_scores(scored, ctx, extra_terms, patterns=list(extra_terms))
 
     all_scored = scored[:20]
     # P158 FIX 5 — tiered scope: separate clean implementation paths from noise.
@@ -1255,16 +1308,20 @@ def plan_change(request: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
         "likely_affected_subsystems": subsystems,
         "affected_systems": subsystems,  # Phase 123 alias (senior-architect label)
         "entry_points": entry_points,
-        "files_to_inspect_first": matched_paths[:8],
-        "files_likely_to_change": matched_paths[:8],
+        "files_to_inspect_first": matched_paths[:IMPLEMENTATION_FILES_MAX],
+        "files_likely_to_change": matched_paths[:IMPLEMENTATION_FILES_MAX],
         # P158 FIX 5: expose tier2 (review-only scope) separately
         "files_review_only": review_only_paths[:6],
-        # P161 — explicit precision tiers. Default output is Tier 1 only.
-        "implementation_files": matched_paths[:8],          # Tier 1
-        "review_files": review_only_paths[:6],              # Tier 2
-        "context_files": [p for p in inbound if p not in matched_paths][:8],  # Tier 3
+        # P163 — max 5 implementation files; review-only separated
+        "implementation_files": matched_paths[:IMPLEMENTATION_FILES_MAX],
+        "implementation_files_with_why": _implementation_files_with_why(
+            matched_paths, ctx, extra_terms,
+            path_reasons={n.get("path", ""): [f"path score {s:.1f}"] for s, n in scored[:IMPLEMENTATION_FILES_MAX]},
+        ),
+        "review_files": review_only_paths[:6],
+        "context_files": [p for p in inbound if p not in matched_paths][:8],
         "file_tiers": {
-            "tier1_implementation": matched_paths[:8],
+            "tier1_implementation": matched_paths[:IMPLEMENTATION_FILES_MAX],
             "tier2_review": review_only_paths[:6],
             "tier3_context": [p for p in inbound if p not in matched_paths][:8],
         },
@@ -1301,6 +1358,12 @@ def plan_change(request: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
         evidence_bundle, precision = evidence_result
         apply_to_build_plan(plan, evidence_bundle, precision)
         plan["heuristic_candidates"] = matched_paths
+    else:
+        store = store_from_ctx(ctx)
+        if store:
+            plan["evidence_panel"] = build_evidence_panel(
+                store, matched_paths[:IMPLEMENTATION_FILES_MAX], extra_terms,
+            ).to_dict()
     if build_class.concept_id:
         limitations = list(plan.get("limitations") or [])
         limitations.extend(build_class.unknowns)
@@ -1444,9 +1507,25 @@ def _build_hypotheses(
                     )
             if not files:
                 evidence.append("No scanned module path matched this area — treat as a lead, not a localization.")
+            ev_score_100 = _hypothesis_evidence_score_100({
+                "files_involved": files,
+                "confidence": confidence,
+                "evidence": evidence,
+            })
+            ev_reason_parts: List[str] = []
+            for f in files:
+                _, rs = _root_cause_evidence_score(
+                    f, symptom, risks_map=risks_map,
+                    explicit_paths=explicit_paths, scored_paths=scored_top_paths,
+                )
+                ev_reason_parts.extend(rs[:2])
+            ev_reason = "; ".join(ev_reason_parts) or "Keyword/path overlap with symptom area"
             hypotheses.append({
                 "title": tmpl["title"],
                 "confidence": confidence,
+                "evidence_score": ev_score_100,
+                "evidence_score_100": ev_score_100,
+                "evidence_reason": ev_reason,
                 "why_it_fits": tmpl["why"],
                 "evidence": evidence,
                 "files_involved": files,
@@ -1454,9 +1533,11 @@ def _build_hypotheses(
                 "what_should_be_true_if_correct": tmpl["should_be_true"],
                 "how_to_disprove": tmpl["disprove"],
             })
-        # Rank: confidence desc, then number of matched files desc
-        hypotheses.sort(key=lambda h: (-_confidence_rank(h["confidence"]), -len(h["files_involved"])))
-        return hypotheses[:4]
+        # P163 — prune to top 3 by evidence score, then confidence
+        hypotheses.sort(
+            key=lambda h: (-h.get("evidence_score_100", 0), -_confidence_rank(h["confidence"]), -len(h["files_involved"]))
+        )
+        return hypotheses[:_HYPOTHESIS_MAX]
 
     # Generic intent: derive structural hypotheses from the top matched modules.
     # P158 FIX 2: Skip noisy/stdlib modules entirely.
@@ -1473,10 +1554,22 @@ def _build_hypotheses(
             conf = "high" if path in explicit_paths else ("medium" if fan_in >= 6 else "low")
         else:
             conf = "low"  # Downgrade: insufficient evidence even if keyword-matched
+        _, ev_reasons = _root_cause_evidence_score(
+            path, symptom, risks_map=risks_map,
+            explicit_paths=explicit_paths, scored_paths=scored_top_paths,
+        )
+        ev_score_100 = _hypothesis_evidence_score_100({
+            "files_involved": [path],
+            "confidence": conf,
+            "evidence": [f"evidence_score={ev_score}"],
+            "evidence_score": ev_score,
+        })
         hypotheses.append({
             "title": f"Defect originates in `{path}`",
             "confidence": conf,
             "evidence_score": ev_score,
+            "evidence_score_100": ev_score_100,
+            "evidence_reason": "; ".join(ev_reasons[:3]) or "Top keyword match in scanned index",
             "why_it_fits": (
                 f"`{path}` scored highest on keyword overlap with the symptom"
                 + (f" and has high coupling (fan-in {fan_in})." if fan_in >= 6 else ".")
@@ -1494,6 +1587,9 @@ def _build_hypotheses(
         hypotheses.append({
             "title": "Insufficient anchors to localize",
             "confidence": "low",
+            "evidence_score": 0,
+            "evidence_score_100": 0,
+            "evidence_reason": "No path, symbol, or subsystem anchor in symptom",
             "why_it_fits": "No file path, error type, or subsystem name in the symptom matched the scanned index.",
             "evidence": ["Symptom is described in behavioral terms only."],
             "files_involved": [],
@@ -1501,7 +1597,8 @@ def _build_hypotheses(
             "what_should_be_true_if_correct": "n/a — gather a stack trace, error message, or file path first.",
             "how_to_disprove": "Provide a trace or a concrete file/module name and re-run the investigation.",
         })
-    return hypotheses[:4]
+    hypotheses.sort(key=lambda h: (-h.get("evidence_score_100", 0), -_confidence_rank(h.get("confidence", "low"))))
+    return hypotheses[:_HYPOTHESIS_MAX]
 
 
 def investigate_symptom(symptom: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
@@ -1545,6 +1642,7 @@ def investigate_symptom(symptom: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
         modules, search_terms, risks_map,
         runtime=runtime, boosts=_boosts_for_text(text), symptom_text=text,
     )
+    scored = _fuse_module_scores(scored, ctx, search_terms, patterns=list(search_terms))
     # If a runtime symptom matched nothing after penalising config files, retry
     # without the term filter so we still surface real source modules (never dotfiles).
     if runtime and not scored:
@@ -1725,6 +1823,12 @@ def investigate_symptom(symptom: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
         inv_bundle, inv_precision = inv_result
         apply_to_investigation_plan(plan, inv_bundle, inv_precision)
         plan["heuristic_candidates"] = likely_modules
+    else:
+        store = store_from_ctx(ctx)
+        if store:
+            plan["evidence_panel"] = build_evidence_panel(
+                store, likely_modules[:5], search_terms, symptom=text,
+            ).to_dict()
     if inv_class.concept_id:
         limitations = list(plan.get("limitations") or [])
         limitations.extend(inv_class.unknowns)
@@ -1965,7 +2069,12 @@ def simulate_change_impact(target: str, impact_payload: Dict[str, Any], ctx: Dic
     if ("registry" in tgt or "indicator" in tgt) and not any("indicator" in t.lower() for t in tests):
         tests.append("Indicator registry and signal pipeline tests")
     result["simulation"]["tests_likely_affected"] = tests[:8]
-    apply_impact_precision(result, impact_payload.get("target") or target, ctx.get("graph"))
+    apply_impact_precision(
+        result,
+        impact_payload.get("target") or target,
+        ctx.get("graph"),
+        evidence_store=ctx.get("evidence_store"),
+    )
     return result
 
 

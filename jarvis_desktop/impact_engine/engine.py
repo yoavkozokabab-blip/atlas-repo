@@ -509,6 +509,32 @@ def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict
                  "Resolved import edges only; dynamic/string imports are not modeled."),
     }
     result.update(arch_extra)
+
+    # Phase 163 — symbol + call-graph evidence panel (prefer references over path heuristics)
+    if evidence_store and evidence_store.get("symbol_index"):
+        try:
+            from jarvis_desktop.evidence_engine.evidence_builder import EvidenceStore
+            from jarvis_desktop.evidence_engine.symbol_evidence import build_evidence_panel, impact_symbol_blast
+
+            store = EvidenceStore.from_dict(evidence_store)
+            sym_files, sym_reasons, panel = impact_symbol_blast(store, tpath)
+            if sym_files:
+                blast_merged = list(dict.fromkeys(direct_paths + sym_files))[:12]
+                result["direct_impact"] = blast_merged
+                indirect_keep = list(result.get("indirect_impact") or [])
+                affected_merged = list(dict.fromkeys(blast_merged + indirect_keep + sym_files))[:_MAX_AFFECTED]
+                result["affected_files"] = affected_merged
+                result["potentially_affected_modules"] = affected_merged
+            if not panel.repository_evidence:
+                panel = build_evidence_panel(store, [tpath], [], anchor_path=tpath)
+                panel.selected_because.insert(0, f"Impact on `{tpath}` — import graph + symbol index")
+            result["impact_evidence_panel"] = panel.to_dict()
+            result["evidence_panel"] = panel.to_dict()
+            if sym_reasons:
+                result["evidence"] = sym_reasons[:3] + list(result.get("evidence") or [])
+        except Exception:
+            pass
+
     return result
 
 

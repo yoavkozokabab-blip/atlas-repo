@@ -64,6 +64,13 @@ class FileEvidence:
     usage_patterns: List[str] = field(default_factory=list)
     reason_selected: str = ""
     symbol_details: List[Dict[str, Any]] = field(default_factory=list)
+    selected_because: str = ""
+    callers: List[str] = field(default_factory=list)
+    callees: List[str] = field(default_factory=list)
+    path_score: float = 0.0
+    symbol_score: float = 0.0
+    call_graph_score: float = 0.0
+    reference_score: float = 0.0
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -84,6 +91,7 @@ class RepositoryEvidenceBundle:
     call_paths: List[str] = field(default_factory=list)
     evidence_summary: str = ""
     recommendation_tiers: Dict[str, Any] = field(default_factory=dict)
+    evidence_panel: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -100,6 +108,7 @@ class RepositoryEvidenceBundle:
             "call_paths": list(self.call_paths),
             "evidence_summary": self.evidence_summary,
             "recommendation_tiers": dict(self.recommendation_tiers),
+            "evidence_panel": dict(self.evidence_panel),
         }
 
     @classmethod
@@ -119,4 +128,5 @@ class RepositoryEvidenceBundle:
             call_paths=list(raw.get("call_paths") or []),
             evidence_summary=raw.get("evidence_summary") or "",
             recommendation_tiers=dict(raw.get("recommendation_tiers") or {}),
+            evidence_panel=dict(raw.get("evidence_panel") or {}),
         )

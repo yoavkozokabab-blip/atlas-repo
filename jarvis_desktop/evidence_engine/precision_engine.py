@@ -8,16 +8,17 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 from .call_graph import CallGraph
 from .evidence_models import FileEvidence, RepositoryEvidenceBundle
 from .implementation_detector import DetectionResult
-from .implementation_detector import DetectionResult
+from .symbol_evidence import file_symbol_evidence, graph_support_lines, why_selected_for_file
 from .symbol_index import SymbolIndex
 
-# Component weights (sum = 1.0)
-WEIGHT_DEFINITION = 0.20
-WEIGHT_REFERENCE = 0.15
-WEIGHT_CALL_GRAPH = 0.15
-WEIGHT_IMPLEMENTATION = 0.25
-WEIGHT_DEPENDENCY = 0.10
-WEIGHT_CONCEPT_MATCH = 0.15
+# Component weights (sum = 1.0) — Phase 163: path + symbol + call graph + reference
+WEIGHT_DEFINITION = 0.18
+WEIGHT_REFERENCE = 0.14
+WEIGHT_CALL_GRAPH = 0.16
+WEIGHT_IMPLEMENTATION = 0.22
+WEIGHT_DEPENDENCY = 0.08
+WEIGHT_CONCEPT_MATCH = 0.12
+WEIGHT_PATH = 0.10
 
 TIER1_MAX = 5
 TIER2_MAX = 8
@@ -61,6 +62,7 @@ class FileScoreBreakdown:
     implementation_score: float = 0.0
     dependency_score: float = 0.0
     concept_match_score: float = 0.0
+    path_score: float = 0.0
     final_score: float = 0.0
     tier: int = 3
     reasons: List[str] = field(default_factory=list)
@@ -200,13 +202,18 @@ def _score_file_components(
             call_graph_score = max(call_graph_score, 0.35)
 
     concept_match = 0.0
+    path_score = 0.0
     for kw in concept_keywords:
         if kw and kw.lower() in p:
             concept_match = min(1.0, concept_match + 0.35)
+            path_score = min(1.0, path_score + 0.3)
     for pat in insertion_patterns:
         if pat in p:
             concept_match = min(1.0, concept_match + 0.25)
+            path_score = min(1.0, path_score + 0.25)
             reasons.append(f"insertion pattern `{pat}`")
+    if path_score:
+        reasons.append("path keyword evidence")
 
     dependency = 0.0
     if graph and insertion_path:
@@ -231,6 +238,7 @@ def _score_file_components(
         + implementation * WEIGHT_IMPLEMENTATION
         + dependency * WEIGHT_DEPENDENCY
         + concept_match * WEIGHT_CONCEPT_MATCH
+        + path_score * WEIGHT_PATH
     ) * 100.0
     final = min(100.0, max(0.0, final + _concept_path_boost(path, concept_id, concept_keywords)))
 
@@ -242,6 +250,7 @@ def _score_file_components(
         implementation_score=round(implementation, 3),
         dependency_score=round(dependency, 3),
         concept_match_score=round(concept_match, 3),
+        path_score=round(path_score, 3),
         final_score=round(final, 1),
         reasons=reasons[:6],
     )
@@ -476,19 +485,45 @@ def rank_files(
             tier1 = [insertion_path.replace("\\", "/")]
 
     tier12_paths = set(tier1 + tier2)
-    file_evidences = [
-        FileEvidence(
-            path=r.path,
-            evidence_score=r.final_score,
-            matching_symbols=[f"{s.name}" for s in by_file.get(r.path, [])[:4]],
-            matching_concepts=patterns[:4],
-            usage_patterns=r.reasons[:3],
-            reason_selected=f"final={r.final_score:.0f} def={r.definition_score:.2f} impl={r.implementation_score:.2f}",
-            symbol_details=[s.to_dict() for s in by_file.get(r.path, [])[:4]],
+    _store = type("_Ctx", (), {"symbol_index": index, "call_graph": call_graph})()
+    ranked_by_path = {r.path: r for r in ranked}
+    file_evidences = []
+    for tier_path in tier1:
+        r = ranked_by_path.get(tier_path)
+        if not r:
+            r = FileScoreBreakdown(path=tier_path.replace("\\", "/"), final_score=TIER1_MIN_SCORE)
+        sym_evs, _ = file_symbol_evidence(_store, tier_path, keywords, patterns)
+        callers: List[str] = []
+        callees: List[str] = []
+        for ev in sym_evs[:3]:
+            callers.extend(ev.callers[:2])
+            callees.extend(ev.callees[:2])
+        selected = why_selected_for_file(
+            tier_path,
+            sym_evs,
+            path_reasons=r.reasons,
+            insertion=_norm(tier_path) == _norm(insertion_path),
         )
-        for r in ranked
-        if r.path in tier1
-    ]
+        file_evidences.append(
+            FileEvidence(
+                path=tier_path,
+                evidence_score=r.final_score,
+                matching_symbols=[f"{s.name}" for s in by_file.get(tier_path, [])[:4]]
+                or [ev.name for ev in sym_evs[:4]],
+                matching_concepts=patterns[:4],
+                usage_patterns=r.reasons[:3] + graph_support_lines(call_graph, tier_path, anchor_path=insertion_path),
+                reason_selected=selected,
+                selected_because=selected,
+                symbol_details=[s.to_dict() for s in by_file.get(tier_path, [])[:4]]
+                or [ev.to_dict() for ev in sym_evs[:4]],
+                callers=sorted(set(callers))[:4],
+                callees=sorted(set(callees))[:4],
+                path_score=round(r.path_score * 100, 1),
+                symbol_score=round(r.definition_score * 100, 1),
+                call_graph_score=round(r.call_graph_score * 100, 1),
+                reference_score=round(r.reference_score * 100, 1),
+            )
+        )
 
     ins_conf = _insertion_confidence(insertion_path, ranked, detection, index)
 
