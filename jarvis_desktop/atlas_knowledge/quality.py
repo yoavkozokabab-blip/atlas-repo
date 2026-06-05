@@ -42,8 +42,12 @@ def quality_ui_label(value: Optional[str]) -> str:
 
 
 def quality_confidence_boost(value: Optional[str]) -> float:
-    """Alias-score boost so curated/source-backed wins ties over pack templates."""
-    return {0: 0.0, 1: 0.75, 2: 1.25, 3: 2.0}.get(quality_rank(value), 0.0)
+    """Alias-score boost so curated/source-backed wins ties over pack templates.
+
+    P164 — boost must stay below LOCAL_CONFIDENCE_THRESHOLD (2.0) so quality
+    alone cannot pass matching without at least one alias/text hit.
+    """
+    return {0: 0.0, 1: 0.75, 2: 1.25, 3: 1.9}.get(quality_rank(value), 0.0)
 
 
 def is_shallow_generated(value: Optional[str]) -> bool:

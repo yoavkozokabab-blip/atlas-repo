@@ -35,6 +35,38 @@ function zfBullets(arr, limit) {
 
 const ZF_TOOL_LABEL = { claude: "Claude", cursor: "Cursor", codex: "Codex" };
 
+function zfTrustBlock(result) {
+  const r = result || {};
+  const p = r.plan || {};
+  const lines = ["## Trust & grounding"];
+  const conf = r.confidence || p.confidence;
+  if (conf) lines.push(`- Confidence: ${conf}`);
+  const cap = r.confidence_cap_reason || p.confidence_cap_reason;
+  if (cap) lines.push(`- Confidence note: ${cap}`);
+  const ep = r.evidence_panel || p.evidence_panel || r.impact_evidence_panel;
+  if (ep && ep.summary) {
+    lines.push(`- Evidence: ${ep.summary}`);
+  } else if (ep && (ep.items || []).length) {
+    lines.push(`- Evidence: ${ep.items.length} grounded match(es) from symbol/path index`);
+  } else if ((p.evidence || r.evidence || []).length) {
+    lines.push(`- Evidence: ${(p.evidence || r.evidence).slice(0, 2).join("; ")}`);
+  }
+  const gh = r.graph_health || p.graph_health;
+  if (gh && typeof gh === "string" && gh !== "healthy") {
+    lines.push(`- Graph health: ${gh}`);
+  } else if (gh && gh.notice) {
+    lines.push(`- Graph health: ${gh.notice}`);
+  }
+  const status = r.status || p.status;
+  if (status && /unknown|insufficient|unresolved|not_resolved/i.test(String(status))) {
+    lines.push(`- Status: ${status}`);
+  }
+  const lims = (r.limitations || p.limitations || []).filter(l =>
+    /insufficient|unknown|evidence|graph health/i.test(String(l)));
+  if (lims.length) lines.push(`- Caveat: ${lims[0]}`);
+  return lines.length > 1 ? lines.join("\n") : "";
+}
+
 function zfSafetyFooter() {
   return [
     "## How to work safely",
@@ -78,6 +110,7 @@ function zfChangePromptBody() {
     "## Rollback plan",
     zfBullets(p.rollback_plan),
     "",
+    zfTrustBlock(r) || "",
     zfSafetyFooter(),
   ].filter(l => l !== "").join("\n");
 }
@@ -105,6 +138,7 @@ function zfInvestigatePromptBody() {
     "## Minimal fix strategy",
     zfBullets(p.minimal_fix_strategy),
     "",
+    zfTrustBlock(r) || "",
     zfSafetyFooter(),
   ].filter(l => l !== "").join("\n");
 }
@@ -130,6 +164,7 @@ function zfImpactPromptBody() {
     "## Verification",
     zfBullets(r.recommended_verification),
     "",
+    zfTrustBlock(r) || "",
     zfSafetyFooter(),
   ].filter(l => l !== "").join("\n");
 }

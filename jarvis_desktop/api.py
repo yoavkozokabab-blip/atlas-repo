@@ -2451,10 +2451,17 @@ def current_hierarchy_graph(level: str = "subsystem", parent: str = "") -> Dict[
 
 
 def impact(target: str) -> Dict[str, Any]:
-    """Reverse-dependency impact from the real graph (mock fallback if unresolved)."""
+    """Legacy impact route — prefer POST /api/planning/impact (modern engine)."""
     graph = _STATE.get("graph")
     if not graph or not target:
-        return _impact_mock(target, reason="No scan / no target")
+        return {
+            "ok": False,
+            "status": "legacy_route_unsupported",
+            "message": "Use the modern planning route.",
+            "error": "No scan / no target",
+            "target": target or "",
+            "mock": False,
+        }
     target = target.strip().replace("\\", "/")
     nodes = {n["id"]: n for n in graph.get("nodes", []) if n.get("type") == "module"}
     match = None
@@ -2672,14 +2679,28 @@ def bug_investigation(text: str) -> Dict[str, Any]:
             if base and base.endswith(".py") and base[:-3] in lowered and len(base) > 6:
                 paths.append(f["path"])
     paths = sorted(set(paths))[:8]
-    confidence = "high" if any(p in blob.replace("\\", "/") for p in paths) else ("medium" if paths else "low")
+    if not paths:
+        # P164 — never return ok=true with mock=true; route users to modern investigate.
+        return {
+            "ok": False,
+            "status": "insufficient_evidence",
+            "mock": False,
+            "message": "Use the modern planning route.",
+            "error": "No repository path or module name matched the input text.",
+            "todo": "Use POST /api/planning/investigate for symptom-based investigation.",
+            "likely_modules": [],
+            "evidence": ["No repository path or module name matched the input text."],
+            "confidence": "low",
+            "recommended_files": [],
+            "suggested_prompt": "",
+        }
+    confidence = "high" if any(p in blob.replace("\\", "/") for p in paths) else "medium"
     return {
         "ok": True,
-        "mock": not bool(paths),
+        "mock": False,
         "todo": "Wire semantic localization + verification evidence for confirmed-defect ranking.",
         "likely_modules": paths,
-        "evidence": [f"`{p}` referenced in the provided text" for p in paths] or
-                    ["No repository path or module name matched the input text."],
+        "evidence": [f"`{p}` referenced in the provided text" for p in paths],
         "confidence": confidence,
         "recommended_files": paths,
         "suggested_prompt": _bug_prompt(text, paths),

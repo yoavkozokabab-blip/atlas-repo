@@ -589,9 +589,25 @@ _TRADING_EXPLICIT_TERMS: frozenset = frozenset({
 # Repository path signals — if ANY module path contains one of these, the repo is
 # classified as trading-domain.
 _TRADING_REPO_PATH_SIGNALS: frozenset = frozenset({
-    "trading", "backtest", "strategy", "indicator", "broker",
-    "execution", "ohlcv", "candle", "portfolio", "order_book",
-    "paper_", "live_trade", "signal.py", "registry.py",
+    "trading/",
+    "trading_strategy",
+    "trading/strategy",
+    "backtest",
+    "backtesting",
+    "trade_signal",
+    "market_signal",
+    "order_book",
+    "broker",
+    "portfolio",
+    "ohlcv",
+    "candle",
+    "position_sizing",
+    "slippage",
+    "execution_model",
+    "indicators/",
+    "paper_trading",
+    "paper_",
+    "live_trade",
 })
 
 
