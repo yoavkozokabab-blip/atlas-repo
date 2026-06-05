@@ -28,6 +28,7 @@ from builder_core import architectural_risk, repository_understanding
 from builder_core.bug_intelligence import depgraph
 
 from . import analytics
+from . import atlas_export
 from . import graph_build
 from . import planning_engine
 from . import reliability
@@ -890,6 +891,11 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
             edges=_STATE["scan"].get("dependency_edges", 0),
             output_size_bytes=len(_json.dumps(_STATE["scan"], default=str)),
         )
+        _STATE["session_export"] = atlas_export.session_context({
+            "scan": _STATE["scan"],
+            "index": _STATE.get("index") or {},
+            "summary": current_summary(),
+        })
         _STATE["scan_perf"] = recorder.snapshot()
         track_analytics_event("scan_completed", demo=bool(_STATE.get("demo_mode")), cache_hit=True)
         _record_usage("scan_completed", cache_hit=True)
@@ -1208,6 +1214,11 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
         "evidence_store": _STATE.get("evidence_store") or {},
         "cached_at": time.time(),
     }
+    _STATE["session_export"] = atlas_export.session_context({
+        "scan": _STATE["scan"],
+        "index": index,
+        "summary": summary_snapshot,
+    })
     _STATE["scan_job"]["stage"] = "completed"
     _STATE["scan_perf"] = recorder.snapshot()
     track_analytics_event(
@@ -2542,6 +2553,14 @@ def plan_change(request: str) -> Dict[str, Any]:
     if result.get("ok"):
         plan = result["plan"]
         result["formatted"] = planning_engine.format_change_plan_markdown(plan)
+        atlas_export.attach_workflow_exports(
+            result,
+            "build",
+            plan=plan,
+            formatted=result["formatted"],
+            prompts=result.get("prompts"),
+            goal=request,
+        )
         track_analytics_event("change_plan_created", intent=plan.get("intent"), confidence=plan.get("confidence"))
         _record_usage("build_plan_created", intent=plan.get("intent"))
     return result
@@ -2555,6 +2574,13 @@ def investigate_symptom(symptom: str) -> Dict[str, Any]:
     if result.get("ok"):
         plan = result["plan"]
         result["formatted"] = planning_engine.format_investigation_plan_markdown(plan)
+        atlas_export.attach_workflow_exports(
+            result,
+            "investigate",
+            plan=plan,
+            formatted=result["formatted"],
+            prompts=result.get("prompts"),
+        )
         track_analytics_event("investigation_plan_created", intent=plan.get("intent"), confidence=plan.get("confidence"))
         _record_usage("investigation_created", intent=plan.get("intent"))
     return result
@@ -2593,9 +2619,25 @@ def change_impact_simulation(target: str) -> Dict[str, Any]:
         "Dynamic dispatch and string-based imports are not modeled.",
     ]
     _augment_impact_with_architecture(res)
+    atlas_export.attach_workflow_exports(res, "impact")
     track_analytics_event("impact_analyzed", risk_level=res.get("risk_level"), confidence=res.get("confidence"))
     _record_usage("impact_created", target=target, risk_level=res.get("risk_level"))
     return res
+
+
+def session_export_packet() -> Dict[str, Any]:
+    """Once-per-scan session context (ATLAS_SESSION v1). Not resent per question."""
+    if not _STATE.get("scan"):
+        return {"ok": False, "error": "No repository scanned yet."}
+    packet = _STATE.get("session_export")
+    if not packet:
+        packet = atlas_export.session_context({
+            "scan": _STATE["scan"],
+            "index": _STATE.get("index") or {},
+            "summary": current_summary(),
+        })
+        _STATE["session_export"] = packet
+    return {"ok": True, **packet}
 
 
 def _augment_impact_with_architecture(res: Dict[str, Any]) -> None:

@@ -34,6 +34,32 @@ function zfBullets(arr, limit) {
 }
 
 const ZF_TOOL_LABEL = { claude: "Claude", cursor: "Cursor", codex: "Codex" };
+const ZF_FULL_EXPORT = "FULL_EXPORT";
+const ZF_MINIMAL_EXPORT = "MINIMAL_EXPORT";
+
+function zfExportMode() {
+  return (window.STATE && STATE.exportMode) || ZF_MINIMAL_EXPORT;
+}
+
+function zfWorkflowResult(kind) {
+  if (!window.STATE) return {};
+  if (kind === "investigate") return STATE.investigateResult || {};
+  if (kind === "impact") return STATE.impactResult || {};
+  return STATE.buildResult || {};
+}
+
+function zfServerExportText(kind) {
+  const r = zfWorkflowResult(kind);
+  const mode = zfExportMode();
+  const block = mode === ZF_FULL_EXPORT ? r.export_full : (r.export || r.export_minimal);
+  return (block && block.text) ? block.text : "";
+}
+
+function zfSessionPrefix() {
+  const se = window.STATE && STATE.sessionExport;
+  if (!se || !se.text) return "";
+  return se.text.trim() + "\n\n";
+}
 
 function zfTrustBlock(result) {
   const r = result || {};
@@ -169,10 +195,16 @@ function zfImpactPromptBody() {
   ].filter(l => l !== "").join("\n");
 }
 
-function zfPromptBody(kind) {
+function zfLegacyFullPromptBody(kind) {
   if (kind === "investigate") return zfInvestigatePromptBody();
   if (kind === "impact") return zfImpactPromptBody();
   return zfChangePromptBody();
+}
+
+function zfPromptBody(kind) {
+  const server = zfServerExportText(kind);
+  if (server) return server;
+  return zfLegacyFullPromptBody(kind);
 }
 
 function zfHasResult(kind) {
@@ -184,7 +216,7 @@ function zfHasResult(kind) {
 
 function composeAiPrompt(tool, kind) {
   const intro = `You are ${ZF_TOOL_LABEL[tool] || "an AI coding assistant"} working in this repository. Implement the plan below carefully and safely.\n\n`;
-  return intro + zfPromptBody(kind);
+  return intro + zfSessionPrefix() + zfPromptBody(kind);
 }
 
 /* ---------------- actions ---------------- */
@@ -202,7 +234,7 @@ function downloadAiMarkdown(kind) {
     if (typeof toast === "function") toast("Generate a result first", "error");
     return;
   }
-  const body = zfPromptBody(kind);
+  const body = zfSessionPrefix() + zfPromptBody(kind);
   const repo = (zfRepoName() || "atlas").replace(/[^\w.-]+/g, "_");
   const blob = new Blob([body], { type: "text/markdown" });
   const a = document.createElement("a");
@@ -217,7 +249,7 @@ function downloadAiMarkdown(kind) {
 function sendToAiPanel(kind) {
   return `<div class="send-to-ai glass" data-kind="${kind}">
     <h3 class="send-to-ai-title">Send this to your AI coding tool</h3>
-    <p class="muted tiny">Copy a ready-to-use prompt with repository context, the right files, implementation order, risks, and tests.</p>
+    <p class="muted tiny">Copy a minimal grounded export (session context sent once per scan + this question's files, confidence, and evidence).</p>
     <div class="copy-row">
       <button class="btn primary small" type="button" onclick="copyForAi('claude','${kind}')">Copy for Claude</button>
       <button class="btn small" type="button" onclick="copyForAi('cursor','${kind}')">Copy for Cursor</button>

@@ -505,6 +505,8 @@ async function loadDemoMode(pack) {
   STATE.demoPack = scan.demo_pack || packId;
   try { localStorage.setItem(DEMO_PACK_KEY, STATE.demoPack); } catch (e) {}
   STATE.summary = await api("/api/repositories/current/summary");
+  STATE.sessionExport = await api("/api/repositories/current/session-export");
+  STATE.exportMode = "MINIMAL_EXPORT";
   finishScanSession(scan, null);
   toast("Demo loaded ✓", "success");
 }
@@ -744,6 +746,8 @@ async function executeScanFlow(validation) {
   }
   $("scanMetrics").innerHTML = metricGrid(scan);
   STATE.summary = await api("/api/repositories/current/summary");
+  STATE.sessionExport = await api("/api/repositories/current/session-export");
+  STATE.exportMode = "MINIMAL_EXPORT";
   finishScanSession(scan, sel.path);
   toast("Scan complete ✓", "success");
   if ((scan.module_count || 0) < GRAPH_HIERARCHY_THRESHOLD) {

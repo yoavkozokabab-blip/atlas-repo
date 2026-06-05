@@ -102,6 +102,7 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
             timeout_sec=float(body.get("timeout_sec")) if body.get("timeout_sec") is not None else None,
         ),
         ("GET", "/api/repositories/current/summary"): lambda _body, _query: api.current_summary(),
+        ("GET", "/api/repositories/current/session-export"): lambda _body, _query: api.session_export_packet(),
         ("GET", "/api/repositories/current/graph"): lambda _body, query: api.current_graph(
             str(query.get("view", "module")),
             force_module=str(query.get("force_module", "0")).lower() in {"1", "true", "yes"},
