@@ -1,4 +1,4 @@
-/* Phase 137B — billing / usage dashboards (local data, no payments). */
+/* billing / usage dashboards (local data, no payments). */
 (function () {
   "use strict";
 
@@ -173,7 +173,7 @@
       cards.innerHTML = "";
       if (empty) {
         empty.style.display = "block";
-        empty.textContent = "Usage dashboard will appear after Atlas records local activity. Run a scan or generate a Build Plan to populate metrics.";
+        empty.textContent = "Usage dashboard will appear after Atlas records local activity. Run a scan or create a Change Plan to populate metrics.";
       }
       return;
     }
@@ -209,9 +209,9 @@
     [
       ["Scans this month", usage.scans_used],
       ["Repositories scanned", usage.repositories_used],
-      ["Build plans", usage.build_plans],
-      ["Investigations", usage.investigations],
-      ["Impact analyses", usage.impacts],
+      ["Change Plans", usage.build_plans],
+      ["Debug", usage.investigations],
+      ["What Breaks", usage.impacts],
       ["Exports", usage.exports_used],
       ["Atlas compute units", usage.atlas_compute_units || usage.token_equivalent_total],
       ["Token-equivalent est.", usage.token_equivalent_total]
@@ -219,7 +219,7 @@
 
     if (empty) {
       empty.style.display = hasData ? "none" : "block";
-      empty.textContent = d.empty_state_message || "No usage recorded yet. Run a scan or generate a Build Plan to populate this dashboard.";
+      empty.textContent = d.empty_state_message || "No usage recorded yet. Run a scan or create a Change Plan to populate this dashboard.";
     }
 
     var lim = document.getElementById("limits");
@@ -333,9 +333,9 @@
       ["Total events", d.total_events],
       ["Total scans", d.total_scans],
       ["Repositories", d.total_repositories],
-      ["Build plans", d.total_build_plans],
-      ["Investigations", d.total_investigations],
-      ["Impact analyses", d.total_impacts],
+      ["Change Plans", d.total_build_plans],
+      ["Debug", d.total_investigations],
+      ["What Breaks", d.total_impacts],
       ["Exports", d.total_exports],
       ["Failed scans", d.failed_scans],
       ["Atlas compute units", d.estimated_atlas_compute_units || d.token_equivalent_total],

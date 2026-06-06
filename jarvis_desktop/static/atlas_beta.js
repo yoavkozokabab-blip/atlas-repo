@@ -1,5 +1,5 @@
 "use strict";
-/* Phase 141 — private beta launch: feedback, exports, walkthrough, diagnostics, about */
+/* private beta launch: feedback, exports, walkthrough, diagnostics, about */
 
 const WF_FEEDBACK_KEY = "atlas_workflow_feedback";
 const WELCOME_KEY = "atlas_welcome_v141_done";
@@ -51,7 +51,7 @@ function voteWorkflowFeedback(workflow, vote) {
 function impactResultMarkdown(r) {
   if (!r || !r.ok) return "";
   const lines = [
-    `# Impact: ${r.target || ""}`,
+    `# What breaks if ${r.target || "this module"} changes`,
     "",
     `- Risk: ${r.risk_level || "unknown"}`,
     `- Confidence: ${r.confidence || "medium"}`,
@@ -81,19 +81,19 @@ function buildWorkflowMarkdownBundle() {
     "",
   ];
   if (STATE.buildResult && STATE.buildResult.ok) {
-    parts.push("---", "", "## Build Plan", "", STATE.buildResult.formatted || "(no markdown body)", "");
+    parts.push("---", "", "## Change Plan", "", STATE.buildResult.formatted || "(no markdown body)", "");
   } else {
-    parts.push("## Build Plan", "", "_Not generated in this session._", "");
+    parts.push("## Change Plan", "", "_Not generated in this session._", "");
   }
   if (STATE.investigateResult && STATE.investigateResult.ok) {
-    parts.push("---", "", "## Investigation", "", STATE.investigateResult.formatted || "(no markdown body)", "");
+    parts.push("---", "", "## Debug", "", STATE.investigateResult.formatted || "(no markdown body)", "");
   } else {
-    parts.push("## Investigation", "", "_Not generated in this session._", "");
+    parts.push("## Debug", "", "_Not generated in this session._", "");
   }
   if (STATE.impactResult && STATE.impactResult.ok) {
     parts.push("---", "", impactResultMarkdown(STATE.impactResult), "");
   } else {
-    parts.push("## Impact", "", "_Not generated in this session._", "");
+    parts.push("## What breaks?", "", "_Not generated in this session._", "");
   }
   return parts.join("\n");
 }
@@ -134,12 +134,12 @@ function closeAboutAtlas() {
 
 async function openReportIssue() {
   const ctx = await collectIssueContext();
-  if (window.JarvisFeedback && typeof JarvisFeedback.openReportIssue === "function") {
-    JarvisFeedback.openReportIssue(ctx);
+  if (window.AtlasFeedback && typeof AtlasFeedback.openReportIssue === "function") {
+    AtlasFeedback.openReportIssue(ctx);
     return;
   }
-  if (window.JarvisFeedback && typeof JarvisFeedback.open === "function") {
-    JarvisFeedback.open("bug");
+  if (window.AtlasFeedback && typeof AtlasFeedback.open === "function") {
+    AtlasFeedback.open("bug");
     return;
   }
   if (typeof toast === "function") toast("Report Issue unavailable — reload the app", "error");
@@ -176,7 +176,7 @@ function welcomeScanMyRepo() {
 function welcomeLoadSample() {
   dismissWelcomeScreen(false);
   if (typeof onboardingLoadSample === "function") onboardingLoadSample();
-  else if (typeof loadDemoMode === "function") loadDemoMode("small");
+  else if (typeof loadDemoMode === "function") loadDemoMode("medium");
 }
 
 function welcomeStartWalkthrough() {
@@ -193,13 +193,13 @@ function maybeShowWelcomeScreen() {
 }
 
 const GUIDED_STEPS = [
-  { title: "Welcome", text: "Atlas prepares grounded Build Plans for your AI tools. It maps code locally and does not write patches for you.", action: null },
+  { title: "Welcome", text: "Atlas prepares grounded Change Plans for your AI tools. It maps code locally and does not write patches for you.", action: null },
   { title: "Sample repository", text: "We'll load a small bundled codebase so you can explore without cloning anything.", action: "load_sample" },
   { title: "Repository Map", text: "The 3D map shows modules, dependencies, and architectural risk. Click nodes to inspect them.", view: "center", action: "wait_map" },
-  { title: "Your first Build Plan", text: "We will load a sample repo and generate a plan — affected files, order, and tests. You implement the change (or paste the export into Claude/Cursor).", view: "build", action: "build_example" },
-  { title: "Investigate", text: "Paste a symptom or traceback. Atlas ranks hypotheses and verification steps.", view: "investigate", action: "investigate_example" },
-  { title: "Impact", text: "Enter a file or module to see blast radius before you edit.", view: "impact", action: "impact_example" },
-  { title: "Export", text: "Download Build, Investigation, and Impact as one markdown file, or copy AI context packets.", view: "export", action: null },
+  { title: "Your first Change Plan", text: "We will load a sample repo and generate a plan — affected files, order, and tests. You implement the change (or paste the export into Claude/Cursor).", view: "build", action: "build_example" },
+  { title: "Debug", text: "Paste a symptom or traceback. Atlas ranks likely causes and verification steps.", view: "investigate", action: "investigate_example" },
+  { title: "What breaks?", text: "Enter a file or module to see what depends on it before you edit.", view: "impact", action: "impact_example" },
+  { title: "Repository Context", text: "Copy repo-wide context for Claude, Cursor, or Codex — or download workflow markdown.", view: "export", action: null },
   { title: "You're ready", text: "Scan your own repository from Home, or keep exploring the sample. Use Report Issue if something breaks.", action: "done" },
 ];
 
@@ -225,7 +225,7 @@ function stopGuidedWalkthrough() {
 
 async function runGuidedAction(action) {
   if (action === "load_sample") {
-    if (typeof loadDemoMode === "function") await loadDemoMode("small");
+    if (typeof loadDemoMode === "function") await loadDemoMode("medium");
     return;
   }
   if (action === "wait_map") {

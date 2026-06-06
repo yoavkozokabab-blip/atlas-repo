@@ -1,5 +1,5 @@
 "use strict";
-/* Phase 146 — beta polish: first Build Plan funnel, copy, installer friction (no new intelligence). */
+/* beta polish: first Build Plan funnel, copy, installer friction (no new intelligence). */
 
 const FIRST_BUILD_KEY = "atlas_first_build_plan_done";
 const FIRST_BUILD_PROMPT = "Add structured logging to API handlers";
@@ -25,7 +25,7 @@ function markFirstBuildPlanDone() {
 
 function promptFirstBuildPlanAfterScan(scan) {
   if (!scan || !scan.ok) return;
-  // Phase 155 — do NOT auto-jump. Let the success screen land so the user
+  // do NOT auto-jump. Let the success screen land so the user
   // clearly sees what Atlas understood, then chooses "Generate your first
   // Change Plan" themselves.
   let done = false;
@@ -46,12 +46,15 @@ function renderScanReliabilityNotice(scan) {
     host.innerHTML = "";
     return;
   }
-  const items = warnings.length ? warnings : [rel.category ? `Scan category: ${rel.category}` : "Scan completed with limited graph coverage."];
+  const relNote = rel.category && typeof atlasFriendlyReliability === "function"
+    ? atlasFriendlyReliability(rel.category)
+    : (rel.category ? String(rel.category).replace(/_/g, " ") : "Scan completed with limited coverage.");
+  const items = warnings.length ? warnings : [relNote];
   host.style.display = "block";
   host.innerHTML = `<div class="beta-notice warn">
     <b>Scan note</b>
     <ul class="clean tiny">${items.map(w => `<li>${escPolish(w)}</li>`).join("")}</ul>
-    <p class="muted tiny">You can still run Build Plan and Impact — results may list fewer grounded files. Try a narrower scan scope if this is your own repo.</p>
+    <p class="muted tiny">You can still run Change Plan and What breaks? — results may list fewer grounded files. Try a narrower scan scope if this is your own repo.</p>
   </div>`;
 }
 

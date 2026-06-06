@@ -99,7 +99,7 @@ function renderGraphModeMetrics(sum, graph) {
     const coverage = gh.label || "—";
     if (view === "module") {
       const riskLabel = risk > 60 ? "high" : risk > 30 ? "medium" : risk > 0 ? "low" : "—";
-      const coverageLabel = coverage === "healthy" ? "complete" : coverage === "watch" ? "partial" : (coverage || "—");
+      const coverageLabel = coverage === "healthy" ? "complete" : coverage === "watch" ? "incomplete" : (coverage || "—");
       host.innerHTML = `
         <div class="scale-row">
           <div class="scale-stat"><span class="scale-num">${vis.nodes.toLocaleString()}</span><span class="scale-lbl">modules</span></div>
@@ -188,7 +188,9 @@ function showFullModuleGraph() {
 
 function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
-const TELEMETRY_WARNING_TEXT = "Telemetry unavailable. Repository analysis unaffected.";
+const TELEMETRY_WARNING_TEXT = typeof atlasFriendlyTelemetry === "function"
+  ? atlasFriendlyTelemetry("")
+  : "Usage stats temporarily unavailable — scanning and plans still work.";
 
 function updateTelemetryWarning(source) {
   const el = $("telemetryWarning");
@@ -196,7 +198,8 @@ function updateTelemetryWarning(source) {
   const degraded = source && (source.analytics_status === "degraded" || source.telemetry_warning);
   if (degraded) {
     el.style.display = "block";
-    el.textContent = source.telemetry_warning || TELEMETRY_WARNING_TEXT;
+    const raw = source.telemetry_warning || TELEMETRY_WARNING_TEXT;
+    el.textContent = typeof atlasFriendlyTelemetry === "function" ? atlasFriendlyTelemetry(raw) : raw;
   } else {
     el.style.display = "none";
   }
@@ -292,9 +295,9 @@ function workflowEmptyHtml(title, body, primaryLabel, primaryFn, secondaryLabel,
 
 function renderWorkflowGate(view) {
   const map = {
-    build: { el: "buildOut", title: "Scan a repository first.", body: "Atlas needs a codebase to plan against. Scan your own folder, or load the bundled sample (about 60 seconds).", primary: "Scan Repository", fn: "go('home')", secondary: "Load Sample Repository", fn2: "loadDemoMode()" },
-    investigate: { el: "investigateOut", title: "Scan a repository first.", body: "Describe a symptom after Atlas has indexed your codebase.", primary: "Scan Repository", fn: "go('home')", secondary: "Load Sample Repository", fn2: "loadDemoMode()" },
-    impact: { el: "impactOut", title: "Scan a repository first.", body: "Enter a file or module path after scanning to see blast radius.", primary: "Scan Repository", fn: "go('home')", secondary: "Load Sample Repository", fn2: "loadDemoMode()" },
+    build: { el: "buildOut", title: "Scan a repository first.", body: "Atlas needs a codebase to plan against. Scan your own folder, or load the bundled sample (about 60 seconds).", primary: "Choose a folder", fn: "go('home')", secondary: "Load Sample Repository", fn2: "loadDemoMode()" },
+    investigate: { el: "investigateOut", title: "Scan a repository first.", body: "Describe a symptom after Atlas has indexed your codebase.", primary: "Choose a folder", fn: "go('home')", secondary: "Load Sample Repository", fn2: "loadDemoMode()" },
+    impact: { el: "impactOut", title: "Scan a repository first.", body: "Enter a file or module path after scanning to see what depends on it.", primary: "Choose a folder", fn: "go('home')", secondary: "Load Sample Repository", fn2: "loadDemoMode()" },
   };
   const spec = map[view];
   if (!spec) return false;
@@ -316,15 +319,28 @@ function fiUserFacingStatus(status, goal) {
   return status;
 }
 
+const WORKFLOW_ERROR_FRIENDLY = {
+  no_repository: "Scan a repository first.",
+  stale_context: "Your repository changed — rescan or refresh, then try again.",
+  partial_graph: "The dependency map is incomplete — try a narrower scan scope.",
+  unsupported_language: "This repository uses languages with limited support.",
+  grounding_gap: "Atlas needs more detail — include a file path or error message.",
+};
+
 function workflowErrorHtml(title, r, hint) {
-  const msg = r.demo_notice || r.error || hint || "Request failed";
+  const code = r && r.code;
+  const msg = r.demo_notice
+    || (code && WORKFLOW_ERROR_FRIENDLY[code])
+    || (r.error && !String(r.error).includes("_") ? r.error : null)
+    || hint
+    || "Something went wrong — try again or load the sample repository.";
   const extra = r.demo_notice ? "" : `<p class="muted tiny">${esc(hint || "")}</p>`;
   return `<div class="glass empty-panel"><h3 style="margin:0">${esc(title)}</h3><p class="muted">${esc(msg)}</p>${extra}</div>`;
 }
 
 function renderWorkflowQuickStarts(view) {
   if (!STATE.summary?.ok) return;
-  const pack = STATE.demoPack || STATE.summary?.demo_pack || "small";
+  const pack = STATE.demoPack || STATE.summary?.demo_pack || "medium";
   const byPack = {
     small: {
       build: "Improve error handling in core/hub.py",
@@ -390,9 +406,9 @@ function showScanFailed(message, code) {
     not_found: ["Check spelling and drive letter.", "Click Validate before scanning."],
     no_code_files: ["Choose a folder that contains .py, .ts, .js, or similar source files.", "Load a sample repository to explore Atlas first."],
     permission_denied: ["Run Atlas from an account that can read the folder.", "Avoid Windows system folders and protected drives."],
-    partial_graph: ["You can still run Build Plan — some files may have fewer links.", "For your own repo: try scan scope “Only backend” or “Only Python”."],
+    partial_graph: ["You can still run Change Plan — some files may have fewer links.", "For your own repo: try scan scope “Only backend” or “Only Python”."],
     not_directory: ["Choose the repository root folder, not a single file.", "Use Browse or paste the parent directory path."],
-    symbols_missing: ["Build Plan and Investigation may have fewer file anchors.", "Re-scan after fixing syntax errors in key entry files."],
+    symbols_missing: ["Change Plan and Debug may have fewer file anchors.", "Re-scan after fixing syntax errors in key entry files."],
   };
   $("scanFailedHints").innerHTML = (hints[code] || [
     "Load a sample repository to see Atlas working end-to-end.",
@@ -419,7 +435,7 @@ function renderScanSuccess(scan) {
   $("scanSuccessMetrics").innerHTML = [
     ["Files", scan.file_count],
     ["Modules", scan.module_count],
-    ["Subsystems", scan.subsystem_count],
+    ["Architecture groups", scan.subsystem_count],
   ].map(([l, v]) => `<div class="metric"><div class="mv">${v ?? "—"}</div><div class="ml">${l}</div></div>`).join("") + tokenSavingNote;
 
   // Plain-language risk: most depended-on module, not raw score
@@ -563,7 +579,7 @@ function finishScanSession(scan, pathLabel) {
   else if (scan.demo_mode || scan.module_count) {
     setTimeout(function () {
       go("center");
-      toast("Repository Map ready — try Build Plan next", "success");
+      toast("Codebase Map ready — try Change Plan next", "success");
     }, scan.demo_mode ? 400 : 1200);
   }
 }
@@ -857,7 +873,7 @@ function pushRecent(p, scan) {
 
 /* ---------------- Scan flow ---------------- */
 const STAGES = ["Indexing repository", "Building dependency graph", "Extracting architecture",
-  "Detecting architectural risks", "Extracting contracts", "Generating verification evidence", "Building AI context packets"];
+  "Detecting architectural risks", "Extracting contracts", "Generating verification evidence", "Preparing export context"];
 
 const STAGE_LABEL_INDEX = {};
 STAGES.forEach((label, i) => { STAGE_LABEL_INDEX[label] = i; });
@@ -937,7 +953,7 @@ async function executeScanFlow(validation) {
     $("scanModeInfo").textContent = "Massive Repository Mode enabled. Starting with architecture overview is recommended.";
   } else if (scan.degraded) {
     $("scanModeInfo").style.display = "block";
-    $("scanModeInfo").textContent = "Graph built in degraded/partial mode — some edges may be missing.";
+    $("scanModeInfo").textContent = "Some dependencies could not be linked. Plans still work; results may cover fewer files.";
   } else if (!scan.module_count && (scan.code_files || scan.file_count || 0) > 0) {
     $("scanModeInfo").style.display = "block";
     $("scanModeInfo").textContent = "This repository uses languages not yet supported for dependency extraction.";
@@ -1101,9 +1117,10 @@ function renderMapHeader(sum) {
   if (nameEl) nameEl.textContent = sum.repo_name ? `· ${sum.repo_name}` : "";
   const badge = $("mapHealthBadge");
   if (badge) {
-    const label = sum.graph_health?.label || "—";
+    const raw = sum.graph_health?.label || "—";
+    const label = typeof atlasFriendlyGraphHealth === "function" ? atlasFriendlyGraphHealth(raw) : raw;
     badge.textContent = label;
-    badge.className = `map-health-badge ${label}`;
+    badge.className = `map-health-badge ${raw}`;
   }
 }
 
@@ -1115,7 +1132,7 @@ function setMapWarning(graph, sum) {
   if (!full) { el.style.display = "none"; return; }
   const partial = (sum.graph_health?.label || "") !== "healthy";
   const concise = partial
-    ? "Graph coverage is partial. Most missing links are external or dynamic imports."
+    ? "Some file links could not be resolved. Most missing links are external or dynamic imports."
     : "Some dependencies could not be resolved.";
   el.style.display = "flex";
   el.innerHTML = `<span>${concise}</span><span class="map-warning-details" role="button" tabindex="0" onclick="toast(${JSON.stringify(full)})">Details</span>`;
@@ -1140,7 +1157,7 @@ function renderArchitectureSummary(sum) {
     <div class="taglist">${subsystems.map(s => `<span class="tag" title="${esc((s.dependencies || []).join(", "))}">${esc(s.name)} · ${s.production_files || 0}</span>`).join("") || '<span class="muted tiny">—</span>'}</div>
     ${areaTags ? `<div class="taglist" style="margin-top:6px">${areaTags}</div>` : ""}
     ${boundaries.length ? `<p class="muted tiny" style="margin-top:6px">Boundaries: ${boundaries.map(b => esc((b.module || b.path || "").split("/").pop())).join(", ")}</p>` : ""}
-    ${internal ? `<p class="muted tiny">Internal unresolved imports: <b>${internal}</b> (graph health driver)</p>` : ""}
+    ${internal ? `<p class="muted tiny">Imports Atlas could not link: <b>${internal}</b></p>` : ""}
     ${Object.keys(buckets).length ? `<p class="muted tiny">Unresolved: ${Object.entries(buckets).filter(([,v]) => v).slice(0,5).map(([k,v]) => `${k} ${v}`).join(" · ")}</p>` : ""}
     <p class="muted tiny" style="margin-top:8px">Entry: ${esc((sum.entry_points || []).slice(0, 3).join(", ") || "none detected")}</p>`;
 }
@@ -1175,7 +1192,7 @@ function filterModuleBrowseList() {
     const rc = risk >= 60 ? "var(--red)" : risk >= 35 ? "var(--amber)" : risk >= 15 ? "var(--cyan)" : "var(--green)";
     return `<li><button type="button" class="mbp-item" onclick="selectModuleFromList(${JSON.stringify(path)})">
       <span class="mbp-path">${esc(path)}</span>
-      <span class="mbp-meta"><b style="color:${rc}">risk ${risk}</b> · in ${fi} · out ${fo}${sub ? " · " + esc(sub) : ""}</span>
+      <span class="mbp-meta"><b style="color:${rc}">risk ${risk}</b> · ${fi} dependents · ${fo} imports</span>
     </button></li>`;
   }).join("") || '<li class="muted tiny">No modules match filter</li>';
 }
@@ -1211,9 +1228,9 @@ function renderPerformancePanel(health) {
       <div class="perf-row"><span>Total scan</span><b>${formatMs(scanPerf.total_duration_ms)}</b></div>
       <div class="perf-row"><span>Graph build</span><b>${formatMs(byStage.building_graph || byStage.building_dependency_graph)}</b></div>
       <div class="perf-row"><span>Evidence index</span><b>${formatMs(byStage.building_evidence_index)}</b></div>
-      <div class="perf-row"><span>Build plan</span><b>${formatMs((wf.build_plan || {}).duration_ms)}</b></div>
-      <div class="perf-row"><span>Investigation</span><b>${formatMs((wf.investigation || {}).duration_ms)}</b></div>
-      <div class="perf-row"><span>Impact analysis</span><b>${formatMs((wf.impact || {}).duration_ms)}</b></div>
+      <div class="perf-row"><span>Change Plan</span><b>${formatMs((wf.build_plan || {}).duration_ms)}</b></div>
+      <div class="perf-row"><span>Debug</span><b>${formatMs((wf.investigation || {}).duration_ms)}</b></div>
+      <div class="perf-row"><span>What breaks?</span><b>${formatMs((wf.impact || {}).duration_ms)}</b></div>
     </div>`;
 }
 
@@ -1223,12 +1240,15 @@ async function renderSystemHealth(sum) {
   const gh = sum.graph_health || {};
   const ev = sum.evidence_coverage || {};
   const showTokenSavings = sav.show_in_cockpit === true && sav.verified === true;
-  const ratioNote = gh.unresolved_ratio_note || "Internal unresolved ÷ (resolved + unresolved internal)";
+  const ratioNote = gh.unresolved_ratio_note || "";
   const graphNotice = gh.notice
     ? `<div class="cockpit-card wide"><div class="cc-label">Graph note</div><div class="cc-val" style="font-size:13px;color:var(--amber)">${esc(gh.notice)}</div></div>`
     : "";
+  const telMsg = typeof atlasFriendlyTelemetry === "function"
+    ? atlasFriendlyTelemetry(sum.telemetry_warning || TELEMETRY_WARNING_TEXT)
+    : (sum.telemetry_warning || TELEMETRY_WARNING_TEXT);
   const tel = sum.analytics_status === "degraded"
-    ? `<div class="cockpit-card wide"><div class="cc-label">Telemetry</div><div class="cc-val" style="font-size:13px;color:var(--amber)">${esc(sum.telemetry_warning || TELEMETRY_WARNING_TEXT)}</div></div>`
+    ? `<div class="cockpit-card wide"><div class="cc-label">Usage stats</div><div class="cc-val" style="font-size:13px;color:var(--amber)">${esc(telMsg)}</div></div>`
     : "";
   const tokenCard = showTokenSavings
     ? `<div class="cockpit-card"><div class="cc-label">Token savings (verified)</div><div class="cc-val" id="ccSavings">${sav.reduction_percent || 0}%</div></div>`
@@ -1242,10 +1262,10 @@ async function renderSystemHealth(sum) {
     <div class="cockpit-grid">
       <div class="cockpit-card"><div class="cc-label">Indexed files</div><div class="cc-val">${(sum.file_count || 0).toLocaleString()}</div></div>
       <div class="cockpit-card"><div class="cc-label">Modules</div><div class="cc-val" id="ccModules">${(sum.module_count || 0).toLocaleString()}</div></div>
-      <div class="cockpit-card"><div class="cc-label">Edges</div><div class="cc-val">${(sum.dependency_edges || 0).toLocaleString()}</div></div>
-      <div class="cockpit-card warn"><div class="cc-label">Unresolved imports</div><div class="cc-val">${gh.unresolved_internal ?? gh.unresolved_imports ?? 0}</div></div>
+      <div class="cockpit-card"><div class="cc-label">Module links</div><div class="cc-val">${(sum.dependency_edges || 0).toLocaleString()}</div></div>
+      <div class="cockpit-card warn"><div class="cc-label">Unlinked imports</div><div class="cc-val">${gh.unresolved_internal ?? gh.unresolved_imports ?? 0}</div></div>
       <div class="cockpit-card"><div class="cc-label">Scan duration</div><div class="cc-val" style="font-size:16px">${sum.scan_duration_seconds != null ? sum.scan_duration_seconds + "s" : "—"}</div></div>
-      <div class="cockpit-card"><div class="cc-label">Graph quality</div><div class="cc-val" id="ccHealth" style="font-size:16px;color:${healthColor}">${gh.label || "—"}</div></div>
+      <div class="cockpit-card"><div class="cc-label">Scan quality</div><div class="cc-val" id="ccHealth" style="font-size:16px;color:${healthColor}">${typeof atlasFriendlyGraphHealth === "function" ? atlasFriendlyGraphHealth(gh.label) : (gh.label || "—")}</div></div>
     </div>
     <div class="cockpit-grid">
       <div class="cockpit-card"><div class="cc-label">Symbols indexed</div><div class="cc-val">${(ev.symbol_count || 0).toLocaleString()}</div></div>
@@ -1258,9 +1278,9 @@ async function renderSystemHealth(sum) {
     <h3 style="margin-top:12px">Performance</h3>
     <div id="perfPanel"><p class="muted tiny">Loading timings…</p></div>
     <div id="architectureSummary"></div>
-    <h3 style="margin-top:14px" title="Architectural risk: coupling, boundaries, cycles & runtime criticality — not just fan-in">Riskiest to change</h3>
+    <h3 style="margin-top:14px">Riskiest to change</h3>
     <ul class="clean cockpit-hubs">${(sum.top_risks || []).slice(0, 5).map(r => `<li><b style="color:${riskColor(r.score)}">${(r.module || r.path || "").split(/[./\\]/).pop()}</b> <span class="muted">${r.score ?? ""}</span></li>`).join("") || '<li class="muted tiny">Scan more modules to populate risk ranking.</li>'}</ul>
-    <h3 style="margin-top:14px" title="Heavily depended-on modules (high fan-in)">Most depended-on</h3>
+    <h3 style="margin-top:14px">Most depended-on</h3>
     <ul class="clean cockpit-hubs">${(sum.top_hubs || []).slice(0, 5).map(h => `<li>${(h.module || h.path || "").split(/[./\\]/).pop()} <span class="muted">← ${h.fan_in}</span></li>`).join("") || '<li class="muted tiny">No hub data yet.</li>'}</ul>`;
   ATLAS_UNIVERSE.animateCounter($("ccRisk"), sum.risk_score, 800);
   ATLAS_UNIVERSE.animateCounter($("ccModules"), sum.module_count, 900);
@@ -1483,7 +1503,7 @@ async function renderModuleInspector(node) {
       <div class="nr"><span>risk score</span><b style="color:${riskColor(info.risk_score)}">${info.risk_score}</b></div>
       <div class="nr"><span>rank</span><b>${info.risk_rank ?? "—"}</b></div>
       <div class="nr"><span>LOC</span><b>${info.loc}</b></div>
-      <div class="nr"><span>fan-in / fan-out</span><b>${info.fan_in} / ${info.fan_out}</b></div>
+      <div class="nr"><span>dependents / dependencies</span><b>${info.fan_in} / ${info.fan_out}</b></div>
       <div class="nr"><span>cycle member</span><b>${info.in_cycle ? "yes" : "no"}</b></div>
       <div class="nr"><span>blast radius</span><b>${info.blast_radius}</b></div>
       <div class="inspector-evidence"><div class="copilot-label">Importers</div><div class="taglist">${(info.importers || []).slice(0, 8).map(f => `<span class="tag">${f}</span>`).join("") || '<span class="muted">none</span>'}</div></div>
@@ -1666,7 +1686,7 @@ async function startProductTour() {
   if (!STATE.productTourActive) return;
   const hub = STATE.summary?.top_hubs?.[0]?.path;
   if (hub) {
-    setProductTourStep("Impact analysis", `Simulating blast radius if you change ${hub}.`);
+    setProductTourStep("What breaks?", `Showing what depends on ${hub} before you change it.`);
     $("impactTarget").value = hub;
     go("impact");
     await runImpact();
@@ -1677,7 +1697,7 @@ async function startProductTour() {
   go("export");
   await refreshExport();
   await sleep(4000);
-  setProductTourStep("Tour complete", "Export Demo Bundle for marketing assets, or scan your own repository.");
+  setProductTourStep("Tour complete", "Scan your own repository from Home, or keep exploring the sample.");
   STATE.productTourActive = false;
   toast("Product tour complete ✓", "success");
 }
@@ -1690,7 +1710,7 @@ async function copyContext(target) {
   copyText(text, `Copied ${target} context`);
 }
 
-/* ---------------- Build Plan ---------------- */
+/* ---------------- Change Plan ---------------- */
 function esc(s) { return String(s || "").replace(/</g, "&lt;"); }
 
 function renderLimitations(items) {
@@ -1800,7 +1820,7 @@ async function runChangePlan() {
   // Explanatory sentence: why these files?
   const topFiles = (p.files_to_inspect_first || []).slice(0, 3);
   const filesNote = topFiles.length
-    ? `<p class="muted tiny" style="margin:0 0 10px">These files ranked highest by how many other modules depend on them${p.likely_affected_subsystems?.length ? ` in the <b>${esc(p.likely_affected_subsystems[0])}</b> subsystem` : ""}.</p>`
+    ? `<p class="muted tiny" style="margin:0 0 10px">These files ranked highest by how many other modules depend on them${p.likely_affected_subsystems?.length ? ` in <b>${esc(p.likely_affected_subsystems[0])}</b>` : ""}.</p>`
     : "";
   out.innerHTML = `
     ${typeof beginnerPlanHero === "function" ? beginnerPlanHero(p, "build") : (typeof sendToAiPanel === "function" ? sendToAiPanel("build") : "")}
@@ -1808,7 +1828,7 @@ async function runChangePlan() {
     <div class="glass ocard">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
         <h3 style="margin:0">Change Plan</h3>
-        <span class="lvl ${p.confidence?.includes('high') ? 'low' : 'medium'}">confidence: ${esc(p.confidence)}</span>
+        <span class="lvl ${p.confidence?.includes('high') ? 'low' : 'medium'}">${typeof atlasFriendlyConfidence === "function" ? atlasFriendlyConfidence(p.confidence) : esc(p.confidence)} confidence</span>
       </div>
       ${filesNote}
       <p class="muted tiny" style="margin:4px 0 10px">Size: <b>${esc(p.estimated_change_size)}</b> · Risk: <b>${esc(p.risk_level)}</b></p>
@@ -1827,7 +1847,7 @@ async function runChangePlan() {
         <pre class="code" style="max-height:320px;overflow:auto">${esc(r.formatted || "")}</pre>
       </details>
       ${renderLimitations(r.limitations)}
-      <details style="margin-top:12px"><summary class="muted tiny">Raw planning prompt</summary>
+      <details style="margin-top:12px"><summary class="muted tiny">Advanced prompt preview</summary>
         <pre class="code">${esc(prompts.claude || "")}</pre></details>
       <details style="margin-top:10px"><summary class="muted tiny">Simulate blast radius</summary>
         <div class="pick-row" style="margin-top:8px">
@@ -1871,7 +1891,7 @@ async function runInvestigationPlan() {
   const r = await api("/api/planning/investigate", "POST", { symptom });
   const out = $("investigateOut");
   if (!r.ok) {
-    out.innerHTML = workflowErrorHtml("Investigation could not run", r, "Include a file path, error message, or subsystem name for better grounding.");
+    out.innerHTML = workflowErrorHtml("Debug could not run", r, "Include a file path, error message, or module name for better grounding.");
     return;
   }
   STATE.investigateResult = r;
@@ -1882,7 +1902,7 @@ async function runInvestigationPlan() {
     <div class="advanced-only glass ocard">
       <div style="display:flex;justify-content:space-between;align-items:center">
         <h3 style="margin:0">Debug analysis</h3>
-        <span class="lvl ${p.confidence === 'high' ? 'low' : p.confidence === 'low' ? 'unknown' : 'medium'}">confidence: ${esc(p.confidence)}</span>
+        <span class="lvl ${p.confidence === 'high' ? 'low' : p.confidence === 'low' ? 'unknown' : 'medium'}">${typeof atlasFriendlyConfidence === "function" ? atlasFriendlyConfidence(p.confidence) : esc(p.confidence)} confidence</span>
       </div>
       <div class="report-section">
         <div class="report-label">What you reported</div>
@@ -1957,7 +1977,7 @@ async function runImpact() {
   const r = await api("/api/planning/impact", "POST", { target });
   const out = $("impactOut");
   if (!r.ok) {
-    out.innerHTML = workflowErrorHtml("Impact could not be analyzed", r, "Use a path from the graph or an architecture concept (e.g. authentication, routing).");
+    out.innerHTML = workflowErrorHtml("Could not analyze what breaks", r, "Use a path from the graph or an architecture concept (e.g. authentication, routing).");
     return;
   }
   STATE.impactResult = r;
@@ -1969,7 +1989,7 @@ async function runImpact() {
   }
   const rl = r.risk_level || "unknown";
   const conf = r.confidence || "medium";
-  const mockTag = r.mock ? `<span class="pill warn">target not in graph — heuristic</span>` : "";
+  const mockTag = r.mock ? `<span class="pill warn">Estimate only — not in last scan</span>` : "";
   const list = (arr, n) => (arr || []).slice(0, n || 8).map(t => `<li>${esc(t)}</li>`).join("") || '<li class="muted">—</li>';
   const dirN = (r.direct_impact || []).length;
   const indN = (r.indirect_impact || []).length;
@@ -2119,13 +2139,13 @@ async function refreshExport() {
   const sum = STATE.summary || await api("/api/repositories/current/summary");
   if (!sum.ok) {
     $("exportPreview").innerHTML = emptyStateHtml(
-      "Create a Change Plan first",
-      "Tip: load the sample, create a Change Plan, then use Copy for Claude on that screen. This tab is for advanced repo-wide context only.",
-      "Go to Change Plan",
-      "go('build')"
+      "Scan a repository first",
+      "Load the sample or scan your own folder to preview repo-wide context for Claude, Cursor, or Codex.",
+      "Go to Home",
+      "go('home')"
     );
     $("tokEst").textContent = "—";
-    $("previewMeta").textContent = "Plan first";
+    $("previewMeta").textContent = "Scan first";
     return;
   }
   const res = await api("/api/context/export", "POST", { target: STATE.exportTarget, packet: STATE.exportPacket });

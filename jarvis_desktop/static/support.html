@@ -22,7 +22,7 @@
   </header>
   <main id="app" class="support-page">
     <h2 class="vh">Support &amp; diagnostics</h2>
-    <p class="muted tiny support-lead">Something went wrong, or you want to check Atlas? You're in the right place. Nothing here is uploaded — reports stay on your device unless you send them yourself. New users: start with <b>Load Sample Repository</b> on Home, then <b>Generate your first Change Plan</b>.</p>
+    <p class="muted tiny support-lead">Something went wrong, or you want to check Atlas? You're in the right place. Nothing here is uploaded — reports stay on your device unless you send them yourself. New users: start with <b>Load Sample Repository</b> on Home, then <b>Generate your first Change Plan</b> in the app.</p>
 
     <section class="glass support-card">
       <h3>Install notes</h3>
@@ -36,10 +36,11 @@
     <section class="glass support-card">
       <h3>Common fixes (beta)</h3>
       <ul class="clean support-faq tiny">
-        <li><b>App won’t start</b> — Install Python 3.10+. On Windows use <code>Launch Atlas.bat</code>. On Mac/Linux use <code>python3 run_atlas.py</code> (not <code>py -3</code>).</li>
+        <li><b>App won’t start (installer)</b> — Reinstall from <code>Atlas_Setup.exe</code>, run <b>Installer self-test</b> below, and check Start menu / desktop shortcuts. Python is <b>not</b> required for the installer build.</li>
+        <li><b>App won’t start (source / developers)</b> — Install <b>Python 3.10+</b>. On Windows use <code>py -3 run_atlas.py</code> or <code>Launch Atlas.bat</code>. On Mac/Linux use <code>python3 run_atlas.py</code>.</li>
         <li><b>pip install failed</b> — Do <b>not</b> run the monorepo <code>requirements.txt</code>. Atlas desktop needs no pip packages for the built-in server.</li>
         <li><b>Scan never finishes</b> — Avoid scanning <code>node_modules</code>, <code>.git</code>, or <code>.venv</code>. Use scan scope on Home.</li>
-        <li><b>Empty or odd results</b> — Try Load Sample Repository first; then Rebuild index below.</li>
+        <li><b>Empty or odd results</b> — Try Load Sample Repository first; then <b>Rescan saved repository</b> below.</li>
         <li><b>“It won’t write code”</b> — Expected. Atlas plans and exports context; you or your AI assistant implements changes.</li>
       </ul>
     </section>
@@ -75,17 +76,48 @@
       <h3>Recovery actions</h3>
       <p class="muted tiny" style="margin:0 0 10px">These run on your machine. Diagnostics and the support bundle are saved locally — Atlas does not send them anywhere. The support bundle is saved to your browser's <b>Downloads</b> folder.</p>
       <div class="success-buttons">
-        <button class="btn primary" type="button" onclick="supportRebuildIndex()">Rebuild index</button>
-        <button class="btn ghost" type="button" onclick="supportClearCache()">Clear cache</button>
+        <button class="btn primary" type="button" onclick="supportRebuildIndex()">Rescan saved repository</button>
+        <button class="btn ghost" type="button" onclick="supportClearCache()">Clear temporary scan cache</button>
         <button class="btn ghost" type="button" onclick="supportResetOnboarding()">Reset onboarding</button>
         <button class="btn ghost" type="button" onclick="supportCopyDiagnostics()">Copy diagnostics</button>
         <button class="btn ghost" type="button" onclick="supportDownloadBundle()">Open support bundle</button>
       </div>
       <p class="muted tiny" style="margin-top:12px" id="supportActionMsg"></p>
     </section>
+
+    <section class="glass support-card" id="recentIssuesSection" style="display:none">
+      <h3>Recent Issues</h3>
+      <p class="muted tiny" style="margin:0 0 10px">Locally recorded crash and error events. No stack traces are shown by default. All data stays on this device.</p>
+      <div id="recentIssuesList"><p class="muted tiny">Loading…</p></div>
+    </section>
   </main>
   <div id="toast" class="toast"></div>
+  <script src="atlas_copy.js"></script>
   <script src="atlas_product.js"></script>
   <script src="support.js"></script>
+  <script>
+  (async function loadRecentIssues(){
+    try{
+      const r=await fetch("/api/operations/crashes?limit=20");
+      const d=await r.json();
+      if(!d||!d.ok) return;
+      const section=document.getElementById("recentIssuesSection");
+      const list=document.getElementById("recentIssuesList");
+      section.style.display="";
+      const items=(d.items||[]).slice(0,20);
+      if(!items.length){ list.innerHTML='<p class="muted tiny">No issues recorded.</p>'; return; }
+      function esc(s){return String(s||"").replace(/[<>&]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;"}[c]));}
+      list.innerHTML=items.map(it=>`
+        <div style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06)">
+          <div style="display:flex;gap:8px;align-items:baseline;margin-bottom:4px">
+            <span class="tiny" style="color:var(--muted)">${esc((it.at||"").replace("T"," ").replace("Z",""))}</span>
+            <span style="font-size:13px;font-weight:600">${esc(it.kind||"unknown")}</span>
+            ${it.version?`<span class="tiny muted">v${esc(it.version)}</span>`:""}
+          </div>
+          <p class="tiny muted" style="margin:0">${esc((it.message||"").slice(0,160))}</p>
+        </div>`).join("");
+    }catch(e){}
+  })();
+  </script>
 </body>
 </html>

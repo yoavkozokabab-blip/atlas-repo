@@ -1,13 +1,13 @@
 "use strict";
 
-/** Phase 111/116B/121F — Cinematic 3D repository universe (visualization only). */
+/** Cinematic 3D repository universe (visualization only). */
 const ATLAS_UNIVERSE = (() => {
   const LARGE_GRAPH_THRESHOLD = 1000;
   const HOVER_NEIGHBOR_CAP = 100;
   const SELECT_NEIGHBOR_CAP = 250;
   const MODULE_VISUAL_MIN = 5.5;
   const MODULE_VISUAL_MAX = 28;
-  /** Phase 121F — force native ForceGraph spheres for module view (custom meshes were invisible in UI). */
+  /** force native ForceGraph spheres for module view (custom meshes were invisible in UI). */
   const MODULE_FORCE_VISIBLE = true;
   const MODULE_FORCE_MIN_RADIUS = 5;
   const MODULE_FORCE_MAX_RADIUS = 16;
@@ -57,7 +57,7 @@ const ATLAS_UNIVERSE = (() => {
   }
 
   /**
-   * Phase 123 — bounds-aware node sizing.
+   * bounds-aware node sizing.
    *
    * The previous bug: node display radius was capped at ~16 units while the
    * galaxy coordinates spread nodes across hundreds of units. Fit to those
@@ -121,7 +121,7 @@ const ATLAS_UNIVERSE = (() => {
   }
 
   // ----------------------------------------------------------------------
-  // Phase 124 — explicit OPAQUE node spheres.
+  // explicit OPAQUE node spheres.
   //
   // ForceGraph3D's built-in node spheres rendered as near-invisible dots in
   // practice (lit material + fog + camera distance washed them out, leaving a
@@ -291,7 +291,7 @@ const ATLAS_UNIVERSE = (() => {
         fan_in: n.fan_in,
         risk_score: n.risk_score,
         is_hub: n.is_hub,
-        tooltip: `${n.label}\n${n.subsystem || ""}\nfan-in ${n.fan_in} · risk ${n.risk_score}${n.is_hub ? " · HUB" : ""}`,
+        tooltip: `${n.label}\n${n.subsystem || ""}\nimporters: ${n.fan_in} · risk ${n.risk_score}${n.is_hub ? " · HUB" : ""}`,
       });
     });
     links.forEach((link, idx) => {
@@ -354,7 +354,7 @@ const ATLAS_UNIVERSE = (() => {
     const hoverId = U.highlightState.hoverId;
     if (hoverId && U.adj.meta.has(hoverId)) {
       const m = U.adj.meta.get(hoverId);
-      fg.nodeLabel(`${m.label}\n${m.subsystem || ""}\nfan-in ${m.fan_in} · risk ${m.risk_score}${m.is_hub ? " · HUB" : ""}`);
+      fg.nodeLabel(`${m.label}\n${m.subsystem || ""}\nimporters: ${m.fan_in} · risk ${m.risk_score}${m.is_hub ? " · HUB" : ""}`);
     } else {
       fg.nodeLabel("");
     }
@@ -619,7 +619,7 @@ const ATLAS_UNIVERSE = (() => {
   function setupScene(fg) {
     if (typeof THREE === "undefined") return;
     const scene = fg.scene();
-    // Phase 124 — very light fog so edges recede slightly but nodes (fog:false)
+    // very light fog so edges recede slightly but nodes (fog:false)
     // and the scene never wash out. Heavy fog previously hid the graph.
     scene.fog = new THREE.FogExp2(0x070b14, 0.00035);
     const amb = new THREE.AmbientLight(0x446688, 1.05);
@@ -768,7 +768,7 @@ const ATLAS_UNIVERSE = (() => {
     if (!fg || !nodes?.length) return;
     const subsystem = U.subsystemView;
     const bounds = graphSpatialRadius(nodes);
-    // Phase 124 — tighter fit so node spheres are clearly visible at default zoom
+    // tighter fit so node spheres are clearly visible at default zoom
     // (previous multiplier pushed the camera back until nodes looked like dots).
     const dist = Math.max(
       subsystem ? 80 : 95,
@@ -808,7 +808,7 @@ const ATLAS_UNIVERSE = (() => {
     U.subsystemView = data.view === "subsystem" || data.graph_view === "subsystem"
       || nodes.some(n => isSubsystemNode(n));
     U.sceneNodeScale = computeSceneNodeScale(nodes, U.subsystemView);
-    // Phase 123 — native ForceGraph spheres for ALL views, sized to the spatial
+    // native ForceGraph spheres for ALL views, sized to the spatial
     // spread so nodes are reliably visible (visibility > custom-mesh beauty).
     U.forceVisibleModule = true;
     buildNodeSizing(nodes, U.subsystemView);
@@ -833,7 +833,7 @@ const ATLAS_UNIVERSE = (() => {
       .width(host.clientWidth)
       .height(host.clientHeight);
 
-    // Phase 124 — explicit opaque spheres (bulletproof visibility). nodeVal still
+    // explicit opaque spheres (bulletproof visibility). nodeVal still
     // feeds the force layout / spacing; the visible body is our MeshBasicMaterial.
     fg.nodeThreeObject(n => makeNodeMesh(n))
       .nodeThreeObjectExtend(false)

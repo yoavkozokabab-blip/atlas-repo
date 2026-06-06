@@ -7,10 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
-  <!-- 3D dependency graph (Three.js under the hood). Falls back gracefully if offline. -->
-  <!-- expose a global THREE so custom OPAQUE node spheres render.
-       Without this, makeNodeMesh() returns null and ForceGraph falls back to
-       washed-out default spheres (the "invisible nodes / spiderweb" bug). -->
+  <!-- 3D dependency graph (Three.js). Requires global THREE for node rendering. -->
   <script src="https://unpkg.com/three@0.157.0/build/three.min.js"></script>
   <script src="https://unpkg.com/3d-force-graph@1.73.4/dist/3d-force-graph.min.js"></script>
 </head>
@@ -38,7 +35,7 @@
     <nav class="nav" id="nav">
       <button data-view="home" class="active" onclick="go('home')">Home</button>
       <button data-view="scan" onclick="go('scan')">Scan</button>
-      <button data-view="center" data-lock="1" onclick="go('center')">Map</button>
+      <button data-view="center" data-lock="1" onclick="go('center')">Codebase Map</button>
       <button data-view="build" data-lock="1" onclick="go('build')">Change Plan</button>
       <button data-view="investigate" data-lock="1" onclick="go('investigate')">Debug</button>
       <button data-view="impact" data-lock="1" onclick="go('impact')">What breaks?</button>
@@ -74,7 +71,7 @@
   <div id="trustStatusBar" class="trust-status-bar glass" style="display:none" role="status"></div>
 
   <div id="telemetryWarning" class="telemetry-banner glass" style="display:none" role="status">
-    Telemetry unavailable. Repository analysis unaffected.
+    Usage stats temporarily unavailable — scanning and plans still work.
   </div>
 
   <main id="app">
@@ -136,7 +133,7 @@
                 <input id="scopeInclude" type="text" placeholder="include patterns, comma-separated (custom)" />
                 <input id="scopeExclude" type="text" placeholder="exclude patterns, comma-separated (custom)" />
               </div>
-              <label class="graph-toggle edge-toggle"><input type="checkbox" id="manualMassiveMode"> Large repo mode (sample top files)</label>
+              <label class="graph-toggle edge-toggle"><input type="checkbox" id="manualMassiveMode"> Very large repository (faster scan, samples key files)</label>
               <div id="preScanEstimate" class="muted tiny"></div>
             </div>
           </details>
@@ -217,7 +214,6 @@
                   <div class="graph-toolbar glass">
                     <label class="graph-toggle edge-toggle"><input type="checkbox" id="showEdges" checked onchange="toggleGraphEdges()"> Show edges</label>
                     <button class="btn small tour-btn advanced-only" type="button" onclick="startRepositoryTour()">Tour</button>
-                    <button class="btn small ghost advanced-only" type="button" onclick="exportDemoBundle()">Export Bundle</button>
                     <button class="btn small ghost advanced-only" type="button" onclick="exportGraphPNG()">PNG</button>
                     <button class="btn small ghost advanced-only" type="button" onclick="exportGraphSVG()">SVG</button>
                     <button class="btn small ghost advanced-only" id="screenshotBtn" type="button" onclick="toggleScreenshotMode()">Screenshot</button>
@@ -332,35 +328,35 @@
       <div class="io glass">
         <label>What do you want to add or change?</label>
         <textarea id="buildRequest" rows="4" placeholder="e.g. Add user authentication&#10;Add request rate limiting&#10;Add audit logging"></textarea>
-        <button class="btn primary" onclick="runChangePlan()">Create Change Plan</button>
+        <button class="btn primary" onclick="runChangePlan()">Generate Change Plan</button>
       </div>
       <div class="workflow-toolbar glass" id="buildToolbar" style="display:none">
         <button class="btn small ghost" type="button" onclick="downloadWorkflowMarkdownBundle()">Download Markdown</button>
       </div>
       <div id="buildHistory"></div>
-      <div id="buildOut" class="out"><div class="glass empty-panel"><h3 style="margin:0 0 8px">Scan a repository first.</h3><p class="muted" style="margin:0 0 14px">Atlas needs a codebase to plan against. Load the bundled sample (about 60 seconds) or scan your own folder.</p><div class="success-buttons"><button class="btn primary" type="button" onclick="go('home')">Scan Repository</button><button class="btn ghost" type="button" onclick="loadDemoMode()">Load Sample Repository</button></div></div></div>
+      <div id="buildOut" class="out"><div class="glass empty-panel"><h3 style="margin:0 0 8px">Scan a repository first.</h3><p class="muted" style="margin:0 0 14px">Atlas needs a codebase to plan against. Load the bundled sample (about 60 seconds) or scan your own folder.</p><div class="success-buttons"><button class="btn primary" type="button" onclick="go('home')">Choose a folder</button><button class="btn ghost" type="button" onclick="loadDemoMode()">Load Sample Repository</button></div></div></div>
     </section>
 
     <!-- ===================== SCREEN: DEBUG ===================== -->
     <section class="view" id="view-investigate">
       <h2 class="vh">Debug</h2>
-      <p class="muted tiny" style="margin:-8px 4px 14px">Describe what's going wrong or paste a stack trace. Atlas names the most likely files, ranks hypotheses, and tells you how to confirm each one.</p>
+      <p class="muted tiny" style="margin:-8px 4px 14px">Describe what's going wrong or paste a stack trace. Atlas ranks likely causes — verify each one before fixing.</p>
       <div class="io glass">
         <label>What is going wrong?</label>
         <textarea id="investigateSymptom" rows="6" placeholder="e.g. API requests fail intermittently under load&#10;Dashboard shows stale data after deploy&#10;Payments fail silently after the last deploy&#10;&#10;Or paste a traceback with file paths…"></textarea>
-        <button class="btn primary" onclick="runInvestigationPlan()">Find root cause</button>
+        <button class="btn primary" onclick="runInvestigationPlan()">Analyze symptom</button>
       </div>
       <div class="workflow-toolbar glass" id="investigateToolbar" style="display:none">
         <button class="btn small ghost" type="button" onclick="downloadWorkflowMarkdownBundle()">Download Markdown</button>
       </div>
       <div id="investigateHistory"></div>
-      <div id="investigateOut" class="out"><div class="glass empty-panel"><h3 style="margin:0 0 8px">Scan a repository first.</h3><p class="muted" style="margin:0 0 14px">Describe a symptom after scanning — Atlas suggests files and verification steps.</p><div class="success-buttons"><button class="btn primary" type="button" onclick="go('home')">Scan Repository</button><button class="btn ghost" type="button" onclick="loadDemoMode()">Load Sample Repository</button></div></div></div>
+      <div id="investigateOut" class="out"><div class="glass empty-panel"><h3 style="margin:0 0 8px">Scan a repository first.</h3><p class="muted" style="margin:0 0 14px">Describe a symptom after scanning — Atlas suggests files and verification steps.</p><div class="success-buttons"><button class="btn primary" type="button" onclick="go('home')">Choose a folder</button><button class="btn ghost" type="button" onclick="loadDemoMode()">Load Sample Repository</button></div></div></div>
     </section>
 
     <!-- ===================== SCREEN 5: WHAT BREAKS? ===================== -->
     <section class="view" id="view-impact">
       <h2 class="vh">What breaks?</h2>
-      <p class="muted tiny" style="margin:-8px 4px 14px">See which files import your target — files that may break if you change it (blast radius).</p>
+      <p class="muted tiny" style="margin:-8px 4px 14px">See which files import your target — what may break if you change it.</p>
       <div class="io glass">
         <label>Which file are you about to change?</label>
         <div class="pick-row">
@@ -373,12 +369,12 @@
         <button class="btn small ghost" type="button" onclick="downloadWorkflowMarkdownBundle()">Download Markdown</button>
       </div>
       <div id="impactHistory"></div>
-      <div id="impactOut" class="out"><div class="glass empty-panel"><h3 style="margin:0 0 8px">Scan a repository first.</h3><p class="muted" style="margin:0 0 14px">Enter a module path after scanning to see blast radius and affected tests.</p><div class="success-buttons"><button class="btn primary" type="button" onclick="go('home')">Scan Repository</button><button class="btn ghost" type="button" onclick="loadDemoMode()">Load Sample Repository</button></div></div></div>
+      <div id="impactOut" class="out"><div class="glass empty-panel"><h3 style="margin:0 0 8px">Scan a repository first.</h3><p class="muted" style="margin:0 0 14px">Enter a module path after scanning to see what depends on it and which tests to run.</p><div class="success-buttons"><button class="btn primary" type="button" onclick="go('home')">Choose a folder</button><button class="btn ghost" type="button" onclick="loadDemoMode()">Load Sample Repository</button></div></div></div>
     </section>
 
     <!-- ===================== SCREEN: SEND TO AI ===================== -->
     <section class="view" id="view-export">
-      <h2 class="vh">Repository context</h2>
+      <h2 class="vh">Repository Context</h2>
       <div class="export-grid">
         <div class="glass controls">
           <div class="export-why">
@@ -396,18 +392,17 @@
             <button class="active" data-v="compact">Short</button>
             <button data-v="verbose">Full</button>
           </div>
-          <div class="tok-est"><span class="muted">Estimated tokens</span><span class="tok-big" id="tokEst">—</span></div>
+          <div class="tok-est"><span class="muted" title="Rough size estimate (characters ÷ 4)">Approximate size</span><span class="tok-big" id="tokEst">—</span></div>
           <div class="copy-row">
             <button class="btn primary" id="copyExportBtn" onclick="copyExport()">Copy for Claude</button>
             <button class="btn ghost" onclick="saveExport()">Download Markdown</button>
             <button class="btn ghost" onclick="downloadWorkflowMarkdownBundle()">Download workflow Markdown</button>
-            <button class="btn ghost" onclick="exportDemoBundle()">Export Demo Bundle</button>
           </div>
           <p class="muted tiny">Token numbers are estimates (chars/4). No API keys required — copy &amp; paste into your tool.</p>
         </div>
         <div class="glass preview">
           <div class="preview-head"><span>Context preview</span><span class="muted" id="previewMeta"></span></div>
-          <pre id="exportPreview" class="code">Tip: create a Change Plan first — then use Copy for Claude on that screen. This tab is for advanced repo-wide context only.</pre>
+          <pre id="exportPreview" class="code">Scan a repository first — then preview repo-wide context for Claude, Cursor, or Codex.</pre>
         </div>
       </div>
     </section>
@@ -446,7 +441,7 @@
       <ul class="clean about-list">
         <li>Scans your codebase locally — files, modules, imports, and dependency edges</li>
         <li>Maps architecture and risk in an interactive Codebase Map</li>
-        <li>Generates grounded <b>Change Plans</b>, <b>Investigations</b>, and <b>What breaks?</b> analysis</li>
+        <li>Generates grounded <b>Change Plans</b>, <b>Debug</b> analysis, and <b>What breaks?</b> results</li>
         <li>Sends ready-to-use context to Claude, Codex, and Cursor</li>
         <li>Stores feedback and diagnostics on your device for beta support</li>
       </ul>
@@ -455,7 +450,7 @@
         <li>Does not upload your source code to the cloud for analysis</li>
         <li>Does not apply patches, run git commands, or edit files automatically</li>
         <li>Does not replace your IDE, test runner, or production monitoring</li>
-        <li>Does not guarantee correct root cause — investigations are ranked hypotheses</li>
+        <li>Does not guarantee a single correct root cause — debug results are ranked hypotheses with verification steps</li>
         <li>Does not require an API key for core repository scanning</li>
       </ul>
       <div class="success-buttons">
@@ -480,6 +475,7 @@
 
   <div id="toast" class="toast"></div>
   <script src="universe.js"></script>
+  <script src="atlas_copy.js"></script>
   <script src="app.js"></script>
   <script src="feedback.js"></script>
   <script>document.body.dataset.fbHideButton = "1";</script>

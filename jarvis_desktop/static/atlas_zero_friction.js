@@ -1,9 +1,9 @@
 "use strict";
-/* Phase 155 — zero-friction first user experience.
+/* zero-friction first user experience.
  *
  * Adds (UI only — no new intelligence, no backend changes):
  *  - clean boot loading screen teardown
- *  - "Send this to your AI coding tool" panel for Change Plan / Investigation / What breaks?
+ *  - "Send this to your AI coding tool" panel for Change Plan / Debug / What breaks?
  *  - rich, safe-to-implement prompts for Claude / Cursor / Codex built from existing plan data
  *  - "You're ready." success recognition after the first Change Plan
  *  - broad-folder confirmation before scanning an obviously-too-large folder
@@ -70,21 +70,14 @@ function zfStripClipboardMetadata(text) {
 function zfSessionPrefix() {
   const se = window.STATE && STATE.sessionExport;
   if (!se || !se.text) return "";
-  let text = se.text.trim() + "\n\n";
-  if (typeof getOutputMode === "function" && getOutputMode() === "beginner") {
-    text = zfStripClipboardMetadata(text);
-    if (text) text += "\n\n";
-  }
-  return text;
+  const text = zfStripClipboardMetadata(se.text.trim());
+  return text ? text + "\n\n" : "";
 }
 
 function zfClipboardBody(kind) {
   const server = zfServerExportText(kind);
   if (!server) return zfLegacyFullPromptBody(kind);
-  if (typeof getOutputMode === "function" && getOutputMode() === "beginner") {
-    return zfStripClipboardMetadata(server);
-  }
-  return server;
+  return zfStripClipboardMetadata(server);
 }
 
 function zfTrustBlock(result) {
@@ -144,8 +137,8 @@ function zfChangePromptBody() {
     "",
     "## Repository context",
     `- Repository: ${repo}`,
-    `- Affected systems: ${zfList(p.affected_systems || p.likely_affected_subsystems).join(", ") || "n/a"}`,
-    `- Entry points: ${zfList(p.entry_points).join(", ") || "n/a"}`,
+    `- Affected systems: ${zfList(p.affected_systems || p.likely_affected_subsystems).join(", ") || "none listed"}`,
+    `- Entry points: ${zfList(p.entry_points).join(", ") || "none listed"}`,
     "",
     "## Files to inspect first",
     zfBullets(p.files_to_inspect_first || p.files_likely_to_modify),
@@ -279,8 +272,17 @@ function _zfEsc(s) {
   return String(s || "").replace(/</g, "&lt;");
 }
 
+/* pinned CTA shown at top of every result regardless of mode */
+function pinnedCopyForClaude(kind) {
+  return `<div class="pinned-copy-cta" style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:14px;border:1px solid rgba(109,107,255,.45);background:linear-gradient(100deg,rgba(109,107,255,.14),rgba(160,107,255,.08));margin-bottom:12px">
+    <button class="btn primary" style="flex:1" type="button" onclick="copyForAi('claude','${kind}')">Copy for Claude</button>
+    <button class="btn ghost small" type="button" onclick="copyForAi('cursor','${kind}')">Cursor</button>
+    <button class="btn ghost small" type="button" onclick="copyForAi('codex','${kind}')">Codex</button>
+  </div>`;
+}
+
 function beginnerPlanHero(plan, kind) {
-  if (typeof getOutputMode === "function" && getOutputMode() === "advanced") return "";
+  if (typeof getOutputMode === "function" && getOutputMode() === "advanced") return pinnedCopyForClaude(kind);
   const p = plan || {};
   const goal = p.change_goal || p.goal || (document.getElementById("buildRequest") && document.getElementById("buildRequest").value) || "Your change";
   const files = zfList(
@@ -293,48 +295,47 @@ function beginnerPlanHero(plan, kind) {
     <h3 class="beginner-plan-title">Your plan</h3>
     <div class="beginner-plan-section"><span class="report-label">Goal</span><p>${_zfEsc(goal)}</p></div>
     <div class="beginner-plan-section"><span class="report-label">Files</span><ul class="clean tiny">${files.length ? files.map(f => `<li>${_zfEsc(f)}</li>`).join("") : "<li class='muted'>No files matched — try a more specific request</li>"}</ul></div>
-    <div class="beginner-plan-section"><span class="report-label">Order</span><ol class="clean tiny">${order.length ? order.map(s => `<li>${_zfEsc(s)}</li>`).join("") : "<li class='muted'>n/a</li>"}</ol></div>
+    <div class="beginner-plan-section"><span class="report-label">Order</span><ol class="clean tiny">${order.length ? order.map(s => `<li>${_zfEsc(s)}</li>`).join("") : "<li class='muted'>No specific order suggested</li>"}</ol></div>
     ${sendToAiPanel(kind, true)}
   </div>`;
 }
 
 function beginnerInvestigateHero(plan) {
-  if (typeof getOutputMode === "function" && getOutputMode() === "advanced") return "";
+  if (typeof getOutputMode === "function" && getOutputMode() === "advanced") return pinnedCopyForClaude("investigate");
   const p = plan || {};
   const goal = p.symptom_summary || p.symptom || (document.getElementById("investigateSymptom") && document.getElementById("investigateSymptom").value) || "Your symptom";
   const hyps = (p.hypotheses || []).slice(0, 3);
   const files = zfList(hyps.flatMap(function (h) { return h.files_involved || []; }), 5);
   const order = zfList(p.verification_checklist || p.minimal_fix_strategy, 5);
   return `<div class="beginner-plan-card glass" data-kind="investigate">
-    <h3 class="beginner-plan-title">Your investigation</h3>
-    <div class="beginner-plan-section"><span class="report-label">Goal</span><p>${_zfEsc(goal)}</p></div>
+    <h3 class="beginner-plan-title">Debug result</h3>
+    <div class="beginner-plan-section"><span class="report-label">Symptom</span><p>${_zfEsc(goal)}</p></div>
     <div class="beginner-plan-section"><span class="report-label">Files</span><ul class="clean tiny">${files.length ? files.map(f => `<li>${_zfEsc(f)}</li>`).join("") : "<li class='muted'>Add a file path or error message for better grounding</li>"}</ul></div>
-    <div class="beginner-plan-section"><span class="report-label">Order</span><ol class="clean tiny">${order.length ? order.map(s => `<li>${_zfEsc(s)}</li>`).join("") : "<li class='muted'>See ranked hypotheses in Advanced view</li>"}</ol></div>
+    <div class="beginner-plan-section"><span class="report-label">How to confirm</span><ol class="clean tiny">${order.length ? order.map(s => `<li>${_zfEsc(s)}</li>`).join("") : "<li class='muted'>Switch to Full detail for ranked hypotheses</li>"}</ol></div>
     ${sendToAiPanel("investigate", true)}
   </div>`;
 }
 
 function beginnerImpactHero(result) {
-  if (typeof getOutputMode === "function" && getOutputMode() === "advanced") return "";
+  if (typeof getOutputMode === "function" && getOutputMode() === "advanced") return pinnedCopyForClaude("impact");
   const r = result || {};
   const goal = r.target || (document.getElementById("impactTarget") && document.getElementById("impactTarget").value) || "This module";
   const files = zfList(r.direct_impact, 5);
   const order = zfList(r.recommended_verification || r.tests_likely_affected, 5);
   return `<div class="beginner-plan-card glass" data-kind="impact">
-    <h3 class="beginner-plan-title">Impact summary</h3>
-    <div class="beginner-plan-section"><span class="report-label">Goal</span><p>Change <span class="mono">${_zfEsc(goal)}</span></p></div>
-    <div class="beginner-plan-section"><span class="report-label">Files</span><ul class="clean tiny">${files.length ? files.map(f => `<li>${_zfEsc(f)}</li>`).join("") : "<li class='muted'>No direct importers found</li>"}</ul></div>
-    <div class="beginner-plan-section"><span class="report-label">Order</span><ol class="clean tiny">${order.length ? order.map(s => `<li>${_zfEsc(s)}</li>`).join("") : "<li class='muted'>Run tests after any change</li>"}</ol></div>
+    <h3 class="beginner-plan-title">Impact of changing ${_zfEsc(goal.split(/[/\\]/).pop())}</h3>
+    <div class="beginner-plan-section"><span class="report-label">Files that may break</span><ul class="clean tiny">${files.length ? files.map(f => `<li>${_zfEsc(f)}</li>`).join("") : "<li class='muted'>No direct importers found — this module is likely safe to change</li>"}</ul></div>
+    <div class="beginner-plan-section"><span class="report-label">Verification steps</span><ol class="clean tiny">${order.length ? order.map(s => `<li>${_zfEsc(s)}</li>`).join("") : "<li class='muted'>Run tests after any change</li>"}</ol></div>
     ${sendToAiPanel("impact", true)}
   </div>`;
 }
 
 /* ---------------- the panel ---------------- */
 function sendToAiPanel(kind, insideBeginner) {
-  const extra = insideBeginner ? "" : `<p class="muted tiny">One copy includes everything Claude needs for this plan. Paste once per new chat.</p>`;
-  const memNote = `<p class="muted tiny memory-export-note">Atlas sends a tiny repository memory plus this question's files — not your whole codebase.</p>`;
+  const extra = insideBeginner ? "" : `<p class="muted tiny">Includes everything Claude needs. Paste once per new chat.</p>`;
+  const memNote = `<p class="muted tiny memory-export-note">Sends a compact repository summary plus this plan — not your whole codebase.</p>`;
   return `<div class="send-to-ai glass" data-kind="${kind}">
-    <h3 class="send-to-ai-title">${insideBeginner ? "Copy your plan" : "Copy plan for your AI tool"}</h3>
+    <h3 class="send-to-ai-title">${insideBeginner ? "Copy for Claude" : "Copy for your AI tool"}</h3>
     ${extra}
     ${memNote}
     <div class="copy-row copy-row-primary">
