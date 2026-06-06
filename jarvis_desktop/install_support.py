@@ -375,14 +375,61 @@ def _tail_file(path: str, max_bytes: int = 48_000) -> str:
         return ""
 
 
+_SECRET_KEY_NAMES = (
+    "api_key",
+    "apikey",
+    "token",
+    "access_token",
+    "refresh_token",
+    "authorization",
+    "bearer",
+    "password",
+    "secret",
+    "private_key",
+    "client_secret",
+)
+
+
+def _redact_secret_values(text: str) -> str:
+    """Redact common key=value, JSON, header, and token-prefix secrets."""
+    if not text:
+        return text
+    out = text
+    for key in _SECRET_KEY_NAMES:
+        out = re.sub(
+            rf"(?i)(\b{re.escape(key)}\s*[=:]\s*)([\"']?)([^\"'\s\\]+)",
+            r"\1\2[REDACTED]",
+            out,
+        )
+        out = re.sub(
+            rf'(?i)"{re.escape(key)}"\s*:\s*"([^"]*)"',
+            rf'"{key}": "[REDACTED]"',
+            out,
+        )
+        out = re.sub(
+            rf"(?i)('{re.escape(key)}'\s*:\s*)'([^']*)'",
+            r"\1'[REDACTED]'",
+            out,
+        )
+    out = re.sub(r"(?i)\bBearer\s+[A-Za-z0-9._\-]+", "Bearer [REDACTED]", out)
+    out = re.sub(r"(?i)\bAuthorization:\s*[^\s\"']+", "Authorization: [REDACTED]", out)
+    out = re.sub(r"sk-ant-[A-Za-z0-9_\-]+", "[REDACTED]", out)
+    out = re.sub(r"\bsk-[A-Za-z0-9_\-]{8,}", "[REDACTED]", out)
+    out = re.sub(r"ghp_[A-Za-z0-9]+", "[REDACTED]", out)
+    out = re.sub(r"github_pat_[A-Za-z0-9_]+", "[REDACTED]", out)
+    out = re.sub(r"xoxb-[A-Za-z0-9\-]+", "[REDACTED]", out)
+    out = re.sub(r"eyJ[A-Za-z0-9_\-]+\.[A-Za-z0-9_\-]+\.[A-Za-z0-9_\-]*", "[REDACTED]", out)
+    return out
+
+
 def _redact_support_text(text: str) -> str:
-    """Beta P0-04 — strip absolute paths and secret canaries from support bundle text."""
+    """Beta P0-04 / 174D — strip paths and secrets from support bundle text."""
     if not text:
         return text
     out = re.sub(r"[A-Za-z]:\\(?:[^\"\\\s]|\\.)+", "[path-redacted]", text)
     out = re.sub(r"/(?:home|Users|var)/(?:[^\"\\\s]|\\.)+", "[path-redacted]", out)
     out = re.sub(r"SECRET_[A-Z0-9_]+", "[secret-redacted]", out)
-    return out
+    return _redact_secret_values(out)
 
 
 def _sanitize_support_payload(payload: Any) -> Any:

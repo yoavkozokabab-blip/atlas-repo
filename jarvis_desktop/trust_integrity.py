@@ -530,58 +530,142 @@ def require_fresh_context(state: Dict[str, Any], *, for_export: bool = False) ->
     return None
 
 
-def _has_exact_file_evidence(plan: Dict[str, Any]) -> bool:
+_UNSUPPORTED_PROD_EXTS = {
+    ".go", ".rs", ".java", ".cs", ".kt", ".swift", ".rb", ".cpp", ".c", ".h", ".hpp",
+}
+
+
+def _shallow_unsupported_coverage(state: Dict[str, Any], scan: Dict[str, Any]) -> bool:
+    """174C A7 — non-Python production dominates but graph is an incidental helper."""
+    index = state.get("index") or {}
+    non_py_prod = 0
+    py_prod = 0
+    for f in index.get("files") or []:
+        ext = (f.get("ext") or "").lower()
+        if (f.get("role") or "") != "production_code":
+            continue
+        if ext == ".py":
+            py_prod += 1
+        elif ext in _UNSUPPORTED_PROD_EXTS:
+            non_py_prod += 1
+    if non_py_prod == 0:
+        return False
+    modules = int(scan.get("module_count") or 0)
+    edges = int(scan.get("dependency_edges") or 0)
+    return non_py_prod >= py_prod and modules <= max(2, py_prod) and edges == 0
+
+
+def weak_graph_gate_applies(state: Dict[str, Any], scan: Dict[str, Any]) -> Tuple[bool, str]:
+    """Return (applies, status) for Build/Investigation weak-graph gate."""
+    gh = scan.get("graph_health") or {}
+    label = gh.get("label") if isinstance(gh, dict) else str(gh or "")
+    modules = int(scan.get("module_count") or 0)
+    files = int(scan.get("file_count") or 0)
+    if label == "unsupported_language_limited":
+        return True, "unsupported_language_limited"
+    if files > 1000 and modules < 25:
+        return True, "unsupported_language_limited"
+    if _shallow_unsupported_coverage(state, scan):
+        return True, "insufficient_evidence"
+    return False, ""
+
+
+def _file_in_graph(state: Dict[str, Any], path: str) -> bool:
+    rel = _norm_path(path)
+    for node in (state.get("graph") or {}).get("nodes") or []:
+        if node.get("type") == "module" and _norm_path(str(node.get("path") or "")) == rel:
+            return True
+    return False
+
+
+def _file_has_graph_symbol_evidence(state: Dict[str, Any], path: str) -> bool:
+    """Real graph/symbol evidence — not incidental helper path lists."""
+    rel = _norm_path(path)
+    if not _file_in_graph(state, rel):
+        return False
+    store = state.get("evidence_store") or {}
+    sym_files = (store.get("symbol_index") or {}).get("files") or {}
+    fdata = sym_files.get(rel) or {}
+    symbols = fdata.get("symbols") or []
+    calls = fdata.get("calls") or []
+    if not symbols:
+        return False
+    graph = state.get("graph") or {}
+    mid = None
+    for node in graph.get("nodes") or []:
+        if node.get("type") == "module" and _norm_path(str(node.get("path") or "")) == rel:
+            mid = node.get("id")
+            break
+    has_resolved_edge = False
+    if mid:
+        for edge in graph.get("edges") or []:
+            if edge.get("resolved") and (edge.get("from") == mid or edge.get("to") == mid):
+                has_resolved_edge = True
+                break
+    return bool(calls) or has_resolved_edge or len(symbols) >= 2
+
+
+def _has_exact_file_evidence(state: Dict[str, Any], plan: Dict[str, Any]) -> bool:
     files = plan.get("files_to_inspect_first") or plan.get("files_likely_to_modify") or []
     if not files:
         return False
     rev = plan.get("repository_evidence") or (plan.get("domain_knowledge") or {}).get("repository_evidence") or {}
     file_evs = rev.get("file_evidences") or []
-    if file_evs:
-        for fe in file_evs:
-            if fe.get("path") in files and (fe.get("matching_symbols") or fe.get("evidence_score", 0) >= 50):
-                return True
-    # Exact path list without symbol panel still counts as file evidence.
-    return bool(files)
-
-
-def _has_exact_investigation_evidence(plan: Dict[str, Any]) -> bool:
-    hyps = plan.get("hypotheses") or []
-    for h in hyps[:3]:
-        if h.get("files_involved") and (h.get("evidence") or h.get("verification_steps")):
+    for fe in file_evs:
+        path = _norm_path(str(fe.get("path") or ""))
+        if path in {_norm_path(f) for f in files}:
+            if fe.get("matching_symbols") or int(fe.get("evidence_score") or 0) >= 50:
+                if _file_has_graph_symbol_evidence(state, path):
+                    return True
+    for f in files:
+        if _file_has_graph_symbol_evidence(state, str(f)):
             return True
+    return False
+
+
+def _has_exact_investigation_evidence(state: Dict[str, Any], plan: Dict[str, Any]) -> bool:
     rev = plan.get("repository_evidence") or {}
-    if rev.get("file_evidences"):
-        return True
+    for fe in rev.get("file_evidences") or []:
+        path = _norm_path(str(fe.get("path") or ""))
+        if fe.get("matching_symbols") or int(fe.get("evidence_score") or 0) >= 50:
+            if _file_has_graph_symbol_evidence(state, path):
+                return True
+    for h in (plan.get("hypotheses") or [])[:3]:
+        involved = [_norm_path(str(p)) for p in (h.get("files_involved") or []) if p]
+        evidence = h.get("evidence") or []
+        if involved and evidence and _file_has_graph_symbol_evidence(state, involved[0]):
+            return True
     return False
 
 
 def gate_weak_graph_workflow(state: Dict[str, Any], result: Dict[str, Any], workflow: str) -> Dict[str, Any]:
-    """Refuse ok=true on unsupported graphs unless exact file/symbol evidence exists."""
+    """Refuse ok=true on unsupported/shallow graphs unless exact graph/symbol evidence exists."""
     if not result.get("ok"):
         return result
     scan = state.get("scan") or {}
-    gh = scan.get("graph_health") or {}
-    label = gh.get("label") if isinstance(gh, dict) else str(gh or "")
-    if label != "unsupported_language_limited":
+    applies, status = weak_graph_gate_applies(state, scan)
+    if not applies:
         return result
 
     plan = result.get("plan") or {}
-    if workflow == "build" and _has_exact_file_evidence(plan):
+    if workflow == "build" and _has_exact_file_evidence(state, plan):
         return result
-    if workflow == "investigate" and _has_exact_investigation_evidence(plan):
+    if workflow == "investigate" and _has_exact_investigation_evidence(state, plan):
         return result
 
+    gh = scan.get("graph_health") or {}
+    label = gh.get("label") if isinstance(gh, dict) else str(gh or "unknown")
     return {
         "ok": False,
-        "status": "unsupported_language_limited",
+        "status": status,
         "insufficient_evidence": True,
         "error": (
             "Graph coverage is too limited for this repository language. "
             "Atlas needs exact file or symbol evidence — provide a file path and rescan."
         ),
         "message": (
-            "Graph health is unsupported_language_limited and Atlas found no exact "
-            "file/symbol evidence for this request."
+            "Graph coverage is too shallow for Build/Investigation on this repository. "
+            "Provide an exact file path with graph/symbol evidence or rescan after changes."
         ),
         "graph_health": label,
         "confidence": "low",

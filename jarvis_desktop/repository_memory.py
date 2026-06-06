@@ -32,6 +32,10 @@ from typing import Any, Dict, List, Optional, Tuple
 MEMORY_VERSION = "ATLAS_REPOSITORY_MEMORY v1"
 DELTA_VERSION = "ATLAS_DELTA v1"
 _CHARS_PER_TOKEN = 4.0
+REPLAY_WARNING = (
+    "This context is only valid for the scanned repository state. "
+    "If files changed, rescan or refresh before reuse."
+)
 
 # Fields hashed for tamper detection (exclude volatile delta/session_count/memory_hash).
 _MEMORY_HASH_KEYS = (
@@ -339,10 +343,17 @@ def memory_text(memory: Dict[str, Any]) -> str:
     mod_d = delta.get("modules_delta", 0)
     edge_d = delta.get("edges_delta", 0)
 
+    sig = str(memory.get("scan_signature") or "")
+    sig_short = sig[:12] if sig else "unknown"
+    freshness = memory.get("freshness_status") or "fresh"
     lines = [
         MEMORY_VERSION,
-        f"repo: {memory.get('repo_name', 'repository')}  "
-        f"session: {session_n}  scan_id: {memory.get('scan_id', '')}",
+        f"repo: {memory.get('repo_name', 'repository')}  session: {session_n}",
+        f"scan_id: {memory.get('scan_id', '')}",
+        f"scan_signature: {sig_short}",
+        f"generated_at: {memory.get('scanned_at', '')}",
+        f"freshness_status: {freshness}",
+        f"replay_warning: {REPLAY_WARNING}",
     ]
 
     # Modules / edges line
@@ -405,18 +416,25 @@ def memory_text(memory: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def memory_packet(memory: Dict[str, Any]) -> Dict[str, Any]:
+def memory_packet(memory: Dict[str, Any], *, freshness_status: str = "fresh") -> Dict[str, Any]:
     """Build the MEMORY-mode packet (analogous to atlas_export.session_context())."""
-    text = memory_text(memory)
+    mem = dict(memory)
+    mem["freshness_status"] = freshness_status or mem.get("freshness_status") or "fresh"
+    text = memory_text(mem)
+    sig = str(mem.get("scan_signature") or "")
     return {
         "text": text,
         "mode": "MEMORY",
         "tokens": _estimate_tokens(text),
         "version": MEMORY_VERSION,
-        "session_count": int(memory.get("session_count", 1)),
-        "repo_id": memory.get("repo_id", ""),
-        "scan_id": memory.get("scan_id", ""),
-        "has_delta": bool((memory.get("delta") or {}).get("has_delta")),
+        "session_count": int(mem.get("session_count", 1)),
+        "repo_id": mem.get("repo_id", ""),
+        "scan_id": mem.get("scan_id", ""),
+        "scan_signature": sig[:12] if sig else "",
+        "generated_at": mem.get("scanned_at", ""),
+        "freshness_status": mem["freshness_status"],
+        "replay_warning": REPLAY_WARNING,
+        "has_delta": bool((mem.get("delta") or {}).get("has_delta")),
     }
 
 
@@ -616,7 +634,16 @@ def update_after_scan(
     state["memory_persistence_status"] = "ok" if persist_ok else "failed"
     state["memory_persistence_error"] = persist_err or ""
 
-    packet = memory_packet(memory)
+    freshness = "fresh"
+    try:
+        from . import trust_integrity as _ti
+
+        st = _ti.assess_staleness(state)
+        freshness = "fresh" if st.get("fresh") else str(st.get("status") or "stale")
+    except Exception:
+        pass
+    memory["freshness_status"] = freshness
+    packet = memory_packet(memory, freshness_status=freshness)
     packet["memory_persistence_status"] = state["memory_persistence_status"]
     if not persist_ok:
         packet["persistent_memory_available"] = False
