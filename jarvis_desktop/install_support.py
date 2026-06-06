@@ -465,6 +465,23 @@ def _redact_secret_values(text: str) -> str:
     return _scrub_residual_secret_markers(out)
 
 
+def _redact_persistence_secret_markers(text: str) -> str:
+    """Strip persistence signing secret labels, paths, and key names from bundle text."""
+    if not text:
+        return text
+    patterns = (
+        r"(?i)persistence_secret\s*=\s*\S+",
+        r"(?i)(?:[A-Za-z]:\\|/|\\)[^\s\"']*persistence_secret[^\s\"']*",
+        r"(?i)security[/\\]persistence_secret",
+        r"(?i)persistence_secret",
+        r"(?i)persistence\s+secret",
+    )
+    out = text
+    for pat in patterns:
+        out = re.sub(pat, "[REDACTED]", out)
+    return out
+
+
 def _redact_support_text(text: str) -> str:
     """Beta P0-04 / 174D — strip paths and secrets from support bundle text."""
     if not text:
@@ -472,7 +489,8 @@ def _redact_support_text(text: str) -> str:
     out = re.sub(r"[A-Za-z]:\\(?:[^\"\\\s]|\\.)+", "[path-redacted]", text)
     out = re.sub(r"/(?:home|Users|var)/(?:[^\"\\\s]|\\.)+", "[path-redacted]", out)
     out = re.sub(r"SECRET_[A-Z0-9_]+", "[secret-redacted]", out)
-    return _redact_secret_values(out)
+    out = _redact_secret_values(out)
+    return _redact_persistence_secret_markers(out)
 
 
 def _sanitize_support_payload(payload: Any) -> Any:
@@ -481,9 +499,7 @@ def _sanitize_support_payload(payload: Any) -> Any:
         blob = json.dumps(payload, indent=2, default=str)
     except TypeError:
         blob = json.dumps(str(payload))
-    redacted = _redact_support_text(blob)
-    redacted = re.sub(r"persistence_secret", "[redacted]", redacted, flags=re.I)
-    return json.loads(redacted)
+    return json.loads(_redact_support_text(blob))
 
 
 def collect_error_logs() -> Dict[str, str]:

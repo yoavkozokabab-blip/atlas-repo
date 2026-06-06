@@ -514,6 +514,9 @@ def save_scan_state(
             signed_packet = sign_memory_packet(mem_packet, record, data_dir)
             _json_write(os.path.join(sdir, "memory_packet.json"), signed_packet)
             written.append("memory_packet.json")
+            state["repository_memory"] = signed_packet
+            state["session_export"] = signed_packet
+            state.pop("persistence_memory_rejected", None)
         except (OSError, TypeError, ValueError):
             partial = True
 
@@ -955,7 +958,7 @@ def get_workflow_history_item(data_dir: str, history_id: str, *, state: Optional
                             continue
                         trust = _validate_history_row(row, expected_repo_id=rid, data_dir=data_dir)
                         if trust == _HISTORY_REJECTED:
-                            return None
+                            continue
                         item = dict(row)
                         item["_trust_level"] = trust
                         item.update(_evaluate_history_export(item, state, data_dir=data_dir))
