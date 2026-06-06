@@ -1,0 +1,42 @@
+concept_id: gitops
+name: GitOps
+title: GitOps
+domain: ci_cd
+category: gitops
+feature_type: gitops
+concept_quality_score: curated_deep
+confidence: medium
+aliases:
+- gitops
+- argocd
+description: Git as source of truth for cluster state.
+when_to_use: Kubernetes deployments.
+requirements:
+- Clear ownership of GitOps in the architecture
+implementation_strategies: &id001
+- Build once, promote artifacts
+- Required checks before merge
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Broken pipeline blocks releases
+- Flaky gates
+security_risks: []
+performance_risks: []
+failure_modes:
+- Deploy without migration order
+- Secrets leaked in CI logs
+verification:
+- Pipeline reproduces on clean runner
+- Artifact signing verified
+testing:
+- CI runs on every PR
+- Canary/rollback playbook tested
+related_concepts: []
+references:
+- atlas://curated/ci_cd/gitops
+path_keywords:
+- gitops
+- gitops
+- argocd
+investigate_only: false

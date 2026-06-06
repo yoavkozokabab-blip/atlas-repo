@@ -1,0 +1,46 @@
+concept_id: write_skew
+name: Write Skew
+title: Write Skew
+domain: databases
+category: anomaly
+feature_type: anomaly
+concept_quality_score: curated_deep
+confidence: medium
+aliases:
+- write skew
+description: Serializable anomaly under concurrent transactions.
+when_to_use: Inventory/finance counters.
+requirements:
+- Clear ownership of Write Skew in the architecture
+implementation_strategies: &id001
+- Migrations additive-first
+- Explicit transaction boundaries
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Data corruption
+- Lock contention
+- Missing indexes
+- Long-running transactions
+- Connection pool exhaustion
+security_risks: []
+performance_risks:
+- Missing indexes
+- Long-running transactions
+- Connection pool exhaustion
+failure_modes:
+- Migration lock on large tables
+- Deadlocks under concurrent updates
+verification:
+- Explain plans for hot queries
+- Migration rollback drill
+testing:
+- Migration up/down tests
+- Concurrency tests on hot rows
+related_concepts: []
+references:
+- atlas://curated/databases/write_skew
+path_keywords:
+- write
+- write skew
+investigate_only: false

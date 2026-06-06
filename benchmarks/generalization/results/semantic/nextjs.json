@@ -1,0 +1,328 @@
+{
+  "id": "nextjs",
+  "display": "Next.js",
+  "language": "typescript",
+  "available": true,
+  "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\nextjs",
+  "modules": 3114,
+  "concepts": [
+    {
+      "concept": "authentication",
+      "phrase": "authentication",
+      "expected_subsystem": "auth / identity",
+      "prompt": "what breaks if I remove authentication",
+      "resolved": false,
+      "category": "semantic_routing_failure",
+      "label": null,
+      "modules": [],
+      "confidence": "low",
+      "actual": "fallback \u2014 no target"
+    },
+    {
+      "concept": "authorization",
+      "phrase": "authorization",
+      "expected_subsystem": "access control / permissions",
+      "prompt": "what breaks if I remove authorization",
+      "resolved": true,
+      "category": null,
+      "label": "authorization",
+      "modules": [
+        "evals/evals/agent-033-forbidden-auth/app/lib/auth.ts",
+        "scripts/release-github-auth.js"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 evals/evals/agent-033-forbidden-auth/app/lib/auth.ts, scripts/release-github-auth.js"
+    },
+    {
+      "concept": "caching",
+      "phrase": "caching",
+      "expected_subsystem": "cache layer",
+      "prompt": "what breaks if I remove caching",
+      "resolved": true,
+      "category": null,
+      "label": "caching",
+      "modules": [
+        "packages/next/src/client/components/segment-cache/cache.ts",
+        "packages/next/src/client/components/segment-cache/lru.ts",
+        "packages/next/cache.js"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 packages/next/src/client/components/segment-cache/cache.ts, packages/next/src/client/components/segment-cache/lru.ts, packages/next/cache.js"
+    },
+    {
+      "concept": "configuration",
+      "phrase": "configuration",
+      "expected_subsystem": "config system",
+      "prompt": "what breaks if I remove configuration",
+      "resolved": true,
+      "category": null,
+      "label": "configuration",
+      "modules": [
+        "packages/next/src/server/config.ts",
+        "packages/next/src/server/typescript/rules/config.ts",
+        "turbo/generators/config.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 packages/next/src/server/config.ts, packages/next/src/server/typescript/rules/config.ts, turbo/generators/config.ts"
+    },
+    {
+      "concept": "database",
+      "phrase": "the database layer",
+      "expected_subsystem": "persistence / database",
+      "prompt": "what breaks if I remove the database layer",
+      "resolved": true,
+      "category": null,
+      "label": "recorder/database",
+      "modules": [
+        "packages/next/src/server/app-render/work-unit-async-storage.external.ts",
+        "packages/next/src/server/app-render/work-async-storage.external.ts",
+        "packages/next/src/telemetry/storage.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 packages/next/src/server/app-render/work-unit-async-storage.external.ts, packages/next/src/server/app-render/work-async-storage.external.ts, packages/next/src/telemetry/storage.ts"
+    },
+    {
+      "concept": "routing",
+      "phrase": "routing",
+      "expected_subsystem": "router / URL dispatch",
+      "prompt": "what breaks if I remove routing",
+      "resolved": true,
+      "category": null,
+      "label": "routing",
+      "modules": [
+        "packages/next/src/shared/lib/router/router.ts",
+        "packages/next/src/shared/lib/router/utils/route-regex.ts",
+        "packages/next/src/shared/lib/router/utils/interception-routes.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 packages/next/src/shared/lib/router/router.ts, packages/next/src/shared/lib/router/utils/route-regex.ts, packages/next/src/shared/lib/router/utils/interception-routes.ts"
+    },
+    {
+      "concept": "middleware",
+      "phrase": "middleware",
+      "expected_subsystem": "middleware pipeline",
+      "prompt": "what breaks if I remove middleware",
+      "resolved": true,
+      "category": null,
+      "label": "middleware",
+      "modules": [
+        "packages/next-routing/src/middleware.ts",
+        "packages/next/src/compiled/@mswjs/interceptors/ClientRequest/index.js",
+        "packages/next/src/next-devtools/server/middleware-response.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 packages/next-routing/src/middleware.ts, packages/next/src/compiled/@mswjs/interceptors/ClientRequest/index.js, packages/next/src/next-devtools/server/middleware-response.ts"
+    },
+    {
+      "concept": "logging",
+      "phrase": "the logging layer",
+      "expected_subsystem": "logging subsystem",
+      "prompt": "what breaks if I remove the logging layer",
+      "resolved": true,
+      "category": null,
+      "label": "logging",
+      "modules": [
+        ".github/actions/next-stats-action/src/util/logger.js",
+        "packages/next/src/server/dev/browser-logs/file-logger.ts",
+        "packages/next/src/server/dev/browser-logs/receive-logs.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 .github/actions/next-stats-action/src/util/logger.js, packages/next/src/server/dev/browser-logs/file-logger.ts, packages/next/src/server/dev/browser-logs/receive-logs.ts"
+    },
+    {
+      "concept": "events",
+      "phrase": "the event system",
+      "expected_subsystem": "event bus / dispatcher",
+      "prompt": "what breaks if I remove the event system",
+      "resolved": true,
+      "category": null,
+      "label": "events",
+      "modules": [
+        "packages/next/src/compiled/events/events.js",
+        "packages/next/src/telemetry/events/index.ts",
+        "packages/next/src/telemetry/events/build.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 packages/next/src/compiled/events/events.js, packages/next/src/telemetry/events/index.ts, packages/next/src/telemetry/events/build.ts"
+    },
+    {
+      "concept": "messaging",
+      "phrase": "messaging",
+      "expected_subsystem": "message queue / pub-sub",
+      "prompt": "what breaks if I remove messaging",
+      "resolved": true,
+      "category": null,
+      "label": "messaging",
+      "modules": [
+        "packages/next/src/next-devtools/dev-overlay/components/errors/error-message/error-message.tsx",
+        "packages/next/src/next-devtools/dev-overlay/components/errors/error-message/error-message.stories.tsx",
+        "packages/next/src/server/dev/messages.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 packages/next/src/next-devtools/dev-overlay/components/errors/error-message/error-message.tsx, packages/next/src/next-devtools/dev-overlay/components/errors/error-message/error-message.stories.tsx, packages/next/src/server/dev/messages.ts"
+    },
+    {
+      "concept": "background_jobs",
+      "phrase": "background jobs",
+      "expected_subsystem": "task / worker queue",
+      "prompt": "what breaks if I remove background jobs",
+      "resolved": true,
+      "category": null,
+      "label": "background jobs",
+      "modules": [
+        "packages/next/src/lib/worker.ts",
+        "packages/next/src/export/worker.ts",
+        "turbopack/crates/turbopack-node/js/src/worker_thread/taskChannel.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 packages/next/src/lib/worker.ts, packages/next/src/export/worker.ts, turbopack/crates/turbopack-node/js/src/worker_thread/taskChannel.ts"
+    },
+    {
+      "concept": "scheduling",
+      "phrase": "scheduling",
+      "expected_subsystem": "scheduler",
+      "prompt": "what breaks if I remove scheduling",
+      "resolved": true,
+      "category": null,
+      "label": "scheduling",
+      "modules": [
+        "packages/next/src/lib/scheduler.ts",
+        "packages/next/src/client/components/segment-cache/scheduler.ts",
+        "packages/next/src/compiled/scheduler/cjs/scheduler-unstable_mock.development.js"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 packages/next/src/lib/scheduler.ts, packages/next/src/client/components/segment-cache/scheduler.ts, packages/next/src/compiled/scheduler/cjs/scheduler-unstable_mock.development.js"
+    },
+    {
+      "concept": "state_management",
+      "phrase": "state management",
+      "expected_subsystem": "state store",
+      "prompt": "what breaks if I remove state management",
+      "resolved": true,
+      "category": null,
+      "label": "state management",
+      "modules": [
+        "packages/next/src/client/components/router-reducer/reducers/navigate-reducer.ts",
+        "packages/next/src/client/components/router-reducer/reducers/refresh-reducer.ts",
+        "packages/next/src/client/components/router-reducer/reducers/committed-state.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 packages/next/src/client/components/router-reducer/reducers/navigate-reducer.ts, packages/next/src/client/components/router-reducer/reducers/refresh-reducer.ts, packages/next/src/client/components/router-reducer/reducers/committed-state.ts"
+    },
+    {
+      "concept": "plugins",
+      "phrase": "the plugin system",
+      "expected_subsystem": "plugin loader",
+      "prompt": "what breaks if I remove the plugin system",
+      "resolved": true,
+      "category": null,
+      "label": "plugins",
+      "modules": [
+        "packages/next/src/telemetry/events/plugins.ts",
+        "packages/next/src/compiled/react-server-dom-webpack-experimental/plugin.js",
+        "packages/next/src/compiled/react-server-dom-webpack/plugin.js"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 packages/next/src/telemetry/events/plugins.ts, packages/next/src/compiled/react-server-dom-webpack-experimental/plugin.js, packages/next/src/compiled/react-server-dom-webpack/plugin.js"
+    },
+    {
+      "concept": "extensions",
+      "phrase": "extensions",
+      "expected_subsystem": "extension system",
+      "prompt": "what breaks if I remove extensions",
+      "resolved": true,
+      "category": null,
+      "label": "extensions",
+      "modules": [
+        "packages/next/src/server/lib/router-utils/instrumentation-node-extensions.ts",
+        "turbopack/crates/turbopack-ecmascript-runtime/js/src/shared/runtime/dev-extensions.ts",
+        "packages/eslint-plugin-next/src/utils/define-rule.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 packages/next/src/server/lib/router-utils/instrumentation-node-extensions.ts, turbopack/crates/turbopack-ecmascript-runtime/js/src/shared/runtime/dev-extensions.ts, packages/eslint-plugin-next/src/utils/define-rule.ts"
+    },
+    {
+      "concept": "websockets",
+      "phrase": "websocket support",
+      "expected_subsystem": "websocket transport",
+      "prompt": "what breaks if I remove websocket support",
+      "resolved": true,
+      "category": null,
+      "label": "websocket support",
+      "modules": [
+        "packages/next/src/telemetry/events/session-stopped.ts",
+        "packages/next/src/client/dev/hot-reloader/pages/websocket.ts",
+        "turbopack/crates/turbopack-cli/js/src/entry/websocket.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 packages/next/src/telemetry/events/session-stopped.ts, packages/next/src/client/dev/hot-reloader/pages/websocket.ts, turbopack/crates/turbopack-cli/js/src/entry/websocket.ts"
+    },
+    {
+      "concept": "api_layer",
+      "phrase": "the api layer",
+      "expected_subsystem": "API / endpoint layer",
+      "prompt": "what breaks if I remove the api layer",
+      "resolved": true,
+      "category": null,
+      "label": "api layer",
+      "modules": [
+        "packages/next/src/api/router.ts",
+        "packages/next/src/client/router.ts",
+        "packages/next/src/shared/lib/router/router.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 packages/next/src/api/router.ts, packages/next/src/client/router.ts, packages/next/src/shared/lib/router/router.ts"
+    },
+    {
+      "concept": "persistence",
+      "phrase": "persistence",
+      "expected_subsystem": "ORM / storage",
+      "prompt": "what breaks if I remove persistence",
+      "resolved": true,
+      "category": null,
+      "label": "persistence",
+      "modules": [
+        "packages/next/src/telemetry/storage.ts",
+        "packages/next/src/server/async-storage/request-store.ts",
+        "packages/next/src/server/async-storage/draft-mode-provider.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 packages/next/src/telemetry/storage.ts, packages/next/src/server/async-storage/request-store.ts, packages/next/src/server/async-storage/draft-mode-provider.ts"
+    },
+    {
+      "concept": "validation",
+      "phrase": "request validation",
+      "expected_subsystem": "input validation",
+      "prompt": "what breaks if I remove request validation",
+      "resolved": true,
+      "category": null,
+      "label": "validation",
+      "modules": [
+        "packages/next/src/server/request/params.ts",
+        "packages/next/src/server/app-render/instant-validation/instant-validation-error.ts",
+        "packages/next/src/server/app-render/instant-validation/instant-validation.tsx"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 packages/next/src/server/request/params.ts, packages/next/src/server/app-render/instant-validation/instant-validation-error.ts, packages/next/src/server/app-render/instant-validation/instant-validation.tsx"
+    },
+    {
+      "concept": "serialization",
+      "phrase": "serialization",
+      "expected_subsystem": "(de)serialization layer",
+      "prompt": "what breaks if I remove serialization",
+      "resolved": true,
+      "category": null,
+      "label": "serialization",
+      "modules": [
+        "turbopack/packages/devlow-bench/src/interfaces/json.ts",
+        "packages/next/src/shared/lib/encode-uri-path.ts",
+        "packages/next/src/server/lib/encode-cache-tag.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 turbopack/packages/devlow-bench/src/interfaces/json.ts, packages/next/src/shared/lib/encode-uri-path.ts, packages/next/src/server/lib/encode-cache-tag.ts"
+    }
+  ],
+  "status": "ok",
+  "resolved_count": 19,
+  "scan_seconds": 33.1
+}

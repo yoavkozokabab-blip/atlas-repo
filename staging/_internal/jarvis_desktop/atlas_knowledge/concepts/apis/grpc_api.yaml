@@ -1,0 +1,45 @@
+concept_id: grpc_api
+name: gRPC
+title: gRPC
+domain: apis
+category: grpc
+feature_type: grpc
+concept_quality_score: source_backed
+confidence: high
+aliases:
+- grpc
+- protobuf rpc
+description: Binary RPC over HTTP/2 with Protocol Buffers contracts.
+when_to_use: Service-to-service low-latency RPC inside trusted networks.
+requirements:
+- Clear ownership of gRPC in the architecture
+implementation_strategies: &id001
+- Versioning strategy
+- Pagination and limits
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Breaking clients on change
+- Chatty APIs
+- Overserialized payloads
+security_risks: []
+performance_risks:
+- Chatty APIs
+- Overserialized payloads
+failure_modes:
+- Undocumented error codes
+- Version skew
+verification:
+- Consumer-driven contracts
+- Backward compatibility checklist
+testing:
+- Contract tests
+- Load tests on gateway
+related_concepts: []
+references:
+- https://grpc.io/docs/what-is-grpc/
+path_keywords:
+- grpc
+- api
+- grpc
+investigate_only: false

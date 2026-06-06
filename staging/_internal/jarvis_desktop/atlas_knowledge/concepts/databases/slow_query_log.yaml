@@ -1,0 +1,48 @@
+concept_id: slow_query_log
+name: Slow Query Log
+title: Slow Query Log
+domain: databases
+category: ops
+feature_type: ops
+concept_quality_score: curated_deep
+confidence: medium
+aliases:
+- slow query
+- slow query log
+description: Find queries exceeding threshold.
+when_to_use: Performance incidents.
+requirements:
+- Clear ownership of Slow Query Log in the architecture
+implementation_strategies: &id001
+- Migrations additive-first
+- Explicit transaction boundaries
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Data corruption
+- Lock contention
+- Missing indexes
+- Long-running transactions
+- Connection pool exhaustion
+security_risks: []
+performance_risks:
+- Missing indexes
+- Long-running transactions
+- Connection pool exhaustion
+failure_modes:
+- Migration lock on large tables
+- Deadlocks under concurrent updates
+verification:
+- Explain plans for hot queries
+- Migration rollback drill
+testing:
+- Migration up/down tests
+- Concurrency tests on hot rows
+related_concepts: []
+references:
+- atlas://curated/databases/slow_query_log
+path_keywords:
+- slow
+- slow query
+- slow query log
+investigate_only: false

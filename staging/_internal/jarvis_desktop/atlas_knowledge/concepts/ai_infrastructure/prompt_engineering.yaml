@@ -1,0 +1,48 @@
+concept_id: prompt_engineering
+name: Prompt Engineering
+title: Prompt Engineering
+domain: ai_infrastructure
+category: llm
+feature_type: llm
+concept_quality_score: curated_deep
+confidence: medium
+aliases:
+- prompt engineering
+- prompt design
+description: Structure prompts, examples, and guardrails for LLMs.
+when_to_use: All LLM features.
+requirements:
+- Clear ownership of Prompt Engineering in the architecture
+implementation_strategies: &id001
+- Validate at boundary
+- Idempotent writes where applicable
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Contract drift between clients and server
+- Unhandled edge cases on partial failure
+- N+1 queries
+- Unbounded payload size
+- Hot-spot endpoints
+security_risks: []
+performance_risks:
+- N+1 queries
+- Unbounded payload size
+- Hot-spot endpoints
+failure_modes:
+- 500s under load without backpressure
+- Inconsistent error shapes for clients
+verification:
+- OpenAPI/contract tests
+- Load test critical endpoints
+testing:
+- Integration tests with realistic payloads
+- Contract tests for error codes
+related_concepts: []
+references:
+- atlas://curated/ai_infrastructure/prompt_engineering
+path_keywords:
+- prompt
+- prompt engineering
+- prompt design
+investigate_only: false

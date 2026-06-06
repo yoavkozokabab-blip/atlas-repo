@@ -42,7 +42,7 @@
       <button data-view="build" data-lock="1" onclick="go('build')">Change Plan</button>
       <button data-view="investigate" data-lock="1" onclick="go('investigate')">Investigate Bug</button>
       <button data-view="impact" data-lock="1" onclick="go('impact')">What breaks?</button>
-      <button data-view="export" data-lock="1" onclick="go('export')">Send to AI</button>
+      <button data-view="export" data-lock="1" data-beta-advanced="1" onclick="go('export')" title="Advanced: full repository context (create a Change Plan first)">Repository context</button>
       <span class="billing-nav" id="billingNav" style="display:none">
         <a class="nav-link" href="usage.html">Usage</a>
         <a class="nav-link" href="pricing.html">Pricing</a>
@@ -84,21 +84,24 @@
         <p class="hero-headline">Map your repository before your AI reads it.</p>
         <p class="hero-subheadline">Atlas scans architecture, dependencies, and risk on your machine,<br>then helps you plan changes and export context for Claude, Codex, or Cursor.</p>
         <div class="beta-notice glass" role="note">
-          <b>Planning only</b> — Atlas maps your code and prepares grounded plans. It does not edit files, run tests, or write patches for you.
+          <b>Atlas plans; Claude/Cursor implement.</b> Atlas maps your code locally and prepares grounded Change Plans — your AI tool writes the code.
         </div>
         <div class="steps-row">
           <div class="step"><div class="step-num">1</div><h3>Load sample</h3><p>Try Atlas in under a minute — no folder path needed.</p></div>
           <div class="step-arrow">→</div>
           <div class="step"><div class="step-num">2</div><h3>Change Plan</h3><p>Describe a change; get files, order, and tests to run.</p></div>
           <div class="step-arrow">→</div>
-          <div class="step"><div class="step-num">3</div><h3>Send to AI</h3><p>Copy a ready prompt into Claude, Cursor, or Codex.</p></div>
+          <div class="step"><div class="step-num">3</div><h3>Copy for Claude</h3><p>Paste one ready prompt into Claude, Cursor, or Codex.</p></div>
         </div>
         <div class="home-actions">
           <button class="btn primary big" type="button" onclick="loadDemoMode()">Load Sample Repository</button>
-          <button class="btn ghost big" type="button" id="browseHomBtn" onclick="browseRepoFolder()">Scan My Repository</button>
+          <button class="btn ghost big" type="button" id="browseHomBtn" onclick="showHomeScanFocus();browseRepoFolder()">Scan My Repository</button>
           <a class="btn ghost big" href="quickstart.html">Open Quickstart</a>
         </div>
-        <p class="muted tiny home-actions-help">New to Atlas? <b>Load Sample Repository</b> is the fastest way to see it work — no setup, no folder path. You can <a href="#" onclick="startGuidedWalkthrough();return false;">take the guided walkthrough</a> any time.</p>
+        <div id="homeScanBanner" class="home-scan-banner glass" style="display:none">
+          <p><b>Scan your repository</b> — paste your project folder path below. New here? <button class="btn link inline" type="button" onclick="loadDemoMode()">Try the sample first</button> (no path needed).</p>
+        </div>
+        <p class="muted tiny home-actions-help">New to Atlas? <b>Load Sample Repository</b> is the fastest way to see it work — no setup, no folder path. Optional: <a href="#" onclick="startGuidedWalkthrough();return false;">guided tour</a>.</p>
         <details class="home-explore">
           <summary class="ask">Or explore by task</summary>
           <div class="cards">
@@ -339,7 +342,7 @@
       <div class="io glass">
         <label>What do you want to add or change?</label>
         <textarea id="buildRequest" rows="4" placeholder="e.g. Add user authentication&#10;Add request rate limiting&#10;Add audit logging"></textarea>
-        <button class="btn primary" onclick="runChangePlan()">Generate Change Plan</button>
+        <button class="btn primary" onclick="runChangePlan()">Create Change Plan</button>
       </div>
       <div class="workflow-toolbar glass" id="buildToolbar" style="display:none">
         <button class="btn small ghost" type="button" onclick="downloadWorkflowMarkdownBundle()">Download Markdown</button>
@@ -381,13 +384,13 @@
 
     <!-- ===================== SCREEN: SEND TO AI ===================== -->
     <section class="view" id="view-export">
-      <h2 class="vh">Send to AI</h2>
+      <h2 class="vh">Repository context</h2>
       <div class="export-grid">
         <div class="glass controls">
           <div class="export-why">
-            <div class="export-why-title">Send this to your AI coding tool</div>
-            <p>Atlas gives your AI assistant repository context before it starts guessing. Compact packets reduce token cost; verbose packets include full architectural evidence.</p>
-            <p class="muted tiny" style="margin-top:10px"><b>Next step:</b> paste this into Claude, Cursor, or Codex and ask it to implement the plan.</p>
+            <div class="export-why-title">Repository context (advanced)</div>
+            <p>This is <b>not</b> your task prompt. Create a <b>Change Plan</b> first, then use <b>Copy for Claude</b> on that screen. Use this tab only when you want a repo-wide context packet.</p>
+            <p class="muted tiny" style="margin-top:10px">Compact packets save tokens; verbose packets include full architectural evidence.</p>
           </div>
           <label>Target tool</label>
           <div class="seg" id="segTarget">
@@ -411,7 +414,7 @@
         </div>
         <div class="glass preview">
           <div class="preview-head"><span>Context preview</span><span class="muted" id="previewMeta"></span></div>
-          <pre id="exportPreview" class="code">Scan a repository, then choose a target and packet.</pre>
+          <pre id="exportPreview" class="code">Tip: create a Change Plan first — then use Copy for Claude on that screen. This tab is for advanced repo-wide context only.</pre>
         </div>
       </div>
     </section>
@@ -425,12 +428,12 @@
       <p class="onboard-eyebrow">Private beta</p>
       <h1 class="welcome-title">Welcome to Atlas</h1>
       <p class="muted welcome-lead">Atlas maps your codebase on your machine and prepares grounded <b>Change Plans</b> you can send to your AI coding tool. It does <b>not</b> write or apply code for you.</p>
-      <p class="muted tiny">Fastest start: load the sample, then generate your first Change Plan in about a minute.</p>
+      <p class="muted tiny">Fastest start: load the sample, create a Change Plan, then copy one prompt into Claude — usually under a minute.</p>
       <div class="welcome-actions">
-        <button class="btn primary big" type="button" onclick="welcomeLoadSample()">Load Sample Repository</button>
-        <button class="btn ghost big" type="button" onclick="welcomeStartWalkthrough()">Guided Walkthrough</button>
-        <button class="btn ghost big" type="button" onclick="dismissWelcomeScreen(true)">Use my own repository</button>
+        <button class="btn primary big" type="button" onclick="welcomeLoadSample()">Try sample (about 1 min)</button>
+        <button class="btn ghost big" type="button" onclick="welcomeScanMyRepo()">Scan my repository</button>
       </div>
+      <p class="muted tiny welcome-foot" style="margin-top:8px"><a href="#" onclick="welcomeStartWalkthrough();return false;">Optional guided tour</a></p>
       <p class="muted tiny welcome-foot">No account required · analysis stays local · <a href="about.html" class="welcome-link">About Atlas</a></p>
     </div>
   </div>

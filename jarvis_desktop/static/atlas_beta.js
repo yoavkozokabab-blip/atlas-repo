@@ -156,11 +156,21 @@ async function collectIssueContext() {
 }
 
 function dismissWelcomeScreen(goHome) {
-  try { localStorage.setItem(WELCOME_KEY, "1"); } catch (e) {}
+  try {
+    localStorage.setItem(WELCOME_KEY, "1");
+    localStorage.setItem("atlas_onboarding_v2_done", "1");
+  } catch (e) {}
   const w = $("welcomeScreen");
   if (w) w.style.display = "none";
+  const ob = $("onboarding");
+  if (ob) ob.style.display = "none";
   if (goHome !== false && typeof go === "function") go("home");
-  if (typeof maybeShowOnboarding === "function") maybeShowOnboarding();
+}
+
+function welcomeScanMyRepo() {
+  dismissWelcomeScreen(false);
+  if (typeof showHomeScanFocus === "function") showHomeScanFocus();
+  else if (typeof go === "function") go("home");
 }
 
 function welcomeLoadSample() {
@@ -280,6 +290,7 @@ window.openReportIssue = openReportIssue;
 window.dismissWelcomeScreen = dismissWelcomeScreen;
 window.welcomeLoadSample = welcomeLoadSample;
 window.welcomeStartWalkthrough = welcomeStartWalkthrough;
+window.welcomeScanMyRepo = welcomeScanMyRepo;
 window.startGuidedWalkthrough = startGuidedWalkthrough;
 window.stopGuidedWalkthrough = stopGuidedWalkthrough;
 window.guidedWalkthroughNext = guidedWalkthroughNext;
@@ -287,12 +298,10 @@ window.maybeShowWelcomeScreen = maybeShowWelcomeScreen;
 
 (function phase141Boot() {
   try {
-    if (localStorage.getItem(WELCOME_KEY) === "1") {
-      if (typeof maybeShowOnboarding === "function") maybeShowOnboarding();
-    } else {
+    if (localStorage.getItem(WELCOME_KEY) !== "1") {
       maybeShowWelcomeScreen();
     }
   } catch (e) {
-    if (typeof maybeShowOnboarding === "function") maybeShowOnboarding();
+    maybeShowWelcomeScreen();
   }
 })();

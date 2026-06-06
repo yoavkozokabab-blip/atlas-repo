@@ -1,0 +1,1444 @@
+{
+"concepts": [
+{
+"concept_id": "frontend_react_state_management_0",
+"name": "React State Management",
+"aliases": [
+"frontend react state management 0",
+"react state management",
+"React State Management"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: React State Management in frontend systems.",
+"requirements": [
+"Understand React State Management prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of React State Management causing production incidents."
+],
+"failure_modes": [
+"React State Management fails silently under load or edge inputs."
+],
+"verification": [
+"Validate React State Management behavior against official specification."
+],
+"testing": [
+"Automated tests covering React State Management happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_react_state_management_0"
+],
+"confidence": "high",
+"path_keywords": [
+"react",
+"state",
+"management",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_virtual_dom_1",
+"name": "Virtual DOM",
+"aliases": [
+"frontend virtual dom 1",
+"virtual dom",
+"Virtual DOM"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Virtual DOM in frontend systems.",
+"requirements": [
+"Understand Virtual DOM prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Virtual DOM causing production incidents."
+],
+"failure_modes": [
+"Virtual DOM fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Virtual DOM behavior against official specification."
+],
+"testing": [
+"Automated tests covering Virtual DOM happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_virtual_dom_1"
+],
+"confidence": "high",
+"path_keywords": [
+"virtual",
+"dom",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_server_components_2",
+"name": "Server Components",
+"aliases": [
+"frontend server components 2",
+"server components",
+"Server Components"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Server Components in frontend systems.",
+"requirements": [
+"Understand Server Components prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Server Components causing production incidents."
+],
+"failure_modes": [
+"Server Components fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Server Components behavior against official specification."
+],
+"testing": [
+"Automated tests covering Server Components happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_server_components_2"
+],
+"confidence": "high",
+"path_keywords": [
+"server",
+"components",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_client_hydration_3",
+"name": "Client Hydration",
+"aliases": [
+"frontend client hydration 3",
+"client hydration",
+"Client Hydration"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Client Hydration in frontend systems.",
+"requirements": [
+"Understand Client Hydration prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Client Hydration causing production incidents."
+],
+"failure_modes": [
+"Client Hydration fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Client Hydration behavior against official specification."
+],
+"testing": [
+"Automated tests covering Client Hydration happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_client_hydration_3"
+],
+"confidence": "high",
+"path_keywords": [
+"client",
+"hydration",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_code_splitting_4",
+"name": "Code Splitting",
+"aliases": [
+"frontend code splitting 4",
+"code splitting",
+"Code Splitting"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Code Splitting in frontend systems.",
+"requirements": [
+"Understand Code Splitting prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Code Splitting causing production incidents."
+],
+"failure_modes": [
+"Code Splitting fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Code Splitting behavior against official specification."
+],
+"testing": [
+"Automated tests covering Code Splitting happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_code_splitting_4"
+],
+"confidence": "high",
+"path_keywords": [
+"code",
+"splitting",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_lazy_loading_5",
+"name": "Lazy Loading",
+"aliases": [
+"frontend lazy loading 5",
+"lazy loading",
+"Lazy Loading"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Lazy Loading in frontend systems.",
+"requirements": [
+"Understand Lazy Loading prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Lazy Loading causing production incidents."
+],
+"failure_modes": [
+"Lazy Loading fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Lazy Loading behavior against official specification."
+],
+"testing": [
+"Automated tests covering Lazy Loading happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_lazy_loading_5"
+],
+"confidence": "high",
+"path_keywords": [
+"lazy",
+"loading",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_accessibility_wcag_6",
+"name": "Accessibility WCAG",
+"aliases": [
+"frontend accessibility wcag 6",
+"accessibility wcag",
+"Accessibility WCAG"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Accessibility WCAG in frontend systems.",
+"requirements": [
+"Understand Accessibility WCAG prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Accessibility WCAG causing production incidents."
+],
+"failure_modes": [
+"Accessibility WCAG fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Accessibility WCAG behavior against official specification."
+],
+"testing": [
+"Automated tests covering Accessibility WCAG happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_accessibility_wcag_6"
+],
+"confidence": "high",
+"path_keywords": [
+"accessibility",
+"wcag",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_responsive_layout_7",
+"name": "Responsive Layout",
+"aliases": [
+"frontend responsive layout 7",
+"responsive layout",
+"Responsive Layout"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Responsive Layout in frontend systems.",
+"requirements": [
+"Understand Responsive Layout prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Responsive Layout causing production incidents."
+],
+"failure_modes": [
+"Responsive Layout fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Responsive Layout behavior against official specification."
+],
+"testing": [
+"Automated tests covering Responsive Layout happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_responsive_layout_7"
+],
+"confidence": "high",
+"path_keywords": [
+"responsive",
+"layout",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_css_grid_8",
+"name": "CSS Grid",
+"aliases": [
+"frontend css grid 8",
+"css grid",
+"CSS Grid"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: CSS Grid in frontend systems.",
+"requirements": [
+"Understand CSS Grid prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of CSS Grid causing production incidents."
+],
+"failure_modes": [
+"CSS Grid fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CSS Grid behavior against official specification."
+],
+"testing": [
+"Automated tests covering CSS Grid happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_css_grid_8"
+],
+"confidence": "high",
+"path_keywords": [
+"css",
+"grid",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_form_validation_9",
+"name": "Form Validation",
+"aliases": [
+"frontend form validation 9",
+"form validation",
+"Form Validation"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Form Validation in frontend systems.",
+"requirements": [
+"Understand Form Validation prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Form Validation causing production incidents."
+],
+"failure_modes": [
+"Form Validation fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Form Validation behavior against official specification."
+],
+"testing": [
+"Automated tests covering Form Validation happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_form_validation_9"
+],
+"confidence": "high",
+"path_keywords": [
+"form",
+"validation",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_optimistic_ui_10",
+"name": "Optimistic UI",
+"aliases": [
+"frontend optimistic ui 10",
+"optimistic ui",
+"Optimistic UI"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Optimistic UI in frontend systems.",
+"requirements": [
+"Understand Optimistic UI prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Optimistic UI causing production incidents."
+],
+"failure_modes": [
+"Optimistic UI fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Optimistic UI behavior against official specification."
+],
+"testing": [
+"Automated tests covering Optimistic UI happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_optimistic_ui_10"
+],
+"confidence": "high",
+"path_keywords": [
+"optimistic",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_error_boundary_11",
+"name": "Error Boundary",
+"aliases": [
+"frontend error boundary 11",
+"error boundary",
+"Error Boundary"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Error Boundary in frontend systems.",
+"requirements": [
+"Understand Error Boundary prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Error Boundary causing production incidents."
+],
+"failure_modes": [
+"Error Boundary fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Error Boundary behavior against official specification."
+],
+"testing": [
+"Automated tests covering Error Boundary happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_error_boundary_11"
+],
+"confidence": "high",
+"path_keywords": [
+"error",
+"boundary",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_react_state_management_12",
+"name": "React State Management",
+"aliases": [
+"frontend react state management 12",
+"react state management",
+"React State Management"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: React State Management in frontend systems.",
+"requirements": [
+"Understand React State Management prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of React State Management causing production incidents."
+],
+"failure_modes": [
+"React State Management fails silently under load or edge inputs."
+],
+"verification": [
+"Validate React State Management behavior against official specification."
+],
+"testing": [
+"Automated tests covering React State Management happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_react_state_management_12"
+],
+"confidence": "high",
+"path_keywords": [
+"react",
+"state",
+"management",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_virtual_dom_13",
+"name": "Virtual DOM",
+"aliases": [
+"frontend virtual dom 13",
+"virtual dom",
+"Virtual DOM"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Virtual DOM in frontend systems.",
+"requirements": [
+"Understand Virtual DOM prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Virtual DOM causing production incidents."
+],
+"failure_modes": [
+"Virtual DOM fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Virtual DOM behavior against official specification."
+],
+"testing": [
+"Automated tests covering Virtual DOM happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_virtual_dom_13"
+],
+"confidence": "high",
+"path_keywords": [
+"virtual",
+"dom",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_server_components_14",
+"name": "Server Components",
+"aliases": [
+"frontend server components 14",
+"server components",
+"Server Components"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Server Components in frontend systems.",
+"requirements": [
+"Understand Server Components prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Server Components causing production incidents."
+],
+"failure_modes": [
+"Server Components fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Server Components behavior against official specification."
+],
+"testing": [
+"Automated tests covering Server Components happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_server_components_14"
+],
+"confidence": "high",
+"path_keywords": [
+"server",
+"components",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_client_hydration_15",
+"name": "Client Hydration",
+"aliases": [
+"frontend client hydration 15",
+"client hydration",
+"Client Hydration"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Client Hydration in frontend systems.",
+"requirements": [
+"Understand Client Hydration prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Client Hydration causing production incidents."
+],
+"failure_modes": [
+"Client Hydration fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Client Hydration behavior against official specification."
+],
+"testing": [
+"Automated tests covering Client Hydration happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_client_hydration_15"
+],
+"confidence": "high",
+"path_keywords": [
+"client",
+"hydration",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_code_splitting_16",
+"name": "Code Splitting",
+"aliases": [
+"frontend code splitting 16",
+"code splitting",
+"Code Splitting"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Code Splitting in frontend systems.",
+"requirements": [
+"Understand Code Splitting prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Code Splitting causing production incidents."
+],
+"failure_modes": [
+"Code Splitting fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Code Splitting behavior against official specification."
+],
+"testing": [
+"Automated tests covering Code Splitting happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_code_splitting_16"
+],
+"confidence": "high",
+"path_keywords": [
+"code",
+"splitting",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_lazy_loading_17",
+"name": "Lazy Loading",
+"aliases": [
+"frontend lazy loading 17",
+"lazy loading",
+"Lazy Loading"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Lazy Loading in frontend systems.",
+"requirements": [
+"Understand Lazy Loading prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Lazy Loading causing production incidents."
+],
+"failure_modes": [
+"Lazy Loading fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Lazy Loading behavior against official specification."
+],
+"testing": [
+"Automated tests covering Lazy Loading happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_lazy_loading_17"
+],
+"confidence": "high",
+"path_keywords": [
+"lazy",
+"loading",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_accessibility_wcag_18",
+"name": "Accessibility WCAG",
+"aliases": [
+"frontend accessibility wcag 18",
+"accessibility wcag",
+"Accessibility WCAG"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Accessibility WCAG in frontend systems.",
+"requirements": [
+"Understand Accessibility WCAG prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Accessibility WCAG causing production incidents."
+],
+"failure_modes": [
+"Accessibility WCAG fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Accessibility WCAG behavior against official specification."
+],
+"testing": [
+"Automated tests covering Accessibility WCAG happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_accessibility_wcag_18"
+],
+"confidence": "high",
+"path_keywords": [
+"accessibility",
+"wcag",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_responsive_layout_19",
+"name": "Responsive Layout",
+"aliases": [
+"frontend responsive layout 19",
+"responsive layout",
+"Responsive Layout"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Responsive Layout in frontend systems.",
+"requirements": [
+"Understand Responsive Layout prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Responsive Layout causing production incidents."
+],
+"failure_modes": [
+"Responsive Layout fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Responsive Layout behavior against official specification."
+],
+"testing": [
+"Automated tests covering Responsive Layout happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_responsive_layout_19"
+],
+"confidence": "high",
+"path_keywords": [
+"responsive",
+"layout",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_css_grid_20",
+"name": "CSS Grid",
+"aliases": [
+"frontend css grid 20",
+"css grid",
+"CSS Grid"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: CSS Grid in frontend systems.",
+"requirements": [
+"Understand CSS Grid prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of CSS Grid causing production incidents."
+],
+"failure_modes": [
+"CSS Grid fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CSS Grid behavior against official specification."
+],
+"testing": [
+"Automated tests covering CSS Grid happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_css_grid_20"
+],
+"confidence": "high",
+"path_keywords": [
+"css",
+"grid",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_form_validation_21",
+"name": "Form Validation",
+"aliases": [
+"frontend form validation 21",
+"form validation",
+"Form Validation"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Form Validation in frontend systems.",
+"requirements": [
+"Understand Form Validation prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Form Validation causing production incidents."
+],
+"failure_modes": [
+"Form Validation fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Form Validation behavior against official specification."
+],
+"testing": [
+"Automated tests covering Form Validation happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_form_validation_21"
+],
+"confidence": "high",
+"path_keywords": [
+"form",
+"validation",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_optimistic_ui_22",
+"name": "Optimistic UI",
+"aliases": [
+"frontend optimistic ui 22",
+"optimistic ui",
+"Optimistic UI"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Optimistic UI in frontend systems.",
+"requirements": [
+"Understand Optimistic UI prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Optimistic UI causing production incidents."
+],
+"failure_modes": [
+"Optimistic UI fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Optimistic UI behavior against official specification."
+],
+"testing": [
+"Automated tests covering Optimistic UI happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_optimistic_ui_22"
+],
+"confidence": "high",
+"path_keywords": [
+"optimistic",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_error_boundary_23",
+"name": "Error Boundary",
+"aliases": [
+"frontend error boundary 23",
+"error boundary",
+"Error Boundary"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Error Boundary in frontend systems.",
+"requirements": [
+"Understand Error Boundary prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Error Boundary causing production incidents."
+],
+"failure_modes": [
+"Error Boundary fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Error Boundary behavior against official specification."
+],
+"testing": [
+"Automated tests covering Error Boundary happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_error_boundary_23"
+],
+"confidence": "high",
+"path_keywords": [
+"error",
+"boundary",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_react_state_management_24",
+"name": "React State Management",
+"aliases": [
+"frontend react state management 24",
+"react state management",
+"React State Management"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: React State Management in frontend systems.",
+"requirements": [
+"Understand React State Management prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of React State Management causing production incidents."
+],
+"failure_modes": [
+"React State Management fails silently under load or edge inputs."
+],
+"verification": [
+"Validate React State Management behavior against official specification."
+],
+"testing": [
+"Automated tests covering React State Management happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_react_state_management_24"
+],
+"confidence": "high",
+"path_keywords": [
+"react",
+"state",
+"management",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_virtual_dom_25",
+"name": "Virtual DOM",
+"aliases": [
+"frontend virtual dom 25",
+"virtual dom",
+"Virtual DOM"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Virtual DOM in frontend systems.",
+"requirements": [
+"Understand Virtual DOM prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Virtual DOM causing production incidents."
+],
+"failure_modes": [
+"Virtual DOM fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Virtual DOM behavior against official specification."
+],
+"testing": [
+"Automated tests covering Virtual DOM happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_virtual_dom_25"
+],
+"confidence": "high",
+"path_keywords": [
+"virtual",
+"dom",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_server_components_26",
+"name": "Server Components",
+"aliases": [
+"frontend server components 26",
+"server components",
+"Server Components"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Server Components in frontend systems.",
+"requirements": [
+"Understand Server Components prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Server Components causing production incidents."
+],
+"failure_modes": [
+"Server Components fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Server Components behavior against official specification."
+],
+"testing": [
+"Automated tests covering Server Components happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_server_components_26"
+],
+"confidence": "high",
+"path_keywords": [
+"server",
+"components",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_client_hydration_27",
+"name": "Client Hydration",
+"aliases": [
+"frontend client hydration 27",
+"client hydration",
+"Client Hydration"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Client Hydration in frontend systems.",
+"requirements": [
+"Understand Client Hydration prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Client Hydration causing production incidents."
+],
+"failure_modes": [
+"Client Hydration fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Client Hydration behavior against official specification."
+],
+"testing": [
+"Automated tests covering Client Hydration happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_client_hydration_27"
+],
+"confidence": "high",
+"path_keywords": [
+"client",
+"hydration",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_code_splitting_28",
+"name": "Code Splitting",
+"aliases": [
+"frontend code splitting 28",
+"code splitting",
+"Code Splitting"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Code Splitting in frontend systems.",
+"requirements": [
+"Understand Code Splitting prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Code Splitting causing production incidents."
+],
+"failure_modes": [
+"Code Splitting fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Code Splitting behavior against official specification."
+],
+"testing": [
+"Automated tests covering Code Splitting happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_code_splitting_28"
+],
+"confidence": "high",
+"path_keywords": [
+"code",
+"splitting",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_lazy_loading_29",
+"name": "Lazy Loading",
+"aliases": [
+"frontend lazy loading 29",
+"lazy loading",
+"Lazy Loading"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Lazy Loading in frontend systems.",
+"requirements": [
+"Understand Lazy Loading prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Lazy Loading causing production incidents."
+],
+"failure_modes": [
+"Lazy Loading fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Lazy Loading behavior against official specification."
+],
+"testing": [
+"Automated tests covering Lazy Loading happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_lazy_loading_29"
+],
+"confidence": "high",
+"path_keywords": [
+"lazy",
+"loading",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_accessibility_wcag_30",
+"name": "Accessibility WCAG",
+"aliases": [
+"frontend accessibility wcag 30",
+"accessibility wcag",
+"Accessibility WCAG"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Accessibility WCAG in frontend systems.",
+"requirements": [
+"Understand Accessibility WCAG prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Accessibility WCAG causing production incidents."
+],
+"failure_modes": [
+"Accessibility WCAG fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Accessibility WCAG behavior against official specification."
+],
+"testing": [
+"Automated tests covering Accessibility WCAG happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_accessibility_wcag_30"
+],
+"confidence": "high",
+"path_keywords": [
+"accessibility",
+"wcag",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_responsive_layout_31",
+"name": "Responsive Layout",
+"aliases": [
+"frontend responsive layout 31",
+"responsive layout",
+"Responsive Layout"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Responsive Layout in frontend systems.",
+"requirements": [
+"Understand Responsive Layout prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Responsive Layout causing production incidents."
+],
+"failure_modes": [
+"Responsive Layout fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Responsive Layout behavior against official specification."
+],
+"testing": [
+"Automated tests covering Responsive Layout happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_responsive_layout_31"
+],
+"confidence": "high",
+"path_keywords": [
+"responsive",
+"layout",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_css_grid_32",
+"name": "CSS Grid",
+"aliases": [
+"frontend css grid 32",
+"css grid",
+"CSS Grid"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: CSS Grid in frontend systems.",
+"requirements": [
+"Understand CSS Grid prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of CSS Grid causing production incidents."
+],
+"failure_modes": [
+"CSS Grid fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CSS Grid behavior against official specification."
+],
+"testing": [
+"Automated tests covering CSS Grid happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_css_grid_32"
+],
+"confidence": "high",
+"path_keywords": [
+"css",
+"grid",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_form_validation_33",
+"name": "Form Validation",
+"aliases": [
+"frontend form validation 33",
+"form validation",
+"Form Validation"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Form Validation in frontend systems.",
+"requirements": [
+"Understand Form Validation prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Form Validation causing production incidents."
+],
+"failure_modes": [
+"Form Validation fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Form Validation behavior against official specification."
+],
+"testing": [
+"Automated tests covering Form Validation happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_form_validation_33"
+],
+"confidence": "high",
+"path_keywords": [
+"form",
+"validation",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_optimistic_ui_34",
+"name": "Optimistic UI",
+"aliases": [
+"frontend optimistic ui 34",
+"optimistic ui",
+"Optimistic UI"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Optimistic UI in frontend systems.",
+"requirements": [
+"Understand Optimistic UI prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Optimistic UI causing production incidents."
+],
+"failure_modes": [
+"Optimistic UI fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Optimistic UI behavior against official specification."
+],
+"testing": [
+"Automated tests covering Optimistic UI happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_optimistic_ui_34"
+],
+"confidence": "high",
+"path_keywords": [
+"optimistic",
+"frontend"
+]
+},
+{
+"concept_id": "frontend_error_boundary_35",
+"name": "Error Boundary",
+"aliases": [
+"frontend error boundary 35",
+"error boundary",
+"Error Boundary"
+],
+"domain": "frontend",
+"category": "pattern",
+"description": "Engineering concept: Error Boundary in frontend systems.",
+"requirements": [
+"Understand Error Boundary prerequisites in frontend context."
+],
+"common_implementations": [
+"Typical pattern integration in frontend systems."
+],
+"risks": [
+"Misconfiguration of Error Boundary causing production incidents."
+],
+"failure_modes": [
+"Error Boundary fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Error Boundary behavior against official specification."
+],
+"testing": [
+"Automated tests covering Error Boundary happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/frontend/frontend_error_boundary_35"
+],
+"confidence": "high",
+"path_keywords": [
+"error",
+"boundary",
+"frontend"
+]
+}
+]
+}

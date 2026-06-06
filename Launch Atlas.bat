@@ -6,6 +6,10 @@ if exist "%~dp0Atlas.exe" (
   start "" "%~dp0Atlas.exe"
   exit /b 0
 )
+if exist "%~dp0Launch Atlas.vbs" (
+  start "" wscript "%~dp0Launch Atlas.vbs"
+  exit /b 0
+)
 echo.
 echo   Starting Atlas...
 echo   (No pip install needed — double-click Launch Atlas after Python 3.10+)

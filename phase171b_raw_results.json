@@ -1,0 +1,248 @@
+{
+  "phase169_minimal_export_avg": 364,
+  "phase169_session_avg": 111,
+  "phase170_total_tokens_minimal_avg": 575,
+  "workflow_minimal_avg": {
+    "build": 322,
+    "investigate": 501,
+    "impact": 269
+  },
+  "delta_budget": {
+    "build": 95,
+    "investigate": 110,
+    "impact": 75,
+    "understanding": 60
+  },
+  "memory_ref_tokens": 22,
+  "projections": [
+    {
+      "repo_id": "fastapi",
+      "session_tokens": 77,
+      "compact_tokens": 324,
+      "memory_object_tokens": 324,
+      "minimal_export_avg": 272,
+      "minimal_by_workflow": {
+        "build": 218,
+        "investigate": 413,
+        "impact": 185
+      },
+      "delta_avg": 85,
+      "structural_overhead_avg": 187,
+      "per_question_minimal": 272,
+      "per_question_memory_delta": 107,
+      "per_question_reduction_pct": 60.6,
+      "session_current_tokens": 5514,
+      "session_memory_tokens": 2464,
+      "session_reduction_pct": 55.3
+    },
+    {
+      "repo_id": "django",
+      "session_tokens": 78,
+      "compact_tokens": 385,
+      "memory_object_tokens": 385,
+      "minimal_export_avg": 290,
+      "minimal_by_workflow": {
+        "build": 259,
+        "investigate": 423,
+        "impact": 189
+      },
+      "delta_avg": 85,
+      "structural_overhead_avg": 205,
+      "per_question_minimal": 290,
+      "per_question_memory_delta": 107,
+      "per_question_reduction_pct": 63.2,
+      "session_current_tokens": 5887,
+      "session_memory_tokens": 2525,
+      "session_reduction_pct": 57.1
+    },
+    {
+      "repo_id": "vscode",
+      "session_tokens": 166,
+      "compact_tokens": 673,
+      "memory_object_tokens": 673,
+      "minimal_export_avg": 506,
+      "minimal_by_workflow": {
+        "build": 447,
+        "investigate": 660,
+        "impact": 411
+      },
+      "delta_avg": 85,
+      "structural_overhead_avg": 421,
+      "per_question_minimal": 506,
+      "per_question_memory_delta": 107,
+      "per_question_reduction_pct": 78.9,
+      "session_current_tokens": 10289,
+      "session_memory_tokens": 2813,
+      "session_reduction_pct": 72.7
+    },
+    {
+      "repo_id": "home_assistant",
+      "session_tokens": 124,
+      "compact_tokens": 633,
+      "memory_object_tokens": 633,
+      "minimal_export_avg": 388,
+      "minimal_by_workflow": {
+        "build": 364,
+        "investigate": 508,
+        "impact": 291
+      },
+      "delta_avg": 85,
+      "structural_overhead_avg": 303,
+      "per_question_minimal": 388,
+      "per_question_memory_delta": 107,
+      "per_question_reduction_pct": 72.4,
+      "session_current_tokens": 7875,
+      "session_memory_tokens": 2773,
+      "session_reduction_pct": 64.8
+    }
+  ],
+  "static_fields": [
+    {
+      "field": "repository_identity",
+      "source": "scan.repo_name, path signature",
+      "currently_in": "ATLAS_SESSION, compact context, minimal headers"
+    },
+    {
+      "field": "graph_statistics",
+      "source": "module_count, edges, files, cycles",
+      "currently_in": "ATLAS_SESSION, compact context"
+    },
+    {
+      "field": "graph_health",
+      "source": "summary.graph_health",
+      "currently_in": "ATLAS_SESSION, trust blocks (removed in minimal)"
+    },
+    {
+      "field": "major_subsystems",
+      "source": "index.subsystems top-N",
+      "currently_in": "compact context (8 subs), FULL export only"
+    },
+    {
+      "field": "architectural_boundaries",
+      "source": "subsystem deps, entry_files",
+      "currently_in": "compact context PRODUCTION SUBSYSTEMS"
+    },
+    {
+      "field": "top_hubs",
+      "source": "scan.top_hubs fan_in",
+      "currently_in": "ATLAS_SESSION, compact context"
+    },
+    {
+      "field": "top_risks",
+      "source": "scan.top_risks",
+      "currently_in": "ATLAS_SESSION, compact context"
+    },
+    {
+      "field": "entry_points",
+      "source": "summary.entry_points",
+      "currently_in": "compact verbose, FULL export"
+    },
+    {
+      "field": "confidence_cap",
+      "source": "graph_health \u2192 confidence ceiling",
+      "currently_in": "trust metadata (session-stable)"
+    },
+    {
+      "field": "evidence_index_metadata",
+      "source": "evidence_store stats",
+      "currently_in": "FULL export repository_evidence (removed minimal)"
+    },
+    {
+      "field": "export_boilerplate",
+      "source": "markdown headers, HOW TO USE",
+      "currently_in": "minimal section headers (~30-50 tok)"
+    }
+  ],
+  "delta_fields": [
+    {
+      "field": "workflow_intent",
+      "workflows": "all",
+      "examples": "goal, symptom, impact target"
+    },
+    {
+      "field": "ranked_files",
+      "workflows": "build,investigate",
+      "examples": "files_to_inspect_first top 5"
+    },
+    {
+      "field": "blast_importers",
+      "workflows": "build",
+      "examples": "what_may_break top 5"
+    },
+    {
+      "field": "implementation_order",
+      "workflows": "build",
+      "examples": "impl order max 4"
+    },
+    {
+      "field": "root_cause_hypothesis",
+      "workflows": "investigate",
+      "examples": "H1 + files"
+    },
+    {
+      "field": "verification_fix",
+      "workflows": "investigate",
+      "examples": "verify checklist, minimal fix"
+    },
+    {
+      "field": "direct_indirect_impact",
+      "workflows": "impact",
+      "examples": "direct 8, indirect 5"
+    },
+    {
+      "field": "per_answer_confidence",
+      "workflows": "all",
+      "examples": "confidence + risk for this answer"
+    },
+    {
+      "field": "per_match_evidence",
+      "workflows": "all",
+      "examples": "evidence_panel summary, 2 bullets"
+    },
+    {
+      "field": "domain_concept_label",
+      "workflows": "build,investigate",
+      "examples": "concept name only (not essay)"
+    }
+  ],
+  "economics": {
+    "rows": [
+      {
+        "repo": "fastapi",
+        "scan_s": 2.58,
+        "token_saved_per_q": 165,
+        "latency_saved_ms_per_q": 8.2,
+        "break_even_old_q": 0.13,
+        "break_even_new_q": 0.13,
+        "session_token_reduction_pct": 55.3
+      },
+      {
+        "repo": "django",
+        "scan_s": 17.52,
+        "token_saved_per_q": 183,
+        "latency_saved_ms_per_q": 9.2,
+        "break_even_old_q": 0.88,
+        "break_even_new_q": 0.88,
+        "session_token_reduction_pct": 57.1
+      },
+      {
+        "repo": "vscode",
+        "scan_s": 26.95,
+        "token_saved_per_q": 399,
+        "latency_saved_ms_per_q": 20.0,
+        "break_even_old_q": 1.36,
+        "break_even_new_q": 1.36,
+        "session_token_reduction_pct": 72.7
+      },
+      {
+        "repo": "home_assistant",
+        "scan_s": 334.05,
+        "token_saved_per_q": 281,
+        "latency_saved_ms_per_q": 14.1,
+        "break_even_old_q": 17.52,
+        "break_even_new_q": 17.51,
+        "session_token_reduction_pct": 64.8
+      }
+    ]
+  }
+}

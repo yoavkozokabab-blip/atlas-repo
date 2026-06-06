@@ -1,0 +1,46 @@
+concept_id: paper_trading
+name: Paper Trading
+title: Paper Trading
+domain: trading
+category: sim
+feature_type: sim
+concept_quality_score: curated_deep
+confidence: medium
+aliases:
+- paper trading
+- paper trade
+description: Simulated trading without capital risk.
+when_to_use: Strategy validation before live.
+requirements:
+- Clear ownership of Paper Trading in the architecture
+implementation_strategies: &id001
+- Single source of truth for bar timestamps
+- Shared calculator for sim/live
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Lookahead bias
+- Backtest/live divergence
+- Python loops on large universes
+- Memory growth in streaming
+security_risks: []
+performance_risks:
+- Python loops on large universes
+- Memory growth in streaming
+failure_modes:
+- Signals on NaN indicators
+- Fill model mismatch vs live
+verification:
+- Parity test on fixed bar stream
+- Compare to reference implementation
+testing:
+- Unit tests on indicator fixtures
+- Paper/backtest reconciliation
+related_concepts: []
+references:
+- atlas://curated/trading/paper_trading
+path_keywords:
+- paper
+- paper trading
+- paper trade
+investigate_only: false

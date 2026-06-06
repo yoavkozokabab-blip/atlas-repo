@@ -1,0 +1,8 @@
+{"ts": 1780664742.0654278, "event": "scan_completed", "product": "phase146b-true-beta-blocker-fixes", "demo": true, "modules": 5, "edges": 4, "cache_hit": false, "massive_mode": false}
+{"ts": 1780664742.07202, "event": "scan_completed", "product": "phase146b-true-beta-blocker-fixes", "demo": true, "cache_hit": true}
+{"ts": 1780664742.0753915, "event": "scan_completed", "product": "phase146b-true-beta-blocker-fixes", "demo": true, "cache_hit": true}
+{"ts": 1780664742.0785892, "event": "scan_completed", "product": "phase146b-true-beta-blocker-fixes", "demo": true, "cache_hit": true}
+{"ts": 1780664742.0817654, "event": "scan_completed", "product": "phase146b-true-beta-blocker-fixes", "demo": true, "cache_hit": true}
+{"ts": 1780664742.385505, "event": "change_plan_created", "product": "phase146b-true-beta-blocker-fixes", "intent": "general", "confidence": "low-medium"}
+{"ts": 1780664742.4389029, "event": "investigation_plan_created", "product": "phase146b-true-beta-blocker-fixes", "intent": "duplicate_events", "confidence": "medium-high"}
+{"ts": 1780664742.4423964, "event": "impact_analyzed", "product": "phase146b-true-beta-blocker-fixes", "risk_level": "low", "confidence": "low"}

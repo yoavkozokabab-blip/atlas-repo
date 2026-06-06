@@ -1,0 +1,49 @@
+concept_id: kubernetes
+name: Kubernetes
+title: Kubernetes
+domain: cloud
+category: orchestration
+feature_type: orchestration
+concept_quality_score: source_backed
+confidence: high
+aliases:
+- kubernetes
+- k8s
+- kubectl
+- deployment
+description: 'Container orchestration: deploy, scale, and heal workloads.'
+when_to_use: Production container workloads at scale.
+requirements:
+- Clear ownership of Kubernetes in the architecture
+implementation_strategies: &id001
+- Infrastructure as code
+- Separate env accounts
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Misconfigured IAM
+- Public exposure
+- Over-privileged roles
+- Secrets in environment variables
+security_risks:
+- Over-privileged roles
+- Secrets in environment variables
+performance_risks: []
+failure_modes:
+- Deploy succeeds but health checks fail
+- Autoscaling lag during spike
+verification:
+- Least-privilege IAM review
+- Disaster recovery drill
+testing:
+- IaC plan/apply in CI
+- Smoke test after deploy
+related_concepts:
+- docker
+- health_check
+references:
+- https://kubernetes.io/docs/home/
+path_keywords:
+- kubernetes
+- kubernetes
+investigate_only: false

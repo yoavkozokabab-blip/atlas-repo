@@ -226,7 +226,13 @@ function copyForAi(tool, kind) {
     return;
   }
   const text = composeAiPrompt(tool, kind);
-  if (typeof copyText === "function") copyText(text, `Copied prompt for ${ZF_TOOL_LABEL[tool] || tool}`);
+  if (typeof copyText === "function") {
+    copyText(text, `Copied prompt for ${ZF_TOOL_LABEL[tool] || tool}`);
+    if (typeof toast === "function") {
+      toast("Paste into Claude and ask it to implement step by step", "success");
+    }
+  }
+  if (typeof applyExportNavVisibility === "function") applyExportNavVisibility();
 }
 
 function downloadAiMarkdown(kind) {
@@ -245,19 +251,63 @@ function downloadAiMarkdown(kind) {
   if (typeof toast === "function") toast("Markdown downloaded", "success");
 }
 
+function _zfEsc(s) {
+  return String(s || "").replace(/</g, "&lt;");
+}
+
+function beginnerPlanHero(plan, kind) {
+  if (typeof getOutputMode === "function" && getOutputMode() === "advanced") return "";
+  const p = plan || {};
+  const goal = p.change_goal || p.goal || (document.getElementById("buildRequest") && document.getElementById("buildRequest").value) || "Your change";
+  const files = zfList(p.files_to_inspect_first || p.files_likely_to_modify, 5);
+  const order = zfList(p.implementation_order, 5);
+  return `<div class="beginner-plan-card glass" data-kind="${kind}">
+    <h3 class="beginner-plan-title">Ready for Claude</h3>
+    <p class="muted tiny">One copy includes everything your AI needs for this plan. Paste once per new chat.</p>
+    <div class="beginner-plan-section"><span class="report-label">Goal</span><p>${_zfEsc(goal)}</p></div>
+    <div class="beginner-plan-section"><span class="report-label">Top files</span><ul class="clean tiny">${files.length ? files.map(f => `<li>${_zfEsc(f)}</li>`).join("") : "<li class='muted'>Atlas will list files after planning</li>"}</ul></div>
+    <div class="beginner-plan-section"><span class="report-label">Order</span><ol class="clean tiny">${order.length ? order.map(s => `<li>${_zfEsc(s)}</li>`).join("") : "<li class='muted'>n/a</li>"}</ol></div>
+    ${sendToAiPanel(kind, true)}
+  </div>`;
+}
+
 /* ---------------- the panel ---------------- */
-function sendToAiPanel(kind) {
+function sendToAiPanel(kind, insideBeginner) {
+  const extra = insideBeginner ? "" : `<p class="muted tiny">One copy includes everything Claude needs for this plan. Paste once per new chat.</p>`;
   return `<div class="send-to-ai glass" data-kind="${kind}">
-    <h3 class="send-to-ai-title">Send this to your AI coding tool</h3>
-    <p class="muted tiny">Copy a minimal grounded export (session context sent once per scan + this question's files, confidence, and evidence).</p>
+    <h3 class="send-to-ai-title">${insideBeginner ? "Copy your plan" : "Copy plan for your AI tool"}</h3>
+    ${extra}
     <div class="copy-row">
-      <button class="btn primary small" type="button" onclick="copyForAi('claude','${kind}')">Copy for Claude</button>
+      <button class="btn primary${insideBeginner ? " big" : " small"}" type="button" onclick="copyForAi('claude','${kind}')">Copy for Claude</button>
       <button class="btn small" type="button" onclick="copyForAi('cursor','${kind}')">Copy for Cursor</button>
       <button class="btn small" type="button" onclick="copyForAi('codex','${kind}')">Copy for Codex</button>
-      <button class="btn ghost small" type="button" onclick="downloadAiMarkdown('${kind}')">Download Markdown</button>
+      <button class="btn ghost small advanced-only" type="button" onclick="downloadAiMarkdown('${kind}')">Download Markdown</button>
     </div>
-    <p class="muted tiny send-to-ai-next">Paste this into Claude, Cursor, or Codex and ask it to implement the plan.</p>
+    <p class="muted tiny send-to-ai-next">Paste into Claude, Cursor, or Codex and ask it to implement step by step.</p>
   </div>`;
+}
+
+function applyExportNavVisibility() {
+  const btn = document.querySelector('#nav button[data-view="export"]');
+  if (!btn) return;
+  let done = false;
+  try { done = localStorage.getItem("atlas_first_build_plan_done") === "1"; } catch (e) {}
+  btn.style.display = done ? "" : "none";
+}
+
+function showHomeScanFocus() {
+  document.body.classList.add("home-scan-focus");
+  const banner = document.getElementById("homeScanBanner");
+  if (banner) banner.style.display = "block";
+  if (typeof go === "function") go("home");
+  const inp = document.getElementById("repoPath");
+  if (inp) setTimeout(function () { inp.focus(); }, 120);
+}
+
+function hideHomeScanFocus() {
+  document.body.classList.remove("home-scan-focus");
+  const banner = document.getElementById("homeScanBanner");
+  if (banner) banner.style.display = "none";
 }
 
 /* ---------------- success recognition ---------------- */
@@ -312,10 +362,15 @@ window.hideBootSplash = hideBootSplash;
 window.copyForAi = copyForAi;
 window.downloadAiMarkdown = downloadAiMarkdown;
 window.sendToAiPanel = sendToAiPanel;
+window.beginnerPlanHero = beginnerPlanHero;
 window.afterChangePlanSuccess = afterChangePlanSuccess;
 window.atlasShowBroadFolderModal = atlasShowBroadFolderModal;
+window.applyExportNavVisibility = applyExportNavVisibility;
+window.showHomeScanFocus = showHomeScanFocus;
+window.hideHomeScanFocus = hideHomeScanFocus;
 
 (function zfBoot() {
+  applyExportNavVisibility();
   if (document.readyState === "complete") {
     setTimeout(hideBootSplash, 200);
   } else {

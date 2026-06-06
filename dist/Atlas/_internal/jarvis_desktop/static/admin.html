@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>JARVIS — Admin Metrics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="marketing.css" />
+</head>
+<body>
+<div class="bg-aura"></div>
+<header class="mnav"><div class="wrap row">
+  <a class="mlogo" href="landing.html"><span class="mk">◈</span> JARVIS</a>
+  <nav class="mlinks"><a href="landing.html">Home</a><a href="index.html">App</a><a href="#" onclick="clearLocal();return false" class="btn ghost">Reset local data</a></nav>
+</div></header>
+
+<section class="page-hero" style="padding-bottom:var(--s3)"><div class="wrap" style="text-align:left">
+  <span class="eyebrow"><span class="dot"></span> Local admin · this device only</span>
+  <h1 class="h1" style="font-size:clamp(28px,4vw,40px)">Metrics dashboard</h1>
+  <p class="muted">Waitlist is read from local storage; product usage (scans, exports, copilot) is read from the
+    local analytics API when the app is running. Nothing leaves this machine.</p>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap">
+  <div class="kpis">
+    <div class="kpi"><div class="v grad-text" id="kWaitlist">0</div><div class="l">Waitlist signups</div></div>
+    <div class="kpi"><div class="v" id="kScans">0</div><div class="l">Repository scans</div></div>
+    <div class="kpi"><div class="v" id="kExports">0</div><div class="l">AI context exports</div></div>
+    <div class="kpi"><div class="v" id="kCopilot">0</div><div class="l">Copilot questions</div></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:var(--s2)">
+    <div style="border:1px solid var(--line);border-radius:var(--r);background:rgba(255,255,255,.02);overflow:hidden">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--line);font-weight:600">Recent waitlist signups</div>
+      <table class="table"><thead><tr><th>Name</th><th>Email</th><th>Repo size</th><th>AI tool</th><th>When</th></tr></thead>
+        <tbody id="signupRows"><tr><td colspan="5" class="muted" style="padding:18px">No signups on this device yet.</td></tr></tbody></table>
+    </div>
+    <div style="border:1px solid var(--line);border-radius:var(--r);background:rgba(255,255,255,.02);overflow:hidden">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--line);font-weight:600">Breakdown</div>
+      <div style="padding:16px 18px"><div class="muted tiny" style="margin-bottom:8px">By AI tool</div><div id="byTool"></div>
+        <div class="muted tiny" style="margin:16px 0 8px">By repository size</div><div id="bySize"></div></div>
+    </div>
+  </div>
+
+  <div style="margin-top:var(--s2);border:1px solid var(--line);border-radius:var(--r);background:rgba(255,255,255,.02);overflow:hidden">
+    <div style="padding:14px 18px;border-bottom:1px solid var(--line);font-weight:600">Server analytics (live, if app running)</div>
+    <pre class="code" id="serverAnalytics" style="max-height:240px">Fetching /api/analytics/summary …</pre>
+  </div>
+  <p class="tiny muted" style="margin-top:14px">Configurable placeholder base: <span class="kbd">WAITLIST_BASE = 127</span> in marketing.js. Local data lives in <span class="kbd">localStorage</span>.</p>
+</div></section>
+
+<div class="mtoast" id="mtoast"></div>
+<script src="marketing.js"></script>
+<script>
+function esc(s){return String(s||"").replace(/[<>&]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;"}[c]));}
+function countBy(list,key){const m={};list.forEach(x=>{const v=x[key]||"(unspecified)";m[v]=(m[v]||0)+1;});return m;}
+function renderBreak(id,map){const el=document.getElementById(id);const max=Math.max(1,...Object.values(map));
+  el.innerHTML=Object.entries(map).sort((a,b)=>b[1]-a[1]).map(([k,v])=>
+    `<div style="display:flex;align-items:center;gap:10px;margin:6px 0;font-size:13px"><span style="min-width:120px;color:var(--ink-2)">${esc(k)}</span>
+     <span style="flex:1;height:8px;border-radius:6px;background:rgba(255,255,255,.06);overflow:hidden"><span style="display:block;height:100%;width:${Math.round(100*v/max)}%;background:var(--grad)"></span></span>
+     <b>${v}</b></div>`).join("") || '<span class="muted tiny">no data</span>';}
+function pick(obj,names){ if(!obj||typeof obj!=='object') return 0; for(const n of names){ for(const k of Object.keys(obj)){ if(k.toLowerCase().includes(n)) { const val=obj[k]; if(typeof val==='number') return val; } } } return 0; }
+
+async function loadAdmin(){
+  const signups=getSignups();
+  document.getElementById("kWaitlist").textContent=signups.length;
+  // recent table
+  const rows=signups.slice().reverse().slice(0,12).map(s=>
+    `<tr><td>${esc(s.name)}</td><td class="muted">${esc(s.email)}</td><td>${esc(s.repo_size)}</td><td>${esc(s.ai_tool)}</td><td class="muted">${esc((s.ts||"").slice(0,10))}</td></tr>`).join("");
+  if(rows) document.getElementById("signupRows").innerHTML=rows;
+  renderBreak("byTool",countBy(signups,"ai_tool"));
+  renderBreak("bySize",countBy(signups,"repo_size"));
+  // local event counts (fallback)
+  const ev=getEvents();
+  let scans=ev.filter(e=>/scan/.test(e.event)).length;
+  let exports=ev.filter(e=>/export/.test(e.event)).length;
+  let copilot=ev.filter(e=>/copilot|ask/.test(e.event)).length;
+  // prefer live server analytics if available
+  try{
+    const r=await fetch("/api/analytics/summary"); const a=await r.json();
+    document.getElementById("serverAnalytics").textContent=JSON.stringify(a,null,2);
+    scans=pick(a,["scan"])||scans; exports=pick(a,["export"])||exports; copilot=pick(a,["copilot","ask","question"])||copilot;
+  }catch(e){ document.getElementById("serverAnalytics").textContent="App not running — showing local event counts only."; }
+  document.getElementById("kScans").textContent=scans;
+  document.getElementById("kExports").textContent=exports;
+  document.getElementById("kCopilot").textContent=copilot;
+}
+function clearLocal(){ if(confirm("Clear local waitlist + events on this device?")){ localStorage.removeItem("jarvis_waitlist"); localStorage.removeItem("jarvis_events"); mtoast("Local data cleared"); loadAdmin(); } }
+loadAdmin();
+</script>
+</body></html>

@@ -1,0 +1,49 @@
+concept_id: content_security_policy
+name: Content Security Policy
+title: Content Security Policy
+domain: security
+category: web
+feature_type: web
+concept_quality_score: curated_deep
+confidence: medium
+aliases:
+- csp
+- content security policy
+description: Restrict script/style sources to mitigate XSS.
+when_to_use: Web frontends.
+requirements:
+- Clear ownership of Content Security Policy in the architecture
+implementation_strategies: &id001
+- Fail closed on validation errors
+- Centralize auth middleware
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Broken trust boundary
+- Credential leakage
+- Token/session theft
+- Privilege escalation
+- Replay attacks
+security_risks:
+- Token/session theft
+- Privilege escalation
+- Replay attacks
+performance_risks: []
+failure_modes:
+- Auth bypass on misconfigured middleware
+- Stale permissions after role change
+verification:
+- Threat-model critical paths
+- Validate negative tests for unauthorized access
+testing:
+- AuthZ matrix tests
+- Session fixation/replay tests
+related_concepts: []
+references:
+- atlas://curated/security/content_security_policy
+- https://cheatsheetseries.owasp.org/
+path_keywords:
+- content
+- csp
+- content security policy
+investigate_only: false

@@ -1,0 +1,1932 @@
+{
+"concepts": [
+{
+"concept_id": "cloud_aws_lambda_0",
+"name": "AWS Lambda",
+"aliases": [
+"cloud aws lambda 0",
+"aws lambda",
+"AWS Lambda"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: AWS Lambda in cloud systems.",
+"requirements": [
+"Understand AWS Lambda prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of AWS Lambda causing production incidents."
+],
+"failure_modes": [
+"AWS Lambda fails silently under load or edge inputs."
+],
+"verification": [
+"Validate AWS Lambda behavior against official specification."
+],
+"testing": [
+"Automated tests covering AWS Lambda happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_aws_lambda_0"
+],
+"confidence": "high",
+"path_keywords": [
+"aws",
+"lambda",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_s3_object_storage_1",
+"name": "S3 Object Storage",
+"aliases": [
+"cloud s3 object storage 1",
+"s3 object storage",
+"S3 Object Storage"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: S3 Object Storage in cloud systems.",
+"requirements": [
+"Understand S3 Object Storage prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of S3 Object Storage causing production incidents."
+],
+"failure_modes": [
+"S3 Object Storage fails silently under load or edge inputs."
+],
+"verification": [
+"Validate S3 Object Storage behavior against official specification."
+],
+"testing": [
+"Automated tests covering S3 Object Storage happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_s3_object_storage_1"
+],
+"confidence": "high",
+"path_keywords": [
+"object",
+"storage",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_iam_policy_2",
+"name": "IAM Policy",
+"aliases": [
+"cloud iam policy 2",
+"iam policy",
+"IAM Policy"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: IAM Policy in cloud systems.",
+"requirements": [
+"Understand IAM Policy prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of IAM Policy causing production incidents."
+],
+"failure_modes": [
+"IAM Policy fails silently under load or edge inputs."
+],
+"verification": [
+"Validate IAM Policy behavior against official specification."
+],
+"testing": [
+"Automated tests covering IAM Policy happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_iam_policy_2"
+],
+"confidence": "high",
+"path_keywords": [
+"iam",
+"policy",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_gcp_cloud_run_3",
+"name": "GCP Cloud Run",
+"aliases": [
+"cloud gcp cloud run 3",
+"gcp cloud run",
+"GCP Cloud Run"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: GCP Cloud Run in cloud systems.",
+"requirements": [
+"Understand GCP Cloud Run prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of GCP Cloud Run causing production incidents."
+],
+"failure_modes": [
+"GCP Cloud Run fails silently under load or edge inputs."
+],
+"verification": [
+"Validate GCP Cloud Run behavior against official specification."
+],
+"testing": [
+"Automated tests covering GCP Cloud Run happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_gcp_cloud_run_3"
+],
+"confidence": "high",
+"path_keywords": [
+"gcp",
+"cloud",
+"run",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_kubernetes_deployment_4",
+"name": "Kubernetes Deployment",
+"aliases": [
+"cloud kubernetes deployment 4",
+"kubernetes deployment",
+"Kubernetes Deployment"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: Kubernetes Deployment in cloud systems.",
+"requirements": [
+"Understand Kubernetes Deployment prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of Kubernetes Deployment causing production incidents."
+],
+"failure_modes": [
+"Kubernetes Deployment fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Kubernetes Deployment behavior against official specification."
+],
+"testing": [
+"Automated tests covering Kubernetes Deployment happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_kubernetes_deployment_4"
+],
+"confidence": "high",
+"path_keywords": [
+"kubernetes",
+"deployment",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_helm_chart_5",
+"name": "Helm Chart",
+"aliases": [
+"cloud helm chart 5",
+"helm chart",
+"Helm Chart"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: Helm Chart in cloud systems.",
+"requirements": [
+"Understand Helm Chart prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of Helm Chart causing production incidents."
+],
+"failure_modes": [
+"Helm Chart fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Helm Chart behavior against official specification."
+],
+"testing": [
+"Automated tests covering Helm Chart happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_helm_chart_5"
+],
+"confidence": "high",
+"path_keywords": [
+"helm",
+"chart",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_terraform_module_6",
+"name": "Terraform Module",
+"aliases": [
+"cloud terraform module 6",
+"terraform module",
+"Terraform Module"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: Terraform Module in cloud systems.",
+"requirements": [
+"Understand Terraform Module prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of Terraform Module causing production incidents."
+],
+"failure_modes": [
+"Terraform Module fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Terraform Module behavior against official specification."
+],
+"testing": [
+"Automated tests covering Terraform Module happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_terraform_module_6"
+],
+"confidence": "high",
+"path_keywords": [
+"terraform",
+"module",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_auto_scaling_group_7",
+"name": "Auto Scaling Group",
+"aliases": [
+"cloud auto scaling group 7",
+"auto scaling group",
+"Auto Scaling Group"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: Auto Scaling Group in cloud systems.",
+"requirements": [
+"Understand Auto Scaling Group prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of Auto Scaling Group causing production incidents."
+],
+"failure_modes": [
+"Auto Scaling Group fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Auto Scaling Group behavior against official specification."
+],
+"testing": [
+"Automated tests covering Auto Scaling Group happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_auto_scaling_group_7"
+],
+"confidence": "high",
+"path_keywords": [
+"auto",
+"scaling",
+"group",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_vpc_subnet_8",
+"name": "VPC Subnet",
+"aliases": [
+"cloud vpc subnet 8",
+"vpc subnet",
+"VPC Subnet"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: VPC Subnet in cloud systems.",
+"requirements": [
+"Understand VPC Subnet prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of VPC Subnet causing production incidents."
+],
+"failure_modes": [
+"VPC Subnet fails silently under load or edge inputs."
+],
+"verification": [
+"Validate VPC Subnet behavior against official specification."
+],
+"testing": [
+"Automated tests covering VPC Subnet happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_vpc_subnet_8"
+],
+"confidence": "high",
+"path_keywords": [
+"vpc",
+"subnet",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_cloudfront_cdn_9",
+"name": "CloudFront CDN",
+"aliases": [
+"cloud cloudfront cdn 9",
+"cloudfront cdn",
+"CloudFront CDN"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: CloudFront CDN in cloud systems.",
+"requirements": [
+"Understand CloudFront CDN prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of CloudFront CDN causing production incidents."
+],
+"failure_modes": [
+"CloudFront CDN fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CloudFront CDN behavior against official specification."
+],
+"testing": [
+"Automated tests covering CloudFront CDN happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_cloudfront_cdn_9"
+],
+"confidence": "high",
+"path_keywords": [
+"cloudfront",
+"cdn",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_rds_multi-az_10",
+"name": "RDS Multi-AZ",
+"aliases": [
+"cloud rds multi-az 10",
+"rds multi-az",
+"RDS Multi-AZ"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: RDS Multi-AZ in cloud systems.",
+"requirements": [
+"Understand RDS Multi-AZ prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of RDS Multi-AZ causing production incidents."
+],
+"failure_modes": [
+"RDS Multi-AZ fails silently under load or edge inputs."
+],
+"verification": [
+"Validate RDS Multi-AZ behavior against official specification."
+],
+"testing": [
+"Automated tests covering RDS Multi-AZ happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_rds_multi-az_10"
+],
+"confidence": "high",
+"path_keywords": [
+"rds",
+"multi-az",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_secrets_manager_11",
+"name": "Secrets Manager",
+"aliases": [
+"cloud secrets manager 11",
+"secrets manager",
+"Secrets Manager"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: Secrets Manager in cloud systems.",
+"requirements": [
+"Understand Secrets Manager prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of Secrets Manager causing production incidents."
+],
+"failure_modes": [
+"Secrets Manager fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Secrets Manager behavior against official specification."
+],
+"testing": [
+"Automated tests covering Secrets Manager happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_secrets_manager_11"
+],
+"confidence": "high",
+"path_keywords": [
+"secrets",
+"manager",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_aws_lambda_12",
+"name": "AWS Lambda",
+"aliases": [
+"cloud aws lambda 12",
+"aws lambda",
+"AWS Lambda"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: AWS Lambda in cloud systems.",
+"requirements": [
+"Understand AWS Lambda prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of AWS Lambda causing production incidents."
+],
+"failure_modes": [
+"AWS Lambda fails silently under load or edge inputs."
+],
+"verification": [
+"Validate AWS Lambda behavior against official specification."
+],
+"testing": [
+"Automated tests covering AWS Lambda happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_aws_lambda_12"
+],
+"confidence": "high",
+"path_keywords": [
+"aws",
+"lambda",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_s3_object_storage_13",
+"name": "S3 Object Storage",
+"aliases": [
+"cloud s3 object storage 13",
+"s3 object storage",
+"S3 Object Storage"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: S3 Object Storage in cloud systems.",
+"requirements": [
+"Understand S3 Object Storage prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of S3 Object Storage causing production incidents."
+],
+"failure_modes": [
+"S3 Object Storage fails silently under load or edge inputs."
+],
+"verification": [
+"Validate S3 Object Storage behavior against official specification."
+],
+"testing": [
+"Automated tests covering S3 Object Storage happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_s3_object_storage_13"
+],
+"confidence": "high",
+"path_keywords": [
+"object",
+"storage",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_iam_policy_14",
+"name": "IAM Policy",
+"aliases": [
+"cloud iam policy 14",
+"iam policy",
+"IAM Policy"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: IAM Policy in cloud systems.",
+"requirements": [
+"Understand IAM Policy prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of IAM Policy causing production incidents."
+],
+"failure_modes": [
+"IAM Policy fails silently under load or edge inputs."
+],
+"verification": [
+"Validate IAM Policy behavior against official specification."
+],
+"testing": [
+"Automated tests covering IAM Policy happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_iam_policy_14"
+],
+"confidence": "high",
+"path_keywords": [
+"iam",
+"policy",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_gcp_cloud_run_15",
+"name": "GCP Cloud Run",
+"aliases": [
+"cloud gcp cloud run 15",
+"gcp cloud run",
+"GCP Cloud Run"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: GCP Cloud Run in cloud systems.",
+"requirements": [
+"Understand GCP Cloud Run prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of GCP Cloud Run causing production incidents."
+],
+"failure_modes": [
+"GCP Cloud Run fails silently under load or edge inputs."
+],
+"verification": [
+"Validate GCP Cloud Run behavior against official specification."
+],
+"testing": [
+"Automated tests covering GCP Cloud Run happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_gcp_cloud_run_15"
+],
+"confidence": "high",
+"path_keywords": [
+"gcp",
+"cloud",
+"run",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_kubernetes_deployment_16",
+"name": "Kubernetes Deployment",
+"aliases": [
+"cloud kubernetes deployment 16",
+"kubernetes deployment",
+"Kubernetes Deployment"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: Kubernetes Deployment in cloud systems.",
+"requirements": [
+"Understand Kubernetes Deployment prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of Kubernetes Deployment causing production incidents."
+],
+"failure_modes": [
+"Kubernetes Deployment fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Kubernetes Deployment behavior against official specification."
+],
+"testing": [
+"Automated tests covering Kubernetes Deployment happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_kubernetes_deployment_16"
+],
+"confidence": "high",
+"path_keywords": [
+"kubernetes",
+"deployment",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_helm_chart_17",
+"name": "Helm Chart",
+"aliases": [
+"cloud helm chart 17",
+"helm chart",
+"Helm Chart"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: Helm Chart in cloud systems.",
+"requirements": [
+"Understand Helm Chart prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of Helm Chart causing production incidents."
+],
+"failure_modes": [
+"Helm Chart fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Helm Chart behavior against official specification."
+],
+"testing": [
+"Automated tests covering Helm Chart happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_helm_chart_17"
+],
+"confidence": "high",
+"path_keywords": [
+"helm",
+"chart",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_terraform_module_18",
+"name": "Terraform Module",
+"aliases": [
+"cloud terraform module 18",
+"terraform module",
+"Terraform Module"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: Terraform Module in cloud systems.",
+"requirements": [
+"Understand Terraform Module prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of Terraform Module causing production incidents."
+],
+"failure_modes": [
+"Terraform Module fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Terraform Module behavior against official specification."
+],
+"testing": [
+"Automated tests covering Terraform Module happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_terraform_module_18"
+],
+"confidence": "high",
+"path_keywords": [
+"terraform",
+"module",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_auto_scaling_group_19",
+"name": "Auto Scaling Group",
+"aliases": [
+"cloud auto scaling group 19",
+"auto scaling group",
+"Auto Scaling Group"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: Auto Scaling Group in cloud systems.",
+"requirements": [
+"Understand Auto Scaling Group prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of Auto Scaling Group causing production incidents."
+],
+"failure_modes": [
+"Auto Scaling Group fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Auto Scaling Group behavior against official specification."
+],
+"testing": [
+"Automated tests covering Auto Scaling Group happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_auto_scaling_group_19"
+],
+"confidence": "high",
+"path_keywords": [
+"auto",
+"scaling",
+"group",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_vpc_subnet_20",
+"name": "VPC Subnet",
+"aliases": [
+"cloud vpc subnet 20",
+"vpc subnet",
+"VPC Subnet"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: VPC Subnet in cloud systems.",
+"requirements": [
+"Understand VPC Subnet prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of VPC Subnet causing production incidents."
+],
+"failure_modes": [
+"VPC Subnet fails silently under load or edge inputs."
+],
+"verification": [
+"Validate VPC Subnet behavior against official specification."
+],
+"testing": [
+"Automated tests covering VPC Subnet happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_vpc_subnet_20"
+],
+"confidence": "high",
+"path_keywords": [
+"vpc",
+"subnet",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_cloudfront_cdn_21",
+"name": "CloudFront CDN",
+"aliases": [
+"cloud cloudfront cdn 21",
+"cloudfront cdn",
+"CloudFront CDN"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: CloudFront CDN in cloud systems.",
+"requirements": [
+"Understand CloudFront CDN prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of CloudFront CDN causing production incidents."
+],
+"failure_modes": [
+"CloudFront CDN fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CloudFront CDN behavior against official specification."
+],
+"testing": [
+"Automated tests covering CloudFront CDN happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_cloudfront_cdn_21"
+],
+"confidence": "high",
+"path_keywords": [
+"cloudfront",
+"cdn",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_rds_multi-az_22",
+"name": "RDS Multi-AZ",
+"aliases": [
+"cloud rds multi-az 22",
+"rds multi-az",
+"RDS Multi-AZ"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: RDS Multi-AZ in cloud systems.",
+"requirements": [
+"Understand RDS Multi-AZ prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of RDS Multi-AZ causing production incidents."
+],
+"failure_modes": [
+"RDS Multi-AZ fails silently under load or edge inputs."
+],
+"verification": [
+"Validate RDS Multi-AZ behavior against official specification."
+],
+"testing": [
+"Automated tests covering RDS Multi-AZ happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_rds_multi-az_22"
+],
+"confidence": "high",
+"path_keywords": [
+"rds",
+"multi-az",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_secrets_manager_23",
+"name": "Secrets Manager",
+"aliases": [
+"cloud secrets manager 23",
+"secrets manager",
+"Secrets Manager"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: Secrets Manager in cloud systems.",
+"requirements": [
+"Understand Secrets Manager prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of Secrets Manager causing production incidents."
+],
+"failure_modes": [
+"Secrets Manager fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Secrets Manager behavior against official specification."
+],
+"testing": [
+"Automated tests covering Secrets Manager happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_secrets_manager_23"
+],
+"confidence": "high",
+"path_keywords": [
+"secrets",
+"manager",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_aws_lambda_24",
+"name": "AWS Lambda",
+"aliases": [
+"cloud aws lambda 24",
+"aws lambda",
+"AWS Lambda"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: AWS Lambda in cloud systems.",
+"requirements": [
+"Understand AWS Lambda prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of AWS Lambda causing production incidents."
+],
+"failure_modes": [
+"AWS Lambda fails silently under load or edge inputs."
+],
+"verification": [
+"Validate AWS Lambda behavior against official specification."
+],
+"testing": [
+"Automated tests covering AWS Lambda happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_aws_lambda_24"
+],
+"confidence": "high",
+"path_keywords": [
+"aws",
+"lambda",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_s3_object_storage_25",
+"name": "S3 Object Storage",
+"aliases": [
+"cloud s3 object storage 25",
+"s3 object storage",
+"S3 Object Storage"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: S3 Object Storage in cloud systems.",
+"requirements": [
+"Understand S3 Object Storage prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of S3 Object Storage causing production incidents."
+],
+"failure_modes": [
+"S3 Object Storage fails silently under load or edge inputs."
+],
+"verification": [
+"Validate S3 Object Storage behavior against official specification."
+],
+"testing": [
+"Automated tests covering S3 Object Storage happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_s3_object_storage_25"
+],
+"confidence": "high",
+"path_keywords": [
+"object",
+"storage",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_iam_policy_26",
+"name": "IAM Policy",
+"aliases": [
+"cloud iam policy 26",
+"iam policy",
+"IAM Policy"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: IAM Policy in cloud systems.",
+"requirements": [
+"Understand IAM Policy prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of IAM Policy causing production incidents."
+],
+"failure_modes": [
+"IAM Policy fails silently under load or edge inputs."
+],
+"verification": [
+"Validate IAM Policy behavior against official specification."
+],
+"testing": [
+"Automated tests covering IAM Policy happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_iam_policy_26"
+],
+"confidence": "high",
+"path_keywords": [
+"iam",
+"policy",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_gcp_cloud_run_27",
+"name": "GCP Cloud Run",
+"aliases": [
+"cloud gcp cloud run 27",
+"gcp cloud run",
+"GCP Cloud Run"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: GCP Cloud Run in cloud systems.",
+"requirements": [
+"Understand GCP Cloud Run prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of GCP Cloud Run causing production incidents."
+],
+"failure_modes": [
+"GCP Cloud Run fails silently under load or edge inputs."
+],
+"verification": [
+"Validate GCP Cloud Run behavior against official specification."
+],
+"testing": [
+"Automated tests covering GCP Cloud Run happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_gcp_cloud_run_27"
+],
+"confidence": "high",
+"path_keywords": [
+"gcp",
+"cloud",
+"run",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_kubernetes_deployment_28",
+"name": "Kubernetes Deployment",
+"aliases": [
+"cloud kubernetes deployment 28",
+"kubernetes deployment",
+"Kubernetes Deployment"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: Kubernetes Deployment in cloud systems.",
+"requirements": [
+"Understand Kubernetes Deployment prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of Kubernetes Deployment causing production incidents."
+],
+"failure_modes": [
+"Kubernetes Deployment fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Kubernetes Deployment behavior against official specification."
+],
+"testing": [
+"Automated tests covering Kubernetes Deployment happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_kubernetes_deployment_28"
+],
+"confidence": "high",
+"path_keywords": [
+"kubernetes",
+"deployment",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_helm_chart_29",
+"name": "Helm Chart",
+"aliases": [
+"cloud helm chart 29",
+"helm chart",
+"Helm Chart"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: Helm Chart in cloud systems.",
+"requirements": [
+"Understand Helm Chart prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of Helm Chart causing production incidents."
+],
+"failure_modes": [
+"Helm Chart fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Helm Chart behavior against official specification."
+],
+"testing": [
+"Automated tests covering Helm Chart happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_helm_chart_29"
+],
+"confidence": "high",
+"path_keywords": [
+"helm",
+"chart",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_terraform_module_30",
+"name": "Terraform Module",
+"aliases": [
+"cloud terraform module 30",
+"terraform module",
+"Terraform Module"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: Terraform Module in cloud systems.",
+"requirements": [
+"Understand Terraform Module prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of Terraform Module causing production incidents."
+],
+"failure_modes": [
+"Terraform Module fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Terraform Module behavior against official specification."
+],
+"testing": [
+"Automated tests covering Terraform Module happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_terraform_module_30"
+],
+"confidence": "high",
+"path_keywords": [
+"terraform",
+"module",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_auto_scaling_group_31",
+"name": "Auto Scaling Group",
+"aliases": [
+"cloud auto scaling group 31",
+"auto scaling group",
+"Auto Scaling Group"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: Auto Scaling Group in cloud systems.",
+"requirements": [
+"Understand Auto Scaling Group prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of Auto Scaling Group causing production incidents."
+],
+"failure_modes": [
+"Auto Scaling Group fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Auto Scaling Group behavior against official specification."
+],
+"testing": [
+"Automated tests covering Auto Scaling Group happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_auto_scaling_group_31"
+],
+"confidence": "high",
+"path_keywords": [
+"auto",
+"scaling",
+"group",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_vpc_subnet_32",
+"name": "VPC Subnet",
+"aliases": [
+"cloud vpc subnet 32",
+"vpc subnet",
+"VPC Subnet"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: VPC Subnet in cloud systems.",
+"requirements": [
+"Understand VPC Subnet prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of VPC Subnet causing production incidents."
+],
+"failure_modes": [
+"VPC Subnet fails silently under load or edge inputs."
+],
+"verification": [
+"Validate VPC Subnet behavior against official specification."
+],
+"testing": [
+"Automated tests covering VPC Subnet happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_vpc_subnet_32"
+],
+"confidence": "high",
+"path_keywords": [
+"vpc",
+"subnet",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_cloudfront_cdn_33",
+"name": "CloudFront CDN",
+"aliases": [
+"cloud cloudfront cdn 33",
+"cloudfront cdn",
+"CloudFront CDN"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: CloudFront CDN in cloud systems.",
+"requirements": [
+"Understand CloudFront CDN prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of CloudFront CDN causing production incidents."
+],
+"failure_modes": [
+"CloudFront CDN fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CloudFront CDN behavior against official specification."
+],
+"testing": [
+"Automated tests covering CloudFront CDN happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_cloudfront_cdn_33"
+],
+"confidence": "high",
+"path_keywords": [
+"cloudfront",
+"cdn",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_rds_multi-az_34",
+"name": "RDS Multi-AZ",
+"aliases": [
+"cloud rds multi-az 34",
+"rds multi-az",
+"RDS Multi-AZ"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: RDS Multi-AZ in cloud systems.",
+"requirements": [
+"Understand RDS Multi-AZ prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of RDS Multi-AZ causing production incidents."
+],
+"failure_modes": [
+"RDS Multi-AZ fails silently under load or edge inputs."
+],
+"verification": [
+"Validate RDS Multi-AZ behavior against official specification."
+],
+"testing": [
+"Automated tests covering RDS Multi-AZ happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_rds_multi-az_34"
+],
+"confidence": "high",
+"path_keywords": [
+"rds",
+"multi-az",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_secrets_manager_35",
+"name": "Secrets Manager",
+"aliases": [
+"cloud secrets manager 35",
+"secrets manager",
+"Secrets Manager"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: Secrets Manager in cloud systems.",
+"requirements": [
+"Understand Secrets Manager prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of Secrets Manager causing production incidents."
+],
+"failure_modes": [
+"Secrets Manager fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Secrets Manager behavior against official specification."
+],
+"testing": [
+"Automated tests covering Secrets Manager happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_secrets_manager_35"
+],
+"confidence": "high",
+"path_keywords": [
+"secrets",
+"manager",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_aws_lambda_36",
+"name": "AWS Lambda",
+"aliases": [
+"cloud aws lambda 36",
+"aws lambda",
+"AWS Lambda"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: AWS Lambda in cloud systems.",
+"requirements": [
+"Understand AWS Lambda prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of AWS Lambda causing production incidents."
+],
+"failure_modes": [
+"AWS Lambda fails silently under load or edge inputs."
+],
+"verification": [
+"Validate AWS Lambda behavior against official specification."
+],
+"testing": [
+"Automated tests covering AWS Lambda happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_aws_lambda_36"
+],
+"confidence": "high",
+"path_keywords": [
+"aws",
+"lambda",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_s3_object_storage_37",
+"name": "S3 Object Storage",
+"aliases": [
+"cloud s3 object storage 37",
+"s3 object storage",
+"S3 Object Storage"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: S3 Object Storage in cloud systems.",
+"requirements": [
+"Understand S3 Object Storage prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of S3 Object Storage causing production incidents."
+],
+"failure_modes": [
+"S3 Object Storage fails silently under load or edge inputs."
+],
+"verification": [
+"Validate S3 Object Storage behavior against official specification."
+],
+"testing": [
+"Automated tests covering S3 Object Storage happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_s3_object_storage_37"
+],
+"confidence": "high",
+"path_keywords": [
+"object",
+"storage",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_iam_policy_38",
+"name": "IAM Policy",
+"aliases": [
+"cloud iam policy 38",
+"iam policy",
+"IAM Policy"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: IAM Policy in cloud systems.",
+"requirements": [
+"Understand IAM Policy prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of IAM Policy causing production incidents."
+],
+"failure_modes": [
+"IAM Policy fails silently under load or edge inputs."
+],
+"verification": [
+"Validate IAM Policy behavior against official specification."
+],
+"testing": [
+"Automated tests covering IAM Policy happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_iam_policy_38"
+],
+"confidence": "high",
+"path_keywords": [
+"iam",
+"policy",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_gcp_cloud_run_39",
+"name": "GCP Cloud Run",
+"aliases": [
+"cloud gcp cloud run 39",
+"gcp cloud run",
+"GCP Cloud Run"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: GCP Cloud Run in cloud systems.",
+"requirements": [
+"Understand GCP Cloud Run prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of GCP Cloud Run causing production incidents."
+],
+"failure_modes": [
+"GCP Cloud Run fails silently under load or edge inputs."
+],
+"verification": [
+"Validate GCP Cloud Run behavior against official specification."
+],
+"testing": [
+"Automated tests covering GCP Cloud Run happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_gcp_cloud_run_39"
+],
+"confidence": "high",
+"path_keywords": [
+"gcp",
+"cloud",
+"run",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_kubernetes_deployment_40",
+"name": "Kubernetes Deployment",
+"aliases": [
+"cloud kubernetes deployment 40",
+"kubernetes deployment",
+"Kubernetes Deployment"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: Kubernetes Deployment in cloud systems.",
+"requirements": [
+"Understand Kubernetes Deployment prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of Kubernetes Deployment causing production incidents."
+],
+"failure_modes": [
+"Kubernetes Deployment fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Kubernetes Deployment behavior against official specification."
+],
+"testing": [
+"Automated tests covering Kubernetes Deployment happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_kubernetes_deployment_40"
+],
+"confidence": "high",
+"path_keywords": [
+"kubernetes",
+"deployment",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_helm_chart_41",
+"name": "Helm Chart",
+"aliases": [
+"cloud helm chart 41",
+"helm chart",
+"Helm Chart"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: Helm Chart in cloud systems.",
+"requirements": [
+"Understand Helm Chart prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of Helm Chart causing production incidents."
+],
+"failure_modes": [
+"Helm Chart fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Helm Chart behavior against official specification."
+],
+"testing": [
+"Automated tests covering Helm Chart happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_helm_chart_41"
+],
+"confidence": "high",
+"path_keywords": [
+"helm",
+"chart",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_terraform_module_42",
+"name": "Terraform Module",
+"aliases": [
+"cloud terraform module 42",
+"terraform module",
+"Terraform Module"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: Terraform Module in cloud systems.",
+"requirements": [
+"Understand Terraform Module prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of Terraform Module causing production incidents."
+],
+"failure_modes": [
+"Terraform Module fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Terraform Module behavior against official specification."
+],
+"testing": [
+"Automated tests covering Terraform Module happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_terraform_module_42"
+],
+"confidence": "high",
+"path_keywords": [
+"terraform",
+"module",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_auto_scaling_group_43",
+"name": "Auto Scaling Group",
+"aliases": [
+"cloud auto scaling group 43",
+"auto scaling group",
+"Auto Scaling Group"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: Auto Scaling Group in cloud systems.",
+"requirements": [
+"Understand Auto Scaling Group prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of Auto Scaling Group causing production incidents."
+],
+"failure_modes": [
+"Auto Scaling Group fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Auto Scaling Group behavior against official specification."
+],
+"testing": [
+"Automated tests covering Auto Scaling Group happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_auto_scaling_group_43"
+],
+"confidence": "high",
+"path_keywords": [
+"auto",
+"scaling",
+"group",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_vpc_subnet_44",
+"name": "VPC Subnet",
+"aliases": [
+"cloud vpc subnet 44",
+"vpc subnet",
+"VPC Subnet"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: VPC Subnet in cloud systems.",
+"requirements": [
+"Understand VPC Subnet prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of VPC Subnet causing production incidents."
+],
+"failure_modes": [
+"VPC Subnet fails silently under load or edge inputs."
+],
+"verification": [
+"Validate VPC Subnet behavior against official specification."
+],
+"testing": [
+"Automated tests covering VPC Subnet happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_vpc_subnet_44"
+],
+"confidence": "high",
+"path_keywords": [
+"vpc",
+"subnet",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_cloudfront_cdn_45",
+"name": "CloudFront CDN",
+"aliases": [
+"cloud cloudfront cdn 45",
+"cloudfront cdn",
+"CloudFront CDN"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: CloudFront CDN in cloud systems.",
+"requirements": [
+"Understand CloudFront CDN prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of CloudFront CDN causing production incidents."
+],
+"failure_modes": [
+"CloudFront CDN fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CloudFront CDN behavior against official specification."
+],
+"testing": [
+"Automated tests covering CloudFront CDN happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_cloudfront_cdn_45"
+],
+"confidence": "high",
+"path_keywords": [
+"cloudfront",
+"cdn",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_rds_multi-az_46",
+"name": "RDS Multi-AZ",
+"aliases": [
+"cloud rds multi-az 46",
+"rds multi-az",
+"RDS Multi-AZ"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: RDS Multi-AZ in cloud systems.",
+"requirements": [
+"Understand RDS Multi-AZ prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of RDS Multi-AZ causing production incidents."
+],
+"failure_modes": [
+"RDS Multi-AZ fails silently under load or edge inputs."
+],
+"verification": [
+"Validate RDS Multi-AZ behavior against official specification."
+],
+"testing": [
+"Automated tests covering RDS Multi-AZ happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_rds_multi-az_46"
+],
+"confidence": "high",
+"path_keywords": [
+"rds",
+"multi-az",
+"cloud"
+]
+},
+{
+"concept_id": "cloud_secrets_manager_47",
+"name": "Secrets Manager",
+"aliases": [
+"cloud secrets manager 47",
+"secrets manager",
+"Secrets Manager"
+],
+"domain": "cloud",
+"category": "pattern",
+"description": "Engineering concept: Secrets Manager in cloud systems.",
+"requirements": [
+"Understand Secrets Manager prerequisites in cloud context."
+],
+"common_implementations": [
+"Typical pattern integration in cloud systems."
+],
+"risks": [
+"Misconfiguration of Secrets Manager causing production incidents."
+],
+"failure_modes": [
+"Secrets Manager fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Secrets Manager behavior against official specification."
+],
+"testing": [
+"Automated tests covering Secrets Manager happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/cloud/cloud_secrets_manager_47"
+],
+"confidence": "high",
+"path_keywords": [
+"secrets",
+"manager",
+"cloud"
+]
+}
+]
+}

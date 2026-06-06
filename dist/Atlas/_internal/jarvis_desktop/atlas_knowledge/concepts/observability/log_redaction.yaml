@@ -1,0 +1,46 @@
+concept_id: log_redaction
+name: Log Redaction
+title: Log Redaction
+domain: observability
+category: logging
+feature_type: logging
+concept_quality_score: curated_deep
+confidence: medium
+aliases:
+- pii redaction
+- log scrubbing
+description: Remove secrets/PII from log fields.
+when_to_use: Compliance logging.
+requirements:
+- Clear ownership of Log Redaction in the architecture
+implementation_strategies: &id001
+- Correlation IDs on all requests
+- RED metrics for SLIs
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Blind spots during incidents
+- PII in logs
+- High-cardinality metrics
+- Log volume cost
+security_risks: []
+performance_risks:
+- High-cardinality metrics
+- Log volume cost
+failure_modes:
+- Alerts fire without actionable context
+- Missing correlation across services
+verification:
+- Trace a single request end-to-end
+- Redact secrets in log samples
+testing:
+- Assert required fields on log lines
+- Synthetic probe alerts
+related_concepts: []
+references:
+- atlas://curated/observability/log_redaction
+path_keywords:
+- log
+- pii redaction
+- log scrubbing
+investigate_only: false

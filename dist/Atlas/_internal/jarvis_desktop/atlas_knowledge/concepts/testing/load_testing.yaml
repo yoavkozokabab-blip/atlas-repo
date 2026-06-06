@@ -1,0 +1,42 @@
+concept_id: load_testing
+name: Load Testing
+title: Load Testing
+domain: testing
+category: load
+feature_type: load
+concept_quality_score: curated_deep
+confidence: medium
+aliases:
+- load test
+- k6
+- locust
+description: Verify SLOs under expected peak load.
+when_to_use: Before major launches.
+requirements:
+- Clear ownership of Load Testing in the architecture
+implementation_strategies: &id001
+- Test pyramid balance
+- Deterministic test clocks
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- False confidence from shallow tests
+security_risks: []
+performance_risks: []
+failure_modes:
+- Flaky tests ignored
+- Tests coupled to implementation details
+verification:
+- Coverage on critical paths not lines only
+- Mutation testing sample
+testing:
+- CI parallelization
+- Test data fixtures versioned
+related_concepts: []
+references:
+- atlas://curated/testing/load_testing
+path_keywords:
+- load
+- load test
+- k6
+investigate_only: false

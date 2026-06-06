@@ -1,0 +1,46 @@
+concept_id: leader_election
+name: Leader Election
+title: Leader Election
+domain: distributed_systems
+category: consensus
+feature_type: consensus
+concept_quality_score: curated_deep
+confidence: medium
+aliases:
+- leader election
+- distributed lock
+description: Single coordinator via lease/raft/etcd.
+when_to_use: Cron or write leader workloads.
+requirements:
+- Clear ownership of Leader Election in the architecture
+implementation_strategies: &id001
+- Timeouts + bulkheads
+- Outbox/inbox for cross-service consistency
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Cascading failures
+- Split-brain
+- Retry storms
+- Queue backlog
+security_risks: []
+performance_risks:
+- Retry storms
+- Queue backlog
+failure_modes:
+- Duplicate side effects on retry
+- Partial failure leaves inconsistent state
+verification:
+- Chaos/fault injection on dependencies
+- Idempotency key audit
+testing:
+- Failure injection tests
+- Idempotent handler tests
+related_concepts: []
+references:
+- atlas://curated/distributed_systems/leader_election
+path_keywords:
+- leader
+- leader election
+- distributed lock
+investigate_only: false

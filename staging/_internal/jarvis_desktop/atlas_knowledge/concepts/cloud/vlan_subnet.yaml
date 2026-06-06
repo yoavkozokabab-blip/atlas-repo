@@ -1,0 +1,47 @@
+concept_id: vlan_subnet
+name: VPC Subnet
+title: VPC Subnet
+domain: cloud
+category: network
+feature_type: network
+concept_quality_score: curated_deep
+confidence: medium
+aliases:
+- vpc
+- subnet
+- security group
+description: Network isolation in cloud accounts.
+when_to_use: All cloud deployments.
+requirements:
+- Clear ownership of VPC Subnet in the architecture
+implementation_strategies: &id001
+- Infrastructure as code
+- Separate env accounts
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Misconfigured IAM
+- Public exposure
+- Over-privileged roles
+- Secrets in environment variables
+security_risks:
+- Over-privileged roles
+- Secrets in environment variables
+performance_risks: []
+failure_modes:
+- Deploy succeeds but health checks fail
+- Autoscaling lag during spike
+verification:
+- Least-privilege IAM review
+- Disaster recovery drill
+testing:
+- IaC plan/apply in CI
+- Smoke test after deploy
+related_concepts: []
+references:
+- atlas://curated/cloud/vlan_subnet
+path_keywords:
+- vlan
+- vpc
+- subnet
+investigate_only: false

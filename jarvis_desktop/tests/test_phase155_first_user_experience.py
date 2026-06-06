@@ -89,12 +89,12 @@ def test_scan_success_cta_exists():
 # --------------------------------------------------------------------------- #
 def test_export_to_ai_buttons_exist():
     js = _read(ZERO_FRICTION)
-    assert "Send this to your AI coding tool" in js
+    assert "Copy plan for your AI tool" in js or "Copy your plan" in js
     assert "Copy for Claude" in js
     assert "Copy for Cursor" in js
     assert "Copy for Codex" in js
     assert "Download Markdown" in js
-    assert "Paste this into Claude, Cursor, or Codex" in js
+    assert "Paste into Claude, Cursor, or Codex and ask it to implement" in js
 
 
 def test_send_to_ai_panel_wired_into_workflows():
@@ -140,7 +140,7 @@ def test_nav_uses_plain_language_labels():
     assert ">Codebase Map<" in html
     assert ">Change Plan<" in html
     assert ">What breaks?<" in html
-    assert ">Send to AI<" in html
+    assert ">Repository context<" in html
 
 
 def test_old_jargon_removed_from_nav():

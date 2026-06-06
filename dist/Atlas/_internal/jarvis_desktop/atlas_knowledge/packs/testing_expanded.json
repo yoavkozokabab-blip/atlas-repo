@@ -1,0 +1,6724 @@
+{
+"concepts": [
+{
+"concept_id": "testing_unit_testing_0",
+"name": "Unit Testing",
+"aliases": [
+"testing unit testing 0",
+"unit testing",
+"Unit Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Unit Testing in testing systems.",
+"requirements": [
+"Understand Unit Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Unit Testing causing production incidents."
+],
+"failure_modes": [
+"Unit Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Unit Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Unit Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_unit_testing_0"
+],
+"confidence": "high",
+"path_keywords": [
+"unit",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_integration_testing_1",
+"name": "Integration Testing",
+"aliases": [
+"testing integration testing 1",
+"integration testing",
+"Integration Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Integration Testing in testing systems.",
+"requirements": [
+"Understand Integration Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Integration Testing causing production incidents."
+],
+"failure_modes": [
+"Integration Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Integration Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Integration Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_integration_testing_1"
+],
+"confidence": "high",
+"path_keywords": [
+"integration",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_e2e_testing_2",
+"name": "E2E Testing",
+"aliases": [
+"testing e2e testing 2",
+"e2e testing",
+"E2E Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: E2E Testing in testing systems.",
+"requirements": [
+"Understand E2E Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of E2E Testing causing production incidents."
+],
+"failure_modes": [
+"E2E Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate E2E Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering E2E Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_e2e_testing_2"
+],
+"confidence": "high",
+"path_keywords": [
+"e2e",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_contract_testing_3",
+"name": "Contract Testing",
+"aliases": [
+"testing contract testing 3",
+"contract testing",
+"Contract Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Contract Testing in testing systems.",
+"requirements": [
+"Understand Contract Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Contract Testing causing production incidents."
+],
+"failure_modes": [
+"Contract Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Contract Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Contract Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_contract_testing_3"
+],
+"confidence": "high",
+"path_keywords": [
+"contract",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_snapshot_testing_4",
+"name": "Snapshot Testing",
+"aliases": [
+"testing snapshot testing 4",
+"snapshot testing",
+"Snapshot Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Snapshot Testing in testing systems.",
+"requirements": [
+"Understand Snapshot Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Snapshot Testing causing production incidents."
+],
+"failure_modes": [
+"Snapshot Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Snapshot Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Snapshot Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_snapshot_testing_4"
+],
+"confidence": "high",
+"path_keywords": [
+"snapshot",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_property_testing_5",
+"name": "Property Testing",
+"aliases": [
+"testing property testing 5",
+"property testing",
+"Property Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Property Testing in testing systems.",
+"requirements": [
+"Understand Property Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Property Testing causing production incidents."
+],
+"failure_modes": [
+"Property Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Property Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Property Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_property_testing_5"
+],
+"confidence": "high",
+"path_keywords": [
+"property",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_mutation_testing_6",
+"name": "Mutation Testing",
+"aliases": [
+"testing mutation testing 6",
+"mutation testing",
+"Mutation Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Mutation Testing in testing systems.",
+"requirements": [
+"Understand Mutation Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Mutation Testing causing production incidents."
+],
+"failure_modes": [
+"Mutation Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Mutation Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Mutation Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_mutation_testing_6"
+],
+"confidence": "high",
+"path_keywords": [
+"mutation",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_load_testing_7",
+"name": "Load Testing",
+"aliases": [
+"testing load testing 7",
+"load testing",
+"Load Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Load Testing in testing systems.",
+"requirements": [
+"Understand Load Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Load Testing causing production incidents."
+],
+"failure_modes": [
+"Load Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Load Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Load Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_load_testing_7"
+],
+"confidence": "high",
+"path_keywords": [
+"load",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_stress_testing_8",
+"name": "Stress Testing",
+"aliases": [
+"testing stress testing 8",
+"stress testing",
+"Stress Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Stress Testing in testing systems.",
+"requirements": [
+"Understand Stress Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Stress Testing causing production incidents."
+],
+"failure_modes": [
+"Stress Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Stress Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Stress Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_stress_testing_8"
+],
+"confidence": "high",
+"path_keywords": [
+"stress",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_chaos_testing_9",
+"name": "Chaos Testing",
+"aliases": [
+"testing chaos testing 9",
+"chaos testing",
+"Chaos Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Chaos Testing in testing systems.",
+"requirements": [
+"Understand Chaos Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Chaos Testing causing production incidents."
+],
+"failure_modes": [
+"Chaos Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Chaos Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Chaos Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_chaos_testing_9"
+],
+"confidence": "high",
+"path_keywords": [
+"chaos",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_security_testing_10",
+"name": "Security Testing",
+"aliases": [
+"testing security testing 10",
+"security testing",
+"Security Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Security Testing in testing systems.",
+"requirements": [
+"Understand Security Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Security Testing causing production incidents."
+],
+"failure_modes": [
+"Security Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Security Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Security Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_security_testing_10"
+],
+"confidence": "high",
+"path_keywords": [
+"security",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_accessibility_testing_11",
+"name": "Accessibility Testing",
+"aliases": [
+"testing accessibility testing 11",
+"accessibility testing",
+"Accessibility Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Accessibility Testing in testing systems.",
+"requirements": [
+"Understand Accessibility Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Accessibility Testing causing production incidents."
+],
+"failure_modes": [
+"Accessibility Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Accessibility Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Accessibility Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_accessibility_testing_11"
+],
+"confidence": "high",
+"path_keywords": [
+"accessibility",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_performance_testing_12",
+"name": "Performance Testing",
+"aliases": [
+"testing performance testing 12",
+"performance testing",
+"Performance Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Performance Testing in testing systems.",
+"requirements": [
+"Understand Performance Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Performance Testing causing production incidents."
+],
+"failure_modes": [
+"Performance Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Performance Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Performance Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_performance_testing_12"
+],
+"confidence": "high",
+"path_keywords": [
+"performance",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_smoke_testing_13",
+"name": "Smoke Testing",
+"aliases": [
+"testing smoke testing 13",
+"smoke testing",
+"Smoke Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Smoke Testing in testing systems.",
+"requirements": [
+"Understand Smoke Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Smoke Testing causing production incidents."
+],
+"failure_modes": [
+"Smoke Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Smoke Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Smoke Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_smoke_testing_13"
+],
+"confidence": "high",
+"path_keywords": [
+"smoke",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_unit_testing_14",
+"name": "Unit Testing",
+"aliases": [
+"testing unit testing 14",
+"unit testing",
+"Unit Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Unit Testing in testing systems.",
+"requirements": [
+"Understand Unit Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Unit Testing causing production incidents."
+],
+"failure_modes": [
+"Unit Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Unit Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Unit Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_unit_testing_14"
+],
+"confidence": "high",
+"path_keywords": [
+"unit",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_integration_testing_15",
+"name": "Integration Testing",
+"aliases": [
+"testing integration testing 15",
+"integration testing",
+"Integration Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Integration Testing in testing systems.",
+"requirements": [
+"Understand Integration Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Integration Testing causing production incidents."
+],
+"failure_modes": [
+"Integration Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Integration Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Integration Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_integration_testing_15"
+],
+"confidence": "high",
+"path_keywords": [
+"integration",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_e2e_testing_16",
+"name": "E2E Testing",
+"aliases": [
+"testing e2e testing 16",
+"e2e testing",
+"E2E Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: E2E Testing in testing systems.",
+"requirements": [
+"Understand E2E Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of E2E Testing causing production incidents."
+],
+"failure_modes": [
+"E2E Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate E2E Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering E2E Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_e2e_testing_16"
+],
+"confidence": "high",
+"path_keywords": [
+"e2e",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_contract_testing_17",
+"name": "Contract Testing",
+"aliases": [
+"testing contract testing 17",
+"contract testing",
+"Contract Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Contract Testing in testing systems.",
+"requirements": [
+"Understand Contract Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Contract Testing causing production incidents."
+],
+"failure_modes": [
+"Contract Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Contract Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Contract Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_contract_testing_17"
+],
+"confidence": "high",
+"path_keywords": [
+"contract",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_snapshot_testing_18",
+"name": "Snapshot Testing",
+"aliases": [
+"testing snapshot testing 18",
+"snapshot testing",
+"Snapshot Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Snapshot Testing in testing systems.",
+"requirements": [
+"Understand Snapshot Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Snapshot Testing causing production incidents."
+],
+"failure_modes": [
+"Snapshot Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Snapshot Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Snapshot Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_snapshot_testing_18"
+],
+"confidence": "high",
+"path_keywords": [
+"snapshot",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_property_testing_19",
+"name": "Property Testing",
+"aliases": [
+"testing property testing 19",
+"property testing",
+"Property Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Property Testing in testing systems.",
+"requirements": [
+"Understand Property Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Property Testing causing production incidents."
+],
+"failure_modes": [
+"Property Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Property Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Property Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_property_testing_19"
+],
+"confidence": "high",
+"path_keywords": [
+"property",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_mutation_testing_20",
+"name": "Mutation Testing",
+"aliases": [
+"testing mutation testing 20",
+"mutation testing",
+"Mutation Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Mutation Testing in testing systems.",
+"requirements": [
+"Understand Mutation Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Mutation Testing causing production incidents."
+],
+"failure_modes": [
+"Mutation Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Mutation Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Mutation Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_mutation_testing_20"
+],
+"confidence": "high",
+"path_keywords": [
+"mutation",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_load_testing_21",
+"name": "Load Testing",
+"aliases": [
+"testing load testing 21",
+"load testing",
+"Load Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Load Testing in testing systems.",
+"requirements": [
+"Understand Load Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Load Testing causing production incidents."
+],
+"failure_modes": [
+"Load Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Load Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Load Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_load_testing_21"
+],
+"confidence": "high",
+"path_keywords": [
+"load",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_stress_testing_22",
+"name": "Stress Testing",
+"aliases": [
+"testing stress testing 22",
+"stress testing",
+"Stress Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Stress Testing in testing systems.",
+"requirements": [
+"Understand Stress Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Stress Testing causing production incidents."
+],
+"failure_modes": [
+"Stress Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Stress Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Stress Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_stress_testing_22"
+],
+"confidence": "high",
+"path_keywords": [
+"stress",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_chaos_testing_23",
+"name": "Chaos Testing",
+"aliases": [
+"testing chaos testing 23",
+"chaos testing",
+"Chaos Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Chaos Testing in testing systems.",
+"requirements": [
+"Understand Chaos Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Chaos Testing causing production incidents."
+],
+"failure_modes": [
+"Chaos Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Chaos Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Chaos Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_chaos_testing_23"
+],
+"confidence": "high",
+"path_keywords": [
+"chaos",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_security_testing_24",
+"name": "Security Testing",
+"aliases": [
+"testing security testing 24",
+"security testing",
+"Security Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Security Testing in testing systems.",
+"requirements": [
+"Understand Security Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Security Testing causing production incidents."
+],
+"failure_modes": [
+"Security Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Security Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Security Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_security_testing_24"
+],
+"confidence": "high",
+"path_keywords": [
+"security",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_accessibility_testing_25",
+"name": "Accessibility Testing",
+"aliases": [
+"testing accessibility testing 25",
+"accessibility testing",
+"Accessibility Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Accessibility Testing in testing systems.",
+"requirements": [
+"Understand Accessibility Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Accessibility Testing causing production incidents."
+],
+"failure_modes": [
+"Accessibility Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Accessibility Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Accessibility Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_accessibility_testing_25"
+],
+"confidence": "high",
+"path_keywords": [
+"accessibility",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_performance_testing_26",
+"name": "Performance Testing",
+"aliases": [
+"testing performance testing 26",
+"performance testing",
+"Performance Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Performance Testing in testing systems.",
+"requirements": [
+"Understand Performance Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Performance Testing causing production incidents."
+],
+"failure_modes": [
+"Performance Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Performance Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Performance Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_performance_testing_26"
+],
+"confidence": "high",
+"path_keywords": [
+"performance",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_smoke_testing_27",
+"name": "Smoke Testing",
+"aliases": [
+"testing smoke testing 27",
+"smoke testing",
+"Smoke Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Smoke Testing in testing systems.",
+"requirements": [
+"Understand Smoke Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Smoke Testing causing production incidents."
+],
+"failure_modes": [
+"Smoke Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Smoke Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Smoke Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_smoke_testing_27"
+],
+"confidence": "high",
+"path_keywords": [
+"smoke",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_unit_testing_28",
+"name": "Unit Testing",
+"aliases": [
+"testing unit testing 28",
+"unit testing",
+"Unit Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Unit Testing in testing systems.",
+"requirements": [
+"Understand Unit Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Unit Testing causing production incidents."
+],
+"failure_modes": [
+"Unit Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Unit Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Unit Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_unit_testing_28"
+],
+"confidence": "high",
+"path_keywords": [
+"unit",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_integration_testing_29",
+"name": "Integration Testing",
+"aliases": [
+"testing integration testing 29",
+"integration testing",
+"Integration Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Integration Testing in testing systems.",
+"requirements": [
+"Understand Integration Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Integration Testing causing production incidents."
+],
+"failure_modes": [
+"Integration Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Integration Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Integration Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_integration_testing_29"
+],
+"confidence": "high",
+"path_keywords": [
+"integration",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_e2e_testing_30",
+"name": "E2E Testing",
+"aliases": [
+"testing e2e testing 30",
+"e2e testing",
+"E2E Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: E2E Testing in testing systems.",
+"requirements": [
+"Understand E2E Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of E2E Testing causing production incidents."
+],
+"failure_modes": [
+"E2E Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate E2E Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering E2E Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_e2e_testing_30"
+],
+"confidence": "high",
+"path_keywords": [
+"e2e",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_contract_testing_31",
+"name": "Contract Testing",
+"aliases": [
+"testing contract testing 31",
+"contract testing",
+"Contract Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Contract Testing in testing systems.",
+"requirements": [
+"Understand Contract Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Contract Testing causing production incidents."
+],
+"failure_modes": [
+"Contract Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Contract Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Contract Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_contract_testing_31"
+],
+"confidence": "high",
+"path_keywords": [
+"contract",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_snapshot_testing_32",
+"name": "Snapshot Testing",
+"aliases": [
+"testing snapshot testing 32",
+"snapshot testing",
+"Snapshot Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Snapshot Testing in testing systems.",
+"requirements": [
+"Understand Snapshot Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Snapshot Testing causing production incidents."
+],
+"failure_modes": [
+"Snapshot Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Snapshot Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Snapshot Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_snapshot_testing_32"
+],
+"confidence": "high",
+"path_keywords": [
+"snapshot",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_property_testing_33",
+"name": "Property Testing",
+"aliases": [
+"testing property testing 33",
+"property testing",
+"Property Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Property Testing in testing systems.",
+"requirements": [
+"Understand Property Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Property Testing causing production incidents."
+],
+"failure_modes": [
+"Property Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Property Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Property Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_property_testing_33"
+],
+"confidence": "high",
+"path_keywords": [
+"property",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_mutation_testing_34",
+"name": "Mutation Testing",
+"aliases": [
+"testing mutation testing 34",
+"mutation testing",
+"Mutation Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Mutation Testing in testing systems.",
+"requirements": [
+"Understand Mutation Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Mutation Testing causing production incidents."
+],
+"failure_modes": [
+"Mutation Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Mutation Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Mutation Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_mutation_testing_34"
+],
+"confidence": "high",
+"path_keywords": [
+"mutation",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_load_testing_35",
+"name": "Load Testing",
+"aliases": [
+"testing load testing 35",
+"load testing",
+"Load Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Load Testing in testing systems.",
+"requirements": [
+"Understand Load Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Load Testing causing production incidents."
+],
+"failure_modes": [
+"Load Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Load Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Load Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_load_testing_35"
+],
+"confidence": "high",
+"path_keywords": [
+"load",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_stress_testing_36",
+"name": "Stress Testing",
+"aliases": [
+"testing stress testing 36",
+"stress testing",
+"Stress Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Stress Testing in testing systems.",
+"requirements": [
+"Understand Stress Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Stress Testing causing production incidents."
+],
+"failure_modes": [
+"Stress Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Stress Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Stress Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_stress_testing_36"
+],
+"confidence": "high",
+"path_keywords": [
+"stress",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_chaos_testing_37",
+"name": "Chaos Testing",
+"aliases": [
+"testing chaos testing 37",
+"chaos testing",
+"Chaos Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Chaos Testing in testing systems.",
+"requirements": [
+"Understand Chaos Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Chaos Testing causing production incidents."
+],
+"failure_modes": [
+"Chaos Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Chaos Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Chaos Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_chaos_testing_37"
+],
+"confidence": "high",
+"path_keywords": [
+"chaos",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_security_testing_38",
+"name": "Security Testing",
+"aliases": [
+"testing security testing 38",
+"security testing",
+"Security Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Security Testing in testing systems.",
+"requirements": [
+"Understand Security Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Security Testing causing production incidents."
+],
+"failure_modes": [
+"Security Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Security Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Security Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_security_testing_38"
+],
+"confidence": "high",
+"path_keywords": [
+"security",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_accessibility_testing_39",
+"name": "Accessibility Testing",
+"aliases": [
+"testing accessibility testing 39",
+"accessibility testing",
+"Accessibility Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Accessibility Testing in testing systems.",
+"requirements": [
+"Understand Accessibility Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Accessibility Testing causing production incidents."
+],
+"failure_modes": [
+"Accessibility Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Accessibility Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Accessibility Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_accessibility_testing_39"
+],
+"confidence": "high",
+"path_keywords": [
+"accessibility",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_performance_testing_40",
+"name": "Performance Testing",
+"aliases": [
+"testing performance testing 40",
+"performance testing",
+"Performance Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Performance Testing in testing systems.",
+"requirements": [
+"Understand Performance Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Performance Testing causing production incidents."
+],
+"failure_modes": [
+"Performance Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Performance Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Performance Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_performance_testing_40"
+],
+"confidence": "high",
+"path_keywords": [
+"performance",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_smoke_testing_41",
+"name": "Smoke Testing",
+"aliases": [
+"testing smoke testing 41",
+"smoke testing",
+"Smoke Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Smoke Testing in testing systems.",
+"requirements": [
+"Understand Smoke Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Smoke Testing causing production incidents."
+],
+"failure_modes": [
+"Smoke Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Smoke Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Smoke Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_smoke_testing_41"
+],
+"confidence": "high",
+"path_keywords": [
+"smoke",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_unit_testing_42",
+"name": "Unit Testing",
+"aliases": [
+"testing unit testing 42",
+"unit testing",
+"Unit Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Unit Testing in testing systems.",
+"requirements": [
+"Understand Unit Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Unit Testing causing production incidents."
+],
+"failure_modes": [
+"Unit Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Unit Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Unit Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_unit_testing_42"
+],
+"confidence": "high",
+"path_keywords": [
+"unit",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_integration_testing_43",
+"name": "Integration Testing",
+"aliases": [
+"testing integration testing 43",
+"integration testing",
+"Integration Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Integration Testing in testing systems.",
+"requirements": [
+"Understand Integration Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Integration Testing causing production incidents."
+],
+"failure_modes": [
+"Integration Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Integration Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Integration Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_integration_testing_43"
+],
+"confidence": "high",
+"path_keywords": [
+"integration",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_e2e_testing_44",
+"name": "E2E Testing",
+"aliases": [
+"testing e2e testing 44",
+"e2e testing",
+"E2E Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: E2E Testing in testing systems.",
+"requirements": [
+"Understand E2E Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of E2E Testing causing production incidents."
+],
+"failure_modes": [
+"E2E Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate E2E Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering E2E Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_e2e_testing_44"
+],
+"confidence": "high",
+"path_keywords": [
+"e2e",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_contract_testing_45",
+"name": "Contract Testing",
+"aliases": [
+"testing contract testing 45",
+"contract testing",
+"Contract Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Contract Testing in testing systems.",
+"requirements": [
+"Understand Contract Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Contract Testing causing production incidents."
+],
+"failure_modes": [
+"Contract Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Contract Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Contract Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_contract_testing_45"
+],
+"confidence": "high",
+"path_keywords": [
+"contract",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_snapshot_testing_46",
+"name": "Snapshot Testing",
+"aliases": [
+"testing snapshot testing 46",
+"snapshot testing",
+"Snapshot Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Snapshot Testing in testing systems.",
+"requirements": [
+"Understand Snapshot Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Snapshot Testing causing production incidents."
+],
+"failure_modes": [
+"Snapshot Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Snapshot Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Snapshot Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_snapshot_testing_46"
+],
+"confidence": "high",
+"path_keywords": [
+"snapshot",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_property_testing_47",
+"name": "Property Testing",
+"aliases": [
+"testing property testing 47",
+"property testing",
+"Property Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Property Testing in testing systems.",
+"requirements": [
+"Understand Property Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Property Testing causing production incidents."
+],
+"failure_modes": [
+"Property Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Property Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Property Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_property_testing_47"
+],
+"confidence": "high",
+"path_keywords": [
+"property",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_mutation_testing_48",
+"name": "Mutation Testing",
+"aliases": [
+"testing mutation testing 48",
+"mutation testing",
+"Mutation Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Mutation Testing in testing systems.",
+"requirements": [
+"Understand Mutation Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Mutation Testing causing production incidents."
+],
+"failure_modes": [
+"Mutation Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Mutation Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Mutation Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_mutation_testing_48"
+],
+"confidence": "high",
+"path_keywords": [
+"mutation",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_load_testing_49",
+"name": "Load Testing",
+"aliases": [
+"testing load testing 49",
+"load testing",
+"Load Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Load Testing in testing systems.",
+"requirements": [
+"Understand Load Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Load Testing causing production incidents."
+],
+"failure_modes": [
+"Load Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Load Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Load Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_load_testing_49"
+],
+"confidence": "high",
+"path_keywords": [
+"load",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_stress_testing_50",
+"name": "Stress Testing",
+"aliases": [
+"testing stress testing 50",
+"stress testing",
+"Stress Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Stress Testing in testing systems.",
+"requirements": [
+"Understand Stress Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Stress Testing causing production incidents."
+],
+"failure_modes": [
+"Stress Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Stress Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Stress Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_stress_testing_50"
+],
+"confidence": "high",
+"path_keywords": [
+"stress",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_chaos_testing_51",
+"name": "Chaos Testing",
+"aliases": [
+"testing chaos testing 51",
+"chaos testing",
+"Chaos Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Chaos Testing in testing systems.",
+"requirements": [
+"Understand Chaos Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Chaos Testing causing production incidents."
+],
+"failure_modes": [
+"Chaos Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Chaos Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Chaos Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_chaos_testing_51"
+],
+"confidence": "high",
+"path_keywords": [
+"chaos",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_security_testing_52",
+"name": "Security Testing",
+"aliases": [
+"testing security testing 52",
+"security testing",
+"Security Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Security Testing in testing systems.",
+"requirements": [
+"Understand Security Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Security Testing causing production incidents."
+],
+"failure_modes": [
+"Security Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Security Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Security Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_security_testing_52"
+],
+"confidence": "high",
+"path_keywords": [
+"security",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_accessibility_testing_53",
+"name": "Accessibility Testing",
+"aliases": [
+"testing accessibility testing 53",
+"accessibility testing",
+"Accessibility Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Accessibility Testing in testing systems.",
+"requirements": [
+"Understand Accessibility Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Accessibility Testing causing production incidents."
+],
+"failure_modes": [
+"Accessibility Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Accessibility Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Accessibility Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_accessibility_testing_53"
+],
+"confidence": "high",
+"path_keywords": [
+"accessibility",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_performance_testing_54",
+"name": "Performance Testing",
+"aliases": [
+"testing performance testing 54",
+"performance testing",
+"Performance Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Performance Testing in testing systems.",
+"requirements": [
+"Understand Performance Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Performance Testing causing production incidents."
+],
+"failure_modes": [
+"Performance Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Performance Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Performance Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_performance_testing_54"
+],
+"confidence": "high",
+"path_keywords": [
+"performance",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_smoke_testing_55",
+"name": "Smoke Testing",
+"aliases": [
+"testing smoke testing 55",
+"smoke testing",
+"Smoke Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Smoke Testing in testing systems.",
+"requirements": [
+"Understand Smoke Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Smoke Testing causing production incidents."
+],
+"failure_modes": [
+"Smoke Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Smoke Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Smoke Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_smoke_testing_55"
+],
+"confidence": "high",
+"path_keywords": [
+"smoke",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_unit_testing_56",
+"name": "Unit Testing",
+"aliases": [
+"testing unit testing 56",
+"unit testing",
+"Unit Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Unit Testing in testing systems.",
+"requirements": [
+"Understand Unit Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Unit Testing causing production incidents."
+],
+"failure_modes": [
+"Unit Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Unit Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Unit Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_unit_testing_56"
+],
+"confidence": "high",
+"path_keywords": [
+"unit",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_integration_testing_57",
+"name": "Integration Testing",
+"aliases": [
+"testing integration testing 57",
+"integration testing",
+"Integration Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Integration Testing in testing systems.",
+"requirements": [
+"Understand Integration Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Integration Testing causing production incidents."
+],
+"failure_modes": [
+"Integration Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Integration Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Integration Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_integration_testing_57"
+],
+"confidence": "high",
+"path_keywords": [
+"integration",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_e2e_testing_58",
+"name": "E2E Testing",
+"aliases": [
+"testing e2e testing 58",
+"e2e testing",
+"E2E Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: E2E Testing in testing systems.",
+"requirements": [
+"Understand E2E Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of E2E Testing causing production incidents."
+],
+"failure_modes": [
+"E2E Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate E2E Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering E2E Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_e2e_testing_58"
+],
+"confidence": "high",
+"path_keywords": [
+"e2e",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_contract_testing_59",
+"name": "Contract Testing",
+"aliases": [
+"testing contract testing 59",
+"contract testing",
+"Contract Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Contract Testing in testing systems.",
+"requirements": [
+"Understand Contract Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Contract Testing causing production incidents."
+],
+"failure_modes": [
+"Contract Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Contract Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Contract Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_contract_testing_59"
+],
+"confidence": "high",
+"path_keywords": [
+"contract",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_snapshot_testing_60",
+"name": "Snapshot Testing",
+"aliases": [
+"testing snapshot testing 60",
+"snapshot testing",
+"Snapshot Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Snapshot Testing in testing systems.",
+"requirements": [
+"Understand Snapshot Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Snapshot Testing causing production incidents."
+],
+"failure_modes": [
+"Snapshot Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Snapshot Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Snapshot Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_snapshot_testing_60"
+],
+"confidence": "high",
+"path_keywords": [
+"snapshot",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_property_testing_61",
+"name": "Property Testing",
+"aliases": [
+"testing property testing 61",
+"property testing",
+"Property Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Property Testing in testing systems.",
+"requirements": [
+"Understand Property Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Property Testing causing production incidents."
+],
+"failure_modes": [
+"Property Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Property Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Property Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_property_testing_61"
+],
+"confidence": "high",
+"path_keywords": [
+"property",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_mutation_testing_62",
+"name": "Mutation Testing",
+"aliases": [
+"testing mutation testing 62",
+"mutation testing",
+"Mutation Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Mutation Testing in testing systems.",
+"requirements": [
+"Understand Mutation Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Mutation Testing causing production incidents."
+],
+"failure_modes": [
+"Mutation Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Mutation Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Mutation Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_mutation_testing_62"
+],
+"confidence": "high",
+"path_keywords": [
+"mutation",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_load_testing_63",
+"name": "Load Testing",
+"aliases": [
+"testing load testing 63",
+"load testing",
+"Load Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Load Testing in testing systems.",
+"requirements": [
+"Understand Load Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Load Testing causing production incidents."
+],
+"failure_modes": [
+"Load Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Load Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Load Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_load_testing_63"
+],
+"confidence": "high",
+"path_keywords": [
+"load",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_stress_testing_64",
+"name": "Stress Testing",
+"aliases": [
+"testing stress testing 64",
+"stress testing",
+"Stress Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Stress Testing in testing systems.",
+"requirements": [
+"Understand Stress Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Stress Testing causing production incidents."
+],
+"failure_modes": [
+"Stress Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Stress Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Stress Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_stress_testing_64"
+],
+"confidence": "high",
+"path_keywords": [
+"stress",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_chaos_testing_65",
+"name": "Chaos Testing",
+"aliases": [
+"testing chaos testing 65",
+"chaos testing",
+"Chaos Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Chaos Testing in testing systems.",
+"requirements": [
+"Understand Chaos Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Chaos Testing causing production incidents."
+],
+"failure_modes": [
+"Chaos Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Chaos Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Chaos Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_chaos_testing_65"
+],
+"confidence": "high",
+"path_keywords": [
+"chaos",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_security_testing_66",
+"name": "Security Testing",
+"aliases": [
+"testing security testing 66",
+"security testing",
+"Security Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Security Testing in testing systems.",
+"requirements": [
+"Understand Security Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Security Testing causing production incidents."
+],
+"failure_modes": [
+"Security Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Security Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Security Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_security_testing_66"
+],
+"confidence": "high",
+"path_keywords": [
+"security",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_accessibility_testing_67",
+"name": "Accessibility Testing",
+"aliases": [
+"testing accessibility testing 67",
+"accessibility testing",
+"Accessibility Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Accessibility Testing in testing systems.",
+"requirements": [
+"Understand Accessibility Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Accessibility Testing causing production incidents."
+],
+"failure_modes": [
+"Accessibility Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Accessibility Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Accessibility Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_accessibility_testing_67"
+],
+"confidence": "high",
+"path_keywords": [
+"accessibility",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_performance_testing_68",
+"name": "Performance Testing",
+"aliases": [
+"testing performance testing 68",
+"performance testing",
+"Performance Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Performance Testing in testing systems.",
+"requirements": [
+"Understand Performance Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Performance Testing causing production incidents."
+],
+"failure_modes": [
+"Performance Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Performance Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Performance Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_performance_testing_68"
+],
+"confidence": "high",
+"path_keywords": [
+"performance",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_smoke_testing_69",
+"name": "Smoke Testing",
+"aliases": [
+"testing smoke testing 69",
+"smoke testing",
+"Smoke Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Smoke Testing in testing systems.",
+"requirements": [
+"Understand Smoke Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Smoke Testing causing production incidents."
+],
+"failure_modes": [
+"Smoke Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Smoke Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Smoke Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_smoke_testing_69"
+],
+"confidence": "high",
+"path_keywords": [
+"smoke",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_unit_testing_70",
+"name": "Unit Testing",
+"aliases": [
+"testing unit testing 70",
+"unit testing",
+"Unit Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Unit Testing in testing systems.",
+"requirements": [
+"Understand Unit Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Unit Testing causing production incidents."
+],
+"failure_modes": [
+"Unit Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Unit Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Unit Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_unit_testing_70"
+],
+"confidence": "high",
+"path_keywords": [
+"unit",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_integration_testing_71",
+"name": "Integration Testing",
+"aliases": [
+"testing integration testing 71",
+"integration testing",
+"Integration Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Integration Testing in testing systems.",
+"requirements": [
+"Understand Integration Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Integration Testing causing production incidents."
+],
+"failure_modes": [
+"Integration Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Integration Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Integration Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_integration_testing_71"
+],
+"confidence": "high",
+"path_keywords": [
+"integration",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_e2e_testing_72",
+"name": "E2E Testing",
+"aliases": [
+"testing e2e testing 72",
+"e2e testing",
+"E2E Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: E2E Testing in testing systems.",
+"requirements": [
+"Understand E2E Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of E2E Testing causing production incidents."
+],
+"failure_modes": [
+"E2E Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate E2E Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering E2E Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_e2e_testing_72"
+],
+"confidence": "high",
+"path_keywords": [
+"e2e",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_contract_testing_73",
+"name": "Contract Testing",
+"aliases": [
+"testing contract testing 73",
+"contract testing",
+"Contract Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Contract Testing in testing systems.",
+"requirements": [
+"Understand Contract Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Contract Testing causing production incidents."
+],
+"failure_modes": [
+"Contract Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Contract Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Contract Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_contract_testing_73"
+],
+"confidence": "high",
+"path_keywords": [
+"contract",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_snapshot_testing_74",
+"name": "Snapshot Testing",
+"aliases": [
+"testing snapshot testing 74",
+"snapshot testing",
+"Snapshot Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Snapshot Testing in testing systems.",
+"requirements": [
+"Understand Snapshot Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Snapshot Testing causing production incidents."
+],
+"failure_modes": [
+"Snapshot Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Snapshot Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Snapshot Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_snapshot_testing_74"
+],
+"confidence": "high",
+"path_keywords": [
+"snapshot",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_property_testing_75",
+"name": "Property Testing",
+"aliases": [
+"testing property testing 75",
+"property testing",
+"Property Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Property Testing in testing systems.",
+"requirements": [
+"Understand Property Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Property Testing causing production incidents."
+],
+"failure_modes": [
+"Property Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Property Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Property Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_property_testing_75"
+],
+"confidence": "high",
+"path_keywords": [
+"property",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_mutation_testing_76",
+"name": "Mutation Testing",
+"aliases": [
+"testing mutation testing 76",
+"mutation testing",
+"Mutation Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Mutation Testing in testing systems.",
+"requirements": [
+"Understand Mutation Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Mutation Testing causing production incidents."
+],
+"failure_modes": [
+"Mutation Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Mutation Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Mutation Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_mutation_testing_76"
+],
+"confidence": "high",
+"path_keywords": [
+"mutation",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_load_testing_77",
+"name": "Load Testing",
+"aliases": [
+"testing load testing 77",
+"load testing",
+"Load Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Load Testing in testing systems.",
+"requirements": [
+"Understand Load Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Load Testing causing production incidents."
+],
+"failure_modes": [
+"Load Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Load Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Load Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_load_testing_77"
+],
+"confidence": "high",
+"path_keywords": [
+"load",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_stress_testing_78",
+"name": "Stress Testing",
+"aliases": [
+"testing stress testing 78",
+"stress testing",
+"Stress Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Stress Testing in testing systems.",
+"requirements": [
+"Understand Stress Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Stress Testing causing production incidents."
+],
+"failure_modes": [
+"Stress Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Stress Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Stress Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_stress_testing_78"
+],
+"confidence": "high",
+"path_keywords": [
+"stress",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_chaos_testing_79",
+"name": "Chaos Testing",
+"aliases": [
+"testing chaos testing 79",
+"chaos testing",
+"Chaos Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Chaos Testing in testing systems.",
+"requirements": [
+"Understand Chaos Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Chaos Testing causing production incidents."
+],
+"failure_modes": [
+"Chaos Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Chaos Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Chaos Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_chaos_testing_79"
+],
+"confidence": "high",
+"path_keywords": [
+"chaos",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_security_testing_80",
+"name": "Security Testing",
+"aliases": [
+"testing security testing 80",
+"security testing",
+"Security Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Security Testing in testing systems.",
+"requirements": [
+"Understand Security Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Security Testing causing production incidents."
+],
+"failure_modes": [
+"Security Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Security Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Security Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_security_testing_80"
+],
+"confidence": "high",
+"path_keywords": [
+"security",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_accessibility_testing_81",
+"name": "Accessibility Testing",
+"aliases": [
+"testing accessibility testing 81",
+"accessibility testing",
+"Accessibility Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Accessibility Testing in testing systems.",
+"requirements": [
+"Understand Accessibility Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Accessibility Testing causing production incidents."
+],
+"failure_modes": [
+"Accessibility Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Accessibility Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Accessibility Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_accessibility_testing_81"
+],
+"confidence": "high",
+"path_keywords": [
+"accessibility",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_performance_testing_82",
+"name": "Performance Testing",
+"aliases": [
+"testing performance testing 82",
+"performance testing",
+"Performance Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Performance Testing in testing systems.",
+"requirements": [
+"Understand Performance Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Performance Testing causing production incidents."
+],
+"failure_modes": [
+"Performance Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Performance Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Performance Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_performance_testing_82"
+],
+"confidence": "high",
+"path_keywords": [
+"performance",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_smoke_testing_83",
+"name": "Smoke Testing",
+"aliases": [
+"testing smoke testing 83",
+"smoke testing",
+"Smoke Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Smoke Testing in testing systems.",
+"requirements": [
+"Understand Smoke Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Smoke Testing causing production incidents."
+],
+"failure_modes": [
+"Smoke Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Smoke Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Smoke Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_smoke_testing_83"
+],
+"confidence": "high",
+"path_keywords": [
+"smoke",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_unit_testing_84",
+"name": "Unit Testing",
+"aliases": [
+"testing unit testing 84",
+"unit testing",
+"Unit Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Unit Testing in testing systems.",
+"requirements": [
+"Understand Unit Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Unit Testing causing production incidents."
+],
+"failure_modes": [
+"Unit Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Unit Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Unit Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_unit_testing_84"
+],
+"confidence": "high",
+"path_keywords": [
+"unit",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_integration_testing_85",
+"name": "Integration Testing",
+"aliases": [
+"testing integration testing 85",
+"integration testing",
+"Integration Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Integration Testing in testing systems.",
+"requirements": [
+"Understand Integration Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Integration Testing causing production incidents."
+],
+"failure_modes": [
+"Integration Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Integration Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Integration Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_integration_testing_85"
+],
+"confidence": "high",
+"path_keywords": [
+"integration",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_e2e_testing_86",
+"name": "E2E Testing",
+"aliases": [
+"testing e2e testing 86",
+"e2e testing",
+"E2E Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: E2E Testing in testing systems.",
+"requirements": [
+"Understand E2E Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of E2E Testing causing production incidents."
+],
+"failure_modes": [
+"E2E Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate E2E Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering E2E Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_e2e_testing_86"
+],
+"confidence": "high",
+"path_keywords": [
+"e2e",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_contract_testing_87",
+"name": "Contract Testing",
+"aliases": [
+"testing contract testing 87",
+"contract testing",
+"Contract Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Contract Testing in testing systems.",
+"requirements": [
+"Understand Contract Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Contract Testing causing production incidents."
+],
+"failure_modes": [
+"Contract Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Contract Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Contract Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_contract_testing_87"
+],
+"confidence": "high",
+"path_keywords": [
+"contract",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_snapshot_testing_88",
+"name": "Snapshot Testing",
+"aliases": [
+"testing snapshot testing 88",
+"snapshot testing",
+"Snapshot Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Snapshot Testing in testing systems.",
+"requirements": [
+"Understand Snapshot Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Snapshot Testing causing production incidents."
+],
+"failure_modes": [
+"Snapshot Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Snapshot Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Snapshot Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_snapshot_testing_88"
+],
+"confidence": "high",
+"path_keywords": [
+"snapshot",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_property_testing_89",
+"name": "Property Testing",
+"aliases": [
+"testing property testing 89",
+"property testing",
+"Property Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Property Testing in testing systems.",
+"requirements": [
+"Understand Property Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Property Testing causing production incidents."
+],
+"failure_modes": [
+"Property Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Property Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Property Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_property_testing_89"
+],
+"confidence": "high",
+"path_keywords": [
+"property",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_mutation_testing_90",
+"name": "Mutation Testing",
+"aliases": [
+"testing mutation testing 90",
+"mutation testing",
+"Mutation Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Mutation Testing in testing systems.",
+"requirements": [
+"Understand Mutation Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Mutation Testing causing production incidents."
+],
+"failure_modes": [
+"Mutation Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Mutation Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Mutation Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_mutation_testing_90"
+],
+"confidence": "high",
+"path_keywords": [
+"mutation",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_load_testing_91",
+"name": "Load Testing",
+"aliases": [
+"testing load testing 91",
+"load testing",
+"Load Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Load Testing in testing systems.",
+"requirements": [
+"Understand Load Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Load Testing causing production incidents."
+],
+"failure_modes": [
+"Load Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Load Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Load Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_load_testing_91"
+],
+"confidence": "high",
+"path_keywords": [
+"load",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_stress_testing_92",
+"name": "Stress Testing",
+"aliases": [
+"testing stress testing 92",
+"stress testing",
+"Stress Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Stress Testing in testing systems.",
+"requirements": [
+"Understand Stress Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Stress Testing causing production incidents."
+],
+"failure_modes": [
+"Stress Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Stress Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Stress Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_stress_testing_92"
+],
+"confidence": "high",
+"path_keywords": [
+"stress",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_chaos_testing_93",
+"name": "Chaos Testing",
+"aliases": [
+"testing chaos testing 93",
+"chaos testing",
+"Chaos Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Chaos Testing in testing systems.",
+"requirements": [
+"Understand Chaos Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Chaos Testing causing production incidents."
+],
+"failure_modes": [
+"Chaos Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Chaos Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Chaos Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_chaos_testing_93"
+],
+"confidence": "high",
+"path_keywords": [
+"chaos",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_security_testing_94",
+"name": "Security Testing",
+"aliases": [
+"testing security testing 94",
+"security testing",
+"Security Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Security Testing in testing systems.",
+"requirements": [
+"Understand Security Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Security Testing causing production incidents."
+],
+"failure_modes": [
+"Security Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Security Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Security Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_security_testing_94"
+],
+"confidence": "high",
+"path_keywords": [
+"security",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_accessibility_testing_95",
+"name": "Accessibility Testing",
+"aliases": [
+"testing accessibility testing 95",
+"accessibility testing",
+"Accessibility Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Accessibility Testing in testing systems.",
+"requirements": [
+"Understand Accessibility Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Accessibility Testing causing production incidents."
+],
+"failure_modes": [
+"Accessibility Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Accessibility Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Accessibility Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_accessibility_testing_95"
+],
+"confidence": "high",
+"path_keywords": [
+"accessibility",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_performance_testing_96",
+"name": "Performance Testing",
+"aliases": [
+"testing performance testing 96",
+"performance testing",
+"Performance Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Performance Testing in testing systems.",
+"requirements": [
+"Understand Performance Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Performance Testing causing production incidents."
+],
+"failure_modes": [
+"Performance Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Performance Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Performance Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_performance_testing_96"
+],
+"confidence": "high",
+"path_keywords": [
+"performance",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_smoke_testing_97",
+"name": "Smoke Testing",
+"aliases": [
+"testing smoke testing 97",
+"smoke testing",
+"Smoke Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Smoke Testing in testing systems.",
+"requirements": [
+"Understand Smoke Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Smoke Testing causing production incidents."
+],
+"failure_modes": [
+"Smoke Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Smoke Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Smoke Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_smoke_testing_97"
+],
+"confidence": "high",
+"path_keywords": [
+"smoke",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_unit_testing_98",
+"name": "Unit Testing",
+"aliases": [
+"testing unit testing 98",
+"unit testing",
+"Unit Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Unit Testing in testing systems.",
+"requirements": [
+"Understand Unit Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Unit Testing causing production incidents."
+],
+"failure_modes": [
+"Unit Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Unit Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Unit Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_unit_testing_98"
+],
+"confidence": "high",
+"path_keywords": [
+"unit",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_integration_testing_99",
+"name": "Integration Testing",
+"aliases": [
+"testing integration testing 99",
+"integration testing",
+"Integration Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Integration Testing in testing systems.",
+"requirements": [
+"Understand Integration Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Integration Testing causing production incidents."
+],
+"failure_modes": [
+"Integration Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Integration Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Integration Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_integration_testing_99"
+],
+"confidence": "high",
+"path_keywords": [
+"integration",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_e2e_testing_100",
+"name": "E2E Testing",
+"aliases": [
+"testing e2e testing 100",
+"e2e testing",
+"E2E Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: E2E Testing in testing systems.",
+"requirements": [
+"Understand E2E Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of E2E Testing causing production incidents."
+],
+"failure_modes": [
+"E2E Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate E2E Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering E2E Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_e2e_testing_100"
+],
+"confidence": "high",
+"path_keywords": [
+"e2e",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_contract_testing_101",
+"name": "Contract Testing",
+"aliases": [
+"testing contract testing 101",
+"contract testing",
+"Contract Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Contract Testing in testing systems.",
+"requirements": [
+"Understand Contract Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Contract Testing causing production incidents."
+],
+"failure_modes": [
+"Contract Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Contract Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Contract Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_contract_testing_101"
+],
+"confidence": "high",
+"path_keywords": [
+"contract",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_snapshot_testing_102",
+"name": "Snapshot Testing",
+"aliases": [
+"testing snapshot testing 102",
+"snapshot testing",
+"Snapshot Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Snapshot Testing in testing systems.",
+"requirements": [
+"Understand Snapshot Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Snapshot Testing causing production incidents."
+],
+"failure_modes": [
+"Snapshot Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Snapshot Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Snapshot Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_snapshot_testing_102"
+],
+"confidence": "high",
+"path_keywords": [
+"snapshot",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_property_testing_103",
+"name": "Property Testing",
+"aliases": [
+"testing property testing 103",
+"property testing",
+"Property Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Property Testing in testing systems.",
+"requirements": [
+"Understand Property Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Property Testing causing production incidents."
+],
+"failure_modes": [
+"Property Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Property Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Property Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_property_testing_103"
+],
+"confidence": "high",
+"path_keywords": [
+"property",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_mutation_testing_104",
+"name": "Mutation Testing",
+"aliases": [
+"testing mutation testing 104",
+"mutation testing",
+"Mutation Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Mutation Testing in testing systems.",
+"requirements": [
+"Understand Mutation Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Mutation Testing causing production incidents."
+],
+"failure_modes": [
+"Mutation Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Mutation Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Mutation Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_mutation_testing_104"
+],
+"confidence": "high",
+"path_keywords": [
+"mutation",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_load_testing_105",
+"name": "Load Testing",
+"aliases": [
+"testing load testing 105",
+"load testing",
+"Load Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Load Testing in testing systems.",
+"requirements": [
+"Understand Load Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Load Testing causing production incidents."
+],
+"failure_modes": [
+"Load Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Load Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Load Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_load_testing_105"
+],
+"confidence": "high",
+"path_keywords": [
+"load",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_stress_testing_106",
+"name": "Stress Testing",
+"aliases": [
+"testing stress testing 106",
+"stress testing",
+"Stress Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Stress Testing in testing systems.",
+"requirements": [
+"Understand Stress Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Stress Testing causing production incidents."
+],
+"failure_modes": [
+"Stress Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Stress Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Stress Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_stress_testing_106"
+],
+"confidence": "high",
+"path_keywords": [
+"stress",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_chaos_testing_107",
+"name": "Chaos Testing",
+"aliases": [
+"testing chaos testing 107",
+"chaos testing",
+"Chaos Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Chaos Testing in testing systems.",
+"requirements": [
+"Understand Chaos Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Chaos Testing causing production incidents."
+],
+"failure_modes": [
+"Chaos Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Chaos Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Chaos Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_chaos_testing_107"
+],
+"confidence": "high",
+"path_keywords": [
+"chaos",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_security_testing_108",
+"name": "Security Testing",
+"aliases": [
+"testing security testing 108",
+"security testing",
+"Security Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Security Testing in testing systems.",
+"requirements": [
+"Understand Security Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Security Testing causing production incidents."
+],
+"failure_modes": [
+"Security Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Security Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Security Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_security_testing_108"
+],
+"confidence": "high",
+"path_keywords": [
+"security",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_accessibility_testing_109",
+"name": "Accessibility Testing",
+"aliases": [
+"testing accessibility testing 109",
+"accessibility testing",
+"Accessibility Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Accessibility Testing in testing systems.",
+"requirements": [
+"Understand Accessibility Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Accessibility Testing causing production incidents."
+],
+"failure_modes": [
+"Accessibility Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Accessibility Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Accessibility Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_accessibility_testing_109"
+],
+"confidence": "high",
+"path_keywords": [
+"accessibility",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_performance_testing_110",
+"name": "Performance Testing",
+"aliases": [
+"testing performance testing 110",
+"performance testing",
+"Performance Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Performance Testing in testing systems.",
+"requirements": [
+"Understand Performance Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Performance Testing causing production incidents."
+],
+"failure_modes": [
+"Performance Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Performance Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Performance Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_performance_testing_110"
+],
+"confidence": "high",
+"path_keywords": [
+"performance",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_smoke_testing_111",
+"name": "Smoke Testing",
+"aliases": [
+"testing smoke testing 111",
+"smoke testing",
+"Smoke Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Smoke Testing in testing systems.",
+"requirements": [
+"Understand Smoke Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Smoke Testing causing production incidents."
+],
+"failure_modes": [
+"Smoke Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Smoke Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Smoke Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_smoke_testing_111"
+],
+"confidence": "high",
+"path_keywords": [
+"smoke",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_unit_testing_112",
+"name": "Unit Testing",
+"aliases": [
+"testing unit testing 112",
+"unit testing",
+"Unit Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Unit Testing in testing systems.",
+"requirements": [
+"Understand Unit Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Unit Testing causing production incidents."
+],
+"failure_modes": [
+"Unit Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Unit Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Unit Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_unit_testing_112"
+],
+"confidence": "high",
+"path_keywords": [
+"unit",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_integration_testing_113",
+"name": "Integration Testing",
+"aliases": [
+"testing integration testing 113",
+"integration testing",
+"Integration Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Integration Testing in testing systems.",
+"requirements": [
+"Understand Integration Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Integration Testing causing production incidents."
+],
+"failure_modes": [
+"Integration Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Integration Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Integration Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_integration_testing_113"
+],
+"confidence": "high",
+"path_keywords": [
+"integration",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_e2e_testing_114",
+"name": "E2E Testing",
+"aliases": [
+"testing e2e testing 114",
+"e2e testing",
+"E2E Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: E2E Testing in testing systems.",
+"requirements": [
+"Understand E2E Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of E2E Testing causing production incidents."
+],
+"failure_modes": [
+"E2E Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate E2E Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering E2E Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_e2e_testing_114"
+],
+"confidence": "high",
+"path_keywords": [
+"e2e",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_contract_testing_115",
+"name": "Contract Testing",
+"aliases": [
+"testing contract testing 115",
+"contract testing",
+"Contract Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Contract Testing in testing systems.",
+"requirements": [
+"Understand Contract Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Contract Testing causing production incidents."
+],
+"failure_modes": [
+"Contract Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Contract Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Contract Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_contract_testing_115"
+],
+"confidence": "high",
+"path_keywords": [
+"contract",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_snapshot_testing_116",
+"name": "Snapshot Testing",
+"aliases": [
+"testing snapshot testing 116",
+"snapshot testing",
+"Snapshot Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Snapshot Testing in testing systems.",
+"requirements": [
+"Understand Snapshot Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Snapshot Testing causing production incidents."
+],
+"failure_modes": [
+"Snapshot Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Snapshot Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Snapshot Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_snapshot_testing_116"
+],
+"confidence": "high",
+"path_keywords": [
+"snapshot",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_property_testing_117",
+"name": "Property Testing",
+"aliases": [
+"testing property testing 117",
+"property testing",
+"Property Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Property Testing in testing systems.",
+"requirements": [
+"Understand Property Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Property Testing causing production incidents."
+],
+"failure_modes": [
+"Property Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Property Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Property Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_property_testing_117"
+],
+"confidence": "high",
+"path_keywords": [
+"property",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_mutation_testing_118",
+"name": "Mutation Testing",
+"aliases": [
+"testing mutation testing 118",
+"mutation testing",
+"Mutation Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Mutation Testing in testing systems.",
+"requirements": [
+"Understand Mutation Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Mutation Testing causing production incidents."
+],
+"failure_modes": [
+"Mutation Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Mutation Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Mutation Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_mutation_testing_118"
+],
+"confidence": "high",
+"path_keywords": [
+"mutation",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_load_testing_119",
+"name": "Load Testing",
+"aliases": [
+"testing load testing 119",
+"load testing",
+"Load Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Load Testing in testing systems.",
+"requirements": [
+"Understand Load Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Load Testing causing production incidents."
+],
+"failure_modes": [
+"Load Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Load Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Load Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_load_testing_119"
+],
+"confidence": "high",
+"path_keywords": [
+"load",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_stress_testing_120",
+"name": "Stress Testing",
+"aliases": [
+"testing stress testing 120",
+"stress testing",
+"Stress Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Stress Testing in testing systems.",
+"requirements": [
+"Understand Stress Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Stress Testing causing production incidents."
+],
+"failure_modes": [
+"Stress Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Stress Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Stress Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_stress_testing_120"
+],
+"confidence": "high",
+"path_keywords": [
+"stress",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_chaos_testing_121",
+"name": "Chaos Testing",
+"aliases": [
+"testing chaos testing 121",
+"chaos testing",
+"Chaos Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Chaos Testing in testing systems.",
+"requirements": [
+"Understand Chaos Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Chaos Testing causing production incidents."
+],
+"failure_modes": [
+"Chaos Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Chaos Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Chaos Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_chaos_testing_121"
+],
+"confidence": "high",
+"path_keywords": [
+"chaos",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_security_testing_122",
+"name": "Security Testing",
+"aliases": [
+"testing security testing 122",
+"security testing",
+"Security Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Security Testing in testing systems.",
+"requirements": [
+"Understand Security Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Security Testing causing production incidents."
+],
+"failure_modes": [
+"Security Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Security Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Security Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_security_testing_122"
+],
+"confidence": "high",
+"path_keywords": [
+"security",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_accessibility_testing_123",
+"name": "Accessibility Testing",
+"aliases": [
+"testing accessibility testing 123",
+"accessibility testing",
+"Accessibility Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Accessibility Testing in testing systems.",
+"requirements": [
+"Understand Accessibility Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Accessibility Testing causing production incidents."
+],
+"failure_modes": [
+"Accessibility Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Accessibility Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Accessibility Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_accessibility_testing_123"
+],
+"confidence": "high",
+"path_keywords": [
+"accessibility",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_performance_testing_124",
+"name": "Performance Testing",
+"aliases": [
+"testing performance testing 124",
+"performance testing",
+"Performance Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Performance Testing in testing systems.",
+"requirements": [
+"Understand Performance Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Performance Testing causing production incidents."
+],
+"failure_modes": [
+"Performance Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Performance Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Performance Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_performance_testing_124"
+],
+"confidence": "high",
+"path_keywords": [
+"performance",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_smoke_testing_125",
+"name": "Smoke Testing",
+"aliases": [
+"testing smoke testing 125",
+"smoke testing",
+"Smoke Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Smoke Testing in testing systems.",
+"requirements": [
+"Understand Smoke Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Smoke Testing causing production incidents."
+],
+"failure_modes": [
+"Smoke Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Smoke Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Smoke Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_smoke_testing_125"
+],
+"confidence": "high",
+"path_keywords": [
+"smoke",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_unit_testing_126",
+"name": "Unit Testing",
+"aliases": [
+"testing unit testing 126",
+"unit testing",
+"Unit Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Unit Testing in testing systems.",
+"requirements": [
+"Understand Unit Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Unit Testing causing production incidents."
+],
+"failure_modes": [
+"Unit Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Unit Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Unit Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_unit_testing_126"
+],
+"confidence": "high",
+"path_keywords": [
+"unit",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_integration_testing_127",
+"name": "Integration Testing",
+"aliases": [
+"testing integration testing 127",
+"integration testing",
+"Integration Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Integration Testing in testing systems.",
+"requirements": [
+"Understand Integration Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Integration Testing causing production incidents."
+],
+"failure_modes": [
+"Integration Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Integration Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Integration Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_integration_testing_127"
+],
+"confidence": "high",
+"path_keywords": [
+"integration",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_e2e_testing_128",
+"name": "E2E Testing",
+"aliases": [
+"testing e2e testing 128",
+"e2e testing",
+"E2E Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: E2E Testing in testing systems.",
+"requirements": [
+"Understand E2E Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of E2E Testing causing production incidents."
+],
+"failure_modes": [
+"E2E Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate E2E Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering E2E Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_e2e_testing_128"
+],
+"confidence": "high",
+"path_keywords": [
+"e2e",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_contract_testing_129",
+"name": "Contract Testing",
+"aliases": [
+"testing contract testing 129",
+"contract testing",
+"Contract Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Contract Testing in testing systems.",
+"requirements": [
+"Understand Contract Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Contract Testing causing production incidents."
+],
+"failure_modes": [
+"Contract Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Contract Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Contract Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_contract_testing_129"
+],
+"confidence": "high",
+"path_keywords": [
+"contract",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_snapshot_testing_130",
+"name": "Snapshot Testing",
+"aliases": [
+"testing snapshot testing 130",
+"snapshot testing",
+"Snapshot Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Snapshot Testing in testing systems.",
+"requirements": [
+"Understand Snapshot Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Snapshot Testing causing production incidents."
+],
+"failure_modes": [
+"Snapshot Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Snapshot Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Snapshot Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_snapshot_testing_130"
+],
+"confidence": "high",
+"path_keywords": [
+"snapshot",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_property_testing_131",
+"name": "Property Testing",
+"aliases": [
+"testing property testing 131",
+"property testing",
+"Property Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Property Testing in testing systems.",
+"requirements": [
+"Understand Property Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Property Testing causing production incidents."
+],
+"failure_modes": [
+"Property Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Property Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Property Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_property_testing_131"
+],
+"confidence": "high",
+"path_keywords": [
+"property",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_mutation_testing_132",
+"name": "Mutation Testing",
+"aliases": [
+"testing mutation testing 132",
+"mutation testing",
+"Mutation Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Mutation Testing in testing systems.",
+"requirements": [
+"Understand Mutation Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Mutation Testing causing production incidents."
+],
+"failure_modes": [
+"Mutation Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Mutation Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Mutation Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_mutation_testing_132"
+],
+"confidence": "high",
+"path_keywords": [
+"mutation",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_load_testing_133",
+"name": "Load Testing",
+"aliases": [
+"testing load testing 133",
+"load testing",
+"Load Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Load Testing in testing systems.",
+"requirements": [
+"Understand Load Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Load Testing causing production incidents."
+],
+"failure_modes": [
+"Load Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Load Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Load Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_load_testing_133"
+],
+"confidence": "high",
+"path_keywords": [
+"load",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_stress_testing_134",
+"name": "Stress Testing",
+"aliases": [
+"testing stress testing 134",
+"stress testing",
+"Stress Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Stress Testing in testing systems.",
+"requirements": [
+"Understand Stress Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Stress Testing causing production incidents."
+],
+"failure_modes": [
+"Stress Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Stress Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Stress Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_stress_testing_134"
+],
+"confidence": "high",
+"path_keywords": [
+"stress",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_chaos_testing_135",
+"name": "Chaos Testing",
+"aliases": [
+"testing chaos testing 135",
+"chaos testing",
+"Chaos Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Chaos Testing in testing systems.",
+"requirements": [
+"Understand Chaos Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Chaos Testing causing production incidents."
+],
+"failure_modes": [
+"Chaos Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Chaos Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Chaos Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_chaos_testing_135"
+],
+"confidence": "high",
+"path_keywords": [
+"chaos",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_security_testing_136",
+"name": "Security Testing",
+"aliases": [
+"testing security testing 136",
+"security testing",
+"Security Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Security Testing in testing systems.",
+"requirements": [
+"Understand Security Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Security Testing causing production incidents."
+],
+"failure_modes": [
+"Security Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Security Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Security Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_security_testing_136"
+],
+"confidence": "high",
+"path_keywords": [
+"security",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_accessibility_testing_137",
+"name": "Accessibility Testing",
+"aliases": [
+"testing accessibility testing 137",
+"accessibility testing",
+"Accessibility Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Accessibility Testing in testing systems.",
+"requirements": [
+"Understand Accessibility Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Accessibility Testing causing production incidents."
+],
+"failure_modes": [
+"Accessibility Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Accessibility Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Accessibility Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_accessibility_testing_137"
+],
+"confidence": "high",
+"path_keywords": [
+"accessibility",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_performance_testing_138",
+"name": "Performance Testing",
+"aliases": [
+"testing performance testing 138",
+"performance testing",
+"Performance Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Performance Testing in testing systems.",
+"requirements": [
+"Understand Performance Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Performance Testing causing production incidents."
+],
+"failure_modes": [
+"Performance Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Performance Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Performance Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_performance_testing_138"
+],
+"confidence": "high",
+"path_keywords": [
+"performance",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_smoke_testing_139",
+"name": "Smoke Testing",
+"aliases": [
+"testing smoke testing 139",
+"smoke testing",
+"Smoke Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Smoke Testing in testing systems.",
+"requirements": [
+"Understand Smoke Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Smoke Testing causing production incidents."
+],
+"failure_modes": [
+"Smoke Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Smoke Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Smoke Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_smoke_testing_139"
+],
+"confidence": "high",
+"path_keywords": [
+"smoke",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_unit_testing_140",
+"name": "Unit Testing",
+"aliases": [
+"testing unit testing 140",
+"unit testing",
+"Unit Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Unit Testing in testing systems.",
+"requirements": [
+"Understand Unit Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Unit Testing causing production incidents."
+],
+"failure_modes": [
+"Unit Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Unit Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Unit Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_unit_testing_140"
+],
+"confidence": "high",
+"path_keywords": [
+"unit",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_integration_testing_141",
+"name": "Integration Testing",
+"aliases": [
+"testing integration testing 141",
+"integration testing",
+"Integration Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Integration Testing in testing systems.",
+"requirements": [
+"Understand Integration Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Integration Testing causing production incidents."
+],
+"failure_modes": [
+"Integration Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Integration Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Integration Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_integration_testing_141"
+],
+"confidence": "high",
+"path_keywords": [
+"integration",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_e2e_testing_142",
+"name": "E2E Testing",
+"aliases": [
+"testing e2e testing 142",
+"e2e testing",
+"E2E Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: E2E Testing in testing systems.",
+"requirements": [
+"Understand E2E Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of E2E Testing causing production incidents."
+],
+"failure_modes": [
+"E2E Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate E2E Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering E2E Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_e2e_testing_142"
+],
+"confidence": "high",
+"path_keywords": [
+"e2e",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_contract_testing_143",
+"name": "Contract Testing",
+"aliases": [
+"testing contract testing 143",
+"contract testing",
+"Contract Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Contract Testing in testing systems.",
+"requirements": [
+"Understand Contract Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Contract Testing causing production incidents."
+],
+"failure_modes": [
+"Contract Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Contract Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Contract Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_contract_testing_143"
+],
+"confidence": "high",
+"path_keywords": [
+"contract",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_snapshot_testing_144",
+"name": "Snapshot Testing",
+"aliases": [
+"testing snapshot testing 144",
+"snapshot testing",
+"Snapshot Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Snapshot Testing in testing systems.",
+"requirements": [
+"Understand Snapshot Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Snapshot Testing causing production incidents."
+],
+"failure_modes": [
+"Snapshot Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Snapshot Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Snapshot Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_snapshot_testing_144"
+],
+"confidence": "high",
+"path_keywords": [
+"snapshot",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_property_testing_145",
+"name": "Property Testing",
+"aliases": [
+"testing property testing 145",
+"property testing",
+"Property Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Property Testing in testing systems.",
+"requirements": [
+"Understand Property Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Property Testing causing production incidents."
+],
+"failure_modes": [
+"Property Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Property Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Property Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_property_testing_145"
+],
+"confidence": "high",
+"path_keywords": [
+"property",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_mutation_testing_146",
+"name": "Mutation Testing",
+"aliases": [
+"testing mutation testing 146",
+"mutation testing",
+"Mutation Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Mutation Testing in testing systems.",
+"requirements": [
+"Understand Mutation Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Mutation Testing causing production incidents."
+],
+"failure_modes": [
+"Mutation Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Mutation Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Mutation Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_mutation_testing_146"
+],
+"confidence": "high",
+"path_keywords": [
+"mutation",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_load_testing_147",
+"name": "Load Testing",
+"aliases": [
+"testing load testing 147",
+"load testing",
+"Load Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Load Testing in testing systems.",
+"requirements": [
+"Understand Load Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Load Testing causing production incidents."
+],
+"failure_modes": [
+"Load Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Load Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Load Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_load_testing_147"
+],
+"confidence": "high",
+"path_keywords": [
+"load",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_stress_testing_148",
+"name": "Stress Testing",
+"aliases": [
+"testing stress testing 148",
+"stress testing",
+"Stress Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Stress Testing in testing systems.",
+"requirements": [
+"Understand Stress Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Stress Testing causing production incidents."
+],
+"failure_modes": [
+"Stress Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Stress Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Stress Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_stress_testing_148"
+],
+"confidence": "high",
+"path_keywords": [
+"stress",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_chaos_testing_149",
+"name": "Chaos Testing",
+"aliases": [
+"testing chaos testing 149",
+"chaos testing",
+"Chaos Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Chaos Testing in testing systems.",
+"requirements": [
+"Understand Chaos Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Chaos Testing causing production incidents."
+],
+"failure_modes": [
+"Chaos Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Chaos Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Chaos Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_chaos_testing_149"
+],
+"confidence": "high",
+"path_keywords": [
+"chaos",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_security_testing_150",
+"name": "Security Testing",
+"aliases": [
+"testing security testing 150",
+"security testing",
+"Security Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Security Testing in testing systems.",
+"requirements": [
+"Understand Security Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Security Testing causing production incidents."
+],
+"failure_modes": [
+"Security Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Security Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Security Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_security_testing_150"
+],
+"confidence": "high",
+"path_keywords": [
+"security",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_accessibility_testing_151",
+"name": "Accessibility Testing",
+"aliases": [
+"testing accessibility testing 151",
+"accessibility testing",
+"Accessibility Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Accessibility Testing in testing systems.",
+"requirements": [
+"Understand Accessibility Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Accessibility Testing causing production incidents."
+],
+"failure_modes": [
+"Accessibility Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Accessibility Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Accessibility Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_accessibility_testing_151"
+],
+"confidence": "high",
+"path_keywords": [
+"accessibility",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_performance_testing_152",
+"name": "Performance Testing",
+"aliases": [
+"testing performance testing 152",
+"performance testing",
+"Performance Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Performance Testing in testing systems.",
+"requirements": [
+"Understand Performance Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Performance Testing causing production incidents."
+],
+"failure_modes": [
+"Performance Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Performance Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Performance Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_performance_testing_152"
+],
+"confidence": "high",
+"path_keywords": [
+"performance",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_smoke_testing_153",
+"name": "Smoke Testing",
+"aliases": [
+"testing smoke testing 153",
+"smoke testing",
+"Smoke Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Smoke Testing in testing systems.",
+"requirements": [
+"Understand Smoke Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Smoke Testing causing production incidents."
+],
+"failure_modes": [
+"Smoke Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Smoke Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Smoke Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_smoke_testing_153"
+],
+"confidence": "high",
+"path_keywords": [
+"smoke",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_unit_testing_154",
+"name": "Unit Testing",
+"aliases": [
+"testing unit testing 154",
+"unit testing",
+"Unit Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Unit Testing in testing systems.",
+"requirements": [
+"Understand Unit Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Unit Testing causing production incidents."
+],
+"failure_modes": [
+"Unit Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Unit Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Unit Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_unit_testing_154"
+],
+"confidence": "high",
+"path_keywords": [
+"unit",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_integration_testing_155",
+"name": "Integration Testing",
+"aliases": [
+"testing integration testing 155",
+"integration testing",
+"Integration Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Integration Testing in testing systems.",
+"requirements": [
+"Understand Integration Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Integration Testing causing production incidents."
+],
+"failure_modes": [
+"Integration Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Integration Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Integration Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_integration_testing_155"
+],
+"confidence": "high",
+"path_keywords": [
+"integration",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_e2e_testing_156",
+"name": "E2E Testing",
+"aliases": [
+"testing e2e testing 156",
+"e2e testing",
+"E2E Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: E2E Testing in testing systems.",
+"requirements": [
+"Understand E2E Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of E2E Testing causing production incidents."
+],
+"failure_modes": [
+"E2E Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate E2E Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering E2E Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_e2e_testing_156"
+],
+"confidence": "high",
+"path_keywords": [
+"e2e",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_contract_testing_157",
+"name": "Contract Testing",
+"aliases": [
+"testing contract testing 157",
+"contract testing",
+"Contract Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Contract Testing in testing systems.",
+"requirements": [
+"Understand Contract Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Contract Testing causing production incidents."
+],
+"failure_modes": [
+"Contract Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Contract Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Contract Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_contract_testing_157"
+],
+"confidence": "high",
+"path_keywords": [
+"contract",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_snapshot_testing_158",
+"name": "Snapshot Testing",
+"aliases": [
+"testing snapshot testing 158",
+"snapshot testing",
+"Snapshot Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Snapshot Testing in testing systems.",
+"requirements": [
+"Understand Snapshot Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Snapshot Testing causing production incidents."
+],
+"failure_modes": [
+"Snapshot Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Snapshot Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Snapshot Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_snapshot_testing_158"
+],
+"confidence": "high",
+"path_keywords": [
+"snapshot",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_property_testing_159",
+"name": "Property Testing",
+"aliases": [
+"testing property testing 159",
+"property testing",
+"Property Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Property Testing in testing systems.",
+"requirements": [
+"Understand Property Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Property Testing causing production incidents."
+],
+"failure_modes": [
+"Property Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Property Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Property Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_property_testing_159"
+],
+"confidence": "high",
+"path_keywords": [
+"property",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_mutation_testing_160",
+"name": "Mutation Testing",
+"aliases": [
+"testing mutation testing 160",
+"mutation testing",
+"Mutation Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Mutation Testing in testing systems.",
+"requirements": [
+"Understand Mutation Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Mutation Testing causing production incidents."
+],
+"failure_modes": [
+"Mutation Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Mutation Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Mutation Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_mutation_testing_160"
+],
+"confidence": "high",
+"path_keywords": [
+"mutation",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_load_testing_161",
+"name": "Load Testing",
+"aliases": [
+"testing load testing 161",
+"load testing",
+"Load Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Load Testing in testing systems.",
+"requirements": [
+"Understand Load Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Load Testing causing production incidents."
+],
+"failure_modes": [
+"Load Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Load Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Load Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_load_testing_161"
+],
+"confidence": "high",
+"path_keywords": [
+"load",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_stress_testing_162",
+"name": "Stress Testing",
+"aliases": [
+"testing stress testing 162",
+"stress testing",
+"Stress Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Stress Testing in testing systems.",
+"requirements": [
+"Understand Stress Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Stress Testing causing production incidents."
+],
+"failure_modes": [
+"Stress Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Stress Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Stress Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_stress_testing_162"
+],
+"confidence": "high",
+"path_keywords": [
+"stress",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_chaos_testing_163",
+"name": "Chaos Testing",
+"aliases": [
+"testing chaos testing 163",
+"chaos testing",
+"Chaos Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Chaos Testing in testing systems.",
+"requirements": [
+"Understand Chaos Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Chaos Testing causing production incidents."
+],
+"failure_modes": [
+"Chaos Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Chaos Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Chaos Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_chaos_testing_163"
+],
+"confidence": "high",
+"path_keywords": [
+"chaos",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_security_testing_164",
+"name": "Security Testing",
+"aliases": [
+"testing security testing 164",
+"security testing",
+"Security Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Security Testing in testing systems.",
+"requirements": [
+"Understand Security Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Security Testing causing production incidents."
+],
+"failure_modes": [
+"Security Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Security Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Security Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_security_testing_164"
+],
+"confidence": "high",
+"path_keywords": [
+"security",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_accessibility_testing_165",
+"name": "Accessibility Testing",
+"aliases": [
+"testing accessibility testing 165",
+"accessibility testing",
+"Accessibility Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Accessibility Testing in testing systems.",
+"requirements": [
+"Understand Accessibility Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Accessibility Testing causing production incidents."
+],
+"failure_modes": [
+"Accessibility Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Accessibility Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Accessibility Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_accessibility_testing_165"
+],
+"confidence": "high",
+"path_keywords": [
+"accessibility",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_performance_testing_166",
+"name": "Performance Testing",
+"aliases": [
+"testing performance testing 166",
+"performance testing",
+"Performance Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Performance Testing in testing systems.",
+"requirements": [
+"Understand Performance Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Performance Testing causing production incidents."
+],
+"failure_modes": [
+"Performance Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Performance Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Performance Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_performance_testing_166"
+],
+"confidence": "high",
+"path_keywords": [
+"performance",
+"testing",
+"testing"
+]
+},
+{
+"concept_id": "testing_smoke_testing_167",
+"name": "Smoke Testing",
+"aliases": [
+"testing smoke testing 167",
+"smoke testing",
+"Smoke Testing"
+],
+"domain": "testing",
+"category": "pattern",
+"description": "Engineering concept: Smoke Testing in testing systems.",
+"requirements": [
+"Understand Smoke Testing prerequisites in testing context."
+],
+"common_implementations": [
+"Typical pattern integration in testing systems."
+],
+"risks": [
+"Misconfiguration of Smoke Testing causing production incidents."
+],
+"failure_modes": [
+"Smoke Testing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Smoke Testing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Smoke Testing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/testing/testing_smoke_testing_167"
+],
+"confidence": "high",
+"path_keywords": [
+"smoke",
+"testing",
+"testing"
+]
+}
+]
+}

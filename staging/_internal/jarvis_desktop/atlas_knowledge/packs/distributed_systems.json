@@ -1,0 +1,1245 @@
+{
+"concepts": [
+{
+"concept_id": "circuit_breaker",
+"name": "Circuit Breaker",
+"aliases": [
+"circuit breaker",
+"breaker pattern"
+],
+"domain": "distributed_systems",
+"category": "feature",
+"description": "Fail fast when downstream is unhealthy.",
+"requirements": [
+"Understand Circuit Breaker prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical feature integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Circuit Breaker causing production incidents."
+],
+"failure_modes": [
+"Circuit Breaker fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Circuit Breaker behavior against official specification."
+],
+"testing": [
+"Automated tests covering Circuit Breaker happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/circuit_breaker"
+],
+"confidence": "high",
+"path_keywords": [
+"circuit",
+"breaker",
+"circuit"
+]
+},
+{
+"concept_id": "retry_backoff",
+"name": "Retry with Backoff",
+"aliases": [
+"retry",
+"exponential backoff"
+],
+"domain": "distributed_systems",
+"category": "feature",
+"description": "Transient failure handling with jitter.",
+"requirements": [
+"Understand Retry with Backoff prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical feature integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Retry with Backoff causing production incidents."
+],
+"failure_modes": [
+"Retry with Backoff fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Retry with Backoff behavior against official specification."
+],
+"testing": [
+"Automated tests covering Retry with Backoff happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/retry_backoff"
+],
+"confidence": "high",
+"path_keywords": [
+"retry",
+"with",
+"backoff",
+"retry"
+]
+},
+{
+"concept_id": "saga_pattern",
+"name": "Saga Pattern",
+"aliases": [
+"saga",
+"distributed transaction saga"
+],
+"domain": "distributed_systems",
+"category": "feature",
+"description": "Multi-service transactions via compensations.",
+"requirements": [
+"Understand Saga Pattern prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical feature integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Saga Pattern causing production incidents."
+],
+"failure_modes": [
+"Saga Pattern fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Saga Pattern behavior against official specification."
+],
+"testing": [
+"Automated tests covering Saga Pattern happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/saga_pattern"
+],
+"confidence": "high",
+"path_keywords": [
+"saga",
+"pattern",
+"saga"
+]
+},
+{
+"concept_id": "event_sourcing",
+"name": "Event Sourcing",
+"aliases": [
+"event sourcing",
+"event store"
+],
+"domain": "distributed_systems",
+"category": "feature",
+"description": "State derived from append-only events.",
+"requirements": [
+"Understand Event Sourcing prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical feature integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Event Sourcing causing production incidents."
+],
+"failure_modes": [
+"Event Sourcing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Event Sourcing behavior against official specification."
+],
+"testing": [
+"Automated tests covering Event Sourcing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/event_sourcing"
+],
+"confidence": "high",
+"path_keywords": [
+"event",
+"sourcing",
+"event"
+]
+},
+{
+"concept_id": "cqrs",
+"name": "CQRS",
+"aliases": [
+"cqrs",
+"command query separation"
+],
+"domain": "distributed_systems",
+"category": "feature",
+"description": "Separate read/write models for scale.",
+"requirements": [
+"Understand CQRS prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical feature integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of CQRS causing production incidents."
+],
+"failure_modes": [
+"CQRS fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CQRS behavior against official specification."
+],
+"testing": [
+"Automated tests covering CQRS happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/cqrs"
+],
+"confidence": "high",
+"path_keywords": [
+"cqrs",
+"cqrs"
+]
+},
+{
+"concept_id": "leader_election",
+"name": "Leader Election",
+"aliases": [
+"leader election",
+"distributed lock"
+],
+"domain": "distributed_systems",
+"category": "feature",
+"description": "Single coordinator in distributed cluster.",
+"requirements": [
+"Understand Leader Election prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical feature integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Leader Election causing production incidents."
+],
+"failure_modes": [
+"Leader Election fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Leader Election behavior against official specification."
+],
+"testing": [
+"Automated tests covering Leader Election happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/leader_election"
+],
+"confidence": "high",
+"path_keywords": [
+"leader",
+"election",
+"leader"
+]
+},
+{
+"concept_id": "cap_theorem",
+"name": "CAP Tradeoffs",
+"aliases": [
+"cap theorem",
+"consistency availability"
+],
+"domain": "distributed_systems",
+"category": "feature",
+"description": "Partition tolerance forces C/A tradeoff.",
+"requirements": [
+"Understand CAP Tradeoffs prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical feature integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of CAP Tradeoffs causing production incidents."
+],
+"failure_modes": [
+"CAP Tradeoffs fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CAP Tradeoffs behavior against official specification."
+],
+"testing": [
+"Automated tests covering CAP Tradeoffs happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/cap_theorem"
+],
+"confidence": "high",
+"path_keywords": [
+"cap",
+"tradeoffs",
+"cap"
+]
+},
+{
+"concept_id": "distributed_systems_gossip_protocol_0",
+"name": "Gossip Protocol",
+"aliases": [
+"distributed systems gossip protocol 0",
+"gossip protocol",
+"Gossip Protocol"
+],
+"domain": "distributed_systems",
+"category": "pattern",
+"description": "Engineering concept: Gossip Protocol in distributed systems systems.",
+"requirements": [
+"Understand Gossip Protocol prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical pattern integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Gossip Protocol causing production incidents."
+],
+"failure_modes": [
+"Gossip Protocol fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Gossip Protocol behavior against official specification."
+],
+"testing": [
+"Automated tests covering Gossip Protocol happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/distributed_systems_gossip_protocol_0"
+],
+"confidence": "high",
+"path_keywords": [
+"gossip",
+"protocol",
+"distributed"
+]
+},
+{
+"concept_id": "distributed_systems_two_phase_commit_1",
+"name": "Two Phase Commit",
+"aliases": [
+"distributed systems two phase commit 1",
+"two phase commit",
+"Two Phase Commit"
+],
+"domain": "distributed_systems",
+"category": "pattern",
+"description": "Engineering concept: Two Phase Commit in distributed systems systems.",
+"requirements": [
+"Understand Two Phase Commit prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical pattern integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Two Phase Commit causing production incidents."
+],
+"failure_modes": [
+"Two Phase Commit fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Two Phase Commit behavior against official specification."
+],
+"testing": [
+"Automated tests covering Two Phase Commit happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/distributed_systems_two_phase_commit_1"
+],
+"confidence": "high",
+"path_keywords": [
+"two",
+"phase",
+"commit",
+"distributed"
+]
+},
+{
+"concept_id": "distributed_systems_quorum_read_2",
+"name": "Quorum Read",
+"aliases": [
+"distributed systems quorum read 2",
+"quorum read",
+"Quorum Read"
+],
+"domain": "distributed_systems",
+"category": "pattern",
+"description": "Engineering concept: Quorum Read in distributed systems systems.",
+"requirements": [
+"Understand Quorum Read prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical pattern integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Quorum Read causing production incidents."
+],
+"failure_modes": [
+"Quorum Read fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Quorum Read behavior against official specification."
+],
+"testing": [
+"Automated tests covering Quorum Read happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/distributed_systems_quorum_read_2"
+],
+"confidence": "high",
+"path_keywords": [
+"quorum",
+"read",
+"distributed"
+]
+},
+{
+"concept_id": "distributed_systems_gossip_protocol_3",
+"name": "Gossip Protocol",
+"aliases": [
+"distributed systems gossip protocol 3",
+"gossip protocol",
+"Gossip Protocol"
+],
+"domain": "distributed_systems",
+"category": "pattern",
+"description": "Engineering concept: Gossip Protocol in distributed systems systems.",
+"requirements": [
+"Understand Gossip Protocol prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical pattern integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Gossip Protocol causing production incidents."
+],
+"failure_modes": [
+"Gossip Protocol fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Gossip Protocol behavior against official specification."
+],
+"testing": [
+"Automated tests covering Gossip Protocol happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/distributed_systems_gossip_protocol_3"
+],
+"confidence": "high",
+"path_keywords": [
+"gossip",
+"protocol",
+"distributed"
+]
+},
+{
+"concept_id": "distributed_systems_two_phase_commit_4",
+"name": "Two Phase Commit",
+"aliases": [
+"distributed systems two phase commit 4",
+"two phase commit",
+"Two Phase Commit"
+],
+"domain": "distributed_systems",
+"category": "pattern",
+"description": "Engineering concept: Two Phase Commit in distributed systems systems.",
+"requirements": [
+"Understand Two Phase Commit prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical pattern integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Two Phase Commit causing production incidents."
+],
+"failure_modes": [
+"Two Phase Commit fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Two Phase Commit behavior against official specification."
+],
+"testing": [
+"Automated tests covering Two Phase Commit happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/distributed_systems_two_phase_commit_4"
+],
+"confidence": "high",
+"path_keywords": [
+"two",
+"phase",
+"commit",
+"distributed"
+]
+},
+{
+"concept_id": "distributed_systems_quorum_read_5",
+"name": "Quorum Read",
+"aliases": [
+"distributed systems quorum read 5",
+"quorum read",
+"Quorum Read"
+],
+"domain": "distributed_systems",
+"category": "pattern",
+"description": "Engineering concept: Quorum Read in distributed systems systems.",
+"requirements": [
+"Understand Quorum Read prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical pattern integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Quorum Read causing production incidents."
+],
+"failure_modes": [
+"Quorum Read fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Quorum Read behavior against official specification."
+],
+"testing": [
+"Automated tests covering Quorum Read happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/distributed_systems_quorum_read_5"
+],
+"confidence": "high",
+"path_keywords": [
+"quorum",
+"read",
+"distributed"
+]
+},
+{
+"concept_id": "distributed_systems_gossip_protocol_6",
+"name": "Gossip Protocol",
+"aliases": [
+"distributed systems gossip protocol 6",
+"gossip protocol",
+"Gossip Protocol"
+],
+"domain": "distributed_systems",
+"category": "pattern",
+"description": "Engineering concept: Gossip Protocol in distributed systems systems.",
+"requirements": [
+"Understand Gossip Protocol prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical pattern integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Gossip Protocol causing production incidents."
+],
+"failure_modes": [
+"Gossip Protocol fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Gossip Protocol behavior against official specification."
+],
+"testing": [
+"Automated tests covering Gossip Protocol happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/distributed_systems_gossip_protocol_6"
+],
+"confidence": "high",
+"path_keywords": [
+"gossip",
+"protocol",
+"distributed"
+]
+},
+{
+"concept_id": "distributed_systems_two_phase_commit_7",
+"name": "Two Phase Commit",
+"aliases": [
+"distributed systems two phase commit 7",
+"two phase commit",
+"Two Phase Commit"
+],
+"domain": "distributed_systems",
+"category": "pattern",
+"description": "Engineering concept: Two Phase Commit in distributed systems systems.",
+"requirements": [
+"Understand Two Phase Commit prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical pattern integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Two Phase Commit causing production incidents."
+],
+"failure_modes": [
+"Two Phase Commit fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Two Phase Commit behavior against official specification."
+],
+"testing": [
+"Automated tests covering Two Phase Commit happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/distributed_systems_two_phase_commit_7"
+],
+"confidence": "high",
+"path_keywords": [
+"two",
+"phase",
+"commit",
+"distributed"
+]
+},
+{
+"concept_id": "distributed_systems_quorum_read_8",
+"name": "Quorum Read",
+"aliases": [
+"distributed systems quorum read 8",
+"quorum read",
+"Quorum Read"
+],
+"domain": "distributed_systems",
+"category": "pattern",
+"description": "Engineering concept: Quorum Read in distributed systems systems.",
+"requirements": [
+"Understand Quorum Read prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical pattern integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Quorum Read causing production incidents."
+],
+"failure_modes": [
+"Quorum Read fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Quorum Read behavior against official specification."
+],
+"testing": [
+"Automated tests covering Quorum Read happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/distributed_systems_quorum_read_8"
+],
+"confidence": "high",
+"path_keywords": [
+"quorum",
+"read",
+"distributed"
+]
+},
+{
+"concept_id": "distributed_systems_gossip_protocol_9",
+"name": "Gossip Protocol",
+"aliases": [
+"distributed systems gossip protocol 9",
+"gossip protocol",
+"Gossip Protocol"
+],
+"domain": "distributed_systems",
+"category": "pattern",
+"description": "Engineering concept: Gossip Protocol in distributed systems systems.",
+"requirements": [
+"Understand Gossip Protocol prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical pattern integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Gossip Protocol causing production incidents."
+],
+"failure_modes": [
+"Gossip Protocol fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Gossip Protocol behavior against official specification."
+],
+"testing": [
+"Automated tests covering Gossip Protocol happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/distributed_systems_gossip_protocol_9"
+],
+"confidence": "high",
+"path_keywords": [
+"gossip",
+"protocol",
+"distributed"
+]
+},
+{
+"concept_id": "distributed_systems_two_phase_commit_10",
+"name": "Two Phase Commit",
+"aliases": [
+"distributed systems two phase commit 10",
+"two phase commit",
+"Two Phase Commit"
+],
+"domain": "distributed_systems",
+"category": "pattern",
+"description": "Engineering concept: Two Phase Commit in distributed systems systems.",
+"requirements": [
+"Understand Two Phase Commit prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical pattern integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Two Phase Commit causing production incidents."
+],
+"failure_modes": [
+"Two Phase Commit fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Two Phase Commit behavior against official specification."
+],
+"testing": [
+"Automated tests covering Two Phase Commit happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/distributed_systems_two_phase_commit_10"
+],
+"confidence": "high",
+"path_keywords": [
+"two",
+"phase",
+"commit",
+"distributed"
+]
+},
+{
+"concept_id": "distributed_systems_quorum_read_11",
+"name": "Quorum Read",
+"aliases": [
+"distributed systems quorum read 11",
+"quorum read",
+"Quorum Read"
+],
+"domain": "distributed_systems",
+"category": "pattern",
+"description": "Engineering concept: Quorum Read in distributed systems systems.",
+"requirements": [
+"Understand Quorum Read prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical pattern integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Quorum Read causing production incidents."
+],
+"failure_modes": [
+"Quorum Read fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Quorum Read behavior against official specification."
+],
+"testing": [
+"Automated tests covering Quorum Read happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/distributed_systems_quorum_read_11"
+],
+"confidence": "high",
+"path_keywords": [
+"quorum",
+"read",
+"distributed"
+]
+},
+{
+"concept_id": "distributed_systems_gossip_protocol_12",
+"name": "Gossip Protocol",
+"aliases": [
+"distributed systems gossip protocol 12",
+"gossip protocol",
+"Gossip Protocol"
+],
+"domain": "distributed_systems",
+"category": "pattern",
+"description": "Engineering concept: Gossip Protocol in distributed systems systems.",
+"requirements": [
+"Understand Gossip Protocol prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical pattern integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Gossip Protocol causing production incidents."
+],
+"failure_modes": [
+"Gossip Protocol fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Gossip Protocol behavior against official specification."
+],
+"testing": [
+"Automated tests covering Gossip Protocol happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/distributed_systems_gossip_protocol_12"
+],
+"confidence": "high",
+"path_keywords": [
+"gossip",
+"protocol",
+"distributed"
+]
+},
+{
+"concept_id": "distributed_systems_two_phase_commit_13",
+"name": "Two Phase Commit",
+"aliases": [
+"distributed systems two phase commit 13",
+"two phase commit",
+"Two Phase Commit"
+],
+"domain": "distributed_systems",
+"category": "pattern",
+"description": "Engineering concept: Two Phase Commit in distributed systems systems.",
+"requirements": [
+"Understand Two Phase Commit prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical pattern integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Two Phase Commit causing production incidents."
+],
+"failure_modes": [
+"Two Phase Commit fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Two Phase Commit behavior against official specification."
+],
+"testing": [
+"Automated tests covering Two Phase Commit happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/distributed_systems_two_phase_commit_13"
+],
+"confidence": "high",
+"path_keywords": [
+"two",
+"phase",
+"commit",
+"distributed"
+]
+},
+{
+"concept_id": "distributed_systems_quorum_read_14",
+"name": "Quorum Read",
+"aliases": [
+"distributed systems quorum read 14",
+"quorum read",
+"Quorum Read"
+],
+"domain": "distributed_systems",
+"category": "pattern",
+"description": "Engineering concept: Quorum Read in distributed systems systems.",
+"requirements": [
+"Understand Quorum Read prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical pattern integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Quorum Read causing production incidents."
+],
+"failure_modes": [
+"Quorum Read fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Quorum Read behavior against official specification."
+],
+"testing": [
+"Automated tests covering Quorum Read happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/distributed_systems_quorum_read_14"
+],
+"confidence": "high",
+"path_keywords": [
+"quorum",
+"read",
+"distributed"
+]
+},
+{
+"concept_id": "distributed_systems_gossip_protocol_15",
+"name": "Gossip Protocol",
+"aliases": [
+"distributed systems gossip protocol 15",
+"gossip protocol",
+"Gossip Protocol"
+],
+"domain": "distributed_systems",
+"category": "pattern",
+"description": "Engineering concept: Gossip Protocol in distributed systems systems.",
+"requirements": [
+"Understand Gossip Protocol prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical pattern integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Gossip Protocol causing production incidents."
+],
+"failure_modes": [
+"Gossip Protocol fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Gossip Protocol behavior against official specification."
+],
+"testing": [
+"Automated tests covering Gossip Protocol happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/distributed_systems_gossip_protocol_15"
+],
+"confidence": "high",
+"path_keywords": [
+"gossip",
+"protocol",
+"distributed"
+]
+},
+{
+"concept_id": "distributed_systems_two_phase_commit_16",
+"name": "Two Phase Commit",
+"aliases": [
+"distributed systems two phase commit 16",
+"two phase commit",
+"Two Phase Commit"
+],
+"domain": "distributed_systems",
+"category": "pattern",
+"description": "Engineering concept: Two Phase Commit in distributed systems systems.",
+"requirements": [
+"Understand Two Phase Commit prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical pattern integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Two Phase Commit causing production incidents."
+],
+"failure_modes": [
+"Two Phase Commit fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Two Phase Commit behavior against official specification."
+],
+"testing": [
+"Automated tests covering Two Phase Commit happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/distributed_systems_two_phase_commit_16"
+],
+"confidence": "high",
+"path_keywords": [
+"two",
+"phase",
+"commit",
+"distributed"
+]
+},
+{
+"concept_id": "distributed_systems_quorum_read_17",
+"name": "Quorum Read",
+"aliases": [
+"distributed systems quorum read 17",
+"quorum read",
+"Quorum Read"
+],
+"domain": "distributed_systems",
+"category": "pattern",
+"description": "Engineering concept: Quorum Read in distributed systems systems.",
+"requirements": [
+"Understand Quorum Read prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical pattern integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Quorum Read causing production incidents."
+],
+"failure_modes": [
+"Quorum Read fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Quorum Read behavior against official specification."
+],
+"testing": [
+"Automated tests covering Quorum Read happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/distributed_systems_quorum_read_17"
+],
+"confidence": "high",
+"path_keywords": [
+"quorum",
+"read",
+"distributed"
+]
+},
+{
+"concept_id": "distributed_systems_gossip_protocol_18",
+"name": "Gossip Protocol",
+"aliases": [
+"distributed systems gossip protocol 18",
+"gossip protocol",
+"Gossip Protocol"
+],
+"domain": "distributed_systems",
+"category": "pattern",
+"description": "Engineering concept: Gossip Protocol in distributed systems systems.",
+"requirements": [
+"Understand Gossip Protocol prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical pattern integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Gossip Protocol causing production incidents."
+],
+"failure_modes": [
+"Gossip Protocol fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Gossip Protocol behavior against official specification."
+],
+"testing": [
+"Automated tests covering Gossip Protocol happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/distributed_systems_gossip_protocol_18"
+],
+"confidence": "high",
+"path_keywords": [
+"gossip",
+"protocol",
+"distributed"
+]
+},
+{
+"concept_id": "distributed_systems_two_phase_commit_19",
+"name": "Two Phase Commit",
+"aliases": [
+"distributed systems two phase commit 19",
+"two phase commit",
+"Two Phase Commit"
+],
+"domain": "distributed_systems",
+"category": "pattern",
+"description": "Engineering concept: Two Phase Commit in distributed systems systems.",
+"requirements": [
+"Understand Two Phase Commit prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical pattern integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Two Phase Commit causing production incidents."
+],
+"failure_modes": [
+"Two Phase Commit fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Two Phase Commit behavior against official specification."
+],
+"testing": [
+"Automated tests covering Two Phase Commit happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/distributed_systems_two_phase_commit_19"
+],
+"confidence": "high",
+"path_keywords": [
+"two",
+"phase",
+"commit",
+"distributed"
+]
+},
+{
+"concept_id": "distributed_systems_quorum_read_20",
+"name": "Quorum Read",
+"aliases": [
+"distributed systems quorum read 20",
+"quorum read",
+"Quorum Read"
+],
+"domain": "distributed_systems",
+"category": "pattern",
+"description": "Engineering concept: Quorum Read in distributed systems systems.",
+"requirements": [
+"Understand Quorum Read prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical pattern integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Quorum Read causing production incidents."
+],
+"failure_modes": [
+"Quorum Read fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Quorum Read behavior against official specification."
+],
+"testing": [
+"Automated tests covering Quorum Read happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/distributed_systems_quorum_read_20"
+],
+"confidence": "high",
+"path_keywords": [
+"quorum",
+"read",
+"distributed"
+]
+},
+{
+"concept_id": "distributed_systems_gossip_protocol_21",
+"name": "Gossip Protocol",
+"aliases": [
+"distributed systems gossip protocol 21",
+"gossip protocol",
+"Gossip Protocol"
+],
+"domain": "distributed_systems",
+"category": "pattern",
+"description": "Engineering concept: Gossip Protocol in distributed systems systems.",
+"requirements": [
+"Understand Gossip Protocol prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical pattern integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Gossip Protocol causing production incidents."
+],
+"failure_modes": [
+"Gossip Protocol fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Gossip Protocol behavior against official specification."
+],
+"testing": [
+"Automated tests covering Gossip Protocol happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/distributed_systems_gossip_protocol_21"
+],
+"confidence": "high",
+"path_keywords": [
+"gossip",
+"protocol",
+"distributed"
+]
+},
+{
+"concept_id": "distributed_systems_two_phase_commit_22",
+"name": "Two Phase Commit",
+"aliases": [
+"distributed systems two phase commit 22",
+"two phase commit",
+"Two Phase Commit"
+],
+"domain": "distributed_systems",
+"category": "pattern",
+"description": "Engineering concept: Two Phase Commit in distributed systems systems.",
+"requirements": [
+"Understand Two Phase Commit prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical pattern integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Two Phase Commit causing production incidents."
+],
+"failure_modes": [
+"Two Phase Commit fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Two Phase Commit behavior against official specification."
+],
+"testing": [
+"Automated tests covering Two Phase Commit happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/distributed_systems_two_phase_commit_22"
+],
+"confidence": "high",
+"path_keywords": [
+"two",
+"phase",
+"commit",
+"distributed"
+]
+},
+{
+"concept_id": "distributed_systems_quorum_read_23",
+"name": "Quorum Read",
+"aliases": [
+"distributed systems quorum read 23",
+"quorum read",
+"Quorum Read"
+],
+"domain": "distributed_systems",
+"category": "pattern",
+"description": "Engineering concept: Quorum Read in distributed systems systems.",
+"requirements": [
+"Understand Quorum Read prerequisites in distributed_systems context."
+],
+"common_implementations": [
+"Typical pattern integration in distributed_systems systems."
+],
+"risks": [
+"Misconfiguration of Quorum Read causing production incidents."
+],
+"failure_modes": [
+"Quorum Read fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Quorum Read behavior against official specification."
+],
+"testing": [
+"Automated tests covering Quorum Read happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/distributed_systems/distributed_systems_quorum_read_23"
+],
+"confidence": "high",
+"path_keywords": [
+"quorum",
+"read",
+"distributed"
+]
+}
+]
+}

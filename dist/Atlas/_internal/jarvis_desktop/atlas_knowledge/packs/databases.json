@@ -1,0 +1,1553 @@
+{
+"concepts": [
+{
+"concept_id": "postgresql",
+"name": "PostgreSQL",
+"aliases": [
+"postgresql",
+"postgres",
+"psql"
+],
+"domain": "databases",
+"category": "feature",
+"description": "Relational database with ACID and rich SQL.",
+"requirements": [
+"Understand PostgreSQL prerequisites in databases context."
+],
+"common_implementations": [
+"Typical feature integration in databases systems."
+],
+"risks": [
+"Misconfiguration of PostgreSQL causing production incidents."
+],
+"failure_modes": [
+"PostgreSQL fails silently under load or edge inputs."
+],
+"verification": [
+"Validate PostgreSQL behavior against official specification."
+],
+"testing": [
+"Automated tests covering PostgreSQL happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/postgresql"
+],
+"confidence": "high",
+"path_keywords": [
+"postgresql",
+"postgresql"
+]
+},
+{
+"concept_id": "database_index",
+"name": "Database Index",
+"aliases": [
+"index",
+"btree index",
+"query index"
+],
+"domain": "databases",
+"category": "feature",
+"description": "Structure accelerating lookups at write cost.",
+"requirements": [
+"Understand Database Index prerequisites in databases context."
+],
+"common_implementations": [
+"Typical feature integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Database Index causing production incidents."
+],
+"failure_modes": [
+"Database Index fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Database Index behavior against official specification."
+],
+"testing": [
+"Automated tests covering Database Index happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/database_index"
+],
+"confidence": "high",
+"path_keywords": [
+"database",
+"index",
+"database"
+]
+},
+{
+"concept_id": "database_migration",
+"name": "Database Migration",
+"aliases": [
+"migration",
+"schema migration",
+"alembic"
+],
+"domain": "databases",
+"category": "feature",
+"description": "Versioned schema evolution.",
+"requirements": [
+"Understand Database Migration prerequisites in databases context."
+],
+"common_implementations": [
+"Typical feature integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Database Migration causing production incidents."
+],
+"failure_modes": [
+"Database Migration fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Database Migration behavior against official specification."
+],
+"testing": [
+"Automated tests covering Database Migration happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/database_migration"
+],
+"confidence": "high",
+"path_keywords": [
+"database",
+"migration",
+"database"
+]
+},
+{
+"concept_id": "transaction_isolation",
+"name": "Transaction Isolation",
+"aliases": [
+"isolation level",
+"serializable",
+"read committed"
+],
+"domain": "databases",
+"category": "feature",
+"description": "Concurrency control for transactions.",
+"requirements": [
+"Understand Transaction Isolation prerequisites in databases context."
+],
+"common_implementations": [
+"Typical feature integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Transaction Isolation causing production incidents."
+],
+"failure_modes": [
+"Transaction Isolation fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Transaction Isolation behavior against official specification."
+],
+"testing": [
+"Automated tests covering Transaction Isolation happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/transaction_isolation"
+],
+"confidence": "high",
+"path_keywords": [
+"transaction",
+"isolation",
+"transaction"
+]
+},
+{
+"concept_id": "connection_limit",
+"name": "Connection Limits",
+"aliases": [
+"max connections",
+"connection limit"
+],
+"domain": "databases",
+"category": "feature",
+"description": "DB saturation from unbounded clients.",
+"requirements": [
+"Understand Connection Limits prerequisites in databases context."
+],
+"common_implementations": [
+"Typical feature integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Connection Limits causing production incidents."
+],
+"failure_modes": [
+"Connection Limits fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Connection Limits behavior against official specification."
+],
+"testing": [
+"Automated tests covering Connection Limits happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/connection_limit"
+],
+"confidence": "high",
+"path_keywords": [
+"connection",
+"limits",
+"connection"
+]
+},
+{
+"concept_id": "nosql_document",
+"name": "Document Database",
+"aliases": [
+"mongodb",
+"document store",
+"nosql document"
+],
+"domain": "databases",
+"category": "feature",
+"description": "JSON-like documents with flexible schema.",
+"requirements": [
+"Understand Document Database prerequisites in databases context."
+],
+"common_implementations": [
+"Typical feature integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Document Database causing production incidents."
+],
+"failure_modes": [
+"Document Database fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Document Database behavior against official specification."
+],
+"testing": [
+"Automated tests covering Document Database happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/nosql_document"
+],
+"confidence": "high",
+"path_keywords": [
+"document",
+"database",
+"nosql"
+]
+},
+{
+"concept_id": "redis_cache",
+"name": "Redis Cache",
+"aliases": [
+"redis",
+"in memory cache"
+],
+"domain": "databases",
+"category": "feature",
+"description": "In-memory data structure store for caching.",
+"requirements": [
+"Understand Redis Cache prerequisites in databases context."
+],
+"common_implementations": [
+"Typical feature integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Redis Cache causing production incidents."
+],
+"failure_modes": [
+"Redis Cache fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Redis Cache behavior against official specification."
+],
+"testing": [
+"Automated tests covering Redis Cache happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/redis_cache"
+],
+"confidence": "high",
+"path_keywords": [
+"redis",
+"cache",
+"redis"
+]
+},
+{
+"concept_id": "databases_query_plan_0",
+"name": "Query Plan",
+"aliases": [
+"databases query plan 0",
+"query plan",
+"Query Plan"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Query Plan in databases systems.",
+"requirements": [
+"Understand Query Plan prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Query Plan causing production incidents."
+],
+"failure_modes": [
+"Query Plan fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Query Plan behavior against official specification."
+],
+"testing": [
+"Automated tests covering Query Plan happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_query_plan_0"
+],
+"confidence": "high",
+"path_keywords": [
+"query",
+"plan",
+"databases"
+]
+},
+{
+"concept_id": "databases_vacuum_1",
+"name": "Vacuum",
+"aliases": [
+"databases vacuum 1",
+"vacuum",
+"Vacuum"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Vacuum in databases systems.",
+"requirements": [
+"Understand Vacuum prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Vacuum causing production incidents."
+],
+"failure_modes": [
+"Vacuum fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Vacuum behavior against official specification."
+],
+"testing": [
+"Automated tests covering Vacuum happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_vacuum_1"
+],
+"confidence": "high",
+"path_keywords": [
+"vacuum",
+"databases"
+]
+},
+{
+"concept_id": "databases_replication_lag_2",
+"name": "Replication Lag",
+"aliases": [
+"databases replication lag 2",
+"replication lag",
+"Replication Lag"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Replication Lag in databases systems.",
+"requirements": [
+"Understand Replication Lag prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Replication Lag causing production incidents."
+],
+"failure_modes": [
+"Replication Lag fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Replication Lag behavior against official specification."
+],
+"testing": [
+"Automated tests covering Replication Lag happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_replication_lag_2"
+],
+"confidence": "high",
+"path_keywords": [
+"replication",
+"lag",
+"databases"
+]
+},
+{
+"concept_id": "databases_sharding_key_3",
+"name": "Sharding Key",
+"aliases": [
+"databases sharding key 3",
+"sharding key",
+"Sharding Key"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Sharding Key in databases systems.",
+"requirements": [
+"Understand Sharding Key prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Sharding Key causing production incidents."
+],
+"failure_modes": [
+"Sharding Key fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Sharding Key behavior against official specification."
+],
+"testing": [
+"Automated tests covering Sharding Key happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_sharding_key_3"
+],
+"confidence": "high",
+"path_keywords": [
+"sharding",
+"key",
+"databases"
+]
+},
+{
+"concept_id": "databases_query_plan_4",
+"name": "Query Plan",
+"aliases": [
+"databases query plan 4",
+"query plan",
+"Query Plan"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Query Plan in databases systems.",
+"requirements": [
+"Understand Query Plan prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Query Plan causing production incidents."
+],
+"failure_modes": [
+"Query Plan fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Query Plan behavior against official specification."
+],
+"testing": [
+"Automated tests covering Query Plan happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_query_plan_4"
+],
+"confidence": "high",
+"path_keywords": [
+"query",
+"plan",
+"databases"
+]
+},
+{
+"concept_id": "databases_vacuum_5",
+"name": "Vacuum",
+"aliases": [
+"databases vacuum 5",
+"vacuum",
+"Vacuum"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Vacuum in databases systems.",
+"requirements": [
+"Understand Vacuum prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Vacuum causing production incidents."
+],
+"failure_modes": [
+"Vacuum fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Vacuum behavior against official specification."
+],
+"testing": [
+"Automated tests covering Vacuum happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_vacuum_5"
+],
+"confidence": "high",
+"path_keywords": [
+"vacuum",
+"databases"
+]
+},
+{
+"concept_id": "databases_replication_lag_6",
+"name": "Replication Lag",
+"aliases": [
+"databases replication lag 6",
+"replication lag",
+"Replication Lag"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Replication Lag in databases systems.",
+"requirements": [
+"Understand Replication Lag prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Replication Lag causing production incidents."
+],
+"failure_modes": [
+"Replication Lag fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Replication Lag behavior against official specification."
+],
+"testing": [
+"Automated tests covering Replication Lag happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_replication_lag_6"
+],
+"confidence": "high",
+"path_keywords": [
+"replication",
+"lag",
+"databases"
+]
+},
+{
+"concept_id": "databases_sharding_key_7",
+"name": "Sharding Key",
+"aliases": [
+"databases sharding key 7",
+"sharding key",
+"Sharding Key"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Sharding Key in databases systems.",
+"requirements": [
+"Understand Sharding Key prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Sharding Key causing production incidents."
+],
+"failure_modes": [
+"Sharding Key fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Sharding Key behavior against official specification."
+],
+"testing": [
+"Automated tests covering Sharding Key happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_sharding_key_7"
+],
+"confidence": "high",
+"path_keywords": [
+"sharding",
+"key",
+"databases"
+]
+},
+{
+"concept_id": "databases_query_plan_8",
+"name": "Query Plan",
+"aliases": [
+"databases query plan 8",
+"query plan",
+"Query Plan"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Query Plan in databases systems.",
+"requirements": [
+"Understand Query Plan prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Query Plan causing production incidents."
+],
+"failure_modes": [
+"Query Plan fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Query Plan behavior against official specification."
+],
+"testing": [
+"Automated tests covering Query Plan happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_query_plan_8"
+],
+"confidence": "high",
+"path_keywords": [
+"query",
+"plan",
+"databases"
+]
+},
+{
+"concept_id": "databases_vacuum_9",
+"name": "Vacuum",
+"aliases": [
+"databases vacuum 9",
+"vacuum",
+"Vacuum"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Vacuum in databases systems.",
+"requirements": [
+"Understand Vacuum prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Vacuum causing production incidents."
+],
+"failure_modes": [
+"Vacuum fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Vacuum behavior against official specification."
+],
+"testing": [
+"Automated tests covering Vacuum happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_vacuum_9"
+],
+"confidence": "high",
+"path_keywords": [
+"vacuum",
+"databases"
+]
+},
+{
+"concept_id": "databases_replication_lag_10",
+"name": "Replication Lag",
+"aliases": [
+"databases replication lag 10",
+"replication lag",
+"Replication Lag"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Replication Lag in databases systems.",
+"requirements": [
+"Understand Replication Lag prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Replication Lag causing production incidents."
+],
+"failure_modes": [
+"Replication Lag fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Replication Lag behavior against official specification."
+],
+"testing": [
+"Automated tests covering Replication Lag happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_replication_lag_10"
+],
+"confidence": "high",
+"path_keywords": [
+"replication",
+"lag",
+"databases"
+]
+},
+{
+"concept_id": "databases_sharding_key_11",
+"name": "Sharding Key",
+"aliases": [
+"databases sharding key 11",
+"sharding key",
+"Sharding Key"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Sharding Key in databases systems.",
+"requirements": [
+"Understand Sharding Key prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Sharding Key causing production incidents."
+],
+"failure_modes": [
+"Sharding Key fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Sharding Key behavior against official specification."
+],
+"testing": [
+"Automated tests covering Sharding Key happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_sharding_key_11"
+],
+"confidence": "high",
+"path_keywords": [
+"sharding",
+"key",
+"databases"
+]
+},
+{
+"concept_id": "databases_query_plan_12",
+"name": "Query Plan",
+"aliases": [
+"databases query plan 12",
+"query plan",
+"Query Plan"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Query Plan in databases systems.",
+"requirements": [
+"Understand Query Plan prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Query Plan causing production incidents."
+],
+"failure_modes": [
+"Query Plan fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Query Plan behavior against official specification."
+],
+"testing": [
+"Automated tests covering Query Plan happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_query_plan_12"
+],
+"confidence": "high",
+"path_keywords": [
+"query",
+"plan",
+"databases"
+]
+},
+{
+"concept_id": "databases_vacuum_13",
+"name": "Vacuum",
+"aliases": [
+"databases vacuum 13",
+"vacuum",
+"Vacuum"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Vacuum in databases systems.",
+"requirements": [
+"Understand Vacuum prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Vacuum causing production incidents."
+],
+"failure_modes": [
+"Vacuum fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Vacuum behavior against official specification."
+],
+"testing": [
+"Automated tests covering Vacuum happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_vacuum_13"
+],
+"confidence": "high",
+"path_keywords": [
+"vacuum",
+"databases"
+]
+},
+{
+"concept_id": "databases_replication_lag_14",
+"name": "Replication Lag",
+"aliases": [
+"databases replication lag 14",
+"replication lag",
+"Replication Lag"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Replication Lag in databases systems.",
+"requirements": [
+"Understand Replication Lag prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Replication Lag causing production incidents."
+],
+"failure_modes": [
+"Replication Lag fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Replication Lag behavior against official specification."
+],
+"testing": [
+"Automated tests covering Replication Lag happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_replication_lag_14"
+],
+"confidence": "high",
+"path_keywords": [
+"replication",
+"lag",
+"databases"
+]
+},
+{
+"concept_id": "databases_sharding_key_15",
+"name": "Sharding Key",
+"aliases": [
+"databases sharding key 15",
+"sharding key",
+"Sharding Key"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Sharding Key in databases systems.",
+"requirements": [
+"Understand Sharding Key prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Sharding Key causing production incidents."
+],
+"failure_modes": [
+"Sharding Key fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Sharding Key behavior against official specification."
+],
+"testing": [
+"Automated tests covering Sharding Key happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_sharding_key_15"
+],
+"confidence": "high",
+"path_keywords": [
+"sharding",
+"key",
+"databases"
+]
+},
+{
+"concept_id": "databases_query_plan_16",
+"name": "Query Plan",
+"aliases": [
+"databases query plan 16",
+"query plan",
+"Query Plan"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Query Plan in databases systems.",
+"requirements": [
+"Understand Query Plan prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Query Plan causing production incidents."
+],
+"failure_modes": [
+"Query Plan fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Query Plan behavior against official specification."
+],
+"testing": [
+"Automated tests covering Query Plan happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_query_plan_16"
+],
+"confidence": "high",
+"path_keywords": [
+"query",
+"plan",
+"databases"
+]
+},
+{
+"concept_id": "databases_vacuum_17",
+"name": "Vacuum",
+"aliases": [
+"databases vacuum 17",
+"vacuum",
+"Vacuum"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Vacuum in databases systems.",
+"requirements": [
+"Understand Vacuum prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Vacuum causing production incidents."
+],
+"failure_modes": [
+"Vacuum fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Vacuum behavior against official specification."
+],
+"testing": [
+"Automated tests covering Vacuum happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_vacuum_17"
+],
+"confidence": "high",
+"path_keywords": [
+"vacuum",
+"databases"
+]
+},
+{
+"concept_id": "databases_replication_lag_18",
+"name": "Replication Lag",
+"aliases": [
+"databases replication lag 18",
+"replication lag",
+"Replication Lag"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Replication Lag in databases systems.",
+"requirements": [
+"Understand Replication Lag prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Replication Lag causing production incidents."
+],
+"failure_modes": [
+"Replication Lag fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Replication Lag behavior against official specification."
+],
+"testing": [
+"Automated tests covering Replication Lag happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_replication_lag_18"
+],
+"confidence": "high",
+"path_keywords": [
+"replication",
+"lag",
+"databases"
+]
+},
+{
+"concept_id": "databases_sharding_key_19",
+"name": "Sharding Key",
+"aliases": [
+"databases sharding key 19",
+"sharding key",
+"Sharding Key"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Sharding Key in databases systems.",
+"requirements": [
+"Understand Sharding Key prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Sharding Key causing production incidents."
+],
+"failure_modes": [
+"Sharding Key fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Sharding Key behavior against official specification."
+],
+"testing": [
+"Automated tests covering Sharding Key happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_sharding_key_19"
+],
+"confidence": "high",
+"path_keywords": [
+"sharding",
+"key",
+"databases"
+]
+},
+{
+"concept_id": "databases_query_plan_20",
+"name": "Query Plan",
+"aliases": [
+"databases query plan 20",
+"query plan",
+"Query Plan"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Query Plan in databases systems.",
+"requirements": [
+"Understand Query Plan prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Query Plan causing production incidents."
+],
+"failure_modes": [
+"Query Plan fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Query Plan behavior against official specification."
+],
+"testing": [
+"Automated tests covering Query Plan happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_query_plan_20"
+],
+"confidence": "high",
+"path_keywords": [
+"query",
+"plan",
+"databases"
+]
+},
+{
+"concept_id": "databases_vacuum_21",
+"name": "Vacuum",
+"aliases": [
+"databases vacuum 21",
+"vacuum",
+"Vacuum"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Vacuum in databases systems.",
+"requirements": [
+"Understand Vacuum prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Vacuum causing production incidents."
+],
+"failure_modes": [
+"Vacuum fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Vacuum behavior against official specification."
+],
+"testing": [
+"Automated tests covering Vacuum happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_vacuum_21"
+],
+"confidence": "high",
+"path_keywords": [
+"vacuum",
+"databases"
+]
+},
+{
+"concept_id": "databases_replication_lag_22",
+"name": "Replication Lag",
+"aliases": [
+"databases replication lag 22",
+"replication lag",
+"Replication Lag"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Replication Lag in databases systems.",
+"requirements": [
+"Understand Replication Lag prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Replication Lag causing production incidents."
+],
+"failure_modes": [
+"Replication Lag fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Replication Lag behavior against official specification."
+],
+"testing": [
+"Automated tests covering Replication Lag happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_replication_lag_22"
+],
+"confidence": "high",
+"path_keywords": [
+"replication",
+"lag",
+"databases"
+]
+},
+{
+"concept_id": "databases_sharding_key_23",
+"name": "Sharding Key",
+"aliases": [
+"databases sharding key 23",
+"sharding key",
+"Sharding Key"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Sharding Key in databases systems.",
+"requirements": [
+"Understand Sharding Key prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Sharding Key causing production incidents."
+],
+"failure_modes": [
+"Sharding Key fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Sharding Key behavior against official specification."
+],
+"testing": [
+"Automated tests covering Sharding Key happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_sharding_key_23"
+],
+"confidence": "high",
+"path_keywords": [
+"sharding",
+"key",
+"databases"
+]
+},
+{
+"concept_id": "databases_query_plan_24",
+"name": "Query Plan",
+"aliases": [
+"databases query plan 24",
+"query plan",
+"Query Plan"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Query Plan in databases systems.",
+"requirements": [
+"Understand Query Plan prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Query Plan causing production incidents."
+],
+"failure_modes": [
+"Query Plan fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Query Plan behavior against official specification."
+],
+"testing": [
+"Automated tests covering Query Plan happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_query_plan_24"
+],
+"confidence": "high",
+"path_keywords": [
+"query",
+"plan",
+"databases"
+]
+},
+{
+"concept_id": "databases_vacuum_25",
+"name": "Vacuum",
+"aliases": [
+"databases vacuum 25",
+"vacuum",
+"Vacuum"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Vacuum in databases systems.",
+"requirements": [
+"Understand Vacuum prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Vacuum causing production incidents."
+],
+"failure_modes": [
+"Vacuum fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Vacuum behavior against official specification."
+],
+"testing": [
+"Automated tests covering Vacuum happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_vacuum_25"
+],
+"confidence": "high",
+"path_keywords": [
+"vacuum",
+"databases"
+]
+},
+{
+"concept_id": "databases_replication_lag_26",
+"name": "Replication Lag",
+"aliases": [
+"databases replication lag 26",
+"replication lag",
+"Replication Lag"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Replication Lag in databases systems.",
+"requirements": [
+"Understand Replication Lag prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Replication Lag causing production incidents."
+],
+"failure_modes": [
+"Replication Lag fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Replication Lag behavior against official specification."
+],
+"testing": [
+"Automated tests covering Replication Lag happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_replication_lag_26"
+],
+"confidence": "high",
+"path_keywords": [
+"replication",
+"lag",
+"databases"
+]
+},
+{
+"concept_id": "databases_sharding_key_27",
+"name": "Sharding Key",
+"aliases": [
+"databases sharding key 27",
+"sharding key",
+"Sharding Key"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Sharding Key in databases systems.",
+"requirements": [
+"Understand Sharding Key prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Sharding Key causing production incidents."
+],
+"failure_modes": [
+"Sharding Key fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Sharding Key behavior against official specification."
+],
+"testing": [
+"Automated tests covering Sharding Key happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_sharding_key_27"
+],
+"confidence": "high",
+"path_keywords": [
+"sharding",
+"key",
+"databases"
+]
+},
+{
+"concept_id": "databases_query_plan_28",
+"name": "Query Plan",
+"aliases": [
+"databases query plan 28",
+"query plan",
+"Query Plan"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Query Plan in databases systems.",
+"requirements": [
+"Understand Query Plan prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Query Plan causing production incidents."
+],
+"failure_modes": [
+"Query Plan fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Query Plan behavior against official specification."
+],
+"testing": [
+"Automated tests covering Query Plan happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_query_plan_28"
+],
+"confidence": "high",
+"path_keywords": [
+"query",
+"plan",
+"databases"
+]
+},
+{
+"concept_id": "databases_vacuum_29",
+"name": "Vacuum",
+"aliases": [
+"databases vacuum 29",
+"vacuum",
+"Vacuum"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Vacuum in databases systems.",
+"requirements": [
+"Understand Vacuum prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Vacuum causing production incidents."
+],
+"failure_modes": [
+"Vacuum fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Vacuum behavior against official specification."
+],
+"testing": [
+"Automated tests covering Vacuum happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_vacuum_29"
+],
+"confidence": "high",
+"path_keywords": [
+"vacuum",
+"databases"
+]
+},
+{
+"concept_id": "databases_replication_lag_30",
+"name": "Replication Lag",
+"aliases": [
+"databases replication lag 30",
+"replication lag",
+"Replication Lag"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Replication Lag in databases systems.",
+"requirements": [
+"Understand Replication Lag prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Replication Lag causing production incidents."
+],
+"failure_modes": [
+"Replication Lag fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Replication Lag behavior against official specification."
+],
+"testing": [
+"Automated tests covering Replication Lag happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_replication_lag_30"
+],
+"confidence": "high",
+"path_keywords": [
+"replication",
+"lag",
+"databases"
+]
+},
+{
+"concept_id": "databases_sharding_key_31",
+"name": "Sharding Key",
+"aliases": [
+"databases sharding key 31",
+"sharding key",
+"Sharding Key"
+],
+"domain": "databases",
+"category": "pattern",
+"description": "Engineering concept: Sharding Key in databases systems.",
+"requirements": [
+"Understand Sharding Key prerequisites in databases context."
+],
+"common_implementations": [
+"Typical pattern integration in databases systems."
+],
+"risks": [
+"Misconfiguration of Sharding Key causing production incidents."
+],
+"failure_modes": [
+"Sharding Key fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Sharding Key behavior against official specification."
+],
+"testing": [
+"Automated tests covering Sharding Key happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/databases/databases_sharding_key_31"
+],
+"confidence": "high",
+"path_keywords": [
+"sharding",
+"key",
+"databases"
+]
+}
+]
+}

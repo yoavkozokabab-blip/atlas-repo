@@ -10,7 +10,8 @@ from typing import Any, Dict, List, Optional, Tuple
 
 FULL_EXPORT = "FULL_EXPORT"
 MINIMAL_EXPORT = "MINIMAL_EXPORT"
-EXPORT_MODES = (FULL_EXPORT, MINIMAL_EXPORT)
+MEMORY_EXPORT = "MEMORY_EXPORT"
+EXPORT_MODES = (FULL_EXPORT, MINIMAL_EXPORT, MEMORY_EXPORT)
 
 
 def _bullets(items: List[str], limit: int = 5, empty: str = "- (none)") -> str:
@@ -246,22 +247,37 @@ def export_metrics(
     *,
     full_text: str,
     minimal_text: str,
+    delta_text: str = "",
     mode: str = MINIMAL_EXPORT,
 ) -> Dict[str, Any]:
     full_tokens = _estimate_tokens(full_text)
     minimal_tokens = _estimate_tokens(minimal_text)
+    delta_tokens = _estimate_tokens(delta_text) if delta_text else 0
     reduction = round(100 * (1 - minimal_tokens / full_tokens), 1) if full_tokens else 0.0
-    active = minimal_text if mode == MINIMAL_EXPORT else full_text
+    delta_reduction = (
+        round(100 * (1 - delta_tokens / minimal_tokens), 1)
+        if minimal_tokens and delta_tokens
+        else 0.0
+    )
+    if mode == MEMORY_EXPORT and delta_text:
+        active = delta_text
+    elif mode == MINIMAL_EXPORT:
+        active = minimal_text
+    else:
+        active = full_text
     return {
         "mode": mode,
         "workflow": workflow,
         "tokens": _estimate_tokens(active),
         "full_export_tokens": full_tokens,
         "minimal_export_tokens": minimal_tokens,
+        "delta_export_tokens": delta_tokens,
         "reduction_vs_full_pct": reduction,
+        "delta_reduction_vs_minimal_pct": delta_reduction,
         "text": active,
         "full_text": full_text,
         "minimal_text": minimal_text,
+        "delta_text": delta_text,
     }
 
 
@@ -274,8 +290,14 @@ def attach_workflow_exports(
     prompts: Optional[Dict[str, str]] = None,
     goal: str = "",
     default_mode: str = MINIMAL_EXPORT,
+    memory_ref: str = "",
 ) -> None:
-    """Add export blocks to API result; default active export is MINIMAL."""
+    """Add export blocks to API result; default active export is MINIMAL.
+
+    Phase 172: also computes MEMORY_EXPORT (delta-only) when memory_ref is supplied.
+    The delta text is the compact per-question payload; the ATLAS_REPOSITORY_MEMORY v1
+    header is sent separately via session_export_packet() and is NOT repeated here.
+    """
     plan = plan or result.get("plan") or {}
     if workflow == "build":
         full = full_build_export(plan, formatted, prompts)
@@ -288,10 +310,34 @@ def attach_workflow_exports(
         minimal = minimal_impact_export(result)
     else:
         return
-    metrics = export_metrics(workflow, full_text=full, minimal_text=minimal, mode=default_mode)
+
+    # Phase 172 — delta export (ATLAS_DELTA v1)
+    delta = ""
+    try:
+        from . import repository_memory as _rm
+        delta = _rm.delta_text(
+            workflow,
+            plan_or_result=result if workflow == "impact" else {"plan": plan},
+            memory_ref=memory_ref,
+            goal=goal,
+        )
+    except Exception:
+        delta = ""
+
+    metrics = export_metrics(
+        workflow, full_text=full, minimal_text=minimal, delta_text=delta, mode=default_mode
+    )
     result["export"] = metrics
-    result["export_full"] = export_metrics(workflow, full_text=full, minimal_text=minimal, mode=FULL_EXPORT)
-    result["export_minimal"] = export_metrics(workflow, full_text=full, minimal_text=minimal, mode=MINIMAL_EXPORT)
+    result["export_full"] = export_metrics(
+        workflow, full_text=full, minimal_text=minimal, delta_text=delta, mode=FULL_EXPORT
+    )
+    result["export_minimal"] = export_metrics(
+        workflow, full_text=full, minimal_text=minimal, delta_text=delta, mode=MINIMAL_EXPORT
+    )
+    if delta:
+        result["export_memory"] = export_metrics(
+            workflow, full_text=full, minimal_text=minimal, delta_text=delta, mode=MEMORY_EXPORT
+        )
 
 
 def quality_fidelity_score(workflow: str, full_text: str, minimal_text: str, plan_or_result: Dict[str, Any]) -> Dict[str, Any]:

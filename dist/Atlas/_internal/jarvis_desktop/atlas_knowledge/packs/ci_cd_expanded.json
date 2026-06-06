@@ -1,0 +1,5800 @@
+{
+"concepts": [
+{
+"concept_id": "ci_cd_ci_cd_pipeline_0",
+"name": "CI/CD Pipeline",
+"aliases": [
+"ci cd ci cd pipeline 0",
+"ci/cd pipeline",
+"CI/CD Pipeline"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Pipeline in ci cd systems.",
+"requirements": [
+"Understand CI/CD Pipeline prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Pipeline causing production incidents."
+],
+"failure_modes": [
+"CI/CD Pipeline fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Pipeline behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Pipeline happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_pipeline_0"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"pipeline",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_artifact_1",
+"name": "CI/CD Artifact",
+"aliases": [
+"ci cd ci cd artifact 1",
+"ci/cd artifact",
+"CI/CD Artifact"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Artifact in ci cd systems.",
+"requirements": [
+"Understand CI/CD Artifact prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Artifact causing production incidents."
+],
+"failure_modes": [
+"CI/CD Artifact fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Artifact behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Artifact happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_artifact_1"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"artifact",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_deploy_2",
+"name": "CI/CD Deploy",
+"aliases": [
+"ci cd ci cd deploy 2",
+"ci/cd deploy",
+"CI/CD Deploy"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Deploy in ci cd systems.",
+"requirements": [
+"Understand CI/CD Deploy prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Deploy causing production incidents."
+],
+"failure_modes": [
+"CI/CD Deploy fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Deploy behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Deploy happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_deploy_2"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"deploy",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_rollback_3",
+"name": "CI/CD Rollback",
+"aliases": [
+"ci cd ci cd rollback 3",
+"ci/cd rollback",
+"CI/CD Rollback"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Rollback in ci cd systems.",
+"requirements": [
+"Understand CI/CD Rollback prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Rollback causing production incidents."
+],
+"failure_modes": [
+"CI/CD Rollback fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Rollback behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Rollback happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_rollback_3"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"rollback",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_canary_4",
+"name": "CI/CD Canary",
+"aliases": [
+"ci cd ci cd canary 4",
+"ci/cd canary",
+"CI/CD Canary"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Canary in ci cd systems.",
+"requirements": [
+"Understand CI/CD Canary prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Canary causing production incidents."
+],
+"failure_modes": [
+"CI/CD Canary fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Canary behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Canary happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_canary_4"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"canary",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_blue_green_5",
+"name": "CI/CD Blue Green",
+"aliases": [
+"ci cd ci cd blue green 5",
+"ci/cd blue green",
+"CI/CD Blue Green"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Blue Green in ci cd systems.",
+"requirements": [
+"Understand CI/CD Blue Green prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Blue Green causing production incidents."
+],
+"failure_modes": [
+"CI/CD Blue Green fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Blue Green behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Blue Green happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_blue_green_5"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"blue",
+"green",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_feature_flag_6",
+"name": "CI/CD Feature Flag",
+"aliases": [
+"ci cd ci cd feature flag 6",
+"ci/cd feature flag",
+"CI/CD Feature Flag"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Feature Flag in ci cd systems.",
+"requirements": [
+"Understand CI/CD Feature Flag prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Feature Flag causing production incidents."
+],
+"failure_modes": [
+"CI/CD Feature Flag fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Feature Flag behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Feature Flag happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_feature_flag_6"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"feature",
+"flag",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_gitops_7",
+"name": "CI/CD GitOps",
+"aliases": [
+"ci cd ci cd gitops 7",
+"ci/cd gitops",
+"CI/CD GitOps"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD GitOps in ci cd systems.",
+"requirements": [
+"Understand CI/CD GitOps prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD GitOps causing production incidents."
+],
+"failure_modes": [
+"CI/CD GitOps fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD GitOps behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD GitOps happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_gitops_7"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"gitops",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_supply_chain_8",
+"name": "CI/CD Supply Chain",
+"aliases": [
+"ci cd ci cd supply chain 8",
+"ci/cd supply chain",
+"CI/CD Supply Chain"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Supply Chain in ci cd systems.",
+"requirements": [
+"Understand CI/CD Supply Chain prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Supply Chain causing production incidents."
+],
+"failure_modes": [
+"CI/CD Supply Chain fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Supply Chain behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Supply Chain happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_supply_chain_8"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"supply",
+"chain",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_sbom_9",
+"name": "CI/CD SBOM",
+"aliases": [
+"ci cd ci cd sbom 9",
+"ci/cd sbom",
+"CI/CD SBOM"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD SBOM in ci cd systems.",
+"requirements": [
+"Understand CI/CD SBOM prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD SBOM causing production incidents."
+],
+"failure_modes": [
+"CI/CD SBOM fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD SBOM behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD SBOM happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_sbom_9"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"sbom",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_signing_10",
+"name": "CI/CD Signing",
+"aliases": [
+"ci cd ci cd signing 10",
+"ci/cd signing",
+"CI/CD Signing"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Signing in ci cd systems.",
+"requirements": [
+"Understand CI/CD Signing prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Signing causing production incidents."
+],
+"failure_modes": [
+"CI/CD Signing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Signing behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Signing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_signing_10"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"signing",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_gate_11",
+"name": "CI/CD Gate",
+"aliases": [
+"ci cd ci cd gate 11",
+"ci/cd gate",
+"CI/CD Gate"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Gate in ci cd systems.",
+"requirements": [
+"Understand CI/CD Gate prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Gate causing production incidents."
+],
+"failure_modes": [
+"CI/CD Gate fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Gate behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Gate happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_gate_11"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"gate",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_pipeline_12",
+"name": "CI/CD Pipeline",
+"aliases": [
+"ci cd ci cd pipeline 12",
+"ci/cd pipeline",
+"CI/CD Pipeline"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Pipeline in ci cd systems.",
+"requirements": [
+"Understand CI/CD Pipeline prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Pipeline causing production incidents."
+],
+"failure_modes": [
+"CI/CD Pipeline fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Pipeline behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Pipeline happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_pipeline_12"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"pipeline",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_artifact_13",
+"name": "CI/CD Artifact",
+"aliases": [
+"ci cd ci cd artifact 13",
+"ci/cd artifact",
+"CI/CD Artifact"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Artifact in ci cd systems.",
+"requirements": [
+"Understand CI/CD Artifact prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Artifact causing production incidents."
+],
+"failure_modes": [
+"CI/CD Artifact fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Artifact behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Artifact happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_artifact_13"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"artifact",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_deploy_14",
+"name": "CI/CD Deploy",
+"aliases": [
+"ci cd ci cd deploy 14",
+"ci/cd deploy",
+"CI/CD Deploy"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Deploy in ci cd systems.",
+"requirements": [
+"Understand CI/CD Deploy prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Deploy causing production incidents."
+],
+"failure_modes": [
+"CI/CD Deploy fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Deploy behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Deploy happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_deploy_14"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"deploy",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_rollback_15",
+"name": "CI/CD Rollback",
+"aliases": [
+"ci cd ci cd rollback 15",
+"ci/cd rollback",
+"CI/CD Rollback"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Rollback in ci cd systems.",
+"requirements": [
+"Understand CI/CD Rollback prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Rollback causing production incidents."
+],
+"failure_modes": [
+"CI/CD Rollback fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Rollback behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Rollback happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_rollback_15"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"rollback",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_canary_16",
+"name": "CI/CD Canary",
+"aliases": [
+"ci cd ci cd canary 16",
+"ci/cd canary",
+"CI/CD Canary"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Canary in ci cd systems.",
+"requirements": [
+"Understand CI/CD Canary prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Canary causing production incidents."
+],
+"failure_modes": [
+"CI/CD Canary fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Canary behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Canary happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_canary_16"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"canary",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_blue_green_17",
+"name": "CI/CD Blue Green",
+"aliases": [
+"ci cd ci cd blue green 17",
+"ci/cd blue green",
+"CI/CD Blue Green"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Blue Green in ci cd systems.",
+"requirements": [
+"Understand CI/CD Blue Green prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Blue Green causing production incidents."
+],
+"failure_modes": [
+"CI/CD Blue Green fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Blue Green behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Blue Green happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_blue_green_17"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"blue",
+"green",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_feature_flag_18",
+"name": "CI/CD Feature Flag",
+"aliases": [
+"ci cd ci cd feature flag 18",
+"ci/cd feature flag",
+"CI/CD Feature Flag"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Feature Flag in ci cd systems.",
+"requirements": [
+"Understand CI/CD Feature Flag prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Feature Flag causing production incidents."
+],
+"failure_modes": [
+"CI/CD Feature Flag fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Feature Flag behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Feature Flag happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_feature_flag_18"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"feature",
+"flag",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_gitops_19",
+"name": "CI/CD GitOps",
+"aliases": [
+"ci cd ci cd gitops 19",
+"ci/cd gitops",
+"CI/CD GitOps"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD GitOps in ci cd systems.",
+"requirements": [
+"Understand CI/CD GitOps prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD GitOps causing production incidents."
+],
+"failure_modes": [
+"CI/CD GitOps fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD GitOps behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD GitOps happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_gitops_19"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"gitops",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_supply_chain_20",
+"name": "CI/CD Supply Chain",
+"aliases": [
+"ci cd ci cd supply chain 20",
+"ci/cd supply chain",
+"CI/CD Supply Chain"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Supply Chain in ci cd systems.",
+"requirements": [
+"Understand CI/CD Supply Chain prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Supply Chain causing production incidents."
+],
+"failure_modes": [
+"CI/CD Supply Chain fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Supply Chain behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Supply Chain happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_supply_chain_20"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"supply",
+"chain",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_sbom_21",
+"name": "CI/CD SBOM",
+"aliases": [
+"ci cd ci cd sbom 21",
+"ci/cd sbom",
+"CI/CD SBOM"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD SBOM in ci cd systems.",
+"requirements": [
+"Understand CI/CD SBOM prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD SBOM causing production incidents."
+],
+"failure_modes": [
+"CI/CD SBOM fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD SBOM behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD SBOM happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_sbom_21"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"sbom",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_signing_22",
+"name": "CI/CD Signing",
+"aliases": [
+"ci cd ci cd signing 22",
+"ci/cd signing",
+"CI/CD Signing"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Signing in ci cd systems.",
+"requirements": [
+"Understand CI/CD Signing prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Signing causing production incidents."
+],
+"failure_modes": [
+"CI/CD Signing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Signing behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Signing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_signing_22"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"signing",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_gate_23",
+"name": "CI/CD Gate",
+"aliases": [
+"ci cd ci cd gate 23",
+"ci/cd gate",
+"CI/CD Gate"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Gate in ci cd systems.",
+"requirements": [
+"Understand CI/CD Gate prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Gate causing production incidents."
+],
+"failure_modes": [
+"CI/CD Gate fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Gate behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Gate happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_gate_23"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"gate",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_pipeline_24",
+"name": "CI/CD Pipeline",
+"aliases": [
+"ci cd ci cd pipeline 24",
+"ci/cd pipeline",
+"CI/CD Pipeline"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Pipeline in ci cd systems.",
+"requirements": [
+"Understand CI/CD Pipeline prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Pipeline causing production incidents."
+],
+"failure_modes": [
+"CI/CD Pipeline fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Pipeline behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Pipeline happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_pipeline_24"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"pipeline",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_artifact_25",
+"name": "CI/CD Artifact",
+"aliases": [
+"ci cd ci cd artifact 25",
+"ci/cd artifact",
+"CI/CD Artifact"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Artifact in ci cd systems.",
+"requirements": [
+"Understand CI/CD Artifact prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Artifact causing production incidents."
+],
+"failure_modes": [
+"CI/CD Artifact fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Artifact behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Artifact happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_artifact_25"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"artifact",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_deploy_26",
+"name": "CI/CD Deploy",
+"aliases": [
+"ci cd ci cd deploy 26",
+"ci/cd deploy",
+"CI/CD Deploy"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Deploy in ci cd systems.",
+"requirements": [
+"Understand CI/CD Deploy prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Deploy causing production incidents."
+],
+"failure_modes": [
+"CI/CD Deploy fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Deploy behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Deploy happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_deploy_26"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"deploy",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_rollback_27",
+"name": "CI/CD Rollback",
+"aliases": [
+"ci cd ci cd rollback 27",
+"ci/cd rollback",
+"CI/CD Rollback"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Rollback in ci cd systems.",
+"requirements": [
+"Understand CI/CD Rollback prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Rollback causing production incidents."
+],
+"failure_modes": [
+"CI/CD Rollback fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Rollback behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Rollback happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_rollback_27"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"rollback",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_canary_28",
+"name": "CI/CD Canary",
+"aliases": [
+"ci cd ci cd canary 28",
+"ci/cd canary",
+"CI/CD Canary"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Canary in ci cd systems.",
+"requirements": [
+"Understand CI/CD Canary prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Canary causing production incidents."
+],
+"failure_modes": [
+"CI/CD Canary fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Canary behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Canary happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_canary_28"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"canary",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_blue_green_29",
+"name": "CI/CD Blue Green",
+"aliases": [
+"ci cd ci cd blue green 29",
+"ci/cd blue green",
+"CI/CD Blue Green"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Blue Green in ci cd systems.",
+"requirements": [
+"Understand CI/CD Blue Green prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Blue Green causing production incidents."
+],
+"failure_modes": [
+"CI/CD Blue Green fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Blue Green behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Blue Green happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_blue_green_29"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"blue",
+"green",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_feature_flag_30",
+"name": "CI/CD Feature Flag",
+"aliases": [
+"ci cd ci cd feature flag 30",
+"ci/cd feature flag",
+"CI/CD Feature Flag"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Feature Flag in ci cd systems.",
+"requirements": [
+"Understand CI/CD Feature Flag prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Feature Flag causing production incidents."
+],
+"failure_modes": [
+"CI/CD Feature Flag fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Feature Flag behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Feature Flag happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_feature_flag_30"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"feature",
+"flag",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_gitops_31",
+"name": "CI/CD GitOps",
+"aliases": [
+"ci cd ci cd gitops 31",
+"ci/cd gitops",
+"CI/CD GitOps"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD GitOps in ci cd systems.",
+"requirements": [
+"Understand CI/CD GitOps prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD GitOps causing production incidents."
+],
+"failure_modes": [
+"CI/CD GitOps fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD GitOps behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD GitOps happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_gitops_31"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"gitops",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_supply_chain_32",
+"name": "CI/CD Supply Chain",
+"aliases": [
+"ci cd ci cd supply chain 32",
+"ci/cd supply chain",
+"CI/CD Supply Chain"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Supply Chain in ci cd systems.",
+"requirements": [
+"Understand CI/CD Supply Chain prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Supply Chain causing production incidents."
+],
+"failure_modes": [
+"CI/CD Supply Chain fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Supply Chain behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Supply Chain happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_supply_chain_32"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"supply",
+"chain",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_sbom_33",
+"name": "CI/CD SBOM",
+"aliases": [
+"ci cd ci cd sbom 33",
+"ci/cd sbom",
+"CI/CD SBOM"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD SBOM in ci cd systems.",
+"requirements": [
+"Understand CI/CD SBOM prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD SBOM causing production incidents."
+],
+"failure_modes": [
+"CI/CD SBOM fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD SBOM behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD SBOM happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_sbom_33"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"sbom",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_signing_34",
+"name": "CI/CD Signing",
+"aliases": [
+"ci cd ci cd signing 34",
+"ci/cd signing",
+"CI/CD Signing"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Signing in ci cd systems.",
+"requirements": [
+"Understand CI/CD Signing prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Signing causing production incidents."
+],
+"failure_modes": [
+"CI/CD Signing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Signing behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Signing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_signing_34"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"signing",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_gate_35",
+"name": "CI/CD Gate",
+"aliases": [
+"ci cd ci cd gate 35",
+"ci/cd gate",
+"CI/CD Gate"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Gate in ci cd systems.",
+"requirements": [
+"Understand CI/CD Gate prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Gate causing production incidents."
+],
+"failure_modes": [
+"CI/CD Gate fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Gate behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Gate happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_gate_35"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"gate",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_pipeline_36",
+"name": "CI/CD Pipeline",
+"aliases": [
+"ci cd ci cd pipeline 36",
+"ci/cd pipeline",
+"CI/CD Pipeline"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Pipeline in ci cd systems.",
+"requirements": [
+"Understand CI/CD Pipeline prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Pipeline causing production incidents."
+],
+"failure_modes": [
+"CI/CD Pipeline fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Pipeline behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Pipeline happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_pipeline_36"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"pipeline",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_artifact_37",
+"name": "CI/CD Artifact",
+"aliases": [
+"ci cd ci cd artifact 37",
+"ci/cd artifact",
+"CI/CD Artifact"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Artifact in ci cd systems.",
+"requirements": [
+"Understand CI/CD Artifact prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Artifact causing production incidents."
+],
+"failure_modes": [
+"CI/CD Artifact fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Artifact behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Artifact happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_artifact_37"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"artifact",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_deploy_38",
+"name": "CI/CD Deploy",
+"aliases": [
+"ci cd ci cd deploy 38",
+"ci/cd deploy",
+"CI/CD Deploy"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Deploy in ci cd systems.",
+"requirements": [
+"Understand CI/CD Deploy prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Deploy causing production incidents."
+],
+"failure_modes": [
+"CI/CD Deploy fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Deploy behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Deploy happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_deploy_38"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"deploy",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_rollback_39",
+"name": "CI/CD Rollback",
+"aliases": [
+"ci cd ci cd rollback 39",
+"ci/cd rollback",
+"CI/CD Rollback"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Rollback in ci cd systems.",
+"requirements": [
+"Understand CI/CD Rollback prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Rollback causing production incidents."
+],
+"failure_modes": [
+"CI/CD Rollback fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Rollback behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Rollback happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_rollback_39"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"rollback",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_canary_40",
+"name": "CI/CD Canary",
+"aliases": [
+"ci cd ci cd canary 40",
+"ci/cd canary",
+"CI/CD Canary"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Canary in ci cd systems.",
+"requirements": [
+"Understand CI/CD Canary prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Canary causing production incidents."
+],
+"failure_modes": [
+"CI/CD Canary fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Canary behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Canary happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_canary_40"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"canary",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_blue_green_41",
+"name": "CI/CD Blue Green",
+"aliases": [
+"ci cd ci cd blue green 41",
+"ci/cd blue green",
+"CI/CD Blue Green"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Blue Green in ci cd systems.",
+"requirements": [
+"Understand CI/CD Blue Green prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Blue Green causing production incidents."
+],
+"failure_modes": [
+"CI/CD Blue Green fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Blue Green behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Blue Green happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_blue_green_41"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"blue",
+"green",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_feature_flag_42",
+"name": "CI/CD Feature Flag",
+"aliases": [
+"ci cd ci cd feature flag 42",
+"ci/cd feature flag",
+"CI/CD Feature Flag"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Feature Flag in ci cd systems.",
+"requirements": [
+"Understand CI/CD Feature Flag prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Feature Flag causing production incidents."
+],
+"failure_modes": [
+"CI/CD Feature Flag fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Feature Flag behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Feature Flag happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_feature_flag_42"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"feature",
+"flag",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_gitops_43",
+"name": "CI/CD GitOps",
+"aliases": [
+"ci cd ci cd gitops 43",
+"ci/cd gitops",
+"CI/CD GitOps"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD GitOps in ci cd systems.",
+"requirements": [
+"Understand CI/CD GitOps prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD GitOps causing production incidents."
+],
+"failure_modes": [
+"CI/CD GitOps fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD GitOps behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD GitOps happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_gitops_43"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"gitops",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_supply_chain_44",
+"name": "CI/CD Supply Chain",
+"aliases": [
+"ci cd ci cd supply chain 44",
+"ci/cd supply chain",
+"CI/CD Supply Chain"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Supply Chain in ci cd systems.",
+"requirements": [
+"Understand CI/CD Supply Chain prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Supply Chain causing production incidents."
+],
+"failure_modes": [
+"CI/CD Supply Chain fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Supply Chain behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Supply Chain happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_supply_chain_44"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"supply",
+"chain",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_sbom_45",
+"name": "CI/CD SBOM",
+"aliases": [
+"ci cd ci cd sbom 45",
+"ci/cd sbom",
+"CI/CD SBOM"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD SBOM in ci cd systems.",
+"requirements": [
+"Understand CI/CD SBOM prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD SBOM causing production incidents."
+],
+"failure_modes": [
+"CI/CD SBOM fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD SBOM behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD SBOM happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_sbom_45"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"sbom",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_signing_46",
+"name": "CI/CD Signing",
+"aliases": [
+"ci cd ci cd signing 46",
+"ci/cd signing",
+"CI/CD Signing"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Signing in ci cd systems.",
+"requirements": [
+"Understand CI/CD Signing prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Signing causing production incidents."
+],
+"failure_modes": [
+"CI/CD Signing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Signing behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Signing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_signing_46"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"signing",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_gate_47",
+"name": "CI/CD Gate",
+"aliases": [
+"ci cd ci cd gate 47",
+"ci/cd gate",
+"CI/CD Gate"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Gate in ci cd systems.",
+"requirements": [
+"Understand CI/CD Gate prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Gate causing production incidents."
+],
+"failure_modes": [
+"CI/CD Gate fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Gate behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Gate happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_gate_47"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"gate",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_pipeline_48",
+"name": "CI/CD Pipeline",
+"aliases": [
+"ci cd ci cd pipeline 48",
+"ci/cd pipeline",
+"CI/CD Pipeline"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Pipeline in ci cd systems.",
+"requirements": [
+"Understand CI/CD Pipeline prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Pipeline causing production incidents."
+],
+"failure_modes": [
+"CI/CD Pipeline fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Pipeline behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Pipeline happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_pipeline_48"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"pipeline",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_artifact_49",
+"name": "CI/CD Artifact",
+"aliases": [
+"ci cd ci cd artifact 49",
+"ci/cd artifact",
+"CI/CD Artifact"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Artifact in ci cd systems.",
+"requirements": [
+"Understand CI/CD Artifact prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Artifact causing production incidents."
+],
+"failure_modes": [
+"CI/CD Artifact fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Artifact behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Artifact happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_artifact_49"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"artifact",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_deploy_50",
+"name": "CI/CD Deploy",
+"aliases": [
+"ci cd ci cd deploy 50",
+"ci/cd deploy",
+"CI/CD Deploy"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Deploy in ci cd systems.",
+"requirements": [
+"Understand CI/CD Deploy prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Deploy causing production incidents."
+],
+"failure_modes": [
+"CI/CD Deploy fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Deploy behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Deploy happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_deploy_50"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"deploy",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_rollback_51",
+"name": "CI/CD Rollback",
+"aliases": [
+"ci cd ci cd rollback 51",
+"ci/cd rollback",
+"CI/CD Rollback"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Rollback in ci cd systems.",
+"requirements": [
+"Understand CI/CD Rollback prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Rollback causing production incidents."
+],
+"failure_modes": [
+"CI/CD Rollback fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Rollback behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Rollback happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_rollback_51"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"rollback",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_canary_52",
+"name": "CI/CD Canary",
+"aliases": [
+"ci cd ci cd canary 52",
+"ci/cd canary",
+"CI/CD Canary"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Canary in ci cd systems.",
+"requirements": [
+"Understand CI/CD Canary prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Canary causing production incidents."
+],
+"failure_modes": [
+"CI/CD Canary fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Canary behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Canary happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_canary_52"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"canary",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_blue_green_53",
+"name": "CI/CD Blue Green",
+"aliases": [
+"ci cd ci cd blue green 53",
+"ci/cd blue green",
+"CI/CD Blue Green"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Blue Green in ci cd systems.",
+"requirements": [
+"Understand CI/CD Blue Green prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Blue Green causing production incidents."
+],
+"failure_modes": [
+"CI/CD Blue Green fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Blue Green behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Blue Green happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_blue_green_53"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"blue",
+"green",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_feature_flag_54",
+"name": "CI/CD Feature Flag",
+"aliases": [
+"ci cd ci cd feature flag 54",
+"ci/cd feature flag",
+"CI/CD Feature Flag"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Feature Flag in ci cd systems.",
+"requirements": [
+"Understand CI/CD Feature Flag prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Feature Flag causing production incidents."
+],
+"failure_modes": [
+"CI/CD Feature Flag fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Feature Flag behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Feature Flag happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_feature_flag_54"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"feature",
+"flag",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_gitops_55",
+"name": "CI/CD GitOps",
+"aliases": [
+"ci cd ci cd gitops 55",
+"ci/cd gitops",
+"CI/CD GitOps"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD GitOps in ci cd systems.",
+"requirements": [
+"Understand CI/CD GitOps prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD GitOps causing production incidents."
+],
+"failure_modes": [
+"CI/CD GitOps fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD GitOps behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD GitOps happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_gitops_55"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"gitops",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_supply_chain_56",
+"name": "CI/CD Supply Chain",
+"aliases": [
+"ci cd ci cd supply chain 56",
+"ci/cd supply chain",
+"CI/CD Supply Chain"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Supply Chain in ci cd systems.",
+"requirements": [
+"Understand CI/CD Supply Chain prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Supply Chain causing production incidents."
+],
+"failure_modes": [
+"CI/CD Supply Chain fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Supply Chain behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Supply Chain happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_supply_chain_56"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"supply",
+"chain",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_sbom_57",
+"name": "CI/CD SBOM",
+"aliases": [
+"ci cd ci cd sbom 57",
+"ci/cd sbom",
+"CI/CD SBOM"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD SBOM in ci cd systems.",
+"requirements": [
+"Understand CI/CD SBOM prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD SBOM causing production incidents."
+],
+"failure_modes": [
+"CI/CD SBOM fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD SBOM behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD SBOM happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_sbom_57"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"sbom",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_signing_58",
+"name": "CI/CD Signing",
+"aliases": [
+"ci cd ci cd signing 58",
+"ci/cd signing",
+"CI/CD Signing"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Signing in ci cd systems.",
+"requirements": [
+"Understand CI/CD Signing prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Signing causing production incidents."
+],
+"failure_modes": [
+"CI/CD Signing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Signing behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Signing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_signing_58"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"signing",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_gate_59",
+"name": "CI/CD Gate",
+"aliases": [
+"ci cd ci cd gate 59",
+"ci/cd gate",
+"CI/CD Gate"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Gate in ci cd systems.",
+"requirements": [
+"Understand CI/CD Gate prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Gate causing production incidents."
+],
+"failure_modes": [
+"CI/CD Gate fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Gate behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Gate happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_gate_59"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"gate",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_pipeline_60",
+"name": "CI/CD Pipeline",
+"aliases": [
+"ci cd ci cd pipeline 60",
+"ci/cd pipeline",
+"CI/CD Pipeline"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Pipeline in ci cd systems.",
+"requirements": [
+"Understand CI/CD Pipeline prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Pipeline causing production incidents."
+],
+"failure_modes": [
+"CI/CD Pipeline fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Pipeline behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Pipeline happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_pipeline_60"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"pipeline",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_artifact_61",
+"name": "CI/CD Artifact",
+"aliases": [
+"ci cd ci cd artifact 61",
+"ci/cd artifact",
+"CI/CD Artifact"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Artifact in ci cd systems.",
+"requirements": [
+"Understand CI/CD Artifact prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Artifact causing production incidents."
+],
+"failure_modes": [
+"CI/CD Artifact fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Artifact behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Artifact happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_artifact_61"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"artifact",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_deploy_62",
+"name": "CI/CD Deploy",
+"aliases": [
+"ci cd ci cd deploy 62",
+"ci/cd deploy",
+"CI/CD Deploy"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Deploy in ci cd systems.",
+"requirements": [
+"Understand CI/CD Deploy prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Deploy causing production incidents."
+],
+"failure_modes": [
+"CI/CD Deploy fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Deploy behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Deploy happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_deploy_62"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"deploy",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_rollback_63",
+"name": "CI/CD Rollback",
+"aliases": [
+"ci cd ci cd rollback 63",
+"ci/cd rollback",
+"CI/CD Rollback"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Rollback in ci cd systems.",
+"requirements": [
+"Understand CI/CD Rollback prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Rollback causing production incidents."
+],
+"failure_modes": [
+"CI/CD Rollback fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Rollback behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Rollback happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_rollback_63"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"rollback",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_canary_64",
+"name": "CI/CD Canary",
+"aliases": [
+"ci cd ci cd canary 64",
+"ci/cd canary",
+"CI/CD Canary"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Canary in ci cd systems.",
+"requirements": [
+"Understand CI/CD Canary prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Canary causing production incidents."
+],
+"failure_modes": [
+"CI/CD Canary fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Canary behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Canary happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_canary_64"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"canary",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_blue_green_65",
+"name": "CI/CD Blue Green",
+"aliases": [
+"ci cd ci cd blue green 65",
+"ci/cd blue green",
+"CI/CD Blue Green"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Blue Green in ci cd systems.",
+"requirements": [
+"Understand CI/CD Blue Green prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Blue Green causing production incidents."
+],
+"failure_modes": [
+"CI/CD Blue Green fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Blue Green behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Blue Green happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_blue_green_65"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"blue",
+"green",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_feature_flag_66",
+"name": "CI/CD Feature Flag",
+"aliases": [
+"ci cd ci cd feature flag 66",
+"ci/cd feature flag",
+"CI/CD Feature Flag"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Feature Flag in ci cd systems.",
+"requirements": [
+"Understand CI/CD Feature Flag prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Feature Flag causing production incidents."
+],
+"failure_modes": [
+"CI/CD Feature Flag fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Feature Flag behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Feature Flag happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_feature_flag_66"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"feature",
+"flag",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_gitops_67",
+"name": "CI/CD GitOps",
+"aliases": [
+"ci cd ci cd gitops 67",
+"ci/cd gitops",
+"CI/CD GitOps"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD GitOps in ci cd systems.",
+"requirements": [
+"Understand CI/CD GitOps prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD GitOps causing production incidents."
+],
+"failure_modes": [
+"CI/CD GitOps fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD GitOps behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD GitOps happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_gitops_67"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"gitops",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_supply_chain_68",
+"name": "CI/CD Supply Chain",
+"aliases": [
+"ci cd ci cd supply chain 68",
+"ci/cd supply chain",
+"CI/CD Supply Chain"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Supply Chain in ci cd systems.",
+"requirements": [
+"Understand CI/CD Supply Chain prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Supply Chain causing production incidents."
+],
+"failure_modes": [
+"CI/CD Supply Chain fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Supply Chain behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Supply Chain happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_supply_chain_68"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"supply",
+"chain",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_sbom_69",
+"name": "CI/CD SBOM",
+"aliases": [
+"ci cd ci cd sbom 69",
+"ci/cd sbom",
+"CI/CD SBOM"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD SBOM in ci cd systems.",
+"requirements": [
+"Understand CI/CD SBOM prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD SBOM causing production incidents."
+],
+"failure_modes": [
+"CI/CD SBOM fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD SBOM behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD SBOM happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_sbom_69"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"sbom",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_signing_70",
+"name": "CI/CD Signing",
+"aliases": [
+"ci cd ci cd signing 70",
+"ci/cd signing",
+"CI/CD Signing"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Signing in ci cd systems.",
+"requirements": [
+"Understand CI/CD Signing prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Signing causing production incidents."
+],
+"failure_modes": [
+"CI/CD Signing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Signing behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Signing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_signing_70"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"signing",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_gate_71",
+"name": "CI/CD Gate",
+"aliases": [
+"ci cd ci cd gate 71",
+"ci/cd gate",
+"CI/CD Gate"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Gate in ci cd systems.",
+"requirements": [
+"Understand CI/CD Gate prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Gate causing production incidents."
+],
+"failure_modes": [
+"CI/CD Gate fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Gate behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Gate happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_gate_71"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"gate",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_pipeline_72",
+"name": "CI/CD Pipeline",
+"aliases": [
+"ci cd ci cd pipeline 72",
+"ci/cd pipeline",
+"CI/CD Pipeline"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Pipeline in ci cd systems.",
+"requirements": [
+"Understand CI/CD Pipeline prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Pipeline causing production incidents."
+],
+"failure_modes": [
+"CI/CD Pipeline fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Pipeline behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Pipeline happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_pipeline_72"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"pipeline",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_artifact_73",
+"name": "CI/CD Artifact",
+"aliases": [
+"ci cd ci cd artifact 73",
+"ci/cd artifact",
+"CI/CD Artifact"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Artifact in ci cd systems.",
+"requirements": [
+"Understand CI/CD Artifact prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Artifact causing production incidents."
+],
+"failure_modes": [
+"CI/CD Artifact fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Artifact behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Artifact happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_artifact_73"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"artifact",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_deploy_74",
+"name": "CI/CD Deploy",
+"aliases": [
+"ci cd ci cd deploy 74",
+"ci/cd deploy",
+"CI/CD Deploy"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Deploy in ci cd systems.",
+"requirements": [
+"Understand CI/CD Deploy prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Deploy causing production incidents."
+],
+"failure_modes": [
+"CI/CD Deploy fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Deploy behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Deploy happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_deploy_74"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"deploy",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_rollback_75",
+"name": "CI/CD Rollback",
+"aliases": [
+"ci cd ci cd rollback 75",
+"ci/cd rollback",
+"CI/CD Rollback"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Rollback in ci cd systems.",
+"requirements": [
+"Understand CI/CD Rollback prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Rollback causing production incidents."
+],
+"failure_modes": [
+"CI/CD Rollback fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Rollback behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Rollback happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_rollback_75"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"rollback",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_canary_76",
+"name": "CI/CD Canary",
+"aliases": [
+"ci cd ci cd canary 76",
+"ci/cd canary",
+"CI/CD Canary"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Canary in ci cd systems.",
+"requirements": [
+"Understand CI/CD Canary prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Canary causing production incidents."
+],
+"failure_modes": [
+"CI/CD Canary fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Canary behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Canary happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_canary_76"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"canary",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_blue_green_77",
+"name": "CI/CD Blue Green",
+"aliases": [
+"ci cd ci cd blue green 77",
+"ci/cd blue green",
+"CI/CD Blue Green"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Blue Green in ci cd systems.",
+"requirements": [
+"Understand CI/CD Blue Green prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Blue Green causing production incidents."
+],
+"failure_modes": [
+"CI/CD Blue Green fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Blue Green behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Blue Green happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_blue_green_77"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"blue",
+"green",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_feature_flag_78",
+"name": "CI/CD Feature Flag",
+"aliases": [
+"ci cd ci cd feature flag 78",
+"ci/cd feature flag",
+"CI/CD Feature Flag"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Feature Flag in ci cd systems.",
+"requirements": [
+"Understand CI/CD Feature Flag prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Feature Flag causing production incidents."
+],
+"failure_modes": [
+"CI/CD Feature Flag fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Feature Flag behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Feature Flag happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_feature_flag_78"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"feature",
+"flag",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_gitops_79",
+"name": "CI/CD GitOps",
+"aliases": [
+"ci cd ci cd gitops 79",
+"ci/cd gitops",
+"CI/CD GitOps"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD GitOps in ci cd systems.",
+"requirements": [
+"Understand CI/CD GitOps prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD GitOps causing production incidents."
+],
+"failure_modes": [
+"CI/CD GitOps fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD GitOps behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD GitOps happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_gitops_79"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"gitops",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_supply_chain_80",
+"name": "CI/CD Supply Chain",
+"aliases": [
+"ci cd ci cd supply chain 80",
+"ci/cd supply chain",
+"CI/CD Supply Chain"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Supply Chain in ci cd systems.",
+"requirements": [
+"Understand CI/CD Supply Chain prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Supply Chain causing production incidents."
+],
+"failure_modes": [
+"CI/CD Supply Chain fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Supply Chain behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Supply Chain happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_supply_chain_80"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"supply",
+"chain",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_sbom_81",
+"name": "CI/CD SBOM",
+"aliases": [
+"ci cd ci cd sbom 81",
+"ci/cd sbom",
+"CI/CD SBOM"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD SBOM in ci cd systems.",
+"requirements": [
+"Understand CI/CD SBOM prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD SBOM causing production incidents."
+],
+"failure_modes": [
+"CI/CD SBOM fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD SBOM behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD SBOM happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_sbom_81"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"sbom",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_signing_82",
+"name": "CI/CD Signing",
+"aliases": [
+"ci cd ci cd signing 82",
+"ci/cd signing",
+"CI/CD Signing"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Signing in ci cd systems.",
+"requirements": [
+"Understand CI/CD Signing prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Signing causing production incidents."
+],
+"failure_modes": [
+"CI/CD Signing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Signing behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Signing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_signing_82"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"signing",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_gate_83",
+"name": "CI/CD Gate",
+"aliases": [
+"ci cd ci cd gate 83",
+"ci/cd gate",
+"CI/CD Gate"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Gate in ci cd systems.",
+"requirements": [
+"Understand CI/CD Gate prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Gate causing production incidents."
+],
+"failure_modes": [
+"CI/CD Gate fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Gate behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Gate happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_gate_83"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"gate",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_pipeline_84",
+"name": "CI/CD Pipeline",
+"aliases": [
+"ci cd ci cd pipeline 84",
+"ci/cd pipeline",
+"CI/CD Pipeline"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Pipeline in ci cd systems.",
+"requirements": [
+"Understand CI/CD Pipeline prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Pipeline causing production incidents."
+],
+"failure_modes": [
+"CI/CD Pipeline fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Pipeline behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Pipeline happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_pipeline_84"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"pipeline",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_artifact_85",
+"name": "CI/CD Artifact",
+"aliases": [
+"ci cd ci cd artifact 85",
+"ci/cd artifact",
+"CI/CD Artifact"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Artifact in ci cd systems.",
+"requirements": [
+"Understand CI/CD Artifact prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Artifact causing production incidents."
+],
+"failure_modes": [
+"CI/CD Artifact fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Artifact behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Artifact happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_artifact_85"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"artifact",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_deploy_86",
+"name": "CI/CD Deploy",
+"aliases": [
+"ci cd ci cd deploy 86",
+"ci/cd deploy",
+"CI/CD Deploy"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Deploy in ci cd systems.",
+"requirements": [
+"Understand CI/CD Deploy prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Deploy causing production incidents."
+],
+"failure_modes": [
+"CI/CD Deploy fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Deploy behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Deploy happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_deploy_86"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"deploy",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_rollback_87",
+"name": "CI/CD Rollback",
+"aliases": [
+"ci cd ci cd rollback 87",
+"ci/cd rollback",
+"CI/CD Rollback"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Rollback in ci cd systems.",
+"requirements": [
+"Understand CI/CD Rollback prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Rollback causing production incidents."
+],
+"failure_modes": [
+"CI/CD Rollback fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Rollback behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Rollback happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_rollback_87"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"rollback",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_canary_88",
+"name": "CI/CD Canary",
+"aliases": [
+"ci cd ci cd canary 88",
+"ci/cd canary",
+"CI/CD Canary"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Canary in ci cd systems.",
+"requirements": [
+"Understand CI/CD Canary prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Canary causing production incidents."
+],
+"failure_modes": [
+"CI/CD Canary fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Canary behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Canary happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_canary_88"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"canary",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_blue_green_89",
+"name": "CI/CD Blue Green",
+"aliases": [
+"ci cd ci cd blue green 89",
+"ci/cd blue green",
+"CI/CD Blue Green"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Blue Green in ci cd systems.",
+"requirements": [
+"Understand CI/CD Blue Green prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Blue Green causing production incidents."
+],
+"failure_modes": [
+"CI/CD Blue Green fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Blue Green behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Blue Green happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_blue_green_89"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"blue",
+"green",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_feature_flag_90",
+"name": "CI/CD Feature Flag",
+"aliases": [
+"ci cd ci cd feature flag 90",
+"ci/cd feature flag",
+"CI/CD Feature Flag"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Feature Flag in ci cd systems.",
+"requirements": [
+"Understand CI/CD Feature Flag prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Feature Flag causing production incidents."
+],
+"failure_modes": [
+"CI/CD Feature Flag fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Feature Flag behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Feature Flag happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_feature_flag_90"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"feature",
+"flag",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_gitops_91",
+"name": "CI/CD GitOps",
+"aliases": [
+"ci cd ci cd gitops 91",
+"ci/cd gitops",
+"CI/CD GitOps"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD GitOps in ci cd systems.",
+"requirements": [
+"Understand CI/CD GitOps prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD GitOps causing production incidents."
+],
+"failure_modes": [
+"CI/CD GitOps fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD GitOps behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD GitOps happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_gitops_91"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"gitops",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_supply_chain_92",
+"name": "CI/CD Supply Chain",
+"aliases": [
+"ci cd ci cd supply chain 92",
+"ci/cd supply chain",
+"CI/CD Supply Chain"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Supply Chain in ci cd systems.",
+"requirements": [
+"Understand CI/CD Supply Chain prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Supply Chain causing production incidents."
+],
+"failure_modes": [
+"CI/CD Supply Chain fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Supply Chain behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Supply Chain happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_supply_chain_92"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"supply",
+"chain",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_sbom_93",
+"name": "CI/CD SBOM",
+"aliases": [
+"ci cd ci cd sbom 93",
+"ci/cd sbom",
+"CI/CD SBOM"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD SBOM in ci cd systems.",
+"requirements": [
+"Understand CI/CD SBOM prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD SBOM causing production incidents."
+],
+"failure_modes": [
+"CI/CD SBOM fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD SBOM behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD SBOM happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_sbom_93"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"sbom",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_signing_94",
+"name": "CI/CD Signing",
+"aliases": [
+"ci cd ci cd signing 94",
+"ci/cd signing",
+"CI/CD Signing"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Signing in ci cd systems.",
+"requirements": [
+"Understand CI/CD Signing prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Signing causing production incidents."
+],
+"failure_modes": [
+"CI/CD Signing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Signing behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Signing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_signing_94"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"signing",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_gate_95",
+"name": "CI/CD Gate",
+"aliases": [
+"ci cd ci cd gate 95",
+"ci/cd gate",
+"CI/CD Gate"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Gate in ci cd systems.",
+"requirements": [
+"Understand CI/CD Gate prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Gate causing production incidents."
+],
+"failure_modes": [
+"CI/CD Gate fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Gate behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Gate happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_gate_95"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"gate",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_pipeline_96",
+"name": "CI/CD Pipeline",
+"aliases": [
+"ci cd ci cd pipeline 96",
+"ci/cd pipeline",
+"CI/CD Pipeline"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Pipeline in ci cd systems.",
+"requirements": [
+"Understand CI/CD Pipeline prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Pipeline causing production incidents."
+],
+"failure_modes": [
+"CI/CD Pipeline fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Pipeline behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Pipeline happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_pipeline_96"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"pipeline",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_artifact_97",
+"name": "CI/CD Artifact",
+"aliases": [
+"ci cd ci cd artifact 97",
+"ci/cd artifact",
+"CI/CD Artifact"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Artifact in ci cd systems.",
+"requirements": [
+"Understand CI/CD Artifact prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Artifact causing production incidents."
+],
+"failure_modes": [
+"CI/CD Artifact fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Artifact behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Artifact happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_artifact_97"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"artifact",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_deploy_98",
+"name": "CI/CD Deploy",
+"aliases": [
+"ci cd ci cd deploy 98",
+"ci/cd deploy",
+"CI/CD Deploy"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Deploy in ci cd systems.",
+"requirements": [
+"Understand CI/CD Deploy prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Deploy causing production incidents."
+],
+"failure_modes": [
+"CI/CD Deploy fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Deploy behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Deploy happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_deploy_98"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"deploy",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_rollback_99",
+"name": "CI/CD Rollback",
+"aliases": [
+"ci cd ci cd rollback 99",
+"ci/cd rollback",
+"CI/CD Rollback"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Rollback in ci cd systems.",
+"requirements": [
+"Understand CI/CD Rollback prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Rollback causing production incidents."
+],
+"failure_modes": [
+"CI/CD Rollback fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Rollback behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Rollback happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_rollback_99"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"rollback",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_canary_100",
+"name": "CI/CD Canary",
+"aliases": [
+"ci cd ci cd canary 100",
+"ci/cd canary",
+"CI/CD Canary"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Canary in ci cd systems.",
+"requirements": [
+"Understand CI/CD Canary prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Canary causing production incidents."
+],
+"failure_modes": [
+"CI/CD Canary fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Canary behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Canary happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_canary_100"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"canary",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_blue_green_101",
+"name": "CI/CD Blue Green",
+"aliases": [
+"ci cd ci cd blue green 101",
+"ci/cd blue green",
+"CI/CD Blue Green"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Blue Green in ci cd systems.",
+"requirements": [
+"Understand CI/CD Blue Green prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Blue Green causing production incidents."
+],
+"failure_modes": [
+"CI/CD Blue Green fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Blue Green behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Blue Green happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_blue_green_101"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"blue",
+"green",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_feature_flag_102",
+"name": "CI/CD Feature Flag",
+"aliases": [
+"ci cd ci cd feature flag 102",
+"ci/cd feature flag",
+"CI/CD Feature Flag"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Feature Flag in ci cd systems.",
+"requirements": [
+"Understand CI/CD Feature Flag prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Feature Flag causing production incidents."
+],
+"failure_modes": [
+"CI/CD Feature Flag fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Feature Flag behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Feature Flag happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_feature_flag_102"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"feature",
+"flag",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_gitops_103",
+"name": "CI/CD GitOps",
+"aliases": [
+"ci cd ci cd gitops 103",
+"ci/cd gitops",
+"CI/CD GitOps"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD GitOps in ci cd systems.",
+"requirements": [
+"Understand CI/CD GitOps prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD GitOps causing production incidents."
+],
+"failure_modes": [
+"CI/CD GitOps fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD GitOps behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD GitOps happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_gitops_103"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"gitops",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_supply_chain_104",
+"name": "CI/CD Supply Chain",
+"aliases": [
+"ci cd ci cd supply chain 104",
+"ci/cd supply chain",
+"CI/CD Supply Chain"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Supply Chain in ci cd systems.",
+"requirements": [
+"Understand CI/CD Supply Chain prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Supply Chain causing production incidents."
+],
+"failure_modes": [
+"CI/CD Supply Chain fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Supply Chain behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Supply Chain happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_supply_chain_104"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"supply",
+"chain",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_sbom_105",
+"name": "CI/CD SBOM",
+"aliases": [
+"ci cd ci cd sbom 105",
+"ci/cd sbom",
+"CI/CD SBOM"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD SBOM in ci cd systems.",
+"requirements": [
+"Understand CI/CD SBOM prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD SBOM causing production incidents."
+],
+"failure_modes": [
+"CI/CD SBOM fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD SBOM behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD SBOM happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_sbom_105"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"sbom",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_signing_106",
+"name": "CI/CD Signing",
+"aliases": [
+"ci cd ci cd signing 106",
+"ci/cd signing",
+"CI/CD Signing"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Signing in ci cd systems.",
+"requirements": [
+"Understand CI/CD Signing prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Signing causing production incidents."
+],
+"failure_modes": [
+"CI/CD Signing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Signing behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Signing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_signing_106"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"signing",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_gate_107",
+"name": "CI/CD Gate",
+"aliases": [
+"ci cd ci cd gate 107",
+"ci/cd gate",
+"CI/CD Gate"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Gate in ci cd systems.",
+"requirements": [
+"Understand CI/CD Gate prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Gate causing production incidents."
+],
+"failure_modes": [
+"CI/CD Gate fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Gate behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Gate happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_gate_107"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"gate",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_pipeline_108",
+"name": "CI/CD Pipeline",
+"aliases": [
+"ci cd ci cd pipeline 108",
+"ci/cd pipeline",
+"CI/CD Pipeline"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Pipeline in ci cd systems.",
+"requirements": [
+"Understand CI/CD Pipeline prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Pipeline causing production incidents."
+],
+"failure_modes": [
+"CI/CD Pipeline fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Pipeline behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Pipeline happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_pipeline_108"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"pipeline",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_artifact_109",
+"name": "CI/CD Artifact",
+"aliases": [
+"ci cd ci cd artifact 109",
+"ci/cd artifact",
+"CI/CD Artifact"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Artifact in ci cd systems.",
+"requirements": [
+"Understand CI/CD Artifact prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Artifact causing production incidents."
+],
+"failure_modes": [
+"CI/CD Artifact fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Artifact behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Artifact happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_artifact_109"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"artifact",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_deploy_110",
+"name": "CI/CD Deploy",
+"aliases": [
+"ci cd ci cd deploy 110",
+"ci/cd deploy",
+"CI/CD Deploy"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Deploy in ci cd systems.",
+"requirements": [
+"Understand CI/CD Deploy prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Deploy causing production incidents."
+],
+"failure_modes": [
+"CI/CD Deploy fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Deploy behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Deploy happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_deploy_110"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"deploy",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_rollback_111",
+"name": "CI/CD Rollback",
+"aliases": [
+"ci cd ci cd rollback 111",
+"ci/cd rollback",
+"CI/CD Rollback"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Rollback in ci cd systems.",
+"requirements": [
+"Understand CI/CD Rollback prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Rollback causing production incidents."
+],
+"failure_modes": [
+"CI/CD Rollback fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Rollback behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Rollback happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_rollback_111"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"rollback",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_canary_112",
+"name": "CI/CD Canary",
+"aliases": [
+"ci cd ci cd canary 112",
+"ci/cd canary",
+"CI/CD Canary"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Canary in ci cd systems.",
+"requirements": [
+"Understand CI/CD Canary prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Canary causing production incidents."
+],
+"failure_modes": [
+"CI/CD Canary fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Canary behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Canary happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_canary_112"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"canary",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_blue_green_113",
+"name": "CI/CD Blue Green",
+"aliases": [
+"ci cd ci cd blue green 113",
+"ci/cd blue green",
+"CI/CD Blue Green"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Blue Green in ci cd systems.",
+"requirements": [
+"Understand CI/CD Blue Green prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Blue Green causing production incidents."
+],
+"failure_modes": [
+"CI/CD Blue Green fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Blue Green behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Blue Green happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_blue_green_113"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"blue",
+"green",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_feature_flag_114",
+"name": "CI/CD Feature Flag",
+"aliases": [
+"ci cd ci cd feature flag 114",
+"ci/cd feature flag",
+"CI/CD Feature Flag"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Feature Flag in ci cd systems.",
+"requirements": [
+"Understand CI/CD Feature Flag prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Feature Flag causing production incidents."
+],
+"failure_modes": [
+"CI/CD Feature Flag fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Feature Flag behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Feature Flag happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_feature_flag_114"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"feature",
+"flag",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_gitops_115",
+"name": "CI/CD GitOps",
+"aliases": [
+"ci cd ci cd gitops 115",
+"ci/cd gitops",
+"CI/CD GitOps"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD GitOps in ci cd systems.",
+"requirements": [
+"Understand CI/CD GitOps prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD GitOps causing production incidents."
+],
+"failure_modes": [
+"CI/CD GitOps fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD GitOps behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD GitOps happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_gitops_115"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"gitops",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_supply_chain_116",
+"name": "CI/CD Supply Chain",
+"aliases": [
+"ci cd ci cd supply chain 116",
+"ci/cd supply chain",
+"CI/CD Supply Chain"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Supply Chain in ci cd systems.",
+"requirements": [
+"Understand CI/CD Supply Chain prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Supply Chain causing production incidents."
+],
+"failure_modes": [
+"CI/CD Supply Chain fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Supply Chain behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Supply Chain happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_supply_chain_116"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"supply",
+"chain",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_sbom_117",
+"name": "CI/CD SBOM",
+"aliases": [
+"ci cd ci cd sbom 117",
+"ci/cd sbom",
+"CI/CD SBOM"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD SBOM in ci cd systems.",
+"requirements": [
+"Understand CI/CD SBOM prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD SBOM causing production incidents."
+],
+"failure_modes": [
+"CI/CD SBOM fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD SBOM behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD SBOM happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_sbom_117"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"sbom",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_signing_118",
+"name": "CI/CD Signing",
+"aliases": [
+"ci cd ci cd signing 118",
+"ci/cd signing",
+"CI/CD Signing"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Signing in ci cd systems.",
+"requirements": [
+"Understand CI/CD Signing prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Signing causing production incidents."
+],
+"failure_modes": [
+"CI/CD Signing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Signing behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Signing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_signing_118"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"signing",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_gate_119",
+"name": "CI/CD Gate",
+"aliases": [
+"ci cd ci cd gate 119",
+"ci/cd gate",
+"CI/CD Gate"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Gate in ci cd systems.",
+"requirements": [
+"Understand CI/CD Gate prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Gate causing production incidents."
+],
+"failure_modes": [
+"CI/CD Gate fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Gate behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Gate happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_gate_119"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"gate",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_pipeline_120",
+"name": "CI/CD Pipeline",
+"aliases": [
+"ci cd ci cd pipeline 120",
+"ci/cd pipeline",
+"CI/CD Pipeline"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Pipeline in ci cd systems.",
+"requirements": [
+"Understand CI/CD Pipeline prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Pipeline causing production incidents."
+],
+"failure_modes": [
+"CI/CD Pipeline fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Pipeline behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Pipeline happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_pipeline_120"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"pipeline",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_artifact_121",
+"name": "CI/CD Artifact",
+"aliases": [
+"ci cd ci cd artifact 121",
+"ci/cd artifact",
+"CI/CD Artifact"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Artifact in ci cd systems.",
+"requirements": [
+"Understand CI/CD Artifact prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Artifact causing production incidents."
+],
+"failure_modes": [
+"CI/CD Artifact fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Artifact behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Artifact happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_artifact_121"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"artifact",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_deploy_122",
+"name": "CI/CD Deploy",
+"aliases": [
+"ci cd ci cd deploy 122",
+"ci/cd deploy",
+"CI/CD Deploy"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Deploy in ci cd systems.",
+"requirements": [
+"Understand CI/CD Deploy prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Deploy causing production incidents."
+],
+"failure_modes": [
+"CI/CD Deploy fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Deploy behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Deploy happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_deploy_122"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"deploy",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_rollback_123",
+"name": "CI/CD Rollback",
+"aliases": [
+"ci cd ci cd rollback 123",
+"ci/cd rollback",
+"CI/CD Rollback"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Rollback in ci cd systems.",
+"requirements": [
+"Understand CI/CD Rollback prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Rollback causing production incidents."
+],
+"failure_modes": [
+"CI/CD Rollback fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Rollback behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Rollback happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_rollback_123"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"rollback",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_canary_124",
+"name": "CI/CD Canary",
+"aliases": [
+"ci cd ci cd canary 124",
+"ci/cd canary",
+"CI/CD Canary"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Canary in ci cd systems.",
+"requirements": [
+"Understand CI/CD Canary prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Canary causing production incidents."
+],
+"failure_modes": [
+"CI/CD Canary fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Canary behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Canary happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_canary_124"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"canary",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_blue_green_125",
+"name": "CI/CD Blue Green",
+"aliases": [
+"ci cd ci cd blue green 125",
+"ci/cd blue green",
+"CI/CD Blue Green"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Blue Green in ci cd systems.",
+"requirements": [
+"Understand CI/CD Blue Green prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Blue Green causing production incidents."
+],
+"failure_modes": [
+"CI/CD Blue Green fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Blue Green behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Blue Green happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_blue_green_125"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"blue",
+"green",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_feature_flag_126",
+"name": "CI/CD Feature Flag",
+"aliases": [
+"ci cd ci cd feature flag 126",
+"ci/cd feature flag",
+"CI/CD Feature Flag"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Feature Flag in ci cd systems.",
+"requirements": [
+"Understand CI/CD Feature Flag prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Feature Flag causing production incidents."
+],
+"failure_modes": [
+"CI/CD Feature Flag fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Feature Flag behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Feature Flag happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_feature_flag_126"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"feature",
+"flag",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_gitops_127",
+"name": "CI/CD GitOps",
+"aliases": [
+"ci cd ci cd gitops 127",
+"ci/cd gitops",
+"CI/CD GitOps"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD GitOps in ci cd systems.",
+"requirements": [
+"Understand CI/CD GitOps prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD GitOps causing production incidents."
+],
+"failure_modes": [
+"CI/CD GitOps fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD GitOps behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD GitOps happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_gitops_127"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"gitops",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_supply_chain_128",
+"name": "CI/CD Supply Chain",
+"aliases": [
+"ci cd ci cd supply chain 128",
+"ci/cd supply chain",
+"CI/CD Supply Chain"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Supply Chain in ci cd systems.",
+"requirements": [
+"Understand CI/CD Supply Chain prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Supply Chain causing production incidents."
+],
+"failure_modes": [
+"CI/CD Supply Chain fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Supply Chain behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Supply Chain happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_supply_chain_128"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"supply",
+"chain",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_sbom_129",
+"name": "CI/CD SBOM",
+"aliases": [
+"ci cd ci cd sbom 129",
+"ci/cd sbom",
+"CI/CD SBOM"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD SBOM in ci cd systems.",
+"requirements": [
+"Understand CI/CD SBOM prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD SBOM causing production incidents."
+],
+"failure_modes": [
+"CI/CD SBOM fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD SBOM behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD SBOM happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_sbom_129"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"sbom",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_signing_130",
+"name": "CI/CD Signing",
+"aliases": [
+"ci cd ci cd signing 130",
+"ci/cd signing",
+"CI/CD Signing"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Signing in ci cd systems.",
+"requirements": [
+"Understand CI/CD Signing prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Signing causing production incidents."
+],
+"failure_modes": [
+"CI/CD Signing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Signing behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Signing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_signing_130"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"signing",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_gate_131",
+"name": "CI/CD Gate",
+"aliases": [
+"ci cd ci cd gate 131",
+"ci/cd gate",
+"CI/CD Gate"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Gate in ci cd systems.",
+"requirements": [
+"Understand CI/CD Gate prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Gate causing production incidents."
+],
+"failure_modes": [
+"CI/CD Gate fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Gate behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Gate happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_gate_131"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"gate",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_pipeline_132",
+"name": "CI/CD Pipeline",
+"aliases": [
+"ci cd ci cd pipeline 132",
+"ci/cd pipeline",
+"CI/CD Pipeline"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Pipeline in ci cd systems.",
+"requirements": [
+"Understand CI/CD Pipeline prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Pipeline causing production incidents."
+],
+"failure_modes": [
+"CI/CD Pipeline fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Pipeline behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Pipeline happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_pipeline_132"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"pipeline",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_artifact_133",
+"name": "CI/CD Artifact",
+"aliases": [
+"ci cd ci cd artifact 133",
+"ci/cd artifact",
+"CI/CD Artifact"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Artifact in ci cd systems.",
+"requirements": [
+"Understand CI/CD Artifact prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Artifact causing production incidents."
+],
+"failure_modes": [
+"CI/CD Artifact fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Artifact behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Artifact happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_artifact_133"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"artifact",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_deploy_134",
+"name": "CI/CD Deploy",
+"aliases": [
+"ci cd ci cd deploy 134",
+"ci/cd deploy",
+"CI/CD Deploy"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Deploy in ci cd systems.",
+"requirements": [
+"Understand CI/CD Deploy prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Deploy causing production incidents."
+],
+"failure_modes": [
+"CI/CD Deploy fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Deploy behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Deploy happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_deploy_134"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"deploy",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_rollback_135",
+"name": "CI/CD Rollback",
+"aliases": [
+"ci cd ci cd rollback 135",
+"ci/cd rollback",
+"CI/CD Rollback"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Rollback in ci cd systems.",
+"requirements": [
+"Understand CI/CD Rollback prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Rollback causing production incidents."
+],
+"failure_modes": [
+"CI/CD Rollback fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Rollback behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Rollback happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_rollback_135"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"rollback",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_canary_136",
+"name": "CI/CD Canary",
+"aliases": [
+"ci cd ci cd canary 136",
+"ci/cd canary",
+"CI/CD Canary"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Canary in ci cd systems.",
+"requirements": [
+"Understand CI/CD Canary prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Canary causing production incidents."
+],
+"failure_modes": [
+"CI/CD Canary fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Canary behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Canary happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_canary_136"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"canary",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_blue_green_137",
+"name": "CI/CD Blue Green",
+"aliases": [
+"ci cd ci cd blue green 137",
+"ci/cd blue green",
+"CI/CD Blue Green"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Blue Green in ci cd systems.",
+"requirements": [
+"Understand CI/CD Blue Green prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Blue Green causing production incidents."
+],
+"failure_modes": [
+"CI/CD Blue Green fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Blue Green behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Blue Green happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_blue_green_137"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"blue",
+"green",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_feature_flag_138",
+"name": "CI/CD Feature Flag",
+"aliases": [
+"ci cd ci cd feature flag 138",
+"ci/cd feature flag",
+"CI/CD Feature Flag"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Feature Flag in ci cd systems.",
+"requirements": [
+"Understand CI/CD Feature Flag prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Feature Flag causing production incidents."
+],
+"failure_modes": [
+"CI/CD Feature Flag fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Feature Flag behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Feature Flag happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_feature_flag_138"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"feature",
+"flag",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_gitops_139",
+"name": "CI/CD GitOps",
+"aliases": [
+"ci cd ci cd gitops 139",
+"ci/cd gitops",
+"CI/CD GitOps"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD GitOps in ci cd systems.",
+"requirements": [
+"Understand CI/CD GitOps prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD GitOps causing production incidents."
+],
+"failure_modes": [
+"CI/CD GitOps fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD GitOps behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD GitOps happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_gitops_139"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"gitops",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_supply_chain_140",
+"name": "CI/CD Supply Chain",
+"aliases": [
+"ci cd ci cd supply chain 140",
+"ci/cd supply chain",
+"CI/CD Supply Chain"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Supply Chain in ci cd systems.",
+"requirements": [
+"Understand CI/CD Supply Chain prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Supply Chain causing production incidents."
+],
+"failure_modes": [
+"CI/CD Supply Chain fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Supply Chain behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Supply Chain happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_supply_chain_140"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"supply",
+"chain",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_sbom_141",
+"name": "CI/CD SBOM",
+"aliases": [
+"ci cd ci cd sbom 141",
+"ci/cd sbom",
+"CI/CD SBOM"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD SBOM in ci cd systems.",
+"requirements": [
+"Understand CI/CD SBOM prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD SBOM causing production incidents."
+],
+"failure_modes": [
+"CI/CD SBOM fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD SBOM behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD SBOM happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_sbom_141"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"sbom",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_signing_142",
+"name": "CI/CD Signing",
+"aliases": [
+"ci cd ci cd signing 142",
+"ci/cd signing",
+"CI/CD Signing"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Signing in ci cd systems.",
+"requirements": [
+"Understand CI/CD Signing prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Signing causing production incidents."
+],
+"failure_modes": [
+"CI/CD Signing fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Signing behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Signing happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_signing_142"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"signing",
+"ci"
+]
+},
+{
+"concept_id": "ci_cd_ci_cd_gate_143",
+"name": "CI/CD Gate",
+"aliases": [
+"ci cd ci cd gate 143",
+"ci/cd gate",
+"CI/CD Gate"
+],
+"domain": "ci_cd",
+"category": "pattern",
+"description": "Engineering concept: CI/CD Gate in ci cd systems.",
+"requirements": [
+"Understand CI/CD Gate prerequisites in ci_cd context."
+],
+"common_implementations": [
+"Typical pattern integration in ci_cd systems."
+],
+"risks": [
+"Misconfiguration of CI/CD Gate causing production incidents."
+],
+"failure_modes": [
+"CI/CD Gate fails silently under load or edge inputs."
+],
+"verification": [
+"Validate CI/CD Gate behavior against official specification."
+],
+"testing": [
+"Automated tests covering CI/CD Gate happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/ci_cd/ci_cd_ci_cd_gate_143"
+],
+"confidence": "high",
+"path_keywords": [
+"ci/cd",
+"gate",
+"ci"
+]
+}
+]
+}

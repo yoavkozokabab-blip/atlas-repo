@@ -1,0 +1,47 @@
+concept_id: sql_injection
+name: SQL Injection
+title: SQL Injection
+domain: security
+category: vulnerability
+feature_type: vulnerability
+concept_quality_score: source_backed
+confidence: high
+aliases:
+- sql injection
+- sqli
+description: Untrusted input alters SQL execution.
+when_to_use: Prevent via parameterized queries/ORM; never concatenate SQL.
+requirements:
+- Clear ownership of SQL Injection in the architecture
+implementation_strategies: &id001
+- Fail closed on validation errors
+- Centralize auth middleware
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Broken trust boundary
+- Credential leakage
+- ORM raw query misuse
+- Dynamic ORDER BY injection
+security_risks:
+- ORM raw query misuse
+- Dynamic ORDER BY injection
+performance_risks: []
+failure_modes:
+- Auth bypass on misconfigured middleware
+- Stale permissions after role change
+verification:
+- Threat-model critical paths
+- Validate negative tests for unauthorized access
+testing:
+- AuthZ matrix tests
+- Session fixation/replay tests
+related_concepts: []
+references:
+- https://owasp.org/www-community/attacks/SQL_Injection
+path_keywords:
+- sql
+- injection
+- sql
+- injection
+investigate_only: false

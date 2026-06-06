@@ -1,0 +1,42 @@
+concept_id: clean_architecture
+name: Clean Architecture
+title: Clean Architecture
+domain: software_architecture
+category: pattern
+feature_type: pattern
+concept_quality_score: curated_deep
+confidence: medium
+aliases:
+- clean architecture
+- layers
+description: Dependencies point inward; domain at center.
+when_to_use: Long-lived business apps.
+requirements:
+- Clear ownership of Clean Architecture in the architecture
+implementation_strategies: &id001
+- Explicit boundaries
+- Document architectural decisions
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Accidental complexity
+- Unclear module boundaries
+security_risks: []
+performance_risks: []
+failure_modes:
+- Circular dependencies
+- God modules
+verification:
+- Architecture fitness functions
+- Dependency rule tests
+testing:
+- ArchUnit-style constraints
+- Contract tests between modules
+related_concepts: []
+references:
+- atlas://curated/software_architecture/clean_architecture
+path_keywords:
+- clean
+- clean architecture
+- layers
+investigate_only: false

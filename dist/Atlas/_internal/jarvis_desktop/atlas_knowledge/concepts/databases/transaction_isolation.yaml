@@ -1,0 +1,50 @@
+concept_id: transaction_isolation
+name: Transaction Isolation
+title: Transaction Isolation
+domain: databases
+category: transaction
+feature_type: transaction
+concept_quality_score: source_backed
+confidence: high
+aliases:
+- isolation level
+- serializable
+- read committed
+description: Controls visibility of concurrent transactions (ANSI levels).
+when_to_use: When debugging anomalies (phantom reads, write skew).
+requirements:
+- Clear ownership of Transaction Isolation in the architecture
+implementation_strategies: &id001
+- Migrations additive-first
+- Explicit transaction boundaries
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Data corruption
+- Lock contention
+- Missing indexes
+- Long-running transactions
+- Connection pool exhaustion
+security_risks: []
+performance_risks:
+- Missing indexes
+- Long-running transactions
+- Connection pool exhaustion
+failure_modes:
+- Migration lock on large tables
+- Deadlocks under concurrent updates
+verification:
+- Explain plans for hot queries
+- Migration rollback drill
+testing:
+- Migration up/down tests
+- Concurrency tests on hot rows
+related_concepts: []
+references:
+- https://www.postgresql.org/docs/current/transaction-iso.html
+path_keywords:
+- transaction
+- isolation
+- transaction
+- isolation
+investigate_only: false

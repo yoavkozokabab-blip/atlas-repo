@@ -1,0 +1,322 @@
+{
+  "id": "openbb",
+  "display": "OpenBB",
+  "language": "python",
+  "available": true,
+  "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\openbb",
+  "modules": 1062,
+  "concepts": [
+    {
+      "concept": "authentication",
+      "phrase": "authentication",
+      "expected_subsystem": "auth / identity",
+      "prompt": "what breaks if I remove authentication",
+      "resolved": true,
+      "category": null,
+      "label": "authentication",
+      "modules": [
+        "openbb_platform/core/openbb_core/api/auth/user.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 openbb_platform/core/openbb_core/api/auth/user.py"
+    },
+    {
+      "concept": "authorization",
+      "phrase": "authorization",
+      "expected_subsystem": "access control / permissions",
+      "prompt": "what breaks if I remove authorization",
+      "resolved": true,
+      "category": null,
+      "label": "authorization",
+      "modules": [
+        "openbb_platform/extensions/mcp_server/openbb_mcp_server/app/auth.py",
+        "openbb_platform/core/openbb_core/api/app_loader.py",
+        "openbb_platform/core/openbb_core/api/exception_handlers.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 openbb_platform/extensions/mcp_server/openbb_mcp_server/app/auth.py, openbb_platform/core/openbb_core/api/app_loader.py, openbb_platform/core/openbb_core/api/exception_handlers.py"
+    },
+    {
+      "concept": "caching",
+      "phrase": "caching",
+      "expected_subsystem": "cache layer",
+      "prompt": "what breaks if I remove caching",
+      "resolved": true,
+      "category": null,
+      "label": "caching",
+      "modules": [
+        "openbb_platform/core/openbb_core/provider/utils/lru.py",
+        "openbb_platform/core/openbb_core/provider/registry.py",
+        "openbb_platform/core/openbb_core/app/command_runner.py"
+      ],
+      "confidence": "medium",
+      "actual": "resolved \u2192 openbb_platform/core/openbb_core/provider/utils/lru.py, openbb_platform/core/openbb_core/provider/registry.py, openbb_platform/core/openbb_core/app/command_runner.py"
+    },
+    {
+      "concept": "configuration",
+      "phrase": "configuration",
+      "expected_subsystem": "config system",
+      "prompt": "what breaks if I remove configuration",
+      "resolved": true,
+      "category": null,
+      "label": "configuration",
+      "modules": [
+        "cli/openbb_cli/models/settings.py",
+        "openbb_platform/core/openbb_core/app/model/preferences.py",
+        "openbb_platform/extensions/mcp_server/openbb_mcp_server/models/settings.py"
+      ],
+      "confidence": "medium",
+      "actual": "resolved \u2192 cli/openbb_cli/models/settings.py, openbb_platform/core/openbb_core/app/model/preferences.py, openbb_platform/extensions/mcp_server/openbb_mcp_server/models/settings.py"
+    },
+    {
+      "concept": "database",
+      "phrase": "the database layer",
+      "expected_subsystem": "persistence / database",
+      "prompt": "what breaks if I remove the database layer",
+      "resolved": true,
+      "category": null,
+      "label": "recorder/database",
+      "modules": [
+        "openbb_platform/providers/finra/openbb_finra/utils/data_storage.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 openbb_platform/providers/finra/openbb_finra/utils/data_storage.py"
+    },
+    {
+      "concept": "routing",
+      "phrase": "routing",
+      "expected_subsystem": "router / URL dispatch",
+      "prompt": "what breaks if I remove routing",
+      "resolved": true,
+      "category": null,
+      "label": "routing",
+      "modules": [
+        "openbb_platform/providers/congress_gov/openbb_congress_gov/router/congress_gov_router.py",
+        "openbb_platform/core/openbb_core/app/router.py",
+        "openbb_platform/providers/federal_reserve/openbb_federal_reserve/router.py"
+      ],
+      "confidence": "medium",
+      "actual": "resolved \u2192 openbb_platform/providers/congress_gov/openbb_congress_gov/router/congress_gov_router.py, openbb_platform/core/openbb_core/app/router.py, openbb_platform/providers/federal_reserve/openbb_federal_reserve/router.py"
+    },
+    {
+      "concept": "middleware",
+      "phrase": "middleware",
+      "expected_subsystem": "middleware pipeline",
+      "prompt": "what breaks if I remove middleware",
+      "resolved": true,
+      "category": null,
+      "label": "middleware",
+      "modules": [
+        "openbb_platform/extensions/platform_api/openbb_platform_api/utils/api.py",
+        "cli/openbb_cli/controllers/base_controller.py",
+        "cli/openbb_cli/controllers/cli_controller.py"
+      ],
+      "confidence": "medium",
+      "actual": "resolved \u2192 openbb_platform/extensions/platform_api/openbb_platform_api/utils/api.py, cli/openbb_cli/controllers/base_controller.py, cli/openbb_cli/controllers/cli_controller.py"
+    },
+    {
+      "concept": "logging",
+      "phrase": "the logging layer",
+      "expected_subsystem": "logging subsystem",
+      "prompt": "what breaks if I remove the logging layer",
+      "resolved": true,
+      "category": null,
+      "label": "logging",
+      "modules": [
+        "openbb_platform/core/openbb_core/app/logs/logging_service.py",
+        "openbb_platform/core/openbb_core/app/logs/models/logging_settings.py",
+        "openbb_platform/core/openbb_core/app/logs/formatters/formatter_with_exceptions.py"
+      ],
+      "confidence": "medium",
+      "actual": "resolved \u2192 openbb_platform/core/openbb_core/app/logs/logging_service.py, openbb_platform/core/openbb_core/app/logs/models/logging_settings.py, openbb_platform/core/openbb_core/app/logs/formatters/formatter_with_exceptions.py"
+    },
+    {
+      "concept": "events",
+      "phrase": "the event system",
+      "expected_subsystem": "event bus / dispatcher",
+      "prompt": "what breaks if I remove the event system",
+      "resolved": true,
+      "category": null,
+      "label": "events",
+      "modules": [
+        "openbb_platform/core/openbb_core/app/static/package_builder.py",
+        "openbb_platform/extensions/mcp_server/openbb_mcp_server/app/app.py",
+        "openbb_platform/obbject_extensions/charting/openbb_charting/core/dummy_backend.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 openbb_platform/core/openbb_core/app/static/package_builder.py, openbb_platform/extensions/mcp_server/openbb_mcp_server/app/app.py, openbb_platform/obbject_extensions/charting/openbb_charting/core/dummy_backend.py"
+    },
+    {
+      "concept": "messaging",
+      "phrase": "messaging",
+      "expected_subsystem": "message queue / pub-sub",
+      "prompt": "what breaks if I remove messaging",
+      "resolved": true,
+      "category": null,
+      "label": "messaging",
+      "modules": [
+        "openbb_platform/core/openbb_core/provider/standard_models/consumer_price_index.py",
+        "openbb_platform/providers/fred/openbb_fred/models/consumer_price_index.py",
+        "openbb_platform/providers/imf/openbb_imf/models/consumer_price_index.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 openbb_platform/core/openbb_core/provider/standard_models/consumer_price_index.py, openbb_platform/providers/fred/openbb_fred/models/consumer_price_index.py, openbb_platform/providers/imf/openbb_imf/models/consumer_price_index.py"
+    },
+    {
+      "concept": "background_jobs",
+      "phrase": "background jobs",
+      "expected_subsystem": "task / worker queue",
+      "prompt": "what breaks if I remove background jobs",
+      "resolved": false,
+      "category": "semantic_routing_failure",
+      "label": null,
+      "modules": [],
+      "confidence": "low",
+      "actual": "fallback \u2014 no target"
+    },
+    {
+      "concept": "scheduling",
+      "phrase": "scheduling",
+      "expected_subsystem": "scheduler",
+      "prompt": "what breaks if I remove scheduling",
+      "resolved": true,
+      "category": null,
+      "label": "scheduling",
+      "modules": [
+        "openbb_platform/core/openbb_core/provider/utils/exchange_utils.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 openbb_platform/core/openbb_core/provider/utils/exchange_utils.py"
+    },
+    {
+      "concept": "state_management",
+      "phrase": "state management",
+      "expected_subsystem": "state store",
+      "prompt": "what breaks if I remove state management",
+      "resolved": true,
+      "category": null,
+      "label": "state management",
+      "modules": [
+        "cli/openbb_cli/argparse_translator/argparse_argument.py",
+        "cli/openbb_cli/config/completer.py",
+        "openbb_platform/providers/finra/openbb_finra/utils/data_storage.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 cli/openbb_cli/argparse_translator/argparse_argument.py, cli/openbb_cli/config/completer.py, openbb_platform/providers/finra/openbb_finra/utils/data_storage.py"
+    },
+    {
+      "concept": "plugins",
+      "phrase": "the plugin system",
+      "expected_subsystem": "plugin loader",
+      "prompt": "what breaks if I remove the plugin system",
+      "resolved": true,
+      "category": null,
+      "label": "plugins",
+      "modules": [
+        "openbb_platform/obbject_extensions/charting/openbb_charting/core/plotly_ta/plugins/custom_indicators_plugin.py",
+        "openbb_platform/obbject_extensions/charting/openbb_charting/core/plotly_ta/plugins/momentum_plugin.py",
+        "openbb_platform/obbject_extensions/charting/openbb_charting/core/plotly_ta/plugins/overlap_plugin.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 openbb_platform/obbject_extensions/charting/openbb_charting/core/plotly_ta/plugins/custom_indicators_plugin.py, openbb_platform/obbject_extensions/charting/openbb_charting/core/plotly_ta/plugins/momentum_plugin.py, openbb_platform/obbject_extensions/charting/openbb_charting/core/plotly_ta/plugins/overlap_plugin.py"
+    },
+    {
+      "concept": "extensions",
+      "phrase": "extensions",
+      "expected_subsystem": "extension system",
+      "prompt": "what breaks if I remove extensions",
+      "resolved": true,
+      "category": null,
+      "label": "extensions",
+      "modules": [
+        "openbb_platform/core/openbb_core/app/model/extension.py",
+        "openbb_platform/core/openbb_core/app/extension_loader.py",
+        "openbb_platform/extensions/mcp_server/openbb_mcp_server/app/app.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 openbb_platform/core/openbb_core/app/model/extension.py, openbb_platform/core/openbb_core/app/extension_loader.py, openbb_platform/extensions/mcp_server/openbb_mcp_server/app/app.py"
+    },
+    {
+      "concept": "websockets",
+      "phrase": "websocket support",
+      "expected_subsystem": "websocket transport",
+      "prompt": "what breaks if I remove websocket support",
+      "resolved": true,
+      "category": null,
+      "label": "websocket support",
+      "modules": [
+        "cli/openbb_cli/session.py",
+        "openbb_platform/core/openbb_core/api/auth/user.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 cli/openbb_cli/session.py, openbb_platform/core/openbb_core/api/auth/user.py"
+    },
+    {
+      "concept": "api_layer",
+      "phrase": "the api layer",
+      "expected_subsystem": "API / endpoint layer",
+      "prompt": "what breaks if I remove the api layer",
+      "resolved": true,
+      "category": null,
+      "label": "api layer",
+      "modules": [
+        "cli/openbb_cli/controllers/base_controller.py",
+        "cli/openbb_cli/controllers/base_platform_controller.py",
+        "cli/openbb_cli/controllers/cli_controller.py"
+      ],
+      "confidence": "medium",
+      "actual": "resolved \u2192 cli/openbb_cli/controllers/base_controller.py, cli/openbb_cli/controllers/base_platform_controller.py, cli/openbb_cli/controllers/cli_controller.py"
+    },
+    {
+      "concept": "persistence",
+      "phrase": "persistence",
+      "expected_subsystem": "ORM / storage",
+      "prompt": "what breaks if I remove persistence",
+      "resolved": true,
+      "category": null,
+      "label": "persistence",
+      "modules": [
+        "openbb_platform/providers/imf/openbb_imf/models/indicator_metadata.py",
+        "openbb_platform/providers/finra/openbb_finra/utils/data_storage.py",
+        "cli/openbb_cli/models/settings.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 openbb_platform/providers/imf/openbb_imf/models/indicator_metadata.py, openbb_platform/providers/finra/openbb_finra/utils/data_storage.py, cli/openbb_cli/models/settings.py"
+    },
+    {
+      "concept": "validation",
+      "phrase": "request validation",
+      "expected_subsystem": "input validation",
+      "prompt": "what breaks if I remove request validation",
+      "resolved": true,
+      "category": null,
+      "label": "validation",
+      "modules": [
+        "openbb_platform/core/openbb_core/provider/standard_models/form_13FHR.py",
+        "openbb_platform/obbject_extensions/charting/openbb_charting/query_params.py",
+        "openbb_platform/providers/sec/openbb_sec/utils/statement_schema/_schema.py"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 openbb_platform/core/openbb_core/provider/standard_models/form_13FHR.py, openbb_platform/obbject_extensions/charting/openbb_charting/query_params.py, openbb_platform/providers/sec/openbb_sec/utils/statement_schema/_schema.py"
+    },
+    {
+      "concept": "serialization",
+      "phrase": "serialization",
+      "expected_subsystem": "(de)serialization layer",
+      "prompt": "what breaks if I remove serialization",
+      "resolved": true,
+      "category": null,
+      "label": "serialization",
+      "modules": [
+        "openbb_platform/core/openbb_core/api/router/commands.py",
+        "openbb_platform/core/openbb_core/api/router/coverage.py",
+        "openbb_platform/core/openbb_core/app/command_runner.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 openbb_platform/core/openbb_core/api/router/commands.py, openbb_platform/core/openbb_core/api/router/coverage.py, openbb_platform/core/openbb_core/app/command_runner.py"
+    }
+  ],
+  "status": "ok",
+  "resolved_count": 19,
+  "scan_seconds": 33.9
+}

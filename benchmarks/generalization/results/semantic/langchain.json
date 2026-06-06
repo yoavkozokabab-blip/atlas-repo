@@ -1,0 +1,328 @@
+{
+  "id": "langchain",
+  "display": "LangChain",
+  "language": "python",
+  "available": true,
+  "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\langchain",
+  "modules": 1689,
+  "concepts": [
+    {
+      "concept": "authentication",
+      "phrase": "authentication",
+      "expected_subsystem": "auth / identity",
+      "prompt": "what breaks if I remove authentication",
+      "resolved": false,
+      "category": "semantic_routing_failure",
+      "label": null,
+      "modules": [],
+      "confidence": "low",
+      "actual": "fallback \u2014 no target"
+    },
+    {
+      "concept": "authorization",
+      "phrase": "authorization",
+      "expected_subsystem": "access control / permissions",
+      "prompt": "what breaks if I remove authorization",
+      "resolved": true,
+      "category": null,
+      "label": "authorization",
+      "modules": [
+        "libs/core/langchain_core/_security/_policy.py",
+        "libs/core/langchain_core/_api/deprecation.py",
+        "libs/core/langchain_core/_security/__init__.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 libs/core/langchain_core/_security/_policy.py, libs/core/langchain_core/_api/deprecation.py, libs/core/langchain_core/_security/__init__.py"
+    },
+    {
+      "concept": "caching",
+      "phrase": "caching",
+      "expected_subsystem": "cache layer",
+      "prompt": "what breaks if I remove caching",
+      "resolved": true,
+      "category": null,
+      "label": "caching",
+      "modules": [
+        "libs/langchain/langchain_classic/cache.py",
+        "libs/langchain/langchain_classic/embeddings/cache.py",
+        "libs/langchain/langchain_classic/schema/cache.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 libs/langchain/langchain_classic/cache.py, libs/langchain/langchain_classic/embeddings/cache.py, libs/langchain/langchain_classic/schema/cache.py"
+    },
+    {
+      "concept": "configuration",
+      "phrase": "configuration",
+      "expected_subsystem": "config system",
+      "prompt": "what breaks if I remove configuration",
+      "resolved": true,
+      "category": null,
+      "label": "configuration",
+      "modules": [
+        "libs/core/langchain_core/runnables/config.py",
+        "libs/langchain/langchain_classic/schema/runnable/config.py",
+        "libs/langchain/langchain_classic/smith/evaluation/config.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 libs/core/langchain_core/runnables/config.py, libs/langchain/langchain_classic/schema/runnable/config.py, libs/langchain/langchain_classic/smith/evaluation/config.py"
+    },
+    {
+      "concept": "database",
+      "phrase": "the database layer",
+      "expected_subsystem": "persistence / database",
+      "prompt": "what breaks if I remove the database layer",
+      "resolved": true,
+      "category": null,
+      "label": "recorder/database",
+      "modules": [
+        "libs/langchain/langchain_classic/chains/elasticsearch_database/__init__.py",
+        "libs/langchain/langchain_classic/chains/elasticsearch_database/base.py",
+        "libs/langchain/langchain_classic/chains/elasticsearch_database/prompts.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 libs/langchain/langchain_classic/chains/elasticsearch_database/__init__.py, libs/langchain/langchain_classic/chains/elasticsearch_database/base.py, libs/langchain/langchain_classic/chains/elasticsearch_database/prompts.py"
+    },
+    {
+      "concept": "routing",
+      "phrase": "routing",
+      "expected_subsystem": "router / URL dispatch",
+      "prompt": "what breaks if I remove routing",
+      "resolved": true,
+      "category": null,
+      "label": "routing",
+      "modules": [
+        "libs/langchain/langchain_classic/chains/router/embedding_router.py",
+        "libs/langchain/langchain_classic/chains/router/llm_router.py",
+        "libs/core/langchain_core/runnables/router.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 libs/langchain/langchain_classic/chains/router/embedding_router.py, libs/langchain/langchain_classic/chains/router/llm_router.py, libs/core/langchain_core/runnables/router.py"
+    },
+    {
+      "concept": "middleware",
+      "phrase": "middleware",
+      "expected_subsystem": "middleware pipeline",
+      "prompt": "what breaks if I remove middleware",
+      "resolved": true,
+      "category": null,
+      "label": "middleware",
+      "modules": [
+        "libs/langchain_v1/langchain/agents/middleware/__init__.py",
+        "libs/langchain_v1/langchain/agents/middleware/_execution.py",
+        "libs/langchain_v1/langchain/agents/middleware/_redaction.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 libs/langchain_v1/langchain/agents/middleware/__init__.py, libs/langchain_v1/langchain/agents/middleware/_execution.py, libs/langchain_v1/langchain/agents/middleware/_redaction.py"
+    },
+    {
+      "concept": "logging",
+      "phrase": "the logging layer",
+      "expected_subsystem": "logging subsystem",
+      "prompt": "what breaks if I remove the logging layer",
+      "resolved": true,
+      "category": null,
+      "label": "logging",
+      "modules": [
+        "libs/langchain/langchain_classic/agents/format_scratchpad/log.py",
+        "libs/langchain/langchain_classic/callbacks/tracers/logging.py",
+        "libs/langchain/langchain_classic/callbacks/mlflow_callback.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 libs/langchain/langchain_classic/agents/format_scratchpad/log.py, libs/langchain/langchain_classic/callbacks/tracers/logging.py, libs/langchain/langchain_classic/callbacks/mlflow_callback.py"
+    },
+    {
+      "concept": "events",
+      "phrase": "the event system",
+      "expected_subsystem": "event bus / dispatcher",
+      "prompt": "what breaks if I remove the event system",
+      "resolved": true,
+      "category": null,
+      "label": "events",
+      "modules": [
+        "libs/core/langchain_core/_api/beta_decorator.py",
+        "libs/core/langchain_core/_api/deprecation.py",
+        "libs/core/langchain_core/language_models/_compat_bridge.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 libs/core/langchain_core/_api/beta_decorator.py, libs/core/langchain_core/_api/deprecation.py, libs/core/langchain_core/language_models/_compat_bridge.py"
+    },
+    {
+      "concept": "messaging",
+      "phrase": "messaging",
+      "expected_subsystem": "message queue / pub-sub",
+      "prompt": "what breaks if I remove messaging",
+      "resolved": true,
+      "category": null,
+      "label": "messaging",
+      "modules": [
+        "libs/core/langchain_core/prompts/message.py",
+        "libs/core/langchain_core/messages/__init__.py",
+        "libs/core/langchain_core/messages/ai.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 libs/core/langchain_core/prompts/message.py, libs/core/langchain_core/messages/__init__.py, libs/core/langchain_core/messages/ai.py"
+    },
+    {
+      "concept": "background_jobs",
+      "phrase": "background jobs",
+      "expected_subsystem": "task / worker queue",
+      "prompt": "what breaks if I remove background jobs",
+      "resolved": true,
+      "category": null,
+      "label": "background jobs",
+      "modules": [
+        "libs/langchain/langchain_classic/embeddings/cloudflare_workersai.py",
+        "libs/core/langchain_core/caches.py",
+        "libs/core/langchain_core/chat_history.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 libs/langchain/langchain_classic/embeddings/cloudflare_workersai.py, libs/core/langchain_core/caches.py, libs/core/langchain_core/chat_history.py"
+    },
+    {
+      "concept": "scheduling",
+      "phrase": "scheduling",
+      "expected_subsystem": "scheduler",
+      "prompt": "what breaks if I remove scheduling",
+      "resolved": true,
+      "category": null,
+      "label": "scheduling",
+      "modules": [
+        "libs/langchain/langchain_classic/retrievers/time_weighted_retriever.py",
+        "libs/langchain/langchain_classic/tools/slack/schedule_message.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 libs/langchain/langchain_classic/retrievers/time_weighted_retriever.py, libs/langchain/langchain_classic/tools/slack/schedule_message.py"
+    },
+    {
+      "concept": "state_management",
+      "phrase": "state management",
+      "expected_subsystem": "state store",
+      "prompt": "what breaks if I remove state management",
+      "resolved": true,
+      "category": null,
+      "label": "state management",
+      "modules": [
+        "libs/core/langchain_core/stores.py",
+        "libs/core/langchain_core/example_selectors/semantic_similarity.py",
+        "libs/core/langchain_core/indexing/api.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 libs/core/langchain_core/stores.py, libs/core/langchain_core/example_selectors/semantic_similarity.py, libs/core/langchain_core/indexing/api.py"
+    },
+    {
+      "concept": "plugins",
+      "phrase": "the plugin system",
+      "expected_subsystem": "plugin loader",
+      "prompt": "what breaks if I remove the plugin system",
+      "resolved": true,
+      "category": null,
+      "label": "plugins",
+      "modules": [
+        "libs/langchain/langchain_classic/document_loaders/parsers/registry.py",
+        "libs/langchain/langchain_classic/tools/plugin.py",
+        "libs/core/langchain_core/callbacks/manager.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 libs/langchain/langchain_classic/document_loaders/parsers/registry.py, libs/langchain/langchain_classic/tools/plugin.py, libs/core/langchain_core/callbacks/manager.py"
+    },
+    {
+      "concept": "extensions",
+      "phrase": "extensions",
+      "expected_subsystem": "extension system",
+      "prompt": "what breaks if I remove extensions",
+      "resolved": true,
+      "category": null,
+      "label": "extensions",
+      "modules": [
+        "libs/core/langchain_core/caches.py",
+        "libs/core/langchain_core/callbacks/base.py",
+        "libs/core/langchain_core/callbacks/file.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 libs/core/langchain_core/caches.py, libs/core/langchain_core/callbacks/base.py, libs/core/langchain_core/callbacks/file.py"
+    },
+    {
+      "concept": "websockets",
+      "phrase": "websocket support",
+      "expected_subsystem": "websocket transport",
+      "prompt": "what breaks if I remove websocket support",
+      "resolved": true,
+      "category": null,
+      "label": "websocket support",
+      "modules": [
+        "libs/core/langchain_core/chat_sessions.py",
+        "libs/langchain/langchain_classic/tools/multion/close_session.py",
+        "libs/langchain/langchain_classic/tools/multion/create_session.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 libs/core/langchain_core/chat_sessions.py, libs/langchain/langchain_classic/tools/multion/close_session.py, libs/langchain/langchain_classic/tools/multion/create_session.py"
+    },
+    {
+      "concept": "api_layer",
+      "phrase": "the api layer",
+      "expected_subsystem": "API / endpoint layer",
+      "prompt": "what breaks if I remove the api layer",
+      "resolved": true,
+      "category": null,
+      "label": "api layer",
+      "modules": [
+        "libs/core/langchain_core/runnables/router.py",
+        "libs/langchain/langchain_classic/agents/agent_toolkits/openapi/planner_prompt.py",
+        "libs/langchain/langchain_classic/chains/api/openapi/chain.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 libs/core/langchain_core/runnables/router.py, libs/langchain/langchain_classic/agents/agent_toolkits/openapi/planner_prompt.py, libs/langchain/langchain_classic/chains/api/openapi/chain.py"
+    },
+    {
+      "concept": "persistence",
+      "phrase": "persistence",
+      "expected_subsystem": "ORM / storage",
+      "prompt": "what breaks if I remove persistence",
+      "resolved": true,
+      "category": null,
+      "label": "persistence",
+      "modules": [
+        "libs/core/langchain_core/language_models/chat_model_stream.py",
+        "libs/langchain/langchain_classic/storage/_lc_store.py",
+        "libs/langchain/langchain_classic/memory/entity.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 libs/core/langchain_core/language_models/chat_model_stream.py, libs/langchain/langchain_classic/storage/_lc_store.py, libs/langchain/langchain_classic/memory/entity.py"
+    },
+    {
+      "concept": "validation",
+      "phrase": "request validation",
+      "expected_subsystem": "input validation",
+      "prompt": "what breaks if I remove request validation",
+      "resolved": true,
+      "category": null,
+      "label": "validation",
+      "modules": [
+        "libs/langchain/langchain_classic/schema/callbacks/tracers/schemas.py",
+        "libs/core/langchain_core/load/validators.py",
+        "libs/core/langchain_core/runnables/schema.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 libs/langchain/langchain_classic/schema/callbacks/tracers/schemas.py, libs/core/langchain_core/load/validators.py, libs/core/langchain_core/runnables/schema.py"
+    },
+    {
+      "concept": "serialization",
+      "phrase": "serialization",
+      "expected_subsystem": "(de)serialization layer",
+      "prompt": "what breaks if I remove serialization",
+      "resolved": true,
+      "category": null,
+      "label": "serialization",
+      "modules": [
+        "libs/core/langchain_core/output_parsers/json.py",
+        "libs/core/langchain_core/runnables/schema.py",
+        "libs/core/langchain_core/utils/json.py"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 libs/core/langchain_core/output_parsers/json.py, libs/core/langchain_core/runnables/schema.py, libs/core/langchain_core/utils/json.py"
+    }
+  ],
+  "status": "ok",
+  "resolved_count": 19,
+  "scan_seconds": 32.8
+}

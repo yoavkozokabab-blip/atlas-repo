@@ -1,0 +1,41 @@
+concept_id: e2e_testing
+name: E2E Testing
+title: E2E Testing
+domain: testing
+category: e2e
+feature_type: e2e
+concept_quality_score: curated_deep
+confidence: medium
+aliases:
+- e2e
+- end to end test
+description: Test full user journeys in near-prod environment.
+when_to_use: Critical flows before release.
+requirements:
+- Clear ownership of E2E Testing in the architecture
+implementation_strategies: &id001
+- Test pyramid balance
+- Deterministic test clocks
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- False confidence from shallow tests
+security_risks: []
+performance_risks: []
+failure_modes:
+- Flaky tests ignored
+- Tests coupled to implementation details
+verification:
+- Coverage on critical paths not lines only
+- Mutation testing sample
+testing:
+- CI parallelization
+- Test data fixtures versioned
+related_concepts: []
+references:
+- atlas://curated/testing/e2e_testing
+path_keywords:
+- e2e
+- e2e
+- end to end test
+investigate_only: false

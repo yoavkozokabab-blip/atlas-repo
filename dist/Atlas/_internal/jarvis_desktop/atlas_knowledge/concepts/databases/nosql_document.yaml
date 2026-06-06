@@ -1,0 +1,48 @@
+concept_id: nosql_document
+name: Document Database
+title: Document Database
+domain: databases
+category: nosql
+feature_type: nosql
+concept_quality_score: curated_deep
+confidence: medium
+aliases:
+- mongodb
+- document db
+description: JSON-like documents with flexible schema.
+when_to_use: Rapid schema evolution; not ideal for all joins.
+requirements:
+- Clear ownership of Document Database in the architecture
+implementation_strategies: &id001
+- Migrations additive-first
+- Explicit transaction boundaries
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Data corruption
+- Lock contention
+- Missing indexes
+- Long-running transactions
+- Connection pool exhaustion
+security_risks: []
+performance_risks:
+- Missing indexes
+- Long-running transactions
+- Connection pool exhaustion
+failure_modes:
+- Migration lock on large tables
+- Deadlocks under concurrent updates
+verification:
+- Explain plans for hot queries
+- Migration rollback drill
+testing:
+- Migration up/down tests
+- Concurrency tests on hot rows
+related_concepts: []
+references:
+- atlas://curated/databases/nosql_document
+path_keywords:
+- nosql
+- mongodb
+- document db
+investigate_only: false

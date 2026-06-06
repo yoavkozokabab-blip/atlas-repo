@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ATLAS — Repository Intelligence Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <!-- 3D dependency graph (Three.js under the hood). Falls back gracefully if offline. -->
+  <!-- Phase 124: expose a global THREE so custom OPAQUE node spheres render.
+       Without this, makeNodeMesh() returns null and ForceGraph falls back to
+       washed-out default spheres (the "invisible nodes / spiderweb" bug). -->
+  <script src="https://unpkg.com/three@0.157.0/build/three.min.js"></script>
+  <script src="https://unpkg.com/3d-force-graph@1.73.4/dist/3d-force-graph.min.js"></script>
+</head>
+<body>
+  <div id="bg-grid"></div>
+  <div id="bg-glow"></div>
+
+  <!-- Top bar -->
+  <header class="topbar glass">
+    <div class="brand" onclick="go('home')">
+      <span class="logo-mark">◈</span>
+      <span class="logo-text">ATLAS</span>
+      <span class="logo-sub">Repository Intelligence Platform</span>
+    </div>
+    <nav class="nav" id="nav">
+      <button data-view="home" class="active" onclick="go('home')">Home</button>
+      <button data-view="scan" onclick="go('scan')">Scan</button>
+      <button data-view="center" data-lock="1" onclick="go('center')">Repository Map</button>
+      <button data-view="build" data-lock="1" onclick="go('build')">Build Plan</button>
+      <button data-view="investigate" data-lock="1" onclick="go('investigate')">Investigate Bug</button>
+      <button data-view="impact" data-lock="1" onclick="go('impact')">Impact</button>
+      <button data-view="export" data-lock="1" onclick="go('export')">Export</button>
+      <span class="billing-nav" id="billingNav" style="display:none">
+        <a class="nav-link" href="usage.html">Usage</a>
+        <a class="nav-link" href="pricing.html">Pricing</a>
+        <a class="nav-link billing-admin" href="billing_admin.html">Admin</a>
+      </span>
+    </nav>
+    <div class="repo-chip" id="repoChip">No repository</div>
+    <span class="demo-badge" id="demoBadge" style="display:none">Sample repository</span>
+    <span class="demo-badge massive" id="massiveBadge" style="display:none">Massive Repository Mode</span>
+    <div class="topbar-actions">
+      <a class="btn ghost small" href="support.html">Support</a>
+      <button class="btn ghost small" type="button" onclick="showAboutAtlas()">About</button>
+      <button class="btn ghost small" type="button" onclick="copyBetaDiagnostics()" title="Copy version and scan stats for support">Diagnostics</button>
+      <button class="btn ghost small report-issue-btn" type="button" onclick="openReportIssue()">Report Issue</button>
+    </div>
+  </header>
+
+  <div id="telemetryWarning" class="telemetry-banner glass" style="display:none" role="status">
+    Telemetry unavailable. Repository analysis unaffected.
+  </div>
+
+  <main id="app">
+
+    <!-- ===================== SCREEN 1: HOME ===================== -->
+    <section class="view active" id="view-home">
+      <div class="hero">
+        <h1 class="hero-title">ATLAS</h1>
+        <p class="hero-sub">Repository Intelligence Platform</p>
+        <p class="hero-headline">Map your repository before your AI reads it.</p>
+        <p class="hero-subheadline">Atlas scans architecture, dependencies, and risk on your machine,<br>then helps you plan changes and export context for Claude, Codex, or Cursor.</p>
+        <div class="beta-notice glass" role="note">
+          <b>Planning only</b> — Atlas maps your code and prepares grounded plans. It does not edit files, run tests, or write patches for you.
+        </div>
+        <div class="steps-row">
+          <div class="step"><div class="step-num">1</div><h3>Load sample</h3><p>Try Atlas in under a minute — no folder path needed.</p></div>
+          <div class="step-arrow">→</div>
+          <div class="step"><div class="step-num">2</div><h3>Build Plan</h3><p>Describe a change; get files, order, and tests to run.</p></div>
+          <div class="step-arrow">→</div>
+          <div class="step"><div class="step-num">3</div><h3>Your repo</h3><p>Scan your project when ready — skip node_modules and .git.</p></div>
+        </div>
+        <div class="home-actions">
+          <button class="btn primary big" type="button" onclick="loadDemoMode()">Load Sample Repository</button>
+          <button class="btn ghost big" type="button" onclick="startGuidedWalkthrough()">Guided Walkthrough</button>
+          <button class="btn ghost big" type="button" id="browseHomBtn" onclick="browseRepoFolder()">Scan my repository</button>
+        </div>
+        <h2 class="ask">Or explore by task</h2>
+        <div class="cards">
+          <div class="card glass" onclick="go('center')"><div class="ci">🧭</div><h3>Understand this repository</h3><p>Architecture summary, hubs, risks, module map.</p></div>
+          <div class="card glass" onclick="go('build')"><div class="ci">🛠</div><h3>Plan a feature change</h3><p>Grounded files, tests, and implementation order.</p></div>
+          <div class="card glass" onclick="go('investigate')"><div class="ci">🐞</div><h3>Investigate a bug</h3><p>Symptom → likely files, hypothesis, verification.</p></div>
+          <div class="card glass" onclick="go('impact')"><div class="ci">🌐</div><h3>Analyze impact of a change</h3><p>Direct importers and tests before you edit.</p></div>
+          <div class="card glass accent" onclick="go('export')"><div class="ci">✨</div><h3>Export context for Claude/Cursor</h3><p>Accurate compact or verbose context packets.</p></div>
+        </div>
+
+        <div class="repo-pick glass">
+          <label for="repoPath">Repository folder</label>
+          <p class="muted tiny picker-help">Paste your <b>project root</b> (not <code>node_modules</code> or <code>.git</code>). Atlas runs locally — your code is not uploaded. New here? Use <b>Load Sample Repository</b> above first.</p>
+          <div class="pick-row">
+            <input id="repoPath" type="text" placeholder="C:\projects\my-app  or  /home/dev/my-app" value="" autocomplete="off" />
+            <button class="btn browse-btn" id="browseRepoBtn" type="button" onclick="browseRepoFolder()">Browse</button>
+            <button class="btn ghost" type="button" onclick="validateRepoPath(true)">Validate</button>
+          </div>
+          <div class="path-error" id="pathError" style="display:none"></div>
+          <div class="path-ok muted tiny" id="pathOk" style="display:none"></div>
+          <div class="scope-wrap">
+            <label>Scan scope</label>
+            <div class="scope-grid">
+              <select id="scopeMode">
+                <option value="entire_repo">Entire repository</option>
+                <option value="folder">Specific folder</option>
+                <option value="python_only">Only Python</option>
+                <option value="backend">Only backend</option>
+                <option value="frontend">Only frontend</option>
+                <option value="custom">Custom patterns</option>
+              </select>
+              <input id="scopeFolder" type="text" placeholder="folder path (for Specific folder)" />
+            </div>
+            <div class="scope-grid">
+              <input id="scopeInclude" type="text" placeholder="include patterns, comma-separated (custom)" />
+              <input id="scopeExclude" type="text" placeholder="exclude patterns, comma-separated (custom)" />
+            </div>
+            <label class="graph-toggle edge-toggle"><input type="checkbox" id="manualMassiveMode"> Force Massive Repository Mode</label>
+            <div id="preScanEstimate" class="muted tiny"></div>
+          </div>
+          <div class="pick-actions">
+            <button class="btn primary big" type="button" id="scanBtn" disabled onclick="scanFlow()">⟳ Scan Repository</button>
+          </div>
+          <div class="demo-pack glass">
+            <label>Sample repository size</label>
+            <p class="muted tiny">Explore Atlas instantly — no folder path required. Pick a bundled sample codebase.</p>
+            <div id="demoPackList" class="demo-pack-grid"></div>
+          </div>
+          <div class="recent">
+            <span class="recent-title">Recent repositories</span>
+            <div id="recentList" class="recent-list"><span class="muted">No history yet — scan a repository or load a sample to populate this list.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SCREEN 2: SCAN ===================== -->
+    <section class="view" id="view-scan">
+      <h2 class="vh">Scan repository</h2>
+      <div id="scanRunning">
+        <div class="scan-path glass" id="scanPath">—</div>
+        <div class="scan-path glass" id="scanModeInfo" style="display:none"></div>
+        <div class="scan-wrap">
+          <div class="stages glass" id="stages"></div>
+          <div class="metrics glass" id="scanMetrics"><div class="skeleton-grid" id="scanSkeleton"></div></div>
+        </div>
+        <div class="scan-foot"><div class="bar"><div class="bar-fill" id="scanBar"></div></div><span id="scanPct">0%</span><button class="btn ghost small" type="button" onclick="cancelCurrentScan()">Cancel scan</button></div>
+      </div>
+      <div id="scanSuccess" class="scan-result glass" style="display:none">
+        <h3>Scan complete</h3>
+        <p class="muted" id="scanSuccessSub"></p>
+        <div class="success-grid" id="scanSuccessMetrics"></div>
+        <div class="success-risk" id="scanSuccessRisk"></div>
+        <div id="scanReliabilityNotice" style="display:none"></div>
+        <h4 class="success-actions-title">Suggested next steps</h4>
+        <ul class="clean" id="scanSuccessActions"></ul>
+        <div class="success-buttons">
+          <button class="btn primary" onclick="goToFirstBuildPlan()">Try your first Build Plan</button>
+          <button class="btn ghost" onclick="go('center')">Explore Repository Map</button>
+          <button class="btn ghost" onclick="focusCopilot()">Ask Copilot</button>
+        </div>
+      </div>
+      <div id="scanFailed" class="scan-result glass fail" style="display:none">
+        <h3>Scan failed</h3>
+        <p id="scanFailedMsg" class="fail-msg"></p>
+        <ul class="clean" id="scanFailedHints"></ul>
+        <div class="success-buttons">
+          <button class="btn primary" onclick="go('home')">Choose another folder</button>
+          <button class="btn ghost" onclick="loadDemoMode()">Load Sample Repository</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SCREEN 3: COMMAND CENTER ===================== -->
+    <section class="view" id="view-center">
+      <div class="center-grid">
+        <aside class="panel glass left" id="leftPanel"></aside>
+        <div class="graph-stage">
+          <div class="map-header">
+            <div class="map-titlebar">
+              <div class="map-title-left">
+                <h3>Repository Map</h3>
+                <span class="map-repo" id="mapRepoName"></span>
+                <span class="map-health-badge" id="mapHealthBadge"></span>
+              </div>
+              <div class="graph-controls">
+                <div class="graph-toggle" role="radiogroup" aria-label="Graph view">
+                  <label><input type="radio" name="graphView" value="module" checked onchange="setGraphView('module')"> Module</label>
+                  <label><input type="radio" name="graphView" value="subsystem" onchange="setGraphView('subsystem')"> Architecture</label>
+                  <label><input type="radio" name="graphView" value="hierarchy" onchange="setGraphView('hierarchy')"> Hierarchy</label>
+                </div>
+                <button class="btn small ghost" type="button" onclick="resetGraphView()" title="Reset camera to default position">Reset View</button>
+                <details class="graph-advanced-toolbar">
+                  <summary class="btn small ghost">Advanced ▾</summary>
+                  <div class="graph-toolbar glass">
+                    <label class="graph-toggle edge-toggle"><input type="checkbox" id="showEdges" checked onchange="toggleGraphEdges()"> Show edges</label>
+                    <button class="btn small tour-btn" type="button" onclick="startRepositoryTour()">Tour Repository</button>
+                    <button class="btn small ghost" type="button" onclick="exportDemoBundle()">Export Bundle</button>
+                    <button class="btn small ghost" type="button" onclick="exportGraphPNG()">PNG</button>
+                    <button class="btn small ghost" type="button" onclick="exportGraphSVG()">SVG</button>
+                    <button class="btn small ghost" id="screenshotBtn" type="button" onclick="toggleScreenshotMode()">Screenshot</button>
+                  </div>
+                </details>
+              </div>
+            </div>
+            <div class="map-metrics glass" id="graphScaleHeader" aria-label="Graph metrics"></div>
+            <div class="map-breadcrumb" id="mapBreadcrumb" style="display:none">
+              <div id="hierarchyBreadcrumb" class="muted tiny">Repository</div>
+              <button class="btn small ghost" type="button" onclick="backToOverview()">Back to overview</button>
+              <span class="muted tiny" id="hierarchyCounts"></span>
+            </div>
+            <div class="map-warning" id="graphWarning" style="display:none"></div>
+            <div class="map-massive" id="massiveModeBanner" style="display:none" role="status">
+              <span class="mmb-title">Massive Mode</span>
+              <span class="mmb-reason muted tiny" id="massiveModeReason">enabled due to repository size</span>
+              <button class="btn small primary" type="button" id="showFullModuleGraphBtn" onclick="showFullModuleGraph()">Show full module graph</button>
+            </div>
+          </div>
+          <span class="muted tiny" id="graphMeta" style="display:none"></span>
+          <div class="graph-mode-badge" id="graphModeBadge" style="display:none" aria-live="polite">Module Graph</div>
+          <p class="graph-entity-summary" id="graphEntitySummary" style="display:none" aria-live="polite"></p>
+          <div class="graph-render-diagnostics glass" id="graphRenderDiagnostics" style="display:none" aria-live="polite"></div>
+          <div id="graph3d"></div>
+          <div class="module-browse-panel glass" id="moduleBrowsePanel" style="display:none" aria-label="Module list fallback">
+            <div class="mbp-head"><h4>Module list</h4><span class="muted tiny" id="moduleBrowseSummary"></span></div>
+            <input type="search" id="moduleBrowseFilter" class="mbp-filter" placeholder="Filter modules…" oninput="filterModuleBrowseList()" />
+            <ul class="clean mbp-list" id="moduleBrowseList"></ul>
+          </div>
+          <div class="tour-panel glass" id="tourPanel" style="display:none">
+            <div class="tour-step" id="tourStep">Step 1/5</div>
+            <h4 id="tourTitle">Tour</h4>
+            <p id="tourNarration" class="muted"></p>
+            <button class="btn small ghost" type="button" onclick="stopRepositoryTour()">Exit tour</button>
+          </div>
+          <div class="product-tour-panel glass" id="productTourPanel" style="display:none">
+            <div class="tour-step" id="productTourStep">Product tour</div>
+            <h4 id="productTourTitle">Recording flow</h4>
+            <p id="productTourNarration" class="muted"></p>
+            <button class="btn small ghost" type="button" onclick="stopProductTour()">Stop tour</button>
+          </div>
+          <div class="graph-legend glass" id="graphLegend">
+            <div class="legend-item"><div class="legend-dot" style="background:#3ef0ff"></div><span>Normal</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#ffc24b"></div><span>Elevated risk</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#ff5c7a"></div><span>High risk</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#9a7bff"></div><span>Cycle</span></div>
+          </div>
+          <div class="presentation-badge" id="presentationBadge" style="display:none">ATLAS · Repository Intelligence</div>
+          <div class="timeline-panel glass" id="timelinePanel"></div>
+        </div>
+        <aside class="panel glass right">
+          <div class="inspector-wrap" id="moduleInspector">
+            <h3>Module Inspector</h3>
+            <p class="muted tiny">Click a node to inspect module evidence, imports, and blast radius.</p>
+          </div>
+          <div class="inspector-quick" id="inspectorQuick" style="display:none">
+            <button class="btn small ghost" onclick="copyInspectorPath()">Copy path</button>
+            <button class="btn small ghost" onclick="genInspectorPrompt('claude')">Claude</button>
+            <button class="btn small ghost" onclick="genInspectorPrompt('codex')">Codex</button>
+            <button class="btn small ghost" onclick="genInspectorPrompt('cursor')">Cursor</button>
+          </div>
+          <h3>AI Copilot</h3>
+          <div class="copilot">
+            <div class="selected-node glass" id="selectedNodeCard" style="display:none"></div>
+            <div class="ask-row">
+              <input id="askInput" type="text" placeholder="Ask about this repository…" />
+              <button class="btn primary small" id="askSend" onclick="sendCopilotQuestion()">Send</button>
+            </div>
+            <div class="suggest" id="suggest"></div>
+            <div class="copilot-loading" id="copilotLoading" style="display:none">Analyzing repository…</div>
+            <div class="copilot-card glass" id="copilotCard" style="display:none">
+              <div class="copilot-card-head">
+                <span class="pill" id="copilotMode">mode</span>
+                <span class="lvl" id="copilotRisk">risk</span>
+              </div>
+              <div id="copilotImpactSummary"></div>
+              <div class="copilot-answer" id="copilotAnswer"></div>
+              <div class="copilot-section" id="copilotEvidenceWrap" style="display:none">
+                <div class="copilot-label">Evidence</div>
+                <ul class="clean" id="copilotEvidence"></ul>
+              </div>
+              <div class="copilot-section" id="copilotFilesWrap" style="display:none">
+                <div class="copilot-label">Relevant files</div>
+                <div class="taglist" id="copilotFiles"></div>
+              </div>
+              <div class="copilot-section" id="copilotActionWrap" style="display:none">
+                <div class="copilot-label">Suggested next action</div>
+                <div class="muted tiny" id="copilotAction"></div>
+              </div>
+              <div class="copy-row">
+                <button class="btn small" onclick="copyCopilotAnswer()">Copy answer</button>
+                <button class="btn small" onclick="copyCopilotTarget('claude')">Copy Claude</button>
+                <button class="btn small" onclick="copyCopilotTarget('codex')">Copy Codex</button>
+                <button class="btn small" onclick="copyCopilotTarget('cursor')">Copy Cursor</button>
+              </div>
+            </div>
+            <div class="copilot-out" id="copilotOut"><span class="muted">Ask a question about the scanned repository. Answers are grounded in Builder Core analysis — no external API calls.</span></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===================== SCREEN: BUILD PLAN ===================== -->
+    <section class="view" id="view-build">
+      <h2 class="vh">Build Plan</h2>
+      <p class="muted tiny" style="margin:-8px 4px 14px">Describe what you want to add or change. Atlas lists affected files, implementation order, and tests — then you implement (or paste the export into your AI assistant).</p>
+      <div id="firstBuildBanner" class="beta-notice glass" style="display:none">
+        <b>First Build Plan</b> — keep the example below or type your own feature, then click <b>Generate Change Plan</b>.
+      </div>
+      <div class="io glass">
+        <label>What do you want to add or change?</label>
+        <textarea id="buildRequest" rows="4" placeholder="e.g. Add user authentication&#10;Add request rate limiting&#10;Add audit logging"></textarea>
+        <button class="btn primary" onclick="runChangePlan()">Generate Change Plan</button>
+      </div>
+      <div class="workflow-toolbar glass" id="buildToolbar" style="display:none">
+        <button class="btn small ghost" type="button" onclick="downloadWorkflowMarkdownBundle()">Export markdown bundle</button>
+      </div>
+      <div id="buildOut" class="out"><div class="glass empty-panel"><h3 style="margin:0 0 8px">Build Plan needs a scanned repository</h3><p class="muted" style="margin:0">Load the sample repository (about 60 seconds) or scan your own folder from Home.</p><div class="success-buttons" style="margin-top:14px"><button class="btn primary" type="button" onclick="loadDemoMode()">Load Sample Repository</button></div></div></div>
+    </section>
+
+    <!-- ===================== SCREEN: INVESTIGATE BUG ===================== -->
+    <section class="view" id="view-investigate">
+      <h2 class="vh">Investigate Bug</h2>
+      <p class="muted tiny" style="margin:-8px 4px 14px">Describe a symptom or paste a stack trace. Atlas returns grounded files, a logical hypothesis, and verification steps — not fake certainty.</p>
+      <div class="io glass">
+        <label>What is going wrong?</label>
+        <textarea id="investigateSymptom" rows="6" placeholder="e.g. The backtest is better than paper trading&#10;Dashboard PnL is wrong&#10;Scan graph shows wrong module count&#10;&#10;Or paste a traceback with file paths…"></textarea>
+        <button class="btn primary" onclick="runInvestigationPlan()">Generate Investigation Plan</button>
+      </div>
+      <div class="workflow-toolbar glass" id="investigateToolbar" style="display:none">
+        <button class="btn small ghost" type="button" onclick="downloadWorkflowMarkdownBundle()">Export markdown bundle</button>
+      </div>
+      <div id="investigateOut" class="out"><div class="glass empty-panel muted">Describe a symptom after scanning — Atlas suggests files and verification steps.</div></div>
+    </section>
+
+    <!-- ===================== SCREEN 5: IMPACT SIMULATOR ===================== -->
+    <section class="view" id="view-impact">
+      <h2 class="vh">Impact Analysis</h2>
+      <p class="muted tiny" style="margin:-8px 4px 14px">See which files import your target — files that may break if you change it (blast radius).</p>
+      <div class="io glass">
+        <label>What file or module do you want to change?</label>
+        <div class="pick-row">
+          <input id="impactTarget" type="text" placeholder="e.g. config.py  or  builder_core/ask.py" />
+          <button class="btn primary" onclick="runImpact()">Simulate Impact</button>
+        </div>
+      </div>
+      <div class="workflow-toolbar glass" id="impactToolbar" style="display:none">
+        <button class="btn small ghost" type="button" onclick="downloadWorkflowMarkdownBundle()">Export markdown bundle</button>
+      </div>
+      <div id="impactOut" class="out"><div class="glass empty-panel muted">Enter a module path after scanning to see blast radius and affected tests.</div></div>
+    </section>
+
+    <!-- ===================== SCREEN: EXPORT ===================== -->
+    <section class="view" id="view-export">
+      <h2 class="vh">Export</h2>
+      <div class="export-grid">
+        <div class="glass controls">
+          <div class="export-why">
+            <div class="export-why-title">Why this helps</div>
+            <p>Atlas gives your AI assistant repository context before it starts guessing. Compact packets reduce token cost; verbose packets include full architectural evidence.</p>
+            <p class="muted tiny" style="margin-top:10px"><b>After you copy:</b> paste into a new chat in Claude, Codex, or Cursor, then ask your assistant to implement or review using that context.</p>
+          </div>
+          <label>Target</label>
+          <div class="seg" id="segTarget">
+            <button class="active" data-v="claude">Claude</button>
+            <button data-v="codex">Codex</button>
+            <button data-v="cursor">Cursor</button>
+          </div>
+          <label>Packet</label>
+          <div class="seg" id="segPacket">
+            <button class="active" data-v="compact">Compact</button>
+            <button data-v="verbose">Verbose</button>
+          </div>
+          <div class="tok-est"><span class="muted">Estimated tokens</span><span class="tok-big" id="tokEst">—</span></div>
+          <div class="copy-row">
+            <button class="btn primary" onclick="copyExport()">Copy to clipboard</button>
+            <button class="btn ghost" onclick="saveExport()">Save prompt</button>
+            <button class="btn ghost" onclick="downloadWorkflowMarkdownBundle()">Export workflow markdown</button>
+            <button class="btn ghost" onclick="exportDemoBundle()">Export Demo Bundle</button>
+          </div>
+          <p class="muted tiny">Token numbers are estimates (chars/4). No API keys required — copy & paste into your tool.</p>
+        </div>
+        <div class="glass preview">
+          <div class="preview-head"><span>Context preview</span><span class="muted" id="previewMeta"></span></div>
+          <pre id="exportPreview" class="code">Scan a repository, then choose a target and packet.</pre>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <button class="btn ghost screenshot-exit" id="screenshotExitBtn" type="button" onclick="exitPresentationMode()">Exit screenshot</button>
+
+  <div id="welcomeScreen" class="welcome-screen" style="display:none">
+    <div class="welcome-card glass">
+      <p class="onboard-eyebrow">Private beta</p>
+      <h1 class="welcome-title">Welcome to Atlas</h1>
+      <p class="muted welcome-lead">Atlas maps your repository on your machine and prepares grounded <b>Build Plans</b> for your AI tools. It does <b>not</b> write or apply code for you.</p>
+      <p class="muted tiny">Fastest start: load the sample, then generate your first Build Plan in about a minute.</p>
+      <div class="welcome-actions">
+        <button class="btn primary big" type="button" onclick="welcomeLoadSample()">Load Sample Repository</button>
+        <button class="btn ghost big" type="button" onclick="welcomeStartWalkthrough()">Guided Walkthrough</button>
+        <button class="btn ghost big" type="button" onclick="dismissWelcomeScreen(true)">Use my own repository</button>
+      </div>
+      <p class="muted tiny welcome-foot">No account required · analysis stays local · <a href="about.html" class="welcome-link">About Atlas</a></p>
+    </div>
+  </div>
+
+  <div id="guidedWalkthroughPanel" class="guided-walkthrough glass" style="display:none">
+    <div class="tour-step" id="guidedTourStep">Step 1 / 8</div>
+    <h4 id="guidedTourTitle">Welcome</h4>
+    <p id="guidedTourText" class="muted tiny"></p>
+    <div class="guided-tour-actions">
+      <button class="btn small primary" type="button" onclick="guidedWalkthroughNext()">Next</button>
+      <button class="btn small ghost" type="button" onclick="stopGuidedWalkthrough()">Skip tour</button>
+    </div>
+  </div>
+
+  <div id="aboutAtlasModal" class="about-modal" style="display:none" onclick="closeAboutAtlas()">
+    <div class="about-card glass" onclick="event.stopPropagation()">
+      <h2>About Atlas</h2>
+      <h3>What Atlas does</h3>
+      <ul class="clean about-list">
+        <li>Scans your repository locally — files, modules, imports, and dependency edges</li>
+        <li>Maps architecture and risk in an interactive Repository Map</li>
+        <li>Generates grounded <b>Build Plans</b>, <b>Investigations</b>, and <b>Impact</b> analysis</li>
+        <li>Exports compact context packets for Claude, Codex, and Cursor</li>
+        <li>Stores feedback and diagnostics on your device for beta support</li>
+      </ul>
+      <h3>What Atlas does not do</h3>
+      <ul class="clean about-list muted">
+        <li>Does not upload your source code to the cloud for analysis</li>
+        <li>Does not apply patches, run git commands, or edit files automatically</li>
+        <li>Does not replace your IDE, test runner, or production monitoring</li>
+        <li>Does not guarantee correct root cause — investigations are ranked hypotheses</li>
+        <li>Does not require an API key for core repository scanning</li>
+      </ul>
+      <div class="success-buttons">
+        <button class="btn primary" type="button" onclick="closeAboutAtlas()">Close</button>
+        <a class="btn ghost" href="about.html">Full about page</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="onboarding" class="onboarding" style="display:none">
+    <div class="onboarding-card glass">
+      <p class="onboard-eyebrow">Private beta · ~60 second tour</p>
+      <h2>Welcome to ATLAS</h2>
+      <p class="muted">Map your repository locally, then plan changes, investigate bugs, and analyze impact — without sending code to the cloud.</p>
+      <div class="onboard-steps-grid">
+        <div class="onboard-step-card"><span class="onboard-num">1</span><b>Select repository</b><p class="muted tiny">Browse your project folder or load a built-in sample.</p></div>
+        <div class="onboard-step-card"><span class="onboard-num">2</span><b>Scan</b><p class="muted tiny">Atlas indexes files, modules, imports, and risks on your machine.</p></div>
+        <div class="onboard-step-card"><span class="onboard-num">3</span><b>Repository Map</b><p class="muted tiny">Explore dependencies, hubs, and architecture in 3D.</p></div>
+        <div class="onboard-step-card"><span class="onboard-num">4</span><b>Build · Investigate · Impact</b><p class="muted tiny">Grounded plans and blast-radius analysis for your next change.</p></div>
+      </div>
+      <div class="onboard-actions">
+        <button class="btn primary" onclick="onboardingLoadSample()">Load Sample Repository</button>
+        <button class="btn ghost" onclick="dismissOnboarding(false)">Use my own repository</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script src="universe.js"></script>
+  <script src="app.js"></script>
+  <script src="feedback.js"></script>
+  <script>document.body.dataset.fbHideButton = "1";</script>
+  <script src="atlas_beta.js"></script>
+  <script src="atlas_polish.js"></script>
+</body>
+</html>

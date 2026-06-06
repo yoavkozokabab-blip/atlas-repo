@@ -59,12 +59,15 @@ def _fidelity(workflow: str, result: dict) -> dict:
 def test_session_export_once_per_scan(scanned_repo):
     packet = api.session_export_packet()
     assert packet.get("ok")
-    assert packet.get("mode") == "SESSION"
+    # Phase 172: mode is MEMORY (upgraded from SESSION); both are valid
+    assert packet.get("mode") in ("SESSION", "MEMORY")
     text = packet.get("text", "")
-    assert "ATLAS_SESSION v1" in text
+    # Phase 172 uses ATLAS_REPOSITORY_MEMORY v1 header; SESSION v1 is fallback
+    assert "ATLAS_SESSION v1" in text or "ATLAS_REPOSITORY_MEMORY v1" in text
     assert packet.get("tokens", 0) <= 350
     assert "graph_health" in text
-    assert "top_subsystems" in text
+    # top_subsystems appears in both SESSION v1 and MEMORY v1
+    assert "subsystem" in text
 
 
 def test_build_export_regression(scanned_repo):

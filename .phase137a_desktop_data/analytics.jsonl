@@ -1,0 +1,8 @@
+{"ts": 1780522899.1894116, "event": "scan_completed", "product": "phase137a-usage-billing-ready", "demo": true, "modules": 5, "edges": 4, "cache_hit": false, "massive_mode": false}
+{"ts": 1780522899.1981022, "event": "demo_loaded", "product": "phase137a-usage-billing-ready", "pack": "small", "modules": 5}
+{"ts": 1780522927.2292898, "event": "scan_completed", "product": "phase137a-usage-billing-ready", "demo": true, "modules": 5, "edges": 4, "cache_hit": false, "massive_mode": false}
+{"ts": 1780522927.2306397, "event": "demo_loaded", "product": "phase137a-usage-billing-ready", "pack": "small", "modules": 5}
+{"ts": 1780522927.5751789, "event": "change_plan_created", "product": "phase137a-usage-billing-ready", "intent": "general", "confidence": "low-medium"}
+{"ts": 1780522927.6340861, "event": "investigation_plan_created", "product": "phase137a-usage-billing-ready", "intent": "general", "confidence": "low-medium"}
+{"ts": 1780522927.6385562, "event": "impact_analyzed", "product": "phase137a-usage-billing-ready", "risk_level": "low", "confidence": "medium"}
+{"ts": 1780522927.6395664, "event": "export_created", "product": "phase137a-usage-billing-ready", "target": "claude", "packet": "compact"}

@@ -115,7 +115,12 @@ def main() -> int:
             print("\n  Opening Atlas Support so you can fix or export diagnostics.\n")
         args.support = True
 
-    open_path = "/support.html" if args.support else "/"
+    if not checks.get("ready"):
+        open_path = "/startup-error.html"
+    elif args.support:
+        open_path = "/support.html"
+    else:
+        open_path = "/"
     if args.fastapi:
         try:
             import uvicorn  # type: ignore

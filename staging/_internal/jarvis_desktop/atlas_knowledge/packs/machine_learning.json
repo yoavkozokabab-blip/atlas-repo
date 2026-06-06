@@ -1,0 +1,1447 @@
+{
+"concepts": [
+{
+"concept_id": "machine_learning_model_training_pipeline_0",
+"name": "Model Training Pipeline",
+"aliases": [
+"machine learning model training pipeline 0",
+"model training pipeline",
+"Model Training Pipeline"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Model Training Pipeline in machine learning systems.",
+"requirements": [
+"Understand Model Training Pipeline prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Model Training Pipeline causing production incidents."
+],
+"failure_modes": [
+"Model Training Pipeline fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Model Training Pipeline behavior against official specification."
+],
+"testing": [
+"Automated tests covering Model Training Pipeline happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_model_training_pipeline_0"
+],
+"confidence": "high",
+"path_keywords": [
+"model",
+"training",
+"pipeline",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_feature_store_1",
+"name": "Feature Store",
+"aliases": [
+"machine learning feature store 1",
+"feature store",
+"Feature Store"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Feature Store in machine learning systems.",
+"requirements": [
+"Understand Feature Store prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Feature Store causing production incidents."
+],
+"failure_modes": [
+"Feature Store fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Feature Store behavior against official specification."
+],
+"testing": [
+"Automated tests covering Feature Store happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_feature_store_1"
+],
+"confidence": "high",
+"path_keywords": [
+"feature",
+"store",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_batch_inference_2",
+"name": "Batch Inference",
+"aliases": [
+"machine learning batch inference 2",
+"batch inference",
+"Batch Inference"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Batch Inference in machine learning systems.",
+"requirements": [
+"Understand Batch Inference prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Batch Inference causing production incidents."
+],
+"failure_modes": [
+"Batch Inference fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Batch Inference behavior against official specification."
+],
+"testing": [
+"Automated tests covering Batch Inference happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_batch_inference_2"
+],
+"confidence": "high",
+"path_keywords": [
+"batch",
+"inference",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_online_inference_3",
+"name": "Online Inference",
+"aliases": [
+"machine learning online inference 3",
+"online inference",
+"Online Inference"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Online Inference in machine learning systems.",
+"requirements": [
+"Understand Online Inference prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Online Inference causing production incidents."
+],
+"failure_modes": [
+"Online Inference fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Online Inference behavior against official specification."
+],
+"testing": [
+"Automated tests covering Online Inference happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_online_inference_3"
+],
+"confidence": "high",
+"path_keywords": [
+"online",
+"inference",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_embedding_model_4",
+"name": "Embedding Model",
+"aliases": [
+"machine learning embedding model 4",
+"embedding model",
+"Embedding Model"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Embedding Model in machine learning systems.",
+"requirements": [
+"Understand Embedding Model prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Embedding Model causing production incidents."
+],
+"failure_modes": [
+"Embedding Model fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Embedding Model behavior against official specification."
+],
+"testing": [
+"Automated tests covering Embedding Model happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_embedding_model_4"
+],
+"confidence": "high",
+"path_keywords": [
+"embedding",
+"model",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_vector_search_5",
+"name": "Vector Search",
+"aliases": [
+"machine learning vector search 5",
+"vector search",
+"Vector Search"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Vector Search in machine learning systems.",
+"requirements": [
+"Understand Vector Search prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Vector Search causing production incidents."
+],
+"failure_modes": [
+"Vector Search fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Vector Search behavior against official specification."
+],
+"testing": [
+"Automated tests covering Vector Search happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_vector_search_5"
+],
+"confidence": "high",
+"path_keywords": [
+"vector",
+"search",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_prompt_engineering_6",
+"name": "Prompt Engineering",
+"aliases": [
+"machine learning prompt engineering 6",
+"prompt engineering",
+"Prompt Engineering"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Prompt Engineering in machine learning systems.",
+"requirements": [
+"Understand Prompt Engineering prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Prompt Engineering causing production incidents."
+],
+"failure_modes": [
+"Prompt Engineering fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Prompt Engineering behavior against official specification."
+],
+"testing": [
+"Automated tests covering Prompt Engineering happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_prompt_engineering_6"
+],
+"confidence": "high",
+"path_keywords": [
+"prompt",
+"engineering",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_rag_pipeline_7",
+"name": "RAG Pipeline",
+"aliases": [
+"machine learning rag pipeline 7",
+"rag pipeline",
+"RAG Pipeline"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: RAG Pipeline in machine learning systems.",
+"requirements": [
+"Understand RAG Pipeline prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of RAG Pipeline causing production incidents."
+],
+"failure_modes": [
+"RAG Pipeline fails silently under load or edge inputs."
+],
+"verification": [
+"Validate RAG Pipeline behavior against official specification."
+],
+"testing": [
+"Automated tests covering RAG Pipeline happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_rag_pipeline_7"
+],
+"confidence": "high",
+"path_keywords": [
+"rag",
+"pipeline",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_fine_tuning_8",
+"name": "Fine Tuning",
+"aliases": [
+"machine learning fine tuning 8",
+"fine tuning",
+"Fine Tuning"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Fine Tuning in machine learning systems.",
+"requirements": [
+"Understand Fine Tuning prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Fine Tuning causing production incidents."
+],
+"failure_modes": [
+"Fine Tuning fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Fine Tuning behavior against official specification."
+],
+"testing": [
+"Automated tests covering Fine Tuning happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_fine_tuning_8"
+],
+"confidence": "high",
+"path_keywords": [
+"fine",
+"tuning",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_model_evaluation_9",
+"name": "Model Evaluation",
+"aliases": [
+"machine learning model evaluation 9",
+"model evaluation",
+"Model Evaluation"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Model Evaluation in machine learning systems.",
+"requirements": [
+"Understand Model Evaluation prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Model Evaluation causing production incidents."
+],
+"failure_modes": [
+"Model Evaluation fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Model Evaluation behavior against official specification."
+],
+"testing": [
+"Automated tests covering Model Evaluation happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_model_evaluation_9"
+],
+"confidence": "high",
+"path_keywords": [
+"model",
+"evaluation",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_data_drift_10",
+"name": "Data Drift",
+"aliases": [
+"machine learning data drift 10",
+"data drift",
+"Data Drift"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Data Drift in machine learning systems.",
+"requirements": [
+"Understand Data Drift prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Data Drift causing production incidents."
+],
+"failure_modes": [
+"Data Drift fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Data Drift behavior against official specification."
+],
+"testing": [
+"Automated tests covering Data Drift happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_data_drift_10"
+],
+"confidence": "high",
+"path_keywords": [
+"data",
+"drift",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_concept_drift_11",
+"name": "Concept Drift",
+"aliases": [
+"machine learning concept drift 11",
+"concept drift",
+"Concept Drift"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Concept Drift in machine learning systems.",
+"requirements": [
+"Understand Concept Drift prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Concept Drift causing production incidents."
+],
+"failure_modes": [
+"Concept Drift fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Concept Drift behavior against official specification."
+],
+"testing": [
+"Automated tests covering Concept Drift happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_concept_drift_11"
+],
+"confidence": "high",
+"path_keywords": [
+"concept",
+"drift",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_model_training_pipeline_12",
+"name": "Model Training Pipeline",
+"aliases": [
+"machine learning model training pipeline 12",
+"model training pipeline",
+"Model Training Pipeline"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Model Training Pipeline in machine learning systems.",
+"requirements": [
+"Understand Model Training Pipeline prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Model Training Pipeline causing production incidents."
+],
+"failure_modes": [
+"Model Training Pipeline fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Model Training Pipeline behavior against official specification."
+],
+"testing": [
+"Automated tests covering Model Training Pipeline happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_model_training_pipeline_12"
+],
+"confidence": "high",
+"path_keywords": [
+"model",
+"training",
+"pipeline",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_feature_store_13",
+"name": "Feature Store",
+"aliases": [
+"machine learning feature store 13",
+"feature store",
+"Feature Store"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Feature Store in machine learning systems.",
+"requirements": [
+"Understand Feature Store prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Feature Store causing production incidents."
+],
+"failure_modes": [
+"Feature Store fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Feature Store behavior against official specification."
+],
+"testing": [
+"Automated tests covering Feature Store happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_feature_store_13"
+],
+"confidence": "high",
+"path_keywords": [
+"feature",
+"store",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_batch_inference_14",
+"name": "Batch Inference",
+"aliases": [
+"machine learning batch inference 14",
+"batch inference",
+"Batch Inference"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Batch Inference in machine learning systems.",
+"requirements": [
+"Understand Batch Inference prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Batch Inference causing production incidents."
+],
+"failure_modes": [
+"Batch Inference fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Batch Inference behavior against official specification."
+],
+"testing": [
+"Automated tests covering Batch Inference happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_batch_inference_14"
+],
+"confidence": "high",
+"path_keywords": [
+"batch",
+"inference",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_online_inference_15",
+"name": "Online Inference",
+"aliases": [
+"machine learning online inference 15",
+"online inference",
+"Online Inference"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Online Inference in machine learning systems.",
+"requirements": [
+"Understand Online Inference prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Online Inference causing production incidents."
+],
+"failure_modes": [
+"Online Inference fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Online Inference behavior against official specification."
+],
+"testing": [
+"Automated tests covering Online Inference happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_online_inference_15"
+],
+"confidence": "high",
+"path_keywords": [
+"online",
+"inference",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_embedding_model_16",
+"name": "Embedding Model",
+"aliases": [
+"machine learning embedding model 16",
+"embedding model",
+"Embedding Model"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Embedding Model in machine learning systems.",
+"requirements": [
+"Understand Embedding Model prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Embedding Model causing production incidents."
+],
+"failure_modes": [
+"Embedding Model fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Embedding Model behavior against official specification."
+],
+"testing": [
+"Automated tests covering Embedding Model happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_embedding_model_16"
+],
+"confidence": "high",
+"path_keywords": [
+"embedding",
+"model",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_vector_search_17",
+"name": "Vector Search",
+"aliases": [
+"machine learning vector search 17",
+"vector search",
+"Vector Search"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Vector Search in machine learning systems.",
+"requirements": [
+"Understand Vector Search prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Vector Search causing production incidents."
+],
+"failure_modes": [
+"Vector Search fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Vector Search behavior against official specification."
+],
+"testing": [
+"Automated tests covering Vector Search happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_vector_search_17"
+],
+"confidence": "high",
+"path_keywords": [
+"vector",
+"search",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_prompt_engineering_18",
+"name": "Prompt Engineering",
+"aliases": [
+"machine learning prompt engineering 18",
+"prompt engineering",
+"Prompt Engineering"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Prompt Engineering in machine learning systems.",
+"requirements": [
+"Understand Prompt Engineering prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Prompt Engineering causing production incidents."
+],
+"failure_modes": [
+"Prompt Engineering fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Prompt Engineering behavior against official specification."
+],
+"testing": [
+"Automated tests covering Prompt Engineering happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_prompt_engineering_18"
+],
+"confidence": "high",
+"path_keywords": [
+"prompt",
+"engineering",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_rag_pipeline_19",
+"name": "RAG Pipeline",
+"aliases": [
+"machine learning rag pipeline 19",
+"rag pipeline",
+"RAG Pipeline"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: RAG Pipeline in machine learning systems.",
+"requirements": [
+"Understand RAG Pipeline prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of RAG Pipeline causing production incidents."
+],
+"failure_modes": [
+"RAG Pipeline fails silently under load or edge inputs."
+],
+"verification": [
+"Validate RAG Pipeline behavior against official specification."
+],
+"testing": [
+"Automated tests covering RAG Pipeline happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_rag_pipeline_19"
+],
+"confidence": "high",
+"path_keywords": [
+"rag",
+"pipeline",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_fine_tuning_20",
+"name": "Fine Tuning",
+"aliases": [
+"machine learning fine tuning 20",
+"fine tuning",
+"Fine Tuning"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Fine Tuning in machine learning systems.",
+"requirements": [
+"Understand Fine Tuning prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Fine Tuning causing production incidents."
+],
+"failure_modes": [
+"Fine Tuning fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Fine Tuning behavior against official specification."
+],
+"testing": [
+"Automated tests covering Fine Tuning happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_fine_tuning_20"
+],
+"confidence": "high",
+"path_keywords": [
+"fine",
+"tuning",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_model_evaluation_21",
+"name": "Model Evaluation",
+"aliases": [
+"machine learning model evaluation 21",
+"model evaluation",
+"Model Evaluation"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Model Evaluation in machine learning systems.",
+"requirements": [
+"Understand Model Evaluation prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Model Evaluation causing production incidents."
+],
+"failure_modes": [
+"Model Evaluation fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Model Evaluation behavior against official specification."
+],
+"testing": [
+"Automated tests covering Model Evaluation happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_model_evaluation_21"
+],
+"confidence": "high",
+"path_keywords": [
+"model",
+"evaluation",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_data_drift_22",
+"name": "Data Drift",
+"aliases": [
+"machine learning data drift 22",
+"data drift",
+"Data Drift"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Data Drift in machine learning systems.",
+"requirements": [
+"Understand Data Drift prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Data Drift causing production incidents."
+],
+"failure_modes": [
+"Data Drift fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Data Drift behavior against official specification."
+],
+"testing": [
+"Automated tests covering Data Drift happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_data_drift_22"
+],
+"confidence": "high",
+"path_keywords": [
+"data",
+"drift",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_concept_drift_23",
+"name": "Concept Drift",
+"aliases": [
+"machine learning concept drift 23",
+"concept drift",
+"Concept Drift"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Concept Drift in machine learning systems.",
+"requirements": [
+"Understand Concept Drift prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Concept Drift causing production incidents."
+],
+"failure_modes": [
+"Concept Drift fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Concept Drift behavior against official specification."
+],
+"testing": [
+"Automated tests covering Concept Drift happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_concept_drift_23"
+],
+"confidence": "high",
+"path_keywords": [
+"concept",
+"drift",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_model_training_pipeline_24",
+"name": "Model Training Pipeline",
+"aliases": [
+"machine learning model training pipeline 24",
+"model training pipeline",
+"Model Training Pipeline"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Model Training Pipeline in machine learning systems.",
+"requirements": [
+"Understand Model Training Pipeline prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Model Training Pipeline causing production incidents."
+],
+"failure_modes": [
+"Model Training Pipeline fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Model Training Pipeline behavior against official specification."
+],
+"testing": [
+"Automated tests covering Model Training Pipeline happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_model_training_pipeline_24"
+],
+"confidence": "high",
+"path_keywords": [
+"model",
+"training",
+"pipeline",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_feature_store_25",
+"name": "Feature Store",
+"aliases": [
+"machine learning feature store 25",
+"feature store",
+"Feature Store"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Feature Store in machine learning systems.",
+"requirements": [
+"Understand Feature Store prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Feature Store causing production incidents."
+],
+"failure_modes": [
+"Feature Store fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Feature Store behavior against official specification."
+],
+"testing": [
+"Automated tests covering Feature Store happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_feature_store_25"
+],
+"confidence": "high",
+"path_keywords": [
+"feature",
+"store",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_batch_inference_26",
+"name": "Batch Inference",
+"aliases": [
+"machine learning batch inference 26",
+"batch inference",
+"Batch Inference"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Batch Inference in machine learning systems.",
+"requirements": [
+"Understand Batch Inference prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Batch Inference causing production incidents."
+],
+"failure_modes": [
+"Batch Inference fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Batch Inference behavior against official specification."
+],
+"testing": [
+"Automated tests covering Batch Inference happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_batch_inference_26"
+],
+"confidence": "high",
+"path_keywords": [
+"batch",
+"inference",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_online_inference_27",
+"name": "Online Inference",
+"aliases": [
+"machine learning online inference 27",
+"online inference",
+"Online Inference"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Online Inference in machine learning systems.",
+"requirements": [
+"Understand Online Inference prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Online Inference causing production incidents."
+],
+"failure_modes": [
+"Online Inference fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Online Inference behavior against official specification."
+],
+"testing": [
+"Automated tests covering Online Inference happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_online_inference_27"
+],
+"confidence": "high",
+"path_keywords": [
+"online",
+"inference",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_embedding_model_28",
+"name": "Embedding Model",
+"aliases": [
+"machine learning embedding model 28",
+"embedding model",
+"Embedding Model"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Embedding Model in machine learning systems.",
+"requirements": [
+"Understand Embedding Model prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Embedding Model causing production incidents."
+],
+"failure_modes": [
+"Embedding Model fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Embedding Model behavior against official specification."
+],
+"testing": [
+"Automated tests covering Embedding Model happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_embedding_model_28"
+],
+"confidence": "high",
+"path_keywords": [
+"embedding",
+"model",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_vector_search_29",
+"name": "Vector Search",
+"aliases": [
+"machine learning vector search 29",
+"vector search",
+"Vector Search"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Vector Search in machine learning systems.",
+"requirements": [
+"Understand Vector Search prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Vector Search causing production incidents."
+],
+"failure_modes": [
+"Vector Search fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Vector Search behavior against official specification."
+],
+"testing": [
+"Automated tests covering Vector Search happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_vector_search_29"
+],
+"confidence": "high",
+"path_keywords": [
+"vector",
+"search",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_prompt_engineering_30",
+"name": "Prompt Engineering",
+"aliases": [
+"machine learning prompt engineering 30",
+"prompt engineering",
+"Prompt Engineering"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Prompt Engineering in machine learning systems.",
+"requirements": [
+"Understand Prompt Engineering prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Prompt Engineering causing production incidents."
+],
+"failure_modes": [
+"Prompt Engineering fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Prompt Engineering behavior against official specification."
+],
+"testing": [
+"Automated tests covering Prompt Engineering happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_prompt_engineering_30"
+],
+"confidence": "high",
+"path_keywords": [
+"prompt",
+"engineering",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_rag_pipeline_31",
+"name": "RAG Pipeline",
+"aliases": [
+"machine learning rag pipeline 31",
+"rag pipeline",
+"RAG Pipeline"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: RAG Pipeline in machine learning systems.",
+"requirements": [
+"Understand RAG Pipeline prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of RAG Pipeline causing production incidents."
+],
+"failure_modes": [
+"RAG Pipeline fails silently under load or edge inputs."
+],
+"verification": [
+"Validate RAG Pipeline behavior against official specification."
+],
+"testing": [
+"Automated tests covering RAG Pipeline happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_rag_pipeline_31"
+],
+"confidence": "high",
+"path_keywords": [
+"rag",
+"pipeline",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_fine_tuning_32",
+"name": "Fine Tuning",
+"aliases": [
+"machine learning fine tuning 32",
+"fine tuning",
+"Fine Tuning"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Fine Tuning in machine learning systems.",
+"requirements": [
+"Understand Fine Tuning prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Fine Tuning causing production incidents."
+],
+"failure_modes": [
+"Fine Tuning fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Fine Tuning behavior against official specification."
+],
+"testing": [
+"Automated tests covering Fine Tuning happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_fine_tuning_32"
+],
+"confidence": "high",
+"path_keywords": [
+"fine",
+"tuning",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_model_evaluation_33",
+"name": "Model Evaluation",
+"aliases": [
+"machine learning model evaluation 33",
+"model evaluation",
+"Model Evaluation"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Model Evaluation in machine learning systems.",
+"requirements": [
+"Understand Model Evaluation prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Model Evaluation causing production incidents."
+],
+"failure_modes": [
+"Model Evaluation fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Model Evaluation behavior against official specification."
+],
+"testing": [
+"Automated tests covering Model Evaluation happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_model_evaluation_33"
+],
+"confidence": "high",
+"path_keywords": [
+"model",
+"evaluation",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_data_drift_34",
+"name": "Data Drift",
+"aliases": [
+"machine learning data drift 34",
+"data drift",
+"Data Drift"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Data Drift in machine learning systems.",
+"requirements": [
+"Understand Data Drift prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Data Drift causing production incidents."
+],
+"failure_modes": [
+"Data Drift fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Data Drift behavior against official specification."
+],
+"testing": [
+"Automated tests covering Data Drift happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_data_drift_34"
+],
+"confidence": "high",
+"path_keywords": [
+"data",
+"drift",
+"machine"
+]
+},
+{
+"concept_id": "machine_learning_concept_drift_35",
+"name": "Concept Drift",
+"aliases": [
+"machine learning concept drift 35",
+"concept drift",
+"Concept Drift"
+],
+"domain": "machine_learning",
+"category": "pattern",
+"description": "Engineering concept: Concept Drift in machine learning systems.",
+"requirements": [
+"Understand Concept Drift prerequisites in machine_learning context."
+],
+"common_implementations": [
+"Typical pattern integration in machine_learning systems."
+],
+"risks": [
+"Misconfiguration of Concept Drift causing production incidents."
+],
+"failure_modes": [
+"Concept Drift fails silently under load or edge inputs."
+],
+"verification": [
+"Validate Concept Drift behavior against official specification."
+],
+"testing": [
+"Automated tests covering Concept Drift happy path and failure cases."
+],
+"related_concepts": [],
+"references": [
+"atlas://catalog/machine_learning/machine_learning_concept_drift_35"
+],
+"confidence": "high",
+"path_keywords": [
+"concept",
+"drift",
+"machine"
+]
+}
+]
+}

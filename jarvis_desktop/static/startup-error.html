@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atlas — startup issue</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="mode-beginner startup-error-page">
+  <main class="startup-error-main">
+    <div class="glass startup-error-card">
+      <p class="onboard-eyebrow">Atlas could not start normally</p>
+      <h1>Startup check failed</h1>
+      <p class="muted">Atlas is running, but something blocked a clean launch — usually a missing folder, a write-permission issue, or Python not found (source install only).</p>
+      <ul class="clean about-list muted" id="startupIssueList">
+        <li>Your code was <b>not</b> uploaded anywhere.</li>
+        <li>Diagnostics stay on your machine until you choose to share them.</li>
+      </ul>
+      <div class="success-buttons">
+        <a class="btn primary" href="support.html">Open Support &amp; diagnostics</a>
+        <a class="btn ghost" href="/">Try Home again</a>
+      </div>
+      <p class="muted tiny" style="margin-top:16px">Installer users: reinstall from your official download. Source users: install Python 3.10+ or double-click <b>Launch Atlas.vbs</b> for a quieter start.</p>
+    </div>
+  </main>
+  <script>
+    (async function () {
+      try {
+        const res = await fetch("/api/system/startup-status");
+        const data = await res.json();
+        const host = document.getElementById("startupIssueList");
+        const fails = (data.startup && data.startup.checks || []).filter(c => !c.ok && c.id !== "optional");
+        if (host && fails.length) {
+          fails.forEach(function (c) {
+            const li = document.createElement("li");
+            li.textContent = (c.label || c.id) + ": " + (c.detail || "failed");
+            host.appendChild(li);
+          });
+        }
+      } catch (e) {}
+    })();
+  </script>
+</body>
+</html>

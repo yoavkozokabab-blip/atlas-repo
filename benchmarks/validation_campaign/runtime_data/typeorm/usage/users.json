@@ -1,0 +1,10 @@
+{
+  "local_owner": {
+    "id": "user_local_owner",
+    "email": "owner@localhost",
+    "name": "Local Owner",
+    "role": "user",
+    "plan": "FREE",
+    "workspace_id": "ws_default"
+  }
+}

@@ -493,6 +493,7 @@ function finishScanSession(scan, pathLabel) {
 
 async function loadDemoMode(pack) {
   dismissOnboarding(true);
+  if (typeof hideHomeScanFocus === "function") hideHomeScanFocus();
   const packId = pack || STATE.demoPack || "small";
   go("scan");
   showScanPanel("running");
@@ -1598,15 +1599,18 @@ async function runChangePlan() {
   if (typeof afterChangePlanSuccess === "function") afterChangePlanSuccess();
   const p = r.plan || {};
   const prompts = r.prompts || {};
+  if (typeof applyExportNavVisibility === "function") applyExportNavVisibility();
   out.innerHTML = `
+    ${typeof beginnerPlanHero === "function" ? beginnerPlanHero(p, "build") : (typeof sendToAiPanel === "function" ? sendToAiPanel("build") : "")}
+    <div class="advanced-only">
     <div class="glass ocard">
       <div style="display:flex;justify-content:space-between;align-items:center">
-        <h3 style="margin:0">Change Plan</h3>
+        <h3 style="margin:0">Change Plan — full details</h3>
         <span class="lvl ${p.confidence?.includes('high') ? 'low' : 'medium'}">confidence: ${esc(p.confidence)}</span>
       </div>
       <p class="muted tiny" style="margin:8px 0">Size: <b>${esc(p.estimated_change_size)}</b> · Risk: <b>${esc(p.risk_level)}</b> · Intent: ${esc(p.intent)}</p>
       ${typeof trustBlock === "function" ? trustBlock("build") : ""}
-      <div class="advanced-only">${renderDomainKnowledge(p.domain_knowledge)}</div>
+      ${renderDomainKnowledge(p.domain_knowledge)}
       ${renderRepositoryEvidence(p.repository_evidence || p.domain_knowledge?.repository_evidence, p)}
       ${renderImplementationWhy(p.implementation_files_with_why)}
       <div class="plan-grid">
@@ -1617,13 +1621,12 @@ async function runChangePlan() {
       <div class="report-section"><div class="report-label">What may break (direct importers / high coupling)</div><div class="taglist">${(p.what_may_break || p.files_likely_to_break || []).map(s => `<span class="tag" onclick="investigateFile(${JSON.stringify(s)})">${esc(s)}</span>`).join("") || '<span class="muted tiny">nothing high-risk identified</span>'}</div></div>
       <div class="report-section"><div class="report-label">Tests required</div><ul class="clean">${(p.tests_required || p.tests_likely_affected || []).map(s => `<li>${esc(s)}</li>`).join("")}</ul></div>
       <div class="report-section"><div class="report-label">Rollback plan</div><ul class="clean">${(p.rollback_plan || []).map(s => `<li>${esc(s)}</li>`).join("")}</ul></div>
-      <details class="advanced-only" style="margin-top:8px"><summary class="muted tiny">Full plan (markdown) + evidence</summary>
+      <details style="margin-top:8px"><summary class="muted tiny">Full plan (markdown) + evidence</summary>
         <pre class="code" style="max-height:320px;overflow:auto">${esc(r.formatted || "")}</pre>
         <ul class="clean tiny">${(p.evidence || []).map(e => `<li>${esc(e)}</li>`).join("")}</ul>
       </details>
       ${renderLimitations(r.limitations)}
-      ${typeof sendToAiPanel === "function" ? sendToAiPanel("build") : ""}
-      <details class="advanced-only" style="margin-top:12px"><summary class="muted tiny">Preview raw planning prompt</summary>
+      <details style="margin-top:12px"><summary class="muted tiny">Preview raw planning prompt</summary>
         <pre class="code">${esc(prompts.claude || "")}</pre></details>
       <h3 style="font-size:13px;color:var(--cyan);margin-top:18px">What breaks? simulation (optional)</h3>
       <div class="pick-row">
@@ -1632,6 +1635,7 @@ async function runChangePlan() {
       </div>
       <div id="buildImpactOut"></div>
       ${typeof workflowFeedbackHtml === "function" ? workflowFeedbackHtml("build") : ""}
+    </div>
     </div>`;
 }
 
@@ -1909,9 +1913,14 @@ async function refreshExport() {
   updateCopyExportLabel();
   const sum = STATE.summary || await api("/api/repositories/current/summary");
   if (!sum.ok) {
-    $("exportPreview").innerHTML = emptyStateHtml("Scan a repository first.", "Scan a folder or load a sample to build an AI context packet.", "Scan Repository", "go('home')");
+    $("exportPreview").innerHTML = emptyStateHtml(
+      "Create a Change Plan first",
+      "Tip: load the sample, create a Change Plan, then use Copy for Claude on that screen. This tab is for advanced repo-wide context only.",
+      "Go to Change Plan",
+      "go('build')"
+    );
     $("tokEst").textContent = "—";
-    $("previewMeta").textContent = "Scan required";
+    $("previewMeta").textContent = "Plan first";
     return;
   }
   const res = await api("/api/context/export", "POST", { target: STATE.exportTarget, packet: STATE.exportPacket });

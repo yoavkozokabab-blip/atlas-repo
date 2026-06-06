@@ -1,9 +1,8 @@
 {
-  "updated_at": "2026-06-03T09:53:23.209992+00:00",
-  "overall": "critical",
-  "summary": "JARVIS health: CRITICAL\n  [ok] app_running: JARVIS runtime is active.\n  [critical] voice_thread: Voice enabled but background voice thread is not running.\n  [ok] last_command_error: No recent command error.\n  [warning] tesseract: VISION_ENABLED but Tesseract OCR is not available.\n  [ok] ollama: LLM classifier disabled.\n  [ok] disk_free: 251.6 GB free on project volume.\n  [ok] command_history: Command history path is writable.",
+  "updated_at": "2026-06-06T09:56:50.070532+00:00",
+  "overall": "warning",
+  "summary": "JARVIS health: WARNING\n  [ok] app_running: JARVIS runtime is active.\n  [ok] voice_thread: Voice thread is alive.\n  [ok] tray_state: Tray mode enabled.\n  [ok] last_command_error: No recent command error.\n  [warning] tesseract: VISION_ENABLED but Tesseract OCR is not available.\n  [ok] ollama: LLM classifier disabled.\n  [ok] disk_free: 232.1 GB free on project volume.\n  [ok] command_history: Command history path is writable.",
   "issues": [
-    "voice_thread: Voice enabled but background voice thread is not running.",
     "tesseract: VISION_ENABLED but Tesseract OCR is not available."
   ],
   "checks": [
@@ -15,8 +14,14 @@
     },
     {
       "name": "voice_thread",
-      "status": "critical",
-      "message": "Voice enabled but background voice thread is not running.",
+      "status": "ok",
+      "message": "Voice thread is alive.",
+      "evidence": []
+    },
+    {
+      "name": "tray_state",
+      "status": "ok",
+      "message": "Tray mode enabled.",
       "evidence": []
     },
     {
@@ -42,7 +47,7 @@
     {
       "name": "disk_free",
       "status": "ok",
-      "message": "251.6 GB free on project volume.",
+      "message": "232.1 GB free on project volume.",
       "evidence": []
     },
     {
@@ -60,7 +65,7 @@
   "recoveries": [],
   "recovery_enabled": true,
   "runtime_monitor": {
-    "updated_at": "2026-06-03T09:53:23.334109+00:00",
+    "updated_at": "2026-06-06T09:56:50.072117+00:00",
     "overall": "ok",
     "issues": [],
     "event_loop": {
@@ -68,72 +73,107 @@
       "warn_after_seconds": 5.0
     },
     "threads": {
-      "total": 8,
-      "jarvis_total": 6,
+      "total": 12,
+      "jarvis_total": 10,
       "jarvis_by_name": {
         "jarvis-runtime-monitor": 1,
         "jarvis-worker-runtime-0": 1,
         "jarvis-worker-runtime-1": 1,
         "jarvis-idle-proactive": 1,
         "jarvis-health-monitor": 1,
-        "jarvis-watchdog": 1
+        "jarvis-watchdog": 1,
+        "jarvis-overlay-queue": 1,
+        "jarvis-overlay-qt": 1,
+        "jarvis-voice": 1,
+        "jarvis-wakeword": 1
       },
       "jarvis_threads": [
         {
           "name": "jarvis-runtime-monitor",
-          "ident": 28652,
+          "ident": 6352,
           "daemon": true,
           "alive": true,
           "frame": "threading.py:wait:363"
         },
         {
           "name": "jarvis-worker-runtime-0",
-          "ident": 36200,
+          "ident": 11824,
           "daemon": true,
           "alive": true,
           "frame": "threading.py:wait:359"
         },
         {
           "name": "jarvis-worker-runtime-1",
-          "ident": 33704,
+          "ident": 6356,
           "daemon": true,
           "alive": true,
           "frame": "threading.py:wait:359"
         },
         {
           "name": "jarvis-idle-proactive",
-          "ident": 38060,
+          "ident": 10248,
           "daemon": true,
           "alive": true,
           "frame": "threading.py:wait:363"
         },
         {
           "name": "jarvis-health-monitor",
-          "ident": 20276,
+          "ident": 17452,
           "daemon": true,
           "alive": true,
           "frame": "threading.py:wait:363"
         },
         {
           "name": "jarvis-watchdog",
+          "ident": 2136,
+          "daemon": true,
+          "alive": true,
+          "frame": "runtime_monitor.py:_thread_frame:46"
+        },
+        {
+          "name": "jarvis-overlay-queue",
           "ident": 17828,
           "daemon": true,
           "alive": true,
           "frame": "threading.py:wait:363"
+        },
+        {
+          "name": "jarvis-overlay-qt",
+          "ident": 17524,
+          "daemon": true,
+          "alive": true,
+          "frame": "__init__.py:cpu_percent:1846"
+        },
+        {
+          "name": "jarvis-voice",
+          "ident": 17504,
+          "daemon": true,
+          "alive": true,
+          "frame": "microphone.py:record_until_enter:255"
+        },
+        {
+          "name": "jarvis-wakeword",
+          "ident": 17512,
+          "daemon": true,
+          "alive": true,
+          "frame": "sounddevice.py:_raw_read:1213"
         }
       ]
     },
     "active_operations": [],
     "timeouts": [],
     "recoveries": [],
-    "heartbeats_age_seconds": {},
+    "heartbeats_age_seconds": {
+      "overlay_queue": 0.079,
+      "runtime_monitor": 26.411
+    },
     "memory": {
-      "rss_mb": 523.56,
+      "rss_mb": 38.21,
       "growth_window_seconds": 300.0,
-      "growth_mb": 0.0,
-      "growth_mb_per_minute": 0.0,
+      "growth_mb": -2.86,
+      "growth_mb_per_minute": -0.58,
       "warn_growth_mb": 200.0,
-      "sample_count": 1
+      "sample_count": 120
     }
   }
 }

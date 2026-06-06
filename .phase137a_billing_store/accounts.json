@@ -1,0 +1,38 @@
+{
+  "users": {
+    "user_local_owner": {
+      "id": "user_local_owner",
+      "email": "owner@localhost",
+      "name": "Local Owner",
+      "role": "admin",
+      "plan_id": "free",
+      "workspace_ids": [
+        "ws_default"
+      ],
+      "created_ts": 1780519817.0167031
+    }
+  },
+  "workspaces": {
+    "ws_default": {
+      "id": "ws_default",
+      "name": "Default Workspace",
+      "owner_user_id": "user_local_owner",
+      "member_user_ids": [
+        "user_local_owner"
+      ],
+      "created_ts": 1780519817.0167143
+    }
+  },
+  "accounts": {
+    "user_local_owner": {
+      "id": "acct_53f1e29eda12",
+      "user_id": "user_local_owner",
+      "workspace_id": "ws_default",
+      "plan_id": "free",
+      "status": "active_local",
+      "waitlisted": false,
+      "note": "Local/mock account — no payment method, no charges.",
+      "created_ts": 1780519817.016741
+    }
+  }
+}

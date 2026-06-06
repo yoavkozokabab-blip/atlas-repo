@@ -18,3 +18,11 @@ reports/verification_plans/
 reports/trading_operations/
 reports/jarvis_logs/*.log
 reports/benchmarks/
+
+# Phase 150 packaging tools and generated build intermediates
+.phase150_inno/
+.phase150_packaging_lib*/
+.phase150_packaging_venv*/
+.phase150_tools/
+.phase150_install_test/
+build/

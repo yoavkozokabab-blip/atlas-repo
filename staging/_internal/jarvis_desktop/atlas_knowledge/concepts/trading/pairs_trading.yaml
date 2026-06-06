@@ -1,0 +1,46 @@
+concept_id: pairs_trading
+name: Pairs Trading
+title: Pairs Trading
+domain: trading
+category: strategy
+feature_type: strategy
+concept_quality_score: curated_deep
+confidence: medium
+aliases:
+- pairs trade
+- stat arb pair
+description: Trade spread between correlated instruments.
+when_to_use: Market-neutral strategies.
+requirements:
+- Clear ownership of Pairs Trading in the architecture
+implementation_strategies: &id001
+- Single source of truth for bar timestamps
+- Shared calculator for sim/live
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Lookahead bias
+- Backtest/live divergence
+- Python loops on large universes
+- Memory growth in streaming
+security_risks: []
+performance_risks:
+- Python loops on large universes
+- Memory growth in streaming
+failure_modes:
+- Signals on NaN indicators
+- Fill model mismatch vs live
+verification:
+- Parity test on fixed bar stream
+- Compare to reference implementation
+testing:
+- Unit tests on indicator fixtures
+- Paper/backtest reconciliation
+related_concepts: []
+references:
+- atlas://curated/trading/pairs_trading
+path_keywords:
+- pairs
+- pairs trade
+- stat arb pair
+investigate_only: false

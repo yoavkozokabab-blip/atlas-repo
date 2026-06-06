@@ -1,0 +1,328 @@
+{
+  "id": "nestjs",
+  "display": "NestJS",
+  "language": "typescript",
+  "available": true,
+  "path": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\nestjs",
+  "modules": 1276,
+  "concepts": [
+    {
+      "concept": "authentication",
+      "phrase": "authentication",
+      "expected_subsystem": "auth / identity",
+      "prompt": "what breaks if I remove authentication",
+      "resolved": true,
+      "category": null,
+      "label": "authentication",
+      "modules": [
+        "sample/19-auth-jwt/src/auth/auth.service.ts",
+        "sample/19-auth-jwt/src/auth/constants.ts",
+        "sample/19-auth-jwt/src/auth/decorators/public.decorator.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 sample/19-auth-jwt/src/auth/auth.service.ts, sample/19-auth-jwt/src/auth/constants.ts, sample/19-auth-jwt/src/auth/decorators/public.decorator.ts"
+    },
+    {
+      "concept": "authorization",
+      "phrase": "authorization",
+      "expected_subsystem": "access control / permissions",
+      "prompt": "what breaks if I remove authorization",
+      "resolved": true,
+      "category": null,
+      "label": "authorization",
+      "modules": [
+        "integration/scopes/src/circular-transient/guards/request-scoped.guard.ts",
+        "integration/scopes/src/transient/guards/request-scoped.guard.ts",
+        "integration/graphql-code-first/src/common/guards/auth.guard.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 integration/scopes/src/circular-transient/guards/request-scoped.guard.ts, integration/scopes/src/transient/guards/request-scoped.guard.ts, integration/graphql-code-first/src/common/guards/auth.guard.ts"
+    },
+    {
+      "concept": "caching",
+      "phrase": "caching",
+      "expected_subsystem": "cache layer",
+      "prompt": "what breaks if I remove caching",
+      "resolved": true,
+      "category": null,
+      "label": "caching",
+      "modules": [
+        "sample/20-cache/src/common/http-cache.interceptor.ts",
+        "packages/core/inspector/interfaces/enhancer-metadata-cache-entry.interface.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 sample/20-cache/src/common/http-cache.interceptor.ts, packages/core/inspector/interfaces/enhancer-metadata-cache-entry.interface.ts"
+    },
+    {
+      "concept": "configuration",
+      "phrase": "configuration",
+      "expected_subsystem": "config system",
+      "prompt": "what breaks if I remove configuration",
+      "resolved": true,
+      "category": null,
+      "label": "configuration",
+      "modules": [
+        "sample/25-dynamic-modules/src/config/config.service.ts",
+        "sample/25-dynamic-modules/src/config/config.module.ts",
+        "sample/25-dynamic-modules/src/config/interfaces/config-options.interface.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 sample/25-dynamic-modules/src/config/config.service.ts, sample/25-dynamic-modules/src/config/config.module.ts, sample/25-dynamic-modules/src/config/interfaces/config-options.interface.ts"
+    },
+    {
+      "concept": "database",
+      "phrase": "the database layer",
+      "expected_subsystem": "persistence / database",
+      "prompt": "what breaks if I remove the database layer",
+      "resolved": true,
+      "category": null,
+      "label": "recorder/database",
+      "modules": [
+        "integration/inspector/src/database/dto/create-database.dto.ts",
+        "integration/inspector/src/database/database.service.ts",
+        "integration/inspector/src/database/dto/update-database.dto.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 integration/inspector/src/database/dto/create-database.dto.ts, integration/inspector/src/database/database.service.ts, integration/inspector/src/database/dto/update-database.dto.ts"
+    },
+    {
+      "concept": "routing",
+      "phrase": "routing",
+      "expected_subsystem": "router / URL dispatch",
+      "prompt": "what breaks if I remove routing",
+      "resolved": true,
+      "category": null,
+      "label": "routing",
+      "modules": [
+        "packages/core/router/router-proxy.ts",
+        "packages/core/router/interfaces/exclude-route-metadata.interface.ts",
+        "packages/core/router/interfaces/route-path-metadata.interface.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 packages/core/router/router-proxy.ts, packages/core/router/interfaces/exclude-route-metadata.interface.ts, packages/core/router/interfaces/route-path-metadata.interface.ts"
+    },
+    {
+      "concept": "middleware",
+      "phrase": "middleware",
+      "expected_subsystem": "middleware pipeline",
+      "prompt": "what breaks if I remove middleware",
+      "resolved": true,
+      "category": null,
+      "label": "middleware",
+      "modules": [
+        "packages/common/interfaces/middleware/middleware-consumer.interface.ts",
+        "integration/scopes/src/circular-transient/interceptors/logging.interceptor.ts",
+        "integration/scopes/src/transient/interceptors/logging.interceptor.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 packages/common/interfaces/middleware/middleware-consumer.interface.ts, integration/scopes/src/circular-transient/interceptors/logging.interceptor.ts, integration/scopes/src/transient/interceptors/logging.interceptor.ts"
+    },
+    {
+      "concept": "logging",
+      "phrase": "the logging layer",
+      "expected_subsystem": "logging subsystem",
+      "prompt": "what breaks if I remove the logging layer",
+      "resolved": true,
+      "category": null,
+      "label": "logging",
+      "modules": [
+        "packages/common/services/logger.service.ts",
+        "integration/scopes/src/nested-transient/transient-logger.service.ts",
+        "integration/scopes/src/circular-transient/interceptors/logging.interceptor.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 packages/common/services/logger.service.ts, integration/scopes/src/nested-transient/transient-logger.service.ts, integration/scopes/src/circular-transient/interceptors/logging.interceptor.ts"
+    },
+    {
+      "concept": "events",
+      "phrase": "the event system",
+      "expected_subsystem": "event bus / dispatcher",
+      "prompt": "what breaks if I remove the event system",
+      "resolved": true,
+      "category": null,
+      "label": "events",
+      "modules": [
+        "packages/microservices/events/tcp.events.ts",
+        "packages/microservices/events/mqtt.events.ts",
+        "packages/microservices/events/nats.events.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 packages/microservices/events/tcp.events.ts, packages/microservices/events/mqtt.events.ts, packages/microservices/events/nats.events.ts"
+    },
+    {
+      "concept": "messaging",
+      "phrase": "messaging",
+      "expected_subsystem": "message queue / pub-sub",
+      "prompt": "what breaks if I remove messaging",
+      "resolved": true,
+      "category": null,
+      "label": "messaging",
+      "modules": [
+        "integration/microservices/src/kafka/kafka.controller.ts",
+        "integration/microservices/src/kafka/kafka.messages.controller.ts",
+        "integration/microservices/src/mqtt/mqtt-broadcast.controller.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 integration/microservices/src/kafka/kafka.controller.ts, integration/microservices/src/kafka/kafka.messages.controller.ts, integration/microservices/src/mqtt/mqtt-broadcast.controller.ts"
+    },
+    {
+      "concept": "background_jobs",
+      "phrase": "background jobs",
+      "expected_subsystem": "task / worker queue",
+      "prompt": "what breaks if I remove background jobs",
+      "resolved": true,
+      "category": null,
+      "label": "background jobs",
+      "modules": [
+        "sample/27-scheduling/src/tasks/tasks.module.ts",
+        "sample/27-scheduling/src/tasks/tasks.service.ts",
+        "tools/gulp/tasks/clean.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 sample/27-scheduling/src/tasks/tasks.module.ts, sample/27-scheduling/src/tasks/tasks.service.ts, tools/gulp/tasks/clean.ts"
+    },
+    {
+      "concept": "scheduling",
+      "phrase": "scheduling",
+      "expected_subsystem": "scheduler",
+      "prompt": "what breaks if I remove scheduling",
+      "resolved": true,
+      "category": null,
+      "label": "architecture symbol `scheduling`",
+      "modules": [
+        "sample/27-scheduling/src/app.module.ts",
+        "sample/27-scheduling/src/main.ts",
+        "sample/27-scheduling/src/tasks/tasks.module.ts"
+      ],
+      "confidence": "medium",
+      "actual": "resolved \u2192 sample/27-scheduling/src/app.module.ts, sample/27-scheduling/src/main.ts, sample/27-scheduling/src/tasks/tasks.module.ts"
+    },
+    {
+      "concept": "state_management",
+      "phrase": "state management",
+      "expected_subsystem": "state store",
+      "prompt": "what breaks if I remove state management",
+      "resolved": false,
+      "category": "semantic_routing_failure",
+      "label": null,
+      "modules": [],
+      "confidence": "low",
+      "actual": "fallback \u2014 no target"
+    },
+    {
+      "concept": "plugins",
+      "phrase": "the plugin system",
+      "expected_subsystem": "plugin loader",
+      "prompt": "what breaks if I remove the plugin system",
+      "resolved": true,
+      "category": null,
+      "label": "plugins",
+      "modules": [
+        "sample/12-graphql-schema-first/src/common/plugins/logging.plugin.ts",
+        "sample/23-graphql-code-first/src/common/plugins/complexity.plugin.ts",
+        "sample/23-graphql-code-first/src/common/plugins/logging.plugin.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 sample/12-graphql-schema-first/src/common/plugins/logging.plugin.ts, sample/23-graphql-code-first/src/common/plugins/complexity.plugin.ts, sample/23-graphql-code-first/src/common/plugins/logging.plugin.ts"
+    },
+    {
+      "concept": "extensions",
+      "phrase": "extensions",
+      "expected_subsystem": "extension system",
+      "prompt": "what breaks if I remove extensions",
+      "resolved": true,
+      "category": null,
+      "label": "extensions",
+      "modules": [
+        "sample/12-graphql-schema-first/src/common/plugins/logging.plugin.ts",
+        "sample/23-graphql-code-first/src/common/plugins/complexity.plugin.ts",
+        "sample/23-graphql-code-first/src/common/plugins/logging.plugin.ts"
+      ],
+      "confidence": "low",
+      "actual": "resolved \u2192 sample/12-graphql-schema-first/src/common/plugins/logging.plugin.ts, sample/23-graphql-code-first/src/common/plugins/complexity.plugin.ts, sample/23-graphql-code-first/src/common/plugins/logging.plugin.ts"
+    },
+    {
+      "concept": "websockets",
+      "phrase": "websocket support",
+      "expected_subsystem": "websocket transport",
+      "prompt": "what breaks if I remove websocket support",
+      "resolved": true,
+      "category": null,
+      "label": "websocket support",
+      "modules": [
+        "sample/19-auth-jwt/src/auth/auth.controller.ts",
+        "sample/19-auth-jwt/src/auth/auth.guard.ts",
+        "sample/19-auth-jwt/src/auth/auth.module.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 sample/19-auth-jwt/src/auth/auth.controller.ts, sample/19-auth-jwt/src/auth/auth.guard.ts, sample/19-auth-jwt/src/auth/auth.module.ts"
+    },
+    {
+      "concept": "api_layer",
+      "phrase": "the api layer",
+      "expected_subsystem": "API / endpoint layer",
+      "prompt": "what breaks if I remove the api layer",
+      "resolved": true,
+      "category": null,
+      "label": "api layer",
+      "modules": [
+        "packages/common/interfaces/controllers/controller-metadata.interface.ts",
+        "packages/common/interfaces/controllers/controller.interface.ts",
+        "packages/common/interfaces/controllers/index.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 packages/common/interfaces/controllers/controller-metadata.interface.ts, packages/common/interfaces/controllers/controller.interface.ts, packages/common/interfaces/controllers/index.ts"
+    },
+    {
+      "concept": "persistence",
+      "phrase": "persistence",
+      "expected_subsystem": "ORM / storage",
+      "prompt": "what breaks if I remove persistence",
+      "resolved": true,
+      "category": null,
+      "label": "persistence",
+      "modules": [
+        "sample/31-graphql-federation-code-first/posts-application/src/posts/models/post.model.ts",
+        "sample/31-graphql-federation-code-first/posts-application/src/posts/models/user.model.ts",
+        "integration/microservices/src/kafka/entities/user.entity.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 sample/31-graphql-federation-code-first/posts-application/src/posts/models/post.model.ts, sample/31-graphql-federation-code-first/posts-application/src/posts/models/user.model.ts, integration/microservices/src/kafka/entities/user.entity.ts"
+    },
+    {
+      "concept": "validation",
+      "phrase": "request validation",
+      "expected_subsystem": "input validation",
+      "prompt": "what breaks if I remove request validation",
+      "resolved": true,
+      "category": null,
+      "label": "validation",
+      "modules": [
+        "sample/06-mongoose/src/cats/schemas/cat.schema.ts",
+        "integration/mongoose/src/cats/schemas/cat.schema.ts",
+        "sample/14-mongoose-base/src/cats/schemas/cat.schema.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 sample/06-mongoose/src/cats/schemas/cat.schema.ts, integration/mongoose/src/cats/schemas/cat.schema.ts, sample/14-mongoose-base/src/cats/schemas/cat.schema.ts"
+    },
+    {
+      "concept": "serialization",
+      "phrase": "serialization",
+      "expected_subsystem": "(de)serialization layer",
+      "prompt": "what breaks if I remove serialization",
+      "resolved": true,
+      "category": null,
+      "label": "serialization",
+      "modules": [
+        "packages/microservices/serializers/kafka-request.serializer.ts",
+        "packages/common/serializer/class-serializer.interfaces.ts",
+        "packages/microservices/serializers/identity.serializer.ts"
+      ],
+      "confidence": "high",
+      "actual": "resolved \u2192 packages/microservices/serializers/kafka-request.serializer.ts, packages/common/serializer/class-serializer.interfaces.ts, packages/microservices/serializers/identity.serializer.ts"
+    }
+  ],
+  "status": "ok",
+  "resolved_count": 19,
+  "scan_seconds": 4.9
+}

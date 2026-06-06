@@ -1,0 +1,42 @@
+concept_id: static_analysis
+name: Static Analysis
+title: Static Analysis
+domain: testing
+category: static
+feature_type: static
+concept_quality_score: curated_deep
+confidence: medium
+aliases:
+- static analysis
+- lint
+- sast
+description: Analyze code without running.
+when_to_use: CI security/quality gates.
+requirements:
+- Clear ownership of Static Analysis in the architecture
+implementation_strategies: &id001
+- Test pyramid balance
+- Deterministic test clocks
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- False confidence from shallow tests
+security_risks: []
+performance_risks: []
+failure_modes:
+- Flaky tests ignored
+- Tests coupled to implementation details
+verification:
+- Coverage on critical paths not lines only
+- Mutation testing sample
+testing:
+- CI parallelization
+- Test data fixtures versioned
+related_concepts: []
+references:
+- atlas://curated/testing/static_analysis
+path_keywords:
+- static
+- static analysis
+- lint
+investigate_only: false

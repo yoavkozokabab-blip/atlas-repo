@@ -1,0 +1,63 @@
+concept_id: jwt
+name: JWT
+title: JWT
+domain: security
+category: authentication
+feature_type: authentication
+concept_quality_score: source_backed
+confidence: high
+aliases:
+- jwt
+- json web token
+- bearer token
+description: 'Compact signed claims (RFC 7519) for stateless auth: header.payload.signature.'
+when_to_use: Use for machine-to-machine or SPA/mobile APIs when sessions are undesirable;
+  pair with refresh tokens for UX.
+requirements:
+- Signing keys or JWKS
+- Short-lived access tokens
+- Algorithm allow-list
+implementation_strategies: &id001
+- Fail closed on validation errors
+- Centralize auth middleware
+implementation_steps: *id001
+common_implementations: *id001
+risks:
+- Broken trust boundary
+- Credential leakage
+- Algorithm confusion (none/HS vs RS)
+- Token theft via XSS
+- Replay without rotation
+security_risks:
+- Algorithm confusion (none/HS vs RS)
+- Token theft via XSS
+- Replay without rotation
+performance_risks: []
+failure_modes:
+- Auth bypass on misconfigured middleware
+- Stale permissions after role change
+verification:
+- Reject tampered payloads
+- Validate exp/nbf/iss/aud
+- Test refresh rotation
+- Threat-model critical paths
+- Validate negative tests for unauthorized access
+testing:
+- Boundary tests on claims
+- Security tests for alg-none attacks
+- AuthZ matrix tests
+- Session fixation/replay tests
+related_concepts:
+- oauth2
+- authentication
+- rbac
+references:
+- RFC 7519 - JSON Web Token (JWT)
+- RFC 8725 - JWT Best Current Practices
+path_keywords:
+- auth
+- jwt
+- token
+- middleware
+- bearer
+investigate_only: false

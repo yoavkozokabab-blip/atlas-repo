@@ -1,0 +1,128 @@
+{
+  "metadata": {
+    "created_at": "2026-06-06T09:56:44Z",
+    "workspace": "C:\\J.A.R.V.I.S\\local_jarvis",
+    "run_root": "C:\\Users\\babi2\\AppData\\Local\\Temp\\atlas_phase174c_c51th0za",
+    "python": "3.13.0 (tags/v3.13.0:60403a5, Oct  7 2024, 09:38:07) [MSC v.1941 64 bit (AMD64)]",
+    "phase174b_report_available": true
+  },
+  "attacks": [
+    {
+      "name": "A1_repo_switch_without_rescan",
+      "expected": "refusal",
+      "actual": {
+        "exception": "PermissionError",
+        "message": "[WinError 5] Access is denied: 'C:\\\\Users\\\\babi2\\\\AppData\\\\Local\\\\Temp\\\\atlas_phase174c_c51th0za\\\\attack01_repo_a'"
+      },
+      "pass": false,
+      "risk": "Probe crashed."
+    },
+    {
+      "name": "A2_edit_scanned_file_export",
+      "expected": "stale_scan refusal",
+      "actual": {
+        "exception": "PermissionError",
+        "message": "[WinError 5] Access is denied: 'C:\\\\Users\\\\babi2\\\\AppData\\\\Local\\\\Temp\\\\atlas_phase174c_c51th0za\\\\attack02_edit_scanned'"
+      },
+      "pass": false,
+      "risk": "Probe crashed."
+    },
+    {
+      "name": "A3_git_head_changed_export",
+      "expected": "stale_git_head_changed refusal",
+      "actual": {
+        "exception": "PermissionError",
+        "message": "[WinError 5] Access is denied: 'C:\\\\Users\\\\babi2\\\\AppData\\\\Local\\\\Temp\\\\atlas_phase174c_c51th0za\\\\attack03_git_head'"
+      },
+      "pass": false,
+      "risk": "Probe crashed."
+    },
+    {
+      "name": "A4_late_file_outside_2500_export",
+      "expected": "stale_scan detected",
+      "actual": {
+        "exception": "PermissionError",
+        "message": "[WinError 5] Access is denied: 'C:\\\\Users\\\\babi2\\\\AppData\\\\Local\\\\Temp\\\\atlas_phase174c_c51th0za\\\\attack04_late_file'"
+      },
+      "pass": false,
+      "risk": "Probe crashed."
+    },
+    {
+      "name": "A5_tampered_memory_json_reload",
+      "expected": "memory discarded or refusal",
+      "actual": {
+        "exception": "PermissionError",
+        "message": "[WinError 5] Access is denied: 'C:\\\\Users\\\\babi2\\\\AppData\\\\Local\\\\Temp\\\\atlas_phase174c_c51th0za\\\\attack05_memory_tamper'"
+      },
+      "pass": false,
+      "risk": "Probe crashed."
+    },
+    {
+      "name": "A6_forced_memory_write_failure",
+      "expected": "memory_persistence_status=failed visible",
+      "actual": {
+        "exception": "PermissionError",
+        "message": "[WinError 5] Access is denied: 'C:\\\\Users\\\\babi2\\\\AppData\\\\Local\\\\Temp\\\\atlas_phase174c_c51th0za\\\\attack06_memory_write_fail'"
+      },
+      "pass": false,
+      "risk": "Probe crashed."
+    },
+    {
+      "name": "A7_unsupported_repo_shallow_graph",
+      "expected": "honest refusal",
+      "actual": {
+        "exception": "PermissionError",
+        "message": "[WinError 5] Access is denied: 'C:\\\\Users\\\\babi2\\\\AppData\\\\Local\\\\Temp\\\\atlas_phase174c_c51th0za\\\\attack07_unsupported_go'"
+      },
+      "pass": false,
+      "risk": "Probe crashed."
+    },
+    {
+      "name": "A8_concurrent_scan_select_export",
+      "expected": "no wrong-repo memory leakage",
+      "actual": {
+        "exception": "PermissionError",
+        "message": "[WinError 5] Access is denied: 'C:\\\\Users\\\\babi2\\\\AppData\\\\Local\\\\Temp\\\\atlas_phase174c_c51th0za\\\\attack08_repo_a'"
+      },
+      "pass": false,
+      "risk": "Probe crashed."
+    },
+    {
+      "name": "A9_export_replay_after_repo_change",
+      "expected": "new export blocked and old packet warning",
+      "actual": {
+        "exception": "PermissionError",
+        "message": "[WinError 5] Access is denied: 'C:\\\\Users\\\\babi2\\\\AppData\\\\Local\\\\Temp\\\\atlas_phase174c_c51th0za\\\\attack09_repo_a'"
+      },
+      "pass": false,
+      "risk": "Probe crashed."
+    },
+    {
+      "name": "A10_support_bundle_trust_redaction",
+      "expected": "trust and redaction",
+      "actual": {
+        "exception": "PermissionError",
+        "message": "[WinError 5] Access is denied: 'C:\\\\Users\\\\babi2\\\\AppData\\\\Local\\\\Temp\\\\atlas_phase174c_c51th0za\\\\attack10_support_repo'"
+      },
+      "pass": false,
+      "risk": "Probe crashed."
+    }
+  ],
+  "summary": {
+    "total": 10,
+    "passed": 0,
+    "failed": 10,
+    "failed_attacks": [
+      "A1_repo_switch_without_rescan",
+      "A2_edit_scanned_file_export",
+      "A3_git_head_changed_export",
+      "A4_late_file_outside_2500_export",
+      "A5_tampered_memory_json_reload",
+      "A6_forced_memory_write_failure",
+      "A7_unsupported_repo_shallow_graph",
+      "A8_concurrent_scan_select_export",
+      "A9_export_replay_after_repo_change",
+      "A10_support_bundle_trust_redaction"
+    ]
+  }
+}
