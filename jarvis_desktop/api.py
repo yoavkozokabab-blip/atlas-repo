@@ -32,6 +32,9 @@ from . import atlas_export
 from . import graph_build
 from . import planning_engine
 from . import reliability
+from . import repository_memory as _repo_memory
+from . import trust_integrity as _ti
+from .data_paths import desktop_data_dir as _desktop_data_dir
 from .evidence_engine import build_evidence_store
 from . import usage as usage_tracking
 
@@ -126,6 +129,10 @@ _STATE: Dict[str, Any] = {
     "workflow_perf": {},
     "graph_detail_level": None,
     "full_graph_pending": False,
+    # Phase 172 — Repository Memory Engine
+    "session_export": None,       # ATLAS_REPOSITORY_MEMORY v1 packet (or SESSION fallback)
+    "repository_memory": None,    # same packet; explicit alias for clear contracts
+    "_current_memory": None,      # full memory dict (for delta generation)
 }
 
 
@@ -458,26 +465,8 @@ def _is_binary_ext(ext: str) -> bool:
 
 
 def _scan_signature(root: str, scope: Dict[str, Any]) -> str:
-    hasher = hashlib.sha256()
-    hasher.update(os.path.abspath(root).encode("utf-8", errors="ignore"))
-    hasher.update(_json.dumps(scope, sort_keys=True).encode("utf-8", errors="ignore"))
-    sample = 0
-    for dirpath, dirnames, filenames in os.walk(root):
-        dirnames[:] = sorted(d for d in dirnames if d not in _SKIP_DIRS)
-        for name in sorted(filenames):
-            if sample >= 2500:
-                break
-            path = os.path.join(dirpath, name)
-            try:
-                st = os.stat(path)
-            except OSError:
-                continue
-            hasher.update(str(st.st_size).encode())
-            hasher.update(str(int(st.st_mtime)).encode())
-            sample += 1
-        if sample >= 2500:
-            break
-    return hasher.hexdigest()
+    """Phase 174B — signature v2 (full manifest + git metadata, no 2500 cap)."""
+    return _ti.compute_signature_v2(root, scope)["signature"]
 
 
 def _scope_from_input(scope: Optional[Dict[str, Any]]) -> Dict[str, Any]:
@@ -740,7 +729,34 @@ def _scan_next_actions(scan: Dict[str, Any]) -> List[str]:
     return actions
 
 
+def _invalidate_repository_state(state: Dict[str, Any]) -> None:
+    """Beta P0-01 — drop scanned intelligence when the active repository path changes."""
+    state["scan"] = None
+    state["graph"] = None
+    state["index"] = None
+    state["risks"] = None
+    state["evidence_store"] = None
+    state.pop("scan_perf", None)
+    state.pop("scan_perf_live", None)
+    state["full_graph_pending"] = False
+    _repo_memory.clear_for_path_change(state)
+
+
+def _scan_matches_current_path() -> bool:
+    scan = _STATE.get("scan")
+    path = _STATE.get("path")
+    if not scan or not path:
+        return False
+    scan_path = os.path.abspath(str(scan.get("repo_path") or path))
+    return scan_path == os.path.abspath(str(path))
+
+
 def select_repository(path: str) -> Dict[str, Any]:
+    with _ti.state_guard():
+        return _select_repository_locked(path)
+
+
+def _select_repository_locked(path: str) -> Dict[str, Any]:
     validation = validate_repository_path(path)
     if not validation.get("ok"):
         return {
@@ -750,6 +766,14 @@ def select_repository(path: str) -> Dict[str, Any]:
             "warnings": validation.get("warnings", []),
         }
     abspath = validation["path"]
+    requires_rescan = False
+    prior = _STATE.get("path")
+    if prior and os.path.abspath(str(prior)) != abspath:
+        _invalidate_repository_state(_STATE)
+        requires_rescan = True
+    elif _STATE.get("scan") and not _scan_matches_current_path():
+        _invalidate_repository_state(_STATE)
+        requires_rescan = True
     _STATE["path"] = abspath
     _STATE["demo_mode"] = False
     return {
@@ -758,6 +782,7 @@ def select_repository(path: str) -> Dict[str, Any]:
         "name": validation["name"],
         "code_files": validation.get("code_files", 0),
         "warnings": validation.get("warnings", []),
+        "requires_rescan": requires_rescan,
     }
 
 
@@ -819,6 +844,11 @@ def _build_evidence_store_for_scan(repo: str) -> Dict[str, Any]:
 
 def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     """Run the real Builder Core scan (graph + light index + risk ranking)."""
+    with _ti.state_guard():
+        return _scan_repository_locked(path, scope)
+
+
+def _scan_repository_locked(path: Optional[str] = None, scope: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     repo = os.path.abspath(path or _STATE.get("path") or ".")
     scope_data = _scope_from_input(scope)
     t_validate_start = time.time()
@@ -844,9 +874,17 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
     scan_job.update({"id": f"scan-{int(time.time()*1000)}", "stage": "discovering_files"})
     _STATE["scan_job"] = scan_job
 
-    signature = _scan_signature(repo, scope_data)
+    cache_key = _scan_signature(repo, scope_data)
     cache = _STATE.setdefault("scan_cache", {})
-    cached = cache.get(signature)
+    cached = cache.get(cache_key)
+    if cached:
+        idx_files = (cached.get("index") or {}).get("files")
+        live_sig = _ti.compute_signature_v2(
+            repo, scope_data, indexed_files=idx_files, include_content_hash=bool(idx_files)
+        )
+        stored_sig = (cached.get("scan") or {}).get("signature_v2") or {}
+        if stored_sig.get("signature") != live_sig.get("signature"):
+            cached = None
     recorder = _StageRecorder(repo_path=repo, scope=scope_data, cache_hit=bool(cached))
     recorder.mark(
         "pre_scan_estimate",
@@ -879,7 +917,14 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
                 "evidence_store": cached.get("evidence_store") or {},
             }
         )
-        _STATE["scan"]["cache"] = {"hit": True, "signature": signature}
+        sig_v2 = _ti.compute_signature_v2(
+            repo,
+            scope_data,
+            indexed_files=(_STATE.get("index") or {}).get("files"),
+            include_content_hash=True,
+        )
+        _STATE["scan"]["signature_v2"] = sig_v2
+        _STATE["scan"]["cache"] = {"hit": True, "signature": sig_v2["signature"]}
         _STATE["scan_job"]["stage"] = "completed"
         recorder.mark(
             "cache_restore",
@@ -891,11 +936,24 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
             edges=_STATE["scan"].get("dependency_edges", 0),
             output_size_bytes=len(_json.dumps(_STATE["scan"], default=str)),
         )
-        _STATE["session_export"] = atlas_export.session_context({
-            "scan": _STATE["scan"],
-            "index": _STATE.get("index") or {},
-            "summary": current_summary(),
-        })
+        _merge_phase134_scan_fields(
+            _STATE["scan"], _STATE["graph"], _STATE["index"], _STATE["risks"]
+        )
+        arch = _STATE.get("architecture") or {}
+        _STATE["scan"]["graph_health"] = _graph_health(
+            _STATE["scan"], arch if arch.get("ok") else None
+        )
+        # Phase 172 — Repository Memory Engine (cache-hit path)
+        try:
+            _repo_memory.update_after_scan(
+                _STATE, _desktop_data_dir(), generated_by_version=PRODUCT_VERSION
+            )
+        except Exception:
+            _STATE["session_export"] = atlas_export.session_context({
+                "scan": _STATE["scan"],
+                "index": _STATE.get("index") or {},
+                "summary": current_summary(),
+            })
         _STATE["scan_perf"] = recorder.snapshot()
         track_analytics_event("scan_completed", demo=bool(_STATE.get("demo_mode")), cache_hit=True)
         _record_usage("scan_completed", cache_hit=True)
@@ -1074,8 +1132,14 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
         "validation_warnings": validation.get("warnings", []),
         "suggested_next_actions": [],
         "scope": scope_data,
-        "cache": {"hit": False, "signature": signature},
+        "cache": {"hit": False, "signature": cache_key},
     }
+    sig_v2 = _ti.compute_signature_v2(
+        repo, scope_data, indexed_files=index["files"], include_content_hash=True
+    )
+    scan["signature_v2"] = sig_v2
+    scan["cache"] = {"hit": False, "signature": sig_v2["signature"]}
+    signature = sig_v2["signature"]
     # Phase 140 — reliability assessment + immediate degraded-scan warnings.
     _assessment = reliability.classify_scan(scan)
     if _STATE.get("scan_retry"):
@@ -1118,6 +1182,8 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
     )
     _STATE.update({"path": repo, "scan": scan, "graph": graph, "index": index, "risks": risks})
     _merge_phase134_scan_fields(scan, graph, index, risks)
+    arch = _STATE.get("architecture") or {}
+    scan["graph_health"] = _graph_health(scan, arch if arch.get("ok") else None)
     t_evidence_start = time.time()
     evidence_store = _build_evidence_store_for_scan(repo)
     _STATE["evidence_store"] = evidence_store
@@ -1206,19 +1272,26 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
         edges=graph_snapshot.get("total_edges", 0),
         output_size_bytes=len(_json.dumps(graph_snapshot, default=str)),
     )
-    cache[signature] = {
+    cache[cache_key] = {
         "scan": _STATE["scan"],
         "graph": graph,
         "index": index,
         "risks": risks,
         "evidence_store": _STATE.get("evidence_store") or {},
+        "signature_v2": sig_v2,
         "cached_at": time.time(),
     }
-    _STATE["session_export"] = atlas_export.session_context({
-        "scan": _STATE["scan"],
-        "index": index,
-        "summary": summary_snapshot,
-    })
+    # Phase 172 — Repository Memory Engine (cache-miss path)
+    try:
+        _repo_memory.update_after_scan(
+            _STATE, _desktop_data_dir(), generated_by_version=PRODUCT_VERSION
+        )
+    except Exception:
+        _STATE["session_export"] = atlas_export.session_context({
+            "scan": _STATE["scan"],
+            "index": index,
+            "summary": summary_snapshot,
+        })
     _STATE["scan_job"]["stage"] = "completed"
     _STATE["scan_perf"] = recorder.snapshot()
     track_analytics_event(
@@ -1418,6 +1491,7 @@ def beta_diagnostics() -> Dict[str, Any]:
         "scope": scan.get("scope") or _STATE.get("last_scope"),
         "reliability": scan.get("reliability") or {},
         "data_dir": _desktop_data_dir_for_diagnostics(),
+        "trust_integrity": _ti.trust_integrity_diagnostics(_STATE),
     }
 
 
@@ -2547,43 +2621,74 @@ def _planning_context() -> Dict[str, Any]:
 
 def plan_change(request: str) -> Dict[str, Any]:
     """Generate a grounded change plan and implementation prompts (no code generation)."""
-    t0 = time.time()
-    result = planning_engine.plan_change(request, _planning_context())
-    _record_workflow_timing("build_plan", t0)
-    if result.get("ok"):
-        plan = result["plan"]
-        result["formatted"] = planning_engine.format_change_plan_markdown(plan)
-        atlas_export.attach_workflow_exports(
-            result,
-            "build",
-            plan=plan,
-            formatted=result["formatted"],
-            prompts=result.get("prompts"),
-            goal=request,
-        )
-        track_analytics_event("change_plan_created", intent=plan.get("intent"), confidence=plan.get("confidence"))
-        _record_usage("build_plan_created", intent=plan.get("intent"))
-    return result
+    with _ti.state_guard():
+        if not _STATE.get("scan") or not _scan_matches_current_path():
+            return {
+                "ok": False,
+                "error": "Scan required — select a repository and scan before creating a Change Plan.",
+                "code": "requires_rescan",
+            }
+        refusal = _ti.require_fresh_context(_STATE)
+        if refusal:
+            return refusal
+        t0 = time.time()
+        result = planning_engine.plan_change(request, _planning_context())
+        _record_workflow_timing("build_plan", t0)
+        result = _ti.gate_weak_graph_workflow(_STATE, result, "build")
+        if result.get("ok"):
+            plan = result["plan"]
+            result["formatted"] = planning_engine.format_change_plan_markdown(plan)
+            export_refusal = _ti.require_fresh_context(_STATE, for_export=True)
+            if export_refusal:
+                result.update({k: export_refusal[k] for k in ("ok", "status", "message", "error") if k in export_refusal})
+                result.pop("export", None)
+                result.pop("export_minimal", None)
+                return result
+            atlas_export.attach_workflow_exports(
+                result,
+                "build",
+                plan=plan,
+                formatted=result["formatted"],
+                prompts=result.get("prompts"),
+                goal=request,
+                memory_ref=_repo_memory.get_memory_ref(_STATE),
+            )
+            track_analytics_event("change_plan_created", intent=plan.get("intent"), confidence=plan.get("confidence"))
+            _record_usage("build_plan_created", intent=plan.get("intent"))
+        return result
 
 
 def investigate_symptom(symptom: str) -> Dict[str, Any]:
     """Symptom-based investigation plan (natural language, not trace-only)."""
-    t0 = time.time()
-    result = planning_engine.investigate_symptom(symptom, _planning_context())
-    _record_workflow_timing("investigation", t0)
-    if result.get("ok"):
-        plan = result["plan"]
-        result["formatted"] = planning_engine.format_investigation_plan_markdown(plan)
-        atlas_export.attach_workflow_exports(
-            result,
-            "investigate",
-            plan=plan,
-            formatted=result["formatted"],
-            prompts=result.get("prompts"),
-        )
-        track_analytics_event("investigation_plan_created", intent=plan.get("intent"), confidence=plan.get("confidence"))
-        _record_usage("investigation_created", intent=plan.get("intent"))
-    return result
+    with _ti.state_guard():
+        refusal = _ti.require_fresh_context(_STATE)
+        if refusal:
+            return refusal
+        t0 = time.time()
+        result = planning_engine.investigate_symptom(symptom, _planning_context())
+        _record_workflow_timing("investigation", t0)
+        result = _ti.gate_weak_graph_workflow(_STATE, result, "investigate")
+        if result.get("ok"):
+            plan = result["plan"]
+            result["formatted"] = planning_engine.format_investigation_plan_markdown(plan)
+            export_refusal = _ti.require_fresh_context(_STATE, for_export=True)
+            if export_refusal:
+                result.update({k: export_refusal[k] for k in ("ok", "status", "message", "error") if k in export_refusal})
+                result.pop("export", None)
+                result.pop("export_minimal", None)
+                return result
+            atlas_export.attach_workflow_exports(
+                result,
+                "investigate",
+                plan=plan,
+                formatted=result["formatted"],
+                prompts=result.get("prompts"),
+                goal=symptom,
+                memory_ref=_repo_memory.get_memory_ref(_STATE),
+            )
+            track_analytics_event("investigation_plan_created", intent=plan.get("intent"), confidence=plan.get("confidence"))
+            _record_usage("investigation_created", intent=plan.get("intent"))
+        return result
 
 
 def change_impact_simulation(target: str) -> Dict[str, Any]:
@@ -2591,53 +2696,79 @@ def change_impact_simulation(target: str) -> Dict[str, Any]:
     coupling + tests + risk classification), via the dedicated impact engine."""
     from . import impact_engine
 
-    summary = current_summary() if _STATE.get("scan") else {}
-    t0 = time.time()
-    res = impact_engine.analyze_impact(target, _STATE, summary=summary if summary.get("ok") else None)
-    _record_workflow_timing("impact", t0)
-    if not res.get("ok"):
+    with _ti.state_guard():
+        refusal = _ti.require_fresh_context(_STATE)
+        if refusal:
+            return refusal
+        summary = current_summary() if _STATE.get("scan") else {}
+        t0 = time.time()
+        res = impact_engine.analyze_impact(target, _STATE, summary=summary if summary.get("ok") else None)
+        _record_workflow_timing("impact", t0)
+        if not res.get("ok"):
+            return res
+        res["simulation"] = {
+            "potentially_affected_modules": res.get("affected_files", []),
+            "potentially_affected_subsystems": res.get("affected_subsystems", []),
+            "resolved_modules": res.get("resolved_modules", []),
+            "resolved_symbols": res.get("resolved_symbols", []),
+            "semantic_concept": res.get("semantic_concept", ""),
+            "semantic_label": res.get("semantic_label", ""),
+            "architectural_blast_radius": res.get("architectural_blast_radius"),
+            "risk_level": res.get("risk_level", "unknown"),
+            "recommended_verification": res.get("recommended_verification", []),
+            "tests_likely_affected": res.get("tests_likely_affected", []),
+            "direct_impact": res.get("direct_impact", []),
+            "indirect_impact": res.get("indirect_impact", []),
+            "what_may_break": res.get("what_may_break", []),
+            "what_probably_wont_break": res.get("what_probably_wont_break", []),
+        }
+        res["limitations"] = [
+            res.get("note", "Static reverse-import impact (resolved edges only)."),
+            "Dynamic dispatch and string-based imports are not modeled.",
+        ]
+        _augment_impact_with_architecture(res)
+        export_refusal = _ti.require_fresh_context(_STATE, for_export=True)
+        if export_refusal:
+            res.update({k: export_refusal[k] for k in ("ok", "status", "message", "error") if k in export_refusal})
+            res.pop("export", None)
+            res.pop("export_minimal", None)
+            return res
+        atlas_export.attach_workflow_exports(
+            res, "impact", memory_ref=_repo_memory.get_memory_ref(_STATE)
+        )
+        track_analytics_event("impact_analyzed", risk_level=res.get("risk_level"), confidence=res.get("confidence"))
+        _record_usage("impact_created", target=target, risk_level=res.get("risk_level"))
         return res
-    # Backward-compatible `simulation` block (UI + evaluator + graph highlight).
-    res["simulation"] = {
-        "potentially_affected_modules": res.get("affected_files", []),
-        "potentially_affected_subsystems": res.get("affected_subsystems", []),
-        "resolved_modules": res.get("resolved_modules", []),
-        "resolved_symbols": res.get("resolved_symbols", []),
-        "semantic_concept": res.get("semantic_concept", ""),
-        "semantic_label": res.get("semantic_label", ""),
-        "architectural_blast_radius": res.get("architectural_blast_radius"),
-        "risk_level": res.get("risk_level", "unknown"),
-        "recommended_verification": res.get("recommended_verification", []),
-        "tests_likely_affected": res.get("tests_likely_affected", []),
-        "direct_impact": res.get("direct_impact", []),
-        "indirect_impact": res.get("indirect_impact", []),
-        "what_may_break": res.get("what_may_break", []),
-        "what_probably_wont_break": res.get("what_probably_wont_break", []),
-    }
-    res["limitations"] = [
-        res.get("note", "Static reverse-import impact (resolved edges only)."),
-        "Dynamic dispatch and string-based imports are not modeled.",
-    ]
-    _augment_impact_with_architecture(res)
-    atlas_export.attach_workflow_exports(res, "impact")
-    track_analytics_event("impact_analyzed", risk_level=res.get("risk_level"), confidence=res.get("confidence"))
-    _record_usage("impact_created", target=target, risk_level=res.get("risk_level"))
-    return res
 
 
 def session_export_packet() -> Dict[str, Any]:
-    """Once-per-scan session context (ATLAS_SESSION v1). Not resent per question."""
-    if not _STATE.get("scan"):
-        return {"ok": False, "error": "No repository scanned yet."}
-    packet = _STATE.get("session_export")
-    if not packet:
-        packet = atlas_export.session_context({
-            "scan": _STATE["scan"],
-            "index": _STATE.get("index") or {},
-            "summary": current_summary(),
-        })
-        _STATE["session_export"] = packet
-    return {"ok": True, **packet}
+    """Once-per-scan context packet.
+
+    Phase 172: returns ATLAS_REPOSITORY_MEMORY v1 when available (richer than SESSION v1).
+    Falls back to ATLAS_SESSION v1 for backward compatibility.
+    """
+    with _ti.state_guard():
+        refusal = _ti.require_fresh_context(_STATE, for_export=True)
+        if refusal:
+            return refusal
+        if not _STATE.get("scan"):
+            return {"ok": False, "error": "No repository scanned yet."}
+        packet = _STATE.get("session_export")
+        if not packet:
+            try:
+                packet = _repo_memory.update_after_scan(
+                    _STATE, _desktop_data_dir(), generated_by_version=PRODUCT_VERSION
+                )
+            except Exception:
+                pass
+        if not packet:
+            packet = atlas_export.session_context({
+                "scan": _STATE["scan"],
+                "index": _STATE.get("index") or {},
+                "summary": current_summary(),
+            })
+            _STATE["session_export"] = packet
+        return {"ok": True, **packet}
 
 
 def _augment_impact_with_architecture(res: Dict[str, Any]) -> None:
@@ -2751,25 +2882,29 @@ def bug_investigation(text: str) -> Dict[str, Any]:
 
 def context_export(target: str = "claude", packet: str = "compact", *, track: bool = True) -> Dict[str, Any]:
     """Build a copyable, token-estimated AI-context packet for the open repo."""
-    if not _STATE.get("scan"):
-        return {"ok": False, "error": "No repository scanned yet."}
-    target = (target or "claude").lower()
-    packet = (packet or "compact").lower()
-    if target not in ("claude", "codex", "cursor"):
-        target = "claude"
-    if packet not in ("compact", "verbose"):
-        packet = "compact"
-    text = _render_context(target, packet)
-    if track:
-        track_analytics_event("export_created", target=target, packet=packet)
-        _record_usage("export_created", target=target, packet=packet)
-    return {
-        "ok": True,
-        "target": target,
-        "packet": packet,
-        "estimated_tokens": estimate_tokens(text),
-        "text": text,
-    }
+    with _ti.state_guard():
+        refusal = _ti.require_fresh_context(_STATE, for_export=True)
+        if refusal:
+            return refusal
+        if not _STATE.get("scan"):
+            return {"ok": False, "error": "No repository scanned yet."}
+        target = (target or "claude").lower()
+        packet = (packet or "compact").lower()
+        if target not in ("claude", "codex", "cursor"):
+            target = "claude"
+        if packet not in ("compact", "verbose"):
+            packet = "compact"
+        text = _render_context(target, packet)
+        if track:
+            track_analytics_event("export_created", target=target, packet=packet)
+            _record_usage("export_created", target=target, packet=packet)
+        return {
+            "ok": True,
+            "target": target,
+            "packet": packet,
+            "estimated_tokens": estimate_tokens(text),
+            "text": text,
+        }
 
 
 def _graph_topology_svg(graph_payload: Dict[str, Any]) -> str:

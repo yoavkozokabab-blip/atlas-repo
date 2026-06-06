@@ -6,6 +6,7 @@ import base64
 import io
 import json
 import os
+import re
 import sys
 import time
 import zipfile
@@ -294,6 +295,9 @@ def environment_status() -> Dict[str, Any]:
             "data_dir_info": data_dir_diagnostics(),
             "launcher_log": launcher_log_path(),
         },
+        "trust_integrity": __import__("jarvis_desktop.trust_integrity", fromlist=["trust_integrity_diagnostics"]).trust_integrity_diagnostics(
+            __import__("jarvis_desktop.api", fromlist=["_STATE"])._STATE
+        ),
     }
 
 
@@ -307,6 +311,14 @@ def clear_scan_cache() -> Dict[str, Any]:
 
 
 def rebuild_index(*, rescan: bool = True) -> Dict[str, Any]:
+    from . import api
+    from . import trust_integrity as _ti
+
+    with _ti.state_guard():
+        return _rebuild_index_locked(rescan=rescan)
+
+
+def _rebuild_index_locked(*, rescan: bool = True) -> Dict[str, Any]:
     from . import api
 
     path = api._STATE.get("path")
@@ -328,6 +340,12 @@ def rebuild_index(*, rescan: bool = True) -> Dict[str, Any]:
     )
     append_launcher_log("rebuild_index")
     if not rescan:
+        # Phase 172 mitigation A2: clear stale session/memory so poisoned state can't survive
+        api._STATE["session_export"] = None
+        api._STATE["repository_memory"] = None
+        api._STATE.pop("_current_memory", None)
+        api._STATE.pop("memory_persistence_status", None)
+        api._STATE.pop("memory_persistence_error", None)
         return {"ok": True, "rescanned": False, "message": "In-memory index cleared. Scan a repository to rebuild."}
     if demo:
         result = api.load_demo_mode(str(pack))
@@ -357,6 +375,25 @@ def _tail_file(path: str, max_bytes: int = 48_000) -> str:
         return ""
 
 
+def _redact_support_text(text: str) -> str:
+    """Beta P0-04 — strip absolute paths and secret canaries from support bundle text."""
+    if not text:
+        return text
+    out = re.sub(r"[A-Za-z]:\\(?:[^\"\\\s]|\\.)+", "[path-redacted]", text)
+    out = re.sub(r"/(?:home|Users|var)/(?:[^\"\\\s]|\\.)+", "[path-redacted]", out)
+    out = re.sub(r"SECRET_[A-Z0-9_]+", "[secret-redacted]", out)
+    return out
+
+
+def _sanitize_support_payload(payload: Any) -> Any:
+    """Deep-copy and redact a JSON-serializable support bundle section."""
+    try:
+        blob = json.dumps(payload, indent=2, default=str)
+    except TypeError:
+        blob = json.dumps(str(payload))
+    return json.loads(_redact_support_text(blob))
+
+
 def collect_error_logs() -> Dict[str, str]:
     logs: Dict[str, str] = {}
     base = data_dir()
@@ -379,7 +416,11 @@ def export_support_bundle() -> Dict[str, Any]:
             "repository": env["diagnostics"].get("repository"),
             "evidence_coverage": env["diagnostics"].get("evidence_coverage"),
         }
-    logs = collect_error_logs()
+    logs = {name: _redact_support_text(text) for name, text in collect_error_logs().items()}
+    diag = _sanitize_support_payload(env.get("diagnostics") or {})
+    env_blob = _sanitize_support_payload(env.get("environment") or {})
+    scan_meta = _sanitize_support_payload(scan_meta)
+    startup_blob = _sanitize_support_payload(env.get("startup") or {})
     manifest = {
         "product": "ATLAS",
         "bundle": "atlas_support_bundle",
@@ -400,10 +441,10 @@ def export_support_bundle() -> Dict[str, Any]:
     with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as zf:
         zf.writestr("manifest.json", json.dumps(manifest, indent=2))
         zf.writestr("version.txt", api.PRODUCT_VERSION + "\n")
-        zf.writestr("diagnostics.json", json.dumps(env.get("diagnostics") or {}, indent=2, default=str))
-        zf.writestr("environment.json", json.dumps(env.get("environment") or {}, indent=2, default=str))
+        zf.writestr("diagnostics.json", json.dumps(diag, indent=2, default=str))
+        zf.writestr("environment.json", json.dumps(env_blob, indent=2, default=str))
         zf.writestr("scan_metadata.json", json.dumps(scan_meta, indent=2, default=str))
-        zf.writestr("startup_checks.json", json.dumps(env.get("startup") or {}, indent=2, default=str))
+        zf.writestr("startup_checks.json", json.dumps(startup_blob, indent=2, default=str))
         for name, text in logs.items():
             zf.writestr(f"logs/{name}", text)
         if not logs:
