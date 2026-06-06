@@ -1,0 +1,340 @@
+{
+  "phase": "181F",
+  "title": "Final Persistence Red Team",
+  "run_date": "2026-06-06",
+  "mode": "verification_only",
+  "code_modified": false,
+  "verdict": "FAIL",
+  "summary": {
+    "total_required_attacks": 20,
+    "passed": 18,
+    "failed": 2,
+    "failed_attack_ids": [
+      5,
+      6
+    ],
+    "go_for_5_supervised_beta_users": false,
+    "go_for_20_supervised_beta_users": false
+  },
+  "test_results": [
+    {
+      "command": "py -3 -m pytest jarvis_desktop/tests/test_phase181b_persistence.py jarvis_desktop/tests/test_phase181e_persistence_red_team_fixes.py -q -p no:cacheprovider",
+      "result": "18 passed in 1.78s",
+      "note": "Run with isolated elevated basetemp because sandboxed Windows temp creation hit permission errors."
+    }
+  ],
+  "notes": [
+    "Attack 8 initially failed due a harness-generated duplicate cleanup repo_id. The corrected cleanup probe passed and is recorded here as PASS.",
+    "History poisoning was tested adversarially with a recomputed deterministic integrity_hash because the hash is not keyed or secret.",
+    "Memory mismatch was tested with both mismatched scan_id and same-scan text tampering. The mismatch subcase passed; same-scan text tampering failed."
+  ],
+  "attacks": [
+    {
+      "id": 1,
+      "name": "181C-01 wrong repo restore",
+      "result": "PASS",
+      "severity": "none",
+      "setup": "Scanned repo A, closed state, replaced the same path with repo B.",
+      "expected": "Refuse or stale-mark restore; no repo A export for repo B.",
+      "actual": {
+        "boot_restored": false,
+        "resume_ok": false,
+        "resume_code": "stale_scan",
+        "export_ok": false,
+        "leaked_repo_a": false
+      }
+    },
+    {
+      "id": 2,
+      "name": "181C-02 file changed after restore",
+      "result": "PASS",
+      "severity": "none",
+      "setup": "Scanned repo, closed state, edited a scanned file, restarted restore path.",
+      "expected": "stale_scan or needs refresh; no export.",
+      "actual": {
+        "boot_restored": false,
+        "resume_code": "stale_scan",
+        "export_ok": false
+      }
+    },
+    {
+      "id": 3,
+      "name": "181C-03 git branch switch",
+      "result": "PASS",
+      "severity": "none",
+      "setup": "Scanned repo with git metadata, changed HEAD/ref, restarted restore path.",
+      "expected": "stale_git_head_changed or needs refresh; no export.",
+      "actual": {
+        "boot_restored": false,
+        "resume_code": "stale_scan",
+        "export_ok": false
+      }
+    },
+    {
+      "id": 4,
+      "name": "181C-04 plan history stale export",
+      "result": "PASS",
+      "severity": "none",
+      "setup": "Generated Change Plan, edited files, restarted, opened old plan history.",
+      "expected": "Old plan copy/export blocked until refresh.",
+      "actual": {
+        "item_ok": true,
+        "export_allowed": false,
+        "stale_reason": "Atlas needs a refresh before exporting context. The repository changed after this plan was generated."
+      }
+    },
+    {
+      "id": 5,
+      "name": "181C-05 history poisoning",
+      "result": "FAIL",
+      "severity": "P0",
+      "setup": "Appended forged JSONL history rows with fake files_named, secret-like text, and recomputed deterministic integrity_hash.",
+      "expected": "Poisoned history rejected, sanitized, or untrusted; no poisoned history export.",
+      "actual": {
+        "old_scan_forge": {
+          "listed_contains_poison": true,
+          "item_ok": true,
+          "export_allowed": false,
+          "leaks_secret": true,
+          "leaks_fake_path": true
+        },
+        "current_scan_forge": {
+          "item_ok": true,
+          "export_allowed": true,
+          "leaks_secret": true,
+          "leaks_fake_path": true
+        },
+        "root_cause": "History integrity hash is deterministic and can be recomputed after local JSONL tampering."
+      }
+    },
+    {
+      "id": 6,
+      "name": "181C-06 memory / scan mismatch",
+      "result": "FAIL",
+      "severity": "P0",
+      "setup": "Tampered persisted memory_packet.json.",
+      "expected": "Mismatched or poisoned persisted memory is discarded; no export.",
+      "actual": {
+        "mismatched_scan_id_subcase": {
+          "resume_ok": true,
+          "memory_rejected": true,
+          "export_ok": false,
+          "export_status": "memory_untrusted",
+          "poison_exported": false
+        },
+        "same_scan_text_tamper_subcase": {
+          "resume_ok": true,
+          "memory_rejected": null,
+          "export_ok": true,
+          "poison_exported": true
+        },
+        "root_cause": "Session memory packet validation checks repo_id, scan_id, and signatures but does not authenticate the packet text."
+      }
+    },
+    {
+      "id": 7,
+      "name": "181C-07 version mismatch",
+      "result": "PASS",
+      "severity": "none",
+      "setup": "Changed latest.json atlas_version to 999.0.0-future-incompatible.",
+      "expected": "Future or incompatible persistence version refused.",
+      "actual": {
+        "boot_restored": false,
+        "resume_code": "version_mismatch",
+        "export_ok": false
+      }
+    },
+    {
+      "id": 8,
+      "name": "181C-08 cleanup safety",
+      "result": "PASS",
+      "severity": "none",
+      "setup": "Created 12 fake scans and malformed/oversized history data, then ran cleanup.",
+      "expected": "Cleanup keeps newest scan/history and survives malformed files.",
+      "actual": {
+        "cleanup_ok": true,
+        "remaining_count": 10,
+        "newest_kept": "cleanup000000011",
+        "removed_scans": [
+          "cleanup000000001",
+          "cleanup000000000"
+        ]
+      }
+    },
+    {
+      "id": 9,
+      "name": "181C-09 support bundle",
+      "result": "PASS",
+      "severity": "none",
+      "setup": "Generated logs/history with api_key, Bearer, JWT, absolute path, and source-like markers.",
+      "expected": "No raw source, secrets, absolute paths, or history content in support bundle.",
+      "actual": {
+        "bundle_ok": true,
+        "leaks": [],
+        "files": [
+          "manifest.json",
+          "version.txt",
+          "diagnostics.json",
+          "environment.json",
+          "scan_metadata.json",
+          "startup_checks.json",
+          "logs/launcher.log",
+          "logs/analytics.jsonl"
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "name": "181C-10 concurrent restore and scan",
+      "result": "PASS",
+      "severity": "none",
+      "setup": "Persisted repo A, reset state, concurrently restored repo A, scanned repo B, and exported.",
+      "expected": "No mixed old/new state during concurrent restore, scan, and export.",
+      "actual": {
+        "errors": [],
+        "final_export_ok": true,
+        "repo_a_leaked_in_final": false,
+        "mixed_markers_in_outputs": false,
+        "output_count": 10
+      }
+    },
+    {
+      "id": 11,
+      "name": "181F-01 corrupted scan JSON",
+      "result": "PASS",
+      "severity": "none",
+      "setup": "Corrupted latest.json after a valid scan.",
+      "expected": "Corrupt scan JSON does not restore or export stale context.",
+      "actual": {
+        "boot_restored": false,
+        "resume_ok": false,
+        "resume_error": "No saved scan for this repository.",
+        "export_ok": false
+      }
+    },
+    {
+      "id": 12,
+      "name": "181F-02 corrupted history JSONL",
+      "result": "PASS",
+      "severity": "none",
+      "setup": "Prepended malformed JSON to a valid build history JSONL file.",
+      "expected": "Malformed history lines ignored without poisoned export or crash.",
+      "actual": {
+        "listed_ok": true,
+        "item_count": 1,
+        "contains_bad_json": false
+      }
+    },
+    {
+      "id": 13,
+      "name": "181F-03 deleted graph file",
+      "result": "PASS",
+      "severity": "none",
+      "setup": "Deleted graph.json after a valid scan.",
+      "expected": "Incomplete scan sidecar refuses restore/export.",
+      "actual": {
+        "boot_restored": false,
+        "resume_code": "partial_scan",
+        "export_ok": false
+      }
+    },
+    {
+      "id": 14,
+      "name": "181F-04 deleted memory file",
+      "result": "PASS",
+      "severity": "none",
+      "setup": "Deleted memory_packet.json and the repository memory file after a valid scan.",
+      "expected": "Deleted memory does not export mismatched or poisoned memory.",
+      "actual": {
+        "resume_ok": true,
+        "export_ok": true,
+        "export_status": null,
+        "memory_rejected": null,
+        "poison_exported": false
+      }
+    },
+    {
+      "id": 15,
+      "name": "181F-05 partial write file",
+      "result": "PASS",
+      "severity": "none",
+      "setup": "Left poisoned latest.json.tmp beside a valid latest.json.",
+      "expected": "Leftover partial write file ignored; no poison export.",
+      "actual": {
+        "boot_restored": true,
+        "resume_ok": true,
+        "export_ok": true,
+        "poison_exported": false
+      }
+    },
+    {
+      "id": 16,
+      "name": "181F-06 repo renamed",
+      "result": "PASS",
+      "severity": "none",
+      "setup": "Scanned repo, then renamed the repository folder.",
+      "expected": "Renamed or missing repo path refuses restore/export.",
+      "actual": {
+        "boot_restored": false,
+        "resume_code": "path_missing",
+        "export_ok": false
+      }
+    },
+    {
+      "id": 17,
+      "name": "181F-07 repo replaced at same path",
+      "result": "PASS",
+      "severity": "none",
+      "setup": "Scanned repo A, deleted it, recreated repo B at the same path.",
+      "expected": "Same-path replacement marks stale; no wrong-repo restore/export.",
+      "actual": {
+        "boot_restored": false,
+        "resume_code": "stale_scan",
+        "export_ok": false,
+        "repo_a_leaked": false
+      }
+    },
+    {
+      "id": 18,
+      "name": "181F-08 branch switch",
+      "result": "PASS",
+      "severity": "none",
+      "setup": "Scanned repo with git metadata, changed HEAD/ref, restarted restore path.",
+      "expected": "Branch switch marks stale or needs refresh; no export.",
+      "actual": {
+        "boot_restored": false,
+        "resume_code": "stale_scan",
+        "export_ok": false
+      }
+    },
+    {
+      "id": 19,
+      "name": "181F-09 fake scan_id",
+      "result": "PASS",
+      "severity": "none",
+      "setup": "Changed latest.json scan_id and memory_ref to a fake value after scan.",
+      "expected": "Fake scan_id cannot produce mismatched memory export.",
+      "actual": {
+        "resume_ok": true,
+        "memory_rejected": true,
+        "export_ok": false,
+        "fake_scan_id_in_export": false
+      }
+    },
+    {
+      "id": 20,
+      "name": "181F-10 concurrent restore + scan + export",
+      "result": "PASS",
+      "severity": "none",
+      "setup": "Persisted repo A, reset state, concurrently restored repo A, scanned repo B, and exported repeatedly.",
+      "expected": "No mixed old/new state.",
+      "actual": {
+        "errors": [],
+        "final_export_ok": true,
+        "repo_a_leaked_in_final": false,
+        "mixed_markers_in_outputs": false,
+        "output_count": 10
+      }
+    }
+  ]
+}
