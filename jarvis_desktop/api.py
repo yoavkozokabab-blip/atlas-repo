@@ -216,6 +216,8 @@ def bootstrap_persistence(*, auto_restore: bool = True) -> Dict[str, Any]:
         "can_resume": validation.get("status") == "valid",
         "needs_refresh": validation.get("status") == "stale",
         "needs_rescan": validation.get("status") in {"path_missing", "missing", "wrong_repo"},
+        "needs_version_rescan": validation.get("status") == "version_mismatch",
+        "version_message": validation.get("message") if validation.get("status") == "version_mismatch" else "",
     }
     status["resume_card"] = resume_card
     if auto_restore and validation.get("status") == "valid" and record.get("repo_id"):
@@ -253,6 +255,13 @@ def resume_persisted_repository(repo_id: str) -> Dict[str, Any]:
                 "ok": False,
                 "error": validation.get("message"),
                 "code": "stale_scan",
+                "validation": validation,
+            }
+        if validation.get("status") == "version_mismatch":
+            return {
+                "ok": False,
+                "error": validation.get("message"),
+                "code": "version_mismatch",
                 "validation": validation,
             }
         if not bundle.get("graph") or not bundle.get("index"):
@@ -3090,12 +3099,48 @@ def session_export_packet() -> Dict[str, Any]:
     Falls back to ATLAS_SESSION v1 for backward compatibility.
     """
     with _ti.state_guard():
+        if _STATE.get("persistence_memory_rejected"):
+            return {
+                "ok": False,
+                "status": "memory_untrusted",
+                "message": "Atlas needs a refresh before exporting this context.",
+                "error": "Persisted memory failed integrity check.",
+            }
         refusal = _ti.require_fresh_context(_STATE, for_export=True)
         if refusal:
             return refusal
         if not _STATE.get("scan"):
             return {"ok": False, "error": "No repository scanned yet."}
         packet = _STATE.get("session_export")
+        if packet:
+            record = {
+                "repo_id": _repo_memory.repo_id(str(_STATE.get("path") or "")),
+                "scan_id": (_STATE.get("_current_memory") or {}).get("scan_id")
+                or (_STATE.get("scan") or {}).get("scan_id")
+                or "",
+                "scan_signature": (
+                    ((_STATE.get("scan") or {}).get("signature_v2") or {}).get("signature")
+                    or ((_STATE.get("scan") or {}).get("cache") or {}).get("signature")
+                    or ""
+                ),
+                "graph_signature": (
+                    ((_STATE.get("scan") or {}).get("signature_v2") or {}).get("signature")
+                    or ((_STATE.get("scan") or {}).get("cache") or {}).get("signature")
+                    or ""
+                ),
+            }
+            mem_check = _persist.validate_memory_packet(
+                record,
+                packet,
+                str(_STATE.get("path") or ""),
+            )
+            if not mem_check.get("trusted"):
+                return {
+                    "ok": False,
+                    "status": "memory_untrusted",
+                    "message": "Atlas needs a refresh before exporting this context.",
+                    "error": "Session export failed integrity check.",
+                }
         if not packet:
             try:
                 packet = _repo_memory.update_after_scan(

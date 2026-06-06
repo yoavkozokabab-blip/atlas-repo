@@ -16,11 +16,31 @@ from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 from . import repository_memory as _repo_memory
+from .product_info import PRODUCT_VERSION
 
 MAX_SCANS = 10
 MAX_HISTORY_PER_REPO = 100
 HISTORY_RETENTION_DAYS = 90
 WORKFLOW_TYPES = ("build", "investigate", "impact")
+VERSION_MISMATCH_MSG = "Rescan required after Atlas update"
+_VERSION_RE = re.compile(r"(\d+)\.(\d+)\.(\d+)")
+_HISTORY_HASH_KEYS = (
+    "history_id",
+    "workflow_type",
+    "request_text",
+    "created_at",
+    "repo_id",
+    "scan_id",
+    "scan_signature",
+    "files_named",
+    "confidence",
+    "export_tokens",
+    "export_mode",
+    "summary_markdown",
+    "result_json",
+    "trust_status",
+    "atlas_version",
+)
 _SOURCE_LIKE_KEYS = frozenset({
     "text", "content", "source", "source_code", "body", "file_content", "raw",
 })
@@ -30,6 +50,125 @@ _MAX_RESULT_DEPTH = 8
 
 def _now_iso() -> str:
     return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+
+
+def _parse_version_tuple(version: str) -> Optional[Tuple[int, int, int]]:
+    if not version:
+        return None
+    match = _VERSION_RE.search(str(version).strip())
+    if not match:
+        return None
+    return (int(match.group(1)), int(match.group(2)), int(match.group(3)))
+
+
+def validate_persistence_version(
+    stored_version: str,
+    current_version: Optional[str] = None,
+) -> Dict[str, Any]:
+    """Reject future, incompatible-major, or malformed persisted versions."""
+    current = current_version or PRODUCT_VERSION
+    if not str(stored_version or "").strip():
+        return {
+            "ok": False,
+            "status": "version_malformed",
+            "message": VERSION_MISMATCH_MSG,
+        }
+    stored = _parse_version_tuple(str(stored_version))
+    live = _parse_version_tuple(str(current))
+    if stored is None or live is None:
+        return {
+            "ok": False,
+            "status": "version_malformed",
+            "message": VERSION_MISMATCH_MSG,
+        }
+    if stored > live:
+        return {
+            "ok": False,
+            "status": "version_future",
+            "message": VERSION_MISMATCH_MSG,
+        }
+    if stored[0] != live[0]:
+        return {
+            "ok": False,
+            "status": "version_incompatible",
+            "message": VERSION_MISMATCH_MSG,
+        }
+    return {"ok": True, "status": "compatible"}
+
+
+def _compute_history_integrity_hash(record: Dict[str, Any]) -> str:
+    payload = {key: record.get(key) for key in _HISTORY_HASH_KEYS}
+    blob = json.dumps(payload, sort_keys=True, default=str, separators=(",", ":"))
+    return hashlib.sha256(blob.encode("utf-8")).hexdigest()
+
+
+def _signatures_match(stored: str, other: str) -> bool:
+    left = str(stored or "")
+    right = str(other or "")
+    if not left or not right:
+        return True
+    if left == right:
+        return True
+    if left.startswith(right) or right.startswith(left[:12]):
+        return True
+    return False
+
+
+def _validate_history_row(row: Dict[str, Any], *, expected_repo_id: Optional[str] = None) -> bool:
+    declared = str(row.get("integrity_hash") or "")
+    if not declared:
+        return False
+    if declared != _compute_history_integrity_hash(row):
+        return False
+    rid = str(row.get("repo_id") or "")
+    if not rid or not row.get("scan_id") or not row.get("scan_signature"):
+        return False
+    if expected_repo_id and rid != expected_repo_id:
+        return False
+    return bool(validate_persistence_version(str(row.get("atlas_version") or "")).get("ok"))
+
+
+def validate_memory_packet(
+    record: Dict[str, Any],
+    memory_packet: Dict[str, Any],
+    repo_path: str,
+) -> Dict[str, Any]:
+    """Ensure persisted memory sidecar matches scan metadata before restore/export."""
+    if not memory_packet:
+        return {"ok": True, "trusted": False, "status": "missing"}
+
+    rid = str(record.get("repo_id") or "")
+    scan_id = str(record.get("scan_id") or "")
+    scan_sig = str(record.get("scan_signature") or "")
+    graph_sig = str(record.get("graph_signature") or scan_sig)
+
+    mode = str(memory_packet.get("mode") or "")
+    if mode in {"MEMORY", "SESSION"} or "text" in memory_packet:
+        pkt_scan = str(memory_packet.get("scan_id") or "")
+        pkt_repo = str(memory_packet.get("repo_id") or "")
+        pkt_sig = str(memory_packet.get("scan_signature") or "")
+        if rid and pkt_repo and pkt_repo != rid:
+            return {"ok": False, "trusted": False, "status": "memory_repo_mismatch"}
+        if scan_id and pkt_scan and pkt_scan != scan_id:
+            return {"ok": False, "trusted": False, "status": "memory_scan_mismatch"}
+        if scan_sig and pkt_sig and not _signatures_match(scan_sig, pkt_sig):
+            return {"ok": False, "trusted": False, "status": "memory_signature_mismatch"}
+        if graph_sig and pkt_sig and not _signatures_match(graph_sig, pkt_sig):
+            return {"ok": False, "trusted": False, "status": "memory_graph_signature_mismatch"}
+        return {"ok": True, "trusted": True, "status": "trusted_packet"}
+
+    if not _repo_memory.verify_memory_record(memory_packet, repo_path):
+        return {"ok": False, "trusted": False, "status": "memory_integrity_failed"}
+    if rid and str(memory_packet.get("repo_id") or "") != rid:
+        return {"ok": False, "trusted": False, "status": "memory_repo_mismatch"}
+    if scan_id and str(memory_packet.get("scan_id") or "") != scan_id:
+        return {"ok": False, "trusted": False, "status": "memory_scan_mismatch"}
+    mem_sig = str(memory_packet.get("scan_signature") or "")
+    if scan_sig and mem_sig and scan_sig != mem_sig:
+        return {"ok": False, "trusted": False, "status": "memory_signature_mismatch"}
+    if graph_sig and mem_sig and graph_sig != mem_sig:
+        return {"ok": False, "trusted": False, "status": "memory_graph_signature_mismatch"}
+    return {"ok": True, "trusted": True, "status": "trusted_memory"}
 
 
 def _parse_iso(ts: str) -> Optional[datetime]:
@@ -308,6 +447,16 @@ def validate_scan_state(
     scope: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """Validate persisted scan against a repo path and live signature."""
+    version_check = validate_persistence_version(str(scan_state.get("atlas_version") or ""))
+    if not version_check.get("ok"):
+        return {
+            "ok": False,
+            "status": "version_mismatch",
+            "freshness_status": "version_mismatch",
+            "message": version_check.get("message") or VERSION_MISMATCH_MSG,
+            "version_status": version_check.get("status"),
+        }
+
     stored_path = str(scan_state.get("repo_path") or "")
     current = str(current_repo_path or stored_path or "")
     if not stored_path:
@@ -433,13 +582,29 @@ def restore_into_state_with_memory(
         "file_manifest": bundle.get("file_manifest") or {},
         "refresh_generation": int(record.get("refresh_generation") or 0),
     })
+    state.pop("repository_memory", None)
+    state.pop("session_export", None)
+    state.pop("_current_memory", None)
+    state.pop("persistence_memory_rejected", None)
+
     mem_packet = bundle.get("memory_packet") or {}
-    if mem_packet:
+    mem_check = validate_memory_packet(record, mem_packet, repo_path)
+    if mem_packet and mem_check.get("trusted"):
         state["repository_memory"] = mem_packet
         state["session_export"] = mem_packet
+    elif mem_packet:
+        state["persistence_memory_rejected"] = True
+        state["requires_refresh_before_export"] = True
+
     disk_mem = _repo_memory.load(repo_path, data_dir) if repo_path else None
     if disk_mem:
-        state["_current_memory"] = disk_mem
+        disk_check = validate_memory_packet(record, disk_mem, repo_path)
+        if disk_check.get("trusted"):
+            state["_current_memory"] = disk_mem
+        else:
+            state["persistence_memory_rejected"] = True
+            state["requires_refresh_before_export"] = True
+
     if not state.get("file_manifest"):
         try:
             from . import trust_integrity as _ti
@@ -448,7 +613,13 @@ def restore_into_state_with_memory(
             pass
     if record.get("requires_refresh_before_export"):
         state["persistence_partial"] = True
-    return {"ok": True, "repo_id": record.get("repo_id"), "repo_name": record.get("repo_name")}
+    return {
+        "ok": True,
+        "repo_id": record.get("repo_id"),
+        "repo_name": record.get("repo_name"),
+        "memory_trusted": not state.get("persistence_memory_rejected"),
+        "memory_status": mem_check.get("status"),
+    }
 
 
 def delete_scan_state(data_dir: str, repo_id: str) -> Dict[str, Any]:
@@ -537,8 +708,12 @@ def save_workflow_history(data_dir: str, record: Dict[str, Any]) -> Dict[str, An
     record = dict(record)
     record.setdefault("history_id", uuid.uuid4().hex[:16])
     record.setdefault("created_at", _now_iso())
+    record.setdefault("atlas_version", PRODUCT_VERSION)
     record["result_json"] = _strip_source_like(record.get("result_json") or {})
     record["summary_markdown"] = str(record.get("summary_markdown") or "")[:8000]
+    if not record.get("scan_signature"):
+        return {"ok": False, "error": "history record missing scan_signature"}
+    record["integrity_hash"] = _compute_history_integrity_hash(record)
     path = os.path.join(_history_dir(data_dir, rid), f"{wf}.jsonl")
     with open(path, "a", encoding="utf-8") as fh:
         fh.write(json.dumps(record, default=str) + "\n")
@@ -561,9 +736,12 @@ def _read_history_lines(data_dir: str, repo_id: str, workflow_type: Optional[str
                     if not line:
                         continue
                     try:
-                        rows.append(json.loads(line))
+                        row = json.loads(line)
                     except json.JSONDecodeError:
                         continue
+                    if not _validate_history_row(row, expected_repo_id=repo_id):
+                        continue
+                    rows.append(row)
         except OSError:
             continue
     rows.sort(key=lambda r: r.get("created_at") or "", reverse=True)
@@ -589,12 +767,14 @@ def _history_list_item(row: Dict[str, Any]) -> Dict[str, Any]:
         "created_at": row.get("created_at"),
         "repo_id": row.get("repo_id"),
         "scan_id": row.get("scan_id"),
+        "scan_signature": row.get("scan_signature"),
         "files_named": row.get("files_named") or [],
         "confidence": row.get("confidence"),
         "export_tokens": row.get("export_tokens"),
         "export_mode": row.get("export_mode"),
         "trust_status": row.get("trust_status"),
-        "export_allowed": row.get("export_allowed", True),
+        "integrity_verified": True,
+        "export_allowed": False,
         "stale_reason": row.get("stale_reason"),
     }
 
@@ -618,23 +798,53 @@ def get_workflow_history_item(data_dir: str, history_id: str, *, state: Optional
                             row = json.loads(line)
                         except json.JSONDecodeError:
                             continue
-                        if row.get("history_id") == history_id:
-                            item = dict(row)
-                            item.update(_evaluate_history_export(item, state))
-                            return item
+                        if row.get("history_id") != history_id:
+                            continue
+                        if not _validate_history_row(row, expected_repo_id=rid):
+                            return None
+                        item = dict(row)
+                        item.update(_evaluate_history_export(item, state))
+                        return item
             except OSError:
                 continue
     return None
 
 
 def _evaluate_history_export(row: Dict[str, Any], state: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+    if not _validate_history_row(row):
+        return {
+            "export_allowed": False,
+            "integrity_verified": False,
+            "stale_reason": "History record failed integrity verification.",
+        }
     if not state:
-        return {"export_allowed": False, "stale_reason": "No active session."}
+        return {"export_allowed": False, "integrity_verified": True, "stale_reason": "No active session."}
+    if state.get("persistence_memory_rejected") or state.get("requires_refresh_before_export"):
+        return {
+            "export_allowed": False,
+            "integrity_verified": True,
+            "stale_reason": "Refresh required before exporting restored context.",
+        }
     scan = state.get("scan") or {}
     active_scan = str(scan.get("scan_id") or (state.get("_current_memory") or {}).get("scan_id") or "")
     row_scan = str(row.get("scan_id") or "")
     if active_scan and row_scan and active_scan != row_scan:
-        return {"export_allowed": False, "stale_reason": "Scan changed since this result was saved."}
+        return {
+            "export_allowed": False,
+            "integrity_verified": True,
+            "stale_reason": "Scan changed since this result was saved.",
+        }
+    record_sig = str((state.get("scan") or {}).get("signature_v2", {}).get("signature") or "")
+    if not record_sig:
+        mem = state.get("_current_memory") or {}
+        record_sig = str(mem.get("scan_signature") or "")
+    row_sig = str(row.get("scan_signature") or "")
+    if record_sig and row_sig and record_sig != row_sig:
+        return {
+            "export_allowed": False,
+            "integrity_verified": True,
+            "stale_reason": "Scan signature changed since this result was saved.",
+        }
     try:
         from . import trust_integrity as _ti
         refusal = _ti.require_fresh_context(state, for_export=True)
@@ -642,7 +852,7 @@ def _evaluate_history_export(row: Dict[str, Any], state: Optional[Dict[str, Any]
             return {"export_allowed": False, "stale_reason": refusal.get("message") or "Refresh required."}
     except Exception:
         pass
-    return {"export_allowed": True, "stale_reason": ""}
+    return {"export_allowed": True, "integrity_verified": True, "stale_reason": ""}
 
 
 def build_workflow_history_record(
@@ -675,11 +885,20 @@ def build_workflow_history_record(
     except Exception:
         pass
     mem = state.get("_current_memory") or {}
+    scan = state.get("scan") or {}
+    scan_sig = (
+        (scan.get("signature_v2") or {}).get("signature")
+        or (scan.get("cache") or {}).get("signature")
+        or mem.get("scan_signature")
+        or ""
+    )
     return {
         "workflow_type": workflow_type,
         "request_text": request_text,
-        "repo_id": _repo_memory.repo_id(str(state.get("path") or (state.get("scan") or {}).get("repo_path") or "")),
-        "scan_id": mem.get("scan_id") or (state.get("scan") or {}).get("scan_id") or "",
+        "repo_id": _repo_memory.repo_id(str(state.get("path") or scan.get("repo_path") or "")),
+        "scan_id": mem.get("scan_id") or scan.get("scan_id") or "",
+        "scan_signature": str(scan_sig),
+        "atlas_version": PRODUCT_VERSION,
         "files_named": files[:12],
         "confidence": plan.get("confidence") or result.get("confidence"),
         "export_tokens": export.get("tokens"),
