@@ -18,8 +18,27 @@ class SymbolIndex:
     by_kind: Dict[str, List[SymbolRecord]] = field(default_factory=dict)
     parse_errors: Dict[str, str] = field(default_factory=dict)
 
+    def remove_file(self, path: str) -> None:
+        """Drop a file and its symbols from the index (targeted refresh)."""
+        path = path.replace("\\", "/")
+        scan = self.files.pop(path, None)
+        self.parse_errors.pop(path, None)
+        if not scan:
+            return
+        for sym in scan.symbols:
+            key = sym.name.lower()
+            if key in self.by_name:
+                self.by_name[key] = [r for r in self.by_name[key] if r.file_path != path]
+                if not self.by_name[key]:
+                    del self.by_name[key]
+            if sym.kind in self.by_kind:
+                self.by_kind[sym.kind] = [r for r in self.by_kind[sym.kind] if r.file_path != path]
+                if not self.by_kind[sym.kind]:
+                    del self.by_kind[sym.kind]
+
     def add_scan(self, scan: FileScanResult) -> None:
         path = scan.path.replace("\\", "/")
+        self.remove_file(path)
         self.files[path] = scan
         if scan.parse_error:
             self.parse_errors[path] = scan.parse_error

@@ -14,7 +14,7 @@ import os
 from ipaddress import ip_address
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
-from typing import Any, Callable, Dict, Tuple
+from typing import Any, Callable, Dict, Optional, Tuple
 
 from . import api, system_browse
 from .billing import service as billing_service
@@ -103,6 +103,10 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
         ),
         ("GET", "/api/repositories/current/summary"): lambda _body, _query: api.current_summary(),
         ("GET", "/api/repositories/current/session-export"): lambda _body, _query: api.session_export_packet(),
+        ("GET", "/api/repositories/current/trust-status"): lambda _body, _query: api.trust_integrity_status(),
+        ("POST", "/api/repositories/current/refresh-changed-files"): lambda body, _query: api.refresh_changed_files(
+            body.get("paths") or body.get("files")
+        ),
         ("GET", "/api/repositories/current/graph"): lambda _body, query: api.current_graph(
             str(query.get("view", "module")),
             force_module=str(query.get("force_module", "0")).lower() in {"1", "true", "yes"},
@@ -259,6 +263,25 @@ def _log_launcher(message: str) -> None:
         pass
 
 
+def _bind_http_server(host: str, port: int, *, attempts: int = 10):
+    """Beta P0-03 — try alternate localhost ports when the default is taken."""
+    last_exc: Optional[Exception] = None
+    for candidate in range(port, port + attempts):
+        try:
+            return ThreadingHTTPServer((host, candidate), JarvisHandler), candidate
+        except OSError as exc:
+            last_exc = exc
+            win_in_use = getattr(exc, "winerror", None) == 10048
+            posix_in_use = getattr(exc, "errno", None) in (48, 98, 10048)
+            if win_in_use or posix_in_use:
+                _log_launcher(f"port {candidate} in use; trying next")
+                continue
+            raise
+    if last_exc:
+        raise last_exc
+    raise OSError(f"Could not bind {host}:{port}-{port + attempts - 1}")
+
+
 def run(
     host: str = "127.0.0.1",
     port: int = 8777,
@@ -266,12 +289,14 @@ def run(
     open_browser: bool = True,
     start_path: str = "/",
 ) -> None:
-    httpd = ThreadingHTTPServer((host, port), JarvisHandler)
+    httpd, bound_port = _bind_http_server(host, port)
+    if bound_port != port:
+        _log_launcher(f"serving on alternate port {bound_port} (requested {port})")
     path = start_path if start_path.startswith("/") else f"/{start_path}"
-    url = f"http://{host}:{port}{path}"
+    url = f"http://{host}:{bound_port}{path}"
     if not getattr(__import__("sys"), "frozen", False):
         print(f"  ATLAS — Repository Intelligence Platform")
-        print(f"  Serving at http://{host}:{port}/  (Ctrl+C to stop)")
+        print(f"  Serving at http://{host}:{bound_port}/  (Ctrl+C to stop)")
     if open_browser:
         opened = False
         try:

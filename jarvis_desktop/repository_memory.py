@@ -51,6 +51,7 @@ _MEMORY_HASH_KEYS = (
     "hub_fingerprint",
     "scan_signature",
     "generated_by_version",
+    "refresh_generation",
 )
 
 
@@ -176,8 +177,9 @@ def build_memory(state: Dict[str, Any], *, generated_by_version: str = "") -> Di
     top_subsystems = [s.get("name", "") for s in subs[:5] if s.get("name")]
 
     scanned_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    refresh_gen = int(state.get("refresh_generation") or 0)
     sid = hashlib.sha256(
-        (repo_path + scanned_at).encode("utf-8", errors="ignore")
+        (repo_path + scanned_at + f":r{refresh_gen}").encode("utf-8", errors="ignore")
     ).hexdigest()[:8]
 
     sig_v2 = scan.get("signature_v2") or {}
@@ -200,6 +202,7 @@ def build_memory(state: Dict[str, Any], *, generated_by_version: str = "") -> Di
         "hub_fingerprint": _hub_fingerprint(top_hubs),
         "scan_signature": scan_signature,
         "generated_by_version": generated_by_version or "unknown",
+        "refresh_generation": int((state.get("refresh_generation") or 0)),
         "session_count": 1,  # overwritten by merge_with_delta()
         "delta": None,       # overwritten by merge_with_delta()
     }

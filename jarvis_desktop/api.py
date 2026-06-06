@@ -739,6 +739,11 @@ def _invalidate_repository_state(state: Dict[str, Any]) -> None:
     state.pop("scan_perf", None)
     state.pop("scan_perf_live", None)
     state["full_graph_pending"] = False
+    state.pop("file_manifest", None)
+    state.pop("workflow_context", None)
+    state.pop("last_workflow_results", None)
+    state.pop("refresh_generation", None)
+    state.pop("active_memory_ref", None)
     _repo_memory.clear_for_path_change(state)
 
 
@@ -943,6 +948,8 @@ def _scan_repository_locked(path: Optional[str] = None, scope: Optional[Dict[str
         _STATE["scan"]["graph_health"] = _graph_health(
             _STATE["scan"], arch if arch.get("ok") else None
         )
+        _ti.capture_file_manifest(_STATE)
+        _STATE["refresh_generation"] = 0
         # Phase 172 — Repository Memory Engine (cache-hit path)
         try:
             _repo_memory.update_after_scan(
@@ -1184,6 +1191,8 @@ def _scan_repository_locked(path: Optional[str] = None, scope: Optional[Dict[str
     _merge_phase134_scan_fields(scan, graph, index, risks)
     arch = _STATE.get("architecture") or {}
     scan["graph_health"] = _graph_health(scan, arch if arch.get("ok") else None)
+    _ti.capture_file_manifest(_STATE)
+    _STATE["refresh_generation"] = 0
     t_evidence_start = time.time()
     evidence_store = _build_evidence_store_for_scan(repo)
     _STATE["evidence_store"] = evidence_store
@@ -1453,6 +1462,41 @@ def export_support_bundle() -> Dict[str, Any]:
     from .install_support import export_support_bundle as _export
 
     return _export()
+
+
+def trust_integrity_status() -> Dict[str, Any]:
+    """Expose staleness / targeted-refresh state for UI (no automatic actions)."""
+    with _ti.state_guard():
+        status = _ti.assess_staleness(_STATE)
+        ctx = _STATE.get("workflow_context") or {}
+        return {
+            "ok": True,
+            "trust_status": status,
+            "targeted_refresh_available": status.get("targeted_refresh_available", False),
+            "repo_changed_outside_plan": status.get("repo_changed_outside_plan", False),
+            "workflow_context": ctx if ctx else None,
+            "refresh_generation": int(_STATE.get("refresh_generation") or 0),
+            "active_memory_ref": _STATE.get("active_memory_ref"),
+        }
+
+
+def refresh_changed_files(paths: Optional[List[str]] = None) -> Dict[str, Any]:
+    """User-initiated targeted refresh — never runs automatically."""
+    from . import targeted_refresh as _tr
+
+    with _ti.state_guard():
+        staleness = _ti.assess_staleness(_STATE)
+        if staleness.get("repo_changed_outside_plan") and not staleness.get("targeted_refresh_available"):
+            return {
+                "ok": False,
+                "status": "full_rescan_required",
+                "error": staleness.get("message"),
+                "trust_status": staleness,
+            }
+        files = paths or staleness.get("changed_recommended_files") or staleness.get("changed_files")
+        if not files:
+            return {"ok": False, "error": "No changed files to refresh.", "status": "no_changes"}
+        return _tr.refresh_files(_STATE, list(files))
 
 
 def beta_diagnostics() -> Dict[str, Any]:
@@ -2628,9 +2672,6 @@ def plan_change(request: str) -> Dict[str, Any]:
                 "error": "Scan required — select a repository and scan before creating a Change Plan.",
                 "code": "requires_rescan",
             }
-        refusal = _ti.require_fresh_context(_STATE)
-        if refusal:
-            return refusal
         t0 = time.time()
         result = planning_engine.plan_change(request, _planning_context())
         _record_workflow_timing("build_plan", t0)
@@ -2638,32 +2679,37 @@ def plan_change(request: str) -> Dict[str, Any]:
         if result.get("ok"):
             plan = result["plan"]
             result["formatted"] = planning_engine.format_change_plan_markdown(plan)
+            mem_ref = _repo_memory.get_memory_ref(_STATE)
+            _ti.record_workflow_context(_STATE, "build", result, memory_ref=mem_ref)
+            _STATE.setdefault("last_workflow_results", {})["build"] = {
+                "request": request,
+                "plan": plan,
+                "formatted": result.get("formatted"),
+            }
             export_refusal = _ti.require_fresh_context(_STATE, for_export=True)
             if export_refusal:
-                result.update({k: export_refusal[k] for k in ("ok", "status", "message", "error") if k in export_refusal})
-                result.pop("export", None)
-                result.pop("export_minimal", None)
-                return result
-            atlas_export.attach_workflow_exports(
-                result,
-                "build",
-                plan=plan,
-                formatted=result["formatted"],
-                prompts=result.get("prompts"),
-                goal=request,
-                memory_ref=_repo_memory.get_memory_ref(_STATE),
-            )
+                result["export_blocked"] = True
+                result["export_block_reason"] = export_refusal.get("message")
+            else:
+                atlas_export.attach_workflow_exports(
+                    result,
+                    "build",
+                    plan=plan,
+                    formatted=result["formatted"],
+                    prompts=result.get("prompts"),
+                    goal=request,
+                    memory_ref=mem_ref,
+                )
             track_analytics_event("change_plan_created", intent=plan.get("intent"), confidence=plan.get("confidence"))
             _record_usage("build_plan_created", intent=plan.get("intent"))
-        return result
+        return _ti.attach_trust_status(result, _STATE)
 
 
 def investigate_symptom(symptom: str) -> Dict[str, Any]:
     """Symptom-based investigation plan (natural language, not trace-only)."""
     with _ti.state_guard():
-        refusal = _ti.require_fresh_context(_STATE)
-        if refusal:
-            return refusal
+        if not _STATE.get("scan"):
+            return {"ok": False, "error": "No repository scanned yet.", "code": "requires_rescan"}
         t0 = time.time()
         result = planning_engine.investigate_symptom(symptom, _planning_context())
         _record_workflow_timing("investigation", t0)
@@ -2671,24 +2717,30 @@ def investigate_symptom(symptom: str) -> Dict[str, Any]:
         if result.get("ok"):
             plan = result["plan"]
             result["formatted"] = planning_engine.format_investigation_plan_markdown(plan)
+            mem_ref = _repo_memory.get_memory_ref(_STATE)
+            _ti.record_workflow_context(_STATE, "investigate", result, memory_ref=mem_ref)
+            _STATE.setdefault("last_workflow_results", {})["investigate"] = {
+                "symptom": symptom,
+                "plan": plan,
+                "formatted": result.get("formatted"),
+            }
             export_refusal = _ti.require_fresh_context(_STATE, for_export=True)
             if export_refusal:
-                result.update({k: export_refusal[k] for k in ("ok", "status", "message", "error") if k in export_refusal})
-                result.pop("export", None)
-                result.pop("export_minimal", None)
-                return result
-            atlas_export.attach_workflow_exports(
-                result,
-                "investigate",
-                plan=plan,
-                formatted=result["formatted"],
-                prompts=result.get("prompts"),
-                goal=symptom,
-                memory_ref=_repo_memory.get_memory_ref(_STATE),
-            )
+                result["export_blocked"] = True
+                result["export_block_reason"] = export_refusal.get("message")
+            else:
+                atlas_export.attach_workflow_exports(
+                    result,
+                    "investigate",
+                    plan=plan,
+                    formatted=result["formatted"],
+                    prompts=result.get("prompts"),
+                    goal=symptom,
+                    memory_ref=mem_ref,
+                )
             track_analytics_event("investigation_plan_created", intent=plan.get("intent"), confidence=plan.get("confidence"))
             _record_usage("investigation_created", intent=plan.get("intent"))
-        return result
+        return _ti.attach_trust_status(result, _STATE)
 
 
 def change_impact_simulation(target: str) -> Dict[str, Any]:
@@ -2697,9 +2749,8 @@ def change_impact_simulation(target: str) -> Dict[str, Any]:
     from . import impact_engine
 
     with _ti.state_guard():
-        refusal = _ti.require_fresh_context(_STATE)
-        if refusal:
-            return refusal
+        if not _STATE.get("scan"):
+            return {"ok": False, "error": "No repository scanned yet.", "code": "requires_rescan"}
         summary = current_summary() if _STATE.get("scan") else {}
         t0 = time.time()
         res = impact_engine.analyze_impact(target, _STATE, summary=summary if summary.get("ok") else None)
@@ -2727,18 +2778,18 @@ def change_impact_simulation(target: str) -> Dict[str, Any]:
             "Dynamic dispatch and string-based imports are not modeled.",
         ]
         _augment_impact_with_architecture(res)
+        mem_ref = _repo_memory.get_memory_ref(_STATE)
+        _ti.record_workflow_context(_STATE, "impact", res, memory_ref=mem_ref)
+        _STATE.setdefault("last_workflow_results", {})["impact"] = {"target": target, "result": res}
         export_refusal = _ti.require_fresh_context(_STATE, for_export=True)
         if export_refusal:
-            res.update({k: export_refusal[k] for k in ("ok", "status", "message", "error") if k in export_refusal})
-            res.pop("export", None)
-            res.pop("export_minimal", None)
-            return res
-        atlas_export.attach_workflow_exports(
-            res, "impact", memory_ref=_repo_memory.get_memory_ref(_STATE)
-        )
+            res["export_blocked"] = True
+            res["export_block_reason"] = export_refusal.get("message")
+        else:
+            atlas_export.attach_workflow_exports(res, "impact", memory_ref=mem_ref)
         track_analytics_event("impact_analyzed", risk_level=res.get("risk_level"), confidence=res.get("confidence"))
         _record_usage("impact_created", target=target, risk_level=res.get("risk_level"))
-        return res
+        return _ti.attach_trust_status(res, _STATE)
 
 
 def session_export_packet() -> Dict[str, Any]:

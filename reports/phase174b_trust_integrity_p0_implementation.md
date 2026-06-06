@@ -1,92 +1,112 @@
 # Phase 174B — Trust Integrity P0 Implementation
 
-**Date:** 2026-06-05  
-**Scope:** Stale/wrong/unsafe export paths only. No features, UI, billing, intelligence, or benchmark changes.
+**Date:** 2026-06-05 (corrected)  
+**Scope:** Stale/wrong/unsafe export paths + user-controlled targeted refresh. No intelligence, UI, billing, or benchmark changes.
 
 ## Summary
 
-Phase 174B closes seven P0 trust-integrity failures identified in Phase 173C and Phase 172A. Atlas now refuses exports and workflow outputs when repository context is stale, tampered, or graph coverage is insufficient — and exposes persistence/diagnostic status for support.
+Phase 174B closes P0 trust-integrity failures from Phase 173C / 172A. Atlas refuses exports when repository context is stale or tampered, exposes persistence/diagnostic status, and offers **targeted file refresh** — never automatic full-repo rescans.
 
-## P0 Fixes
+## Why full auto-rescan was rejected
 
-| ID | Issue | Fix |
-|----|-------|-----|
-| 1 | Stale graph after source edits | `trust_integrity.verify_scan_fresh()` / `require_fresh_context()` gate all workflow + export paths; returns `stale_scan` or `stale_git_head_changed` |
-| 2 | Signature sampled only first 2500 files | `compute_signature_v2()` — git HEAD/branch/dirty + full indexed manifest hash + scope aggregates + optional content hashes |
-| 3 | Poisoned repository memory exportable | `repository_memory` persists `scan_signature`, `memory_hash`, `repo_id`, `scan_id`, `generated_by_version`; `load()` / `verify_memory_record()` discard tampered records |
-| 4 | Memory persistence failure silent | `persist()` returns `(path, ok, error)`; `update_after_scan()` sets `memory_persistence_status=failed` and `persistent_memory_available=False` on write failure |
-| 5 | Exports carry stale/poisoned context | `require_fresh_context(for_export=True)` validates path, signature, memory hash, graph health before `context_export`, `session_export_packet`, and workflow export attachment |
-| 6 | Build/Investigation on weak graph | `gate_weak_graph_workflow()` refuses `ok=true` when `graph_health=unsupported_language_limited` unless exact file/symbol evidence exists |
-| 7 | Global runtime state race | `trust_integrity.state_guard()` (`threading.RLock`) wraps scan, select, rebuild, memory update, export, and workflow generation |
+Automatic full rescans after file edits were explicitly **not** implemented because:
 
-## Files Changed
+- Users may be mid-edit; Claude/Cursor output is often incomplete
+- Full rescans are expensive on real repositories
+- Silent refresh would hide stale-context bugs and erode trust
+- Users must control when Atlas re-trusts the working tree
 
-| File | Change |
-|------|--------|
-| `jarvis_desktop/trust_integrity.py` | **New** — signature v2, freshness gates, weak-graph gate, diagnostics, state lock |
-| `jarvis_desktop/repository_memory.py` | Memory hash/signature fields, tamper verification, persist tuple return, persistence status |
-| `jarvis_desktop/api.py` | Wire trust gates; store `signature_v2` + `graph_health` on scan; cache key vs content signature split; state_guard on critical paths |
-| `jarvis_desktop/install_support.py` | `rebuild_index` under state lock; clear persistence flags; `trust_integrity` in `environment_status` |
-| `jarvis_desktop/tests/test_phase174b_trust_integrity.py` | **New** — 11 regression tests |
-| `jarvis_desktop/tests/test_phase172a_memory_attack_surface.py` | Updated signature v2 assertion (removed 2500-cap test) |
-| `jarvis_desktop/tests/test_phase172_memory_engine.py` | Updated `persist()` return-type expectations |
+**Acceptance:** Atlas never silently trusts changed code. Atlas never silently rescans the entire repo.
 
-## Refusal Status Codes
+## Targeted refresh design
 
-| Status | When |
-|--------|------|
-| `stale_scan` | File manifest/content changed since last scan |
-| `stale_git_head_changed` | Git HEAD changed since last scan |
-| `memory_invalid` | In-memory or on-disk memory failed hash/path verification |
-| `memory_stale` | Memory `scan_signature` does not match active scan |
-| `unsupported_language_limited` | Weak graph + no exact file/symbol evidence |
-| `requires_rescan` | No scan or path mismatch |
+When files change **only within the last Atlas plan** (`recommended_files` / `inspected_files` / `likely_modified_files`):
 
-Export-facing message (when `for_export=True`):
+| State flag | Meaning |
+|------------|---------|
+| `targeted_refresh_available=true` | Changed files ⊆ plan scope |
+| `repo_changed_outside_plan=false` | No unrelated edits |
 
-> Atlas needs a fresh scan before exporting this context.
+User message:
 
-## Signature v2 Design
+> Files from the last Atlas plan changed. Refresh those files before exporting new context.
+
+**User action:** `POST /api/repositories/current/refresh-changed-files` (button: *Refresh changed files*)
+
+**Scope updated (not whole repo):**
+
+- AST symbols for changed files
+- Imports / call edges touching changed files
+- Direct dependency-graph neighbors (importers/importees)
+- Index metadata for affected paths
+- Evidence store records for touched files
+- `signature_v2` manifest + memory delta (`refresh_generation` bump, new `memory_ref`)
+
+When files change **outside** the plan (or git HEAD moves, or no plan exists):
+
+| State flag | Meaning |
+|------------|---------|
+| `repo_changed_outside_plan=true` | Unscoped edits |
+| `targeted_refresh_available=false` | Targeted refresh insufficient |
+
+User message:
+
+> Repository changed outside the last Atlas plan. A full rescan may be required.
+
+Exports remain blocked until **full rescan** or scoped refresh where applicable.
+
+## User-controlled refresh behavior
+
+1. **No silent refresh** — graph/memory/signature never update without explicit API call.
+2. **Workflows stay historical** — Build / Investigation / Impact return `ok=true` with `context_stale=true`; prior plan text remains visible.
+3. **Exports blocked when stale** — `context_export`, `session_export_packet`, and workflow copy packets refuse with:
+
+   > Atlas needs a refresh before exporting context. The repository changed after this plan was generated.
+
+4. **Workflow context tracked** per export:
+
+   - `recommended_files`, `inspected_files`, `likely_modified_files`
+   - `generated_at`, `scan_id`, `memory_ref`, `scan_signature`, `refresh_generation`
+
+5. **Status endpoint:** `GET /api/repositories/current/trust-status`
+
+## P0 fixes (original + correction)
+
+| ID | Fix |
+|----|-----|
+| 1 | Stale graph detection via per-file manifest + signature v2 (no auto-rescan) |
+| 2 | Signature v2: git metadata + full indexed manifest hash |
+| 3 | Memory tamper detection (`memory_hash`, `scan_signature`, `repo_id`) |
+| 4 | `memory_persistence_status=failed` on write failure |
+| 5 | Export validation: path, signature, memory, graph health, `memory_ref` |
+| 6 | Weak-graph workflow gate (`unsupported_language_limited`) |
+| 7 | `threading.RLock` on scan/select/rebuild/memory/export/workflow |
+| 8 | **Targeted refresh** for plan-scoped file changes (user-initiated only) |
+
+## Files
+
+| File | Role |
+|------|------|
+| `jarvis_desktop/trust_integrity.py` | Signatures, staleness assessment, workflow context, export gates |
+| `jarvis_desktop/targeted_refresh.py` | User-initiated partial graph/symbol/evidence refresh |
+| `jarvis_desktop/repository_memory.py` | `refresh_generation`, memory hash, persist status |
+| `jarvis_desktop/api.py` | Wire gates, `refresh_changed_files()`, `trust_integrity_status()` |
+| `jarvis_desktop/server.py` | Routes for trust-status + refresh-changed-files |
+| `jarvis_desktop/evidence_engine/symbol_index.py` | `remove_file()` for targeted symbol rebuild |
+| `jarvis_desktop/tests/test_phase174b_trust_integrity.py` | 17 regression tests |
+
+## Test results
 
 ```
-version, root, scope,
-git_head, git_branch, git_dirty,
-file_count, total_size, total_mtime,
-manifest_hash (from indexed scan files, not arbitrary walk cap)
-→ SHA256 digest → signature
-```
-
-- **Cache lookup key:** filesystem manifest (pre-scan, no index yet)
-- **Freshness / stored signature:** indexed manifest + content hashes from scan result
-
-## Test Results
-
-```
-py -3 -m pytest jarvis_desktop/tests/test_phase174b_trust_integrity.py -q
-# 11 passed
-
+py -3 -m pytest jarvis_desktop/tests/test_phase174b_trust_integrity.py -q   # 17 passed
 py -3 -m pytest jarvis_desktop/tests/test_phase172a_memory_attack_surface.py -q
-# 6 passed
-
 py -3 -m pytest jarvis_desktop/tests/test_phase172_memory_engine.py -q
-# 49 passed
 ```
 
-**Total: 66 passed**
+## Remaining limitations
 
-## Test Coverage (174B)
-
-- Edit file after scan → export refuses `stale_scan`
-- Git HEAD change → export refuses `stale_git_head_changed`
-- Memory file tamper → `load()` returns `None`; in-state tamper → export refuses `memory_invalid`
-- Memory write failure → `memory_persistence_status=failed` exposed
-- Repo path switch → stale memory cleared; export refuses
-- Unsupported graph Build → refuses unless exact file evidence
-- Concurrent `select_repository` + export → no wrong-repo memory
-- `beta_diagnostics()` / `environment_status()` include `trust_integrity` block
-
-## Out of Scope (unchanged)
-
-- Website, billing, UI redesign
-- Intelligence / planning engine logic
-- Benchmark scoring
+- Targeted refresh rebuilds **import-level** edges for touched Python modules; full call-graph depth for distant transitive deps is not recomputed.
+- Non-Python file edits outside the plan always require full rescan.
+- Git dirty/uncommitted changes outside the plan scope trigger `repo_changed_outside_plan` even when changes are unrelated to Atlas recommendations.
+- UI buttons/messages are exposed via API flags; front-end wiring is out of scope for this phase.
+- Concurrent edits during targeted refresh are not merged; user should refresh again if files change mid-refresh.

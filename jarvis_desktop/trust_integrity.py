@@ -11,8 +11,9 @@ import json
 import os
 import subprocess
 import threading
+import time
 from contextlib import contextmanager
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 SIGNATURE_VERSION = 2
 
@@ -173,6 +174,268 @@ def compute_signature_v2(
     return payload
 
 
+def _norm_path(path: str) -> str:
+    return (path or "").replace("\\", "/").strip()
+
+
+def capture_file_manifest(state: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
+    """Snapshot per-file size/mtime/content hash at scan time."""
+    scan = state.get("scan") or {}
+    path = state.get("path") or scan.get("repo_path")
+    if not path:
+        return {}
+    root = os.path.abspath(str(path))
+    manifest: Dict[str, Dict[str, Any]] = {}
+    for f in (state.get("index") or {}).get("files") or []:
+        rel = _norm_path(str(f.get("path") or ""))
+        if not rel:
+            continue
+        abs_path = os.path.join(root, rel.replace("/", os.sep))
+        try:
+            st = os.stat(abs_path)
+            size = int(st.st_size)
+            mtime = int(st.st_mtime)
+        except OSError:
+            size = int(f.get("size") or 0)
+            mtime = 0
+        manifest[rel] = {
+            "size": size,
+            "mtime": mtime,
+            "content_hash": _content_hash(abs_path),
+        }
+    state["file_manifest"] = manifest
+    return manifest
+
+
+def update_file_manifest(state: Dict[str, Any], paths: List[str]) -> None:
+    """Update manifest entries after targeted refresh."""
+    scan = state.get("scan") or {}
+    path = state.get("path") or scan.get("repo_path")
+    if not path:
+        return
+    root = os.path.abspath(str(path))
+    manifest = dict(state.get("file_manifest") or {})
+    for rel in paths:
+        rel = _norm_path(rel)
+        abs_path = os.path.join(root, rel.replace("/", os.sep))
+        try:
+            st = os.stat(abs_path)
+            manifest[rel] = {
+                "size": int(st.st_size),
+                "mtime": int(st.st_mtime),
+                "content_hash": _content_hash(abs_path),
+            }
+        except OSError:
+            manifest.pop(rel, None)
+    state["file_manifest"] = manifest
+
+
+def detect_changed_files(state: Dict[str, Any]) -> List[str]:
+    """Return repo-relative paths that differ from the stored file manifest."""
+    scan = state.get("scan") or {}
+    path = state.get("path") or scan.get("repo_path")
+    if not scan or not path:
+        return []
+    stored = state.get("file_manifest") or {}
+    if not stored:
+        capture_file_manifest(state)
+        stored = state.get("file_manifest") or {}
+    root = os.path.abspath(str(path))
+    changed: List[str] = []
+    seen: Set[str] = set(stored.keys())
+    for rel, meta in stored.items():
+        abs_path = os.path.join(root, rel.replace("/", os.sep))
+        try:
+            st = os.stat(abs_path)
+            live = {
+                "size": int(st.st_size),
+                "mtime": int(st.st_mtime),
+                "content_hash": _content_hash(abs_path),
+            }
+        except OSError:
+            changed.append(rel)
+            continue
+        if live != meta:
+            changed.append(rel)
+    for f in (state.get("index") or {}).get("files") or []:
+        rel = _norm_path(str(f.get("path") or ""))
+        if rel and rel not in seen:
+            try:
+                os.stat(os.path.join(root, rel.replace("/", os.sep)))
+                changed.append(rel)
+            except OSError:
+                pass
+    return sorted(set(changed))
+
+
+def _recommended_file_set(ctx: Dict[str, Any]) -> Set[str]:
+    paths: Set[str] = set()
+    for key in ("recommended_files", "inspected_files", "likely_modified_files"):
+        for p in ctx.get(key) or []:
+            if p:
+                paths.add(_norm_path(str(p)))
+    return paths
+
+
+def extract_workflow_files(workflow: str, plan_or_result: Dict[str, Any]) -> Dict[str, List[str]]:
+    """Collect file paths Atlas recommended for change/inspection."""
+    plan = plan_or_result.get("plan") or plan_or_result
+    recommended: List[str] = []
+    inspected: List[str] = []
+    likely_modified: List[str] = []
+
+    if workflow == "build":
+        inspected = list(plan.get("files_to_inspect_first") or [])
+        likely_modified = list(plan.get("files_likely_to_modify") or plan.get("likely_affected_modules") or [])
+        recommended = _dedupe_paths(inspected + likely_modified)
+    elif workflow == "investigate":
+        for h in (plan.get("hypotheses") or [])[:3]:
+            likely_modified.extend(h.get("files_involved") or [])
+        likely_modified.extend(plan.get("likely_modules") or [])
+        inspected = list(plan.get("recommended_files") or [])
+        recommended = _dedupe_paths(inspected + likely_modified)
+    elif workflow == "impact":
+        target = _norm_path(str(plan_or_result.get("target") or ""))
+        affected = list(plan_or_result.get("affected_files") or [])
+        direct = list(plan_or_result.get("direct_impact") or [])
+        if target:
+            recommended = _dedupe_paths([target] + affected[:8] + direct[:8])
+        else:
+            recommended = _dedupe_paths(affected[:8] + direct[:8])
+        likely_modified = list(recommended)
+    return {
+        "recommended_files": recommended,
+        "inspected_files": _dedupe_paths(inspected),
+        "likely_modified_files": _dedupe_paths(likely_modified),
+    }
+
+
+def _dedupe_paths(paths: List[str]) -> List[str]:
+    out: List[str] = []
+    seen: Set[str] = set()
+    for p in paths:
+        n = _norm_path(str(p))
+        if n and n not in seen:
+            seen.add(n)
+            out.append(n)
+    return out
+
+
+def record_workflow_context(
+    state: Dict[str, Any],
+    workflow: str,
+    plan_or_result: Dict[str, Any],
+    *,
+    memory_ref: str = "",
+) -> None:
+    """Persist Atlas-recommended files for targeted refresh scoping."""
+    files = extract_workflow_files(workflow, plan_or_result)
+    scan = state.get("scan") or {}
+    mem = state.get("_current_memory") or {}
+    ctx = {
+        "workflow": workflow,
+        **files,
+        "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "scan_id": mem.get("scan_id") or (state.get("repository_memory") or {}).get("scan_id") or "",
+        "memory_ref": memory_ref or mem.get("scan_id") or "",
+        "scan_signature": (stored_signature(state) or {}).get("signature"),
+        "refresh_generation": int(state.get("refresh_generation") or 0),
+        "superseded": False,
+    }
+    state["workflow_context"] = ctx
+    state["active_memory_ref"] = ctx["memory_ref"]
+
+
+def assess_staleness(state: Dict[str, Any]) -> Dict[str, Any]:
+    """Classify repo changes vs last scan and Atlas plan scope."""
+    scan = state.get("scan")
+    path = state.get("path") or (scan or {}).get("repo_path")
+    base = {
+        "fresh": True,
+        "targeted_refresh_available": False,
+        "repo_changed_outside_plan": False,
+        "changed_files": [],
+        "changed_recommended_files": [],
+        "changed_outside_plan_files": [],
+        "status": "fresh",
+        "message": "",
+    }
+    if not scan or not path:
+        return {**base, "fresh": False, "status": "requires_rescan", "message": "No repository scanned yet."}
+
+    if os.path.abspath(str(scan.get("repo_path") or path)) != os.path.abspath(str(path)):
+        return {
+            **base,
+            "fresh": False,
+            "repo_changed_outside_plan": True,
+            "status": "stale_scan",
+            "message": "Repository path changed since the last scan. Rescan before exporting context.",
+        }
+
+    scope = scan.get("scope") or state.get("last_scope") or {"mode": "entire_repo"}
+    index_files = (state.get("index") or {}).get("files")
+    live = compute_signature_v2(str(path), scope, indexed_files=index_files, include_content_hash=bool(index_files))
+    prev = stored_signature(state)
+    git_head_changed = False
+    if prev:
+        prev_git = prev.get("git_head")
+        live_git = live.get("git_head")
+        git_head_changed = bool(prev_git and live_git and prev_git != live_git)
+
+    changed = detect_changed_files(state)
+    if not changed and (not prev or live.get("signature") == prev.get("signature")):
+        return base
+
+    ctx = state.get("workflow_context") or {}
+    recommended = _recommended_file_set(ctx) if ctx and not ctx.get("superseded") else set()
+    changed_set = {_norm_path(c) for c in changed}
+    inside = sorted(changed_set & recommended) if recommended else []
+    outside = sorted(changed_set - recommended) if recommended else sorted(changed_set)
+
+    if git_head_changed:
+        outside = sorted(set(outside) | set(changed_set))
+
+    if outside or not recommended:
+        return {
+            **base,
+            "fresh": False,
+            "repo_changed_outside_plan": True,
+            "targeted_refresh_available": False,
+            "changed_files": sorted(changed_set),
+            "changed_recommended_files": inside,
+            "changed_outside_plan_files": outside if outside else sorted(changed_set),
+            "status": "stale_git_head_changed" if git_head_changed else "stale_outside_plan",
+            "message": (
+                "Repository changed outside the last Atlas plan. A full rescan may be required."
+            ),
+        }
+
+    return {
+        **base,
+        "fresh": False,
+        "targeted_refresh_available": True,
+        "repo_changed_outside_plan": False,
+        "changed_files": sorted(changed_set),
+        "changed_recommended_files": inside,
+        "changed_outside_plan_files": [],
+        "status": "targeted_refresh_required",
+        "message": (
+            "Files from the last Atlas plan changed. Refresh those files before exporting new context."
+        ),
+    }
+
+
+def attach_trust_status(result: Dict[str, Any], state: Dict[str, Any]) -> Dict[str, Any]:
+    """Attach trust/staleness flags without mutating ok for historical workflow views."""
+    status = assess_staleness(state)
+    result["trust_status"] = status
+    result["targeted_refresh_available"] = status.get("targeted_refresh_available", False)
+    result["repo_changed_outside_plan"] = status.get("repo_changed_outside_plan", False)
+    if not status.get("fresh"):
+        result["context_stale"] = True
+    return result
+
+
 def stored_signature(state: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     scan = state.get("scan") or {}
     sig = scan.get("signature_v2")
@@ -185,52 +448,37 @@ def stored_signature(state: Dict[str, Any]) -> Optional[Dict[str, Any]]:
 
 
 def verify_scan_fresh(state: Dict[str, Any]) -> Optional[Dict[str, Any]]:
-    """Return refusal dict when active scan no longer matches repository on disk."""
-    scan = state.get("scan")
-    path = state.get("path") or (scan or {}).get("repo_path")
-    if not scan or not path:
-        return {
-            "ok": False,
-            "status": "requires_rescan",
-            "message": "No repository scanned yet.",
-            "error": "No repository scanned yet.",
-        }
-    if os.path.abspath(str(scan.get("repo_path") or path)) != os.path.abspath(str(path)):
-        return {
-            "ok": False,
-            "status": "stale_scan",
-            "message": "Repository path changed since the last scan. Rescan before exporting context.",
-            "error": "Repository path changed since the last scan.",
-        }
-
-    scope = scan.get("scope") or state.get("last_scope") or {"mode": "entire_repo"}
-    index_files = (state.get("index") or {}).get("files")
-    live = compute_signature_v2(
-        str(path), scope, indexed_files=index_files, include_content_hash=bool(index_files)
-    )
-    prev = stored_signature(state)
-    if not prev or live.get("signature") == prev.get("signature"):
+    """Return refusal dict when context is stale (never triggers rescan)."""
+    status = assess_staleness(state)
+    if status.get("fresh"):
         return None
+    st = status.get("status") or "stale_scan"
+    msg = status.get("message") or "Repository changed since the last scan."
+    return {
+        "ok": False,
+        "status": st,
+        "message": msg,
+        "error": msg,
+        "trust_status": status,
+        "targeted_refresh_available": status.get("targeted_refresh_available", False),
+        "repo_changed_outside_plan": status.get("repo_changed_outside_plan", False),
+        "changed_files": status.get("changed_files", []),
+    }
 
-    prev_git = (prev or {}).get("git_head") if isinstance(prev, dict) else None
-    live_git = live.get("git_head")
-    if prev_git and live_git and prev_git != live_git:
-        status = "stale_git_head_changed"
-        msg = "Git HEAD changed since the last scan. Rescan before exporting context."
-    else:
-        status = "stale_scan"
-        msg = "Repository changed since the last scan. Rescan before exporting context."
 
-    return {"ok": False, "status": status, "message": msg, "error": msg}
+_EXPORT_STALE_MSG = (
+    "Atlas needs a refresh before exporting context. "
+    "The repository changed after this plan was generated."
+)
 
 
 def require_fresh_context(state: Dict[str, Any], *, for_export: bool = False) -> Optional[Dict[str, Any]]:
-    """Gate workflows/exports on path, signature, memory, and graph health."""
+    """Gate exports on freshness; workflows use attach_trust_status instead."""
     refusal = verify_scan_fresh(state)
     if refusal:
-        if for_export and refusal.get("status") in ("stale_scan", "stale_git_head_changed"):
-            refusal["message"] = "Atlas needs a fresh scan before exporting this context."
-            refusal["error"] = refusal["message"]
+        if for_export:
+            refusal["message"] = _EXPORT_STALE_MSG
+            refusal["error"] = _EXPORT_STALE_MSG
         return refusal
 
     scan = state.get("scan") or {}
@@ -261,8 +509,18 @@ def require_fresh_context(state: Dict[str, Any], *, for_export: bool = False) ->
             return {
                 "ok": False,
                 "status": "memory_stale",
-                "message": "Atlas needs a fresh scan before exporting this context.",
+                "message": _EXPORT_STALE_MSG if for_export else "Repository memory does not match the active scan.",
                 "error": "Repository memory does not match the active scan.",
+            }
+        wf = state.get("workflow_context") or {}
+        active_ref = state.get("active_memory_ref") or mem.get("scan_id")
+        wf_ref = wf.get("memory_ref")
+        if for_export and wf_ref and active_ref and wf_ref != active_ref:
+            return {
+                "ok": False,
+                "status": "memory_ref_stale",
+                "message": _EXPORT_STALE_MSG,
+                "error": "Workflow memory_ref no longer matches after refresh.",
             }
 
     if for_export and state.get("memory_persistence_status") == "failed":
@@ -345,12 +603,18 @@ def trust_integrity_diagnostics(state: Dict[str, Any]) -> Dict[str, Any]:
         except Exception as exc:
             stale = {"ok": False, "status": "signature_error", "error": str(exc)}
     gh = scan.get("graph_health") or {}
+    staleness = assess_staleness(state)
     return {
         "signature_version": SIGNATURE_VERSION,
         "stored_signature": (stored_signature(state) or {}).get("signature"),
         "live_signature": (live or {}).get("signature"),
         "scan_stale": bool(stale),
         "stale_status": (stale or {}).get("status"),
+        "targeted_refresh_available": staleness.get("targeted_refresh_available", False),
+        "repo_changed_outside_plan": staleness.get("repo_changed_outside_plan", False),
+        "changed_files": staleness.get("changed_files", []),
+        "workflow_context": bool(state.get("workflow_context")),
+        "refresh_generation": state.get("refresh_generation", 0),
         "memory_persistence_status": state.get("memory_persistence_status", "unknown"),
         "memory_persistence_error": state.get("memory_persistence_error"),
         "graph_health": gh.get("label") if isinstance(gh, dict) else gh,
