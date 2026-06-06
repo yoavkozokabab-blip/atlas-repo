@@ -98,7 +98,7 @@ def _check_directories() -> Dict[str, Any]:
         "detail": "present" if ok else "; ".join(problems),
         "hint": None if ok else (
             "Atlas could not write app data. Close other Atlas instances, check disk space, "
-            "or set JARVIS_DESKTOP_DATA to a writable folder."
+            "or set ATLAS_DESKTOP_DATA to a writable folder."
         ),
     }
 
@@ -405,7 +405,10 @@ def _scrub_residual_secret_markers(text: str) -> str:
         r"(?i)Authorization:\s*(?:\[REDACTED\]|\S+)",
         r"(?i)Authorization\s*=\s*(?:\[REDACTED\]|\S+)",
         r"(?i)\bBearer\s+(?:\[REDACTED\]|[A-Za-z0-9._\-]+)",
-        r'(?i)"(?:api_key|token|access_token|refresh_token|authorization)"\s*:\s*"(?:\[REDACTED\]|[^"]*)"',
+        r"(?i)\bJWT\s+(?:\[REDACTED\]|[A-Za-z0-9_\-]+)",
+        r"(?i)\bjwt\s*=\s*(?:\[REDACTED\]|[^\s\"']+)",
+        r"(?i)\bJWT\s*:\s*(?:\[REDACTED\]|[^\s\"']+)",
+        r'(?i)"(?:api_key|token|access_token|refresh_token|authorization|jwt)"\s*:\s*"(?:\[REDACTED\]|[^"]*)"',
     )
     out = text
     for pat in patterns:
@@ -456,6 +459,9 @@ def _redact_secret_values(text: str) -> str:
     out = re.sub(r"github_pat_[A-Za-z0-9_]+", "[REDACTED]", out)
     out = re.sub(r"xoxb-[A-Za-z0-9\-]+", "[REDACTED]", out)
     out = re.sub(r"eyJ[A-Za-z0-9_\-]+\.[A-Za-z0-9_\-]+\.[A-Za-z0-9_\-]*", "[REDACTED]", out)
+    out = re.sub(r"(?i)\bJWT\s+[A-Za-z0-9_\-]+", "[REDACTED]", out)
+    out = re.sub(r"(?i)\bjwt\s*=\s*[^\s\"']+", "[REDACTED]", out)
+    out = re.sub(r"(?i)\bJWT\s*:\s*[^\s\"']+", "[REDACTED]", out)
     return _scrub_residual_secret_markers(out)
 
 
@@ -475,7 +481,9 @@ def _sanitize_support_payload(payload: Any) -> Any:
         blob = json.dumps(payload, indent=2, default=str)
     except TypeError:
         blob = json.dumps(str(payload))
-    return json.loads(_redact_support_text(blob))
+    redacted = _redact_support_text(blob)
+    redacted = re.sub(r"persistence_secret", "[redacted]", redacted, flags=re.I)
+    return json.loads(redacted)
 
 
 def collect_error_logs() -> Dict[str, str]:

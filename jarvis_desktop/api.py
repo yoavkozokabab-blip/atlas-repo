@@ -3133,6 +3133,7 @@ def session_export_packet() -> Dict[str, Any]:
                 record,
                 packet,
                 str(_STATE.get("path") or ""),
+                data_dir=_desktop_data_dir(),
             )
             if not mem_check.get("trusted"):
                 return {

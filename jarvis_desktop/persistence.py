@@ -7,9 +7,12 @@ Does not modify graph intelligence, impact algorithm, or repository memory seman
 from __future__ import annotations
 
 import hashlib
+import hmac
 import json
 import os
 import re
+import secrets
+import stat
 import time
 import uuid
 from datetime import datetime, timedelta, timezone
@@ -46,6 +49,11 @@ _SOURCE_LIKE_KEYS = frozenset({
 })
 _MAX_STRING_LEN = 4000
 _MAX_RESULT_DEPTH = 8
+_SECRET_BYTES = 32
+_SECRET_FILENAME = "persistence_secret"
+_HISTORY_TRUSTED = "trusted"
+_HISTORY_LEGACY = "legacy_untrusted"
+_HISTORY_REJECTED = "rejected"
 
 
 def _now_iso() -> str:
@@ -102,6 +110,104 @@ def _compute_history_integrity_hash(record: Dict[str, Any]) -> str:
     return hashlib.sha256(blob.encode("utf-8")).hexdigest()
 
 
+def _security_dir(data_dir: str) -> str:
+    path = os.path.join(data_dir, "security")
+    os.makedirs(path, exist_ok=True)
+    return path
+
+
+def persistence_secret_path(data_dir: str) -> str:
+    return os.path.join(_security_dir(data_dir), _SECRET_FILENAME)
+
+
+def _write_persistence_secret(path: str, key: bytes) -> None:
+    tmp = path + ".tmp"
+    with open(tmp, "wb") as fh:
+        fh.write(key)
+    os.replace(tmp, path)
+    try:
+        os.chmod(path, stat.S_IRUSR | stat.S_IWUSR)
+    except OSError:
+        pass
+
+
+def load_persistence_secret(data_dir: str) -> bytes:
+    """Load or create the local HMAC secret (never export or bundle)."""
+    path = persistence_secret_path(data_dir)
+    if os.path.isfile(path):
+        try:
+            raw = open(path, "rb").read()
+        except OSError:
+            raw = b""
+        if len(raw) >= _SECRET_BYTES:
+            return raw[:_SECRET_BYTES]
+    key = secrets.token_bytes(_SECRET_BYTES)
+    try:
+        _write_persistence_secret(path, key)
+    except OSError:
+        pass
+    return key
+
+
+def _result_json_hash(result_json: Any) -> str:
+    blob = json.dumps(result_json or {}, sort_keys=True, default=str, separators=(",", ":"))
+    return hashlib.sha256(blob.encode("utf-8")).hexdigest()
+
+
+def _history_hmac_payload(record: Dict[str, Any]) -> Dict[str, Any]:
+    return {
+        "repo_id": record.get("repo_id"),
+        "scan_id": record.get("scan_id"),
+        "scan_signature": record.get("scan_signature"),
+        "graph_signature": record.get("graph_signature") or record.get("scan_signature"),
+        "atlas_version": record.get("atlas_version"),
+        "request_text": record.get("request_text"),
+        "files_named": record.get("files_named") or [],
+        "summary_markdown": record.get("summary_markdown") or "",
+        "result_json_hash": _result_json_hash(record.get("result_json")),
+        "history_id": record.get("history_id"),
+        "workflow_type": record.get("workflow_type"),
+        "created_at": record.get("created_at"),
+    }
+
+
+def _compute_history_integrity_hmac(record: Dict[str, Any], secret: bytes) -> str:
+    blob = json.dumps(_history_hmac_payload(record), sort_keys=True, default=str, separators=(",", ":"))
+    return hmac.new(secret, blob.encode("utf-8"), hashlib.sha256).hexdigest()
+
+
+def _memory_text_from_packet(packet: Dict[str, Any]) -> str:
+    return str(packet.get("memory_text") or packet.get("text") or "")
+
+
+def _memory_hmac_payload(packet: Dict[str, Any], record: Dict[str, Any]) -> Dict[str, Any]:
+    return {
+        "repo_id": packet.get("repo_id") or record.get("repo_id"),
+        "scan_id": packet.get("scan_id") or record.get("scan_id"),
+        "scan_signature": packet.get("scan_signature") or record.get("scan_signature"),
+        "graph_signature": record.get("graph_signature") or record.get("scan_signature"),
+        "memory_text": _memory_text_from_packet(packet),
+        "created_at": packet.get("created_at") or packet.get("generated_at") or record.get("created_at"),
+        "atlas_version": packet.get("atlas_version") or record.get("atlas_version") or PRODUCT_VERSION,
+    }
+
+
+def _compute_memory_hmac(packet: Dict[str, Any], record: Dict[str, Any], secret: bytes) -> str:
+    blob = json.dumps(_memory_hmac_payload(packet, record), sort_keys=True, default=str, separators=(",", ":"))
+    return hmac.new(secret, blob.encode("utf-8"), hashlib.sha256).hexdigest()
+
+
+def sign_memory_packet(
+    packet: Dict[str, Any],
+    record: Dict[str, Any],
+    data_dir: str,
+) -> Dict[str, Any]:
+    signed = dict(packet)
+    secret = load_persistence_secret(data_dir)
+    signed["memory_hmac"] = _compute_memory_hmac(signed, record, secret)
+    return signed
+
+
 def _signatures_match(stored: str, other: str) -> bool:
     left = str(stored or "")
     right = str(other or "")
@@ -114,24 +220,47 @@ def _signatures_match(stored: str, other: str) -> bool:
     return False
 
 
-def _validate_history_row(row: Dict[str, Any], *, expected_repo_id: Optional[str] = None) -> bool:
-    declared = str(row.get("integrity_hash") or "")
-    if not declared:
-        return False
-    if declared != _compute_history_integrity_hash(row):
-        return False
+def _validate_history_row(
+    row: Dict[str, Any],
+    *,
+    expected_repo_id: Optional[str] = None,
+    data_dir: str = "",
+) -> str:
+    """Return trusted, legacy_untrusted, or rejected."""
     rid = str(row.get("repo_id") or "")
     if not rid or not row.get("scan_id") or not row.get("scan_signature"):
-        return False
+        return _HISTORY_REJECTED
     if expected_repo_id and rid != expected_repo_id:
-        return False
-    return bool(validate_persistence_version(str(row.get("atlas_version") or "")).get("ok"))
+        return _HISTORY_REJECTED
+    if not validate_persistence_version(str(row.get("atlas_version") or "")).get("ok"):
+        return _HISTORY_REJECTED
+
+    declared_hmac = str(row.get("integrity_hmac") or "")
+    if not declared_hmac:
+        declared_hash = str(row.get("integrity_hash") or "")
+        if declared_hash and declared_hash == _compute_history_integrity_hash(row):
+            return _HISTORY_LEGACY
+        return _HISTORY_REJECTED
+
+    if not data_dir:
+        return _HISTORY_REJECTED
+    secret = load_persistence_secret(data_dir)
+    expected_hmac = _compute_history_integrity_hmac(row, secret)
+    if not hmac.compare_digest(declared_hmac, expected_hmac):
+        return _HISTORY_REJECTED
+
+    declared_hash = str(row.get("integrity_hash") or "")
+    if declared_hash and declared_hash != _compute_history_integrity_hash(row):
+        return _HISTORY_REJECTED
+    return _HISTORY_TRUSTED
 
 
 def validate_memory_packet(
     record: Dict[str, Any],
     memory_packet: Dict[str, Any],
     repo_path: str,
+    *,
+    data_dir: str = "",
 ) -> Dict[str, Any]:
     """Ensure persisted memory sidecar matches scan metadata before restore/export."""
     if not memory_packet:
@@ -143,7 +272,19 @@ def validate_memory_packet(
     graph_sig = str(record.get("graph_signature") or scan_sig)
 
     mode = str(memory_packet.get("mode") or "")
-    if mode in {"MEMORY", "SESSION"} or "text" in memory_packet:
+    packet_shape = mode in {"MEMORY", "SESSION"} or "text" in memory_packet
+    if packet_shape:
+        declared_hmac = str(memory_packet.get("memory_hmac") or "")
+        if not declared_hmac:
+            return {"ok": False, "trusted": False, "status": "legacy_unsigned"}
+        if not data_dir:
+            return {"ok": False, "trusted": False, "status": "memory_hmac_invalid"}
+        secret = load_persistence_secret(data_dir)
+        expected_hmac = _compute_memory_hmac(memory_packet, record, secret)
+        if not hmac.compare_digest(declared_hmac, expected_hmac):
+            return {"ok": False, "trusted": False, "status": "memory_hmac_invalid"}
+
+    if packet_shape:
         pkt_scan = str(memory_packet.get("scan_id") or "")
         pkt_repo = str(memory_packet.get("repo_id") or "")
         pkt_sig = str(memory_packet.get("scan_signature") or "")
@@ -370,7 +511,8 @@ def save_scan_state(
     mem_packet = state.get("repository_memory") or state.get("session_export")
     if mem_packet:
         try:
-            _json_write(os.path.join(sdir, "memory_packet.json"), mem_packet)
+            signed_packet = sign_memory_packet(mem_packet, record, data_dir)
+            _json_write(os.path.join(sdir, "memory_packet.json"), signed_packet)
             written.append("memory_packet.json")
         except (OSError, TypeError, ValueError):
             partial = True
@@ -588,7 +730,7 @@ def restore_into_state_with_memory(
     state.pop("persistence_memory_rejected", None)
 
     mem_packet = bundle.get("memory_packet") or {}
-    mem_check = validate_memory_packet(record, mem_packet, repo_path)
+    mem_check = validate_memory_packet(record, mem_packet, repo_path, data_dir=data_dir)
     if mem_packet and mem_check.get("trusted"):
         state["repository_memory"] = mem_packet
         state["session_export"] = mem_packet
@@ -598,7 +740,7 @@ def restore_into_state_with_memory(
 
     disk_mem = _repo_memory.load(repo_path, data_dir) if repo_path else None
     if disk_mem:
-        disk_check = validate_memory_packet(record, disk_mem, repo_path)
+        disk_check = validate_memory_packet(record, disk_mem, repo_path, data_dir=data_dir)
         if disk_check.get("trusted"):
             state["_current_memory"] = disk_mem
         else:
@@ -713,7 +855,11 @@ def save_workflow_history(data_dir: str, record: Dict[str, Any]) -> Dict[str, An
     record["summary_markdown"] = str(record.get("summary_markdown") or "")[:8000]
     if not record.get("scan_signature"):
         return {"ok": False, "error": "history record missing scan_signature"}
+    record.setdefault("graph_signature", record.get("scan_signature"))
+    record["result_json_hash"] = _result_json_hash(record.get("result_json"))
     record["integrity_hash"] = _compute_history_integrity_hash(record)
+    secret = load_persistence_secret(data_dir)
+    record["integrity_hmac"] = _compute_history_integrity_hmac(record, secret)
     path = os.path.join(_history_dir(data_dir, rid), f"{wf}.jsonl")
     with open(path, "a", encoding="utf-8") as fh:
         fh.write(json.dumps(record, default=str) + "\n")
@@ -739,8 +885,11 @@ def _read_history_lines(data_dir: str, repo_id: str, workflow_type: Optional[str
                         row = json.loads(line)
                     except json.JSONDecodeError:
                         continue
-                    if not _validate_history_row(row, expected_repo_id=repo_id):
+                    trust = _validate_history_row(row, expected_repo_id=repo_id, data_dir=data_dir)
+                    if trust == _HISTORY_REJECTED:
                         continue
+                    row = dict(row)
+                    row["_trust_level"] = trust
                     rows.append(row)
         except OSError:
             continue
@@ -760,6 +909,8 @@ def list_workflow_history(
 
 
 def _history_list_item(row: Dict[str, Any]) -> Dict[str, Any]:
+    trust_level = row.get("_trust_level") or _HISTORY_TRUSTED
+    historical_only = trust_level == _HISTORY_LEGACY
     return {
         "history_id": row.get("history_id"),
         "workflow_type": row.get("workflow_type"),
@@ -773,9 +924,11 @@ def _history_list_item(row: Dict[str, Any]) -> Dict[str, Any]:
         "export_tokens": row.get("export_tokens"),
         "export_mode": row.get("export_mode"),
         "trust_status": row.get("trust_status"),
-        "integrity_verified": True,
+        "trust_level": trust_level,
+        "historical_only": historical_only,
+        "integrity_verified": trust_level == _HISTORY_TRUSTED,
         "export_allowed": False,
-        "stale_reason": row.get("stale_reason"),
+        "stale_reason": "Historical only — refresh and re-run to export." if historical_only else row.get("stale_reason"),
     }
 
 
@@ -800,29 +953,55 @@ def get_workflow_history_item(data_dir: str, history_id: str, *, state: Optional
                             continue
                         if row.get("history_id") != history_id:
                             continue
-                        if not _validate_history_row(row, expected_repo_id=rid):
+                        trust = _validate_history_row(row, expected_repo_id=rid, data_dir=data_dir)
+                        if trust == _HISTORY_REJECTED:
                             return None
                         item = dict(row)
-                        item.update(_evaluate_history_export(item, state))
+                        item["_trust_level"] = trust
+                        item.update(_evaluate_history_export(item, state, data_dir=data_dir))
                         return item
             except OSError:
                 continue
     return None
 
 
-def _evaluate_history_export(row: Dict[str, Any], state: Optional[Dict[str, Any]]) -> Dict[str, Any]:
-    if not _validate_history_row(row):
+def _evaluate_history_export(
+    row: Dict[str, Any],
+    state: Optional[Dict[str, Any]],
+    *,
+    data_dir: str = "",
+) -> Dict[str, Any]:
+    trust_level = row.get("_trust_level") or _validate_history_row(row, data_dir=data_dir)
+    if trust_level == _HISTORY_REJECTED:
         return {
             "export_allowed": False,
             "integrity_verified": False,
+            "trust_level": _HISTORY_REJECTED,
+            "historical_only": False,
             "stale_reason": "History record failed integrity verification.",
         }
+    if trust_level == _HISTORY_LEGACY:
+        return {
+            "export_allowed": False,
+            "integrity_verified": False,
+            "trust_level": _HISTORY_LEGACY,
+            "historical_only": True,
+            "stale_reason": "Historical only — refresh and re-run to export.",
+        }
     if not state:
-        return {"export_allowed": False, "integrity_verified": True, "stale_reason": "No active session."}
+        return {
+            "export_allowed": False,
+            "integrity_verified": True,
+            "trust_level": _HISTORY_TRUSTED,
+            "historical_only": False,
+            "stale_reason": "No active session.",
+        }
     if state.get("persistence_memory_rejected") or state.get("requires_refresh_before_export"):
         return {
             "export_allowed": False,
             "integrity_verified": True,
+            "trust_level": _HISTORY_TRUSTED,
+            "historical_only": False,
             "stale_reason": "Refresh required before exporting restored context.",
         }
     scan = state.get("scan") or {}
@@ -832,6 +1011,8 @@ def _evaluate_history_export(row: Dict[str, Any], state: Optional[Dict[str, Any]
         return {
             "export_allowed": False,
             "integrity_verified": True,
+            "trust_level": _HISTORY_TRUSTED,
+            "historical_only": False,
             "stale_reason": "Scan changed since this result was saved.",
         }
     record_sig = str((state.get("scan") or {}).get("signature_v2", {}).get("signature") or "")
@@ -843,6 +1024,8 @@ def _evaluate_history_export(row: Dict[str, Any], state: Optional[Dict[str, Any]
         return {
             "export_allowed": False,
             "integrity_verified": True,
+            "trust_level": _HISTORY_TRUSTED,
+            "historical_only": False,
             "stale_reason": "Scan signature changed since this result was saved.",
         }
     try:
@@ -852,7 +1035,13 @@ def _evaluate_history_export(row: Dict[str, Any], state: Optional[Dict[str, Any]
             return {"export_allowed": False, "stale_reason": refusal.get("message") or "Refresh required."}
     except Exception:
         pass
-    return {"export_allowed": True, "integrity_verified": True, "stale_reason": ""}
+    return {
+        "export_allowed": True,
+        "integrity_verified": True,
+        "trust_level": _HISTORY_TRUSTED,
+        "historical_only": False,
+        "stale_reason": "",
+    }
 
 
 def build_workflow_history_record(
@@ -898,6 +1087,7 @@ def build_workflow_history_record(
         "repo_id": _repo_memory.repo_id(str(state.get("path") or scan.get("repo_path") or "")),
         "scan_id": mem.get("scan_id") or scan.get("scan_id") or "",
         "scan_signature": str(scan_sig),
+        "graph_signature": str(scan_sig),
         "atlas_version": PRODUCT_VERSION,
         "files_named": files[:12],
         "confidence": plan.get("confidence") or result.get("confidence"),
