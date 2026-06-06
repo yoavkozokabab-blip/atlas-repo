@@ -172,8 +172,9 @@ def test_exact_file_with_real_graph_evidence_may_succeed(tmp_path):
     assert api.scan_repository(str(root))["ok"]
 
     target = "core.py"
-    api_id = next(n["id"] for n in api._STATE["graph"]["nodes"] if n.get("path") == "api.py")
-    core_id = next(n["id"] for n in api._STATE["graph"]["nodes"] if n.get("path") == target)
+    graph = api._STATE["graph"]
+    api_id = next(n["id"] for n in graph["nodes"] if n.get("path") == "api.py" and n.get("type") == "module")
+    core_id = next(n["id"] for n in graph["nodes"] if n.get("path") == target and n.get("type") == "module")
     api._STATE["graph"]["edges"] = [
         {"type": "imports", "from": api_id, "to": core_id, "resolved": True},
     ]

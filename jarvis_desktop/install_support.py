@@ -395,6 +395,20 @@ def _redact_secret_values(text: str) -> str:
     if not text:
         return text
     out = text
+    # Authorization header forms first (Bearer must not leave orphan tokens).
+    out = re.sub(
+        r"(?i)\bAuthorization\s*=\s*Bearer\s+[A-Za-z0-9._\-]+",
+        "Authorization=Bearer [REDACTED]",
+        out,
+    )
+    out = re.sub(
+        r"(?i)\bAuthorization:\s*Bearer\s+[A-Za-z0-9._\-]+",
+        "Authorization: Bearer [REDACTED]",
+        out,
+    )
+    out = re.sub(r"(?i)\bAuthorization\s*=\s*[^\s\"']+", "Authorization=[REDACTED]", out)
+    out = re.sub(r"(?i)\bAuthorization:\s*[^\s\"']+", "Authorization: [REDACTED]", out)
+    out = re.sub(r"(?i)\bBearer\s+[A-Za-z0-9._\-]+", "Bearer [REDACTED]", out)
     for key in _SECRET_KEY_NAMES:
         out = re.sub(
             rf"(?i)(\b{re.escape(key)}\s*[=:]\s*)([\"']?)([^\"'\s\\]+)",
@@ -402,8 +416,8 @@ def _redact_secret_values(text: str) -> str:
             out,
         )
         out = re.sub(
-            rf'(?i)"{re.escape(key)}"\s*:\s*"([^"]*)"',
-            rf'"{key}": "[REDACTED]"',
+            rf'(?i)"({re.escape(key)})"\s*:\s*"([^"]*)"',
+            r'"\1": "[REDACTED]"',
             out,
         )
         out = re.sub(
@@ -411,8 +425,9 @@ def _redact_secret_values(text: str) -> str:
             r"\1'[REDACTED]'",
             out,
         )
-    out = re.sub(r"(?i)\bBearer\s+[A-Za-z0-9._\-]+", "Bearer [REDACTED]", out)
-    out = re.sub(r"(?i)\bAuthorization:\s*[^\s\"']+", "Authorization: [REDACTED]", out)
+    out = re.sub(r"(?i)\bBEARER_[A-Za-z0-9_]+", "[REDACTED]", out)
+    out = re.sub(r"(?i)\bTOKEN_[A-Za-z0-9_]+", "[REDACTED]", out)
+    out = re.sub(r"(?i)\bLEAK_ME\b", "[REDACTED]", out)
     out = re.sub(r"sk-ant-[A-Za-z0-9_\-]+", "[REDACTED]", out)
     out = re.sub(r"\bsk-[A-Za-z0-9_\-]{8,}", "[REDACTED]", out)
     out = re.sub(r"ghp_[A-Za-z0-9]+", "[REDACTED]", out)

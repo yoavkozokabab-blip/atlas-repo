@@ -578,8 +578,34 @@ def _file_in_graph(state: Dict[str, Any], path: str) -> bool:
     return False
 
 
+def _module_node_id(state: Dict[str, Any], path: str) -> Optional[str]:
+    rel = _norm_path(path)
+    for node in (state.get("graph") or {}).get("nodes") or []:
+        if node.get("type") == "module" and _norm_path(str(node.get("path") or "")) == rel:
+            return str(node.get("id") or "")
+    return None
+
+
+def _has_import_graph_evidence(state: Dict[str, Any], path: str) -> bool:
+    """Real module import graph evidence — excludes repository contains edges (174F A7 bypass)."""
+    rel = _norm_path(path)
+    if not _file_in_graph(state, rel):
+        return False
+    mid = _module_node_id(state, rel)
+    if not mid:
+        return False
+    for edge in (state.get("graph") or {}).get("edges") or []:
+        if edge.get("type") != "imports":
+            continue
+        if not edge.get("resolved"):
+            continue
+        if edge.get("from") == mid or edge.get("to") == mid:
+            return True
+    return False
+
+
 def _file_has_graph_symbol_evidence(state: Dict[str, Any], path: str) -> bool:
-    """Real graph/symbol evidence — not incidental helper path lists."""
+    """Symbol + import evidence for healthy graphs (non-weak-gate paths)."""
     rel = _norm_path(path)
     if not _file_in_graph(state, rel):
         return False
@@ -590,56 +616,50 @@ def _file_has_graph_symbol_evidence(state: Dict[str, Any], path: str) -> bool:
     calls = fdata.get("calls") or []
     if not symbols:
         return False
-    graph = state.get("graph") or {}
-    mid = None
-    for node in graph.get("nodes") or []:
-        if node.get("type") == "module" and _norm_path(str(node.get("path") or "")) == rel:
-            mid = node.get("id")
-            break
-    has_resolved_edge = False
-    if mid:
-        for edge in graph.get("edges") or []:
-            if edge.get("resolved") and (edge.get("from") == mid or edge.get("to") == mid):
-                has_resolved_edge = True
-                break
-    return bool(calls) or has_resolved_edge or len(symbols) >= 2
+    if _has_import_graph_evidence(state, rel):
+        return True
+    return bool(calls) and len(symbols) >= 1
+
+
+def _plan_candidate_paths(plan: Dict[str, Any], workflow: str) -> List[str]:
+    paths: List[str] = []
+    if workflow == "build":
+        paths.extend(plan.get("files_to_inspect_first") or [])
+        paths.extend(plan.get("files_likely_to_modify") or [])
+    else:
+        for h in (plan.get("hypotheses") or [])[:3]:
+            paths.extend(h.get("files_involved") or [])
+        paths.extend(plan.get("likely_modules") or [])
+        paths.extend(plan.get("recommended_files") or [])
+    return _dedupe_paths([str(p) for p in paths if p])
+
+
+def _weak_graph_evidence_allows(state: Dict[str, Any], plan: Dict[str, Any], workflow: str) -> bool:
+    """174F — identical strict evidence rule for Build and Investigation."""
+    candidates = _plan_candidate_paths(plan, workflow)
+    rev = plan.get("repository_evidence") or (plan.get("domain_knowledge") or {}).get("repository_evidence") or {}
+    for fe in rev.get("file_evidences") or []:
+        path = _norm_path(str(fe.get("path") or ""))
+        if not (fe.get("matching_symbols") or int(fe.get("evidence_score") or 0) >= 50):
+            continue
+        if _has_import_graph_evidence(state, path):
+            return True
+    for path in candidates:
+        if _has_import_graph_evidence(state, path):
+            return True
+    return False
 
 
 def _has_exact_file_evidence(state: Dict[str, Any], plan: Dict[str, Any]) -> bool:
-    files = plan.get("files_to_inspect_first") or plan.get("files_likely_to_modify") or []
-    if not files:
-        return False
-    rev = plan.get("repository_evidence") or (plan.get("domain_knowledge") or {}).get("repository_evidence") or {}
-    file_evs = rev.get("file_evidences") or []
-    for fe in file_evs:
-        path = _norm_path(str(fe.get("path") or ""))
-        if path in {_norm_path(f) for f in files}:
-            if fe.get("matching_symbols") or int(fe.get("evidence_score") or 0) >= 50:
-                if _file_has_graph_symbol_evidence(state, path):
-                    return True
-    for f in files:
-        if _file_has_graph_symbol_evidence(state, str(f)):
-            return True
-    return False
+    return _weak_graph_evidence_allows(state, plan, "build")
 
 
 def _has_exact_investigation_evidence(state: Dict[str, Any], plan: Dict[str, Any]) -> bool:
-    rev = plan.get("repository_evidence") or {}
-    for fe in rev.get("file_evidences") or []:
-        path = _norm_path(str(fe.get("path") or ""))
-        if fe.get("matching_symbols") or int(fe.get("evidence_score") or 0) >= 50:
-            if _file_has_graph_symbol_evidence(state, path):
-                return True
-    for h in (plan.get("hypotheses") or [])[:3]:
-        involved = [_norm_path(str(p)) for p in (h.get("files_involved") or []) if p]
-        evidence = h.get("evidence") or []
-        if involved and evidence and _file_has_graph_symbol_evidence(state, involved[0]):
-            return True
-    return False
+    return _weak_graph_evidence_allows(state, plan, "investigate")
 
 
 def gate_weak_graph_workflow(state: Dict[str, Any], result: Dict[str, Any], workflow: str) -> Dict[str, Any]:
-    """Refuse ok=true on unsupported/shallow graphs unless exact graph/symbol evidence exists."""
+    """Refuse ok=true on unsupported/shallow graphs unless import-graph evidence exists."""
     if not result.get("ok"):
         return result
     scan = state.get("scan") or {}
@@ -648,9 +668,7 @@ def gate_weak_graph_workflow(state: Dict[str, Any], result: Dict[str, Any], work
         return result
 
     plan = result.get("plan") or {}
-    if workflow == "build" and _has_exact_file_evidence(state, plan):
-        return result
-    if workflow == "investigate" and _has_exact_investigation_evidence(state, plan):
+    if _weak_graph_evidence_allows(state, plan, workflow):
         return result
 
     gh = scan.get("graph_health") or {}
