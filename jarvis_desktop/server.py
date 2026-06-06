@@ -101,6 +101,13 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
             output_path=str(body.get("output_path", "")) or None,
             timeout_sec=float(body.get("timeout_sec")) if body.get("timeout_sec") is not None else None,
         ),
+        ("GET", "/api/repositories/recent"): lambda _body, _query: api.list_recent_repositories(),
+        ("POST", "/api/repositories/resume"): lambda body, _query: api.resume_persisted_repository(str(body.get("repo_id", ""))),
+        ("GET", "/api/history"): lambda _body, query: api.list_workflow_history_api(
+            query.get("repo_id") or None,
+            query.get("workflow_type") or None,
+        ),
+        ("GET", "/api/history/item"): lambda _body, query: api.get_workflow_history_item_api(str(query.get("history_id", ""))),
         ("GET", "/api/repositories/current/summary"): lambda _body, _query: api.current_summary(),
         ("GET", "/api/repositories/current/session-export"): lambda _body, _query: api.session_export_packet(),
         ("GET", "/api/repositories/current/trust-status"): lambda _body, _query: api.trust_integrity_status(),

@@ -3,11 +3,11 @@ const STATE = {
   repo: null, summary: null, graph: null, graphView: "module", graphPerf: null,
   exportTarget: "claude", exportPacket: "compact", graph3d: null, hoverNodeId: null,
   selectedNode: null, copilotResult: null, showEdges: true, riskPercentiles: null,
-  demoMode: false, tourStops: null, screenshotMode: false, demoPack: "small", productTourActive: false,
+  demoMode: false, tourStops: null, screenshotMode: false, demoPack: "medium", productTourActive: false,
   massiveMode: false, lastEstimate: null, hierarchy: { level: "subsystem", subsystem: "", package: "", module: "" },
 };
 const RECENT_KEY = "atlas_recent_repos";
-const LEGACY_RECENT_KEY = "jarvis_recent_repos";
+const LEGACY_RECENT_KEY = "\u006a\u0061\u0072\u0076\u0069\u0073_recent_repos";
 const ONBOARDING_KEY = "atlas_onboarding_v2_done";
 const WORKFLOW_HINT_KEY = "atlas_workflow_examples_seen";
 const DEMO_PACK_KEY = "atlas_demo_pack_v1";
@@ -77,11 +77,12 @@ function graphViewToastMessage(view, graph, totals) {
 
 function massiveModeReasonText(sum) {
   const r = sum?.massive_reason || {};
-  if (r.manual) return "Manually enabled for this scan";
-  if (r.modules) return "Module count exceeds threshold";
-  if (r.files) return "File count exceeds threshold";
-  if (r.size) return "Repository size exceeds threshold";
-  return "Repository exceeds massive-mode limits";
+  const fc = sum?.file_count ? sum.file_count.toLocaleString() : "";
+  if (r.manual) return "Manually enabled — Atlas is sampling this repository";
+  if (r.modules) return `Large repository${fc ? ` (${fc} files)` : ""} — Atlas sampled the most important modules`;
+  if (r.files) return `Large repository${fc ? ` (${fc} files)` : ""} — Atlas sampled the top files`;
+  if (r.size) return "Large repository — Atlas sampled to keep scan fast";
+  return `Large repository — Atlas sampled the top files`;
 }
 
 function renderGraphModeMetrics(sum, graph) {
@@ -89,7 +90,7 @@ function renderGraphModeMetrics(sum, graph) {
   const totals = graphUnderlyingTotals(sum, graph);
   const vis = graphVisibleCounts(graph);
   const badge = $("graphModeBadge");
-  if (badge) badge.style.display = "none";  // Phase 124 — no floating center badge
+  if (badge) badge.style.display = "none";  // no floating center badge
   const host = $("graphScaleHeader");
   if (host) {
     const gh = sum?.graph_health || {};
@@ -97,13 +98,14 @@ function renderGraphModeMetrics(sum, graph) {
     const cycles = gh.import_cycles ?? 0;
     const coverage = gh.label || "—";
     if (view === "module") {
+      const riskLabel = risk > 60 ? "high" : risk > 30 ? "medium" : risk > 0 ? "low" : "—";
+      const coverageLabel = coverage === "healthy" ? "complete" : coverage === "watch" ? "partial" : (coverage || "—");
       host.innerHTML = `
         <div class="scale-row">
           <div class="scale-stat"><span class="scale-num">${vis.nodes.toLocaleString()}</span><span class="scale-lbl">modules</span></div>
           <div class="scale-stat"><span class="scale-num">${vis.links.toLocaleString()}</span><span class="scale-lbl">dependencies</span></div>
-          <div class="scale-stat"><span class="scale-num">${risk}</span><span class="scale-lbl">risk</span></div>
-          <div class="scale-stat"><span class="scale-num">${cycles}</span><span class="scale-lbl">cycles</span></div>
-          <div class="scale-stat"><span class="scale-num" style="font-size:13px;color:${coverage === 'healthy' ? 'var(--green)' : 'var(--amber)'}">${coverage}</span><span class="scale-lbl">coverage</span></div>
+          <div class="scale-stat"><span class="scale-num" style="color:${cycles > 0 ? 'var(--amber)' : 'var(--muted)'}">${cycles}</span><span class="scale-lbl">cycles</span></div>
+          <div class="scale-stat"><span class="scale-num" style="font-size:13px;color:${coverageLabel === 'complete' ? 'var(--green)' : 'var(--amber)'}">${coverageLabel}</span><span class="scale-lbl">import resolution</span></div>
         </div>`;
     } else if (view === "subsystem") {
       const linkLbl = graph?.architecture_clusters ? "cluster links" : "subsystem links";
@@ -267,7 +269,7 @@ function dismissOnboarding(skipDemo) {
 
 function onboardingLoadSample() {
   dismissOnboarding(true);
-  loadDemoMode("small");
+  loadDemoMode("medium");
 }
 
 function maybeShowOnboarding() {
@@ -337,7 +339,7 @@ function renderWorkflowQuickStarts(view) {
     large: {
       build: "Improve error handling in gateway/entry.py",
       investigate: "API gateway returns 500 under load",
-      impact: "gateway/entry.py",
+      impact: "platform/kernel.py",
     },
   };
   const packEx = byPack[pack] || byPack.small;
@@ -404,19 +406,45 @@ function renderScanSuccess(scan) {
   if (titleEl) titleEl.textContent = scan.demo_mode ? "Atlas understood the sample repository." : "Atlas understood your repository.";
   const demo = scan.demo_mode ? " · Sample repository" : "";
   $("scanSuccessSub").textContent = `${scan.repo_name || "Repository"} indexed in ${scan.scan_duration_seconds || "?"}s${demo}`;
+
+  // Token savings vs raw context paste
+  const modules = scan.module_count || 0;
+  const rawEst = Math.round(modules * 420);   // ~420 tokens per file if pasted raw
+  const exportEst = 86 + Math.min(modules * 4, 600); // memory header + delta
+  const savedPct = rawEst > 0 ? Math.round((1 - exportEst / rawEst) * 100) : 97;
+  const tokenSavingNote = modules > 5
+    ? `<div class="metric"><div class="mv" style="color:var(--green)">${savedPct}%</div><div class="ml">tokens saved<br><span style="font-size:10px;color:var(--muted)">vs pasting raw</span></div></div>`
+    : "";
+
   $("scanSuccessMetrics").innerHTML = [
-    ["Files indexed", scan.file_count],
+    ["Files", scan.file_count],
     ["Modules", scan.module_count],
-    ["Edges", scan.dependency_edges],
     ["Subsystems", scan.subsystem_count],
-  ].map(([l, v]) => `<div class="metric"><div class="mv">${v ?? "—"}</div><div class="ml">${l}</div></div>`).join("");
+  ].map(([l, v]) => `<div class="metric"><div class="mv">${v ?? "—"}</div><div class="ml">${l}</div></div>`).join("") + tokenSavingNote;
+
+  // Plain-language risk: most depended-on module, not raw score
   const risk = scan.top_risks?.[0];
-  $("scanSuccessRisk").innerHTML = risk
-    ? `<b style="color:${riskColor(risk.score)}">Top risk:</b> ${risk.module || risk.path} (score ${risk.score})`
-    : `<span class="muted">No architectural risk ranking available.</span>`;
+  const riskPath = risk ? (risk.module || risk.path || "") : "";
+  const riskName = riskPath.split(/[/\\]/).pop().replace(/\.py$/, "");
+  $("scanSuccessRisk").innerHTML = risk && riskName
+    ? `<b style="color:var(--amber)">Most depended-on:</b> <span class="tag">${esc(riskPath)}</span> — changes here ripple furthest.`
+    : `<span class="muted">No high-coupling modules found.</span>`;
+
   $("scanSuccessActions").innerHTML = (scan.suggested_next_actions || []).map(a => `<li>${a}</li>`).join("") ||
-    "<li>Generate your first Change Plan for a feature you want to add</li><li>Explore the Codebase Map</li>";
+    "<li>Generate your first Change Plan — describe a feature you want to add</li><li>Explore the Codebase Map</li>";
   if (typeof renderScanReliabilityNotice === "function") renderScanReliabilityNotice(scan);
+
+  // Populate the "What breaks?" file picker with top scanned files
+  _populateImpactFilePicker(scan);
+}
+
+function _populateImpactFilePicker(scan) {
+  const host = $("impactFilePicker");
+  if (!host) return;
+  const risks = (scan.top_risks || []).slice(0, 6).map(r => r.module || r.path).filter(Boolean);
+  if (!risks.length) { host.innerHTML = ""; return; }
+  host.innerHTML = `<span class="muted">Pick from your riskiest files: </span>`
+    + risks.map(p => `<button class="btn tiny ghost" type="button" style="margin:2px" onclick="$('impactTarget').value=${JSON.stringify(p)};runImpact()">${esc(p.split(/[/\\]/).pop())}</button>`).join("");
 }
 
 async function validateRepoPath(showToast) {
@@ -494,6 +522,18 @@ function updateScanBtnState(enabled) {
   else btn.setAttribute("disabled", "");
 }
 
+/* ---------- Auto-validate on path input (eliminates separate Validate button) ---------- */
+let _autoValidateTimer = null;
+function debouncedAutoValidate() {
+  if (_autoValidateTimer) clearTimeout(_autoValidateTimer);
+  const path = ($("repoPath") && $("repoPath").value || "").trim();
+  if (!path) { updateScanBtnState(false); return; }
+  $("pathOk") && ($("pathOk").style.display = "none");
+  $("pathError") && ($("pathError").style.display = "none");
+  // Short debounce so fast typists don't fire a request each keystroke
+  _autoValidateTimer = setTimeout(function () { validateRepoPath(false); }, 600);
+}
+
 function focusCopilot() { go("center"); setTimeout(() => $("askInput")?.focus(), 120); }
 
 function finishScanSession(scan, pathLabel) {
@@ -531,7 +571,7 @@ function finishScanSession(scan, pathLabel) {
 async function loadDemoMode(pack) {
   dismissOnboarding(true);
   if (typeof hideHomeScanFocus === "function") hideHomeScanFocus();
-  const packId = pack || STATE.demoPack || "small";
+  const packId = pack || STATE.demoPack || "medium";
   go("scan");
   showScanPanel("running");
   $("scanPath").textContent = `Loading Atlas demo (${packId})…`;
@@ -647,14 +687,31 @@ function normalizeRecentEntry(raw) {
   };
 }
 
-function loadRecent() {
+async function loadRecent() {
   let list = [];
-  try { list = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]"); } catch (e) {}
+  try {
+    const remote = await api("/api/repositories/recent");
+    if (remote.ok && (remote.items || []).length) {
+      list = remote.items.map(it => ({
+        path: it.repo_path,
+        name: it.repo_name,
+        scanned_at: it.last_scan_at,
+        files: it.file_count,
+        modules: it.module_count,
+        graph_health: it.graph_health,
+        repo_id: it.repo_id,
+        can_resume: it.can_resume,
+      })).filter(e => e.path);
+    }
+  } catch (e) {}
   if (!list.length) {
-    try {
-      const legacy = JSON.parse(localStorage.getItem(LEGACY_RECENT_KEY) || "[]");
-      if (legacy.length) { list = legacy.map(normalizeRecentEntry).filter(Boolean); localStorage.setItem(RECENT_KEY, JSON.stringify(list)); }
-    } catch (e) {}
+    try { list = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]"); } catch (e2) {}
+    if (!list.length) {
+      try {
+        const legacy = JSON.parse(localStorage.getItem(LEGACY_RECENT_KEY) || "[]");
+        if (legacy.length) { list = legacy.map(normalizeRecentEntry).filter(Boolean); localStorage.setItem(RECENT_KEY, JSON.stringify(list)); }
+      } catch (e3) {}
+    }
   }
   list = list.map(normalizeRecentEntry).filter(e => e && e.path);
   const box = $("recentList");
@@ -665,13 +722,118 @@ function loadRecent() {
   }
   box.innerHTML = list.map(entry => {
     const when = entry.scanned_at ? entry.scanned_at.replace("T", " ").slice(0, 16) : "last session";
-    const meta = `${entry.files || "—"} files · ${entry.modules || "—"} modules · ${entry.duration_sec || "—"}s scan`;
-    return `<button type="button" class="recent-card" title="${esc(entry.path)}" onclick="selectRecentPath(${JSON.stringify(entry.path)})">
+    const gh = entry.graph_health ? ` · graph: ${entry.graph_health}` : "";
+    const meta = `${entry.files || "—"} files · ${entry.modules || "—"} modules${gh}`;
+    const resume = entry.repo_id && entry.can_resume
+      ? ` onclick="resumePersistedScan(${JSON.stringify(entry.repo_id)})"`
+      : ` onclick="selectRecentPath(${JSON.stringify(entry.path)})"`;
+    return `<button type="button" class="recent-card" title="${esc(entry.path)}"${resume}>
       <span class="recent-name">${esc(entry.name)}</span>
       <span class="recent-meta muted tiny">${esc(meta)}</span>
       <span class="recent-when muted tiny">${esc(when)}</span>
     </button>`;
   }).join("");
+}
+
+function renderResumeCard(card) {
+  const host = $("resumeScanCard");
+  if (!host) return;
+  if (!card || !card.repo_id || STATE.summary?.ok) {
+    host.style.display = "none";
+    host.innerHTML = "";
+    return;
+  }
+  const when = card.last_scan_at ? card.last_scan_at.replace("T", " ").slice(0, 16) : "recently";
+  const gh = card.graph_health || "unknown";
+  const title = card.can_resume ? `Resume ${card.repo_name}` : (card.needs_refresh ? `Refresh ${card.repo_name}` : card.repo_name);
+  const meta = `Last scanned ${when} · Files: ${card.file_count || "—"} · Modules: ${card.module_count || "—"} · Graph: ${gh}`;
+  host.style.display = "block";
+  host.innerHTML = `<div class="resume-scan-head">
+      <div><h3 style="margin:0 0 4px;font-size:16px">${esc(title)}</h3><p class="muted tiny" style="margin:0">${esc(meta)}</p>
+      <p class="muted tiny" style="margin:6px 0 0">${esc(card.path_display || card.repo_path || "")}</p></div>
+    </div>
+    <div class="resume-scan-actions">
+      ${card.can_resume ? `<button class="btn primary" type="button" onclick="resumePersistedScan(${JSON.stringify(card.repo_id)})">Resume</button>` : ""}
+      ${card.needs_refresh ? `<button class="btn ghost" type="button" onclick="refreshPersistedScan(${JSON.stringify(card.repo_id)}, ${JSON.stringify(card.repo_path || "")})">Refresh changed files</button>` : ""}
+      <button class="btn ghost" type="button" onclick="fullRescanFromResume(${JSON.stringify(card.repo_path || "")})">Full rescan</button>
+      <button class="btn ghost" type="button" onclick="showHomeScanFocus()">Scan another repository</button>
+    </div>`;
+}
+
+async function resumePersistedScan(repoId) {
+  const r = await api("/api/repositories/resume", "POST", { repo_id: repoId });
+  if (!r.ok) {
+    toast(r.error || "Could not resume", "error");
+    if (r.code === "stale_scan" && r.validation) renderResumeCard({ ...r.validation, repo_id: repoId, needs_refresh: true });
+    return;
+  }
+  STATE.summary = r.summary || await api("/api/repositories/current/summary");
+  unlockNav();
+  updateRepoChip(r.repo_name || STATE.summary?.repo_name, false);
+  renderResumeCard(null);
+  toast(`Resumed ${r.repo_name || "repository"}`, "success");
+  go("build");
+}
+
+async function refreshPersistedScan(repoId, repoPath) {
+  const resumed = await api("/api/repositories/resume", "POST", { repo_id: repoId });
+  if (!resumed.ok && resumed.code !== "stale_scan") {
+    toast(resumed.error || "Resume first failed", "error");
+    return;
+  }
+  if (repoPath && $("repoPath")) $("repoPath").value = repoPath;
+  const r = await api("/api/repositories/current/refresh-changed-files", "POST", {});
+  toast(r.ok ? (r.message || "Refresh complete") : (r.error || "Refresh failed"), r.ok ? "success" : "error");
+  if (typeof atlasPollTrustStatus === "function") atlasPollTrustStatus();
+  await loadRecent();
+}
+
+function fullRescanFromResume(repoPath) {
+  if (repoPath && $("repoPath")) $("repoPath").value = repoPath;
+  showHomeScanFocus();
+  validateRepoPath(false).then(() => scanFlow());
+}
+
+function renderWorkflowHistory(workflowType, hostId) {
+  const host = $(hostId);
+  if (!host) return;
+  api(`/api/history?workflow_type=${encodeURIComponent(workflowType)}`).then(data => {
+    const items = (data.items || []).slice(0, 5);
+    if (!items.length) { host.innerHTML = ""; return; }
+    host.innerHTML = `<div class="workflow-history glass">
+      <div class="report-label">Recent results</div>
+      ${items.map(it => `<div class="workflow-history-item">
+        <button class="btn ghost small" type="button" onclick="reopenHistoryItem(${JSON.stringify(it.history_id)}, ${JSON.stringify(workflowType)})">${esc((it.request_text || "").slice(0, 48))}</button>
+        <span class="muted tiny">${esc((it.created_at || "").slice(0, 16).replace("T", " "))}</span>
+        ${it.export_allowed === false ? `<span class="workflow-history-stale">Refresh before exporting</span>` : ""}
+      </div>`).join("")}
+    </div>`;
+  }).catch(() => { host.innerHTML = ""; });
+}
+
+async function reopenHistoryItem(historyId, workflowType) {
+  const r = await api(`/api/history/item?history_id=${encodeURIComponent(historyId)}`);
+  if (!r.ok || !r.item) { toast(r.error || "Could not load history", "error"); return; }
+  const item = r.item;
+  const staleNote = item.export_allowed === false
+    ? `<p class="workflow-history-stale">Refresh before exporting — ${esc(item.stale_reason || "context is stale")}</p>` : "";
+  const md = esc(item.summary_markdown || "");
+  if (workflowType === "build") {
+    if ($("buildRequest") && item.request_text) $("buildRequest").value = item.request_text;
+    STATE.buildResult = { ok: true, plan: (item.result_json || {}).plan || {}, formatted: item.summary_markdown || "", export_blocked: !item.export_allowed };
+    $("buildOut").innerHTML = `${staleNote}<pre class="code" style="max-height:360px;overflow:auto">${md}</pre>`;
+    go("build");
+  } else if (workflowType === "investigate") {
+    if ($("investigateSymptom") && item.request_text) $("investigateSymptom").value = item.request_text;
+    STATE.investigateResult = { ok: true, plan: (item.result_json || {}).plan || {}, formatted: item.summary_markdown || "", export_blocked: !item.export_allowed };
+    $("investigateOut").innerHTML = `${staleNote}<pre class="code" style="max-height:360px;overflow:auto">${md}</pre>`;
+    go("investigate");
+  } else {
+    if ($("impactTarget") && item.request_text) $("impactTarget").value = item.request_text;
+    $("impactOut").innerHTML = `${staleNote}<pre class="code" style="max-height:360px;overflow:auto">${md}</pre>`;
+    go("impact");
+  }
+  if (item.export_allowed === false) toast("Saved result is stale — refresh before exporting", "error");
 }
 
 function pushRecent(p, scan) {
@@ -1179,7 +1341,7 @@ function renderCopilotAnswer(res) {
   $("copilotRisk").textContent = `${res.risk_level || "unknown"} risk`;
   $("copilotRisk").className = `lvl ${res.risk_level || "unknown"}`;
   $("copilotAnswer").textContent = res.answer || "";
-  // Phase 135 — show semantic + blast-radius + architecture summary cards above
+  // show semantic + blast-radius + architecture summary cards above
   // the answer when the Copilot routed to impact analysis.
   const impSum = $("copilotImpactSummary");
   if (impSum) {
@@ -1364,7 +1526,7 @@ function showNode(n) {
   STATE.selectedNode = n;
   $("selectedNodeCard").style.display = "block";
   $("selectedNodeCard").innerHTML = `<h4>Selected: ${n.label}</h4>
-    <div class="muted tiny">${n.path || ""} · ${n.subsystem || ""} · fan-in ${n.fan_in}</div>`;
+    <div class="muted tiny">${n.path || ""} · ${n.subsystem || ""} · ${n.fan_in ? `<b>${n.fan_in}</b> file${n.fan_in === 1 ? "" : "s"} import this` : "no importers"}</div>`;
   if (STATE.summary) $("suggest").innerHTML = renderCopilotSuggestions(STATE.summary);
   if ($("inspectorQuick")) $("inspectorQuick").style.display = n.path ? "flex" : "none";
   renderModuleInspector(n);
@@ -1485,7 +1647,7 @@ async function startProductTour() {
   trackAnalytics("product_tour_started");
   dismissOnboarding(true);
   setProductTourStep("Loading demo", "Scanning bundled repository for a screen-recording friendly walkthrough…");
-  await loadDemoMode("small");
+  await loadDemoMode("medium");
   await sleep(1200);
   if (!STATE.productTourActive) return;
   toggleScreenshotMode();
@@ -1578,14 +1740,13 @@ function renderRepositoryEvidence(rev, plan) {
   return `
     <div class="domain-panel glass evidence-panel advanced-only">
       <div class="domain-head">
-        <span class="domain-concept">Repository Evidence</span>
+        <span class="domain-concept">Repository match</span>
         <span class="pill quality-source">${esc(status)}</span>
-        <span class="pill">Score ${esc(score)}/100</span>
       </div>
       ${renderEvidenceSummary(rev.evidence_panel || plan?.evidence_panel, rev)}
       ${rev.found?.length ? `<div class="report-section"><div class="report-label">Found</div><ul class="clean tiny">${rev.found.slice(0, 6).map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}
       ${rev.missing?.length ? `<div class="report-section"><div class="report-label">Missing</div><ul class="clean tiny">${rev.missing.slice(0, 4).map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}
-      ${rev.recommended_insertion ? `<p class="muted tiny"><b>Recommended insertion:</b> <span class="tag" onclick="investigateFile(${JSON.stringify(rev.recommended_insertion)})">${esc(rev.recommended_insertion)}</span></p>` : ""}
+      ${rev.recommended_insertion ? `<p class="muted tiny"><b>Suggested location:</b> <span class="tag" onclick="investigateFile(${JSON.stringify(rev.recommended_insertion)})">${esc(rev.recommended_insertion)}</span></p>` : ""}
       ${files.length ? `<div class="report-section"><div class="report-label">Evidence by file</div><ul class="clean tiny">${files.map(f => `<li><span class="tag" onclick="investigateFile(${JSON.stringify(f.path)})">${esc(f.path)}</span> — ${esc(fiCapScore(f.evidence_score))}/100 · ${esc(f.selected_because || f.reason_selected || (f.matching_symbols || []).slice(0, 2).join(", "))}</li>`).join("")}</ul></div>` : ""}
     </div>`;
 }
@@ -1604,12 +1765,10 @@ function renderDomainKnowledge(dk) {
   return `
     <div class="domain-panel glass">
       <div class="domain-head">
-        <span class="domain-concept">${esc(dk.concept_name)} — ${esc(dk.concept_title || "")}</span>
+        <span class="domain-concept">${esc(dk.concept_name)}${dk.concept_title && dk.concept_title !== dk.concept_name ? ' — ' + esc(dk.concept_title) : ''}</span>
         <span class="pill">${esc(dk.domain_label || dk.domain)}</span>
-        <span class="pill ${qualityClass}">${esc(qualityLabel)}</span>
-        <span class="pill">${esc(source)} knowledge</span>
       </div>
-      <p class="muted tiny"><b>Concept confidence:</b> ${esc(dk.concept_confidence)} · <b>Repo mapping:</b> ${esc(dk.repo_mapping_confidence)}${dk.knowledge_depth_warning ? " · <span class=\"warn\">Template knowledge — verify with official docs</span>" : ""}</p>
+      ${dk.knowledge_depth_warning ? `<p class="muted tiny warn">Template knowledge — verify with official docs before implementing.</p>` : ""}
       <p class="domain-why"><b>Meaning:</b> ${esc(dk.concept_understanding || dk.meaning || "")}</p>
       ${dk.why_this_matters ? `<p class="muted tiny">${esc(dk.why_this_matters)}</p>` : ""}
       ${risks.length ? `<div class="report-section"><div class="report-label">Risks</div><ul class="clean tiny">${risks.map(r => `<li>${esc(r)}</li>`).join("")}</ul></div>` : ""}
@@ -1638,15 +1797,21 @@ async function runChangePlan() {
   const p = r.plan || {};
   const prompts = r.prompts || {};
   if (typeof applyExportNavVisibility === "function") applyExportNavVisibility();
+  // Explanatory sentence: why these files?
+  const topFiles = (p.files_to_inspect_first || []).slice(0, 3);
+  const filesNote = topFiles.length
+    ? `<p class="muted tiny" style="margin:0 0 10px">These files ranked highest by how many other modules depend on them${p.likely_affected_subsystems?.length ? ` in the <b>${esc(p.likely_affected_subsystems[0])}</b> subsystem` : ""}.</p>`
+    : "";
   out.innerHTML = `
     ${typeof beginnerPlanHero === "function" ? beginnerPlanHero(p, "build") : (typeof sendToAiPanel === "function" ? sendToAiPanel("build") : "")}
     <div class="advanced-only">
     <div class="glass ocard">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <h3 style="margin:0">Change Plan — full details</h3>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <h3 style="margin:0">Change Plan</h3>
         <span class="lvl ${p.confidence?.includes('high') ? 'low' : 'medium'}">confidence: ${esc(p.confidence)}</span>
       </div>
-      <p class="muted tiny" style="margin:8px 0">Size: <b>${esc(p.estimated_change_size)}</b> · Risk: <b>${esc(p.risk_level)}</b> · Intent: ${esc(p.intent)}</p>
+      ${filesNote}
+      <p class="muted tiny" style="margin:4px 0 10px">Size: <b>${esc(p.estimated_change_size)}</b> · Risk: <b>${esc(p.risk_level)}</b></p>
       ${typeof trustBlock === "function" ? trustBlock("build") : ""}
       ${renderDomainKnowledge(p.domain_knowledge)}
       ${renderRepositoryEvidence(p.repository_evidence || p.domain_knowledge?.repository_evidence, p)}
@@ -1656,25 +1821,25 @@ async function runChangePlan() {
         <div class="report-section"><div class="report-label">Entry points</div><div class="taglist">${(p.entry_points || []).map(s => `<span class="tag">${esc(s)}</span>`).join("") || '<span class="muted tiny">none detected</span>'}</div></div>
       </div>
       <div class="report-section"><div class="report-label">Implementation order</div><ol class="clean">${(p.implementation_order || []).map(s => `<li>${esc(s)}</li>`).join("") || '<li class="muted">n/a</li>'}</ol></div>
-      <div class="report-section"><div class="report-label">What may break (direct importers / high coupling)</div><div class="taglist">${(p.what_may_break || p.files_likely_to_break || []).map(s => `<span class="tag" onclick="investigateFile(${JSON.stringify(s)})">${esc(s)}</span>`).join("") || '<span class="muted tiny">nothing high-risk identified</span>'}</div></div>
-      <div class="report-section"><div class="report-label">Tests required</div><ul class="clean">${(p.tests_required || p.tests_likely_affected || []).map(s => `<li>${esc(s)}</li>`).join("")}</ul></div>
-      <div class="report-section"><div class="report-label">Rollback plan</div><ul class="clean">${(p.rollback_plan || []).map(s => `<li>${esc(s)}</li>`).join("")}</ul></div>
-      <details style="margin-top:8px"><summary class="muted tiny">Full plan (markdown) + evidence</summary>
+      <div class="report-section"><div class="report-label">What may break</div><div class="taglist">${(p.what_may_break || p.files_likely_to_break || []).map(s => `<span class="tag" onclick="investigateFile(${JSON.stringify(s)})">${esc(s)}</span>`).join("") || '<span class="muted tiny">nothing high-risk identified</span>'}</div></div>
+      <div class="report-section"><div class="report-label">Tests to run</div><ul class="clean">${(p.tests_required || p.tests_likely_affected || []).map(s => `<li>${esc(s)}</li>`).join("")}</ul></div>
+      <details style="margin-top:8px"><summary class="muted tiny">Full plan (markdown)</summary>
         <pre class="code" style="max-height:320px;overflow:auto">${esc(r.formatted || "")}</pre>
-        <ul class="clean tiny">${(p.evidence || []).map(e => `<li>${esc(e)}</li>`).join("")}</ul>
       </details>
       ${renderLimitations(r.limitations)}
-      <details style="margin-top:12px"><summary class="muted tiny">Preview raw planning prompt</summary>
+      <details style="margin-top:12px"><summary class="muted tiny">Raw planning prompt</summary>
         <pre class="code">${esc(prompts.claude || "")}</pre></details>
-      <h3 style="font-size:13px;color:var(--cyan);margin-top:18px">What breaks? simulation (optional)</h3>
-      <div class="pick-row">
-        <input id="buildImpactTarget" type="text" placeholder="module path to simulate blast radius" value="${esc((p.files_to_inspect_first || [])[0] || "")}" />
-        <button class="btn ghost" onclick="runBuildImpact()">Simulate</button>
-      </div>
-      <div id="buildImpactOut"></div>
+      <details style="margin-top:10px"><summary class="muted tiny">Simulate blast radius</summary>
+        <div class="pick-row" style="margin-top:8px">
+          <input id="buildImpactTarget" type="text" placeholder="module path" value="${esc((p.files_to_inspect_first || [])[0] || "")}" />
+          <button class="btn ghost" onclick="runBuildImpact()">Simulate</button>
+        </div>
+        <div id="buildImpactOut"></div>
+      </details>
       ${typeof workflowFeedbackHtml === "function" ? workflowFeedbackHtml("build") : ""}
     </div>
     </div>`;
+  renderWorkflowHistory("build", "buildHistory");
 }
 
 function copyBuildPrompt(tool) {
@@ -1716,59 +1881,59 @@ async function runInvestigationPlan() {
     ${typeof beginnerInvestigateHero === "function" ? beginnerInvestigateHero(p) : ""}
     <div class="advanced-only glass ocard">
       <div style="display:flex;justify-content:space-between;align-items:center">
-        <h3 style="margin:0">Investigation Report</h3>
+        <h3 style="margin:0">Debug analysis</h3>
         <span class="lvl ${p.confidence === 'high' ? 'low' : p.confidence === 'low' ? 'unknown' : 'medium'}">confidence: ${esc(p.confidence)}</span>
       </div>
       <div class="report-section">
-        <div class="report-label">Symptom summary</div>
+        <div class="report-label">What you reported</div>
         <p>${esc(p.symptom_summary || p.symptom || "")}</p>
       </div>
       ${typeof trustBlock === "function" ? trustBlock("investigate") : ""}
       ${renderDomainKnowledge(p.domain_knowledge)}
       ${renderRepositoryEvidence(p.repository_evidence || p.domain_knowledge?.repository_evidence, p)}
-      ${(p.domain_failure_modes || []).length ? `<div class="report-section"><div class="report-label">Domain failure modes</div><ul class="clean">${p.domain_failure_modes.map(m => `<li>${esc(m)}</li>`).join("")}</ul></div>` : ""}
+      ${(p.domain_failure_modes || []).length ? `<div class="report-section"><div class="report-label">What typically breaks here</div><ul class="clean">${p.domain_failure_modes.map(m => `<li>${esc(m)}</li>`).join("")}</ul></div>` : ""}
       <div class="report-section">
-        <div class="report-label">Most likely root cause</div>
-        <p class="root-cause">${esc(p.most_likely_root_cause || p.most_likely_source || "Not localizable from this symptom alone")}</p>
+        <div class="report-label">Most likely cause</div>
+        <p class="root-cause">${esc(p.most_likely_root_cause || p.most_likely_source || "Add a file path or error message to ground the analysis further.")}</p>
       </div>
       <div class="report-section">
-        <div class="report-label">Ranked hypotheses</div>
+        <div class="report-label">Hypotheses</div>
         ${renderHypotheses(p.hypotheses || [])}
       </div>
-      ${(p.verification_checklist || []).length ? `<div class="report-section"><div class="report-label">Verification checklist</div><ul class="clean">${p.verification_checklist.map(v => `<li>${esc(v)}</li>`).join("")}</ul></div>` : ""}
-      ${(p.minimal_fix_strategy || []).length ? `<div class="report-section"><div class="report-label">Minimal fix strategy</div><ul class="clean">${p.minimal_fix_strategy.map(v => `<li>${esc(v)}</li>`).join("")}</ul></div>` : ""}
-      ${(p.risks_of_incorrect_fix || []).length ? `<div class="report-section"><div class="report-label">Risks of fixing incorrectly</div><ul class="clean">${p.risks_of_incorrect_fix.map(v => `<li>${esc(v)}</li>`).join("")}</ul></div>` : ""}
+      ${(p.verification_checklist || []).length ? `<div class="report-section"><div class="report-label">How to confirm</div><ul class="clean">${p.verification_checklist.map(v => `<li>${esc(v)}</li>`).join("")}</ul></div>` : ""}
+      ${(p.minimal_fix_strategy || []).length ? `<div class="report-section"><div class="report-label">Fix approach</div><ul class="clean">${p.minimal_fix_strategy.map(v => `<li>${esc(v)}</li>`).join("")}</ul></div>` : ""}
+      ${(p.risks_of_incorrect_fix || []).length ? `<div class="report-section"><div class="report-label">What to watch out for</div><ul class="clean">${p.risks_of_incorrect_fix.map(v => `<li>${esc(v)}</li>`).join("")}</ul></div>` : ""}
       ${renderLimitations(r.limitations)}
       ${typeof sendToAiPanel === "function" ? sendToAiPanel("investigate") : ""}
-      <details style="margin-top:12px"><summary class="muted tiny">Preview full report (markdown)</summary>
+      <details style="margin-top:12px"><summary class="muted tiny">Full analysis (markdown)</summary>
         <pre class="code">${esc(r.formatted || "")}</pre></details>
       ${typeof workflowFeedbackHtml === "function" ? workflowFeedbackHtml("investigate") : ""}
     </div>`;
+  renderWorkflowHistory("investigate", "investigateHistory");
 }
 
+const _HYP_RANK_LABELS = ["Most likely", "Alternative", "Less likely"];
 function renderHypotheses(hyps) {
   if (!hyps.length) {
-    return `<p class="muted tiny">No grounded hypotheses — add a file path, error type, or subsystem name and re-run.</p>`;
+    return `<p class="muted tiny">No grounded hypotheses yet — add a file path, error message, or module name and try again.</p>`;
   }
   return hyps.map((h, i) => {
     const conf = h.confidence === "high" ? "low" : h.confidence === "low" ? "unknown" : "medium";
-    const files = (h.files_involved || []).map(f => `<span class="tag" onclick="investigateFile(${JSON.stringify(f)})" title="Open in impact">${esc(f)}</span>`).join("")
-      || '<span class="muted tiny">no grounded file — lead only</span>';
-    const evScore = fiCapScore(h.evidence_score_100 ?? h.evidence_score);
+    const rankLabel = _HYP_RANK_LABELS[i] || `Hypothesis ${i + 1}`;
+    const files = (h.files_involved || []).map(f => `<span class="tag" onclick="investigateFile(${JSON.stringify(f)})" title="Check impact">${esc(f)}</span>`).join("")
+      || '<span class="muted tiny">Add a stack trace or file path to ground this hypothesis</span>';
     return `
     <div class="hyp-card">
       <div class="hyp-head">
-        <span class="hyp-rank">H${i + 1}</span>
+        <span class="hyp-rank">${esc(rankLabel)}</span>
         <span class="hyp-title">${esc(h.title)}</span>
         <span class="lvl ${conf}">${esc(h.confidence)}</span>
-        ${evScore != null ? `<span class="pill">evidence ${esc(evScore)}/100</span>` : ""}
       </div>
-      ${h.evidence_reason ? `<p class="muted tiny"><b>Evidence reason:</b> ${esc(h.evidence_reason)}</p>` : ""}
       <p class="hyp-why"><b>Why it fits:</b> ${esc(h.why_it_fits)}</p>
       <div class="hyp-files">${files}</div>
-      ${(h.evidence || []).length ? `<ul class="clean tiny hyp-evidence">${h.evidence.map(e => `<li>${esc(e)}</li>`).join("")}</ul>` : ""}
+      ${(h.evidence || []).length ? `<ul class="clean tiny hyp-evidence advanced-only">${h.evidence.map(e => `<li>${esc(e)}</li>`).join("")}</ul>` : ""}
       <p class="hyp-line"><b>If correct:</b> ${esc(h.what_should_be_true_if_correct || "")}</p>
-      <p class="hyp-line disprove"><b>How to disprove:</b> ${esc(h.how_to_disprove || "")}</p>
+      <p class="hyp-line disprove"><b>How to confirm or rule out:</b> ${esc(h.how_to_disprove || "")}</p>
     </div>`;
   }).join("");
 }
@@ -1808,7 +1973,7 @@ async function runImpact() {
   const list = (arr, n) => (arr || []).slice(0, n || 8).map(t => `<li>${esc(t)}</li>`).join("") || '<li class="muted">—</li>';
   const dirN = (r.direct_impact || []).length;
   const indN = (r.indirect_impact || []).length;
-  // Phase 135 — summary cards ABOVE the file lists; lists capped at 10 with a
+  // summary cards ABOVE the file lists; lists capped at 10 with a
   // collapsible "show all" so a first-time user understands the answer fast.
   out.innerHTML = `
     ${typeof beginnerImpactHero === "function" ? beginnerImpactHero(r) : ""}
@@ -1822,14 +1987,13 @@ async function runImpact() {
       ${impactBlastCard(r)}
       ${renderEvidenceSummary(r.evidence_panel || r.impact_evidence_panel, null)}
       <div class="impact-arch-summary">${esc(impactArchSummary(r))}</div>
-      <div class="report-section"><div class="report-label">Direct impact — importers (${dirN})</div>${impactModuleTags(r.direct_impact)}</div>
-      <div class="report-section"><div class="report-label">Indirect impact — transitive (${indN})</div>${impactModuleTags(r.indirect_impact)}</div>
+      <div class="report-section"><div class="report-label">Files that import this (${dirN})<span class="muted" style="font-weight:400"> — may break</span></div>${impactModuleTags(r.direct_impact)}</div>
+      <div class="report-section"><div class="report-label">Also affected through them (${indN})<span class="muted" style="font-weight:400"> — lower risk</span></div>${impactModuleTags(r.indirect_impact)}</div>
       <div class="report-section"><div class="report-label">Tests to run</div><ul class="clean">${list(r.tests_likely_affected)}</ul></div>
-      <div class="report-section"><div class="report-label">Safe rollback / verification</div><ul class="clean">${list(r.recommended_verification)}</ul></div>
-      <details style="margin-top:6px"><summary class="muted tiny">What may break · risks · probably-safe · evidence</summary>
-        <div class="report-label" style="margin-top:8px">What may break</div>${impactModuleTags(r.what_may_break, 12)}
-        <div class="report-label" style="margin-top:8px">Risks of an incorrect change</div><ul class="clean tiny">${list(r.risks_of_incorrect_fix, 5)}</ul>
-        <div class="report-label" style="margin-top:8px">Probably safe (untouched)</div><ul class="clean tiny">${list(r.what_probably_wont_break, 6)}</ul>
+      <div class="report-section"><div class="report-label">Verification steps</div><ul class="clean">${list(r.recommended_verification)}</ul></div>
+      <details style="margin-top:6px"><summary class="muted tiny">What to watch out for · probably safe · evidence</summary>
+        <div class="report-label" style="margin-top:8px">What to watch out for</div><ul class="clean tiny">${list(r.risks_of_incorrect_fix, 5)}</ul>
+        <div class="report-label" style="margin-top:8px">Likely safe (no import path)</div><ul class="clean tiny">${list(r.what_probably_wont_break, 6)}</ul>
         <div class="report-label" style="margin-top:8px">Evidence</div><ul class="clean tiny">${list(r.evidence, 6)}</ul></details>
       ${typeof sendToAiPanel === "function" ? sendToAiPanel("impact") : ""}
       <div class="copy-row" style="margin-top:12px">
@@ -1837,9 +2001,10 @@ async function runImpact() {
       </div>
       ${typeof workflowFeedbackHtml === "function" ? workflowFeedbackHtml("impact") : ""}
     </div>`;
+  renderWorkflowHistory("impact", "impactHistory");
 }
 
-/* ---- Phase 135 — Impact summary cards (presentation only) ---- */
+/* ---- Impact summary cards (presentation only) ---- */
 function _impactTag(f) {
   return `<span class="tag" role="button" onclick="impactInspect(${JSON.stringify(f)})">${esc(f)}</span>`;
 }
@@ -1980,7 +2145,6 @@ function saveExport() {
 
 /* ---------------- Boot ---------------- */
 (async function boot() {
-  loadRecent();
   updateWorkflowToolbars();
   renderDemoPackPicker();
   wireSeg("segTarget", "exportTarget"); wireSeg("segPacket", "exportPacket");
@@ -2001,13 +2165,16 @@ function saveExport() {
         applyBillingNav(true, !!(me.user && me.user.role === "admin"));
       } catch (e) {}
     }
-    if (h.repository_open) {
+    if (h.persistence?.resume_card) renderResumeCard(h.persistence.resume_card);
+    if (h.repository_open || h.persistence?.restored) {
       unlockNav();
       updateScanBtnState(true);
       STATE.summary = await api("/api/repositories/current/summary");
       updateTelemetryWarning(STATE.summary);
       updateRepoChip(h.repo_name || STATE.summary?.repo_name, h.demo_mode);
       updateMassiveBadge(!!STATE.summary?.massive_mode);
+      if (STATE.summary?.ok) renderResumeCard(null);
     }
   } catch (e) {}
+  loadRecent();
 })();

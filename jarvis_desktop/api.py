@@ -31,6 +31,7 @@ from . import analytics
 from . import atlas_export
 from . import first_impression as _fi
 from . import graph_build
+from . import persistence as _persist
 from . import planning_engine
 from . import reliability
 from . import repository_memory as _repo_memory
@@ -136,6 +137,156 @@ _STATE: Dict[str, Any] = {
     "repository_memory": None,    # same packet; explicit alias for clear contracts
     "_current_memory": None,      # full memory dict (for delta generation)
 }
+
+_PERSISTENCE_BOOTSTRAPPED = False
+
+
+def _persist_scan_snapshot() -> None:
+    """Phase 181B — write scan snapshot after successful scan."""
+    scan = _STATE.get("scan") or {}
+    if not scan.get("ok") and scan.get("module_count") is None:
+        return
+    try:
+        trust = _ti.assess_staleness(_STATE)
+        _persist.save_scan_state(
+            _desktop_data_dir(),
+            scan=scan,
+            graph=_STATE.get("graph") or {},
+            index=_STATE.get("index") or {},
+            evidence_store=_STATE.get("evidence_store") or {},
+            risks=_STATE.get("risks") or {},
+            state=_STATE,
+            atlas_version=PRODUCT_VERSION,
+            trust_status=trust,
+        )
+    except Exception:
+        pass
+
+
+def _save_workflow_history(workflow_type: str, request_text: str, result: Dict[str, Any]) -> None:
+    if not result.get("ok"):
+        return
+    try:
+        record = _persist.build_workflow_history_record(
+            workflow_type,
+            request_text=request_text,
+            result=result,
+            state=_STATE,
+        )
+        _persist.save_workflow_history(_desktop_data_dir(), record)
+    except Exception:
+        pass
+
+
+def bootstrap_persistence(*, auto_restore: bool = True) -> Dict[str, Any]:
+    """Startup hook — cleanup, optional restore of freshest valid scan."""
+    global _PERSISTENCE_BOOTSTRAPPED
+    status: Dict[str, Any] = {"ok": True, "restored": False, "resume_card": None}
+    try:
+        _persist.cleanup_old_scans(_desktop_data_dir())
+    except Exception:
+        pass
+    if _STATE.get("scan"):
+        status["resume_card"] = None
+        _PERSISTENCE_BOOTSTRAPPED = True
+        return status
+    recent = _persist.list_recent_scans(_desktop_data_dir())
+    if not recent:
+        _PERSISTENCE_BOOTSTRAPPED = True
+        return status
+    latest = recent[0]
+    rid = latest.get("repo_id")
+    record = latest
+    if rid:
+        bundle_peek = _persist.load_scan_state(_desktop_data_dir(), rid)
+        if bundle_peek and bundle_peek.get("record"):
+            record = {**latest, **bundle_peek["record"]}
+    validation = _persist.validate_scan_state(record, str(record.get("repo_path") or ""))
+    resume_card = {
+        "repo_id": record.get("repo_id"),
+        "repo_name": record.get("repo_name"),
+        "repo_path": record.get("repo_path"),
+        "path_display": latest.get("path_display") or _persist.path_display(record.get("repo_path", "")),
+        "last_scan_at": latest.get("last_scan_at") or record.get("created_at"),
+        "file_count": record.get("file_count"),
+        "module_count": record.get("module_count"),
+        "graph_health": record.get("graph_health_label") or latest.get("graph_health"),
+        "freshness_status": validation.get("freshness_status"),
+        "validation_status": validation.get("status"),
+        "can_resume": validation.get("status") == "valid",
+        "needs_refresh": validation.get("status") == "stale",
+        "needs_rescan": validation.get("status") in {"path_missing", "missing", "wrong_repo"},
+    }
+    status["resume_card"] = resume_card
+    if auto_restore and validation.get("status") == "valid" and record.get("repo_id"):
+        bundle = _persist.load_scan_state(_desktop_data_dir(), record["repo_id"])
+        if bundle and bundle.get("graph") and bundle.get("index"):
+            _persist.restore_into_state(_STATE, bundle, data_dir=_desktop_data_dir())
+            status["restored"] = True
+    _STATE["persistence_status"] = status
+    _PERSISTENCE_BOOTSTRAPPED = True
+    return status
+
+
+def list_recent_repositories() -> Dict[str, Any]:
+    with _ti.state_guard():
+        bootstrap_persistence(auto_restore=False)
+        items = _persist.list_recent_scans(_desktop_data_dir())
+        return {"ok": True, "items": items}
+
+
+def resume_persisted_repository(repo_id: str) -> Dict[str, Any]:
+    with _ti.state_guard():
+        if not repo_id:
+            return {"ok": False, "error": "repo_id required"}
+        bundle = _persist.load_scan_state(_desktop_data_dir(), repo_id)
+        if not bundle:
+            return {"ok": False, "error": "No saved scan for this repository."}
+        record = bundle.get("record") or {}
+        validation = _persist.validate_scan_state(record, record.get("repo_path", ""))
+        if validation.get("status") == "path_missing":
+            return {"ok": False, "error": validation.get("message"), "code": "path_missing"}
+        if validation.get("status") == "wrong_repo":
+            return {"ok": False, "error": validation.get("message"), "code": "wrong_repo"}
+        if validation.get("status") == "stale":
+            return {
+                "ok": False,
+                "error": validation.get("message"),
+                "code": "stale_scan",
+                "validation": validation,
+            }
+        if not bundle.get("graph") or not bundle.get("index"):
+            return {"ok": False, "error": "Saved scan is incomplete — run a full rescan.", "code": "partial_scan"}
+        _persist.restore_into_state(_STATE, bundle, data_dir=_desktop_data_dir())
+        return {
+            "ok": True,
+            "repo_id": repo_id,
+            "repo_name": record.get("repo_name"),
+            "validation": validation,
+            "summary": current_summary(),
+        }
+
+
+def list_workflow_history_api(
+    repo_id: Optional[str] = None,
+    workflow_type: Optional[str] = None,
+) -> Dict[str, Any]:
+    with _ti.state_guard():
+        rid = repo_id or _repo_memory.repo_id(str(_STATE.get("path") or (_STATE.get("scan") or {}).get("repo_path") or ""))
+        if not rid:
+            return {"ok": False, "error": "No repository selected."}
+        items = _persist.list_workflow_history(_desktop_data_dir(), rid, workflow_type, limit=100)
+        return {"ok": True, "repo_id": rid, "items": items}
+
+
+def get_workflow_history_item_api(history_id: str) -> Dict[str, Any]:
+    with _ti.state_guard():
+        if not history_id:
+            return {"ok": False, "error": "history_id required"}
+        item = _persist.get_workflow_history_item(_desktop_data_dir(), history_id, state=_STATE)
+        if not item:
+            return {"ok": False, "error": "History item not found."}
+        return {"ok": True, "item": item}
 
 
 def _record_workflow_timing(name: str, started: float) -> None:
@@ -318,6 +469,11 @@ def _short(node_id: str) -> str:
 # Endpoints
 # --------------------------------------------------------------------------
 def health() -> Dict[str, Any]:
+    global _PERSISTENCE_BOOTSTRAPPED
+    if not _PERSISTENCE_BOOTSTRAPPED:
+        persistence = bootstrap_persistence(auto_restore=True)
+    else:
+        persistence = _STATE.get("persistence_status") or {"ok": True, "restored": bool(_STATE.get("scan"))}
     scan = _STATE.get("scan") or {}
     telemetry = analytics.status_snapshot()
     return {
@@ -336,6 +492,7 @@ def health() -> Dict[str, Any]:
         "billing_enabled": False,
         "payments_active": False,
         "support_email": _product.support_email(),
+        "persistence": persistence,
         **telemetry,
     }
 
@@ -971,6 +1128,7 @@ def _scan_repository_locked(path: Optional[str] = None, scope: Optional[Dict[str
         _STATE["scan_perf"] = recorder.snapshot()
         track_analytics_event("scan_completed", demo=bool(_STATE.get("demo_mode")), cache_hit=True)
         _record_usage("scan_completed", cache_hit=True)
+        _persist_scan_snapshot()
         return _attach_analytics_status(_STATE["scan"])
     started = time.time()
     usage_tracking.record_event(
@@ -1319,6 +1477,7 @@ def _scan_repository_locked(path: Optional[str] = None, scope: Optional[Dict[str
         massive_mode=massive_mode,
     )
     _record_usage("scan_completed", cache_hit=False, massive_mode=massive_mode)
+    _persist_scan_snapshot()
     return _attach_analytics_status(scan)
 
 
@@ -1565,14 +1724,24 @@ def submit_feedback(body: Dict[str, Any]) -> Dict[str, Any]:
         except (urllib.error.URLError, urllib.error.HTTPError, OSError, ValueError):
             remote_sent = False
 
+    # Always persist to local JSONL — provides beta visibility regardless of remote config.
+    try:
+        feedback_dir = os.path.join(_desktop_data_dir(), "feedback")
+        os.makedirs(feedback_dir, exist_ok=True)
+        feedback_file = os.path.join(feedback_dir, "feedback.jsonl")
+        with open(feedback_file, "a", encoding="utf-8") as fh:
+            fh.write(_json.dumps(payload) + "\n")
+    except Exception:
+        pass
+
     if remote_sent:
         msg = "Feedback sent — thank you."
         destination = "remote"
     elif remote_url:
-        msg = "Saved locally — remote send failed. Export a support bundle and email support."
-        destination = "local"
+        msg = "Saved. We'll follow up at your email if provided."
+        destination = "local_after_remote_fail"
     else:
-        msg = "Saved locally — send a support bundle manually if you need help."
+        msg = "Saved. Email support@useatlas.dev if you need immediate help."
         destination = "local"
 
     return {
@@ -2817,6 +2986,7 @@ def plan_change(request: str) -> Dict[str, Any]:
                 )
             track_analytics_event("change_plan_created", intent=plan.get("intent"), confidence=plan.get("confidence"))
             _record_usage("build_plan_created", intent=plan.get("intent"))
+            _save_workflow_history("build", request, result)
         return _ti.attach_trust_status(result, _STATE)
 
 
@@ -2856,6 +3026,7 @@ def investigate_symptom(symptom: str) -> Dict[str, Any]:
                 )
             track_analytics_event("investigation_plan_created", intent=plan.get("intent"), confidence=plan.get("confidence"))
             _record_usage("investigation_created", intent=plan.get("intent"))
+            _save_workflow_history("investigate", symptom, result)
         return _ti.attach_trust_status(result, _STATE)
 
 
@@ -2908,6 +3079,7 @@ def change_impact_simulation(target: str) -> Dict[str, Any]:
             atlas_export.attach_workflow_exports(res, "impact", memory_ref=mem_ref)
         track_analytics_event("impact_analyzed", risk_level=res.get("risk_level"), confidence=res.get("confidence"))
         _record_usage("impact_created", target=target, risk_level=res.get("risk_level"))
+        _save_workflow_history("impact", target, res)
         return _ti.attach_trust_status(res, _STATE)
 
 
