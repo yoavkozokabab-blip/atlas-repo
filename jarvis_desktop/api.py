@@ -21,6 +21,7 @@ import math
 import os
 import re
 import time
+import uuid
 import zipfile
 from typing import Any, Dict, List, Optional, Set, Tuple
 
@@ -39,6 +40,7 @@ from . import trust_integrity as _ti
 from .data_paths import desktop_data_dir as _desktop_data_dir
 from .evidence_engine import build_evidence_store
 from . import usage as usage_tracking
+from . import operations as _ops
 from . import product_info as _product
 
 PRODUCT_VERSION = _product.PRODUCT_VERSION
@@ -485,12 +487,14 @@ def health() -> Dict[str, Any]:
         persistence = _STATE.get("persistence_status") or {"ok": True, "restored": bool(_STATE.get("scan"))}
     scan = _STATE.get("scan") or {}
     telemetry = analytics.status_snapshot()
+    install = _ops.get_installation_identity()
     return {
         "ok": True,
         "status": "ok",
         "product": "ATLAS",
         "tagline": "Repository Intelligence Platform",
         "version": PRODUCT_VERSION,
+        "installation_id": install.get("installation_id"),
         "build_commit": _product.build_commit(),
         "build_date": _product.build_date(),
         "repository_open": bool(scan),
@@ -586,7 +590,48 @@ def list_demo_packs() -> Dict[str, Any]:
 
 
 def track_analytics_event(event: str, **properties: Any) -> Dict[str, Any]:
-    return analytics.track_event(event, product=PRODUCT_VERSION, **properties)
+    return _ops.pipeline_track_event(event, **properties)
+
+
+def operations_identity() -> Dict[str, Any]:
+    return _ops.get_installation_identity()
+
+
+def operations_insights() -> Dict[str, Any]:
+    scan = _STATE.get("scan") or {}
+    savings = _token_savings(scan) if scan else {}
+    ctx = usage_tracking.current_context()
+    admin = ctx.get("is_admin") or os.environ.get("ATLAS_ADMIN", "").strip().lower() in ("1", "true", "yes")
+    return _ops.beta_insights_dashboard(scan_token_savings=savings, is_admin=admin)
+
+
+def operations_feedback_inbox(*, limit: int = 50) -> Dict[str, Any]:
+    admin = os.environ.get("ATLAS_ADMIN", "").strip().lower() in ("1", "true", "yes")
+    if not admin:
+        return {"ok": False, "code": "admin_disabled", "error": "Feedback inbox requires ATLAS_ADMIN=1."}
+    items = _ops.list_feedback(limit=limit)
+    return {"ok": True, "items": items, "summary": _ops.feedback_inbox_summary()}
+
+
+def operations_token_savings() -> Dict[str, Any]:
+    scan = _STATE.get("scan") or {}
+    return _ops.token_savings_dashboard(scan_token_savings=_token_savings(scan) if scan else {})
+
+
+def operations_crashes(*, limit: int = 50) -> Dict[str, Any]:
+    admin = os.environ.get("ATLAS_ADMIN", "").strip().lower() in ("1", "true", "yes")
+    if not admin:
+        return {"ok": False, "code": "admin_disabled", "error": "Crash registry requires ATLAS_ADMIN=1."}
+    return {"ok": True, "summary": _ops.crash_summary(), "items": _ops.list_crashes(limit=limit)}
+
+
+def operations_record_crash(body: Dict[str, Any]) -> Dict[str, Any]:
+    return _ops.record_crash(
+        str(body.get("kind") or "client_crash"),
+        str(body.get("message") or body.get("error") or ""),
+        exc_type=str(body.get("exc_type") or ""),
+        context={k: v for k, v in body.items() if k not in ("kind", "message", "error", "exc_type")},
+    )
 
 
 def _attach_analytics_status(payload: Dict[str, Any]) -> Dict[str, Any]:
@@ -1023,7 +1068,17 @@ def _build_evidence_store_for_scan(repo: str) -> Dict[str, Any]:
 def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     """Run the real Builder Core scan (graph + light index + risk ranking)."""
     with _ti.state_guard():
-        return _scan_repository_locked(path, scope)
+        result = _scan_repository_locked(path, scope)
+        if not result.get("ok"):
+            try:
+                _ops.record_crash(
+                    "scan_failure",
+                    str(result.get("error") or "scan failed"),
+                    context={"code": result.get("code")},
+                )
+            except Exception:
+                pass
+        return result
 
 
 def _scan_repository_locked(path: Optional[str] = None, scope: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
@@ -1666,8 +1721,8 @@ def product_config() -> Dict[str, Any]:
 
 
 def check_product_update() -> Dict[str, Any]:
-    """Phase 175B — optional update check (silent when unconfigured)."""
-    return _product.check_for_update()
+    """Phase 175B/182 — optional update check with response hardening."""
+    return _ops.check_update_hardened()
 
 
 def submit_feedback(body: Dict[str, Any]) -> Dict[str, Any]:
@@ -1699,6 +1754,7 @@ def submit_feedback(body: Dict[str, Any]) -> Dict[str, Any]:
         pass
 
     payload = {
+        "feedback_id": uuid.uuid4().hex[:12],
         "product": "ATLAS",
         "category": category,
         "message": _redact_support_text(message),
@@ -1706,6 +1762,7 @@ def submit_feedback(body: Dict[str, Any]) -> Dict[str, Any]:
         "page": page,
         "version": PRODUCT_VERSION,
         "build_commit": _product.build_commit(),
+        "installation_id": _ops.get_installation_identity(touch=False).get("installation_id"),
         "diagnostics_summary": diag_summary,
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
     }
@@ -3156,6 +3213,11 @@ def session_export_packet() -> Dict[str, Any]:
                 "summary": current_summary(),
             })
             _STATE["session_export"] = packet
+        track_analytics_event(
+            "session_export_used",
+            tokens=int(packet.get("tokens") or 0),
+            mode=str(packet.get("mode") or ""),
+        )
         return {"ok": True, **packet}
 
 
@@ -3283,14 +3345,15 @@ def context_export(target: str = "claude", packet: str = "compact", *, track: bo
         if packet not in ("compact", "verbose"):
             packet = "compact"
         text = _render_context(target, packet)
+        est_tokens = estimate_tokens(text)
         if track:
-            track_analytics_event("export_created", target=target, packet=packet)
+            track_analytics_event("export_created", target=target, packet=packet, tokens=est_tokens)
             _record_usage("export_created", target=target, packet=packet)
         return {
             "ok": True,
             "target": target,
             "packet": packet,
-            "estimated_tokens": estimate_tokens(text),
+            "estimated_tokens": est_tokens,
             "text": text,
         }
 
