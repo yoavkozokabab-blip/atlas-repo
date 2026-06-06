@@ -51,7 +51,12 @@
       </section>
       <section class="glass support-card">
         <h3>Atlas version</h3>
-        <p class="support-version" id="atlasVersion">—</p>
+        <p class="support-version" id="atlasVersion" data-atlas-version>—</p>
+        <p class="muted tiny">Build <span id="atlasBuildCommit">—</span> · <span id="atlasBuildDate">—</span></p>
+        <h3 style="margin-top:16px">Context status</h3>
+        <p id="trustStatusLabel" class="support-trust-label">—</p>
+        <h3 style="margin-top:16px">Contact</h3>
+        <p class="tiny"><a href="mailto:support@useatlas.dev" data-atlas-support-email>support@useatlas.dev</a></p>
         <h3 style="margin-top:16px">Scan health</h3>
         <div id="scanHealth" class="muted tiny">—</div>
       </section>
@@ -80,6 +85,7 @@
     </section>
   </main>
   <div id="toast" class="toast"></div>
+  <script src="atlas_product.js"></script>
   <script src="support.js"></script>
 </body>
 </html>

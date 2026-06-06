@@ -124,9 +124,11 @@ def pricing_payload() -> Dict[str, Any]:
         "currency": "USD",
         "payment_provider": None,
         "checkout_enabled": False,
+        "billing_enabled": False,
+        "billing_message": "Billing is not enabled in this beta build. Plans are preview-only.",
         "note": (
             "Atlas compute is priced in token-equivalent units for planning only. "
-            "No Stripe connection — join beta or contact us."
+            "Billing is not enabled in beta — no checkout, no payment collection."
         ),
         "plans": list_plans(),
     }

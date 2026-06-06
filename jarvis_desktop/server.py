@@ -140,6 +140,10 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
         ("GET", "/api/billing/plans"): lambda _body, _query: api.usage_plans(),
         ("GET", "/api/billing/usage"): lambda _body, _query: api.usage_me(),
         ("GET", "/api/billing/admin"): lambda _body, _query: api.usage_admin(),
+        # Phase 175B — product completion
+        ("GET", "/api/product/config"): lambda _body, _query: api.product_config(),
+        ("GET", "/api/product/update-check"): lambda _body, _query: api.check_product_update(),
+        ("POST", "/api/feedback"): lambda body, _query: api.submit_feedback(body or {}),
     }
 
 

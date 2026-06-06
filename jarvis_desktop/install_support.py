@@ -281,9 +281,14 @@ def environment_status() -> Dict[str, Any]:
         diag = api.beta_diagnostics()
     except Exception as exc:
         diag = {"ok": False, "error": str(exc)}
+    from . import product_info as pi
+
     return {
         "ok": True,
         "version": api.PRODUCT_VERSION,
+        "build_commit": pi.build_commit(),
+        "build_date": pi.build_date(),
+        "support_email": pi.support_email(),
         "startup": startup,
         "scan_health": health,
         "diagnostics": diag,

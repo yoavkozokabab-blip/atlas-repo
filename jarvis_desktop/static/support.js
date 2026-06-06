@@ -99,6 +99,14 @@ async function loadSupportStatus() {
     return;
   }
   $("atlasVersion").textContent = env.version || "—";
+  if ($("atlasBuildCommit")) $("atlasBuildCommit").textContent = env.build_commit || "—";
+  if ($("atlasBuildDate")) $("atlasBuildDate").textContent = env.build_date || "—";
+  const trustEl = $("trustStatusLabel");
+  if (trustEl) {
+    const label = (env.scan_health && env.scan_health.user_trust_label) || "Fresh";
+    trustEl.textContent = label;
+    trustEl.className = "support-trust-label trust-" + String(label).toLowerCase().replace(/\s+/g, "-");
+  }
   renderChecks(env.startup);
   renderScanHealth(env.scan_health);
   supportRunSelfTest();

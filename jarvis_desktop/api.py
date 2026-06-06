@@ -37,8 +37,9 @@ from . import trust_integrity as _ti
 from .data_paths import desktop_data_dir as _desktop_data_dir
 from .evidence_engine import build_evidence_store
 from . import usage as usage_tracking
+from . import product_info as _product
 
-PRODUCT_VERSION = "phase146b-true-beta-blocker-fixes"
+PRODUCT_VERSION = _product.PRODUCT_VERSION
 CHARS_PER_TOKEN = 4.0
 GRAPH_DISPLAY_CAP = 5000
 GRAPH_DEFAULT_HIERARCHY_THRESHOLD = 1000
@@ -324,11 +325,16 @@ def health() -> Dict[str, Any]:
         "product": "ATLAS",
         "tagline": "Repository Intelligence Platform",
         "version": PRODUCT_VERSION,
+        "build_commit": _product.build_commit(),
+        "build_date": _product.build_date(),
         "repository_open": bool(scan),
         "demo_mode": bool(_STATE.get("demo_mode")),
         "repo_name": scan.get("repo_name"),
         "billing_ui_enabled": usage_tracking.billing_ui_enabled(),
         "usage_enforcement_enabled": usage_tracking.enforcement_enabled(),
+        "billing_enabled": False,
+        "payments_active": False,
+        "support_email": _product.support_email(),
         **telemetry,
     }
 
@@ -1469,15 +1475,113 @@ def trust_integrity_status() -> Dict[str, Any]:
     with _ti.state_guard():
         status = _ti.assess_staleness(_STATE)
         ctx = _STATE.get("workflow_context") or {}
+        scan = _STATE.get("scan") or {}
+        gh = scan.get("graph_health") or {}
+        graph_label = gh.get("label") if isinstance(gh, dict) else str(gh or "")
+        user_label = _product.user_trust_label(status, graph_label=graph_label)
         return {
             "ok": True,
             "trust_status": status,
+            "user_trust_label": user_label,
             "targeted_refresh_available": status.get("targeted_refresh_available", False),
             "repo_changed_outside_plan": status.get("repo_changed_outside_plan", False),
             "workflow_context": ctx if ctx else None,
             "refresh_generation": int(_STATE.get("refresh_generation") or 0),
             "active_memory_ref": _STATE.get("active_memory_ref"),
         }
+
+
+def product_config() -> Dict[str, Any]:
+    """Phase 175B — beta product configuration for UI."""
+    return _product.product_config()
+
+
+def check_product_update() -> Dict[str, Any]:
+    """Phase 175B — optional update check (silent when unconfigured)."""
+    return _product.check_for_update()
+
+
+def submit_feedback(body: Dict[str, Any]) -> Dict[str, Any]:
+    """Phase 175B — submit feedback with optional remote destination (no source code)."""
+    from .install_support import _redact_support_text
+
+    category = str(body.get("category") or "general").strip()[:64]
+    message = str(body.get("message") or "").strip()
+    email = str(body.get("email") or "").strip()[:200]
+    page = str(body.get("page") or "").strip()[:120]
+    if len(message) < 3:
+        return {"ok": False, "error": "Please write a short message."}
+
+    diag_summary: Dict[str, Any] = {}
+    try:
+        diag = beta_diagnostics()
+        staleness = _ti.assess_staleness(_STATE)
+        gh = ((diag.get("scan_statistics") or {}).get("graph_quality")) or ""
+        diag_summary = {
+            "version": PRODUCT_VERSION,
+            "build_commit": _product.build_commit(),
+            "file_count": (diag.get("scan_statistics") or {}).get("file_count"),
+            "module_count": (diag.get("scan_statistics") or {}).get("module_count"),
+            "graph_quality": gh,
+            "user_trust_label": _product.user_trust_label(staleness, graph_label=str(gh)),
+            "demo_mode": bool((diag.get("repository") or {}).get("demo_mode")),
+        }
+    except Exception:
+        pass
+
+    payload = {
+        "product": "ATLAS",
+        "category": category,
+        "message": _redact_support_text(message),
+        "email": _redact_support_text(email) if email else "",
+        "page": page,
+        "version": PRODUCT_VERSION,
+        "build_commit": _product.build_commit(),
+        "diagnostics_summary": diag_summary,
+        "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+    }
+
+    remote_url = _product.feedback_url()
+    remote_sent = False
+    if remote_url:
+        try:
+            import urllib.error
+            import urllib.request
+
+            req = urllib.request.Request(
+                remote_url,
+                data=_json.dumps(payload).encode("utf-8"),
+                headers={"Content-Type": "application/json", "Accept": "application/json"},
+                method="POST",
+            )
+            resp = urllib.request.urlopen(req, timeout=10)
+            try:
+                code = int(getattr(resp, "status", None) or resp.getcode())
+                remote_sent = 200 <= code < 300
+            finally:
+                if hasattr(resp, "close"):
+                    resp.close()
+        except (urllib.error.URLError, urllib.error.HTTPError, OSError, ValueError):
+            remote_sent = False
+
+    if remote_sent:
+        msg = "Feedback sent — thank you."
+        destination = "remote"
+    elif remote_url:
+        msg = "Saved locally — remote send failed. Export a support bundle and email support."
+        destination = "local"
+    else:
+        msg = "Saved locally — send a support bundle manually if you need help."
+        destination = "local"
+
+    return {
+        "ok": True,
+        "remote_sent": remote_sent,
+        "destination": destination,
+        "feedback_url_configured": bool(remote_url),
+        "message": msg,
+        "support_email": _product.support_email(),
+    }
 
 
 def refresh_changed_files(paths: Optional[List[str]] = None) -> Dict[str, Any]:
@@ -1509,6 +1613,9 @@ def beta_diagnostics() -> Dict[str, Any]:
         "ok": True,
         "product": "ATLAS",
         "version": PRODUCT_VERSION,
+        "build_commit": _product.build_commit(),
+        "build_date": _product.build_date(),
+        "support_email": _product.support_email(),
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "repository": {
             "name": scan.get("repo_name"),
@@ -1556,8 +1663,14 @@ def beta_system_health() -> Dict[str, Any]:
     gh = summary.get("graph_health") or {}
     ev = summary.get("evidence_coverage") or {}
     perf = _STATE.get("scan_perf") or {}
+    staleness = _ti.assess_staleness(_STATE)
+    gh_label = gh.get("label") or "unknown"
     return {
         "ok": True,
+        "version": PRODUCT_VERSION,
+        "build_commit": _product.build_commit(),
+        "build_date": _product.build_date(),
+        "user_trust_label": _product.user_trust_label(staleness, graph_label=str(gh_label)),
         "repo_name": summary.get("repo_name"),
         "demo_mode": summary.get("demo_mode"),
         "indexed_files": summary.get("file_count"),

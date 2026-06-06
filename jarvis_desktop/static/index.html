@@ -40,9 +40,9 @@
       <button data-view="scan" onclick="go('scan')">Scan</button>
       <button data-view="center" data-lock="1" onclick="go('center')">Codebase Map</button>
       <button data-view="build" data-lock="1" onclick="go('build')">Change Plan</button>
-      <button data-view="investigate" data-lock="1" onclick="go('investigate')">Investigate Bug</button>
+      <button data-view="investigate" data-lock="1" onclick="go('investigate')">Investigate</button>
       <button data-view="impact" data-lock="1" onclick="go('impact')">What breaks?</button>
-      <button data-view="export" data-lock="1" data-beta-advanced="1" onclick="go('export')" title="Advanced: full repository context (create a Change Plan first)">Repository context</button>
+      <button data-view="export" data-lock="1" data-beta-advanced="1" onclick="go('export')" title="Advanced: Repository Context (create a Change Plan first)">Repository Context <span class="nav-advanced-tag">Advanced</span></button>
       <span class="billing-nav" id="billingNav" style="display:none">
         <a class="nav-link" href="usage.html">Usage</a>
         <a class="nav-link" href="pricing.html">Pricing</a>
@@ -69,6 +69,9 @@
       </details>
     </div>
   </header>
+
+  <div id="updateBanner" class="update-banner glass" style="display:none" role="status"></div>
+  <div id="trustStatusBar" class="trust-status-bar glass" style="display:none" role="status"></div>
 
   <div id="telemetryWarning" class="telemetry-banner glass" style="display:none" role="status">
     Telemetry unavailable. Repository analysis unaffected.
@@ -388,8 +391,8 @@
       <div class="export-grid">
         <div class="glass controls">
           <div class="export-why">
-            <div class="export-why-title">Repository context (advanced)</div>
-            <p>This is <b>not</b> your task prompt. Create a <b>Change Plan</b> first, then use <b>Copy for Claude</b> on that screen. Use this tab only when you want a repo-wide context packet.</p>
+            <div class="export-why-title">Repository Context <span class="nav-advanced-tag">Advanced</span></div>
+            <p>This is <b>not</b> your task prompt. Create a <b>Change Plan</b> first, then use <b>Copy for Claude</b> on that screen — that is the primary path. Use this tab only when you want a repo-wide context packet.</p>
             <p class="muted tiny" style="margin-top:10px">Compact packets save tokens; verbose packets include full architectural evidence.</p>
           </div>
           <label>Target tool</label>
@@ -501,5 +504,6 @@
   <script src="atlas_polish.js"></script>
   <script src="atlas_zero_friction.js"></script>
   <script src="atlas_trust.js"></script>
+  <script src="atlas_product.js"></script>
 </body>
 </html>

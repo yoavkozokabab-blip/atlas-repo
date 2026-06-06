@@ -264,6 +264,7 @@ function beginnerPlanHero(plan, kind) {
   return `<div class="beginner-plan-card glass" data-kind="${kind}">
     <h3 class="beginner-plan-title">Ready for Claude</h3>
     <p class="muted tiny">One copy includes everything your AI needs for this plan. Paste once per new chat.</p>
+    <p class="muted tiny memory-export-note">Atlas sends a tiny repository memory plus this question's files — not your whole codebase.</p>
     <div class="beginner-plan-section"><span class="report-label">Goal</span><p>${_zfEsc(goal)}</p></div>
     <div class="beginner-plan-section"><span class="report-label">Top files</span><ul class="clean tiny">${files.length ? files.map(f => `<li>${_zfEsc(f)}</li>`).join("") : "<li class='muted'>Atlas will list files after planning</li>"}</ul></div>
     <div class="beginner-plan-section"><span class="report-label">Order</span><ol class="clean tiny">${order.length ? order.map(s => `<li>${_zfEsc(s)}</li>`).join("") : "<li class='muted'>n/a</li>"}</ol></div>
@@ -274,10 +275,12 @@ function beginnerPlanHero(plan, kind) {
 /* ---------------- the panel ---------------- */
 function sendToAiPanel(kind, insideBeginner) {
   const extra = insideBeginner ? "" : `<p class="muted tiny">One copy includes everything Claude needs for this plan. Paste once per new chat.</p>`;
+  const memNote = `<p class="muted tiny memory-export-note">Atlas sends a tiny repository memory plus this question's files — not your whole codebase.</p>`;
   return `<div class="send-to-ai glass" data-kind="${kind}">
     <h3 class="send-to-ai-title">${insideBeginner ? "Copy your plan" : "Copy plan for your AI tool"}</h3>
     ${extra}
-    <div class="copy-row">
+    ${memNote}
+    <div class="copy-row copy-row-primary">
       <button class="btn primary${insideBeginner ? " big" : " small"}" type="button" onclick="copyForAi('claude','${kind}')">Copy for Claude</button>
       <button class="btn small" type="button" onclick="copyForAi('cursor','${kind}')">Copy for Cursor</button>
       <button class="btn small" type="button" onclick="copyForAi('codex','${kind}')">Copy for Codex</button>
@@ -322,9 +325,9 @@ function afterChangePlanSuccess() {
     <h2 class="ready-title">You're ready.</h2>
     <p class="muted">Atlas turned a request into a grounded plan. Send it to your AI coding tool and start implementing.</p>
     <div class="copy-row">
-      <button class="btn primary small" type="button" onclick="copyForAi('claude','build')">Copy to Claude</button>
-      <button class="btn small" type="button" onclick="copyForAi('cursor','build')">Copy to Cursor</button>
-      <button class="btn small" type="button" onclick="copyForAi('codex','build')">Copy to Codex</button>
+      <button class="btn primary big" type="button" onclick="copyForAi('claude','build')">Copy for Claude</button>
+      <button class="btn small" type="button" onclick="copyForAi('cursor','build')">Copy for Cursor</button>
+      <button class="btn small" type="button" onclick="copyForAi('codex','build')">Copy for Codex</button>
       <button class="btn ghost small" type="button" onclick="go('home')">Try on your own repository</button>
     </div>
   </div>`;

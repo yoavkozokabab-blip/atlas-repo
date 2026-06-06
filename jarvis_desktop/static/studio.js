@@ -122,7 +122,7 @@ async function runSequence() {
   // 6 — outro
   stopOrbit(); setDots(5, TOTAL);
   try { S.G && S.G.cameraPosition({ x: 0, y: 20, z: 360 }, { x: 0, y: 0, z: 0 }, 2000); } catch (e) {}
-  scene("JARVIS", "Prepare your codebase for AI", "Stop making AI read your entire repository.");
+  scene("Atlas", "Prepare your codebase for AI", "Stop making AI read your entire repository.");
   await wait(6000);
 
   // restore controls

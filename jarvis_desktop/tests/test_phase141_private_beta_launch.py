@@ -50,7 +50,7 @@ def test_launch_ui_assets():
     about = (STATIC / "about.html").read_text(encoding="utf-8")
     assert "welcomeScreen" in html
     assert "guidedWalkthroughPanel" in html
-    assert "Report Issue" in html
+    assert "Report an issue" in html or "Report Issue" in html
     assert "aboutAtlasModal" in html
     assert "workflowFeedbackHtml" in beta
     assert "downloadWorkflowMarkdownBundle" in beta
