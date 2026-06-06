@@ -1,0 +1,358 @@
+{
+  "phase": "181H",
+  "title": "Final Persistence Verification",
+  "run_date": "2026-06-06",
+  "mode": "verification_only",
+  "code_modified_by_codex": false,
+  "verdict": "FAIL",
+  "summary": {
+    "required_attacks": 20,
+    "passed_attacks": 19,
+    "failed_attacks": 1,
+    "failed_attack_ids": [
+      9
+    ],
+    "specific_checks": 5,
+    "passed_specific_checks": 4,
+    "failed_specific_checks": 1,
+    "failed_specific_ids": [
+      3
+    ],
+    "additional_regressions": [
+      "fresh_scan_session_export_returns_memory_untrusted"
+    ],
+    "go_for_5_supervised_beta_users": false,
+    "go_for_20_supervised_beta_users": false
+  },
+  "test_results": [
+    {
+      "command": "py -3 -m pytest jarvis_desktop/tests/test_phase181b_persistence.py jarvis_desktop/tests/test_phase181e_persistence_red_team_fixes.py jarvis_desktop/tests/test_phase181g_persistence_signing.py -q -p no:cacheprovider",
+      "result": "29 passed in 7.53s",
+      "note": "Run with isolated elevated basetemp because sandboxed Windows temp creation hit permission issues in prior runs."
+    }
+  ],
+  "interpretation_notes": [
+    "The concurrency attacks returned memory_untrusted instead of a usable export. They are counted PASS for the stated safety expectation because no stale, poisoned, or wrong-repo context was exported.",
+    "A separate normal scan to session_export_packet sanity probe also returned memory_untrusted, which is recorded as an additional usability/trust regression.",
+    "The support bundle did not contain the raw 32-byte persistence secret, but did contain the literal marker persistence_secret when that marker was present in launcher.log."
+  ],
+  "attacks": [
+    {
+      "id": 1,
+      "name": "181C-01 wrong repo restore",
+      "result": "PASS",
+      "expected": "Refuse or stale-mark restore; no repo A export for repo B.",
+      "actual": {
+        "boot_restored": false,
+        "resume_ok": false,
+        "resume_code": "stale_scan",
+        "export_ok": false,
+        "leaked_repo_a": false
+      }
+    },
+    {
+      "id": 2,
+      "name": "181C-02 file changed after restore",
+      "result": "PASS",
+      "expected": "stale_scan or needs refresh; no export.",
+      "actual": {
+        "boot_restored": false,
+        "resume_code": "stale_scan",
+        "export_ok": false
+      }
+    },
+    {
+      "id": 3,
+      "name": "181C-03 git branch switch",
+      "result": "PASS",
+      "expected": "stale_git_head_changed or needs refresh; no export.",
+      "actual": {
+        "boot_restored": false,
+        "resume_code": "stale_scan",
+        "export_ok": false
+      }
+    },
+    {
+      "id": 4,
+      "name": "181C-04 plan history stale export",
+      "result": "PASS",
+      "expected": "Old plan copy/export blocked until refresh.",
+      "actual": {
+        "item_ok": true,
+        "export_allowed": false,
+        "stale_reason": "Atlas needs a refresh before exporting context. The repository changed after this plan was generated."
+      }
+    },
+    {
+      "id": 5,
+      "name": "181C-05 forged history with recomputed hash",
+      "result": "PASS",
+      "expected": "Forged history with recomputed old deterministic hash fails and cannot export.",
+      "actual": {
+        "listed_contains_poison": false,
+        "item_ok": false,
+        "leaks_secret": false,
+        "leaks_fake_path": false
+      }
+    },
+    {
+      "id": 6,
+      "name": "181C-06 memory text poisoning with preserved signatures",
+      "result": "PASS",
+      "expected": "Preserved-signature memory text tamper fails and cannot export.",
+      "actual": {
+        "resume_ok": true,
+        "memory_rejected": true,
+        "export_ok": false,
+        "export_status": "memory_untrusted",
+        "poison_exported": false
+      }
+    },
+    {
+      "id": 7,
+      "name": "181C-07 version mismatch",
+      "result": "PASS",
+      "expected": "Future or incompatible persistence version refused.",
+      "actual": {
+        "boot_restored": false,
+        "resume_code": "version_mismatch",
+        "export_ok": false
+      }
+    },
+    {
+      "id": 8,
+      "name": "181C-08 cleanup safety",
+      "result": "PASS",
+      "expected": "Cleanup keeps newest scan/history and survives malformed files.",
+      "actual": {
+        "cleanup_ok": true,
+        "removed_scans": [
+          "cleanup000000001",
+          "cleanup000000000"
+        ],
+        "remaining_count": 10,
+        "newest_kept": "cleanup000000011"
+      }
+    },
+    {
+      "id": 9,
+      "name": "181C-09 support bundle and persistence_secret redaction",
+      "result": "FAIL",
+      "severity": "P0",
+      "expected": "No raw source, secrets, absolute paths, history content, persistence_secret marker, or secret bytes in support bundle.",
+      "actual": {
+        "bundle_ok": true,
+        "leaks": [
+          "persistence_secret"
+        ],
+        "secret_bytes_present": false,
+        "files": [
+          "manifest.json",
+          "version.txt",
+          "diagnostics.json",
+          "environment.json",
+          "scan_metadata.json",
+          "startup_checks.json",
+          "logs/launcher.log",
+          "logs/analytics.jsonl"
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "name": "181C-10 concurrent restore and scan",
+      "result": "PASS",
+      "expected": "No mixed old/new state during concurrent restore, scan, and export.",
+      "actual": {
+        "errors": [],
+        "final_export_ok": false,
+        "final_export_status": "memory_untrusted",
+        "repo_a_leaked_in_final": false,
+        "mixed_markers_in_outputs": false,
+        "output_count": 10,
+        "note": "Safe refusal, but export usability is degraded."
+      }
+    },
+    {
+      "id": 11,
+      "name": "181F-01 corrupted scan JSON",
+      "result": "PASS",
+      "expected": "Corrupt scan JSON does not restore or export stale context.",
+      "actual": {
+        "boot_restored": false,
+        "resume_ok": false,
+        "resume_error": "No saved scan for this repository.",
+        "export_ok": false
+      }
+    },
+    {
+      "id": 12,
+      "name": "181F-02 corrupted history JSONL",
+      "result": "PASS",
+      "expected": "Malformed history lines ignored without poisoned export or crash.",
+      "actual": {
+        "listed_ok": true,
+        "item_count": 1,
+        "contains_bad_json": false
+      }
+    },
+    {
+      "id": 13,
+      "name": "181F-03 deleted graph file",
+      "result": "PASS",
+      "expected": "Incomplete scan sidecar refuses restore/export.",
+      "actual": {
+        "boot_restored": false,
+        "resume_code": "partial_scan",
+        "export_ok": false
+      }
+    },
+    {
+      "id": 14,
+      "name": "181F-04 deleted memory file",
+      "result": "PASS",
+      "expected": "Deleted memory does not export mismatched or poisoned memory.",
+      "actual": {
+        "resume_ok": true,
+        "export_ok": true,
+        "export_status": null,
+        "memory_rejected": null,
+        "poison_exported": false
+      }
+    },
+    {
+      "id": 15,
+      "name": "181F-05 partial write file",
+      "result": "PASS",
+      "expected": "Leftover partial write file ignored; no poison export.",
+      "actual": {
+        "boot_restored": true,
+        "resume_ok": true,
+        "export_ok": true,
+        "poison_exported": false
+      }
+    },
+    {
+      "id": 16,
+      "name": "181F-06 repo renamed",
+      "result": "PASS",
+      "expected": "Renamed or missing repo path refuses restore/export.",
+      "actual": {
+        "boot_restored": false,
+        "resume_code": "path_missing",
+        "export_ok": false
+      }
+    },
+    {
+      "id": 17,
+      "name": "181F-07 repo replaced at same path",
+      "result": "PASS",
+      "expected": "Same-path replacement marks stale; no wrong-repo restore/export.",
+      "actual": {
+        "boot_restored": false,
+        "resume_code": "stale_scan",
+        "export_ok": false,
+        "repo_a_leaked": false
+      }
+    },
+    {
+      "id": 18,
+      "name": "181F-08 branch switch",
+      "result": "PASS",
+      "expected": "Branch switch marks stale or needs refresh; no export.",
+      "actual": {
+        "boot_restored": false,
+        "resume_code": "stale_scan",
+        "export_ok": false
+      }
+    },
+    {
+      "id": 19,
+      "name": "181F-09 fake scan_id",
+      "result": "PASS",
+      "expected": "Fake scan_id cannot produce mismatched memory export.",
+      "actual": {
+        "resume_ok": true,
+        "memory_rejected": true,
+        "export_ok": false,
+        "fake_scan_id_in_export": false
+      }
+    },
+    {
+      "id": 20,
+      "name": "181F-10 concurrent restore + scan + export",
+      "result": "PASS",
+      "expected": "No mixed old/new state during concurrent restore, scan, and export.",
+      "actual": {
+        "errors": [],
+        "final_export_ok": false,
+        "final_export_status": "memory_untrusted",
+        "repo_a_leaked_in_final": false,
+        "mixed_markers_in_outputs": false,
+        "output_count": 10,
+        "note": "Safe refusal, but export usability is degraded."
+      }
+    }
+  ],
+  "specific_checks": [
+    {
+      "id": 1,
+      "name": "forged history with recomputed hash fails",
+      "result": "PASS",
+      "covered_by_attack_id": 5
+    },
+    {
+      "id": 2,
+      "name": "memory text poisoning with preserved signatures fails",
+      "result": "PASS",
+      "covered_by_attack_id": 6
+    },
+    {
+      "id": 3,
+      "name": "persistence_secret not present in support bundle",
+      "result": "FAIL",
+      "covered_by_attack_id": 9,
+      "actual": {
+        "literal_marker_present": true,
+        "raw_secret_bytes_present": false
+      }
+    },
+    {
+      "id": 4,
+      "name": "legacy unsigned history cannot export",
+      "result": "PASS",
+      "actual": {
+        "listed_count": 1,
+        "list_historical_only": true,
+        "list_export_allowed": false,
+        "item_export_allowed": false,
+        "item_historical_only": true
+      }
+    },
+    {
+      "id": 5,
+      "name": "legacy unsigned memory cannot export",
+      "result": "PASS",
+      "actual": {
+        "resume_ok": true,
+        "memory_rejected": true,
+        "export_ok": false,
+        "export_status": "memory_untrusted"
+      }
+    }
+  ],
+  "additional_regressions": [
+    {
+      "name": "fresh scan session export",
+      "result": "FAIL",
+      "expected": "After a normal successful scan, session_export_packet returns usable Atlas context.",
+      "actual": {
+        "scan_ok": true,
+        "export_ok": false,
+        "export_status": "memory_untrusted",
+        "export_error": "Session export failed integrity check.",
+        "session_export_has_memory_hmac": false
+      }
+    }
+  ]
+}
