@@ -296,7 +296,7 @@ window.stopGuidedWalkthrough = stopGuidedWalkthrough;
 window.guidedWalkthroughNext = guidedWalkthroughNext;
 window.maybeShowWelcomeScreen = maybeShowWelcomeScreen;
 
-(function phase141Boot() {
+(function atlasBetaBoot() {
   try {
     if (localStorage.getItem(WELCOME_KEY) !== "1") {
       maybeShowWelcomeScreen();

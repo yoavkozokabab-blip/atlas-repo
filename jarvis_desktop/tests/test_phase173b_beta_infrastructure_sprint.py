@@ -64,6 +64,7 @@ def test_p0_03_bind_http_server_tries_next_port(monkeypatch):
                 exc = OSError("in use")
                 exc.winerror = 10048  # type: ignore[attr-defined]
                 raise exc
+            self.server_address = (addr[0], addr[1])
 
         def server_close(self):
             return None

@@ -267,18 +267,32 @@ def _log_launcher(message: str) -> None:
         pass
 
 
+def _port_bind_retryable(exc: OSError) -> bool:
+    """Treat occupied, denied, and firewall-blocked binds as retryable (175D)."""
+    if isinstance(exc, PermissionError):
+        return True
+    win_code = getattr(exc, "winerror", None)
+    if win_code in (10048, 10013):
+        return True
+    errno = getattr(exc, "errno", None)
+    return errno in (13, 48, 98, 10048, 10013)
+
+
 def _bind_http_server(host: str, port: int, *, attempts: int = 10):
-    """Beta P0-03 — try alternate localhost ports when the default is taken."""
+    """Beta P0-03 / 175D — try alternate localhost ports when bind is blocked."""
     last_exc: Optional[Exception] = None
-    for candidate in range(port, port + attempts):
+    start = port if port else 0
+    count = 1 if port == 0 else attempts
+    for offset in range(count):
+        candidate = start + offset
         try:
-            return ThreadingHTTPServer((host, candidate), JarvisHandler), candidate
+            httpd = ThreadingHTTPServer((host, candidate), JarvisHandler)
+            bound = int(httpd.server_address[1])
+            return httpd, bound
         except OSError as exc:
             last_exc = exc
-            win_in_use = getattr(exc, "winerror", None) == 10048
-            posix_in_use = getattr(exc, "errno", None) in (48, 98, 10048)
-            if win_in_use or posix_in_use:
-                _log_launcher(f"port {candidate} in use; trying next")
+            if _port_bind_retryable(exc):
+                _log_launcher(f"port {candidate} unavailable ({type(exc).__name__}); trying next")
                 continue
             raise
     if last_exc:
@@ -293,7 +307,13 @@ def run(
     open_browser: bool = True,
     start_path: str = "/",
 ) -> None:
-    httpd, bound_port = _bind_http_server(host, port)
+    try:
+        httpd, bound_port = _bind_http_server(host, port)
+    except OSError as exc:
+        _log_launcher(f"bind failed on {host}:{port}: {type(exc).__name__}: {exc}")
+        httpd, bound_port = _bind_http_server(host, 0, attempts=1)
+        start_path = "/startup-error.html"
+        _log_launcher(f"recovered on ephemeral port {bound_port} with startup-error page")
     if bound_port != port:
         _log_launcher(f"serving on alternate port {bound_port} (requested {port})")
     path = start_path if start_path.startswith("/") else f"/{start_path}"

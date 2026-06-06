@@ -1,7 +1,7 @@
 "use strict";
 
 /** Phase 111/116B/121F — Cinematic 3D repository universe (visualization only). */
-const JARVIS_UNIVERSE = (() => {
+const ATLAS_UNIVERSE = (() => {
   const LARGE_GRAPH_THRESHOLD = 1000;
   const HOVER_NEIGHBOR_CAP = 100;
   const SELECT_NEIGHBOR_CAP = 250;
@@ -344,8 +344,8 @@ const JARVIS_UNIVERSE = (() => {
 
   function logHoverPerf(ms, label) {
     if (!U.perfEnabled) return;
-    if (ms > 50) console.warn(`[JARVIS graph] ${label} ${ms.toFixed(1)}ms (>50ms)`);
-    else if (ms > 16) console.debug(`[JARVIS graph] ${label} ${ms.toFixed(1)}ms`);
+    if (ms > 50) console.warn(`[Atlas graph] ${label} ${ms.toFixed(1)}ms (>50ms)`);
+    else if (ms > 16) console.debug(`[Atlas graph] ${label} ${ms.toFixed(1)}ms`);
   }
 
   function syncHighlightVisuals(fg) {
@@ -1145,3 +1145,4 @@ const JARVIS_UNIVERSE = (() => {
     get fg() { return U.fg; },
   };
 })();
+window.ATLAS_UNIVERSE = ATLAS_UNIVERSE;

@@ -273,8 +273,10 @@ def test_old_memory_ref_rejected_after_refresh(tmp_path):
 # ---------------------------------------------------------------------------
 
 def test_redact_api_key_value():
-    assert "LEAK_ME" not in _redact_support_text("api_key=LEAK_ME")
-    assert "api_key=[REDACTED]" in _redact_support_text("api_key=LEAK_ME")
+    out = _redact_support_text("api_key=LEAK_ME")
+    assert "LEAK_ME" not in out
+    assert "api_key=" not in out
+    assert "[REDACTED]" in out
 
 
 def test_redact_json_token_field():
@@ -316,5 +318,7 @@ def test_support_bundle_does_not_contain_leak_me(tmp_path, monkeypatch):
         blob = zf.read("logs/launcher.log").decode("utf-8")
     assert "LEAK_ME" not in blob
     assert "sk-ant-leak-token" not in blob
-    assert "api_key=[REDACTED]" in blob
+    assert "api_key=" not in blob
+    assert "token=" not in blob
+    assert "[REDACTED]" in blob
     assert str(secret_path) not in blob or "[path-redacted]" in blob

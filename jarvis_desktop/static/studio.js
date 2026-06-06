@@ -1,5 +1,5 @@
 "use strict";
-/* JARVIS Demo Studio — one-click cinematic recording mode (Phase 113A).
+/* Atlas Demo Studio — one-click cinematic recording mode.
    Loads a bundled demo repo, then runs a hands-free ~70s scripted tour over a
    maximized auto-orbiting 3D graph. No debug noise, clean branding. */
 
@@ -101,7 +101,7 @@ async function runSequence() {
   // 3 — impact
   const hub = (S.summary.top_hubs || [])[0];
   const imp = markImpact(hub && hub.path); S.hl = "impact"; recolor(); setDots(2, TOTAL);
-  scene("Impact analysis", "See the blast radius before you edit", "JARVIS shows exactly what a change touches — and the tests to run.");
+  scene("Impact analysis", "See the blast radius before you edit", "Atlas shows exactly what a change touches — and the tests to run.");
   if (imp) datacard("Impact of changing " + (hub ? hub.module : ""), `<div class="drow"><span>Affected modules</span><b>${imp.count}</b></div><div class="drow"><span>Risk level</span><b style="color:#ffbe5c">${imp.count >= 6 ? "high" : "medium"}</b></div><div class="pillbar" style="width:${Math.min(100, imp.count * 9)}%"></div>`);
   await wait(12000); hideCard();
 

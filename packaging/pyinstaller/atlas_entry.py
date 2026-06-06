@@ -50,7 +50,7 @@ def _open_support_fallback() -> None:
     try:
         from jarvis_desktop import server
 
-        server.run(host="127.0.0.1", port=8777, open_browser=True, start_path="/support.html")
+        server.run(host="127.0.0.1", port=0, open_browser=True, start_path="/startup-error.html")
     except Exception as exc:
         _log_fatal(f"support fallback failed: {type(exc).__name__}: {exc}")
 

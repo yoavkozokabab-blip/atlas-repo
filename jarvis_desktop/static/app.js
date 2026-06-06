@@ -147,7 +147,7 @@ function renderGraphRenderDiagnostics(perf) {
     return;
   }
   const view = STATE.graphView || "module";
-  const d = perf?.renderDiagnostics || JARVIS_UNIVERSE.getRenderDiagnostics?.();
+  const d = perf?.renderDiagnostics || ATLAS_UNIVERSE.getRenderDiagnostics?.();
   if (!d || view !== "module") {
     el.style.display = "none";
     return;
@@ -219,7 +219,7 @@ async function api(path, method = "GET", body) {
   let payload = {};
   try { payload = await r.json(); } catch (e) { payload = { ok: false, error: "Invalid server response" }; }
   if (!payload.ok && String(payload.error || "").startsWith("Unknown endpoint")) {
-    console.error("JARVIS API route missing:", method, normalized, payload.error);
+    console.error("Atlas API route missing:", method, normalized, payload.error);
   }
   return payload;
 }
@@ -862,7 +862,7 @@ async function renderCenter() {
     $("graph3d").innerHTML = emptyStateHtml("Scan a repository first.", "Complete a scan to render the dependency map.", "Scan Repository", "go('home')");
     $("suggest").innerHTML = "";
     $("moduleInspector").innerHTML = `<h3>Module Inspector</h3><p class="muted tiny">Scan a repository first.</p>`;
-    JARVIS_UNIVERSE.renderTimeline($("timelinePanel"), null);
+    ATLAS_UNIVERSE.renderTimeline($("timelinePanel"), null);
     return;
   }
   renderHealthCockpit(sum);
@@ -890,7 +890,7 @@ async function renderCenter() {
     STATE._pendingGraphViewToast = null;
   }
   const timeline = await api("/api/repositories/current/timeline");
-  JARVIS_UNIVERSE.renderTimeline($("timelinePanel"), timeline);
+  ATLAS_UNIVERSE.renderTimeline($("timelinePanel"), timeline);
   renderModuleInspectorPlaceholder();
   renderArchitectureSummary(sum);
   renderModuleBrowsePanel(graph, sum);
@@ -1063,10 +1063,10 @@ async function renderSystemHealth(sum) {
     <ul class="clean cockpit-hubs">${(sum.top_risks || []).slice(0, 5).map(r => `<li><b style="color:${riskColor(r.score)}">${(r.module || r.path || "").split(/[./\\]/).pop()}</b> <span class="muted">${r.score ?? ""}</span></li>`).join("") || '<li class="muted tiny">Scan more modules to populate risk ranking.</li>'}</ul>
     <h3 style="margin-top:14px" title="Heavily depended-on modules (high fan-in)">Most depended-on</h3>
     <ul class="clean cockpit-hubs">${(sum.top_hubs || []).slice(0, 5).map(h => `<li>${(h.module || h.path || "").split(/[./\\]/).pop()} <span class="muted">← ${h.fan_in}</span></li>`).join("") || '<li class="muted tiny">No hub data yet.</li>'}</ul>`;
-  JARVIS_UNIVERSE.animateCounter($("ccRisk"), sum.risk_score, 800);
-  JARVIS_UNIVERSE.animateCounter($("ccModules"), sum.module_count, 900);
-  JARVIS_UNIVERSE.animateCounter($("ccCycles"), gh.import_cycles ?? 0, 700);
-  if (showTokenSavings && $("ccSavings")) JARVIS_UNIVERSE.animateCounter($("ccSavings"), sav.reduction_percent || 0, 900);
+  ATLAS_UNIVERSE.animateCounter($("ccRisk"), sum.risk_score, 800);
+  ATLAS_UNIVERSE.animateCounter($("ccModules"), sum.module_count, 900);
+  ATLAS_UNIVERSE.animateCounter($("ccCycles"), gh.import_cycles ?? 0, 700);
+  if (showTokenSavings && $("ccSavings")) ATLAS_UNIVERSE.animateCounter($("ccSavings"), sav.reduction_percent || 0, 900);
   renderArchitectureSummary(sum);
   const health = await api("/api/repositories/current/system-health");
   renderPerformancePanel(health);
@@ -1178,7 +1178,7 @@ function renderCopilotAnswer(res) {
       ? `<span class="muted">Limitations: ${limits.join(" · ")}</span>`
       : `<span class="muted">Confidence: ${res.confidence || "medium"}</span>`;
   }
-  if (res.graph_highlight) JARVIS_UNIVERSE.highlightBlastRadius(res.graph_highlight);
+  if (res.graph_highlight) ATLAS_UNIVERSE.highlightBlastRadius(res.graph_highlight);
 }
 
 function copyCopilotAnswer() {
@@ -1193,13 +1193,13 @@ function copyCopilotTarget(target) {
 
 function toggleGraphEdges() {
   STATE.showEdges = $("showEdges").checked;
-  JARVIS_UNIVERSE.setShowEdges(STATE.showEdges);
-  JARVIS_UNIVERSE.refreshHighlight(STATE.hoverNodeId ? { id: STATE.hoverNodeId } : STATE.selectedNode);
+  ATLAS_UNIVERSE.setShowEdges(STATE.showEdges);
+  ATLAS_UNIVERSE.refreshHighlight(STATE.hoverNodeId ? { id: STATE.hoverNodeId } : STATE.selectedNode);
 }
 
 function build3DGraph(data) {
-  JARVIS_UNIVERSE.destroyGraph?.();
-  STATE.graph3d = JARVIS_UNIVERSE.buildGraph($("graph3d"), data, {
+  ATLAS_UNIVERSE.destroyGraph?.();
+  STATE.graph3d = ATLAS_UNIVERSE.buildGraph($("graph3d"), data, {
     onNodeClick: n => {
       if (STATE.graphView === "hierarchy") {
         handleHierarchyClick(n);
@@ -1331,15 +1331,15 @@ function showNode(n) {
   if (STATE.summary) $("suggest").innerHTML = renderCopilotSuggestions(STATE.summary);
   if ($("inspectorQuick")) $("inspectorQuick").style.display = n.path ? "flex" : "none";
   renderModuleInspector(n);
-  JARVIS_UNIVERSE.refreshHighlight(n);
-  JARVIS_UNIVERSE.flyToNode(n, 1100);
+  ATLAS_UNIVERSE.refreshHighlight(n);
+  ATLAS_UNIVERSE.flyToNode(n, 1100);
 }
 
 function startRepositoryTour() {
   const stops = STATE.tourStops || STATE.graph?.tour_stops || [];
   if (!stops.length) { toast("Tour unavailable — scan a repository first"); return; }
   $("tourPanel").style.display = "block";
-  JARVIS_UNIVERSE.startTour(stops, ({ stop, index, total, done }) => {
+  ATLAS_UNIVERSE.startTour(stops, ({ stop, index, total, done }) => {
     if (done) {
       $("tourPanel").style.display = "none";
       toast("Tour complete ✓", "success");
@@ -1352,36 +1352,36 @@ function startRepositoryTour() {
 }
 
 function stopRepositoryTour() {
-  JARVIS_UNIVERSE.stopTour();
+  ATLAS_UNIVERSE.stopTour();
   $("tourPanel").style.display = "none";
 }
 
 function exportGraphPNG() {
-  const url = JARVIS_UNIVERSE.exportPNG(2);
+  const url = ATLAS_UNIVERSE.exportPNG(2);
   if (!url) { toast("Export failed"); return; }
-  JARVIS_UNIVERSE.downloadDataUrl(url, `atlas-universe-${Date.now()}.png`);
+  ATLAS_UNIVERSE.downloadDataUrl(url, `atlas-universe-${Date.now()}.png`);
   toast("PNG exported ✓", "success");
 }
 
 function exportGraphSVG() {
-  const svg = JARVIS_UNIVERSE.exportSVG();
+  const svg = ATLAS_UNIVERSE.exportSVG();
   if (!svg) { toast("SVG export failed"); return; }
-  JARVIS_UNIVERSE.downloadText(svg, `atlas-universe-${Date.now()}.svg`, "image/svg+xml");
+  ATLAS_UNIVERSE.downloadText(svg, `atlas-universe-${Date.now()}.svg`, "image/svg+xml");
   toast("SVG exported ✓", "success");
 }
 
 function toggleScreenshotMode() {
   STATE.screenshotMode = !STATE.screenshotMode;
-  JARVIS_UNIVERSE.toggleScreenshotMode(STATE.screenshotMode);
+  ATLAS_UNIVERSE.toggleScreenshotMode(STATE.screenshotMode);
   $("screenshotBtn").textContent = STATE.screenshotMode ? "Exit screenshot" : "Screenshot";
   if ($("screenshotExitBtn")) {
     $("screenshotExitBtn").style.display = STATE.screenshotMode ? "block" : "none";
     $("screenshotExitBtn").textContent = STATE.productTourActive ? "Stop tour" : "Exit screenshot";
   }
   if ($("presentationBadge")) $("presentationBadge").style.display = STATE.screenshotMode ? "block" : "none";
-  if (STATE.graph3d || JARVIS_UNIVERSE.fg) {
+  if (STATE.graph3d || ATLAS_UNIVERSE.fg) {
     const host = $("graph3d");
-    JARVIS_UNIVERSE.fg?.width(host.clientWidth).height(host.clientHeight);
+    ATLAS_UNIVERSE.fg?.width(host.clientWidth).height(host.clientHeight);
   }
 }
 
@@ -1391,12 +1391,12 @@ function exitPresentationMode() {
 }
 
 function resetGraphView() {
-  if (typeof JARVIS_UNIVERSE?.resetGraphView === "function") {
-    JARVIS_UNIVERSE.resetGraphView();
+  if (typeof ATLAS_UNIVERSE?.resetGraphView === "function") {
+    ATLAS_UNIVERSE.resetGraphView();
     return;
   }
-  if (JARVIS_UNIVERSE?.fg) {
-    JARVIS_UNIVERSE.fg.cameraPosition({ x: 0, y: 0, z: 600 }, { x: 0, y: 0, z: 0 }, 800);
+  if (ATLAS_UNIVERSE?.fg) {
+    ATLAS_UNIVERSE.fg.cameraPosition({ x: 0, y: 0, z: 600 }, { x: 0, y: 0, z: 0 }, 800);
   }
 }
 
@@ -1758,7 +1758,7 @@ async function runImpact() {
   }
   STATE.impactResult = r;
   if (r.target_node_id) {
-    JARVIS_UNIVERSE.highlightBlastRadius({
+    ATLAS_UNIVERSE.highlightBlastRadius({
       target_node_id: r.target_node_id,
       affected_node_ids: r.affected_node_ids || [],
     });

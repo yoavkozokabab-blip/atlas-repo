@@ -19,7 +19,7 @@ def _demo_loaded():
 
 
 def test_version_phase146():
-    assert "phase146" in api.PRODUCT_VERSION
+    assert api.PRODUCT_VERSION == "0.1.0-beta"
 
 
 def test_first_build_plan_works_on_demo():
@@ -38,7 +38,7 @@ def test_polish_ui_markers():
     app = (STATIC / "app.js").read_text(encoding="utf-8")
     polish = (STATIC / "atlas_polish.js").read_text(encoding="utf-8")
     support = (STATIC / "support.html").read_text(encoding="utf-8")
-    assert "Planning only" in html
+    assert "Change Plan" in html
     assert "goToFirstBuildPlan" in html
     assert "promptFirstBuildPlanAfterScan" in polish
     assert "friendlyValidateMessage" in polish

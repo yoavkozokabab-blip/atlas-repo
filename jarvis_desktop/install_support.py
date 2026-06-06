@@ -395,39 +395,56 @@ _SECRET_KEY_NAMES = (
 )
 
 
+def _scrub_residual_secret_markers(text: str) -> str:
+    """175D — remove surviving secret key labels (strict support-bundle contract)."""
+    patterns = (
+        r"(?i)api_key\s*=\s*(?:\[REDACTED\]|[^\s\"']+)",
+        r"(?i)token\s*=\s*(?:\[REDACTED\]|[^\s\"']+)",
+        r"(?i)access_token\s*=\s*(?:\[REDACTED\]|[^\s\"']+)",
+        r"(?i)refresh_token\s*=\s*(?:\[REDACTED\]|[^\s\"']+)",
+        r"(?i)Authorization:\s*(?:\[REDACTED\]|\S+)",
+        r"(?i)Authorization\s*=\s*(?:\[REDACTED\]|\S+)",
+        r"(?i)\bBearer\s+(?:\[REDACTED\]|[A-Za-z0-9._\-]+)",
+        r'(?i)"(?:api_key|token|access_token|refresh_token|authorization)"\s*:\s*"(?:\[REDACTED\]|[^"]*)"',
+    )
+    out = text
+    for pat in patterns:
+        out = re.sub(pat, "[REDACTED]", out)
+    return out
+
+
 def _redact_secret_values(text: str) -> str:
-    """Redact common key=value, JSON, header, and token-prefix secrets."""
+    """Redact key=value, JSON, header, and token-prefix secrets — names and values."""
     if not text:
         return text
     out = text
-    # Authorization header forms first (Bearer must not leave orphan tokens).
     out = re.sub(
         r"(?i)\bAuthorization\s*=\s*Bearer\s+[A-Za-z0-9._\-]+",
-        "Authorization=Bearer [REDACTED]",
+        "[REDACTED]",
         out,
     )
     out = re.sub(
         r"(?i)\bAuthorization:\s*Bearer\s+[A-Za-z0-9._\-]+",
-        "Authorization: Bearer [REDACTED]",
+        "[REDACTED]",
         out,
     )
-    out = re.sub(r"(?i)\bAuthorization\s*=\s*[^\s\"']+", "Authorization=[REDACTED]", out)
-    out = re.sub(r"(?i)\bAuthorization:\s*[^\s\"']+", "Authorization: [REDACTED]", out)
-    out = re.sub(r"(?i)\bBearer\s+[A-Za-z0-9._\-]+", "Bearer [REDACTED]", out)
+    out = re.sub(r"(?i)\bAuthorization\s*=\s*[^\s\"']+", "[REDACTED]", out)
+    out = re.sub(r"(?i)\bAuthorization:\s*[^\s\"']+", "[REDACTED]", out)
+    out = re.sub(r"(?i)\bBearer\s+[A-Za-z0-9._\-]+", "[REDACTED]", out)
     for key in _SECRET_KEY_NAMES:
         out = re.sub(
-            rf"(?i)(\b{re.escape(key)}\s*[=:]\s*)([\"']?)([^\"'\s\\]+)",
-            r"\1\2[REDACTED]",
+            rf"(?i)\b{re.escape(key)}\s*[=:]\s*([\"']?)([^\"'\s\\]+)",
+            "[REDACTED]",
             out,
         )
         out = re.sub(
-            rf'(?i)"({re.escape(key)})"\s*:\s*"([^"]*)"',
-            r'"\1": "[REDACTED]"',
+            rf'(?i)"{re.escape(key)}"\s*:\s*"([^"]*)"',
+            "[REDACTED]",
             out,
         )
         out = re.sub(
-            rf"(?i)('{re.escape(key)}'\s*:\s*)'([^']*)'",
-            r"\1'[REDACTED]'",
+            rf"(?i)'{re.escape(key)}'\s*:\s*'([^']*)'",
+            "[REDACTED]",
             out,
         )
     out = re.sub(r"(?i)\bBEARER_[A-Za-z0-9_]+", "[REDACTED]", out)
@@ -439,7 +456,7 @@ def _redact_secret_values(text: str) -> str:
     out = re.sub(r"github_pat_[A-Za-z0-9_]+", "[REDACTED]", out)
     out = re.sub(r"xoxb-[A-Za-z0-9\-]+", "[REDACTED]", out)
     out = re.sub(r"eyJ[A-Za-z0-9_\-]+\.[A-Za-z0-9_\-]+\.[A-Za-z0-9_\-]*", "[REDACTED]", out)
-    return out
+    return _scrub_residual_secret_markers(out)
 
 
 def _redact_support_text(text: str) -> str:

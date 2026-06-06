@@ -35,6 +35,35 @@ def _launcher_log(message: str) -> None:
         pass
 
 
+def _install_source_excepthook() -> None:
+    """175D — log fatals locally and open startup-error instead of a console traceback."""
+    import traceback
+
+    def _hook(exc_type, exc, tb) -> None:
+        _launcher_log("FATAL: " + "".join(traceback.format_exception(exc_type, exc, tb))[:8000])
+        try:
+            from jarvis_desktop import server
+
+            server.run(
+                host="127.0.0.1",
+                port=0,
+                open_browser=True,
+                start_path="/startup-error.html",
+            )
+        except Exception as fallback_exc:
+            _launcher_log(f"startup-error fallback failed: {type(fallback_exc).__name__}: {fallback_exc}")
+
+    sys.excepthook = _hook
+
+
+def _safe_console_print(message: str) -> None:
+    """Avoid Unicode console crashes on CP1252 redirected terminals."""
+    try:
+        print(message)
+    except UnicodeEncodeError:
+        print(message.encode("ascii", errors="replace").decode("ascii"))
+
+
 def _run_self_test_cli() -> int:
     """Run the post-install self-test, write a report file, and return 0/1."""
     import json
@@ -80,6 +109,9 @@ def main() -> int:
     from jarvis_desktop.install_support import append_launcher_log, installer_self_test, startup_checks
     from jarvis_desktop import server
 
+    if not _frozen_launch():
+        _install_source_excepthook()
+
     checks = startup_checks()
     append_launcher_log(f"startup ready={checks.get('ready')}")
 
@@ -105,14 +137,14 @@ def main() -> int:
                     continue
                 _launcher_log(f"check fail {item.get('label')}: {item.get('detail')}")
         else:
-            print("\n  Atlas — startup check found issues:\n")
+            _safe_console_print("\n  Atlas — startup check found issues:\n")
             for item in checks.get("checks") or []:
                 if item.get("ok") or item.get("id") == "optional":
                     continue
-                print(f"    ✗ {item.get('label')}: {item.get('detail')}")
+                _safe_console_print(f"    [X] {item.get('label')}: {item.get('detail')}")
                 if item.get("hint"):
-                    print(f"      → {item.get('hint')}")
-            print("\n  Opening Atlas Support so you can fix or export diagnostics.\n")
+                    _safe_console_print(f"      -> {item.get('hint')}")
+            _safe_console_print("\n  Opening Atlas Support so you can fix or export diagnostics.\n")
         args.support = True
 
     if not checks.get("ready"):
@@ -143,12 +175,24 @@ def main() -> int:
             else:
                 _launcher_log(f"FastAPI unavailable ({exc}); using built-in server.")
 
-    server.run(
-        host=args.host,
-        port=args.port,
-        open_browser=not args.no_browser,
-        start_path=open_path,
-    )
+    try:
+        server.run(
+            host=args.host,
+            port=args.port,
+            open_browser=not args.no_browser,
+            start_path=open_path,
+        )
+    except OSError as exc:
+        append_launcher_log(f"launch bind failed: {type(exc).__name__}: {exc}")
+        if not _frozen_launch():
+            _safe_console_print("\n  Atlas could not bind the requested port. Opening startup-error page.\n")
+        server.run(
+            host=args.host,
+            port=0,
+            open_browser=not args.no_browser,
+            start_path="/startup-error.html",
+        )
+        return 1
     return 0
 
 
