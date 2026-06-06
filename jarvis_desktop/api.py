@@ -590,7 +590,13 @@ def list_demo_packs() -> Dict[str, Any]:
 
 
 def track_analytics_event(event: str, **properties: Any) -> Dict[str, Any]:
-    return _ops.pipeline_track_event(event, **properties)
+    # P0-1: sanitize external payloads before persisting.
+    _, safe = _ops.sanitize_analytics_payload(event, properties, for_external=True)
+    return _ops.pipeline_track_event(event, **safe)
+
+
+def system_identity() -> Dict[str, Any]:
+    return _ops.get_system_identity()
 
 
 def operations_identity() -> Dict[str, Any]:
@@ -609,7 +615,8 @@ def operations_feedback_inbox(*, limit: int = 50) -> Dict[str, Any]:
     admin = os.environ.get("ATLAS_ADMIN", "").strip().lower() in ("1", "true", "yes")
     if not admin:
         return {"ok": False, "code": "admin_disabled", "error": "Feedback inbox requires ATLAS_ADMIN=1."}
-    items = _ops.list_feedback(limit=limit)
+    # P1: return minimized items only — no raw payloads, no email, no repo paths.
+    items = _ops.list_feedback_minimized(limit=limit)
     return {"ok": True, "items": items, "summary": _ops.feedback_inbox_summary()}
 
 

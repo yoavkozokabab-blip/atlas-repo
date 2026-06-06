@@ -83,7 +83,8 @@ def test_feedback_inbox_lists_submissions(data_dir, monkeypatch):
     _, inbox = server.dispatch("GET", "/api/operations/feedback")
     assert inbox["ok"] is True
     assert len(inbox["items"]) >= 1
-    assert inbox["items"][0]["message"] == "Button confusing on export"
+    # P1 minimization: items now use "summary" key (truncated, no email/paths).
+    assert "Button confusing on export" in inbox["items"][0]["summary"]
     assert inbox["items"][0].get("feedback_id")
 
 
@@ -161,3 +162,105 @@ def test_scan_failure_records_crash(data_dir, tmp_path, monkeypatch):
     api.scan_repository(missing)
     summary = operations.crash_summary()
     assert summary["total"] >= 1
+
+
+def test_system_identity_endpoint(data_dir):
+    _, res = server.dispatch("GET", "/api/system/identity")
+    assert res["ok"] is True
+    assert res["installation_id"]
+    assert res["atlas_version"]
+    assert "build_commit" in res
+    assert "first_launch" in res
+    assert "last_launch" in res
+
+
+def test_system_identity_stable_across_calls(data_dir):
+    _, r1 = server.dispatch("GET", "/api/system/identity")
+    _, r2 = server.dispatch("GET", "/api/system/identity")
+    assert r1["installation_id"] == r2["installation_id"]
+    assert r1["first_launch"] == r2["first_launch"]
+
+
+def test_update_hardening_rejects_older_version(monkeypatch):
+    monkeypatch.setenv("ATLAS_UPDATE_CHECK_URL", "https://updates.example/version.json")
+
+    class _Resp:
+        def read(self):
+            return json.dumps({"version": "0.0.1-beta"}).encode("utf-8")
+        status = 200
+        def close(self): pass
+
+    monkeypatch.setattr("urllib.request.urlopen", lambda *a, **k: _Resp())
+    data = operations.check_update_hardened()
+    assert data["update_available"] is False
+    assert data["trust_level"] == "malformed"
+
+
+def test_update_hardening_same_version(monkeypatch):
+    from jarvis_desktop.product_info import PRODUCT_VERSION
+    monkeypatch.setenv("ATLAS_UPDATE_CHECK_URL", "https://updates.example/version.json")
+
+    class _Resp:
+        def read(self):
+            return json.dumps({"version": PRODUCT_VERSION}).encode("utf-8")
+        status = 200
+        def close(self): pass
+
+    monkeypatch.setattr("urllib.request.urlopen", lambda *a, **k: _Resp())
+    data = operations.check_update_hardened()
+    assert data["update_available"] is False
+    assert data["trust_level"] == "trusted"
+
+
+def test_update_hardening_missing_latest_json(monkeypatch):
+    import urllib.error
+    monkeypatch.setenv("ATLAS_UPDATE_CHECK_URL", "https://updates.example/version.json")
+    monkeypatch.setattr(
+        "urllib.request.urlopen",
+        lambda *a, **k: (_ for _ in ()).throw(urllib.error.URLError("not found")),
+    )
+    data = operations.check_update_hardened()
+    assert data["update_available"] is False
+    assert data["trust_level"] == "unavailable"
+
+
+def test_update_hardening_invalid_json(monkeypatch):
+    monkeypatch.setenv("ATLAS_UPDATE_CHECK_URL", "https://updates.example/version.json")
+
+    class _BadResp:
+        def read(self): return b"not-json"
+        status = 200
+        def close(self): pass
+
+    monkeypatch.setattr("urllib.request.urlopen", lambda *a, **k: _BadResp())
+    data = operations.check_update_hardened()
+    assert data["update_available"] is False
+
+
+def test_feedback_survives_multiple_submissions(data_dir, monkeypatch):
+    monkeypatch.setenv("ATLAS_ADMIN", "1")
+    for i in range(3):
+        server.dispatch("POST", "/api/feedback", {
+            "category": "general",
+            "message": f"Feedback item {i}",
+        })
+    _, inbox = server.dispatch("GET", "/api/operations/feedback")
+    assert inbox["ok"] is True
+    assert len(inbox["items"]) >= 3
+
+
+def test_crash_registry_capped_at_100(data_dir, monkeypatch):
+    monkeypatch.setenv("ATLAS_ADMIN", "1")
+    for i in range(5):
+        operations.record_crash("test_kind", f"crash {i}")
+    _, res = server.dispatch("GET", "/api/operations/crashes")
+    assert res["ok"] is True
+    assert len(res["items"]) <= 100
+
+
+def test_token_savings_no_fake_values(data_dir):
+    dash = operations.token_savings_dashboard()
+    assert dash["ok"] is True
+    totals = dash["from_events"]
+    assert totals["export_events"] == 0
+    assert totals["active_export_tokens"] == 0

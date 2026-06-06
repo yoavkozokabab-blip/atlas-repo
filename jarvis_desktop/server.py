@@ -152,6 +152,7 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
         ("GET", "/api/product/update-check"): lambda _body, _query: api.check_product_update(),
         ("POST", "/api/feedback"): lambda body, _query: api.submit_feedback(body or {}),
         # Phase 182 — beta operations foundation
+        ("GET", "/api/system/identity"): lambda _body, _query: api.system_identity(),
         ("GET", "/api/operations/identity"): lambda _body, _query: api.operations_identity(),
         ("GET", "/api/operations/insights"): lambda _body, _query: api.operations_insights(),
         ("GET", "/api/operations/feedback"): lambda _body, _query: api.operations_feedback_inbox(),
@@ -314,6 +315,15 @@ def _bind_http_server(host: str, port: int, *, attempts: int = 10):
     raise OSError(f"Could not bind {host}:{port}-{port + attempts - 1}")
 
 
+def _track_app_started() -> None:
+    """Fire app_started analytics once per server launch — never raises."""
+    try:
+        from . import operations as _ops
+        _ops.pipeline_track_event("app_started")
+    except Exception:
+        pass
+
+
 def run(
     host: str = "127.0.0.1",
     port: int = 8777,
@@ -321,6 +331,7 @@ def run(
     open_browser: bool = True,
     start_path: str = "/",
 ) -> None:
+    _track_app_started()
     try:
         httpd, bound_port = _bind_http_server(host, port)
     except OSError as exc:

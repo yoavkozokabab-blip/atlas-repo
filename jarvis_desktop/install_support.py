@@ -502,14 +502,37 @@ def _sanitize_support_payload(payload: Any) -> Any:
     return json.loads(_redact_support_text(blob))
 
 
+def _strip_analytics_payloads(text: str) -> str:
+    """P1 support bundle hardening: keep only event names + timestamps from analytics JSONL."""
+    out_lines = []
+    for line in text.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            import json as _j
+            row = _j.loads(line)
+            # Retain only the non-payload envelope fields.
+            safe = {k: row[k] for k in ("ts", "event", "at", "version", "kind") if k in row}
+            out_lines.append(_j.dumps(safe))
+        except Exception:
+            # Malformed line — redact and include as a marker.
+            out_lines.append('{"event":"[parse-error]"}')
+    return "\n".join(out_lines)
+
+
 def collect_error_logs() -> Dict[str, str]:
     logs: Dict[str, str] = {}
     base = data_dir()
     for name in ("launcher.log", "analytics.jsonl", "analytics_write_diag.log"):
         path = os.path.join(base, name)
         text = _tail_file(path)
-        if text:
-            logs[name] = text
+        if not text:
+            continue
+        # P1: strip analytics payload content before including in support bundle.
+        if name == "analytics.jsonl":
+            text = _strip_analytics_payloads(text)
+        logs[name] = text
     return logs
 
 

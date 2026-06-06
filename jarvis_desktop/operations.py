@@ -1,4 +1,4 @@
-"""Phase 182 — Beta operations foundation (local-only, no intelligence changes)."""
+"""Phase 182 / 182A — Beta operations foundation (local-only, no intelligence changes)."""
 
 from __future__ import annotations
 
@@ -10,11 +10,104 @@ import uuid
 from typing import Any, Dict, List, Optional, Tuple
 
 from . import analytics
-from .product_info import PRODUCT_VERSION, check_for_update
+from .product_info import PRODUCT_VERSION, build_commit as _build_commit, check_for_update
 
 PIPELINE_VERSION = "1"
 _CHANNEL = "beta"
 _SEMVER_RE = re.compile(r"(\d+)\.(\d+)\.(\d+)")
+
+# --------------------------------------------------------------------------
+# P0-1  Analytics sanitization constants (182A)
+# --------------------------------------------------------------------------
+
+# Fields accepted from external callers via /api/analytics/event.
+_ALLOWED_USER_FIELDS = frozenset({
+    "event", "event_type", "timestamp", "duration_ms", "token_count",
+    "file_count", "repo_language", "workflow_type", "success",
+})
+
+# Fields added by the pipeline itself — always permitted.
+_SYSTEM_FIELDS = frozenset({
+    "installation_id", "pipeline_version", "channel", "product",
+    "ts", "at", "version", "crash_id", "kind", "exc_type",
+    # aggregate / numeric fields emitted by internal scan / export paths
+    "files", "modules", "edges", "symbols", "duration_sec", "duration_s",
+    "cache_hit", "ok", "tokens", "export_tokens", "full_export_tokens",
+    "minimal_export_tokens", "delta_export_tokens", "bytes", "message",
+})
+
+_MAX_FIELD_LEN = 256
+_MAX_EVENT_BYTES = 4 * 1024  # 4 KB
+
+# Patterns that signal source code, prompts, or repository export content
+# embedded in an analytics field value.  Deliberately no ^ anchors so they
+# fire on substrings (a field value is rarely multi-line, but may contain an
+# injected snippet anywhere in the string).
+_SOURCE_CODE_RE = re.compile(
+    # ── code fences & markdown ──────────────────────────────────────────────
+    r"```"
+    # ── Python ──────────────────────────────────────────────────────────────
+    r"|\bdef [a-zA-Z_]\w*\s*\("          # function definition
+    r"|\bclass [A-Za-z_]\w*[\s:(]"       # class declaration
+    r"|\bimport [a-zA-Z_][\w.]+"         # bare import
+    r"|\bfrom [a-zA-Z_][\w.]+ import\b"  # from … import
+    r"|\bif __name__\s*=="               # main guard
+    # ── JavaScript / TypeScript ─────────────────────────────────────────────
+    r"|function\s+[a-zA-Z_]\w*\s*\("    # named function
+    r"|\bconst\s+\w+\s*="               # const assignment
+    r"|\blet\s+\w+\s*="                 # let assignment
+    r"|\bvar\s+\w+\s*="                 # var assignment
+    r"|=>\s*\{"                          # arrow function body
+    r"|console\.log\s*\("               # debug call
+    r"|require\s*\(['\"]"               # CommonJS require
+    # ── Prompt / LLM injection patterns ────────────────────────────────────
+    r"|\bYou are an? "                  # system-prompt opener
+    r"|\bAs an AI\b"                    # LLM self-description
+    r"|\bHuman:\s"                      # conversation turn marker
+    r"|\bAssistant:\s"                  # conversation turn marker
+    r"|<\|im_start\|>"                  # ChatML format
+    r"|\[INST\]"                        # Llama instruction tag
+    r"|\[/INST\]"
+    r"|\bignore previous instructions\b"  # prompt injection
+    # ── Atlas export / repository content ───────────────────────────────────
+    r"|ATLAS_REPOSITORY_MEMORY"
+    r"|## Repository"
+    r"|# ==+\s*\w"                      # section divider from exports
+)
+
+# --------------------------------------------------------------------------
+# P0-2  Crash / secret redaction constants (182A)
+# --------------------------------------------------------------------------
+
+# Single compiled pattern to redact all known secret token shapes.
+# Compiled with IGNORECASE so bearer/jwt/authorization variants are caught
+# regardless of casing; the specific token prefixes (ghp_, sk-, …) are
+# effectively case-insensitive too which is a safe over-catch.
+_SECRET_RE = re.compile(
+    r"sk-ant-[A-Za-z0-9_\-]+"                          # Anthropic key
+    r"|\bsk-[A-Za-z0-9_\-]{8,}"                        # OpenAI / generic sk- key
+    r"|ghp_[A-Za-z0-9]+"                               # GitHub PAT (classic)
+    r"|github_pat_[A-Za-z0-9_]+"                       # GitHub fine-grained PAT
+    r"|ghs_[A-Za-z0-9]+"                               # GitHub server token
+    r"|xoxb-[A-Za-z0-9\-]+"                            # Slack bot token
+    r"|xoxp-[A-Za-z0-9\-]+"                            # Slack user token
+    r"|eyJ[A-Za-z0-9_\-]+\.[A-Za-z0-9_\-]+\.[A-Za-z0-9_\-]*"  # JWT
+    r"|\bbearer\s+[A-Za-z0-9_\-\.]+"                   # Bearer <token>
+    r"|\bjwt\s*[=:]\s*\S+"                             # jwt=value
+    r"|authorization\s*[=:]\s*\S+"                     # Authorization: value
+    r"|(?:api[_\-]?key|access[_\-]?token|refresh[_\-]?token"
+    r"|auth[_\-]?token|secret(?:[_\-]?key)?|client[_\-]?secret"
+    r"|private[_\-]?key|token)\s*[=:]\s*\S+",          # generic key=value
+    re.IGNORECASE,
+)
+
+# Redact absolute filesystem paths (Windows, Linux, macOS) to prevent
+# leaking usernames embedded in path components.
+_PATH_RE = re.compile(
+    r"[A-Za-z]:\\[^\s\"'\r\n]+"                         # Windows  C:\Users\bob\...
+    r"|/(?:home|Users)/[^\s\"'\r\n/]+(?:/[^\s\"'\r\n]*)?"  # POSIX /home/bob/...
+    r"|/(?:tmp|var|private|opt)/[^\s\"'\r\n]*"          # other POSIX prefixes
+)
 
 
 def _data_dir() -> str:
@@ -81,6 +174,79 @@ def _parse_semver(version: str) -> Optional[Tuple[int, int, int]]:
 
 
 # --------------------------------------------------------------------------
+# P0-1  Analytics sanitization (182A)
+# --------------------------------------------------------------------------
+
+def _scrub_value(v: Any) -> Any:
+    """Enforce field-level safety for a single analytics value."""
+    if isinstance(v, bool):
+        return v
+    if isinstance(v, (int, float)):
+        return v
+    s = str(v)[:_MAX_FIELD_LEN]
+    if _SOURCE_CODE_RE.search(s):
+        return "[redacted-content]"
+    if _SECRET_RE.search(s):
+        return "[redacted-secret]"
+    return s
+
+
+def sanitize_analytics_payload(
+    event: str,
+    properties: Dict[str, Any],
+    *,
+    for_external: bool = True,
+) -> Tuple[str, Dict[str, Any]]:
+    """
+    Sanitize an analytics event before persistence.
+
+    for_external=True  — external callers (/api/analytics/event): strip to
+                         the user-allowed field whitelist.
+    for_external=False — internal pipeline events: allow all system fields,
+                         still enforce size + secret/source-code redaction.
+
+    Returns (event_name, sanitized_properties).
+    """
+    name = (event or "").strip()[:128]
+
+    allowed = (_ALLOWED_USER_FIELDS | _SYSTEM_FIELDS) if not for_external else _ALLOWED_USER_FIELDS
+
+    clean: Dict[str, Any] = {}
+    for k, v in properties.items():
+        if for_external and k not in allowed:
+            continue  # silently drop disallowed fields from external callers
+        if not for_external and k in _SYSTEM_FIELDS:
+            # system fields: scrub but preserve
+            clean[k] = _scrub_value(v)
+            continue
+        if for_external and k in _ALLOWED_USER_FIELDS:
+            clean[k] = _scrub_value(v)
+            continue
+        # internal non-system fields: apply scrub
+        clean[k] = _scrub_value(v)
+
+    # Hard size limit: if still over 4 KB, keep only system fields + event.
+    payload = json.dumps({"event": name, **clean}, ensure_ascii=False)
+    if len(payload.encode()) > _MAX_EVENT_BYTES:
+        clean = {k: v for k, v in clean.items() if k in _SYSTEM_FIELDS}
+
+    return name, clean
+
+
+# --------------------------------------------------------------------------
+# P0-2  Crash text redaction (182A)
+# --------------------------------------------------------------------------
+
+def _sanitize_crash_text(text: str) -> str:
+    """Redact secrets and absolute paths from crash message text."""
+    if not text:
+        return text
+    out = _SECRET_RE.sub("[redacted-secret]", text)
+    out = _PATH_RE.sub("[path-redacted]", out)
+    return out
+
+
+# --------------------------------------------------------------------------
 # Installation identity
 # --------------------------------------------------------------------------
 
@@ -125,6 +291,19 @@ def get_installation_identity(*, data_dir: Optional[str] = None, touch: bool = T
     }
 
 
+def get_system_identity(*, data_dir: Optional[str] = None) -> Dict[str, Any]:
+    """Spec-aligned identity for GET /api/system/identity."""
+    raw = get_installation_identity(data_dir=data_dir)
+    return {
+        "ok": True,
+        "installation_id": raw.get("installation_id"),
+        "atlas_version": PRODUCT_VERSION,
+        "build_commit": _build_commit(),
+        "first_launch": raw.get("created_at"),
+        "last_launch": raw.get("last_seen_at"),
+    }
+
+
 # --------------------------------------------------------------------------
 # Analytics event pipeline
 # --------------------------------------------------------------------------
@@ -135,12 +314,14 @@ def pipeline_track_event(event: str, **properties: Any) -> Dict[str, Any]:
     if not name:
         return {"ok": False, "error": "Event name required."}
     identity = get_installation_identity(touch=False)
+    # P0-1: internal-path sanitization (size + secret/source-code scrub, no whitelist).
+    _, safe_props = sanitize_analytics_payload(name, properties, for_external=False)
     enriched = {
-        "product": properties.pop("product", PRODUCT_VERSION),
+        "product": safe_props.pop("product", PRODUCT_VERSION),
         "pipeline_version": PIPELINE_VERSION,
         "installation_id": identity.get("installation_id"),
         "channel": _CHANNEL,
-        **{k: v for k, v in properties.items() if v is not None},
+        **{k: v for k, v in safe_props.items() if v is not None},
     }
     result = analytics.track_event(name, **enriched)
     if name in {"scan_crash", "app_crash"}:
@@ -164,16 +345,18 @@ def record_crash(
     context: Optional[Dict[str, Any]] = None,
     data_dir: Optional[str] = None,
 ) -> Dict[str, Any]:
+    # P0-2: redact secrets and paths before storing.
+    safe_message = _sanitize_crash_text(str(message or ""))[:500]
+    safe_exc_type = str(exc_type or "")[:120]
     row = {
         "crash_id": uuid.uuid4().hex[:12],
         "ts": time.time(),
         "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "kind": str(kind or "unknown")[:64],
-        "message": str(message or "")[:2000],
-        "exc_type": str(exc_type or "")[:120],
-        "installation_id": get_installation_identity(touch=False).get("installation_id"),
+        "exc_type": safe_exc_type,
+        "safe_summary": safe_message,
         "version": PRODUCT_VERSION,
-        "context": dict(context or {}),
+        "installation_id": get_installation_identity(touch=False).get("installation_id"),
     }
     ok = _append_jsonl(_crashes_path(data_dir), row)
     identity = get_installation_identity(touch=False)
@@ -184,7 +367,6 @@ def record_crash(
         installation_id=identity.get("installation_id"),
         kind=row["kind"],
         crash_id=row["crash_id"],
-        message=row["message"][:200],
     )
     return {"ok": ok, "crash_id": row["crash_id"]}
 
@@ -193,6 +375,19 @@ def list_crashes(*, data_dir: Optional[str] = None, limit: int = 50) -> List[Dic
     rows = _read_jsonl(_crashes_path(data_dir), limit=limit)
     rows.sort(key=lambda r: r.get("ts") or 0, reverse=True)
     return rows[:limit]
+
+
+def _minimize_crash_item(row: Dict[str, Any]) -> Dict[str, Any]:
+    """P1 admin data minimization: safe crash summary without raw messages."""
+    return {
+        "crash_id": row.get("crash_id") or "",
+        "at": row.get("at") or "",
+        "kind": row.get("kind") or "unknown",
+        "exc_type": row.get("exc_type") or "",
+        "version": row.get("version") or "",
+        # safe_summary is already redacted at write time (P0-2)
+        "message": str(row.get("safe_summary") or row.get("message") or "")[:160],
+    }
 
 
 def crash_summary(*, data_dir: Optional[str] = None) -> Dict[str, Any]:
@@ -205,7 +400,8 @@ def crash_summary(*, data_dir: Optional[str] = None) -> Dict[str, Any]:
         "total": len(rows),
         "by_kind": by_kind,
         "latest_at": rows[0].get("at") if rows else None,
-        "recent": rows[:10],
+        # P1: minimized items — no raw messages, no context dicts.
+        "recent": [_minimize_crash_item(r) for r in rows[:10]],
     }
 
 
@@ -219,6 +415,23 @@ def list_feedback(*, data_dir: Optional[str] = None, limit: int = 50) -> List[Di
     return rows[:limit]
 
 
+def list_feedback_minimized(*, data_dir: Optional[str] = None, limit: int = 50) -> List[Dict[str, Any]]:
+    """Return minimized feedback items safe for admin display (P1 data minimization)."""
+    return [_minimize_feedback_item(r) for r in list_feedback(data_dir=data_dir, limit=limit)]
+
+
+def _minimize_feedback_item(row: Dict[str, Any]) -> Dict[str, Any]:
+    """P1 admin data minimization: return only safe display fields, no raw paths or email."""
+    return {
+        "feedback_id": row.get("feedback_id") or "",
+        "category": row.get("category") or "general",
+        "timestamp": row.get("timestamp") or row.get("at") or "",
+        "version": row.get("version") or "",
+        "page": row.get("page") or "",
+        "summary": str(row.get("message") or "")[:120],
+    }
+
+
 def feedback_inbox_summary(*, data_dir: Optional[str] = None) -> Dict[str, Any]:
     rows = list_feedback(data_dir=data_dir, limit=200)
     by_category: Dict[str, int] = {}
@@ -229,7 +442,8 @@ def feedback_inbox_summary(*, data_dir: Optional[str] = None) -> Dict[str, Any]:
         "total": len(rows),
         "by_category": by_category,
         "latest_at": rows[0].get("timestamp") if rows else None,
-        "items": rows[:20],
+        # P1: minimized items — no raw messages, no email, no paths.
+        "items": [_minimize_feedback_item(r) for r in rows[:20]],
     }
 
 
