@@ -55,10 +55,36 @@ function zfServerExportText(kind) {
   return (block && block.text) ? block.text : "";
 }
 
+const ZF_CLIPBOARD_METADATA_RE = /^(scan_id|scan_signature|memory_ref|generated_at|replay_warning|freshness_status|ref):/i;
+
+function zfStripClipboardMetadata(text) {
+  if (!text) return "";
+  return String(text)
+    .split("\n")
+    .filter(function (line) { return !ZF_CLIPBOARD_METADATA_RE.test(line.trim()); })
+    .join("\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
 function zfSessionPrefix() {
   const se = window.STATE && STATE.sessionExport;
   if (!se || !se.text) return "";
-  return se.text.trim() + "\n\n";
+  let text = se.text.trim() + "\n\n";
+  if (typeof getOutputMode === "function" && getOutputMode() === "beginner") {
+    text = zfStripClipboardMetadata(text);
+    if (text) text += "\n\n";
+  }
+  return text;
+}
+
+function zfClipboardBody(kind) {
+  const server = zfServerExportText(kind);
+  if (!server) return zfLegacyFullPromptBody(kind);
+  if (typeof getOutputMode === "function" && getOutputMode() === "beginner") {
+    return zfStripClipboardMetadata(server);
+  }
+  return server;
 }
 
 function zfTrustBlock(result) {
@@ -202,9 +228,7 @@ function zfLegacyFullPromptBody(kind) {
 }
 
 function zfPromptBody(kind) {
-  const server = zfServerExportText(kind);
-  if (server) return server;
-  return zfLegacyFullPromptBody(kind);
+  return zfClipboardBody(kind);
 }
 
 function zfHasResult(kind) {
@@ -259,16 +283,49 @@ function beginnerPlanHero(plan, kind) {
   if (typeof getOutputMode === "function" && getOutputMode() === "advanced") return "";
   const p = plan || {};
   const goal = p.change_goal || p.goal || (document.getElementById("buildRequest") && document.getElementById("buildRequest").value) || "Your change";
-  const files = zfList(p.files_to_inspect_first || p.files_likely_to_modify, 5);
+  const files = zfList(
+    p.files_to_inspect_first || p.files_likely_to_modify
+      || (p.repository_evidence && p.repository_evidence.file_evidences || []).map(function (f) { return f.path; }),
+    5
+  );
   const order = zfList(p.implementation_order, 5);
   return `<div class="beginner-plan-card glass" data-kind="${kind}">
-    <h3 class="beginner-plan-title">Ready for Claude</h3>
-    <p class="muted tiny">One copy includes everything your AI needs for this plan. Paste once per new chat.</p>
-    <p class="muted tiny memory-export-note">Atlas sends a tiny repository memory plus this question's files — not your whole codebase.</p>
+    <h3 class="beginner-plan-title">Your plan</h3>
     <div class="beginner-plan-section"><span class="report-label">Goal</span><p>${_zfEsc(goal)}</p></div>
-    <div class="beginner-plan-section"><span class="report-label">Top files</span><ul class="clean tiny">${files.length ? files.map(f => `<li>${_zfEsc(f)}</li>`).join("") : "<li class='muted'>Atlas will list files after planning</li>"}</ul></div>
+    <div class="beginner-plan-section"><span class="report-label">Files</span><ul class="clean tiny">${files.length ? files.map(f => `<li>${_zfEsc(f)}</li>`).join("") : "<li class='muted'>No files matched — try a more specific request</li>"}</ul></div>
     <div class="beginner-plan-section"><span class="report-label">Order</span><ol class="clean tiny">${order.length ? order.map(s => `<li>${_zfEsc(s)}</li>`).join("") : "<li class='muted'>n/a</li>"}</ol></div>
     ${sendToAiPanel(kind, true)}
+  </div>`;
+}
+
+function beginnerInvestigateHero(plan) {
+  if (typeof getOutputMode === "function" && getOutputMode() === "advanced") return "";
+  const p = plan || {};
+  const goal = p.symptom_summary || p.symptom || (document.getElementById("investigateSymptom") && document.getElementById("investigateSymptom").value) || "Your symptom";
+  const hyps = (p.hypotheses || []).slice(0, 3);
+  const files = zfList(hyps.flatMap(function (h) { return h.files_involved || []; }), 5);
+  const order = zfList(p.verification_checklist || p.minimal_fix_strategy, 5);
+  return `<div class="beginner-plan-card glass" data-kind="investigate">
+    <h3 class="beginner-plan-title">Your investigation</h3>
+    <div class="beginner-plan-section"><span class="report-label">Goal</span><p>${_zfEsc(goal)}</p></div>
+    <div class="beginner-plan-section"><span class="report-label">Files</span><ul class="clean tiny">${files.length ? files.map(f => `<li>${_zfEsc(f)}</li>`).join("") : "<li class='muted'>Add a file path or error message for better grounding</li>"}</ul></div>
+    <div class="beginner-plan-section"><span class="report-label">Order</span><ol class="clean tiny">${order.length ? order.map(s => `<li>${_zfEsc(s)}</li>`).join("") : "<li class='muted'>See ranked hypotheses in Advanced view</li>"}</ol></div>
+    ${sendToAiPanel("investigate", true)}
+  </div>`;
+}
+
+function beginnerImpactHero(result) {
+  if (typeof getOutputMode === "function" && getOutputMode() === "advanced") return "";
+  const r = result || {};
+  const goal = r.target || (document.getElementById("impactTarget") && document.getElementById("impactTarget").value) || "This module";
+  const files = zfList(r.direct_impact, 5);
+  const order = zfList(r.recommended_verification || r.tests_likely_affected, 5);
+  return `<div class="beginner-plan-card glass" data-kind="impact">
+    <h3 class="beginner-plan-title">Impact summary</h3>
+    <div class="beginner-plan-section"><span class="report-label">Goal</span><p>Change <span class="mono">${_zfEsc(goal)}</span></p></div>
+    <div class="beginner-plan-section"><span class="report-label">Files</span><ul class="clean tiny">${files.length ? files.map(f => `<li>${_zfEsc(f)}</li>`).join("") : "<li class='muted'>No direct importers found</li>"}</ul></div>
+    <div class="beginner-plan-section"><span class="report-label">Order</span><ol class="clean tiny">${order.length ? order.map(s => `<li>${_zfEsc(s)}</li>`).join("") : "<li class='muted'>Run tests after any change</li>"}</ol></div>
+    ${sendToAiPanel("impact", true)}
   </div>`;
 }
 
@@ -366,6 +423,9 @@ window.copyForAi = copyForAi;
 window.downloadAiMarkdown = downloadAiMarkdown;
 window.sendToAiPanel = sendToAiPanel;
 window.beginnerPlanHero = beginnerPlanHero;
+window.beginnerInvestigateHero = beginnerInvestigateHero;
+window.beginnerImpactHero = beginnerImpactHero;
+window.zfStripClipboardMetadata = zfStripClipboardMetadata;
 window.afterChangePlanSuccess = afterChangePlanSuccess;
 window.atlasShowBroadFolderModal = atlasShowBroadFolderModal;
 window.applyExportNavVisibility = applyExportNavVisibility;

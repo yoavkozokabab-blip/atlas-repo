@@ -29,6 +29,7 @@ from builder_core.bug_intelligence import depgraph
 
 from . import analytics
 from . import atlas_export
+from . import first_impression as _fi
 from . import graph_build
 from . import planning_engine
 from . import reliability
@@ -2789,6 +2790,7 @@ def plan_change(request: str) -> Dict[str, Any]:
         result = planning_engine.plan_change(request, _planning_context())
         _record_workflow_timing("build_plan", t0)
         result = _ti.gate_weak_graph_workflow(_STATE, result, "build")
+        result = _fi.polish_workflow_result("build", result, _STATE, goal=request)
         if result.get("ok"):
             plan = result["plan"]
             result["formatted"] = planning_engine.format_change_plan_markdown(plan)
@@ -2827,6 +2829,7 @@ def investigate_symptom(symptom: str) -> Dict[str, Any]:
         result = planning_engine.investigate_symptom(symptom, _planning_context())
         _record_workflow_timing("investigation", t0)
         result = _ti.gate_weak_graph_workflow(_STATE, result, "investigate")
+        result = _fi.polish_workflow_result("investigate", result, _STATE, goal=symptom)
         if result.get("ok"):
             plan = result["plan"]
             result["formatted"] = planning_engine.format_investigation_plan_markdown(plan)
@@ -2891,6 +2894,9 @@ def change_impact_simulation(target: str) -> Dict[str, Any]:
             "Dynamic dispatch and string-based imports are not modeled.",
         ]
         _augment_impact_with_architecture(res)
+        res = _fi.polish_workflow_result("impact", res, _STATE, goal=target)
+        if not res.get("ok"):
+            return _ti.attach_trust_status(res, _STATE)
         mem_ref = _repo_memory.get_memory_ref(_STATE)
         _ti.record_workflow_context(_STATE, "impact", res, memory_ref=mem_ref)
         _STATE.setdefault("last_workflow_results", {})["impact"] = {"target": target, "result": res}

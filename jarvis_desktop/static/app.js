@@ -302,12 +302,49 @@ function renderWorkflowGate(view) {
   return true;
 }
 
+function fiCapScore(score) {
+  const n = Math.round(Number(score) || 0);
+  return Math.max(0, Math.min(100, n));
+}
+
+function fiUserFacingStatus(status, goal) {
+  if (status !== "Implemented") return status || "";
+  const g = String(goal || "").toLowerCase();
+  if (/^(add |implement |create |introduce |build |enable |new )/.test(g) || g.includes(" add ")) return "Proposed";
+  return status;
+}
+
+function workflowErrorHtml(title, r, hint) {
+  const msg = r.demo_notice || r.error || hint || "Request failed";
+  const extra = r.demo_notice ? "" : `<p class="muted tiny">${esc(hint || "")}</p>`;
+  return `<div class="glass empty-panel"><h3 style="margin:0">${esc(title)}</h3><p class="muted">${esc(msg)}</p>${extra}</div>`;
+}
+
 function renderWorkflowQuickStarts(view) {
   if (!STATE.summary?.ok) return;
+  const pack = STATE.demoPack || STATE.summary?.demo_pack || "small";
+  const byPack = {
+    small: {
+      build: "Improve error handling in core/hub.py",
+      investigate: "API requests fail intermittently under load",
+      impact: "core/hub.py",
+    },
+    medium: {
+      build: "Add structured logging to API handlers",
+      investigate: "API requests fail intermittently under load",
+      impact: "api/handlers.py",
+    },
+    large: {
+      build: "Improve error handling in gateway/entry.py",
+      investigate: "API gateway returns 500 under load",
+      impact: "gateway/entry.py",
+    },
+  };
+  const packEx = byPack[pack] || byPack.small;
   const examples = {
-    build: { text: "Add structured logging to API handlers", target: "buildRequest", run: "runChangePlan" },
-    investigate: { text: "API requests fail intermittently under load", target: "investigateSymptom", run: "runInvestigationPlan" },
-    impact: { text: "core/hub.py", target: "impactTarget", run: "runImpact" },
+    build: { text: packEx.build, target: "buildRequest", run: "runChangePlan" },
+    investigate: { text: packEx.investigate, target: "investigateSymptom", run: "runInvestigationPlan" },
+    impact: { text: packEx.impact, target: "impactTarget", run: "runImpact" },
   };
   const ex = examples[view];
   if (!ex) return;
@@ -1534,19 +1571,22 @@ function renderRepositoryEvidence(rev, plan) {
     if (plan?.evidence_panel) return renderEvidenceSummary(plan.evidence_panel, null);
     return "";
   }
+  const goal = plan?.goal || plan?.change_goal || plan?.symptom || plan?.symptom_summary || "";
+  const status = fiUserFacingStatus(rev.status, goal);
+  const score = fiCapScore(rev.confidence_score);
   const files = (rev.file_evidences || []).slice(0, 5);
   return `
-    <div class="domain-panel glass evidence-panel">
+    <div class="domain-panel glass evidence-panel advanced-only">
       <div class="domain-head">
         <span class="domain-concept">Repository Evidence</span>
-        <span class="pill quality-source">${esc(rev.status)}</span>
-        <span class="pill">Score ${esc(rev.confidence_score)}/100</span>
+        <span class="pill quality-source">${esc(status)}</span>
+        <span class="pill">Score ${esc(score)}/100</span>
       </div>
       ${renderEvidenceSummary(rev.evidence_panel || plan?.evidence_panel, rev)}
       ${rev.found?.length ? `<div class="report-section"><div class="report-label">Found</div><ul class="clean tiny">${rev.found.slice(0, 6).map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}
       ${rev.missing?.length ? `<div class="report-section"><div class="report-label">Missing</div><ul class="clean tiny">${rev.missing.slice(0, 4).map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}
       ${rev.recommended_insertion ? `<p class="muted tiny"><b>Recommended insertion:</b> <span class="tag" onclick="investigateFile(${JSON.stringify(rev.recommended_insertion)})">${esc(rev.recommended_insertion)}</span></p>` : ""}
-      ${files.length ? `<div class="report-section"><div class="report-label">Evidence by file</div><ul class="clean tiny">${files.map(f => `<li><span class="tag" onclick="investigateFile(${JSON.stringify(f.path)})">${esc(f.path)}</span> — ${esc(f.evidence_score)}/100 · ${esc(f.selected_because || f.reason_selected || (f.matching_symbols || []).slice(0, 2).join(", "))}</li>`).join("")}</ul></div>` : ""}
+      ${files.length ? `<div class="report-section"><div class="report-label">Evidence by file</div><ul class="clean tiny">${files.map(f => `<li><span class="tag" onclick="investigateFile(${JSON.stringify(f.path)})">${esc(f.path)}</span> — ${esc(fiCapScore(f.evidence_score))}/100 · ${esc(f.selected_because || f.reason_selected || (f.matching_symbols || []).slice(0, 2).join(", "))}</li>`).join("")}</ul></div>` : ""}
     </div>`;
 }
 
@@ -1576,11 +1616,9 @@ function renderDomainKnowledge(dk) {
       ${failures.length ? `<div class="report-section"><div class="report-label">Failure modes</div><ul class="clean tiny">${failures.map(r => `<li>${esc(r)}</li>`).join("")}</ul></div>` : ""}
       ${verify.length ? `<div class="report-section"><div class="report-label">Verification</div><ul class="clean tiny">${verify.map(r => `<li>${esc(r)}</li>`).join("")}</ul></div>` : ""}
       ${testing.length ? `<div class="report-section"><div class="report-label">Testing</div><ul class="clean tiny">${testing.map(r => `<li>${esc(r)}</li>`).join("")}</ul></div>` : ""}
-      <div class="report-section"><div class="report-label">Repository mapping</div>
-        <p class="muted tiny">Must inspect</p><div class="taglist">${(roles.must_inspect || []).map(tag).join("") || '<span class="muted tiny">—</span>'}</div>
-        <p class="muted tiny">Likely modify</p><div class="taglist">${(roles.likely_modify || []).map(tag).join("") || '<span class="muted tiny">—</span>'}</div>
-        <p class="muted tiny">Verify only</p><div class="taglist">${(roles.verify_only || []).map(tag).join("") || '<span class="muted tiny">—</span>'}</div>
-      </div>
+      ${(roles.must_inspect || []).length ? `<div class="report-section"><div class="report-label">Must inspect</div><div class="taglist">${roles.must_inspect.map(tag).join("")}</div></div>` : ""}
+      ${(roles.likely_modify || []).length ? `<div class="report-section"><div class="report-label">Likely modify</div><div class="taglist">${roles.likely_modify.map(tag).join("")}</div></div>` : ""}
+      ${(roles.verify_only || []).length ? `<div class="report-section"><div class="report-label">Verify only</div><div class="taglist">${roles.verify_only.map(tag).join("")}</div></div>` : ""}
       ${dk.integration_note ? `<p class="muted tiny">${esc(dk.integration_note)}</p>` : ""}
     </div>`;
 }
@@ -1591,7 +1629,7 @@ async function runChangePlan() {
   const r = await api("/api/planning/change", "POST", { request });
   const out = $("buildOut");
   if (!r.ok) {
-    out.innerHTML = `<div class="glass empty-panel"><h3 style="margin:0">Could not generate plan</h3><p class="muted">${esc(r.error || "Plan failed")}</p><p class="muted tiny">Try a more specific request or pick a module from the Repository Map.</p></div>`;
+    out.innerHTML = workflowErrorHtml("Could not generate plan", r, "Try a more specific request or pick a module from the Repository Map.");
     return;
   }
   STATE.buildResult = r;
@@ -1668,14 +1706,15 @@ async function runInvestigationPlan() {
   const r = await api("/api/planning/investigate", "POST", { symptom });
   const out = $("investigateOut");
   if (!r.ok) {
-    out.innerHTML = `<div class="glass empty-panel"><h3 style="margin:0">Investigation could not run</h3><p class="muted">${esc(r.error || "Investigation failed")}</p><p class="muted tiny">Include a file path, error message, or subsystem name for better grounding.</p></div>`;
+    out.innerHTML = workflowErrorHtml("Investigation could not run", r, "Include a file path, error message, or subsystem name for better grounding.");
     return;
   }
   STATE.investigateResult = r;
   const p = r.plan || {};
   const prompts = r.prompts || {};
   out.innerHTML = `
-    <div class="glass ocard">
+    ${typeof beginnerInvestigateHero === "function" ? beginnerInvestigateHero(p) : ""}
+    <div class="advanced-only glass ocard">
       <div style="display:flex;justify-content:space-between;align-items:center">
         <h3 style="margin:0">Investigation Report</h3>
         <span class="lvl ${p.confidence === 'high' ? 'low' : p.confidence === 'low' ? 'unknown' : 'medium'}">confidence: ${esc(p.confidence)}</span>
@@ -1685,7 +1724,7 @@ async function runInvestigationPlan() {
         <p>${esc(p.symptom_summary || p.symptom || "")}</p>
       </div>
       ${typeof trustBlock === "function" ? trustBlock("investigate") : ""}
-      <div class="advanced-only">${renderDomainKnowledge(p.domain_knowledge)}</div>
+      ${renderDomainKnowledge(p.domain_knowledge)}
       ${renderRepositoryEvidence(p.repository_evidence || p.domain_knowledge?.repository_evidence, p)}
       ${(p.domain_failure_modes || []).length ? `<div class="report-section"><div class="report-label">Domain failure modes</div><ul class="clean">${p.domain_failure_modes.map(m => `<li>${esc(m)}</li>`).join("")}</ul></div>` : ""}
       <div class="report-section">
@@ -1701,7 +1740,7 @@ async function runInvestigationPlan() {
       ${(p.risks_of_incorrect_fix || []).length ? `<div class="report-section"><div class="report-label">Risks of fixing incorrectly</div><ul class="clean">${p.risks_of_incorrect_fix.map(v => `<li>${esc(v)}</li>`).join("")}</ul></div>` : ""}
       ${renderLimitations(r.limitations)}
       ${typeof sendToAiPanel === "function" ? sendToAiPanel("investigate") : ""}
-      <details class="advanced-only" style="margin-top:12px"><summary class="muted tiny">Preview full report (markdown)</summary>
+      <details style="margin-top:12px"><summary class="muted tiny">Preview full report (markdown)</summary>
         <pre class="code">${esc(r.formatted || "")}</pre></details>
       ${typeof workflowFeedbackHtml === "function" ? workflowFeedbackHtml("investigate") : ""}
     </div>`;
@@ -1715,7 +1754,7 @@ function renderHypotheses(hyps) {
     const conf = h.confidence === "high" ? "low" : h.confidence === "low" ? "unknown" : "medium";
     const files = (h.files_involved || []).map(f => `<span class="tag" onclick="investigateFile(${JSON.stringify(f)})" title="Open in impact">${esc(f)}</span>`).join("")
       || '<span class="muted tiny">no grounded file — lead only</span>';
-    const evScore = h.evidence_score_100 ?? h.evidence_score;
+    const evScore = fiCapScore(h.evidence_score_100 ?? h.evidence_score);
     return `
     <div class="hyp-card">
       <div class="hyp-head">
@@ -1753,7 +1792,7 @@ async function runImpact() {
   const r = await api("/api/planning/impact", "POST", { target });
   const out = $("impactOut");
   if (!r.ok) {
-    out.innerHTML = `<div class="glass empty-panel"><h3 style="margin:0">Impact could not be analyzed</h3><p class="muted">${esc(r.error || "No result")}</p><p class="muted tiny">Use a path from the graph or an architecture concept (e.g. authentication, routing).</p></div>`;
+    out.innerHTML = workflowErrorHtml("Impact could not be analyzed", r, "Use a path from the graph or an architecture concept (e.g. authentication, routing).");
     return;
   }
   STATE.impactResult = r;
@@ -1772,7 +1811,8 @@ async function runImpact() {
   // Phase 135 — summary cards ABOVE the file lists; lists capped at 10 with a
   // collapsible "show all" so a first-time user understands the answer fast.
   out.innerHTML = `
-    <div class="glass ocard impact-card">
+    ${typeof beginnerImpactHero === "function" ? beginnerImpactHero(r) : ""}
+    <div class="advanced-only glass ocard impact-card">
       <div class="impact-head">
         <h3 style="margin:0">Impact of changing <span class="mono">${esc(r.target)}</span></h3>
         <div class="impact-badges"><span class="lvl ${rl}">${rl} risk</span><span class="pill">confidence ${esc(conf)}</span>${mockTag}</div>
@@ -1786,7 +1826,7 @@ async function runImpact() {
       <div class="report-section"><div class="report-label">Indirect impact — transitive (${indN})</div>${impactModuleTags(r.indirect_impact)}</div>
       <div class="report-section"><div class="report-label">Tests to run</div><ul class="clean">${list(r.tests_likely_affected)}</ul></div>
       <div class="report-section"><div class="report-label">Safe rollback / verification</div><ul class="clean">${list(r.recommended_verification)}</ul></div>
-      <details class="advanced-only" style="margin-top:6px"><summary class="muted tiny">What may break · risks · probably-safe · evidence</summary>
+      <details style="margin-top:6px"><summary class="muted tiny">What may break · risks · probably-safe · evidence</summary>
         <div class="report-label" style="margin-top:8px">What may break</div>${impactModuleTags(r.what_may_break, 12)}
         <div class="report-label" style="margin-top:8px">Risks of an incorrect change</div><ul class="clean tiny">${list(r.risks_of_incorrect_fix, 5)}</ul>
         <div class="report-label" style="margin-top:8px">Probably safe (untouched)</div><ul class="clean tiny">${list(r.what_probably_wont_break, 6)}</ul>

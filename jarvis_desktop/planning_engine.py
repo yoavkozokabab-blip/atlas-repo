@@ -2300,19 +2300,13 @@ def format_change_plan_markdown(plan: Dict[str, Any]) -> str:
             "",
             dk_block.get("integration_note", ""),
             "",
-            "MUST inspect:",
-            *_md_bullets(roles.get("must_inspect") or []),
-            "",
-            "LIKELY modify:",
-            *_md_bullets(roles.get("likely_modify") or []),
-            "",
-            "VERIFY only:",
-            *_md_bullets(roles.get("verify_only") or []),
-            "",
-            "DO NOT touch unless needed:",
-            *_md_bullets(roles.get("do_not_touch") or [], "- (none flagged)"),
-            "",
         ])
+        from . import first_impression as _fi
+        lines.extend(_fi.md_optional_section("MUST inspect", roles.get("must_inspect") or []))
+        lines.extend(_fi.md_optional_section("LIKELY modify", roles.get("likely_modify") or []))
+        lines.extend(_fi.md_optional_section("VERIFY only", roles.get("verify_only") or []))
+        lines.extend(_fi.md_optional_section("DO NOT touch unless needed", roles.get("do_not_touch") or []))
+        lines.append("")
         if plan.get("domain_implementation_steps"):
             lines.extend([
                 "Domain implementation steps:",
@@ -2321,11 +2315,18 @@ def format_change_plan_markdown(plan: Dict[str, Any]) -> str:
             ])
     repo_ev = plan.get("repository_evidence") or {}
     if repo_ev:
+        from . import first_impression as _fi
+        _goal = str(plan.get("goal") or plan.get("change_goal") or "")
+        _intent = str(plan.get("intent") or "")
+        _status = _fi.user_facing_implementation_status(
+            repo_ev.get("status") or "", goal=_goal, intent=_intent,
+        )
+        _score = _fi.cap_evidence_score(repo_ev.get("confidence_score", 0))
         lines.extend([
             "REPOSITORY EVIDENCE",
             "===================",
-            f"Status: {repo_ev.get('status')}",
-            f"Evidence score: {repo_ev.get('confidence_score', 0)}/100",
+            f"Status: {_status}",
+            f"Evidence score: {_score}/100",
             "",
             "Found:",
             *_md_bullets(repo_ev.get("found") or [], "- (none)"),
@@ -2341,8 +2342,9 @@ def format_change_plan_markdown(plan: Dict[str, Any]) -> str:
                 "",
             ])
         for fe in (repo_ev.get("file_evidences") or [])[:5]:
+            fe_score = _fi.cap_evidence_score(fe.get("evidence_score", 0))
             lines.append(
-                f"- `{fe.get('path')}` — score {fe.get('evidence_score', 0):.0f}/100 — "
+                f"- `{fe.get('path')}` — score {fe_score}/100 — "
                 f"{', '.join((fe.get('matching_symbols') or [])[:3]) or 'symbols matched'}"
             )
         lines.append("")
@@ -2418,10 +2420,14 @@ def format_investigation_plan_markdown(plan: Dict[str, Any]) -> str:
         ])
     repo_ev = plan.get("repository_evidence") or {}
     if repo_ev:
+        from . import first_impression as _fi
+        _goal = str(plan.get("symptom") or plan.get("symptom_summary") or "")
+        _status = _fi.user_facing_implementation_status(repo_ev.get("status") or "", goal=_goal)
+        _score = _fi.cap_evidence_score(repo_ev.get("confidence_score", 0))
         lines.extend([
             "A3. Repository evidence",
-            f"   Status: {repo_ev.get('status')}",
-            f"   Evidence score: {repo_ev.get('confidence_score', 0)}/100",
+            f"   Status: {_status}",
+            f"   Evidence score: {_score}/100",
             "   Found:",
             *(f"     - {x}" for x in (repo_ev.get("found") or [])[:6]),
             "   Missing:",
