@@ -1,0 +1,241 @@
+{
+  "phase": "181C",
+  "title": "Persistence Red Team Verification",
+  "run_date": "2026-06-06",
+  "mode": "verification_only",
+  "code_modified": false,
+  "verdict": "FAIL",
+  "summary": {
+    "total_attacks": 10,
+    "passed": 7,
+    "failed": 3,
+    "failed_attacks": [
+      5,
+      6,
+      7
+    ],
+    "go_for_5_supervised_beta_users": false,
+    "go_for_20_supervised_beta_users": false
+  },
+  "source_inputs": {
+    "read": [
+      "reports/phase181b_persistence_implementation.md",
+      "reports/phase174_trust_integrity_architecture.md",
+      "reports/phase172a_repository_memory_attack_surface.md"
+    ],
+    "missing": [
+      "reports/phase181a_persistence_architecture.md"
+    ]
+  },
+  "tests": [
+    {
+      "command": "py -3 -m pytest jarvis_desktop/tests/test_phase181b_persistence.py -q",
+      "result": "10 passed in 1.18s",
+      "note": "Initial sandboxed runs hit pytest temp cleanup PermissionError. Elevated retry used an isolated basetemp and passed."
+    }
+  ],
+  "attacks": [
+    {
+      "id": 1,
+      "name": "Wrong repo restore",
+      "result": "PASS",
+      "severity": "none",
+      "setup": "Scanned repo A, closed Atlas state, removed/recreated a different repo at the same path.",
+      "steps": [
+        "Reset in-memory state.",
+        "Ran persistence bootstrap with auto_restore=true.",
+        "Requested explicit persisted repository resume.",
+        "Requested session export."
+      ],
+      "expected": "Atlas refuses restore or marks stale. No repo A history exported for repo B.",
+      "actual": {
+        "auto_restored": false,
+        "resume_code": "stale_scan",
+        "export_ok": false,
+        "notes": "Stored and live signatures differed; export was blocked."
+      }
+    },
+    {
+      "id": 2,
+      "name": "File changed after restore",
+      "result": "PASS",
+      "severity": "none",
+      "setup": "Scanned a repo, closed Atlas state, edited a scanned source file, restarted restore path.",
+      "steps": [
+        "Reset in-memory state.",
+        "Ran persistence bootstrap.",
+        "Requested Copy for Claude/session export.",
+        "Requested explicit persisted repository resume."
+      ],
+      "expected": "stale_scan or needs refresh. No export.",
+      "actual": {
+        "auto_restored": false,
+        "resume_code": "stale_scan",
+        "export_ok": false,
+        "notes": "Changed file invalidated restore and export."
+      }
+    },
+    {
+      "id": 3,
+      "name": "Git branch switch",
+      "result": "PASS",
+      "severity": "none",
+      "setup": "Scanned a repo with a fake git HEAD/ref value, then changed the ref to simulate branch/HEAD movement.",
+      "steps": [
+        "Reset in-memory state.",
+        "Ran persistence bootstrap.",
+        "Requested explicit persisted repository resume."
+      ],
+      "expected": "stale_git_head_changed or needs refresh.",
+      "actual": {
+        "auto_restored": false,
+        "resume_code": "stale_scan",
+        "notes": "The refusal was generic stale_scan rather than stale_git_head_changed, but restore/export were blocked."
+      }
+    },
+    {
+      "id": 4,
+      "name": "Plan history stale export",
+      "result": "PASS",
+      "severity": "none",
+      "setup": "Generated a Change Plan, closed Atlas state, edited files, restarted, and opened old plan history.",
+      "steps": [
+        "Created valid build history.",
+        "Changed a scanned file.",
+        "Reset state and listed/opened the old build history item."
+      ],
+      "expected": "Old plan export blocked until refresh.",
+      "actual": {
+        "history_item_ok": true,
+        "export_allowed": false,
+        "stale_reason": "Atlas needs a refresh before exporting context. The repository changed after this plan was generated."
+      }
+    },
+    {
+      "id": 5,
+      "name": "History poisoning",
+      "result": "FAIL",
+      "severity": "P0",
+      "setup": "Appended a forged JSONL history row with fake files_named, api_key-like secret text, source-like text, and an old scan_id.",
+      "steps": [
+        "Called list_workflow_history_api for build history.",
+        "Called get_workflow_history_item_api for the forged history_id.",
+        "Inspected returned list and item payloads for injected values."
+      ],
+      "expected": "History rejected, sanitized, or shown as untrusted. No export.",
+      "actual": {
+        "history_item_ok": true,
+        "export_allowed": false,
+        "leaks_secret": true,
+        "leaks_fake_path": true,
+        "notes": "Old scan_id blocked export, but poisoned content was still returned to the UI/API."
+      }
+    },
+    {
+      "id": 6,
+      "name": "Memory / scan mismatch",
+      "result": "FAIL",
+      "severity": "P0",
+      "setup": "Tampered persisted memory_packet.json so its scan_id and text referenced a different poisoned scan.",
+      "steps": [
+        "Reset in-memory state.",
+        "Called resume_persisted_repository.",
+        "Requested session export packet.",
+        "Inspected exported memory scan_id and text."
+      ],
+      "expected": "Memory discarded. Scan restore requires rescan or refresh.",
+      "actual": {
+        "resume_ok": true,
+        "export_ok": true,
+        "export_scan_id": "poison_scan_181c",
+        "poison_text_exported": true,
+        "poison_text": "ATLAS_REPOSITORY_MEMORY v1\\nrepo: POISONED_REPO\\nhubs: POISONED_FAKE_HUB (999)",
+        "notes": "Persisted memory_packet.json was trusted on restore and exported."
+      }
+    },
+    {
+      "id": 7,
+      "name": "Version mismatch",
+      "result": "FAIL",
+      "severity": "P0",
+      "setup": "Changed stored atlas_version in latest.json to an incompatible future version while keeping signatures fresh.",
+      "steps": [
+        "Updated latest.json atlas_version to 999.0.0-future-incompatible.",
+        "Aligned scan_signature and graph_signature with current live signature to isolate the version check.",
+        "Reset state and ran bootstrap/resume."
+      ],
+      "expected": "Restore refused for incompatible future version.",
+      "actual": {
+        "auto_restored": true,
+        "resume_ok": true,
+        "validation_status": "valid",
+        "freshness_status": "fresh",
+        "notes": "validate_scan_state did not enforce atlas_version compatibility."
+      }
+    },
+    {
+      "id": 8,
+      "name": "Cleanup safety",
+      "result": "PASS",
+      "severity": "none",
+      "setup": "Created many fake scans plus malformed/oversized history files.",
+      "steps": [
+        "Ran cleanup_old_scans with a low retention limit.",
+        "Inspected retained scan directories and compacted history."
+      ],
+      "expected": "Does not delete active latest scan, does not delete newest history, and does not crash on malformed files.",
+      "actual": {
+        "cleanup_ok": true,
+        "latest_scan_kept": true,
+        "newest_history_kept": true,
+        "malformed_history_handled": true
+      }
+    },
+    {
+      "id": 9,
+      "name": "Support bundle",
+      "result": "PASS",
+      "severity": "none",
+      "setup": "Generated history and logs containing api_key, Authorization/Bearer/JWT-like tokens, absolute paths, and source-like snippets.",
+      "steps": [
+        "Exported support bundle.",
+        "Inspected text files inside the bundle."
+      ],
+      "expected": "No raw source code, no secrets, no unredacted absolute paths, and no plan content if it may include source snippets.",
+      "actual": {
+        "secret_leaks": [],
+        "includes_history": false,
+        "files_seen": [
+          "manifest.json",
+          "version.txt",
+          "diagnostics.json",
+          "environment.json",
+          "scan_metadata.json",
+          "startup_checks.json",
+          "logs/launcher.log",
+          "logs/analytics.jsonl"
+        ],
+        "notes": "No support-bundle leak was observed in this attack."
+      }
+    },
+    {
+      "id": 10,
+      "name": "Concurrent restore and scan",
+      "result": "PASS",
+      "severity": "none",
+      "setup": "Persisted repo A, reset state, then concurrently requested restore of repo A and scan of repo B before exporting.",
+      "steps": [
+        "Started resume_persisted_repository for repo A in one thread.",
+        "Started scan_project for repo B in another thread.",
+        "Requested session export after both completed."
+      ],
+      "expected": "No mixed old/new state and no wrong-repo memory leakage.",
+      "actual": {
+        "final_repo": "concurrent_b",
+        "export_ok": true,
+        "repo_a_leaked": false,
+        "notes": "Final export matched repo B and did not contain repo A marker text."
+      }
+    }
+  ]
+}
