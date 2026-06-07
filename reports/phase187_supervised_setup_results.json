@@ -1,0 +1,84 @@
+{
+  "phase": "187",
+  "mode": "first_supervised_beta_setup",
+  "date": "2026-06-07",
+  "source_commit": "b14334281",
+  "code_changes": false,
+
+  "installer": {
+    "path": "packaging/installer/output/Atlas_Setup.exe",
+    "copy": "installer/output/Atlas_Setup.exe",
+    "filename": "Atlas_Setup.exe",
+    "size_bytes": 12229727,
+    "size_mb": 11.66,
+    "version": "0.1.0-beta",
+    "build_date": "2026-06-07T17:32:43",
+    "commit": "b14334281",
+    "entry": "Atlas.exe",
+    "product": "ATLAS"
+  },
+
+  "bootstrap_verification": {
+    "admin_email": "yoavkozokabab@gmail.com",
+    "script": "scripts/verify_bootstrap.py",
+    "total_checks": 15,
+    "passed": 15,
+    "failed": 0,
+    "steps": [
+      {"step": 1, "name": "Admin registers",             "checks": ["Registration HTTP 201", "Initial role is user"]},
+      {"step": 2, "name": "bootstrap_superadmins()",     "checks": ["count=1", "role=superadmin", "audit log written", "audit records before/after role"]},
+      {"step": 3, "name": "Idempotency",                 "checks": ["second run count=0"]},
+      {"step": 4, "name": "Admin login",                 "checks": ["login HTTP 200"]},
+      {"step": 5, "name": "Admin endpoints",             "checks": ["GET /admin/dashboard 200", "GET /admin/users 200", "GET /admin/users/{id} role=superadmin", "beta user registers 201", "grant-beta 200 status=beta", "audit-log 200", "grant_beta in log", "PATCH suspend 200", "PATCH reinstate 200", "force-logout 204"]},
+      {"step": 6, "name": "Maintenance prune",           "checks": ["superadmin=200", "regular-admin=403"]},
+      {"step": 7, "name": "Env var removal",             "checks": ["bootstrap no-op count=0", "superadmin persists in DB"]}
+    ],
+    "verdict": "PASS"
+  },
+
+  "smoke_tests": [
+    {
+      "suite": "Phase 186 full suite",
+      "command": "pytest accounts_service/tests/test_phase186f_beta_smoke.py accounts_service/tests/test_phase186e_accounts_blocker_remediation.py accounts_service/tests/test_phase186c_accounts_beta_safety.py jarvis_desktop/tests/test_phase186_accounts.py jarvis_desktop/tests/test_phase186_admin.py jarvis_desktop/tests/test_phase186_privacy.py -q -p no:cacheprovider",
+      "passed": 104,
+      "failed": 0
+    },
+    {
+      "suite": "Operations security + beta gate + final blockers",
+      "command": "pytest jarvis_desktop/tests/test_phase182a_operations_security.py jarvis_desktop/tests/test_phase175d_beta_gate_closure.py jarvis_desktop/tests/test_phase174f_final_blockers.py -q -p no:cacheprovider",
+      "passed": 93,
+      "failed": 0
+    },
+    {
+      "suite": "Bootstrap verification script",
+      "command": "py -3 scripts/verify_bootstrap.py",
+      "passed": 15,
+      "failed": 0
+    }
+  ],
+
+  "total_checks": 212,
+  "total_pass": 212,
+  "total_fail": 0,
+
+  "non_blocking_issues": [
+    {"id": "NB-2", "area": "jwt_secret",      "severity": "low", "issue": "File perms 0o666 on Windows (OS limit; 0o600 on Linux)"},
+    {"id": "NB-3", "area": "ux_readiness",    "severity": "low", "issue": "license.message not rendered in login panel"},
+    {"id": "NB-4", "area": "ux_readiness",    "severity": "low", "issue": "Blocked screen doesn't differentiate suspended vs banned"},
+    {"id": "NB-5", "area": "ux_readiness",    "severity": "low", "issue": "Open-ended question fallback is generic"},
+    {"id": "NB-6", "area": "pre_existing",    "severity": "low", "issue": "test_phase174d: 2 failures (scan_signature not in text output, pre-Phase-187)"},
+    {"id": "NB-7", "area": "accounts_client", "severity": "low", "issue": "accounts_state.json no file lock (relevant at >20 concurrent users)"}
+  ],
+
+  "conditions_before_first_user": [
+    "Set ATLAS_INITIAL_ADMINS=yoavkozokabab@gmail.com on first service start only",
+    "Register admin email in Atlas app, then restart service to trigger bootstrap",
+    "Verify superadmin role via /user/me or GET /admin/users/{id}",
+    "Remove ATLAS_INITIAL_ADMINS from environment after verification",
+    "Follow operator checklist in reports/phase186f_beta_operations_readiness.md",
+    "Distribute Atlas_Setup.exe built at b14334281 only — do not use older builds"
+  ],
+
+  "verdict_first_beta_user": "GO",
+  "verdict_3_5_supervised_beta_users": "GO"
+}
