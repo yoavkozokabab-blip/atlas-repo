@@ -1,0 +1,304 @@
+{
+  "phase": "186D",
+  "mode": "audit_only_no_code_changes",
+  "generated_at": "2026-06-07T13:33:33.806464+00:00",
+  "suite": {
+    "phase186_tests": "73 passed, 3 warnings under vendored-dependency read permission"
+  },
+  "counts": {
+    "attacks_run": 20,
+    "passed": 13,
+    "failed": 7,
+    "blockers": 7
+  },
+  "verdict": {
+    "5_supervised_beta_users": "NO-GO",
+    "20_supervised_beta_users": "NO-GO"
+  },
+  "attack_results": [
+    {
+      "id": 1,
+      "area": "AUTH",
+      "attack": "service restart after login",
+      "expected": "Access token remains valid and refresh token still works after backend restart",
+      "actual": "me=200; refresh=200; refresh_has_access=True",
+      "passed": true,
+      "severity": "info",
+      "detail": "",
+      "evidence": {
+        "child_returncode": 0
+      }
+    },
+    {
+      "id": 2,
+      "area": "AUTH",
+      "attack": "forged JWT with valid-looking payload",
+      "expected": "Rejected",
+      "actual": "HTTP 401",
+      "passed": true,
+      "severity": "info",
+      "detail": "",
+      "evidence": {}
+    },
+    {
+      "id": 3,
+      "area": "AUTH",
+      "attack": "modified real token role=user to role=admin",
+      "expected": "Rejected by signature validation",
+      "actual": "HTTP 401",
+      "passed": true,
+      "severity": "info",
+      "detail": "",
+      "evidence": {}
+    },
+    {
+      "id": 4,
+      "area": "AUTH",
+      "attack": "expired JWT",
+      "expected": "Rejected",
+      "actual": "HTTP 401",
+      "passed": true,
+      "severity": "info",
+      "detail": "",
+      "evidence": {}
+    },
+    {
+      "id": 5,
+      "area": "AUTH",
+      "attack": "refresh token replay",
+      "expected": "First use succeeds; replay is rejected; family invalidation noted if present",
+      "actual": "first=200; replay=401; rotated_token_reuse=200",
+      "passed": true,
+      "severity": "info",
+      "detail": "Replay is rejected. Session-family invalidation is not implemented; the rotated token remains usable.",
+      "evidence": {
+        "family_invalidation_implemented": false
+      }
+    },
+    {
+      "id": 6,
+      "area": "AUTH",
+      "attack": "refresh token DB leakage",
+      "expected": "No raw refresh token stored",
+      "actual": "raw_found=False; hash_lengths=[64]; columns=['session_id', 'user_id', 'device_id', 'refresh_hash', 'created_at', 'expires_at', 'revoked_at', 'revoked_reason']",
+      "passed": true,
+      "severity": "info",
+      "detail": "",
+      "evidence": {}
+    },
+    {
+      "id": 7,
+      "area": "PRIVACY",
+      "attack": "feedback secrets and paths",
+      "expected": "Stored feedback is redacted",
+      "actual": "HTTP 201; leaks=[]",
+      "passed": true,
+      "severity": "info",
+      "detail": "",
+      "evidence": {
+        "stored_redacted": "api_key=[REDACTED]\nAuthorization: [REDACTED] [REDACTED]\n[REDACTED]\n[REDACTED]\n[path-redacted]\n[path-redacted]"
+      }
+    },
+    {
+      "id": 8,
+      "area": "SUPPORT BUNDLES",
+      "attack": "support bundle token/secret leakage",
+      "expected": "No raw JWT, refresh/access token, API key, bearer token, password, or auth header in bundle",
+      "actual": "bundle_ok=True; raw_leak_count=0",
+      "passed": true,
+      "severity": "info",
+      "detail": "",
+      "evidence": {}
+    },
+    {
+      "id": 9,
+      "area": "LICENSES",
+      "attack": "banned user desktop state/license/protected use",
+      "expected": "Denied across desktop state, license check, and protected use",
+      "actual": "service_me=403; service_license=403; desktop_authenticated=True; desktop_license_valid=None; protected=200/True",
+      "passed": false,
+      "severity": "critical",
+      "detail": "Service endpoints deny the banned user, but desktop account state falls back to cached license and local workflow routes remain callable.",
+      "evidence": {}
+    },
+    {
+      "id": 10,
+      "area": "LICENSES",
+      "attack": "suspended user use",
+      "expected": "Denied",
+      "actual": "service_me=403; service_license=403; desktop_authenticated=True; desktop_license_valid=None",
+      "passed": false,
+      "severity": "critical",
+      "detail": "Service endpoints deny the suspended user, but desktop account state still authenticates from cache.",
+      "evidence": {}
+    },
+    {
+      "id": 11,
+      "area": "LICENSES",
+      "attack": "expired license use",
+      "expected": "Online license check denied; protected use denied except offline grace",
+      "actual": "service_valid=False; desktop_valid=False; protected=200/True",
+      "passed": false,
+      "severity": "critical",
+      "detail": "License check returns invalid, but local workflow route remains callable without license enforcement.",
+      "evidence": {}
+    },
+    {
+      "id": 12,
+      "area": "DEVICES",
+      "attack": "device revocation use from revoked device",
+      "expected": "Denied from that device",
+      "actual": "revoke=204; refresh=401; old_access_me=200; desktop_authenticated=True",
+      "passed": false,
+      "severity": "critical",
+      "detail": "Refresh is denied, but old access token and desktop cached state remain usable after device revocation.",
+      "evidence": {}
+    },
+    {
+      "id": 13,
+      "area": "DEVICES",
+      "attack": "device limit bypass and fake device ids",
+      "expected": "More devices than allowed are denied, including reused/fake device ids",
+      "actual": "normal_second_device=403; cross_account_reuse=201; bypass_session=True",
+      "passed": false,
+      "severity": "critical",
+      "detail": "Normal second device is denied, but cross-account reuse of an existing device_id still creates a session for another user.",
+      "evidence": {}
+    },
+    {
+      "id": 14,
+      "area": "ADMIN",
+      "attack": "regular user admin endpoint access",
+      "expected": "Denied",
+      "actual": "HTTP 403",
+      "passed": true,
+      "severity": "info",
+      "detail": "",
+      "evidence": {}
+    },
+    {
+      "id": 15,
+      "area": "ADMIN",
+      "attack": "regular admin attempts superadmin-only unban",
+      "expected": "Denied",
+      "actual": "ban=200; unban_attempt=403",
+      "passed": true,
+      "severity": "info",
+      "detail": "",
+      "evidence": {}
+    },
+    {
+      "id": 16,
+      "area": "ADMIN",
+      "attack": "admin action audit logging and secret exclusion",
+      "expected": "Every status/device/license action writes audit log; audit log has no secrets",
+      "actual": "before=4; after=10; actions=[('status_notes_secret', 200), ('license', 200), ('grant_beta', 200), ('revoke_beta', 200), ('force_logout', 204), ('revoke_device', 204)]; leaks=0",
+      "passed": true,
+      "severity": "info",
+      "detail": "",
+      "evidence": {}
+    },
+    {
+      "id": 17,
+      "area": "AUTH",
+      "attack": "login/register rate limit and stale key pruning",
+      "expected": "Repeated attempts throttled; old keys prune",
+      "actual": "login=[401, 401, 401, 401, 401, 429]; register=[201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 429]; pruned=1; remaining=['register:testclient', 'phase186d_active']",
+      "passed": true,
+      "severity": "info",
+      "detail": "",
+      "evidence": {}
+    },
+    {
+      "id": 18,
+      "area": "PRIVACY",
+      "attack": "analytics source/prompt/export/path/file/secret smuggling",
+      "expected": "Rejected or sanitized",
+      "actual": "cases=[{'case': 'source_code_extra', 'status': 422}, {'case': 'prompt_extra', 'status': 422}, {'case': 'export_extra', 'status': 422}, {'case': 'repo_path_extra', 'status': 422}, {'case': 'file_name_extra', 'status': 422}, {'case': 'app_version_path', 'status': 422}, {'case': 'event_type_ghp_secret', 'status': 204}, {'case': 'event_type_file_name', 'status': 422}, {'case': 'event_type_source_code', 'status': 204}]",
+      "passed": false,
+      "severity": "high",
+      "detail": "Extra string fields and path-like app_version are rejected, but arbitrary short event_type values allow ghp-style secrets, filenames, and code-shaped strings.",
+      "evidence": {}
+    },
+    {
+      "id": 19,
+      "area": "OFFLINE MODE",
+      "attack": "offline grace extension by editing local cache",
+      "expected": "Denied or clearly documented limitation",
+      "actual": "before=offline_grace_expired; after_authenticated=True; after_valid=True",
+      "passed": false,
+      "severity": "high",
+      "detail": "Bypass requires local file tampering, but the client accepts edited access_token_expires_at and license_checked_at without integrity protection.",
+      "evidence": {}
+    },
+    {
+      "id": 20,
+      "area": "ADMIN",
+      "attack": "admin dashboard data exposure",
+      "expected": "No raw feedback secrets, crash messages, repo paths, prompt/export text",
+      "actual": "HTTP 200; keys=['active_devices', 'active_users', 'banned_users', 'beta_users', 'exports_today', 'feedback_pending', 'launches_today', 'scans_today', 'suspended_users', 'tokens_saved_today', 'total_users']; leaks=0",
+      "passed": true,
+      "severity": "info",
+      "detail": "",
+      "evidence": {}
+    }
+  ],
+  "real_remaining_blockers": [
+    {
+      "id": 9,
+      "area": "LICENSES",
+      "attack": "banned user desktop state/license/protected use",
+      "severity": "critical",
+      "actual": "service_me=403; service_license=403; desktop_authenticated=True; desktop_license_valid=None; protected=200/True",
+      "detail": "Service endpoints deny the banned user, but desktop account state falls back to cached license and local workflow routes remain callable."
+    },
+    {
+      "id": 10,
+      "area": "LICENSES",
+      "attack": "suspended user use",
+      "severity": "critical",
+      "actual": "service_me=403; service_license=403; desktop_authenticated=True; desktop_license_valid=None",
+      "detail": "Service endpoints deny the suspended user, but desktop account state still authenticates from cache."
+    },
+    {
+      "id": 11,
+      "area": "LICENSES",
+      "attack": "expired license use",
+      "severity": "critical",
+      "actual": "service_valid=False; desktop_valid=False; protected=200/True",
+      "detail": "License check returns invalid, but local workflow route remains callable without license enforcement."
+    },
+    {
+      "id": 12,
+      "area": "DEVICES",
+      "attack": "device revocation use from revoked device",
+      "severity": "critical",
+      "actual": "revoke=204; refresh=401; old_access_me=200; desktop_authenticated=True",
+      "detail": "Refresh is denied, but old access token and desktop cached state remain usable after device revocation."
+    },
+    {
+      "id": 13,
+      "area": "DEVICES",
+      "attack": "device limit bypass and fake device ids",
+      "severity": "critical",
+      "actual": "normal_second_device=403; cross_account_reuse=201; bypass_session=True",
+      "detail": "Normal second device is denied, but cross-account reuse of an existing device_id still creates a session for another user."
+    },
+    {
+      "id": 18,
+      "area": "PRIVACY",
+      "attack": "analytics source/prompt/export/path/file/secret smuggling",
+      "severity": "high",
+      "actual": "cases=[{'case': 'source_code_extra', 'status': 422}, {'case': 'prompt_extra', 'status': 422}, {'case': 'export_extra', 'status': 422}, {'case': 'repo_path_extra', 'status': 422}, {'case': 'file_name_extra', 'status': 422}, {'case': 'app_version_path', 'status': 422}, {'case': 'event_type_ghp_secret', 'status': 204}, {'case': 'event_type_file_name', 'status': 422}, {'case': 'event_type_source_code', 'status': 204}]",
+      "detail": "Extra string fields and path-like app_version are rejected, but arbitrary short event_type values allow ghp-style secrets, filenames, and code-shaped strings."
+    },
+    {
+      "id": 19,
+      "area": "OFFLINE MODE",
+      "attack": "offline grace extension by editing local cache",
+      "severity": "high",
+      "actual": "before=offline_grace_expired; after_authenticated=True; after_valid=True",
+      "detail": "Bypass requires local file tampering, but the client accepts edited access_token_expires_at and license_checked_at without integrity protection."
+    }
+  ]
+}
