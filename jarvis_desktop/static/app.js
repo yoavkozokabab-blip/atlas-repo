@@ -236,8 +236,40 @@ function toast(msg, kind) {
   setTimeout(() => { t.classList.remove("show"); t.className = "toast"; }, 2400);
 }
 async function copyText(text, label) {
-  try { await navigator.clipboard.writeText(text); toast((label || "Copied") + " ✓", "success"); }
-  catch (e) { const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); toast((label || "Copied") + " ✓", "success"); }
+  const payload = String(text || "");
+  if (!payload.trim()) {
+    toast("Nothing to copy — generate a result first", "error");
+    return false;
+  }
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(payload);
+      toast((label || "Copied") + " ✓", "success");
+      return true;
+    }
+    throw new Error("clipboard unavailable");
+  } catch (e) {
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = payload;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.left = "-9999px";
+      ta.style.top = "0";
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      ta.setSelectionRange(0, payload.length);
+      const ok = document.execCommand("copy");
+      ta.remove();
+      if (!ok) throw new Error("execCommand copy failed");
+      toast((label || "Copied") + " ✓", "success");
+      return true;
+    } catch (e2) {
+      toast("Copy failed — use Download markdown instead", "error");
+      return false;
+    }
+  }
 }
 
 function emptyStateHtml(title, body, actionLabel, actionFn) {
@@ -555,7 +587,6 @@ function focusCopilot() { go("center"); setTimeout(() => $("askInput")?.focus(),
 function finishScanSession(scan, pathLabel) {
   if (pathLabel && !scan.demo_mode) pushRecent(pathLabel, scan);
   else if (scan.demo_mode) pushRecent(scan.repo_path || "Atlas Demo", scan);
-  STATE.summary = null;
   STATE.graph = null;
   STATE.graph3d = null;
   STATE.graphPerf = null;

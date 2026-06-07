@@ -20,10 +20,10 @@ $AtlasExe = Join-Path $DistAtlas "Atlas.exe"
 $PyBuild = Join-Path $Root "packaging\pyinstaller\build_atlas_exe.ps1"
 
 function Write-InnoVersionDefines {
-    $version = "1.0.0-beta"
-    $apiFile = Join-Path $Root "jarvis_desktop\api.py"
-    if (Test-Path $apiFile) {
-        $m = Select-String -Path $apiFile -Pattern 'PRODUCT_VERSION\s*=\s*"([^"]+)"' | Select-Object -First 1
+    $version = "0.1.0-beta"
+    $productFile = Join-Path $Root "jarvis_desktop\product_info.py"
+    if (Test-Path $productFile) {
+        $m = Select-String -Path $productFile -Pattern 'PRODUCT_VERSION\s*=\s*"([^"]+)"' | Select-Object -First 1
         if ($m) { $version = $m.Matches[0].Groups[1].Value }
     }
     $commit = "unknown"

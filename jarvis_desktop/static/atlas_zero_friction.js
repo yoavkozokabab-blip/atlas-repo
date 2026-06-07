@@ -77,7 +77,9 @@ function zfSessionPrefix() {
 function zfClipboardBody(kind) {
   const server = zfServerExportText(kind);
   if (!server) return zfLegacyFullPromptBody(kind);
-  return zfStripClipboardMetadata(server);
+  const stripped = zfStripClipboardMetadata(server);
+  if (stripped.trim()) return stripped;
+  return zfLegacyFullPromptBody(kind);
 }
 
 function zfTrustBlock(result) {
@@ -237,19 +239,25 @@ function composeAiPrompt(tool, kind) {
 }
 
 /* ---------------- actions ---------------- */
-function copyForAi(tool, kind) {
+async function copyForAi(tool, kind) {
   if (!zfHasResult(kind)) {
     if (typeof toast === "function") toast("Generate a result first", "error");
-    return;
+    return false;
   }
   const text = composeAiPrompt(tool, kind);
+  if (!String(text || "").trim()) {
+    if (typeof toast === "function") toast("Export is empty — try generating the plan again", "error");
+    return false;
+  }
+  let ok = false;
   if (typeof copyText === "function") {
-    copyText(text, `Copied prompt for ${ZF_TOOL_LABEL[tool] || tool}`);
-    if (typeof toast === "function") {
-      toast("Paste into Claude and ask it to implement step by step", "success");
-    }
+    ok = await copyText(text, `Copied prompt for ${ZF_TOOL_LABEL[tool] || tool}`);
+  }
+  if (ok && typeof toast === "function") {
+    toast("Paste into Claude and ask it to implement step by step", "success");
   }
   if (typeof applyExportNavVisibility === "function") applyExportNavVisibility();
+  return ok;
 }
 
 function downloadAiMarkdown(kind) {
