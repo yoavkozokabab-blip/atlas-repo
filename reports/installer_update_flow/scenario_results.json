@@ -1,0 +1,9 @@
+﻿{
+    "real_detect_and_autoclose_when_running":  true,
+    "real_installs_when_absent":  true,
+    "scenario_atlas_running":  true,
+    "scenario_atlas_idle":  true,
+    "scenario_service_active":  true,
+    "scenario_browser_open":  true,
+    "browser_open_no_atlas_not_blocked":  true
+}

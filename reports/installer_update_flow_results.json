@@ -1,0 +1,64 @@
+{
+  "task": "installer_running_application_update_flow",
+  "date": "2026-06-07",
+  "toolchain": "Inno Setup 6.7.3",
+  "code_changes": true,
+  "installer": {
+    "path": "packaging/installer/output/Atlas_Setup.exe",
+    "mirror_path": "installer/output/Atlas_Setup.exe",
+    "size_bytes": 12232138,
+    "size_mb": 11.67,
+    "sha256": "5F78090BA6106779ABA186A781A0BAEC523DF01CC401B1FC5D83899EA1FF63F3",
+    "rebuilt_after_ux_changes": true,
+    "rebuilt_at": "2026-06-07T20:45:38",
+    "mirror_sha256_matches": true
+  },
+  "dialog": {
+    "title": "Atlas is currently running",
+    "body": "Atlas must be closed before the update can continue.",
+    "actions": ["Close Atlas automatically", "Retry", "Open Task Manager instructions", "Cancel"],
+    "close_failed_body": "We couldn't close Atlas automatically. (manual steps + Process name: Atlas.exe + Retry default)",
+    "no_generic_error_language": true
+  },
+  "implementation": {
+    "detection": "WMI Win32_Process WHERE Name='Atlas.exe' (tasklist fallback)",
+    "graceful_close": "taskkill /IM Atlas.exe",
+    "force_close": "taskkill /F /T /IM Atlas.exe",
+    "hook": "PrepareToInstall (runs before files are copied)",
+    "silent_mode": "WizardSilent() -> auto-close without UI; abort cleanly if close fails",
+    "inno_defaults_disabled": ["CloseApplications=no", "RestartApplications=no"],
+    "dialog_form": "custom TSetupForm via CreateNew"
+  },
+  "screenshots": {
+    "atlas_is_currently_running": "reports/installer_update_flow/01_atlas_running_dialog.png",
+    "we_couldnt_close_atlas_automatically": "reports/installer_update_flow/02_close_failed_dialog.png",
+    "task_manager_instructions": "reports/installer_update_flow/03_task_manager_instructions.png"
+  },
+  "verification": {
+    "overall": "PASS",
+    "checks": {
+      "real_detect_and_autoclose_when_running": true,
+      "real_installs_when_absent": true,
+      "scenario_atlas_running": true,
+      "scenario_atlas_idle": true,
+      "scenario_service_active": true,
+      "scenario_browser_open": true,
+      "browser_open_no_atlas_not_blocked": true
+    },
+    "atlas_running_blocks_unsafe_install": "PASS — running Atlas.exe is closed before any files are written; the live process is never overwritten",
+    "atlas_not_running_installs_successfully": "PASS — exit 0, Atlas.exe written",
+    "idle_atlas_detected": "PASS",
+    "service_worker_detected": "PASS — bound TCP port 8779 freed after close",
+    "browser_open_no_false_block_when_atlas_absent": "PASS — Atlas.exe not detected, install not blocked"
+  },
+  "files_changed": [
+    "packaging/installer/Atlas.iss",
+    "packaging/installer/running_app_flow.iss",
+    "packaging/installer/_verify/running_app_flow_test.iss",
+    "scripts/capture_installer_dialogs.ps1",
+    "scripts/verify_installer_update_flow.ps1",
+    "packaging/installer/output/Atlas_Setup.exe",
+    "installer/output/Atlas_Setup.exe"
+  ],
+  "verdict": "ready_to_distribute_to_beta_users"
+}

@@ -27,6 +27,11 @@ Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern
 PrivilegesRequired=lowest
+; Installer-update flow: suppress Inno's default "files in use" / Restart Manager
+; dialogs and generic technical errors. A dedicated [Code] flow (PrepareToInstall)
+; detects and closes a running Atlas with beta-friendly messaging instead.
+CloseApplications=no
+RestartApplications=no
 VersionInfoVersion={#MyAppVersionInfo}
 VersionInfoProductVersion={#MyAppVersionInfo}
 VersionInfoCompany={#MyAppPublisher}
@@ -54,3 +59,29 @@ Filename: "{app}\{#MyAppExeName}"; Description: "Launch {#MyAppName}"; Flags: no
 [UninstallDelete]
 Type: filesandordirs; Name: "{userappdata}\.jarvis_desktop"
 Type: filesandordirs; Name: "{localappdata}\Atlas\desktop_data"
+
+[Code]
+{ ============================================================================
+  Running-application update flow (beta-friendly).
+
+  Detects a running Atlas before files are copied and shows a dedicated dialog
+  ("Atlas is currently running") with four actions: close automatically, retry,
+  open Task Manager instructions, or cancel. If automatic close fails, the same
+  dialog explains how to close Atlas manually and shows the exact process name.
+  No generic installer "file in use" error is ever shown.
+  ============================================================================ }
+
+#include "running_app_flow.iss"
+
+function PrepareToInstall(var NeedsRestart: Boolean): String;
+begin
+  Result := '';
+  if IsAtlasRunning() then
+  begin
+    if not EnsureAtlasClosed() then
+      { User cancelled. Return a clear, non-technical instruction (shown instead
+        of any generic "file in use" error) and stop the update cleanly. }
+      Result := 'Update paused: Atlas is still running.' + #13#10 + #13#10 +
+                'Please close Atlas, then run this installer again.';
+  end;
+end;
