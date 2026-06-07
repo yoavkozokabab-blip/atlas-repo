@@ -37,7 +37,7 @@ def test_landing_value_proposition_under_the_fold():
     assert "Join the Waitlist" in html or "Join Waitlist" in html
     assert "Watch the Demo" in html or "demo.html" in html
     # the 5 required features
-    for feat in ("Repository Intelligence", "Dependency Universe", "Impact Analysis",
+    for feat in ("Repository Intelligence", "Dependency Universe", "What Breaks",
                  "Architecture Risk Detection", "Cursor Export"):
         assert feat in html, f"missing feature: {feat}"
     # required sections
@@ -70,7 +70,7 @@ def test_demo_page_has_video_and_chapters():
 
 def test_gallery_has_all_five_surfaces():
     html = _read("gallery.html")
-    for surface in ("Dependency Universe", "AI Copilot", "Impact Analysis",
+    for surface in ("Dependency Universe", "AI Copilot", "What Breaks",
                     "Architecture Risk", "Cursor Export"):
         assert surface in html, f"gallery missing {surface}"
     assert "real-shot" in html  # supports dropping in real PNGs

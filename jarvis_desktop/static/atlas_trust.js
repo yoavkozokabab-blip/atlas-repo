@@ -1,11 +1,10 @@
 "use strict";
-/* Phase 157 — trust signals, beginner/advanced output, and SmartScreen guidance.
+/* trust signals, output detail level, and SmartScreen guidance.
  *
  * UI-only. No changes to intelligence, semantic resolver, benchmarks, billing,
- * or the marketing site. Every Change Plan / Investigation / What-breaks result
+ * or the marketing site. Every Change Plan / Debug / What-breaks result
  * gets a consistent "Why Atlas believes this" block (evidence + confidence +
- * reason), and the user can switch between a plain-English Beginner view and a
- * full-detail Advanced view.
+ * reason), and the user can switch between Simple and Full detail output.
  */
 
 const OUTPUT_MODE_KEY = "atlas_output_mode_v157";
@@ -33,7 +32,7 @@ function setOutputMode(mode) {
   try { localStorage.setItem(OUTPUT_MODE_KEY, next); } catch (e) {}
   applyOutputMode(next);
   if (typeof toast === "function") {
-    toast(next === "advanced" ? "Advanced view — full details" : "Beginner view — plain English", "success");
+    toast(next === "advanced" ? "Full detail view" : "Simple view", "success");
   }
 }
 
@@ -152,7 +151,7 @@ function trustBlock(kind) {
       <div class="trust-ev-row"><span class="trust-ev-label">Symbols</span><div class="taglist">${_tagList(ev.symbols, "sym")}</div></div>
       <div class="trust-ev-row"><span class="trust-ev-label">References</span><div class="taglist">${_tagList(ev.references)}</div></div>
     </div>
-    <p class="trust-ev-hint beginner-only muted tiny">Switch to <b>Advanced</b> (top bar) to see the exact files, symbols, and references behind this result.</p>
+    <p class="trust-ev-hint beginner-only muted tiny">Switch to <b>Full detail</b> (top bar) to see the exact files, symbols, and references behind this result.</p>
   </div>`;
 }
 

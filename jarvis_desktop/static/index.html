@@ -174,7 +174,7 @@
         <h4 class="success-actions-title">Suggested next steps</h4>
         <ul class="clean" id="scanSuccessActions"></ul>
         <div class="success-buttons">
-          <button class="btn primary big" onclick="goToFirstBuildPlan()">Generate your first Change Plan</button>
+          <button class="btn primary big" onclick="goToFirstBuildPlan()">Create your first Change Plan</button>
           <button class="btn ghost" onclick="go('center')">Explore Codebase Map</button>
           <button class="btn ghost" onclick="focusCopilot()">Ask Copilot</button>
         </div>
@@ -323,12 +323,12 @@
       <p class="muted tiny" style="margin:-8px 4px 14px">Describe what you want to add or change. Atlas lists affected files, implementation order, and tests — then sends a ready prompt to your AI coding tool.</p>
       <div id="readyState"></div>
       <div id="firstBuildBanner" class="beta-notice glass" style="display:none">
-        <b>Your first Change Plan</b> — keep the example below or type your own feature, then click <b>Generate Change Plan</b>.
+        <b>Your first Change Plan</b> — keep the example below or type your own feature, then click <b>Create Change Plan</b>.
       </div>
       <div class="io glass">
         <label>What do you want to add or change?</label>
         <textarea id="buildRequest" rows="4" placeholder="e.g. Add user authentication&#10;Add request rate limiting&#10;Add audit logging"></textarea>
-        <button class="btn primary" onclick="runChangePlan()">Generate Change Plan</button>
+        <button class="btn primary" onclick="runChangePlan()">Create Change Plan</button>
       </div>
       <div class="workflow-toolbar glass" id="buildToolbar" style="display:none">
         <button class="btn small ghost" type="button" onclick="downloadWorkflowMarkdownBundle()">Download Markdown</button>

@@ -12,7 +12,7 @@ function goToFirstBuildPlan() {
   setTimeout(function () {
     field && field.focus();
     if (typeof toast === "function") {
-      toast("Describe your change, then click Generate Change Plan", "success");
+      toast("Describe your change, then click Create Change Plan", "success");
     }
   }, 200);
 }
@@ -32,7 +32,7 @@ function promptFirstBuildPlanAfterScan(scan) {
   try { done = localStorage.getItem(FIRST_BUILD_KEY) === "1"; } catch (e) {}
   if (done) return;
   if (typeof toast === "function") {
-    toast("Next: click \u201cGenerate your first Change Plan\u201d", "success");
+    toast("Next: click \u201cCreate your first Change Plan\u201d", "success");
   }
 }
 

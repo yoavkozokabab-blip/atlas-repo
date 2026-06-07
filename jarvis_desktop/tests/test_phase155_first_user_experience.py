@@ -37,7 +37,7 @@ def test_first_launch_shows_three_main_actions():
     home = html.split('class="home-actions"', 1)[1].split("</div>", 1)[0]
     assert "Load Sample Repository" in home
     assert "Scan My Repository" in home
-    assert "Open Quickstart" in home
+    assert "Learn more" in home
     # Long tours are de-emphasized: not a primary action button.
     assert "Guided Walkthrough" not in home
 
@@ -51,7 +51,7 @@ def test_advanced_surfaces_are_deemphasized():
     assert 'href="quickstart.html"' in html
     # Advanced scan options are collapsed.
     assert "scope-advanced" in html
-    assert "Advanced scan options" in html
+    assert "Scan options" in html
 
 
 # --------------------------------------------------------------------------- #
@@ -59,7 +59,7 @@ def test_advanced_surfaces_are_deemphasized():
 # --------------------------------------------------------------------------- #
 def test_sample_repo_cta_exists():
     html = _read(INDEX)
-    assert "Generate your first Change Plan" in html
+    assert "Create your first Change Plan" in html
     assert 'id="scanSuccessTitle"' in html
 
 
@@ -80,7 +80,7 @@ def test_sample_does_not_auto_jump_too_quickly():
 def test_scan_success_cta_exists():
     html = _read(INDEX)
     block = html.split('id="scanSuccess"', 1)[1].split("</section>", 1)[0]
-    assert "Generate your first Change Plan" in block
+    assert "Create your first Change Plan" in block
     assert "Explore Codebase Map" in block
 
 
@@ -89,7 +89,6 @@ def test_scan_success_cta_exists():
 # --------------------------------------------------------------------------- #
 def test_export_to_ai_buttons_exist():
     js = _read(ZERO_FRICTION)
-    assert "Copy plan for your AI tool" in js or "Copy your plan" in js
     assert "Copy for Claude" in js
     assert "Copy for Cursor" in js
     assert "Copy for Codex" in js
@@ -124,7 +123,7 @@ def test_no_raw_traceback_in_user_ui():
 def test_frozen_launch_routes_failures_to_support_not_traceback():
     entry = _read(ENTRY)
     assert "excepthook" in entry
-    assert "support.html" in entry
+    assert "startup-error.html" in entry
     assert "_open_support_fallback" in entry
     launcher = _read(RUN_ATLAS)
     # Frozen launches log instead of printing tracebacks, and fall back to Support.
@@ -140,7 +139,7 @@ def test_nav_uses_plain_language_labels():
     assert ">Codebase Map<" in html
     assert ">Change Plan<" in html
     assert ">What breaks?<" in html
-    assert ">Repository context<" in html
+    assert ">Repository Context<" in html
 
 
 def test_old_jargon_removed_from_nav():

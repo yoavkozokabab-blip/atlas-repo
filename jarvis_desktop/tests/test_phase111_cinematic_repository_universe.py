@@ -131,12 +131,12 @@ def test_frontend_universe_markers_exist():
     universe = (static / "universe.js").read_text(encoding="utf-8")
     html = (static / "index.html").read_text(encoding="utf-8")
     for needle in (
-        "JARVIS_UNIVERSE",
+        "ATLAS_UNIVERSE",
         "startRepositoryTour",
         "exportGraphPNG",
         "exportGraphSVG",
         "moduleInspector",
-        "Health Cockpit",
+        "System Health",
         "timelinePanel",
     ):
         assert needle in app or needle in universe or needle in html, needle

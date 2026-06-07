@@ -447,7 +447,7 @@ function renderScanSuccess(scan) {
     : `<span class="muted">No high-coupling modules found.</span>`;
 
   $("scanSuccessActions").innerHTML = (scan.suggested_next_actions || []).map(a => `<li>${a}</li>`).join("") ||
-    "<li>Generate your first Change Plan — describe a feature you want to add</li><li>Explore the Codebase Map</li>";
+    "<li>Create your first Change Plan — describe a feature you want to add</li><li>Explore the Codebase Map</li>";
   if (typeof renderScanReliabilityNotice === "function") renderScanReliabilityNotice(scan);
 
   // Populate the "What breaks?" file picker with top scanned files

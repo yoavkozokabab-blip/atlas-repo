@@ -59,7 +59,7 @@ function renderScanHealth(health) {
     <ul class="clean tiny">
       <li>Modules: ${health.modules ?? "—"}</li>
       <li>Edges: ${health.edges ?? "—"}</li>
-      <li>Graph quality: ${esc(health.graph_quality || "—")}</li>
+      <li>Scan quality: ${esc(typeof atlasFriendlyGraphHealth === "function" ? atlasFriendlyGraphHealth(health.graph_quality) : (health.graph_quality || "—"))}</li>
       <li>Scan duration: ${health.scan_duration_seconds != null ? health.scan_duration_seconds + "s" : "—"}</li>
     </ul>`;
 }
@@ -138,6 +138,9 @@ function supportResetOnboarding() {
     "atlas_onboarding_v2_done",
     "atlas_guided_walkthrough_v141_done",
     "atlas_workflow_examples_seen",
+    "atlas_first_build_plan_done",
+    "atlas_ready_state_shown_v155",
+    "atlas_output_mode_v157",
   ];
   keys.forEach(k => { try { localStorage.removeItem(k); } catch (e) {} });
   setActionMsg("Onboarding and welcome screens reset. Reload Atlas home to see them again.");
