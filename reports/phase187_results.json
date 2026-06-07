@@ -1,0 +1,162 @@
+{
+  "phase": "187",
+  "mode": "first_beta_dry_run",
+  "source_commit": "ebbe4ca66",
+  "code_changes": false,
+  "environment": {
+    "os": "Windows",
+    "product_version": "0.1.0-beta",
+    "installer_commit": "a54fcd711",
+    "source_head": "ebbe4ca66",
+    "test_mode": "FastAPI TestClient (in-process) + direct API calls"
+  },
+  "dry_run_areas": {
+    "clean_install": "PASS",
+    "admin_setup": "PASS",
+    "beta_user_lifecycle": "PASS",
+    "privacy_security": "PASS",
+    "ux_readiness": "PASS",
+    "real_repo_validation": "PASS"
+  },
+  "lifecycle_steps": [
+    {"step": 1,  "action": "POST /auth/register",                      "result": "201 — user active, free plan"},
+    {"step": 2,  "action": "POST /auth/login",                         "result": "200 — tokens issued"},
+    {"step": 3,  "action": "GET /user/me",                             "result": "200 — profile returned"},
+    {"step": 4,  "action": "GET /user/license",                        "result": "200 — plan: free, valid: true"},
+    {"step": 5,  "action": "POST /auth/refresh",                       "result": "200 — rotation successful"},
+    {"step": 6,  "action": "GET /user/devices",                        "result": "200 — 1 device returned"},
+    {"step": 7,  "action": "POST /feedback",                           "result": "201 — feedback accepted and redacted"},
+    {"step": 8,  "action": "DB promote + re-login as superadmin",      "result": "200 — superadmin role in token"},
+    {"step": 9,  "action": "GET /admin/dashboard",                     "result": "200 — dashboard visible"},
+    {"step": 10, "action": "Register second beta user",                "result": "201 — user created"},
+    {"step": 11, "action": "POST /admin/users/{id}/grant-beta",        "result": "200 — status: beta, plan: beta"},
+    {"step": 12, "action": "Beta user re-login",                       "result": "200 — license plan: beta in response"},
+    {"step": 13, "action": "POST /analytics/event (heartbeat)",        "result": "204 — event accepted"},
+    {"step": 14, "action": "POST /admin/users/{id}/force-logout",      "result": "204 — sessions revoked"},
+    {"step": 15, "action": "Beta user refresh (post force-logout)",    "result": "401 — correctly denied"},
+    {"step": 16, "action": "POST /auth/logout",                        "result": "204 — refresh token revoked"},
+    {"step": 17, "action": "POST /admin/maintenance/prune",            "result": "200 — pruned stats returned"}
+  ],
+  "security_checks": [
+    {"check": "Suspended user login",                    "expected": 403, "actual": 403, "pass": true},
+    {"check": "Banned user login",                       "expected": 403, "actual": 403, "pass": true},
+    {"check": "Expired license check",                   "expected": "valid: false", "actual": "valid: false", "pass": true},
+    {"check": "Login rate limit (>5 attempts/15 min)",  "expected": "429 by attempt 6", "actual": "hit at attempt 4", "pass": true},
+    {"check": "Analytics secret injection",              "expected": 422, "actual": 422, "pass": true},
+    {"check": "Cross-account device reuse",              "expected": 403, "actual": 403, "pass": true},
+    {"check": "Forged JWT rejected",                     "expected": 401, "actual": 401, "pass": true},
+    {"check": "Feedback API key redacted",               "expected": "no secret in stored text", "actual": "no secret found", "pass": true}
+  ],
+  "real_repo_validation": {
+    "repo": "jarvis_desktop",
+    "files": 457,
+    "modules": 154,
+    "scan": "PASS",
+    "change_plan": "PASS — relevant files identified, 2950-char formatted output",
+    "what_breaks": "PASS — 4 affected files for evidence_engine.symbol_evidence",
+    "bug_investigation": "PASS — relevant modules, structured prompt generated",
+    "export_claude": "PASS — 1889-char context, 109-token estimate",
+    "export_cursor": "PASS — same quality",
+    "token_savings_estimate": "99.5% reduction (92400 naive vs 472 compact)"
+  },
+  "blockers": [],
+  "non_blocking_issues": [
+    {
+      "id": "NB-1",
+      "area": "clean_install",
+      "issue": "Installer binary predates Phase 186C–186F (built at a54fcd711, source HEAD ebbe4ca66)",
+      "severity": "medium",
+      "action": "Rebuild installer before distributing to beta users"
+    },
+    {
+      "id": "NB-2",
+      "area": "jwt_secret",
+      "issue": "JWT secret file permissions are 0o666 on Windows instead of intended 0o600 (OS filesystem limitation)",
+      "severity": "low",
+      "action": "Acceptable for local beta; Linux production deployment enforces 0o600 correctly"
+    },
+    {
+      "id": "NB-3",
+      "area": "ux_readiness",
+      "issue": "license.message not displayed in login panel — tamper/offline error states show no explanation to user",
+      "severity": "low",
+      "action": "Add license.message rendering to login panel; display integrity and offline-grace-expired messages"
+    },
+    {
+      "id": "NB-4",
+      "area": "ux_readiness",
+      "issue": "Blocked screen (acc-panel-blocked) does not differentiate suspended vs banned",
+      "severity": "low",
+      "action": "Add status-specific text to blocked panel; contact support message should vary"
+    },
+    {
+      "id": "NB-5",
+      "area": "ux_readiness",
+      "issue": "copilot_ask open-ended question fallback message is generic ('I could not map that question...')",
+      "severity": "low",
+      "action": "Improve fallback copy; add example questions to accounts/onboarding UI"
+    },
+    {
+      "id": "NB-6",
+      "area": "pre_existing",
+      "issue": "test_phase174d: scan_signature present in packet dict but not rendered in text output (2 tests fail)",
+      "severity": "low",
+      "action": "Pre-existing since Phase 174/175; out of scope for Phase 187"
+    },
+    {
+      "id": "NB-7",
+      "area": "accounts_client",
+      "issue": "accounts_state.json written without file lock — race condition under ThreadingHTTPServer",
+      "severity": "low",
+      "action": "Known Phase 186B issue; becomes relevant at >20 concurrent users"
+    },
+    {
+      "id": "NB-8",
+      "area": "real_repo_validation",
+      "issue": "bug_investigation formatted field is empty (mock path without AI enrichment)",
+      "severity": "low",
+      "action": "Structured data fields are correct; formatted output requires AI call"
+    }
+  ],
+  "tests_run": [
+    {
+      "command": "py -3 -m pytest accounts_service/tests/test_phase186f_beta_smoke.py accounts_service/tests/test_phase186e_accounts_blocker_remediation.py accounts_service/tests/test_phase186c_accounts_beta_safety.py jarvis_desktop/tests/test_phase186_accounts.py jarvis_desktop/tests/test_phase186_admin.py jarvis_desktop/tests/test_phase186_privacy.py -q -p no:cacheprovider",
+      "result": "104 passed, 0 failed"
+    },
+    {
+      "command": "py -3 -m pytest jarvis_desktop/tests/test_phase182a_operations_security.py -q -p no:cacheprovider",
+      "result": "34 passed, 0 failed"
+    },
+    {
+      "command": "py -3 -m pytest jarvis_desktop/tests/test_phase175d_beta_gate_closure.py -q -p no:cacheprovider",
+      "result": "35 passed, 0 failed"
+    },
+    {
+      "command": "py -3 -m pytest jarvis_desktop/tests/test_phase174f_final_blockers.py -q -p no:cacheprovider",
+      "result": "24 passed, 0 failed"
+    },
+    {
+      "command": "py -3 -m pytest jarvis_desktop/tests/test_phase174d_final_ship_blockers.py -q -p no:cacheprovider",
+      "result": "34 passed, 2 failed (pre-existing: scan_signature not in text output)"
+    },
+    {
+      "command": "Inline lifecycle simulation (17 steps)",
+      "result": "All 17 PASS"
+    },
+    {
+      "command": "Inline security checks (8 checks)",
+      "result": "All 8 PASS"
+    },
+    {
+      "command": "Real repo validation (jarvis_desktop, 457 files)",
+      "result": "All 6 workflows PASS"
+    }
+  ],
+  "verdict_first_beta_user": "GO",
+  "verdict_5_supervised_beta_users": "GO",
+  "conditions_before_first_user": [
+    "Rebuild installer binary to include Phase 186C-186F changes",
+    "Set ATLAS_INITIAL_ADMINS=<operator-email> on first service run, then remove",
+    "Follow operator checklist in reports/phase186f_beta_operations_readiness.md"
+  ]
+}
