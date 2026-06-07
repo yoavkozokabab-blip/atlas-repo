@@ -2,7 +2,8 @@
 from __future__ import annotations
 
 import os
-import secrets
+
+from .jwt_secret import load_jwt_secret
 
 # ── Database ───────────────────────────────────────────────────────────────
 # SQLite for development; set DATABASE_URL to a PostgreSQL URL in production.
@@ -12,9 +13,8 @@ DATABASE_URL: str = os.environ.get(
 )
 
 # ── JWT ────────────────────────────────────────────────────────────────────
-# Generate a random secret on first run; in production set ATLAS_JWT_SECRET env var.
-_default_secret = secrets.token_hex(32)
-JWT_SECRET: str = os.environ.get("ATLAS_JWT_SECRET", _default_secret)
+# Prefer ATLAS_AUTH_JWT_SECRET; otherwise load/create a persisted local secret.
+JWT_SECRET: str = load_jwt_secret()
 JWT_ALGORITHM: str = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
 REFRESH_TOKEN_EXPIRE_DAYS: int = 30

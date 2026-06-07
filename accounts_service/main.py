@@ -13,7 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .config import CORS_ORIGINS, SERVICE_HOST, SERVICE_PORT
 from .database import init_db
-from .routers import admin, analytics, auth, users
+from .routers import admin, analytics, auth, feedback, users
 
 app = FastAPI(
     title="Atlas Accounts Service",
@@ -35,6 +35,7 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(analytics.router)
+app.include_router(feedback.router)
 app.include_router(admin.router)
 
 

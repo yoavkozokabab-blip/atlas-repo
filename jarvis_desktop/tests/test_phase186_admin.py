@@ -37,11 +37,13 @@ from fastapi.testclient import TestClient
 from accounts_service.main import app
 from accounts_service.database import Base, engine, SessionLocal
 from accounts_service import models
+from accounts_service.rate_limit import reset_rate_limit_store
 
 # ── Fixtures ──────────────────────────────────────────────────────────────────
 
 @pytest.fixture(scope="module", autouse=True)
 def setup_db():
+    reset_rate_limit_store()
     Base.metadata.create_all(bind=engine)
     yield
     Base.metadata.drop_all(bind=engine)
@@ -53,6 +55,11 @@ def setup_db():
                 pass
 
 
+@pytest.fixture(autouse=True)
+def _reset_rate_limits():
+    reset_rate_limit_store()
+
+
 @pytest.fixture(scope="module")
 def client():
     with TestClient(app) as c:
@@ -60,7 +67,7 @@ def client():
 
 
 def _rand_email():
-    return f"admin_{secrets.token_hex(5)}@test.dev"
+    return f"admin_{secrets.token_hex(5)}@example.com"
 
 
 def _device():
@@ -87,12 +94,13 @@ def _make_admin(email: str, role: str = "admin"):
 
 def _admin_token(client) -> str:
     """Create an admin user and return its access token."""
-    reg, email, _ = _register(client, email=f"admin_root_{secrets.token_hex(4)}@test.dev")
+    reg, email, device = _register(client, email=f"admin_root_{secrets.token_hex(4)}@example.com")
     _make_admin(email, role="superadmin")
     login = client.post("/auth/login", json={
-        "email": email, "password": "TestPass1!", "device_id": _device(),
+        "email": email, "password": "TestPass1!", "device_id": device,
         "app_version": "0.1.0", "platform": "test"
     })
+    assert login.status_code == 200, login.text
     return login.json()["access_token"]
 
 
@@ -137,7 +145,7 @@ class TestUserList:
 
     def test_list_users_search(self, client, admin_hdr):
         # Create a uniquely named user then search for them
-        unique_email = f"unique_{secrets.token_hex(8)}@findme.test"
+        unique_email = f"unique_{secrets.token_hex(8)}@findme.example.com"
         _register(client, email=unique_email)
         res = client.get(f"/admin/users?q=unique_{unique_email.split('_')[1][:8]}", headers=admin_hdr)
         assert res.status_code == 200
@@ -185,12 +193,13 @@ class TestUserActions:
 
     def test_patch_ban_requires_superadmin(self, client):
         # Create an admin (not superadmin)
-        reg, email, _ = _register(client, email=f"plain_admin_{secrets.token_hex(4)}@test.dev")
+        reg, email, device = _register(client, email=f"plain_admin_{secrets.token_hex(4)}@example.com")
         _make_admin(email, role="admin")  # regular admin, not superadmin
         login = client.post("/auth/login", json={
-            "email": email, "password": "TestPass1!", "device_id": _device(),
+            "email": email, "password": "TestPass1!", "device_id": device,
             "app_version": "0.1.0", "platform": "test"
         })
+        assert login.status_code == 200, login.text
         admin_token = login.json()["access_token"]
         hdr = {"Authorization": f"Bearer {admin_token}"}
 
@@ -202,12 +211,13 @@ class TestUserActions:
         assert res.status_code == 403
 
     def test_patch_role_requires_superadmin(self, client):
-        reg, email, _ = _register(client, email=f"plain_a2_{secrets.token_hex(4)}@test.dev")
+        reg, email, device = _register(client, email=f"plain_a2_{secrets.token_hex(4)}@example.com")
         _make_admin(email, role="admin")
         login = client.post("/auth/login", json={
-            "email": email, "password": "TestPass1!", "device_id": _device(),
+            "email": email, "password": "TestPass1!", "device_id": device,
             "app_version": "0.1.0", "platform": "test"
         })
+        assert login.status_code == 200, login.text
         hdr = {"Authorization": f"Bearer {login.json()['access_token']}"}
 
         reg2, _, _ = _register(client)

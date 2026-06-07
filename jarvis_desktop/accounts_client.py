@@ -97,23 +97,29 @@ def _call(
 
 # ── Token management ──────────────────────────────────────────────────────────
 
-def _token_payload(token: str) -> Dict[str, Any]:
-    """Decode JWT payload (no signature check — service already validated)."""
+def _extract_access_token_exp(access_token: str) -> Optional[float]:
+    """Read exp from a freshly issued access token (server response only)."""
     try:
-        parts = token.split(".")
+        parts = access_token.split(".")
         if len(parts) != 3:
-            return {}
+            return None
         import base64
         padded = parts[1] + "=" * (-len(parts[1]) % 4)
-        return json.loads(base64.urlsafe_b64decode(padded).decode())
+        payload = json.loads(base64.urlsafe_b64decode(padded).decode())
+        exp = payload.get("exp")
+        return float(exp) if exp is not None else None
     except Exception:
-        return {}
+        return None
 
 
-def _is_access_token_valid(access_token: str) -> bool:
-    payload = _token_payload(access_token)
-    exp = payload.get("exp", 0)
-    return time.time() < (exp - _ACCESS_TOKEN_BUFFER_SECONDS)
+def _is_access_token_valid(access_token: str, state: Dict[str, Any]) -> bool:
+    exp = state.get("access_token_expires_at")
+    if exp is None:
+        return False
+    try:
+        return time.time() < (float(exp) - _ACCESS_TOKEN_BUFFER_SECONDS)
+    except (TypeError, ValueError):
+        return False
 
 
 def get_valid_access_token() -> Optional[str]:
@@ -122,7 +128,7 @@ def get_valid_access_token() -> Optional[str]:
     access_token = state.get("access_token")
     refresh_token = state.get("refresh_token")
 
-    if access_token and _is_access_token_valid(access_token):
+    if access_token and _is_access_token_valid(access_token, state):
         return access_token
 
     if not refresh_token:
@@ -147,6 +153,11 @@ def _persist_token_response(result: Dict[str, Any], state: Optional[Dict] = None
         state = _load_state()
     if "access_token" in result:
         state["access_token"] = result["access_token"]
+        exp = _extract_access_token_exp(result["access_token"])
+        if exp is not None:
+            state["access_token_expires_at"] = exp
+        else:
+            state.pop("access_token_expires_at", None)
     if "refresh_token" in result:
         state["refresh_token"] = result["refresh_token"]
     if "user" in result and result["user"]:
@@ -248,6 +259,7 @@ def logout() -> None:
     # Clear credentials regardless of server response
     state.pop("access_token", None)
     state.pop("refresh_token", None)
+    state.pop("access_token_expires_at", None)
     state.pop("user", None)
     state.pop("license", None)
     state.pop("license_checked_at", None)

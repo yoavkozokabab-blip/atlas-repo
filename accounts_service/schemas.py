@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional, List
+from typing import Literal, Optional, List
 from pydantic import BaseModel, EmailStr, field_validator, ConfigDict
 
 
@@ -95,6 +95,8 @@ class LicenseCheckResponse(BaseModel):
 
 # ── Usage/analytics ────────────────────────────────────────────────────────
 class UsageEventRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     device_id: str
     event_type: str
     app_version: str = "unknown"
@@ -137,13 +139,20 @@ class AdminUserOut(BaseModel):
 
 
 class AdminUserUpdate(BaseModel):
-    status: Optional[str] = None
-    role: Optional[str] = None
+    status: Optional[Literal["pending", "active", "beta", "suspended", "banned", "expired"]] = None
+    role: Optional[Literal["user", "admin", "superadmin"]] = None
     beta_flag: Optional[bool] = None
-    plan: Optional[str] = None
+    plan: Optional[Literal["beta", "free", "pro", "enterprise"]] = None
     max_devices: Optional[int] = None
     expires_at: Optional[datetime] = None
     admin_notes: Optional[str] = None
+
+    @field_validator("max_devices")
+    @classmethod
+    def max_devices_positive(cls, v: Optional[int]) -> Optional[int]:
+        if v is not None and v < 1:
+            raise ValueError("max_devices must be at least 1")
+        return v
 
 
 class AdminDashboard(BaseModel):
@@ -172,6 +181,22 @@ class AdminAuditEntry(BaseModel):
 
 
 # ── Feedback ───────────────────────────────────────────────────────────────
+class FeedbackCreate(BaseModel):
+    category: str = "general"
+    message: str
+    contact_email: Optional[EmailStr] = None
+
+    @field_validator("message")
+    @classmethod
+    def message_length(cls, v: str) -> str:
+        text = (v or "").strip()
+        if len(text) < 3:
+            raise ValueError("Message must be at least 3 characters")
+        if len(text) > 4000:
+            raise ValueError("Message too long")
+        return text
+
+
 class FeedbackOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 

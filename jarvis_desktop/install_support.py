@@ -521,6 +521,24 @@ def _strip_analytics_payloads(text: str) -> str:
     return "\n".join(out_lines)
 
 
+def _redact_accounts_state_blob(text: str) -> str:
+    """Redact tokens if accounts_state.json is ever included in support output."""
+    return _redact_support_text(text)
+
+
+def _collect_accounts_state_redacted() -> str:
+    """Return redacted accounts state for support bundles (never raw tokens)."""
+    path = os.path.join(data_dir(), "accounts_state.json")
+    if not os.path.isfile(path):
+        return ""
+    try:
+        with open(path, encoding="utf-8") as fh:
+            raw = fh.read()
+    except OSError:
+        return ""
+    return _redact_accounts_state_blob(raw)
+
+
 def collect_error_logs() -> Dict[str, str]:
     logs: Dict[str, str] = {}
     base = data_dir()
@@ -548,6 +566,9 @@ def export_support_bundle() -> Dict[str, Any]:
             "evidence_coverage": env["diagnostics"].get("evidence_coverage"),
         }
     logs = {name: _redact_support_text(text) for name, text in collect_error_logs().items()}
+    accounts_state = _collect_accounts_state_redacted()
+    if accounts_state:
+        logs["accounts_state_redacted.json"] = accounts_state
     diag = _sanitize_support_payload(env.get("diagnostics") or {})
     env_blob = _sanitize_support_payload(env.get("environment") or {})
     scan_meta = _sanitize_support_payload(scan_meta)

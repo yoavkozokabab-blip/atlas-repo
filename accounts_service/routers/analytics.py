@@ -35,7 +35,7 @@ _SECRET_PATTERN = re.compile(
 class PrivacyValidator:
     """Verify that no string field in the analytics payload carries sensitive data."""
 
-    ALLOWED_STRING_FIELDS = {"event_type", "app_version", "date"}
+    ALLOWED_STRING_FIELDS = {"event_type", "app_version", "date", "device_id"}
 
     @staticmethod
     def validate(payload: dict) -> None:
@@ -49,6 +49,8 @@ class PrivacyValidator:
                 raise ValueError("event_type too long")
             if key == "app_version" and len(value) > 32:
                 raise ValueError("app_version too long")
+            if key == "device_id" and (len(value) > 64 or not re.fullmatch(r"[a-f0-9]+", value, re.I)):
+                raise ValueError("device_id must be a short hex identifier")
             if _SECRET_PATTERN.search(value):
                 raise ValueError(f"Field {key!r} appears to contain sensitive data")
 

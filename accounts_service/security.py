@@ -11,8 +11,8 @@ _lib = os.path.join(os.path.dirname(__file__), ".lib")
 if _lib not in sys.path:
     sys.path.insert(0, _lib)
 
+import bcrypt
 import jwt
-from passlib.context import CryptContext
 
 from .config import (
     JWT_SECRET,
@@ -21,19 +21,19 @@ from .config import (
     REFRESH_TOKEN_EXPIRE_DAYS,
 )
 
-# ── Password hashing (bcrypt via passlib) ──────────────────────────────────
-_pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# Precomputed hash for constant-time login when email is unknown.
+_DUMMY_HASH = bcrypt.hashpw(b"dummy_constant_time_check", bcrypt.gensalt()).decode("utf-8")
 
 
 def hash_password(plain: str) -> str:
     """Hash a plaintext password. Never log the input."""
-    return _pwd_context.hash(plain)
+    return bcrypt.hashpw(plain.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
 
 
 def verify_password(plain: str, hashed: str) -> bool:
     """Verify a plaintext password against its hash."""
     try:
-        return _pwd_context.verify(plain, hashed)
+        return bcrypt.checkpw(plain.encode("utf-8"), hashed.encode("utf-8"))
     except Exception:
         return False
 

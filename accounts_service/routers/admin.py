@@ -136,9 +136,16 @@ def update_user(
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    # Require superadmin for banning or role changes
+    # Require superadmin for banning, unbanning, or role changes
     if body.status == "banned" and admin.role != "superadmin":
         raise HTTPException(status_code=403, detail="Banning requires superadmin role.")
+    if (
+        body.status is not None
+        and user.status == "banned"
+        and body.status != "banned"
+        and admin.role != "superadmin"
+    ):
+        raise HTTPException(status_code=403, detail="Unbanning requires superadmin role.")
     if body.role and admin.role != "superadmin":
         raise HTTPException(status_code=403, detail="Role changes require superadmin.")
 

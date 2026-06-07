@@ -40,11 +40,13 @@ from fastapi.testclient import TestClient
 from accounts_service.main import app
 from accounts_service.database import Base, engine, get_db
 from accounts_service import models
+from accounts_service.rate_limit import reset_rate_limit_store
 
 # ── Fixtures ──────────────────────────────────────────────────────────────────
 
 @pytest.fixture(scope="module", autouse=True)
 def setup_db():
+    reset_rate_limit_store()
     Base.metadata.create_all(bind=engine)
     yield
     Base.metadata.drop_all(bind=engine)
@@ -57,6 +59,11 @@ def setup_db():
             pass
 
 
+@pytest.fixture(autouse=True)
+def _reset_rate_limits():
+    reset_rate_limit_store()
+
+
 @pytest.fixture(scope="module")
 def client() -> Generator:
     with TestClient(app) as c:
@@ -64,7 +71,7 @@ def client() -> Generator:
 
 
 def _random_email() -> str:
-    return f"test_{secrets.token_hex(6)}@atlas.test"
+    return f"test_{secrets.token_hex(6)}@example.com"
 
 
 def _device_id() -> str:
@@ -131,7 +138,7 @@ class TestLogin:
 
     def test_unknown_email_returns_401(self, client):
         res = client.post("/auth/login", json={
-            "email": "nobody@nowhere.test", "password": "Pass1234!",
+            "email": "nobody@nowhere.example.com", "password": "Pass1234!",
             "device_id": _device_id(), "app_version": "0.1.0", "platform": "test"
         })
         assert res.status_code == 401

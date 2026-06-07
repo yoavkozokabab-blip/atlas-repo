@@ -17,6 +17,7 @@ from ..models import Device, EmailToken, License, Session as DBSession, User
 from ..rate_limit import check_rate_limit
 from ..schemas import LoginRequest, LogoutRequest, RefreshRequest, RegisterRequest, TokenResponse
 from ..security import (
+    _DUMMY_HASH,
     create_access_token,
     generate_refresh_token,
     hash_password,
@@ -156,8 +157,8 @@ def login(req: LoginRequest, request: Request, db: Session = Depends(get_db)):
     email = req.email.lower().strip()
     user = db.query(User).filter(User.email == email).first()
 
-    # Constant-time: always hash even if user not found
-    candidate_hash = user.password_hash if user else hash_password("dummy_constant_time_check")
+    # Constant-time: always verify even if user not found
+    candidate_hash = user.password_hash if user else _DUMMY_HASH
     valid = verify_password(req.password, candidate_hash)
 
     if not user or not valid:
