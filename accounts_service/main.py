@@ -41,7 +41,36 @@ app.include_router(admin.router)
 
 @app.on_event("startup")
 def _startup() -> None:
+    import logging
+
+    from .bootstrap import bootstrap_superadmins
+    from .database import SessionLocal
+    from .session_cleanup import prune_all
+
+    _log = logging.getLogger(__name__)
+
     init_db()
+
+    # Prune stale sessions and tokens from previous runs.
+    _db = SessionLocal()
+    try:
+        stats = prune_all(_db)
+        _log.info("startup: session cleanup complete — %s", stats)
+    except Exception as exc:  # pragma: no cover
+        _log.warning("startup: session cleanup failed — %s", exc)
+    finally:
+        _db.close()
+
+    # Promote INITIAL_ADMINS to superadmin (idempotent).
+    _db2 = SessionLocal()
+    try:
+        promoted = bootstrap_superadmins(_db2)
+        if promoted:
+            _log.info("startup: bootstrap_superadmins promoted %d account(s)", promoted)
+    except Exception as exc:  # pragma: no cover
+        _log.warning("startup: bootstrap_superadmins failed — %s", exc)
+    finally:
+        _db2.close()
 
 
 @app.get("/health", tags=["meta"])

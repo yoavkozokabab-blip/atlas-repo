@@ -286,6 +286,26 @@ def audit_log(
     )
 
 
+# ── Maintenance ────────────────────────────────────────────────────────────
+
+@router.post("/maintenance/prune", status_code=200)
+def maintenance_prune(
+    admin: User = Depends(require_superadmin),
+    db: Session = Depends(get_db),
+):
+    """Prune expired/old sessions and used email tokens.  Superadmin only.
+
+    Returns pruning statistics so the operator can verify the operation.
+    Safe to call at any time — only deletes rows that can never be used again.
+    """
+    from ..session_cleanup import prune_all
+    stats = prune_all(db)
+    _audit(db, admin, "maintenance_prune", metadata={"pruned": stats})
+    # prune_all already committed; audit entry needs an explicit commit
+    db.commit()
+    return {"pruned": stats}
+
+
 # ── Feedback inbox ─────────────────────────────────────────────────────────
 @router.get("/feedback", response_model=List[FeedbackOut])
 def list_feedback(

@@ -1,0 +1,98 @@
+{
+  "phase": "186F",
+  "mode": "operations_readiness",
+  "prerequisite_commit": "791a0e245 phase186e: fix accounts beta blockers",
+  "focus_areas": [
+    {
+      "id": 1,
+      "area": "jwt_secret_provisioning",
+      "status": "already_implemented",
+      "finding": "accounts_service/jwt_secret.py was implemented in Phase 186C. load_jwt_secret() checks ATLAS_AUTH_JWT_SECRET and ATLAS_JWT_SECRET env vars first, then reads/creates a persisted file at {ATLAS_ACCOUNTS_DATA_DIR}/auth/jwt_secret with mode 0o600. The critical instability (random secret on every restart) documented in Phase 186B is closed.",
+      "runbook_section": "Section 1 of phase186f_beta_operations_readiness.md",
+      "new_files": [],
+      "modified_files": []
+    },
+    {
+      "id": 2,
+      "area": "session_cleanup",
+      "status": "implemented",
+      "finding": "No session or email-token pruning existed. Sessions and EmailTokens accumulated indefinitely.",
+      "implementation": "Created accounts_service/session_cleanup.py with prune_sessions(), prune_email_tokens(), and prune_all(). Wired into _startup() in main.py. Added POST /admin/maintenance/prune (superadmin only) for manual operator triggers. Revoked sessions are retained for 7 days (audit trail) before deletion.",
+      "new_files": ["accounts_service/session_cleanup.py"],
+      "modified_files": [
+        "accounts_service/main.py",
+        "accounts_service/routers/admin.py"
+      ]
+    },
+    {
+      "id": 3,
+      "area": "superadmin_bootstrap",
+      "status": "implemented",
+      "finding": "INITIAL_ADMINS was parsed in config.py but _startup() in main.py never called any bootstrap logic. There was no way to create the first superadmin without direct DB access.",
+      "implementation": "Created accounts_service/bootstrap.py with bootstrap_superadmins(db) that promotes ATLAS_INITIAL_ADMINS emails to superadmin role at startup. Idempotent, audit-logged, no API surface. Wired into _startup() in main.py.",
+      "new_files": ["accounts_service/bootstrap.py"],
+      "modified_files": ["accounts_service/main.py"]
+    },
+    {
+      "id": 4,
+      "area": "smoke_test",
+      "status": "implemented",
+      "test_file": "accounts_service/tests/test_phase186f_beta_smoke.py",
+      "test_count": 24,
+      "test_classes": [
+        "TestJwtSecretProvisioning (4 tests)",
+        "TestSessionCleanup (6 tests)",
+        "TestSuperadminBootstrap (5 tests)",
+        "TestFullBetaLifecycle (9 tests)"
+      ],
+      "new_files": ["accounts_service/tests/test_phase186f_beta_smoke.py"],
+      "modified_files": []
+    },
+    {
+      "id": 5,
+      "area": "operator_checklist",
+      "status": "documented",
+      "sections": [
+        "Before inviting beta users",
+        "Approving a beta user",
+        "Revoking a beta user",
+        "Collecting a support bundle",
+        "JWT secret rotation",
+        "Investigating an account bug",
+        "Investigating a login or device issue"
+      ],
+      "new_files": [],
+      "modified_files": []
+    }
+  ],
+  "new_files": [
+    "accounts_service/session_cleanup.py",
+    "accounts_service/bootstrap.py",
+    "accounts_service/tests/test_phase186f_beta_smoke.py",
+    "reports/phase186f_beta_operations_readiness.md",
+    "reports/phase186f_results.json"
+  ],
+  "modified_files": [
+    "accounts_service/main.py",
+    "accounts_service/routers/admin.py"
+  ],
+  "tests_run": [
+    {
+      "command": "py -3 -m pytest accounts_service/tests/test_phase186f_beta_smoke.py -q -p no:cacheprovider",
+      "result": "24 passed, 0 failed, 3 warnings"
+    },
+    {
+      "command": "py -3 -m pytest accounts_service/tests/test_phase186c_accounts_beta_safety.py jarvis_desktop/tests/test_phase186_accounts.py jarvis_desktop/tests/test_phase186_admin.py jarvis_desktop/tests/test_phase186_privacy.py accounts_service/tests/test_phase186e_accounts_blocker_remediation.py accounts_service/tests/test_phase186f_beta_smoke.py -q -p no:cacheprovider",
+      "result": "104 passed, 0 failed, 3 warnings"
+    }
+  ],
+  "verdict_5_users": "GO",
+  "verdict_20_users": "GO",
+  "residual_risks": [
+    "Session cleanup runs at startup only (no background scheduler). For production beyond beta, a cron job or APScheduler should call POST /admin/maintenance/prune periodically.",
+    "bootstrap_superadmins only promotes users who are already registered. If the operator's email is not yet in the DB, they must register first, then restart the service.",
+    "ATLAS_INITIAL_ADMINS should be removed from the environment after the first successful bootstrap to reduce attack surface. The promotion persists in the DB regardless.",
+    "The maintenance/prune endpoint commits its own transaction then immediately writes the audit entry in a second commit. In a race condition with concurrent prunes, both audit entries will be written — harmless but verbose.",
+    "accounts_state.json (desktop) is written without file locking under ThreadingHTTPServer — race condition under concurrent desktop HTTP requests is a known issue from Phase 186B, not addressed in this phase."
+  ]
+}
