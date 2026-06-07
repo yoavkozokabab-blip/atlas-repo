@@ -1,0 +1,182 @@
+"""Atlas Accounts Service — Pydantic v2 request/response schemas."""
+from __future__ import annotations
+
+from datetime import datetime
+from typing import Optional, List
+from pydantic import BaseModel, EmailStr, field_validator, ConfigDict
+
+
+# ── Auth ───────────────────────────────────────────────────────────────────
+class RegisterRequest(BaseModel):
+    email: EmailStr
+    password: str
+    device_id: str
+    app_version: str = "unknown"
+    platform: str = "unknown"
+
+    @field_validator("password")
+    @classmethod
+    def password_length(cls, v: str) -> str:
+        if len(v) < 8:
+            raise ValueError("Password must be at least 8 characters")
+        if len(v) > 1024:
+            raise ValueError("Password too long")
+        return v
+
+
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str
+    device_id: str
+    app_version: str = "unknown"
+    platform: str = "unknown"
+
+
+class RefreshRequest(BaseModel):
+    refresh_token: str
+    device_id: str
+
+
+class LogoutRequest(BaseModel):
+    refresh_token: str
+
+
+# ── User ───────────────────────────────────────────────────────────────────
+class UserOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    user_id: str
+    email: str
+    status: str
+    role: str
+    beta_flag: bool
+    created_at: datetime
+    last_seen_at: Optional[datetime] = None
+
+
+class LicenseOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    license_id: str
+    plan: str
+    status: str
+    expires_at: Optional[datetime] = None
+    max_devices: int
+
+
+class DeviceOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    device_id: str
+    app_version: str
+    platform: str
+    first_seen_at: datetime
+    last_seen_at: datetime
+    status: str
+
+
+class TokenResponse(BaseModel):
+    access_token: str
+    refresh_token: str
+    token_type: str = "bearer"
+    user: UserOut
+    license: Optional[LicenseOut] = None
+
+
+class LicenseCheckResponse(BaseModel):
+    valid: bool
+    plan: str
+    status: str
+    expires_at: Optional[datetime] = None
+    max_devices: int
+    beta_features: bool
+    message: Optional[str] = None
+
+
+# ── Usage/analytics ────────────────────────────────────────────────────────
+class UsageEventRequest(BaseModel):
+    device_id: str
+    event_type: str
+    app_version: str = "unknown"
+    date: Optional[str] = None  # YYYY-MM-DD; server uses today if absent
+
+    # Numeric counters only — no strings carrying code/paths
+    launches: int = 0
+    scans: int = 0
+    change_plans: int = 0
+    debug_runs: int = 0
+    what_breaks_runs: int = 0
+    exports: int = 0
+    estimated_tokens_saved: int = 0
+
+    @field_validator(
+        "launches", "scans", "change_plans", "debug_runs",
+        "what_breaks_runs", "exports", "estimated_tokens_saved",
+        mode="before",
+    )
+    @classmethod
+    def non_negative(cls, v: int) -> int:
+        v = int(v)
+        if v < 0:
+            raise ValueError("Counter fields must be non-negative integers")
+        return v
+
+
+# ── Admin ──────────────────────────────────────────────────────────────────
+class AdminUserOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    user_id: str
+    email: str
+    status: str
+    role: str
+    beta_flag: bool
+    created_at: datetime
+    last_seen_at: Optional[datetime] = None
+    admin_notes: Optional[str] = None
+
+
+class AdminUserUpdate(BaseModel):
+    status: Optional[str] = None
+    role: Optional[str] = None
+    beta_flag: Optional[bool] = None
+    plan: Optional[str] = None
+    max_devices: Optional[int] = None
+    expires_at: Optional[datetime] = None
+    admin_notes: Optional[str] = None
+
+
+class AdminDashboard(BaseModel):
+    total_users: int
+    active_users: int
+    beta_users: int
+    suspended_users: int
+    banned_users: int
+    active_devices: int
+    launches_today: int
+    scans_today: int
+    exports_today: int
+    tokens_saved_today: int
+    feedback_pending: int
+
+
+class AdminAuditEntry(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    action_id: str
+    admin_email: str
+    action: str
+    target_user_email: Optional[str] = None
+    target_device_id: Optional[str] = None
+    created_at: datetime
+
+
+# ── Feedback ───────────────────────────────────────────────────────────────
+class FeedbackOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    feedback_id: str
+    category: str
+    message_redacted: str
+    created_at: datetime
+    status: str

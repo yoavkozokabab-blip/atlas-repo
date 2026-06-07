@@ -18,6 +18,7 @@ from typing import Any, Callable, Dict, Optional, Tuple
 
 from . import api, system_browse
 from .billing import service as billing_service
+from .accounts_routes import ACCOUNTS_ROUTES
 
 STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 RouteHandler = Callable[[Dict[str, Any], Dict[str, str]], Dict[str, Any]]
@@ -159,6 +160,8 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
         ("GET", "/api/operations/token-savings"): lambda _body, _query: api.operations_token_savings(),
         ("GET", "/api/operations/crashes"): lambda _body, _query: api.operations_crashes(),
         ("POST", "/api/operations/crash"): lambda body, _query: api.operations_record_crash(body or {}),
+        # Phase 186 — accounts & beta access
+        **ACCOUNTS_ROUTES,
     }
 
 

@@ -1,0 +1,9 @@
+# Atlas Accounts Service — Python dependencies
+# Install with: py -3 -m pip install --target .lib -r requirements.txt
+
+fastapi==0.115.6
+uvicorn[standard]==0.32.1
+sqlalchemy==2.0.36
+pyjwt[crypto]==2.10.1
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.20
