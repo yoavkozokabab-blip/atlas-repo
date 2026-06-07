@@ -1,6 +1,7 @@
 """Atlas Accounts Service — FastAPI dependencies."""
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from typing import Optional
 
 import sys, os
@@ -14,7 +15,7 @@ import jwt
 from sqlalchemy.orm import Session
 
 from .database import get_db
-from .models import User
+from .models import Device, Session as DBSession, User
 from .security import decode_access_token
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
@@ -38,6 +39,35 @@ def _get_user_from_token(token: str, db: Session) -> User:
     user = db.query(User).filter(User.user_id == user_id).first()
     if not user:
         raise HTTPException(status_code=401, detail="User not found")
+
+    session_id: Optional[str] = payload.get("session_id")
+    device_id: Optional[str] = payload.get("device_id")
+    if not session_id or not device_id:
+        raise HTTPException(status_code=401, detail="Invalid token claims")
+
+    now = datetime.now(timezone.utc).replace(tzinfo=None)
+    session = (
+        db.query(DBSession)
+        .filter(DBSession.session_id == session_id, DBSession.user_id == user_id)
+        .first()
+    )
+    if (
+        not session
+        or session.device_id != device_id
+        or session.revoked_at is not None
+        or session.expires_at <= now
+    ):
+        raise HTTPException(status_code=401, detail="Session is no longer valid")
+
+    device = (
+        db.query(Device)
+        .filter(Device.device_id == device_id, Device.user_id == user_id)
+        .first()
+    )
+    if not device:
+        raise HTTPException(status_code=401, detail="Device not found")
+    if device.status == "revoked":
+        raise HTTPException(status_code=403, detail="Device has been revoked")
     return user
 
 

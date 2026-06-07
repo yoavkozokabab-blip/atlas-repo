@@ -27,9 +27,20 @@ router = APIRouter(prefix="/analytics", tags=["analytics"])
 
 # Regex that catches common secret / path patterns — defence in depth
 _SECRET_PATTERN = re.compile(
-    r"(api[_-]?key|secret|password|token|bearer|auth|sk-[a-z0-9]+|/[a-z]|[a-z]:\\)",
+    r"(api[_-]?key|secret|password|token|bearer|auth|ghp_[a-z0-9_]+|github_pat_[a-z0-9_]+|sk-[a-z0-9_-]+|sk-ant-[a-z0-9_-]+|eyJ[a-z0-9_-]+\.[a-z0-9_-]+\.[a-z0-9_-]*|/[a-z]|[a-z]:\\)",
     re.IGNORECASE,
 )
+
+ALLOWED_EVENT_TYPES = {
+    "app_started",
+    "scan_completed",
+    "change_plan_generated",
+    "debug_generated",
+    "what_breaks_generated",
+    "export_copied",
+    "feedback_submitted",
+    "heartbeat",
+}
 
 
 class PrivacyValidator:
@@ -47,24 +58,14 @@ class PrivacyValidator:
                 raise ValueError(f"Unexpected string field in analytics payload: {key!r}")
             if key == "event_type" and len(value) > 64:
                 raise ValueError("event_type too long")
+            if key == "event_type" and value not in ALLOWED_EVENT_TYPES:
+                raise ValueError("event_type is not allowed")
             if key == "app_version" and len(value) > 32:
                 raise ValueError("app_version too long")
             if key == "device_id" and (len(value) > 64 or not re.fullmatch(r"[a-f0-9]+", value, re.I)):
                 raise ValueError("device_id must be a short hex identifier")
             if _SECRET_PATTERN.search(value):
                 raise ValueError(f"Field {key!r} appears to contain sensitive data")
-
-
-ALLOWED_EVENT_TYPES = {
-    "app_started",
-    "scan_completed",
-    "change_plan_generated",
-    "debug_generated",
-    "what_breaks_generated",
-    "export_copied",
-    "feedback_submitted",
-    "heartbeat",
-}
 
 
 @router.post("/event", status_code=204)
@@ -81,8 +82,7 @@ def record_event(
         raise HTTPException(status_code=422, detail=str(exc))
 
     if req.event_type not in ALLOWED_EVENT_TYPES:
-        # Unknown event types are silently accepted but clamped to safe fields
-        pass
+        raise HTTPException(status_code=422, detail="event_type is not allowed")
 
     # Resolve date
     event_date: date

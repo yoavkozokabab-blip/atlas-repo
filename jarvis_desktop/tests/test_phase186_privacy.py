@@ -279,7 +279,6 @@ class TestAccountsClientPayloadConstruction:
                        "what_breaks_runs", "exports", "estimated_tokens_saved"}
 
         # Check that no other string keys are referenced in the function
-        # Simple keyword check: no "source_code", "repo_path", "prompt", "file_contents"
         forbidden = ["source_code", "repo_path", "raw_prompt", "file_contents", "export_text"]
         for bad_key in forbidden:
             assert bad_key not in source, (

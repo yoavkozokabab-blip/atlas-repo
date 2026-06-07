@@ -16,12 +16,45 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
 from typing import Any, Callable, Dict, Optional, Tuple
 
-from . import api, system_browse
+from . import accounts_client, api, system_browse
 from .billing import service as billing_service
 from .accounts_routes import ACCOUNTS_ROUTES
 
 STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 RouteHandler = Callable[[Dict[str, Any], Dict[str, str]], Dict[str, Any]]
+PROTECTED_ACCOUNT_ROUTES = {
+    ("POST", "/api/demo/load"),
+    ("POST", "/api/repositories/scan"),
+    ("POST", "/api/impact"),
+    ("POST", "/api/planning/change"),
+    ("POST", "/api/planning/investigate"),
+    ("POST", "/api/planning/impact"),
+    ("POST", "/api/bug-investigation"),
+    ("POST", "/api/context/export"),
+    ("POST", "/api/copilot/ask"),
+}
+
+
+def _account_gate_failure() -> Optional[Dict[str, Any]]:
+    """Return a 403 payload when beta account/license enforcement should block."""
+    state = accounts_client.get_account_state()
+    license_status = state.get("license") or {}
+    user = state.get("user")
+    if user and license_status.get("valid") is not True:
+        return {
+            "ok": False,
+            "code": "license_required",
+            "error": "Atlas account license is not active.",
+            "license": license_status,
+        }
+    if not state.get("authenticated"):
+        return {
+            "ok": False,
+            "code": "account_required",
+            "error": "Sign in with an active Atlas account to use this workflow.",
+            "license": license_status,
+        }
+    return None
 
 
 def _is_loopback_host(host: str) -> bool:
@@ -186,6 +219,10 @@ def dispatch(
     try:
         if handler is None:
             return 404, {"ok": False, "error": f"Unknown endpoint: {method} {path}"}
+        if (method, path) in PROTECTED_ACCOUNT_ROUTES:
+            blocked = _account_gate_failure()
+            if blocked:
+                return 403, blocked
         result = handler(body, query)
         # Phase 137A: record product usage (local/mock). Never affects the response.
         billing_service.record_from_dispatch(path, result, body)
@@ -386,6 +423,12 @@ def create_fastapi_app():  # pragma: no cover - exercised only when fastapi pres
         except Exception:
             return {}
 
+    def _account_gate_response():
+        blocked = _account_gate_failure()
+        if blocked:
+            return JSONResponse(status_code=403, content=blocked)
+        return None
+
     @app.get("/api/health")
     def _health():
         return api.health()
@@ -421,6 +464,9 @@ def create_fastapi_app():  # pragma: no cover - exercised only when fastapi pres
 
     @app.post("/api/demo/load")
     async def _demo(request: Request):
+        blocked = _account_gate_response()
+        if blocked:
+            return blocked
         return api.load_demo_mode(str((await _body(request)).get("pack", "small")))
 
     @app.get("/api/demo/packs")
@@ -442,6 +488,9 @@ def create_fastapi_app():  # pragma: no cover - exercised only when fastapi pres
 
     @app.post("/api/repositories/scan")
     async def _scan(request: Request):
+        blocked = _account_gate_response()
+        if blocked:
+            return blocked
         b = await _body(request)
         return api.scan_repository(b.get("path"), b.get("scope"))
 
@@ -516,33 +565,54 @@ def create_fastapi_app():  # pragma: no cover - exercised only when fastapi pres
 
     @app.post("/api/impact")
     async def _impact(request: Request):
+        blocked = _account_gate_response()
+        if blocked:
+            return blocked
         return api.impact(str((await _body(request)).get("target", "")))
 
     @app.post("/api/planning/change")
     async def _plan_change(request: Request):
+        blocked = _account_gate_response()
+        if blocked:
+            return blocked
         b = await _body(request)
         return api.plan_change(str(b.get("request") or b.get("goal") or b.get("text") or ""))
 
     @app.post("/api/planning/investigate")
     async def _plan_investigate(request: Request):
+        blocked = _account_gate_response()
+        if blocked:
+            return blocked
         b = await _body(request)
         return api.investigate_symptom(str(b.get("symptom") or b.get("text") or b.get("description") or ""))
 
     @app.post("/api/planning/impact")
     async def _plan_impact(request: Request):
+        blocked = _account_gate_response()
+        if blocked:
+            return blocked
         return api.change_impact_simulation(str((await _body(request)).get("target", "")))
 
     @app.post("/api/bug-investigation")
     async def _bug(request: Request):
+        blocked = _account_gate_response()
+        if blocked:
+            return blocked
         return api.bug_investigation(str((await _body(request)).get("text", "")))
 
     @app.post("/api/context/export")
     async def _ctx(request: Request):
+        blocked = _account_gate_response()
+        if blocked:
+            return blocked
         b = await _body(request)
         return api.context_export(str(b.get("target", "claude")), str(b.get("packet", "compact")))
 
     @app.post("/api/copilot/ask")
     async def _copilot(request: Request):
+        blocked = _account_gate_response()
+        if blocked:
+            return blocked
         b = await _body(request)
         return api.copilot_ask(
             str(b.get("question", "")),

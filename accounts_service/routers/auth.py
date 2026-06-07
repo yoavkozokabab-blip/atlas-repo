@@ -37,13 +37,6 @@ def _user_plan(user: User) -> str:
 
 def _build_token_response(user: User, device_id: str, db: Session) -> TokenResponse:
     """Create access + refresh tokens, persist session, return full response."""
-    access_token = create_access_token(
-        user_id=user.user_id,
-        email=user.email,
-        role=user.role,
-        beta_flag=user.beta_flag,
-        plan=_user_plan(user),
-    )
     raw_refresh = generate_refresh_token()
     refresh_hash = hash_token(raw_refresh)
 
@@ -54,6 +47,16 @@ def _build_token_response(user: User, device_id: str, db: Session) -> TokenRespo
         expires_at=refresh_token_expiry(),
     )
     db.add(db_session)
+    db.flush()
+
+    access_token = create_access_token(
+        user_id=user.user_id,
+        email=user.email,
+        role=user.role,
+        beta_flag=user.beta_flag,
+        plan=_user_plan(user),
+        extra={"session_id": db_session.session_id, "device_id": device_id},
+    )
 
     # Update last_seen
     user.last_seen_at = datetime.now(timezone.utc).replace(tzinfo=None)
@@ -78,6 +81,8 @@ def _ensure_device(
     """Register device if new; update last_seen if known."""
     device = db.query(Device).filter(Device.device_id == device_id).first()
     if device:
+        if device.user_id != user.user_id:
+            raise HTTPException(status_code=403, detail="Device ID is already registered to another account.")
         # Existing device — update heartbeat
         device.last_seen_at = datetime.now(timezone.utc).replace(tzinfo=None)
         device.app_version = app_version

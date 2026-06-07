@@ -13,6 +13,7 @@ Responsibilities:
 from __future__ import annotations
 
 import hashlib
+import hmac
 import json
 import os
 import secrets
@@ -29,6 +30,25 @@ _SERVICE_BASE = os.environ.get("ATLAS_ACCOUNTS_URL", "http://127.0.0.1:8788")
 _OFFLINE_GRACE_SECONDS = 7 * 24 * 3600   # 7 days
 _ACCESS_TOKEN_BUFFER_SECONDS = 120        # refresh if <2 min left
 _CONNECT_TIMEOUT = 5                      # seconds
+_INTEGRITY_FIELD = "_integrity"
+_STATE_SECRET_FILE = "accounts_state_secret"
+_SIGNED_STATE_KEYS = (
+    "device_id",
+    "access_token",
+    "access_token_expires_at",
+    "refresh_token",
+    "user",
+    "license",
+    "license_checked_at",
+)
+_SENSITIVE_STATE_KEYS = {
+    "access_token",
+    "access_token_expires_at",
+    "refresh_token",
+    "user",
+    "license",
+    "license_checked_at",
+}
 
 # ── File helpers ──────────────────────────────────────────────────────────────
 
@@ -36,18 +56,75 @@ def _state_path() -> str:
     return os.path.join(desktop_data_dir(), "accounts_state.json")
 
 
+def _state_secret_path() -> str:
+    return os.path.join(desktop_data_dir(), _STATE_SECRET_FILE)
+
+
+def _load_state_secret() -> str:
+    path = _state_secret_path()
+    try:
+        with open(path, encoding="utf-8") as f:
+            secret = f.read().strip()
+        if secret:
+            return secret
+    except OSError:
+        pass
+    secret = secrets.token_hex(32)
+    try:
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(secret)
+    except OSError:
+        pass
+    return secret
+
+
+def _state_payload(state: Dict[str, Any]) -> bytes:
+    signed = {key: state.get(key) for key in _SIGNED_STATE_KEYS if key in state}
+    return json.dumps(signed, sort_keys=True, separators=(",", ":"), default=str).encode("utf-8")
+
+
+def _state_digest(state: Dict[str, Any]) -> str:
+    return hmac.new(_load_state_secret().encode("utf-8"), _state_payload(state), hashlib.sha256).hexdigest()
+
+
+def _has_sensitive_state(state: Dict[str, Any]) -> bool:
+    return any(key in state for key in _SENSITIVE_STATE_KEYS)
+
+
+def _state_integrity_valid(state: Dict[str, Any]) -> bool:
+    meta = state.get(_INTEGRITY_FIELD)
+    if not isinstance(meta, dict):
+        return False
+    expected = str(meta.get("sha256", ""))
+    if not expected:
+        return False
+    unsigned = {key: value for key, value in state.items() if key != _INTEGRITY_FIELD}
+    return hmac.compare_digest(expected, _state_digest(unsigned))
+
+
 def _load_state() -> Dict[str, Any]:
     try:
         with open(_state_path(), encoding="utf-8") as f:
-            return json.load(f)
+            state = json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         return {}
+    if not isinstance(state, dict):
+        return {}
+    if _has_sensitive_state(state) and not _state_integrity_valid(state):
+        clean: Dict[str, Any] = {"_state_integrity_error": True}
+        if isinstance(state.get("device_id"), str):
+            clean["device_id"] = state["device_id"]
+        return clean
+    return state
 
 
 def _save_state(state: Dict[str, Any]) -> None:
+    state = {key: value for key, value in state.items() if key != "_state_integrity_error"}
+    unsigned = {key: value for key, value in state.items() if key != _INTEGRITY_FIELD}
+    unsigned[_INTEGRITY_FIELD] = {"version": 1, "sha256": _state_digest(unsigned)}
     try:
         with open(_state_path(), "w", encoding="utf-8") as f:
-            json.dump(state, f, indent=2)
+            json.dump(unsigned, f, indent=2)
     except OSError:
         pass
 
@@ -122,9 +199,28 @@ def _is_access_token_valid(access_token: str, state: Dict[str, Any]) -> bool:
         return False
 
 
+def _clear_auth_state(state: Optional[Dict[str, Any]] = None, reason: str = "") -> None:
+    if state is None:
+        state = _load_state()
+    for key in (
+        "access_token",
+        "refresh_token",
+        "access_token_expires_at",
+        "user",
+        "license",
+        "license_checked_at",
+    ):
+        state.pop(key, None)
+    if reason:
+        state["last_auth_error"] = reason
+    _save_state(state)
+
+
 def get_valid_access_token() -> Optional[str]:
     """Return a valid access token, refreshing automatically if needed."""
     state = _load_state()
+    if state.get("_state_integrity_error"):
+        return None
     access_token = state.get("access_token")
     refresh_token = state.get("refresh_token")
 
@@ -139,9 +235,12 @@ def get_valid_access_token() -> Optional[str]:
         "refresh_token": refresh_token,
         "device_id": get_device_id(),
     })
-    if result.get("_offline") or result.get("_http_status"):
-        # Offline or error — return stale access token if we have one (offline grace)
+    if result.get("_offline"):
         return access_token or None
+    if result.get("_http_status"):
+        if int(result.get("_http_status") or 0) in (401, 403):
+            _clear_auth_state(state, "auth_rejected")
+        return None
 
     _persist_token_response(result, state)
     return state.get("access_token")
@@ -173,6 +272,14 @@ def _persist_token_response(result: Dict[str, Any], state: Optional[Dict] = None
 def get_license_status() -> Dict[str, Any]:
     """Return license status with offline grace fallback."""
     state = _load_state()
+    if state.get("_state_integrity_error"):
+        return {
+            "valid": False,
+            "plan": "free",
+            "status": "local_state_tampered",
+            "_offline": False,
+            "message": "Atlas account cache integrity failed. Please sign in again.",
+        }
     token = get_valid_access_token()
 
     # Online: refresh from server
@@ -183,6 +290,17 @@ def get_license_status() -> Dict[str, Any]:
             state["license_checked_at"] = time.time()
             _save_state(state)
             return result
+        if result.get("_http_status"):
+            status_code = int(result.get("_http_status") or 0)
+            if status_code in (401, 403):
+                _clear_auth_state(state, "account_unavailable")
+            return {
+                "valid": False,
+                "plan": "free",
+                "status": "account_unavailable" if status_code in (401, 403) else "license_check_failed",
+                "_http_status": status_code,
+                "message": "Atlas account is not available. Please sign in again.",
+            }
 
     # Offline path — check grace window
     cached = state.get("license")
@@ -257,13 +375,7 @@ def logout() -> None:
     if refresh_token:
         _call("POST", "/auth/logout", {"refresh_token": refresh_token})
     # Clear credentials regardless of server response
-    state.pop("access_token", None)
-    state.pop("refresh_token", None)
-    state.pop("access_token_expires_at", None)
-    state.pop("user", None)
-    state.pop("license", None)
-    state.pop("license_checked_at", None)
-    _save_state(state)
+    _clear_auth_state(state)
 
 
 def get_profile() -> Dict[str, Any]:
@@ -277,6 +389,9 @@ def get_profile() -> Dict[str, Any]:
         state = _load_state()
         state["user"] = result
         _save_state(state)
+    elif result.get("_http_status") and int(result.get("_http_status") or 0) in (401, 403):
+        _clear_auth_state(reason="account_unavailable")
+        return {"_unauthenticated": True, "status": "account_unavailable", "_http_status": result.get("_http_status")}
     return result
 
 
@@ -324,15 +439,25 @@ def send_analytics_event(event_type: str, app_version: str, **counters: int) -> 
 
 def get_account_state() -> Dict[str, Any]:
     """Return a combined state object for the frontend accounts screen."""
-    state = _load_state()
-    token = get_valid_access_token()
     license_status = get_license_status()
+    state = _load_state()
+    if state.get("_state_integrity_error"):
+        license_status = {
+            "valid": False,
+            "plan": "free",
+            "status": "local_state_tampered",
+            "_offline": False,
+            "message": "Atlas account cache integrity failed. Please sign in again.",
+        }
+    token = state.get("access_token")
     user = state.get("user")
+    authenticated = bool(token and user and license_status.get("valid") is True)
 
     return {
-        "authenticated": bool(token and user),
+        "authenticated": authenticated,
         "user": user,
         "license": license_status,
         "device_id": get_device_id(),
-        "service_online": bool(token and not license_status.get("_offline")),
+        "service_online": bool(token and not license_status.get("_offline") and not license_status.get("_http_status")),
+        "state_integrity_error": bool(state.get("_state_integrity_error")),
     }

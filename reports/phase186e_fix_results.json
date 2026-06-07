@@ -1,0 +1,161 @@
+{
+  "phase": "186E",
+  "mode": "code_changes",
+  "source_report": "phase186d",
+  "blockers_fixed": [
+    {
+      "id": 9,
+      "area": "LICENSES",
+      "severity": "critical",
+      "attack": "banned user desktop state/license/protected use",
+      "root_cause": "Desktop treated account-service HTTP denials as offline and fell back to cached account/license state; local workflow routes lacked server-side account/license enforcement.",
+      "files_changed": [
+        "jarvis_desktop/accounts_client.py",
+        "jarvis_desktop/server.py"
+      ],
+      "fix": "HTTP 401/403 license/profile responses now clear cached credentials and return invalid account state; protected workflow routes now require an authenticated active license.",
+      "regression_tests": [
+        "test_phase186e_desktop_state_denies_banned_and_suspended_users",
+        "test_phase186e_protected_workflows_require_valid_license"
+      ],
+      "before": "Service denied the banned user, but Desktop still reported authenticated and protected routes returned 200.",
+      "after": "Desktop reports unauthenticated, clears tokens, and protected routes return 403.",
+      "residual_risk": "Local account recovery still depends on the service refusing blocked users; service remains authoritative."
+    },
+    {
+      "id": 10,
+      "area": "LICENSES",
+      "severity": "critical",
+      "attack": "suspended user use",
+      "root_cause": "Desktop cached auth/license fallback was used after service 403.",
+      "files_changed": [
+        "jarvis_desktop/accounts_client.py"
+      ],
+      "fix": "Server-denied account/license checks no longer enter offline grace; credentials are cleared on 401/403.",
+      "regression_tests": [
+        "test_phase186e_desktop_state_denies_banned_and_suspended_users"
+      ],
+      "before": "Suspended user was denied by service but remained authenticated in Desktop.",
+      "after": "Suspended user becomes unauthenticated in Desktop and cached tokens are removed.",
+      "residual_risk": "None beyond normal local-machine compromise assumptions."
+    },
+    {
+      "id": 11,
+      "area": "LICENSES",
+      "severity": "critical",
+      "attack": "expired license use",
+      "root_cause": "Desktop workflow dispatch directly invoked local APIs without account/license checks.",
+      "files_changed": [
+        "jarvis_desktop/accounts_client.py",
+        "jarvis_desktop/server.py"
+      ],
+      "fix": "Added account/license gate to protected workflow routes in both dispatch and optional FastAPI paths.",
+      "regression_tests": [
+        "test_phase186e_protected_workflows_require_valid_license"
+      ],
+      "before": "Expired license returned invalid from license check but local workflow route returned 200.",
+      "after": "Expired license receives 403 license_required on protected workflows.",
+      "residual_risk": "Older unauthenticated desktop workflow tests are obsolete for account-gated routes."
+    },
+    {
+      "id": 12,
+      "area": "DEVICES",
+      "severity": "critical",
+      "attack": "device revocation use from revoked device",
+      "root_cause": "Access JWTs were not bound to active session/device records; device revocation only blocked refresh.",
+      "files_changed": [
+        "accounts_service/routers/auth.py",
+        "accounts_service/dependencies.py",
+        "jarvis_desktop/accounts_client.py"
+      ],
+      "fix": "Issued access tokens now include session_id and device_id; protected dependencies verify active unrevoked session and active device on every request.",
+      "regression_tests": [
+        "test_phase186e_device_revocation_invalidates_existing_access_token"
+      ],
+      "before": "Revoked device could still use old access token against /user/me.",
+      "after": "Old access token is rejected after device/session revocation.",
+      "residual_risk": "Pre-186E tokens without session/device claims require re-login."
+    },
+    {
+      "id": 13,
+      "area": "DEVICES",
+      "severity": "critical",
+      "attack": "device limit bypass and fake device ids",
+      "root_cause": "Existing device_id lookup did not verify ownership before reuse.",
+      "files_changed": [
+        "accounts_service/routers/auth.py"
+      ],
+      "fix": "Existing device IDs are rejected unless owned by the authenticating user.",
+      "regression_tests": [
+        "test_phase186e_cross_account_device_id_reuse_rejected"
+      ],
+      "before": "Another account could reuse an existing device_id and create a session.",
+      "after": "Cross-account device_id reuse returns 403.",
+      "residual_risk": "Device IDs remain client-generated but are ownership-checked server-side."
+    },
+    {
+      "id": 18,
+      "area": "PRIVACY",
+      "severity": "high",
+      "attack": "analytics source/prompt/export/path/file/secret smuggling",
+      "root_cause": "event_type was a whitelisted string field but not constrained to known values.",
+      "files_changed": [
+        "accounts_service/routers/analytics.py"
+      ],
+      "fix": "event_type is now validated against an allow-list; secret regex catches GitHub, Anthropic-style, JWT-looking, and path-like values.",
+      "regression_tests": [
+        "test_phase186e_analytics_rejects_unknown_event_type_secret_and_code"
+      ],
+      "before": "ghp-style secret and code-shaped event_type strings returned 204.",
+      "after": "Unknown/secret/code-shaped event_type values return 422; valid heartbeat returns 204.",
+      "residual_risk": "New analytics events require explicit allow-list changes."
+    },
+    {
+      "id": 19,
+      "area": "OFFLINE MODE",
+      "severity": "high",
+      "attack": "offline grace extension by editing local cache",
+      "root_cause": "Desktop trusted unsigned local token expiry and license_checked_at cache values.",
+      "files_changed": [
+        "jarvis_desktop/accounts_client.py"
+      ],
+      "fix": "Desktop account cache now has an HMAC integrity marker over sensitive auth/license fields; tampered state returns local_state_tampered and does not authenticate.",
+      "regression_tests": [
+        "test_phase186e_offline_grace_cache_tamper_rejected"
+      ],
+      "before": "Editing local timestamps extended offline grace and restored authenticated valid state.",
+      "after": "Edited cache fails integrity and returns unauthenticated invalid state.",
+      "residual_risk": "A user with write access to both cache and local signing secret can replace local state; online service checks remain authoritative."
+    }
+  ],
+  "blockers_remaining": [],
+  "tests_added": [
+    "accounts_service/tests/test_phase186e_accounts_blocker_remediation.py::test_phase186e_device_revocation_invalidates_existing_access_token",
+    "accounts_service/tests/test_phase186e_accounts_blocker_remediation.py::test_phase186e_cross_account_device_id_reuse_rejected",
+    "accounts_service/tests/test_phase186e_accounts_blocker_remediation.py::test_phase186e_desktop_state_denies_banned_and_suspended_users",
+    "accounts_service/tests/test_phase186e_accounts_blocker_remediation.py::test_phase186e_protected_workflows_require_valid_license",
+    "accounts_service/tests/test_phase186e_accounts_blocker_remediation.py::test_phase186e_analytics_rejects_unknown_event_type_secret_and_code",
+    "accounts_service/tests/test_phase186e_accounts_blocker_remediation.py::test_phase186e_offline_grace_cache_tamper_rejected"
+  ],
+  "tests_run": [
+    {
+      "command": "py -3 -m pytest accounts_service\\tests\\test_phase186e_accounts_blocker_remediation.py -q -p no:cacheprovider",
+      "result": "7 passed, 3 warnings"
+    },
+    {
+      "command": "py -3 -m pytest accounts_service\\tests\\test_phase186c_accounts_beta_safety.py jarvis_desktop\\tests\\test_phase186_accounts.py jarvis_desktop\\tests\\test_phase186_admin.py jarvis_desktop\\tests\\test_phase186_privacy.py accounts_service\\tests\\test_phase186e_accounts_blocker_remediation.py -q -p no:cacheprovider",
+      "result": "80 passed, 3 warnings"
+    },
+    {
+      "command": "py -3 -m pytest accounts_service\\tests\\test_phase186c_accounts_beta_safety.py::TestFeedbackRedaction accounts_service\\tests\\test_phase186c_accounts_beta_safety.py::TestRefreshTokenStorage::test_support_bundle_redacts_refresh_token jarvis_desktop\\tests\\test_phase174d_final_ship_blockers.py::test_support_bundle_does_not_contain_leak_me jarvis_desktop\\tests\\test_phase174f_final_blockers.py::test_support_bundle_no_secret_leaks jarvis_desktop\\tests\\test_phase175d_beta_gate_closure.py::test_a10_strict_support_bundle_no_key_patterns jarvis_desktop\\tests\\test_phase182a_operations_security.py::test_support_bundle_no_analytics_payload_leak jarvis_desktop\\tests\\test_phase182a_operations_security.py::test_support_bundle_no_crash_secret_leakage jarvis_desktop\\tests\\test_phase182a_operations_security.py::test_admin_feedback_no_raw_payload jarvis_desktop\\tests\\test_phase182a_operations_security.py::test_admin_feedback_summary_no_raw_items_in_insights -q -p no:cacheprovider",
+      "result": "11 passed, 3 warnings"
+    }
+  ],
+  "verdict_5_users": "GO",
+  "verdict_20_users": "GO",
+  "residual_risks": [
+    "Local cache HMAC blocks direct timestamp/token edits, but a user with write access to both the cache and its local signing secret can replace local state; online account service checks remain authoritative.",
+    "Pre-186E access tokens without session_id/device_id claims are rejected and require re-login after update.",
+    "Refresh replay is rejected; broader session-family invalidation remains unchanged from Phase 186D info findings and was not a confirmed blocker."
+  ]
+}
