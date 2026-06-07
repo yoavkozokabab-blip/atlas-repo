@@ -1827,6 +1827,133 @@ def submit_feedback(body: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
+# Phase 189 — lightweight result feedback funnel for beta users.
+RESULT_FEEDBACK_WORKFLOWS = {
+    "understanding",   # Repository Understanding (scan)
+    "what_breaks",     # What Breaks / impact
+    "change_plan",     # Change Plan / build
+    "debug",           # Debug / investigate
+    "export",          # Claude/Cursor/Codex context export
+}
+RESULT_FEEDBACK_CATEGORIES = {
+    "accurate",
+    "missing_context",
+    "too_generic",
+    "wrong_repo_area",
+    "hard_to_understand",
+    "saved_time",
+    "other",
+}
+
+
+def submit_result_feedback(body: Dict[str, Any]) -> Dict[str, Any]:
+    """Phase 189 — store high-signal "Was this useful?" feedback on a result screen.
+
+    Stores ONLY safe fields: workflow, useful, optional category, redacted
+    comment, timestamp, app version/build, user_id/email if authenticated, and
+    safe repo metadata (counts only). Never stores source code or repository
+    paths. The comment is redacted with the existing support-text redactor.
+    """
+    from .install_support import _redact_support_text
+
+    workflow = str(body.get("workflow") or "").strip().lower()
+    if workflow not in RESULT_FEEDBACK_WORKFLOWS:
+        return {"ok": False, "error": "Unknown workflow."}
+
+    useful_raw = body.get("useful")
+    if isinstance(useful_raw, bool):
+        useful = useful_raw
+    elif isinstance(useful_raw, str) and useful_raw.lower() in ("true", "false", "yes", "no"):
+        useful = useful_raw.lower() in ("true", "yes")
+    else:
+        return {"ok": False, "error": "useful (true/false) is required."}
+
+    category = str(body.get("category") or "").strip().lower()
+    if category and category not in RESULT_FEEDBACK_CATEGORIES:
+        category = "other"
+
+    comment_raw = str(body.get("comment") or "").strip()[:2000]
+    comment = _redact_support_text(comment_raw) if comment_raw else ""
+
+    # Safe repo metadata only — counts, never paths or source.
+    repo_meta: Dict[str, Any] = {}
+    try:
+        stats = (beta_diagnostics().get("scan_statistics") or {})
+        repo_meta = {
+            "file_count": stats.get("file_count"),
+            "module_count": stats.get("module_count"),
+            "subsystem_count": stats.get("subsystem_count"),
+            "dependency_edges": stats.get("dependency_edges"),
+            "graph_quality": stats.get("graph_quality"),
+        }
+    except Exception:
+        pass
+
+    # Attach user identity only if authenticated (local cache, no network).
+    user_id, user_email = "", ""
+    try:
+        from . import accounts_client
+
+        ident = accounts_client.cached_identity()
+        if ident.get("authenticated"):
+            user_id = str(ident.get("user_id") or "")
+            user_email = str(ident.get("email") or "")
+    except Exception:
+        pass
+
+    try:
+        build_commit = _product.build_commit()
+    except Exception:
+        build_commit = ""
+    try:
+        installation_id = _ops.get_installation_identity(touch=False).get("installation_id")
+    except Exception:
+        installation_id = ""
+
+    payload = {
+        "feedback_id": uuid.uuid4().hex[:12],
+        "kind": "result_feedback",
+        "product": "ATLAS",
+        "workflow": workflow,
+        "useful": useful,
+        "category": category or "general",
+        # "message" mirrors the redacted comment so the existing inbox stays compatible.
+        "message": comment,
+        "comment": comment,
+        "user_id": user_id,
+        "email": user_email,
+        "repo_metadata": repo_meta,
+        "version": PRODUCT_VERSION,
+        "build_commit": build_commit,
+        "installation_id": installation_id,
+        "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+    }
+
+    try:
+        feedback_dir = os.path.join(_desktop_data_dir(), "feedback")
+        os.makedirs(feedback_dir, exist_ok=True)
+        feedback_file = os.path.join(feedback_dir, "feedback.jsonl")
+        with open(feedback_file, "a", encoding="utf-8") as fh:
+            fh.write(_json.dumps(payload) + "\n")
+    except Exception:
+        return {"ok": False, "error": "Could not save feedback."}
+
+    return {
+        "ok": True,
+        "message": "Thanks — your feedback was saved.",
+        "workflow": workflow,
+        "useful": useful,
+    }
+
+
+def operations_result_feedback_inbox(*, limit: int = 100) -> Dict[str, Any]:
+    """Phase 189 — admin/operator inbox for result feedback (ATLAS_ADMIN gated)."""
+    admin = os.environ.get("ATLAS_ADMIN", "").strip().lower() in ("1", "true", "yes")
+    if not admin:
+        return {"ok": False, "code": "admin_disabled", "error": "Feedback inbox requires ATLAS_ADMIN=1."}
+    return {"ok": True, **_ops.result_feedback_inbox(limit=limit)}
+
+
 def refresh_changed_files(paths: Optional[List[str]] = None) -> Dict[str, Any]:
     """User-initiated targeted refresh — never runs automatically."""
     from . import targeted_refresh as _tr

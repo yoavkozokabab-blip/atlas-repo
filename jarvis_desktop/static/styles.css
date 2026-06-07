@@ -486,6 +486,17 @@ ul.clean{margin:0;padding-left:18px;line-height:1.9;color:#c7d2f5}
 .guided-walkthrough{position:fixed;right:18px;bottom:18px;z-index:95;max-width:320px;padding:16px 18px}
 .guided-tour-actions{display:flex;gap:8px;margin-top:12px}
 .workflow-feedback{display:flex;align-items:center;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);flex-wrap:wrap}
+/* Phase 189 — result feedback funnel */
+.result-feedback{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.result-feedback .rf-ask{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.result-feedback .rf-q{font-size:13px;color:var(--ink-2,#a8b2c8)}
+.result-feedback .rf-yes.active{background:rgba(64,200,120,.18);border-color:rgba(64,200,120,.5)}
+.result-feedback .rf-no.active{background:rgba(230,120,120,.16);border-color:rgba(230,120,120,.5)}
+.result-feedback .rf-detail{margin-top:10px;display:flex;flex-direction:column;gap:8px;max-width:520px}
+.result-feedback .rf-cat{padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:inherit;font-size:13px}
+.result-feedback .rf-comment{padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:inherit;font-size:13px;resize:vertical;min-height:44px}
+.result-feedback .rf-send{align-self:flex-start}
+.result-feedback .rf-thanks{display:inline-block;margin-top:8px}
 .workflow-toolbar{display:flex;gap:8px;margin:0 auto 12px;max-width:1000px;padding:10px 14px;justify-content:flex-end}
 .about-modal{position:fixed;inset:0;z-index:105;background:rgba(4,8,18,.82);display:grid;place-items:center;padding:24px}
 .about-card{max-width:560px;padding:28px;max-height:85vh;overflow:auto}

@@ -129,6 +129,25 @@ def _save_state(state: Dict[str, Any]) -> None:
         pass
 
 
+def cached_identity() -> Dict[str, Any]:
+    """Return the locally cached account identity (no network call).
+
+    Used by feedback to attach user_id/email when authenticated. Reads only the
+    signed local state file; never triggers a license refresh or network call.
+    Returns safe fields only — never tokens or hashes.
+    """
+    state = _load_state()
+    if state.get("_state_integrity_error"):
+        return {"authenticated": False, "user_id": "", "email": ""}
+    user = state.get("user") if isinstance(state.get("user"), dict) else {}
+    has_token = bool(state.get("access_token"))
+    return {
+        "authenticated": bool(has_token and user),
+        "user_id": str(user.get("user_id") or "")[:64],
+        "email": str(user.get("email") or "")[:200],
+    }
+
+
 def get_device_id() -> str:
     """Return this device's persistent ID, creating it if necessary."""
     state = _load_state()

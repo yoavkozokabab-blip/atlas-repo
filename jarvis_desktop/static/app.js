@@ -498,6 +498,10 @@ function renderScanSuccess(scan) {
 
   // Populate the "What breaks?" file picker with top scanned files
   _populateImpactFilePicker(scan);
+
+  // Phase 189 — Repository Understanding feedback funnel.
+  const ufs = $("understandingFeedbackSlot");
+  if (ufs && typeof workflowFeedbackHtml === "function") ufs.innerHTML = workflowFeedbackHtml("understanding");
 }
 
 function _populateImpactFilePicker(scan) {
@@ -2213,6 +2217,10 @@ async function refreshExport() {
   $("tokEst").textContent = res.estimated_tokens;
   $("previewMeta").textContent = `${res.target} · ${res.packet} · ~${res.estimated_tokens} tokens`;
   STATE._exportText = res.text;
+
+  // Phase 189 — export result feedback funnel.
+  const efs = $("exportFeedbackSlot");
+  if (efs && typeof workflowFeedbackHtml === "function") efs.innerHTML = workflowFeedbackHtml("export");
 }
 async function copyExport() {
   if (!requireAtlasAccess("Copy/export")) return;

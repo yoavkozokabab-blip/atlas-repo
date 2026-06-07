@@ -448,6 +448,67 @@ def feedback_inbox_summary(*, data_dir: Optional[str] = None) -> Dict[str, Any]:
 
 
 # --------------------------------------------------------------------------
+# Phase 189 — result feedback funnel inbox
+# --------------------------------------------------------------------------
+
+def _redact_comment(text: str) -> str:
+    """Defense-in-depth: re-redact a comment at read time (already redacted on write)."""
+    if not text:
+        return ""
+    try:
+        from .install_support import _redact_support_text
+
+        return _redact_support_text(text)
+    except Exception:
+        return text
+
+
+def _minimize_result_feedback_item(row: Dict[str, Any]) -> Dict[str, Any]:
+    """Safe operator view of a result-feedback row.
+
+    Exposes workflow, useful, category, redacted comment, user email (for
+    follow-up), and timestamp. Never exposes tokens, hashes, paths, or source.
+    """
+    return {
+        "feedback_id": row.get("feedback_id") or "",
+        "workflow": str(row.get("workflow") or "")[:32],
+        "useful": bool(row.get("useful")),
+        "category": str(row.get("category") or "general")[:48],
+        "comment": _redact_comment(str(row.get("comment") or row.get("message") or ""))[:400],
+        "email": str(row.get("email") or "")[:200],
+        "timestamp": row.get("timestamp") or row.get("at") or "",
+        "version": str(row.get("version") or "")[:32],
+        "repo_metadata": row.get("repo_metadata") or {},
+    }
+
+
+def list_result_feedback(*, data_dir: Optional[str] = None, limit: int = 100) -> List[Dict[str, Any]]:
+    rows = [r for r in list_feedback(data_dir=data_dir, limit=500) if r.get("kind") == "result_feedback"]
+    return rows[:limit]
+
+
+def result_feedback_inbox(*, data_dir: Optional[str] = None, limit: int = 100) -> Dict[str, Any]:
+    rows = list_result_feedback(data_dir=data_dir, limit=limit)
+    by_workflow: Dict[str, int] = {}
+    useful_yes = 0
+    useful_no = 0
+    for row in rows:
+        wf = str(row.get("workflow") or "unknown")
+        by_workflow[wf] = by_workflow.get(wf, 0) + 1
+        if row.get("useful"):
+            useful_yes += 1
+        else:
+            useful_no += 1
+    return {
+        "total": len(rows),
+        "by_workflow": by_workflow,
+        "useful_yes": useful_yes,
+        "useful_no": useful_no,
+        "items": [_minimize_result_feedback_item(r) for r in rows],
+    }
+
+
+# --------------------------------------------------------------------------
 # Token savings dashboard
 # --------------------------------------------------------------------------
 

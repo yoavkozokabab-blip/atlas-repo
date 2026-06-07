@@ -55,6 +55,15 @@
       </table>
     </div>
   </div>
+  <div style="margin-top:var(--s2);border:1px solid var(--line);border-radius:var(--r);background:rgba(255,255,255,.02);overflow:hidden">
+    <div style="padding:14px 18px;border-bottom:1px solid var(--line);font-weight:600">Result feedback <span class="muted tiny" id="resultFeedbackSummary"></span></div>
+    <div style="overflow:auto">
+      <table class="table">
+        <thead><tr><th>Workflow</th><th>Useful</th><th>Category</th><th>Comment (redacted)</th><th>User email</th><th>When</th></tr></thead>
+        <tbody id="resultFeedbackRows"><tr><td colspan="6" class="muted" style="padding:18px">Run Atlas with ATLAS_ADMIN=1 to load result feedback.</td></tr></tbody>
+      </table>
+    </div>
+  </div>
   <p class="tiny muted" style="margin-top:14px">Waitlist and event counts on this page reflect data stored on this device only.</p>
 </div></section>
 
@@ -192,8 +201,34 @@ async function loadAccountApplicants(){
 }
 
 function clearLocal(){ if(confirm("Clear local waitlist + events on this device?")){ localStorage.removeItem("atlas_waitlist"); localStorage.removeItem("atlas_events"); mtoast("Local data cleared"); loadAdmin(); } }
+async function loadResultFeedback(){
+  const rows=document.getElementById("resultFeedbackRows");
+  if(!rows) return;
+  let d;
+  try{ const r=await fetch("/api/operations/result-feedback"); d=await r.json(); }catch(e){
+    rows.innerHTML='<tr><td colspan="6" class="muted" style="padding:18px">App not running — result feedback unavailable.</td></tr>';
+    return;
+  }
+  if(!d||!d.ok){
+    rows.innerHTML=`<tr><td colspan="6" class="muted" style="padding:18px">${esc(d&&d.error||"Run Atlas with ATLAS_ADMIN=1 to load result feedback.")}</td></tr>`;
+    return;
+  }
+  const items=d.items||[];
+  const sum=document.getElementById("resultFeedbackSummary");
+  if(sum) sum.textContent=`· ${d.total||0} total · ${d.useful_yes||0} yes / ${d.useful_no||0} no`;
+  rows.innerHTML=items.map(it=>`<tr>
+    <td>${esc(it.workflow)}</td>
+    <td>${it.useful?'<b style="color:var(--green,#4c8)">Yes</b>':'<b style="color:#e88">No</b>'}</td>
+    <td>${esc(it.category||"-")}</td>
+    <td class="muted">${esc(it.comment||"-")}</td>
+    <td class="muted">${esc(it.email||"-")}</td>
+    <td class="muted">${esc((it.timestamp||"").slice(0,16).replace("T"," "))}</td>
+  </tr>`).join("")||'<tr><td colspan="6" class="muted" style="padding:18px">No result feedback yet.</td></tr>';
+}
+
 loadAdmin();
 loadBetaInsights();
 loadAccountApplicants();
+loadResultFeedback();
 </script>
 </body></html>

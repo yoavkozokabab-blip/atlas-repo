@@ -1,0 +1,110 @@
+{
+  "phase": "189",
+  "mode": "beta_feedback_funnel",
+  "code_changes": true,
+  "base_commit": "8441798c8b3e3e22148622faa44f198313b4c408",
+  "areas": {
+    "result_feedback_ui": "PASS",
+    "feedback_storage": "PASS",
+    "feedback_redaction": "PASS",
+    "admin_feedback_review": "PASS",
+    "privacy": "PASS"
+  },
+  "result_screens": [
+    {"screen": "Repository Understanding", "workflow": "understanding"},
+    {"screen": "What Breaks", "workflow": "what_breaks"},
+    {"screen": "Change Plan", "workflow": "change_plan"},
+    {"screen": "Debug", "workflow": "debug"},
+    {"screen": "Claude/Cursor/Codex export", "workflow": "export"}
+  ],
+  "feedback_storage_location": "{desktop_data_dir}/feedback/feedback.jsonl (rows tagged kind=result_feedback)",
+  "endpoints_added": [
+    "POST /api/feedback/result -> api.submit_result_feedback",
+    "GET /api/operations/result-feedback -> api.operations_result_feedback_inbox (ATLAS_ADMIN gated)"
+  ],
+  "stored_fields": [
+    "feedback_id", "kind", "product", "workflow", "useful", "category",
+    "message", "comment", "user_id", "email", "repo_metadata",
+    "version", "build_commit", "installation_id", "timestamp"
+  ],
+  "repo_metadata_fields": ["file_count", "module_count", "subsystem_count", "dependency_edges", "graph_quality"],
+  "categories": ["accurate", "missing_context", "too_generic", "wrong_repo_area", "hard_to_understand", "saved_time", "other"],
+  "privacy_checks": {
+    "api_keys_redacted": true,
+    "jwts_redacted": true,
+    "bearer_github_tokens_redacted": true,
+    "filesystem_paths_redacted": true,
+    "no_source_code_stored": true,
+    "no_password_token_session_hashes_exposed": true,
+    "unauthenticated_safe": true,
+    "redaction_module": "jarvis_desktop/install_support.py:_redact_support_text (applied at write and read)"
+  },
+  "files_changed": [
+    "jarvis_desktop/api.py",
+    "jarvis_desktop/operations.py",
+    "jarvis_desktop/server.py",
+    "jarvis_desktop/accounts_client.py",
+    "jarvis_desktop/static/atlas_beta.js",
+    "jarvis_desktop/static/app.js",
+    "jarvis_desktop/static/index.html",
+    "jarvis_desktop/static/styles.css",
+    "jarvis_desktop/static/admin.html",
+    "jarvis_desktop/tests/test_phase189_beta_feedback_funnel.py",
+    "scripts/capture_phase189_screens.py",
+    "reports/phase189_beta_feedback_funnel.md",
+    "reports/phase189_results.json",
+    "reports/phase189_feedback_ux/01_funnel_collapsed.png",
+    "reports/phase189_feedback_ux/02_funnel_expanded.png",
+    "reports/phase189_feedback_ux/03_admin_result_feedback.png"
+  ],
+  "tests_added": [
+    "jarvis_desktop/tests/test_phase189_beta_feedback_funnel.py::test_useful_true_submission_is_stored",
+    "jarvis_desktop/tests/test_phase189_beta_feedback_funnel.py::test_useful_false_submission_is_stored",
+    "jarvis_desktop/tests/test_phase189_beta_feedback_funnel.py::test_optional_comment_may_be_empty",
+    "jarvis_desktop/tests/test_phase189_beta_feedback_funnel.py::test_all_result_workflows_accepted",
+    "jarvis_desktop/tests/test_phase189_beta_feedback_funnel.py::test_unknown_workflow_rejected",
+    "jarvis_desktop/tests/test_phase189_beta_feedback_funnel.py::test_missing_useful_rejected",
+    "jarvis_desktop/tests/test_phase189_beta_feedback_funnel.py::test_invalid_category_coerced_to_other",
+    "jarvis_desktop/tests/test_phase189_beta_feedback_funnel.py::test_secrets_redacted_from_comment",
+    "jarvis_desktop/tests/test_phase189_beta_feedback_funnel.py::test_source_code_not_stored",
+    "jarvis_desktop/tests/test_phase189_beta_feedback_funnel.py::test_unauthenticated_submission_is_safe",
+    "jarvis_desktop/tests/test_phase189_beta_feedback_funnel.py::test_authenticated_identity_attached",
+    "jarvis_desktop/tests/test_phase189_beta_feedback_funnel.py::test_admin_inbox_requires_admin",
+    "jarvis_desktop/tests/test_phase189_beta_feedback_funnel.py::test_admin_inbox_lists_feedback_without_secrets",
+    "jarvis_desktop/tests/test_phase189_beta_feedback_funnel.py::test_admin_inbox_only_returns_result_feedback",
+    "jarvis_desktop/tests/test_phase189_beta_feedback_funnel.py::test_frontend_funnel_present_in_atlas_beta_js",
+    "jarvis_desktop/tests/test_phase189_beta_feedback_funnel.py::test_frontend_slots_present_in_index_html",
+    "jarvis_desktop/tests/test_phase189_beta_feedback_funnel.py::test_admin_html_has_result_feedback_section"
+  ],
+  "tests_run": [
+    {
+      "command": "py -3 -m pytest jarvis_desktop/tests/test_phase189_beta_feedback_funnel.py -p no:cacheprovider",
+      "result": "17 passed, 0 failed"
+    },
+    {
+      "command": "py -3 -m pytest jarvis_desktop/tests/test_phase182_beta_operations.py jarvis_desktop/tests/test_phase182a_operations_security.py jarvis_desktop/tests/test_phase186_privacy.py jarvis_desktop/tests/test_phase143_installer_and_support.py jarvis_desktop/tests/test_phase176_first_impression.py -p no:cacheprovider",
+      "result": "99 passed, 1 failed (pre-existing test_clear_cache_and_rebuild, unrelated to Phase 189)"
+    }
+  ],
+  "screenshots": [
+    "reports/phase189_feedback_ux/01_funnel_collapsed.png",
+    "reports/phase189_feedback_ux/02_funnel_expanded.png",
+    "reports/phase189_feedback_ux/03_admin_result_feedback.png"
+  ],
+  "blockers": [],
+  "non_blocking_issues": [
+    {
+      "id": "NB-1",
+      "issue": "test_phase143_installer_and_support.py::test_clear_cache_and_rebuild fails in demo mode (no on-disk repo path to rescan).",
+      "severity": "low",
+      "status": "pre-existing, unrelated to Phase 189; reproduces on clean baseline with Phase 189 changes stashed"
+    },
+    {
+      "id": "NB-2",
+      "issue": "Result funnel CSS revealed via inline display:block clobbered the column flex layout; fixed to display:flex during screenshot review.",
+      "severity": "resolved",
+      "status": "fixed in this phase"
+    }
+  ],
+  "verdict_first_3_5_beta_users": "GO"
+}

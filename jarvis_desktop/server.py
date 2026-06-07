@@ -185,6 +185,9 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
         ("GET", "/api/product/config"): lambda _body, _query: api.product_config(),
         ("GET", "/api/product/update-check"): lambda _body, _query: api.check_product_update(),
         ("POST", "/api/feedback"): lambda body, _query: api.submit_feedback(body or {}),
+        # Phase 189 — result feedback funnel
+        ("POST", "/api/feedback/result"): lambda body, _query: api.submit_result_feedback(body or {}),
+        ("GET", "/api/operations/result-feedback"): lambda _body, _query: api.operations_result_feedback_inbox(),
         # Phase 182 — beta operations foundation
         ("GET", "/api/system/identity"): lambda _body, _query: api.system_identity(),
         ("GET", "/api/operations/identity"): lambda _body, _query: api.operations_identity(),

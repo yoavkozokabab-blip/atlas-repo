@@ -378,6 +378,7 @@
           <button class="btn ghost" onclick="go('center')">Explore Codebase Map</button>
           <button class="btn ghost" onclick="focusCopilot()">Ask Copilot</button>
         </div>
+        <div id="understandingFeedbackSlot"></div>
       </div>
       <div id="scanFailed" class="scan-result glass fail" style="display:none">
         <h3>Scan failed</h3>
@@ -603,6 +604,7 @@
         <div class="glass preview">
           <div class="preview-head"><span>Context preview</span><span class="muted" id="previewMeta"></span></div>
           <pre id="exportPreview" class="code">Scan a repository first — then preview repo-wide context for Claude, Cursor, or Codex.</pre>
+          <div id="exportFeedbackSlot"></div>
         </div>
       </div>
     </section>

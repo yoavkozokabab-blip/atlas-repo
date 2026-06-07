@@ -23,29 +23,95 @@ function saveWorkflowFeedback(workflow, vote, meta) {
   return list.length;
 }
 
+/* Phase 189 — result feedback funnel.
+   Internal workflow keys map to backend workflow names. */
+const WF_BACKEND = {
+  build: "change_plan",
+  investigate: "debug",
+  impact: "what_breaks",
+  understanding: "understanding",
+  export: "export",
+};
+const RF_CATEGORIES = [
+  ["accurate", "Accurate"],
+  ["missing_context", "Missing context"],
+  ["too_generic", "Too generic"],
+  ["wrong_repo_area", "Wrong repo area"],
+  ["hard_to_understand", "Hard to understand"],
+  ["saved_time", "Saved time"],
+  ["other", "Other"],
+];
+
 function workflowFeedbackHtml(workflow) {
   const id = `wfFb_${workflow}`;
-  return `<div class="workflow-feedback" id="${id}" data-workflow="${workflow}">
-    <span class="muted tiny">Was this helpful?</span>
-    <button type="button" class="btn small ghost wf-up" title="Helpful" onclick="voteWorkflowFeedback('${workflow}', 'up')">👍</button>
-    <button type="button" class="btn small ghost wf-down" title="Not helpful" onclick="voteWorkflowFeedback('${workflow}', 'down')">👎</button>
-    <span class="wf-thanks muted tiny" style="display:none">Thanks — saved locally.</span>
+  const opts = RF_CATEGORIES.map(([v, l]) => `<option value="${v}">${l}</option>`).join("");
+  return `<div class="result-feedback" id="${id}" data-workflow="${workflow}">
+    <div class="rf-ask">
+      <span class="rf-q">Was this useful?</span>
+      <button type="button" class="btn small ghost rf-yes" onclick="resultFeedbackVote('${workflow}', true)">Yes</button>
+      <button type="button" class="btn small ghost rf-no" onclick="resultFeedbackVote('${workflow}', false)">No</button>
+    </div>
+    <div class="rf-detail" style="display:none">
+      <select class="rf-cat" aria-label="Feedback category"><option value="">Category (optional)</option>${opts}</select>
+      <textarea class="rf-comment" rows="2" placeholder="What worked or what was missing?"></textarea>
+      <button type="button" class="btn small primary rf-send" onclick="resultFeedbackSend('${workflow}')">Send feedback</button>
+    </div>
+    <span class="rf-thanks muted tiny" style="display:none">Thanks — your feedback was saved.</span>
   </div>`;
 }
 
-function voteWorkflowFeedback(workflow, vote) {
-  const meta = {};
-  if (workflow === "build" && STATE.buildResult) meta.request = ($("buildRequest") && $("buildRequest").value) || "";
-  if (workflow === "investigate" && STATE.investigateResult) meta.symptom = ($("investigateSymptom") && $("investigateSymptom").value) || "";
-  if (workflow === "impact" && STATE.impactResult) meta.target = STATE.impactResult.target || "";
-  saveWorkflowFeedback(workflow, vote, meta);
-  const host = document.querySelector(`.workflow-feedback[data-workflow="${workflow}"]`);
-  if (host) {
-    host.querySelectorAll("button").forEach(b => { b.disabled = true; });
-    const thanks = host.querySelector(".wf-thanks");
-    if (thanks) thanks.style.display = "inline";
+function _resultFeedbackHost(workflow) {
+  return document.querySelector(`.result-feedback[data-workflow="${workflow}"]`);
+}
+
+function resultFeedbackVote(workflow, useful) {
+  const host = _resultFeedbackHost(workflow);
+  if (!host) return;
+  host.dataset.useful = useful ? "true" : "false";
+  const yes = host.querySelector(".rf-yes");
+  const no = host.querySelector(".rf-no");
+  if (yes) yes.classList.toggle("active", !!useful);
+  if (no) no.classList.toggle("active", !useful);
+  const detail = host.querySelector(".rf-detail");
+  if (detail) detail.style.display = "flex";  // .rf-detail is a column flex container
+}
+
+async function resultFeedbackSend(workflow) {
+  const host = _resultFeedbackHost(workflow);
+  if (!host) return;
+  if (host.dataset.useful !== "true" && host.dataset.useful !== "false") {
+    if (typeof toast === "function") toast("Choose Yes or No first");
+    return;
   }
-  if (typeof toast === "function") toast("Feedback saved locally", "success");
+  const useful = host.dataset.useful === "true";
+  const category = (host.querySelector(".rf-cat") || {}).value || "";
+  const comment = (host.querySelector(".rf-comment") || {}).value || "";
+  const backendWorkflow = WF_BACKEND[workflow] || workflow;
+  // Local mirror for offline resilience (no raw comment in localStorage).
+  saveWorkflowFeedback(workflow, useful ? "up" : "down", { category, comment_len: comment.length });
+  try {
+    const r = await api("/api/feedback/result", "POST", {
+      workflow: backendWorkflow,
+      useful: useful,
+      category: category,
+      comment: comment,
+    });
+    if (r && r.ok === false) {
+      if (typeof toast === "function") toast(r.error || "Could not send feedback", "error");
+      return;
+    }
+  } catch (e) { /* offline — local mirror already saved */ }
+  host.querySelectorAll("button, select, textarea").forEach(el => { el.disabled = true; });
+  const detail = host.querySelector(".rf-detail");
+  if (detail) detail.style.display = "none";
+  const thanks = host.querySelector(".rf-thanks");
+  if (thanks) thanks.style.display = "inline";
+  if (typeof toast === "function") toast("Feedback sent — thank you", "success");
+}
+
+/* Backward-compatible alias for the older thumb widget entry point. */
+function voteWorkflowFeedback(workflow, vote) {
+  resultFeedbackVote(workflow, vote === "up");
 }
 
 function impactResultMarkdown(r) {
@@ -282,6 +348,9 @@ function startGuidedWalkthrough() {
 }
 
 window.voteWorkflowFeedback = voteWorkflowFeedback;
+window.workflowFeedbackHtml = workflowFeedbackHtml;
+window.resultFeedbackVote = resultFeedbackVote;
+window.resultFeedbackSend = resultFeedbackSend;
 window.downloadWorkflowMarkdownBundle = downloadWorkflowMarkdownBundle;
 window.copyBetaDiagnostics = copyBetaDiagnostics;
 window.showAboutAtlas = showAboutAtlas;
