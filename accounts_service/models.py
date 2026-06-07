@@ -46,6 +46,11 @@ class User(Base):
     usage = relationship("UsageDaily", back_populates="user", cascade="all, delete-orphan")
     sessions = relationship("Session", back_populates="user", cascade="all, delete-orphan")
     feedback = relationship("Feedback", back_populates="user")
+    beta_profile = relationship("BetaProfile", back_populates="user", uselist=False, cascade="all, delete-orphan")
+
+    @property
+    def device_count(self) -> int:
+        return len([device for device in self.devices if device.status == "active"])
 
 
 # ── Devices ────────────────────────────────────────────────────────────────
@@ -85,6 +90,29 @@ class License(Base):
     notes = Column(Text, nullable=True)
 
     user = relationship("User", back_populates="license")
+
+
+# ── Beta profile metadata ───────────────────────────────────────────────────
+class BetaProfile(Base):
+    __tablename__ = "beta_profiles"
+
+    profile_id = Column(String(36), primary_key=True, default=_uuid)
+    user_id = Column(String(36), ForeignKey("users.user_id", ondelete="CASCADE"), nullable=False, unique=True, index=True)
+    currently_developer = Column(Boolean, nullable=False)
+    project_use = Column(String(32), nullable=False)
+    company_name = Column(String(120), nullable=True)
+    company_size = Column(String(32), nullable=False)
+    developer_experience = Column(String(32), nullable=False)
+    primary_role = Column(String(64), nullable=False)
+    coding_tools = Column(JSON, nullable=False, default=list)
+    languages_frameworks = Column(Text, nullable=True)
+    repo_size = Column(String(32), nullable=False)
+    atlas_help = Column(JSON, nullable=False, default=list)
+    notes = Column(Text, nullable=True)
+    created_at = Column(DateTime, nullable=False, default=_utcnow)
+    updated_at = Column(DateTime, nullable=False, default=_utcnow, onupdate=_utcnow)
+
+    user = relationship("User", back_populates="beta_profile")
 
 
 # ── Sessions ───────────────────────────────────────────────────────────────

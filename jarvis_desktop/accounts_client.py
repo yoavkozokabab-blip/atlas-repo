@@ -216,6 +216,29 @@ def _clear_auth_state(state: Optional[Dict[str, Any]] = None, reason: str = "") 
     _save_state(state)
 
 
+def _error_status(result: Dict[str, Any], default: str = "account_unavailable") -> str:
+    detail = str(result.get("detail") or result.get("error") or result.get("message") or "").lower()
+    if "device" in detail and "revoked" in detail:
+        return "device_revoked"
+    if "suspended" in detail:
+        return "suspended"
+    if "banned" in detail:
+        return "banned"
+    if "expired" in detail:
+        return "expired"
+    return default
+
+
+def _status_message(status: str) -> str:
+    return {
+        "device_revoked": "This device is no longer authorized for this account.",
+        "suspended": "This account is suspended. Contact the Atlas operator.",
+        "banned": "This account is banned and cannot access Atlas.",
+        "expired": "Your Atlas access is not currently active.",
+        "account_unavailable": "Your Atlas access is not currently active.",
+    }.get(status, "Atlas account is not available. Please sign in again.")
+
+
 def get_valid_access_token() -> Optional[str]:
     """Return a valid access token, refreshing automatically if needed."""
     state = _load_state()
@@ -239,7 +262,7 @@ def get_valid_access_token() -> Optional[str]:
         return access_token or None
     if result.get("_http_status"):
         if int(result.get("_http_status") or 0) in (401, 403):
-            _clear_auth_state(state, "auth_rejected")
+            _clear_auth_state(state, _error_status(result, "auth_rejected"))
         return None
 
     _persist_token_response(result, state)
@@ -281,6 +304,7 @@ def get_license_status() -> Dict[str, Any]:
             "message": "Atlas account cache integrity failed. Please sign in again.",
         }
     token = get_valid_access_token()
+    state = _load_state()
 
     # Online: refresh from server
     if token:
@@ -292,15 +316,26 @@ def get_license_status() -> Dict[str, Any]:
             return result
         if result.get("_http_status"):
             status_code = int(result.get("_http_status") or 0)
+            status_label = _error_status(result)
             if status_code in (401, 403):
-                _clear_auth_state(state, "account_unavailable")
+                _clear_auth_state(state, status_label)
             return {
                 "valid": False,
                 "plan": "free",
-                "status": "account_unavailable" if status_code in (401, 403) else "license_check_failed",
+                "status": status_label if status_code in (401, 403) else "license_check_failed",
                 "_http_status": status_code,
-                "message": "Atlas account is not available. Please sign in again.",
+                "message": _status_message(status_label),
             }
+
+    last_error = state.get("last_auth_error")
+    if last_error in {"device_revoked", "suspended", "banned", "expired", "account_unavailable"}:
+        return {
+            "valid": False,
+            "plan": "free",
+            "status": last_error,
+            "_offline": False,
+            "message": _status_message(last_error),
+        }
 
     # Offline path — check grace window
     cached = state.get("license")
@@ -340,15 +375,24 @@ def is_service_running() -> bool:
     return result.get("status") == "ok"
 
 
-def register(email: str, password: str, app_version: str, platform: str) -> Dict[str, Any]:
+def register(
+    email: str,
+    password: str,
+    app_version: str,
+    platform: str,
+    beta_profile: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
     """Register a new account."""
-    result = _call("POST", "/auth/register", {
+    payload: Dict[str, Any] = {
         "email": email,
         "password": password,
         "device_id": get_device_id(),
         "app_version": app_version,
         "platform": platform,
-    })
+    }
+    if beta_profile is not None:
+        payload["beta_profile"] = beta_profile
+    result = _call("POST", "/auth/register", payload)
     if "access_token" in result:
         _persist_token_response(result)
     return result
@@ -411,6 +455,14 @@ def remove_device(device_id: str) -> Dict[str, Any]:
     return _call("DELETE", f"/user/devices/{device_id}", access_token=token)
 
 
+def get_admin_users() -> Dict[str, Any]:
+    """Return account users for admin review. Requires current account admin token."""
+    token = get_valid_access_token()
+    if not token:
+        return {"_unauthenticated": True}
+    return _call("GET", "/admin/users?limit=200", access_token=token)
+
+
 def send_analytics_event(event_type: str, app_version: str, **counters: int) -> None:
     """Send a privacy-safe usage event. Only integer counters are sent."""
     token = get_valid_access_token()
@@ -460,4 +512,5 @@ def get_account_state() -> Dict[str, Any]:
         "device_id": get_device_id(),
         "service_online": bool(token and not license_status.get("_offline") and not license_status.get("_http_status")),
         "state_integrity_error": bool(state.get("_state_integrity_error")),
+        "last_auth_error": state.get("last_auth_error"),
     }

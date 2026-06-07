@@ -13,7 +13,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.orm import Session
 
 from ..database import get_db
-from ..models import Device, EmailToken, License, Session as DBSession, User
+from ..models import BetaProfile, Device, EmailToken, License, Session as DBSession, User
 from ..rate_limit import check_rate_limit
 from ..schemas import LoginRequest, LogoutRequest, RefreshRequest, RegisterRequest, TokenResponse
 from ..security import (
@@ -132,7 +132,7 @@ def register(req: RegisterRequest, request: Request, db: Session = Depends(get_d
     user = User(
         email=email,
         password_hash=hash_password(req.password),
-        status="active",  # Beta: skip email verification for now
+        status="pending",
         role="user",
         beta_flag=False,
     )
@@ -143,6 +143,10 @@ def register(req: RegisterRequest, request: Request, db: Session = Depends(get_d
     lic = License(user_id=user.user_id, plan="free", status="active", max_devices=1)
     db.add(lic)
     db.flush()
+
+    if req.beta_profile:
+        db.add(BetaProfile(user_id=user.user_id, **req.beta_profile.model_dump()))
+        db.flush()
 
     _ensure_device(user, req.device_id, req.app_version, req.platform, db)
     return _build_token_response(user, req.device_id, db)
@@ -162,12 +166,14 @@ def login(req: LoginRequest, request: Request, db: Session = Depends(get_db)):
     email = req.email.lower().strip()
     user = db.query(User).filter(User.email == email).first()
 
-    # Constant-time: always verify even if user not found
+    # Always verify even if user is not found to keep timing roughly consistent.
     candidate_hash = user.password_hash if user else _DUMMY_HASH
     valid = verify_password(req.password, candidate_hash)
 
-    if not user or not valid:
-        raise HTTPException(status_code=401, detail="Invalid email or password.")
+    if not user:
+        raise HTTPException(status_code=401, detail="No Atlas account was found for this email.")
+    if not valid:
+        raise HTTPException(status_code=401, detail="Incorrect password. Try again or reset it.")
 
     if user.status in BLOCKED_STATUSES:
         reason_map = {

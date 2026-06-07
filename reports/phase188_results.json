@@ -1,0 +1,106 @@
+{
+  "phase": "188",
+  "mode": "auth_ux_beta_profile",
+  "code_changes": true,
+  "recovery": {
+    "index_lock_removed": true,
+    "index_lock_age_minutes_at_removal": 34.7,
+    "git_process_running_at_removal": false,
+    "note": "Stale .git/index.lock (created 18:35:06) from the earlier blocked commit was removed only after confirming no git process was running."
+  },
+  "areas": {
+    "auth_layout": "PASS",
+    "signin_errors": "PASS",
+    "create_account_profile": "PASS",
+    "data_storage_documented": "PASS",
+    "access_gating": "PASS",
+    "admin_profile_review": "PASS",
+    "privacy": "PASS"
+  },
+  "tests_added": [
+    "accounts_service/tests/test_phase188_beta_profile_accounts.py::test_phase188_register_stores_beta_profile_and_keeps_account_pending",
+    "accounts_service/tests/test_phase188_beta_profile_accounts.py::test_phase188_optional_company_name_may_be_empty",
+    "accounts_service/tests/test_phase188_beta_profile_accounts.py::test_phase188_profile_rejects_secrets_code_and_paths",
+    "accounts_service/tests/test_phase188_beta_profile_accounts.py::test_phase188_admin_can_view_profile_without_password_or_token_hashes",
+    "accounts_service/tests/test_phase188_beta_profile_accounts.py::test_phase188_desktop_register_validates_email_password_and_required_profile",
+    "accounts_service/tests/test_phase188_beta_profile_accounts.py::test_phase188_signin_error_messages_are_specific",
+    "jarvis_desktop/tests/test_phase188_auth_ux.py::test_phase188_auth_layout_is_dedicated_and_polished",
+    "jarvis_desktop/tests/test_phase188_auth_ux.py::test_phase188_beta_application_fields_are_present",
+    "jarvis_desktop/tests/test_phase188_auth_ux.py::test_phase188_signin_and_blocked_state_messages_are_human_readable",
+    "jarvis_desktop/tests/test_phase188_auth_ux.py::test_phase188_workflow_views_and_actions_require_valid_access",
+    "jarvis_desktop/tests/test_phase188_auth_ux.py::test_phase188_license_gating_disables_workflow_buttons",
+    "jarvis_desktop/tests/test_phase188_auth_ux.py::test_phase188_admin_review_lists_profile_fields_without_hash_columns"
+  ],
+  "tests_run": [
+    {
+      "command": "py -3 -m pytest accounts_service/tests/test_phase188_beta_profile_accounts.py jarvis_desktop/tests/test_phase188_auth_ux.py -p no:cacheprovider",
+      "status": "PASS",
+      "result": "12 passed",
+      "note": "This is the suite that was BLOCKED before by a .lib permission error; now runs cleanly."
+    },
+    {
+      "command": "py -3 -m pytest accounts_service/tests/test_phase186f_beta_smoke.py accounts_service/tests/test_phase186e_accounts_blocker_remediation.py accounts_service/tests/test_phase186c_accounts_beta_safety.py jarvis_desktop/tests/test_phase186_accounts.py jarvis_desktop/tests/test_phase186_admin.py jarvis_desktop/tests/test_phase186_privacy.py -p no:cacheprovider",
+      "status": "PASS",
+      "result": "104 passed"
+    },
+    {
+      "command": "py -3 -m pytest jarvis_desktop/tests/test_phase143_installer_and_support.py jarvis_desktop/tests/test_phase182a_operations_security.py jarvis_desktop/tests/test_phase181g_persistence_signing.py -p no:cacheprovider",
+      "status": "PASS_WITH_PREEXISTING_FAILURE",
+      "result": "50 passed, 1 failed",
+      "failure": "test_clear_cache_and_rebuild",
+      "failure_analysis": "Pre-existing and unrelated to Phase 188. Reproduces on clean HEAD with all working-tree changes stashed. Demo mode has no on-disk repository path to rescan after clear-cache. Privacy-relevant test_support_bundle_no_source_code in the same file passes."
+    }
+  ],
+  "totals": {
+    "relevant_passed": 166,
+    "preexisting_unrelated_failures": 1
+  },
+  "screenshots": [
+    "reports/phase188_auth_ux/00_auth_before.png",
+    "reports/phase188_auth_ux/01_login_signed_out.png",
+    "reports/phase188_auth_ux/02_create_account_beta_profile.png",
+    "reports/phase188_auth_ux/03_pending_approval.png",
+    "reports/phase188_auth_ux/04_access_denied_no_beta.png",
+    "reports/phase188_auth_ux/05_admin_profile_review.png"
+  ],
+  "data_storage": {
+    "ATLAS_ACCOUNTS_DB_default": "sqlite:///./atlas_accounts.db",
+    "tables": {
+      "users": "user_id, email (unique), password_hash (bcrypt), status, role, beta_flag, created_at, last_seen_at, admin_notes",
+      "sessions": "session_id, user_id, device_id, refresh_hash (SHA-256 hex of raw token; raw token never stored), created_at, expires_at, revoked_at, revoked_reason",
+      "devices": "device_id (client-generated), user_id, app_version, platform, first_seen_at, last_seen_at, status (active|revoked), revoked_by",
+      "licenses": "license_id, user_id, plan (beta|free|pro|enterprise), status (active|expired|suspended|cancelled), expires_at, max_devices, notes",
+      "beta_profiles": "profile_id, user_id, currently_developer, project_use, company_name (optional), company_size, developer_experience, primary_role, coding_tools (JSON), languages_frameworks (optional), repo_size, atlas_help (JSON), notes (optional), created_at, updated_at",
+      "email_tokens": "token_id, user_id, kind, token_hash (SHA-256 hex), created_at, expires_at, used_at",
+      "admin_audit_log": "action_id, admin_user_id, admin_email, action, target_user_id, target_user_email, target_device_id, created_at, metadata",
+      "usage_daily": "per user/device/day counters (launches, scans, change_plans, exports, tokens_saved)",
+      "feedback": "feedback_id, user_id, category, message_redacted (secrets stripped), created_at, status"
+    },
+    "desktop_auth_cache": "desktop_data_dir()/accounts_state.json (HMAC-signed; ATLAS_DESKTOP_DATA / JARVIS_DESKTOP_DATA override, else ~/.jarvis_desktop, else %LOCALAPPDATA%/Atlas/desktop_data)"
+  },
+  "admin_api_never_exposes": {
+    "AdminUserOut_fields": ["admin_notes", "beta_flag", "beta_profile", "created_at", "device_count", "email", "last_seen_at", "license", "role", "status", "user_id"],
+    "plaintext_passwords": "never stored; only bcrypt password_hash exists",
+    "password_hashes": "excluded from AdminUserOut and admin.html",
+    "refresh_token_hashes": "excluded from AdminUserOut and admin.html",
+    "raw_jwt_access_tokens": "excluded from AdminUserOut and admin.html",
+    "jwt_secret": "not present in any ORM model or schema; lives in {ATLAS_ACCOUNTS_DATA_DIR}/auth/jwt_secret file only",
+    "verified_by": "schema field introspection (zero secret-like fields) + grep (no password_hash/refresh_hash/token_hash/jwt_secret in admin.py/users.py/schemas.py) + test_phase188_admin_can_view_profile_without_password_or_token_hashes"
+  },
+  "blockers": [],
+  "resolved_blockers": [
+    "Account-service/admin/privacy tests now execute (the .lib permission error is gone when run from a normal terminal). 12 + 104 relevant tests pass.",
+    "Auth UX screenshots captured from the live app on 127.0.0.1:8802 via scripted Chromium (Playwright), bypassing the earlier file:// / 127.0.0.1 browser-policy block.",
+    "Stale .git/index.lock removed after confirming no git process was running; git status and commit work."
+  ],
+  "non_blocking_issues": [
+    {
+      "id": "NB-1",
+      "test": "test_phase143_installer_and_support.py::test_clear_cache_and_rebuild",
+      "severity": "low",
+      "issue": "Fails in demo mode (no on-disk repo path to rescan after clear-cache).",
+      "status": "pre-existing, unrelated to Phase 188; reproduces on clean HEAD"
+    }
+  ],
+  "verdict_first_3_5_beta_users": "GO"
+}

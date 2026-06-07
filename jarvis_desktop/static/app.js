@@ -14,6 +14,7 @@ const DEMO_PACK_KEY = "atlas_demo_pack_v1";
 const GRAPH_HIERARCHY_THRESHOLD = 1000;
 const ATLAS_SHOW_GRAPH_DEBUG = false;
 const NAV_ALIASES = { intel: "center", bug: "investigate", map: "center", "command-center": "center" };
+const PROTECTED_VIEWS = new Set(["home", "scan", "center", "build", "investigate", "impact", "export"]);
 
 function resolveDefaultGraphView(moduleCount) {
   return (moduleCount || 0) >= GRAPH_HIERARCHY_THRESHOLD ? "hierarchy" : "module";
@@ -235,6 +236,18 @@ function toast(msg, kind) {
   t.className = "toast show" + (kind === "success" ? " toast-success" : kind === "error" ? " toast-error" : "");
   setTimeout(() => { t.classList.remove("show"); t.className = "toast"; }, 2400);
 }
+function requireAtlasAccess(actionLabel) {
+  if (window.atlasAccounts && typeof window.atlasAccounts.requireAccess === "function") {
+    const ok = window.atlasAccounts.requireAccess();
+    if (!ok) toast(`${actionLabel || "Atlas"} requires active beta access`, "error");
+    return ok;
+  }
+  if (document.body.classList.contains("auth-mode")) {
+    toast(`${actionLabel || "Atlas"} requires active beta access`, "error");
+    return false;
+  }
+  return true;
+}
 async function copyText(text, label) {
   const payload = String(text || "");
   if (!payload.trim()) {
@@ -303,6 +316,7 @@ function dismissOnboarding(skipDemo) {
 }
 
 function onboardingLoadSample() {
+  if (!requireAtlasAccess("Sample repository")) return;
   dismissOnboarding(true);
   loadDemoMode("medium");
 }
@@ -496,6 +510,7 @@ function _populateImpactFilePicker(scan) {
 }
 
 async function validateRepoPath(showToast) {
+  if (!requireAtlasAccess("Repository validation")) return null;
   const path = ($("repoPath").value || "").trim();
   $("pathError").style.display = "none";
   $("pathOk").style.display = "none";
@@ -536,6 +551,7 @@ async function validateRepoPath(showToast) {
 }
 
 async function browseRepoFolder() {
+  if (!requireAtlasAccess("Folder selection")) return;
   const btn = $("browseRepoBtn");
   if (btn) { btn.disabled = true; btn.textContent = "Opening…"; }
   try {
@@ -616,6 +632,7 @@ function finishScanSession(scan, pathLabel) {
 }
 
 async function loadDemoMode(pack) {
+  if (!requireAtlasAccess("Sample repository")) return;
   dismissOnboarding(true);
   if (typeof hideHomeScanFocus === "function") hideHomeScanFocus();
   const packId = pack || STATE.demoPack || "medium";
@@ -667,6 +684,7 @@ function selectDemoPack(id) {
 function go(view) {
   if (document.body.classList.contains('auth-mode') && view !== 'accounts') return;
   view = NAV_ALIASES[view] || view;
+  if (PROTECTED_VIEWS.has(view) && !requireAtlasAccess("Atlas")) return;
   document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
   const el = $("view-" + view); if (el) el.classList.add("active");
   document.querySelectorAll("#nav button").forEach(b => {
@@ -940,6 +958,7 @@ async function pollScanProgress(stopRef) {
 }
 
 async function scanFlow() {
+  if (!requireAtlasAccess("Repository scan")) return;
   const validation = await validateRepoPath(true);
   if (!validation) return;
   const broad = validation.broad_warnings || [];
@@ -951,6 +970,7 @@ async function scanFlow() {
 }
 
 async function executeScanFlow(validation) {
+  if (!requireAtlasAccess("Repository scan")) return;
   const path = validation.path;
   const sel = await api("/api/repositories/select", "POST", { path });
   if (!sel.ok) { toast("✗ " + (sel.error || "Invalid path"), "error"); return; }
@@ -1696,6 +1716,7 @@ function setProductTourStep(title, narration) {
 
 async function startProductTour() {
   if (STATE.productTourActive) return;
+  if (!requireAtlasAccess("Product tour")) return;
   STATE.productTourActive = true;
   trackAnalytics("product_tour_started");
   dismissOnboarding(true);
@@ -1737,6 +1758,7 @@ async function startProductTour() {
 function impactFor(path) { $("impactTarget").value = path; go("impact"); runImpact(); }
 
 async function copyContext(target) {
+  if (!requireAtlasAccess("Copy context")) return;
   const res = await api("/api/copilot/ask", "POST", { question: `Generate a ${target} prompt for this repo`, target, packet: "compact" });
   if (!res.ok) { toast("✗ Scan a repo first"); return; }
   const text = res.copy_targets?.[target] || res.suggested_prompt || "";
@@ -1836,6 +1858,7 @@ function renderDomainKnowledge(dk) {
 }
 
 async function runChangePlan() {
+  if (!requireAtlasAccess("Change Plan")) return;
   const request = $("buildRequest")?.value.trim();
   if (!request) { toast("Describe the change you want"); return; }
   const r = await api("/api/planning/change", "POST", { request });
@@ -1919,6 +1942,7 @@ async function runBuildImpact() {
 
 /* ---------------- Investigate (Symptom Engine) ---------------- */
 async function runInvestigationPlan() {
+  if (!requireAtlasAccess("Debug")) return;
   const symptom = $("investigateSymptom")?.value.trim();
   if (!symptom) { toast("Describe the symptom"); return; }
   const r = await api("/api/planning/investigate", "POST", { symptom });
@@ -2005,6 +2029,7 @@ function copyInvestigatePrompt(tool) {
 
 /* ---------------- Impact ---------------- */
 async function runImpact() {
+  if (!requireAtlasAccess("What Breaks")) return;
   const target = $("impactTarget").value.trim();
   if (!target) { toast("Enter a file or module"); return; }
   const r = await api("/api/planning/impact", "POST", { target });
@@ -2168,6 +2193,7 @@ function updateCopyExportLabel() {
 }
 
 async function refreshExport() {
+  if (!requireAtlasAccess("Context export")) return;
   updateCopyExportLabel();
   const sum = STATE.summary || await api("/api/repositories/current/summary");
   if (!sum.ok) {
@@ -2188,7 +2214,11 @@ async function refreshExport() {
   $("previewMeta").textContent = `${res.target} · ${res.packet} · ~${res.estimated_tokens} tokens`;
   STATE._exportText = res.text;
 }
-async function copyExport() { if (STATE._exportText) copyText(STATE._exportText, `Copied ${STATE.exportPacket} context for ${STATE.exportTarget}`); else toast("Nothing to copy"); }
+async function copyExport() {
+  if (!requireAtlasAccess("Copy/export")) return;
+  if (STATE._exportText) copyText(STATE._exportText, `Copied ${STATE.exportPacket} context for ${STATE.exportTarget}`);
+  else toast("Nothing to copy");
+}
 function saveExport() {
   if (!STATE._exportText) { toast("Nothing to save"); return; }
   const blob = new Blob([STATE._exportText], { type: "text/plain" });

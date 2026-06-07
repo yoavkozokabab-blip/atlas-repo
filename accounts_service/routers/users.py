@@ -28,6 +28,17 @@ def me(user: User = Depends(get_current_user)):
 @router.get("/license", response_model=LicenseCheckResponse)
 def license_check(user: User = Depends(get_current_user)):
     """Desktop client polls this to validate license + get feature flags."""
+    if user.status == "pending":
+        lic = user.license
+        return LicenseCheckResponse(
+            valid=False,
+            plan=lic.plan if lic else "free",
+            status="pending",
+            expires_at=lic.expires_at if lic else None,
+            max_devices=lic.max_devices if lic else 1,
+            beta_features=False,
+            message="Your account was created and is waiting for beta approval.",
+        )
     lic = user.license
     if not lic or lic.status != "active":
         return LicenseCheckResponse(

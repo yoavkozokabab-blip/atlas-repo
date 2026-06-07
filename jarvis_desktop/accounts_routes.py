@@ -7,6 +7,7 @@ keeps all API calls to the same origin for the JS layer).
 from __future__ import annotations
 
 import platform
+import re
 from typing import Any, Dict
 
 from . import accounts_client
@@ -29,6 +30,39 @@ def _platform_str() -> str:
     return f"{platform.system()} {platform.release()}"
 
 
+_EMAIL_PATTERN = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+_PROFILE_REQUIRED_FIELDS = (
+    "currently_developer",
+    "project_use",
+    "company_size",
+    "developer_experience",
+    "primary_role",
+    "coding_tools",
+    "repo_size",
+    "atlas_help",
+)
+
+
+def _valid_email(email: str) -> bool:
+    return bool(_EMAIL_PATTERN.match(email or ""))
+
+
+def _validate_beta_profile(profile: Dict[str, Any]) -> str:
+    if not isinstance(profile, dict):
+        return "Complete the beta profile before creating your account."
+    for field in _PROFILE_REQUIRED_FIELDS:
+        value = profile.get(field)
+        if value is None or value == "" or value == []:
+            return "Complete the required beta profile fields."
+    if not isinstance(profile.get("currently_developer"), bool):
+        return "Choose whether you currently work as a developer."
+    for list_field in ("coding_tools", "atlas_help"):
+        value = profile.get(list_field)
+        if not isinstance(value, list) or not value:
+            return "Select at least one option in each beta profile checklist."
+    return ""
+
+
 # ── Route handlers ─────────────────────────────────────────────────────────────
 
 def accounts_state(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
@@ -40,13 +74,22 @@ def accounts_register(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str,
     """POST /api/accounts/register"""
     email = str(body.get("email", "")).strip()
     password = str(body.get("password", ""))
+    confirm = str(body.get("confirm_password", ""))
     if not email or not password:
         return {"ok": False, "error": "email and password are required"}
+    if not _valid_email(email):
+        return {"ok": False, "error": "Enter a valid email address."}
+    if password != confirm:
+        return {"ok": False, "error": "Passwords do not match."}
+    profile_error = _validate_beta_profile(body.get("beta_profile") or {})
+    if profile_error:
+        return {"ok": False, "error": profile_error}
     result = accounts_client.register(
         email=email,
         password=password,
         app_version=_app_version(),
         platform=_platform_str(),
+        beta_profile=body.get("beta_profile") or {},
     )
     if result.get("_offline"):
         return {"ok": False, "error": "Accounts service is not running. Start it with: python -m accounts_service.main"}
@@ -62,6 +105,8 @@ def accounts_login(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, An
     password = str(body.get("password", ""))
     if not email or not password:
         return {"ok": False, "error": "email and password are required"}
+    if not _valid_email(email):
+        return {"ok": False, "error": "Enter a valid email address."}
     result = accounts_client.login(
         email=email,
         password=password,
@@ -120,6 +165,18 @@ def accounts_remove_device(body: Dict[str, Any], _query: Dict[str, str]) -> Dict
     return {"ok": True}
 
 
+def accounts_admin_users(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+    """GET /api/accounts/admin/users — current account admin applicant review."""
+    result = accounts_client.get_admin_users()
+    if isinstance(result, list):
+        return {"ok": True, "users": result}
+    if result.get("_unauthenticated"):
+        return {"ok": False, "error": "Admin account sign-in required."}
+    if result.get("_http_status"):
+        return {"ok": False, "error": result.get("detail", "Admin access required.")}
+    return {"ok": True, "users": result if isinstance(result, list) else []}
+
+
 def accounts_service_status(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
     """GET /api/accounts/service-status"""
     return {"running": accounts_client.is_service_running()}
@@ -136,4 +193,5 @@ ACCOUNTS_ROUTES = {
     ("GET",  "/api/accounts/devices"):        accounts_devices,
     ("POST", "/api/accounts/devices/remove"): accounts_remove_device,
     ("GET",  "/api/accounts/service-status"): accounts_service_status,
+    ("GET",  "/api/accounts/admin/users"):     accounts_admin_users,
 }

@@ -425,9 +425,9 @@ class TestFullBetaLifecycle:
     """End-to-end smoke test covering the complete supervised-beta user journey."""
 
     def test_register_and_license_check(self, client):
-        """New user registers and gets a free license."""
+        """New beta applicant registers in pending state with a free license row."""
         user = _register(client)
-        assert user["user"]["status"] == "active"
+        assert user["user"]["status"] == "pending"
         assert user["license"]["plan"] == "free"
 
         profile = client.get("/user/me", headers=_auth(user))
@@ -437,7 +437,8 @@ class TestFullBetaLifecycle:
         lic = client.get("/user/license", headers=_auth(user))
         assert lic.status_code == 200
         assert lic.json()["plan"] == "free"
-        assert lic.json()["valid"] is True
+        assert lic.json()["valid"] is False
+        assert lic.json()["status"] == "pending"
 
     def test_admin_grants_and_revokes_beta(self, client, db):
         """Admin can grant beta status; user gets beta plan and extra device slots."""
