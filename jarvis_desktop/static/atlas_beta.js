@@ -296,7 +296,16 @@ window.stopGuidedWalkthrough = stopGuidedWalkthrough;
 window.guidedWalkthroughNext = guidedWalkthroughNext;
 window.maybeShowWelcomeScreen = maybeShowWelcomeScreen;
 
+document.addEventListener("atlas:authenticated", () => {
+  try {
+    if (localStorage.getItem(WELCOME_KEY) !== "1" && typeof maybeShowWelcomeScreen === "function") {
+      maybeShowWelcomeScreen();
+    }
+  } catch (e) {}
+});
+
 (function atlasBetaBoot() {
+  if (document.body.classList.contains("auth-mode")) return;
   try {
     if (localStorage.getItem(WELCOME_KEY) !== "1") {
       maybeShowWelcomeScreen();

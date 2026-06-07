@@ -665,6 +665,7 @@ function selectDemoPack(id) {
 }
 
 function go(view) {
+  if (document.body.classList.contains('auth-mode') && view !== 'accounts') return;
   view = NAV_ALIASES[view] || view;
   document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
   const el = $("view-" + view); if (el) el.classList.add("active");
@@ -673,6 +674,7 @@ function go(view) {
     b.classList.toggle("active", target === view);
   });
   window.scrollTo({ top: 0, behavior: "smooth" });
+  document.dispatchEvent(new CustomEvent("atlas:viewchange", { detail: { view } }));
   if (view === "center") {
     trackAnalytics("graph_opened");
     api("/api/usage/event", "POST", { event_type: "repository_map_opened" }).catch(function () {});
@@ -2194,8 +2196,11 @@ function saveExport() {
   a.download = `atlas_context_${STATE.exportTarget}_${STATE.exportPacket}.txt`; a.click(); toast("Prompt saved ✓");
 }
 
-/* ---------------- Boot ---------------- */
-(async function boot() {
+/* ---------------- Boot (deferred until authenticated) ---------------- */
+let _atlasAppBooted = false;
+async function bootAtlasApp() {
+  if (_atlasAppBooted) return;
+  _atlasAppBooted = true;
   updateWorkflowToolbars();
   renderDemoPackPicker();
   wireSeg("segTarget", "exportTarget"); wireSeg("segPacket", "exportPacket");
@@ -2228,4 +2233,6 @@ function saveExport() {
     }
   } catch (e) {}
   loadRecent();
-})();
+}
+window.bootAtlasApp = bootAtlasApp;
+document.addEventListener("atlas:authenticated", bootAtlasApp);

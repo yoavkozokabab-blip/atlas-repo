@@ -9,9 +9,102 @@
   <script src="vendor/three.min.js"></script>
   <script src="vendor/3d-force-graph.min.js"></script>
 </head>
-<body class="mode-beginner">
+<body class="mode-beginner auth-mode auth-loading">
   <div id="bg-grid"></div>
   <div id="bg-glow"></div>
+
+  <!-- Dedicated authentication experience (pre-login only) -->
+  <div id="auth-layout" class="auth-layout">
+    <header class="auth-topbar">
+      <div class="auth-brand" aria-label="Atlas">
+        <span class="logo-mark">◈</span>
+        <span class="logo-text">ATLAS</span>
+      </div>
+      <a class="auth-help-link" href="support.html">Help</a>
+    </header>
+
+    <main class="auth-stage">
+      <div class="auth-card glass">
+        <div class="auth-card-head">
+          <h1 class="auth-title">ATLAS</h1>
+          <p class="auth-subtitle">Plan changes before Claude writes them.</p>
+        </div>
+
+        <!-- LOGIN -->
+        <div id="acc-panel-login" class="auth-panel">
+          <h2 class="auth-panel-title">Sign in</h2>
+          <div id="acc-login-error" class="acc-error" style="display:none" role="alert"></div>
+          <div class="acc-field">
+            <label for="acc-login-email">Email</label>
+            <div class="acc-input-wrap">
+              <span class="acc-input-icon" aria-hidden="true">✉</span>
+              <input id="acc-login-email" type="email" autocomplete="email" placeholder="you@company.com" />
+            </div>
+          </div>
+          <div class="acc-field">
+            <label for="acc-login-pwd">Password</label>
+            <div class="acc-input-wrap">
+              <span class="acc-input-icon" aria-hidden="true">🔒</span>
+              <input id="acc-login-pwd" type="password" autocomplete="current-password" placeholder="Your password" onkeydown="if(event.key==='Enter') atlasAccounts.login()" />
+            </div>
+          </div>
+          <div class="acc-actions acc-actions-stack">
+            <button id="acc-login-btn" class="btn primary auth-btn-primary" type="button" onclick="atlasAccounts.login()">Sign In</button>
+            <button class="btn ghost auth-btn-secondary" type="button" onclick="atlasAccounts.switchPanel('register')">Create Account</button>
+          </div>
+        </div>
+
+        <!-- REGISTER -->
+        <div id="acc-panel-register" class="auth-panel" style="display:none">
+          <h2 class="auth-panel-title">Create account</h2>
+          <p class="auth-panel-lead muted">Free for beta. No payment required.</p>
+          <div id="acc-reg-error" class="acc-error" style="display:none" role="alert"></div>
+          <div class="acc-field">
+            <label for="acc-reg-email">Email</label>
+            <div class="acc-input-wrap">
+              <span class="acc-input-icon" aria-hidden="true">✉</span>
+              <input id="acc-reg-email" type="email" autocomplete="email" placeholder="you@company.com" />
+            </div>
+          </div>
+          <div class="acc-field">
+            <label for="acc-reg-pwd">Password</label>
+            <div class="acc-input-wrap">
+              <span class="acc-input-icon" aria-hidden="true">🔒</span>
+              <input id="acc-reg-pwd" type="password" autocomplete="new-password" placeholder="At least 8 characters" />
+            </div>
+          </div>
+          <div class="acc-field">
+            <label for="acc-reg-pwd2">Confirm password</label>
+            <div class="acc-input-wrap">
+              <span class="acc-input-icon" aria-hidden="true">🔒</span>
+              <input id="acc-reg-pwd2" type="password" autocomplete="new-password" placeholder="Repeat password" onkeydown="if(event.key==='Enter') atlasAccounts.register()" />
+            </div>
+          </div>
+          <div class="acc-actions acc-actions-stack">
+            <button id="acc-reg-btn" class="btn primary auth-btn-primary" type="button" onclick="atlasAccounts.register()">Create Account</button>
+            <button class="btn ghost auth-btn-secondary" type="button" onclick="atlasAccounts.switchPanel('login')">Sign in instead</button>
+          </div>
+        </div>
+
+        <!-- ACCOUNT STATE (blocked, pending, offline, etc.) -->
+        <div id="acc-panel-state" class="auth-panel" style="display:none">
+          <div class="acc-state-icon" id="acc-state-icon" aria-hidden="true">⚠</div>
+          <h2 class="auth-panel-title" id="acc-state-title">Account unavailable</h2>
+          <p class="acc-state-message" id="acc-state-message"></p>
+          <p class="acc-state-action muted" id="acc-state-action"></p>
+          <div class="acc-actions acc-actions-stack">
+            <button class="btn primary auth-btn-primary" type="button" id="acc-state-primary-btn" style="display:none"></button>
+            <button class="btn ghost auth-btn-secondary" type="button" onclick="atlasAccounts.switchPanel('login')">Back to sign in</button>
+            <button class="btn ghost auth-btn-secondary" type="button" onclick="atlasAccounts.logout()" id="acc-state-signout-btn" style="display:none">Sign out</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="auth-footer muted tiny">
+      Repository intelligence for serious codebases · <a href="support.html">Support</a>
+    </footer>
+  </div>
 
   <!-- Clean loading screen shown while the local server / UI initializes -->
   <div id="bootSplash" class="boot-splash">
@@ -22,6 +115,8 @@
       <div class="boot-spinner" aria-hidden="true"></div>
     </div>
   </div>
+
+  <div id="app-shell">
 
   <!-- Top bar -->
   <header class="topbar glass">
@@ -90,7 +185,7 @@
           <p><b>Scan your repository</b> — paste your project folder path below, or <button class="btn link inline" type="button" onclick="loadDemoMode()">load the sample</button> to see it working first.</p>
         </div>
         <div id="resumeScanCard" class="resume-scan-card glass" style="display:none"></div>
-        <p class="muted tiny home-actions-help">No account. No API key. Runs locally. <a href="#" onclick="startGuidedWalkthrough();return false;">Guided tour</a> · <a href="about.html">About Atlas</a></p>
+        <p class="muted tiny home-actions-help">Runs locally on your machine. <a href="#" onclick="startGuidedWalkthrough();return false;">Guided tour</a> · <a href="about.html">About Atlas</a></p>
         <details class="home-explore">
           <summary class="ask">What can Atlas do?</summary>
           <div class="cards">
@@ -407,54 +502,10 @@
       </div>
     </section>
 
-    <!-- ===================== SCREEN: ACCOUNTS ===================== -->
+    <!-- ===================== SCREEN: ACCOUNTS (signed-in profile) ===================== -->
     <section class="view" id="view-accounts">
       <div class="accounts-wrap glass">
-
-        <!-- LOGIN PANEL -->
-        <div id="acc-panel-login">
-          <h2>Sign in to Atlas</h2>
-          <p class="muted tiny">Beta access is free. Your code stays local.</p>
-          <div id="acc-login-error" class="acc-error" style="display:none"></div>
-          <div class="acc-field">
-            <label for="acc-login-email">Email</label>
-            <input id="acc-login-email" type="email" autocomplete="email" placeholder="you@example.com" />
-          </div>
-          <div class="acc-field">
-            <label for="acc-login-pwd">Password</label>
-            <input id="acc-login-pwd" type="password" autocomplete="current-password" placeholder="Password" onkeydown="if(event.key==='Enter') atlasAccounts.login()" />
-          </div>
-          <div class="acc-actions">
-            <button id="acc-login-btn" class="btn primary" type="button" onclick="atlasAccounts.login()">Sign in</button>
-            <button class="btn ghost" type="button" onclick="atlasAccounts.switchPanel('register')">Create account</button>
-          </div>
-        </div>
-
-        <!-- REGISTER PANEL -->
-        <div id="acc-panel-register" style="display:none">
-          <h2>Create your Atlas account</h2>
-          <p class="muted tiny">Free for beta. No payment required.</p>
-          <div id="acc-reg-error" class="acc-error" style="display:none"></div>
-          <div class="acc-field">
-            <label for="acc-reg-email">Email</label>
-            <input id="acc-reg-email" type="email" autocomplete="email" placeholder="you@example.com" />
-          </div>
-          <div class="acc-field">
-            <label for="acc-reg-pwd">Password <span class="muted tiny">(min 8 chars)</span></label>
-            <input id="acc-reg-pwd" type="password" autocomplete="new-password" placeholder="Choose a password" />
-          </div>
-          <div class="acc-field">
-            <label for="acc-reg-pwd2">Confirm password</label>
-            <input id="acc-reg-pwd2" type="password" autocomplete="new-password" placeholder="Repeat password" onkeydown="if(event.key==='Enter') atlasAccounts.register()" />
-          </div>
-          <div class="acc-actions">
-            <button id="acc-reg-btn" class="btn primary" type="button" onclick="atlasAccounts.register()">Create account</button>
-            <button class="btn ghost" type="button" onclick="atlasAccounts.switchPanel('login')">Sign in instead</button>
-          </div>
-        </div>
-
-        <!-- PROFILE PANEL -->
-        <div id="acc-panel-profile" style="display:none">
+        <div id="acc-panel-profile">
           <h2>Your Account</h2>
           <table class="acc-table">
             <tr><th>Email</th><td id="acc-profile-email">—</td></tr>
@@ -469,21 +520,12 @@
             <button class="btn ghost" type="button" onclick="atlasAccounts.logout()">Sign out</button>
           </div>
         </div>
-
-        <!-- BLOCKED PANEL -->
-        <div id="acc-panel-blocked" style="display:none">
-          <h2>Account Restricted</h2>
-          <p>Your account has been suspended or banned. Atlas features are unavailable.</p>
-          <p class="muted tiny">Contact <a href="mailto:support@useatlas.dev">support@useatlas.dev</a> if you believe this is an error.</p>
-          <div class="acc-actions">
-            <button class="btn ghost" type="button" onclick="atlasAccounts.logout()">Sign out</button>
-          </div>
-        </div>
-
       </div>
     </section>
 
   </main>
+
+  </div><!-- /#app-shell -->
 
   <button class="btn ghost screenshot-exit" id="screenshotExitBtn" type="button" onclick="exitPresentationMode()">Exit screenshot</button>
 
