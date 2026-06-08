@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>JARVIS — Admin Metrics</title>
+<title>Atlas — Admin Metrics</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="marketing.css" />
@@ -10,7 +10,7 @@
 <body>
 <div class="bg-aura"></div>
 <header class="mnav"><div class="wrap row">
-  <a class="mlogo" href="landing.html"><span class="mk">◈</span> JARVIS</a>
+  <a class="mlogo" href="landing.html"><span class="mk">A</span> ATLAS</a>
   <nav class="mlinks"><a href="landing.html">Home</a><a href="index.html">App</a><a href="#" onclick="clearLocal();return false" class="btn ghost">Reset local data</a></nav>
 </div></header>
 
@@ -46,7 +46,50 @@
     <div style="padding:14px 18px;border-bottom:1px solid var(--line);font-weight:600">Server analytics (live, if app running)</div>
     <pre class="code" id="serverAnalytics" style="max-height:240px">Fetching /api/analytics/summary …</pre>
   </div>
-  <p class="tiny muted" style="margin-top:14px">Configurable placeholder base: <span class="kbd">WAITLIST_BASE = 127</span> in marketing.js. Local data lives in <span class="kbd">localStorage</span>.</p>
+  <div style="margin-top:var(--s2);border:1px solid var(--line);border-radius:var(--r);background:rgba(255,255,255,.02);overflow:hidden">
+    <div style="padding:14px 18px;border-bottom:1px solid var(--line);font-weight:600">Beta applicants</div>
+    <div style="overflow:auto">
+      <table class="table">
+        <thead><tr><th>Email</th><th>Status</th><th>Role</th><th>License</th><th>Devices</th><th>Use</th><th>Company size</th><th>Experience</th><th>Primary role</th><th>Tools</th><th>Notes</th></tr></thead>
+        <tbody id="accountApplicantRows"><tr><td colspan="11" class="muted" style="padding:18px">Sign in as an Atlas admin account to load applicants.</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+  <div style="margin-top:var(--s2);border:1px solid var(--line);border-radius:var(--r);background:rgba(255,255,255,.02);overflow:hidden">
+    <div style="padding:14px 18px;border-bottom:1px solid var(--line);font-weight:600">Result feedback <span class="muted tiny" id="resultFeedbackSummary"></span></div>
+    <div style="overflow:auto">
+      <table class="table">
+        <thead><tr><th>Workflow</th><th>Useful</th><th>Category</th><th>Comment (redacted)</th><th>User email</th><th>When</th></tr></thead>
+        <tbody id="resultFeedbackRows"><tr><td colspan="6" class="muted" style="padding:18px">Run Atlas with ATLAS_ADMIN=1 to load result feedback.</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+  <p class="tiny muted" style="margin-top:14px">Waitlist and event counts on this page reflect data stored on this device only.</p>
+</div></section>
+
+<section style="padding-top:0" id="betaInsightsSection" hidden><div class="wrap">
+  <span class="eyebrow" style="margin-bottom:12px"><span class="dot"></span> Beta Insights · requires ATLAS_ADMIN=1</span>
+  <h2 class="h2" style="font-size:clamp(22px,3vw,32px);margin-bottom:var(--s2)">Beta Insights</h2>
+  <div class="kpis" id="insightKpis"></div>
+
+  <div style="margin-top:var(--s2);border:1px solid var(--line);border-radius:var(--r);background:rgba(255,255,255,.02);overflow:hidden">
+    <div style="padding:14px 18px;border-bottom:1px solid var(--line);font-weight:600">Recent activity</div>
+    <table class="table" id="insightActivity">
+      <thead><tr><th>When</th><th>Event</th><th>Summary</th></tr></thead>
+      <tbody id="insightRows"><tr><td colspan="3" class="muted" style="padding:18px">Loading…</td></tr></tbody>
+    </table>
+  </div>
+
+  <div style="margin-top:var(--s2);display:grid;grid-template-columns:1fr 1fr;gap:var(--s2)">
+    <div style="border:1px solid var(--line);border-radius:var(--r);background:rgba(255,255,255,.02);overflow:hidden">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--line);font-weight:600">Token savings</div>
+      <div style="padding:16px 18px" id="insightTokenSavings"><span class="muted tiny">Loading…</span></div>
+    </div>
+    <div style="border:1px solid var(--line);border-radius:var(--r);background:rgba(255,255,255,.02);overflow:hidden">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--line);font-weight:600">Update status</div>
+      <div style="padding:16px 18px" id="insightUpdate"><span class="muted tiny">Loading…</span></div>
+    </div>
+  </div>
 </div></section>
 
 <div class="mtoast" id="mtoast"></div>
@@ -60,22 +103,22 @@ function renderBreak(id,map){const el=document.getElementById(id);const max=Math
      <span style="flex:1;height:8px;border-radius:6px;background:rgba(255,255,255,.06);overflow:hidden"><span style="display:block;height:100%;width:${Math.round(100*v/max)}%;background:var(--grad)"></span></span>
      <b>${v}</b></div>`).join("") || '<span class="muted tiny">no data</span>';}
 function pick(obj,names){ if(!obj||typeof obj!=='object') return 0; for(const n of names){ for(const k of Object.keys(obj)){ if(k.toLowerCase().includes(n)) { const val=obj[k]; if(typeof val==='number') return val; } } } return 0; }
+function kv(label,val){return `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px"><span class="muted">${esc(label)}</span><b>${esc(String(val))}</b></div>`;}
+function fmtList(v){return Array.isArray(v)?v.join(", "):(v||"");}
+function applicantLicense(u){const l=u.license||{};return [l.plan,l.status].filter(Boolean).join(" / ")||"-";}
 
 async function loadAdmin(){
   const signups=getSignups();
   document.getElementById("kWaitlist").textContent=signups.length;
-  // recent table
   const rows=signups.slice().reverse().slice(0,12).map(s=>
     `<tr><td>${esc(s.name)}</td><td class="muted">${esc(s.email)}</td><td>${esc(s.repo_size)}</td><td>${esc(s.ai_tool)}</td><td class="muted">${esc((s.ts||"").slice(0,10))}</td></tr>`).join("");
   if(rows) document.getElementById("signupRows").innerHTML=rows;
   renderBreak("byTool",countBy(signups,"ai_tool"));
   renderBreak("bySize",countBy(signups,"repo_size"));
-  // local event counts (fallback)
   const ev=getEvents();
   let scans=ev.filter(e=>/scan/.test(e.event)).length;
   let exports=ev.filter(e=>/export/.test(e.event)).length;
   let copilot=ev.filter(e=>/copilot|ask/.test(e.event)).length;
-  // prefer live server analytics if available
   try{
     const r=await fetch("/api/analytics/summary"); const a=await r.json();
     document.getElementById("serverAnalytics").textContent=JSON.stringify(a,null,2);
@@ -85,7 +128,107 @@ async function loadAdmin(){
   document.getElementById("kExports").textContent=exports;
   document.getElementById("kCopilot").textContent=copilot;
 }
-function clearLocal(){ if(confirm("Clear local waitlist + events on this device?")){ localStorage.removeItem("jarvis_waitlist"); localStorage.removeItem("jarvis_events"); mtoast("Local data cleared"); loadAdmin(); } }
+
+async function loadBetaInsights(){
+  let d;
+  try{ const r=await fetch("/api/operations/insights"); d=await r.json(); }catch(e){ return; }
+  if(!d||!d.ok){ return; }
+  document.getElementById("betaInsightsSection").removeAttribute("hidden");
+  const an=d.analytics||{};
+  const fb=d.feedback||{};
+  const cr=d.crashes||{};
+  const ts=(d.token_savings||{}).from_events||{};
+  const avgScanDur = an.avg_scan_duration_sec ? an.avg_scan_duration_sec.toFixed(1)+"s" : "—";
+  const savedPct = ts.savings_vs_full_pct ? ts.savings_vs_full_pct+"%" : "—";
+  document.getElementById("insightKpis").innerHTML=`
+    <div class="kpi"><div class="v grad-text">${an.scans_completed||0}</div><div class="l">Total scans</div></div>
+    <div class="kpi"><div class="v">${an.exports||0}</div><div class="l">Total exports</div></div>
+    <div class="kpi"><div class="v">${fb.total||0}</div><div class="l">Feedback items</div></div>
+    <div class="kpi"><div class="v">${cr.total||0}</div><div class="l">Crashes logged</div></div>
+    <div class="kpi"><div class="v">${avgScanDur}</div><div class="l">Avg scan duration</div></div>
+    <div class="kpi"><div class="v">${savedPct}</div><div class="l">Token reduction</div></div>`;
+  // recent activity from analytics counts
+  const evMap=an.counts||{};
+  const actRows=Object.entries(evMap).sort((a,b)=>b[1]-a[1]).slice(0,15)
+    .map(([evt,cnt])=>`<tr><td class="muted">—</td><td>${esc(evt)}</td><td>${cnt} occurrence${cnt===1?'':'s'}</td></tr>`).join("");
+  document.getElementById("insightRows").innerHTML=actRows||'<tr><td colspan="3" class="muted" style="padding:18px">No events yet.</td></tr>';
+  // token savings panel
+  document.getElementById("insightTokenSavings").innerHTML=
+    kv("Export events",ts.export_events||0)+
+    kv("Active tokens (last export)",ts.active_export_tokens||0)+
+    kv("Full context tokens",ts.full_export_tokens_total||0)+
+    kv("Minimal tokens",ts.minimal_export_tokens_total||0)+
+    kv("Savings vs full",savedPct);
+  // update panel
+  const upd=d.update||{};
+  document.getElementById("insightUpdate").innerHTML=
+    kv("Current version",upd.current_version||"—")+
+    kv("Latest version",upd.latest_version||"—")+
+    kv("Update available",upd.update_available?"Yes":"No")+
+    kv("Check status",upd.check_failed?"check failed":upd.configured?"ok":"not configured")+
+    kv("Trust level",upd.trust_level||"—");
+}
+
+async function loadAccountApplicants(){
+  const rows=document.getElementById("accountApplicantRows");
+  if(!rows) return;
+  let d;
+  try{ const r=await fetch("/api/accounts/admin/users"); d=await r.json(); }catch(e){
+    rows.innerHTML='<tr><td colspan="11" class="muted" style="padding:18px">Accounts service is not reachable.</td></tr>';
+    return;
+  }
+  if(!d||!d.ok){
+    rows.innerHTML=`<tr><td colspan="11" class="muted" style="padding:18px">${esc(d&&d.error||"Admin account sign-in required.")}</td></tr>`;
+    return;
+  }
+  const users=d.users||[];
+  rows.innerHTML=users.map(u=>{
+    const p=u.beta_profile||{};
+    return `<tr>
+      <td>${esc(u.email)}</td>
+      <td>${esc(u.status)}</td>
+      <td>${esc(u.role)}</td>
+      <td>${esc(applicantLicense(u))}</td>
+      <td>${esc(String(u.device_count||0))}</td>
+      <td>${esc(p.project_use||"-")}</td>
+      <td>${esc(p.company_size||"-")}</td>
+      <td>${esc(p.developer_experience||"-")}</td>
+      <td>${esc(p.primary_role||"-")}</td>
+      <td>${esc(fmtList(p.coding_tools)||"-")}</td>
+      <td class="muted">${esc(p.notes||"-")}</td>
+    </tr>`;
+  }).join("")||'<tr><td colspan="11" class="muted" style="padding:18px">No account applicants yet.</td></tr>';
+}
+
+function clearLocal(){ if(confirm("Clear local waitlist + events on this device?")){ localStorage.removeItem("atlas_waitlist"); localStorage.removeItem("atlas_events"); mtoast("Local data cleared"); loadAdmin(); } }
+async function loadResultFeedback(){
+  const rows=document.getElementById("resultFeedbackRows");
+  if(!rows) return;
+  let d;
+  try{ const r=await fetch("/api/operations/result-feedback"); d=await r.json(); }catch(e){
+    rows.innerHTML='<tr><td colspan="6" class="muted" style="padding:18px">App not running — result feedback unavailable.</td></tr>';
+    return;
+  }
+  if(!d||!d.ok){
+    rows.innerHTML=`<tr><td colspan="6" class="muted" style="padding:18px">${esc(d&&d.error||"Run Atlas with ATLAS_ADMIN=1 to load result feedback.")}</td></tr>`;
+    return;
+  }
+  const items=d.items||[];
+  const sum=document.getElementById("resultFeedbackSummary");
+  if(sum) sum.textContent=`· ${d.total||0} total · ${d.useful_yes||0} yes / ${d.useful_no||0} no`;
+  rows.innerHTML=items.map(it=>`<tr>
+    <td>${esc(it.workflow)}</td>
+    <td>${it.useful?'<b style="color:var(--green,#4c8)">Yes</b>':'<b style="color:#e88">No</b>'}</td>
+    <td>${esc(it.category||"-")}</td>
+    <td class="muted">${esc(it.comment||"-")}</td>
+    <td class="muted">${esc(it.email||"-")}</td>
+    <td class="muted">${esc((it.timestamp||"").slice(0,16).replace("T"," "))}</td>
+  </tr>`).join("")||'<tr><td colspan="6" class="muted" style="padding:18px">No result feedback yet.</td></tr>';
+}
+
 loadAdmin();
+loadBetaInsights();
+loadAccountApplicants();
+loadResultFeedback();
 </script>
 </body></html>

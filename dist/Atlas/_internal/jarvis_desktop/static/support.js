@@ -59,9 +59,37 @@ function renderScanHealth(health) {
     <ul class="clean tiny">
       <li>Modules: ${health.modules ?? "—"}</li>
       <li>Edges: ${health.edges ?? "—"}</li>
-      <li>Graph quality: ${esc(health.graph_quality || "—")}</li>
+      <li>Scan quality: ${esc(typeof atlasFriendlyGraphHealth === "function" ? atlasFriendlyGraphHealth(health.graph_quality) : (health.graph_quality || "—"))}</li>
       <li>Scan duration: ${health.scan_duration_seconds != null ? health.scan_duration_seconds + "s" : "—"}</li>
     </ul>`;
+}
+
+function renderSelfTest(result) {
+  const host = $("selfTestResults");
+  if (!host) return;
+  if (!result || !result.ok) {
+    host.innerHTML = `<p class="muted tiny">Self-test unavailable.</p>`;
+    return;
+  }
+  const head = result.ready
+    ? `<p class="support-check ok"><span class="support-check-label">Install looks healthy</span></p>`
+    : `<p class="support-check fail"><span class="support-check-label">Some checks need attention</span></p>`;
+  const rows = (result.checks || []).map(c => {
+    const cls = c.ok ? "ok" : (c.optional ? "warn" : "fail");
+    return `<div class="support-check ${cls}">
+      <span class="support-check-label">${esc(c.label)}</span>
+      <span class="support-check-detail">${esc(c.detail)}</span>
+      ${c.hint && !c.ok ? `<p class="support-hint">${esc(c.hint)}</p>` : ""}
+    </div>`;
+  }).join("");
+  host.innerHTML = head + rows;
+}
+
+async function supportRunSelfTest() {
+  const host = $("selfTestResults");
+  if (host) host.innerHTML = '<p class="muted tiny">Running…</p>';
+  const result = await api("/api/system/self-test");
+  renderSelfTest(result);
 }
 
 async function loadSupportStatus() {
@@ -71,8 +99,17 @@ async function loadSupportStatus() {
     return;
   }
   $("atlasVersion").textContent = env.version || "—";
+  if ($("atlasBuildCommit")) $("atlasBuildCommit").textContent = env.build_commit || "—";
+  if ($("atlasBuildDate")) $("atlasBuildDate").textContent = env.build_date || "—";
+  const trustEl = $("trustStatusLabel");
+  if (trustEl) {
+    const label = (env.scan_health && env.scan_health.user_trust_label) || "Fresh";
+    trustEl.textContent = label;
+    trustEl.className = "support-trust-label trust-" + String(label).toLowerCase().replace(/\s+/g, "-");
+  }
   renderChecks(env.startup);
   renderScanHealth(env.scan_health);
+  supportRunSelfTest();
 }
 
 function setActionMsg(msg) {
@@ -101,6 +138,9 @@ function supportResetOnboarding() {
     "atlas_onboarding_v2_done",
     "atlas_guided_walkthrough_v141_done",
     "atlas_workflow_examples_seen",
+    "atlas_first_build_plan_done",
+    "atlas_ready_state_shown_v155",
+    "atlas_output_mode_v157",
   ];
   keys.forEach(k => { try { localStorage.removeItem(k); } catch (e) {} });
   setActionMsg("Onboarding and welcome screens reset. Reload Atlas home to see them again.");
@@ -141,8 +181,8 @@ async function supportDownloadBundle() {
   a.download = r.filename || "atlas_support_bundle.zip";
   a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 3000);
-  setActionMsg("Downloaded " + (r.filename || "bundle") + " (" + Math.round((r.size_bytes || 0) / 1024) + " KB)");
-  toast("Support bundle downloaded", "success");
+  setActionMsg("Support bundle saved to your Downloads folder: " + (r.filename || "bundle") + " (" + Math.round((r.size_bytes || 0) / 1024) + " KB). Attach it to your support message.");
+  toast("Support bundle saved to Downloads", "success");
 }
 
 window.supportClearCache = supportClearCache;
@@ -150,5 +190,6 @@ window.supportRebuildIndex = supportRebuildIndex;
 window.supportResetOnboarding = supportResetOnboarding;
 window.supportCopyDiagnostics = supportCopyDiagnostics;
 window.supportDownloadBundle = supportDownloadBundle;
+window.supportRunSelfTest = supportRunSelfTest;
 
 loadSupportStatus();

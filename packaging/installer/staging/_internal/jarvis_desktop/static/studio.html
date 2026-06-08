@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>JARVIS — Demo Studio</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<title>Atlas — Demo Studio</title>
 <link rel="stylesheet" href="marketing.css" />
-<script src="https://unpkg.com/3d-force-graph@1.73.4/dist/3d-force-graph.min.js"></script>
+<script src="vendor/three.min.js"></script>
+<script src="vendor/3d-force-graph.min.js"></script>
 <style>
   /* Cinematic recording mode — full bleed, zero chrome, clean branding */
   html,body{height:100%;overflow:hidden;background:#05050a}
@@ -60,7 +59,7 @@
 <div id="stage">
   <div id="graph"></div>
   <div id="vignette"></div>
-  <div class="brandmark"><span class="mk">◈</span><span class="nm">JARVIS<small>Repository Intelligence</small></span></div>
+  <div class="brandmark"><span class="mk">A</span><span class="nm">ATLAS<small>Repository Intelligence</small></span></div>
   <a class="exitlink" href="landing.html">Esc to exit</a>
   <div id="dots"></div>
 
@@ -70,7 +69,7 @@
 
   <div id="titlecard">
     <div class="big">
-      <h1><span class="grad-text">JARVIS</span></h1>
+      <h1><span class="grad-text">ATLAS</span></h1>
       <p>Prepare your codebase for AI</p>
       <button class="btn primary lg" id="startBtn" onclick="startDemo()">▶ Start Demo</button>
     </div>

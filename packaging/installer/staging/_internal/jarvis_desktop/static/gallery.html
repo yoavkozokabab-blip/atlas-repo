@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>JARVIS — Gallery</title>
+<title>Atlas — Gallery</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="marketing.css" />
@@ -10,27 +10,27 @@
 <body>
 <div class="bg-aura"></div>
 <header class="mnav"><div class="wrap row">
-  <a class="mlogo" href="landing.html"><span class="mk">◈</span> JARVIS</a>
+  <a class="mlogo" href="landing.html"><span class="mk">A</span> ATLAS</a>
   <nav class="mlinks"><a href="landing.html#features">Features</a><a href="demo.html">Demo</a><a href="beta.html">Beta</a>
     <a href="index.html" class="btn ghost">Open App</a><a href="#" class="btn primary" onclick="openWaitlist();return false">Join Waitlist</a></nav>
 </div></header>
 
 <section class="page-hero"><div class="wrap">
   <span class="eyebrow"><span class="dot"></span> Product gallery</span>
-  <h1 class="h1">A look <span class="grad-text">inside JARVIS</span></h1>
+  <h1 class="h1">A look <span class="grad-text">inside Atlas</span></h1>
   <p class="lead">Five surfaces, one job: make your repository legible to AI. (Live mockups shown — drop real PNGs into <span class="kbd">static/shots/</span> to replace them.)</p>
 </div></section>
 
 <section style="padding-top:0"><div class="wrap">
   <div class="gal" id="gallery">
     <div class="gcard reveal"><div class="gshot"><div class="mock" data-mock="graph"></div><img class="real-shot" src="shots/graph.png" onerror="this.remove()" alt="Dependency Universe"/></div>
-      <div class="gmeta"><h4>Dependency Universe</h4><p>An interactive 3D map of every module, colored by architectural risk. Click any node for fan-in, fan-out, LOC and risk.</p></div></div>
+      <div class="gmeta"><h4>Dependency Universe</h4><p>An interactive 3D map of every module, colored by architectural risk. Click any node to see importers, dependencies, LOC and risk.</p></div></div>
     <div class="gcard reveal"><div class="gshot"><div class="mock" data-mock="copilot"></div><img class="real-shot" src="shots/copilot.png" onerror="this.remove()" alt="AI Copilot"/></div>
       <div class="gmeta"><h4>AI Copilot</h4><p>Suggested questions for your repo, and one-click context packets for Claude, Codex and Cursor.</p></div></div>
-    <div class="gcard reveal"><div class="gshot"><div class="mock" data-mock="impact"></div><img class="real-shot" src="shots/impact.png" onerror="this.remove()" alt="Impact Analysis"/></div>
-      <div class="gmeta"><h4>Impact Analysis</h4><p>The blast radius of a change before you make it — affected modules, subsystems and the tests to run.</p></div></div>
+    <div class="gcard reveal"><div class="gshot"><div class="mock" data-mock="impact"></div><img class="real-shot" src="shots/impact.png" onerror="this.remove()" alt="What Breaks"/></div>
+      <div class="gmeta"><h4>What Breaks</h4><p>The blast radius of a change before you make it — affected modules, subsystems and the tests to run.</p></div></div>
     <div class="gcard reveal"><div class="gshot"><div class="mock" data-mock="risk"></div><img class="real-shot" src="shots/risk.png" onerror="this.remove()" alt="Risk Analysis"/></div>
-      <div class="gmeta"><h4>Architecture Risk</h4><p>Riskiest modules ranked by fan-in, size, cycles and coverage — each with the evidence behind its score.</p></div></div>
+      <div class="gmeta"><h4>Architecture Risk</h4><p>Riskiest modules ranked by dependency count, size, and import cycles — each with the evidence behind its score.</p></div></div>
     <div class="gcard reveal" style="grid-column:1/-1"><div class="gshot" style="aspect-ratio:21/9"><div class="mock" data-mock="copilot"></div><img class="real-shot" src="shots/export.png" onerror="this.remove()" alt="AI Export"/></div>
       <div class="gmeta"><h4>Claude / Codex / Cursor Export</h4><p>The whole analysis, distilled into a compact, token-cheap context packet with a live token estimate. Copy or save — no API keys.</p></div></div>
   </div>
@@ -42,7 +42,7 @@
 </div></section>
 
 <footer class="footer"><div class="wrap row">
-  <a class="mlogo" href="landing.html"><span class="mk">◈</span> JARVIS</a>
+  <a class="mlogo" href="landing.html"><span class="mk">A</span> ATLAS</a>
   <div style="display:flex;gap:var(--s3);flex-wrap:wrap"><a href="landing.html">Home</a><a href="demo.html">Demo</a><a href="beta.html">Beta</a><a href="index.html">Open app</a></div>
 </div></footer>
 

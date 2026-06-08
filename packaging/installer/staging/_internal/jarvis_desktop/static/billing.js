@@ -1,4 +1,4 @@
-/* Phase 137B — billing / usage dashboards (local data, no payments). */
+/* billing / usage dashboards (local data, no payments). */
 (function () {
   "use strict";
 
@@ -97,11 +97,10 @@
   function flagNote(enabled, enforcement) {
     var n = document.getElementById("flagNote");
     if (!n) return;
+    n.textContent = "Billing is not enabled in this beta build. Plans and usage are preview-only — no checkout, no payment collection.";
     if (enabled) {
-      n.textContent = "Billing UI enabled (ATLAS_BILLING_UI_ENABLED=true). Enforcement: "
-        + (enforcement ? "on" : "off") + " · Payments: disabled · No Stripe.";
-    } else {
-      n.textContent = "Preview only — billing UI is gated off (ATLAS_BILLING_UI_ENABLED=false). No enforcement, no payments.";
+      n.textContent += " (Billing UI visible via ATLAS_BILLING_UI_ENABLED; enforcement: "
+        + (enforcement ? "on" : "off") + ".)";
     }
   }
 
@@ -145,8 +144,10 @@
       var ul = el("ul", "plan-feat");
       (p.features || []).forEach(function (f) { ul.appendChild(el("li", null, f)); });
       card.appendChild(ul);
-      var btn = el("a", "btn primary", p.cta || "Join beta");
+      var isFree = p.id === "FREE";
+      var btn = el("a", isFree ? "btn primary" : "btn ghost", isFree ? (p.cta || "Open Atlas") : "Join waitlist");
       btn.href = planCtaHref(p.id);
+      if (!isFree) btn.setAttribute("aria-disabled", "true");
       card.appendChild(btn);
       grid.appendChild(card);
     });
@@ -172,7 +173,7 @@
       cards.innerHTML = "";
       if (empty) {
         empty.style.display = "block";
-        empty.textContent = "Usage dashboard will appear after Atlas records local activity. Run a scan or generate a Build Plan to populate metrics.";
+        empty.textContent = "Usage dashboard will appear after Atlas records local activity. Run a scan or create a Change Plan to populate metrics.";
       }
       return;
     }
@@ -194,23 +195,23 @@
       hero.appendChild(main);
       var side = el("div", null);
       side.appendChild(el("div", "muted", "Billing status"));
-      side.appendChild(el("div", null, "Local preview · no payments active"));
+      side.appendChild(el("div", null, d.billing_message || "Billing is not enabled in this beta build."));
       hero.appendChild(side);
       planCard.appendChild(hero);
     }
 
     if (status) {
       status.className = "status-banner";
-      status.textContent = "No payment is collected today. Usage metrics are stored locally on this machine.";
+      status.textContent = d.billing_message || "Billing is not enabled in beta. Usage metrics are stored locally on this machine.";
     }
 
     cards.innerHTML = "";
     [
       ["Scans this month", usage.scans_used],
       ["Repositories scanned", usage.repositories_used],
-      ["Build plans", usage.build_plans],
-      ["Investigations", usage.investigations],
-      ["Impact analyses", usage.impacts],
+      ["Change Plans", usage.build_plans],
+      ["Debug", usage.investigations],
+      ["What Breaks", usage.impacts],
       ["Exports", usage.exports_used],
       ["Atlas compute units", usage.atlas_compute_units || usage.token_equivalent_total],
       ["Token-equivalent est.", usage.token_equivalent_total]
@@ -218,7 +219,7 @@
 
     if (empty) {
       empty.style.display = hasData ? "none" : "block";
-      empty.textContent = d.empty_state_message || "No usage recorded yet. Run a scan or generate a Build Plan to populate this dashboard.";
+      empty.textContent = d.empty_state_message || "No usage recorded yet. Run a scan or create a Change Plan to populate this dashboard.";
     }
 
     var lim = document.getElementById("limits");
@@ -276,10 +277,13 @@
       up.innerHTML = "";
       var box = el("div", "upgrade-box");
       box.appendChild(el("strong", null, "Need more capacity?"));
-      box.appendChild(el("p", "muted", d.upgrade_note || "Plans are in private beta — no checkout yet."));
-      var a = el("a", "btn primary", "See plans");
-      a.href = "pricing.html";
+      box.appendChild(el("p", "muted", d.upgrade_note || "Billing is not enabled in beta — join the waitlist for paid plans."));
+      var a = el("a", "btn ghost", "Join waitlist");
+      a.href = "landing.html#waitlist";
       box.appendChild(a);
+      var plans = el("a", "btn ghost", "See plan preview");
+      plans.href = "pricing.html";
+      box.appendChild(plans);
       up.appendChild(box);
     }
   }
@@ -329,9 +333,9 @@
       ["Total events", d.total_events],
       ["Total scans", d.total_scans],
       ["Repositories", d.total_repositories],
-      ["Build plans", d.total_build_plans],
-      ["Investigations", d.total_investigations],
-      ["Impact analyses", d.total_impacts],
+      ["Change Plans", d.total_build_plans],
+      ["Debug", d.total_investigations],
+      ["What Breaks", d.total_impacts],
       ["Exports", d.total_exports],
       ["Failed scans", d.failed_scans],
       ["Atlas compute units", d.estimated_atlas_compute_units || d.token_equivalent_total],

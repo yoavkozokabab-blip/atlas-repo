@@ -1,5 +1,5 @@
 "use strict";
-/* JARVIS Demo Studio — one-click cinematic recording mode (Phase 113A).
+/* Atlas Demo Studio — one-click cinematic recording mode.
    Loads a bundled demo repo, then runs a hands-free ~70s scripted tour over a
    maximized auto-orbiting 3D graph. No debug noise, clean branding. */
 
@@ -93,7 +93,7 @@ async function runSequence() {
 
   // 2 — risk
   S.hl = "risk"; recolor(); setDots(1, TOTAL);
-  scene("Architectural risk", "The riskiest modules, ranked", "Fan-in, size, cycles and coverage — with the evidence behind every score.");
+  scene("Architectural risk", "The riskiest modules, ranked", "Dependency count, size, import cycles — with the evidence behind every score.");
   const rks = (S.risks.ranked_modules || []).slice(0, 4);
   datacard("Top architectural risk", rks.map(r => `<div class="drow"><span>${(r.label || "").split(".").pop()}</span><b style="color:${riskColor(r.total_score)}">${r.total_score}</b></div>`).join("") || '<div class="drow"><span>clean</span><b>0</b></div>');
   await wait(12500); hideCard();
@@ -101,7 +101,7 @@ async function runSequence() {
   // 3 — impact
   const hub = (S.summary.top_hubs || [])[0];
   const imp = markImpact(hub && hub.path); S.hl = "impact"; recolor(); setDots(2, TOTAL);
-  scene("Impact analysis", "See the blast radius before you edit", "JARVIS shows exactly what a change touches — and the tests to run.");
+  scene("What breaks?", "See the blast radius before you edit", "Atlas shows exactly what a change touches — and the tests to run.");
   if (imp) datacard("Impact of changing " + (hub ? hub.module : ""), `<div class="drow"><span>Affected modules</span><b>${imp.count}</b></div><div class="drow"><span>Risk level</span><b style="color:#ffbe5c">${imp.count >= 6 ? "high" : "medium"}</b></div><div class="pillbar" style="width:${Math.min(100, imp.count * 9)}%"></div>`);
   await wait(12000); hideCard();
 
@@ -122,7 +122,7 @@ async function runSequence() {
   // 6 — outro
   stopOrbit(); setDots(5, TOTAL);
   try { S.G && S.G.cameraPosition({ x: 0, y: 20, z: 360 }, { x: 0, y: 0, z: 0 }, 2000); } catch (e) {}
-  scene("JARVIS", "Prepare your codebase for AI", "Stop making AI read your entire repository.");
+  scene("Atlas", "Prepare your codebase for AI", "Stop making AI read your entire repository.");
   await wait(6000);
 
   // restore controls

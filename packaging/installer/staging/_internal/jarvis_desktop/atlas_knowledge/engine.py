@@ -139,7 +139,8 @@ class KnowledgeEngine:
                 best_hits = hits
                 best_rank = rank
 
-        if best_id and best_score >= LOCAL_CONFIDENCE_THRESHOLD:
+        # P164 — quality boost alone must not pass threshold; require real hits.
+        if best_id and best_score >= LOCAL_CONFIDENCE_THRESHOLD and len(best_hits) >= 1:
             rec = self.concepts[best_id]
             q = rec.computed_quality_score
             if q in ("source_backed", "curated_deep") and (best_score >= HIGH_SCORE or len(best_hits) >= 2):
@@ -150,8 +151,8 @@ class KnowledgeEngine:
                 conf = "medium"
             return ConceptMatch(best_id, rec, best_score, best_hits, "local", conf)
 
-        # Try cache
-        if best_id:
+        # Try cache (only when at least one alias/text hit grounded the concept)
+        if best_id and len(best_hits) >= 1:
             cached = self._retrieval.load_cached(best_id)
             if cached:
                 return ConceptMatch(cached.concept_id, cached, best_score, best_hits, "cache", "medium")
@@ -166,14 +167,17 @@ class KnowledgeEngine:
                     retrieved.concept_id, retrieved, best_score, best_hits, "retrieval", "low"
                 )
 
-        if best_id and best_score > 0:
+        # Partial score from quality boost alone is not a concept match.
+        if best_id and best_score > 0 and len(best_hits) >= 1:
             rec = self.concepts[best_id]
             return ConceptMatch(best_id, rec, best_score, best_hits, "local", "low")
 
-        return ConceptMatch(
-            None, None, best_score, best_hits, "none", "low",
-            ["No domain concept matched — plan relies on path keywords only."],
-        )
+        unknowns = ["No domain concept matched — plan relies on path keywords only."]
+        if best_id and best_score > 0 and not best_hits:
+            unknowns.append(
+                "Quality-tier boost alone is insufficient — add explicit concept terms or file paths."
+            )
+        return ConceptMatch(None, None, best_score, best_hits, "none", "low", unknowns)
 
     def classify_request(self, text: str, *, mode: str = "build") -> ConceptClassification:
         m = self.match_text(text, mode=mode)

@@ -1,5 +1,5 @@
 "use strict";
-/* Phase 141 — private beta launch: feedback, exports, walkthrough, diagnostics, about */
+/* private beta launch: feedback, exports, walkthrough, diagnostics, about */
 
 const WF_FEEDBACK_KEY = "atlas_workflow_feedback";
 const WELCOME_KEY = "atlas_welcome_v141_done";
@@ -23,35 +23,101 @@ function saveWorkflowFeedback(workflow, vote, meta) {
   return list.length;
 }
 
+/* Phase 189 — result feedback funnel.
+   Internal workflow keys map to backend workflow names. */
+const WF_BACKEND = {
+  build: "change_plan",
+  investigate: "debug",
+  impact: "what_breaks",
+  understanding: "understanding",
+  export: "export",
+};
+const RF_CATEGORIES = [
+  ["accurate", "Accurate"],
+  ["missing_context", "Missing context"],
+  ["too_generic", "Too generic"],
+  ["wrong_repo_area", "Wrong repo area"],
+  ["hard_to_understand", "Hard to understand"],
+  ["saved_time", "Saved time"],
+  ["other", "Other"],
+];
+
 function workflowFeedbackHtml(workflow) {
   const id = `wfFb_${workflow}`;
-  return `<div class="workflow-feedback" id="${id}" data-workflow="${workflow}">
-    <span class="muted tiny">Was this helpful?</span>
-    <button type="button" class="btn small ghost wf-up" title="Helpful" onclick="voteWorkflowFeedback('${workflow}', 'up')">👍</button>
-    <button type="button" class="btn small ghost wf-down" title="Not helpful" onclick="voteWorkflowFeedback('${workflow}', 'down')">👎</button>
-    <span class="wf-thanks muted tiny" style="display:none">Thanks — saved locally.</span>
+  const opts = RF_CATEGORIES.map(([v, l]) => `<option value="${v}">${l}</option>`).join("");
+  return `<div class="result-feedback" id="${id}" data-workflow="${workflow}">
+    <div class="rf-ask">
+      <span class="rf-q">Was this useful?</span>
+      <button type="button" class="btn small ghost rf-yes" onclick="resultFeedbackVote('${workflow}', true)">Yes</button>
+      <button type="button" class="btn small ghost rf-no" onclick="resultFeedbackVote('${workflow}', false)">No</button>
+    </div>
+    <div class="rf-detail" style="display:none">
+      <select class="rf-cat" aria-label="Feedback category"><option value="">Category (optional)</option>${opts}</select>
+      <textarea class="rf-comment" rows="2" placeholder="What worked or what was missing?"></textarea>
+      <button type="button" class="btn small primary rf-send" onclick="resultFeedbackSend('${workflow}')">Send feedback</button>
+    </div>
+    <span class="rf-thanks muted tiny" style="display:none">Thanks — your feedback was saved.</span>
   </div>`;
 }
 
-function voteWorkflowFeedback(workflow, vote) {
-  const meta = {};
-  if (workflow === "build" && STATE.buildResult) meta.request = ($("buildRequest") && $("buildRequest").value) || "";
-  if (workflow === "investigate" && STATE.investigateResult) meta.symptom = ($("investigateSymptom") && $("investigateSymptom").value) || "";
-  if (workflow === "impact" && STATE.impactResult) meta.target = STATE.impactResult.target || "";
-  saveWorkflowFeedback(workflow, vote, meta);
-  const host = document.querySelector(`.workflow-feedback[data-workflow="${workflow}"]`);
-  if (host) {
-    host.querySelectorAll("button").forEach(b => { b.disabled = true; });
-    const thanks = host.querySelector(".wf-thanks");
-    if (thanks) thanks.style.display = "inline";
+function _resultFeedbackHost(workflow) {
+  return document.querySelector(`.result-feedback[data-workflow="${workflow}"]`);
+}
+
+function resultFeedbackVote(workflow, useful) {
+  const host = _resultFeedbackHost(workflow);
+  if (!host) return;
+  host.dataset.useful = useful ? "true" : "false";
+  const yes = host.querySelector(".rf-yes");
+  const no = host.querySelector(".rf-no");
+  if (yes) yes.classList.toggle("active", !!useful);
+  if (no) no.classList.toggle("active", !useful);
+  const detail = host.querySelector(".rf-detail");
+  if (detail) detail.style.display = "flex";  // .rf-detail is a column flex container
+}
+
+async function resultFeedbackSend(workflow) {
+  const host = _resultFeedbackHost(workflow);
+  if (!host) return;
+  if (host.dataset.useful !== "true" && host.dataset.useful !== "false") {
+    if (typeof toast === "function") toast("Choose Yes or No first");
+    return;
   }
-  if (typeof toast === "function") toast("Feedback saved locally", "success");
+  const useful = host.dataset.useful === "true";
+  const category = (host.querySelector(".rf-cat") || {}).value || "";
+  const comment = (host.querySelector(".rf-comment") || {}).value || "";
+  const backendWorkflow = WF_BACKEND[workflow] || workflow;
+  // Local mirror for offline resilience (no raw comment in localStorage).
+  saveWorkflowFeedback(workflow, useful ? "up" : "down", { category, comment_len: comment.length });
+  try {
+    const r = await api("/api/feedback/result", "POST", {
+      workflow: backendWorkflow,
+      useful: useful,
+      category: category,
+      comment: comment,
+    });
+    if (r && r.ok === false) {
+      if (typeof toast === "function") toast(r.error || "Could not send feedback", "error");
+      return;
+    }
+  } catch (e) { /* offline — local mirror already saved */ }
+  host.querySelectorAll("button, select, textarea").forEach(el => { el.disabled = true; });
+  const detail = host.querySelector(".rf-detail");
+  if (detail) detail.style.display = "none";
+  const thanks = host.querySelector(".rf-thanks");
+  if (thanks) thanks.style.display = "inline";
+  if (typeof toast === "function") toast("Feedback sent — thank you", "success");
+}
+
+/* Backward-compatible alias for the older thumb widget entry point. */
+function voteWorkflowFeedback(workflow, vote) {
+  resultFeedbackVote(workflow, vote === "up");
 }
 
 function impactResultMarkdown(r) {
   if (!r || !r.ok) return "";
   const lines = [
-    `# Impact: ${r.target || ""}`,
+    `# What breaks if ${r.target || "this module"} changes`,
     "",
     `- Risk: ${r.risk_level || "unknown"}`,
     `- Confidence: ${r.confidence || "medium"}`,
@@ -81,19 +147,19 @@ function buildWorkflowMarkdownBundle() {
     "",
   ];
   if (STATE.buildResult && STATE.buildResult.ok) {
-    parts.push("---", "", "## Build Plan", "", STATE.buildResult.formatted || "(no markdown body)", "");
+    parts.push("---", "", "## Change Plan", "", STATE.buildResult.formatted || "(no markdown body)", "");
   } else {
-    parts.push("## Build Plan", "", "_Not generated in this session._", "");
+    parts.push("## Change Plan", "", "_Not generated in this session._", "");
   }
   if (STATE.investigateResult && STATE.investigateResult.ok) {
-    parts.push("---", "", "## Investigation", "", STATE.investigateResult.formatted || "(no markdown body)", "");
+    parts.push("---", "", "## Debug", "", STATE.investigateResult.formatted || "(no markdown body)", "");
   } else {
-    parts.push("## Investigation", "", "_Not generated in this session._", "");
+    parts.push("## Debug", "", "_Not generated in this session._", "");
   }
   if (STATE.impactResult && STATE.impactResult.ok) {
     parts.push("---", "", impactResultMarkdown(STATE.impactResult), "");
   } else {
-    parts.push("## Impact", "", "_Not generated in this session._", "");
+    parts.push("## What breaks?", "", "_Not generated in this session._", "");
   }
   return parts.join("\n");
 }
@@ -134,12 +200,12 @@ function closeAboutAtlas() {
 
 async function openReportIssue() {
   const ctx = await collectIssueContext();
-  if (window.JarvisFeedback && typeof JarvisFeedback.openReportIssue === "function") {
-    JarvisFeedback.openReportIssue(ctx);
+  if (window.AtlasFeedback && typeof AtlasFeedback.openReportIssue === "function") {
+    AtlasFeedback.openReportIssue(ctx);
     return;
   }
-  if (window.JarvisFeedback && typeof JarvisFeedback.open === "function") {
-    JarvisFeedback.open("bug");
+  if (window.AtlasFeedback && typeof AtlasFeedback.open === "function") {
+    AtlasFeedback.open("bug");
     return;
   }
   if (typeof toast === "function") toast("Report Issue unavailable — reload the app", "error");
@@ -156,17 +222,27 @@ async function collectIssueContext() {
 }
 
 function dismissWelcomeScreen(goHome) {
-  try { localStorage.setItem(WELCOME_KEY, "1"); } catch (e) {}
+  try {
+    localStorage.setItem(WELCOME_KEY, "1");
+    localStorage.setItem("atlas_onboarding_v2_done", "1");
+  } catch (e) {}
   const w = $("welcomeScreen");
   if (w) w.style.display = "none";
+  const ob = $("onboarding");
+  if (ob) ob.style.display = "none";
   if (goHome !== false && typeof go === "function") go("home");
-  if (typeof maybeShowOnboarding === "function") maybeShowOnboarding();
+}
+
+function welcomeScanMyRepo() {
+  dismissWelcomeScreen(false);
+  if (typeof showHomeScanFocus === "function") showHomeScanFocus();
+  else if (typeof go === "function") go("home");
 }
 
 function welcomeLoadSample() {
   dismissWelcomeScreen(false);
   if (typeof onboardingLoadSample === "function") onboardingLoadSample();
-  else if (typeof loadDemoMode === "function") loadDemoMode("small");
+  else if (typeof loadDemoMode === "function") loadDemoMode("medium");
 }
 
 function welcomeStartWalkthrough() {
@@ -183,13 +259,13 @@ function maybeShowWelcomeScreen() {
 }
 
 const GUIDED_STEPS = [
-  { title: "Welcome", text: "Atlas prepares grounded Build Plans for your AI tools. It maps code locally and does not write patches for you.", action: null },
+  { title: "Welcome", text: "Atlas prepares grounded Change Plans for your AI tools. It maps code locally and does not write patches for you.", action: null },
   { title: "Sample repository", text: "We'll load a small bundled codebase so you can explore without cloning anything.", action: "load_sample" },
   { title: "Repository Map", text: "The 3D map shows modules, dependencies, and architectural risk. Click nodes to inspect them.", view: "center", action: "wait_map" },
-  { title: "Your first Build Plan", text: "We will load a sample repo and generate a plan — affected files, order, and tests. You implement the change (or paste the export into Claude/Cursor).", view: "build", action: "build_example" },
-  { title: "Investigate", text: "Paste a symptom or traceback. Atlas ranks hypotheses and verification steps.", view: "investigate", action: "investigate_example" },
-  { title: "Impact", text: "Enter a file or module to see blast radius before you edit.", view: "impact", action: "impact_example" },
-  { title: "Export", text: "Download Build, Investigation, and Impact as one markdown file, or copy AI context packets.", view: "export", action: null },
+  { title: "Your first Change Plan", text: "We will load a sample repo and generate a plan — affected files, order, and tests. You implement the change (or paste the export into Claude/Cursor).", view: "build", action: "build_example" },
+  { title: "Debug", text: "Paste a symptom or traceback. Atlas ranks likely causes and verification steps.", view: "investigate", action: "investigate_example" },
+  { title: "What breaks?", text: "Enter a file or module to see what depends on it before you edit.", view: "impact", action: "impact_example" },
+  { title: "Repository Context", text: "Copy repo-wide context for Claude, Cursor, or Codex — or download workflow markdown.", view: "export", action: null },
   { title: "You're ready", text: "Scan your own repository from Home, or keep exploring the sample. Use Report Issue if something breaks.", action: "done" },
 ];
 
@@ -215,7 +291,7 @@ function stopGuidedWalkthrough() {
 
 async function runGuidedAction(action) {
   if (action === "load_sample") {
-    if (typeof loadDemoMode === "function") await loadDemoMode("small");
+    if (typeof loadDemoMode === "function") await loadDemoMode("medium");
     return;
   }
   if (action === "wait_map") {
@@ -272,6 +348,9 @@ function startGuidedWalkthrough() {
 }
 
 window.voteWorkflowFeedback = voteWorkflowFeedback;
+window.workflowFeedbackHtml = workflowFeedbackHtml;
+window.resultFeedbackVote = resultFeedbackVote;
+window.resultFeedbackSend = resultFeedbackSend;
 window.downloadWorkflowMarkdownBundle = downloadWorkflowMarkdownBundle;
 window.copyBetaDiagnostics = copyBetaDiagnostics;
 window.showAboutAtlas = showAboutAtlas;
@@ -280,19 +359,27 @@ window.openReportIssue = openReportIssue;
 window.dismissWelcomeScreen = dismissWelcomeScreen;
 window.welcomeLoadSample = welcomeLoadSample;
 window.welcomeStartWalkthrough = welcomeStartWalkthrough;
+window.welcomeScanMyRepo = welcomeScanMyRepo;
 window.startGuidedWalkthrough = startGuidedWalkthrough;
 window.stopGuidedWalkthrough = stopGuidedWalkthrough;
 window.guidedWalkthroughNext = guidedWalkthroughNext;
 window.maybeShowWelcomeScreen = maybeShowWelcomeScreen;
 
-(function phase141Boot() {
+document.addEventListener("atlas:authenticated", () => {
   try {
-    if (localStorage.getItem(WELCOME_KEY) === "1") {
-      if (typeof maybeShowOnboarding === "function") maybeShowOnboarding();
-    } else {
+    if (localStorage.getItem(WELCOME_KEY) !== "1" && typeof maybeShowWelcomeScreen === "function") {
+      maybeShowWelcomeScreen();
+    }
+  } catch (e) {}
+});
+
+(function atlasBetaBoot() {
+  if (document.body.classList.contains("auth-mode")) return;
+  try {
+    if (localStorage.getItem(WELCOME_KEY) !== "1") {
       maybeShowWelcomeScreen();
     }
   } catch (e) {
-    if (typeof maybeShowOnboarding === "function") maybeShowOnboarding();
+    maybeShowWelcomeScreen();
   }
 })();

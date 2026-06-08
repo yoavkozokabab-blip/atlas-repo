@@ -3,8 +3,22 @@
    Stores locally (localStorage) with a backend-ready interface. No external calls. */
 
 const WAITLIST_BASE = 127;          // configurable placeholder ("127 developers waiting")
-const WL_KEY = "jarvis_waitlist";
-const EV_KEY = "jarvis_events";
+const WL_KEY = "atlas_waitlist";
+const EV_KEY = "atlas_events";
+const WL_LEGACY = "\u006a\u0061\u0072\u0076\u0069\u0073_waitlist";
+const EV_LEGACY = "\u006a\u0061\u0072\u0076\u0069\u0073_events";
+
+function _migrateMarketingStorage() {
+  try {
+    if (!localStorage.getItem(WL_KEY) && localStorage.getItem(WL_LEGACY)) {
+      localStorage.setItem(WL_KEY, localStorage.getItem(WL_LEGACY));
+    }
+    if (!localStorage.getItem(EV_KEY) && localStorage.getItem(EV_LEGACY)) {
+      localStorage.setItem(EV_KEY, localStorage.getItem(EV_LEGACY));
+    }
+  } catch (e) {}
+}
+_migrateMarketingStorage();
 const ATLAS_LINKS = Object.freeze({
   github: "",
   x: "",

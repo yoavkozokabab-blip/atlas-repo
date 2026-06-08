@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atlas — Quickstart</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="bg-grid"></div>
+  <div id="bg-glow"></div>
+  <header class="topbar glass">
+    <div class="brand" onclick="location.href='index.html'">
+      <span class="logo-mark">◈</span>
+      <span class="logo-text">ATLAS</span>
+      <span class="logo-sub">Quickstart</span>
+    </div>
+    <div class="topbar-actions" style="margin-left:auto">
+      <a class="btn primary small" href="index.html">Open Atlas</a>
+      <a class="btn ghost small" href="support.html">Support</a>
+    </div>
+  </header>
+
+  <main id="app" class="support-page">
+    <h2 class="vh">Quickstart — from zero to an AI prompt in 5 minutes</h2>
+    <p class="muted tiny support-lead">Atlas maps your codebase locally and turns a request into a grounded plan you can paste into Claude, Cursor, or Codex. It does not edit your files — you (or your AI tool) implement the change.</p>
+
+    <section class="glass support-card">
+      <h3>The 5-minute path</h3>
+      <ol class="clean support-faq tiny">
+        <li><b>Open Atlas.</b> Your browser opens automatically to the Home screen.</li>
+        <li><b>Click “Load Sample Repository.”</b> No folder path, no setup — Atlas indexes a small bundled codebase.</li>
+        <li><b>Read the success screen.</b> You'll see <i>“Atlas understood the sample repository”</i> with files indexed, modules, and dependency edges.</li>
+        <li><b>Click “Create your first Change Plan.”</b> Keep the example or type your own change. Atlas lists the affected files, implementation order, risks, and tests.</li>
+        <li><b>Click “Copy for Claude / Cursor / Codex.”</b> Paste it into your AI coding tool and ask it to implement the plan.</li>
+      </ol>
+    </section>
+
+    <section class="glass support-card">
+      <h3>Scanning your own repository</h3>
+      <ul class="clean support-faq tiny">
+        <li><span class="guide-ok">✓ Recommended</span> — choose your <b>project root</b>, the folder that holds your source code.</li>
+        <li><span class="guide-avoid">✗ Avoid</span> — <code>node_modules</code>, <code>.git</code>, your whole C: drive, Desktop/Downloads, or <code>external_repos</code>.</li>
+        <li>If a folder looks too broad, Atlas warns you before scanning and lets you choose a smaller folder or continue anyway.</li>
+      </ul>
+    </section>
+
+    <section class="glass support-card">
+      <h3>What the words mean</h3>
+      <ul class="clean support-faq tiny">
+        <li><b>Change Plan</b> — files, order, risks, and tests for a change you describe.</li>
+        <li><b>What breaks?</b> — which files import your target and may break if you change it.</li>
+        <li><b>Codebase Map</b> — an interactive 3D view of modules and dependencies.</li>
+        <li><b>Send to AI</b> — copy a ready prompt for Claude, Cursor, or Codex.</li>
+      </ul>
+    </section>
+
+    <section class="glass support-card">
+      <h3>Install notes</h3>
+      <ul class="clean support-faq tiny">
+        <li><b>Windows beta</b> — launch Atlas from the Start menu or desktop shortcut.</li>
+        <li><b>No Python required</b> if you installed with <code>Atlas_Setup.exe</code> — everything is bundled.</li>
+        <li><b>Source mode</b> needs <b>Python 3.10+</b>: run <code>py -3 run_atlas.py</code> (Windows) or <code>python3 run_atlas.py</code> (macOS/Linux).</li>
+        <li><b>Unsigned beta</b> — Windows SmartScreen may warn on first launch because Atlas is not yet code-signed. Click <b>More info &rarr; Run anyway</b> to continue.</li>
+      </ul>
+      <div class="success-buttons" style="margin-top:14px">
+        <a class="btn primary" href="index.html">Open Atlas and load the sample</a>
+      </div>
+    </section>
+  </main>
+  <div id="toast" class="toast"></div>
+</body>
+</html>

@@ -1,7 +1,7 @@
-﻿{
-    "build_date":  "2026-06-04T19:34:09",
-    "commit":  "6c7e929c",
-    "version":  "phase146b-true-beta-blocker-fixes",
+{
+    "build_date":  "2026-06-08T03:59:56",
+    "commit":  "4f879a59c",
+    "version":  "0.1.0-beta",
     "entry":  "Atlas.exe",
     "product":  "ATLAS"
 }

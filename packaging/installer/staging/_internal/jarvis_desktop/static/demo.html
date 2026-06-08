@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>JARVIS — Watch it in action</title>
+<title>Atlas — See how it works</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="marketing.css" />
@@ -10,61 +10,59 @@
 <body>
 <div class="bg-aura"></div>
 <header class="mnav"><div class="wrap row">
-  <a class="mlogo" href="landing.html"><span class="mk">◈</span> JARVIS</a>
+  <a class="mlogo" href="landing.html"><span class="mk">A</span> ATLAS</a>
   <nav class="mlinks"><a href="landing.html#features">Features</a><a href="gallery.html">Gallery</a><a href="beta.html">Beta</a>
     <a href="index.html" class="btn ghost">Open App</a><a href="#" class="btn primary" onclick="openWaitlist();return false">Join Waitlist</a></nav>
 </div></header>
 
 <section class="page-hero"><div class="wrap">
   <span class="eyebrow"><span class="dot"></span> 60-second walkthrough</span>
-  <h1 class="h1">Watch JARVIS <span class="grad-text">in action</span></h1>
+  <h1 class="h1">See Atlas <span class="grad-text">in action</span></h1>
   <p class="lead">From an unfamiliar repository to an AI-ready context packet — in under a minute.</p>
 
-  <div class="video-frame reveal" id="videoFrame">
-    <!-- Drop a real recording in: replace this block with <video controls src="demo.mp4"></video> -->
-    <button class="play" onclick="playDemo()" aria-label="Play demo">
-      <svg width="26" height="30" viewBox="0 0 26 30"><path d="M0 0l26 15L0 30z" fill="#0a0a12"/></svg>
-    </button>
-    <div class="cap" style="position:absolute;bottom:16px;color:var(--muted);font-size:13px">Demo recording placeholder · add <span class="kbd">demo.mp4</span> to ship the real clip</div>
+  <div class="video-frame reveal" id="videoFrame" style="min-height:280px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:32px">
+    <p class="lead" style="margin:0;text-align:center;max-width:520px">Try it yourself — load the bundled sample in the app and follow the steps below. Nothing is uploaded.</p>
+    <a class="btn primary lg" href="index.html">Open Atlas and load sample</a>
+    <a class="btn ghost lg" href="quickstart.html">Read the quickstart</a>
   </div>
 
   <div class="chapters">
-    <div class="chapter reveal"><div class="t">0:00 — 0:12</div><h4>Open a repository</h4><p>Point JARVIS at a local project. Nothing is uploaded.</p></div>
-    <div class="chapter reveal"><div class="t">0:12 — 0:34</div><h4>Scan & explore</h4><p>The dependency universe forms, risks rank, the overview writes itself.</p></div>
-    <div class="chapter reveal"><div class="t">0:34 — 0:60</div><h4>Export for AI</h4><p>One click → a compact context packet for Claude, Codex or Cursor.</p></div>
+    <div class="chapter reveal"><h4>1. Open a repository</h4><p>Point Atlas at a local project or load the bundled sample. Nothing is uploaded.</p></div>
+    <div class="chapter reveal"><h4>2. Scan &amp; explore</h4><p>The Codebase Map forms, risks rank, and the overview writes itself.</p></div>
+    <div class="chapter reveal"><h4>3. Create a Change Plan</h4><p>Describe a change — Atlas lists files, order, and risks.</p></div>
+    <div class="chapter reveal"><h4>4. Copy for your AI tool</h4><p>One click → a compact context packet for Claude, Codex, or Cursor.</p></div>
   </div>
 </div></section>
 
 <section><div class="wrap">
-  <div class="sec-head reveal"><div class="sec-tag">Architecture highlights</div><h2 class="sec-h">What you'll see in the demo</h2></div>
+  <div class="sec-head reveal"><div class="sec-tag">What you'll see</div><h2 class="sec-h">Core workflows in Atlas</h2></div>
   <div class="gal">
-    <div class="gcard reveal"><div class="gshot"><div class="mock" data-mock="graph"></div></div><div class="gmeta"><h4>The Dependency Universe forms in 3D</h4><p>Modules, hubs and coupling — animated into place.</p></div></div>
-    <div class="gcard reveal"><div class="gshot"><div class="mock" data-mock="risk"></div></div><div class="gmeta"><h4>Risk score reveal</h4><p>The riskiest modules surface with their evidence.</p></div></div>
+    <div class="gcard reveal"><div class="gshot"><div class="mock" data-mock="graph"></div></div><div class="gmeta"><h4>Codebase Map</h4><p>Modules, dependencies, and architectural risk — animated into place.</p></div></div>
+    <div class="gcard reveal"><div class="gshot"><div class="mock" data-mock="risk"></div></div><div class="gmeta"><h4>Change Plan</h4><p>Affected files, implementation order, and tests — ready to paste into your AI tool.</p></div></div>
   </div>
   <div style="text-align:center;margin-top:var(--s4)">
-    <a class="btn primary lg" href="#" onclick="openWaitlist();return false">Join the Waitlist</a>
+    <a class="btn primary lg" href="index.html">Open the app</a>
     <a class="btn ghost lg" href="gallery.html">Browse the gallery</a>
   </div>
 </div></section>
 
 <footer class="footer"><div class="wrap row">
-  <a class="mlogo" href="landing.html"><span class="mk">◈</span> JARVIS</a>
+  <a class="mlogo" href="landing.html"><span class="mk">A</span> ATLAS</a>
   <div style="display:flex;gap:var(--s3);flex-wrap:wrap"><a href="landing.html">Home</a><a href="gallery.html">Gallery</a><a href="beta.html">Beta</a><a href="index.html">Open app</a></div>
 </div></footer>
 
-<!-- waitlist modal (shared markup) -->
 <div class="modal-bg" id="waitlistModal"><div class="modal">
-  <div id="waitlistForm"><h3>Join the waitlist</h3><p class="sub"><b id="modalCount">127</b> developers already waiting.</p>
+  <div id="waitlistForm"><h3>Join the waitlist</h3><p class="sub">Get early access to Atlas beta builds.</p>
     <div class="field"><label>Name</label><input id="wlName" type="text" /><div class="err" id="errName">Please enter your name.</div></div>
     <div class="field"><label>Email</label><input id="wlEmail" type="email" /><div class="err" id="errEmail">Please enter a valid email.</div></div>
     <div class="row2"><div class="field"><label>Company <span class="muted tiny">(optional)</span></label><input id="wlCompany" type="text" /></div>
       <div class="field"><label>Repository size</label><select id="wlSize"><option value="">Select…</option><option>Small (&lt; 10k LOC)</option><option>Medium (10k–100k LOC)</option><option>Large (100k–1M LOC)</option><option>Huge (1M+ LOC)</option></select></div></div>
     <div class="field"><label>AI tool you use most</label><select id="wlTool"><option value="">Select…</option><option>Claude</option><option>Codex / ChatGPT</option><option>Cursor</option><option>GitHub Copilot</option><option>Other / none yet</option></select></div>
     <div class="actions"><button class="btn primary lg" style="flex:1" onclick="submitWaitlist()">Join Waitlist</button><button class="btn ghost" onclick="closeWaitlist()">Cancel</button></div></div>
-  <div id="waitlistDone" class="success-msg" style="display:none"><div class="check">✓</div><h3>You're on the list.</h3><p class="sub">You're <b id="yourPos">#128</b> in line.</p><div class="actions" style="justify-content:center"><a class="btn primary" href="index.html">Open the app</a></div></div>
+  <div id="waitlistDone" class="success-msg" style="display:none"><div class="check">✓</div><h3>You're on the list.</h3><p class="sub">We'll email you when your wave opens.</p><div class="actions" style="justify-content:center"><a class="btn primary" href="index.html">Open the app</a></div></div>
 </div></div>
 <div class="mtoast" id="mtoast"></div>
 <script src="marketing.js"></script>
 <script src="feedback.js"></script>
-<script>renderMocks(); function playDemo(){mtoast('Demo recording coming soon — drop demo.mp4 into static/');track('demo_play');}</script>
+<script>renderMocks();</script>
 </body></html>

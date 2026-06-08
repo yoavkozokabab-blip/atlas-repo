@@ -92,7 +92,7 @@ def accounts_register(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str,
         beta_profile=body.get("beta_profile") or {},
     )
     if result.get("_offline"):
-        return {"ok": False, "error": "Accounts service is not running. Start it with: python -m accounts_service.main"}
+        return {"ok": False, "error": "The Atlas accounts service isn't available right now. Please restart Atlas, and contact support@useatlas.dev if this keeps happening."}
     if result.get("_http_status"):
         detail = result.get("detail", "Registration failed")
         return {"ok": False, "error": detail if isinstance(detail, str) else str(detail)}
@@ -114,7 +114,7 @@ def accounts_login(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, An
         platform=_platform_str(),
     )
     if result.get("_offline"):
-        return {"ok": False, "error": "Accounts service is not running."}
+        return {"ok": False, "error": "The Atlas accounts service isn't available right now. Please restart Atlas, and contact support@useatlas.dev if this keeps happening."}
     if result.get("_http_status"):
         detail = result.get("detail", "Login failed")
         return {"ok": False, "error": detail if isinstance(detail, str) else str(detail)}
