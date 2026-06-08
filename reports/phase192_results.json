@@ -1,0 +1,72 @@
+{
+  "phase": "192",
+  "mode": "frozen_accounts_service_packaging",
+  "date": "2026-06-08",
+  "code_changes": true,
+  "root_cause": "accounts_service_runner spawned [sys.executable, '-m', 'accounts_service.main']; in a frozen build sys.executable is Atlas.exe (not Python), and atlas.spec excluded fastapi/uvicorn/starlette and never bundled accounts_service or its vendored deps. The accounts service therefore never started, so :8788 was never reachable.",
+  "chosen_architecture": "separate_frozen_executable",
+  "architecture_detail": "AtlasAccounts.exe (its own PyInstaller one-folder bundle with FastAPI/uvicorn/pydantic/sqlalchemy/bcrypt) ships inside the Atlas install folder under accounts/. Atlas.exe's runner spawns it in frozen mode. Two-process HTTP architecture preserved.",
+  "files_bundled": [
+    "packaging/pyinstaller/accounts_entry.py",
+    "packaging/pyinstaller/accounts.spec",
+    "dist/Atlas/accounts/AtlasAccounts.exe (+ _internal: fastapi, uvicorn, starlette, pydantic, pydantic_core, sqlalchemy, greenlet, bcrypt, passlib, jwt, email_validator, anyio, h11, click)"
+  ],
+  "files_changed": [
+    "jarvis_desktop/accounts_service_runner.py",
+    "packaging/pyinstaller/atlas.spec (unchanged excludes; desktop bundle stays lean)",
+    "packaging/pyinstaller/build_atlas_exe.ps1",
+    "packaging/installer/installer_build.ps1"
+  ],
+  "startup_sequence": [
+    "Atlas.exe launches desktop UI on :8777",
+    "server.run() -> accounts_service_runner.ensure_running_async()",
+    "frozen runner spawns accounts/AtlasAccounts.exe with a writable data dir",
+    "AtlasAccounts.exe runs uvicorn; :8788/health -> {status: ok}",
+    "desktop register/login/onboarding call the service over HTTP"
+  ],
+  "standalone_verification": {
+    "health": "200 in ~1.1s",
+    "register": "HTTP 201 (account + profile persisted)"
+  },
+  "integration_verification": {
+    "method": "scripts/verify_frozen_accounts.ps1 — clean silent install, launch only Atlas.exe",
+    "installed_atlas_exe": true,
+    "installed_accounts_exe": true,
+    "health_ok": true,
+    "health_seconds": 8.2,
+    "register_status": 201,
+    "login_status": 200,
+    "desktop_proxy_status": 200,
+    "overall": "PASS"
+  },
+  "overhead": {
+    "accounts_bundle_disk_mb": 82,
+    "installer_size_before_mb": 11.68,
+    "installer_size_after_mb": 41.78,
+    "accounts_process_rss_mb": 83.9,
+    "startup_to_health_seconds": 8.2,
+    "note": "Some non-runtime weight (mypy plugin via pydantic, vendored test dirs) could be trimmed later; out of scope for the blocker fix."
+  },
+  "installer": {
+    "path": "packaging/installer/output/Atlas_Setup.exe",
+    "size_bytes": 43811656,
+    "size_mb": 41.78,
+    "sha256": "5BE8C5659A940C63ABBB5FCD887C4AAB260AD4377A15D9F072CED1649099EE9E"
+  },
+  "ux_changes": "none",
+  "feature_changes": "none",
+  "tests_added": [
+    "jarvis_desktop/tests/test_phase192_frozen_accounts.py::test_service_env_points_at_writable_paths",
+    "jarvis_desktop/tests/test_phase192_frozen_accounts.py::test_frozen_accounts_exe_found_next_to_atlas",
+    "jarvis_desktop/tests/test_phase192_frozen_accounts.py::test_frozen_accounts_exe_missing_returns_none",
+    "jarvis_desktop/tests/test_phase192_frozen_accounts.py::test_frozen_start_spawns_bundled_exe",
+    "jarvis_desktop/tests/test_phase192_frozen_accounts.py::test_source_mode_uses_python_module"
+  ],
+  "tests_passed": "5 passed (runner) + standalone & fresh-install integration PASS",
+  "screenshots": [
+    "reports/phase192_polish/installed_01_sign_in.png",
+    "reports/phase192_polish/installed_02_create_account.png"
+  ],
+  "commit": "12d59ce81716117f12dfb6b47e3a01ddc546e7bd",
+  "verdict_first_3_5_beta_users": "GO"
+}

@@ -91,6 +91,9 @@ function Test-StagedInstaller {
     $issues = @()
     $stagedExe = Join-Path $Staging "Atlas.exe"
     if (-not (Test-Path $stagedExe)) { $issues += "missing staged Atlas.exe ($stagedExe)" }
+    # Phase 192 — the bundled accounts service must ship so installed users can register.
+    $stagedAccounts = Join-Path $Staging "accounts\AtlasAccounts.exe"
+    if (-not (Test-Path $stagedAccounts)) { $issues += "missing bundled accounts service ($stagedAccounts)" }
     $issText = Get-Content -Raw (Join-Path $InstallerDir "Atlas.iss")
     if ($issText -notmatch "autodesktop") { $issues += "Atlas.iss does not create a desktop shortcut" }
     if ($issText -notmatch "\{group\}") { $issues += "Atlas.iss does not create a Start menu shortcut" }

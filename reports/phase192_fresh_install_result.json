@@ -1,0 +1,10 @@
+﻿{
+    "installed_atlas":  true,
+    "installed_accounts":  true,
+    "health_seconds":  8.2,
+    "health_ok":  true,
+    "register_status":  201,
+    "login_status":  200,
+    "desktop_proxy":  200,
+    "accounts_rss_mb":  83.9
+}

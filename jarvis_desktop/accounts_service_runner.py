@@ -28,8 +28,56 @@ def is_running() -> bool:
     return accounts_client.is_service_running()
 
 
+def _frozen() -> bool:
+    return bool(getattr(sys, "frozen", False))
+
+
+def _accounts_data_dir() -> str:
+    """A per-user writable directory for the accounts DB + JWT secret."""
+    try:
+        from jarvis_desktop.data_paths import desktop_data_dir
+
+        base = desktop_data_dir()
+    except Exception:
+        base = os.environ.get("LOCALAPPDATA") or os.path.expanduser("~")
+        base = os.path.join(base, "Atlas")
+    data_dir = os.path.join(base, "accounts_service")
+    try:
+        os.makedirs(os.path.join(data_dir, "auth"), exist_ok=True)
+    except OSError:
+        pass
+    return data_dir
+
+
+def _frozen_accounts_exe() -> Optional[str]:
+    """Locate the bundled AtlasAccounts.exe next to the frozen Atlas.exe."""
+    exe_dir = os.path.dirname(os.path.abspath(sys.executable))
+    for candidate in (
+        os.path.join(exe_dir, "accounts", "AtlasAccounts.exe"),
+        os.path.join(exe_dir, "AtlasAccounts.exe"),
+    ):
+        if os.path.isfile(candidate):
+            return candidate
+    return None
+
+
+def _service_env() -> dict:
+    """Environment for the accounts service: writable DB + JWT secret paths."""
+    env = os.environ.copy()
+    data_dir = _accounts_data_dir()
+    env.setdefault("ATLAS_ACCOUNTS_DATA_DIR", data_dir)
+    if not env.get("ATLAS_ACCOUNTS_DB"):
+        db_path = os.path.join(data_dir, "atlas_accounts.db").replace(os.sep, "/")
+        env["ATLAS_ACCOUNTS_DB"] = f"sqlite:///{db_path}"
+    return env
+
+
 def start_accounts_service() -> bool:
-    """Launch accounts_service in a background subprocess if not already running."""
+    """Launch the accounts service in the background if not already running.
+
+    Frozen install: spawn the bundled AtlasAccounts.exe (no Python required).
+    Source mode: spawn ``python -m accounts_service.main``.
+    """
     global _process
     with _lock:
         if is_running():
@@ -37,22 +85,31 @@ def start_accounts_service() -> bool:
         if _process is not None and _process.poll() is None:
             return True
 
-        lib = os.path.join(_repo_root, "accounts_service", ".lib")
-        env = os.environ.copy()
-        if lib not in env.get("PYTHONPATH", "").split(os.pathsep):
-            env["PYTHONPATH"] = lib + (os.pathsep + env["PYTHONPATH"] if env.get("PYTHONPATH") else "")
+        env = _service_env()
+        if _frozen():
+            exe = _frozen_accounts_exe()
+            if not exe:
+                _log("accounts service exe not found next to Atlas.exe")
+                return False
+            cmd = [exe]
+            cwd = os.path.dirname(exe)
+        else:
+            lib = os.path.join(_repo_root, "accounts_service", ".lib")
+            if lib not in env.get("PYTHONPATH", "").split(os.pathsep):
+                env["PYTHONPATH"] = lib + (os.pathsep + env["PYTHONPATH"] if env.get("PYTHONPATH") else "")
+            cmd = [sys.executable, "-m", "accounts_service.main"]
+            cwd = _repo_root
 
-        cmd = [sys.executable, "-m", "accounts_service.main"]
         try:
             _process = subprocess.Popen(
                 cmd,
-                cwd=_repo_root,
+                cwd=cwd,
                 env=env,
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
                 creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
             )
-            _log(f"accounts service subprocess started pid={_process.pid}")
+            _log(f"accounts service started pid={_process.pid} frozen={_frozen()}")
             return True
         except OSError as exc:
             _log(f"accounts service start failed: {type(exc).__name__}: {exc}")

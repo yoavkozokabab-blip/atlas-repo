@@ -26,3 +26,7 @@ reports/benchmarks/
 .phase150_tools/
 .phase150_install_test/
 build/
+
+# Phase 192 — accounts service build intermediates (shipped copy lives in dist/Atlas/accounts)
+dist/AtlasAccounts/
+build/pyinstaller_accounts/

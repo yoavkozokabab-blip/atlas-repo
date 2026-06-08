@@ -116,3 +116,31 @@ if (-not (Test-Path $AtlasExe)) {
 $item = Get-Item -LiteralPath $AtlasExe
 $exeMb = [Math]::Round($item.Length / 1048576, 2)
 Write-Host ("Built: {0} ({1} MB)" -f $AtlasExe, $exeMb) -ForegroundColor Green
+
+# Phase 192 — build the frozen Atlas Accounts Service (AtlasAccounts.exe) and
+# bundle it inside the Atlas folder under accounts\ so Atlas.exe can launch it.
+$AccountsSpec = Join-Path $ScriptDir "accounts.spec"
+$AccountsLib = Join-Path $Root "accounts_service\.lib"
+$AccountsDist = Join-Path $DistDir "AtlasAccounts"
+$AccountsWork = Join-Path $Root "build\pyinstaller_accounts"
+if (Test-Path $AccountsSpec) {
+    $oldPP = $env:PYTHONPATH
+    try {
+        $env:PYTHONPATH = ($PackagingLib, $AccountsLib, $Root, $oldPP | Where-Object { $_ }) -join ';'
+        Push-Location $Root
+        & py -3 -m PyInstaller.__main__ --noconfirm --clean --distpath $DistDir --workpath $AccountsWork $AccountsSpec
+        if ($LASTEXITCODE -ne 0) { throw "Accounts PyInstaller failed with exit code $LASTEXITCODE" }
+    } finally {
+        $env:PYTHONPATH = $oldPP
+        Pop-Location
+    }
+    $AccountsExe = Join-Path $AccountsDist "AtlasAccounts.exe"
+    if (-not (Test-Path $AccountsExe)) { throw "Expected accounts executable not built: $AccountsExe" }
+    # Copy the accounts one-folder bundle into dist\Atlas\accounts\ (shipped together).
+    $AccountsTarget = Join-Path $DistAtlas "accounts"
+    if (Test-Path $AccountsTarget) { Remove-Item -LiteralPath $AccountsTarget -Recurse -Force }
+    New-Item -ItemType Directory -Path $AccountsTarget -Force | Out-Null
+    Copy-Item -Path (Join-Path $AccountsDist "*") -Destination $AccountsTarget -Recurse -Force
+    $accMb = [Math]::Round((Get-Item (Join-Path $AccountsTarget "AtlasAccounts.exe")).Length / 1048576, 2)
+    Write-Host ("Bundled accounts service: {0}\AtlasAccounts.exe ({1} MB)" -f $AccountsTarget, $accMb) -ForegroundColor Green
+}
