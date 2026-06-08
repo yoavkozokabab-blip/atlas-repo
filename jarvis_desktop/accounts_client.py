@@ -517,6 +517,53 @@ def reject_application(user_id: str, admin_notes: Optional[str] = None) -> Dict[
     return _call("POST", f"/admin/users/{user_id}/reject-application", payload, access_token=token)
 
 
+def get_admin_dashboard() -> Dict[str, Any]:
+    token = get_valid_access_token()
+    if not token:
+        return {"_unauthenticated": True}
+    return _call("GET", "/admin/dashboard", access_token=token)
+
+
+def get_admin_audit_log(limit: int = 100) -> Dict[str, Any]:
+    token = get_valid_access_token()
+    if not token:
+        return {"_unauthenticated": True}
+    return _call("GET", f"/admin/audit-log?limit={int(limit)}", access_token=token)
+
+
+def admin_grant_beta(user_id: str) -> Dict[str, Any]:
+    token = get_valid_access_token()
+    if not token:
+        return {"_unauthenticated": True}
+    return _call("POST", f"/admin/users/{user_id}/grant-beta", {}, access_token=token)
+
+
+def admin_revoke_beta(user_id: str) -> Dict[str, Any]:
+    token = get_valid_access_token()
+    if not token:
+        return {"_unauthenticated": True}
+    return _call("POST", f"/admin/users/{user_id}/revoke-beta", {}, access_token=token)
+
+
+def admin_force_logout(user_id: str) -> Dict[str, Any]:
+    token = get_valid_access_token()
+    if not token:
+        return {"_unauthenticated": True}
+    return _call("POST", f"/admin/users/{user_id}/force-logout", {}, access_token=token)
+
+
+_ADMIN_UPDATE_FIELDS = {"status", "role", "beta_flag", "plan", "max_devices", "expires_at", "admin_notes"}
+
+
+def admin_update_user(user_id: str, fields: Dict[str, Any]) -> Dict[str, Any]:
+    """PATCH a user — only the whitelisted admin-editable fields are forwarded."""
+    token = get_valid_access_token()
+    if not token:
+        return {"_unauthenticated": True}
+    payload = {k: v for k, v in (fields or {}).items() if k in _ADMIN_UPDATE_FIELDS and v is not None}
+    return _call("PATCH", f"/admin/users/{user_id}", payload, access_token=token)
+
+
 def send_analytics_event(event_type: str, app_version: str, **counters: int) -> None:
     """Send a privacy-safe usage event. Only integer counters are sent."""
     token = get_valid_access_token()
@@ -558,9 +605,14 @@ def get_account_state() -> Dict[str, Any]:
     token = state.get("access_token")
     user = state.get("user")
     authenticated = bool(token and user and license_status.get("valid") is True)
+    # A user can be signed in (valid session + cached profile) yet not have an
+    # active license (e.g. beta approval still pending). Such users must reach an
+    # in-app status dashboard rather than a pre-login access wall (Phase 193).
+    signed_in = bool(token and user)
 
     return {
         "authenticated": authenticated,
+        "signed_in": signed_in,
         "user": user,
         "license": license_status,
         "device_id": get_device_id(),

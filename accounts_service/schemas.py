@@ -236,7 +236,7 @@ class AdminUserOut(BaseModel):
 
 
 class AdminUserUpdate(BaseModel):
-    status: Optional[Literal["pending", "active", "beta", "suspended", "banned", "expired"]] = None
+    status: Optional[Literal["pending", "active", "beta", "suspended", "banned", "expired", "inactive", "rejected"]] = None
     role: Optional[Literal["user", "admin", "superadmin"]] = None
     beta_flag: Optional[bool] = None
     plan: Optional[Literal["beta", "free", "pro", "enterprise"]] = None

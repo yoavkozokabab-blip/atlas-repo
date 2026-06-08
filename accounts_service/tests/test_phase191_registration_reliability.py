@@ -166,7 +166,9 @@ class TestRegistrationReliability:
             headers={"Authorization": f"Bearer {token}"},
         )
         assert out.status_code == 200, out.text
-        assert out.json()["status"] == "expired"
+        # Phase 193: rejection sets a dedicated "rejected" status (was "expired")
+        # so the desktop app can show a tailored "not approved" dashboard.
+        assert out.json()["status"] == "rejected"
 
 
 class TestDesktopRegisterProxy:

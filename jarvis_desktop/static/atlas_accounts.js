@@ -316,6 +316,162 @@
     document.body.classList.remove('auth-loading');
   }
 
+  // ── Account status taxonomy + in-app dashboards (Phase 193) ───────────────
+  // Every signed-in account resolves to exactly one status. active/beta get the
+  // product; pending/inactive/rejected get a tailored in-app dashboard — never a
+  // pre-login access wall.
+  function _accountStatus() {
+    if (!_state) return 'unknown';
+    const user = _state.user || {};
+    const lic = _state.license || {};
+    const us = String(user.status || '').toLowerCase();
+    const ls = String(lic.status || '').toLowerCase();
+    if (_state.authenticated) {
+      if (us === 'beta' || ls === 'beta' || lic.plan === 'beta' || user.beta_flag) return 'beta';
+      return 'active';
+    }
+    if (us === 'pending' || ls === 'pending') return 'pending';
+    if (us === 'rejected' || ls === 'rejected') return 'rejected';
+    if (us === 'suspended' || us === 'banned' || ls === 'suspended' || ls === 'banned') return 'blocked';
+    return 'inactive';
+  }
+
+  const STATUS_DASH = {
+    pending: {
+      icon: '⏳',
+      title: 'Application received',
+      message: 'Your beta application was submitted successfully and is waiting for review.',
+      steps: [
+        { label: 'Application submitted successfully', done: true },
+        { label: 'Under review by the Atlas team', done: false },
+        { label: 'We email you the moment access is approved', done: false },
+      ],
+      eta: 'Estimated review time: 1–3 business days.',
+      showRefresh: true,
+      showReapply: false,
+      foot: 'Atlas beta access is approved manually. Your code stays on your machine.',
+    },
+    inactive: {
+      icon: '🔒',
+      title: 'Account not active',
+      message: 'Your Atlas account is not active right now.',
+      steps: [],
+      showRefresh: true,
+      showReapply: false,
+      foot: 'If you think this is a mistake, contact support and we will take a look.',
+    },
+    rejected: {
+      icon: '⛔',
+      title: 'Application not approved',
+      message: 'Your beta application review is complete. It was not approved at this time.',
+      steps: [
+        { label: 'Application review completed', done: true },
+      ],
+      showRefresh: false,
+      showReapply: true,
+      foot: 'You will be able to reapply in a future cohort.',
+    },
+  };
+
+  function _renderStatusDashboard(status) {
+    const spec = STATUS_DASH[status] || STATUS_DASH.inactive;
+    const set = (id, val) => { const e = el(id); if (e) e.textContent = val || ''; };
+    set('statusDashIcon', spec.icon);
+    set('statusDashTitle', spec.title);
+    set('statusDashMessage', spec.message);
+
+    const stepsEl = el('statusDashSteps');
+    if (stepsEl) {
+      const steps = spec.steps || [];
+      stepsEl.innerHTML = steps.map(s => `<li class="${s.done ? '' : 'muted-step'}">${_escHtml(s.label)}</li>`).join('');
+      stepsEl.style.display = steps.length ? '' : 'none';
+    }
+
+    const lic = (_state && _state.license) || {};
+    const reasonEl = el('statusDashReason');
+    if (reasonEl) {
+      const reason = (status === 'inactive' && lic.message && lic.status !== 'unauthenticated') ? lic.message : '';
+      reasonEl.textContent = reason ? ('Reason: ' + reason) : '';
+      reasonEl.style.display = reason ? '' : 'none';
+    }
+
+    const etaEl = el('statusDashEta');
+    if (etaEl) { etaEl.textContent = spec.eta || ''; etaEl.style.display = spec.eta ? '' : 'none'; }
+
+    const refreshBtn = el('statusRefreshBtn');
+    if (refreshBtn) refreshBtn.style.display = spec.showRefresh ? '' : 'none';
+    const reapplyBtn = el('statusReapplyBtn');
+    if (reapplyBtn) reapplyBtn.style.display = spec.showReapply ? '' : 'none';
+    set('statusDashFoot', spec.foot);
+  }
+
+  function _renderHomeRecent() {
+    const box = el('homeRecentAnalyses');
+    if (!box) return;
+    const homeView = el('view-home');
+    if (homeView && !homeView.classList.contains('active')) return; // only fetch when visible
+    api('GET', '/api/repositories/recent').then(res => {
+      const items = (res && res.items) || [];
+      if (!items.length) {
+        box.innerHTML = '<span class="muted tiny">No analyses yet — scan a repository to get started.</span>';
+        return;
+      }
+      box.innerHTML = items.slice(0, 3).map(it => {
+        const name = it.repo_name || (it.repo_path || '').split(/[\\/]/).pop() || 'repository';
+        const when = it.last_scan_at ? String(it.last_scan_at).slice(0, 10) : '';
+        return `<div class="home-recent-item"><span>${_escHtml(name)}</span><span class="muted">${_escHtml(when)}</span></div>`;
+      }).join('');
+    }).catch(() => { box.innerHTML = '<span class="muted tiny">No analyses yet.</span>'; });
+  }
+
+  const _HOME_STATUS_PILL = {
+    active: { label: 'Active', cls: '' },
+    beta: { label: 'Beta access', cls: '' },
+    pending: { label: 'Approval pending', cls: 'warn' },
+    inactive: { label: 'Not active', cls: 'bad' },
+    rejected: { label: 'Not approved', cls: 'bad' },
+  };
+
+  function _renderHomeDashboard() {
+    const dash = el('homeDashboard');
+    if (!dash) return;
+    if (!_state || !_state.signed_in) { dash.style.display = 'none'; return; }
+    dash.style.display = '';
+
+    const user = _state.user || {};
+    const lic = _state.license || {};
+    const status = _accountStatus();
+    const name = (user.email || '').split('@')[0] || 'there';
+
+    const welcome = el('homeWelcome');
+    if (welcome) welcome.textContent = `Welcome back, ${name}`;
+    const sub = el('homeWelcomeSub');
+    if (sub) sub.textContent = status === 'active' || status === 'beta'
+      ? "Here's your Atlas workspace."
+      : "Here's the status of your Atlas account.";
+
+    const pill = el('homeStatusPill');
+    if (pill) {
+      const s = _HOME_STATUS_PILL[status] || { label: status, cls: 'warn' };
+      pill.textContent = s.label;
+      pill.className = 'status-pill' + (s.cls ? ' ' + s.cls : '');
+    }
+    const planPill = el('homePlanPill');
+    if (planPill) planPill.textContent = (lic.plan || 'free') + (lic._offline ? ' · offline' : '');
+
+    const repoEl = el('homeRepoStatus');
+    if (repoEl) {
+      const summary = window.STATE && window.STATE.summary;
+      if (summary && summary.ok) {
+        const files = summary.file_count || summary.files || 0;
+        repoEl.innerHTML = `<a href="#" onclick="go('center');return false;">${_escHtml(summary.repo_name || 'Current repository')}</a> · ${files} files`;
+      } else {
+        repoEl.textContent = 'No repository scanned yet';
+      }
+    }
+    _renderHomeRecent();
+  }
+
   function _enterApp(options) {
     const firstReveal = !_appRevealed;
     _appRevealed = true;
@@ -363,13 +519,20 @@
 
   function openAccountScreen() {
     refreshState().then(() => {
-      if (!_state || !_state.authenticated) {
-        const block = _licenseBlockState();
-        if (block) showAccountScreen('blocked');
-        else showAccountScreen('login');
+      if (_state && _state.authenticated) {
+        showAccountScreen('profile');
         return;
       }
-      showAccountScreen('profile');
+      // Signed in but not active: keep them in-app on their status dashboard.
+      if (_state && _state.signed_in && _accountStatus() !== 'blocked') {
+        _enterApp({ goHome: false });
+        _renderStatusDashboard(_accountStatus());
+        if (typeof go === 'function') go('status');
+        return;
+      }
+      const block = _licenseBlockState();
+      if (block) showAccountScreen('blocked');
+      else showAccountScreen('login');
     });
   }
 
@@ -397,6 +560,22 @@
     }
     if (_state.authenticated) {
       _enterApp();
+      _renderHomeDashboard();
+      return;
+    }
+    // Signed in but not yet active — route into the app to a status dashboard
+    // (with branding + nav), never the pre-login access wall (Phase 193).
+    if (_state.signed_in) {
+      const status = _accountStatus();
+      if (status === 'blocked') {
+        const hard = _licenseBlockState();
+        if (hard) { showAccountScreen('blocked'); return; }
+      }
+      const firstReveal = !_appRevealed;
+      _enterApp({ goHome: false });
+      _renderStatusDashboard(status);
+      _renderHomeDashboard();
+      if (firstReveal && typeof go === 'function') go('status');
       return;
     }
     const block = _licenseBlockState();
@@ -428,7 +607,9 @@
       setLoading('acc-login-btn', false);
       if (res.ok) {
         if (el('acc-login-pwd')) el('acc-login-pwd').value = '';
-        setTimeout(() => refreshState().then(() => _enterApp({ goHome: true })), 300);
+        // refreshState() routes via _syncLayoutFromState: active/beta -> home,
+        // pending/inactive/rejected -> in-app status dashboard. Never stranded.
+        setTimeout(() => refreshState(), 300);
       } else {
         const err = _formatLoginError(res.error || res.detail || res.message);
         setError('acc-login-error', `${err.message} ${err.action}`, err.title);
@@ -672,13 +853,26 @@
     _updateAccountChip();
   }
 
+  function _isAdmin() {
+    const role = _state && _state.user && _state.user.role;
+    return role === 'admin' || role === 'superadmin';
+  }
+
   function _updateAccountChip() {
     const chip = el('accountChip');
-    if (!chip) return;
+    const menu = el('userMenu');
+    const summary = el('userMenuSummary');
+    const adminEntry = el('userMenuAdmin');
+    const accAdminEntry = el('acc-admin-entry');
 
-    if (!_state || !_state.authenticated) {
-      chip.textContent = 'Account';
-      chip.className = 'account-chip unsigned';
+    // Show the consolidated user menu for any signed-in account (including
+    // pending/inactive/rejected) so they always have Account + Sign out and are
+    // never dependent on the loose pre-login chip (Phase 193).
+    if (!_state || !_state.signed_in) {
+      if (chip) { chip.textContent = 'Account'; chip.className = 'account-chip unsigned'; chip.style.display = ''; }
+      if (menu) menu.style.display = 'none';
+      if (adminEntry) adminEntry.style.display = 'none';
+      if (accAdminEntry) accAdminEntry.style.display = 'none';
       return;
     }
 
@@ -687,13 +881,19 @@
     const email = user.email || '';
     const plan = license.plan || 'free';
     const offline = license._offline ? ' (offline)' : '';
+    const admin = _isAdmin();
 
-    chip.textContent = `${email.split('@')[0]} · ${plan}${offline}`;
-    chip.className = 'account-chip signed-in' + (license._offline ? ' offline' : '');
+    // Signed in: show the consolidated user menu, hide the loose chip.
+    if (chip) { chip.textContent = `${email.split('@')[0]} · ${plan}${offline}`; chip.className = 'account-chip signed-in' + (license._offline ? ' offline' : ''); chip.style.display = 'none'; }
+    if (menu) menu.style.display = '';
+    if (summary) summary.textContent = `${email.split('@')[0]}${admin ? ' · admin' : ''} ▾`;
+    if (adminEntry) adminEntry.style.display = admin ? '' : 'none';
+    if (accAdminEntry) accAdminEntry.style.display = admin ? '' : 'none';
+    document.body.classList.toggle('role-admin', admin);
   }
 
   function _populateProfile() {
-    if (!_state || !_state.authenticated) return;
+    if (!_state || !_state.signed_in) return;
     const user = _state.user || {};
     const license = _state.license || {};
 
@@ -728,6 +928,31 @@
     _pollTimer = setInterval(() => refreshState(), POLL_INTERVAL_MS);
   }
 
+  // Re-check account status against the server without sign out / sign in.
+  function refreshStatus() {
+    const btn = el('statusRefreshBtn');
+    let orig;
+    if (btn) { orig = btn.textContent; btn.disabled = true; btn.textContent = 'Checking…'; }
+    return refreshState().then(() => {
+      if (_state && _state.authenticated) {
+        _enterApp({ goHome: true });
+        _renderHomeDashboard();
+        if (typeof toast === 'function') toast('Your Atlas account is now active 🎉', 'success');
+      } else {
+        const status = _accountStatus();
+        _renderStatusDashboard(status);
+        _renderHomeDashboard();
+        if (typeof toast === 'function') toast('Status checked — no change yet.', 'info');
+      }
+    }).finally(() => {
+      if (btn) { btn.disabled = false; btn.textContent = orig || 'Refresh account status'; }
+    });
+  }
+
+  function reapply() {
+    if (typeof toast === 'function') toast('Reapplying will be available in a future release.', 'info');
+  }
+
   function init() {
     restoreDraft();
     refreshState().finally(() => {
@@ -739,8 +964,13 @@
     if (chip) chip.addEventListener('click', openAccountScreen);
 
     document.addEventListener('atlas:viewchange', e => {
-      if (e.detail && e.detail.view === 'accounts') {
+      if (!e.detail) return;
+      if (e.detail.view === 'accounts') {
         refreshState().then(() => _populateProfile());
+      } else if (e.detail.view === 'home') {
+        _renderHomeDashboard();
+      } else if (e.detail.view === 'status') {
+        _renderStatusDashboard(_accountStatus());
       }
     });
   }
@@ -758,9 +988,22 @@
     retrySubmit: retrySubmit,
     restoreDraft: restoreDraft,
     refresh: refreshState,
+    refreshStatus: refreshStatus,
+    reapply: reapply,
+    accountStatus: _accountStatus,
     isAuthenticated: () => !!( _state && _state.authenticated),
+    isSignedIn: () => !!( _state && _state.signed_in),
+    isAdmin: _isAdmin,
     requireAccess: () => {
       if (_state && _state.authenticated) return true;
+      // Signed-in but not-active users are kept inside the app on their status
+      // dashboard rather than bounced to a pre-login wall (Phase 193).
+      if (_state && _state.signed_in && _accountStatus() !== 'blocked') {
+        _enterApp({ goHome: false });
+        _renderStatusDashboard(_accountStatus());
+        if (typeof go === 'function') go('status');
+        return false;
+      }
       const block = _licenseBlockState();
       if (block) showAccountScreen('blocked');
       else showAccountScreen('login');

@@ -808,3 +808,97 @@ body.auth-loading.auth-mode .auth-stage::after{
   .auth-form-scroll{max-height:48vh}
   .acc-profile-grid{grid-template-columns:1fr}
 }
+
+/* ===================== Phase 193 — Admin Console + polish ===================== */
+.page-head{margin:0 0 18px}
+.page-title{font-size:22px;font-weight:700;margin:0 0 4px;color:#eaf0ff}
+.page-sub{margin:0;color:var(--muted);font-size:13px}
+.admin-health .ok{color:var(--green,#4c8)}
+.admin-health .bad{color:#e88}
+.ok{color:var(--green,#4c8)} .bad{color:#e88}
+
+.admin-tabs{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0 0 18px;border-bottom:1px solid var(--line);padding-bottom:0}
+.admin-tab{background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-size:13px;padding:9px 12px;cursor:pointer;border-radius:0}
+.admin-tab:hover{color:#dce6ff}
+.admin-tab.active{color:var(--cyan);border-bottom-color:var(--cyan)}
+.admin-badge{display:inline-block;min-width:16px;padding:0 5px;border-radius:9px;background:var(--cyan);color:#04121a;font-size:11px;font-weight:700;line-height:16px;text-align:center}
+.admin-badge:empty{display:none}
+.admin-refresh{margin-left:auto}
+.admin-pane[hidden]{display:none}
+.admin-empty{padding:28px;text-align:center}
+
+.admin-kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.admin-kpi{border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025);padding:16px}
+.admin-kpi-v{font-size:26px;font-weight:700;color:#eaf0ff}
+.admin-kpi-l{font-size:12px;color:var(--muted);margin-top:4px}
+
+.admin-app-card{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:12px}
+.admin-app-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.admin-app-time{color:var(--muted);font-size:12px;margin-left:10px}
+.admin-app-actions{display:flex;gap:6px;flex-wrap:wrap}
+.admin-app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px 18px}
+.admin-kv{display:flex;justify-content:space-between;gap:10px;font-size:12px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.admin-kv span{color:var(--muted)} .admin-kv b{color:#dce6ff;text-align:right}
+
+/* ── Phase 193 — Home dashboard + account status dashboards ───────────────── */
+.home-dashboard{max-width:1120px;margin:20px auto 8px;padding:22px 26px;text-align:left}
+.home-dash-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.home-dash-welcome{font-size:22px;font-weight:700;margin:0 0 2px;color:#eaf0ff}
+.home-dash-pills{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.status-pill,.plan-pill{font-size:12px;font-weight:600;letter-spacing:.3px;padding:5px 12px;border-radius:20px;border:1px solid var(--line);white-space:nowrap}
+.status-pill{color:var(--cyan);background:rgba(62,240,255,.08);border-color:rgba(62,240,255,.3)}
+.status-pill.warn{color:var(--amber);background:rgba(255,194,75,.08);border-color:rgba(255,194,75,.32)}
+.status-pill.bad{color:var(--red);background:rgba(255,92,122,.08);border-color:rgba(255,92,122,.32)}
+.plan-pill{color:var(--violet);background:rgba(154,123,255,.08);border-color:rgba(154,123,255,.3);text-transform:capitalize}
+.home-dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:18px 0}
+.home-dash-card{border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025);padding:14px 16px}
+.home-dash-label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px}
+.home-dash-value{font-size:14px;color:#dce6ff}
+.home-dash-value a{color:var(--cyan);text-decoration:none}
+.home-recent-item{display:flex;justify-content:space-between;gap:10px;padding:3px 0;font-size:13px}
+.home-recent-item .muted{font-size:11px}
+.quick-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+
+.status-dash{max-width:620px;margin:36px auto;padding:36px 40px;text-align:center}
+.status-dash-icon{font-size:46px;line-height:1;margin-bottom:14px}
+.status-dash-title{font-size:26px;font-weight:700;margin:0 0 10px;color:#eaf0ff}
+.status-dash-message{font-size:15px;color:#cdd8ff;line-height:1.55;margin:0 auto 18px;max-width:480px}
+.status-dash-steps{list-style:none;padding:0;margin:0 auto 18px;max-width:420px;text-align:left}
+.status-dash-steps li{position:relative;padding:8px 8px 8px 30px;font-size:14px;color:#cdd8ff;border-bottom:1px solid rgba(255,255,255,.05)}
+.status-dash-steps li::before{content:"✓";position:absolute;left:6px;color:var(--green)}
+.status-dash-steps li.muted-step::before{content:"○";color:var(--muted)}
+.status-dash-reason{font-size:13px;background:rgba(255,194,75,.06);border:1px solid rgba(255,194,75,.25);border-radius:10px;padding:10px 14px;margin:0 auto 14px;max-width:460px}
+.status-dash-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+.status-dash-foot{margin-top:18px}
+
+.admin-toolbar{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.admin-toolbar input,.admin-toolbar select{padding:8px 11px;border-radius:9px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:inherit;font-size:13px}
+.admin-toolbar input{flex:1;min-width:180px}
+
+.admin-table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+.admin-table{width:100%;border-collapse:collapse;font-size:13px}
+.admin-table th{text-align:left;padding:10px 12px;color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--line);white-space:nowrap}
+.admin-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.05);vertical-align:middle}
+.admin-table tr:last-child td{border-bottom:none}
+.admin-row-actions{display:flex;gap:5px;flex-wrap:wrap}
+.admin-pill{display:inline-block;padding:2px 8px;border-radius:9px;font-size:11px;background:rgba(255,255,255,.08);text-transform:capitalize}
+.admin-pill.s-active,.admin-pill.s-beta{background:rgba(64,200,120,.18);color:#9ff0bf}
+.admin-pill.s-pending{background:rgba(230,180,80,.18);color:#f0d49f}
+.admin-pill.s-suspended{background:rgba(230,150,80,.18);color:#f0c49f}
+.admin-pill.s-banned{background:rgba(230,90,90,.18);color:#f0a0a0}
+.danger-text{color:#e88 !important}
+
+.admin-access-card{border:1px solid var(--line);border-radius:12px;padding:18px;max-width:560px}
+.admin-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.admin-form-grid label{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--muted)}
+.admin-form-grid select,.admin-form-grid input{padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:inherit;font-size:13px}
+.admin-check{flex-direction:row !important;align-items:center;gap:8px !important}
+
+.btn.danger{background:linear-gradient(92deg,#e0556b,#c0405a);color:#fff;border:none}
+.btn.danger:hover{filter:brightness(1.08)}
+.admin-modal{position:fixed;inset:0;z-index:120;background:rgba(4,8,18,.72);display:grid;place-items:center;padding:24px}
+.admin-modal-card{max-width:440px;width:100%;border:1px solid var(--line);border-radius:14px;padding:22px}
+.admin-modal-card h3{margin:0 0 10px;color:#eaf0ff}
+.admin-modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
+.acc-admin-entry{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+@media(max-width:720px){.admin-form-grid{grid-template-columns:1fr}}

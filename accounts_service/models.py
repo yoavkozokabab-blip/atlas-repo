@@ -22,7 +22,7 @@ def _uuid() -> str:
 
 
 # ── Users ──────────────────────────────────────────────────────────────────
-USER_STATUSES = ("pending", "active", "beta", "suspended", "banned", "expired")
+USER_STATUSES = ("pending", "active", "beta", "suspended", "banned", "expired", "inactive", "rejected")
 USER_ROLES = ("user", "admin", "superadmin")
 
 

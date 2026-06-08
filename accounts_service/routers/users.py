@@ -28,16 +28,25 @@ def me(user: User = Depends(get_current_user)):
 @router.get("/license", response_model=LicenseCheckResponse)
 def license_check(user: User = Depends(get_current_user)):
     """Desktop client polls this to validate license + get feature flags."""
-    if user.status == "pending":
+    # Non-punitive, not-yet-active account states resolve to an invalid license
+    # so the desktop app routes the user to an in-app status dashboard rather
+    # than the product (Phase 193). The user.status drives the dashboard shown.
+    _INACTIVE_STATUS_MESSAGES = {
+        "pending": "Your account was created and is waiting for beta approval.",
+        "inactive": "Your Atlas account is not active right now.",
+        "expired": "Your Atlas access has expired.",
+        "rejected": "Your beta application was not approved.",
+    }
+    if user.status in _INACTIVE_STATUS_MESSAGES:
         lic = user.license
         return LicenseCheckResponse(
             valid=False,
             plan=lic.plan if lic else "free",
-            status="pending",
+            status=user.status,
             expires_at=lic.expires_at if lic else None,
             max_devices=lic.max_devices if lic else 1,
             beta_features=False,
-            message="Your account was created and is waiting for beta approval.",
+            message=_INACTIVE_STATUS_MESSAGES[user.status],
         )
     lic = user.license
     if not lic or lic.status != "active":

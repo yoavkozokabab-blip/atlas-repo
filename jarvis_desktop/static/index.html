@@ -304,7 +304,6 @@
       <button data-view="investigate" data-lock="1" onclick="go('investigate')">Debug</button>
       <button data-view="impact" data-lock="1" onclick="go('impact')">What breaks?</button>
       <button data-view="export" data-lock="1" data-beta-advanced="1" class="advanced-only" onclick="go('export')" title="Repository Context — create a Change Plan first">Repository Context</button>
-      <button data-view="accounts" onclick="go('accounts')" class="nav-accounts-btn" title="Account &amp; license">Account</button>
       <span class="billing-nav" id="billingNav" style="display:none">
         <a class="nav-link" href="usage.html">Usage</a>
         <a class="nav-link" href="pricing.html">Pricing</a>
@@ -321,6 +320,14 @@
         <button type="button" data-mode="advanced" onclick="setOutputMode('advanced')">Full detail</button>
       </div>
       <a class="btn ghost small" href="quickstart.html">Quickstart</a>
+      <details class="help-menu user-menu" id="userMenu" style="display:none">
+        <summary class="btn ghost small" id="userMenuSummary">Account ▾</summary>
+        <div class="help-menu-pop glass">
+          <button class="btn ghost small" type="button" onclick="go('accounts')">Account</button>
+          <button class="btn ghost small admin-only" id="userMenuAdmin" type="button" style="display:none" onclick="go('admin')">Admin Console</button>
+          <button class="btn ghost small" type="button" onclick="atlasAccounts.logout()">Sign out</button>
+        </div>
+      </details>
       <details class="help-menu">
         <summary class="btn ghost small">Help &amp; more ▾</summary>
         <div class="help-menu-pop glass">
@@ -344,6 +351,38 @@
 
     <!-- ===================== SCREEN 1: HOME ===================== -->
     <section class="view active" id="view-home">
+      <!-- Post-login dashboard header (populated from account + repository state). -->
+      <div id="homeDashboard" class="home-dashboard glass" style="display:none">
+        <div class="home-dash-head">
+          <div>
+            <h2 class="home-dash-welcome" id="homeWelcome">Welcome back</h2>
+            <p class="muted tiny" id="homeWelcomeSub">Here's your Atlas workspace.</p>
+          </div>
+          <div class="home-dash-pills">
+            <span class="status-pill" id="homeStatusPill">—</span>
+            <span class="plan-pill" id="homePlanPill">free</span>
+          </div>
+        </div>
+        <div class="home-dash-grid">
+          <div class="home-dash-card">
+            <span class="home-dash-label">Repository</span>
+            <span class="home-dash-value" id="homeRepoStatus">No repository scanned yet</span>
+          </div>
+          <div class="home-dash-card">
+            <span class="home-dash-label">Recent analyses</span>
+            <div class="home-dash-value" id="homeRecentAnalyses"><span class="muted tiny">None yet</span></div>
+          </div>
+        </div>
+        <div class="home-dash-actions">
+          <span class="home-dash-label">Quick actions</span>
+          <div class="quick-actions">
+            <button class="btn primary" type="button" onclick="showHomeScanFocus();browseRepoFolder()">Scan Repository</button>
+            <button class="btn ghost" type="button" onclick="go('build')">Change Plan</button>
+            <button class="btn ghost" type="button" onclick="go('investigate')">Debug</button>
+            <button class="btn ghost" type="button" onclick="go('impact')">What Breaks</button>
+          </div>
+        </div>
+      </div>
       <div class="hero">
         <h1 class="hero-title">ATLAS</h1>
         <p class="hero-headline">Describe a change. Get the files, order, and risks.<br>Copy one prompt to Claude. Done.</p>
@@ -676,6 +715,27 @@
     </section>
 
     <!-- ===================== SCREEN: ACCOUNTS (signed-in profile) ===================== -->
+    <!-- ===================== SCREEN: ACCOUNT STATUS DASHBOARD ===================== -->
+    <!-- Shown in-app (with branding + nav) for signed-in users whose account is not
+         yet active: pending approval, inactive, or not approved. Never a dead end. -->
+    <section class="view" id="view-status">
+      <div class="status-dash glass" id="statusDash">
+        <div class="status-dash-icon" id="statusDashIcon" aria-hidden="true">⏳</div>
+        <h1 class="status-dash-title" id="statusDashTitle">Application received</h1>
+        <p class="status-dash-message" id="statusDashMessage"></p>
+        <ul class="status-dash-steps" id="statusDashSteps"></ul>
+        <p class="status-dash-reason muted" id="statusDashReason" style="display:none"></p>
+        <p class="status-dash-eta muted tiny" id="statusDashEta" style="display:none"></p>
+        <div class="status-dash-actions">
+          <button class="btn primary" type="button" id="statusRefreshBtn" onclick="atlasAccounts.refreshStatus()">Refresh account status</button>
+          <button class="btn ghost" type="button" id="statusReapplyBtn" style="display:none" onclick="atlasAccounts.reapply()">Reapply (coming soon)</button>
+          <a class="btn ghost" href="support.html">Contact support</a>
+          <button class="btn ghost" type="button" onclick="atlasAccounts.logout()">Sign out</button>
+        </div>
+        <p class="muted tiny status-dash-foot" id="statusDashFoot"></p>
+      </div>
+    </section>
+
     <section class="view" id="view-accounts">
       <div class="accounts-wrap glass">
         <div id="acc-panel-profile">
@@ -689,6 +749,11 @@
           <div id="acc-profile-offline" class="acc-offline-warn" style="display:none"></div>
           <h3 class="acc-section-head">Your devices</h3>
           <div id="acc-device-list"><p class="muted tiny">Loading…</p></div>
+          <div id="acc-admin-entry" class="acc-admin-entry" style="display:none">
+            <h3 class="acc-section-head">Administration</h3>
+            <p class="muted tiny" style="margin:0 0 10px">You have administrator access.</p>
+            <button class="btn primary" type="button" onclick="go('admin')">Open Admin Console</button>
+          </div>
           <div class="acc-actions">
             <button class="btn ghost" type="button" onclick="atlasAccounts.logout()">Sign out</button>
           </div>
@@ -696,7 +761,81 @@
       </div>
     </section>
 
+    <!-- ===================== SCREEN: ADMIN CONSOLE (admin/superadmin only) ===================== -->
+    <section class="view" id="view-admin">
+      <div class="page-head">
+        <h1 class="page-title">Admin Console</h1>
+        <p class="page-sub">Manage beta access, users, licenses, and review activity. <span id="admin-health" class="admin-health"></span></p>
+      </div>
+      <div class="admin-tabs" role="tablist">
+        <button class="admin-tab active" data-tab="overview" onclick="adminConsole.tab('overview')">Overview</button>
+        <button class="admin-tab" data-tab="pending" onclick="adminConsole.tab('pending')">Pending <span class="admin-badge" id="admin-pending-count"></span></button>
+        <button class="admin-tab" data-tab="users" onclick="adminConsole.tab('users')">Users</button>
+        <button class="admin-tab" data-tab="access" onclick="adminConsole.tab('access')">Licenses / Access</button>
+        <button class="admin-tab" data-tab="feedback" onclick="adminConsole.tab('feedback')">Feedback</button>
+        <button class="admin-tab" data-tab="audit" onclick="adminConsole.tab('audit')">Audit Log</button>
+        <button class="btn ghost small admin-refresh" type="button" onclick="adminConsole.refresh()">↻ Refresh</button>
+      </div>
+
+      <div class="admin-pane" id="admin-pane-overview">
+        <div class="admin-kpis" id="admin-kpis"><p class="muted tiny">Loading…</p></div>
+      </div>
+
+      <div class="admin-pane" id="admin-pane-pending" hidden>
+        <div id="admin-pending-list"><p class="muted tiny">Loading…</p></div>
+      </div>
+
+      <div class="admin-pane" id="admin-pane-users" hidden>
+        <div class="admin-toolbar">
+          <input id="admin-user-search" type="search" placeholder="Search by email…" oninput="adminConsole.renderUsers()" />
+          <select id="admin-user-filter" onchange="adminConsole.renderUsers()">
+            <option value="">All statuses</option>
+            <option value="pending">Pending</option>
+            <option value="beta">Beta</option>
+            <option value="active">Active</option>
+            <option value="suspended">Suspended</option>
+            <option value="banned">Banned</option>
+          </select>
+        </div>
+        <div class="admin-table-wrap"><table class="admin-table">
+          <thead><tr><th>Email</th><th>Status</th><th>Role</th><th>License</th><th>Beta</th><th>Devices</th><th>Last seen</th><th>Actions</th></tr></thead>
+          <tbody id="admin-users-rows"><tr><td colspan="8" class="muted" style="padding:16px">Loading…</td></tr></tbody>
+        </table></div>
+      </div>
+
+      <div class="admin-pane" id="admin-pane-access" hidden>
+        <p class="muted tiny">Manual license &amp; access management (no payments). Pick a user from the Users tab, or edit below.</p>
+        <div id="admin-access-editor"><p class="muted tiny">Select a user in the Users tab → “License”.</p></div>
+      </div>
+
+      <div class="admin-pane" id="admin-pane-feedback" hidden>
+        <div class="admin-table-wrap"><table class="admin-table">
+          <thead><tr><th>Workflow</th><th>Useful</th><th>Category</th><th>Comment (redacted)</th><th>User email</th><th>When</th></tr></thead>
+          <tbody id="admin-feedback-rows"><tr><td colspan="6" class="muted" style="padding:16px">Loading…</td></tr></tbody>
+        </table></div>
+      </div>
+
+      <div class="admin-pane" id="admin-pane-audit" hidden>
+        <div class="admin-table-wrap"><table class="admin-table">
+          <thead><tr><th>When</th><th>Action</th><th>Actor</th><th>Target</th><th>Details</th></tr></thead>
+          <tbody id="admin-audit-rows"><tr><td colspan="5" class="muted" style="padding:16px">Loading…</td></tr></tbody>
+        </table></div>
+      </div>
+    </section>
+
   </main>
+
+  <!-- Admin confirmation modal (dangerous actions) -->
+  <div id="admin-confirm" class="admin-modal" style="display:none" role="dialog" aria-modal="true">
+    <div class="admin-modal-card glass">
+      <h3 id="admin-confirm-title">Confirm</h3>
+      <p id="admin-confirm-body" class="muted"></p>
+      <div class="admin-modal-actions">
+        <button class="btn ghost" type="button" onclick="adminConsole.closeConfirm()">Cancel</button>
+        <button class="btn danger" id="admin-confirm-ok" type="button">Confirm</button>
+      </div>
+    </div>
+  </div>
 
   </div><!-- /#app-shell -->
 
@@ -776,5 +915,6 @@
   <script src="atlas_trust.js"></script>
   <script src="atlas_product.js"></script>
   <script src="atlas_accounts.js"></script>
+  <script src="atlas_admin.js"></script>
 </body>
 </html>

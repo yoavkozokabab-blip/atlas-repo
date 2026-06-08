@@ -28,7 +28,11 @@ from ..security import (
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
-BLOCKED_STATUSES = ("suspended", "banned", "expired")
+# Punitive statuses that are refused at login (no token issued). Non-punitive
+# inactive states (pending / inactive / expired / rejected) DO receive a token so
+# the desktop app can route them to an in-app status dashboard instead of a
+# dead-end access wall (Phase 193).
+BLOCKED_STATUSES = ("suspended", "banned")
 
 
 def _user_plan(user: User) -> str:
