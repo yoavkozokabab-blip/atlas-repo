@@ -62,11 +62,10 @@ def test_home_dashboard_present_with_quick_actions():
     assert 'id="homeDashboard"' in INDEX
     assert 'id="homeWelcome"' in INDEX
     assert 'id="homeStatusPill"' in INDEX
-    assert 'id="homePlanPill"' in INDEX
     assert 'id="homeRepoStatus"' in INDEX
     assert 'id="homeRecentAnalyses"' in INDEX
-    quick = INDEX[INDEX.find('class="quick-actions"'):]
-    for action in ("Scan Repository", "Change Plan", "Debug", "What Breaks"):
+    quick = INDEX[INDEX.find('class="quick-action-cards"'):]
+    for action in ("Scan Repository", "Change Plan", "Debug Issue", "What Breaks"):
         assert action in quick, action
 
 

@@ -324,7 +324,9 @@
         <summary class="btn ghost small" id="userMenuSummary">Account ▾</summary>
         <div class="help-menu-pop glass">
           <button class="btn ghost small" type="button" onclick="go('accounts')">Account</button>
+          <button class="btn ghost small" type="button" onclick="atlasAccounts.openDevices()">Devices</button>
           <button class="btn ghost small admin-only" id="userMenuAdmin" type="button" style="display:none" onclick="go('admin')">Admin Console</button>
+          <a class="btn ghost small" href="support.html">Support</a>
           <button class="btn ghost small" type="button" onclick="atlasAccounts.logout()">Sign out</button>
         </div>
       </details>
@@ -351,37 +353,76 @@
 
     <!-- ===================== SCREEN 1: HOME ===================== -->
     <section class="view active" id="view-home">
-      <!-- Post-login dashboard header (populated from account + repository state). -->
-      <div id="homeDashboard" class="home-dashboard glass" style="display:none">
-        <div class="home-dash-head">
+      <!-- Onboarding dashboard for signed-in users (Phase 193B). One clear
+           account-status indicator lives here; account details stay in the
+           user menu. -->
+      <div id="homeDashboard" class="home-dashboard" style="display:none">
+        <!-- Section 1 — Welcome -->
+        <header class="home-welcome glass">
           <div>
             <h2 class="home-dash-welcome" id="homeWelcome">Welcome back</h2>
-            <p class="muted tiny" id="homeWelcomeSub">Here's your Atlas workspace.</p>
+            <p class="home-tagline">Atlas helps you understand large repositories before your AI starts changing code.</p>
+            <p class="home-repo-line muted tiny" id="homeRepoStatus">No repository scanned yet</p>
           </div>
-          <div class="home-dash-pills">
-            <span class="status-pill" id="homeStatusPill">—</span>
-            <span class="plan-pill" id="homePlanPill">free</span>
+          <span class="status-pill" id="homeStatusPill">—</span>
+        </header>
+
+        <!-- Section 2 — Quick Actions -->
+        <section class="home-section">
+          <h3 class="home-section-title">Quick actions</h3>
+          <div class="quick-action-cards">
+            <button class="qa-card" type="button" onclick="showHomeScanFocus();browseRepoFolder()">
+              <span class="qa-icon" aria-hidden="true">🔍</span>
+              <span class="qa-title">Scan Repository</span>
+              <span class="qa-desc">Choose a repository and build understanding.</span>
+            </button>
+            <button class="qa-card" type="button" onclick="go('investigate')">
+              <span class="qa-icon" aria-hidden="true">🐞</span>
+              <span class="qa-title">Debug Issue</span>
+              <span class="qa-desc">Investigate bugs and root causes.</span>
+            </button>
+            <button class="qa-card" type="button" onclick="go('build')">
+              <span class="qa-icon" aria-hidden="true">🛠</span>
+              <span class="qa-title">Change Plan</span>
+              <span class="qa-desc">Plan a code change before implementation.</span>
+            </button>
+            <button class="qa-card" type="button" onclick="go('impact')">
+              <span class="qa-icon" aria-hidden="true">🌐</span>
+              <span class="qa-title">What Breaks?</span>
+              <span class="qa-desc">Understand downstream impact.</span>
+            </button>
           </div>
-        </div>
-        <div class="home-dash-grid">
-          <div class="home-dash-card">
-            <span class="home-dash-label">Repository</span>
-            <span class="home-dash-value" id="homeRepoStatus">No repository scanned yet</span>
+        </section>
+
+        <!-- Section 3 — Getting Started (auto-hides once usage history exists) -->
+        <section class="home-section" id="homeGettingStarted" style="display:none">
+          <h3 class="home-section-title">Getting started</h3>
+          <ol class="getting-started-steps">
+            <li><span class="gs-step">1</span> Scan a repository</li>
+            <li><span class="gs-step">2</span> Open Codebase Map</li>
+            <li><span class="gs-step">3</span> Generate a Change Plan</li>
+            <li><span class="gs-step">4</span> Export to Claude / Cursor / Codex</li>
+          </ol>
+        </section>
+
+        <!-- Section 4 — Recent Activity -->
+        <section class="home-section">
+          <h3 class="home-section-title">Recent activity</h3>
+          <div class="recent-activity-grid">
+            <div class="recent-col glass">
+              <h4 class="recent-col-title">Recent analyses</h4>
+              <div id="homeRecentAnalyses"><span class="muted tiny">No analyses yet — scan a repository to get started.</span></div>
+            </div>
+            <div class="recent-col glass">
+              <h4 class="recent-col-title">Recent repositories</h4>
+              <div id="homeRecentRepos"><span class="muted tiny">No repositories yet.</span></div>
+            </div>
+            <div class="recent-col glass">
+              <h4 class="recent-col-title">Recent exports</h4>
+              <div id="homeRecentExports"><span class="muted tiny">No exports yet.</span></div>
+            </div>
           </div>
-          <div class="home-dash-card">
-            <span class="home-dash-label">Recent analyses</span>
-            <div class="home-dash-value" id="homeRecentAnalyses"><span class="muted tiny">None yet</span></div>
-          </div>
-        </div>
-        <div class="home-dash-actions">
-          <span class="home-dash-label">Quick actions</span>
-          <div class="quick-actions">
-            <button class="btn primary" type="button" onclick="showHomeScanFocus();browseRepoFolder()">Scan Repository</button>
-            <button class="btn ghost" type="button" onclick="go('build')">Change Plan</button>
-            <button class="btn ghost" type="button" onclick="go('investigate')">Debug</button>
-            <button class="btn ghost" type="button" onclick="go('impact')">What Breaks</button>
-          </div>
-        </div>
+        </section>
       </div>
       <div class="hero">
         <h1 class="hero-title">ATLAS</h1>

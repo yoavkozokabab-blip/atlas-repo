@@ -336,46 +336,55 @@
     return 'inactive';
   }
 
+  // Feature flag — the "Reapply" affordance is a placeholder for a future cohort
+  // and stays hidden until the reapply flow exists (Phase 193B, Part 6).
+  const REAPPLY_ENABLED = false;
+
   const STATUS_DASH = {
     pending: {
-      icon: '⏳',
+      // Success state — a submitted application, not an error (Part 4).
+      tone: 'success',
+      icon: '✓',
       title: 'Application received',
-      message: 'Your beta application was submitted successfully and is waiting for review.',
-      steps: [
-        { label: 'Application submitted successfully', done: true },
-        { label: 'Under review by the Atlas team', done: false },
-        { label: 'We email you the moment access is approved', done: false },
-      ],
-      eta: 'Estimated review time: 1–3 business days.',
+      message: 'Your Atlas beta application has been submitted successfully. Our team is reviewing your application.',
+      steps: [],
+      eta: 'Typical review time: 24–72 hours.',
       showRefresh: true,
       showReapply: false,
-      foot: 'Atlas beta access is approved manually. Your code stays on your machine.',
+      foot: 'You can close Atlas and return later — we will email you when access is approved.',
     },
     inactive: {
-      icon: '🔒',
+      // Calm/neutral — never error or warning styling (Part 5).
+      tone: 'neutral',
+      icon: 'ℹ️',
       title: 'Account not active',
-      message: 'Your Atlas account is not active right now.',
-      steps: [],
+      message: 'You are signed in and your account exists — Atlas access is just not available right now.',
+      steps: [
+        { label: 'Your account exists', done: true },
+        { label: 'You signed in successfully', done: true },
+        { label: 'Atlas access is currently unavailable', done: false },
+      ],
       showRefresh: true,
       showReapply: false,
       foot: 'If you think this is a mistake, contact support and we will take a look.',
     },
     rejected: {
-      icon: '⛔',
+      tone: 'neutral',
+      icon: '⊘',
       title: 'Application not approved',
-      message: 'Your beta application review is complete. It was not approved at this time.',
-      steps: [
-        { label: 'Application review completed', done: true },
-      ],
+      message: 'Your application was reviewed but was not approved at this time.',
+      steps: [],
       showRefresh: false,
-      showReapply: true,
-      foot: 'You will be able to reapply in a future cohort.',
+      showReapply: REAPPLY_ENABLED,
+      foot: 'Thank you for your interest in Atlas.',
     },
   };
 
   function _renderStatusDashboard(status) {
     const spec = STATUS_DASH[status] || STATUS_DASH.inactive;
     const set = (id, val) => { const e = el(id); if (e) e.textContent = val || ''; };
+    const dash = el('statusDash');
+    if (dash) dash.className = 'status-dash glass' + (spec.tone ? ' ' + spec.tone : '');
     set('statusDashIcon', spec.icon);
     set('statusDashTitle', spec.title);
     set('statusDashMessage', spec.message);
@@ -405,23 +414,51 @@
     set('statusDashFoot', spec.foot);
   }
 
+  function _recentName(it) {
+    return it.repo_name || (it.repo_path || '').split(/[\\/]/).pop() || 'repository';
+  }
+
   function _renderHomeRecent() {
-    const box = el('homeRecentAnalyses');
-    if (!box) return;
+    const aBox = el('homeRecentAnalyses');
+    const rBox = el('homeRecentRepos');
+    const xBox = el('homeRecentExports');
+    const gs = el('homeGettingStarted');
     const homeView = el('view-home');
     if (homeView && !homeView.classList.contains('active')) return; // only fetch when visible
+
     api('GET', '/api/repositories/recent').then(res => {
       const items = (res && res.items) || [];
-      if (!items.length) {
-        box.innerHTML = '<span class="muted tiny">No analyses yet — scan a repository to get started.</span>';
-        return;
+      // Section 3: Getting Started auto-hides once there is usage history.
+      if (gs) gs.style.display = items.length ? 'none' : '';
+
+      if (aBox) {
+        aBox.innerHTML = items.length
+          ? items.slice(0, 4).map(it => {
+              const when = it.last_scan_at ? String(it.last_scan_at).slice(0, 10) : '';
+              return `<div class="home-recent-item"><span>${_escHtml(_recentName(it))}</span><span class="muted">${_escHtml(when)}</span></div>`;
+            }).join('')
+          : '<span class="muted tiny">No analyses yet — scan a repository to get started.</span>';
       }
-      box.innerHTML = items.slice(0, 3).map(it => {
-        const name = it.repo_name || (it.repo_path || '').split(/[\\/]/).pop() || 'repository';
-        const when = it.last_scan_at ? String(it.last_scan_at).slice(0, 10) : '';
-        return `<div class="home-recent-item"><span>${_escHtml(name)}</span><span class="muted">${_escHtml(when)}</span></div>`;
-      }).join('');
-    }).catch(() => { box.innerHTML = '<span class="muted tiny">No analyses yet.</span>'; });
+      if (rBox) {
+        const seen = {}; const repos = [];
+        items.forEach(it => { const p = it.repo_path || it.repo_name; if (p && !seen[p]) { seen[p] = 1; repos.push(it); } });
+        rBox.innerHTML = repos.length
+          ? repos.slice(0, 4).map(it => `<div class="home-recent-item"><span>${_escHtml(_recentName(it))}</span></div>`).join('')
+          : '<span class="muted tiny">No repositories yet.</span>';
+      }
+    }).catch(() => {
+      if (aBox) aBox.innerHTML = '<span class="muted tiny">No analyses yet.</span>';
+      if (rBox) rBox.innerHTML = '<span class="muted tiny">No repositories yet.</span>';
+    });
+
+    // Recent exports — local history only (no server dependency / empty-state).
+    if (xBox) {
+      let exports = [];
+      try { exports = JSON.parse(localStorage.getItem('atlas_recent_exports') || '[]'); } catch (e) {}
+      xBox.innerHTML = (exports && exports.length)
+        ? exports.slice(0, 4).map(x => `<div class="home-recent-item"><span>${_escHtml(x.label || x.target || 'export')}</span><span class="muted">${_escHtml(String(x.at || '').slice(0, 10))}</span></div>`).join('')
+        : '<span class="muted tiny">No exports yet.</span>';
+    }
   }
 
   const _HOME_STATUS_PILL = {
@@ -445,19 +482,16 @@
 
     const welcome = el('homeWelcome');
     if (welcome) welcome.textContent = `Welcome back, ${name}`;
-    const sub = el('homeWelcomeSub');
-    if (sub) sub.textContent = status === 'active' || status === 'beta'
-      ? "Here's your Atlas workspace."
-      : "Here's the status of your Atlas account.";
 
+    // Single, clear account-status indicator (Part 8): status + plan in one pill.
     const pill = el('homeStatusPill');
     if (pill) {
       const s = _HOME_STATUS_PILL[status] || { label: status, cls: 'warn' };
-      pill.textContent = s.label;
+      const plan = lic.plan || 'free';
+      const planTitle = plan.charAt(0).toUpperCase() + plan.slice(1);
+      pill.textContent = s.label + ' · ' + planTitle + (lic._offline ? ' · offline' : '');
       pill.className = 'status-pill' + (s.cls ? ' ' + s.cls : '');
     }
-    const planPill = el('homePlanPill');
-    if (planPill) planPill.textContent = (lic.plan || 'free') + (lic._offline ? ' · offline' : '');
 
     const repoEl = el('homeRepoStatus');
     if (repoEl) {
@@ -953,6 +987,16 @@
     if (typeof toast === 'function') toast('Reapplying will be available in a future release.', 'info');
   }
 
+  // User-menu "Devices": open the account view and bring the device list into view.
+  function openDevices() {
+    if (typeof go === 'function') go('accounts');
+    refreshState().then(() => _populateProfile());
+    setTimeout(() => {
+      const list = el('acc-device-list');
+      if (list && list.scrollIntoView) { try { list.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {} }
+    }, 150);
+  }
+
   function init() {
     restoreDraft();
     refreshState().finally(() => {
@@ -990,6 +1034,7 @@
     refresh: refreshState,
     refreshStatus: refreshStatus,
     reapply: reapply,
+    openDevices: openDevices,
     accountStatus: _accountStatus,
     isAuthenticated: () => !!( _state && _state.authenticated),
     isSignedIn: () => !!( _state && _state.signed_in),

@@ -870,6 +870,32 @@ body.auth-loading.auth-mode .auth-stage::after{
 .status-dash-reason{font-size:13px;background:rgba(255,194,75,.06);border:1px solid rgba(255,194,75,.25);border-radius:10px;padding:10px 14px;margin:0 auto 14px;max-width:460px}
 .status-dash-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px}
 .status-dash-foot{margin-top:18px}
+/* Dashboard tone (Phase 193B): pending = success, inactive = calm/neutral. */
+.status-dash.success{border-color:rgba(66,245,176,.32);box-shadow:0 10px 40px rgba(0,0,0,.45), 0 0 50px rgba(66,245,176,.08), inset 0 1px 0 rgba(255,255,255,.04)}
+.status-dash.success .status-dash-title{color:#d6fff0}
+.status-dash.success .status-dash-icon{color:var(--green)}
+.status-dash.neutral .status-dash-reason{background:rgba(120,160,255,.06);border-color:var(--line);color:#cdd8ff}
+
+/* ── Phase 193B — Onboarding home dashboard ───────────────────────────────── */
+.home-dashboard{max-width:1120px;margin:18px auto 8px;text-align:left}
+.home-welcome{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;padding:22px 26px;margin-bottom:18px}
+.home-tagline{font-size:14px;color:#aab7e0;margin:6px 0 0;max-width:620px;line-height:1.5}
+.home-repo-line{margin:10px 0 0}
+.home-repo-line a{color:var(--cyan);text-decoration:none}
+.home-section{margin:0 0 22px}
+.home-section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin:0 0 12px;font-weight:600}
+.quick-action-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.qa-card{display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:left;padding:18px 18px 16px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.03);cursor:pointer;transition:.18s;color:var(--txt)}
+.qa-card:hover{border-color:rgba(62,240,255,.45);background:rgba(62,240,255,.06);transform:translateY(-2px);box-shadow:0 12px 30px rgba(0,0,0,.35)}
+.qa-icon{font-size:26px;line-height:1}
+.qa-title{font-size:16px;font-weight:700;color:#eaf0ff}
+.qa-desc{font-size:12.5px;color:var(--muted);line-height:1.45}
+.getting-started-steps{list-style:none;counter-reset:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.getting-started-steps li{display:flex;align-items:center;gap:10px;font-size:14px;color:#cdd8ff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:rgba(255,255,255,.02)}
+.gs-step{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:linear-gradient(180deg,var(--cyan),var(--violet));color:#04121a;font-weight:800;font-size:12px;flex:0 0 auto}
+.recent-activity-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.recent-col{padding:16px 18px}
+.recent-col-title{font-size:13px;font-weight:700;color:#eaf0ff;margin:0 0 10px}
 
 .admin-toolbar{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap}
 .admin-toolbar input,.admin-toolbar select{padding:8px 11px;border-radius:9px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:inherit;font-size:13px}
