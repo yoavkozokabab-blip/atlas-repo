@@ -499,7 +499,7 @@ function renderScanSuccess(scan) {
   // Populate the "What breaks?" file picker with top scanned files
   _populateImpactFilePicker(scan);
 
-  // Phase 189 — Repository Understanding feedback funnel.
+  // Repository Understanding feedback funnel.
   const ufs = $("understandingFeedbackSlot");
   if (ufs && typeof workflowFeedbackHtml === "function") ufs.innerHTML = workflowFeedbackHtml("understanding");
 }
@@ -2233,7 +2233,7 @@ async function refreshExport() {
   $("previewMeta").textContent = `${res.target} · ${res.packet} · ~${res.estimated_tokens} tokens`;
   STATE._exportText = res.text;
 
-  // Phase 189 — export result feedback funnel.
+  // export result feedback funnel.
   const efs = $("exportFeedbackSlot");
   if (efs && typeof workflowFeedbackHtml === "function") efs.innerHTML = workflowFeedbackHtml("export");
 }

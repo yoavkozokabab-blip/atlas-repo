@@ -316,7 +316,7 @@
     document.body.classList.remove('auth-loading');
   }
 
-  // ── Account status taxonomy + in-app dashboards (Phase 193) ───────────────
+  // ── Account status taxonomy + in-app dashboards ───────────────
   // Every signed-in account resolves to exactly one status. active/beta get the
   // product; pending/inactive/rejected get a tailored in-app dashboard — never a
   // pre-login access wall.
@@ -337,7 +337,7 @@
   }
 
   // Feature flag — the "Reapply" affordance is a placeholder for a future cohort
-  // and stays hidden until the reapply flow exists (Phase 193B, Part 6).
+  // and stays hidden until the reapply flow exists (Part 6).
   const REAPPLY_ENABLED = false;
 
   const STATUS_DASH = {
@@ -598,7 +598,7 @@
       return;
     }
     // Signed in but not yet active — route into the app to a status dashboard
-    // (with branding + nav), never the pre-login access wall (Phase 193).
+    // (with branding + nav), never the pre-login access wall.
     if (_state.signed_in) {
       const status = _accountStatus();
       if (status === 'blocked') {
@@ -901,7 +901,7 @@
 
     // Show the consolidated user menu for any signed-in account (including
     // pending/inactive/rejected) so they always have Account + Sign out and are
-    // never dependent on the loose pre-login chip (Phase 193).
+    // never dependent on the loose pre-login chip.
     if (!_state || !_state.signed_in) {
       if (chip) { chip.textContent = 'Account'; chip.className = 'account-chip unsigned'; chip.style.display = ''; }
       if (menu) menu.style.display = 'none';
@@ -1042,7 +1042,7 @@
     requireAccess: () => {
       if (_state && _state.authenticated) return true;
       // Signed-in but not-active users are kept inside the app on their status
-      // dashboard rather than bounced to a pre-login wall (Phase 193).
+      // dashboard rather than bounced to a pre-login wall.
       if (_state && _state.signed_in && _accountStatus() !== 'blocked') {
         _enterApp({ goHome: false });
         _renderStatusDashboard(_accountStatus());

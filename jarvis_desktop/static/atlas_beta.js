@@ -23,7 +23,7 @@ function saveWorkflowFeedback(workflow, vote, meta) {
   return list.length;
 }
 
-/* Phase 189 — result feedback funnel.
+/* result feedback funnel.
    Internal workflow keys map to backend workflow names. */
 const WF_BACKEND = {
   build: "change_plan",

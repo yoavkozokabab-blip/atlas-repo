@@ -4,7 +4,7 @@
   --cyan:#3ef0ff; --violet:#9a7bff; --pink:#ff5fc8; --green:#42f5b0; --amber:#ffc24b; --red:#ff5c7a;
   --glass-blur:16px;
 
-  /* ── Phase 194 design system ────────────────────────────────────────────
+  /* ── design system ────────────────────────────────────────────
      One small, intentional scale. New/updated components consume these
      tokens so spacing, radius, type and color stay consistent everywhere. */
   /* Color: one primary action, one secondary accent (+ semantic states). */
@@ -41,7 +41,7 @@ body{
   border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 10px 40px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.04)}
 .muted{color:var(--muted)} .tiny{font-size:11px} .accent{outline:1px solid rgba(62,240,255,.25)}
 
-/* Top bar — Phase 194: left logo · centered nav · right controls */
+/* Top bar — left logo · centered nav · right controls */
 .topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:var(--space-4);margin:14px;padding:10px 18px;border-radius:16px}
 .brand{display:flex;align-items:baseline;gap:8px;cursor:pointer;flex:0 0 auto}
 .logo-mark{color:var(--cyan);font-size:22px;text-shadow:0 0 18px var(--cyan)}
@@ -510,7 +510,7 @@ ul.clean{margin:0;padding-left:18px;line-height:1.9;color:#c7d2f5}
 .guided-walkthrough{position:fixed;right:18px;bottom:18px;z-index:95;max-width:320px;padding:16px 18px}
 .guided-tour-actions{display:flex;gap:8px;margin-top:12px}
 .workflow-feedback{display:flex;align-items:center;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);flex-wrap:wrap}
-/* Phase 189 — result feedback funnel */
+/* result feedback funnel */
 .result-feedback{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
 .result-feedback .rf-ask{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .result-feedback .rf-q{font-size:13px;color:var(--ink-2,#a8b2c8)}
@@ -754,7 +754,7 @@ body.auth-mode{
 .acc-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
 .acc-actions-stack{flex-direction:column;align-items:stretch}
 
-/* ── Beta application wizard (Phase 190) ─────────────────────────────────── */
+/* ── Beta application wizard ─────────────────────────────────── */
 .auth-wizard{display:flex;flex-direction:column;min-height:0}
 .auth-wizard-head{flex:0 0 auto}
 .auth-progress{margin:2px 0 14px}
@@ -833,7 +833,7 @@ body.auth-loading.auth-mode .auth-stage::after{
   .acc-profile-grid{grid-template-columns:1fr}
 }
 
-/* ===================== Phase 193 — Admin Console + polish ===================== */
+/* ===================== Admin Console + polish ===================== */
 .page-head{margin:0 0 18px}
 .page-title{font-size:22px;font-weight:700;margin:0 0 4px;color:#eaf0ff}
 .page-sub{margin:0;color:var(--muted);font-size:13px}
@@ -864,7 +864,7 @@ body.auth-loading.auth-mode .auth-stage::after{
 .admin-kv{display:flex;justify-content:space-between;gap:10px;font-size:12px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.05)}
 .admin-kv span{color:var(--muted)} .admin-kv b{color:#dce6ff;text-align:right}
 
-/* ── Phase 193 — Home dashboard + account status dashboards ───────────────── */
+/* ── Home dashboard + account status dashboards ───────────────── */
 .home-dashboard{max-width:1120px;margin:20px auto 8px;padding:22px 26px;text-align:left}
 .home-dash-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
 .home-dash-welcome{font-size:22px;font-weight:700;margin:0 0 2px;color:#eaf0ff}
@@ -894,13 +894,13 @@ body.auth-loading.auth-mode .auth-stage::after{
 .status-dash-reason{font-size:13px;background:rgba(255,194,75,.06);border:1px solid rgba(255,194,75,.25);border-radius:10px;padding:10px 14px;margin:0 auto 14px;max-width:460px}
 .status-dash-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px}
 .status-dash-foot{margin-top:18px}
-/* Dashboard tone (Phase 193B): pending = success, inactive = calm/neutral. */
+/* Dashboard tone: pending = success, inactive = calm/neutral. */
 .status-dash.success{border-color:rgba(66,245,176,.32);box-shadow:0 10px 40px rgba(0,0,0,.45), 0 0 50px rgba(66,245,176,.08), inset 0 1px 0 rgba(255,255,255,.04)}
 .status-dash.success .status-dash-title{color:#d6fff0}
 .status-dash.success .status-dash-icon{color:var(--green)}
 .status-dash.neutral .status-dash-reason{background:rgba(120,160,255,.06);border-color:var(--line);color:#cdd8ff}
 
-/* ── Phase 193B — Onboarding home dashboard ───────────────────────────────── */
+/* ── Onboarding home dashboard ───────────────────────────────── */
 .home-dashboard{max-width:1120px;margin:18px auto 8px;text-align:left}
 .home-welcome{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;padding:22px 26px;margin-bottom:18px}
 .home-tagline{font-size:14px;color:#aab7e0;margin:6px 0 0;max-width:620px;line-height:1.5}
