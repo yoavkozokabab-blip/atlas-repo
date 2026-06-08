@@ -482,6 +482,41 @@ def get_admin_users() -> Dict[str, Any]:
     return _call("GET", "/admin/users?limit=200", access_token=token)
 
 
+def get_admin_pending_applications() -> Dict[str, Any]:
+    token = get_valid_access_token()
+    if not token:
+        return {"_unauthenticated": True}
+    return _call("GET", "/admin/applications/pending?limit=200", access_token=token)
+
+
+def get_admin_notifications(unread_only: bool = True) -> Dict[str, Any]:
+    token = get_valid_access_token()
+    if not token:
+        return {"_unauthenticated": True}
+    flag = "1" if unread_only else "0"
+    return _call("GET", f"/admin/notifications?unread_only={flag}&limit=50", access_token=token)
+
+
+def approve_application(user_id: str, admin_notes: Optional[str] = None) -> Dict[str, Any]:
+    token = get_valid_access_token()
+    if not token:
+        return {"_unauthenticated": True}
+    payload: Dict[str, Any] = {}
+    if admin_notes:
+        payload["admin_notes"] = admin_notes
+    return _call("POST", f"/admin/users/{user_id}/approve-application", payload, access_token=token)
+
+
+def reject_application(user_id: str, admin_notes: Optional[str] = None) -> Dict[str, Any]:
+    token = get_valid_access_token()
+    if not token:
+        return {"_unauthenticated": True}
+    payload: Dict[str, Any] = {}
+    if admin_notes:
+        payload["admin_notes"] = admin_notes
+    return _call("POST", f"/admin/users/{user_id}/reject-application", payload, access_token=token)
+
+
 def send_analytics_event(event_type: str, app_version: str, **counters: int) -> None:
     """Send a privacy-safe usage event. Only integer counters are sent."""
     token = get_valid_access_token()

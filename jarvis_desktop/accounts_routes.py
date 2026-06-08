@@ -1,9 +1,4 @@
-"""Atlas Accounts route handlers for server.py's _route_handlers().
-
-Adds /api/accounts/* endpoints so the desktop frontend can call the
-accounts service through the local server (avoids CORS issues and
-keeps all API calls to the same origin for the JS layer).
-"""
+"""Atlas Accounts route handlers for server.py's _route_handlers()."""
 from __future__ import annotations
 
 import platform
@@ -11,10 +6,10 @@ import re
 from typing import Any, Dict
 
 from . import accounts_client
+from . import accounts_service_runner
 
 
 def _app_version() -> str:
-    """Read app version from build_info or fallback."""
     try:
         import os, json
         here = os.path.dirname(__file__)
@@ -63,27 +58,37 @@ def _validate_beta_profile(profile: Dict[str, Any]) -> str:
     return ""
 
 
-# ── Route handlers ─────────────────────────────────────────────────────────────
+def _service_unavailable_response() -> Dict[str, Any]:
+    return {
+        "ok": False,
+        "code": "service_unavailable",
+        "submitted": False,
+        "error": "We could not reach the Atlas account service.",
+        "detail": "Your application has not been submitted yet.",
+    }
+
 
 def accounts_state(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
-    """GET /api/accounts/state — combined auth + license + device state."""
     return accounts_client.get_account_state()
 
 
 def accounts_register(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
-    """POST /api/accounts/register"""
     email = str(body.get("email", "")).strip()
     password = str(body.get("password", ""))
     confirm = str(body.get("confirm_password", ""))
     if not email or not password:
-        return {"ok": False, "error": "email and password are required"}
+        return {"ok": False, "code": "validation_error", "submitted": False, "error": "Email and password are required."}
     if not _valid_email(email):
-        return {"ok": False, "error": "Enter a valid email address."}
+        return {"ok": False, "code": "validation_error", "submitted": False, "error": "Enter a valid email address."}
     if password != confirm:
-        return {"ok": False, "error": "Passwords do not match."}
+        return {"ok": False, "code": "validation_error", "submitted": False, "error": "Passwords do not match."}
     profile_error = _validate_beta_profile(body.get("beta_profile") or {})
     if profile_error:
-        return {"ok": False, "error": profile_error}
+        return {"ok": False, "code": "validation_error", "submitted": False, "error": profile_error}
+
+    if not accounts_service_runner.ensure_running():
+        return _service_unavailable_response()
+
     result = accounts_client.register(
         email=email,
         password=password,
@@ -92,21 +97,37 @@ def accounts_register(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str,
         beta_profile=body.get("beta_profile") or {},
     )
     if result.get("_offline"):
-        return {"ok": False, "error": "The Atlas accounts service isn't available right now. Please restart Atlas, and contact support@useatlas.dev if this keeps happening."}
+        return _service_unavailable_response()
     if result.get("_http_status"):
+        status = int(result.get("_http_status") or 0)
         detail = result.get("detail", "Registration failed")
-        return {"ok": False, "error": detail if isinstance(detail, str) else str(detail)}
-    return {"ok": True, **result}
+        detail_text = detail if isinstance(detail, str) else str(detail)
+        if status == 409:
+            return {
+                "ok": False,
+                "code": "duplicate_email",
+                "submitted": False,
+                "account_created": True,
+                "error": "An account with this email already exists.",
+                "detail": "Your application may already be on file. Try signing in instead.",
+            }
+        return {"ok": False, "code": "registration_failed", "submitted": False, "error": detail_text}
+    return {"ok": True, "submitted": True, **result}
 
 
 def accounts_login(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
-    """POST /api/accounts/login"""
     email = str(body.get("email", "")).strip()
     password = str(body.get("password", ""))
     if not email or not password:
         return {"ok": False, "error": "email and password are required"}
     if not _valid_email(email):
         return {"ok": False, "error": "Enter a valid email address."}
+    if not accounts_service_runner.ensure_running():
+        return {
+            "ok": False,
+            "code": "service_unavailable",
+            "error": "The Atlas accounts service isn't available right now. Please restart Atlas, and contact support@useatlas.dev if this keeps happening.",
+        }
     result = accounts_client.login(
         email=email,
         password=password,
@@ -114,7 +135,11 @@ def accounts_login(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, An
         platform=_platform_str(),
     )
     if result.get("_offline"):
-        return {"ok": False, "error": "The Atlas accounts service isn't available right now. Please restart Atlas, and contact support@useatlas.dev if this keeps happening."}
+        return {
+            "ok": False,
+            "code": "service_unavailable",
+            "error": "The Atlas accounts service isn't available right now. Please restart Atlas, and contact support@useatlas.dev if this keeps happening.",
+        }
     if result.get("_http_status"):
         detail = result.get("detail", "Login failed")
         return {"ok": False, "error": detail if isinstance(detail, str) else str(detail)}
@@ -122,13 +147,11 @@ def accounts_login(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, An
 
 
 def accounts_logout(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
-    """POST /api/accounts/logout"""
     accounts_client.logout()
     return {"ok": True}
 
 
 def accounts_profile(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
-    """GET /api/accounts/profile"""
     result = accounts_client.get_profile()
     if result.get("_unauthenticated"):
         return {"ok": False, "error": "Not signed in"}
@@ -136,12 +159,10 @@ def accounts_profile(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str,
 
 
 def accounts_license(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
-    """GET /api/accounts/license"""
     return {"ok": True, **accounts_client.get_license_status()}
 
 
 def accounts_devices(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
-    """GET /api/accounts/devices"""
     result = accounts_client.get_devices()
     if isinstance(result, list):
         return {"ok": True, "devices": result}
@@ -151,7 +172,6 @@ def accounts_devices(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str,
 
 
 def accounts_remove_device(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
-    """POST /api/accounts/devices/remove"""
     device_id = str(body.get("device_id", "")).strip()
     if not device_id:
         return {"ok": False, "error": "device_id required"}
@@ -166,7 +186,6 @@ def accounts_remove_device(body: Dict[str, Any], _query: Dict[str, str]) -> Dict
 
 
 def accounts_admin_users(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
-    """GET /api/accounts/admin/users — current account admin applicant review."""
     result = accounts_client.get_admin_users()
     if isinstance(result, list):
         return {"ok": True, "users": result}
@@ -177,12 +196,60 @@ def accounts_admin_users(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[
     return {"ok": True, "users": result if isinstance(result, list) else []}
 
 
+def accounts_admin_pending(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+    result = accounts_client.get_admin_pending_applications()
+    if isinstance(result, list):
+        return {"ok": True, "applications": result}
+    if result.get("_unauthenticated"):
+        return {"ok": False, "error": "Admin account sign-in required."}
+    if result.get("_http_status"):
+        return {"ok": False, "error": result.get("detail", "Admin access required.")}
+    return {"ok": True, "applications": []}
+
+
+def accounts_admin_notifications(_body: Dict[str, Any], query: Dict[str, str]) -> Dict[str, Any]:
+    unread_only = query.get("unread_only", "1") not in ("0", "false", "False")
+    result = accounts_client.get_admin_notifications(unread_only=unread_only)
+    if isinstance(result, list):
+        return {"ok": True, "notifications": result}
+    if result.get("_unauthenticated"):
+        return {"ok": False, "error": "Admin account sign-in required."}
+    if result.get("_http_status"):
+        return {"ok": False, "error": result.get("detail", "Admin access required.")}
+    return {"ok": True, "notifications": []}
+
+
+def accounts_admin_approve(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+    uid = str(body.get("user_id", "")).strip()
+    if not uid:
+        return {"ok": False, "error": "user_id required"}
+    result = accounts_client.approve_application(uid, body.get("admin_notes"))
+    if result.get("_unauthenticated"):
+        return {"ok": False, "error": "Admin account sign-in required."}
+    if result.get("_http_status"):
+        return {"ok": False, "error": result.get("detail", "Approval failed.")}
+    return {"ok": True, "user": result}
+
+
+def accounts_admin_reject(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+    uid = str(body.get("user_id", "")).strip()
+    if not uid:
+        return {"ok": False, "error": "user_id required"}
+    result = accounts_client.reject_application(uid, body.get("admin_notes"))
+    if result.get("_unauthenticated"):
+        return {"ok": False, "error": "Admin account sign-in required."}
+    if result.get("_http_status"):
+        return {"ok": False, "error": result.get("detail", "Rejection failed.")}
+    return {"ok": True, "user": result}
+
+
 def accounts_service_status(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
-    """GET /api/accounts/service-status"""
-    return {"running": accounts_client.is_service_running()}
+    running = accounts_client.is_service_running()
+    if not running:
+        running = accounts_service_runner.ensure_running(timeout=8.0)
+    return {"running": running}
 
 
-# ── Route table — merge into server._route_handlers() ──────────────────────
 ACCOUNTS_ROUTES = {
     ("GET",  "/api/accounts/state"):          accounts_state,
     ("POST", "/api/accounts/register"):       accounts_register,
@@ -194,4 +261,8 @@ ACCOUNTS_ROUTES = {
     ("POST", "/api/accounts/devices/remove"): accounts_remove_device,
     ("GET",  "/api/accounts/service-status"): accounts_service_status,
     ("GET",  "/api/accounts/admin/users"):     accounts_admin_users,
+    ("GET",  "/api/accounts/admin/applications/pending"): accounts_admin_pending,
+    ("GET",  "/api/accounts/admin/notifications"): accounts_admin_notifications,
+    ("POST", "/api/accounts/admin/applications/approve"): accounts_admin_approve,
+    ("POST", "/api/accounts/admin/applications/reject"): accounts_admin_reject,
 }

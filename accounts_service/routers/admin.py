@@ -16,11 +16,12 @@ from sqlalchemy.orm import Session
 from ..database import get_db
 from ..dependencies import require_admin, require_superadmin
 from ..models import (
-    AdminAuditLog, Device, Feedback, License,
+    AdminAuditLog, AdminNotification, Device, Feedback, License,
     Session as DBSession, User, UsageDaily,
 )
 from ..schemas import (
-    AdminAuditEntry, AdminDashboard, AdminUserOut, AdminUserUpdate, FeedbackOut,
+    AdminAuditEntry, AdminDashboard, AdminNotificationOut, AdminUserOut, AdminUserUpdate,
+    ApplicationDecisionRequest, FeedbackOut, PendingApplicationOut,
 )
 
 router = APIRouter(prefix="/admin", tags=["admin"])
@@ -77,6 +78,14 @@ def dashboard(admin: User = Depends(require_admin), db: Session = Depends(get_db
     feedback_pending = (
         db.query(func.count(Feedback.feedback_id)).filter(Feedback.status == "pending").scalar() or 0
     )
+    pending_applications = (
+        db.query(func.count(User.user_id)).filter(User.status == "pending").scalar() or 0
+    )
+    unread_notifications = (
+        db.query(func.count(AdminNotification.notification_id))
+        .filter(AdminNotification.read_at == None)  # noqa: E711
+        .scalar() or 0
+    )
 
     return AdminDashboard(
         total_users=total,
@@ -90,6 +99,8 @@ def dashboard(admin: User = Depends(require_admin), db: Session = Depends(get_db
         exports_today=today_usage[2],
         tokens_saved_today=today_usage[3],
         feedback_pending=feedback_pending,
+        pending_applications=pending_applications,
+        unread_notifications=unread_notifications,
     )
 
 
@@ -109,6 +120,113 @@ def list_users(
     if status:
         query = query.filter(User.status == status)
     return query.order_by(User.created_at.desc()).offset(offset).limit(limit).all()
+
+
+@router.get("/applications/pending", response_model=List[PendingApplicationOut])
+def list_pending_applications(
+    limit: int = Query(100, le=200),
+    admin: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
+    """Pending beta applications with full intake profile."""
+    users = (
+        db.query(User)
+        .filter(User.status == "pending")
+        .order_by(User.created_at.desc())
+        .limit(limit)
+        .all()
+    )
+    return [
+        PendingApplicationOut(
+            user_id=u.user_id,
+            email=u.email,
+            status=u.status,
+            created_at=u.created_at,
+            admin_notes=u.admin_notes,
+            beta_profile=u.beta_profile,
+        )
+        for u in users
+    ]
+
+
+@router.get("/notifications", response_model=List[AdminNotificationOut])
+def list_notifications(
+    unread_only: bool = Query(True),
+    limit: int = Query(20, le=100),
+    admin: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
+    query = db.query(AdminNotification).order_by(AdminNotification.created_at.desc())
+    if unread_only:
+        query = query.filter(AdminNotification.read_at == None)  # noqa: E711
+    return query.limit(limit).all()
+
+
+@router.post("/notifications/{notification_id}/read", status_code=204)
+def mark_notification_read(
+    notification_id: str,
+    admin: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
+    note = db.query(AdminNotification).filter(
+        AdminNotification.notification_id == notification_id
+    ).first()
+    if not note:
+        raise HTTPException(status_code=404, detail="Notification not found")
+    note.read_at = datetime.now(timezone.utc).replace(tzinfo=None)
+    db.commit()
+
+
+@router.post("/users/{user_id}/approve-application", response_model=AdminUserOut)
+def approve_application(
+    user_id: str,
+    body: ApplicationDecisionRequest,
+    admin: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
+    user = db.query(User).filter(User.user_id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    user.beta_flag = True
+    user.status = "beta"
+    if body.admin_notes:
+        user.admin_notes = body.admin_notes
+    lic = user.license
+    if lic:
+        lic.plan = "beta"
+        lic.max_devices = 3
+    db.query(AdminNotification).filter(
+        AdminNotification.user_id == user_id,
+        AdminNotification.read_at == None,  # noqa: E711
+    ).update({"read_at": datetime.now(timezone.utc).replace(tzinfo=None)})
+    _audit(db, admin, "approve_application", user, metadata={"notes": body.admin_notes})
+    db.commit()
+    db.refresh(user)
+    return user
+
+
+@router.post("/users/{user_id}/reject-application", response_model=AdminUserOut)
+def reject_application(
+    user_id: str,
+    body: ApplicationDecisionRequest,
+    admin: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
+    user = db.query(User).filter(User.user_id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    user.status = "expired"
+    user.beta_flag = False
+    if body.admin_notes:
+        user.admin_notes = body.admin_notes
+    db.query(AdminNotification).filter(
+        AdminNotification.user_id == user_id,
+        AdminNotification.read_at == None,  # noqa: E711
+    ).update({"read_at": datetime.now(timezone.utc).replace(tzinfo=None)})
+    _audit(db, admin, "reject_application", user, metadata={"notes": body.admin_notes})
+    db.commit()
+    db.refresh(user)
+    return user
 
 
 @router.get("/users/{user_id}", response_model=AdminUserOut)

@@ -203,3 +203,16 @@ class AdminAuditLog(Base):
     target_device_id = Column(String(36), nullable=True)
     created_at = Column(DateTime, nullable=False, default=_utcnow, index=True)
     metadata_ = Column("metadata", JSON, nullable=True)
+
+
+# ── Admin intake notifications ───────────────────────────────────────────────
+class AdminNotification(Base):
+    __tablename__ = "admin_notifications"
+
+    notification_id = Column(String(36), primary_key=True, default=_uuid)
+    kind = Column(String(32), nullable=False, default="beta_application", index=True)
+    user_id = Column(String(36), ForeignKey("users.user_id", ondelete="CASCADE"), nullable=False, index=True)
+    email = Column(String(254), nullable=False)
+    summary = Column(JSON, nullable=True)
+    created_at = Column(DateTime, nullable=False, default=_utcnow, index=True)
+    read_at = Column(DateTime, nullable=True)

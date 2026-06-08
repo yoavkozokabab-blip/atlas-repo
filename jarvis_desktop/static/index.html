@@ -243,6 +243,20 @@
           </div>
         </div>
 
+        <!-- APPLICATION SUBMIT FAILED -->
+        <div id="acc-panel-submit-failed" class="auth-panel" style="display:none">
+          <div class="acc-state-icon" aria-hidden="true">!</div>
+          <h2 class="auth-panel-title" id="acc-submit-failed-title">Application not submitted</h2>
+          <p class="acc-state-message" id="acc-submit-failed-message">We could not reach the Atlas account service.</p>
+          <p class="acc-state-action muted" id="acc-submit-failed-detail">Your application has not been submitted yet. Your answers are saved locally.</p>
+          <div class="acc-actions acc-actions-stack">
+            <button class="btn primary auth-btn-primary" type="button" onclick="atlasAccounts.retrySubmit()">Retry</button>
+            <button class="btn ghost auth-btn-secondary" type="button" onclick="atlasAccounts.saveDraft()">Save draft locally</button>
+            <a class="btn ghost auth-btn-secondary" href="support.html">Contact support</a>
+            <button class="btn ghost auth-btn-secondary" type="button" onclick="atlasAccounts.switchPanel('register')">Back to application</button>
+          </div>
+        </div>
+
         <!-- ACCOUNT STATE (blocked, pending, offline, etc.) -->
         <div id="acc-panel-state" class="auth-panel" style="display:none">
           <div class="acc-state-icon" id="acc-state-icon" aria-hidden="true">⚠</div>

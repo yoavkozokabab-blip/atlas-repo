@@ -264,6 +264,33 @@ class AdminDashboard(BaseModel):
     exports_today: int
     tokens_saved_today: int
     feedback_pending: int
+    pending_applications: int = 0
+    unread_notifications: int = 0
+
+
+class AdminNotificationOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    notification_id: str
+    kind: str
+    user_id: str
+    email: str
+    summary: Optional[dict] = None
+    created_at: datetime
+    read_at: Optional[datetime] = None
+
+
+class PendingApplicationOut(BaseModel):
+    user_id: str
+    email: str
+    status: str
+    created_at: datetime
+    admin_notes: Optional[str] = None
+    beta_profile: Optional[BetaProfileOut] = None
+
+
+class ApplicationDecisionRequest(BaseModel):
+    admin_notes: Optional[str] = None
 
 
 class AdminAuditEntry(BaseModel):

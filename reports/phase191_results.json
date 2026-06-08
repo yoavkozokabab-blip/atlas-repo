@@ -1,0 +1,32 @@
+{
+  "phase": "191",
+  "title": "Registration Reliability + Admin Intake Review",
+  "date": "2026-06-07",
+  "root_cause": "Accounts service (127.0.0.1:8788) was not running when desktop proxy handled registration; error copy used login formatter ('Sign-in failed').",
+  "account_created_on_reported_failure": false,
+  "profile_stored_on_reported_failure": false,
+  "admin_visibility_before": {
+    "applicants_table": "read-only, all users, partial columns",
+    "pending_queue": false,
+    "approve_reject_ui": false,
+    "notifications": false
+  },
+  "admin_visibility_after": {
+    "pending_applications_view": true,
+    "full_intake_fields": true,
+    "approve_reject_actions": true,
+    "operator_notification_banner": true,
+    "dashboard_counts": ["pending_applications", "unread_notifications"]
+  },
+  "tests_added": [
+    "accounts_service/tests/test_phase191_registration_reliability.py",
+    "jarvis_desktop/tests/test_phase191_draft_contract.py"
+  ],
+  "tests_passed": 9,
+  "tests_failed": 0,
+  "test_command": "py -3 -m pytest accounts_service/tests/test_phase191_registration_reliability.py jarvis_desktop/tests/test_phase191_draft_contract.py -q",
+  "screenshots": [
+    "reports/phase191_admin_intake.png"
+  ],
+  "commit_message": "phase191: harden beta registration and admin intake"
+}

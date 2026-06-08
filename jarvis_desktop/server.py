@@ -17,6 +17,7 @@ from urllib.parse import parse_qs, urlparse
 from typing import Any, Callable, Dict, Optional, Tuple
 
 from . import accounts_client, api, system_browse
+from . import accounts_service_runner
 from .billing import service as billing_service
 from .accounts_routes import ACCOUNTS_ROUTES
 
@@ -375,6 +376,7 @@ def run(
     start_path: str = "/",
 ) -> None:
     _track_app_started()
+    accounts_service_runner.ensure_running_async()
     try:
         httpd, bound_port = _bind_http_server(host, port)
     except OSError as exc:

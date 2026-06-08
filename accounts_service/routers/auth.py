@@ -13,7 +13,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.orm import Session
 
 from ..database import get_db
-from ..models import BetaProfile, Device, EmailToken, License, Session as DBSession, User
+from ..models import AdminNotification, BetaProfile, Device, EmailToken, License, Session as DBSession, User
 from ..rate_limit import check_rate_limit
 from ..schemas import LoginRequest, LogoutRequest, RefreshRequest, RegisterRequest, TokenResponse
 from ..security import (
@@ -145,8 +145,27 @@ def register(req: RegisterRequest, request: Request, db: Session = Depends(get_d
     db.flush()
 
     if req.beta_profile:
-        db.add(BetaProfile(user_id=user.user_id, **req.beta_profile.model_dump()))
+        profile = BetaProfile(user_id=user.user_id, **req.beta_profile.model_dump())
+        db.add(profile)
         db.flush()
+        summary = {
+            "primary_role": req.beta_profile.primary_role,
+            "developer_experience": req.beta_profile.developer_experience,
+            "currently_developer": req.beta_profile.currently_developer,
+            "company_name": req.beta_profile.company_name,
+            "company_size": req.beta_profile.company_size,
+            "project_use": req.beta_profile.project_use,
+            "repo_size": req.beta_profile.repo_size,
+            "coding_tools": req.beta_profile.coding_tools,
+            "languages_frameworks": req.beta_profile.languages_frameworks,
+            "atlas_help": req.beta_profile.atlas_help,
+        }
+        db.add(AdminNotification(
+            kind="beta_application",
+            user_id=user.user_id,
+            email=user.email,
+            summary=summary,
+        ))
 
     _ensure_device(user, req.device_id, req.app_version, req.platform, db)
     return _build_token_response(user, req.device_id, db)
