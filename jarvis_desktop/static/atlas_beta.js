@@ -116,6 +116,7 @@ function voteWorkflowFeedback(workflow, vote) {
 
 function impactResultMarkdown(r) {
   if (!r || !r.ok) return "";
+  if (r.formatted) return r.formatted;
   const lines = [
     `# What breaks if ${r.target || "this module"} changes`,
     "",

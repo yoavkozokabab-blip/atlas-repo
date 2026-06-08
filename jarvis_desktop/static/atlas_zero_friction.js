@@ -128,6 +128,7 @@ function zfSafetyFooter() {
 /* ---------------- prompt builders (from existing plan data) ---------------- */
 function zfChangePromptBody() {
   const r = (window.STATE && STATE.buildResult) || {};
+  if (r.report && r.report.copy_prompt) return r.report.copy_prompt;
   const p = r.plan || {};
   const repo = zfRepoName();
   const request = (document.getElementById("buildRequest") && document.getElementById("buildRequest").value.trim()) || p.intent || "the requested change";
@@ -164,6 +165,7 @@ function zfChangePromptBody() {
 
 function zfInvestigatePromptBody() {
   const r = (window.STATE && STATE.investigateResult) || {};
+  if (r.report && r.report.copy_prompt) return r.report.copy_prompt;
   const p = r.plan || {};
   const repo = zfRepoName();
   const hyps = (p.hypotheses || []).slice(0, 4).map((h, i) =>
@@ -192,6 +194,7 @@ function zfInvestigatePromptBody() {
 
 function zfImpactPromptBody() {
   const r = (window.STATE && STATE.impactResult) || {};
+  if (r.report && r.report.copy_prompt) return r.report.copy_prompt;
   const repo = zfRepoName();
   return [
     `# Impact of changing ${r.target || "this module"} in ${repo}`,
@@ -289,8 +292,44 @@ function pinnedCopyForClaude(kind) {
   </div>`;
 }
 
+function renderStructuredReportHtml(report, title) {
+  if (!report) return "";
+  const esc = _zfEsc;
+  const conf = report.confidence || {};
+  const dir = report.direction || {};
+  const dirItems = (dir.items || []).map(function (it) {
+    return `<div class="beginner-plan-section"><span class="report-label">${esc(it.label || "")}</span><p>${esc(it.value || "")}</p></div>`;
+  }).join("");
+  const evidence = (report.evidence || []).slice(0, 5).map(function (e) {
+    return `<li><b>${esc(e.signal || "")}</b>${e.why_it_matters ? " — " + esc(e.why_it_matters) : ""}</li>`;
+  }).join("");
+  const ranked = (report.ranked_files || []).slice(0, 5).map(function (f) {
+    return `<li><span class="mono">${esc(f.path || "")}</span><div class="muted tiny">Why: ${esc(f.why || "")}</div><div class="muted tiny">Risk: ${esc(f.risk || "")} · Action: ${esc(f.action || "")}</div></li>`;
+  }).join("");
+  const verify = (report.verification_steps || []).slice(0, 4).map(function (v, i) {
+    let line = `<li><b>${i + 1}. ${esc(v.what || v.text || "")}</b>`;
+    if (v.where) line += `<div class="muted tiny">Where: ${esc(v.where)}</div>`;
+    if (v.confirms) line += `<div class="muted tiny">Confirms if: ${esc(v.confirms)}</div>`;
+    if (v.rules_out) line += `<div class="muted tiny">Rules out if: ${esc(v.rules_out)}</div>`;
+    return line + "</li>";
+  }).join("");
+  return `<div class="beginner-plan-card glass structured-report">
+    <h3 class="beginner-plan-title">${esc(title || "Analysis")}</h3>
+    <div class="beginner-plan-section"><span class="report-label">Executive summary</span><p>${esc(report.executive_summary || "")}</p></div>
+    <div class="beginner-plan-section"><span class="report-label">Confidence</span><p>${esc(conf.level || "Low")} · Evidence: ${esc(conf.evidence_strength || "Weak")}<span class="muted tiny">${conf.reason ? " — " + esc(conf.reason) : ""}</span></p></div>
+    ${dir.title ? `<div class="beginner-plan-section"><span class="report-label">${esc(dir.title)}</span></div>` : ""}${dirItems}
+    ${evidence ? `<div class="beginner-plan-section"><span class="report-label">Evidence</span><ul class="clean tiny">${evidence}</ul></div>` : ""}
+    ${ranked ? `<div class="beginner-plan-section"><span class="report-label">Ranked files</span><ol class="clean tiny">${ranked}</ol></div>` : ""}
+    ${verify ? `<div class="beginner-plan-section"><span class="report-label">Verification steps</span><ol class="clean tiny">${verify}</ol></div>` : ""}
+  </div>`;
+}
+
 function beginnerPlanHero(plan, kind) {
   if (typeof getOutputMode === "function" && getOutputMode() === "advanced") return pinnedCopyForClaude(kind);
+  const stateResult = (window.STATE && kind === "build" && STATE.buildResult) ? STATE.buildResult : null;
+  if (stateResult && stateResult.report) {
+    return renderStructuredReportHtml(stateResult.report, "Change Plan") + sendToAiPanel(kind, true);
+  }
   const p = plan || {};
   const goal = p.change_goal || p.goal || (document.getElementById("buildRequest") && document.getElementById("buildRequest").value) || "Your change";
   const files = zfList(
@@ -310,6 +349,10 @@ function beginnerPlanHero(plan, kind) {
 
 function beginnerInvestigateHero(plan) {
   if (typeof getOutputMode === "function" && getOutputMode() === "advanced") return pinnedCopyForClaude("investigate");
+  const stateResult = (window.STATE && STATE.investigateResult) ? STATE.investigateResult : null;
+  if (stateResult && stateResult.report) {
+    return renderStructuredReportHtml(stateResult.report, "Debug analysis") + sendToAiPanel("investigate", true);
+  }
   const p = plan || {};
   const goal = p.symptom_summary || p.symptom || (document.getElementById("investigateSymptom") && document.getElementById("investigateSymptom").value) || "Your symptom";
   const hyps = (p.hypotheses || []).slice(0, 3);
@@ -326,6 +369,11 @@ function beginnerInvestigateHero(plan) {
 
 function beginnerImpactHero(result) {
   if (typeof getOutputMode === "function" && getOutputMode() === "advanced") return pinnedCopyForClaude("impact");
+  const stateResult = (window.STATE && STATE.impactResult) ? STATE.impactResult : result || {};
+  if (stateResult && stateResult.report) {
+    const short = (stateResult.target || "this module").split(/[/\\]/).pop();
+    return renderStructuredReportHtml(stateResult.report, "Impact of changing " + short) + sendToAiPanel("impact", true);
+  }
   const r = result || {};
   const goal = r.target || (document.getElementById("impactTarget") && document.getElementById("impactTarget").value) || "This module";
   const files = zfList(r.direct_impact, 5);
@@ -431,6 +479,7 @@ window.hideBootSplash = hideBootSplash;
 window.copyForAi = copyForAi;
 window.downloadAiMarkdown = downloadAiMarkdown;
 window.sendToAiPanel = sendToAiPanel;
+window.renderStructuredReportHtml = renderStructuredReportHtml;
 window.beginnerPlanHero = beginnerPlanHero;
 window.beginnerInvestigateHero = beginnerInvestigateHero;
 window.beginnerImpactHero = beginnerImpactHero;

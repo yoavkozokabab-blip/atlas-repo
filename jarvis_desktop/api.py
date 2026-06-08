@@ -3161,8 +3161,15 @@ def plan_change(request: str) -> Dict[str, Any]:
         result = _ti.gate_weak_graph_workflow(_STATE, result, "build")
         result = _fi.polish_workflow_result("build", result, _STATE, goal=request)
         if result.get("ok"):
+            from . import result_reports
+
             plan = result["plan"]
-            result["formatted"] = planning_engine.format_change_plan_markdown(plan)
+            result["report"] = result_reports.build_change_plan_report(plan, user_request=request)
+            result["formatted"] = result_reports.format_change_plan_markdown(plan, user_request=request)
+            if result["report"].get("copy_prompt"):
+                prompts = dict(result.get("prompts") or {})
+                prompts["claude"] = result["report"]["copy_prompt"]
+                result["prompts"] = prompts
             mem_ref = _repo_memory.get_memory_ref(_STATE)
             _ti.record_workflow_context(_STATE, "build", result, memory_ref=mem_ref)
             _STATE.setdefault("last_workflow_results", {})["build"] = {
@@ -3201,8 +3208,15 @@ def investigate_symptom(symptom: str) -> Dict[str, Any]:
         result = _ti.gate_weak_graph_workflow(_STATE, result, "investigate")
         result = _fi.polish_workflow_result("investigate", result, _STATE, goal=symptom)
         if result.get("ok"):
+            from . import result_reports
+
             plan = result["plan"]
-            result["formatted"] = planning_engine.format_investigation_plan_markdown(plan)
+            result["report"] = result_reports.build_investigation_report(plan, user_request=symptom)
+            result["formatted"] = result_reports.format_investigation_plan_markdown(plan, user_request=symptom)
+            if result["report"].get("copy_prompt"):
+                prompts = dict(result.get("prompts") or {})
+                prompts["claude"] = result["report"]["copy_prompt"]
+                result["prompts"] = prompts
             mem_ref = _repo_memory.get_memory_ref(_STATE)
             _ti.record_workflow_context(_STATE, "investigate", result, memory_ref=mem_ref)
             _STATE.setdefault("last_workflow_results", {})["investigate"] = {
@@ -3268,6 +3282,10 @@ def change_impact_simulation(target: str) -> Dict[str, Any]:
         res = _fi.polish_workflow_result("impact", res, _STATE, goal=target)
         if not res.get("ok"):
             return _ti.attach_trust_status(res, _STATE)
+        from . import result_reports
+
+        res["report"] = result_reports.build_impact_report(res, user_request=target)
+        res["formatted"] = result_reports.format_impact_markdown(res, user_request=target)
         mem_ref = _repo_memory.get_memory_ref(_STATE)
         _ti.record_workflow_context(_STATE, "impact", res, memory_ref=mem_ref)
         _STATE.setdefault("last_workflow_results", {})["impact"] = {"target": target, "result": res}
@@ -4100,6 +4118,8 @@ def _module_graph_neighbors(path: str) -> Tuple[Optional[Dict[str, Any]], List[s
 
 
 def _answer_repository_understanding(question: str, packet: str) -> Dict[str, Any]:
+    from . import result_reports
+
     summary = current_summary()
     scan = _STATE.get("scan") or {}
     sub_name = _extract_subsystem_from_question(question)
@@ -4117,18 +4137,32 @@ def _answer_repository_understanding(question: str, packet: str) -> Dict[str, An
                 f"production_files={sub.get('production_files', 0)}",
             ]
             files = list(sub.get("entry_files") or [])[:6]
-            return _copilot_envelope(
+            report = result_reports.build_repository_understanding_report(
+                answer=answer,
+                evidence=evidence,
+                files=files,
+                confidence="high",
+                limitations=limitations,
+                suggested_action=f"Open entry files under `{sub_name}` and trace their imports.",
+                subsystem=sub_name,
+            )
+            payload = _copilot_envelope(
                 "repository_understanding",
-                answer,
+                report["executive_summary"],
                 evidence=evidence,
                 files=files,
                 risk_level="low",
-                suggested_prompt=f"Explain the role of subsystem `{sub_name}` in this repository and how its entry files connect to the rest of the codebase.",
+                suggested_prompt=report.get("copy_prompt") or (
+                    f"Explain the role of subsystem `{sub_name}` in this repository and how its entry files connect to the rest of the codebase."
+                ),
                 suggested_action=f"Open entry files under `{sub_name}` and trace their imports.",
                 confidence="high",
                 limitations=limitations,
                 packet=packet,
             )
+            payload["report"] = report
+            payload["formatted"] = result_reports.format_repository_understanding_markdown(report)
+            return payload
         limitations.append(f"Subsystem `{sub_name}` was mentioned but not found in the scan index.")
     if "start" in question.lower():
         entries = summary.get("entry_points") or []
@@ -4140,22 +4174,33 @@ def _answer_repository_understanding(question: str, packet: str) -> Dict[str, An
     else:
         answer = summary.get("explanation") or "No repository summary available."
         suggested_action = "Review subsystems and top hubs in Project Intelligence."
-    return _copilot_envelope(
-        "repository_understanding",
-        answer,
+    report = result_reports.build_repository_understanding_report(
+        answer=answer,
         evidence=[
             f"modules={scan.get('module_count', 0)}",
             f"subsystems={scan.get('subsystem_count', 0)}",
             f"graph_scope={scan.get('graph_scope', '')}",
         ],
         files=(summary.get("entry_points") or [])[:8],
+        confidence="high",
+        limitations=limitations,
+        suggested_action=suggested_action,
+    )
+    payload = _copilot_envelope(
+        "repository_understanding",
+        report["executive_summary"],
+        evidence=[e.get("signal", "") for e in (report.get("evidence") or [])],
+        files=(summary.get("entry_points") or [])[:8],
         risk_level="low",
-        suggested_prompt=_render_context("claude", packet)[:800] + ("…" if len(_render_context("claude", packet)) > 800 else ""),
+        suggested_prompt=report.get("copy_prompt") or _render_context("claude", packet)[:800],
         suggested_action=suggested_action,
         confidence="high",
         limitations=limitations,
         packet=packet,
     )
+    payload["report"] = report
+    payload["formatted"] = result_reports.format_repository_understanding_markdown(report)
+    return payload
 
 
 def _answer_risk(packet: str) -> Dict[str, Any]:

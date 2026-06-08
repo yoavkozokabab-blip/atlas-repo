@@ -141,7 +141,8 @@ def test_build_plan_includes_repository_evidence(evidence_scan):
     rev = res["plan"].get("repository_evidence") or {}
     assert rev.get("status")
     assert rev.get("confidence_score", 0) >= 40
-    assert "REPOSITORY EVIDENCE" in res["formatted"]
+    assert "## Evidence" in res["formatted"]
+    assert "## Ranked files" in res["formatted"]
     assert rev.get("recommended_insertion")
 
 

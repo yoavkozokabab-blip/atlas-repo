@@ -164,7 +164,8 @@ def test_investigation_graph_module_count_symptom(planner_scan):
     assert res["ok"]
     plan = res["plan"]
     assert plan["intent"] == "graph_module_count"
-    assert "INVESTIGATION REPORT" in res["formatted"]
+    assert "DEBUG ANALYSIS" in res["formatted"]
+    assert "## Executive Summary" in res["formatted"]
     assert plan.get("logical_hypothesis")
     assert plan.get("verification_steps")
     # Phase 123 — ranked hypotheses structure
@@ -222,9 +223,9 @@ def test_formatters_include_headers():
         "limitations": ["lim"],
     }
     inv_text = planning_engine.format_investigation_plan_markdown(inv)
-    assert "INVESTIGATION REPORT" in inv_text
-    assert "A. Symptom summary" in inv_text
+    assert "DEBUG ANALYSIS" in inv_text
+    assert "## Executive Summary" in inv_text
 
     text = planning_engine.format_change_plan_markdown(plan)
     assert "CHANGE PLAN" in text
-    assert "Goal: Add auth" in text
+    assert "## Executive Summary" in text

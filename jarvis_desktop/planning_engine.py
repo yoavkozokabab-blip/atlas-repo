@@ -1788,10 +1788,8 @@ def investigate_symptom(symptom: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
         best = max((h.get("evidence_score_100", 0) for h in hypotheses), default=0)
         root_cause_evidence_score = best
         most_likely_root_cause = (
-            "Insufficient evidence. Atlas did not find enough repository evidence "
-            f"for a strong root cause (best evidence score {best}/100, "
-            f"threshold {_ROOT_CAUSE_MIN_SCORE_100}). Provide a stack trace, error "
-            "message, or exact file path and re-run."
+            "Atlas couldn't identify a confident root cause from the symptom alone. "
+            "Try adding a file path or error message for better results."
         )
     symptom_summary = _symptom_summary(text, intent, likely_modules)
     verification_checklist = _verification_checklist(hypotheses, verify_steps, inbound)
@@ -1805,7 +1803,6 @@ def investigate_symptom(symptom: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
         "symptom_summary": symptom_summary,
         "most_likely_root_cause": most_likely_root_cause,
         "root_cause_evidence_score": root_cause_evidence_score,
-        "root_cause_threshold": _ROOT_CAUSE_MIN_SCORE_100,
         "hypotheses": hypotheses,
         "verification_checklist": verification_checklist,
         "minimal_fix_strategy": minimal_fix_strategy,
@@ -1965,7 +1962,7 @@ def _symptom_summary(text: str, intent: str, modules: List[str]) -> str:
     intent_label = intent.replace("_", " ")
     anchor = f" Likely area: {modules[0]}." if modules else " No module anchor matched yet."
     domain = "" if intent == "general" else f" Pattern recognized: {intent_label}."
-    return f"Reported: \"{head}\".{domain}{anchor}"
+    return f"{head}{domain}{anchor}"
 
 
 def _verification_checklist(
@@ -2271,209 +2268,13 @@ def _md_bullets(items: Iterable[str], empty_line: str = "- (none)") -> List[str]
     return rows or [empty_line]
 
 
-def format_change_plan_markdown(plan: Dict[str, Any]) -> str:
-    deps = plan.get("dependencies_involved") or {}
-    lines = [
-        "CHANGE PLAN",
-        "===========",
-        "",
-        f"Goal: {plan.get('goal', '')}",
-        "",
-    ]
-    dk_block = plan.get("domain_knowledge") or {}
-    if dk_block.get("applied"):
-        roles = dk_block.get("file_roles") or {}
-        lines.extend([
-            f"Detected concept: {dk_block.get('concept_name')} — {dk_block.get('concept_title')}",
-            f"Domain: {dk_block.get('domain_label')} / {dk_block.get('feature_type')}",
-            f"Knowledge quality: {dk_block.get('knowledge_quality_label') or dk_block.get('concept_quality_score') or 'Curated'}",
-            f"Concept confidence: {dk_block.get('concept_confidence')} · Repo mapping: {dk_block.get('repo_mapping_confidence')}",
-            "",
-            "Concept understanding:",
-            dk_block.get("concept_understanding", ""),
-            "",
-            "Why this matters:",
-            dk_block.get("why_this_matters", ""),
-            "",
-            "Knowledge-backed risks:",
-            *_md_bullets(dk_block.get("knowledge_risks") or []),
-            "",
-            dk_block.get("integration_note", ""),
-            "",
-        ])
-        from . import first_impression as _fi
-        lines.extend(_fi.md_optional_section("MUST inspect", roles.get("must_inspect") or []))
-        lines.extend(_fi.md_optional_section("LIKELY modify", roles.get("likely_modify") or []))
-        lines.extend(_fi.md_optional_section("VERIFY only", roles.get("verify_only") or []))
-        lines.extend(_fi.md_optional_section("DO NOT touch unless needed", roles.get("do_not_touch") or []))
-        lines.append("")
-        if plan.get("domain_implementation_steps"):
-            lines.extend([
-                "Domain implementation steps:",
-                *_md_bullets(plan.get("domain_implementation_steps") or []),
-                "",
-            ])
-    repo_ev = plan.get("repository_evidence") or {}
-    if repo_ev:
-        from . import first_impression as _fi
-        _goal = str(plan.get("goal") or plan.get("change_goal") or "")
-        _intent = str(plan.get("intent") or "")
-        _status = _fi.user_facing_implementation_status(
-            repo_ev.get("status") or "", goal=_goal, intent=_intent,
-        )
-        _score = _fi.cap_evidence_score(repo_ev.get("confidence_score", 0))
-        lines.extend([
-            "REPOSITORY EVIDENCE",
-            "===================",
-            f"Status: {_status}",
-            f"Evidence score: {_score}/100",
-            "",
-            "Found:",
-            *_md_bullets(repo_ev.get("found") or [], "- (none)"),
-            "",
-            "Missing:",
-            *_md_bullets(repo_ev.get("missing") or [], "- (none flagged)"),
-            "",
-        ])
-        if repo_ev.get("recommended_insertion"):
-            lines.extend([
-                f"Recommended insertion: `{repo_ev.get('recommended_insertion')}`",
-                repo_ev.get("recommended_insertion_reason") or "",
-                "",
-            ])
-        for fe in (repo_ev.get("file_evidences") or [])[:5]:
-            fe_score = _fi.cap_evidence_score(fe.get("evidence_score", 0))
-            lines.append(
-                f"- `{fe.get('path')}` — score {fe_score}/100 — "
-                f"{', '.join((fe.get('matching_symbols') or [])[:3]) or 'symbols matched'}"
-            )
-        lines.append("")
-    lines.extend([
-        "Files to inspect first:",
-        *_md_bullets(plan.get("files_to_inspect_first") or [], "- (none matched — provide more context)"),
-        "",
-        "Files likely to change:",
-        *_md_bullets((plan.get("files_likely_to_change") or plan.get("likely_affected_modules") or [])[:12]),
-        "",
-        "Files likely to break (direct importers / high coupling):",
-        *_md_bullets(plan.get("files_likely_to_break") or [], "- (none identified from graph)"),
-        "",
-        "Likely affected subsystems:",
-        *_md_bullets(plan.get("likely_affected_subsystems") or [], "- (unknown)"),
-        "",
-        "Entry points:",
-        *_md_bullets(plan.get("entry_points") or [], "- (none detected)"),
-        "",
-        "Dependencies involved:",
-        f"- Outbound: {', '.join(deps.get('outbound_imports') or []) or 'none'}",
-        f"- Inbound: {', '.join(deps.get('inbound_importers') or []) or 'none'}",
-        "",
-        "Implementation order (static heuristic):",
-        *_md_bullets(plan.get("implementation_order") or []),
-        "",
-        "Tests to add/update:",
-        *_md_bullets(plan.get("tests_likely_affected") or []),
-        "",
-        "Verification plan:",
-        *_md_bullets(plan.get("verification_plan") or []),
-        "",
-        "Rollback plan:",
-        *_md_bullets(plan.get("rollback_plan") or []),
-        "",
-        "Architectural risks:",
-        *_md_bullets(plan.get("architectural_risks") or [], "- Review coupling on listed modules"),
-        "",
-        f"Risk level: {plan.get('risk_level', 'unknown')}",
-        f"Estimated change size: {plan.get('estimated_change_size', 'Unknown')}",
-        f"Confidence: {plan.get('confidence', 'low')}",
-    ])
-    lim = plan.get("limitations") or []
-    if lim:
-        lines.extend(["", "Limitations:", *(f"- {x}" for x in lim)])
-    return "\n".join(lines)
+def format_change_plan_markdown(plan: Dict[str, Any], *, user_request: str = "") -> str:
+    from . import result_reports
+
+    return result_reports.format_change_plan_markdown(plan, user_request=user_request)
 
 
-def format_investigation_plan_markdown(plan: Dict[str, Any]) -> str:
-    deps = plan.get("relevant_dependencies") or {}
-    lines = [
-        "INVESTIGATION REPORT",
-        "====================",
-        "",
-        "A. Symptom summary",
-        f"   {plan.get('symptom_summary') or plan.get('symptom', '')}",
-        "",
-    ]
-    dk_block = plan.get("domain_knowledge") or {}
-    if dk_block.get("applied"):
-        lines.extend([
-            "A2. Domain knowledge",
-            f"   Concept: {dk_block.get('concept_name')} — {dk_block.get('concept_title')}",
-            f"   Domain: {dk_block.get('domain_label')}",
-            f"   Knowledge quality: {dk_block.get('knowledge_quality_label') or dk_block.get('concept_quality_score')}",
-            f"   {dk_block.get('concept_understanding', '')}",
-            "",
-            "   Domain failure modes to check:",
-            *(f"     - {m}" for m in (plan.get("domain_failure_modes") or dk_block.get("domain_failure_modes") or [])[:6]),
-            "",
-            f"   {dk_block.get('integration_note', '')}",
-            "",
-        ])
-    repo_ev = plan.get("repository_evidence") or {}
-    if repo_ev:
-        from . import first_impression as _fi
-        _goal = str(plan.get("symptom") or plan.get("symptom_summary") or "")
-        _status = _fi.user_facing_implementation_status(repo_ev.get("status") or "", goal=_goal)
-        _score = _fi.cap_evidence_score(repo_ev.get("confidence_score", 0))
-        lines.extend([
-            "A3. Repository evidence",
-            f"   Status: {_status}",
-            f"   Evidence score: {_score}/100",
-            "   Found:",
-            *(f"     - {x}" for x in (repo_ev.get("found") or [])[:6]),
-            "   Missing:",
-            *(f"     - {x}" for x in (repo_ev.get("missing") or [])[:4]),
-        ])
-        if repo_ev.get("recommended_insertion"):
-            lines.append(f"   Recommended insertion: `{repo_ev.get('recommended_insertion')}`")
-        lines.append("")
-    lines.extend([
-        "B. Most likely root cause",
-        f"   {plan.get('most_likely_root_cause') or plan.get('most_likely_source') or '(not localizable yet)'}",
-        "",
-        "C. Ranked hypotheses",
-    ])
-    hyps = plan.get("hypotheses") or []
-    if not hyps:
-        lines.append("   (none — insufficient anchors; see limitations)")
-    for i, h in enumerate(hyps, 1):
-        lines.extend([
-            f"   H{i}. {h.get('title', '')}  [confidence: {h.get('confidence', 'low')}]",
-            f"       Why it fits: {h.get('why_it_fits', '')}",
-            f"       Files involved: {', '.join(h.get('files_involved') or []) or '(none grounded)'}",
-            "       Evidence:",
-            *(f"         - {e}" for e in (h.get("evidence") or [])),
-            f"       What to inspect: {', '.join(h.get('what_to_inspect') or [])}",
-            f"       Should be true if correct: {h.get('what_should_be_true_if_correct', '')}",
-            f"       How to disprove: {h.get('how_to_disprove', '')}",
-            "",
-        ])
-    lines.extend([
-        "D. Verification checklist",
-        *_md_bullets(plan.get("verification_checklist") or plan.get("verification_steps") or []),
-        "",
-        "E. Minimal fix strategy",
-        *_md_bullets(plan.get("minimal_fix_strategy") or []),
-        "",
-        "F. Risks of fixing incorrectly",
-        *_md_bullets(plan.get("risks_of_incorrect_fix") or [plan.get("risk_if_fixed", "")]),
-        "",
-        "Relevant dependencies:",
-        f"- Outbound: {', '.join(deps.get('outbound') or []) or 'none'}",
-        f"- Inbound: {', '.join(deps.get('inbound') or []) or 'none'}",
-        "",
-        f"Overall confidence: {plan.get('confidence', 'low')}",
-    ])
-    lim = plan.get("limitations") or []
-    if lim:
-        lines.extend(["", "Limitations:", *(f"- {x}" for x in lim)])
-    return "\n".join(lines)
+def format_investigation_plan_markdown(plan: Dict[str, Any], *, user_request: str = "") -> str:
+    from . import result_reports
+
+    return result_reports.format_investigation_plan_markdown(plan, user_request=user_request)

@@ -688,6 +688,11 @@ function selectDemoPack(id) {
 function go(view) {
   if (document.body.classList.contains('auth-mode') && view !== 'accounts') return;
   view = NAV_ALIASES[view] || view;
+  // Admin Console is restricted to admin/superadmin accounts.
+  if (view === "admin" && !(window.atlasAccounts && atlasAccounts.isAdmin && atlasAccounts.isAdmin())) {
+    if (typeof toast === "function") toast("Admin access required", "error");
+    view = "accounts";
+  }
   if (PROTECTED_VIEWS.has(view) && !requireAtlasAccess("Atlas")) return;
   document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
   const el = $("view-" + view); if (el) el.classList.add("active");
@@ -1417,7 +1422,14 @@ function renderCopilotAnswer(res) {
   $("copilotMode").textContent = res.mode || "unknown";
   $("copilotRisk").textContent = `${res.risk_level || "unknown"} risk`;
   $("copilotRisk").className = `lvl ${res.risk_level || "unknown"}`;
-  $("copilotAnswer").textContent = res.answer || "";
+  if (res.report && typeof renderStructuredReportHtml === "function") {
+    $("copilotAnswer").innerHTML = `<p>${esc(res.answer || "")}</p>` + renderStructuredReportHtml(
+      res.report,
+      res.mode === "repository_understanding" ? "Repository overview" : "Analysis"
+    );
+  } else {
+    $("copilotAnswer").textContent = res.answer || "";
+  }
   // show semantic + blast-radius + architecture summary cards above
   // the answer when the Copilot routed to impact analysis.
   const impSum = $("copilotImpactSummary");
@@ -2078,6 +2090,9 @@ async function runImpact() {
         <div class="report-label" style="margin-top:8px">Likely safe (no import path)</div><ul class="clean tiny">${list(r.what_probably_wont_break, 6)}</ul>
         <div class="report-label" style="margin-top:8px">Evidence</div><ul class="clean tiny">${list(r.evidence, 6)}</ul></details>
       ${typeof sendToAiPanel === "function" ? sendToAiPanel("impact") : ""}
+      <details style="margin-top:8px"><summary class="muted tiny">Full impact report (markdown)</summary>
+        <pre class="code" style="max-height:320px;overflow:auto">${esc(r.formatted || "")}</pre>
+      </details>
       <div class="copy-row" style="margin-top:12px">
         <button class="btn small ghost" onclick="go('center')">Show on map</button>
       </div>

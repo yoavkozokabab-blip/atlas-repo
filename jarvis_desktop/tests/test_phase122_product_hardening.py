@@ -110,6 +110,5 @@ def test_investigation_formatter_sections(planner_scan):
     res = api.investigate_symptom("position close sometimes fails")
     assert res["ok"]
     text = res.get("formatted") or ""
-    # Phase 123 — senior-engineer report structure
-    for section in ("A. Symptom summary", "C. Ranked hypotheses", "E. Minimal fix strategy", "Limitations:"):
+    for section in ("## Executive Summary", "## Ranked files", "## Verification steps", "DEBUG ANALYSIS"):
         assert section in text
