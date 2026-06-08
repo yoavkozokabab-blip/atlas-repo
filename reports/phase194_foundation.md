@@ -71,5 +71,22 @@ Part 2 (noise −30/40%), Part 3 (unified result card), Part 4 (export dropdown)
 Part 5 (recent-results cards), Part 6 (Admin Workspace sections), Part 7 (full
 users table), Part 8 (admin password tools), Part 11 (full UX audit).
 
-## Commit
-`9bbe61d1b`
+## Ship-blocker fix (follow-up)
+A full-suite run surfaced `test_phase179::test_shipped_static_has_no_phase_labels`
+failing — shipped static assets must not contain internal `Phase N` labels. My
+193/193b/194 code comments (and pre-existing labels in `app.js`/`atlas_beta.js`)
+violated it. Scrubbed all `Phase N` tokens from comments in `atlas_accounts.js`,
+`index.html`, `styles.css`, `app.js`, `atlas_beta.js` (comment-only, no behavior
+change). Now 159 UI/ship-blocker tests pass; the only remaining static-label
+failure is `atlas_admin.js`, untracked Admin-Console WIP cleaned when the Admin
+Workspace (Parts 6–8) lands.
+
+Note on the full suite: other failures observed in a 38-min full run are
+pre-existing engine/integration failures from the repo's dirty working tree
+(uncommitted `evidence_engine`/`impact_engine`/`planning_engine`/… changes), not
+introduced by this UX work and outside Part 194's "do not change analysis
+engines" scope.
+
+## Commits
+- `9bbe61d1b` — foundation (Parts 9/1/10)
+- `491293aa9` — ship-blocker: scrub internal phase labels from shipped static
