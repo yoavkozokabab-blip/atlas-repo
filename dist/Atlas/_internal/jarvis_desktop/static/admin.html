@@ -22,6 +22,11 @@
 </div></section>
 
 <section style="padding-top:0"><div class="wrap">
+  <div id="adminIntakeBanner" style="display:none;margin-bottom:var(--s2);padding:14px 18px;border:1px solid rgba(62,240,255,.35);border-radius:var(--r);background:rgba(62,240,255,.08)">
+    <div style="font-weight:700;color:#9ef;margin-bottom:6px">New beta application received</div>
+    <div id="adminIntakeBannerBody" class="muted tiny"></div>
+  </div>
+
   <div class="kpis">
     <div class="kpi"><div class="v grad-text" id="kWaitlist">0</div><div class="l">Waitlist signups</div></div>
     <div class="kpi"><div class="v" id="kScans">0</div><div class="l">Repository scans</div></div>
@@ -47,7 +52,16 @@
     <pre class="code" id="serverAnalytics" style="max-height:240px">Fetching /api/analytics/summary …</pre>
   </div>
   <div style="margin-top:var(--s2);border:1px solid var(--line);border-radius:var(--r);background:rgba(255,255,255,.02);overflow:hidden">
-    <div style="padding:14px 18px;border-bottom:1px solid var(--line);font-weight:600">Beta applicants</div>
+    <div style="padding:14px 18px;border-bottom:1px solid var(--line);font-weight:600">Pending Applications <span class="muted tiny" id="pendingAppsCount"></span></div>
+    <div style="overflow:auto">
+      <table class="table">
+        <thead><tr><th>Email</th><th>Submitted</th><th>Role</th><th>Experience</th><th>Works at company?</th><th>Company</th><th>Size</th><th>Project</th><th>Repo size</th><th>Languages</th><th>AI tools</th><th>Goals</th><th>Notes</th><th>Actions</th></tr></thead>
+        <tbody id="pendingApplicationRows"><tr><td colspan="14" class="muted" style="padding:18px">Sign in as an Atlas admin account to load pending applications.</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+  <div style="margin-top:var(--s2);border:1px solid var(--line);border-radius:var(--r);background:rgba(255,255,255,.02);overflow:hidden">
+    <div style="padding:14px 18px;border-bottom:1px solid var(--line);font-weight:600">All account applicants</div>
     <div style="overflow:auto">
       <table class="table">
         <thead><tr><th>Email</th><th>Status</th><th>Role</th><th>License</th><th>Devices</th><th>Use</th><th>Company size</th><th>Experience</th><th>Primary role</th><th>Tools</th><th>Notes</th></tr></thead>
@@ -169,6 +183,85 @@ async function loadBetaInsights(){
     kv("Trust level",upd.trust_level||"—");
 }
 
+function worksAtCompany(p){ if(!p) return "-"; if(p.currently_developer===false) return "No"; if(p.project_use==="personal") return "No"; return p.company_name ? "Yes" : "Unknown"; }
+function fmtTs(v){ return esc((v||"").slice(0,16).replace("T"," ")); }
+
+async function loadPendingApplications(){
+  const rows=document.getElementById("pendingApplicationRows");
+  const countEl=document.getElementById("pendingAppsCount");
+  if(!rows) return;
+  let d;
+  try{ const r=await fetch("/api/accounts/admin/applications/pending"); d=await r.json(); }catch(e){
+    rows.innerHTML='<tr><td colspan="14" class="muted" style="padding:18px">Accounts service is not reachable.</td></tr>';
+    return;
+  }
+  if(!d||!d.ok){
+    rows.innerHTML=`<tr><td colspan="14" class="muted" style="padding:18px">${esc(d&&d.error||"Admin account sign-in required.")}</td></tr>`;
+    return;
+  }
+  const apps=d.applications||[];
+  if(countEl) countEl.textContent=`· ${apps.length} waiting`;
+  rows.innerHTML=apps.map(u=>{
+    const p=u.beta_profile||{};
+    const uid=esc(u.user_id);
+    return `<tr>
+      <td>${esc(u.email)}</td>
+      <td class="muted">${fmtTs(u.created_at)}</td>
+      <td>${esc(p.primary_role||"-")}</td>
+      <td>${esc(p.developer_experience||"-")}</td>
+      <td>${esc(worksAtCompany(p))}</td>
+      <td>${esc(p.company_name||"-")}</td>
+      <td>${esc(p.company_size||"-")}</td>
+      <td>${esc(p.project_use||"-")}</td>
+      <td>${esc(p.repo_size||"-")}</td>
+      <td class="muted">${esc(p.languages_frameworks||"-")}</td>
+      <td>${esc(fmtList(p.coding_tools)||"-")}</td>
+      <td>${esc(fmtList(p.atlas_help)||"-")}</td>
+      <td class="muted">${esc(p.notes||u.admin_notes||"-")}</td>
+      <td style="white-space:nowrap">
+        <button class="btn ghost small" type="button" onclick="approveApplication('${uid}')">Approve</button>
+        <button class="btn ghost small" type="button" onclick="rejectApplication('${uid}')">Reject</button>
+        <button class="btn ghost small" type="button" onclick="noteApplication('${uid}')">Notes</button>
+      </td>
+    </tr>`;
+  }).join("")||'<tr><td colspan="14" class="muted" style="padding:18px">No pending applications.</td></tr>';
+}
+
+async function loadAdminNotifications(){
+  const banner=document.getElementById("adminIntakeBanner");
+  const body=document.getElementById("adminIntakeBannerBody");
+  if(!banner||!body) return;
+  let d;
+  try{ const r=await fetch("/api/accounts/admin/notifications?unread_only=1"); d=await r.json(); }catch(e){ banner.style.display="none"; return; }
+  if(!d||!d.ok||!(d.notifications||[]).length){ banner.style.display="none"; return; }
+  const n=d.notifications[0];
+  const s=n.summary||{};
+  banner.style.display="block";
+  body.innerHTML=`Email: <b>${esc(n.email)}</b> · Role: ${esc(s.primary_role||"-")} · Company: ${esc(s.company_name||"-")} · ${fmtTs(n.created_at)}`;
+}
+
+async function approveApplication(userId){
+  const notes=prompt("Optional internal notes for approval:", "")||"";
+  const r=await fetch("/api/accounts/admin/applications/approve",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({user_id:userId,admin_notes:notes||undefined})});
+  const d=await r.json();
+  if(!d.ok){ alert(d.error||"Approval failed"); return; }
+  mtoast("Application approved");
+  loadPendingApplications(); loadAccountApplicants(); loadAdminNotifications();
+}
+async function rejectApplication(userId){
+  const notes=prompt("Reason / internal notes for rejection:", "")||"";
+  const r=await fetch("/api/accounts/admin/applications/reject",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({user_id:userId,admin_notes:notes||undefined})});
+  const d=await r.json();
+  if(!d.ok){ alert(d.error||"Rejection failed"); return; }
+  mtoast("Application rejected");
+  loadPendingApplications(); loadAccountApplicants(); loadAdminNotifications();
+}
+async function noteApplication(userId){
+  const notes=prompt("Internal notes:", "")||"";
+  if(!notes) return;
+  alert("Save notes via Approve/Reject for now, or use the accounts admin API PATCH endpoint.");
+}
+
 async function loadAccountApplicants(){
   const rows=document.getElementById("accountApplicantRows");
   if(!rows) return;
@@ -228,6 +321,8 @@ async function loadResultFeedback(){
 
 loadAdmin();
 loadBetaInsights();
+loadPendingApplications();
+loadAdminNotifications();
 loadAccountApplicants();
 loadResultFeedback();
 </script>

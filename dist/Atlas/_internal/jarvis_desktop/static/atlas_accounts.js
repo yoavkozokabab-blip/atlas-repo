@@ -13,7 +13,10 @@
 
   const POLL_INTERVAL_MS = 60_000;
 
-  const AUTH_PANELS = ['acc-panel-login', 'acc-panel-register', 'acc-panel-state', 'acc-panel-submitted'];
+  const AUTH_PANELS = ['acc-panel-login', 'acc-panel-register', 'acc-panel-state', 'acc-panel-submitted', 'acc-panel-submit-failed'];
+
+  const DRAFT_KEY = 'atlas_beta_application_draft_v1';
+  const DRAFT_SESSION_KEY = 'atlas_beta_application_session_v1';
 
   // Beta application wizard state
   let _regStep = 1;
@@ -95,6 +98,142 @@
     return String(str).replace(/[&<>"']/g, c => ({
       '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
     }[c]));
+  }
+
+  function _formatRegistrationError(res) {
+    const code = res && res.code;
+    const raw = String((res && (res.error || res.detail)) || 'Registration failed.');
+    if (code === 'service_unavailable' || /could not reach|isn't available|unreachable|network error/i.test(raw)) {
+      return {
+        useSubmitFailedPanel: true,
+        title: 'Application not submitted',
+        message: 'We could not reach the Atlas account service.',
+        detail: 'Your application has not been submitted yet. Your answers are saved locally.',
+      };
+    }
+    if (code === 'duplicate_email' || /already registered|already exists/i.test(raw)) {
+      return {
+        title: 'Email already registered',
+        message: 'An account with this email already exists.',
+        detail: res.detail || 'Your application may already be on file. Try signing in instead.',
+      };
+    }
+    if (res && res.account_created && !res.submitted) {
+      return {
+        title: 'Account created — profile not confirmed',
+        message: 'Your Atlas account was created, but we could not confirm your beta profile was saved.',
+        detail: 'Try signing in. If your application is missing, contact support@useatlas.dev with your email.',
+      };
+    }
+    return {
+      title: 'Application not submitted',
+      message: raw,
+      detail: 'Review your answers and try again, or contact support@useatlas.dev if this continues.',
+    };
+  }
+
+  function _showSubmitFailedPanel(spec) {
+    AUTH_PANELS.forEach(id => { const e = el(id); if (e) e.style.display = 'none'; });
+    const panel = el('acc-panel-submit-failed');
+    if (!panel) return;
+    panel.style.display = '';
+    if (el('acc-submit-failed-title')) el('acc-submit-failed-title').textContent = spec.title || 'Application not submitted';
+    if (el('acc-submit-failed-message')) el('acc-submit-failed-message').textContent = spec.message || '';
+    if (el('acc-submit-failed-detail')) el('acc-submit-failed-detail').textContent = spec.detail || '';
+    _setAuthMode(true);
+    _screenMode = 'submit-failed';
+  }
+
+  function _draftPayload(includeSecrets) {
+    const dev = selectedRadio('acc-current-dev');
+    return {
+      step: _regStep,
+      email: fieldValue('acc-reg-email'),
+      currently_developer: dev,
+      project_use: fieldValue('acc-project-use'),
+      company_name: fieldValue('acc-company-name'),
+      company_size: fieldValue('acc-company-size'),
+      developer_experience: fieldValue('acc-dev-exp'),
+      primary_role: fieldValue('acc-primary-role'),
+      coding_tools: checkedValues('acc-tools'),
+      languages_frameworks: fieldValue('acc-languages'),
+      repo_size: fieldValue('acc-repo-size'),
+      atlas_help: checkedValues('acc-help'),
+      notes: fieldValue('acc-notes'),
+      saved_at: new Date().toISOString(),
+      password: includeSecrets && el('acc-reg-pwd') ? el('acc-reg-pwd').value : undefined,
+      confirm_password: includeSecrets && el('acc-reg-pwd2') ? el('acc-reg-pwd2').value : undefined,
+    };
+  }
+
+  function saveDraft(showToast) {
+    try {
+      const draft = _draftPayload(false);
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+      const session = _draftPayload(true);
+      delete session.saved_at;
+      sessionStorage.setItem(DRAFT_SESSION_KEY, JSON.stringify({
+        password: session.password,
+        confirm_password: session.confirm_password,
+      }));
+      if (showToast !== false && typeof toast === 'function') toast('Draft saved locally', 'success');
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function restoreDraft() {
+    try {
+      const raw = localStorage.getItem(DRAFT_KEY);
+      if (!raw) return false;
+      const draft = JSON.parse(raw);
+      if (el('acc-reg-email') && draft.email) el('acc-reg-email').value = draft.email;
+      if (draft.currently_developer) {
+        const radio = document.querySelector(`input[name="acc-current-dev"][value="${draft.currently_developer}"]`);
+        if (radio) radio.checked = true;
+      }
+      const setVal = (id, val) => { const t = el(id); if (t && val != null) t.value = val; };
+      setVal('acc-project-use', draft.project_use);
+      setVal('acc-company-name', draft.company_name);
+      setVal('acc-company-size', draft.company_size);
+      setVal('acc-dev-exp', draft.developer_experience);
+      setVal('acc-primary-role', draft.primary_role);
+      setVal('acc-languages', draft.languages_frameworks);
+      setVal('acc-repo-size', draft.repo_size);
+      setVal('acc-notes', draft.notes);
+      (draft.coding_tools || []).forEach(v => {
+        const cb = document.querySelector(`input[name="acc-tools"][value="${v}"]`);
+        if (cb) cb.checked = true;
+      });
+      (draft.atlas_help || []).forEach(v => {
+        const cb = document.querySelector(`input[name="acc-help"][value="${v}"]`);
+        if (cb) cb.checked = true;
+      });
+      const sessRaw = sessionStorage.getItem(DRAFT_SESSION_KEY);
+      if (sessRaw) {
+        const sess = JSON.parse(sessRaw);
+        if (el('acc-reg-pwd') && sess.password) el('acc-reg-pwd').value = sess.password;
+        if (el('acc-reg-pwd2') && sess.confirm_password) el('acc-reg-pwd2').value = sess.confirm_password;
+      }
+      _updateConditionalFields();
+      if (draft.step) _showRegStep(Number(draft.step) || 1);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function clearDraft() {
+    try {
+      localStorage.removeItem(DRAFT_KEY);
+      sessionStorage.removeItem(DRAFT_SESSION_KEY);
+    } catch (e) {}
+  }
+
+  function retrySubmit() {
+    showAccountScreen('register');
+    doRegister();
   }
 
   function _formatLoginError(raw) {
@@ -217,6 +356,7 @@
     if (_screenMode === 'register') {
       _wireRegisterEvents();
       resetRegisterWizard();
+      restoreDraft();
     }
     _setAuthMode(true);
   }
@@ -247,6 +387,10 @@
   }
 
   function _syncLayoutFromState() {
+    if (_screenMode === 'submitted' || _screenMode === 'submit-failed') {
+      _setAuthMode(true);
+      return;
+    }
     if (!_state) {
       showAccountScreen('login');
       return;
@@ -390,12 +534,15 @@
     });
     // Enter advances / submits.
     document.querySelectorAll('#acc-panel-register input').forEach(inp => {
+      inp.addEventListener('input', () => saveDraft(false));
+      inp.addEventListener('change', () => saveDraft(false));
       inp.addEventListener('keydown', ev => {
         if (ev.key !== 'Enter') return;
         ev.preventDefault();
         if (_regStep < _REG_STEPS) wizardNext(); else doRegister();
       });
     });
+    if (el('acc-notes')) el('acc-notes').addEventListener('input', () => saveDraft(false));
   }
 
   function collectBetaProfile() {
@@ -444,6 +591,7 @@
     }
 
     setLoading('acc-reg-btn', true);
+    saveDraft(false);
     api('POST', '/api/accounts/register', {
       email,
       password,
@@ -451,15 +599,22 @@
       beta_profile: profileResult.profile,
     }).then(res => {
       setLoading('acc-reg-btn', false);
-      if (res.ok) {
+      if (res.ok && res.submitted !== false) {
         if (el('acc-reg-pwd')) el('acc-reg-pwd').value = '';
         if (el('acc-reg-pwd2')) el('acc-reg-pwd2').value = '';
-        // Show the dedicated "Application submitted" completion screen.
+        clearDraft();
+        _screenMode = 'submitted';
         showAccountScreen('submitted');
         refreshState();
       } else {
-        const err = _formatLoginError(res.error || res.detail || 'Registration failed.');
-        setError('acc-reg-error', `${err.message} ${err.action}`, err.title);
+        saveDraft(false);
+        const err = _formatRegistrationError(res);
+        if (err.useSubmitFailedPanel) {
+          _showSubmitFailedPanel(err);
+        } else {
+          setError('acc-reg-error', `${err.message} ${err.detail || ''}`.trim(), err.title);
+          if (_regStep < _REG_STEPS) _showRegStep(_REG_STEPS);
+        }
       }
     });
   }
@@ -574,6 +729,7 @@
   }
 
   function init() {
+    restoreDraft();
     refreshState().finally(() => {
       document.body.classList.remove('auth-loading');
     });
@@ -598,6 +754,9 @@
     switchPanel: showAccountScreen,
     wizardNext: wizardNext,
     wizardBack: wizardBack,
+    saveDraft: () => saveDraft(true),
+    retrySubmit: retrySubmit,
+    restoreDraft: restoreDraft,
     refresh: refreshState,
     isAuthenticated: () => !!( _state && _state.authenticated),
     requireAccess: () => {
