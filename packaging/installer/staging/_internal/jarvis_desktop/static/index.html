@@ -55,82 +55,51 @@
           </div>
         </div>
 
-        <!-- REGISTER -->
-        <div id="acc-panel-register" class="auth-panel" style="display:none">
-          <h2 class="auth-panel-title">Apply for beta access</h2>
-          <p class="auth-panel-lead muted">Atlas beta access is manually approved. Your code stays local.</p>
-          <div id="acc-reg-error" class="acc-error" style="display:none" role="alert"></div>
-          <div class="acc-field">
-            <label for="acc-reg-email">Email</label>
-            <div class="acc-input-wrap">
-              <span class="acc-input-icon" aria-hidden="true">✉</span>
-              <input id="acc-reg-email" type="email" autocomplete="email" placeholder="you@company.com" />
+        <!-- REGISTER (sectioned beta application wizard) -->
+        <div id="acc-panel-register" class="auth-panel auth-wizard" style="display:none">
+          <div class="auth-wizard-head">
+            <h2 class="auth-panel-title">Apply for beta access</h2>
+            <p class="auth-panel-lead muted">Atlas beta access is manually approved. Your code stays local.</p>
+            <div class="auth-progress" aria-hidden="false">
+              <div class="auth-progress-label">Step <span id="acc-step-num">1</span> of 5 · <span id="acc-step-name">Account</span></div>
+              <div class="auth-progress-track"><div id="acc-progress-fill" class="auth-progress-fill" style="width:20%"></div></div>
             </div>
-            <div id="acc-reg-email-msg" class="acc-field-error" role="alert"></div>
+            <div id="acc-reg-error" class="acc-error" style="display:none" role="alert"></div>
           </div>
-          <div class="acc-field">
-            <label for="acc-reg-pwd">Password</label>
-            <div class="acc-input-wrap">
-              <span class="acc-input-icon" aria-hidden="true">🔒</span>
-              <input id="acc-reg-pwd" type="password" autocomplete="new-password" placeholder="At least 8 characters" />
-            </div>
-          </div>
-          <div class="acc-field">
-            <label for="acc-reg-pwd2">Confirm password</label>
-            <div class="acc-input-wrap">
-              <span class="acc-input-icon" aria-hidden="true">🔒</span>
-              <input id="acc-reg-pwd2" type="password" autocomplete="new-password" placeholder="Repeat password" onkeydown="if(event.key==='Enter') atlasAccounts.register()" />
-            </div>
-          </div>
-          <div class="auth-form-scroll">
-            <div class="auth-section-title">Beta profile</div>
-            <div class="acc-field">
-              <label>Are you currently working as a developer?</label>
-              <div class="acc-choice-row" role="radiogroup" aria-label="Currently developer">
-                <label for="acc-current-dev-yes"><input id="acc-current-dev-yes" type="radio" name="acc-current-dev" value="yes"> Yes</label>
-                <label for="acc-current-dev-no"><input id="acc-current-dev-no" type="radio" name="acc-current-dev" value="no"> No</label>
-              </div>
-            </div>
-            <div class="acc-field">
-              <label for="acc-project-use">Using Atlas for</label>
-              <select id="acc-project-use">
-                <option value="">Select one</option>
-                <option value="personal">Personal projects</option>
-                <option value="work">Work projects</option>
-                <option value="both">Both</option>
-              </select>
-            </div>
-            <div class="acc-field">
-              <label for="acc-company-name">Company name <span class="muted tiny">optional</span></label>
-              <input id="acc-company-name" type="text" maxlength="120" placeholder="Optional" />
-            </div>
-            <div class="acc-profile-grid">
+
+          <div class="auth-wizard-body">
+            <!-- SECTION 1 — Account -->
+            <section class="acc-step" data-step="1">
+              <div class="acc-step-title">Account</div>
               <div class="acc-field">
-                <label for="acc-company-size">Company size</label>
-                <select id="acc-company-size">
-                  <option value="">Select one</option>
-                  <option value="just_me">Just me</option>
-                  <option value="2_10">2-10</option>
-                  <option value="11_50">11-50</option>
-                  <option value="51_200">51-200</option>
-                  <option value="201_1000">201-1000</option>
-                  <option value="1000_plus">1000+</option>
-                  <option value="prefer_not_to_say">Prefer not to say</option>
-                </select>
+                <label for="acc-reg-email">Email</label>
+                <div class="acc-input-wrap">
+                  <span class="acc-input-icon" aria-hidden="true">✉</span>
+                  <input id="acc-reg-email" type="email" autocomplete="email" placeholder="you@company.com" />
+                </div>
+                <div id="acc-reg-email-msg" class="acc-field-error" role="alert"></div>
               </div>
               <div class="acc-field">
-                <label for="acc-dev-exp">Developer experience</label>
-                <select id="acc-dev-exp">
-                  <option value="">Select one</option>
-                  <option value="lt_1">Less than 1 year</option>
-                  <option value="1_2">1-2 years</option>
-                  <option value="3_5">3-5 years</option>
-                  <option value="6_10">6-10 years</option>
-                  <option value="10_plus">10+ years</option>
-                </select>
+                <label for="acc-reg-pwd">Password</label>
+                <div class="acc-input-wrap">
+                  <span class="acc-input-icon" aria-hidden="true">🔒</span>
+                  <input id="acc-reg-pwd" type="password" autocomplete="new-password" placeholder="At least 8 characters" />
+                </div>
+                <div id="acc-reg-pwd-msg" class="acc-field-error" role="alert"></div>
               </div>
-            </div>
-            <div class="acc-profile-grid">
+              <div class="acc-field">
+                <label for="acc-reg-pwd2">Confirm password</label>
+                <div class="acc-input-wrap">
+                  <span class="acc-input-icon" aria-hidden="true">🔒</span>
+                  <input id="acc-reg-pwd2" type="password" autocomplete="new-password" placeholder="Repeat password" />
+                </div>
+                <div id="acc-reg-pwd2-msg" class="acc-field-error" role="alert"></div>
+              </div>
+            </section>
+
+            <!-- SECTION 2 — Developer Profile -->
+            <section class="acc-step" data-step="2" hidden>
+              <div class="acc-step-title">Developer profile</div>
               <div class="acc-field">
                 <label for="acc-primary-role">Primary role</label>
                 <select id="acc-primary-role">
@@ -146,48 +115,131 @@
                 </select>
               </div>
               <div class="acc-field">
-                <label for="acc-repo-size">Typical repo size</label>
+                <label for="acc-dev-exp">Developer experience</label>
+                <select id="acc-dev-exp">
+                  <option value="">Select one</option>
+                  <option value="lt_1">Less than 1 year</option>
+                  <option value="1_2">1-2 years</option>
+                  <option value="3_5">3-5 years</option>
+                  <option value="6_10">6-10 years</option>
+                  <option value="10_plus">10+ years</option>
+                </select>
+              </div>
+              <div class="acc-field">
+                <label>Are you currently working as a developer?</label>
+                <div class="acc-choice-row" role="radiogroup" aria-label="Currently developer">
+                  <label for="acc-current-dev-yes"><input id="acc-current-dev-yes" type="radio" name="acc-current-dev" value="yes"> Yes</label>
+                  <label for="acc-current-dev-no"><input id="acc-current-dev-no" type="radio" name="acc-current-dev" value="no"> No</label>
+                </div>
+              </div>
+            </section>
+
+            <!-- SECTION 3 — Projects -->
+            <section class="acc-step" data-step="3" hidden>
+              <div class="acc-step-title">Projects</div>
+              <div class="acc-field">
+                <label for="acc-project-use">Are you using Atlas for personal or work projects?</label>
+                <select id="acc-project-use">
+                  <option value="">Select one</option>
+                  <option value="personal">Personal projects</option>
+                  <option value="work">Work projects</option>
+                  <option value="both">Both</option>
+                </select>
+              </div>
+              <div id="acc-company-fields">
+                <div class="acc-field">
+                  <label for="acc-company-name">Company name <span class="muted tiny">optional</span></label>
+                  <input id="acc-company-name" type="text" maxlength="120" placeholder="Optional" />
+                </div>
+                <div class="acc-field">
+                  <label for="acc-company-size">Company size</label>
+                  <select id="acc-company-size">
+                    <option value="">Select one</option>
+                    <option value="just_me">Just me</option>
+                    <option value="2_10">2-10</option>
+                    <option value="11_50">11-50</option>
+                    <option value="51_200">51-200</option>
+                    <option value="201_1000">201-1000</option>
+                    <option value="1000_plus">1000+</option>
+                    <option value="prefer_not_to_say">Prefer not to say</option>
+                  </select>
+                </div>
+              </div>
+              <div class="acc-field">
+                <label for="acc-repo-size">Typical repository size</label>
                 <select id="acc-repo-size">
                   <option value="">Select one</option>
-                  <option value="small">Small</option>
-                  <option value="medium">Medium</option>
-                  <option value="large">Large</option>
-                  <option value="very_large">Very large</option>
+                  <option value="small">Small (&lt;100 files)</option>
+                  <option value="medium">Medium (100–1,000 files)</option>
+                  <option value="large">Large (1,000–10,000 files)</option>
+                  <option value="very_large">Very large (10,000+ files)</option>
                   <option value="not_sure">Not sure</option>
                 </select>
               </div>
-            </div>
-            <fieldset class="acc-checks">
-              <legend>Main coding tools</legend>
-              <label><input type="checkbox" name="acc-tools" value="claude"> Claude</label>
-              <label><input type="checkbox" name="acc-tools" value="cursor"> Cursor</label>
-              <label><input type="checkbox" name="acc-tools" value="codex"> Codex</label>
-              <label><input type="checkbox" name="acc-tools" value="github_copilot"> GitHub Copilot</label>
-              <label><input type="checkbox" name="acc-tools" value="windsurf"> Windsurf</label>
-              <label><input type="checkbox" name="acc-tools" value="other"> Other</label>
-            </fieldset>
-            <div class="acc-field">
-              <label for="acc-languages">Main languages/frameworks <span class="muted tiny">optional</span></label>
-              <input id="acc-languages" type="text" maxlength="500" placeholder="Python, React, FastAPI..." />
-            </div>
-            <fieldset class="acc-checks">
-              <legend>What do you want Atlas to help with most?</legend>
-              <label><input type="checkbox" name="acc-help" value="understand_codebases"> Understanding unfamiliar codebases</label>
-              <label><input type="checkbox" name="acc-help" value="planning_changes"> Planning changes</label>
-              <label><input type="checkbox" name="acc-help" value="debugging"> Debugging</label>
-              <label><input type="checkbox" name="acc-help" value="what_breaks"> Finding what breaks</label>
-              <label><input type="checkbox" name="acc-help" value="reduce_context"> Reducing AI context/token usage</label>
-              <label><input type="checkbox" name="acc-help" value="onboarding"> Onboarding to a repo</label>
-              <label><input type="checkbox" name="acc-help" value="other"> Other</label>
-            </fieldset>
-            <div class="acc-field">
-              <label for="acc-notes">Optional notes</label>
-              <textarea id="acc-notes" maxlength="1000" placeholder="Anything useful for the Atlas operator to know. Do not include code, secrets, or repository paths."></textarea>
-            </div>
+              <div class="acc-field">
+                <label for="acc-languages">Main languages / frameworks <span class="muted tiny">optional</span></label>
+                <input id="acc-languages" type="text" maxlength="500" placeholder="Python, React, FastAPI…" />
+              </div>
+              <fieldset class="acc-checks">
+                <legend>Main coding tools</legend>
+                <label><input type="checkbox" name="acc-tools" value="claude"> Claude</label>
+                <label><input type="checkbox" name="acc-tools" value="cursor"> Cursor</label>
+                <label><input type="checkbox" name="acc-tools" value="codex"> Codex</label>
+                <label><input type="checkbox" name="acc-tools" value="github_copilot"> GitHub Copilot</label>
+                <label><input type="checkbox" name="acc-tools" value="windsurf"> Windsurf</label>
+                <label><input type="checkbox" name="acc-tools" value="other"> Other</label>
+              </fieldset>
+            </section>
+
+            <!-- SECTION 4 — Goals -->
+            <section class="acc-step" data-step="4" hidden>
+              <div class="acc-step-title">Goals</div>
+              <fieldset class="acc-checks">
+                <legend>What do you want Atlas to help with most?</legend>
+                <label><input type="checkbox" name="acc-help" value="understand_codebases"> Understanding unfamiliar codebases</label>
+                <label><input type="checkbox" name="acc-help" value="planning_changes"> Planning changes</label>
+                <label><input type="checkbox" name="acc-help" value="debugging"> Debugging</label>
+                <label><input type="checkbox" name="acc-help" value="what_breaks"> Finding what breaks</label>
+                <label><input type="checkbox" name="acc-help" value="reduce_context"> Reducing AI context/token usage</label>
+                <label><input type="checkbox" name="acc-help" value="onboarding"> Onboarding to a repo</label>
+                <label><input type="checkbox" name="acc-help" value="other"> Other</label>
+              </fieldset>
+            </section>
+
+            <!-- SECTION 5 — Optional Notes -->
+            <section class="acc-step" data-step="5" hidden>
+              <div class="acc-step-title">Optional notes</div>
+              <div class="acc-field">
+                <label for="acc-notes">Anything else? <span class="muted tiny">optional</span></label>
+                <textarea id="acc-notes" maxlength="1000" placeholder="Anything useful for the Atlas operator to know. Do not include code, secrets, or repository paths."></textarea>
+              </div>
+              <p class="muted tiny">You're all set — review your answers, then submit your application.</p>
+            </section>
+          </div>
+
+          <div class="auth-wizard-footer">
+            <button id="acc-back-btn" class="btn ghost" type="button" onclick="atlasAccounts.wizardBack()" style="display:none">Back</button>
+            <button id="acc-next-btn" class="btn primary auth-btn-primary" type="button" onclick="atlasAccounts.wizardNext()">Next</button>
+            <button id="acc-reg-btn" class="btn primary auth-btn-primary" type="button" onclick="atlasAccounts.register()" style="display:none">Submit application</button>
+            <button class="btn ghost auth-wizard-signin" type="button" onclick="atlasAccounts.switchPanel('login')">Sign in instead</button>
+          </div>
+        </div>
+
+        <!-- APPLICATION SUBMITTED (completion screen) -->
+        <div id="acc-panel-submitted" class="auth-panel" style="display:none">
+          <div class="acc-state-icon" aria-hidden="true">✅</div>
+          <h2 class="auth-panel-title">Application submitted</h2>
+          <p class="acc-state-message">Your Atlas beta application has been received.</p>
+          <div class="acc-nextsteps">
+            <div class="acc-nextsteps-title">Next steps</div>
+            <ol>
+              <li>Wait for approval.</li>
+              <li>You'll receive beta access from the Atlas operator.</li>
+              <li>Once approved, sign in and begin using Atlas.</li>
+            </ol>
           </div>
           <div class="acc-actions acc-actions-stack">
-            <button id="acc-reg-btn" class="btn primary auth-btn-primary" type="button" onclick="atlasAccounts.register()">Submit beta application</button>
-            <button class="btn ghost auth-btn-secondary" type="button" onclick="atlasAccounts.switchPanel('login')">Sign in instead</button>
+            <button class="btn primary auth-btn-primary" type="button" onclick="atlasAccounts.switchPanel('login')">Back to sign in</button>
           </div>
         </div>
 

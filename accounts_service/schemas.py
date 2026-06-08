@@ -8,7 +8,7 @@ from pydantic import BaseModel, EmailStr, field_validator, ConfigDict, model_val
 
 
 ProfileUse = Literal["personal", "work", "both"]
-CompanySize = Literal["just_me", "2_10", "11_50", "51_200", "201_1000", "1000_plus", "prefer_not_to_say"]
+CompanySize = Literal["just_me", "2_10", "11_50", "51_200", "201_1000", "1000_plus", "prefer_not_to_say", "not_applicable"]
 DeveloperExperience = Literal["lt_1", "1_2", "3_5", "6_10", "10_plus"]
 PrimaryRole = Literal[
     "student", "frontend", "backend", "full_stack", "devops_platform",

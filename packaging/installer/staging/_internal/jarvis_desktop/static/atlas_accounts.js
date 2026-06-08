@@ -13,7 +13,13 @@
 
   const POLL_INTERVAL_MS = 60_000;
 
-  const AUTH_PANELS = ['acc-panel-login', 'acc-panel-register', 'acc-panel-state'];
+  const AUTH_PANELS = ['acc-panel-login', 'acc-panel-register', 'acc-panel-state', 'acc-panel-submitted'];
+
+  // Beta application wizard state
+  let _regStep = 1;
+  let _regWired = false;
+  const _REG_STEPS = 5;
+  const _STEP_NAMES = { 1: 'Account', 2: 'Developer profile', 3: 'Projects', 4: 'Goals', 5: 'Optional notes' };
 
   const LOGIN_ERROR_MAP = [
     { match: /valid email/i, title: 'Email needs attention', message: 'Enter a valid email address.', action: '' },
@@ -208,6 +214,10 @@
     AUTH_PANELS.forEach(id => { const e = el(id); if (e) e.style.display = 'none'; });
     const panel = el('acc-panel-' + _screenMode);
     if (panel) panel.style.display = '';
+    if (_screenMode === 'register') {
+      _wireRegisterEvents();
+      resetRegisterWizard();
+    }
     _setAuthMode(true);
   }
 
@@ -282,13 +292,120 @@
     });
   }
 
+  // ── Beta application wizard ───────────────────────────────────────────────
+  function _companyFieldsRelevant() {
+    const dev = selectedRadio('acc-current-dev');
+    const use = fieldValue('acc-project-use');
+    const role = fieldValue('acc-primary-role');
+    // Company questions only make sense for working developers on work projects.
+    return !(dev === 'no' || use === 'personal' || role === 'student');
+  }
+
+  function _updateConditionalFields() {
+    const wrap = el('acc-company-fields');
+    if (wrap) wrap.style.display = _companyFieldsRelevant() ? '' : 'none';
+  }
+
+  function _validateRegStep(n, { quiet } = {}) {
+    if (!quiet) setError('acc-reg-error', '');
+    if (n === 1) {
+      const email = fieldValue('acc-reg-email');
+      const pwd = el('acc-reg-pwd') ? el('acc-reg-pwd').value : '';
+      const pwd2 = el('acc-reg-pwd2') ? el('acc-reg-pwd2').value : '';
+      let ok = true;
+      if (!email || !isValidEmail(email)) { setFieldError('acc-reg-email-msg', 'Enter a valid email address.'); ok = false; }
+      else setFieldError('acc-reg-email-msg', '');
+      if (pwd.length < 8) { setFieldError('acc-reg-pwd-msg', 'Use at least 8 characters.'); ok = false; }
+      else setFieldError('acc-reg-pwd-msg', '');
+      if (pwd2 !== pwd || !pwd2) { setFieldError('acc-reg-pwd2-msg', pwd2 && pwd2 !== pwd ? 'Passwords do not match.' : 'Confirm your password.'); ok = false; }
+      else setFieldError('acc-reg-pwd2-msg', '');
+      return ok;
+    }
+    if (n === 2) {
+      if (!fieldValue('acc-primary-role')) return _stepErr('Select your primary role.', quiet);
+      if (!fieldValue('acc-dev-exp')) return _stepErr('Select your developer experience.', quiet);
+      if (!selectedRadio('acc-current-dev')) return _stepErr('Choose whether you currently work as a developer.', quiet);
+      return true;
+    }
+    if (n === 3) {
+      if (!fieldValue('acc-project-use')) return _stepErr('Choose personal or work projects.', quiet);
+      if (_companyFieldsRelevant() && !fieldValue('acc-company-size')) return _stepErr('Select your company size.', quiet);
+      if (!fieldValue('acc-repo-size')) return _stepErr('Select your typical repository size.', quiet);
+      if (!checkedValues('acc-tools').length) return _stepErr('Select at least one coding tool.', quiet);
+      return true;
+    }
+    if (n === 4) {
+      if (!checkedValues('acc-help').length) return _stepErr('Select what you want Atlas to help with.', quiet);
+      return true;
+    }
+    return true;
+  }
+
+  function _stepErr(msg, quiet) { if (!quiet) setError('acc-reg-error', msg); return false; }
+
+  function _showRegStep(n) {
+    _regStep = Math.max(1, Math.min(_REG_STEPS, n));
+    document.querySelectorAll('#acc-panel-register .acc-step').forEach(s => {
+      s.hidden = (parseInt(s.dataset.step, 10) !== _regStep);
+    });
+    if (el('acc-step-num')) el('acc-step-num').textContent = _regStep;
+    if (el('acc-step-name')) el('acc-step-name').textContent = _STEP_NAMES[_regStep] || '';
+    if (el('acc-progress-fill')) el('acc-progress-fill').style.width = (_regStep / _REG_STEPS * 100) + '%';
+    if (el('acc-back-btn')) el('acc-back-btn').style.display = _regStep > 1 ? '' : 'none';
+    if (el('acc-next-btn')) el('acc-next-btn').style.display = _regStep < _REG_STEPS ? '' : 'none';
+    if (el('acc-reg-btn')) el('acc-reg-btn').style.display = _regStep >= _REG_STEPS ? '' : 'none';
+    const body = document.querySelector('#acc-panel-register .auth-wizard-body');
+    if (body) body.scrollTop = 0;
+    const first = document.querySelector(`#acc-panel-register .acc-step[data-step="${_regStep}"] input, #acc-panel-register .acc-step[data-step="${_regStep}"] select, #acc-panel-register .acc-step[data-step="${_regStep}"] textarea`);
+    if (first) { try { first.focus(); } catch (e) {} }
+  }
+
+  function resetRegisterWizard() {
+    _regStep = 1;
+    _updateConditionalFields();
+    _showRegStep(1);
+  }
+
+  function wizardNext() {
+    if (!_validateRegStep(_regStep)) return;
+    _updateConditionalFields();
+    _showRegStep(_regStep + 1);
+  }
+
+  function wizardBack() { setError('acc-reg-error', ''); _showRegStep(_regStep - 1); }
+
+  function _wireRegisterEvents() {
+    if (_regWired) return;
+    _regWired = true;
+    // Immediate validation on the account step.
+    const onEmail = () => { const v = fieldValue('acc-reg-email'); setFieldError('acc-reg-email-msg', v && !isValidEmail(v) ? 'Enter a valid email address.' : ''); };
+    const onPwd = () => { const v = el('acc-reg-pwd') ? el('acc-reg-pwd').value : ''; setFieldError('acc-reg-pwd-msg', v && v.length < 8 ? 'Use at least 8 characters.' : ''); _onPwd2(); };
+    const _onPwd2 = () => { const p = el('acc-reg-pwd') ? el('acc-reg-pwd').value : ''; const c = el('acc-reg-pwd2') ? el('acc-reg-pwd2').value : ''; setFieldError('acc-reg-pwd2-msg', c && c !== p ? 'Passwords do not match.' : ''); };
+    if (el('acc-reg-email')) el('acc-reg-email').addEventListener('input', onEmail);
+    if (el('acc-reg-pwd')) el('acc-reg-pwd').addEventListener('input', onPwd);
+    if (el('acc-reg-pwd2')) el('acc-reg-pwd2').addEventListener('input', _onPwd2);
+    // Conditional company fields.
+    ['acc-current-dev-yes', 'acc-current-dev-no', 'acc-project-use', 'acc-primary-role'].forEach(id => {
+      const e = el(id); if (e) e.addEventListener('change', _updateConditionalFields);
+    });
+    // Enter advances / submits.
+    document.querySelectorAll('#acc-panel-register input').forEach(inp => {
+      inp.addEventListener('keydown', ev => {
+        if (ev.key !== 'Enter') return;
+        ev.preventDefault();
+        if (_regStep < _REG_STEPS) wizardNext(); else doRegister();
+      });
+    });
+  }
+
   function collectBetaProfile() {
     const devValue = selectedRadio('acc-current-dev');
+    const companyRelevant = _companyFieldsRelevant();
     const profile = {
       currently_developer: devValue === 'yes' ? true : devValue === 'no' ? false : null,
       project_use: fieldValue('acc-project-use'),
-      company_name: fieldValue('acc-company-name'),
-      company_size: fieldValue('acc-company-size'),
+      company_name: companyRelevant ? fieldValue('acc-company-name') : '',
+      company_size: companyRelevant ? fieldValue('acc-company-size') : 'not_applicable',
       developer_experience: fieldValue('acc-dev-exp'),
       primary_role: fieldValue('acc-primary-role'),
       coding_tools: checkedValues('acc-tools'),
@@ -309,30 +426,17 @@
   }
 
   function doRegister() {
+    // Re-validate each step; jump to the first incomplete one.
+    for (let s = 1; s <= _REG_STEPS - 1; s++) {
+      if (!_validateRegStep(s, { quiet: true })) {
+        _showRegStep(s);
+        _validateRegStep(s);
+        return;
+      }
+    }
     const email = el('acc-reg-email') && el('acc-reg-email').value.trim();
     const password = el('acc-reg-pwd') && el('acc-reg-pwd').value;
     const confirm = el('acc-reg-pwd2') && el('acc-reg-pwd2').value;
-    setError('acc-reg-error', '');
-    setFieldError('acc-reg-email-msg', '');
-
-    if (!email || !password) {
-      setError('acc-reg-error', 'Email and password are required.', 'Missing fields');
-      return;
-    }
-    if (!isValidEmail(email)) {
-      setFieldError('acc-reg-email-msg', 'Enter a valid email address.');
-      if (el('acc-reg-email')) el('acc-reg-email').setAttribute('aria-invalid', 'true');
-      return;
-    }
-    if (el('acc-reg-email')) el('acc-reg-email').removeAttribute('aria-invalid');
-    if (password.length < 8) {
-      setError('acc-reg-error', 'Use at least 8 characters for your password.', 'Password too short');
-      return;
-    }
-    if (password !== confirm) {
-      setError('acc-reg-error', 'Passwords do not match.', 'Passwords differ');
-      return;
-    }
     const profileResult = collectBetaProfile();
     if (profileResult.error) {
       setError('acc-reg-error', profileResult.error, 'Beta profile incomplete');
@@ -350,7 +454,9 @@
       if (res.ok) {
         if (el('acc-reg-pwd')) el('acc-reg-pwd').value = '';
         if (el('acc-reg-pwd2')) el('acc-reg-pwd2').value = '';
-        setTimeout(() => refreshState().then(() => showAccountScreen('blocked')), 300);
+        // Show the dedicated "Application submitted" completion screen.
+        showAccountScreen('submitted');
+        refreshState();
       } else {
         const err = _formatLoginError(res.error || res.detail || 'Registration failed.');
         setError('acc-reg-error', `${err.message} ${err.action}`, err.title);
@@ -490,6 +596,8 @@
     logout: doLogout,
     removeDevice: doRemoveDevice,
     switchPanel: showAccountScreen,
+    wizardNext: wizardNext,
+    wizardBack: wizardBack,
     refresh: refreshState,
     isAuthenticated: () => !!( _state && _state.authenticated),
     requireAccess: () => {

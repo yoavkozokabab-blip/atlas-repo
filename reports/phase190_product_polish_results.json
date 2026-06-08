@@ -1,0 +1,86 @@
+{
+  "phase": "190",
+  "mode": "product_polish",
+  "date": "2026-06-08",
+  "code_changes": true,
+  "form_overhaul": {
+    "sticky_submit_cta": "PASS",
+    "conditional_company_fields": "PASS",
+    "repo_size_file_count_labels": "PASS",
+    "sectioned_onboarding_5_sections": "PASS",
+    "progress_indicator": "PASS",
+    "immediate_validation": "PASS",
+    "completion_screen": "PASS"
+  },
+  "sections": ["Account", "Developer profile", "Projects", "Goals", "Optional notes"],
+  "conditional_rule": "Company name + size hidden when developer=No OR usage=personal OR role=student; hidden fields submit company_size='not_applicable'.",
+  "repo_size_labels": [
+    "Small (<100 files)",
+    "Medium (100-1,000 files)",
+    "Large (1,000-10,000 files)",
+    "Very large (10,000+ files)",
+    "Not sure"
+  ],
+  "files_changed": [
+    "jarvis_desktop/static/index.html",
+    "jarvis_desktop/static/styles.css",
+    "jarvis_desktop/static/atlas_accounts.js",
+    "accounts_service/schemas.py",
+    "scripts/capture_phase190_form.py",
+    "scripts/capture_phase190_app.py"
+  ],
+  "screens_reviewed": {
+    "sign_in": {"method": "live", "severity": "ok"},
+    "create_account": {"method": "live", "severity": "critical", "status": "fixed"},
+    "pending_approval": {"method": "live", "severity": "ok"},
+    "application_submitted": {"method": "live", "severity": "ok", "status": "added"},
+    "home": {"method": "code", "severity": "low"},
+    "scan_repository_understanding": {"method": "code", "severity": "low"},
+    "what_breaks": {"method": "code", "severity": "low"},
+    "change_plan": {"method": "code", "severity": "low"},
+    "debug": {"method": "code", "severity": "low"},
+    "admin": {"method": "live", "severity": "low"},
+    "feedback": {"method": "code", "severity": "ok"},
+    "support_bundle": {"method": "code", "severity": "ok"}
+  },
+  "findings": [
+    {"id": "F1", "screen": "create_account", "issue": "Submit CTA not clearly visible; form felt unfinished", "severity": "critical", "status": "fixed", "fix": "Sectioned wizard + sticky footer + progress indicator"},
+    {"id": "F2", "screen": "create_account", "issue": "Irrelevant company questions for students/personal/non-devs", "severity": "high", "status": "fixed", "fix": "Conditional company fields"},
+    {"id": "F3", "screen": "create_account", "issue": "Vague repo-size labels", "severity": "medium", "status": "fixed", "fix": "File-count labels"},
+    {"id": "F4", "screen": "create_account", "issue": "No progress indicator", "severity": "medium", "status": "fixed", "fix": "Step X of 5 + bar"},
+    {"id": "F5", "screen": "create_account", "issue": "Validation only on submit", "severity": "medium", "status": "fixed", "fix": "Immediate per-field validation"},
+    {"id": "F6", "screen": "create_account", "issue": "No completion screen (generic pending state)", "severity": "high", "status": "fixed", "fix": "Dedicated 'Application submitted' screen"},
+    {"id": "F7", "screen": "auth", "issue": "User-facing Python command in offline error", "severity": "high", "status": "fixed", "fix": "Plain-language message (accounts_routes.py)"},
+    {"id": "F8", "screen": "admin", "issue": "Server-analytics raw JSON shows a local filesystem path", "severity": "low", "status": "remaining"},
+    {"id": "F9", "screen": "admin", "issue": "Breakdown empty copy terse ('no data')", "severity": "low", "status": "remaining"},
+    {"id": "F10", "screen": "workflows", "issue": "Access gate blocks unauthenticated workflow views", "severity": "info", "status": "by_design_positive"}
+  ],
+  "performance_review": {
+    "polling": "account state every 60s (light)",
+    "redundant_api_calls": "none observed; scans are user-initiated only",
+    "dom_size": "result panels collapse detail behind <details>/advanced toggles",
+    "startup": "auth renders immediately; app shell boots lazily on first authenticated reveal",
+    "unnecessary_renders": "none in auth/onboarding path (imperative DOM updates)"
+  },
+  "screenshots": [
+    "reports/phase190_polish/form_01_step1_account.png",
+    "reports/phase190_polish/form_02_step2_developer.png",
+    "reports/phase190_polish/form_03_step3_projects_company_shown.png",
+    "reports/phase190_polish/form_04_step3_company_hidden_conditional.png",
+    "reports/phase190_polish/form_05_step4_goals.png",
+    "reports/phase190_polish/form_06_step5_notes_submit.png",
+    "reports/phase190_polish/form_07_application_submitted.png",
+    "reports/phase190_polish/form_08_inline_validation.png",
+    "reports/phase190_polish/app_06_admin.png"
+  ],
+  "tests_run": [
+    {"command": "pytest test_phase188_beta_profile_accounts.py test_phase188_auth_ux.py test_phase189_beta_feedback_funnel.py -q", "result": "29 passed"}
+  ],
+  "remaining_issues": [
+    {"issue": "Admin server-analytics raw JSON includes a local path", "severity": "low"},
+    {"issue": "Admin breakdown empty copy terse", "severity": "low"},
+    {"issue": "In-app workflow screens not captured live (need approved session)", "severity": "info"},
+    {"issue": "No forgot-password flow", "severity": "low"}
+  ],
+  "verdict": "Beta application now reads like a polished commercial beta; remaining items are low-severity."
+}
