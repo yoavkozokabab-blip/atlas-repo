@@ -3,7 +3,28 @@
   --line:rgba(120,160,255,.14); --txt:#dce6ff; --muted:#7e8db5;
   --cyan:#3ef0ff; --violet:#9a7bff; --pink:#ff5fc8; --green:#42f5b0; --amber:#ffc24b; --red:#ff5c7a;
   --glass-blur:16px;
+
+  /* ── Phase 194 design system ────────────────────────────────────────────
+     One small, intentional scale. New/updated components consume these
+     tokens so spacing, radius, type and color stay consistent everywhere. */
+  /* Color: one primary action, one secondary accent (+ semantic states). */
+  --primary:#3ef0ff; --primary-ink:#04121a; --accent:#9a7bff;
+  --ok:#42f5b0; --warn:#ffc24b; --danger:#ff5c7a;
+  /* Type — 3 heading sizes, 2 body sizes. */
+  --h1:26px; --h2:19px; --h3:14.5px;
+  --text:14px; --text-sm:12px;
+  --fw-bold:700; --fw-med:600;
+  /* Spacing scale (4px base). */
+  --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px; --space-5:24px; --space-6:32px;
+  /* Radius — every card shares one radius; pills/sm derive from it. */
+  --radius:18px; --radius-sm:12px; --radius-pill:20px;
 }
+/* Design-system primitives (opt-in classes; see reports/phase194_design_system.md). */
+.ds-h1{font-size:var(--h1);font-weight:var(--fw-bold);color:#eaf0ff;margin:0}
+.ds-h2{font-size:var(--h2);font-weight:var(--fw-bold);color:#eaf0ff;margin:0}
+.ds-h3{font-size:var(--h3);font-weight:var(--fw-med);color:#eaf0ff;margin:0}
+.ds-text{font-size:var(--text);color:var(--txt)}
+.ds-text-sm{font-size:var(--text-sm);color:var(--muted)}
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
 body{
@@ -17,23 +38,26 @@ body{
 #bg-glow{position:fixed;z-index:0;width:640px;height:640px;left:-160px;bottom:-220px;pointer-events:none;
   background:radial-gradient(circle,rgba(154,123,255,.22),transparent 60%);filter:blur(30px)}
 .glass{background:var(--panel);backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));
-  border:1px solid var(--line);border-radius:18px;box-shadow:0 10px 40px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.04)}
+  border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 10px 40px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.04)}
 .muted{color:var(--muted)} .tiny{font-size:11px} .accent{outline:1px solid rgba(62,240,255,.25)}
 
-/* Top bar */
-.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:18px;margin:14px;padding:10px 18px;border-radius:16px}
-.brand{display:flex;align-items:baseline;gap:10px;cursor:pointer}
+/* Top bar — Phase 194: left logo · centered nav · right controls */
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:var(--space-4);margin:14px;padding:10px 18px;border-radius:16px}
+.brand{display:flex;align-items:baseline;gap:8px;cursor:pointer;flex:0 0 auto}
 .logo-mark{color:var(--cyan);font-size:22px;text-shadow:0 0 18px var(--cyan)}
 .logo-text{font-family:Orbitron;font-weight:900;font-size:22px;letter-spacing:3px;
   background:linear-gradient(90deg,var(--cyan),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
 .logo-sub{color:var(--muted);font-size:11px;letter-spacing:1px}
-.nav{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
-.nav button{background:transparent;border:1px solid transparent;color:var(--muted);padding:7px 12px;border-radius:10px;
-  font-size:12.5px;letter-spacing:.4px;cursor:pointer;transition:.18s}
+.nav{display:flex;gap:var(--space-1);flex:1 1 auto;justify-content:center;flex-wrap:wrap}
+.nav button{background:transparent;border:1px solid transparent;color:var(--muted);padding:7px 14px;border-radius:var(--radius-sm);
+  font-size:13px;letter-spacing:.3px;cursor:pointer;transition:.18s}
 .nav button:hover{color:var(--txt);border-color:var(--line)}
 .nav button.active{color:#fff;background:linear-gradient(180deg,rgba(62,240,255,.18),rgba(154,123,255,.12));border-color:rgba(62,240,255,.35);box-shadow:0 0 18px rgba(62,240,255,.15)}
 .nav button[data-lock="1"]{opacity:.4}
-.repo-chip{font-size:12px;color:var(--cyan);border:1px solid rgba(62,240,255,.3);padding:6px 12px;border-radius:20px;background:rgba(62,240,255,.06);white-space:nowrap;max-width:260px;overflow:hidden;text-overflow:ellipsis}
+.topbar-right{display:flex;align-items:center;gap:var(--space-2);flex:0 0 auto;margin-left:auto}
+.menu-divider{height:1px;background:var(--line);margin:6px 4px}
+.repo-chip{font-size:12px;color:var(--cyan);border:1px solid rgba(62,240,255,.3);padding:6px 12px;border-radius:var(--radius-pill);background:rgba(62,240,255,.06);white-space:nowrap;max-width:240px;overflow:hidden;text-overflow:ellipsis;cursor:pointer;transition:.18s}
+.repo-chip:hover{border-color:rgba(62,240,255,.6);background:rgba(62,240,255,.12)}
 .telemetry-banner{position:relative;z-index:19;margin:-4px 14px 10px;padding:10px 16px;border-radius:12px;border-color:rgba(255,194,75,.35);
   color:var(--amber);font-size:13px;text-align:center;background:rgba(255,194,75,.08);box-shadow:0 0 24px rgba(255,194,75,.08)}
 
@@ -896,6 +920,12 @@ body.auth-loading.auth-mode .auth-stage::after{
 .recent-activity-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
 .recent-col{padding:16px 18px}
 .recent-col-title{font-size:13px;font-weight:700;color:#eaf0ff;margin:0 0 10px}
+/* Part 10 — lead the home with the dashboard; the big marketing title is
+   redundant once signed in (the topbar already brands Atlas). The scan picker,
+   sample packs and CTAs below remain available. */
+body.app-authenticated #view-home .hero-title,
+body.app-authenticated #view-home .hero-headline{display:none}
+body.app-authenticated #view-home .hero{margin-top:0}
 
 .admin-toolbar{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap}
 .admin-toolbar input,.admin-toolbar select{padding:8px 11px;border-radius:9px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:inherit;font-size:13px}

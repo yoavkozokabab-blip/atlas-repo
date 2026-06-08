@@ -78,10 +78,10 @@ def test_user_menu_contains_account_devices_admin_signout():
     assert "Account" in menu
     assert ">Devices<" in menu
     assert "atlasAccounts.openDevices()" in menu
-    assert 'id="userMenuAdmin"' in menu and "Admin Console" in menu
+    assert 'id="userMenuAdmin"' in menu and "Admin Workspace" in menu
     assert "Support" in menu
     assert "Sign out" in menu
-    # Admin Console stays role-gated.
+    # Admin Workspace stays role-gated.
     assert 'class="btn ghost small admin-only" id="userMenuAdmin"' in INDEX
     assert "openDevices: openDevices" in ACCOUNTS_JS
 

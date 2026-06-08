@@ -44,10 +44,12 @@ def test_first_launch_shows_three_main_actions():
 
 def test_advanced_surfaces_are_deemphasized():
     html = _read(INDEX)
-    # Diagnostics / support / report are tucked into a Help menu, not the main bar.
+    # Diagnostics / support / report are tucked into the user menu, not the main bar.
+    # (Phase 194 consolidated the separate "Help & more" menu into the user menu.)
     assert "help-menu" in html
-    assert "Help &amp; more" in html
-    # Quickstart is promoted in the top bar.
+    assert 'id="userMenu"' in html
+    assert "Copy diagnostics" in html and "Report an issue" in html
+    # Quickstart is available from the top bar (now inside the user menu).
     assert 'href="quickstart.html"' in html
     # Advanced scan options are collapsed.
     assert "scope-advanced" in html
