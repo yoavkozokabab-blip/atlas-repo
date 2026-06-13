@@ -75,7 +75,7 @@ class Device(Base):
 
 # ── Licenses ───────────────────────────────────────────────────────────────
 LICENSE_PLANS = ("beta", "free", "pro", "enterprise")
-LICENSE_STATUSES = ("active", "expired", "suspended", "cancelled")
+LICENSE_STATUSES = ("active", "trial", "expired", "past_due", "canceled", "cancelled", "suspended")
 
 
 class License(Base):

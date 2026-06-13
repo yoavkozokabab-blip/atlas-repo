@@ -1,0 +1,73 @@
+{
+  "phase": "197",
+  "final_verdict": "NO_GO",
+  "production_url": "https://jarvislanding-brown.vercel.app",
+  "stripe_mode": "disabled",
+  "supabase_status": "waitlist_schema_only_not_reverified_live",
+  "admin_status": "accounts_admin_partial_waitlist_admin_only_no_payment_admin",
+  "desktop_license_status": "paid_lifecycle_states_enforced_no_stripe_sync",
+  "installer": {
+    "rebuilt": false,
+    "path": null,
+    "sha256": null
+  },
+  "implemented": [
+    "live Stripe env validation with prefix and localhost guards",
+    "health endpoint payment readiness metadata without secrets",
+    "landing env example for Stripe live variables",
+    "Phase 197 Stripe env validation test",
+    "desktop/accounts license lifecycle states for trial, past_due, canceled, cancelled",
+    "admin license_status update with audit metadata",
+    "local_jarvis .env ignore rules",
+    "local_jarvis .env removed from git index while preserving local file"
+  ],
+  "blockers": [
+    "no checkout endpoint",
+    "no Stripe webhook endpoint",
+    "no paid Supabase billing/license schema",
+    "no live Stripe product or price verification",
+    "no live Stripe smoke test",
+    "no Stripe-to-desktop-license synchronization",
+    "production URL not reverified in this phase",
+    "historical .env exposure risk requires operator review and secret rotation",
+    "landing admin has no payment/subscription operations",
+    "Reddit source feedback unavailable for copy update"
+  ],
+  "non_blocking_issues": [
+    "FastAPI deprecation warnings in tests",
+    "test JWT key length warnings in desktop admin tests",
+    "dirty workspace contains many unrelated pre-existing changes"
+  ],
+  "tests_run": [
+    {
+      "command": "npm run test:phase197",
+      "status": "PASS"
+    },
+    {
+      "command": "py -3 scripts\\validate_env.py",
+      "status": "PASS_WITH_WARNINGS",
+      "warnings": ["RESEND_API_KEY not configured", "ADMIN_NOTIFICATION_EMAIL not configured"]
+    },
+    {
+      "command": "py -3 -m pytest accounts_service\\tests\\test_phase197_license_lifecycle.py -q -p no:cacheprovider",
+      "status": "PASS",
+      "result": "7 passed"
+    },
+    {
+      "command": "py -3 -m pytest accounts_service\\tests\\test_phase186f_beta_smoke.py accounts_service\\tests\\test_phase188_beta_profile_accounts.py accounts_service\\tests\\test_phase191_registration_reliability.py -q -p no:cacheprovider",
+      "status": "PASS",
+      "result": "38 passed"
+    },
+    {
+      "command": "py -3 -m pytest jarvis_desktop\\tests\\test_phase188_auth_ux.py jarvis_desktop\\tests\\test_phase193_admin_console.py -q -p no:cacheprovider",
+      "status": "PASS",
+      "result": "20 passed"
+    }
+  ],
+  "live_smoke_test": {
+    "run": false,
+    "reason": "No explicit live-charge approval and checkout/webhook prerequisites missing"
+  },
+  "commits": []
+}
+

@@ -245,6 +245,10 @@ def _error_status(result: Dict[str, Any], default: str = "account_unavailable") 
         return "banned"
     if "expired" in detail:
         return "expired"
+    if "past due" in detail or "past_due" in detail:
+        return "past_due"
+    if "canceled" in detail or "cancelled" in detail:
+        return "canceled"
     return default
 
 
@@ -254,6 +258,10 @@ def _status_message(status: str) -> str:
         "suspended": "This account is suspended. Contact the Atlas operator.",
         "banned": "This account is banned and cannot access Atlas.",
         "expired": "Your Atlas access is not currently active.",
+        "past_due": "Your Atlas subscription is past due. Update billing to continue.",
+        "canceled": "Your Atlas subscription is canceled. Reactivate billing to continue.",
+        "cancelled": "Your Atlas subscription is cancelled. Reactivate billing to continue.",
+        "trial_missing_expiry": "Your Atlas trial is missing an expiry date. Contact support.",
         "account_unavailable": "Your Atlas access is not currently active.",
     }.get(status, "Atlas account is not available. Please sign in again.")
 
@@ -347,7 +355,17 @@ def get_license_status() -> Dict[str, Any]:
             }
 
     last_error = state.get("last_auth_error")
-    if last_error in {"device_revoked", "suspended", "banned", "expired", "account_unavailable"}:
+    if last_error in {
+        "device_revoked",
+        "suspended",
+        "banned",
+        "expired",
+        "past_due",
+        "canceled",
+        "cancelled",
+        "trial_missing_expiry",
+        "account_unavailable",
+    }:
         return {
             "valid": False,
             "plan": "free",
@@ -552,7 +570,7 @@ def admin_force_logout(user_id: str) -> Dict[str, Any]:
     return _call("POST", f"/admin/users/{user_id}/force-logout", {}, access_token=token)
 
 
-_ADMIN_UPDATE_FIELDS = {"status", "role", "beta_flag", "plan", "max_devices", "expires_at", "admin_notes"}
+_ADMIN_UPDATE_FIELDS = {"status", "role", "beta_flag", "plan", "license_status", "max_devices", "expires_at", "admin_notes"}
 
 
 def admin_update_user(user_id: str, fields: Dict[str, Any]) -> Dict[str, Any]:

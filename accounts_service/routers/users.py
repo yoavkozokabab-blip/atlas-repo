@@ -49,11 +49,11 @@ def license_check(user: User = Depends(get_current_user)):
             message=_INACTIVE_STATUS_MESSAGES[user.status],
         )
     lic = user.license
-    if not lic or lic.status != "active":
+    if not lic:
         return LicenseCheckResponse(
             valid=False,
             plan="free",
-            status="none" if not lic else lic.status,
+            status="none",
             max_devices=1,
             beta_features=False,
             message="No active license. Contact support.",
@@ -69,13 +69,50 @@ def license_check(user: User = Depends(get_current_user)):
             beta_features=False,
             message="License expired. Contact support@useatlas.dev.",
         )
+    _INACTIVE_LICENSE_MESSAGES = {
+        "expired": "License expired. Contact support@useatlas.dev.",
+        "past_due": "Payment is past due. Update billing to continue using Atlas.",
+        "canceled": "Subscription canceled. Reactivate billing to continue using Atlas.",
+        "cancelled": "Subscription cancelled. Reactivate billing to continue using Atlas.",
+        "suspended": "License suspended. Contact support@useatlas.dev.",
+    }
+    if lic.status in _INACTIVE_LICENSE_MESSAGES:
+        return LicenseCheckResponse(
+            valid=False,
+            plan=lic.plan,
+            status=lic.status,
+            expires_at=lic.expires_at,
+            max_devices=lic.max_devices,
+            beta_features=False,
+            message=_INACTIVE_LICENSE_MESSAGES[lic.status],
+        )
+    if lic.status == "trial" and not lic.expires_at:
+        return LicenseCheckResponse(
+            valid=False,
+            plan=lic.plan,
+            status="trial_missing_expiry",
+            expires_at=lic.expires_at,
+            max_devices=lic.max_devices,
+            beta_features=False,
+            message="Trial license is missing an expiry date. Contact support@useatlas.dev.",
+        )
+    if lic.status not in {"active", "trial"}:
+        return LicenseCheckResponse(
+            valid=False,
+            plan=lic.plan,
+            status=lic.status,
+            expires_at=lic.expires_at,
+            max_devices=lic.max_devices,
+            beta_features=False,
+            message="No active license. Contact support.",
+        )
     return LicenseCheckResponse(
         valid=True,
         plan=lic.plan,
         status=lic.status,
         expires_at=lic.expires_at,
         max_devices=lic.max_devices,
-        beta_features=user.beta_flag or lic.plan == "beta",
+        beta_features=user.beta_flag or lic.plan in {"beta", "pro", "enterprise"},
     )
 
 

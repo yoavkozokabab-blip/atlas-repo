@@ -266,7 +266,7 @@
     if (status === 'device_revoked') {
       return { icon: '!', title: 'Device revoked', message: 'This device is no longer authorized for this account.', action: 'Sign in from an approved device or contact the Atlas operator.', showSignOut: true };
     }
-    if (status === 'expired' || status === 'license_check_failed') {
+    if (status === 'expired' || status === 'past_due' || status === 'canceled' || status === 'cancelled' || status === 'trial_missing_expiry' || status === 'license_check_failed') {
       return { icon: '!', title: 'Access inactive', message: 'Your Atlas access is not currently active.', action: 'Contact the Atlas operator if this looks wrong.', showSignOut: true };
     }
 

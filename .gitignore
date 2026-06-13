@@ -3,6 +3,9 @@ __pycache__/
 .pytest_tmp/
 tests_tmp/
 .jarvis_builder/
+.env
+.env.*
+!.env.example
 
 # Generated / runtime outputs (repo hygiene)
 data/llm_router_audit.jsonl

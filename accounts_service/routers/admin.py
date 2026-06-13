@@ -278,20 +278,39 @@ def update_user(
     if body.admin_notes is not None:
         user.admin_notes = body.admin_notes
 
+    after = {"status": user.status, "role": user.role, "beta_flag": user.beta_flag}
+
     # License changes
-    if body.plan is not None or body.max_devices is not None or body.expires_at is not None:
+    if (
+        body.plan is not None
+        or body.license_status is not None
+        or body.max_devices is not None
+        or body.expires_at is not None
+    ):
         lic = user.license
         if not lic:
             lic = License(user_id=user.user_id, plan="free", status="active", max_devices=1)
             db.add(lic)
+        before["license"] = {
+            "plan": lic.plan,
+            "status": lic.status,
+            "max_devices": lic.max_devices,
+            "expires_at": lic.expires_at.isoformat() if lic.expires_at else None,
+        }
         if body.plan is not None:
             lic.plan = body.plan
+        if body.license_status is not None:
+            lic.status = body.license_status
         if body.max_devices is not None:
             lic.max_devices = body.max_devices
         if body.expires_at is not None:
             lic.expires_at = body.expires_at
-
-    after = {"status": user.status, "role": user.role, "beta_flag": user.beta_flag}
+        after["license"] = {
+            "plan": lic.plan,
+            "status": lic.status,
+            "max_devices": lic.max_devices,
+            "expires_at": lic.expires_at.isoformat() if lic.expires_at else None,
+        }
 
     _audit(db, admin, "update_user", user, metadata={"before": before, "after": after})
     db.commit()

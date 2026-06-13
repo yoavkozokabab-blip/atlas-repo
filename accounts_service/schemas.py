@@ -240,6 +240,7 @@ class AdminUserUpdate(BaseModel):
     role: Optional[Literal["user", "admin", "superadmin"]] = None
     beta_flag: Optional[bool] = None
     plan: Optional[Literal["beta", "free", "pro", "enterprise"]] = None
+    license_status: Optional[Literal["active", "trial", "expired", "past_due", "canceled", "cancelled", "suspended"]] = None
     max_devices: Optional[int] = None
     expires_at: Optional[datetime] = None
     admin_notes: Optional[str] = None
