@@ -1085,6 +1085,20 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
                 )
             except Exception:
                 pass
+        else:
+            # License integration (opt-in via ATLAS_LICENSING_ENABLED): emit a
+            # repo_scanned analytics event and, for Free users over the cap,
+            # attach an upgrade notice. No-ops when licensing is disabled.
+            try:
+                from licensing.integration import record_repo_scanned, apply_scan_limit
+                scan_state = _STATE.get("scan") or {}
+                file_count = int(scan_state.get("file_count") or 0)
+                record_repo_scanned(file_count, scan_state.get("language_breakdown") or {})
+                _kept, notice = apply_scan_limit(range(file_count))
+                if notice is not None:
+                    result["license_notice"] = notice
+            except Exception:
+                pass
         return result
 
 
@@ -3064,6 +3078,14 @@ def current_hierarchy_graph(level: str = "subsystem", parent: str = "") -> Dict[
 
 def impact(target: str) -> Dict[str, Any]:
     """Legacy impact route — prefer POST /api/planning/impact (modern engine)."""
+    # License gate (opt-in via ATLAS_LICENSING_ENABLED) — Impact Analysis is Pro.
+    try:
+        from licensing.integration import require_feature
+        _gate = require_feature("impact_analysis")
+        if _gate is not None:
+            return _gate
+    except Exception:
+        pass
     graph = _STATE.get("graph")
     if not graph or not target:
         return {
@@ -3199,6 +3221,14 @@ def plan_change(request: str) -> Dict[str, Any]:
 
 def investigate_symptom(symptom: str) -> Dict[str, Any]:
     """Symptom-based investigation plan (natural language, not trace-only)."""
+    # License gate (opt-in via ATLAS_LICENSING_ENABLED) — Investigation is Pro.
+    try:
+        from licensing.integration import require_feature
+        _gate = require_feature("investigation")
+        if _gate is not None:
+            return _gate
+    except Exception:
+        pass
     with _ti.state_guard():
         if not _STATE.get("scan"):
             return {"ok": False, "error": "No repository scanned yet.", "code": "requires_rescan"}
