@@ -83,8 +83,13 @@ TOOLS: List[Dict[str, Any]] = [
             properties={
                 "repo_path": {"type": "string", "description": "Optional path that must match the current scan."},
                 "target": {"type": "string", "description": "File path, module path, or supported semantic target."},
+                "changed_files": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "Alias for `target`: one or more changed file paths. The first is analyzed.",
+                },
             },
-            required=["target"],
+            required=[],
         ),
     },
     {
@@ -403,7 +408,14 @@ def call_tool(name: str, arguments: Optional[Dict[str, Any]] = None) -> Dict[str
                 return err
             target = str(args.get("target") or "").strip()
             if not target:
-                return _err("missing_target", "`target` is required.")
+                # Accept `changed_files: [...]` (or `changed_file`) as an alias for `target`.
+                changed = args.get("changed_files") or args.get("changed_file")
+                if isinstance(changed, str):
+                    target = changed.strip()
+                elif isinstance(changed, (list, tuple)) and changed:
+                    target = str(changed[0]).strip()
+            if not target:
+                return _err("missing_target", "`target` (or `changed_files`) is required.")
             return _sanitize(_compact_impact(api.change_impact_simulation(target)))
 
         if name == "atlas_plan_change":

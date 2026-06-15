@@ -36,11 +36,22 @@ def _launcher_log(message: str) -> None:
 
 
 def _install_source_excepthook() -> None:
-    """175D — log fatals locally and open startup-error instead of a console traceback."""
+    """175D/182 — log fatals + record crash, then open startup-error page."""
     import traceback
 
     def _hook(exc_type, exc, tb) -> None:
-        _launcher_log("FATAL: " + "".join(traceback.format_exception(exc_type, exc, tb))[:8000])
+        summary = "".join(traceback.format_exception(exc_type, exc, tb))
+        _launcher_log("FATAL: " + summary[:8000])
+        try:
+            from jarvis_desktop import operations as _ops
+            _ops.record_crash(
+                "startup_crash",
+                str(exc)[:500] or exc_type.__name__,
+                exc_type=exc_type.__name__,
+                context={"summary": summary[:1000]},
+            )
+        except Exception:
+            pass
         try:
             from jarvis_desktop import server
 
@@ -93,6 +104,42 @@ def _run_self_test_cli() -> int:
     return 0 if result.get("ready") else 1
 
 
+def _run_mcp_stdio() -> int:
+    """Run the local MCP stdio server.
+
+    stdout is the JSON-RPC transport, so nothing else may write to it. In source
+    mode sys.stdin/stdout are real. In a frozen windowed build (console=False)
+    Python sets sys.stdin/stdout to None even when the parent (an MCP client)
+    connected pipes to fds 0/1 — so we rebind them from the raw OS handles.
+    """
+    import io
+    import os
+
+    try:
+        if sys.stdin is None or getattr(sys.stdin, "buffer", None) is None:
+            sys.stdin = io.TextIOWrapper(io.FileIO(0, "rb"), encoding="utf-8")
+        if sys.stdout is None or getattr(sys.stdout, "buffer", None) is None:
+            sys.stdout = io.TextIOWrapper(io.FileIO(1, "wb"), encoding="utf-8")
+        if sys.stderr is None or getattr(sys.stderr, "buffer", None) is None:
+            # stderr must never reach the transport; route to the launcher log file.
+            sys.stderr = open(os.devnull, "w", encoding="utf-8")
+    except Exception as exc:  # pragma: no cover - last-resort guard
+        _launcher_log(f"mcp stdio rebind failed: {type(exc).__name__}: {exc}")
+
+    try:
+        from jarvis_desktop.mcp_server.runtime import serve_stdio
+    except Exception as exc:
+        _launcher_log(f"mcp import failed: {type(exc).__name__}: {exc}")
+        return 1
+
+    _launcher_log("mcp stdio server starting")
+    try:
+        return int(serve_stdio() or 0)
+    except Exception as exc:
+        _launcher_log(f"mcp stdio server crashed: {type(exc).__name__}: {exc}")
+        return 1
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Atlas Repository Intelligence — launcher")
     ap.add_argument("--host", default="127.0.0.1")
@@ -101,10 +148,18 @@ def main() -> int:
     ap.add_argument("--fastapi", action="store_true", help="Use FastAPI/uvicorn if installed.")
     ap.add_argument("--support", action="store_true", help="Open Support & diagnostics page.")
     ap.add_argument("--self-test", action="store_true", help="Run the installer self-test and exit.")
+    ap.add_argument(
+        "--mcp",
+        action="store_true",
+        help="Run the local MCP stdio server (for Claude Desktop / Cursor / Codex).",
+    )
     args = ap.parse_args()
 
     if getattr(args, "self_test", False):
         return _run_self_test_cli()
+
+    if getattr(args, "mcp", False):
+        return _run_mcp_stdio()
 
     from jarvis_desktop.install_support import append_launcher_log, installer_self_test, startup_checks
     from jarvis_desktop import server
