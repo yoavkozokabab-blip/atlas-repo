@@ -1,293 +1,278 @@
-import Image from "next/image";
-import {
-  ArrowRight,
-  Bot,
-  Brain,
-  Cpu,
-  Database,
-  Gauge,
-  Layers3,
-  LockKeyhole,
-  Mic2,
-  Network,
-  Play,
-  Search,
-  Send,
-  Sparkles,
-  Workflow,
-  Wrench
-} from "lucide-react";
-
-const features = [
-  {
-    title: "Voice",
-    copy: "Speak naturally and move from intent to action without digging through interfaces.",
-    icon: Mic2,
-    accent: "cyan"
-  },
-  {
-    title: "Tool Use",
-    copy: "Route commands through a controlled registry of local tools, apps, and workflows.",
-    icon: Wrench,
-    accent: "platinum"
-  },
-  {
-    title: "Research",
-    copy: "Scan context, inspect evidence, compare sources, and return concise operational answers.",
-    icon: Search,
-    accent: "blue"
-  },
-  {
-    title: "Memory",
-    copy: "Keep durable context for projects, preferences, sessions, and ongoing decisions.",
-    icon: Database,
-    accent: "green"
-  },
-  {
-    title: "Automation",
-    copy: "Schedule, monitor, recover, and continue important work with human approval intact.",
-    icon: Workflow,
-    accent: "gold"
-  }
-];
-
-const demoEvents = [
-  ["Wake", "Voice detected", "42 ms"],
-  ["Understand", "show failing tests", "118 ms"],
-  ["Route", "security + registry", "9 ms"],
-  ["Act", "pytest diagnostics", "1.2 s"],
-  ["Respond", "summary ready", "240 ms"]
-];
-
-const architecture = [
-  {
-    title: "Interface Layer",
-    copy: "Voice, console, overlay, and dashboard surfaces feed one command path.",
-    icon: Layers3
-  },
-  {
-    title: "Policy Core",
-    copy: "Router, security, registry, and approvals keep actions explicit and bounded.",
-    icon: LockKeyhole
-  },
-  {
-    title: "Runtime Mesh",
-    copy: "Workers, watchdogs, traces, and queues keep the operating system responsive.",
-    icon: Network
-  },
-  {
-    title: "Intelligence Plane",
-    copy: "Research, memory, automation, and tool selection compound across sessions.",
-    icon: Brain
-  }
-];
+import Link from "next/link";
+import { SiteNav, SiteFooter } from "./_components/site";
 
 export default function Home() {
   return (
-    <main>
-      <header className="site-header" aria-label="Main navigation">
-        <a className="brand" href="#top" aria-label="JARVIS home">
-          <span className="brand-mark" aria-hidden="true" />
-          JARVIS
-        </a>
-        <nav className="nav-links">
-          <a href="#features">Features</a>
-          <a href="#demo">Demo</a>
-          <a href="#architecture">Architecture</a>
-        </nav>
-        <a className="nav-cta" href="#waitlist">
-          Join <ArrowRight size={16} strokeWidth={1.8} />
-        </a>
-      </header>
+    <>
+      {/* NAV */}
+      <SiteNav />
 
-      <section className="hero" id="top">
-        <Image
-          src="/jarvis-hero.png"
-          alt="Dark futuristic AI operating system interface"
-          fill
-          priority
-          sizes="100vw"
-          className="hero-image"
-        />
-        <div className="hero-shade" aria-hidden="true" />
-        <div className="scan-grid" aria-hidden="true" />
-
-        <div className="hero-content">
-          <div className="eyebrow">
-            <Sparkles size={15} strokeWidth={1.7} />
-            Private alpha now forming
-          </div>
-          <h1>JARVIS</h1>
-          <p className="hero-subtitle">Personal AI Operating System</p>
-          <p className="hero-copy">
-            A voice-native command layer for tools, research, memory, and automation.
-            Designed for people who want an AI that operates with context, restraint,
-            and speed.
-          </p>
-          <div className="hero-actions">
-            <a className="button button-primary" href="#waitlist">
-              Join waitlist <ArrowRight size={18} strokeWidth={1.8} />
-            </a>
-            <a className="button button-secondary" href="#demo">
-              <Play size={17} fill="currentColor" strokeWidth={1.8} />
-              Watch demo
-            </a>
-          </div>
-          <dl className="hero-metrics" aria-label="JARVIS performance highlights">
+      <main>
+        {/* HERO */}
+        <section className="hero">
+          <div className="container hero-grid">
             <div>
-              <dt>Sub-second</dt>
-              <dd>voice loop target</dd>
-            </div>
-            <div>
-              <dt>Local-first</dt>
-              <dd>tool routing</dd>
-            </div>
-            <div>
-              <dt>Human-led</dt>
-              <dd>automation</dd>
-            </div>
-          </dl>
-        </div>
-      </section>
-
-      <section className="section section-intro" aria-label="Operating system thesis">
-        <div className="section-shell intro-grid">
-          <p className="kicker">Not another chat window</p>
-          <h2>An AI layer that understands the work surface.</h2>
-          <p>
-            JARVIS connects conversation to operating context: the active window,
-            project memory, available tools, runtime health, and the command registry
-            that decides what can actually run.
-          </p>
-        </div>
-      </section>
-
-      <section className="section" id="features">
-        <div className="section-shell">
-          <div className="section-heading">
-            <p className="kicker">Core capabilities</p>
-            <h2>Everything important, routed through one trusted command path.</h2>
-          </div>
-
-          <div className="feature-grid">
-            {features.map((feature) => {
-              const Icon = feature.icon;
-              return (
-                <article className={`feature-card accent-${feature.accent}`} key={feature.title}>
-                  <div className="feature-icon" aria-hidden="true">
-                    <Icon size={22} strokeWidth={1.7} />
-                  </div>
-                  <h3>{feature.title}</h3>
-                  <p>{feature.copy}</p>
-                </article>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className="section demo-section" id="demo">
-        <div className="section-shell demo-grid">
-          <div className="demo-copy">
-            <p className="kicker">Live command demo</p>
-            <h2>Say it once. JARVIS handles the route.</h2>
-            <p>
-              The demo surface shows the full lifecycle from voice detection to
-              final response. Partial understanding can update the HUD, while final
-              execution still passes through the router, security checks, and registry.
-            </p>
-            <div className="signal-row" aria-label="Runtime qualities">
-              <span><Gauge size={16} /> Low latency</span>
-              <span><LockKeyhole size={16} /> Approval aware</span>
-              <span><Cpu size={16} /> Local runtime</span>
-            </div>
-          </div>
-
-          <div className="demo-console" aria-label="JARVIS demo console">
-            <div className="console-bar">
-              <span />
-              <span />
-              <span />
-              <strong>voice session</strong>
-            </div>
-            <div className="console-body">
-              <p className="prompt">User</p>
-              <p className="command">&quot;JARVIS, review the latest patch and show failing tests.&quot;</p>
-              <div className="event-list">
-                {demoEvents.map(([phase, detail, time]) => (
-                  <div className="event-row" key={phase}>
-                    <span className="phase">{phase}</span>
-                    <span>{detail}</span>
-                    <time>{time}</time>
-                  </div>
-                ))}
+              <p className="eyebrow">Repository intelligence · local-first</p>
+              <h1>
+                Stop making AI <span className="grad">re-read your repository.</span>
+              </h1>
+              <p>
+                Atlas maps your codebase once, on your machine, into architecture, a
+                dependency graph, risk and impact — then hands Claude, Codex and
+                Cursor evidence-backed context instead of letting them guess.
+              </p>
+              <div className="hero-actions">
+                <Link className="btn btn-primary btn-lg" href="/download">Download for Windows</Link>
+                <a className="btn btn-ghost btn-lg" href="#see-it-work">See it work</a>
               </div>
-              <div className="response">
-                <Bot size={18} strokeWidth={1.7} />
-                <p>Two regressions found. Screenshot pruning is fixed. Runtime checks pass.</p>
+              <p className="hero-note">Free to start · your code never leaves your machine</p>
+            </div>
+            <div className="hero-visual">
+              <GraphCard />
+            </div>
+          </div>
+        </section>
+
+        {/* PROOF */}
+        <div className="container">
+          <div className="proof" aria-label="Works with">
+            <span>WORKS WITH</span>
+            <span>Claude</span><span>Codex</span><span>Cursor</span><span>Copilot</span>
+          </div>
+        </div>
+
+        {/* PILLARS */}
+        <section className="section">
+          <div className="container">
+            <div className="grid-3">
+              <Pillar t="Understands" d="Builds a real map of your repo — subsystems, a dependency graph, hubs and architectural risk — not a flat file dump." />
+              <Pillar t="Grounds" d="Evidence-backed plans that name the exact files. Atlas refuses stale or unverifiable context rather than hallucinating." />
+              <Pillar t="Stays private" d="Local-first by design. Scanning and analysis run on your machine; only the context you choose to copy ever leaves it." />
+            </div>
+          </div>
+        </section>
+
+        {/* SEE IT WORK */}
+        <section className="section" id="see-it-work">
+          <div className="container">
+            <div className="grid-2">
+              <div>
+                <p className="eyebrow">See it work</p>
+                <h2>The context your agent actually needs.</h2>
+                <p className="lead" style={{ marginTop: 18 }}>
+                  Point Atlas at a repo, describe a change, and it returns the files
+                  to touch, what may break, and the verification steps — then exports
+                  a clean, compact packet for your AI tool. No internal noise, no
+                  guessing.
+                </p>
+              </div>
+              <div className="terminal" role="img" aria-label="Example Atlas context export for Claude">
+                <div className="head">
+                  <span className="dot" /><span className="dot" /><span className="dot" />
+                </div>
+                <pre>{`# ATLAS REPOSITORY CONTEXT — your-service
+scope=full  modules=73  edges=159  cycles=0
+
+## CHANGE PLAN — "add authentication"
+files to inspect first:
+  services/auth.py        # entry point
+  api/routes.py           # wire the middleware
+likely to break:
+  api/handlers.py         # depends on auth
+verify:
+  tests/test_auth.py
+
+`}<span className="c"># confidence: medium-high · evidence-backed</span></pre>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="section architecture-section" id="architecture">
-        <div className="section-shell">
-          <div className="section-heading">
-            <p className="kicker">Architecture</p>
-            <h2>Built like an operating layer, not a novelty assistant.</h2>
+        {/* FEATURES */}
+        <section className="section">
+          <div className="container">
+            <p className="eyebrow center">Built for serious codebases</p>
+            <h2 className="center" style={{ marginBottom: 40 }}>Everything your AI is missing about your repo.</h2>
+            <div className="grid-3">
+              <Feature ic="{}" t="Dependency graph" d="A precise, navigable map of how your modules really connect — hubs, cycles and blast radius." />
+              <Feature ic="Δ" t="Impact analysis" d="Change a file, see exactly what depends on it and which tests to run before you ship." />
+              <Feature ic="?" t="Investigation mode" d="Trace a symptom to the likely files with grounded evidence, not vibes." />
+              <Feature ic="!" t="Risk detection" d="Surface the architectural risk hotspots that make changes dangerous." />
+              <Feature ic="⌘" t="AI context export" d="One click to a compact, evidence-backed packet for Claude, Codex or Cursor." />
+              <Feature ic="◐" t="Local-first" d="No upload, no cloud scan. Your source stays on your machine, always." />
+            </div>
           </div>
+        </section>
 
-          <div className="architecture-map">
-            {architecture.map((layer, index) => {
-              const Icon = layer.icon;
-              return (
-                <article className="architecture-node" key={layer.title}>
-                  <span className="node-index">0{index + 1}</span>
-                  <Icon size={22} strokeWidth={1.7} aria-hidden="true" />
-                  <h3>{layer.title}</h3>
-                  <p>{layer.copy}</p>
-                </article>
-              );
-            })}
+        {/* TRUST / LOCAL-FIRST */}
+        <section className="section">
+          <div className="container">
+            <div className="band">
+              <div>
+                <p className="eyebrow">Private by design</p>
+                <h2>Your code never leaves your machine.</h2>
+                <p style={{ marginTop: 16 }}>
+                  Atlas runs locally. Repository scanning, the dependency graph and
+                  analysis all happen on your device. The only thing that travels is
+                  the compact context you explicitly copy into your AI tool.
+                </p>
+              </div>
+              <div className="flow" aria-label="Data flow">
+                <div className="row"><span className="tag local">LOCAL</span> Repository scan + dependency graph</div>
+                <div className="row"><span className="tag local">LOCAL</span> Architecture, risk &amp; impact analysis</div>
+                <div className="row"><span className="tag local">LOCAL</span> Context packet generated on your machine</div>
+                <div className="row"><span className="tag net">YOU CHOOSE</span> Paste the packet into Claude / Codex / Cursor</div>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="section waitlist-section" id="waitlist">
-        <div className="section-shell waitlist-panel">
-          <div>
-            <p className="kicker">Join waitlist</p>
-            <h2>Build your personal command layer.</h2>
-            <p>
-              Early access is for builders, operators, and researchers who want
-              an AI that can understand context and execute through guardrails.
+        {/* PRICING TEASER */}
+        <section className="section">
+          <div className="container">
+            <p className="eyebrow center">Pricing</p>
+            <h2 className="center" style={{ marginBottom: 40 }}>Simple pricing for serious codebases.</h2>
+            <div className="tiers">
+              <div className="tier">
+                <h3>Free</h3>
+                <div className="price">$0</div>
+                <ul>
+                  <li>Local scanning &amp; architecture map</li>
+                  <li>One repository</li>
+                  <li>Basic Change Plans</li>
+                </ul>
+                <Link className="btn btn-ghost" href="/download">Download</Link>
+              </div>
+              <div className="tier feat">
+                <h3>Pro</h3>
+                <div className="price">$29<small> / month</small></div>
+                <ul>
+                  <li>Unlimited repositories</li>
+                  <li>Impact analysis &amp; investigation</li>
+                  <li>AI context compression</li>
+                  <li>Architecture risk detection</li>
+                  <li>Priority support</li>
+                </ul>
+                <Link className="btn btn-primary" href="/checkout/plan/pro">Start 7-day trial</Link>
+              </div>
+              <div className="tier">
+                <h3>Team</h3>
+                <div className="price">Talk to us</div>
+                <ul>
+                  <li>Shared context &amp; seats</li>
+                  <li>SSO</li>
+                  <li>For engineering teams</li>
+                </ul>
+                <Link className="btn btn-ghost" href="/contact">Contact</Link>
+              </div>
+            </div>
+            <p className="center muted" style={{ marginTop: 22, fontSize: "0.85rem" }}>
+              Local-first · 7-day trial, no card · cancel anytime
             </p>
           </div>
-          <form className="waitlist-form" action="/api/waitlist" method="post">
-            <label htmlFor="email">Email</label>
-            <div className="form-row">
-              <input id="email" name="email" type="email" placeholder="you@company.com" required />
-              <button className="button button-primary" type="submit">
-                <Send size={17} strokeWidth={1.8} />
-                Request access
-              </button>
-            </div>
-            <label htmlFor="role">What will you run with JARVIS?</label>
-            <input
-              id="role"
-              name="role"
-              type="text"
-              placeholder="Research, dev tools, trading ops, personal automation..."
-            />
-          </form>
-        </div>
-      </section>
+        </section>
 
-      <footer className="site-footer">
-        <span>JARVIS</span>
-        <span>Personal AI Operating System</span>
-      </footer>
-    </main>
+        {/* FAQ TEASER */}
+        <section className="section">
+          <div className="container" style={{ maxWidth: 760 }}>
+            <p className="eyebrow center">FAQ</p>
+            <h2 className="center" style={{ marginBottom: 32 }}>Questions, answered.</h2>
+            <div className="faq">
+              <details open>
+                <summary>Does my code leave my machine?</summary>
+                <p>No. Scanning and analysis run locally; only the compact context you choose to copy goes wherever you paste it.</p>
+              </details>
+              <details>
+                <summary>Does Atlas replace Claude, Codex or Cursor?</summary>
+                <p>No — it makes them better by giving them your repository&apos;s real structure instead of letting them guess.</p>
+              </details>
+              <details>
+                <summary>Will it invent files or give stale context?</summary>
+                <p>No. Atlas is evidence-backed and refuses stale or unverifiable context rather than hallucinating.</p>
+              </details>
+              <details>
+                <summary>What platforms are supported?</summary>
+                <p>Windows today. macOS and Linux are on the waitlist.</p>
+              </details>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="section">
+          <div className="container">
+            <div className="cta">
+              <h2>Make your AI fluent in your codebase.</h2>
+              <p className="center" style={{ marginTop: 14, marginBottom: 28 }}>
+                Local. Deterministic. Free to start.
+              </p>
+              <Link className="btn btn-primary btn-lg" href="/download">Download Atlas</Link>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* FOOTER */}
+      <SiteFooter />
+    </>
+  );
+}
+
+function Pillar({ t, d }: { t: string; d: string }) {
+  return (
+    <div className="card">
+      <h3>{t}</h3>
+      <p>{d}</p>
+    </div>
+  );
+}
+
+function Feature({ ic, t, d }: { ic: string; t: string; d: string }) {
+  return (
+    <div className="card">
+      <div className="ic mono" aria-hidden>{ic}</div>
+      <h3>{t}</h3>
+      <p>{d}</p>
+    </div>
+  );
+}
+
+function GraphCard() {
+  const nodes = [
+    { x: 70, y: 60, r: 9, hub: true },
+    { x: 180, y: 40, r: 5, hub: false },
+    { x: 250, y: 110, r: 7, hub: true },
+    { x: 130, y: 130, r: 5, hub: false },
+    { x: 60, y: 170, r: 5, hub: false },
+    { x: 200, y: 190, r: 6, hub: false },
+    { x: 300, y: 60, r: 5, hub: false },
+    { x: 320, y: 170, r: 5, hub: false }
+  ];
+  const edges = [
+    [0, 1], [0, 3], [0, 4], [1, 2], [2, 5], [2, 6], [3, 5], [2, 7], [6, 7]
+  ];
+  return (
+    <div className="graph-card">
+      <div className="bar"><span className="dot" /><span className="dot" /><span className="dot" /></div>
+      <svg viewBox="0 0 360 230" width="100%" height="auto" role="img" aria-label="Dependency graph visualization">
+        {edges.map(([a, b], i) => (
+          <line
+            key={i}
+            className={i % 3 === 0 ? "edge bridge" : "edge"}
+            x1={nodes[a].x} y1={nodes[a].y} x2={nodes[b].x} y2={nodes[b].y}
+            strokeWidth={i % 3 === 0 ? 1.6 : 0.9}
+          />
+        ))}
+        {nodes.map((n, i) => (
+          <circle
+            key={i}
+            className={n.hub ? "pulse" : undefined}
+            cx={n.x} cy={n.y} r={n.r}
+            fill={n.hub ? "var(--accent)" : "var(--accent-2)"}
+            opacity={n.hub ? 1 : 0.7}
+          />
+        ))}
+      </svg>
+    </div>
   );
 }

@@ -1,28 +1,41 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
+const TITLE = "Atlas — Local-first repository intelligence for AI engineering";
+const DESC =
+  "Atlas maps your codebase locally into architecture, a dependency graph, risk and impact — then exports evidence-backed context so Claude, Codex and Cursor start with the structure instead of re-reading files. Your code never leaves your machine.";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://jarvis.local"),
-  title: "JARVIS - Personal AI Operating System",
-  description:
-    "A premium personal AI operating system for voice, tools, research, memory, and automation.",
+  metadataBase: new URL("https://useatlas.dev"),
+  title: TITLE,
+  description: DESC,
+  applicationName: "Atlas",
+  keywords: [
+    "repository intelligence",
+    "AI coding context",
+    "dependency graph",
+    "Claude",
+    "Codex",
+    "Cursor",
+    "local-first developer tools"
+  ],
   openGraph: {
-    title: "JARVIS - Personal AI Operating System",
-    description:
-      "Voice-native intelligence, local tools, durable memory, and automation in one elegant operating layer.",
-    images: [
-      {
-        url: "/jarvis-hero.png",
-        width: 1536,
-        height: 864,
-        alt: "Futuristic JARVIS AI operating system interface"
-      }
-    ]
-  }
+    type: "website",
+    url: "https://useatlas.dev",
+    siteName: "Atlas",
+    title: TITLE,
+    description: DESC
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESC
+  },
+  robots: { index: true, follow: true }
 };
 
 export const viewport: Viewport = {
-  themeColor: "#050608",
+  themeColor: "#06070A",
   colorScheme: "dark",
   width: "device-width",
   initialScale: 1
@@ -30,9 +43,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({
   children
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body>{children}</body>
