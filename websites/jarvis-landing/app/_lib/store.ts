@@ -114,6 +114,15 @@ function load(): DBShape {
   }
 }
 function persist(db: DBShape): void {
+  // Safety: the file backend is ephemeral on serverless. Never let it silently
+  // accept writes in production — that would lose data on the next redeploy.
+  // Fail loudly so the bug is visible (and /api/health already reports not-ok).
+  if (ENV.isProd && !ENV.hasSupabase) {
+    throw new Error(
+      "Refusing to persist to the local file store in production. Set SUPABASE_URL and " +
+        "SUPABASE_SERVICE_ROLE_KEY (see docs/SUPABASE_SETUP.md)."
+    );
+  }
   const p = dbPath();
   fs.mkdirSync(path.dirname(p), { recursive: true });
   fs.writeFileSync(p, JSON.stringify(db, null, 2), "utf8");
@@ -348,6 +357,13 @@ const supabaseStore: Store = {
 };
 
 export function getStore(): Store {
+  if (ENV.isProd && !ENV.hasSupabase) {
+    // Visible in Vercel logs. Writes will throw (see persist); /api/health reports not-ok.
+    console.error(
+      "[atlas] PRODUCTION without Supabase — file store is ephemeral. Set SUPABASE_URL + " +
+        "SUPABASE_SERVICE_ROLE_KEY. Writes are disabled until then."
+    );
+  }
   return ENV.hasSupabase ? supabaseStore : fileStore;
 }
 
