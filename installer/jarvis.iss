@@ -1,6 +1,6 @@
-; Atlas - Windows installer (Inno Setup 6, Phase 150)
+; Atlas - Windows installer (Inno Setup 6)
 #define MyAppName "Atlas"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "0.1.0-beta"
 #define MyAppPublisher "Atlas"
 #define MyAppURL "https://github.com/atlas"
 #define MyAppExeName "Atlas.exe"
