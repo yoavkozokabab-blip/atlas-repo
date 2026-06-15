@@ -42,11 +42,15 @@ data. Corrected to remove `{%USERPROFILE}\.jarvis_desktop` and `{localappdata}\A
 
 ## WARN detail
 
-- **Staging staleness / split release flow.** `build_atlas_exe.ps1` produces `dist/Atlas`
-  but does **not** populate `staging/` or run Inno; `installer/jarvis.iss` bundles
-  `..\staging\*`, and on-disk `staging/Atlas.exe` is **2026-06-04** (stale) while `dist` is
-  06-15. A naive Inno rebuild would ship a June-4 build. The release process must refresh
-  `staging` from `dist` every time — addressed in `docs/RELEASE_PROCESS.md` (P6).
+- **Two installer setups — use the canonical one.** The shipped artifact is built by
+  `packaging/installer/installer_build.ps1` + `packaging/installer/Atlas.iss`, which
+  **does** refresh `packaging/installer/staging/` from `dist/Atlas` and auto-generates the
+  version (`generated_version.iss` = `0.1.0-beta`). The website serves
+  `packaging/installer/output/Atlas_Setup.exe` (byte-identical to the hashed copy). The
+  **legacy** `installer/jarvis.iss` bundles a stale top-level `staging/` (06-04) and must
+  not be used. Documented in `docs/RELEASE_PROCESS.md` (P6). *(Correction: the version
+  "mismatch" only existed in the unused legacy `jarvis.iss`; the shipped installer was
+  already `0.1.0-beta`.)*
 - **Publisher URL placeholder** shows a dead link in Add/Remove Programs. Set to the real
   site (`https://useatlas.dev`) before public beta.
 - **Unsigned installer** triggers SmartScreen "unknown publisher." Known external blocker
