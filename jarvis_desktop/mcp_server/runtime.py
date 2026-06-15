@@ -18,7 +18,8 @@ from .. import api, repository_memory as repo_memory
 from ..context_pack import build_context_pack_from_state
 
 MCP_PROTOCOL_VERSION = "2024-11-05"
-ATLAS_MCP_VERSION = "1.0.0"
+# Server version reported in initialize.serverInfo — kept in step with the app.
+ATLAS_MCP_VERSION = "0.1.0-beta"
 
 _SECRET_KEY_RE = re.compile(
     r"(secret|token|password|passwd|api[_-]?key|authorization|bearer|cookie|session|credential)",

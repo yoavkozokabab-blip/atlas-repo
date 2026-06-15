@@ -41,4 +41,9 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilen
 Filename: "{app}\{#MyAppExeName}"; Description: "Launch {#MyAppName}"; Flags: nowait postinstall skipifsilent
 
 [UninstallDelete]
-Type: filesandordirs; Name: "{userappdata}\.jarvis_desktop"
+; Match the actual data-dir candidates resolved by jarvis_desktop/data_paths.py:
+;   1) %USERPROFILE%\.jarvis_desktop  2) %LOCALAPPDATA%\Atlas\desktop_data
+; (The old {userappdata}\.jarvis_desktop path was %APPDATA% and never matched, so
+;  uninstall left user data behind.)
+Type: filesandordirs; Name: "{%USERPROFILE}\.jarvis_desktop"
+Type: filesandordirs; Name: "{localappdata}\Atlas"
