@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteNav, SiteFooter } from "../_components/site";
+import { WaitlistForm } from "../_components/waitlist";
 import { currentUser } from "../_lib/auth";
 import { ENV } from "../_lib/config";
 
@@ -69,10 +70,14 @@ export default async function DownloadPage() {
                 <li>Describe a change and generate your first Change Plan.</li>
                 <li>Click <b>Copy for Claude / Cursor / Codex</b> and paste it into your AI tool.</li>
               </ol>
-              <p className="note" style={{ marginTop: 18 }}>
-                On macOS or Linux? <Link href="/contact" style={{ color: "var(--accent)" }}>Tell us</Link> —
-                binaries are on the roadmap.
-              </p>
+              <div style={{ marginTop: 24 }}>
+                <h3 style={{ fontSize: "1rem" }}>On macOS or Linux?</h3>
+                <p className="note" style={{ marginTop: 8, marginBottom: 12 }}>
+                  Binaries are on the roadmap — join the waitlist and we&apos;ll email you
+                  when your platform is ready.
+                </p>
+                <WaitlistForm source="download-macos-linux" compact />
+              </div>
             </div>
           </div>
         </section>

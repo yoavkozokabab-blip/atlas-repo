@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SiteNav, SiteFooter } from "./_components/site";
+import { WaitlistForm } from "./_components/waitlist";
 
 export default function Home() {
   return (
@@ -194,6 +195,28 @@ verify:
                 <summary>What platforms are supported?</summary>
                 <p>Windows today. macOS and Linux are on the waitlist.</p>
               </details>
+            </div>
+          </div>
+        </section>
+
+        {/* WAITLIST */}
+        <section className="section" id="waitlist">
+          <div className="container" style={{ maxWidth: 760 }}>
+            <div className="band">
+              <div>
+                <p className="eyebrow">Private beta</p>
+                <h2>Not on Windows yet? Get your beta invite.</h2>
+                <p style={{ marginTop: 14 }}>
+                  Atlas is Windows-first today. Drop your email and tell us what you use —
+                  we&apos;ll send your invite and prioritize macOS / Linux by demand.
+                </p>
+              </div>
+              <div style={{ alignSelf: "center", width: "100%" }}>
+                <WaitlistForm source="landing" />
+                <p className="muted" style={{ marginTop: 10, fontSize: "0.8rem" }}>
+                  No spam. One email when your platform is ready.
+                </p>
+              </div>
             </div>
           </div>
         </section>
