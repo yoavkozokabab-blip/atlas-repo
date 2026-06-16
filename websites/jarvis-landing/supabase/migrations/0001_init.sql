@@ -73,3 +73,15 @@ alter table public.users        enable row level security;
 alter table public.audit        enable row level security;
 alter table public.reset_tokens enable row level security;
 alter table public.waitlist     enable row level security;
+
+-- ---------------------------------------------------------------------------
+-- Grants: the server uses the SERVICE ROLE key. service_role has BYPASSRLS, but
+-- Postgres still requires table-level privileges (RLS bypass and GRANTs are two
+-- separate layers). Without these, every query returns 42501 "permission denied".
+-- anon/authenticated are intentionally NOT granted, so RLS + no-policies keeps
+-- them locked out. Idempotent — safe to re-run.
+-- ---------------------------------------------------------------------------
+grant usage on schema public to service_role;
+grant select, insert, update, delete on
+  public.users, public.audit, public.reset_tokens, public.waitlist
+  to service_role;

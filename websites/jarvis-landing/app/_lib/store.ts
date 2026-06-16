@@ -223,10 +223,19 @@ function rowToUser(r: Row): User {
   };
 }
 
+// Normalize SUPABASE_URL to the PostgREST base. Accepts either the bare project
+// URL (https://x.supabase.co) or one that already includes the REST path
+// (…/rest/v1[/]). Trailing slashes and a trailing /rest/v1 are stripped so we
+// never produce a doubled "/rest/v1/rest/v1/<table>" (PGRST125 "Invalid path").
+function restBase(): string {
+  const raw = (process.env.SUPABASE_URL || "").trim().replace(/\/+$/, "");
+  const origin = raw.replace(/\/rest\/v1$/i, "");
+  return `${origin}/rest/v1`;
+}
+
 async function sb(pathAndQuery: string, init: RequestInit = {}): Promise<Response> {
-  const base = process.env.SUPABASE_URL!.replace(/\/$/, "");
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-  return fetch(`${base}/rest/v1/${pathAndQuery}`, {
+  return fetch(`${restBase()}/${pathAndQuery}`, {
     ...init,
     cache: "no-store",
     headers: {
