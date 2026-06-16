@@ -4,3 +4,11 @@ out
 waitlist.jsonl
 .waitlist
 *.tsbuildinfo
+
+# Local environment config — never commit (contact email, API keys, secrets)
+.env
+.env.local
+.env*.local
+
+# Local test-mode data store (users, audit) — never commit
+.data
