@@ -60,6 +60,15 @@ export default async function DownloadPage() {
                 show a warning on first run. Click <b>More info → Run anyway</b>. A
                 code-signed release (no warning) is coming for the public launch.
               </div>
+
+              <div style={{ marginTop: 22, paddingTop: 20, borderTop: "1px solid var(--line)" }}>
+                <h3 style={{ fontSize: "1rem" }}>Want beta updates?</h3>
+                <p className="note" style={{ marginTop: 8, marginBottom: 12 }}>
+                  Join the Atlas beta list for updates, fixes, MCP improvements, and
+                  platform releases.
+                </p>
+                <WaitlistForm source="download-beta-updates" compact />
+              </div>
             </div>
 
             <div>

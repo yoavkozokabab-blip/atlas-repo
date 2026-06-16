@@ -26,7 +26,10 @@ export default function Home() {
                 <Link className="btn btn-primary btn-lg" href="/download">Download for Windows</Link>
                 <a className="btn btn-ghost btn-lg" href="#see-it-work">See it work</a>
               </div>
-              <p className="hero-note">Free to start · your code never leaves your machine</p>
+              <p className="hero-note">
+                Free to start · your code never leaves your machine ·{" "}
+                <a href="#waitlist" style={{ color: "var(--accent)" }}>Join the beta list</a>
+              </p>
             </div>
             <div className="hero-visual">
               <GraphCard />
