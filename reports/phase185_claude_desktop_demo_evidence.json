@@ -1,0 +1,352 @@
+{
+  "generated_at": "2026-06-18T10:46:48Z",
+  "question": "Where is authentication implemented?",
+  "demo_repo": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\phase185_demo_workspace\\auth_demo_repo",
+  "claude_desktop": {
+    "config_path": "C:\\Users\\babi2\\AppData\\Roaming\\Claude\\claude_desktop_config.json",
+    "config_source": "appdata_roaming",
+    "discovered_paths": [
+      {
+        "path": "C:\\Users\\babi2\\AppData\\Roaming\\Claude\\claude_desktop_config.json",
+        "source": "appdata_roaming",
+        "exists": true,
+        "parent_exists": true
+      },
+      {
+        "path": "C:\\Users\\babi2\\AppData\\Local\\Claude\\claude_desktop_config.json",
+        "source": "localappdata_claude",
+        "exists": false,
+        "parent_exists": false
+      },
+      {
+        "path": "C:\\Users\\babi2\\AppData\\Local\\AnthropicClaude\\claude_desktop_config.json",
+        "source": "localappdata_anthropic",
+        "exists": false,
+        "parent_exists": false
+      },
+      {
+        "path": "C:\\Users\\babi2\\AppData\\Local\\Packages\\Claude_pzs8sxrjxfjjc\\LocalCache\\Roaming\\Claude\\claude_desktop_config.json",
+        "source": "microsoft_store:Claude_pzs8sxrjxfjjc",
+        "exists": true,
+        "parent_exists": true
+      },
+      {
+        "path": "C:\\Users\\babi2\\AppData\\Local\\Packages\\Claude_pzs8sxrjxfjjc\\LocalState\\Claude\\claude_desktop_config.json",
+        "source": "microsoft_store:Claude_pzs8sxrjxfjjc",
+        "exists": false,
+        "parent_exists": false
+      },
+      {
+        "path": "C:\\Users\\babi2\\AppData\\Local\\Packages\\Claude_pzs8sxrjxfjjc\\Roaming\\Claude\\claude_desktop_config.json",
+        "source": "microsoft_store:Claude_pzs8sxrjxfjjc",
+        "exists": false,
+        "parent_exists": false
+      }
+    ],
+    "atlas_configured": true
+  },
+  "tool_trace": [
+    {
+      "tool": "atlas_scan_repo",
+      "arguments": {
+        "repo_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\phase185_demo_workspace\\auth_demo_repo"
+      },
+      "response": {
+        "codebase_map": {
+          "degraded": false,
+          "dependency_edges": 1,
+          "entry_points": [
+            "app/__init__.py",
+            "app/auth.py",
+            "app/routes.py"
+          ],
+          "explanation": "This repository has 3 production modules across 4 top-level subsystems. The largest production subsystems are app/__init__.py, app/auth.py, app/routes.py. Its most depended-on module is app.auth, and the highest architectural-risk module is app.routes. The dependency graph is 'production' with 1 resolved import edges and 0 import cycle(s). Entry points include app/__init__.py, app/auth.py, app/routes.py.",
+          "file_count": 4,
+          "graph_health": {
+            "degraded": false,
+            "edges": 1,
+            "external_label": "external + stdlib imports",
+            "external_package_imports": 0,
+            "health_basis": "internal_unresolved",
+            "import_cycles": 0,
+            "label": "healthy",
+            "modules": 3,
+            "notice": "Internal graph is reliable: 0 unresolved internal import(s). The 0 external/stdlib import(s) are normal dependencies.",
+            "partial_reason": "",
+            "reason": "Graph health weights internal_missing and relative_resolution_issue; external_dependency and dynamic_import are expected in large apps.",
+            "reliability_category": "ok",
+            "reliable": true,
+            "resolved_imports": 1,
+            "scope": "production",
+            "unresolved_dynamic_optional": 0,
+            "unresolved_external": 0,
+            "unresolved_imports": 0,
+            "unresolved_internal": 0,
+            "unresolved_internal_ratio": 0.0,
+            "unresolved_ratio": 0.0,
+            "unresolved_ratio_note": "External imports (targets outside the internal module set: third-party packages + standard library + any unresolved internal imports) \u00c3\u00b7 all imports. High values are normal for apps with many dependencies."
+          },
+          "language_breakdown": {
+            "external_package_imports": 0,
+            "external_packages": 0,
+            "javascript_modules": 0,
+            "python_modules": 3,
+            "resolved_imports": 1,
+            "typescript_modules": 0,
+            "unresolved_imports": 0,
+            "unresolved_ratio": 0.0
+          },
+          "module_count": 3,
+          "ok": true,
+          "repo_name": "auth_demo_repo",
+          "repo_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\phase185_demo_workspace\\auth_demo_repo",
+          "subsystem_count": 4,
+          "subsystems": [
+            {
+              "dependencies": [],
+              "entry_files": [
+                "app/__init__.py"
+              ],
+              "name": "app/__init__.py",
+              "production_files": 1
+            },
+            {
+              "dependencies": [],
+              "entry_files": [
+                "app/auth.py"
+              ],
+              "name": "app/auth.py",
+              "production_files": 1
+            },
+            {
+              "dependencies": [],
+              "entry_files": [
+                "app/routes.py"
+              ],
+              "name": "app/routes.py",
+              "production_files": 1
+            }
+          ],
+          "top_hubs": [
+            {
+              "fan_in": 1,
+              "fan_out": 0,
+              "module": "app.auth",
+              "path": "app/auth.py",
+              "reason": "depended on by 1 module(s)"
+            },
+            {
+              "fan_in": 0,
+              "fan_out": 0,
+              "module": "app",
+              "path": "app/__init__.py",
+              "reason": "depended on by 0 module(s)"
+            },
+            {
+              "fan_in": 0,
+              "fan_out": 1,
+              "module": "app.routes",
+              "path": "app/routes.py",
+              "reason": "depended on by 0 module(s)"
+            }
+          ],
+          "top_risks": [
+            {
+              "components": {
+                "boundary": 0.737,
+                "centrality": 0.5,
+                "coupling": 1.0,
+                "cycle": 0.0,
+                "runtime_criticality": 0.0,
+                "unresolved": 0.0
+              },
+              "confidence": "high",
+              "fan_in": 0,
+              "fan_out": 1,
+              "hub_role": "import_hub",
+              "in_cycle": false,
+              "is_config": false,
+              "module": "app.routes",
+              "path": "app/routes.py",
+              "patterns": [],
+              "reasons": [
+                "coupling 1.00, boundary 0.74, centrality 0.50"
+              ],
+              "risk_components": {
+                "boundary": 0.737,
+                "centrality": 0.5,
+                "coupling": 1.0,
+                "cycle": 0.0,
+                "runtime_criticality": 0.0,
+                "unresolved": 0.0
+              },
+              "risk_confidence": "high",
+              "risk_role": "coupling_risk",
+              "score": 46.2
+            },
+            {
+              "components": {
+                "boundary": 0.387,
+                "centrality": 1.0,
+                "coupling": 0.3,
+                "cycle": 0.0,
+                "runtime_criticality": 0.0,
+                "unresolved": 0.0
+              },
+              "confidence": "high",
+              "fan_in": 1,
+              "fan_out": 0,
+              "hub_role": "import_hub",
+              "in_cycle": false,
+              "is_config": false,
+              "module": "app.auth",
+              "path": "app/auth.py",
+              "patterns": [
+                "auth_boundary"
+              ],
+              "reasons": [
+                "centrality 1.00, boundary 0.39, coupling 0.30"
+              ],
+              "risk_components": {
+                "boundary": 0.387,
+                "centrality": 1.0,
+                "coupling": 0.3,
+                "cycle": 0.0,
+                "runtime_criticality": 0.0,
+                "unresolved": 0.0
+              },
+              "risk_confidence": "high",
+              "risk_role": "coupling_risk",
+              "score": 31.1
+            },
+            {
+              "components": {
+                "boundary": 0.0,
+                "centrality": 0.0,
+                "coupling": 0.0,
+                "cycle": 0.0,
+                "runtime_criticality": 0.0,
+                "unresolved": 0.0
+              },
+              "confidence": "high",
+              "fan_in": 0,
+              "fan_out": 0,
+              "hub_role": "import_hub",
+              "in_cycle": false,
+              "is_config": false,
+              "module": "app",
+              "path": "app/__init__.py",
+              "patterns": [],
+              "reasons": [
+                "low overall"
+              ],
+              "risk_components": {
+                "boundary": 0.0,
+                "centrality": 0.0,
+                "coupling": 0.0,
+                "cycle": 0.0,
+                "runtime_criticality": 0.0,
+                "unresolved": 0.0
+              },
+              "risk_confidence": "high",
+              "risk_role": "coupling_risk",
+              "score": 0.0
+            }
+          ]
+        },
+        "ok": true,
+        "repo_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\phase185_demo_workspace\\auth_demo_repo",
+        "scan": {
+          "cache": {
+            "hit": false,
+            "signature": "0397945062f6eece4c69027203858712d9c6fcf1923704a3b3da4746e99cc676"
+          },
+          "degraded": false,
+          "dependency_edges": 1,
+          "file_count": 4,
+          "graph_health": {
+            "degraded": false,
+            "edges": 1,
+            "external_label": "external + stdlib imports",
+            "external_package_imports": 0,
+            "health_basis": "internal_unresolved",
+            "import_cycles": 0,
+            "label": "healthy",
+            "modules": 3,
+            "notice": "Internal graph is reliable: 0 unresolved internal import(s). The 0 external/stdlib import(s) are normal dependencies.",
+            "partial_reason": "",
+            "reason": "Graph health weights internal_missing and relative_resolution_issue; external_dependency and dynamic_import are expected in large apps.",
+            "reliability_category": "ok",
+            "reliable": true,
+            "resolved_imports": 1,
+            "scope": "production",
+            "unresolved_dynamic_optional": 0,
+            "unresolved_external": 0,
+            "unresolved_imports": 0,
+            "unresolved_internal": 0,
+            "unresolved_internal_ratio": 0.0,
+            "unresolved_ratio": 0.0,
+            "unresolved_ratio_note": "External imports (targets outside the internal module set: third-party packages + standard library + any unresolved internal imports) \u00c3\u00b7 all imports. High values are normal for apps with many dependencies."
+          },
+          "module_count": 3,
+          "repo_name": "auth_demo_repo"
+        }
+      }
+    },
+    {
+      "tool": "atlas_find_file",
+      "arguments": {
+        "query": "Where is authentication implemented?",
+        "limit": 8
+      },
+      "response": {
+        "matches": [],
+        "ok": true,
+        "query": "Where is authentication implemented?"
+      }
+    },
+    {
+      "tool": "atlas_find_relevant_files",
+      "arguments": {
+        "task": "Where is authentication implemented?",
+        "max_files": 8
+      },
+      "response": {
+        "confidence": "MEDIUM",
+        "confidence_score": 57,
+        "evidence": [],
+        "excluded_files": [
+          {
+            "path": "app/routes.py",
+            "reason": "weak evidence after ranking",
+            "score": 16.0
+          },
+          {
+            "path": "tests/test_auth.py",
+            "reason": "weak evidence after ranking",
+            "score": 16.0
+          }
+        ],
+        "ok": true,
+        "recommended_files": [
+          {
+            "path": "app/auth.py",
+            "reasons": [
+              "name related to authentication, authentication-implemented",
+              "listed as important in repository memory",
+              "historical/import hub",
+              "risk-ranked module"
+            ],
+            "role": "production_code",
+            "score": 55.0,
+            "subsystem": "app"
+          }
+        ],
+        "related_tests": [],
+        "task": "Where is authentication implemented?"
+      }
+    }
+  ],
+  "synthetic_claude_answer": "Authentication is implemented in `app/auth.py`. These paths were returned by Atlas MCP tools after scanning the repository.",
+  "notes": "Automated MCP proof. Live Claude Desktop UI interaction must be captured manually on a machine with Claude Desktop installed."
+}
