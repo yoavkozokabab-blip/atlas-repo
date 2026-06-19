@@ -217,7 +217,12 @@ def test_phase188_desktop_register_validates_email_password_and_required_profile
     assert calls[0]["beta_profile"]["company_name"] == ""
 
 
-def test_phase188_signin_error_messages_are_specific(client):
+def test_phase188_signin_errors_do_not_leak_account_existence(client):
+    """Anti-enumeration (Phase 186D): unknown-email and wrong-password logins must
+    return the SAME status and the SAME generic message, so an attacker cannot use
+    the error to discover which emails have accounts."""
+    generic = "Invalid email or password."
+
     unknown = client.post(
         "/auth/login",
         json={
@@ -229,7 +234,7 @@ def test_phase188_signin_error_messages_are_specific(client):
         },
     )
     assert unknown.status_code == 401
-    assert unknown.json()["detail"] == "No Atlas account was found for this email."
+    assert unknown.json()["detail"] == generic
 
     reg = _register(client)
     wrong = client.post(
@@ -243,4 +248,6 @@ def test_phase188_signin_error_messages_are_specific(client):
         },
     )
     assert wrong.status_code == 401
-    assert wrong.json()["detail"] == "Incorrect password. Try again or reset it."
+    assert wrong.json()["detail"] == generic
+    # The two responses must be indistinguishable.
+    assert unknown.json()["detail"] == wrong.json()["detail"]
