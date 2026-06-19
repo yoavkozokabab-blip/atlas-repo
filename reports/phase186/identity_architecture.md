@@ -84,8 +84,8 @@ sessions(id uuid pk, user_id uuid, device_id text, token_hash text, created_at, 
 |---|---|---|
 | Audit all auth flows | **PASS** | This doc; file:line citations above. |
 | Choose canonical source (Supabase) | **PASS** | §2. |
-| Desktop authenticates against website store | **BLOCKED** | Requires the new endpoints + desktop rewire + a Supabase project. Specced (§4–5); not yet implemented/demonstrated. |
-| Remove fragmentation | **BLOCKED** | Depends on the above + deleting the old `~/jarvis_landing/api/`. |
+| Desktop authenticates against website store | **WEBSITE SIDE DONE (PASS, local) / DESKTOP REWIRE PENDING** | The 4 bearer-token endpoints (§4) are implemented and **demonstrated end-to-end on the dev file-store**: register → 128-char signed token; `GET /me` + Bearer returns the same identity + entitlement; tampered token → 401; login returns a working token; wrong password → generic error. Remaining: point `accounts_client.py` at these endpoints + provision Supabase. |
+| Remove fragmentation | **PARTIAL** | One store now serves both browser (cookie) and desktop (bearer) auth in the website. Still to do: desktop client rewire + delete the old `~/jarvis_landing/api/`. |
 | Session handling (refresh/logout/multi-device/expiry/suspension) | **PARTIAL** | Desktop side proven in `accounts_service` (73 tests); website side needs the `sessions` table (§6). |
 | Migration path | **PASS (design)** | See `identity_migration_plan.md`. |
 | **Website signup → Desktop login demo** | **BLOCKED** | Cannot run end-to-end without a provisioned Supabase + the desktop rewire. **Will not be claimed without a recorded run.** |

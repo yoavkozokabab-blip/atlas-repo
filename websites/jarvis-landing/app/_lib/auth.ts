@@ -121,6 +121,35 @@ export async function loginUser(email: string, password: string): Promise<AuthRe
   return { ok: true, user };
 }
 
+// --- Desktop (bearer-token) auth (Phase 186A) ---
+// The desktop is a native client, not a browser, so it authenticates with a
+// Bearer token instead of the httpOnly cookie. It hits the SAME Supabase-backed
+// user store as the website — one account, one identity. The token is the same
+// HMAC-signed payload used by the cookie (createToken/verifyToken).
+export function bearerToken(req: Request): string | null {
+  const m = /^Bearer\s+(.+)$/i.exec(req.headers.get("authorization") || "");
+  return m ? m[1].trim() : null;
+}
+export async function userFromBearer(req: Request): Promise<User | null> {
+  const tok = bearerToken(req);
+  if (!tok) return null;
+  const uid = verifyToken(tok);
+  if (!uid) return null;
+  const u = await store.getById(uid);
+  if (!u || u.status === "suspended") return null;
+  return u;
+}
+/** Entitlement view returned to the desktop so it can gate features. */
+export function entitlement(u: User) {
+  return {
+    user: toSafe(u),
+    plan: u.plan,
+    planStatus: u.planStatus,
+    trialEndsAt: u.trialEndsAt ?? null,
+    renewsAt: u.renewsAt ?? null,
+  };
+}
+
 // --- Roles ---
 export function isAdmin(u: User | null | undefined): boolean {
   if (!u) return false;
