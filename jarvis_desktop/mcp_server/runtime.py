@@ -171,6 +171,17 @@ TOOLS: List[Dict[str, Any]] = [
         ),
     },
     {
+        "name": "atlas_root_cause",
+        "description": "Root-cause analysis (#10): given an exception, stack trace, error log, or failing-test output, return probable root-cause symbols, confidence, evidence, supporting files, and a suggested investigation order.",
+        "inputSchema": _schema(
+            properties={
+                "error": {"type": "string", "description": "Exception, stack trace, error log, or failing-test output."},
+                "repo_path": {"type": "string", "description": "Optional path that must match the current scan."},
+            },
+            required=["error"],
+        ),
+    },
+    {
         "name": "atlas_find_file",
         "description": "Find files in the current scan by path/name terms without returning file contents.",
         "inputSchema": _schema(
@@ -715,6 +726,16 @@ def call_tool(name: str, arguments: Optional[Dict[str, Any]] = None) -> Dict[str
             if not request:
                 return _err("missing_request", "`request` is required.")
             return _sanitize(_compact_plan(api.plan_change(request)))
+
+        if name == "atlas_root_cause":
+            err = _scan_ready(str(args.get("repo_path") or ""))
+            if err:
+                return err
+            error_text = str(args.get("error") or "").strip()
+            if not error_text:
+                return _err("missing_error", "`error` (exception, stack trace, log, or failing test) is required.")
+            from ..root_cause import analyze_root_cause
+            return _sanitize(analyze_root_cause(_current_repo(), error_text, dict(api._STATE), memory=_memory()))
 
         if name == "atlas_find_file":
             err = _scan_ready(str(args.get("repo_path") or ""))
