@@ -18,7 +18,10 @@
 
 ---
 
-## Sequenced plan for #2–#15 (current state → next step)
+## ✅ Phase 2 — #2, #6, #10 — **DONE (2026-06-20)**
+Symbol slicing (#2), task-type detection (#6), and root-cause mode (#10) are implemented, tested, and benchmarked across requests / langchain / home-assistant / Atlas. Numbers + North-Star demo: `excellence_phase2_benchmark.md`. Commits `2cde9c4a0`, `6f7011444`.
+
+## Sequenced plan for #3/#4/#5/#7/#8/#11/#12/#13/#14/#15 (current state → next step)
 
 ### #2 SYMBOL-LEVEL RETRIEVAL — *foundation exists; biggest remaining token win*
 - **Have:** `EvidenceStore` + `file_symbol_evidence` already produce `matched_symbols` per file (symbol/qualname/kind).
