@@ -7,6 +7,7 @@ context for an AI coding agent without dumping whole files.
 
 from __future__ import annotations
 
+import ast
 import os
 import re
 from collections import Counter
@@ -31,6 +32,39 @@ _ACTION_WORDS = {
     "rename": {"rename"},
     "debug": {"debug", "trace", "investigate", "diagnose"},
 }
+
+# #6 Task-type detection. Ordered by specificity (earliest wins ties) so that,
+# e.g., "fix authentication timeout" classifies as security (auth) not bug_fix.
+_TASK_TYPE_KEYWORDS: List[Tuple[str, Set[str]]] = [
+    ("security", {"security", "vulnerability", "vulnerable", "csrf", "xss", "injection",
+                  "sanitize", "exploit", "auth", "authentication", "authorization", "login",
+                  "session", "password", "token", "credential", "encrypt", "decrypt",
+                  "permission", "secret", "jwt", "oauth"}),
+    ("performance", {"performance", "perf", "slow", "latency", "optimize", "optimization",
+                     "throughput", "cache", "caching", "bottleneck", "leak", "speed", "profile"}),
+    ("testing", {"test", "tests", "coverage", "pytest", "unittest", "fixture", "mock", "flaky"}),
+    ("documentation", {"document", "documentation", "docs", "readme", "docstring", "comment", "changelog"}),
+    ("refactor", {"refactor", "rename", "restructure", "cleanup", "extract", "simplify", "deduplicate", "reorganize"}),
+    ("architecture", {"architecture", "architectural", "redesign", "migrate", "migration",
+                      "decouple", "coupling", "boundary", "subsystem", "modular", "layering"}),
+    ("bug_fix", {"bug", "fix", "error", "crash", "exception", "traceback", "stacktrace",
+                 "broken", "fails", "failing", "regression", "defect", "diagnose"}),
+    ("feature", {"add", "implement", "create", "support", "feature", "endpoint", "introduce"}),
+]
+
+
+def _classify_task_type(lower: str) -> str:
+    scores: Dict[str, int] = {}
+    order: Dict[str, int] = {}
+    for i, (ttype, kws) in enumerate(_TASK_TYPE_KEYWORDS):
+        order[ttype] = i
+        hits = sum(1 for kw in kws if re.search(rf"\b{re.escape(kw)}", lower))
+        if hits:
+            scores[ttype] = hits
+    if not scores:
+        return "general"
+    # Highest keyword hits; ties broken by specificity (earlier in the list).
+    return max(scores.items(), key=lambda kv: (kv[1], -order[kv[0]]))[0]
 
 _STOPWORDS = {
     "a", "an", "and", "are", "as", "at", "be", "by", "can", "for", "from",
@@ -79,6 +113,7 @@ _COMPONENT_CAPS = {
     "test": 42.0,
     "importance": 18.0,
     "risk": 18.0,
+    "tasktype": 16.0,
 }
 
 _TERM_ALIASES = {
@@ -99,6 +134,7 @@ class TaskSignals:
     modules: List[str] = field(default_factory=list)
     concepts: List[str] = field(default_factory=list)
     domain_keywords: List[str] = field(default_factory=list)
+    task_type: str = "general"  # #6: bug_fix|feature|refactor|security|performance|architecture|documentation|testing|general
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -108,6 +144,7 @@ class TaskSignals:
             "modules": list(self.modules),
             "concepts": list(self.concepts),
             "domain_keywords": list(self.domain_keywords),
+            "task_type": self.task_type,
         }
 
 
@@ -338,7 +375,57 @@ def parse_task(task: str) -> TaskSignals:
         modules=list(dict.fromkeys(modules)),
         concepts=list(dict.fromkeys(concepts))[:40],
         domain_keywords=list(dict.fromkeys(domain_keywords))[:24],
+        task_type=_classify_task_type(lower),
     )
+
+
+def _apply_task_type_strategy(
+    candidates: Dict[str, "Candidate"],
+    signals: TaskSignals,
+    imports: Dict[str, Set[str]],
+    imported_by: Dict[str, Set[str]],
+    file_meta: Dict[str, Any],
+) -> None:
+    """#6: nudge ranking with a task-type-specific retrieval strategy. Boosts are
+    small + capped ("tasktype") so they tune order without overriding strong
+    direct/symbol/path evidence."""
+    ttype = signals.task_type
+    if ttype == "general":
+        return
+    for path, cand in candidates.items():
+        rel = _norm_path(path)
+        low = rel.lower()
+        base = os.path.basename(low)
+        fan_in = len(imported_by.get(rel) or ())
+        fan_out = len(imports.get(rel) or ())
+        role = _file_role(rel, file_meta.get(rel, {}))
+        is_test = role == "test_code" or _is_test_path(rel)
+        if ttype in ("refactor", "architecture"):
+            centrality = fan_in + fan_out
+            if centrality >= 4:
+                cand.add(min(12.0, 4 + centrality / 2.0), f"{ttype}: central module (fan-in {fan_in}, fan-out {fan_out})", "tasktype")
+            if base in ("__init__.py", "base.py") or "abstract" in base:
+                cand.add(6.0, f"{ttype}: package/base boundary", "tasktype")
+        elif ttype == "bug_fix":
+            if fan_in >= 3:
+                cand.add(min(10.0, float(fan_in)), f"bug_fix: {fan_in} caller(s) via call/import graph", "tasktype")
+            if is_test:
+                cand.add(8.0, "bug_fix: nearby test may reproduce the failure", "tasktype")
+        elif ttype == "feature":
+            if any(k in base for k in ("base", "abstract", "interface", "protocol", "registry", "factory", "__init__")):
+                cand.add(10.0, "feature: extension point / interface", "tasktype")
+        elif ttype == "security":
+            if any(k in low for k in ("auth", "security", "login", "session", "token", "crypto", "permission", "middleware", "validat", "sanitiz")):
+                cand.add(10.0, "security: security-sensitive boundary", "tasktype")
+        elif ttype == "performance":
+            if any(k in low for k in ("cache", "query", "/db", "pool", "batch", "async", "stream", "worker", "queue")):
+                cand.add(8.0, "performance: likely hot-path module", "tasktype")
+        elif ttype == "testing":
+            if is_test:
+                cand.add(12.0, "testing: test file", "tasktype")
+        elif ttype == "documentation":
+            if _is_doc_path(rel):
+                cand.add(12.0, "documentation: doc file", "tasktype")
 
 
 def _is_test_path(path: str) -> bool:
@@ -892,6 +979,9 @@ def _score_candidates(
             elif src_parts and len(src_parts & parts) >= 2:
                 _candidate(candidates, path).add(16, f"test shares path terms with `{src}`", "test")
 
+    # #6: apply the task-type-specific retrieval strategy before thresholding.
+    _apply_task_type_strategy(candidates, signals, imports, imported_by, file_meta)
+
     # Apply penalties and exclusions.
     excluded: List[Candidate] = []
     for cand in list(candidates.values()):
@@ -1026,6 +1116,115 @@ def _structured_evidence(
     }
 
 
+def _python_symbol_spans(source: str) -> Dict[str, Tuple[int, int, str]]:
+    """Map symbol name/qualname -> (start_line, end_line, kind) using the AST,
+    including decorators. Top-level functions/classes and one level of methods.
+    Empty on syntax error (caller falls back to file-level)."""
+    spans: Dict[str, Tuple[int, int, str]] = {}
+    try:
+        tree = ast.parse(source)
+    except (SyntaxError, ValueError):
+        return spans
+
+    def span(node: ast.AST) -> Tuple[int, int]:
+        start = node.lineno  # type: ignore[attr-defined]
+        decs = getattr(node, "decorator_list", None) or []
+        if decs:
+            start = min(start, min(d.lineno for d in decs))
+        end = getattr(node, "end_lineno", None) or node.lineno  # type: ignore[attr-defined]
+        return start, end
+
+    for node in tree.body:
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            s, e = span(node)
+            spans[node.name] = (s, e, "function")
+        elif isinstance(node, ast.ClassDef):
+            s, e = span(node)
+            spans[node.name] = (s, e, "class")
+            for sub in node.body:
+                if isinstance(sub, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                    ss, ee = span(sub)
+                    spans[f"{node.name}.{sub.name}"] = (ss, ee, "method")
+                    spans.setdefault(sub.name, (ss, ee, "method"))
+    return spans
+
+
+def _symbol_confidence(ev: Any) -> Tuple[float, str]:
+    """Per-symbol confidence (0–1 + label) from its evidence strength."""
+    score = 0.5
+    if getattr(ev, "kind", "") in ("function", "method", "class"):
+        score += 0.1
+    if getattr(ev, "callers", None):
+        score += 0.2
+    if getattr(ev, "references", None):
+        score += 0.1
+    if getattr(ev, "callees", None):
+        score += 0.05
+    score = round(min(0.99, score), 2)
+    label = "HIGH" if score >= 0.75 else "MEDIUM" if score >= 0.6 else "LOW"
+    return score, label
+
+
+def compute_symbol_slices(
+    repo_path: str,
+    rel: str,
+    evidences: List[Any],
+    *,
+    include_body: bool = False,
+    max_slices: int = 6,
+) -> Tuple[List[Dict[str, Any]], int, int]:
+    """#2 Symbol slicing: return (slices, sliced_tokens, full_file_tokens).
+
+    Slices are symbols DEFINED in the file that matched the task, ranked by the
+    incoming evidence order, with precise line boundaries, token counts, and
+    per-symbol confidence. Non-Python or unparseable files yield no slices
+    (caller keeps file-level), which is reported honestly.
+    """
+    full = _read_small_file(repo_path, rel, max_chars=200_000)
+    full_tokens = estimate_tokens(full)
+    if not full or not rel.lower().endswith(".py"):
+        return [], 0, full_tokens
+    spans = _python_symbol_spans(full)
+    if not spans:
+        return [], 0, full_tokens
+    file_lines = full.splitlines()
+
+    slices: List[Dict[str, Any]] = []
+    seen: Set[str] = set()
+    for ev in evidences:
+        qual = getattr(ev, "qualname", "") or getattr(ev, "name", "")
+        leaf = qual.split(".")[-1] if qual else ""
+        for key in (qual, getattr(ev, "name", ""), leaf):
+            if key and key in spans and key not in seen:
+                seen.add(key)
+                start, end, kind = spans[key]
+                body = "\n".join(file_lines[start - 1:end])
+                conf, label = _symbol_confidence(ev)
+                item: Dict[str, Any] = {
+                    "symbol": qual or key,
+                    "kind": kind,
+                    "start_line": start,
+                    "end_line": end,
+                    "line_count": end - start + 1,
+                    "token_estimate": estimate_tokens(body),
+                    "confidence": conf,
+                    "confidence_label": label,
+                    "callers": list(getattr(ev, "callers", []) or [])[:3],
+                    "callees": list(getattr(ev, "callees", []) or [])[:3],
+                }
+                if include_body:
+                    item["body"] = body
+                slices.append(item)
+                break
+        if len(slices) >= max_slices:
+            break
+
+    # Highest-confidence first, then source order.
+    slices.sort(key=lambda s: (-s["confidence"], s["start_line"]))
+    sliced_tokens = sum(s["token_estimate"] for s in slices)
+    return slices, sliced_tokens, full_tokens
+
+
 def build_context_pack_from_state(
     repo_path: str,
     task: str,
@@ -1069,19 +1268,29 @@ def build_context_pack_from_state(
     )
 
     recommended: List[Dict[str, Any]] = []
+    slice_file_tokens = 0      # full-file tokens for files where slicing applied
+    slice_symbol_tokens = 0    # symbol-sliced tokens for those same files
+    files_sliced = 0
     for cand in selected_candidates[:max_files]:
         rel = _norm_path(cand.path)
         meta_file = file_meta.get(rel, {})
         syms = []
         symbol_reason = ""
+        sym_slices: List[Dict[str, Any]] = []
+        sliced_tokens = 0
+        full_tokens = 0
         if store:
             try:
                 evs, _boost = file_symbol_evidence(store, rel, signals.concepts)
                 syms = [ev.to_dict() for ev in evs[:4]]
                 if evs:
                     symbol_reason = f"matched symbols: {', '.join(ev.qualname or ev.name for ev in evs[:3])}"
+                    sym_slices, sliced_tokens, full_tokens = compute_symbol_slices(
+                        repo_path, rel, evs, include_body=include_snippets
+                    )
             except Exception:
                 syms = []
+                sym_slices = []
         reasons = list(cand.reasons[:6])
         if symbol_reason and symbol_reason not in reasons:
             reasons.insert(0, symbol_reason)
@@ -1102,7 +1311,17 @@ def build_context_pack_from_state(
             "size_bytes": int(meta_file.get("size") or 0),
             "token_estimate": estimate_tokens(_read_small_file(repo_path, rel, max_chars=60_000)) if int(meta_file.get("size") or 0) <= 60_000 else estimate_tokens(""),
             "matched_symbols": syms,
+            # #2 Symbol slicing: only the required symbols, with boundaries +
+            # per-symbol token counts + confidence. Empty when slicing doesn't apply.
+            "symbol_slices": sym_slices,
+            "full_token_estimate": full_tokens,
+            "sliced_token_estimate": sliced_tokens if sym_slices else 0,
+            "token_reduction_pct": round(100.0 * (1 - sliced_tokens / full_tokens), 1) if (sym_slices and full_tokens) else 0.0,
         }
+        if sym_slices and full_tokens:
+            files_sliced += 1
+            slice_file_tokens += full_tokens
+            slice_symbol_tokens += sliced_tokens
         if include_snippets:
             item["snippet"] = _snippet(repo_path, rel, signals.concepts)
         recommended.append(item)
@@ -1148,6 +1367,12 @@ def build_context_pack_from_state(
         "confidence": confidence,
         "confidence_score": confidence_score,
         "confidence_reasons": confidence_reasons,
+        "symbol_slicing": {
+            "files_sliced": files_sliced,
+            "file_level_tokens": slice_file_tokens,
+            "symbol_level_tokens": slice_symbol_tokens,
+            "token_reduction_pct": round(100.0 * (1 - slice_symbol_tokens / slice_file_tokens), 1) if slice_file_tokens else 0.0,
+        },
         "token_estimate": 0,
         "include_snippets": include_snippets,
     }
@@ -1227,6 +1452,25 @@ def render_context_pack(pack: Dict[str, Any]) -> str:
                     lines.append(f"    - symbols: {names}")
     else:
         lines.append("- Atlas did not find enough direct, symbol, path, subsystem, or dependency evidence.")
+
+    # #2 Symbol slicing — tell the agent exactly which symbols/line-ranges to read.
+    sliced = [it for it in recs if it.get("symbol_slices")]
+    if sliced:
+        lines.append("\n## Symbol slices (read only these)")
+        for it in sliced[:12]:
+            red = it.get("token_reduction_pct") or 0
+            lines.append(f"- `{it['path']}` (file ~{it.get('full_token_estimate', 0)} tok -> symbols ~{it.get('sliced_token_estimate', 0)} tok, -{red}%)")
+            for s in it["symbol_slices"][:6]:
+                lines.append(
+                    f"    - `{s['symbol']}` ({s['kind']}) L{s['start_line']}-{s['end_line']}"
+                    f" · ~{s['token_estimate']} tok · confidence {s['confidence_label']}"
+                )
+        agg = pack.get("symbol_slicing") or {}
+        if agg.get("file_level_tokens"):
+            lines.append(
+                f"- TOTAL: {agg['file_level_tokens']} file tokens -> {agg['symbol_level_tokens']} symbol tokens"
+                f" (-{agg.get('token_reduction_pct', 0)}% across {agg.get('files_sliced', 0)} file(s))"
+            )
 
     lines.append("\n## Related tests")
     tests = pack.get("related_tests") or []

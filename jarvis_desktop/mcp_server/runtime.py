@@ -422,6 +422,7 @@ def _compact_pack(pack: Dict[str, Any]) -> Dict[str, Any]:
         "ok": bool(pack.get("ok")),
         "repo_name": pack.get("repo_name"),
         "task": pack.get("task"),
+        "task_type": (pack.get("task_signals") or {}).get("task_type", "general"),
         "confidence": pack.get("confidence"),
         "confidence_score": pack.get("confidence_score"),
         "token_estimate": pack.get("token_estimate"),
@@ -441,10 +442,23 @@ def _compact_pack(pack: Dict[str, Any]) -> Dict[str, Any]:
                     for s in (item.get("matched_symbols") or [])
                     if isinstance(s, dict) and (s.get("qualname") or s.get("name"))
                 ][:4],
+                # #2 Symbol slicing: read only these symbols/line-ranges.
+                "symbol_slices": [
+                    {
+                        "symbol": s.get("symbol"),
+                        "kind": s.get("kind"),
+                        "lines": [s.get("start_line"), s.get("end_line")],
+                        "tokens": s.get("token_estimate"),
+                        "confidence": s.get("confidence_label"),
+                    }
+                    for s in (item.get("symbol_slices") or [])
+                ][:6],
+                "token_reduction_pct": item.get("token_reduction_pct", 0.0),
                 "reasons": (item.get("reasons") or [])[:4],
             }
             for item in pack.get("recommended_files") or []
         ],
+        "symbol_slicing": pack.get("symbol_slicing") or {},
         "related_tests": [
             {
                 "path": item.get("path"),

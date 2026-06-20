@@ -265,6 +265,55 @@ def test_context_pack_is_evidence_centric_every_file_explains_why(tmp_path):
     assert "impact:" in md
 
 
+def test_compute_symbol_slices_extracts_only_matched_symbols(tmp_path):
+    """#2: slicing returns only requested symbols with precise boundaries +
+    token counts, and never exceeds the full-file token count."""
+    src = (
+        "import os\n\n"
+        "def helper():\n    return 1\n\n"
+        "class AuthManager:\n"
+        "    def login(self, u, p):\n        return validate(u)\n\n"
+        "    def refresh_token(self, t):\n        return t\n\n"
+        "def validate(u):\n    return bool(u)\n"
+    )
+    (tmp_path / "auth.py").write_text(src, encoding="utf-8")
+
+    class _Ev:
+        def __init__(self, qual, kind="method"):
+            self.qualname = qual
+            self.name = qual.split(".")[-1]
+            self.kind = kind
+            self.callers = []
+            self.callees = []
+            self.references = []
+
+    evs = [_Ev("AuthManager.login"), _Ev("AuthManager.refresh_token"), _Ev("validate", "function")]
+    slices, sliced_tokens, full_tokens = cp.compute_symbol_slices(str(tmp_path), "auth.py", evs)
+    names = {s["symbol"] for s in slices}
+    assert "AuthManager.login" in names
+    assert "AuthManager.refresh_token" in names
+    assert "validate" in names
+    assert "helper" not in names  # not requested -> not sliced
+    for s in slices:
+        assert s["start_line"] >= 1 and s["end_line"] >= s["start_line"]
+        assert s["token_estimate"] > 0
+        assert s["confidence_label"] in {"HIGH", "MEDIUM", "LOW"}
+    assert 0 < sliced_tokens <= full_tokens
+
+
+def test_parse_task_classifies_task_type():
+    """#6: task-type detection across the supported categories."""
+    assert cp.parse_task("Fix authentication timeout").task_type == "security"
+    assert cp.parse_task("fix the null pointer crash in the parser").task_type == "bug_fix"
+    assert cp.parse_task("add a CSV export endpoint").task_type == "feature"
+    assert cp.parse_task("refactor the payment module to reduce coupling").task_type == "refactor"
+    assert cp.parse_task("optimize slow dashboard query with caching").task_type == "performance"
+    assert cp.parse_task("improve test coverage for the router").task_type == "testing"
+    assert cp.parse_task("update the README and docstrings").task_type == "documentation"
+    assert cp.parse_task("redesign the storage subsystem boundaries").task_type == "architecture"
+    assert cp.parse_task("tweak the button color").task_type == "general"
+
+
 def test_context_pack_excludes_generated_vendor_noise(tmp_path):
     repo = _repo(tmp_path)
     pack = cp.build_context_pack_from_state(
