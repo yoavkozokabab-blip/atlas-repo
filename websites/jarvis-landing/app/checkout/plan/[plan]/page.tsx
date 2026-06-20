@@ -3,11 +3,14 @@ import { PageShell } from "../../../_components/site";
 import { currentUser } from "../../../_lib/auth";
 import { PLANS, isPlanId } from "../../../_lib/billing";
 import { CheckoutButton } from "../../../_components/client";
+import { PAID_PLANS_ENABLED } from "../../../_config";
 
 export const dynamic = "force-dynamic";
 
 export default async function CheckoutPlanPage({ params }: { params: Promise<{ plan: string }> }) {
   const { plan } = await params;
+  // Free beta (Phase 186A): there is no checkout. Send anyone here back to pricing.
+  if (!PAID_PLANS_ENABLED) redirect("/pricing");
   if (!isPlanId(plan) || plan === "free") redirect("/pricing");
   if (plan === "team") redirect("/contact");
 

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { SiteNav, SiteFooter } from "./_components/site";
 import { WaitlistForm } from "./_components/waitlist";
+import { PAID_PLANS_ENABLED } from "./_config";
 
 export default function Home() {
   return (
@@ -149,7 +150,7 @@ verify:
               </div>
               <div className="tier feat">
                 <h3>Pro</h3>
-                <div className="price">$29<small> / month</small></div>
+                <div className="price">{PAID_PLANS_ENABLED ? <>$29<small> / month</small></> : <>Free<small> in beta</small></>}</div>
                 <ul>
                   <li>Unlimited repositories</li>
                   <li>Impact analysis &amp; investigation</li>
@@ -157,7 +158,9 @@ verify:
                   <li>Architecture risk detection</li>
                   <li>Priority support</li>
                 </ul>
-                <Link className="btn btn-primary" href="/checkout/plan/pro">Start 7-day trial</Link>
+                {PAID_PLANS_ENABLED
+                  ? <Link className="btn btn-primary" href="/checkout/plan/pro">Start 7-day trial</Link>
+                  : <Link className="btn btn-primary" href="/download">Join the beta</Link>}
               </div>
               <div className="tier">
                 <h3>Team</h3>
@@ -171,7 +174,7 @@ verify:
               </div>
             </div>
             <p className="center muted" style={{ marginTop: 22, fontSize: "0.85rem" }}>
-              Local-first · 7-day trial, no card · cancel anytime
+              {PAID_PLANS_ENABLED ? "Local-first · 7-day trial, no card · cancel anytime" : "Local-first · free invite beta · no card, no charge"}
             </p>
           </div>
         </section>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PageShell } from "../_components/site";
+import { PAID_PLANS_ENABLED } from "../_config";
 
 export const metadata: Metadata = {
   title: "FAQ — Atlas",
@@ -12,8 +13,12 @@ const faqs = [
   ["Does Atlas replace Claude, Cursor or Codex?", "No — it makes them better by giving them your repository's real structure instead of letting them guess."],
   ["Will it invent files or give stale context?", "No. Atlas is evidence-backed and refuses stale or unverifiable context rather than hallucinating."],
   ["What platforms are supported?", "Windows today. macOS and Linux are on the roadmap — let us know on the contact page."],
-  ["Is it free?", "Yes — a free tier for one repository. Pro ($29/mo) adds unlimited repos, impact analysis, investigation, compression and risk detection; the 7-day trial starts in-app, no card."],
-  ["How do I cancel?", "Anytime from the billing portal; access continues to the end of the period."],
+  ["Is it free?", PAID_PLANS_ENABLED
+    ? "Yes — a free tier for one repository. Pro ($29/mo) adds unlimited repos, impact analysis, investigation, compression and risk detection; the 7-day trial starts in-app, no card."
+    : "Yes. Atlas is in a free invite beta — everything is free right now, with no card and nothing to buy. Paid plans are planned for after the beta, and we'll announce them first."],
+  ["How do I cancel?", PAID_PLANS_ENABLED
+    ? "Anytime from the billing portal; access continues to the end of the period."
+    : "There's nothing to cancel during the free beta — no subscription and no payment method are on file. You can delete your account anytime from Account settings."],
   ["Is the installer safe?", "The public release will be code-signed with published SHA-256 checksums. The current beta build is unsigned, so Windows SmartScreen may warn on first run."]
 ] as const;
 

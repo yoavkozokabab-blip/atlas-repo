@@ -28,6 +28,14 @@ export const ENV = {
   get adminEmails(): string[] {
     return csv(process.env.ADMIN_EMAILS);
   },
+  // Free-beta access model (Phase 186A). "open" = anyone who signs up is in;
+  // "invite" = only emails on BETA_ALLOWLIST (and admins) are approved.
+  get betaMode(): "open" | "invite" {
+    return process.env.BETA_MODE === "invite" ? "invite" : "open";
+  },
+  get betaAllowlist(): string[] {
+    return csv(process.env.BETA_ALLOWLIST);
+  },
   get hasSupabase(): boolean {
     return !!(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
   },

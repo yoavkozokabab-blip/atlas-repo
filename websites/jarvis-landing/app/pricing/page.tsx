@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteNav, SiteFooter } from "../_components/site";
+import { PAID_PLANS_ENABLED } from "../_config";
 
 export const metadata: Metadata = {
   title: "Pricing — Atlas",
-  description: "Simple pricing for serious codebases. Free to start, Pro at $29/mo with a 7-day trial, Team for engineering orgs."
+  description: PAID_PLANS_ENABLED
+    ? "Simple pricing for serious codebases. Free to start, Pro at $29/mo with a 7-day trial, Team for engineering orgs."
+    : "Atlas is in free invite beta — everything is free while we're in beta. Paid plans come later."
 };
 
 export default function PricingPage() {
@@ -15,11 +18,11 @@ export default function PricingPage() {
         <section className="page-head">
           <div className="container">
             <p className="eyebrow">Pricing</p>
-            <h1 className="page-title">Simple pricing for serious codebases.</h1>
+            <h1 className="page-title">{PAID_PLANS_ENABLED ? "Simple pricing for serious codebases." : "Free while we're in beta."}</h1>
             <p className="lead" style={{ marginTop: 18 }}>
-              Start free, on your machine. Upgrade when you want unlimited repos,
-              impact analysis and investigation. The 7-day Pro trial starts inside
-              Atlas — no credit card.
+              {PAID_PLANS_ENABLED
+                ? "Start free, on your machine. Upgrade when you want unlimited repos, impact analysis and investigation. The 7-day Pro trial starts inside Atlas — no credit card."
+                : "Atlas is in a free invite beta. Everything below is free right now — there's nothing to buy and no card required. Paid plans are planned for after the beta."}
             </p>
           </div>
         </section>
@@ -40,7 +43,7 @@ export default function PricingPage() {
               </div>
               <div className="tier feat">
                 <h3>Pro</h3>
-                <div className="price">$29<small> / month</small></div>
+                <div className="price">{PAID_PLANS_ENABLED ? <>$29<small> / month</small></> : <>Free<small> in beta</small></>}</div>
                 <ul>
                   <li>Unlimited repositories</li>
                   <li>Impact analysis &amp; investigation mode</li>
@@ -48,8 +51,17 @@ export default function PricingPage() {
                   <li>Architecture risk detection</li>
                   <li>Priority support</li>
                 </ul>
-                <Link className="btn btn-primary" href="/checkout/plan/pro">Start 7-day trial</Link>
-                <p className="dl-meta" style={{ marginTop: 10 }}>Trial starts in-app · no card</p>
+                {PAID_PLANS_ENABLED ? (
+                  <>
+                    <Link className="btn btn-primary" href="/checkout/plan/pro">Start 7-day trial</Link>
+                    <p className="dl-meta" style={{ marginTop: 10 }}>Trial starts in-app · no card</p>
+                  </>
+                ) : (
+                  <>
+                    <Link className="btn btn-primary" href="/download">Join the beta</Link>
+                    <p className="dl-meta" style={{ marginTop: 10 }}>Free during beta · Pro pricing planned later</p>
+                  </>
+                )}
               </div>
               <div className="tier">
                 <h3>Team</h3>
@@ -64,11 +76,16 @@ export default function PricingPage() {
               </div>
             </div>
             <p className="center muted" style={{ marginTop: 24, fontSize: "0.88rem" }}>
-              Local-first · cancel anytime from the billing portal · prices in USD
+              {PAID_PLANS_ENABLED
+                ? "Local-first · cancel anytime from the billing portal · prices in USD"
+                : "Local-first · free invite beta · no card, no charge"}
             </p>
             <div className="note-accent" style={{ marginTop: 28, maxWidth: 760 }}>
-              <b>Note:</b> paid checkout goes live when billing is connected (Stripe).
-              Until then, download Atlas and start the Pro trial inside the app.
+              {PAID_PLANS_ENABLED ? (
+                <><b>Note:</b> the 7-day Pro trial starts inside the app — no card required.</>
+              ) : (
+                <><b>Free invite beta.</b> There is nothing to purchase yet — no checkout, no card, no charge. Download Atlas, sign in, and start using it. We&apos;ll announce paid plans before they go live.</>
+              )}
             </div>
           </div>
         </section>

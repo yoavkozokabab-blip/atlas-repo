@@ -139,14 +139,31 @@ export async function userFromBearer(req: Request): Promise<User | null> {
   if (!u || u.status === "suspended") return null;
   return u;
 }
+/**
+ * Beta access rule (Phase 186A). Open beta → everyone active is approved.
+ * Invite beta → only allow-listed emails (and admins). Minimal, env-driven,
+ * no schema change. Unapproved users still get an account + a clear message.
+ */
+export function betaApproved(u: User): boolean {
+  if (ENV.betaMode === "open") return true;
+  if (u.role === "admin" || ENV.adminEmails.includes(u.email)) return true;
+  return ENV.betaAllowlist.includes(u.email.toLowerCase());
+}
+
 /** Entitlement view returned to the desktop so it can gate features. */
 export function entitlement(u: User) {
+  const approved = betaApproved(u);
   return {
     user: toSafe(u),
     plan: u.plan,
     planStatus: u.planStatus,
     trialEndsAt: u.trialEndsAt ?? null,
     renewsAt: u.renewsAt ?? null,
+    approved,
+    betaMode: ENV.betaMode,
+    message: approved
+      ? null
+      : "Your account isn't approved for the Atlas beta yet. Join the waitlist and we'll email your invite.",
   };
 }
 

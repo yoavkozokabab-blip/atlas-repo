@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { currentUser } from "../_lib/auth";
 import { LogoutButton } from "../_components/client";
+import { PAID_PLANS_ENABLED } from "../_config";
 
 export const dynamic = "force-dynamic";
 
@@ -30,9 +31,11 @@ export default async function AccountOverview() {
 
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
         <Link className="btn btn-primary" href="/account/downloads">Download Atlas</Link>
-        {user.plan === "free"
-          ? <Link className="btn btn-ghost" href="/pricing">Upgrade to Pro</Link>
-          : <Link className="btn btn-ghost" href="/account/billing">Manage billing</Link>}
+        {PAID_PLANS_ENABLED
+          ? (user.plan === "free"
+              ? <Link className="btn btn-ghost" href="/pricing">Upgrade to Pro</Link>
+              : <Link className="btn btn-ghost" href="/account/billing">Manage billing</Link>)
+          : <Link className="btn btn-ghost" href="/account/billing">Billing</Link>}
         <LogoutButton />
       </div>
     </div>
