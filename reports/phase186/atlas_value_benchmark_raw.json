@@ -1,0 +1,847 @@
+[
+  {
+    "repo": "requests",
+    "task": "fix connection retry and backoff in the HTTP adapter",
+    "gold_symbols": [
+      "HTTPAdapter"
+    ],
+    "gold_files": [
+      "src/requests/adapters.py"
+    ],
+    "atlas_files": [
+      "src/requests/adapters.py",
+      "src/requests/exceptions.py",
+      "src/requests/models.py",
+      "src/requests/__init__.py",
+      "src/requests/sessions.py",
+      "src/requests/auth.py",
+      "src/requests/_types.py",
+      "src/requests/utils.py"
+    ],
+    "atlas_recall": 1.0,
+    "atlas_hit@1": true,
+    "atlas_symbol_recall": 1.0,
+    "atlas_pack_tokens": 2492,
+    "atlas_build_s": 0.059,
+    "atlas_fabricated_files": [],
+    "atlas_slice_reduction_pct": 63.4,
+    "task_type": "bug_fix",
+    "baseline_files": [
+      "tests/test_requests.py",
+      "docs/user/advanced.rst",
+      "tests/test_utils.py",
+      "HISTORY.md",
+      "src/requests/adapters.py",
+      "AUTHORS.rst",
+      "docs/user/quickstart.rst",
+      "src/requests/sessions.py"
+    ],
+    "baseline_recall": 1.0,
+    "baseline_hit@1": false,
+    "baseline_open_tokens": 83728,
+    "baseline_grep_s": 0.031
+  },
+  {
+    "repo": "requests",
+    "task": "cookies are not persisted across requests in a session",
+    "gold_symbols": [
+      "RequestsCookieJar"
+    ],
+    "gold_files": [
+      "src/requests/cookies.py"
+    ],
+    "atlas_files": [
+      "src/requests/sessions.py",
+      "src/requests/__init__.py",
+      "src/requests/cookies.py",
+      "src/requests/models.py",
+      "src/requests/_types.py",
+      "src/requests/adapters.py",
+      "src/requests/api.py",
+      "src/requests/auth.py"
+    ],
+    "atlas_recall": 1.0,
+    "atlas_hit@1": false,
+    "atlas_symbol_recall": 1.0,
+    "atlas_pack_tokens": 2453,
+    "atlas_build_s": 0.056,
+    "atlas_fabricated_files": [],
+    "atlas_slice_reduction_pct": 64.9,
+    "task_type": "security",
+    "baseline_files": [
+      "tests/test_requests.py",
+      "docs/user/advanced.rst",
+      "HISTORY.md",
+      "docs/user/quickstart.rst",
+      "src/requests/sessions.py",
+      "docs/api.rst",
+      "src/requests/cookies.py",
+      "src/requests/models.py"
+    ],
+    "baseline_recall": 1.0,
+    "baseline_hit@1": false,
+    "baseline_open_tokens": 84525,
+    "baseline_grep_s": 0.016
+  },
+  {
+    "repo": "requests",
+    "task": "handle redirect history when following 302 responses",
+    "gold_symbols": [
+      "SessionRedirectMixin"
+    ],
+    "gold_files": [
+      "src/requests/sessions.py"
+    ],
+    "atlas_files": [
+      "src/requests/sessions.py",
+      "src/requests/auth.py",
+      "src/requests/models.py",
+      "src/requests/__init__.py",
+      "src/requests/utils.py",
+      "src/requests/exceptions.py",
+      "src/requests/adapters.py",
+      "src/requests/cookies.py"
+    ],
+    "atlas_recall": 1.0,
+    "atlas_hit@1": true,
+    "atlas_symbol_recall": 1.0,
+    "atlas_pack_tokens": 2354,
+    "atlas_build_s": 0.052,
+    "atlas_fabricated_files": [],
+    "atlas_slice_reduction_pct": 80.2,
+    "task_type": "general",
+    "baseline_files": [
+      "tests/test_requests.py",
+      "HISTORY.md",
+      "src/requests/sessions.py",
+      "tests/test_lowlevel.py",
+      "src/requests/models.py",
+      "docs/user/quickstart.rst",
+      "tests/testserver/server.py",
+      "tests/test_testserver.py"
+    ],
+    "baseline_recall": 1.0,
+    "baseline_hit@1": false,
+    "baseline_open_tokens": 73340,
+    "baseline_grep_s": 0.02
+  },
+  {
+    "repo": "requests",
+    "task": "Response.json raises the wrong error on an invalid JSON body",
+    "gold_symbols": [
+      "Response"
+    ],
+    "gold_files": [
+      "src/requests/models.py"
+    ],
+    "atlas_files": [
+      "src/requests/__init__.py",
+      "src/requests/models.py",
+      "src/requests/exceptions.py",
+      "src/requests/utils.py",
+      "src/requests/_types.py",
+      "src/requests/adapters.py",
+      "src/requests/sessions.py",
+      "src/requests/cookies.py"
+    ],
+    "atlas_recall": 1.0,
+    "atlas_hit@1": false,
+    "atlas_symbol_recall": 1.0,
+    "atlas_pack_tokens": 2764,
+    "atlas_build_s": 0.058,
+    "atlas_fabricated_files": [],
+    "atlas_slice_reduction_pct": 75.7,
+    "task_type": "bug_fix",
+    "baseline_files": [
+      "tests/test_requests.py",
+      "src/requests/models.py",
+      "HISTORY.md",
+      "src/requests/adapters.py",
+      "docs/user/advanced.rst",
+      "src/requests/sessions.py",
+      "docs/user/quickstart.rst",
+      "src/requests/utils.py"
+    ],
+    "baseline_recall": 1.0,
+    "baseline_hit@1": false,
+    "baseline_open_tokens": 93401,
+    "baseline_grep_s": 0.033
+  },
+  {
+    "repo": "requests",
+    "task": "prepare a multipart file upload request body",
+    "gold_symbols": [
+      "PreparedRequest"
+    ],
+    "gold_files": [
+      "src/requests/models.py"
+    ],
+    "atlas_files": [
+      "src/requests/__init__.py",
+      "src/requests/models.py",
+      "src/requests/sessions.py",
+      "src/requests/utils.py",
+      "src/requests/exceptions.py",
+      "src/requests/_types.py",
+      "src/requests/cookies.py",
+      "src/requests/api.py"
+    ],
+    "atlas_recall": 1.0,
+    "atlas_hit@1": false,
+    "atlas_symbol_recall": 1.0,
+    "atlas_pack_tokens": 2744,
+    "atlas_build_s": 0.055,
+    "atlas_fabricated_files": [],
+    "atlas_slice_reduction_pct": 83.3,
+    "task_type": "general",
+    "baseline_files": [
+      "tests/test_requests.py",
+      "docs/user/advanced.rst",
+      "HISTORY.md",
+      "src/requests/sessions.py",
+      "src/requests/models.py",
+      "src/requests/adapters.py",
+      "docs/user/quickstart.rst",
+      "tests/test_lowlevel.py"
+    ],
+    "baseline_recall": 1.0,
+    "baseline_hit@1": false,
+    "baseline_open_tokens": 88157,
+    "baseline_grep_s": 0.02
+  },
+  {
+    "repo": "atlas",
+    "task": "improve symbol slicing token reduction in context packs",
+    "gold_symbols": [
+      "compute_symbol_slices"
+    ],
+    "gold_files": [
+      "context_pack.py"
+    ],
+    "atlas_files": [
+      "context_pack.py",
+      "api.py",
+      "mcp_server/runtime.py",
+      "evidence_engine/symbol_index.py",
+      "evidence_engine/symbol_evidence.py",
+      "agent_integrations.py",
+      "planning_engine.py",
+      "evidence_engine/evidence_models.py"
+    ],
+    "atlas_recall": 1.0,
+    "atlas_hit@1": true,
+    "atlas_symbol_recall": 1.0,
+    "atlas_pack_tokens": 3148,
+    "atlas_build_s": 0.25,
+    "atlas_fabricated_files": [],
+    "atlas_slice_reduction_pct": 92.3,
+    "task_type": "security",
+    "baseline_files": [
+      "atlas_knowledge/packs/apis_expanded.json",
+      "atlas_knowledge/packs/networking_expanded.json",
+      "atlas_knowledge/packs/testing_expanded.json",
+      "accounts_client.py",
+      "atlas_knowledge/packs/ci_cd_expanded.json",
+      "atlas_knowledge/packs/data_engineering_expanded.json",
+      "atlas_knowledge/packs/performance_expanded.json",
+      "api.py"
+    ],
+    "baseline_recall": 0.0,
+    "baseline_hit@1": false,
+    "baseline_open_tokens": 283021,
+    "baseline_grep_s": 0.025
+  },
+  {
+    "repo": "atlas",
+    "task": "root cause analysis from an exception stack trace",
+    "gold_symbols": [
+      "analyze_root_cause"
+    ],
+    "gold_files": [
+      "root_cause.py"
+    ],
+    "atlas_files": [
+      "root_cause.py",
+      "mcp_server/runtime.py",
+      "api.py",
+      "context_pack.py",
+      "repository_memory.py",
+      "evidence_engine/evidence_builder.py",
+      "planning_engine.py",
+      "agent_context.py"
+    ],
+    "atlas_recall": 1.0,
+    "atlas_hit@1": true,
+    "atlas_symbol_recall": 1.0,
+    "atlas_pack_tokens": 2142,
+    "atlas_build_s": 0.243,
+    "atlas_fabricated_files": [],
+    "atlas_slice_reduction_pct": 97.9,
+    "task_type": "bug_fix",
+    "baseline_files": [
+      "api.py",
+      "planning_engine.py",
+      "tests/test_phase174b_trust_integrity.py",
+      "agent_context.py",
+      "tests/test_phase174f_final_blockers.py",
+      "tests/test_phase174d_final_ship_blockers.py",
+      "root_cause.py",
+      "tests/test_phase114_massive_repository_mode.py"
+    ],
+    "baseline_recall": 1.0,
+    "baseline_hit@1": false,
+    "baseline_open_tokens": 101050,
+    "baseline_grep_s": 0.025
+  },
+  {
+    "repo": "atlas",
+    "task": "classify task type to pick a retrieval strategy",
+    "gold_symbols": [
+      "_classify_task_type"
+    ],
+    "gold_files": [
+      "context_pack.py"
+    ],
+    "atlas_files": [
+      "atlas_knowledge/retrieval.py",
+      "context_pack.py",
+      "atlas_knowledge/engine.py",
+      "mcp_server/runtime.py",
+      "evidence_engine/evidence_builder.py",
+      "api.py",
+      "root_cause.py",
+      "domain_knowledge.py"
+    ],
+    "atlas_recall": 1.0,
+    "atlas_hit@1": false,
+    "atlas_symbol_recall": 1.0,
+    "atlas_pack_tokens": 2441,
+    "atlas_build_s": 0.226,
+    "atlas_fabricated_files": [],
+    "atlas_slice_reduction_pct": 94.2,
+    "task_type": "general",
+    "baseline_files": [
+      "static/index.html",
+      "static/app.js",
+      "context_pack.py",
+      "mcp_server/runtime.py",
+      "api.py",
+      "atlas_knowledge/legacy_embedded.py",
+      "static/atlas_beta.js",
+      "static/atlas_zero_friction.js"
+    ],
+    "baseline_recall": 1.0,
+    "baseline_hit@1": false,
+    "baseline_open_tokens": 133691,
+    "baseline_grep_s": 0.024
+  },
+  {
+    "repo": "atlas",
+    "task": "MCP server tool dispatch and JSON-RPC handling",
+    "gold_symbols": [
+      "handle_jsonrpc"
+    ],
+    "gold_files": [
+      "mcp_server/runtime.py"
+    ],
+    "atlas_files": [
+      "server.py",
+      "mcp_server/__init__.py",
+      "mcp_server/tools.py",
+      "mcp_server/server.py",
+      "mcp_server/runtime.py",
+      "api.py",
+      "accounts_client.py",
+      "agent_integrations.py"
+    ],
+    "atlas_recall": 1.0,
+    "atlas_hit@1": false,
+    "atlas_symbol_recall": 1.0,
+    "atlas_pack_tokens": 2370,
+    "atlas_build_s": 0.255,
+    "atlas_fabricated_files": [],
+    "atlas_slice_reduction_pct": 95.5,
+    "task_type": "general",
+    "baseline_files": [
+      "persistence.py",
+      "static/app.js",
+      "agent_context.py",
+      "tests/test_phase119_atlas_product_polish.py",
+      "atlas_knowledge/packs/frontend_engineering.json",
+      "agent_integrations.py",
+      "tests/test_phase186_accounts.py",
+      "mcp_server/runtime.py"
+    ],
+    "baseline_recall": 1.0,
+    "baseline_hit@1": false,
+    "baseline_open_tokens": 84139,
+    "baseline_grep_s": 0.027
+  },
+  {
+    "repo": "atlas",
+    "task": "desktop authenticates against the website with a bearer token",
+    "gold_symbols": [
+      "auth_mode"
+    ],
+    "gold_files": [
+      "accounts_client.py"
+    ],
+    "atlas_files": [
+      "accounts_client.py",
+      "api.py",
+      "operations.py",
+      "accounts_service_runner.py",
+      "agent_integrations.py",
+      "mcp_server/runtime.py",
+      "data_paths.py",
+      "context_pack.py"
+    ],
+    "atlas_recall": 1.0,
+    "atlas_hit@1": true,
+    "atlas_symbol_recall": 0.0,
+    "atlas_pack_tokens": 2725,
+    "atlas_build_s": 0.263,
+    "atlas_fabricated_files": [],
+    "atlas_slice_reduction_pct": 96.8,
+    "task_type": "security",
+    "baseline_files": [
+      "accounts_client.py",
+      "atlas_knowledge/packs/apis_expanded.json",
+      "atlas_knowledge/packs/networking_expanded.json",
+      "atlas_knowledge/packs/testing_expanded.json",
+      "atlas_knowledge/packs/ci_cd_expanded.json",
+      "atlas_knowledge/packs/data_engineering_expanded.json",
+      "atlas_knowledge/packs/performance_expanded.json",
+      "atlas_knowledge/packs/messaging_expanded.json"
+    ],
+    "baseline_recall": 1.0,
+    "baseline_hit@1": true,
+    "baseline_open_tokens": 262941,
+    "baseline_grep_s": 0.026
+  },
+  {
+    "repo": "langchain",
+    "task": "streaming callback handler in the base chat model",
+    "gold_symbols": [
+      "BaseChatModel"
+    ],
+    "gold_files": [
+      "libs/core/langchain_core/language_models/chat_models.py"
+    ],
+    "atlas_files": [
+      "libs/core/langchain_core/language_models/chat_models.py",
+      "libs/core/langchain_core/callbacks/base.py",
+      "libs/core/langchain_core/callbacks/__init__.py",
+      "libs/standard-tests/langchain_tests/integration_tests/chat_models.py",
+      "libs/core/langchain_core/tracers/base.py",
+      "libs/langchain/langchain_classic/callbacks/base.py",
+      "libs/partners/anthropic/langchain_anthropic/chat_models.py",
+      "libs/partners/fireworks/langchain_fireworks/chat_models.py"
+    ],
+    "atlas_recall": 1.0,
+    "atlas_hit@1": true,
+    "atlas_symbol_recall": 1.0,
+    "atlas_pack_tokens": 2950,
+    "atlas_build_s": 1.531,
+    "atlas_fabricated_files": [],
+    "atlas_slice_reduction_pct": 27.8,
+    "task_type": "general",
+    "baseline_files": [
+      "libs/partners/openrouter/tests/unit_tests/test_chat_models.py",
+      "libs/standard-tests/langchain_tests/integration_tests/chat_models.py",
+      "libs/partners/openai/langchain_openai/chat_models/base.py",
+      "libs/langchain_v1/tests/unit_tests/agents/middleware/core/test_wrap_model_call.py",
+      "libs/core/langchain_core/callbacks/manager.py",
+      "libs/core/langchain_core/language_models/chat_models.py",
+      "libs/core/tests/unit_tests/runnables/__snapshots__/test_runnable.ambr",
+      "libs/langchain_v1/langchain/agents/factory.py"
+    ],
+    "baseline_recall": 1.0,
+    "baseline_hit@1": false,
+    "baseline_open_tokens": 200223,
+    "baseline_grep_s": 0.068
+  },
+  {
+    "repo": "langchain",
+    "task": "parse JSON output returned by an LLM",
+    "gold_symbols": [
+      "JsonOutputParser"
+    ],
+    "gold_files": [
+      "libs/core/langchain_core/output_parsers/json.py"
+    ],
+    "atlas_files": [
+      "libs/core/langchain_core/output_parsers/json.py",
+      "libs/core/langchain_core/utils/json.py",
+      "libs/langchain/langchain_classic/agents/output_parsers/json.py",
+      "libs/langchain/langchain_classic/agents/conversational_chat/output_parser.py",
+      "libs/langchain/langchain_classic/agents/structured_chat/output_parser.py",
+      "libs/langchain/langchain_classic/output_parsers/json.py",
+      "libs/langchain/langchain_classic/agents/chat/output_parser.py",
+      "libs/langchain/langchain_classic/agents/conversational/output_parser.py"
+    ],
+    "atlas_recall": 1.0,
+    "atlas_hit@1": true,
+    "atlas_symbol_recall": 1.0,
+    "atlas_pack_tokens": 3338,
+    "atlas_build_s": 1.481,
+    "atlas_fabricated_files": [],
+    "atlas_slice_reduction_pct": -21.4,
+    "task_type": "general",
+    "baseline_files": [
+      "libs/core/langchain_core/runnables/base.py",
+      "libs/partners/openai/langchain_openai/chat_models/base.py",
+      "libs/core/tests/unit_tests/runnables/test_runnable.py",
+      "libs/partners/openai/tests/unit_tests/chat_models/test_base.py",
+      "libs/core/tests/unit_tests/runnables/__snapshots__/test_runnable.ambr",
+      "libs/partners/openai/tests/integration_tests/chat_models/test_responses_api.py",
+      "libs/standard-tests/langchain_tests/integration_tests/chat_models.py",
+      "libs/text-splitters/tests/unit_tests/test_text_splitters.py"
+    ],
+    "baseline_recall": 0.0,
+    "baseline_hit@1": false,
+    "baseline_open_tokens": 211796,
+    "baseline_grep_s": 0.067
+  },
+  {
+    "repo": "langchain",
+    "task": "retry logic when the base LLM hits a rate limit",
+    "gold_symbols": [
+      "BaseLLM"
+    ],
+    "gold_files": [
+      "libs/core/langchain_core/language_models/llms.py"
+    ],
+    "atlas_files": [
+      "libs/core/langchain_core/callbacks/base.py",
+      "libs/core/langchain_core/tracers/base.py",
+      "libs/core/langchain_core/language_models/base.py",
+      "libs/core/langchain_core/runnables/retry.py",
+      "libs/langchain/langchain_classic/chains/conversational_retrieval/base.py",
+      "libs/langchain/langchain_classic/agents/openai_functions_agent/base.py",
+      "libs/core/langchain_core/output_parsers/base.py",
+      "libs/langchain/langchain_classic/agents/conversational_chat/base.py"
+    ],
+    "atlas_recall": 0.0,
+    "atlas_hit@1": false,
+    "atlas_symbol_recall": 0.0,
+    "atlas_pack_tokens": 3616,
+    "atlas_build_s": 1.572,
+    "atlas_fabricated_files": [],
+    "atlas_slice_reduction_pct": 50.3,
+    "task_type": "general",
+    "baseline_files": [
+      "libs/core/tests/unit_tests/test_tools.py",
+      "libs/langchain_v1/tests/unit_tests/agents/middleware/implementations/test_tool_call_limit.py",
+      "libs/standard-tests/langchain_tests/integration_tests/sandboxes.py",
+      "libs/core/langchain_core/runnables/base.py",
+      "libs/core/langchain_core/language_models/chat_models.py",
+      "libs/langchain_v1/tests/unit_tests/agents/middleware/implementations/test_tool_retry.py",
+      "libs/partners/openai/langchain_openai/chat_models/base.py",
+      "libs/standard-tests/langchain_tests/integration_tests/chat_models.py"
+    ],
+    "baseline_recall": 0.0,
+    "baseline_hit@1": false,
+    "baseline_open_tokens": 172370,
+    "baseline_grep_s": 0.069
+  },
+  {
+    "repo": "langchain",
+    "task": "in-memory vector store similarity search",
+    "gold_symbols": [
+      "InMemoryVectorStore"
+    ],
+    "gold_files": [
+      "libs/core/langchain_core/vectorstores/in_memory.py",
+      "libs/langchain/tests/unit_tests/indexes/test_indexing.py"
+    ],
+    "atlas_files": [
+      "libs/core/langchain_core/stores.py",
+      "libs/langchain/langchain_classic/chains/conversation/memory.py",
+      "libs/core/langchain_core/vectorstores/__init__.py",
+      "libs/core/langchain_core/vectorstores/in_memory.py",
+      "libs/core/langchain_core/vectorstores/base.py",
+      "libs/langchain/langchain_classic/memory/vectorstore_token_buffer_memory.py",
+      "libs/langchain/langchain_classic/memory/__init__.py",
+      "libs/langchain/langchain_classic/docstore/__init__.py"
+    ],
+    "atlas_recall": 0.5,
+    "atlas_hit@1": false,
+    "atlas_symbol_recall": 1.0,
+    "atlas_pack_tokens": 2885,
+    "atlas_build_s": 1.55,
+    "atlas_fabricated_files": [],
+    "atlas_slice_reduction_pct": 4.7,
+    "task_type": "general",
+    "baseline_files": [
+      "libs/partners/qdrant/langchain_qdrant/vectorstores.py",
+      "libs/core/tests/unit_tests/indexing/test_indexing.py",
+      "libs/core/langchain_core/vectorstores/base.py",
+      "libs/partners/qdrant/langchain_qdrant/qdrant.py",
+      "libs/partners/chroma/tests/integration_tests/test_vectorstores.py",
+      "libs/standard-tests/langchain_tests/integration_tests/vectorstores.py",
+      "libs/langchain/langchain_classic/vectorstores/__init__.py",
+      "libs/langchain/tests/unit_tests/indexes/test_indexing.py"
+    ],
+    "baseline_recall": 0.5,
+    "baseline_hit@1": false,
+    "baseline_open_tokens": 93234,
+    "baseline_grep_s": 0.066
+  },
+  {
+    "repo": "langchain",
+    "task": "prompt template variable formatting",
+    "gold_symbols": [
+      "BasePromptTemplate"
+    ],
+    "gold_files": [
+      "libs/core/langchain_core/prompts/base.py"
+    ],
+    "atlas_files": [
+      "libs/core/langchain_core/prompts/__init__.py",
+      "libs/langchain/langchain_classic/chains/chat_vector_db/prompts.py",
+      "libs/langchain/langchain_classic/chains/conversational_retrieval/prompts.py",
+      "libs/langchain/langchain_classic/chains/flare/prompts.py",
+      "libs/core/langchain_core/prompts/prompt.py",
+      "libs/langchain/langchain_classic/chains/api/prompt.py",
+      "libs/langchain/langchain_classic/chains/llm_math/prompt.py",
+      "libs/langchain/langchain_classic/chains/natbot/prompt.py"
+    ],
+    "atlas_recall": 0.0,
+    "atlas_hit@1": false,
+    "atlas_symbol_recall": 1.0,
+    "atlas_pack_tokens": 2441,
+    "atlas_build_s": 1.56,
+    "atlas_fabricated_files": [],
+    "atlas_slice_reduction_pct": -34.0,
+    "task_type": "general",
+    "baseline_files": [
+      "libs/core/tests/unit_tests/prompts/test_chat.py",
+      "libs/core/tests/unit_tests/runnables/__snapshots__/test_runnable.ambr",
+      "libs/core/langchain_core/prompts/chat.py",
+      "libs/core/tests/unit_tests/prompts/test_prompt.py",
+      "libs/core/tests/unit_tests/runnables/test_runnable.py",
+      "libs/core/langchain_core/language_models/llms.py",
+      "libs/core/tests/unit_tests/prompts/test_few_shot.py",
+      "libs/core/tests/unit_tests/prompts/test_loading.py"
+    ],
+    "baseline_recall": 0.0,
+    "baseline_hit@1": false,
+    "baseline_open_tokens": 106463,
+    "baseline_grep_s": 0.065
+  },
+  {
+    "repo": "home_assistant",
+    "task": "sensor entity state is not updating",
+    "gold_symbols": [
+      "SensorEntity"
+    ],
+    "gold_files": [
+      "homeassistant/components/sensor/__init__.py",
+      "tests/pylint/test_class_module.py"
+    ],
+    "atlas_files": [
+      "homeassistant/helpers/entity.py",
+      "homeassistant/components/alexa/entities.py",
+      "homeassistant/auth/permissions/entities.py",
+      "homeassistant/components/binary_sensor/__init__.py",
+      "homeassistant/components/sensor/__init__.py",
+      "homeassistant/components/abode/sensor.py",
+      "homeassistant/components/growatt_server/sensor/__init__.py",
+      "homeassistant/helpers/state.py"
+    ],
+    "atlas_recall": 0.5,
+    "atlas_hit@1": false,
+    "atlas_symbol_recall": 1.0,
+    "atlas_pack_tokens": 2816,
+    "atlas_build_s": 7.113,
+    "atlas_fabricated_files": [],
+    "atlas_slice_reduction_pct": 77.1,
+    "task_type": "general",
+    "baseline_files": [
+      "tests/components/enphase_envoy/snapshots/test_sensor.ambr",
+      "tests/components/matter/snapshots/test_sensor.ambr",
+      "tests/components/tuya/snapshots/test_sensor.ambr",
+      "tests/components/smartthings/snapshots/test_sensor.ambr",
+      "tests/components/growatt_server/snapshots/test_sensor.ambr",
+      "tests/components/homewizard/snapshots/test_sensor.ambr",
+      "tests/components/homekit_controller/snapshots/test_init.ambr",
+      "tests/components/enphase_envoy/snapshots/test_diagnostics.ambr"
+    ],
+    "baseline_recall": 0.0,
+    "baseline_hit@1": false,
+    "baseline_open_tokens": 0,
+    "baseline_grep_s": 0.48
+  },
+  {
+    "repo": "home_assistant",
+    "task": "config entry setup and unload flow",
+    "gold_symbols": [
+      "ConfigEntry"
+    ],
+    "gold_files": [
+      "homeassistant/config_entries.py"
+    ],
+    "atlas_files": [
+      "homeassistant/components/config/config_entries.py",
+      "homeassistant/config_entries.py",
+      "homeassistant/helpers/template/extensions/config_entries.py",
+      "homeassistant/components/device_tracker/config_entry.py",
+      "homeassistant/components/auth/mfa_setup_flow.py",
+      "homeassistant/setup.py",
+      "homeassistant/components/bayesian/config_flow.py",
+      "homeassistant/config.py"
+    ],
+    "atlas_recall": 1.0,
+    "atlas_hit@1": false,
+    "atlas_symbol_recall": 1.0,
+    "atlas_pack_tokens": 2528,
+    "atlas_build_s": 7.139,
+    "atlas_fabricated_files": [],
+    "atlas_slice_reduction_pct": 69.4,
+    "task_type": "general",
+    "baseline_files": [
+      "tests/test_config_entries.py",
+      "tests/components/enphase_envoy/snapshots/test_sensor.ambr",
+      "tests/components/homewizard/snapshots/test_sensor.ambr",
+      "tests/components/tuya/snapshots/test_sensor.ambr",
+      "tests/components/matter/snapshots/test_sensor.ambr",
+      "tests/components/homekit_controller/snapshots/test_init.ambr",
+      "tests/components/tuya/snapshots/test_init.ambr",
+      "tests/helpers/test_device_registry.py"
+    ],
+    "baseline_recall": 0.0,
+    "baseline_hit@1": false,
+    "baseline_open_tokens": 0,
+    "baseline_grep_s": 0.536
+  },
+  {
+    "repo": "home_assistant",
+    "task": "climate entity target temperature handling",
+    "gold_symbols": [
+      "ClimateEntity"
+    ],
+    "gold_files": [
+      "homeassistant/components/climate/__init__.py"
+    ],
+    "atlas_files": [
+      "homeassistant/auth/permissions/entities.py",
+      "homeassistant/components/climate/__init__.py",
+      "homeassistant/components/overkiz/climate/__init__.py",
+      "homeassistant/components/alexa/entities.py",
+      "homeassistant/components/actron_air/climate.py",
+      "homeassistant/components/adax/climate.py",
+      "homeassistant/components/advantage_air/climate.py",
+      "homeassistant/components/airobot/climate.py"
+    ],
+    "atlas_recall": 1.0,
+    "atlas_hit@1": false,
+    "atlas_symbol_recall": 1.0,
+    "atlas_pack_tokens": 3337,
+    "atlas_build_s": 7.056,
+    "atlas_fabricated_files": [],
+    "atlas_slice_reduction_pct": 77.6,
+    "task_type": "general",
+    "baseline_files": [
+      "tests/components/enphase_envoy/snapshots/test_sensor.ambr",
+      "tests/components/matter/snapshots/test_sensor.ambr",
+      "tests/components/tuya/snapshots/test_sensor.ambr",
+      "tests/components/homekit_controller/snapshots/test_init.ambr",
+      "tests/components/homewizard/snapshots/test_sensor.ambr",
+      "tests/components/smartthings/snapshots/test_sensor.ambr",
+      "tests/components/growatt_server/snapshots/test_sensor.ambr",
+      "tests/components/enphase_envoy/snapshots/test_diagnostics.ambr"
+    ],
+    "baseline_recall": 0.0,
+    "baseline_hit@1": false,
+    "baseline_open_tokens": 0,
+    "baseline_grep_s": 0.469
+  },
+  {
+    "repo": "home_assistant",
+    "task": "entity base class writes state to the machine",
+    "gold_symbols": [
+      "Entity"
+    ],
+    "gold_files": [
+      "homeassistant/helpers/entity.py",
+      "tests/pylint/test_class_module.py",
+      "tests/pylint/test_super_call.py",
+      "tests/pylint/type_hints/test_type_hints.py"
+    ],
+    "atlas_files": [
+      "homeassistant/auth/permissions/entities.py",
+      "homeassistant/components/fritzbox_callmonitor/base.py",
+      "homeassistant/helpers/template/extensions/base.py",
+      "homeassistant/helpers/entity.py",
+      "homeassistant/components/recorder/models/state.py",
+      "homeassistant/components/recorder/table_managers/states.py",
+      "homeassistant/helpers/template/extensions/state.py",
+      "homeassistant/helpers/template/states.py"
+    ],
+    "atlas_recall": 0.25,
+    "atlas_hit@1": false,
+    "atlas_symbol_recall": 0.0,
+    "atlas_pack_tokens": 2162,
+    "atlas_build_s": 7.544,
+    "atlas_fabricated_files": [],
+    "atlas_slice_reduction_pct": 93.0,
+    "task_type": "general",
+    "baseline_files": [
+      "tests/components/enphase_envoy/snapshots/test_sensor.ambr",
+      "tests/components/matter/snapshots/test_sensor.ambr",
+      "tests/components/tuya/snapshots/test_sensor.ambr",
+      "tests/components/smartthings/snapshots/test_sensor.ambr",
+      "tests/components/growatt_server/snapshots/test_sensor.ambr",
+      "tests/components/homekit_controller/snapshots/test_init.ambr",
+      "tests/components/homewizard/snapshots/test_sensor.ambr",
+      "tests/components/enphase_envoy/snapshots/test_diagnostics.ambr"
+    ],
+    "baseline_recall": 0.0,
+    "baseline_hit@1": false,
+    "baseline_open_tokens": 0,
+    "baseline_grep_s": 0.515
+  },
+  {
+    "repo": "home_assistant",
+    "task": "event bus fire and listen",
+    "gold_symbols": [
+      "EventBus"
+    ],
+    "gold_files": [
+      "homeassistant/core.py"
+    ],
+    "atlas_files": [
+      "homeassistant/helpers/event.py",
+      "homeassistant/auth/permissions/events.py",
+      "homeassistant/components/alexa_devices/event.py",
+      "homeassistant/components/axis/event.py",
+      "homeassistant/components/azure_event_hub/__init__.py",
+      "homeassistant/components/backup/event.py",
+      "homeassistant/components/bang_olufsen/event.py",
+      "homeassistant/components/august/event.py"
+    ],
+    "atlas_recall": 0.0,
+    "atlas_hit@1": false,
+    "atlas_symbol_recall": 0.0,
+    "atlas_pack_tokens": 3290,
+    "atlas_build_s": 6.924,
+    "atlas_fabricated_files": [],
+    "atlas_slice_reduction_pct": 31.0,
+    "task_type": "general",
+    "baseline_files": [
+      "tests/helpers/test_script.py",
+      "tests/components/logbook/test_websocket_api.py",
+      "tests/helpers/test_event.py",
+      "tests/components/wyoming/test_satellite.py",
+      "tests/components/unifiprotect/test_event.py",
+      "tests/components/nest/test_media_source.py",
+      "homeassistant/helpers/event.py",
+      "tests/components/google/test_calendar.py"
+    ],
+    "baseline_recall": 0.0,
+    "baseline_hit@1": false,
+    "baseline_open_tokens": 145151,
+    "baseline_grep_s": 0.442
+  }
+]
