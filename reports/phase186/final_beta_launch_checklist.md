@@ -10,8 +10,8 @@ You asked me to build the installer, generate SHA256, create the GitHub Release,
 
 | Task | Result | Why |
 |---|---|---|
-| Build latest installer | **BLOCKED** | **Inno Setup (ISCC) not installed** and **PyInstaller not installed.** The installer cannot be compiled or its frozen exe rebuilt here. |
-| Generate SHA256 | **DONE (but of a STALE build)** | Existing `Atlas_Setup.exe` = `e5dad2121b31f9116ccc7e6046454b6cd7ad609b155b7331becf699bd8dee6a7`. **This installer was built 2026-06-18 from commit `ce5f73805` — BEFORE the phase186A desktop rewire.** Verified: its bundled `accounts_client.py` has **no** website-auth code. **Do not release it as "latest."** |
+| Build latest installer | **DONE (2026-06-20)** | **Correction:** PyInstaller + Inno Setup are present in the workspace (`.phase152_packaging_lib`, `.phase150_inno`) — my first probe only checked global installs. Rebuilt from HEAD `f70a4975e`; ISCC "Successful compile". Frozen exe **proven** to contain the `/api/auth/desktop/*` rewire. |
+| Generate SHA256 | **DONE (current build)** | New `Atlas_Setup.exe` = `bc2a3e60113e74400d44d99c3548662e94739ec6074860482a116e6edb30cc6e` (sidecar regenerated + verified). Supersedes the stale 06-18 `e5dad2…` build (do not ship that one). |
 | Create GitHub Release | **BLOCKED** | `gh` CLI not installed and no API token available. (Remote exists: `github.com/yoavkozokabab-blip/atlas-repo`.) Also moot until a *current* installer exists. |
 | Deploy website to Vercel | **BLOCKED (won't ship broken)** | Vercel CLI present and you are logged in (`yoavkozokabab-8018`), but the project is **not linked** and **no Supabase env is set** — a deploy would build yet return 500 on signup/login/waitlist (the prod data-loss guard). Deploying a broken-auth site is not a beta launch. |
 | Final checklist | **DONE** | This document. |
@@ -102,7 +102,7 @@ Verify `GET /download/atlas` → 302 to the release asset.
 
 ## 4. Go / No-Go gates before inviting users
 
-- [ ] `build_info.json.commit` ≥ `e06b62bed` (installer contains phase186A) — **currently NO** (stale `ce5f73805`)
+- [x] `build_info.json.commit` ≥ `e06b62bed` (installer contains phase186A) — **DONE**: `f70a4975e`, rewire proven inside the exe. See `owner_setup_guide.md`.
 - [ ] `web_base()` default == live site URL (or DNS points there)
 - [ ] `/api/health` reports `backend: "supabase"`
 - [ ] Signup on the live site → desktop login works (repeat the smoke against the live URL)
