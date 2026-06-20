@@ -117,6 +117,10 @@ class Candidate:
     score: float = 0.0
     reasons: List[str] = field(default_factory=list)
     components: Dict[str, float] = field(default_factory=dict)
+    # Phase 186-excellence: keep each reason attributed to the scoring component
+    # that produced it, so the pack can explain WHY a file matters (selection vs
+    # dependency vs impact) instead of a flat reason list.
+    reason_by_component: Dict[str, List[str]] = field(default_factory=dict)
     excluded_reason: str = ""
 
     def add(self, amount: float, reason: str, component: str) -> None:
@@ -133,6 +137,10 @@ class Candidate:
         self.components[component] = round(current + applied, 2)
         if reason and reason not in self.reasons:
             self.reasons.append(reason)
+        if reason:
+            bucket = self.reason_by_component.setdefault(component, [])
+            if reason not in bucket:
+                bucket.append(reason)
 
 
 def estimate_tokens(text: str) -> int:
@@ -943,6 +951,81 @@ def _score_candidates(
     return signals, ranked, excluded[:_MAX_EXCLUDED], meta
 
 
+# Components that explain WHY a file matched the task (selection evidence),
+# ordered strongest-first for picking the primary selection reason.
+_SELECTION_COMPONENTS = (
+    "direct", "exact", "symbol", "canonical", "compound",
+    "framework", "content", "path", "package", "subsystem",
+)
+
+
+def _structured_evidence(
+    cand: "Candidate",
+    rel: str,
+    imports: Dict[str, Set[str]],
+    imported_by: Dict[str, Set[str]],
+    symbol_reason: str = "",
+) -> Dict[str, Any]:
+    """Turn a candidate's flat reasons into the evidence-centric explanation:
+    relevance / selection / dependency / impact. Every file gets a non-empty
+    selection_reason so it never appears without a stated WHY."""
+    comps = cand.components or {}
+
+    # selection_reason — why THIS file matches the task.
+    selection = symbol_reason
+    if not selection:
+        best_comp, best_score = "", -1.0
+        for c in _SELECTION_COMPONENTS:
+            s = comps.get(c, 0.0)
+            if s > best_score:
+                best_score, best_comp = s, c
+        bucket = cand.reason_by_component.get(best_comp) or []
+        if bucket:
+            selection = bucket[0]
+    if not selection:
+        selection = cand.reasons[0] if cand.reasons else "ranked by Atlas relevance scoring"
+
+    # dependency_reason — concrete, graph-grounded import links.
+    imp = imports.get(rel) or set()
+    impby = imported_by.get(rel) or set()
+    if imp or impby:
+        parts: List[str] = []
+        if impby:
+            parts.append(f"imported by {len(impby)} module(s)")
+        if imp:
+            parts.append(f"imports {len(imp)} module(s)")
+        sample = list(impby)[:2] or list(imp)[:2]
+        dependency = "; ".join(parts)
+        if sample:
+            dependency += " (e.g. " + ", ".join(os.path.basename(p) for p in sample) + ")"
+    else:
+        dep_comp = "; ".join((cand.reason_by_component.get("dependency") or [])[:2])
+        dependency = dep_comp or "no resolved import edges (standalone/leaf module)"
+
+    # impact_reason — predicted blast radius from inbound dependents (fan-in).
+    fan_in, fan_out = len(impby), len(imp)
+    extra = ""
+    if comps.get("risk"):
+        extra = "; flagged risk-ranked module"
+    elif comps.get("importance"):
+        extra = "; import/historical hub"
+    if fan_in >= 8:
+        impact = f"high blast radius - {fan_in} modules import this; edits ripple widely{extra}"
+    elif fan_in >= 3:
+        impact = f"moderate blast radius - {fan_in} dependent module(s){extra}"
+    elif fan_in == 0:
+        impact = f"low inbound impact - no resolved dependents (leaf/entry; fan-out {fan_out}){extra}"
+    else:
+        impact = f"localized - {fan_in} dependent module(s); fan-out {fan_out}{extra}"
+
+    return {
+        "relevance_score": round(cand.score, 1),
+        "selection_reason": selection,
+        "dependency_reason": dependency,
+        "impact_reason": impact,
+    }
+
+
 def build_context_pack_from_state(
     repo_path: str,
     task: str,
@@ -1002,12 +1085,19 @@ def build_context_pack_from_state(
         reasons = list(cand.reasons[:6])
         if symbol_reason and symbol_reason not in reasons:
             reasons.insert(0, symbol_reason)
+        evidence = _structured_evidence(cand, rel, imports, imported_by, symbol_reason)
         item = {
             "path": rel,
             "score": round(cand.score, 1),
             "role": _file_role(rel, meta_file),
             "subsystem": _subsystem_for_path(rel, memory, state.get("index") or {}),
             "reasons": reasons[:6],
+            # Evidence-centric explanation: every file states WHY it was selected,
+            # how it is connected, and its predicted impact.
+            "relevance_score": evidence["relevance_score"],
+            "selection_reason": evidence["selection_reason"],
+            "dependency_reason": evidence["dependency_reason"],
+            "impact_reason": evidence["impact_reason"],
             "components": dict(cand.components),
             "size_bytes": int(meta_file.get("size") or 0),
             "token_estimate": estimate_tokens(_read_small_file(repo_path, rel, max_chars=60_000)) if int(meta_file.get("size") or 0) <= 60_000 else estimate_tokens(""),
@@ -1125,8 +1215,16 @@ def render_context_pack(pack: Dict[str, Any]) -> str:
     lines.append("\n## Why these files")
     if recs:
         for item in recs[:12]:
-            comps = ", ".join(sorted((item.get("components") or {}).keys())) or "heuristic"
-            lines.append(f"- `{item['path']}`: evidence={comps}; subsystem={item.get('subsystem') or 'unknown'}.")
+            rscore = item.get("relevance_score", item.get("score", 0))
+            lines.append(f"- `{item['path']}` (relevance {rscore}, subsystem {item.get('subsystem') or 'unknown'})")
+            lines.append(f"    - why selected: {item.get('selection_reason') or 'ranked by relevance'}")
+            lines.append(f"    - dependencies: {item.get('dependency_reason') or 'n/a'}")
+            lines.append(f"    - impact: {item.get('impact_reason') or 'n/a'}")
+            syms = [s for s in (item.get("matched_symbols") or []) if isinstance(s, dict)]
+            if syms:
+                names = ", ".join(str(s.get("qualname") or s.get("name") or "").strip() for s in syms[:4] if (s.get("qualname") or s.get("name")))
+                if names:
+                    lines.append(f"    - symbols: {names}")
     else:
         lines.append("- Atlas did not find enough direct, symbol, path, subsystem, or dependency evidence.")
 
