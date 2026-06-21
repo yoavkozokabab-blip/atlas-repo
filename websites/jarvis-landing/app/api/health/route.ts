@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { store } from "@/app/_lib/store";
-import { ENV } from "@/app/_lib/config";
+import { ENV, validateSupabaseConfig } from "@/app/_lib/config";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -25,6 +25,18 @@ export async function GET() {
     }
   }
 
+  // Supabase env diagnostic — booleans + hostname only (no secrets). Surfacing
+  // the resolved hostname lets an operator catch env drift (e.g. a stale/wrong
+  // project) immediately instead of via an opaque ENOTFOUND 500.
+  const sb = validateSupabaseConfig();
+  const supabase = {
+    supabase_url_present: sb.urlPresent,
+    anon_key_present: !!(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY),
+    service_role_present: sb.serviceRolePresent,
+    hostname: sb.hostname,
+    validation_passed: sb.ok,
+  };
+
   const body = {
     ok: persistence === "ok" || (persistence === "ephemeral" && !ENV.isProd),
     version: ENV.appVersion,
@@ -37,6 +49,7 @@ export async function GET() {
       hasInstallerUrl: !!process.env.ATLAS_INSTALLER_URL || !!process.env.ATLAS_INSTALLER_PATH,
       paymentsMode: ENV.paymentsMode,
     },
+    supabase,
     ...(detail ? { detail } : {}),
   };
   return NextResponse.json(body, { status: body.ok ? 200 : 503 });

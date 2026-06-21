@@ -66,3 +66,61 @@ export const ENV = {
 export function liveChargesEnabled(): boolean {
   return ENV.paymentsMode === "live" && ENV.hasStripe;
 }
+
+// ---------------------------------------------------------------------------
+// Supabase config validation (production env reconciliation).
+// Validates ONLY the variables this codebase actually consumes — SUPABASE_URL
+// and SUPABASE_SERVICE_ROLE_KEY (raw PostgREST + service role; see _lib/store.ts
+// and _lib/ratelimit.ts). The app does NOT use createClient / anon key /
+// NEXT_PUBLIC_SUPABASE_*, so those are not required and not validated here.
+//
+// No project id is hardcoded — drift is caught by surfacing the resolved
+// hostname via /api/health so an operator can see a wrong/stale project.
+// ---------------------------------------------------------------------------
+export interface SupabaseConfigCheck {
+  urlPresent: boolean;
+  serviceRolePresent: boolean;
+  validUrl: boolean;
+  isSupabaseHost: boolean;
+  hostname: string;
+  ok: boolean;
+}
+
+export function validateSupabaseConfig(): SupabaseConfigCheck {
+  const raw = (process.env.SUPABASE_URL || "").trim();
+  const serviceRolePresent = !!process.env.SUPABASE_SERVICE_ROLE_KEY;
+  let validUrl = false;
+  let isSupabaseHost = false;
+  let hostname = "";
+  if (raw) {
+    try {
+      const u = new URL(raw);
+      validUrl = true;
+      hostname = u.hostname;
+      isSupabaseHost = u.hostname.endsWith(".supabase.co") || u.hostname.endsWith(".supabase.in");
+    } catch {
+      validUrl = false;
+    }
+  }
+  const urlPresent = !!raw;
+  return {
+    urlPresent,
+    serviceRolePresent,
+    validUrl,
+    isSupabaseHost,
+    hostname,
+    ok: urlPresent && serviceRolePresent && validUrl && isSupabaseHost,
+  };
+}
+
+/** Throws a clear, secret-free error when Supabase env is missing/malformed. */
+export function assertSupabaseConfigured(): void {
+  const c = validateSupabaseConfig();
+  if (!c.ok) {
+    throw new Error(
+      `[atlas] Supabase env invalid: url_present=${c.urlPresent} service_role_present=${c.serviceRolePresent} ` +
+        `valid_url=${c.validUrl} supabase_host=${c.isSupabaseHost} hostname=${c.hostname || "<none>"}. ` +
+        `Set SUPABASE_URL=https://<project>.supabase.co and SUPABASE_SERVICE_ROLE_KEY to the CURRENT project.`
+    );
+  }
+}
