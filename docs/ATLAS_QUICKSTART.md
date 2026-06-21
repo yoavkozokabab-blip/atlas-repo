@@ -2,18 +2,20 @@
 
 **Atlas maps your repository locally and helps you plan changes — it does not write or apply code.**
 
-## Windows (easiest)
+## Installed Atlas — Windows (easiest, no Python needed)
 
-1. Install **Python 3.10+** from [python.org](https://www.python.org/downloads/) (check “Add python.exe to PATH”).
-2. Double-click **`Launch Atlas.bat`** in this folder (or use **Launch Atlas** from the installer).
-3. In the browser, click **Load Sample Repository** (fastest path to your first Build Plan).
-4. Open **Build Plan**, keep the example text, click **Generate Change Plan**.
+The installer bundles everything; **Python is not required**.
 
-## macOS / Linux
+1. Launch **Atlas** from the Start-menu or desktop shortcut created by the installer.
+2. In the browser that opens, click **Load Sample Repository** (fastest path to your first Build Plan).
+3. Open **Build Plan**, keep the example text, click **Generate Change Plan**.
+
+## Run from source (developers only)
+
+Requires **Python 3.10+**. From your `local_jarvis` checkout:
 
 ```bash
-cd path/to/local_jarvis
-python3 run_atlas.py
+python3 run_atlas.py        # Windows: py -3 run_atlas.py
 ```
 
 Then open `http://127.0.0.1:8777/` and use **Load Sample Repository**.
