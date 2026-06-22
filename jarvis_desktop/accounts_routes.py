@@ -105,7 +105,8 @@ def accounts_register(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str,
     if result.get("_http_status"):
         status = int(result.get("_http_status") or 0)
         detail = result.get("detail", "Registration failed")
-        detail_text = detail if isinstance(detail, str) else str(detail)
+        # Never surface a raw validation blob (pydantic error list) to the user.
+        detail_text = detail if isinstance(detail, str) else "Please check the form fields and try again."
         if status == 409:
             return {
                 "ok": False,
