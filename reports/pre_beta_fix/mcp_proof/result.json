@@ -1,0 +1,196 @@
+{
+  "exe": "C:\\J.A.R.V.I.S\\local_jarvis\\dist\\Atlas\\Atlas.exe",
+  "repo": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\requests",
+  "passed": true,
+  "checks": [
+    {
+      "check": "Atlas.exe exists",
+      "ok": true,
+      "detail": "C:\\J.A.R.V.I.S\\local_jarvis\\dist\\Atlas\\Atlas.exe"
+    },
+    {
+      "check": "Atlas.exe --self-test exit 0 (ready)",
+      "ok": true,
+      "detail": "exit=0"
+    },
+    {
+      "check": "initialize returns serverInfo",
+      "ok": true,
+      "detail": "atlas-local"
+    },
+    {
+      "check": "tools/list returns Atlas tools",
+      "ok": true,
+      "detail": "17 tools"
+    },
+    {
+      "check": "atlas_health works (no error, no secret leak)",
+      "ok": true,
+      "detail": "{\"claude_desktop\": {\"atlas_configured\": true, \"can_auto_write\": true, \"config_path\": \"C:\\\\Users\\\\babi2\\\\AppData\\\\Roaming\\\\Claude\\\\claude_desktop_config.json\", \""
+    },
+    {
+      "check": "atlas_scan_repo works on demo repo",
+      "ok": true,
+      "detail": "files=125"
+    },
+    {
+      "check": "atlas_repo_summary works",
+      "ok": true,
+      "detail": "name=requests"
+    }
+  ],
+  "transcript": {
+    "initialize": {
+      "protocolVersion": "2024-11-05",
+      "capabilities": {
+        "tools": {}
+      },
+      "serverInfo": {
+        "name": "atlas-local",
+        "version": "0.1.0-beta"
+      }
+    },
+    "tools": [
+      "atlas_scan_repo",
+      "atlas_get_codebase_map",
+      "atlas_repo_summary",
+      "atlas_get_architecture",
+      "atlas_get_dependency_graph",
+      "atlas_find_relevant_files",
+      "atlas_build_context_pack",
+      "atlas_what_breaks",
+      "atlas_get_impact_analysis",
+      "atlas_plan_change",
+      "atlas_get_change_plan",
+      "atlas_find_file",
+      "atlas_repo_health",
+      "atlas_export_for_claude",
+      "atlas_export_for_cursor",
+      "atlas_export_for_codex",
+      "atlas_health"
+    ],
+    "atlas_health": {
+      "claude_desktop": {
+        "atlas_configured": true,
+        "can_auto_write": true,
+        "config_path": "C:\\Users\\babi2\\AppData\\Roaming\\Claude\\claude_desktop_config.json",
+        "config_source": "appdata_roaming",
+        "copyable_json": "{\n  \"mcpServers\": {\n    \"atlas\": {\n      \"command\": \"C:\\\\J.A.R.V.I.S\\\\local_jarvis\\\\dist\\\\Atlas\\\\Atlas.exe\",\n      \"args\": [\n        \"--mcp\"\n      ]\n    }\n  }\n}",
+        "discovered_paths": [
+          {
+            "exists": true,
+            "parent_exists": true,
+            "path": "C:\\Users\\babi2\\AppData\\Roaming\\Claude\\claude_desktop_config.json",
+            "source": "appdata_roaming"
+          },
+          {
+            "exists": false,
+            "parent_exists": false,
+            "path": "C:\\Users\\babi2\\AppData\\Local\\Claude\\claude_desktop_config.json",
+            "source": "localappdata_claude"
+          },
+          {
+            "exists": false,
+            "parent_exists": false,
+            "path": "C:\\Users\\babi2\\AppData\\Local\\AnthropicClaude\\claude_desktop_config.json",
+            "source": "localappdata_anthropic"
+          },
+          {
+            "exists": true,
+            "parent_exists": true,
+            "path": "C:\\Users\\babi2\\AppData\\Local\\Packages\\Claude_pzs8sxrjxfjjc\\LocalCache\\Roaming\\Claude\\claude_desktop_config.json",
+            "source": "microsoft_store:Claude_pzs8sxrjxfjjc"
+          },
+          {
+            "exists": false,
+            "parent_exists": false,
+            "path": "C:\\Users\\babi2\\AppData\\Local\\Packages\\Claude_pzs8sxrjxfjjc\\LocalState\\Claude\\claude_desktop_config.json",
+            "source": "microsoft_store:Claude_pzs8sxrjxfjjc"
+          },
+          {
+            "exists": false,
+            "parent_exists": false,
+            "path": "C:\\Users\\babi2\\AppData\\Local\\Packages\\Claude_pzs8sxrjxfjjc\\Roaming\\Claude\\claude_desktop_config.json",
+            "source": "microsoft_store:Claude_pzs8sxrjxfjjc"
+          }
+        ],
+        "existing_server_names": [
+          "atlas"
+        ],
+        "exists": true,
+        "invalid_json": false,
+        "ok": true,
+        "requires_confirmation": true,
+        "snippet": {
+          "mcpServers": {
+            "atlas": {
+              "args": [
+                "--mcp"
+              ],
+              "command": "C:\\J.A.R.V.I.S\\local_jarvis\\dist\\Atlas\\Atlas.exe"
+            }
+          }
+        }
+      },
+      "mcp_version": "0.1.0-beta",
+      "ok": true,
+      "privacy": {
+        "secrets_redacted": "[REDACTED]",
+        "source_bodies_returned_by_default": false,
+        "transport": "stdio-local"
+      },
+      "protocol_version": "2024-11-05",
+      "repo": {
+        "message": "No repository scanned yet.",
+        "ok": true,
+        "repo_path": "",
+        "repository_memory": null,
+        "scan": null,
+        "trust": null
+      },
+      "tool_count": 17
+    },
+    "atlas_scan_repo": {
+      "ok": true,
+      "scan": {
+        "cache": {
+          "hit": false,
+          "signature": "ae6514f3ce20b1c13609605beb6aea8bea3d91c9b63d6dc22e803540bf69bc59"
+        },
+        "degraded": false,
+        "dependency_edges": 66,
+        "file_count": 125,
+        "graph_health": {
+          "degraded": false,
+          "edges": 66,
+          "external_label": "external + stdlib imports",
+          "external_package_imports": 0,
+          "health_basis": "internal_unresolved",
+          "import_cycles": 0,
+          "label": "healthy",
+          "modules": 20,
+          "notice": "Internal graph is reliable: 0 unresolved internal import(s). The 26 external/stdlib import(s) are normal dependencies.",
+          "partial_reason": "",
+          "reason": "Graph health weights internal_missing and relative_resolution_issue; external_dependency and dynamic_import are expected in large apps.",
+          "reliability_category": "ok",
+          "reliable": true,
+          "resolved_imports": 66,
+          "scope": "production",
+          "unresolved_dynamic_optional": 28,
+          "unresolved_external": 26,
+          "unresolved_imports": 185,
+          "unresolved_internal": 0,
+          "unresolved_internal_ratio": 0.0,
+          "unresolved_ratio": 0.7371,
+          "unresolved_ratio_note": "External imports (targets outside the internal module set: third-party packages + standard library + any unresolved internal imports) \u00f7 all imports. High values are normal for apps with many dependencies."
+        },
+        "module_count": 20,
+        "repo_name": "requests"
+      }
+    },
+    "atlas_repo_summary": {
+      "ok": true,
+      "repo_name": "requests"
+    }
+  }
+}

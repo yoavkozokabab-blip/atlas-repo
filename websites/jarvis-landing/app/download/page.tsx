@@ -79,6 +79,15 @@ export default async function DownloadPage() {
                 <li>Describe a change and generate your first Change Plan.</li>
                 <li>Click <b>Copy for Claude / Cursor / Codex</b> and paste it into your AI tool.</li>
               </ol>
+              <div style={{ marginTop: 22 }}>
+                <h3 style={{ fontSize: "1rem" }}>Or connect your AI agent directly (MCP)</h3>
+                <ol className="steps" style={{ marginTop: 12 }}>
+                  <li>Add Atlas to Claude Desktop / Cursor / Codex with the <Link href="/docs" style={{ color: "var(--accent)" }}>setup guide</Link> (point it at <code>Atlas.exe --mcp</code> — no account needed).</li>
+                  <li>Restart your AI tool — <b>atlas</b> appears in its tools menu.</li>
+                  <li>Verify it connected by asking: <b>&ldquo;What Atlas tools are available?&rdquo;</b> or <b>&ldquo;Use atlas_health.&rdquo;</b></li>
+                  <li>Not visible? Re-check the config in the <Link href="/docs" style={{ color: "var(--accent)" }}>setup guide</Link>.</li>
+                </ol>
+              </div>
               <div style={{ marginTop: 24 }}>
                 <h3 style={{ fontSize: "1rem" }}>On macOS or Linux?</h3>
                 <p className="note" style={{ marginTop: 8, marginBottom: 12 }}>
