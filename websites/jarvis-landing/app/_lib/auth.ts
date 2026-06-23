@@ -140,14 +140,14 @@ export async function userFromBearer(req: Request): Promise<User | null> {
   return u;
 }
 /**
- * Beta access rule (Phase 186A). Open beta → everyone active is approved.
- * Invite beta → only allow-listed emails (and admins). Minimal, env-driven,
- * no schema change. Unapproved users still get an account + a clear message.
+ * Access rule (Phase 187 — open self-serve). Any registered, non-suspended user
+ * is approved. Beta approval / invite / allowlist gating has been REMOVED:
+ * BETA_MODE and BETA_ALLOWLIST no longer gate access. Account control is via
+ * `status` (suspended) only — enforced in loginUser/currentUser, which never
+ * return a suspended user, so this returns true for every reachable user.
  */
 export function betaApproved(u: User): boolean {
-  if (ENV.betaMode === "open") return true;
-  if (u.role === "admin" || ENV.adminEmails.includes(u.email)) return true;
-  return ENV.betaAllowlist.includes(u.email.toLowerCase());
+  return u.status !== "suspended";
 }
 
 /** Entitlement view returned to the desktop so it can gate features. */
