@@ -341,3 +341,63 @@ def test_context_pack_low_confidence_when_no_relevant_context(tmp_path):
     assert pack["confidence"] == "LOW"
     assert pack["recommended_files"] == []
     assert "No relevant files identified" in pack["markdown"]
+
+
+def test_ownership_penalty_targets_nonsource_dirs():
+    # external_repos = vendored third party -> demoted hard (effectively excluded).
+    assert cp._ownership_penalty("external_repos/somelib/approval.py")[0] >= 150
+    # demo / staging / packaging / _internal / .phase* -> demoted.
+    assert cp._ownership_penalty("demo/sample_repo/beta.py")[0] == 80
+    assert cp._ownership_penalty("packaging/staging/_internal/beta.py")[0] == 80
+    assert cp._ownership_penalty(".phase150_install_test/beta.py")[0] == 80
+    assert cp._ownership_penalty("tests/fixtures/sample.py")[0] == 80
+    # first-party production source -> no penalty.
+    assert cp._ownership_penalty("accounts_routes.py")[0] == 0
+    assert cp._ownership_penalty("jarvis_desktop/api.py")[0] == 0
+    assert cp._ownership_penalty("websites/jarvis-landing/app/_lib/auth.ts")[0] == 0
+
+
+def test_production_source_outranks_demo_and_vendor_for_maintenance(tmp_path):
+    # Regression for the "remove beta approval" relevance bug: a trivially-named
+    # demo fixture (beta.py / run_beta) used to outrank the real production module
+    # via the exact-filename bonus. Production must now win; vendored external_repos
+    # code must be demoted out of recommendations.
+    bodies = {
+        "accounts_routes.py": (
+            "def accounts_admin_grant_beta():\n    pass\n"
+            "def accounts_admin_revoke_beta():\n    pass\n"
+            "def validate_beta_profile():\n    # beta approval routing\n    return True\n"
+        ),
+        "accounts_client.py": (
+            "def admin_grant_beta():\n    pass\n"
+            "def admin_revoke_beta():\n    # beta approval client\n    pass\n"
+        ),
+        "demo/sample_repo/beta.py": "def run_beta():\n    pass\n",
+        "demo/small_repo/beta.py": "def run_beta():\n    pass\n",
+        "external_repos/somelib/approval.py": "def approval():\n    pass\n",
+        "packaging/staging/_internal/beta.py": "def run_beta():\n    pass\n",
+    }
+    paths = list(bodies)
+    for rel, body in bodies.items():
+        t = tmp_path / rel
+        t.parent.mkdir(parents=True, exist_ok=True)
+        t.write_text(body, encoding="utf-8")
+
+    pack = cp.build_context_pack_from_state(
+        str(tmp_path),
+        "remove beta approval completely",
+        _framework_state(tmp_path, paths),
+        memory=_framework_memory(tmp_path),
+        max_files=12,
+    )
+    selected = [it["path"] for it in pack["recommended_files"]]
+    excluded = [it["path"] for it in pack["excluded_files"]]
+
+    assert "accounts_routes.py" in selected
+    # production modules must outrank the demo fixture.
+    for demo in ("demo/sample_repo/beta.py", "demo/small_repo/beta.py", "packaging/staging/_internal/beta.py"):
+        if demo in selected:
+            assert selected.index("accounts_routes.py") < selected.index(demo), f"{demo} outranks production"
+    # vendored external repo code is demoted out of recommendations.
+    assert "external_repos/somelib/approval.py" not in selected
+    assert "external_repos/somelib/approval.py" in excluded

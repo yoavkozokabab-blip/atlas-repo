@@ -1,0 +1,120 @@
+{
+  "n": 20,
+  "agg": {
+    "cur": {
+      "h1": 12,
+      "h3": 17,
+      "h5": 20,
+      "rec": 20.0
+    },
+    "prod": {
+      "h1": 12,
+      "h3": 17,
+      "h5": 20,
+      "rec": 20.0
+    }
+  },
+  "sym_hits": 20,
+  "rows": [
+    [
+      "remove beta approval completely",
+      "cur#1 prod#1",
+      "top: cur=accounts_routes.py | prod=accounts_routes.py"
+    ],
+    [
+      "desktop authenticates against the website login",
+      "cur#1 prod#1",
+      "top: cur=accounts_client.py | prod=accounts_client.py"
+    ],
+    [
+      "list the MCP tools the server exposes",
+      "cur#5 prod#5",
+      "top: cur=server.py | prod=server.py"
+    ],
+    [
+      "rank task-relevant files for a context pack",
+      "cur#1 prod#1",
+      "top: cur=context_pack.py | prod=context_pack.py"
+    ],
+    [
+      "analyze root cause from a python stack trace",
+      "cur#1 prod#1",
+      "top: cur=root_cause.py | prod=root_cause.py"
+    ],
+    [
+      "reduce context tokens with symbol slicing",
+      "cur#1 prod#1",
+      "top: cur=context_pack.py | prod=context_pack.py"
+    ],
+    [
+      "write the Cursor MCP configuration file",
+      "cur#2 prod#2",
+      "top: cur=api.py | prod=api.py"
+    ],
+    [
+      "discover the Claude Desktop config path",
+      "cur#4 prod#4",
+      "top: cur=api.py | prod=api.py"
+    ],
+    [
+      "repository memory freshness and drift refusal",
+      "cur#1 prod#1",
+      "top: cur=repository_memory.py | prod=repository_memory.py"
+    ],
+    [
+      "desktop HTTP API endpoints",
+      "cur#1 prod#1",
+      "top: cur=api.py | prod=api.py"
+    ],
+    [
+      "usage limits and quota enforcement",
+      "cur#2 prod#2",
+      "top: cur=usage/__init__.py | prod=usage/__init__.py"
+    ],
+    [
+      "billing plan definitions",
+      "cur#2 prod#2",
+      "top: cur=usage/plans.py | prod=usage/plans.py"
+    ],
+    [
+      "evidence engine symbol index",
+      "cur#1 prod#1",
+      "top: cur=evidence_engine/symbol_index.py | prod=evidence_engine/symbol_index.py"
+    ],
+    [
+      "architecture analyzer clusters",
+      "cur#1 prod#1",
+      "top: cur=architecture/analyzer.py | prod=architecture/analyzer.py"
+    ],
+    [
+      "impact analysis what breaks",
+      "cur#4 prod#4",
+      "top: cur=api.py | prod=api.py"
+    ],
+    [
+      "first impression implementation status",
+      "cur#1 prod#1",
+      "top: cur=first_impression.py | prod=first_impression.py"
+    ],
+    [
+      "desktop data directory resolution",
+      "cur#2 prod#2",
+      "top: cur=api.py | prod=api.py"
+    ],
+    [
+      "evidence builder assembles evidence",
+      "cur#1 prod#1",
+      "top: cur=evidence_engine/evidence_builder.py | prod=evidence_engine/evidence_builder.py"
+    ],
+    [
+      "account device limit and removal",
+      "cur#2 prod#2",
+      "top: cur=usage/limits.py | prod=usage/limits.py"
+    ],
+    [
+      "install support and launcher log",
+      "cur#1 prod#1",
+      "top: cur=install_support.py | prod=install_support.py"
+    ]
+  ]
+}
