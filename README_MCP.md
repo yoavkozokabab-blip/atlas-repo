@@ -15,12 +15,21 @@ already shipped with Atlas.
 | Tool | What it does |
 |---|---|
 | `atlas_scan_repo` | Scan/rescan a repo; returns module & dependency counts and risk summary. |
+| `atlas_repo_summary` | Compact summary: language, graph health, entry points, hubs, risks, subsystems. |
 | `atlas_get_codebase_map` | Modules, subsystems, dependency hubs, risk hotspots, entry files. |
-| `atlas_build_context_pack` | **The headline tool.** Given a task, the exact files to read + reasons + confidence + a paste-ready context pack. |
-| `atlas_what_breaks` | Given changed files, the impacted importers, risk, and tests to run. |
-| `atlas_plan_change` | Files to inspect, ordered steps, risks, validation plan. |
+| `atlas_get_architecture` | Architectural overview and layering. |
+| `atlas_get_dependency_graph` | Resolved import/dependency edges. |
+| `atlas_build_context_pack` | **The headline tool.** Given a task: the exact files to read + reasons + confidence + a paste-ready context pack. |
+| `atlas_find_relevant_files` | Rank task-relevant files from graph, memory, subsystems, tests, and symbol evidence. |
 | `atlas_find_file` | Rank files by a free-text query, with reasons + confidence. |
+| `atlas_what_breaks` / `atlas_get_impact_analysis` | Given changed files: impacted importers, risk, and tests to run. |
+| `atlas_plan_change` / `atlas_get_change_plan` | Files to inspect, ordered steps, risks, validation plan. |
+| `atlas_root_cause` | Given an exception/stack trace/failing test: probable root-cause symbols, evidence, investigation order. |
 | `atlas_repo_health` | Scan quality, unresolved imports, stale/degraded warnings, risk score. |
+| `atlas_export_for_claude` / `_cursor` / `_codex` | Export a context pack formatted for each agent. |
+| `atlas_health` | MCP runtime, repository, trust, memory, and Claude Desktop config health. |
+
+**18 tools total.**
 
 Every tool takes an absolute `repo_path`. Tools auto-scan on first use, so you don't have
 to call `atlas_scan_repo` first (they report `scanned_now` so you know if a scan happened).
@@ -70,7 +79,7 @@ macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`):
     "atlas": {
       "command": "py",
       "args": ["-m", "jarvis_desktop.mcp_server"],
-      "cwd": "C:/J.A.R.V.I.S/local_jarvis"
+      "cwd": "C:/path/to/Atlas"
     }
   }
 }
@@ -92,7 +101,7 @@ Run that from your Atlas directory (so `cwd` is correct), or add a project `.mcp
 ```json
 {
   "mcpServers": {
-    "atlas": { "command": "py", "args": ["-m", "jarvis_desktop.mcp_server"], "cwd": "C:/J.A.R.V.I.S/local_jarvis" }
+    "atlas": { "command": "py", "args": ["-m", "jarvis_desktop.mcp_server"], "cwd": "C:/path/to/Atlas" }
   }
 }
 ```
@@ -104,7 +113,7 @@ Cursor → Settings → MCP → Add new server, or add `.cursor/mcp.json`:
 ```json
 {
   "mcpServers": {
-    "atlas": { "command": "py", "args": ["-m", "jarvis_desktop.mcp_server"], "cwd": "C:/J.A.R.V.I.S/local_jarvis" }
+    "atlas": { "command": "py", "args": ["-m", "jarvis_desktop.mcp_server"], "cwd": "C:/path/to/Atlas" }
   }
 }
 ```

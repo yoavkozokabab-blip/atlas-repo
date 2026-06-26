@@ -14,7 +14,7 @@ import re
 import sys
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
-from .. import api, repository_memory as repo_memory
+from .. import agent_integrations, api, repository_memory as repo_memory
 from ..context_pack import build_context_pack_from_state
 
 MCP_PROTOCOL_VERSION = "2024-11-05"
@@ -28,6 +28,11 @@ _SECRET_KEY_RE = re.compile(
 _SECRET_VALUE_RE = re.compile(
     r"(?i)(sk-[A-Za-z0-9_-]{8,}|ghp_[A-Za-z0-9_]{8,}|bearer\s+[A-Za-z0-9._-]+|api[_-]?key\s*[:=]\s*[^,\s]+)"
 )
+_SAFE_TOKEN_METRIC_KEYS = {
+    "tokens", "estimated_tokens", "token_estimate", "token_count", "tokens_saved",
+    "token_reduction_pct", "file_level_tokens", "symbol_level_tokens",
+    "slice_tokens", "full_tokens", "tokens_before", "tokens_after",
+}
 
 
 def _schema(
@@ -66,6 +71,49 @@ TOOLS: List[Dict[str, Any]] = [
         ),
     },
     {
+        "name": "atlas_repo_summary",
+        "description": "Return compact repository summary, language, graph health, entry points, hubs, risks, and subsystems.",
+        "inputSchema": _schema(
+            properties={
+                "repo_path": {"type": "string", "description": "Optional path that must match the current scan."},
+                "limit": {"type": "integer", "minimum": 1, "maximum": 50, "default": 12},
+            },
+        ),
+    },
+    {
+        "name": "atlas_get_architecture",
+        "description": "Return architecture clusters, important subsystems, top hubs, top risks, and evidence quality for the current scan.",
+        "inputSchema": _schema(
+            properties={
+                "repo_path": {"type": "string", "description": "Optional path that must match the current scan."},
+                "limit": {"type": "integer", "minimum": 1, "maximum": 50, "default": 12},
+            },
+        ),
+    },
+    {
+        "name": "atlas_get_dependency_graph",
+        "description": "Return a capped dependency graph summary without source contents.",
+        "inputSchema": _schema(
+            properties={
+                "repo_path": {"type": "string", "description": "Optional path that must match the current scan."},
+                "view": {"type": "string", "enum": ["module", "subsystem"], "default": "module"},
+                "limit": {"type": "integer", "minimum": 1, "maximum": 250, "default": 80},
+            },
+        ),
+    },
+    {
+        "name": "atlas_find_relevant_files",
+        "description": "Rank task-relevant files from Atlas graph, memory, subsystems, tests, and path/symbol evidence.",
+        "inputSchema": _schema(
+            properties={
+                "repo_path": {"type": "string", "description": "Optional path that must match the current scan."},
+                "task": {"type": "string", "description": "Natural-language coding task."},
+                "query": {"type": "string", "description": "Alias for task."},
+                "max_files": {"type": "integer", "minimum": 1, "maximum": 24, "default": 12},
+            },
+        ),
+    },
+    {
         "name": "atlas_build_context_pack",
         "description": "Build a compact task-scoped context pack from the current scan.",
         "inputSchema": _schema(
@@ -94,6 +142,17 @@ TOOLS: List[Dict[str, Any]] = [
         ),
     },
     {
+        "name": "atlas_get_impact_analysis",
+        "description": "Alias of Atlas What Breaks: analyze likely blast radius for a changed file/module target.",
+        "inputSchema": _schema(
+            properties={
+                "repo_path": {"type": "string", "description": "Optional path that must match the current scan."},
+                "target": {"type": "string", "description": "File path, module path, or supported semantic target."},
+                "changed_files": {"type": "array", "items": {"type": "string"}},
+            },
+        ),
+    },
+    {
         "name": "atlas_plan_change",
         "description": "Build a read-only Atlas Change Plan for the current scan.",
         "inputSchema": _schema(
@@ -102,6 +161,28 @@ TOOLS: List[Dict[str, Any]] = [
                 "request": {"type": "string", "description": "Natural-language change request."},
             },
             required=["request"],
+        ),
+    },
+    {
+        "name": "atlas_get_change_plan",
+        "description": "Alias of Atlas Change Plan: build a read-only change plan for the current scan.",
+        "inputSchema": _schema(
+            properties={
+                "repo_path": {"type": "string", "description": "Optional path that must match the current scan."},
+                "request": {"type": "string", "description": "Natural-language change request."},
+                "task": {"type": "string", "description": "Alias for request."},
+            },
+        ),
+    },
+    {
+        "name": "atlas_root_cause",
+        "description": "Root-cause analysis (#10): given an exception, stack trace, error log, or failing-test output, return probable root-cause symbols, confidence, evidence, supporting files, and a suggested investigation order.",
+        "inputSchema": _schema(
+            properties={
+                "error": {"type": "string", "description": "Exception, stack trace, error log, or failing-test output."},
+                "repo_path": {"type": "string", "description": "Optional path that must match the current scan."},
+            },
+            required=["error"],
         ),
     },
     {
@@ -119,6 +200,51 @@ TOOLS: List[Dict[str, Any]] = [
     {
         "name": "atlas_repo_health",
         "description": "Return scan, graph, trust, and repository-memory health for the current scan.",
+        "inputSchema": _schema(
+            properties={
+                "repo_path": {"type": "string", "description": "Optional path that must match the current scan."},
+            },
+        ),
+    },
+    {
+        "name": "atlas_export_for_claude",
+        "description": "Build a Claude-ready task-scoped Atlas export without file bodies or secrets.",
+        "inputSchema": _schema(
+            properties={
+                "repo_path": {"type": "string", "description": "Optional path that must match the current scan."},
+                "task": {"type": "string", "description": "Natural-language coding task."},
+                "max_files": {"type": "integer", "minimum": 1, "maximum": 24, "default": 12},
+            },
+            required=["task"],
+        ),
+    },
+    {
+        "name": "atlas_export_for_cursor",
+        "description": "Build a Cursor-ready task-scoped Atlas export without file bodies or secrets.",
+        "inputSchema": _schema(
+            properties={
+                "repo_path": {"type": "string", "description": "Optional path that must match the current scan."},
+                "task": {"type": "string", "description": "Natural-language coding task."},
+                "max_files": {"type": "integer", "minimum": 1, "maximum": 24, "default": 12},
+            },
+            required=["task"],
+        ),
+    },
+    {
+        "name": "atlas_export_for_codex",
+        "description": "Build a Codex-ready task-scoped Atlas export without file bodies or secrets.",
+        "inputSchema": _schema(
+            properties={
+                "repo_path": {"type": "string", "description": "Optional path that must match the current scan."},
+                "task": {"type": "string", "description": "Natural-language coding task."},
+                "max_files": {"type": "integer", "minimum": 1, "maximum": 24, "default": 12},
+            },
+            required=["task"],
+        ),
+    },
+    {
+        "name": "atlas_health",
+        "description": "Return Atlas MCP runtime, repository, trust, memory, and Claude Desktop config health.",
         "inputSchema": _schema(
             properties={
                 "repo_path": {"type": "string", "description": "Optional path that must match the current scan."},
@@ -178,7 +304,9 @@ def _sanitize(value: Any) -> Any:
         out: Dict[str, Any] = {}
         for key, item in value.items():
             key_s = str(key)
-            if _SECRET_KEY_RE.search(key_s):
+            if key_s in _SAFE_TOKEN_METRIC_KEYS and isinstance(item, (int, float)):
+                out[key_s] = item
+            elif _SECRET_KEY_RE.search(key_s):
                 out[key_s] = "[REDACTED]"
             else:
                 out[key_s] = _sanitize(item)
@@ -225,6 +353,77 @@ def _compact_summary(limit: int = 12) -> Dict[str, Any]:
     }
 
 
+def _compact_architecture(limit: int = 12) -> Dict[str, Any]:
+    summary = _compact_summary(limit=limit)
+    if not summary.get("ok"):
+        return summary
+    arch = (api.current_summary().get("architecture") or {}) if api._STATE.get("scan") else {}
+    return _ok(
+        repo_name=summary.get("repo_name"),
+        repo_path=summary.get("repo_path"),
+        graph_health=summary.get("graph_health"),
+        degraded=summary.get("degraded"),
+        architecture=arch,
+        subsystems=summary.get("subsystems") or [],
+        entry_points=summary.get("entry_points") or [],
+        top_hubs=summary.get("top_hubs") or [],
+        top_risks=summary.get("top_risks") or [],
+        explanation=summary.get("explanation"),
+    )
+
+
+def _compact_dependency_graph(view: str = "module", limit: int = 80) -> Dict[str, Any]:
+    view = (view or "module").strip().lower()
+    if view not in {"module", "subsystem"}:
+        view = "module"
+    limit = max(1, min(250, int(limit or 80)))
+    graph = api.current_graph(view)
+    if not graph.get("ok"):
+        return graph
+    nodes = graph.get("nodes") or []
+    links = graph.get("links") or []
+    kept_ids = {str(node.get("id")) for node in nodes[:limit]}
+    compact_nodes = [
+        {
+            "id": node.get("id"),
+            "path": node.get("path"),
+            "label": node.get("label"),
+            "type": node.get("type") or node.get("graph_view") or view,
+            "subsystem": node.get("subsystem"),
+            "risk_score": node.get("risk_score"),
+            "risk_tier": node.get("risk_tier"),
+            "fan_in": node.get("fan_in"),
+            "fan_out": node.get("fan_out"),
+        }
+        for node in nodes[:limit]
+    ]
+    compact_links = [
+        {
+            "source": edge.get("source") or edge.get("from"),
+            "target": edge.get("target") or edge.get("to"),
+            "type": edge.get("type") or "imports",
+            "weight": edge.get("weight"),
+        }
+        for edge in links
+        if str(edge.get("source") or edge.get("from")) in kept_ids
+        and str(edge.get("target") or edge.get("to")) in kept_ids
+    ][:limit]
+    return _ok(
+        repo_path=_current_repo(),
+        view=graph.get("view") or view,
+        graph_scope=graph.get("graph_scope"),
+        degraded=bool(graph.get("degraded")),
+        node_count=graph.get("node_count"),
+        link_count=graph.get("link_count"),
+        total_modules=graph.get("total_modules"),
+        total_edges=graph.get("total_edges"),
+        returned_nodes=len(compact_nodes),
+        returned_links=len(compact_links),
+        nodes=compact_nodes,
+        links=compact_links,
+    )
+
+
 def _memory() -> Dict[str, Any]:
     memory = api._STATE.get("repository_memory") or api._STATE.get("_current_memory")
     repo_path = _current_repo()
@@ -238,6 +437,7 @@ def _compact_pack(pack: Dict[str, Any]) -> Dict[str, Any]:
         "ok": bool(pack.get("ok")),
         "repo_name": pack.get("repo_name"),
         "task": pack.get("task"),
+        "task_type": (pack.get("task_signals") or {}).get("task_type", "general"),
         "confidence": pack.get("confidence"),
         "confidence_score": pack.get("confidence_score"),
         "token_estimate": pack.get("token_estimate"),
@@ -245,12 +445,35 @@ def _compact_pack(pack: Dict[str, Any]) -> Dict[str, Any]:
             {
                 "path": item.get("path"),
                 "score": item.get("score"),
+                "relevance_score": item.get("relevance_score", item.get("score")),
                 "role": item.get("role"),
                 "subsystem": item.get("subsystem"),
+                # Evidence-centric: why this file matters, at a glance.
+                "selection_reason": item.get("selection_reason"),
+                "dependency_reason": item.get("dependency_reason"),
+                "impact_reason": item.get("impact_reason"),
+                "matched_symbols": [
+                    {"name": s.get("qualname") or s.get("name"), "kind": s.get("kind")}
+                    for s in (item.get("matched_symbols") or [])
+                    if isinstance(s, dict) and (s.get("qualname") or s.get("name"))
+                ][:4],
+                # #2 Symbol slicing: read only these symbols/line-ranges.
+                "symbol_slices": [
+                    {
+                        "symbol": s.get("symbol"),
+                        "kind": s.get("kind"),
+                        "lines": [s.get("start_line"), s.get("end_line")],
+                        "tokens": s.get("token_estimate"),
+                        "confidence": s.get("confidence_label"),
+                    }
+                    for s in (item.get("symbol_slices") or [])
+                ][:6],
+                "token_reduction_pct": item.get("token_reduction_pct", 0.0),
                 "reasons": (item.get("reasons") or [])[:4],
             }
             for item in pack.get("recommended_files") or []
         ],
+        "symbol_slicing": pack.get("symbol_slicing") or {},
         "related_tests": [
             {
                 "path": item.get("path"),
@@ -265,6 +488,21 @@ def _compact_pack(pack: Dict[str, Any]) -> Dict[str, Any]:
         "excluded_files": pack.get("excluded_files") or [],
         "confidence_reasons": pack.get("confidence_reasons") or [],
     }
+
+
+def _build_pack_for_args(args: Dict[str, Any]) -> Dict[str, Any]:
+    task = str(args.get("task") or args.get("query") or "").strip()
+    if not task:
+        return _err("missing_task", "`task` is required.")
+    max_files = max(1, min(24, int(args.get("max_files") or 12)))
+    return build_context_pack_from_state(
+        _current_repo(),
+        task,
+        dict(api._STATE),
+        memory=_memory(),
+        include_snippets=False,
+        max_files=max_files,
+    )
 
 
 def _compact_impact(result: Dict[str, Any]) -> Dict[str, Any]:
@@ -304,6 +542,46 @@ def _compact_plan(result: Dict[str, Any]) -> Dict[str, Any]:
         "verification": plan.get("verification") or plan.get("verification_steps") or [],
         "trust_status": result.get("trust_status") or result.get("status"),
     }
+
+
+def _agent_export(target: str, args: Dict[str, Any]) -> Dict[str, Any]:
+    task = str(args.get("task") or "").strip()
+    if not task:
+        return _err("missing_task", "`task` is required.")
+    max_files = max(1, min(24, int(args.get("max_files") or 12)))
+    result = agent_integrations.export_for_state(
+        dict(api._STATE),
+        target=target,
+        task=task,
+        max_files=max_files,
+    )
+    return result
+
+
+def _health_payload() -> Dict[str, Any]:
+    if api._STATE.get("scan"):
+        repo_health = call_tool("atlas_repo_health", {})
+    else:
+        repo_health = {
+            "ok": True,
+            "repo_path": "",
+            "scan": None,
+            "trust": None,
+            "repository_memory": None,
+            "message": "No repository scanned yet.",
+        }
+    return _ok(
+        mcp_version=ATLAS_MCP_VERSION,
+        protocol_version=MCP_PROTOCOL_VERSION,
+        tool_count=len(TOOLS),
+        repo=repo_health,
+        claude_desktop=agent_integrations.claude_config_status(),
+        privacy={
+            "transport": "stdio-local",
+            "source_bodies_returned_by_default": False,
+            "secrets_redacted": True,
+        },
+    )
 
 
 def _find_files(query: str, limit: int) -> Dict[str, Any]:
@@ -378,32 +656,57 @@ def call_tool(name: str, arguments: Optional[Dict[str, Any]] = None) -> Dict[str
                 codebase_map=summary if summary.get("ok") else None,
             ))
 
-        if name == "atlas_get_codebase_map":
+        if name in {"atlas_get_codebase_map", "atlas_repo_summary"}:
             err = _scan_ready(str(args.get("repo_path") or ""))
             if err:
                 return err
             limit = max(1, min(50, int(args.get("limit") or 12)))
             return _sanitize(_compact_summary(limit=limit))
 
+        if name == "atlas_get_architecture":
+            err = _scan_ready(str(args.get("repo_path") or ""))
+            if err:
+                return err
+            limit = max(1, min(50, int(args.get("limit") or 12)))
+            return _sanitize(_compact_architecture(limit=limit))
+
+        if name == "atlas_get_dependency_graph":
+            err = _scan_ready(str(args.get("repo_path") or ""))
+            if err:
+                return err
+            return _sanitize(_compact_dependency_graph(
+                str(args.get("view") or "module"),
+                max(1, min(250, int(args.get("limit") or 80))),
+            ))
+
         if name == "atlas_build_context_pack":
             err = _scan_ready(str(args.get("repo_path") or ""))
             if err:
                 return err
-            task = str(args.get("task") or "").strip()
-            if not task:
-                return _err("missing_task", "`task` is required.")
-            max_files = max(1, min(24, int(args.get("max_files") or 12)))
-            pack = build_context_pack_from_state(
-                _current_repo(),
-                task,
-                dict(api._STATE),
-                memory=_memory(),
-                include_snippets=False,
-                max_files=max_files,
-            )
+            pack = _build_pack_for_args(args)
+            if not pack.get("ok"):
+                return _sanitize(pack)
             return _sanitize(_compact_pack(pack))
 
-        if name == "atlas_what_breaks":
+        if name == "atlas_find_relevant_files":
+            err = _scan_ready(str(args.get("repo_path") or ""))
+            if err:
+                return err
+            pack = _build_pack_for_args(args)
+            if not pack.get("ok"):
+                return _sanitize(pack)
+            compact = _compact_pack(pack)
+            return _sanitize(_ok(
+                task=compact.get("task"),
+                confidence=compact.get("confidence"),
+                confidence_score=compact.get("confidence_score"),
+                recommended_files=compact.get("recommended_files") or [],
+                related_tests=compact.get("related_tests") or [],
+                excluded_files=compact.get("excluded_files") or [],
+                evidence=compact.get("confidence_reasons") or [],
+            ))
+
+        if name in {"atlas_what_breaks", "atlas_get_impact_analysis"}:
             err = _scan_ready(str(args.get("repo_path") or ""))
             if err:
                 return err
@@ -419,14 +722,24 @@ def call_tool(name: str, arguments: Optional[Dict[str, Any]] = None) -> Dict[str
                 return _err("missing_target", "`target` (or `changed_files`) is required.")
             return _sanitize(_compact_impact(api.change_impact_simulation(target)))
 
-        if name == "atlas_plan_change":
+        if name in {"atlas_plan_change", "atlas_get_change_plan"}:
             err = _scan_ready(str(args.get("repo_path") or ""))
             if err:
                 return err
-            request = str(args.get("request") or "").strip()
+            request = str(args.get("request") or args.get("task") or "").strip()
             if not request:
                 return _err("missing_request", "`request` is required.")
             return _sanitize(_compact_plan(api.plan_change(request)))
+
+        if name == "atlas_root_cause":
+            err = _scan_ready(str(args.get("repo_path") or ""))
+            if err:
+                return err
+            error_text = str(args.get("error") or "").strip()
+            if not error_text:
+                return _err("missing_error", "`error` (exception, stack trace, log, or failing test) is required.")
+            from ..root_cause import analyze_root_cause
+            return _sanitize(analyze_root_cause(_current_repo(), error_text, dict(api._STATE), memory=_memory()))
 
         if name == "atlas_find_file":
             err = _scan_ready(str(args.get("repo_path") or ""))
@@ -460,6 +773,21 @@ def call_tool(name: str, arguments: Optional[Dict[str, Any]] = None) -> Dict[str
                     "derivation_confidence": ((memory.get("agent_context") or {}).get("derivation_confidence")),
                 },
             ))
+
+        if name in {"atlas_export_for_claude", "atlas_export_for_cursor", "atlas_export_for_codex"}:
+            err = _scan_ready(str(args.get("repo_path") or ""))
+            if err:
+                return err
+            target = name.rsplit("_", 1)[-1]
+            return _sanitize(_agent_export(target, args))
+
+        if name == "atlas_health":
+            repo_path = str(args.get("repo_path") or "")
+            if repo_path and api._STATE.get("scan"):
+                err = _scan_ready(repo_path)
+                if err:
+                    return err
+            return _sanitize(_health_payload())
 
         return _err("unknown_tool", f"Unknown Atlas MCP tool: {name}")
     except Exception as exc:
