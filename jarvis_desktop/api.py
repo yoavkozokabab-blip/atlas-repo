@@ -3274,6 +3274,39 @@ def investigate_symptom(symptom: str) -> Dict[str, Any]:
         return _ti.attach_trust_status(result, _STATE)
 
 
+def _reconcile_wont_break(res: Dict[str, Any]) -> None:
+    """Keep `what_probably_wont_break` consistent with the reported impact.
+
+    Architecture augmentation can add cross-subsystem files to `direct_impact`
+    *after* the impact engine computed the won't-break list, which previously
+    left a subsystem named as both impacted and "probably won't break". Never
+    reassure about a subsystem that has a file in direct/indirect/affected impact.
+    """
+    def _sub(p: str) -> str:
+        p = str(p or "").replace("\\", "/")
+        return p.split("/")[0] if "/" in p else "(root)"
+
+    impacted_subs = {
+        _sub(p)
+        for key in ("direct_impact", "indirect_impact", "affected_files")
+        for p in (res.get(key) or [])
+    }
+
+    def _filter(items: Any) -> List[str]:
+        kept: List[str] = []
+        for s in items or []:
+            m = re.match(r"`([^`]+)` subsystem", str(s))
+            if m and m.group(1) in impacted_subs:
+                continue
+            kept.append(s)
+        return kept
+
+    res["what_probably_wont_break"] = _filter(res.get("what_probably_wont_break"))
+    sim = res.get("simulation")
+    if isinstance(sim, dict):
+        sim["what_probably_wont_break"] = _filter(sim.get("what_probably_wont_break"))
+
+
 def change_impact_simulation(target: str) -> Dict[str, Any]:
     """Phase 132 — full impact analysis (transitive reverse deps + subsystem
     coupling + tests + risk classification), via the dedicated impact engine."""
@@ -3312,6 +3345,7 @@ def change_impact_simulation(target: str) -> Dict[str, Any]:
         res = _fi.polish_workflow_result("impact", res, _STATE, goal=target)
         if not res.get("ok"):
             return _ti.attach_trust_status(res, _STATE)
+        _reconcile_wont_break(res)
         from . import result_reports
 
         res["report"] = result_reports.build_impact_report(res, user_request=target)
