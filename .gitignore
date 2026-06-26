@@ -33,3 +33,20 @@ build/
 # Phase 192 — accounts service build intermediates (shipped copy lives in dist/Atlas/accounts)
 dist/AtlasAccounts/
 build/pyinstaller_accounts/
+
+# RC-1 cleanup — exclude artifacts, generated output, local data, secrets
+data/
+dist/
+reports/
+screenshots/
+external_repos/
+*.db
+*.jsonl
+packaging/installer/staging/
+packaging/installer/output/
+installer/output/
+.env.local
+manual_context_pack_tests/
+manual_mcp_tests/
+tmp*
+*_raw_results.json
