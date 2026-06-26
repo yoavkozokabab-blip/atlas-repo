@@ -28,7 +28,11 @@ _SECRET_KEY_RE = re.compile(
 _SECRET_VALUE_RE = re.compile(
     r"(?i)(sk-[A-Za-z0-9_-]{8,}|ghp_[A-Za-z0-9_]{8,}|bearer\s+[A-Za-z0-9._-]+|api[_-]?key\s*[:=]\s*[^,\s]+)"
 )
-_SAFE_TOKEN_METRIC_KEYS = {"tokens", "estimated_tokens", "token_estimate", "token_count", "tokens_saved"}
+_SAFE_TOKEN_METRIC_KEYS = {
+    "tokens", "estimated_tokens", "token_estimate", "token_count", "tokens_saved",
+    "token_reduction_pct", "file_level_tokens", "symbol_level_tokens",
+    "slice_tokens", "full_tokens", "tokens_before", "tokens_after",
+}
 
 
 def _schema(
