@@ -82,9 +82,12 @@ def accounts_register(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str,
         return {"ok": False, "code": "validation_error", "submitted": False, "error": "Enter a valid email address."}
     if password != confirm:
         return {"ok": False, "code": "validation_error", "submitted": False, "error": "Passwords do not match."}
-    profile_error = _validate_beta_profile(body.get("beta_profile") or {})
-    if profile_error:
-        return {"ok": False, "code": "validation_error", "submitted": False, "error": profile_error}
+    # The website authority (free beta) collects email/password only — the local
+    # beta-profile questionnaire applies to the local accounts service only.
+    if accounts_client.auth_mode() != "website":
+        profile_error = _validate_beta_profile(body.get("beta_profile") or {})
+        if profile_error:
+            return {"ok": False, "code": "validation_error", "submitted": False, "error": profile_error}
 
     if not accounts_service_runner.ensure_running():
         return _service_unavailable_response()
@@ -95,13 +98,15 @@ def accounts_register(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str,
         app_version=_app_version(),
         platform=_platform_str(),
         beta_profile=body.get("beta_profile") or {},
+        invite_code=str(body.get("invite_code") or "").strip() or None,
     )
     if result.get("_offline"):
         return _service_unavailable_response()
     if result.get("_http_status"):
         status = int(result.get("_http_status") or 0)
         detail = result.get("detail", "Registration failed")
-        detail_text = detail if isinstance(detail, str) else str(detail)
+        # Never surface a raw validation blob (pydantic error list) to the user.
+        detail_text = detail if isinstance(detail, str) else "Please check the form fields and try again."
         if status == 409:
             return {
                 "ok": False,
@@ -243,11 +248,176 @@ def accounts_admin_reject(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[
     return {"ok": True, "user": result}
 
 
+def _admin_result(result: Dict[str, Any], key: str, fail: str) -> Dict[str, Any]:
+    if isinstance(result, list):
+        return {"ok": True, key: result}
+    if result.get("_unauthenticated"):
+        return {"ok": False, "error": "Admin account sign-in required."}
+    if result.get("_http_status"):
+        return {"ok": False, "error": result.get("detail", fail)}
+    return {"ok": True, key: result}
+
+
+def accounts_admin_dashboard(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+    return _admin_result(accounts_client.get_admin_dashboard(), "dashboard", "Admin access required.")
+
+
+def accounts_admin_audit_log(_body: Dict[str, Any], query: Dict[str, str]) -> Dict[str, Any]:
+    try:
+        limit = int(query.get("limit", "100"))
+    except (TypeError, ValueError):
+        limit = 100
+    return _admin_result(accounts_client.get_admin_audit_log(limit=limit), "entries", "Admin access required.")
+
+
+def accounts_admin_grant_beta(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+    uid = str(body.get("user_id", "")).strip()
+    if not uid:
+        return {"ok": False, "error": "user_id required"}
+    return _admin_result(accounts_client.admin_grant_beta(uid), "user", "Grant beta failed.")
+
+
+def accounts_admin_revoke_beta(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+    uid = str(body.get("user_id", "")).strip()
+    if not uid:
+        return {"ok": False, "error": "user_id required"}
+    return _admin_result(accounts_client.admin_revoke_beta(uid), "user", "Revoke beta failed.")
+
+
+def accounts_admin_force_logout(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+    uid = str(body.get("user_id", "")).strip()
+    if not uid:
+        return {"ok": False, "error": "user_id required"}
+    result = accounts_client.admin_force_logout(uid)
+    if result.get("_unauthenticated"):
+        return {"ok": False, "error": "Admin account sign-in required."}
+    if result.get("_http_status"):
+        return {"ok": False, "error": result.get("detail", "Force logout failed.")}
+    return {"ok": True}
+
+
+def accounts_admin_update_user(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+    uid = str(body.get("user_id", "")).strip()
+    if not uid:
+        return {"ok": False, "error": "user_id required"}
+    fields = {k: v for k, v in (body or {}).items() if k != "user_id"}
+    return _admin_result(accounts_client.admin_update_user(uid, fields), "user", "Update failed.")
+
+
 def accounts_service_status(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
     running = accounts_client.is_service_running()
     if not running:
         running = accounts_service_runner.ensure_running(timeout=8.0)
     return {"running": running}
+
+
+def accounts_validate_invite(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+    code = str(body.get("code") or "").strip()
+    if not code:
+        return {"ok": False, "valid": False, "message": "Enter an invite code."}
+    if not accounts_service_runner.ensure_running(timeout=8.0):
+        return {"ok": False, "valid": False, "message": "Accounts service unavailable."}
+    result = accounts_client.validate_invite_code(code)
+    if result.get("_offline"):
+        return {"ok": False, "valid": False, "message": "Accounts service unavailable."}
+    return {"ok": True, **result}
+
+
+def accounts_acquisition_event(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+    stage = str(body.get("stage") or "").strip()
+    if not stage:
+        return {"ok": False, "error": "stage required"}
+    if accounts_service_runner.ensure_running(timeout=4.0):
+        accounts_client.record_acquisition_event(
+            stage,
+            source=str(body.get("source") or "desktop"),
+            metadata=body.get("metadata") if isinstance(body.get("metadata"), dict) else None,
+        )
+    return {"ok": True}
+
+
+def _admin_proxy(result: Dict[str, Any], key: str, fail: str) -> Dict[str, Any]:
+    if result.get("_unauthenticated"):
+        return {"ok": False, "error": "Admin account sign-in required."}
+    if result.get("_http_status"):
+        detail = result.get("detail", fail)
+        return {"ok": False, "error": detail if isinstance(detail, str) else str(detail)}
+    return {"ok": True, key: result}
+
+
+def accounts_admin_launch_readiness(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+    result = accounts_client.get_launch_readiness()
+    if result.get("_unauthenticated"):
+        return {"ok": False, "error": "Admin account sign-in required."}
+    if result.get("_http_status"):
+        detail = result.get("detail", "Launch readiness unavailable.")
+        return {"ok": False, "error": detail if isinstance(detail, str) else str(detail)}
+    return {"ok": True, "readiness": result}
+
+
+def accounts_admin_feedback(_body: Dict[str, Any], query: Dict[str, str]) -> Dict[str, Any]:
+    result = accounts_client.get_admin_feedback(
+        status=query.get("status"),
+        category=query.get("category"),
+        limit=int(query.get("limit") or 100),
+    )
+    if result.get("_unauthenticated"):
+        return {"ok": False, "error": "Admin account sign-in required."}
+    if result.get("_http_status"):
+        return {"ok": False, "error": result.get("detail", "Feedback unavailable.")}
+    if isinstance(result, list):
+        return {"ok": True, "items": result}
+    return {"ok": True, "items": result if isinstance(result, list) else []}
+
+
+def accounts_admin_feedback_update(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+    fid = str(body.get("feedback_id") or "").strip()
+    status = str(body.get("status") or "").strip()
+    if not fid or not status:
+        return {"ok": False, "error": "feedback_id and status required"}
+    return _admin_proxy(accounts_client.patch_admin_feedback(fid, status), "feedback", "Update failed.")
+
+
+def accounts_admin_invites_list(_body: Dict[str, Any], query: Dict[str, str]) -> Dict[str, Any]:
+    result = accounts_client.list_invite_codes(limit=int(query.get("limit") or 50))
+    if result.get("_unauthenticated"):
+        return {"ok": False, "error": "Admin account sign-in required."}
+    if isinstance(result, list):
+        return {"ok": True, "invites": result}
+    if result.get("_http_status"):
+        return {"ok": False, "error": result.get("detail", "Invites unavailable.")}
+    return {"ok": True, "invites": []}
+
+
+def accounts_admin_invites_create(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+    return _admin_proxy(
+        accounts_client.create_invite_code(
+            email=str(body.get("email") or "").strip() or None,
+            max_uses=int(body.get("max_uses") or 1),
+            expires_days=int(body["expires_days"]) if body.get("expires_days") is not None else 30,
+            notes=str(body.get("notes") or "").strip() or None,
+        ),
+        "invite",
+        "Create invite failed.",
+    )
+
+
+def accounts_admin_export_beta(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+    result = accounts_client.export_beta_users_admin()
+    if result.get("_unauthenticated"):
+        return {"ok": False, "error": "Admin account sign-in required."}
+    if result.get("_http_status"):
+        return {"ok": False, "error": result.get("detail", "Export failed.")}
+    return {"ok": True, "users": result.get("users") or []}
+
+
+def accounts_admin_interview_summary(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+    result = accounts_client.get_interview_summary()
+    if result.get("_unauthenticated"):
+        return {"ok": False, "error": "Admin account sign-in required."}
+    if result.get("_http_status"):
+        return {"ok": False, "error": result.get("detail", "Summary unavailable.")}
+    return {"ok": True, "summary": result}
 
 
 ACCOUNTS_ROUTES = {
@@ -265,4 +435,21 @@ ACCOUNTS_ROUTES = {
     ("GET",  "/api/accounts/admin/notifications"): accounts_admin_notifications,
     ("POST", "/api/accounts/admin/applications/approve"): accounts_admin_approve,
     ("POST", "/api/accounts/admin/applications/reject"): accounts_admin_reject,
+    # Phase 193 — Admin Console
+    ("GET",  "/api/accounts/admin/dashboard"): accounts_admin_dashboard,
+    ("GET",  "/api/accounts/admin/audit-log"): accounts_admin_audit_log,
+    ("POST", "/api/accounts/admin/users/grant-beta"): accounts_admin_grant_beta,
+    ("POST", "/api/accounts/admin/users/revoke-beta"): accounts_admin_revoke_beta,
+    ("POST", "/api/accounts/admin/users/force-logout"): accounts_admin_force_logout,
+    ("POST", "/api/accounts/admin/users/update"): accounts_admin_update_user,
+    # Phase 199 — private beta acquisition
+    ("POST", "/api/accounts/validate-invite"): accounts_validate_invite,
+    ("POST", "/api/accounts/acquisition/event"): accounts_acquisition_event,
+    ("GET",  "/api/accounts/admin/launch-readiness"): accounts_admin_launch_readiness,
+    ("GET",  "/api/accounts/admin/feedback"): accounts_admin_feedback,
+    ("POST", "/api/accounts/admin/feedback/update"): accounts_admin_feedback_update,
+    ("GET",  "/api/accounts/admin/invites"): accounts_admin_invites_list,
+    ("POST", "/api/accounts/admin/invites"): accounts_admin_invites_create,
+    ("GET",  "/api/accounts/admin/export/beta-users"): accounts_admin_export_beta,
+    ("GET",  "/api/accounts/admin/interview-summary"): accounts_admin_interview_summary,
 }

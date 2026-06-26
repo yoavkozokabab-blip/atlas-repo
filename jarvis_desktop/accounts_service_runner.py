@@ -132,6 +132,20 @@ def ensure_running(timeout: float = 12.0) -> bool:
 
 def ensure_running_async() -> None:
     """Best-effort background start (desktop server boot)."""
+    from jarvis_desktop import accounts_client
+
+    if accounts_client.auth_mode() == "website":
+        # Website authority: never spawn a local service. Instead verify the
+        # cached session against /me in the background (Phase 186A).
+        def _verify() -> None:
+            try:
+                accounts_client.verify_session()
+            except Exception:
+                pass
+
+        threading.Thread(target=_verify, name="atlas-session-verify", daemon=True).start()
+        return
+
     if is_running():
         return
 
