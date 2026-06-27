@@ -239,11 +239,11 @@ function toast(msg, kind) {
 function requireAtlasAccess(actionLabel) {
   if (window.atlasAccounts && typeof window.atlasAccounts.requireAccess === "function") {
     const ok = window.atlasAccounts.requireAccess();
-    if (!ok) toast(`${actionLabel || "Atlas"} requires active beta access`, "error");
+    if (!ok) toast(`${actionLabel || "Atlas"} requires you to sign in`, "error");
     return ok;
   }
   if (document.body.classList.contains("auth-mode")) {
-    toast(`${actionLabel || "Atlas"} requires active beta access`, "error");
+    toast(`${actionLabel || "Atlas"} requires you to sign in`, "error");
     return false;
   }
   return true;
