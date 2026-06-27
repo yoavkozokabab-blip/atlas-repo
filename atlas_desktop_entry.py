@@ -17,6 +17,23 @@ import traceback
 import webbrowser
 
 
+def _frozen() -> bool:
+    return bool(getattr(sys, "frozen", False))
+
+
+def _prepare_runtime() -> None:
+    if _frozen():
+        exe_dir = Path(sys.executable).resolve().parent
+        os.chdir(exe_dir)
+        if hasattr(sys, "_MEIPASS"):
+            meipass = str(Path(sys._MEIPASS))
+            if meipass not in sys.path:
+                sys.path.insert(0, meipass)
+        root = exe_dir
+        if str(root) not in sys.path:
+            sys.path.insert(0, str(root))
+
+
 def _bundle_root() -> Path:
     frozen_root = getattr(sys, "_MEIPASS", None)
     if frozen_root:
@@ -125,6 +142,7 @@ def _open_failure_support(exc: BaseException) -> None:
 
 
 def main() -> int:
+    _prepare_runtime()
     try:
         from run_atlas import main as run_main
 
