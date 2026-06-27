@@ -477,7 +477,7 @@ ul.clean{margin:0;padding-left:18px;line-height:1.9;color:#c7d2f5}
 .nav-link{color:var(--muted);font-size:13px;padding:6px 10px;text-decoration:none;border-radius:8px}
 .nav-link:hover{color:#eaf0ff;background:rgba(255,255,255,.06)}
 
-/* private beta readiness */
+/* account readiness */
 .onboard-eyebrow{font-size:11px;letter-spacing:1px;color:var(--cyan);text-transform:uppercase;margin:0 0 8px}
 .onboard-steps-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0 22px}
 .onboard-step-card{padding:14px;border:1px solid var(--line);border-radius:14px;background:rgba(8,12,22,.45)}
@@ -498,7 +498,7 @@ ul.clean{margin:0;padding-left:18px;line-height:1.9;color:#c7d2f5}
 .perf-row b{font-family:Orbitron;color:var(--cyan);font-size:13px}
 @media(max-width:700px){.onboard-steps-grid{grid-template-columns:1fr}}
 
-/* private beta launch */
+/* product launch */
 .topbar-actions{display:flex;gap:6px;align-items:center;margin-left:8px;flex-wrap:wrap}
 .report-issue-btn{border-color:rgba(255,92,122,.35);color:#ffb3c0}
 .welcome-screen{position:fixed;inset:0;z-index:110;background:rgba(4,8,18,.88);display:grid;place-items:center;padding:24px}
@@ -544,12 +544,12 @@ ul.clean{margin:0;padding-left:18px;line-height:1.9;color:#c7d2f5}
 .support-actions-card{margin-top:8px}
 @media(max-width:800px){.support-grid{grid-template-columns:1fr}}
 
-/* beta polish */
-.beta-notice{margin:0 auto 20px;max-width:720px;padding:12px 16px;border-radius:12px;border:1px solid rgba(62,240,255,.28);
+/* product polish */
+.product-notice{margin:0 auto 20px;max-width:720px;padding:12px 16px;border-radius:12px;border:1px solid rgba(62,240,255,.28);
   background:rgba(62,240,255,.06);font-size:13px;line-height:1.5;text-align:center;color:#c7d2f5}
-.beta-notice b{color:#eaf0ff}
-.beta-notice.warn{border-color:rgba(255,194,75,.35);background:rgba(255,194,75,.08);text-align:left;max-width:900px;margin:12px auto 0}
-.beta-notice.warn ul{margin:8px 0 0;padding-left:18px}
+.product-notice b{color:#eaf0ff}
+.product-notice.warn{border-color:rgba(255,194,75,.35);background:rgba(255,194,75,.08);text-align:left;max-width:900px;margin:12px auto 0}
+.product-notice.warn ul{margin:8px 0 0;padding-left:18px}
 .support-faq li{margin-bottom:10px;line-height:1.5}
 .home-actions .btn.primary{box-shadow:0 10px 36px rgba(62,240,255,.3)}
 
@@ -633,7 +633,7 @@ body.mode-advanced .beginner-only{display:none !important}
 .workflow-history-item:last-child{border-bottom:none}
 .workflow-history-stale{font-size:11px;color:var(--amber)}
 
-/* Beta sprint — first-user rails */
+/* First-user rails */
 .beginner-plan-card{margin:0 0 16px;padding:18px 20px;border-radius:16px;border:1px solid rgba(62,240,255,.35);
   background:linear-gradient(180deg,rgba(62,240,255,.08),rgba(154,123,255,.04))}
 .beginner-plan-title{margin:0 0 6px;font-family:Orbitron;font-size:15px;color:var(--cyan)}
@@ -754,7 +754,7 @@ body.auth-mode{
 .acc-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
 .acc-actions-stack{flex-direction:column;align-items:stretch}
 
-/* ── Beta application wizard ─────────────────────────────────── */
+/* ── Account setup wizard ─────────────────────────────────── */
 .auth-wizard{display:flex;flex-direction:column;min-height:0}
 .auth-wizard-head{flex:0 0 auto}
 .auth-progress{margin:2px 0 14px}
@@ -894,7 +894,7 @@ body.auth-loading.auth-mode .auth-stage::after{
 .status-dash-reason{font-size:13px;background:rgba(255,194,75,.06);border:1px solid rgba(255,194,75,.25);border-radius:10px;padding:10px 14px;margin:0 auto 14px;max-width:460px}
 .status-dash-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px}
 .status-dash-foot{margin-top:18px}
-/* Dashboard tone: pending = success, inactive = calm/neutral. */
+/* Dashboard tone: waiting = success, inactive = calm/neutral. */
 .status-dash.success{border-color:rgba(66,245,176,.32);box-shadow:0 10px 40px rgba(0,0,0,.45), 0 0 50px rgba(66,245,176,.08), inset 0 1px 0 rgba(255,255,255,.04)}
 .status-dash.success .status-dash-title{color:#d6fff0}
 .status-dash.success .status-dash-icon{color:var(--green)}

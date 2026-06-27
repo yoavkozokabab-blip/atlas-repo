@@ -55,7 +55,7 @@
           </div>
         </div>
 
-        <!-- REGISTER (sectioned beta application wizard) -->
+        <!-- REGISTER (sectioned account setup wizard) -->
         <div id="acc-panel-register" class="auth-panel auth-wizard" style="display:none">
           <div class="auth-wizard-head">
             <h2 class="auth-panel-title">Create your account</h2>
@@ -257,7 +257,7 @@
           </div>
         </div>
 
-        <!-- ACCOUNT STATE (blocked, pending, offline, etc.) -->
+        <!-- ACCOUNT STATE (blocked, offline, etc.) -->
         <div id="acc-panel-state" class="auth-panel" style="display:none">
           <div class="acc-state-icon" id="acc-state-icon" aria-hidden="true">⚠</div>
           <h2 class="auth-panel-title" id="acc-state-title">Account unavailable</h2>
@@ -306,7 +306,7 @@
       <button data-view="build" data-lock="1" onclick="go('build')">Change Plan</button>
       <button data-view="investigate" data-lock="1" onclick="go('investigate')">Debug</button>
       <button data-view="impact" data-lock="1" onclick="go('impact')">Impact</button>
-      <button data-view="export" data-lock="1" data-beta-advanced="1" class="advanced-only" onclick="go('export')" title="Repository Context — create a Change Plan first">Repository Context</button>
+      <button data-view="export" data-lock="1" data-advanced-feature="1" class="advanced-only" onclick="go('export')" title="Repository Context — create a Change Plan first">Repository Context</button>
     </nav>
 
     <!-- RIGHT — repository selector, detail mode, user menu -->
@@ -335,7 +335,7 @@
           <a class="btn ghost small" href="docs.html">Documentation</a>
           <a class="btn ghost small" href="support.html">Support</a>
           <button class="btn ghost small" type="button" onclick="showAboutAtlas()">Help &amp; about</button>
-          <button class="btn ghost small" type="button" onclick="copyBetaDiagnostics()" title="Copy version and scan stats — stays on your device">Copy diagnostics</button>
+          <button class="btn ghost small" type="button" onclick="copyDiagnostics()" title="Copy version and scan stats — stays on your device">Copy diagnostics</button>
           <button class="btn ghost small report-issue-btn" type="button" onclick="openReportIssue()">Report an issue</button>
           <div class="menu-divider" role="separator"></div>
           <button class="btn ghost small" type="button" onclick="atlasAccounts.logout()">Sign out</button>
@@ -685,7 +685,7 @@
       <h2 class="vh">Change Plan</h2>
       <p class="muted tiny" style="margin:-8px 4px 14px">Describe what you want to add or change. Atlas lists affected files, implementation order, and tests — then sends a ready prompt to your AI coding tool.</p>
       <div id="readyState"></div>
-      <div id="firstBuildBanner" class="beta-notice glass" style="display:none">
+      <div id="firstBuildBanner" class="product-notice glass" style="display:none">
         <b>Your first Change Plan</b> — keep the example below or type your own feature, then click <b>Create Change Plan</b>.
       </div>
       <div class="io glass">
@@ -773,8 +773,7 @@
 
     <!-- ===================== SCREEN: ACCOUNTS (signed-in profile) ===================== -->
     <!-- ===================== SCREEN: ACCOUNT STATUS DASHBOARD ===================== -->
-    <!-- Shown in-app (with branding + nav) for signed-in users whose account is not
-         yet active: pending approval, inactive, or not approved. Never a dead end. -->
+    <!-- Shown in-app (with branding + nav) for signed-in users whose account is not active. -->
     <section class="view" id="view-status">
       <div class="status-dash glass" id="statusDash">
         <div class="status-dash-icon" id="statusDashIcon" aria-hidden="true">⏳</div>
@@ -801,7 +800,7 @@
             <tr><th>Email</th><td id="acc-profile-email">—</td></tr>
             <tr><th>Plan</th><td id="acc-profile-plan">—</td></tr>
             <tr><th>Status</th><td id="acc-profile-status">—</td></tr>
-            <tr><th>Account</th><td id="acc-profile-beta">—</td></tr>
+            <tr><th>Account</th><td id="acc-profile-account">—</td></tr>
           </table>
           <div id="acc-profile-offline" class="acc-offline-warn" style="display:none"></div>
           <h3 class="acc-section-head">Your devices</h3>
@@ -822,11 +821,11 @@
     <section class="view" id="view-admin">
       <div class="page-head">
         <h1 class="page-title">Admin Workspace</h1>
-        <p class="page-sub">Manage beta access, users, licenses, and review activity. <span id="admin-health" class="admin-health"></span></p>
+        <p class="page-sub">Manage account status, users, licenses, and review activity. <span id="admin-health" class="admin-health"></span></p>
       </div>
       <div class="admin-tabs" role="tablist">
         <button class="admin-tab active" data-tab="overview" onclick="adminConsole.tab('overview')">Overview</button>
-        <button class="admin-tab" data-tab="pending" onclick="adminConsole.tab('pending')">Pending <span class="admin-badge" id="admin-pending-count"></span></button>
+        <button class="admin-tab" data-tab="status" onclick="adminConsole.tab('status')">Account Status <span class="admin-badge" id="admin-status-count"></span></button>
         <button class="admin-tab" data-tab="users" onclick="adminConsole.tab('users')">Users</button>
         <button class="admin-tab" data-tab="access" onclick="adminConsole.tab('access')">Licenses / Access</button>
         <button class="admin-tab" data-tab="feedback" onclick="adminConsole.tab('feedback')">Feedback</button>
@@ -838,8 +837,8 @@
         <div class="admin-kpis" id="admin-kpis"><p class="muted tiny">Loading…</p></div>
       </div>
 
-      <div class="admin-pane" id="admin-pane-pending" hidden>
-        <div id="admin-pending-list"><p class="muted tiny">Loading…</p></div>
+      <div class="admin-pane" id="admin-pane-status" hidden>
+        <div id="admin-status-list"><p class="muted tiny">Loading…</p></div>
       </div>
 
       <div class="admin-pane" id="admin-pane-users" hidden>
@@ -847,15 +846,15 @@
           <input id="admin-user-search" type="search" placeholder="Search by email…" oninput="adminConsole.renderUsers()" />
           <select id="admin-user-filter" onchange="adminConsole.renderUsers()">
             <option value="">All statuses</option>
-            <option value="pending">Pending</option>
-            <option value="beta">Beta</option>
+            <option value="needs_attention">Needs attention</option>
             <option value="active">Active</option>
             <option value="suspended">Suspended</option>
+            <option value="disabled">Disabled</option>
             <option value="banned">Banned</option>
           </select>
         </div>
         <div class="admin-table-wrap"><table class="admin-table">
-          <thead><tr><th>Email</th><th>Status</th><th>Role</th><th>License</th><th>Beta</th><th>Devices</th><th>Last seen</th><th>Actions</th></tr></thead>
+          <thead><tr><th>Email</th><th>Status</th><th>Role</th><th>License</th><th>Account</th><th>Devices</th><th>Last seen</th><th>Actions</th></tr></thead>
           <tbody id="admin-users-rows"><tr><td colspan="8" class="muted" style="padding:16px">Loading…</td></tr></tbody>
         </table></div>
       </div>

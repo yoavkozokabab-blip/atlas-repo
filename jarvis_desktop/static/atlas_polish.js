@@ -1,5 +1,5 @@
 "use strict";
-/* beta polish: first Build Plan funnel, copy, installer friction (no new intelligence). */
+/* Product polish: first Change Plan funnel, copy, installer friction (no new intelligence). */
 
 const FIRST_BUILD_KEY = "atlas_first_build_plan_done";
 const FIRST_BUILD_PROMPT = "Add structured logging to API handlers";
@@ -51,7 +51,7 @@ function renderScanReliabilityNotice(scan) {
     : (rel.category ? String(rel.category).replace(/_/g, " ") : "Scan completed with limited coverage.");
   const items = warnings.length ? warnings : [relNote];
   host.style.display = "block";
-  host.innerHTML = `<div class="beta-notice warn">
+  host.innerHTML = `<div class="product-notice warn">
     <b>Scan note</b>
     <ul class="clean tiny">${items.map(w => `<li>${escPolish(w)}</li>`).join("")}</ul>
     <p class="muted tiny">You can still run Change Plan and What breaks? — results may list fewer grounded files. Try a narrower scan scope if this is your own repo.</p>
