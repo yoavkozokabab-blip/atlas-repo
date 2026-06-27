@@ -29,8 +29,7 @@
     { match: /no atlas account/i, title: 'Account not found', message: 'No Atlas account was found for this email.', action: '' },
     { match: /incorrect password/i, title: 'Incorrect password', message: 'Incorrect password. Try again or reset it.', action: '' },
     { match: /invalid email or password/i, title: 'Incorrect sign-in', message: 'No Atlas account matched that email and password.', action: 'Check the email and password, then try again.' },
-    { match: /pending|waiting for beta approval/i, title: 'Beta approval pending', message: 'Your account was created and is waiting for beta approval.', action: 'The Atlas operator will approve beta access manually.' },
-    { match: /suspended/i, title: 'Account suspended', message: 'This account is suspended. Contact the Atlas operator.', action: '' },
+    { match: /suspended/i, title: 'Account suspended', message: 'This account is suspended. Contact support.', action: '' },
     { match: /banned/i, title: 'Account banned', message: 'This account is banned and cannot access Atlas.', action: '' },
     { match: /expired|license|not currently active/i, title: 'Access inactive', message: 'Your Atlas access is not currently active.', action: 'Contact the Atlas operator if this looks wrong.' },
     { match: /device.*revoked|no longer authorized/i, title: 'Device revoked', message: 'This device is no longer authorized for this account.', action: 'Sign in from an approved device or contact the Atlas operator.' },
@@ -260,9 +259,6 @@
     if (userStatus === 'banned' || status === 'banned') {
       return { icon: '!', title: 'Account banned', message: 'This account is banned and cannot access Atlas.', action: 'Atlas workflows are unavailable for this account.', showSignOut: true };
     }
-    if (status === 'pending' || userStatus === 'pending') {
-      return { icon: '...', title: 'Beta access pending', message: 'Your account was created and is waiting for beta approval.', action: 'Atlas beta access is manually approved. Your code stays local.', showSignOut: true };
-    }
     if (status === 'device_revoked') {
       return { icon: '!', title: 'Device revoked', message: 'This device is no longer authorized for this account.', action: 'Sign in from an approved device or contact the Atlas operator.', showSignOut: true };
     }
@@ -275,9 +271,6 @@
     }
     if (userStatus === 'banned' || status === 'banned') {
       return { icon: '🚫', title: 'Account banned', message: 'Your account has been banned from Atlas.', action: 'Contact support@useatlas.dev if you believe this is an error.', showSignOut: true };
-    }
-    if (status === 'pending' || userStatus === 'pending') {
-      return { icon: '⏳', title: 'Beta access pending', message: 'Your account is registered but beta access has not been granted yet.', action: 'We will email you when your access is approved. You can contact support@useatlas.dev for status updates.', showSignOut: true };
     }
     if (status === 'offline_grace_expired') {
       return { icon: '📡', title: 'Offline grace expired', message: lic.message || 'Atlas has been offline too long without verifying your license.', action: 'Reconnect to the internet and sign in again to continue.', showSignOut: true };
@@ -327,11 +320,8 @@
     const us = String(user.status || '').toLowerCase();
     const ls = String(lic.status || '').toLowerCase();
     if (_state.authenticated) {
-      if (us === 'beta' || ls === 'beta' || lic.plan === 'beta' || user.beta_flag) return 'beta';
       return 'active';
     }
-    if (us === 'pending' || ls === 'pending') return 'pending';
-    if (us === 'rejected' || ls === 'rejected') return 'rejected';
     if (us === 'suspended' || us === 'banned' || ls === 'suspended' || ls === 'banned') return 'blocked';
     return 'inactive';
   }
@@ -341,18 +331,6 @@
   const REAPPLY_ENABLED = false;
 
   const STATUS_DASH = {
-    pending: {
-      // Success state — a submitted application, not an error (Part 4).
-      tone: 'success',
-      icon: '✓',
-      title: 'Application received',
-      message: 'Your Atlas beta application has been submitted successfully. Our team is reviewing your application.',
-      steps: [],
-      eta: 'Typical review time: 24–72 hours.',
-      showRefresh: true,
-      showReapply: false,
-      foot: 'You can close Atlas and return later — we will email you when access is approved.',
-    },
     inactive: {
       // Calm/neutral — never error or warning styling (Part 5).
       tone: 'neutral',
@@ -367,16 +345,6 @@
       showRefresh: true,
       showReapply: false,
       foot: 'If you think this is a mistake, contact support and we will take a look.',
-    },
-    rejected: {
-      tone: 'neutral',
-      icon: '⊘',
-      title: 'Application not approved',
-      message: 'Your application was reviewed but was not approved at this time.',
-      steps: [],
-      showRefresh: false,
-      showReapply: REAPPLY_ENABLED,
-      foot: 'Thank you for your interest in Atlas.',
     },
   };
 
