@@ -174,8 +174,8 @@ function showUnsignedBetaNotice(force) {
   }
   modal.innerHTML = `<div class="about-card glass" onclick="event.stopPropagation()">
     <p class="onboard-eyebrow">First launch</p>
-    <h2>Atlas is an unsigned beta application</h2>
-    <p class="muted">During the beta, Atlas is not yet code-signed with a paid certificate, so Windows may show a
+    <h2>Atlas is an unsigned application</h2>
+    <p class="muted">Atlas is not yet code-signed with a paid certificate, so Windows may show a
       blue <b>SmartScreen</b> warning the first time you run it. This is expected for new, unsigned software — it is
       not a sign that anything is wrong.</p>
     <h3>Why Windows shows this</h3>

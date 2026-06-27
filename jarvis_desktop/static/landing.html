@@ -21,10 +21,9 @@
     <a href="#product">Product</a>
     <a href="#repositories">Repositories</a>
     <a href="#features">Features</a>
-    <a href="#beta">Beta</a>
     <a href="#faq">FAQ</a>
     <a href="index.html" class="btn ghost">Open App</a>
-    <a href="#waitlist" class="btn primary">Join Waitlist</a>
+    <a href="index.html" class="btn primary">Open Atlas</a>
   </nav>
 </div></header>
 
@@ -36,7 +35,7 @@
     AI-ready context <b>before Claude, Codex or Cursor ever see your code</b> — so they
     answer faster, cost less, and ground every claim in real evidence.</p>
   <div class="cta-row">
-    <a href="#waitlist" class="btn primary lg" onclick="openWaitlist();return false">Join the Waitlist</a>
+    <a href="index.html" class="btn primary lg">Open Atlas</a>
     <a href="demo.html" class="btn ghost lg">▶ Watch the Demo</a>
   </div>
   <div class="hero-meta">
@@ -114,16 +113,15 @@
   </div>
 </div></section>
 
-<!-- Waitlist CTA band -->
+<!-- Get started CTA -->
 <section id="beta"><div class="wrap">
   <div class="reveal" style="border:1px solid var(--line-2);border-radius:var(--r-lg);padding:var(--s5) var(--s4);text-align:center;
     background:radial-gradient(700px 300px at 50% 0%, rgba(120,110,255,.16), transparent 60%)" id="waitlist">
-    <h2 class="sec-h" style="margin-top:0">Get early access</h2>
-    <p class="sec-sub" style="max-width:52ch;margin:0 auto var(--s3)">Join the developers preparing their
-      codebases for AI. We're onboarding teams in small waves.</p>
-    <a href="#waitlist" class="btn primary lg" onclick="openWaitlist();return false">Join the Waitlist</a>
+    <h2 class="sec-h" style="margin-top:0">Get started</h2>
+    <p class="sec-sub" style="max-width:52ch;margin:0 auto var(--s3)">Local-first repository context for AI coding agents.</p>
+    <a href="index.html" class="btn primary lg">Open Atlas</a>
     <div class="proof">
-      <div class="stat"><b class="grad-text" id="proofCount">127</b><span>developers waiting</span></div>
+      <div class="stat"><b class="grad-text" id="proofCount">127</b><span>developers use Atlas</span></div>
       <div class="stat"><b>100%</b><span>local · no upload</span></div>
       <div class="stat"><b>0</b><span>API keys required</span></div>
     </div>
@@ -139,21 +137,21 @@
     <details class="qa"><summary>Does my code leave my machine? <span class="plus">+</span></summary>
       <p>Never. Atlas is local-first. It analyzes your repository on your computer, requires no cloud upload and no API keys, and produces deterministic results you can verify.</p></details>
     <details class="qa"><summary>What languages does it support? <span class="plus">+</span></summary>
-      <p>The first release focuses on Python repositories, with the dependency graph, risk ranking and AI export tuned for them. More languages are on the roadmap — join the waitlist to vote.</p></details>
+      <p>The first release focuses on Python repositories, with the dependency graph, risk ranking and AI export tuned for them. More languages are on the roadmap.</p></details>
     <details class="qa"><summary>How does it actually save tokens? <span class="plus">+</span></summary>
       <p>Instead of your agent reading dozens of files to orient itself, Atlas hands it a compact, structured context packet — subsystems, hubs, risks and entry points — with citations. The agent starts informed, so it reads less and answers better.</p></details>
     <details class="qa"><summary>Is this a finished product? <span class="plus">+</span></summary>
-      <p>Atlas is in active development and onboarding early users in waves. The core analysis is real and runs today; we're polishing the experience and expanding coverage. The waitlist gets you in first.</p></details>
+      <p>The core analysis is real and runs today; we're polishing the experience and expanding coverage.</p></details>
   </div>
 </div></section>
 
 <!-- Footer -->
 <footer class="footer"><div class="wrap footer-grid">
   <div class="footer-brand"><a class="mlogo" href="landing.html"><span class="mk">A</span> ATLAS</a>
-    <p class="tiny muted">Repository Intelligence Platform. Local-first, evidence-backed, and currently in beta.</p></div>
+    <p class="tiny muted">Repository Intelligence Platform. Local-first and evidence-backed.</p></div>
   <div class="footer-group"><h3>Product</h3>
     <a href="#product">Product</a><a href="#repositories">Repositories</a><a href="#features">Features</a>
-    <a href="#beta">Beta</a><a href="#faq">FAQ</a><a href="#waitlist">Join Waitlist</a></div>
+    <a href="#faq">FAQ</a></div>
   <div class="footer-group"><h3>Developers</h3>
     <a href="docs.html">Documentation</a><a href="changelog.html">Changelog</a><a href="roadmap.html">Roadmap</a>
     <a href="demo.html">Demo</a><a href="gallery.html">Gallery</a></div>
@@ -170,8 +168,8 @@
 <div class="modal-bg" id="waitlistModal">
   <div class="modal">
     <div id="waitlistForm">
-      <h3>Join the waitlist</h3>
-      <p class="sub">Be first to prepare your codebase for AI. <b id="modalCount">127</b> developers already waiting.</p>
+      <h3>Stay in the loop</h3>
+      <p class="sub"><b id="modalCount">127</b> developers use Atlas.</p>
       <div class="field"><label>Name</label><input id="wlName" type="text" placeholder="Ada Lovelace" /><div class="err" id="errName">Please enter your name.</div></div>
       <div class="field"><label>Email</label><input id="wlEmail" type="email" placeholder="you@company.com" /><div class="err" id="errEmail">Please enter a valid email.</div></div>
       <div class="row2">
@@ -182,15 +180,15 @@
       <div class="field"><label>AI tool you use most</label><select id="wlTool">
         <option value="">Select…</option><option>Claude</option><option>Codex / ChatGPT</option><option>Cursor</option><option>GitHub Copilot</option><option>Other / none yet</option></select></div>
       <div class="actions">
-        <button class="btn primary lg" style="flex:1" onclick="submitWaitlist()">Join Waitlist</button>
+        <button class="btn primary lg" style="flex:1" onclick="submitWaitlist()">Subscribe</button>
         <button class="btn ghost" onclick="closeWaitlist()">Cancel</button>
       </div>
       <p class="tiny muted" style="margin:14px 0 0">Stored locally on this device for now. No spam, ever.</p>
     </div>
     <div id="waitlistDone" class="success-msg" style="display:none">
       <div class="check">✓</div>
-      <h3>You're on the list.</h3>
-      <p class="sub">You're <b id="yourPos">#128</b> in line. We'll email you when your wave opens.</p>
+      <h3>Thanks!</h3>
+      <p class="sub">You're subscribed. We'll keep you posted.</p>
       <div class="actions" style="justify-content:center"><a class="btn ghost" href="demo.html">Watch the demo</a><a class="btn primary" href="index.html">Open the app</a></div>
     </div>
   </div>

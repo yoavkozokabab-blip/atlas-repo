@@ -5,12 +5,12 @@
 </head><body><div class="bg-aura"></div>
 <header class="mnav"><div class="wrap row"><a class="mlogo" href="landing.html"><span class="mk">A</span> ATLAS</a><nav class="mlinks"><a href="landing.html">Home</a><a href="docs.html">Documentation</a><a href="roadmap.html">Roadmap</a><a href="index.html" class="btn ghost">Open App</a></nav></div></header>
 <main class="info-page"><div class="wrap info-shell">
-<span class="eyebrow"><span class="dot"></span> Beta notes</span>
+<span class="eyebrow"><span class="dot"></span> Release notes</span>
 <h1>Changelog</h1>
-<p>Atlas is moving quickly during beta. This page records public-facing product changes.</p>
+<p>Atlas is moving quickly. This page records public-facing product changes.</p>
 
 <h2>0.1.0-beta — June 2026</h2>
-<p><b>First supervised beta release.</b> This build is shared with a small group of developers for early feedback.</p>
+<p><b>Early release.</b> This build is shared with a small group of developers for early feedback.</p>
 <ul>
   <li><b>Trust integrity</b> — every Change Plan, Debug result, and What Breaks result is grounded in your actual repository graph. Atlas refuses to produce output it cannot support with evidence.</li>
   <li><b>Repository memory</b> — Atlas remembers your repository structure across sessions. Exports sent to Claude include a compact memory header (~120 tokens) instead of repeating the full context each time.</li>
@@ -21,11 +21,11 @@
   <li><b>Local-first</b> — no source code leaves your machine. All analysis runs locally against a Python/TypeScript import graph built from your repository.</li>
 </ul>
 
-<h3>Beta limitations</h3>
+<h3>Current limitations</h3>
 <ul>
   <li>Python and TypeScript repositories are fully supported. Go, Java, Rust, and C# get file discovery but limited import graph resolution.</li>
   <li>Repositories over ~50,000 files use a sampling strategy; some file links may not be resolved.</li>
-  <li>macOS and Linux support is in progress. Windows is the primary platform for this beta.</li>
+  <li>Windows is the supported platform. macOS and Linux are not supported yet.</li>
 </ul>
 
 <h2>Release notes</h2>
