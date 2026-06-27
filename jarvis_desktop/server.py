@@ -188,6 +188,16 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
         ("POST", "/api/feedback"): lambda body, _query: api.submit_feedback(body or {}),
         # Phase 189 — result feedback funnel
         ("POST", "/api/feedback/result"): lambda body, _query: api.submit_result_feedback(body or {}),
+        ("GET", "/api/integrations/mcp/status"): lambda _body, _query: api.mcp_setup_status(),
+        ("GET", "/api/integrations/claude/config"): lambda _body, _query: api.agent_integrations_status(),
+        ("POST", "/api/integrations/cursor/write-config"): lambda body, _query: api.write_cursor_mcp_config(
+            body.get("confirm") is True or str(body.get("confirm", "")).lower() in {"1", "true", "yes"}
+        ),
+        ("POST", "/api/integrations/claude/write-config"): lambda body, _query: api.write_claude_mcp_config(
+            body.get("confirm") is True or str(body.get("confirm", "")).lower() in {"1", "true", "yes"}
+        ),
+        ("POST", "/api/integrations/mcp/test"): lambda _body, _query: api.test_claude_mcp_runtime(),
+        ("POST", "/api/integrations/mcp/diagnostics"): lambda _body, _query: api.run_mcp_diagnostics(),
         ("GET", "/api/operations/result-feedback"): lambda _body, _query: api.operations_result_feedback_inbox(),
         # Phase 182 — beta operations foundation
         ("GET", "/api/system/identity"): lambda _body, _query: api.system_identity(),

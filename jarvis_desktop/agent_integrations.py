@@ -11,7 +11,11 @@ from __future__ import annotations
 import json
 import os
 import re
+import shutil
+import subprocess
 import sys
+import time
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
@@ -21,6 +25,7 @@ from .context_pack import build_context_pack, build_context_pack_from_state, est
 ATLAS_START = "<!-- ATLAS:START -->"
 ATLAS_END = "<!-- ATLAS:END -->"
 _CLAUDE_CONFIG_NAME = "claude_desktop_config.json"
+_CURSOR_CONFIG_NAME = "mcp.json"
 
 _TARGET_LABELS = {
     "claude": "Claude",
@@ -348,15 +353,50 @@ def _claude_config_source_for_path(path: str) -> str:
     return "default"
 
 
-def _atlas_mcp_command() -> Tuple[str, List[str]]:
+def atlas_executable_path() -> str:
+    """Return the installed Atlas.exe path when available (never hardcoded)."""
     if getattr(sys, "frozen", False):
-        return os.path.abspath(sys.executable), ["--mcp"]
+        return os.path.abspath(sys.executable)
+
+    override = os.environ.get("ATLAS_EXE_PATH", "").strip()
+    if override and os.path.isfile(override):
+        return os.path.abspath(override)
+
+    candidates: List[str] = []
+    local = os.environ.get("LOCALAPPDATA", "").strip()
+    if local:
+        candidates.append(os.path.join(local, "Programs", "Atlas", "Atlas.exe"))
+    for env_name in ("ProgramFiles", "ProgramFiles(x86)"):
+        base = os.environ.get(env_name, "").strip()
+        if base:
+            candidates.append(os.path.join(base, "Atlas", "Atlas.exe"))
+
+    exe_name = os.path.basename(sys.executable).lower()
+    if exe_name == "atlas.exe" and os.path.isfile(sys.executable):
+        candidates.insert(0, sys.executable)
+
+    for path in candidates:
+        if os.path.isfile(path):
+            return os.path.abspath(path)
+
+    root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    bundled = os.path.join(root, "dist", "Atlas", "Atlas.exe")
+    if os.path.isfile(bundled):
+        return os.path.abspath(bundled)
+
+    return os.path.abspath(sys.executable)
+
+
+def _atlas_mcp_command() -> Tuple[str, List[str]]:
+    exe = atlas_executable_path()
+    if exe.lower().endswith("atlas.exe"):
+        return exe, ["--mcp"]
     root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
     runner = os.path.join(root, "run_atlas.py")
     return os.path.abspath(sys.executable), [runner, "--mcp"]
 
 
-def claude_mcp_snippet(server_name: str = "atlas") -> Dict[str, Any]:
+def mcp_snippet(server_name: str = "atlas") -> Dict[str, Any]:
     command, args = _atlas_mcp_command()
     return {
         "mcpServers": {
@@ -366,6 +406,229 @@ def claude_mcp_snippet(server_name: str = "atlas") -> Dict[str, Any]:
             }
         }
     }
+
+
+def claude_mcp_snippet(server_name: str = "atlas") -> Dict[str, Any]:
+    return mcp_snippet(server_name)
+
+
+def _backup_config_file(path: str) -> Optional[str]:
+    target = Path(path)
+    if not target.is_file():
+        return None
+    stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    backup = target.with_name(f"{target.name}.atlas-backup-{stamp}")
+    shutil.copy2(target, backup)
+    return str(backup)
+
+
+def _validate_mcp_config_data(data: Any) -> Optional[str]:
+    if not isinstance(data, dict):
+        return "Config root is not a JSON object."
+    servers = data.get("mcpServers")
+    if servers is None:
+        return None
+    if not isinstance(servers, dict):
+        return "`mcpServers` is not a JSON object."
+    return None
+
+
+def _write_mcp_servers_config(
+    path: str,
+    *,
+    server_name: str = "atlas",
+    client_label: str,
+) -> Dict[str, Any]:
+    target = Path(path)
+    data: Dict[str, Any] = {}
+    backup_path: Optional[str] = None
+
+    if target.exists():
+        try:
+            data = json.loads(target.read_text(encoding="utf-8") or "{}")
+        except (OSError, json.JSONDecodeError) as exc:
+            snippet = mcp_snippet(server_name)
+            return {
+                "ok": False,
+                "code": "invalid_config",
+                "error": f"{client_label} config is not valid JSON: {exc}",
+                "config_path": path,
+                "fallback_json": json.dumps(snippet, indent=2),
+            }
+        invalid = _validate_mcp_config_data(data)
+        if invalid:
+            snippet = mcp_snippet(server_name)
+            return {
+                "ok": False,
+                "code": "invalid_config",
+                "error": invalid,
+                "config_path": path,
+                "fallback_json": json.dumps(snippet, indent=2),
+            }
+        try:
+            backup_path = _backup_config_file(path)
+        except OSError as exc:
+            snippet = mcp_snippet(server_name)
+            return {
+                "ok": False,
+                "code": "backup_failed",
+                "error": f"Could not back up existing config: {exc}",
+                "config_path": path,
+                "fallback_json": json.dumps(snippet, indent=2),
+            }
+
+    servers = data.setdefault("mcpServers", {})
+    if not isinstance(servers, dict):
+        snippet = mcp_snippet(server_name)
+        return {
+            "ok": False,
+            "code": "invalid_config",
+            "error": "`mcpServers` is not a JSON object.",
+            "config_path": path,
+            "fallback_json": json.dumps(snippet, indent=2),
+        }
+
+    preserved = sorted(str(k) for k in servers.keys() if k != server_name)
+    servers[server_name] = mcp_snippet(server_name)["mcpServers"][server_name]
+    target.parent.mkdir(parents=True, exist_ok=True)
+    rendered = json.dumps(data, indent=2) + "\n"
+    tmp = target.with_suffix(target.suffix + ".tmp")
+    try:
+        tmp.write_text(rendered, encoding="utf-8")
+        try:
+            json.loads(tmp.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            return {
+                "ok": False,
+                "code": "validation_failed",
+                "error": f"Written JSON failed validation: {exc}",
+                "config_path": path,
+                "fallback_json": json.dumps(mcp_snippet(server_name), indent=2),
+            }
+        try:
+            os.replace(tmp, target)
+        except PermissionError:
+            target.write_text(rendered, encoding="utf-8")
+            try:
+                tmp.unlink(missing_ok=True)
+            except OSError:
+                pass
+    except OSError as exc:
+        snippet = mcp_snippet(server_name)
+        return {
+            "ok": False,
+            "code": "write_failed",
+            "error": str(exc),
+            "config_path": path,
+            "fallback_json": json.dumps(snippet, indent=2),
+        }
+
+    return {
+        "ok": True,
+        "config_path": path,
+        "backup_path": backup_path,
+        "server_name": server_name,
+        "preserved_server_names": preserved,
+        "atlas_configured": True,
+        "executable_path": atlas_executable_path(),
+    }
+
+
+def _platform_default_cursor_config_path() -> str:
+    return os.path.join(os.path.expanduser("~"), ".cursor", _CURSOR_CONFIG_NAME)
+
+
+def discover_cursor_mcp_config_paths() -> List[Dict[str, Any]]:
+    seen: set[str] = set()
+    out: List[Dict[str, Any]] = []
+
+    def add(path: str, source: str) -> None:
+        resolved = os.path.abspath(path)
+        if resolved in seen:
+            return
+        seen.add(resolved)
+        parent = os.path.dirname(resolved)
+        out.append(
+            {
+                "path": resolved,
+                "source": source,
+                "exists": os.path.isfile(resolved),
+                "parent_exists": os.path.isdir(parent),
+            }
+        )
+
+    add(_platform_default_cursor_config_path(), "default")
+    appdata = os.environ.get("APPDATA", "").strip()
+    if appdata:
+        add(os.path.join(appdata, "Cursor", "User", "globalStorage", "cursor.mcp", _CURSOR_CONFIG_NAME), "appdata_cursor_mcp")
+    return out
+
+
+def cursor_config_path() -> str:
+    for item in discover_cursor_mcp_config_paths():
+        if item.get("exists"):
+            return str(item["path"])
+    return _platform_default_cursor_config_path()
+
+
+def _cursor_config_source_for_path(path: str) -> str:
+    target = os.path.abspath(path)
+    for item in discover_cursor_mcp_config_paths():
+        if os.path.abspath(str(item.get("path") or "")) == target:
+            return str(item.get("source") or "discovered")
+    return "default"
+
+
+def cursor_config_status() -> Dict[str, Any]:
+    path = cursor_config_path()
+    discovered = discover_cursor_mcp_config_paths()
+    snippet = mcp_snippet()
+    exists = os.path.exists(path)
+    server_names: List[str] = []
+    atlas_configured = False
+    invalid = False
+    if exists:
+        try:
+            data = json.loads(Path(path).read_text(encoding="utf-8") or "{}")
+            servers = data.get("mcpServers") if isinstance(data, dict) else {}
+            if isinstance(servers, dict):
+                server_names = sorted(str(k) for k in servers.keys())
+                atlas_configured = "atlas" in servers
+        except (OSError, json.JSONDecodeError):
+            invalid = True
+    return {
+        "ok": True,
+        "config_path": path,
+        "config_source": _cursor_config_source_for_path(path),
+        "discovered_paths": discovered,
+        "exists": exists,
+        "invalid_json": invalid,
+        "atlas_configured": atlas_configured,
+        "existing_server_names": server_names,
+        "snippet": snippet,
+        "copyable_json": json.dumps(snippet, indent=2),
+        "can_auto_write": not invalid,
+        "requires_confirmation": True,
+    }
+
+
+def write_cursor_config(*, confirm: bool = False, server_name: str = "atlas") -> Dict[str, Any]:
+    if not confirm:
+        return {
+            "ok": False,
+            "code": "confirmation_required",
+            "error": "Atlas will only write Cursor MCP config after explicit confirmation.",
+        }
+    result = _write_mcp_servers_config(
+        cursor_config_path(),
+        server_name=server_name,
+        client_label="Cursor",
+    )
+    if result.get("ok"):
+        result["message"] = (
+            "Atlas was added to Cursor. Restart Cursor, then open Settings → MCP and confirm Atlas is connected."
+        )
+    return result
 
 
 def claude_config_status() -> Dict[str, Any]:
@@ -408,42 +671,145 @@ def write_claude_config(*, confirm: bool = False, server_name: str = "atlas") ->
             "code": "confirmation_required",
             "error": "Atlas will only write Claude Desktop config after explicit confirmation.",
         }
-    path = claude_desktop_config_path()
-    target = Path(path)
-    data: Dict[str, Any] = {}
-    if target.exists():
-        try:
-            data = json.loads(target.read_text(encoding="utf-8") or "{}")
-            if not isinstance(data, dict):
-                return {"ok": False, "code": "invalid_config", "error": "Claude config root is not a JSON object.", "config_path": path}
-        except (OSError, json.JSONDecodeError) as exc:
-            return {"ok": False, "code": "invalid_config", "error": f"Claude config is not valid JSON: {exc}", "config_path": path}
-    servers = data.setdefault("mcpServers", {})
-    if not isinstance(servers, dict):
-        return {"ok": False, "code": "invalid_config", "error": "`mcpServers` is not a JSON object.", "config_path": path}
-    preserved = sorted(str(k) for k in servers.keys() if k != server_name)
-    servers[server_name] = claude_mcp_snippet(server_name)["mcpServers"][server_name]
-    target.parent.mkdir(parents=True, exist_ok=True)
-    tmp = target.with_suffix(target.suffix + ".tmp")
-    rendered = json.dumps(data, indent=2) + "\n"
-    tmp.write_text(rendered, encoding="utf-8")
-    try:
-        os.replace(tmp, target)
-    except PermissionError:
-        # Some Windows installs/sandboxes block atomic replace on config files.
-        # The merged JSON is already built in memory, so fall back to a direct
-        # write rather than dropping the user's existing MCP servers.
-        target.write_text(rendered, encoding="utf-8")
-        try:
-            tmp.unlink(missing_ok=True)
-        except OSError:
-            pass
+    result = _write_mcp_servers_config(
+        claude_desktop_config_path(),
+        server_name=server_name,
+        client_label="Claude Desktop",
+    )
+    if result.get("ok"):
+        result["message"] = (
+            "Atlas was added to Claude Desktop. Restart Claude Desktop, then confirm Atlas appears in MCP settings."
+        )
+    return result
+
+
+def mcp_setup_status() -> Dict[str, Any]:
+    cursor = cursor_config_status()
+    claude = claude_config_status()
+    command, args = _atlas_mcp_command()
     return {
         "ok": True,
-        "config_path": path,
-        "server_name": server_name,
-        "preserved_server_names": preserved,
-        "atlas_configured": True,
+        "executable_path": atlas_executable_path(),
+        "executable_exists": os.path.isfile(atlas_executable_path()),
+        "mcp_command": command,
+        "mcp_args": args,
+        "snippet": mcp_snippet(),
+        "copyable_json": json.dumps(mcp_snippet(), indent=2),
+        "cursor": cursor,
+        "claude": claude,
+    }
+
+
+def _exe_help_contains_mcp(exe_path: str) -> Dict[str, Any]:
+    if not os.path.isfile(exe_path):
+        return {"ok": False, "detail": f"Missing executable: {exe_path}"}
+    try:
+        proc = subprocess.run(
+            [exe_path, "--help"],
+            capture_output=True,
+            text=True,
+            timeout=60,
+            check=False,
+        )
+        combined = f"{proc.stdout or ''}\n{proc.stderr or ''}"
+        if "unrecognized arguments" in combined.lower():
+            return {"ok": False, "detail": combined.strip()[:300]}
+        ok = "--mcp" in combined
+        return {"ok": ok, "detail": "help lists --mcp" if ok else combined.strip()[:300]}
+    except Exception as exc:  # noqa: BLE001
+        return {"ok": False, "detail": f"{type(exc).__name__}: {exc}"}
+
+
+def _exe_mcp_starts_without_argparse_error(exe_path: str) -> Dict[str, Any]:
+    if not os.path.isfile(exe_path):
+        return {"ok": False, "detail": f"Missing executable: {exe_path}"}
+    proc: Optional[subprocess.Popen[str]] = None
+    try:
+        proc = subprocess.Popen(
+            [exe_path, "--mcp"],
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        time.sleep(0.8)
+        if proc.poll() is not None:
+            err = (proc.stderr.read() if proc.stderr else "")[:400]
+            out = (proc.stdout.read() if proc.stdout else "")[:200]
+            combined = f"{out}\n{err}".strip()
+            if "unrecognized arguments" in combined.lower():
+                return {"ok": False, "detail": combined[:300]}
+            return {"ok": False, "detail": combined[:300] or f"exit={proc.returncode}"}
+        return {"ok": True, "detail": "MCP process stayed alive (stdio ready)"}
+    except Exception as exc:  # noqa: BLE001
+        return {"ok": False, "detail": f"{type(exc).__name__}: {exc}"}
+    finally:
+        if proc is not None:
+            try:
+                if proc.stdin:
+                    proc.stdin.close()
+                proc.terminate()
+                proc.wait(timeout=3)
+            except Exception:
+                try:
+                    proc.kill()
+                except Exception:
+                    pass
+
+
+def run_mcp_diagnostics() -> Dict[str, Any]:
+    exe = atlas_executable_path()
+    cursor = cursor_config_status()
+    claude = claude_config_status()
+    snippet = mcp_snippet()
+    checks: List[Dict[str, Any]] = []
+
+    def add(name: str, ok: bool, detail: str = "") -> None:
+        checks.append({"name": name, "ok": bool(ok), "detail": str(detail)[:400]})
+
+    add("Atlas executable path resolved", bool(exe), exe)
+    add("Atlas.exe exists", os.path.isfile(exe), exe)
+    help_check = _exe_help_contains_mcp(exe)
+    add("Atlas.exe --help contains --mcp", help_check["ok"], help_check.get("detail", ""))
+    start_check = _exe_mcp_starts_without_argparse_error(exe)
+    add("Atlas.exe --mcp starts without argparse error", start_check["ok"], start_check.get("detail", ""))
+
+    snippet_ok = False
+    snippet_detail = ""
+    try:
+        json.loads(json.dumps(snippet))
+        entry = snippet["mcpServers"]["atlas"]
+        snippet_ok = bool(entry.get("command")) and entry.get("args") == ["--mcp"]
+        snippet_detail = json.dumps(entry)
+    except Exception as exc:  # noqa: BLE001
+        snippet_detail = f"{type(exc).__name__}: {exc}"
+    add("MCP config JSON is valid", snippet_ok, snippet_detail)
+
+    if cursor.get("atlas_configured"):
+        add("Cursor MCP config exists", cursor.get("exists"), cursor.get("config_path", ""))
+        add("Cursor MCP config JSON valid", not cursor.get("invalid_json"), cursor.get("config_path", ""))
+    else:
+        add("Cursor MCP config (optional until connected)", True, "Not configured yet")
+
+    if claude.get("atlas_configured"):
+        add("Claude Desktop MCP config exists", claude.get("exists"), claude.get("config_path", ""))
+        add("Claude Desktop MCP config JSON valid", not claude.get("invalid_json"), claude.get("config_path", ""))
+    else:
+        add("Claude Desktop MCP config (optional until connected)", True, "Not configured yet")
+
+    runtime = test_mcp_runtime()
+    add("Atlas MCP runtime loads tools", runtime.get("ok"), runtime.get("error") or f"{runtime.get('tool_count', 0)} tools")
+
+    passed = all(item["ok"] for item in checks)
+    return {
+        "ok": passed,
+        "passed": passed,
+        "executable_path": exe,
+        "checks": checks,
+        "cursor_config_path": cursor.get("config_path"),
+        "claude_config_path": claude.get("config_path"),
+        "copyable_json": json.dumps(snippet, indent=2),
+        "runtime": runtime,
     }
 
 

@@ -30,6 +30,7 @@ from builder_core.bug_intelligence import depgraph
 
 from . import analytics
 from . import atlas_export
+from . import agent_integrations as _agent_integrations
 from . import first_impression as _fi
 from . import graph_build
 from . import persistence as _persist
@@ -4612,3 +4613,31 @@ def copilot_ask(
     if mode == "context_export":
         return _answer_context_export(question, packet)
     return _answer_unknown(question, packet)
+
+
+def mcp_setup_status() -> Dict[str, Any]:
+    return _agent_integrations.mcp_setup_status()
+
+
+def write_cursor_mcp_config(confirm: bool = False) -> Dict[str, Any]:
+    return _agent_integrations.write_cursor_config(confirm=bool(confirm))
+
+
+def write_claude_mcp_config(confirm: bool = False) -> Dict[str, Any]:
+    return _agent_integrations.write_claude_config(confirm=bool(confirm))
+
+
+def agent_integrations_status() -> Dict[str, Any]:
+    status = _agent_integrations.mcp_setup_status()
+    status["about"] = _agent_integrations.about_payload()
+    status["repo_open"] = bool(_STATE.get("scan"))
+    status["repo_path"] = str(_STATE.get("path") or "")
+    return status
+
+
+def test_claude_mcp_runtime() -> Dict[str, Any]:
+    return _agent_integrations.test_mcp_runtime()
+
+
+def run_mcp_diagnostics() -> Dict[str, Any]:
+    return _agent_integrations.run_mcp_diagnostics()
