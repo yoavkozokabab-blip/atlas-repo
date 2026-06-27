@@ -120,7 +120,7 @@
     if (res && res.account_created && !res.submitted) {
       return {
         title: 'Account created — profile not confirmed',
-        message: 'Your Atlas account was created, but we could not confirm your beta profile was saved.',
+        message: 'Your Atlas account was created, but we could not confirm it was saved.',
         detail: 'Try signing in. If your application is missing, contact support@useatlas.dev with your email.',
       };
     }
@@ -431,10 +431,8 @@
 
   const _HOME_STATUS_PILL = {
     active: { label: 'Active', cls: '' },
-    beta: { label: 'Beta access', cls: '' },
-    pending: { label: 'Approval pending', cls: 'warn' },
+    blocked: { label: 'Suspended', cls: 'bad' },
     inactive: { label: 'Not active', cls: 'bad' },
-    rejected: { label: 'Not approved', cls: 'bad' },
   };
 
   function _renderHomeDashboard() {
@@ -746,7 +744,7 @@
     };
     if (profile.currently_developer === null) return { error: 'Choose whether you currently work as a developer.' };
     const required = ['project_use', 'company_size', 'developer_experience', 'primary_role', 'repo_size'];
-    if (required.some(key => !profile[key])) return { error: 'Complete the required beta profile fields.' };
+    if (required.some(key => !profile[key])) return { error: 'Complete the required profile fields.' };
     if (!profile.coding_tools.length) return { error: 'Select at least one main coding tool.' };
     if (!profile.atlas_help.length) return { error: 'Select what you want Atlas to help with most.' };
     if (!profile.company_name) delete profile.company_name;
@@ -767,19 +765,12 @@
     const email = el('acc-reg-email') && el('acc-reg-email').value.trim();
     const password = el('acc-reg-pwd') && el('acc-reg-pwd').value;
     const confirm = el('acc-reg-pwd2') && el('acc-reg-pwd2').value;
-    const profileResult = collectBetaProfile();
-    if (profileResult.error) {
-      setError('acc-reg-error', profileResult.error, 'Beta profile incomplete');
-      return;
-    }
-
     setLoading('acc-reg-btn', true);
     saveDraft(false);
     api('POST', '/api/accounts/register', {
       email,
       password,
       confirm_password: confirm,
-      beta_profile: profileResult.profile,
     }).then(res => {
       setLoading('acc-reg-btn', false);
       if (res.ok && res.submitted !== false) {
@@ -848,7 +839,7 @@
     document.querySelectorAll('[data-lock="1"]').forEach(btn => {
       btn.disabled = !licenseValid;
       btn.title = (!licenseValid)
-        ? 'Sign in to unlock — free for beta users'
+        ? 'Sign in to unlock'
         : (btn.dataset.origTitle || '');
     });
 
@@ -907,9 +898,6 @@
 
     const statusEl = el('acc-profile-status');
     if (statusEl) statusEl.textContent = license.status || user.status || '—';
-
-    const betaEl = el('acc-profile-beta');
-    if (betaEl) betaEl.textContent = user.beta_flag ? 'Yes' : 'No';
 
     const offlineEl = el('acc-profile-offline');
     if (offlineEl) {
