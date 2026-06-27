@@ -25,7 +25,7 @@ export interface CheckoutResult {
  *
  * SAFETY: In this build no real money ever moves. The live branch is intentionally
  * inert and falls through to the stub, which grants a local trial. Real Stripe
- * checkout must be added deliberately (SDK + env + explicit approval).
+ * checkout must be added deliberately (SDK + env + explicit release decision).
  */
 export async function startCheckout(user: User, plan: PlanId): Promise<CheckoutResult> {
   if (plan === "team") return { mode: "stub", url: "/contact" };
@@ -36,7 +36,7 @@ export async function startCheckout(user: User, plan: PlanId): Promise<CheckoutR
 
   if (liveChargesEnabled()) {
     // Real Stripe Checkout session would be created here once billing is wired and
-    // explicitly approved. Deliberately NOT active — fall through to stub so no
+    // explicitly enabled. Deliberately NOT active — fall through to stub so no
     // live charge can occur from this build.
   }
 

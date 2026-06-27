@@ -1,8 +1,6 @@
 .next
 node_modules
 out
-waitlist.jsonl
-.waitlist
 *.tsbuildinfo
 
 # Local environment config — never commit (contact email, API keys, secrets)

@@ -54,7 +54,7 @@ create table if not exists public.reset_tokens (
 );
 
 -- ---------------------------------------------------------------------------
--- waitlist — beta signups (idempotent on email)
+-- legacy email signups (idempotent on email)
 -- ---------------------------------------------------------------------------
 create table if not exists public.waitlist (
   id         uuid primary key default gen_random_uuid(),

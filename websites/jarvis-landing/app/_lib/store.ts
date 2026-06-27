@@ -86,7 +86,7 @@ export interface Store {
   audit(e: AuditEntry): Promise<void>;
   auditList(limit?: number): Promise<AuditEntry[]>;
   addResetToken(t: { token: string; email: string; exp: number }): Promise<void>;
-  /** Returns duplicate:true if the email was already on the waitlist (idempotent). */
+  /** Returns duplicate:true if the email was already captured (idempotent). */
   addWaitlist(w: { email: string; role?: string; source?: string }): Promise<{ ok: boolean; duplicate: boolean }>;
   listWaitlist(limit?: number): Promise<WaitlistEntry[]>;
   /** Identifies the active backend for health checks / diagnostics. */

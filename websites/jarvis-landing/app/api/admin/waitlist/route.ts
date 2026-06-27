@@ -6,9 +6,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 /**
- * Admin: export the beta waitlist.
- *   GET /api/admin/waitlist            -> JSON
- *   GET /api/admin/waitlist?format=csv -> CSV download (for beta invites)
+ * Admin: export email signups.
  */
 export async function GET(req: Request) {
   const admin = await requireAdmin();
@@ -27,7 +25,7 @@ export async function GET(req: Request) {
     return new NextResponse(csv, {
       headers: {
         "Content-Type": "text/csv; charset=utf-8",
-        "Content-Disposition": 'attachment; filename="atlas-waitlist.csv"',
+        "Content-Disposition": 'attachment; filename="atlas-email-signups.csv"',
         "Cache-Control": "no-store",
       },
     });

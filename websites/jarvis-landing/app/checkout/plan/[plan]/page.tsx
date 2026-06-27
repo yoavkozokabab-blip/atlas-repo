@@ -2,7 +2,6 @@ import { redirect } from "next/navigation";
 import { PageShell } from "../../../_components/site";
 import { currentUser } from "../../../_lib/auth";
 import { PLANS, isPlanId } from "../../../_lib/billing";
-import { CheckoutButton } from "../../../_components/client";
 
 export const dynamic = "force-dynamic";
 
@@ -17,7 +16,7 @@ export default async function CheckoutPlanPage({ params }: { params: Promise<{ p
 
   const p = PLANS[plan];
   return (
-    <PageShell eyebrow="Checkout" title={`Start ${p.name}`} intro="Review your plan before continuing.">
+    <PageShell eyebrow="Checkout" title={`${p.name} checkout is not enabled`} intro="Download Atlas and start with the free tier.">
       <section className="section" style={{ borderTop: "none", paddingTop: 8 }}>
         <div className="container" style={{ maxWidth: 560 }}>
           <div className="card" style={{ marginBottom: 22 }}>
@@ -25,15 +24,13 @@ export default async function CheckoutPlanPage({ params }: { params: Promise<{ p
             <p>{p.blurb}</p>
             <dl className="kv" style={{ marginTop: 16 }}>
               <dt>Price</dt><dd>${p.price} per {p.interval}</dd>
-              <dt>Trial</dt><dd>{p.trialDays}-day free trial — no card required</dd>
-              <dt>Billing</dt><dd>Monthly, starting after the trial</dd>
-              <dt>Cancellation</dt><dd>Cancel anytime; access continues to period end</dd>
+              <dt>Availability</dt><dd>Paid checkout is not enabled in this build</dd>
+              <dt>Start now</dt><dd>Create an account and download the Windows installer</dd>
             </dl>
           </div>
-          <CheckoutButton plan={plan} label={`Start ${p.trialDays}-day trial`} className="btn btn-primary btn-lg" />
+          <a className="btn btn-primary btn-lg" href="/download">Download Atlas</a>
           <div className="note-accent" style={{ marginTop: 22 }}>
-            <b>Test mode:</b> this does not charge a card. It starts a simulated trial; live Stripe
-            checkout activates when billing keys are configured.
+            This page does not charge a card or start a paid subscription.
           </div>
         </div>
       </section>

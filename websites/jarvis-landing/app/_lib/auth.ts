@@ -141,27 +141,25 @@ export async function userFromBearer(req: Request): Promise<User | null> {
 }
 /**
  * Access rule (Phase 187 — open self-serve). Any registered, non-suspended user
- * is approved. Beta approval / invite / allowlist gating has been REMOVED:
- * BETA_MODE and BETA_ALLOWLIST no longer gate access. Account control is via
- * `status` (suspended) only — enforced in loginUser/currentUser, which never
- * return a suspended user, so this returns true for every reachable user.
+ * can use Atlas. Account control is via `status` (suspended) only, enforced in
+ * loginUser/currentUser, which never return a suspended user.
  */
-export function betaApproved(u: User): boolean {
+export function accountEnabled(u: User): boolean {
   return u.status !== "suspended";
 }
 
 /** Entitlement view returned to the desktop so it can gate features. */
 export function entitlement(u: User) {
-  const approved = betaApproved(u);
+  const enabled = accountEnabled(u);
   return {
     user: toSafe(u),
     plan: u.plan,
     planStatus: u.planStatus,
     trialEndsAt: u.trialEndsAt ?? null,
     renewsAt: u.renewsAt ?? null,
-    approved,
+    approved: enabled,
     betaMode: ENV.betaMode,
-    message: approved
+    message: enabled
       ? null
       : "This account is not available. Contact support.",
   };

@@ -31,8 +31,8 @@ export default async function DownloadsPage() {
         </a>
         <p className="dl-meta" style={{ marginTop: 10 }}>You have downloaded Atlas {user.downloads} time(s).</p>
         <div className="dl-warn">
-          <b>Unsigned beta build.</b> Windows SmartScreen may warn on first run — click
-          <b> More info → Run anyway</b>. A signed release is coming for public launch.
+          <b>Windows SmartScreen may show a warning on first run.</b> Confirm you
+          downloaded Atlas from useatlas.dev, then click <b> More info → Run anyway</b>.
         </div>
       </div>
       <h3>Release notes</h3>

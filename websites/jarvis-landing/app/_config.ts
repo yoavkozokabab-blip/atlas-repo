@@ -5,9 +5,9 @@
 export const SUPPORT_EMAIL = process.env.NEXT_PUBLIC_SUPPORT_EMAIL ?? "";
 
 /**
- * Paid plans visibility (Phase 186A free-beta).
- * OFF by default → the site shows an honest free-invite-beta with NO checkout,
- * no prices to pay, and no fake trial. Flip to "1" (NEXT_PUBLIC_PAID_PLANS=1)
+ * Paid plans visibility.
+ * OFF by default → the site shows free download copy with no checkout,
+ * no prices to pay and no fake trial. Flip to "1" (NEXT_PUBLIC_PAID_PLANS=1)
  * only once real Stripe billing is wired and you intend to charge.
  */
 export const PAID_PLANS_ENABLED = process.env.NEXT_PUBLIC_PAID_PLANS === "1";

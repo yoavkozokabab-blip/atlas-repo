@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { SiteNav, SiteFooter } from "./_components/site";
-import { WaitlistForm } from "./_components/waitlist";
 
 export default function Home() {
   return (
@@ -27,8 +26,7 @@ export default function Home() {
                 <a className="btn btn-ghost btn-lg" href="#see-it-work">See it work</a>
               </div>
               <p className="hero-note">
-                Free to start · your code never leaves your machine ·{" "}
-                <a href="#waitlist" style={{ color: "var(--accent)" }}>Join the beta list</a>
+                Free to start · your code never leaves your machine · Windows installer
               </p>
             </div>
             <div className="hero-visual">
@@ -149,7 +147,7 @@ verify:
               </div>
               <div className="tier feat">
                 <h3>Pro</h3>
-                <div className="price">$29<small> / month</small></div>
+                <div className="price">Coming soon</div>
                 <ul>
                   <li>Unlimited repositories</li>
                   <li>Impact analysis &amp; investigation</li>
@@ -157,7 +155,7 @@ verify:
                   <li>Architecture risk detection</li>
                   <li>Priority support</li>
                 </ul>
-                <Link className="btn btn-primary" href="/checkout/plan/pro">Start 7-day trial</Link>
+                <Link className="btn btn-primary" href="/download">Download Atlas</Link>
               </div>
               <div className="tier">
                 <h3>Team</h3>
@@ -171,7 +169,7 @@ verify:
               </div>
             </div>
             <p className="center muted" style={{ marginTop: 22, fontSize: "0.85rem" }}>
-              Local-first · 7-day trial, no card · cancel anytime
+              Local-first · Windows installer · your code stays on your machine
             </p>
           </div>
         </section>
@@ -196,29 +194,28 @@ verify:
               </details>
               <details>
                 <summary>What platforms are supported?</summary>
-                <p>Windows today. macOS and Linux are on the waitlist.</p>
+                <p>Atlas is available today as a Windows installer.</p>
               </details>
             </div>
           </div>
         </section>
 
-        {/* WAITLIST */}
-        <section className="section" id="waitlist">
+        {/* GET STARTED */}
+        <section className="section" id="get-started">
           <div className="container" style={{ maxWidth: 760 }}>
             <div className="band">
               <div>
-                <p className="eyebrow">Private beta</p>
-                <h2>Not on Windows yet? Get your beta invite.</h2>
+                <p className="eyebrow">Start using Atlas</p>
+                <h2>Create an account, download Atlas, and connect your AI tool.</h2>
                 <p style={{ marginTop: 14 }}>
-                  Atlas is Windows-first today. Drop your email and tell us what you use —
-                  we&apos;ll send your invite and prioritize macOS / Linux by demand.
+                  Atlas works with Claude, Cursor and Codex. Create an account, install
+                  the Windows app, scan a repository, then copy local-first context into
+                  the AI coding agent you already use.
                 </p>
               </div>
               <div style={{ alignSelf: "center", width: "100%" }}>
-                <WaitlistForm source="landing" />
-                <p className="muted" style={{ marginTop: 10, fontSize: "0.8rem" }}>
-                  No spam. One email when your platform is ready.
-                </p>
+                <Link className="btn btn-primary btn-lg" href="/download">Download Atlas</Link>
+                <Link className="btn btn-ghost btn-lg" href="/login" style={{ marginLeft: 10 }}>Sign in</Link>
               </div>
             </div>
           </div>

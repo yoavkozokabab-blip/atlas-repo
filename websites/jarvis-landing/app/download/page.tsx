@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteNav, SiteFooter } from "../_components/site";
-import { WaitlistForm } from "../_components/waitlist";
 import { currentUser } from "../_lib/auth";
 import { ENV } from "../_lib/config";
 
@@ -56,18 +55,8 @@ export default async function DownloadPage() {
               )}
 
               <div className="dl-warn">
-                <b>Heads up — this is an unsigned beta build.</b> Windows SmartScreen may
-                show a warning on first run. Click <b>More info → Run anyway</b>. A
-                code-signed release (no warning) is coming for the public launch.
-              </div>
-
-              <div style={{ marginTop: 22, paddingTop: 20, borderTop: "1px solid var(--line)" }}>
-                <h3 style={{ fontSize: "1rem" }}>Want beta updates?</h3>
-                <p className="note" style={{ marginTop: 8, marginBottom: 12 }}>
-                  Join the Atlas beta list for updates, fixes, MCP improvements, and
-                  platform releases.
-                </p>
-                <WaitlistForm source="download-beta-updates" compact />
+                <b>Windows SmartScreen may show a warning on first run.</b> Confirm
+                you downloaded Atlas from useatlas.dev, then click <b>More info → Run anyway</b>.
               </div>
             </div>
 
@@ -79,14 +68,6 @@ export default async function DownloadPage() {
                 <li>Describe a change and generate your first Change Plan.</li>
                 <li>Click <b>Copy for Claude / Cursor / Codex</b> and paste it into your AI tool.</li>
               </ol>
-              <div style={{ marginTop: 24 }}>
-                <h3 style={{ fontSize: "1rem" }}>On macOS or Linux?</h3>
-                <p className="note" style={{ marginTop: 8, marginBottom: 12 }}>
-                  Binaries are on the roadmap — join the waitlist and we&apos;ll email you
-                  when your platform is ready.
-                </p>
-                <WaitlistForm source="download-macos-linux" compact />
-              </div>
             </div>
           </div>
         </section>

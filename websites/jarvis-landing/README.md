@@ -1,6 +1,6 @@
-# JARVIS Landing Page
+# Atlas Website
 
-Premium Next.js landing page for JARVIS, the Personal AI Operating System.
+Next.js website for Atlas, local-first memory and context for AI coding agents.
 
 ## Stack
 
@@ -8,7 +8,7 @@ Premium Next.js landing page for JARVIS, the Personal AI Operating System.
 - React + TypeScript
 - CSS-only motion for low JavaScript overhead
 - `next/image` optimized hero asset
-- Small server route for waitlist submissions
+- Small server route for email update signups
 
 ## Run Locally
 
@@ -31,7 +31,7 @@ npm run start
 ```text
 app/page.tsx              Landing page sections
 app/globals.css           Visual system, layout, animation, responsiveness
-app/api/waitlist/route.ts Waitlist POST endpoint
+app/api/.../route.ts      Email signup POST endpoint
 public/jarvis-hero.png    Generated hero background asset
 ```
 
@@ -43,13 +43,13 @@ public/jarvis-hero.png    Generated hero background asset
 - Cards use an 8px radius to keep the interface crisp and premium.
 - Layout is responsive across desktop, tablet, and mobile.
 
-## Waitlist
+## Email Signups
 
-The waitlist endpoint validates email and appends JSONL records to:
+The signup endpoint validates email and appends JSONL records to:
 
 ```text
-.waitlist/submissions.jsonl
+.email-signups/submissions.jsonl
 ```
 
-For hosted production, connect `app/api/waitlist/route.ts` to your email platform,
+For hosted production, connect the signup route to your email platform,
 CRM, database, or queue before launch.

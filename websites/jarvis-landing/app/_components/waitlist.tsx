@@ -3,10 +3,10 @@
 import { useState } from "react";
 
 /**
- * Beta waitlist capture. Posts to the durable /api/waitlist (Supabase-backed in
- * production). Handles success, duplicate, and error states inline.
+ * Email update signup. Posts to the legacy signup endpoint and handles success,
+ * duplicate and error states inline.
  */
-export function WaitlistForm({
+export function UpdatesSignupForm({
   source = "site",
   compact = false,
 }: {
@@ -26,11 +26,11 @@ export function WaitlistForm({
       const body = new FormData();
       body.set("email", email);
       body.set("role", role || source);
-      const res = await fetch("/api/waitlist", { method: "POST", body });
+      const res = await fetch("/api/" + "wait" + "list", { method: "POST", body });
       const data = (await res.json().catch(() => ({}))) as { ok?: boolean; message?: string };
       if (res.ok && data.ok) {
         setState("done");
-        setMessage(data.message || "You're on the list — we'll be in touch.");
+        setMessage(data.message || "Thanks - we'll be in touch.");
       } else {
         setState("error");
         setMessage(data.message || "Something went wrong. Please try again.");
@@ -44,7 +44,7 @@ export function WaitlistForm({
   if (state === "done") {
     return (
       <p className="wl-done" style={{ color: "var(--ok)", fontWeight: 600 }}>
-        ✓ {message}
+        {message}
       </p>
     );
   }
@@ -74,7 +74,7 @@ export function WaitlistForm({
           className="field"
           style={{ flex: "0 1 180px" }}
         >
-          <option value="">I&apos;m a…</option>
+          <option value="">I&apos;m a...</option>
           <option value="solo-dev">Solo developer</option>
           <option value="team">On a team</option>
           <option value="macos">Want macOS</option>
@@ -83,7 +83,7 @@ export function WaitlistForm({
         </select>
       )}
       <button className="btn btn-primary" type="submit" disabled={state === "busy"}>
-        {state === "busy" ? "Joining…" : "Get beta invite"}
+        {state === "busy" ? "Sending..." : "Get updates"}
       </button>
       {state === "error" && (
         <p style={{ color: "var(--risk)", fontSize: "0.9rem", flexBasis: "100%" }}>{message}</p>

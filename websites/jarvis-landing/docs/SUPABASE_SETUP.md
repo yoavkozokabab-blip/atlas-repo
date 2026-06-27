@@ -1,6 +1,6 @@
 # Atlas Website — Supabase Persistence Setup
 
-The website funnel (waitlist, accounts, login, billing state, admin) persists through a
+The website funnel (email signups, accounts, login, billing state, admin) persists through a
 single `Store` interface (`app/_lib/store.ts`). It selects a backend at runtime:
 
 | Condition | Backend | Durability |
@@ -16,7 +16,7 @@ No extra npm dependency is used — the adapter calls Supabase's PostgREST REST 
 1. Create a project at https://supabase.com (or use an existing one).
 2. **SQL Editor → New query →** paste `supabase/migrations/0001_init.sql` → **Run**.
    (Or, with the Supabase CLI linked: `supabase db push`.)
-   This creates `users`, `audit`, `reset_tokens`, `waitlist`, enables RLS, and adds
+   This creates the website tables, enables RLS, and adds
    **no** public policies — only the service role can read/write.
 
 ## 2. Configure environment variables
@@ -28,7 +28,7 @@ In **Vercel → Project → Settings → Environment Variables** (and `.env.loca
 | `SUPABASE_URL` | Supabase → Project Settings → API → Project URL | e.g. `https://abc.supabase.co` |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase → API → `service_role` secret | **server-only secret** — never client-exposed |
 | `AUTH_SECRET` | `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"` | stable sessions across redeploys |
-| `ADMIN_EMAILS` | your admin email(s), comma-separated | grants admin dashboard + waitlist export |
+| `ADMIN_EMAILS` | your admin email(s), comma-separated | grants admin dashboard + email signup export |
 
 Redeploy after setting them (Vercel env changes need a new deployment).
 
@@ -41,18 +41,17 @@ Redeploy after setting them (Vercel env changes need a new deployment).
    `backend: "file"` or `persistence: "ephemeral"` in production = **NOT wired** — fix env vars.
    `persistence: "error"` = schema missing or bad key — re-run the migration / recheck the key.
 
-2. **Waitlist round-trip:**
+2. **Email signup round-trip:**
    ```bash
-   curl -s -X POST https://<domain>/api/waitlist -F email=test@example.com -F role=dev
+   curl -s -X POST https://<domain>/<signup-endpoint> -F email=test@example.com -F role=dev
    # { "ok": true, "duplicate": false, ... }   then repeat -> "duplicate": true
    ```
-   Confirm the row in Supabase → Table editor → `waitlist`. It must **survive a redeploy**.
+   Confirm the row in Supabase. It must **survive a redeploy**.
 
 3. **Account round-trip:** register at `/register`, redeploy, then log in at `/login`.
    Success after a redeploy proves durable persistence (the old file backend would lose it).
 
-4. **Admin export:** as an `ADMIN_EMAILS` user, `GET /api/admin/waitlist?format=csv`
-   downloads the beta list for invites.
+4. **Admin export:** as an `ADMIN_EMAILS` user, download the email signup CSV.
 
 ## Rollback / dev
 

@@ -28,8 +28,7 @@ export const ENV = {
   get adminEmails(): string[] {
     return csv(process.env.ADMIN_EMAILS);
   },
-  // Free-beta access model (Phase 186A). "open" = anyone who signs up is in;
-  // "invite" = only emails on BETA_ALLOWLIST (and admins) are approved.
+  // Legacy access-mode flags kept for compatibility. Normal self-serve access is open.
   get betaMode(): "open" | "invite" {
     return process.env.BETA_MODE === "invite" ? "invite" : "open";
   },
@@ -53,7 +52,7 @@ export const ENV = {
     return process.env.NODE_ENV === "production";
   },
   get appVersion(): string {
-    return process.env.NEXT_PUBLIC_ATLAS_VERSION || "0.1.0-beta";
+    return process.env.NEXT_PUBLIC_ATLAS_VERSION || "1.0.0";
   },
 };
 
