@@ -375,21 +375,16 @@ def _web_user_normalize(user: Any) -> Dict[str, Any]:
 
 
 def _web_license_from_result(result: Dict[str, Any]) -> Dict[str, Any]:
-    """Map a website /me|login response to the desktop license shape. Free beta:
-    an active, beta-approved account is valid (no paid plan involved)."""
+    """Map a website /me|login response to the desktop license shape.
+    Normal accounts are active immediately; only suspended accounts are blocked."""
     user = result.get("user") or {}
     plan = result.get("plan") or "free"
     plan_status = result.get("planStatus") or "none"
-    approved = result.get("approved", True)
     if user.get("status") == "suspended":
-        return {"valid": False, "plan": plan, "status": "suspended", "beta": True,
-                "message": "This account is suspended. Contact support@useatlas.dev."}
-    if not approved:
-        return {"valid": False, "plan": plan, "status": "beta_pending", "beta": True,
-                "message": result.get("message")
-                or "Your account isn't approved for the Atlas beta yet. We'll email your invite."}
-    return {"valid": True, "plan": plan, "plan_status": plan_status, "status": "beta_active",
-            "beta": True, "message": "Atlas free beta — active."}
+        return {"valid": False, "plan": plan, "status": "suspended",
+                "message": "This account is suspended. Contact support."}
+    return {"valid": True, "plan": plan, "plan_status": plan_status, "status": "active",
+            "message": "Account active."}
 
 
 def _persist_web_session(result: Dict[str, Any], state: Optional[Dict[str, Any]] = None) -> None:

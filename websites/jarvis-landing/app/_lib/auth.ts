@@ -163,7 +163,7 @@ export function entitlement(u: User) {
     betaMode: ENV.betaMode,
     message: approved
       ? null
-      : "Your account isn't approved for the Atlas beta yet. Join the waitlist and we'll email your invite.",
+      : "This account is not available. Contact support.",
   };
 }
 
