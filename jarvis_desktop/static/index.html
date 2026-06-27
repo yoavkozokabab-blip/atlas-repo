@@ -58,8 +58,8 @@
         <!-- REGISTER (sectioned beta application wizard) -->
         <div id="acc-panel-register" class="auth-panel auth-wizard" style="display:none">
           <div class="auth-wizard-head">
-            <h2 class="auth-panel-title">Apply for beta access</h2>
-            <p class="auth-panel-lead muted">Atlas beta access is manually approved. Your code stays local.</p>
+            <h2 class="auth-panel-title">Create your account</h2>
+            <p class="auth-panel-lead muted">Your code stays on your machine.</p>
             <div class="auth-progress" aria-hidden="false">
               <div class="auth-progress-label">Step <span id="acc-step-num">1</span> of 5 · <span id="acc-step-name">Account</span></div>
               <div class="auth-progress-track"><div id="acc-progress-fill" class="auth-progress-fill" style="width:20%"></div></div>
@@ -228,14 +228,14 @@
         <!-- APPLICATION SUBMITTED (completion screen) -->
         <div id="acc-panel-submitted" class="auth-panel" style="display:none">
           <div class="acc-state-icon" aria-hidden="true">✅</div>
-          <h2 class="auth-panel-title">Application submitted</h2>
-          <p class="acc-state-message">Your Atlas beta application has been received.</p>
+          <h2 class="auth-panel-title">Account created</h2>
+          <p class="acc-state-message">Your Atlas account is ready.</p>
           <div class="acc-nextsteps">
             <div class="acc-nextsteps-title">Next steps</div>
             <ol>
-              <li>Wait for approval.</li>
-              <li>You'll receive beta access from the Atlas operator.</li>
-              <li>Once approved, sign in and begin using Atlas.</li>
+              
+              
+              <li>Sign in and start using Atlas.</li>
             </ol>
           </div>
           <div class="acc-actions acc-actions-stack">
@@ -787,7 +787,7 @@
             <tr><th>Email</th><td id="acc-profile-email">—</td></tr>
             <tr><th>Plan</th><td id="acc-profile-plan">—</td></tr>
             <tr><th>Status</th><td id="acc-profile-status">—</td></tr>
-            <tr><th>Beta access</th><td id="acc-profile-beta">—</td></tr>
+            <tr><th>Account</th><td id="acc-profile-beta">—</td></tr>
           </table>
           <div id="acc-profile-offline" class="acc-offline-warn" style="display:none"></div>
           <h3 class="acc-section-head">Your devices</h3>
@@ -886,7 +886,7 @@
 
   <div id="welcomeScreen" class="welcome-screen" style="display:none">
     <div class="welcome-card glass">
-      <p class="onboard-eyebrow">Beta</p>
+      <p class="onboard-eyebrow">Atlas</p>
       <h1 class="welcome-title">Welcome to Atlas</h1>
       <p class="muted welcome-lead">Describe a change. Atlas names the files, order, and risks. Copy one prompt to Claude. <b>Under a minute to your first plan.</b></p>
       <div class="welcome-actions">
@@ -916,7 +916,7 @@
         <li>Maps architecture and risk in an interactive Codebase Map</li>
         <li>Generates grounded <b>Change Plans</b>, <b>Debug</b> analysis, and <b>What breaks?</b> results</li>
         <li>Sends ready-to-use context to Claude, Codex, and Cursor</li>
-        <li>Stores feedback and diagnostics on your device for beta support</li>
+        <li>Stores feedback and diagnostics on your device for support</li>
       </ul>
       <h3>What Atlas does not do</h3>
       <ul class="clean about-list muted">
@@ -936,7 +936,7 @@
   <!-- onboarding card — now points users to the welcome screen flow; kept for backwards compat -->
   <div id="onboarding" class="onboarding" style="display:none">
     <div class="onboarding-card glass">
-      <p class="onboard-eyebrow">Beta</p>
+      <p class="onboard-eyebrow">Atlas</p>
       <h2>Get started</h2>
       <p class="muted">Load a sample repository to see Atlas working in under a minute — no folder path needed.</p>
       <div class="onboard-actions">
@@ -952,7 +952,6 @@
   <script src="app.js"></script>
   <script src="feedback.js"></script>
   <script>document.body.dataset.fbHideButton = "1";</script>
-  <script src="atlas_beta.js"></script>
   <script src="atlas_polish.js"></script>
   <script src="atlas_zero_friction.js"></script>
   <script src="atlas_trust.js"></script>

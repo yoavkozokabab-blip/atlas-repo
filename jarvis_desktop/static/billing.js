@@ -106,7 +106,7 @@
 
   function planCtaHref(planId) {
     if (planId === "FREE") return "index.html";
-    if (planId === "PRO") return "beta.html";
+    if (planId === "PRO") return "pricing.html";
     return "contact.html";
   }
 
