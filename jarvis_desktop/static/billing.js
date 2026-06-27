@@ -97,7 +97,7 @@
   function flagNote(enabled, enforcement) {
     var n = document.getElementById("flagNote");
     if (!n) return;
-    n.textContent = "Billing is not enabled in this beta build. Plans and usage are preview-only — no checkout, no payment collection.";
+    n.textContent = "Billing is not enabled yet. Plans and usage are preview-only — no checkout, no payment collection.";
     if (enabled) {
       n.textContent += " (Billing UI visible via ATLAS_BILLING_UI_ENABLED; enforcement: "
         + (enforcement ? "on" : "off") + ".)";
@@ -126,9 +126,9 @@
       var lim = p.limits || {};
       var card = el("div", "plan-card" + (p.id === "PRO" ? " featured" : ""));
       card.appendChild(el("h3", null, p.name || p.id));
-      card.appendChild(el("div", "plan-price", p.price_display || "Private beta"));
+      card.appendChild(el("div", "plan-price", p.price_display || "Preview"));
       card.appendChild(el("div", "plan-tag", p.tagline || ""));
-      card.appendChild(el("div", "plan-avail", p.availability || "Private beta preview"));
+      card.appendChild(el("div", "plan-avail", p.availability || "Preview"));
       var limits = el("ul", "plan-limits");
       [
         ["Repositories", cap(lim.max_repositories)],
@@ -145,7 +145,7 @@
       (p.features || []).forEach(function (f) { ul.appendChild(el("li", null, f)); });
       card.appendChild(ul);
       var isFree = p.id === "FREE";
-      var btn = el("a", isFree ? "btn primary" : "btn ghost", isFree ? (p.cta || "Open Atlas") : "Join waitlist");
+      var btn = el("a", isFree ? "btn primary" : "btn ghost", isFree ? (p.cta || "Open Atlas") : "Coming soon");
       btn.href = planCtaHref(p.id);
       if (!isFree) btn.setAttribute("aria-disabled", "true");
       card.appendChild(btn);
@@ -195,14 +195,14 @@
       hero.appendChild(main);
       var side = el("div", null);
       side.appendChild(el("div", "muted", "Billing status"));
-      side.appendChild(el("div", null, d.billing_message || "Billing is not enabled in this beta build."));
+      side.appendChild(el("div", null, d.billing_message || "Billing is not enabled yet."));
       hero.appendChild(side);
       planCard.appendChild(hero);
     }
 
     if (status) {
       status.className = "status-banner";
-      status.textContent = d.billing_message || "Billing is not enabled in beta. Usage metrics are stored locally on this machine.";
+      status.textContent = d.billing_message || "Billing is not enabled yet. Usage metrics are stored locally on this machine.";
     }
 
     cards.innerHTML = "";
@@ -277,9 +277,9 @@
       up.innerHTML = "";
       var box = el("div", "upgrade-box");
       box.appendChild(el("strong", null, "Need more capacity?"));
-      box.appendChild(el("p", "muted", d.upgrade_note || "Billing is not enabled in beta — join the waitlist for paid plans."));
-      var a = el("a", "btn ghost", "Join waitlist");
-      a.href = "landing.html#waitlist";
+      box.appendChild(el("p", "muted", d.upgrade_note || "Billing is not enabled yet."));
+      var a = el("a", "btn ghost", "View pricing");
+      a.href = "pricing.html";
       box.appendChild(a);
       var plans = el("a", "btn ghost", "See plan preview");
       plans.href = "pricing.html";
