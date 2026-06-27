@@ -908,6 +908,9 @@ body.auth-loading.auth-mode .auth-stage::after{
 .home-repo-line a{color:var(--cyan);text-decoration:none}
 .home-section{margin:0 0 22px}
 .home-section-title{font-size:13px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin:0 0 12px;font-weight:600}
+.mcp-setup{margin:18px 0 24px;padding:18px}
+.mcp-setup-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.mcp-setup-output{margin-top:14px;max-height:260px;overflow:auto;white-space:pre-wrap}
 .quick-action-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
 .qa-card{display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:left;padding:18px 18px 16px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.03);cursor:pointer;transition:.18s;color:var(--txt)}
 .qa-card:hover{border-color:rgba(62,240,255,.45);background:rgba(62,240,255,.06);transform:translateY(-2px);box-shadow:0 12px 30px rgba(0,0,0,.35)}

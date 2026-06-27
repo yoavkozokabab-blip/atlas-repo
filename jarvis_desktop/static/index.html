@@ -439,6 +439,20 @@
         </div>
         <div id="resumeScanCard" class="resume-scan-card glass" style="display:none"></div>
         <p class="muted tiny home-actions-help">Runs locally on your machine. <a href="#" onclick="startGuidedWalkthrough();return false;">Guided tour</a> · <a href="about.html">About Atlas</a></p>
+
+        <section class="mcp-setup glass" id="mcpSetupSection" aria-labelledby="mcpSetupTitle">
+          <h2 class="home-section-title" id="mcpSetupTitle">Connect Atlas to your AI editor</h2>
+          <p class="muted tiny">One click adds Atlas to Cursor or Claude Desktop. No PowerShell or manual JSON editing required.</p>
+          <div class="mcp-setup-actions">
+            <button class="btn primary" type="button" onclick="atlasMcpSetup.connectCursor()">Connect to Cursor</button>
+            <button class="btn primary" type="button" onclick="atlasMcpSetup.connectClaude()">Connect to Claude Desktop</button>
+            <button class="btn ghost" type="button" onclick="atlasMcpSetup.copyConfig()">Copy MCP config</button>
+            <button class="btn ghost" type="button" onclick="atlasMcpSetup.testMcp()">Test Atlas MCP</button>
+            <button class="btn ghost" type="button" onclick="atlasMcpSetup.showDiagnostics()">Show diagnostics</button>
+          </div>
+          <pre id="mcpSetupOutput" class="code tiny mcp-setup-output" style="display:none" aria-live="polite"></pre>
+        </section>
+
         <details class="home-explore">
           <summary class="ask">What can Atlas do?</summary>
           <div class="cards">
@@ -958,5 +972,6 @@
   <script src="atlas_product.js"></script>
   <script src="atlas_accounts.js"></script>
   <script src="atlas_admin.js"></script>
+  <script src="atlas_mcp_setup.js"></script>
 </body>
 </html>
