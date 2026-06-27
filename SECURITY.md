@@ -23,14 +23,14 @@ not to upload.
 - MCP tool output passes through a secret-redaction filter before returning to the agent.
 - MCP tools are read-only and local-path-only.
 
-## Beta limitations (honest)
+## Current limitations (honest)
 
 - Windows only; macOS/Linux not supported yet.
-- The installer is **unsigned** in this beta — Windows SmartScreen may warn.
+- The app is not currently code-signed — Windows SmartScreen may warn.
 - **No third-party security certification** (e.g., SOC 2) exists yet.
 - The full web → desktop → MCP path has not been independently verified on a clean
   machine at the time of writing.
 
 ## Supported versions
 
-Beta (`0.1.0-beta`). Security fixes target the latest build only.
+Atlas `1.0.0`. Security fixes target the latest build only.

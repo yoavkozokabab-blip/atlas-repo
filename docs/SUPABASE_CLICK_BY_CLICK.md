@@ -1,6 +1,6 @@
 # Supabase — Click-by-Click Setup (for Yoav)
 
-Goal: a free Supabase project that stores Atlas accounts + waitlist durably, so nothing is
+Goal: a free Supabase project that stores Atlas accounts and email signups durably, so nothing is
 lost when Vercel redeploys. ~10 minutes. **Never paste secrets into chat, git, or client code.**
 
 ---
@@ -26,7 +26,7 @@ lost when Vercel redeploys. ~10 minutes. **Never paste secrets into chat, git, o
    its **entire** contents, and paste into the editor.
 4. Click **Run** (or Ctrl+Enter). You should see "Success. No rows returned."
 5. Verify: left sidebar → **Table Editor** → you should now see 4 tables:
-   **users, audit, reset_tokens, waitlist**.
+   **users, audit, reset_tokens, waitlist**. The `waitlist` table name is kept for storage compatibility.
 
 This script also enables Row Level Security with **no public policies**, so only the secret
 service-role key (used server-side) can read/write. That's intentional and secure.
@@ -55,7 +55,7 @@ SUPABASE_SERVICE_ROLE_KEY  = <service_role secret key>
 SUPABASE_ANON_KEY          = <anon public key>          # optional, not used server-side yet
 AUTH_SECRET                = <run the command below>
 ADMIN_EMAILS               = yoavkozokabab@gmail.com    # your admin email(s), comma-separated
-NEXT_PUBLIC_ATLAS_VERSION  = 0.1.0-beta
+NEXT_PUBLIC_ATLAS_VERSION  = 1.0.0
 ```
 
 Generate `AUTH_SECRET` (stable login sessions across redeploys) — run locally:
@@ -86,7 +86,7 @@ You want to see:
 - `persistence: "error"` → the migration didn't run, or the service-role key is wrong. Re-run
   step 2 / re-copy the key.
 
-Then submit the waitlist form on the site once, and confirm a row appears in
+Then submit an email signup on the site once, and confirm a row appears in
 **Table Editor → waitlist**. It must still be there after a redeploy — that proves durability.
 
 ## Local testing (optional)

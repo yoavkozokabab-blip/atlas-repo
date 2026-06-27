@@ -40,7 +40,7 @@ SUPABASE_SERVICE_ROLE_KEY  = <service_role secret>     ← secret, server-only
 SUPABASE_ANON_KEY          = <anon public>             ← optional
 AUTH_SECRET                = <32-byte hex>             ← node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ADMIN_EMAILS               = yoavkozokabab@gmail.com
-NEXT_PUBLIC_ATLAS_VERSION  = 0.1.0-beta
+NEXT_PUBLIC_ATLAS_VERSION  = 1.0.0
 NEXT_PUBLIC_SUPPORT_EMAIL  = yoavkozokabab@gmail.com
 ATLAS_INSTALLER_URL        = <leave empty for now; set after the GitHub Release>
 ```
@@ -67,9 +67,9 @@ Env-var changes don't apply to existing deployments. After editing them:
    ```
    If `backend:"file"` → Root Directory or env vars wrong (and writes are now disabled in
    prod by design — see the readiness audit). Fix + redeploy.
-2. **Waitlist:** open the landing, scroll to "Get your beta invite", submit a test email.
-   Expect the success message; confirm the row in **Supabase → Table Editor → waitlist**.
-   Resubmit the same email → "already on the list" (dedup).
+2. **Account signup:** create a test account from the landing/download flow.
+   Expect the success message; confirm the account row in **Supabase → Table Editor → users**.
+   Resubmit the same email → duplicate-account message.
 3. **Pages:** click through `/`, `/download`, `/pricing`, `/features`, `/faq`, `/login` — all
    should load.
 4. **Download:** before the GitHub Release, the button shows the "create account / installer
@@ -79,7 +79,7 @@ Env-var changes don't apply to existing deployments. After editing them:
 ## 7. Admin
 
 Sign up with the email you put in `ADMIN_EMAILS`, then visit `/admin` (users + audit) and
-`GET /api/admin/waitlist?format=csv` to export beta signups for invites.
+`GET /api/admin/waitlist?format=csv` to export legacy email signups if needed.
 
 ---
 
@@ -87,4 +87,4 @@ Sign up with the email you put in `ADMIN_EMAILS`, then visit `/admin` (users + a
 - The 42 MB installer is **never** deployed to Vercel or streamed through a function — it's
   hosted on GitHub Releases and the download route only redirects. The installer also lives
   outside `websites/jarvis-landing`, so it isn't part of the Vercel build.
-- Free plan limits (bandwidth, function execution) are ample for a limited beta.
+- Free plan limits (bandwidth, function execution) are ample for the current launch.

@@ -2,7 +2,7 @@
 
 > **This test has NOT been performed by Claude.** It modifies a real machine (Program Files,
 > Start Menu, registry) and needs a clean Windows 10/11 environment (ideally a fresh VM or a
-> spare machine). Run it once before inviting beta users and record PASS/FAIL per step.
+> spare machine). Run it once before release and record PASS/FAIL per step.
 
 ## Prerequisites
 - A clean Windows 10/11 machine or VM (no prior Atlas install).
@@ -24,11 +24,11 @@
 | 9 | Describe a task → **Generate context pack** | returns recommended files + reasons + confidence; **Copy for Claude/Cursor/Codex** works | |
 | 10 | **What breaks** for a file | shows impacted files + tests to run | |
 | 11 | MCP: wire Claude Desktop to `Atlas.exe --mcp` (see `docs/MCP_REAL_CLIENT_TEST.md`) | tools list shows `atlas_*`; one `tools/call` returns data | |
-| 12 | Add/Remove Programs | shows **Atlas 0.1.0-beta** | |
+| 12 | Add/Remove Programs | shows **Atlas 1.0.0** | |
 | 13 | Uninstall via Start Menu **Uninstall Atlas** (or Apps & features) | uninstalls cleanly, no errors | |
 | 14 | After uninstall, check leftovers | `%USERPROFILE%\.jarvis_desktop` and `%LOCALAPPDATA%\Atlas` removed (validates the uninstall fix); Start Menu/desktop shortcuts gone | |
 
-## Pass criteria for limited beta
+## Pass criteria for release
 - Steps 1–10, 12–14 PASS.
 - Step 11 (MCP) may remain **experimental** if not green — document, don't block.
 - If step 14 leaves data behind, the uninstall fix didn't make it into the build → rebuild.

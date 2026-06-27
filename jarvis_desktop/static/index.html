@@ -211,21 +211,21 @@
               <div class="acc-step-title">Optional notes</div>
               <div class="acc-field">
                 <label for="acc-notes">Anything else? <span class="muted tiny">optional</span></label>
-                <textarea id="acc-notes" maxlength="1000" placeholder="Anything useful for the Atlas operator to know. Do not include code, secrets, or repository paths."></textarea>
+                <textarea id="acc-notes" maxlength="1000" placeholder="Anything useful for Atlas support to know. Do not include code, secrets, or repository paths."></textarea>
               </div>
-              <p class="muted tiny">You're all set — review your answers, then submit your application.</p>
+              <p class="muted tiny">You're all set — review your answers, then create your account.</p>
             </section>
           </div>
 
           <div class="auth-wizard-footer">
             <button id="acc-back-btn" class="btn ghost" type="button" onclick="atlasAccounts.wizardBack()" style="display:none">Back</button>
             <button id="acc-next-btn" class="btn primary auth-btn-primary" type="button" onclick="atlasAccounts.wizardNext()">Next</button>
-            <button id="acc-reg-btn" class="btn primary auth-btn-primary" type="button" onclick="atlasAccounts.register()" style="display:none">Submit application</button>
+            <button id="acc-reg-btn" class="btn primary auth-btn-primary" type="button" onclick="atlasAccounts.register()" style="display:none">Create account</button>
             <button class="btn ghost auth-wizard-signin" type="button" onclick="atlasAccounts.switchPanel('login')">Sign in instead</button>
           </div>
         </div>
 
-        <!-- APPLICATION SUBMITTED (completion screen) -->
+        <!-- ACCOUNT CREATED (completion screen) -->
         <div id="acc-panel-submitted" class="auth-panel" style="display:none">
           <div class="acc-state-icon" aria-hidden="true">✅</div>
           <h2 class="auth-panel-title">Account created</h2>
@@ -243,10 +243,10 @@
           </div>
         </div>
 
-        <!-- APPLICATION SUBMIT FAILED -->
+        <!-- ACCOUNT CREATE FAILED -->
         <div id="acc-panel-submit-failed" class="auth-panel" style="display:none">
           <div class="acc-state-icon" aria-hidden="true">!</div>
-          <h2 class="auth-panel-title" id="acc-submit-failed-title">Application not submitted</h2>
+          <h2 class="auth-panel-title" id="acc-submit-failed-title">Account not created</h2>
           <p class="acc-state-message" id="acc-submit-failed-message">We could not reach the Atlas account service.</p>
           <p class="acc-state-action muted" id="acc-submit-failed-detail">Your application has not been submitted yet. Your answers are saved locally.</p>
           <div class="acc-actions acc-actions-stack">

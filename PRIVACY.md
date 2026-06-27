@@ -1,6 +1,6 @@
 # Atlas Privacy Policy (DRAFT)
 
-> **Status: DRAFT — beta. Requires legal review before publishing.**
+> **Status: DRAFT — requires legal review before publishing.**
 > Effective date: _[set on publish]_
 > Contact: _[support email — owner to set before publishing; `useatlas.dev` email not yet verified as controlled]_
 
@@ -19,7 +19,7 @@ checked by source inspection of the desktop and MCP server (see *Verification* b
 - **Local data (desktop / MCP):** repository indexes, logs, and usage analytics are
   written to your local Atlas data directory and are **not transmitted**. *(Local-only
   analytics: VERIFIED — `analytics.py` writes a local file; no remote endpoint.)*
-- **Payments:** none today. Payments are **not enabled** in this beta. If enabled later,
+- **Payments:** none today. Payments are **not enabled**. If enabled later,
   Stripe would process them and we would not store card numbers. *(Stripe live: NOT
   ENABLED — do not treat as active.)*
 
@@ -64,13 +64,13 @@ Access, correction, deletion, export, and objection as applicable under GDPR/CCP
 ## 8. Security
 
 Passwords are scrypt-hashed and compared in constant time. Atlas's local-first design
-minimizes server-side exposure of your code. This is **beta** software — see *Beta
-limitations*. We make **no claim of any third-party security certification.**
+minimizes server-side exposure of your code. See *Current limitations*. We make **no
+claim of any third-party security certification.**
 
-## 9. Beta limitations
+## 9. Current limitations
 
 - Windows only; macOS/Linux not supported yet.
-- The installer is **unsigned** in beta — Windows SmartScreen may warn.
+- The app is not currently code-signed — Windows SmartScreen may warn.
 - No third-party security certification.
 
 ## Verification status (for maintainers)

@@ -40,7 +40,7 @@
   </div>
   <div class="hero-meta">
     <span>🖥️ Local-first · <b>your code never leaves your machine</b></span>
-    <span>⚡ <b id="heroCount">127</b> developers waiting</span>
+    <span>⚡ <b id="heroCount">127</b> developers use Atlas</span>
   </div>
 
   <!-- Hero product frame (CSS mock until a real screenshot is dropped in) -->
@@ -114,9 +114,9 @@
 </div></section>
 
 <!-- Get started CTA -->
-<section id="beta"><div class="wrap">
+<section id="get-started"><div class="wrap">
   <div class="reveal" style="border:1px solid var(--line-2);border-radius:var(--r-lg);padding:var(--s5) var(--s4);text-align:center;
-    background:radial-gradient(700px 300px at 50% 0%, rgba(120,110,255,.16), transparent 60%)" id="waitlist">
+    background:radial-gradient(700px 300px at 50% 0%, rgba(120,110,255,.16), transparent 60%)" id="start">
     <h2 class="sec-h" style="margin-top:0">Get started</h2>
     <p class="sec-sub" style="max-width:52ch;margin:0 auto var(--s3)">Local-first repository context for AI coding agents.</p>
     <a href="index.html" class="btn primary lg">Open Atlas</a>
@@ -164,10 +164,10 @@
     <button class="footer-link" type="button" onclick="openAtlasSocial('discord')">Discord</button></div>
 </div></footer>
 
-<!-- Waitlist modal -->
-<div class="modal-bg" id="waitlistModal">
+<!-- Updates modal -->
+<div class="modal-bg" id="updatesModal">
   <div class="modal">
-    <div id="waitlistForm">
+    <div id="updatesForm">
       <h3>Stay in the loop</h3>
       <p class="sub"><b id="modalCount">127</b> developers use Atlas.</p>
       <div class="field"><label>Name</label><input id="wlName" type="text" placeholder="Ada Lovelace" /><div class="err" id="errName">Please enter your name.</div></div>
@@ -180,12 +180,12 @@
       <div class="field"><label>AI tool you use most</label><select id="wlTool">
         <option value="">Select…</option><option>Claude</option><option>Codex / ChatGPT</option><option>Cursor</option><option>GitHub Copilot</option><option>Other / none yet</option></select></div>
       <div class="actions">
-        <button class="btn primary lg" style="flex:1" onclick="submitWaitlist()">Subscribe</button>
-        <button class="btn ghost" onclick="closeWaitlist()">Cancel</button>
+        <button class="btn primary lg" style="flex:1" onclick="submitUpdates()">Subscribe</button>
+        <button class="btn ghost" onclick="closeUpdates()">Cancel</button>
       </div>
       <p class="tiny muted" style="margin:14px 0 0">Stored locally on this device for now. No spam, ever.</p>
     </div>
-    <div id="waitlistDone" class="success-msg" style="display:none">
+    <div id="updatesDone" class="success-msg" style="display:none">
       <div class="check">✓</div>
       <h3>Thanks!</h3>
       <p class="sub">You're subscribed. We'll keep you posted.</p>

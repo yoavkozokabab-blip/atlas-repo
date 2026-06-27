@@ -25,7 +25,7 @@ is the artifact that ships.
 
 Single source of truth: `jarvis_desktop/product_info.py` → `PRODUCT_VERSION`.
 Everything else (installer version, build_info, `generated_version.iss`, website
-`NEXT_PUBLIC_ATLAS_VERSION`) derives from it. Edit it, e.g. `0.1.1-beta`.
+`NEXT_PUBLIC_ATLAS_VERSION`) derives from it. Edit it, e.g. `1.0.1`.
 
 ## Step 2 — Build the installer (5–7 min)
 
@@ -61,13 +61,13 @@ py scripts\mcp_smoke_test.py            # MCP 12/12 green
 ## Step 5 — Publish to GitHub Releases (1–2 min)
 
 ```powershell
-$v = "v0.1.1-beta"
+$v = "v1.0.1"
 gh release create $v `
   "packaging\installer\output\Atlas_Setup.exe" `
   "packaging\installer\output\Atlas_Setup.exe.sha256" `
   --title "Atlas $v" --notes "See CHANGELOG."
 # Stable asset URL:
-#   https://github.com/<owner>/<repo>/releases/download/v0.1.1-beta/Atlas_Setup.exe
+#   https://github.com/<owner>/<repo>/releases/download/v1.0.1/Atlas_Setup.exe
 ```
 
 GitHub Releases gives a stable, versioned, CDN-backed URL and free download analytics
@@ -78,8 +78,8 @@ GitHub Releases gives a stable, versioned, CDN-backed URL and free download anal
 In **Vercel → Settings → Environment Variables** set (and redeploy):
 
 ```
-ATLAS_INSTALLER_URL = https://github.com/<owner>/<repo>/releases/download/v0.1.1-beta/Atlas_Setup.exe
-NEXT_PUBLIC_ATLAS_VERSION = 0.1.1-beta
+ATLAS_INSTALLER_URL = https://github.com/<owner>/<repo>/releases/download/v1.0.1/Atlas_Setup.exe
+NEXT_PUBLIC_ATLAS_VERSION = 1.0.1
 ```
 
 The `/download/atlas` route 302-redirects to `ATLAS_INSTALLER_URL` (it never streams the

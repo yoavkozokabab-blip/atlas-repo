@@ -16,12 +16,13 @@ $Root = (Resolve-Path (Join-Path $ScriptDir "..\..")).Path
 $Spec = Join-Path $ScriptDir "atlas.spec"
 $PackagingLib = Join-Path $Root ".phase152_packaging_lib"
 $DistDir = Join-Path $Root "dist"
+$DistAtlas = Join-Path $DistDir "Atlas"
 $WorkDir = Join-Path $Root "build\pyinstaller"
-$AtlasExe = Join-Path $DistDir "Atlas\Atlas.exe"
+$AtlasExe = Join-Path $DistAtlas "Atlas.exe"
 $InstallerDir = Join-Path $Root "packaging\installer"
 
 function Write-BuildInfo {
-    $version = "0.1.0-beta"
+    $version = "1.0.0"
     $productFile = Join-Path $Root "jarvis_desktop\product_info.py"
     if (Test-Path $productFile) {
         $m = Select-String -Path $productFile -Pattern 'PRODUCT_VERSION\s*=\s*"([^"]+)"' | Select-Object -First 1

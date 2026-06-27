@@ -1,9 +1,9 @@
 "use strict";
-/* Atlas marketing layer — waitlist, counts, reveals, mock screenshots, analytics.
+/* Atlas marketing layer — updates, counts, reveals, mock screenshots, analytics.
    Stores locally (localStorage) with a backend-ready interface. No external calls. */
 
-const WAITLIST_BASE = 127;          // configurable placeholder ("127 developers waiting")
-const WL_KEY = "jarvis_waitlist";
+const SIGNUP_BASE = 127;
+const SIGNUP_KEY = "jarvis_updates";
 const EV_KEY = "jarvis_events";
 const ATLAS_LINKS = Object.freeze({
   github: "",
@@ -13,12 +13,12 @@ const ATLAS_LINKS = Object.freeze({
 const ATLAS_LINK_UNAVAILABLE = "Coming soon — official Atlas link not configured yet.";
 
 /* ---------- storage (swap these two for a real API later) ---------- */
-function getSignups() { try { return JSON.parse(localStorage.getItem(WL_KEY) || "[]"); } catch (e) { return []; } }
+function getSignups() { try { return JSON.parse(localStorage.getItem(SIGNUP_KEY) || "[]"); } catch (e) { return []; } }
 async function persistSignup(entry) {
-  // FUTURE BACKEND: replace with `await fetch('/api/waitlist',{method:'POST',body:JSON.stringify(entry)})`
-  const list = getSignups(); list.push(entry); localStorage.setItem(WL_KEY, JSON.stringify(list)); return entry;
+  // FUTURE BACKEND: replace with an email signup endpoint.
+  const list = getSignups(); list.push(entry); localStorage.setItem(SIGNUP_KEY, JSON.stringify(list)); return entry;
 }
-function waitlistCount() { return WAITLIST_BASE + getSignups().length; }
+function signupCount() { return SIGNUP_BASE + getSignups().length; }
 
 /* ---------- analytics (local, best-effort server mirror) ---------- */
 function track(event, props) {
@@ -30,15 +30,15 @@ function getEvents() { try { return JSON.parse(localStorage.getItem(EV_KEY) || "
 
 /* ---------- counts ---------- */
 function updateCounts() {
-  const c = waitlistCount();
+  const c = signupCount();
   ["heroCount", "proofCount", "modalCount"].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = c; });
 }
 
-/* ---------- waitlist modal ---------- */
-function openWaitlist() { const m = document.getElementById("waitlistModal"); if (!m) return; updateCounts(); m.classList.add("show"); track("waitlist_open"); }
-function closeWaitlist() { const m = document.getElementById("waitlistModal"); if (m) m.classList.remove("show"); }
+/* ---------- updates modal ---------- */
+function openUpdates() { const m = document.getElementById("updatesModal"); if (!m) return; updateCounts(); m.classList.add("show"); track("updates_open"); }
+function closeUpdates() { const m = document.getElementById("updatesModal"); if (m) m.classList.remove("show"); }
 function _err(id, on) { const el = document.getElementById(id); if (el) el.style.display = on ? "block" : "none"; }
-async function submitWaitlist() {
+async function submitUpdates() {
   const name = (document.getElementById("wlName").value || "").trim();
   const email = (document.getElementById("wlEmail").value || "").trim();
   const valid = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
@@ -52,10 +52,10 @@ async function submitWaitlist() {
     ts: new Date().toISOString(),
   };
   await persistSignup(entry);
-  track("waitlist_join", { repo_size: entry.repo_size, ai_tool: entry.ai_tool });
-  const pos = document.getElementById("yourPos"); if (pos) pos.textContent = "#" + waitlistCount();
-  document.getElementById("waitlistForm").style.display = "none";
-  document.getElementById("waitlistDone").style.display = "block";
+  track("updates_join", { repo_size: entry.repo_size, ai_tool: entry.ai_tool });
+  const pos = document.getElementById("yourPos"); if (pos) pos.textContent = "#" + signupCount();
+  document.getElementById("updatesForm").style.display = "none";
+  document.getElementById("updatesDone").style.display = "block";
   updateCounts();
 }
 function mtoast(msg) { const t = document.getElementById("mtoast"); if (!t) return; t.textContent = msg; t.classList.add("show"); setTimeout(() => t.classList.remove("show"), 2200); }
@@ -131,7 +131,7 @@ window.addEventListener("resize", () => { clearTimeout(window._mr); window._mr =
 /* ---------- boot ---------- */
 document.addEventListener("DOMContentLoaded", () => {
   updateCounts(); initReveals(); initHashNavigation();
-  const m = document.getElementById("waitlistModal");
-  if (m) m.addEventListener("click", e => { if (e.target === m) closeWaitlist(); });
+  const m = document.getElementById("updatesModal");
+  if (m) m.addEventListener("click", e => { if (e.target === m) closeUpdates(); });
   track("page_view", { page: (location.pathname.split("/").pop() || "landing") });
 });

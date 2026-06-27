@@ -4,7 +4,7 @@ No terminal knowledge required.
 
 Install modes
 -------------
-* Windows beta (installer): double-click the Atlas desktop/Start-menu shortcut.
+* Windows installer: double-click the Atlas desktop/Start-menu shortcut.
   No Python is required — the installer ships a self-contained Atlas.exe.
 * Source mode (developers): Python 3.10+ is required. Run:
       py -3 run_atlas.py        (Windows)

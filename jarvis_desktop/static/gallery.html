@@ -46,15 +46,15 @@
   <div style="display:flex;gap:var(--s3);flex-wrap:wrap"><a href="landing.html">Home</a><a href="demo.html">Demo</a><a href="index.html">Open app</a></div>
 </div></footer>
 
-<div class="modal-bg" id="waitlistModal"><div class="modal">
-  <div id="waitlistForm"><h3>Stay in the loop</h3><p class="sub"><b id="modalCount">127</b> developers use Atlas.</p>
+<div class="modal-bg" id="updatesModal"><div class="modal">
+  <div id="updatesForm"><h3>Stay in the loop</h3><p class="sub"><b id="modalCount">127</b> developers use Atlas.</p>
     <div class="field"><label>Name</label><input id="wlName" type="text" /><div class="err" id="errName">Please enter your name.</div></div>
     <div class="field"><label>Email</label><input id="wlEmail" type="email" /><div class="err" id="errEmail">Please enter a valid email.</div></div>
     <div class="row2"><div class="field"><label>Company <span class="muted tiny">(optional)</span></label><input id="wlCompany" type="text" /></div>
       <div class="field"><label>Repository size</label><select id="wlSize"><option value="">Select…</option><option>Small (&lt; 10k LOC)</option><option>Medium (10k–100k LOC)</option><option>Large (100k–1M LOC)</option><option>Huge (1M+ LOC)</option></select></div></div>
     <div class="field"><label>AI tool you use most</label><select id="wlTool"><option value="">Select…</option><option>Claude</option><option>Codex / ChatGPT</option><option>Cursor</option><option>GitHub Copilot</option><option>Other / none yet</option></select></div>
-    <div class="actions"><button class="btn primary lg" style="flex:1" onclick="submitWaitlist()">Subscribe</button><button class="btn ghost" onclick="closeWaitlist()">Cancel</button></div></div>
-  <div id="waitlistDone" class="success-msg" style="display:none"><div class="check">✓</div><h3>Thanks!</h3><p class="sub">You're subscribed.</p><div class="actions" style="justify-content:center"><a class="btn primary" href="index.html">Open the app</a></div></div>
+    <div class="actions"><button class="btn primary lg" style="flex:1" onclick="submitUpdates()">Subscribe</button><button class="btn ghost" onclick="closeUpdates()">Cancel</button></div></div>
+  <div id="updatesDone" class="success-msg" style="display:none"><div class="check">✓</div><h3>Thanks!</h3><p class="sub">You're subscribed.</p><div class="actions" style="justify-content:center"><a class="btn primary" href="index.html">Open the app</a></div></div>
 </div></div>
 <div class="mtoast" id="mtoast"></div>
 <script src="marketing.js"></script>

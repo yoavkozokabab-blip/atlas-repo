@@ -84,5 +84,5 @@ claim a client passed if it wasn't actually run.
 ```powershell
 cd C:\J.A.R.V.I.S\local_jarvis
 '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"t","version":"0"}}}' | py -3 run_atlas.py --mcp
-# expect one line: {"jsonrpc":"2.0","id":1,"result":{..."serverInfo":{"name":"atlas-local","version":"0.1.0-beta"}}}
+# expect one line: {"jsonrpc":"2.0","id":1,"result":{..."serverInfo":{"name":"atlas-local","version":"1.0.0"}}}
 ```

@@ -19,9 +19,9 @@ DisableProgramGroupPage=yes
 OutputDir=output
 OutputBaseFilename=Atlas_Setup
 SetupIconFile=assets\atlas.ico
-; Phase 155 — show plain-language beta + install notes before installing.
+; Phase 155 — show plain-language install notes before installing.
 InfoBeforeFile=install_notes.txt
-AppComments=Atlas (Windows beta). Self-contained — no Python required to use the installer.
+AppComments=Atlas for Windows. Self-contained — no Python required to use the installer.
 UninstallDisplayIcon={app}\{#MyAppExeName}
 Compression=lzma2
 SolidCompression=yes
@@ -29,7 +29,7 @@ WizardStyle=modern
 PrivilegesRequired=lowest
 ; Installer-update flow: suppress Inno's default "files in use" / Restart Manager
 ; dialogs and generic technical errors. A dedicated [Code] flow (PrepareToInstall)
-; detects and closes a running Atlas with beta-friendly messaging instead.
+; detects and closes a running Atlas with product-friendly messaging instead.
 CloseApplications=no
 RestartApplications=no
 VersionInfoVersion={#MyAppVersionInfo}
@@ -64,7 +64,7 @@ Type: filesandordirs; Name: "{localappdata}\Atlas\desktop_data"
 
 [Code]
 { ============================================================================
-  Running-application update flow (beta-friendly).
+  Running-application update flow.
 
   Detects a running Atlas before files are copied and shows a dedicated dialog
   ("Atlas is currently running") with four actions: close automatically, retry,

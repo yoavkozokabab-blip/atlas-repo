@@ -13,7 +13,7 @@ stdio transport.
 
 | You have… | `command` | `args` |
 |---|---|---|
-| Installed Atlas (beta) | `C:\Program Files\Atlas\Atlas.exe` | `["--mcp"]` |
+| Installed Atlas | `C:\Program Files\Atlas\Atlas.exe` | `["--mcp"]` |
 | Source checkout (Win) | `py` | `["-3", "run_atlas.py", "--mcp"]` |
 | Source checkout (mac/Linux) | `python3` | `["run_atlas.py", "--mcp"]` |
 

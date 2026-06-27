@@ -13,9 +13,9 @@ Run before flipping the repository to public.
 [ ] MCP guide (README_MCP.md — 18 tools, generic paths)
 [ ] examples/ (sample config + sample prompts)
 [ ] SECURITY.md (private vuln reporting; links to docs/LOCAL_FIRST.md)
-[ ] CONTRIBUTING.md (or a clear "not accepting external PRs in beta")
+[ ] CONTRIBUTING.md
 [ ] .github/ISSUE_TEMPLATE (bug, feature, feedback)
-[ ] Release notes for v0.1.0-beta
+[ ] Release notes for v1.0.0
 [ ] PRIVACY.md and TERMS.md reviewed by counsel
 ```
 

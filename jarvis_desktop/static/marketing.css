@@ -119,7 +119,7 @@ img.real-shot{width:100%;height:100%;object-fit:cover;display:block}
 .qa[open] summary .plus{transform:rotate(45deg)}
 .qa p{margin:0 0 var(--s3);color:var(--muted);font-size:15px;line-height:1.7;max-width:64ch}
 
-/* Waitlist modal */
+/* Updates modal */
 .modal-bg{position:fixed;inset:0;z-index:100;background:rgba(5,5,9,.72);backdrop-filter:blur(8px);display:none;place-items:center;padding:var(--s3)}
 .modal-bg.show{display:grid;animation:fade .25s ease}
 .modal{width:100%;max-width:480px;border:1px solid var(--line-2);border-radius:var(--r-lg);background:var(--bg-soft);
@@ -160,8 +160,8 @@ img.real-shot{width:100%;height:100%;object-fit:cover;display:block}
 .chapter .t{font:600 12px ui-monospace,monospace;color:var(--accent)}
 .chapter h4{margin:6px 0 4px;font-size:15px} .chapter p{margin:0;color:var(--muted);font-size:13px}
 
-/* Beta */
-.beta-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s2)}
+/* Product */
+.product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s2)}
 .bcard{border:1px solid var(--line);border-radius:var(--r);padding:var(--s3);background:rgba(255,255,255,.02)}
 .bcard h3{margin:0 0 10px;font-size:18px}
 .timeline{max-width:680px;margin:var(--s4) auto 0}
@@ -211,7 +211,7 @@ img.real-shot{width:100%;height:100%;object-fit:cover;display:block}
 .mtoast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 @media(max-width:860px){
-  .features,.steps,.beta-grid,.chapters{grid-template-columns:1fr}
+  .features,.steps,.product-grid,.chapters{grid-template-columns:1fr}
   .gal,.kpis{grid-template-columns:1fr 1fr}
   .footer-grid{grid-template-columns:1fr 1fr}
   .mlinks a:not(.btn){display:none}

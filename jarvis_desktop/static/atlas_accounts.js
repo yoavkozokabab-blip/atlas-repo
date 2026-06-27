@@ -15,10 +15,10 @@
 
   const AUTH_PANELS = ['acc-panel-login', 'acc-panel-register', 'acc-panel-state', 'acc-panel-submitted', 'acc-panel-submit-failed'];
 
-  const DRAFT_KEY = 'atlas_beta_application_draft_v1';
-  const DRAFT_SESSION_KEY = 'atlas_beta_application_session_v1';
+  const DRAFT_KEY = 'atlas_account_profile_draft_v1';
+  const DRAFT_SESSION_KEY = 'atlas_account_profile_session_v1';
 
-  // Beta application wizard state
+  // Account setup wizard state
   let _regStep = 1;
   let _regWired = false;
   const _REG_STEPS = 5;
@@ -31,8 +31,8 @@
     { match: /invalid email or password/i, title: 'Incorrect sign-in', message: 'No Atlas account matched that email and password.', action: 'Check the email and password, then try again.' },
     { match: /suspended/i, title: 'Account suspended', message: 'This account is suspended. Contact support.', action: '' },
     { match: /banned/i, title: 'Account banned', message: 'This account is banned and cannot access Atlas.', action: '' },
-    { match: /expired|license|not currently active/i, title: 'Access inactive', message: 'Your Atlas access is not currently active.', action: 'Contact the Atlas operator if this looks wrong.' },
-    { match: /device.*revoked|no longer authorized/i, title: 'Device revoked', message: 'This device is no longer authorized for this account.', action: 'Sign in from an approved device or contact the Atlas operator.' },
+    { match: /expired|license|not currently active/i, title: 'Access inactive', message: 'Your Atlas access is not currently active.', action: 'Contact support if this looks wrong.' },
+    { match: /device.*revoked|no longer authorized/i, title: 'Device revoked', message: 'This device is no longer authorized for this account.', action: 'Sign in from an authorized device or contact support.' },
     { match: /too many login/i, title: 'Too many attempts', message: 'Sign-in is temporarily locked after several failed attempts.', action: 'Wait 15 minutes, then try again.' },
     { match: /device limit|device_limit/i, title: 'Device limit reached', message: 'This account is already signed in on the maximum number of devices.', action: 'Sign in on an existing device and remove an old device from Your Account, or contact support.' },
     { match: /accounts service is not running/i, title: 'Sign-in unavailable', message: 'The Atlas accounts service is not running on this machine.', action: 'Restart Atlas. If the problem persists, check support docs or contact support@useatlas.dev.' },
@@ -105,27 +105,27 @@
     if (code === 'service_unavailable' || /could not reach|isn't available|unreachable|network error/i.test(raw)) {
       return {
         useSubmitFailedPanel: true,
-        title: 'Application not submitted',
+        title: 'Account not created',
         message: 'We could not reach the Atlas account service.',
-        detail: 'Your application has not been submitted yet. Your answers are saved locally.',
+        detail: 'Your account has not been created yet. Your answers are saved locally.',
       };
     }
     if (code === 'duplicate_email' || /already registered|already exists/i.test(raw)) {
       return {
         title: 'Email already registered',
         message: 'An account with this email already exists.',
-        detail: res.detail || 'Your application may already be on file. Try signing in instead.',
+        detail: res.detail || 'Your account may already exist. Try signing in instead.',
       };
     }
     if (res && res.account_created && !res.submitted) {
       return {
         title: 'Account created — profile not confirmed',
         message: 'Your Atlas account was created, but we could not confirm it was saved.',
-        detail: 'Try signing in. If your application is missing, contact support@useatlas.dev with your email.',
+        detail: 'Try signing in. If your account is missing, contact support@useatlas.dev with your email.',
       };
     }
     return {
-      title: 'Application not submitted',
+      title: 'Account not created',
       message: raw,
       detail: 'Review your answers and try again, or contact support@useatlas.dev if this continues.',
     };
@@ -136,7 +136,7 @@
     const panel = el('acc-panel-submit-failed');
     if (!panel) return;
     panel.style.display = '';
-    if (el('acc-submit-failed-title')) el('acc-submit-failed-title').textContent = spec.title || 'Application not submitted';
+    if (el('acc-submit-failed-title')) el('acc-submit-failed-title').textContent = spec.title || 'Account not created';
     if (el('acc-submit-failed-message')) el('acc-submit-failed-message').textContent = spec.message || '';
     if (el('acc-submit-failed-detail')) el('acc-submit-failed-detail').textContent = spec.detail || '';
     _setAuthMode(true);
@@ -254,16 +254,16 @@
     const userStatus = (_state.user && _state.user.status) || '';
 
     if (userStatus === 'suspended' || status === 'suspended') {
-      return { icon: '!', title: 'Account suspended', message: 'This account is suspended. Contact the Atlas operator.', action: 'Atlas workflows are unavailable for this account.', showSignOut: true };
+      return { icon: '!', title: 'Account suspended', message: 'This account is suspended. Contact support.', action: 'Atlas workflows are unavailable for this account.', showSignOut: true };
     }
     if (userStatus === 'banned' || status === 'banned') {
       return { icon: '!', title: 'Account banned', message: 'This account is banned and cannot access Atlas.', action: 'Atlas workflows are unavailable for this account.', showSignOut: true };
     }
     if (status === 'device_revoked') {
-      return { icon: '!', title: 'Device revoked', message: 'This device is no longer authorized for this account.', action: 'Sign in from an approved device or contact the Atlas operator.', showSignOut: true };
+      return { icon: '!', title: 'Device revoked', message: 'This device is no longer authorized for this account.', action: 'Sign in from an authorized device or contact support.', showSignOut: true };
     }
     if (status === 'expired' || status === 'past_due' || status === 'canceled' || status === 'cancelled' || status === 'trial_missing_expiry' || status === 'license_check_failed') {
-      return { icon: '!', title: 'Access inactive', message: 'Your Atlas access is not currently active.', action: 'Contact the Atlas operator if this looks wrong.', showSignOut: true };
+      return { icon: '!', title: 'Access inactive', message: 'Your Atlas access is not currently active.', action: 'Contact support if this looks wrong.', showSignOut: true };
     }
 
     if (userStatus === 'suspended' || status === 'suspended') {
@@ -310,8 +310,8 @@
   }
 
   // ── Account status taxonomy + in-app dashboards ───────────────
-  // Every signed-in account resolves to exactly one status. active/beta get the
-  // product; pending/inactive/rejected get a tailored in-app dashboard — never a
+  // Every signed-in account resolves to exactly one status. Active accounts get the
+  // product; inactive/rejected accounts get a tailored in-app dashboard — never a
   // pre-login access wall.
   function _accountStatus() {
     if (!_state) return 'unknown';
@@ -607,8 +607,8 @@
       setLoading('acc-login-btn', false);
       if (res.ok) {
         if (el('acc-login-pwd')) el('acc-login-pwd').value = '';
-        // refreshState() routes via _syncLayoutFromState: active/beta -> home,
-        // pending/inactive/rejected -> in-app status dashboard. Never stranded.
+        // refreshState() routes active accounts to home and inactive/rejected
+        // accounts to the in-app status dashboard. Never stranded.
         setTimeout(() => refreshState(), 300);
       } else {
         const err = _formatLoginError(res.error || res.detail || res.message);
@@ -617,7 +617,7 @@
     });
   }
 
-  // ── Beta application wizard ───────────────────────────────────────────────
+  // ── Account setup wizard ───────────────────────────────────────────────
   function _companyFieldsRelevant() {
     const dev = selectedRadio('acc-current-dev');
     const use = fieldValue('acc-project-use');
@@ -726,7 +726,7 @@
     if (el('acc-notes')) el('acc-notes').addEventListener('input', () => saveDraft(false));
   }
 
-  function collectBetaProfile() {
+  function collectAccountProfile() {
     const devValue = selectedRadio('acc-current-dev');
     const companyRelevant = _companyFieldsRelevant();
     const profile = {
@@ -859,7 +859,7 @@
     const accAdminEntry = el('acc-admin-entry');
 
     // Show the consolidated user menu for any signed-in account (including
-    // pending/inactive/rejected) so they always have Account + Sign out and are
+    // inactive/rejected) so they always have Account + Sign out and are
     // never dependent on the loose pre-login chip.
     if (!_state || !_state.signed_in) {
       if (chip) { chip.textContent = 'Account'; chip.className = 'account-chip unsigned'; chip.style.display = ''; }

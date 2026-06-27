@@ -27,5 +27,5 @@ significant vs naive grep on top-5 hit. On small repos your IDE's search may be 
 **One line:** everyone returns files; Atlas returns the right files with auditable reasons,
 blast radius, and confidence — to any agent, locally.
 
-**Beta limitations:** Windows only; unsigned installer; outcome (vs retrieval) value not
-yet measured.
+**Current limitations:** Windows only; the app is not currently code-signed; outcome
+(vs retrieval) value not yet measured.

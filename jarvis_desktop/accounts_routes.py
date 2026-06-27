@@ -16,9 +16,9 @@ def _app_version() -> str:
         info_path = os.path.join(here, "build_info.json")
         with open(info_path, encoding="utf-8") as f:
             data = json.load(f)
-        return data.get("version", "0.1.0-beta")
+        return data.get("version", "1.0.0")
     except Exception:
-        return "0.1.0-beta"
+        return "1.0.0"
 
 
 def _platform_str() -> str:
@@ -44,17 +44,17 @@ def _valid_email(email: str) -> bool:
 
 def _validate_beta_profile(profile: Dict[str, Any]) -> str:
     if not isinstance(profile, dict):
-        return "Complete the beta profile before creating your account."
+        return "Complete your profile before creating your account."
     for field in _PROFILE_REQUIRED_FIELDS:
         value = profile.get(field)
         if value is None or value == "" or value == []:
-            return "Complete the required beta profile fields."
+            return "Complete the required profile fields."
     if not isinstance(profile.get("currently_developer"), bool):
         return "Choose whether you currently work as a developer."
     for list_field in ("coding_tools", "atlas_help"):
         value = profile.get(list_field)
         if not isinstance(value, list) or not value:
-            return "Select at least one option in each beta profile checklist."
+            return "Select at least one option in each profile checklist."
     return ""
 
 
@@ -82,8 +82,8 @@ def accounts_register(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str,
         return {"ok": False, "code": "validation_error", "submitted": False, "error": "Enter a valid email address."}
     if password != confirm:
         return {"ok": False, "code": "validation_error", "submitted": False, "error": "Passwords do not match."}
-    # The website authority (free beta) collects email/password only — the local
-    # beta-profile questionnaire applies to the local accounts service only.
+    # The website authority collects email/password only; the local profile
+    # questionnaire applies to the local accounts service only.
     if accounts_client.auth_mode() != "website":
         profile_error = _validate_beta_profile(body.get("beta_profile") or {})
         if profile_error:
@@ -114,7 +114,7 @@ def accounts_register(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str,
                 "submitted": False,
                 "account_created": True,
                 "error": "An account with this email already exists.",
-                "detail": "Your application may already be on file. Try signing in instead.",
+                "detail": "Your account may already exist. Try signing in instead.",
             }
         return {"ok": False, "code": "registration_failed", "submitted": False, "error": detail_text}
     return {"ok": True, "submitted": True, **result}
@@ -232,7 +232,7 @@ def accounts_admin_approve(body: Dict[str, Any], _query: Dict[str, str]) -> Dict
     if result.get("_unauthenticated"):
         return {"ok": False, "error": "Admin account sign-in required."}
     if result.get("_http_status"):
-        return {"ok": False, "error": result.get("detail", "Approval failed.")}
+        return {"ok": False, "error": result.get("detail", "Enable account failed.")}
     return {"ok": True, "user": result}
 
 
@@ -274,14 +274,14 @@ def accounts_admin_grant_beta(body: Dict[str, Any], _query: Dict[str, str]) -> D
     uid = str(body.get("user_id", "")).strip()
     if not uid:
         return {"ok": False, "error": "user_id required"}
-    return _admin_result(accounts_client.admin_grant_beta(uid), "user", "Grant beta failed.")
+    return _admin_result(accounts_client.admin_grant_beta(uid), "user", "Enable account failed.")
 
 
 def accounts_admin_revoke_beta(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
     uid = str(body.get("user_id", "")).strip()
     if not uid:
         return {"ok": False, "error": "user_id required"}
-    return _admin_result(accounts_client.admin_revoke_beta(uid), "user", "Revoke beta failed.")
+    return _admin_result(accounts_client.admin_revoke_beta(uid), "user", "Disable account failed.")
 
 
 def accounts_admin_force_logout(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
@@ -314,7 +314,7 @@ def accounts_service_status(_body: Dict[str, Any], _query: Dict[str, str]) -> Di
 def accounts_validate_invite(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
     code = str(body.get("code") or "").strip()
     if not code:
-        return {"ok": False, "valid": False, "message": "Enter an invite code."}
+        return {"ok": False, "valid": False, "message": "Enter an access code."}
     if not accounts_service_runner.ensure_running(timeout=8.0):
         return {"ok": False, "valid": False, "message": "Accounts service unavailable."}
     result = accounts_client.validate_invite_code(code)
@@ -385,7 +385,7 @@ def accounts_admin_invites_list(_body: Dict[str, Any], query: Dict[str, str]) ->
     if isinstance(result, list):
         return {"ok": True, "invites": result}
     if result.get("_http_status"):
-        return {"ok": False, "error": result.get("detail", "Invites unavailable.")}
+        return {"ok": False, "error": result.get("detail", "Access codes unavailable.")}
     return {"ok": True, "invites": []}
 
 
@@ -398,7 +398,7 @@ def accounts_admin_invites_create(body: Dict[str, Any], _query: Dict[str, str]) 
             notes=str(body.get("notes") or "").strip() or None,
         ),
         "invite",
-        "Create invite failed.",
+        "Create access code failed.",
     )
 
 
@@ -442,7 +442,7 @@ ACCOUNTS_ROUTES = {
     ("POST", "/api/accounts/admin/users/revoke-beta"): accounts_admin_revoke_beta,
     ("POST", "/api/accounts/admin/users/force-logout"): accounts_admin_force_logout,
     ("POST", "/api/accounts/admin/users/update"): accounts_admin_update_user,
-    # Phase 199 — private beta acquisition
+    # Phase 199 — legacy account acquisition compatibility
     ("POST", "/api/accounts/validate-invite"): accounts_validate_invite,
     ("POST", "/api/accounts/acquisition/event"): accounts_acquisition_event,
     ("GET",  "/api/accounts/admin/launch-readiness"): accounts_admin_launch_readiness,

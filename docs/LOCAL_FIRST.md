@@ -21,7 +21,7 @@ and MCP server, commit `69556ceeb`.)
   excludes source code, file paths, and prompt text from request payloads —
   `accounts_client.py`.)
 - Website usage produces standard server request logs (via Vercel).
-- Payments: **not enabled** in this beta. If enabled later, Stripe would handle them and
+- Payments: **not enabled**. If enabled later, Stripe would handle them and
   we would never see card numbers.
 
 > When you connect Atlas to an AI agent (Claude, Cursor, Codex), that agent receives the
@@ -45,7 +45,7 @@ and MCP server, commit `69556ceeb`.)
 - Tools are **read-only** (Atlas never writes to your repo) and **local-path-only**.
 - Every tool is gated behind a successful local scan.
 
-## Known beta limitations
+## Current limitations
 
 - **Windows only** — macOS/Linux are not supported yet.
 - The installer is **unsigned** — Windows SmartScreen may warn ("unknown publisher").

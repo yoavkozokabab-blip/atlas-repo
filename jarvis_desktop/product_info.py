@@ -1,4 +1,4 @@
-"""Phase 175B — product metadata, beta config, and user-facing labels."""
+"""Product metadata, release config, and user-facing labels."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ import urllib.error
 import urllib.request
 from typing import Any, Dict, Optional
 
-PRODUCT_VERSION = "0.1.0-beta"
+PRODUCT_VERSION = "1.0.0"
 DEFAULT_SUPPORT_EMAIL = "support@useatlas.dev"
 
 _BUILD_DATE = time.strftime("%Y-%m-%d", time.gmtime())
@@ -66,12 +66,12 @@ def version_info() -> Dict[str, Any]:
         "build_commit": build_commit(),
         "build_date": build_date(),
         "product": "ATLAS",
-        "channel": "beta",
+        "channel": "release",
     }
 
 
 def product_config() -> Dict[str, Any]:
-    """Public beta product configuration for UI (no secrets)."""
+    """Public product configuration for UI (no secrets)."""
     return {
         "ok": True,
         **version_info(),
@@ -81,7 +81,7 @@ def product_config() -> Dict[str, Any]:
         "billing_enabled": False,
         "payments_active": False,
         "checkout_enabled": False,
-        "billing_message": "Billing is not enabled in this beta build. Plans and usage are preview-only.",
+        "billing_message": "Billing is not enabled in this build. Plans and usage are preview-only.",
     }
 
 

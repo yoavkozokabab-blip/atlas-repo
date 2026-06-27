@@ -11,7 +11,7 @@ Your code stays on your machine. Atlas runs locally over stdio (MCP), tool outpu
 secret-redacted, and **no source code is uploaded to Atlas servers** to provide the
 product (verified by source inspection — see [Security & Local-First](docs/LOCAL_FIRST.md)).
 
-> Status: **0.1.0-beta, Windows only.**
+> Status: **1.0.0, Windows only.**
 
 ---
 
@@ -52,10 +52,11 @@ Full tool list and setup: [README_MCP.md](README_MCP.md) (18 tools).
 
 ---
 
-## Install & connect (Windows beta)
+## Install & connect (Windows)
 
-1. Download and run the installer (`Atlas_Setup.exe`). It is **unsigned in beta**, so
-   Windows SmartScreen may warn ("unknown publisher") — choose *More info → Run anyway*.
+1. Download and run the Windows installer (`Atlas_Setup.exe`). The app is not currently
+   code-signed, so Windows SmartScreen may warn ("unknown publisher") — choose
+   *More info → Run anyway* if you trust the download source.
 2. Connect your agent — see [README_MCP.md](README_MCP.md) and
    [docs/MCP_CLIENT_SETUP.md](docs/MCP_CLIENT_SETUP.md).
 3. In your agent, scan a repository, then ask:
@@ -65,7 +66,7 @@ First scan on a very large monorepo can take up to a minute; results are cached 
 
 ---
 
-## Beta limitations (honest)
+## Current limitations (honest)
 
 - **Windows only** — macOS/Linux are not supported yet.
 - The installer is **unsigned** — SmartScreen will warn until it is code-signed.

@@ -1,4 +1,4 @@
-"""Phase 188 - auth UX and pre-access workflow gating tests."""
+"""Phase 188 - auth UX and account workflow gating tests."""
 from __future__ import annotations
 
 import re
@@ -26,15 +26,16 @@ def test_phase188_auth_layout_is_dedicated_and_polished():
     assert "body.auth-mode #app-shell{display:none !important}" in CSS
     assert "body.auth-mode #auth-layout{display:flex}" in CSS
     assert "Sign in" in INDEX
-    assert "Apply for beta access" in INDEX
-    assert "Atlas beta access is manually approved. Your code stays local." in INDEX
+    assert "Create Account" in INDEX
+    assert "Create your account" in INDEX
+    assert "Your code stays on your machine." in INDEX
     assert 'id="acc-login-email-msg"' in INDEX
     assert 'id="acc-reg-email-msg"' in INDEX
     assert ".auth-card" in CSS
     assert ".auth-form-scroll" in CSS
 
 
-def test_phase188_beta_application_fields_are_present():
+def test_phase188_account_profile_fields_are_present():
     for field_id in (
         "acc-current-dev-yes",
         "acc-current-dev-no",
@@ -70,10 +71,10 @@ def test_phase188_signin_and_blocked_state_messages_are_human_readable():
         "Enter a valid email address.",
         "No Atlas account was found for this email.",
         "Incorrect password. Try again or reset it.",
-        "Your account was created and is waiting for beta approval.",
-        "This account is suspended. Contact the Atlas operator.",
+        "Your Atlas account was created, but we could not confirm it was saved.",
+        "This account is suspended. Contact support.",
         "This account is banned and cannot access Atlas.",
-        "Your Atlas access is not currently active.",
+        "Your Atlas license is not active.",
         "This device is no longer authorized for this account.",
     ]
     for message in expected:
@@ -81,6 +82,23 @@ def test_phase188_signin_and_blocked_state_messages_are_human_readable():
 
     assert "setFieldError('acc-login-email-msg', 'Enter a valid email address.')" in ACCOUNTS_JS
     assert "setFieldError('acc-reg-email-msg', 'Enter a valid email address.')" in ACCOUNTS_JS
+
+
+def test_phase188_register_and_login_route_into_app_without_pending_screen():
+    register_pos = ACCOUNTS_JS.find("api('POST', '/api/accounts/register'")
+    assert register_pos >= 0
+    register_success = ACCOUNTS_JS[register_pos : register_pos + 700]
+    assert "showAccountScreen('submitted')" in register_success
+    assert "refreshState();" in register_success
+
+    login_pos = ACCOUNTS_JS.find("api('POST', '/api/accounts/login'")
+    assert login_pos >= 0
+    login_success = ACCOUNTS_JS[login_pos : login_pos + 520]
+    assert "refreshState()" in login_success
+
+    old_pending_copy = (INDEX + ACCOUNTS_JS).lower()
+    assert "waiting for beta approval" not in old_pending_copy
+    assert "beta access pending" not in old_pending_copy
 
 
 def test_phase188_workflow_views_and_actions_require_valid_access():
@@ -127,7 +145,7 @@ def test_phase188_license_gating_disables_workflow_buttons():
 
 
 def test_phase188_admin_review_lists_profile_fields_without_hash_columns():
-    assert "Beta applicants" in ADMIN_HTML
+    assert "Account Requests" in ADMIN_HTML
     assert "/api/accounts/admin/users" in ADMIN_HTML
     assert "Company size" in ADMIN_HTML
     assert "Experience" in ADMIN_HTML
@@ -136,5 +154,5 @@ def test_phase188_admin_review_lists_profile_fields_without_hash_columns():
     assert "Notes" in ADMIN_HTML
 
     forbidden = re.compile(r"password_hash|refresh_hash|refresh_token|access_token", re.IGNORECASE)
-    applicant_section = ADMIN_HTML[ADMIN_HTML.find("Beta applicants") :]
+    applicant_section = ADMIN_HTML[ADMIN_HTML.find("Account Requests") :]
     assert not forbidden.search(applicant_section)

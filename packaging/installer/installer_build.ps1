@@ -20,7 +20,7 @@ $AtlasExe = Join-Path $DistAtlas "Atlas.exe"
 $PyBuild = Join-Path $Root "packaging\pyinstaller\build_atlas_exe.ps1"
 
 function Write-InnoVersionDefines {
-    $version = "0.1.0-beta"
+    $version = "1.0.0"
     $productFile = Join-Path $Root "jarvis_desktop\product_info.py"
     if (Test-Path $productFile) {
         $m = Select-String -Path $productFile -Pattern 'PRODUCT_VERSION\s*=\s*"([^"]+)"' | Select-Object -First 1
@@ -97,7 +97,7 @@ function Test-StagedInstaller {
     $issText = Get-Content -Raw (Join-Path $InstallerDir "Atlas.iss")
     if ($issText -notmatch "autodesktop") { $issues += "Atlas.iss does not create a desktop shortcut" }
     if ($issText -notmatch "\{group\}") { $issues += "Atlas.iss does not create a Start menu shortcut" }
-    if ($issText -notmatch "InfoBeforeFile") { $issues += "Atlas.iss does not show beta install notes" }
+    if ($issText -notmatch "InfoBeforeFile") { $issues += "Atlas.iss does not show install notes" }
     $staticSupport = Join-Path $Staging "_internal\jarvis_desktop\static\support.html"
     if (-not (Test-Path $staticSupport)) {
         $staticSupport = Get-ChildItem -Path $Staging -Recurse -Filter "support.html" -ErrorAction SilentlyContinue | Select-Object -First 1

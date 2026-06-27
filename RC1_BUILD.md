@@ -71,7 +71,7 @@
 - [ ] Provision Supabase (migrations 0001 + 0002 applied) — if funnel enabled
 - [ ] Set required env (`SUPABASE_URL`, service-role key, `SUPPORT_EMAIL`) — verify support email is correct, not personal
 - [ ] Deploy website (Vercel) — if funnel enabled
-- [ ] Create GitHub Release (tag `v0.1.0-beta`)
+- [ ] Create GitHub Release (tag `v1.0.0`)
 - [ ] Upload signed installer + `.sha256` as release assets
 - [ ] Set `ATLAS_INSTALLER_URL` to the release asset; redeploy
 - [ ] Download installer from the public URL on a separate network

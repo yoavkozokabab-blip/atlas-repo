@@ -291,7 +291,7 @@ def _error_status(result: Dict[str, Any], default: str = "account_unavailable") 
 def _status_message(status: str) -> str:
     return {
         "device_revoked": "This device is no longer authorized for this account.",
-        "suspended": "This account is suspended. Contact the Atlas operator.",
+        "suspended": "This account is suspended. Contact support.",
         "banned": "This account is banned and cannot access Atlas.",
         "expired": "Your Atlas access is not currently active.",
         "past_due": "Your Atlas subscription is past due. Update billing to continue.",
@@ -588,7 +588,7 @@ def register(
 ) -> Dict[str, Any]:
     """Register a new account."""
     if auth_mode() == "website":
-        # Free beta: the website captures email/password only (no local beta profile).
+        # Website auth captures email/password only; local profile fields remain legacy-compatible.
         return _web_register(email, password)
     payload: Dict[str, Any] = {
         "email": email,
@@ -932,7 +932,7 @@ def get_account_state() -> Dict[str, Any]:
     user = state.get("user")
     authenticated = bool(token and user and license_status.get("valid") is True)
     # A user can be signed in (valid session + cached profile) yet not have an
-    # active license (e.g. beta approval still pending). Such users must reach an
+    # active license. Such users must reach an
     # in-app status dashboard rather than a pre-login access wall (Phase 193).
     signed_in = bool(token and user)
 

@@ -1,20 +1,19 @@
-Atlas — Windows beta
-====================
+Atlas — Windows
+===============
 
 Thanks for trying Atlas.
 
 SmartScreen / unsigned app
 ---------------------------
-Atlas is an unsigned beta application. The first time you run it, Windows
+Atlas is not currently code-signed. The first time you run it, Windows
 SmartScreen may show a blue warning because the app is not yet code-signed.
 This is expected for new software. To continue safely:
   1. Make sure you downloaded Atlas from the official source.
   2. Click "More info", then "Run anyway".
-A signed release (no warning) is planned for the public launch.
 
 What you should know
 --------------------
-* Windows beta. Atlas runs as a local desktop app on your machine.
+* Windows app. Atlas runs as a local desktop app on your machine.
 * No Python required. This installer is self-contained — you do NOT need to
   install Python to use Atlas.
 * Source mode (developers only): if you instead run Atlas from source code,

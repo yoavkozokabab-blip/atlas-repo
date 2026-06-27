@@ -5,8 +5,8 @@
 > Effective date: _[set on publish]_
 > Contact: _[support email — owner to set before publishing]_
 
-1. **Beta software.** Atlas is pre-release beta provided for evaluation. Features may
-   change, degrade, or be removed without notice. **[LAWYER REVIEW]**
+1. **Use of Atlas.** Atlas is provided under these terms. Features may change, degrade,
+   or be removed without notice. **[LAWYER REVIEW]**
 
 2. **License.** Atlas is proprietary (see `LICENSE`). We grant a limited, revocable,
    non-exclusive, non-transferable right to use Atlas under these terms. No reverse
@@ -31,7 +31,7 @@
 7. **Account termination.** We may suspend or terminate accounts for breach of these
    terms. You may stop using Atlas and request account deletion at any time.
 
-8. **Payments and refunds.** Payments are **not enabled** in this beta. If/when paid
+8. **Payments and refunds.** Payments are **not enabled**. If/when paid
    plans launch, billing will be handled by Stripe; trial, billing cycle, and refund
    terms will be stated at that time. **[LAWYER REVIEW + confirm billing is live before
    publishing any payment terms]**
