@@ -154,3 +154,36 @@ def test_rc1_recursive_visible_surfaces_have_no_beta_language():
 
     assert scanned > 0, "no files were scanned — surfaces missing?"
     assert offenders == [], "Visible beta/waitlist language found:\n" + "\n".join(offenders)
+
+
+# ── Rendered desktop plan/usage payloads (RC-1) ──────────────────────────────
+# The desktop pricing/billing/usage UI renders these JSON payloads (billing.js
+# shows plan.availability + plan.cta; the usage dashboard shows billing_message
+# + upgrade_note). Guard the actual rendered string values, not just templates.
+
+def _walk_strings(obj, path: str, out: list[str]) -> None:
+    if isinstance(obj, str):
+        if FORBIDDEN_VISIBLE.search(obj):
+            out.append(f"{path}: {obj}")
+    elif isinstance(obj, dict):
+        for k, v in obj.items():
+            _walk_strings(v, f"{path}.{k}", out)
+    elif isinstance(obj, (list, tuple)):
+        for i, v in enumerate(obj):
+            _walk_strings(v, f"{path}[{i}]", out)
+
+
+def test_rc1_desktop_plan_and_usage_payloads_have_no_beta_language():
+    from jarvis_desktop.billing import plans as billing_plans
+    from jarvis_desktop.usage import tracker as usage_tracker
+
+    payloads = {
+        "billing_plans": [p.to_dict() for p in billing_plans.PLANS.values()],
+        "usage_plans_api": usage_tracker.plans_api(),
+        "usage_pricing_api": usage_tracker.pricing_api(),
+        "usage_me_summary": usage_tracker.usage_me_summary(),
+    }
+    offenders: list[str] = []
+    for name, payload in payloads.items():
+        _walk_strings(payload, name, offenders)
+    assert offenders == [], "Beta/waitlist language in rendered desktop payload:\n" + "\n".join(offenders)

@@ -32,7 +32,7 @@ export default async function DownloadsPage() {
         <p className="dl-meta" style={{ marginTop: 10 }}>You have downloaded Atlas {user.downloads} time(s).</p>
         <div className="dl-warn">
           <b>Windows SmartScreen may show a warning on first run.</b> Confirm you
-          downloaded Atlas from useatlas.dev, then click <b> More info → Run anyway</b>.
+          downloaded Atlas from atlas-repo-chi.vercel.app, then click <b> More info → Run anyway</b>.
         </div>
       </div>
       <h3>Release notes</h3>

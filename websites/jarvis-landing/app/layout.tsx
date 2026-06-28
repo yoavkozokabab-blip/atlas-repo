@@ -6,7 +6,7 @@ const DESC =
   "Atlas maps your codebase locally into architecture, a dependency graph, risk and impact — then exports evidence-backed context so Claude, Codex and Cursor start with the structure instead of re-reading files. Your code never leaves your machine.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://useatlas.dev"),
+  metadataBase: new URL("https://atlas-repo-chi.vercel.app"),
   title: TITLE,
   description: DESC,
   applicationName: "Atlas",
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: "website",
-    url: "https://useatlas.dev",
+    url: "https://atlas-repo-chi.vercel.app",
     siteName: "Atlas",
     title: TITLE,
     description: DESC

@@ -155,8 +155,8 @@ class Plan:
     tagline: str
     features: List[str]
     limits: PlanLimit
-    cta: str = "Join waitlist"        # never a real payment button
-    availability: str = "Private beta — coming soon"
+    cta: str = "Coming soon"          # never a real payment button
+    availability: str = "Coming soon"
 
     def to_dict(self) -> Dict[str, Any]:
         d = asdict(self)

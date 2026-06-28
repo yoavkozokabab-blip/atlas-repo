@@ -12,7 +12,7 @@ PLANS: Dict[str, Dict[str, Any]] = {
         "billing_period": "month",
         "tagline": "Explore Atlas on a few repositories locally.",
         "cta": "Start local",
-        "availability": "Available during private beta",
+        "availability": "Available now (local)",
         "features": [
             "1 workspace",
             "Up to 3 repositories",
@@ -37,8 +37,8 @@ PLANS: Dict[str, Dict[str, Any]] = {
         "price_display": "Coming soon",
         "billing_period": "month",
         "tagline": "Deeper intelligence for individual engineers.",
-        "cta": "Join beta",
-        "availability": "Private beta — no checkout yet",
+        "cta": "Coming soon",
+        "availability": "Coming soon — no checkout yet",
         "features": [
             "25 repositories",
             "Large repositories",
@@ -62,8 +62,8 @@ PLANS: Dict[str, Dict[str, Any]] = {
         "price_display": "Coming soon",
         "billing_period": "month",
         "tagline": "Shared workspaces and admin visibility.",
-        "cta": "Request access",
-        "availability": "Private beta — contact us",
+        "cta": "Contact us",
+        "availability": "Coming soon — contact us",
         "features": [
             "200 repositories",
             "Huge repositories",
@@ -88,7 +88,7 @@ PLANS: Dict[str, Dict[str, Any]] = {
         "billing_period": "year",
         "tagline": "Custom limits, governance, and deployment options.",
         "cta": "Contact us",
-        "availability": "Private beta — no payment collection",
+        "availability": "Coming soon — no payment collection",
         "features": [
             "Unlimited repositories (contract)",
             "Unlimited scans (contract)",
@@ -125,10 +125,10 @@ def pricing_payload() -> Dict[str, Any]:
         "payment_provider": None,
         "checkout_enabled": False,
         "billing_enabled": False,
-        "billing_message": "Billing is not enabled in this beta build. Plans are preview-only.",
+        "billing_message": "Billing is not enabled in this build. Plans are preview-only.",
         "note": (
             "Atlas compute is priced in token-equivalent units for planning only. "
-            "Billing is not enabled in beta — no checkout, no payment collection."
+            "Billing is not enabled yet — no checkout, no payment collection."
         ),
         "plans": list_plans(),
     }

@@ -35,7 +35,7 @@
     { match: /device.*revoked|no longer authorized/i, title: 'Device revoked', message: 'This device is no longer authorized for this account.', action: 'Sign in from an authorized device or contact support.' },
     { match: /too many login/i, title: 'Too many attempts', message: 'Sign-in is temporarily locked after several failed attempts.', action: 'Wait 15 minutes, then try again.' },
     { match: /device limit|device_limit/i, title: 'Device limit reached', message: 'This account is already signed in on the maximum number of devices.', action: 'Sign in on an existing device and remove an old device from Your Account, or contact support.' },
-    { match: /accounts service is not running/i, title: 'Sign-in unavailable', message: 'The Atlas accounts service is not running on this machine.', action: 'Restart Atlas. If the problem persists, check support docs or contact support@useatlas.dev.' },
+    { match: /accounts service is not running/i, title: 'Sign-in unavailable', message: 'The Atlas accounts service is not running on this machine.', action: 'Restart Atlas. If the problem persists, check support docs or contact atlas.repo.support@gmail.com.' },
     { match: /network error/i, title: 'Connection problem', message: 'Atlas could not reach the local accounts service.', action: 'Check your connection and restart Atlas, then try again.' },
   ];
 
@@ -121,13 +121,13 @@
       return {
         title: 'Account created — profile not confirmed',
         message: 'Your Atlas account was created, but we could not confirm it was saved.',
-        detail: 'Try signing in. If your account is missing, contact support@useatlas.dev with your email.',
+        detail: 'Try signing in. If your account is missing, contact atlas.repo.support@gmail.com with your email.',
       };
     }
     return {
       title: 'Account not created',
       message: raw,
-      detail: 'Review your answers and try again, or contact support@useatlas.dev if this continues.',
+      detail: 'Review your answers and try again, or contact atlas.repo.support@gmail.com if this continues.',
     };
   }
 
@@ -243,7 +243,7 @@
     return {
       title: 'Sign-in failed',
       message: text,
-      action: 'Try again or contact support@useatlas.dev if the problem continues.',
+      action: 'Try again or contact atlas.repo.support@gmail.com if the problem continues.',
     };
   }
 
@@ -267,10 +267,10 @@
     }
 
     if (userStatus === 'suspended' || status === 'suspended') {
-      return { icon: '⏸', title: 'Account suspended', message: 'Your account is suspended and Atlas features are unavailable.', action: 'Contact support@useatlas.dev to restore access.', showSignOut: true };
+      return { icon: '⏸', title: 'Account suspended', message: 'Your account is suspended and Atlas features are unavailable.', action: 'Contact atlas.repo.support@gmail.com to restore access.', showSignOut: true };
     }
     if (userStatus === 'banned' || status === 'banned') {
-      return { icon: '🚫', title: 'Account banned', message: 'Your account has been banned from Atlas.', action: 'Contact support@useatlas.dev if you believe this is an error.', showSignOut: true };
+      return { icon: '🚫', title: 'Account banned', message: 'Your account has been banned from Atlas.', action: 'Contact atlas.repo.support@gmail.com if you believe this is an error.', showSignOut: true };
     }
     if (status === 'offline_grace_expired') {
       return { icon: '📡', title: 'Offline grace expired', message: lic.message || 'Atlas has been offline too long without verifying your license.', action: 'Reconnect to the internet and sign in again to continue.', showSignOut: true };
@@ -282,7 +282,7 @@
       return { icon: '🔑', title: 'Session expired', message: lic.message || 'Your session is no longer valid.', action: 'Sign in again to continue using Atlas.', showSignOut: true };
     }
     if (_state.user && !lic.valid && status !== 'unauthenticated') {
-      return { icon: '🔒', title: 'License inactive', message: lic.message || 'Your Atlas license is not active.', action: 'Sign in again or contact support@useatlas.dev.', showSignOut: true };
+      return { icon: '🔒', title: 'License inactive', message: lic.message || 'Your Atlas license is not active.', action: 'Sign in again or contact atlas.repo.support@gmail.com.', showSignOut: true };
     }
     return null;
   }
@@ -500,7 +500,7 @@
         icon: '⚠',
         title: 'Account restricted',
         message: 'Atlas features are unavailable for this account.',
-        action: 'Contact support@useatlas.dev for help.',
+        action: 'Contact atlas.repo.support@gmail.com for help.',
         showSignOut: true,
       });
       return;

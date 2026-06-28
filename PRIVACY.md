@@ -2,7 +2,7 @@
 
 > **Status: DRAFT — requires legal review before publishing.**
 > Effective date: _[set on publish]_
-> Contact: _[support email — owner to set before publishing; `useatlas.dev` email not yet verified as controlled]_
+> Contact: atlas.repo.support@gmail.com
 
 ## Summary
 

@@ -307,8 +307,8 @@ def usage_me_summary(store: Optional[UsageStore] = None) -> Dict[str, Any]:
             else "No usage recorded yet. Run a scan or generate a Build Plan to populate this dashboard."
         ),
         "billing_enabled": False,
-        "billing_message": "Billing is not enabled in this beta build. Usage is tracked locally only.",
-        "upgrade_note": "Billing is not enabled in beta — join the waitlist for paid plans when they launch.",
+        "billing_message": "Billing is not enabled in this build. Usage is tracked locally only.",
+        "upgrade_note": "Billing is not enabled yet — paid plans are not available yet.",
     }
 
 

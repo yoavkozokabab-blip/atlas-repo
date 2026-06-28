@@ -11,7 +11,7 @@ import urllib.request
 from typing import Any, Dict, Optional
 
 PRODUCT_VERSION = "1.0.0"
-DEFAULT_SUPPORT_EMAIL = "support@useatlas.dev"
+DEFAULT_SUPPORT_EMAIL = "atlas.repo.support@gmail.com"
 
 _BUILD_DATE = time.strftime("%Y-%m-%d", time.gmtime())
 _BUILD_COMMIT_CACHE: Optional[str] = None

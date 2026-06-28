@@ -16,7 +16,7 @@ PLANS: Dict[str, Plan] = {
         name="Free",
         price_display="$0",
         tagline="Understand one or two repositories locally.",
-        availability="Available (local) — private beta",
+        availability="Available now (local)",
         cta="Get started",
         features=[
             "1 workspace",
@@ -40,8 +40,8 @@ PLANS: Dict[str, Plan] = {
         name="Pro",
         price_display="Coming soon",
         tagline="Serious repository intelligence for an individual engineer.",
-        availability="Private beta — join waitlist",
-        cta="Join waitlist",
+        availability="Coming soon",
+        cta="Coming soon",
         features=[
             "More repositories",
             "Larger repositories",
@@ -64,7 +64,7 @@ PLANS: Dict[str, Plan] = {
         name="Team",
         price_display="Coming soon",
         tagline="Shared repository intelligence for a whole team.",
-        availability="Private beta — contact us",
+        availability="Coming soon — contact us",
         cta="Contact us",
         features=[
             "Multiple users",
@@ -87,7 +87,7 @@ PLANS: Dict[str, Plan] = {
         name="Enterprise",
         price_display="Custom",
         tagline="Custom limits, private deployment, and governance.",
-        availability="Private beta — contact us",
+        availability="Coming soon — contact us",
         cta="Contact us",
         features=[
             "Custom limits",

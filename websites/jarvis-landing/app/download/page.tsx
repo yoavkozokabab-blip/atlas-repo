@@ -56,7 +56,7 @@ export default async function DownloadPage() {
 
               <div className="dl-warn">
                 <b>Windows SmartScreen may show a warning on first run.</b> Confirm
-                you downloaded Atlas from useatlas.dev, then click <b>More info → Run anyway</b>.
+                you downloaded Atlas from atlas-repo-chi.vercel.app, then click <b>More info → Run anyway</b>.
               </div>
             </div>
 

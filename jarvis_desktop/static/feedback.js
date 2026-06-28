@@ -11,7 +11,7 @@
   ];
   let selected = "general";
   let pendingContext = null;
-  let productConfig = { feedback_url_configured: false, support_email: "support@useatlas.dev" };
+  let productConfig = { feedback_url_configured: false, support_email: "atlas.repo.support@gmail.com" };
 
   function migrateLegacy() {
     try {

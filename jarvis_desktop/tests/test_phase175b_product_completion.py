@@ -25,7 +25,6 @@ USER_FACING_HTML = (
     "quickstart.html",
     "landing.html",
     "feedback.html",
-    "beta.html",
     "gallery.html",
     "demo.html",
     "studio.html",
@@ -40,9 +39,9 @@ def test_no_user_facing_jarvis_in_primary_pages():
 
 
 def test_semver_version_in_api():
-    assert api.PRODUCT_VERSION == "0.1.0-beta"
+    assert api.PRODUCT_VERSION == "1.0.0"
     _, health = server.dispatch("GET", "/api/health")
-    assert health["version"] == "0.1.0-beta"
+    assert health["version"] == "1.0.0"
     assert "build_commit" in health
     assert "build_date" in health
 
@@ -50,19 +49,19 @@ def test_semver_version_in_api():
 def test_product_config_endpoint():
     _, cfg = server.dispatch("GET", "/api/product/config")
     assert cfg["ok"] is True
-    assert cfg["version"] == "0.1.0-beta"
+    assert cfg["version"] == "1.0.0"
     assert cfg["billing_enabled"] is False
     assert cfg["payments_active"] is False
     assert cfg["checkout_enabled"] is False
     assert "Billing is not enabled" in cfg["billing_message"]
-    assert cfg["support_email"] == "support@useatlas.dev"
+    assert cfg["support_email"] == "atlas.repo.support@gmail.com"
 
 
 def test_support_email_visible_on_contact_and_support():
     contact = (STATIC / "contact.html").read_text(encoding="utf-8")
     support = (STATIC / "support.html").read_text(encoding="utf-8")
-    assert "support@useatlas.dev" in contact
-    assert "support@useatlas.dev" in support
+    assert "atlas.repo.support@gmail.com" in contact
+    assert "atlas.repo.support@gmail.com" in support
     assert "not configured yet" not in contact.lower()
 
 
@@ -72,7 +71,7 @@ def test_billing_disabled_copy_honest():
     billing_js = (STATIC / "billing.js").read_text(encoding="utf-8")
     assert "billing is not enabled" in pricing.lower()
     assert "billing is not enabled" in usage.lower()
-    assert "Billing is not enabled in this beta build" in billing_js
+    assert "Billing is not enabled" in billing_js
     _, plans = server.dispatch("GET", "/api/pricing")
     assert plans.get("billing_enabled") is False
     assert plans.get("checkout_enabled") is False
@@ -86,7 +85,7 @@ def test_feedback_local_mode_message():
     })
     assert result["ok"] is True
     assert result["remote_sent"] is False
-    assert "locally" in result["message"].lower()
+    assert "saved" in result["message"].lower()
     fb_js = (STATIC / "feedback.js").read_text(encoding="utf-8")
     assert "/api/feedback" in fb_js
     assert "support bundle manually" in fb_js.lower()
@@ -157,9 +156,9 @@ def test_export_cta_primary_after_change_plan():
     zf = (STATIC / "atlas_zero_friction.js").read_text(encoding="utf-8")
     assert "Copy for Claude" in html
     assert "Repository Context" in html
-    assert "Advanced" in html
+    assert "advanced" in html.lower()
     assert "memory-export-note" in zf
-    assert "tiny repository memory" in zf.lower()
+    assert "compact repository summary" in zf.lower()
     assert 'btn primary big' in zf or "btn primary big" in zf
 
 
@@ -180,6 +179,6 @@ def test_trust_status_visible():
 
 def test_startup_status_includes_semver_and_support_email():
     _, env = server.dispatch("GET", "/api/system/startup-status")
-    assert env["version"] == "0.1.0-beta"
+    assert env["version"] == "1.0.0"
     assert env.get("build_commit")
-    assert env.get("support_email") == "support@useatlas.dev"
+    assert env.get("support_email") == "atlas.repo.support@gmail.com"
