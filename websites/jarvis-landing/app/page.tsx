@@ -12,14 +12,14 @@ export default function Home() {
         <section className="hero">
           <div className="container hero-grid">
             <div>
-              <p className="eyebrow">Repository intelligence · local-first</p>
+              <p className="eyebrow">Local-first repository memory</p>
               <h1>
-                Stop making AI <span className="grad">re-read your repository.</span>
+                Give Cursor and Claude a <span className="grad">memory of your codebase.</span>
               </h1>
               <p>
-                Atlas maps your codebase once, on your machine, into architecture, a
-                dependency graph, risk and impact — then hands Claude, Codex and
-                Cursor evidence-backed context instead of letting them guess.
+                Scan once, on your machine. Atlas maps your architecture, dependency
+                graph, risk and impact — then hands Cursor, Claude and Codex
+                evidence-backed context on demand, instead of letting them guess.
               </p>
               <div className="hero-actions">
                 <Link className="btn btn-primary btn-lg" href="/download">Download for Windows</Link>
