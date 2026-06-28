@@ -1,25 +1,27 @@
 /* Atlas — design system (dark-first). Token-driven per atlas_website_strategy.md */
 
 :root {
-  /* surfaces */
-  --bg-0: #06070A;
-  --bg-1: #0C0E13;
-  --bg-2: #14171F;
-  --bg-3: #1B1F29;
-  --line: #20242E;
-  --line-2: #2A2F3B;
+  /* surfaces — deep graphite, not pure black */
+  --bg-0: #0B0F14;
+  --bg-1: #11161D;
+  --bg-2: #171D26;
+  --bg-3: #1B222D;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-2: rgba(255, 255, 255, 0.14);
   /* text */
-  --text-0: #F4F6FB;
-  --text-1: #AEB6C4;
-  --text-2: #6B7280;
-  /* accent */
-  --accent: #5BD1FF;
-  --accent-2: #7C8CFF;
-  --accent-soft: rgba(91, 209, 255, 0.12);
-  /* semantic */
+  --text-0: #F2F5F8;
+  --text-1: #A7B0BE;
+  --text-2: #6F7A89;
+  /* accent — calm blue-indigo (no neon cyan) */
+  --accent: #7AA2F7;
+  --accent-2: #8B9DFF;
+  --accent-ink: #0A0F17;
+  --accent-soft: rgba(122, 162, 247, 0.12);
+  --secondary: #5CC8BE;
+  /* semantic — restrained */
   --ok: #3FB950;
-  --warn: #D29922;
-  --risk: #F85149;
+  --warn: #D6A23B;
+  --risk: #E5687A;
   /* type */
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
   --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Cascadia Code", "Roboto Mono", Menlo, monospace;
@@ -43,7 +45,7 @@ body {
   letter-spacing: -0.011em;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  background-image: radial-gradient(900px 500px at 50% -120px, rgba(91, 209, 255, 0.10), transparent 70%);
+  background-image: radial-gradient(820px 460px at 50% -160px, rgba(122, 162, 247, 0.07), transparent 72%);
   background-repeat: no-repeat;
 }
 
@@ -76,8 +78,8 @@ p { margin: 0; color: var(--text-1); }
   transition: transform 0.15s var(--ease), background 0.15s var(--ease), border-color 0.15s var(--ease);
 }
 .btn:active { transform: translateY(1px); }
-.btn-primary { background: var(--accent); color: #04121A; }
-.btn-primary:hover { background: #7CDCFF; }
+.btn-primary { background: var(--accent); color: var(--accent-ink); box-shadow: 0 1px 2px rgba(0,0,0,0.4); }
+.btn-primary:hover { background: #93B4FF; }
 .btn-ghost { background: transparent; color: var(--text-0); border-color: var(--line-2); }
 .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
 .btn-lg { padding: 14px 24px; font-size: 1rem; }
@@ -170,7 +172,7 @@ p { margin: 0; color: var(--text-1); }
 .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
 @media (max-width: 860px) { .tiers { grid-template-columns: 1fr; } }
 .tier { background: var(--bg-1); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; }
-.tier.feat { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset, 0 20px 60px -40px var(--accent); }
+.tier.feat { border-color: rgba(122,162,247,0.55); box-shadow: 0 0 0 1px rgba(122,162,247,0.45) inset, 0 24px 60px -46px rgba(0,0,0,0.8); }
 .tier .price { font-size: 2.2rem; font-weight: 650; letter-spacing: -0.03em; margin: 6px 0 2px; }
 .tier .price small { font-size: 0.9rem; color: var(--text-2); font-weight: 500; }
 .tier ul { list-style: none; padding: 0; margin: 18px 0 22px; display: flex; flex-direction: column; gap: 9px; }
@@ -188,7 +190,7 @@ p { margin: 0; color: var(--text-1); }
 
 .cta {
   text-align: center; padding: 72px 28px; border-radius: 20px;
-  background: radial-gradient(700px 300px at 50% 0%, rgba(91,209,255,0.14), transparent 70%), var(--bg-1);
+  background: radial-gradient(680px 300px at 50% 0%, rgba(122,162,247,0.10), transparent 72%), var(--bg-1);
   border: 1px solid var(--line);
 }
 

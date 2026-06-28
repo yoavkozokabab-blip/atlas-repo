@@ -2,11 +2,11 @@
    Premium, restrained. Inter typography, deep near-black, one signature gradient,
    subtle glass, generous spacing. The Linear/Vercel/Stripe answer to gamer-neon. */
 :root{
-  --bg:#07070c; --bg-soft:#0b0b14; --ink:#f2f2f7; --ink-2:#c4c5d4; --muted:#8b8c9e; --faint:#5a5b6e;
+  --bg:#0B0F14; --bg-soft:#0F141C; --ink:#F2F5F8; --ink-2:#C4CBD6; --muted:#8A94A6; --faint:#5A6271;
   --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.14);
-  --grad:linear-gradient(100deg,#6d6bff 0%,#a06bff 50%,#ff6bd0 100%);
-  --grad-soft:linear-gradient(100deg,#6d6bff,#a06bff);
-  --accent:#9a8bff; --accent-2:#6bd5ff; --good:#4be0a8;
+  --grad:linear-gradient(100deg,#7AA2F7 0%,#8B9DFF 100%);
+  --grad-soft:linear-gradient(100deg,#7AA2F7,#8B9DFF);
+  --accent:#8B9DFF; --accent-2:#5CC8BE; --good:#3FB950;
   --s1:8px; --s2:16px; --s3:24px; --s4:40px; --s5:64px; --s6:96px;
   --r:14px; --r-lg:22px; --maxw:1120px;
 }
@@ -19,14 +19,13 @@ a{color:inherit;text-decoration:none}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--s3)}
 .bg-aura{position:fixed;inset:0;z-index:-1;pointer-events:none;
   background:
-    radial-gradient(900px 520px at 72% -8%, rgba(120,110,255,.20), transparent 60%),
-    radial-gradient(700px 460px at 12% 8%, rgba(255,110,210,.10), transparent 60%),
-    radial-gradient(600px 600px at 50% 120%, rgba(107,213,255,.08), transparent 60%);}
+    radial-gradient(900px 520px at 72% -8%, rgba(122,162,247,.10), transparent 62%),
+    radial-gradient(700px 460px at 12% 8%, rgba(139,157,255,.06), transparent 62%);}
 .muted{color:var(--muted)} .ink2{color:var(--ink-2)} .tiny{font-size:13px}
 .grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 
 /* Nav */
-.mnav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:rgba(7,7,12,.72);border-bottom:1px solid var(--line)}
+.mnav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:rgba(11,15,20,.72);border-bottom:1px solid var(--line)}
 .mnav .row{display:flex;align-items:center;gap:var(--s3);height:64px}
 .mlogo{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.01em}
 .mlogo .mk{width:26px;height:26px;border-radius:8px;background:var(--grad);display:grid;place-items:center;color:#0a0a12;font-weight:800;font-size:15px;box-shadow:0 6px 22px rgba(120,110,255,.4)}
