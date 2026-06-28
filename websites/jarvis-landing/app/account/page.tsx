@@ -30,9 +30,9 @@ export default async function AccountOverview() {
 
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
         <Link className="btn btn-primary" href="/account/downloads">Download Atlas</Link>
-        {user.plan === "free"
-          ? <Link className="btn btn-ghost" href="/pricing">Upgrade to Pro</Link>
-          : <Link className="btn btn-ghost" href="/account/billing">Manage billing</Link>}
+        {user.plan !== "free"
+          ? <Link className="btn btn-ghost" href="/account/billing">Manage billing</Link>
+          : null}
         <LogoutButton />
       </div>
     </div>

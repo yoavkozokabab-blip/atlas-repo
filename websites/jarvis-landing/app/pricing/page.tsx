@@ -25,49 +25,20 @@ export default function PricingPage() {
 
         <section className="section" style={{ borderTop: "none", paddingTop: 24 }}>
           <div className="container">
-            <div className="tiers">
-              <div className="tier">
-                <h3>Free</h3>
-                <div className="price">$0</div>
-                <ul>
-                  <li>Local scanning &amp; architecture map</li>
-                  <li>One repository</li>
-                  <li>Basic Change Plans</li>
-                  <li>Claude / Codex / Cursor export</li>
-                </ul>
-                <Link className="btn btn-ghost" href="/download">Download free</Link>
-              </div>
-              <div className="tier feat">
-                <h3>Pro</h3>
-                <div className="price">Coming soon</div>
-                <ul>
-                  <li>Unlimited repositories</li>
-                  <li>Impact analysis &amp; investigation mode</li>
-                  <li>AI context compression</li>
-                  <li>Architecture risk detection</li>
-                  <li>Priority support</li>
-                </ul>
-                <Link className="btn btn-primary" href="/download">Download Atlas</Link>
-                <p className="dl-meta" style={{ marginTop: 10 }}>Paid checkout is not enabled yet</p>
-              </div>
-              <div className="tier">
-                <h3>Team</h3>
-                <div className="price">Talk to us</div>
-                <ul>
-                  <li>Everything in Pro</li>
-                  <li>Shared context &amp; seats</li>
-                  <li>SSO</li>
-                  <li>For engineering teams</li>
-                </ul>
-                <Link className="btn btn-ghost" href="/contact">Contact sales</Link>
-              </div>
+            <div className="tier feat" style={{ maxWidth: 440, margin: "0 auto" }}>
+              <h3>Free</h3>
+              <div className="price">$0</div>
+              <ul>
+                <li>Local scanning &amp; architecture map</li>
+                <li>Change Plans, impact and investigation</li>
+                <li>Claude / Codex / Cursor context export</li>
+                <li>Your code stays on your machine</li>
+              </ul>
+              <Link className="btn btn-primary btn-lg" href="/download">Download free</Link>
             </div>
-            <p className="center muted" style={{ marginTop: 24, fontSize: "0.88rem" }}>
-              Local-first · Windows installer · your code stays on your machine
-            </p>
-            <div className="note-accent" style={{ marginTop: 28, maxWidth: 760 }}>
-              <b>Note:</b> paid checkout is not enabled in this build. Download Atlas
-              and start with the free tier.
+            <div className="note-accent" style={{ marginTop: 28, maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
+              <b>Note:</b> Atlas is free during the release candidate. Paid plans
+              aren&apos;t available yet — no checkout, no payment collection.
             </div>
           </div>
         </section>
