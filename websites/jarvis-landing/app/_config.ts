@@ -1,8 +1,9 @@
 // Public, non-secret site configuration sourced from environment variables.
-// The support email is intentionally NOT hardcoded in source — set
-// NEXT_PUBLIC_SUPPORT_EMAIL in .env.local (gitignored) for local dev and in your
-// host's environment for production. See .env.example.
-export const SUPPORT_EMAIL = process.env.NEXT_PUBLIC_SUPPORT_EMAIL ?? "";
+// The support email is sourced from NEXT_PUBLIC_SUPPORT_EMAIL (set it in
+// .env.local for local dev and in your host's environment for production). A
+// neutral shared support address is used as the fallback so we never expose a
+// maintainer's personal inbox. See .env.example.
+export const SUPPORT_EMAIL = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "atlas.repo.support@gmail.com";
 
 /**
  * Paid plans visibility.

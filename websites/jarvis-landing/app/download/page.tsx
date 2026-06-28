@@ -68,6 +68,10 @@ export default async function DownloadPage() {
                 <li>Describe a change and generate your first Change Plan.</li>
                 <li>Click <b>Copy for Claude / Cursor / Codex</b> and paste it into your AI tool.</li>
               </ol>
+
+              <p className="dl-meta" style={{ marginTop: 20 }}>
+                Windows is available now. macOS and Linux are not available yet.
+              </p>
             </div>
           </div>
         </section>

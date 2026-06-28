@@ -76,3 +76,81 @@ def test_rc1_visible_surfaces_do_not_use_beta_language():
                 matches.append(f"{rel}:{lineno}: {line.strip()}")
 
     assert matches == []
+
+
+# ── Recursive visible-surface scan (RC-1) ────────────────────────────────────
+# Walk every user-rendered file across the production website and desktop copy
+# and fail on visible beta/waitlist/invite/approval/early-access language.
+# Internal compatibility names (the Supabase `waitlist` table, the `betaMode`
+# flag, admin API paths) are allowed ONLY in backend modules that are never
+# rendered to users — those live under app/_lib and app/api, which are skipped.
+
+# Forbidden VISIBLE words (RC-1 contract). "approval" also covers
+# "pending approval"; "beta" also covers "private beta".
+FORBIDDEN_VISIBLE = re.compile(
+    r"\b(beta|waitlist|invite|approval)\b|early\s+access|private\s+beta",
+    re.IGNORECASE,
+)
+
+# Directories whose every rendered text file must be clean.
+SCAN_DIRS = [
+    "websites/jarvis-landing/app",
+    "websites/jarvis-landing/public",
+    "websites/jarvis-landing/docs",
+    "jarvis_desktop/static",
+]
+# Standalone docs that ship to users.
+SCAN_ROOT_FILES = [
+    "README.md",
+    "PRIVACY.md",
+    "SECURITY.md",
+    "TERMS.md",
+    "RC1_BUILD.md",
+]
+
+# Only these extensions can render text to a user.
+RENDERED_EXTS = {
+    ".tsx", ".ts", ".jsx", ".js", ".html", ".htm", ".css",
+    ".md", ".mdx", ".txt",
+}
+# Backend-only path segments: compatibility names here are never shown to users.
+INTERNAL_SEGMENTS = {"_lib", "api", "node_modules", ".next"}
+
+
+def _is_internal_or_skipped(rel_parts: tuple[str, ...]) -> bool:
+    return any(seg in INTERNAL_SEGMENTS for seg in rel_parts)
+
+
+def test_rc1_recursive_visible_surfaces_have_no_beta_language():
+    offenders: list[str] = []
+    scanned = 0
+
+    def scan(path: Path) -> None:
+        nonlocal scanned
+        rel = path.relative_to(ROOT)
+        if _is_internal_or_skipped(rel.parts):
+            return
+        if path.suffix.lower() not in RENDERED_EXTS:
+            return
+        scanned += 1
+        text = path.read_text(encoding="utf-8", errors="ignore")
+        for snippet in SAFE_COMPAT_SNIPPETS:
+            text = text.replace(snippet, "")
+        for lineno, line in enumerate(text.splitlines(), start=1):
+            if FORBIDDEN_VISIBLE.search(line):
+                offenders.append(f"{rel.as_posix()}:{lineno}: {line.strip()}")
+
+    for rel_dir in SCAN_DIRS:
+        base = ROOT / rel_dir
+        assert base.exists(), rel_dir
+        for path in base.rglob("*"):
+            if path.is_file():
+                scan(path)
+
+    for rel_file in SCAN_ROOT_FILES:
+        path = ROOT / rel_file
+        assert path.exists(), rel_file
+        scan(path)
+
+    assert scanned > 0, "no files were scanned — surfaces missing?"
+    assert offenders == [], "Visible beta/waitlist language found:\n" + "\n".join(offenders)
