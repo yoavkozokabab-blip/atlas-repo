@@ -38,7 +38,7 @@ export default function Home() {
         {/* PROOF */}
         <div className="container">
           <div className="proof" aria-label="Works with">
-            <span>WORKS WITH</span>
+            <span>Works with</span>
             <span>Claude</span><span>Codex</span><span>Cursor</span><span>Copilot</span>
           </div>
         </div>
@@ -90,22 +90,6 @@ verify:
           </div>
         </section>
 
-        {/* FEATURES */}
-        <section className="section">
-          <div className="container">
-            <p className="eyebrow center">Built for serious codebases</p>
-            <h2 className="center" style={{ marginBottom: 40 }}>Everything your AI is missing about your repo.</h2>
-            <div className="grid-3">
-              <Feature ic="{}" t="Dependency graph" d="A precise, navigable map of how your modules really connect — hubs, cycles and blast radius." />
-              <Feature ic="Δ" t="Impact analysis" d="Change a file, see exactly what depends on it and which tests to run before you ship." />
-              <Feature ic="?" t="Investigation mode" d="Trace a symptom to the likely files with grounded evidence, not vibes." />
-              <Feature ic="!" t="Risk detection" d="Surface the architectural risk hotspots that make changes dangerous." />
-              <Feature ic="⌘" t="AI context export" d="One click to a compact, evidence-backed packet for Claude, Codex or Cursor." />
-              <Feature ic="◐" t="Local-first" d="No upload, no cloud scan. Your source stays on your machine, always." />
-            </div>
-          </div>
-        </section>
-
         {/* TRUST / LOCAL-FIRST */}
         <section className="section">
           <div className="container">
@@ -120,57 +104,12 @@ verify:
                 </p>
               </div>
               <div className="flow" aria-label="Data flow">
-                <div className="row"><span className="tag local">LOCAL</span> Repository scan + dependency graph</div>
-                <div className="row"><span className="tag local">LOCAL</span> Architecture, risk &amp; impact analysis</div>
-                <div className="row"><span className="tag local">LOCAL</span> Context packet generated on your machine</div>
-                <div className="row"><span className="tag net">YOU CHOOSE</span> Paste the packet into Claude / Codex / Cursor</div>
+                <div className="row"><span className="tag local">Local</span> Repository scan + dependency graph</div>
+                <div className="row"><span className="tag local">Local</span> Architecture, risk &amp; impact analysis</div>
+                <div className="row"><span className="tag local">Local</span> Context packet generated on your machine</div>
+                <div className="row"><span className="tag net">You choose</span> Paste the packet into Claude / Codex / Cursor</div>
               </div>
             </div>
-          </div>
-        </section>
-
-        {/* PRICING TEASER */}
-        <section className="section">
-          <div className="container">
-            <p className="eyebrow center">Pricing</p>
-            <h2 className="center" style={{ marginBottom: 40 }}>Simple pricing for serious codebases.</h2>
-            <div className="tiers">
-              <div className="tier">
-                <h3>Free</h3>
-                <div className="price">$0</div>
-                <ul>
-                  <li>Local scanning &amp; architecture map</li>
-                  <li>One repository</li>
-                  <li>Basic Change Plans</li>
-                </ul>
-                <Link className="btn btn-ghost" href="/download">Download</Link>
-              </div>
-              <div className="tier feat">
-                <h3>Pro</h3>
-                <div className="price">Coming soon</div>
-                <ul>
-                  <li>Unlimited repositories</li>
-                  <li>Impact analysis &amp; investigation</li>
-                  <li>AI context compression</li>
-                  <li>Architecture risk detection</li>
-                  <li>Priority support</li>
-                </ul>
-                <Link className="btn btn-primary" href="/download">Download Atlas</Link>
-              </div>
-              <div className="tier">
-                <h3>Team</h3>
-                <div className="price">Talk to us</div>
-                <ul>
-                  <li>Shared context &amp; seats</li>
-                  <li>SSO</li>
-                  <li>For engineering teams</li>
-                </ul>
-                <Link className="btn btn-ghost" href="/contact">Contact</Link>
-              </div>
-            </div>
-            <p className="center muted" style={{ marginTop: 22, fontSize: "0.85rem" }}>
-              Local-first · Windows installer · your code stays on your machine
-            </p>
           </div>
         </section>
 
@@ -221,18 +160,6 @@ verify:
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="section">
-          <div className="container">
-            <div className="cta">
-              <h2>Make your AI fluent in your codebase.</h2>
-              <p className="center" style={{ marginTop: 14, marginBottom: 28 }}>
-                Local. Deterministic. Free to start.
-              </p>
-              <Link className="btn btn-primary btn-lg" href="/download">Download Atlas</Link>
-            </div>
-          </div>
-        </section>
       </main>
 
       {/* FOOTER */}
@@ -244,16 +171,6 @@ verify:
 function Pillar({ t, d }: { t: string; d: string }) {
   return (
     <div className="card">
-      <h3>{t}</h3>
-      <p>{d}</p>
-    </div>
-  );
-}
-
-function Feature({ ic, t, d }: { ic: string; t: string; d: string }) {
-  return (
-    <div className="card">
-      <div className="ic mono" aria-hidden>{ic}</div>
       <h3>{t}</h3>
       <p>{d}</p>
     </div>

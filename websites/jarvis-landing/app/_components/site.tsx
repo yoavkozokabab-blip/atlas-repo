@@ -11,9 +11,8 @@ export function SiteNav() {
         </Link>
         <nav className="nav-links" aria-label="Primary">
           <Link href="/features">Features</Link>
-          <Link href="/pricing">Pricing</Link>
           <Link href="/docs">Docs</Link>
-          <Link href="/faq">FAQ</Link>
+          <Link href="/download">Download</Link>
         </nav>
         <div className="nav-cta">
           <Link className="btn btn-ghost" href="/login">Sign in</Link>
@@ -40,7 +39,6 @@ export function SiteFooter() {
           <div>
             <h4>Product</h4>
             <Link href="/features">Features</Link>
-            <Link href="/pricing">Pricing</Link>
             <Link href="/download">Download</Link>
             <Link href="/docs">Docs</Link>
           </div>

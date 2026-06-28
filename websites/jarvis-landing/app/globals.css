@@ -66,8 +66,8 @@ p { margin: 0; color: var(--text-1); }
 .container { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
 .section { padding: 96px 0; border-top: 1px solid var(--line); }
 .eyebrow {
-  font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+  font-size: 0.82rem; font-weight: 550; letter-spacing: 0.01em;
+  color: var(--accent); margin-bottom: 14px;
 }
 .lead { font-size: 1.15rem; color: var(--text-1); max-width: 60ch; }
 .center { text-align: center; margin-left: auto; margin-right: auto; }
