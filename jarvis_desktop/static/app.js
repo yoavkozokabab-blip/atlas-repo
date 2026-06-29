@@ -618,6 +618,7 @@ function finishScanSession(scan, pathLabel) {
   updateTelemetryWarning(scan);
   updateRepoChip(scan.repo_name, scan.demo_mode);
   unlockNav();
+  document.body.classList.remove("atlas-no-repo");  // repo scanned → reveal repo-dependent UI
   updateWorkflowToolbars();
   renderScanSuccess(scan);
   try {
@@ -707,7 +708,14 @@ function go(view) {
     api("/api/usage/event", "POST", { event_type: "repository_map_opened" }).catch(function () {});
     setTimeout(renderCenter, 60);
   }
-  if (view === "home") renderDemoPackPicker();
+  if (view === "home") {
+    renderDemoPackPicker();
+    // First-run gate is removed synchronously by finishScanSession after any scan
+    // and re-asserted only when a repo is genuinely absent. Reveal it here if a
+    // scan summary already exists, then let the trust poll confirm/clear.
+    if (window.STATE && STATE.summary && STATE.summary.ok) document.body.classList.remove("atlas-no-repo");
+    if (typeof atlasPollTrustStatus === "function") atlasPollTrustStatus();
+  }
   if (view === "export") refreshExport();
   if (view === "build" || view === "investigate" || view === "impact") {
     if (!STATE.summary?.ok) renderWorkflowGate(view);

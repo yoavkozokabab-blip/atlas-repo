@@ -45,10 +45,15 @@ function atlasTrustStatusClass(label) {
 }
 
 function atlasRenderTrustBar(payload) {
+  // Drive first-run gating: repo-dependent UI (advanced quick actions, recent
+  // activity, output-detail toggle) is hidden via CSS until a repo is scanned.
+  document.body.classList.toggle("atlas-no-repo", !(payload && payload.has_repo));
   const bar = document.getElementById("trustStatusBar");
   if (!bar) return;
   const label = (payload && payload.user_trust_label) || "Fresh";
-  if (!payload || label === "Fresh") {
+  // No active repository → the staleness bar is meaningless. Hide it so a fresh
+  // first run never shows a contradictory "Full rescan required".
+  if (!payload || payload.has_repo === false || label === "Fresh") {
     bar.style.display = "none";
     bar.innerHTML = "";
     return;

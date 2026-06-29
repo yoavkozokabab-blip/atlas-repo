@@ -1727,6 +1727,10 @@ def trust_integrity_status() -> Dict[str, Any]:
         user_label = _product.user_trust_label(status, graph_label=graph_label)
         return {
             "ok": True,
+            # Whether a repository is actively scanned. The trust/staleness bar is
+            # meaningless with no repo, so the UI hides it when this is false
+            # (avoids a contradictory "Full rescan required" on a fresh first run).
+            "has_repo": bool(_STATE.get("scan") or _STATE.get("path")),
             "trust_status": status,
             "user_trust_label": user_label,
             "targeted_refresh_available": status.get("targeted_refresh_available", False),

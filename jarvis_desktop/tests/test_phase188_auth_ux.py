@@ -20,7 +20,7 @@ def _snippet_after(marker: str, length: int = 420) -> str:
 
 
 def test_phase188_auth_layout_is_dedicated_and_polished():
-    assert '<body class="mode-beginner auth-mode auth-loading">' in INDEX
+    assert '<body class="mode-beginner auth-mode auth-loading' in INDEX
     assert 'id="auth-layout"' in INDEX
     assert 'id="app-shell"' in INDEX
     assert "body.auth-mode #app-shell{display:none !important}" in CSS
