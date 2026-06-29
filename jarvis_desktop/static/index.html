@@ -359,8 +359,19 @@
            account-status indicator lives here; account details stay in the
            user menu. -->
       <div id="homeDashboard" class="home-dashboard" style="display:none">
-        <!-- Section 1 — Welcome -->
-        <header class="home-welcome glass">
+        <!-- Section 1 — Hero. First run shows product onboarding; after a scan
+             the personalized "Welcome back" status card is shown instead. -->
+        <header class="home-welcome glass needs-no-repo">
+          <div>
+            <h2 class="home-dash-welcome">Give Cursor and Claude repo memory</h2>
+            <p class="home-tagline">Scan a local repository. Atlas builds a private map on this machine, then helps your AI agent answer repo-aware questions.</p>
+            <div class="home-hero-cta" style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn primary" type="button" onclick="showHomeScanFocus();browseRepoFolder()">Scan local repository</button>
+              <button class="btn ghost" type="button" onclick="loadDemoMode('small')">Load sample repository</button>
+            </div>
+          </div>
+        </header>
+        <header class="home-welcome glass needs-repo">
           <div>
             <h2 class="home-dash-welcome" id="homeWelcome">Welcome back</h2>
             <p class="home-tagline">Atlas helps you understand large repositories before your AI starts changing code.</p>
@@ -446,11 +457,13 @@
           <div class="mcp-setup-actions">
             <button class="btn primary" type="button" onclick="atlasMcpSetup.connectCursor()">Connect to Cursor</button>
             <button class="btn primary" type="button" onclick="atlasMcpSetup.connectClaude()">Connect to Claude Desktop</button>
-            <button class="btn ghost" type="button" onclick="atlasMcpSetup.copyConfig()">Copy MCP config</button>
             <button class="btn ghost" type="button" onclick="atlasMcpSetup.testMcp()">Test Atlas MCP</button>
             <button class="btn ghost" type="button" onclick="atlasMcpSetup.showDiagnostics()">Show diagnostics</button>
           </div>
           <pre id="mcpSetupOutput" class="code tiny mcp-setup-output" style="display:none" aria-live="polite"></pre>
+          <div class="mcp-advanced" id="mcpAdvanced" style="display:none;margin-top:10px">
+            <button class="btn ghost small" type="button" onclick="atlasMcpSetup.copyConfig()">Copy MCP config (manual setup)</button>
+          </div>
         </section>
 
         <details class="home-explore">

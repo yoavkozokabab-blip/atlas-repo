@@ -103,6 +103,8 @@ const atlasMcpSetup = (() => {
     lines.push("");
     lines.push(res.passed ? "Overall: PASS" : "Overall: FAIL");
     showOutput(lines.join("\n"));
+    const adv = document.getElementById("mcpAdvanced");
+    if (adv) adv.style.display = "flex";  // reveal manual "Copy MCP config" once diagnostics is open
     toast(res.passed ? "MCP diagnostics passed" : "MCP diagnostics found issues", res.passed ? "success" : "error");
   }
 
