@@ -189,6 +189,26 @@ def get_device_id() -> str:
 
 # ── HTTP helpers ──────────────────────────────────────────────────────────────
 
+def _looks_json(content_type: str, body: str) -> bool:
+    """True if the response is (or claims to be) JSON."""
+    if "json" in (content_type or "").lower():
+        return True
+    stripped = (body or "").lstrip()
+    return stripped.startswith("{") or stripped.startswith("[")
+
+
+def _non_json_error(url: str, status: int) -> Dict[str, Any]:
+    """Clean error for a non-JSON response (e.g. an HTML 404 page from a wrong
+    route/deployment). We NEVER surface the raw HTML body to the UI — it would
+    dump a whole error page into the login box. The message names the URL so the
+    cause (missing API route / wrong deployment) is obvious."""
+    msg = (
+        f"Atlas server returned a non-JSON response from {url}. "
+        "This usually means the desktop is calling a missing API route or the wrong deployment."
+    )
+    return {"ok": False, "_non_json": True, "_http_status": status, "error": msg, "detail": msg}
+
+
 def _call(
     method: str,
     path: str,
@@ -199,7 +219,8 @@ def _call(
     """Make an HTTP request to an accounts backend. Returns parsed JSON.
 
     `base` selects the backend; defaults to the local service. Website-auth calls
-    pass base=web_base().
+    pass base=web_base(). Non-JSON responses are converted to a clean error dict
+    (the raw body is never returned) so the desktop UI can't render an HTML page.
     """
     url = f"{base or _SERVICE_BASE}{path}"
     data = json.dumps(payload).encode() if payload is not None else None
@@ -209,18 +230,31 @@ def _call(
     req = urllib.request.Request(url, data=data, headers=headers, method=method)
     try:
         with urllib.request.urlopen(req, timeout=_CONNECT_TIMEOUT) as resp:
-            body = resp.read().decode("utf-8")
-            return json.loads(body) if body else {}
+            ctype = resp.headers.get("Content-Type", "") if resp.headers else ""
+            body = resp.read().decode("utf-8", errors="replace")
+            if not body:
+                return {}
+            if not _looks_json(ctype, body):
+                return _non_json_error(url, getattr(resp, "status", 200) or 200)
+            try:
+                return json.loads(body)
+            except (json.JSONDecodeError, ValueError):
+                return _non_json_error(url, getattr(resp, "status", 200) or 200)
     except urllib.error.HTTPError as exc:
-        body = exc.read().decode("utf-8") if exc.fp else ""
-        try:
-            err = json.loads(body)
-        except (json.JSONDecodeError, ValueError):
-            err = {"detail": body or str(exc)}
+        ctype = exc.headers.get("Content-Type", "") if exc.headers else ""
+        body = exc.read().decode("utf-8", errors="replace") if exc.fp else ""
+        if body and _looks_json(ctype, body):
+            try:
+                err = json.loads(body)
+                err["_http_status"] = exc.code
+                return err
+            except (json.JSONDecodeError, ValueError):
+                pass
+        err = _non_json_error(url, exc.code)
         err["_http_status"] = exc.code
         return err
     except (urllib.error.URLError, OSError):
-        return {"_offline": True, "detail": "accounts service unreachable"}
+        return {"_offline": True, "detail": "Atlas account service is unreachable. Check your connection and try again."}
 
 
 # ── Token management ──────────────────────────────────────────────────────────
