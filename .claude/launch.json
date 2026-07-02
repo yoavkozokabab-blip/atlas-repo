@@ -2,10 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "atlas",
-      "runtimeExecutable": "py",
-      "runtimeArgs": ["-c", "from jarvis_desktop import server; server.run(port=8802, open_browser=False)"],
-      "port": 8802
+      "name": "atlas-web",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "cd /d \"C:\\J.A.R.V.I.S\\atlas-rc1-clean\\websites\\jarvis-landing\" && npm run dev"],
+      "port": 3000
     }
   ]
 }
