@@ -16,9 +16,8 @@ $Root = (Resolve-Path (Join-Path $ScriptDir "..\..")).Path
 $Spec = Join-Path $ScriptDir "atlas.spec"
 $PackagingLib = Join-Path $Root ".phase152_packaging_lib"
 $DistDir = Join-Path $Root "dist"
-$DistAtlas = Join-Path $DistDir "Atlas"
 $WorkDir = Join-Path $Root "build\pyinstaller"
-$AtlasExe = Join-Path $DistAtlas "Atlas.exe"
+$AtlasExe = Join-Path $DistDir "Atlas\Atlas.exe"
 $InstallerDir = Join-Path $Root "packaging\installer"
 
 function Write-BuildInfo {

@@ -2,7 +2,7 @@
 /* Atlas feedback — local save + optional remote destination (ATLAS_FEEDBACK_URL). */
 (function () {
   const KEY = "atlas_feedback";
-  const LEGACY_KEY = "\u006a\u0061\u0072\u0076\u0069\u0073_feedback";
+  const LEGACY_KEY = "jarvis_feedback";
   const CATS = [
     { id: "bug", label: "Bug", icon: "🐞" },
     { id: "confusing_ui", label: "Confusing UI", icon: "🧭" },
@@ -11,7 +11,7 @@
   ];
   let selected = "general";
   let pendingContext = null;
-  let productConfig = { feedback_url_configured: false, support_email: "support@useatlas.dev" };
+  let productConfig = { feedback_url_configured: false, support_email: "atlas.repo.support@gmail.com" };
 
   function migrateLegacy() {
     try {
@@ -148,8 +148,6 @@
     const err = document.getElementById("fbErr");
     if (msg.length < 3) { err.style.display = "block"; return; }
     err.style.display = "none";
-    const sendBtn = document.getElementById("fbSend");
-    if (sendBtn) { sendBtn.disabled = true; sendBtn.textContent = "Sending…"; }
     const entry = {
       category: selected, message: msg,
       email: (document.getElementById("fbEmail").value || "").trim(),
@@ -159,36 +157,26 @@
       destination: productConfig.feedback_url_configured ? "remote_attempt" : "local",
     };
     pendingContext = null;
-    save(entry);
+    const n = save(entry);
     let remoteMsg = "";
-    let remoteSent = false;
     try {
       const r = await fetch("/api/feedback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ category: selected, message: msg, email: entry.email, page: entry.page }),
+        body: JSON.stringify({
+          category: selected,
+          message: msg,
+          email: entry.email,
+          page: entry.page,
+        }),
       });
       const data = await r.json();
       if (data && data.message) remoteMsg = data.message;
-      if (data && data.remote_sent) remoteSent = true;
-    } catch (e) {
-      remoteMsg = "Saved on this device.";
-    }
+    } catch (e) {}
     try { if (typeof track === "function") track("feedback_saved", { category: selected }); } catch (e) {}
-    // Show inline success state instead of closing immediately
-    const modal = document.querySelector("#fbBg .fb-modal");
-    if (modal) {
-      modal.innerHTML = `<div style="text-align:center;padding:24px 0">
-        <div style="font-size:36px;margin-bottom:12px">${remoteSent ? "✓" : "💾"}</div>
-        <h3 style="margin:0 0 8px">${remoteSent ? "Sent — thank you!" : "Saved"}</h3>
-        <p class="s" style="margin:0 0 16px">${remoteMsg || "Your feedback helps improve Atlas."}</p>
-        <button class="fb-primary" style="padding:10px 22px;border-radius:10px;border:none;cursor:pointer;font:700 14px Inter,sans-serif;background:linear-gradient(100deg,#6d6bff,#a06bff);color:#0a0a12" onclick="AtlasFeedback.close()">Done</button>
-      </div>`;
-    } else {
-      close();
-    }
-    document.getElementById("fbMsg") && (document.getElementById("fbMsg").value = "");
-    document.getElementById("fbEmail") && (document.getElementById("fbEmail").value = "");
+    close();
+    document.getElementById("fbMsg").value = ""; document.getElementById("fbEmail").value = "";
+    toast(remoteMsg || ("Saved locally (" + n + " note" + (n === 1 ? "" : "s") + " on this device)."));
   }
   function exportJSON() {
     const data = JSON.stringify({ exported_at: new Date().toISOString(), count: list().length, feedback: list() }, null, 2);
@@ -198,5 +186,6 @@
 
   const apiObj = { open, close, submit, list, exportJSON, openReportIssue, count: () => list().length, categories: CATS, loadConfig };
   window.AtlasFeedback = apiObj;
+  window.JarvisFeedback = apiObj;
   if (document.readyState !== "loading") inject(); else document.addEventListener("DOMContentLoaded", inject);
 })();

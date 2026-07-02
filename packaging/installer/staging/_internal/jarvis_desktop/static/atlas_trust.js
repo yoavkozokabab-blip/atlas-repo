@@ -8,7 +8,7 @@
  */
 
 const OUTPUT_MODE_KEY = "atlas_output_mode_v157";
-const UNSIGNED_BETA_KEY = "atlas_unsigned_beta_ack_v157";
+const UNSIGNED_APP_KEY = "atlas_unsigned_app_ack_v157";
 
 /* ---------------- Beginner / Advanced output mode ---------------- */
 function getOutputMode() {
@@ -155,33 +155,33 @@ function trustBlock(kind) {
   </div>`;
 }
 
-/* ---------------- SmartScreen / unsigned-beta first-launch notice ---------------- */
+/* ---------------- SmartScreen / unsigned first-launch notice ---------------- */
 function _isWindows() {
   return /windows/i.test(navigator.userAgent || "") || /win/i.test(navigator.platform || "");
 }
 
-function showUnsignedBetaNotice(force) {
+function showUnsignedAppNotice(force) {
   let acked = false;
-  try { acked = localStorage.getItem(UNSIGNED_BETA_KEY) === "1"; } catch (e) {}
+  try { acked = localStorage.getItem(UNSIGNED_APP_KEY) === "1"; } catch (e) {}
   if (acked && !force) return;
-  if (!_isWindows() && !force) { try { localStorage.setItem(UNSIGNED_BETA_KEY, "1"); } catch (e) {} return; }
-  let modal = document.getElementById("unsignedBetaModal");
+  if (!_isWindows() && !force) { try { localStorage.setItem(UNSIGNED_APP_KEY, "1"); } catch (e) {} return; }
+  let modal = document.getElementById("unsignedAppModal");
   if (!modal) {
     modal = document.createElement("div");
-    modal.id = "unsignedBetaModal";
+    modal.id = "unsignedAppModal";
     modal.className = "about-modal";
     document.body.appendChild(modal);
   }
   modal.innerHTML = `<div class="about-card glass" onclick="event.stopPropagation()">
     <p class="onboard-eyebrow">First launch</p>
-    <h2>Atlas is an unsigned beta application</h2>
-    <p class="muted">During the beta, Atlas is not yet code-signed with a paid certificate, so Windows may show a
+    <h2>Atlas is an unsigned application</h2>
+    <p class="muted">Atlas is not yet code-signed with a paid certificate, so Windows may show a
       blue <b>SmartScreen</b> warning the first time you run it. This is expected for new, unsigned software — it is
       not a sign that anything is wrong.</p>
     <h3>Why Windows shows this</h3>
     <ul class="clean about-list muted">
       <li>SmartScreen flags applications it has not seen from a known publisher.</li>
-      <li>A code-signing certificate (coming for the public release) removes the warning.</li>
+      <li>SmartScreen reputation improves as more people install and run the app.</li>
     </ul>
     <h3>How to continue safely</h3>
     <ul class="clean about-list">
@@ -190,27 +190,27 @@ function showUnsignedBetaNotice(force) {
       <li>Atlas runs entirely on your machine and does not upload your source code.</li>
     </ul>
     <div class="success-buttons">
-      <button class="btn primary" type="button" id="unsignedBetaAck">I understand — continue</button>
+      <button class="btn primary" type="button" id="unsignedAppAck">I understand — continue</button>
     </div>
   </div>`;
   modal.style.display = "grid";
   const close = function () {
     modal.style.display = "none";
-    try { localStorage.setItem(UNSIGNED_BETA_KEY, "1"); } catch (e) {}
+    try { localStorage.setItem(UNSIGNED_APP_KEY, "1"); } catch (e) {}
   };
   modal.onclick = close;
-  const btn = modal.querySelector("#unsignedBetaAck");
+  const btn = modal.querySelector("#unsignedAppAck");
   if (btn) btn.onclick = close;
 }
 
 window.setOutputMode = setOutputMode;
 window.trustBlock = trustBlock;
 window.tzConfidence = tzConfidence;
-window.showUnsignedBetaNotice = showUnsignedBetaNotice;
+window.showUnsignedAppNotice = showUnsignedAppNotice;
 
 (function trustBoot() {
   applyOutputMode(getOutputMode());
-  // Show the unsigned-beta notice once, after the welcome screen has had a chance
+  // Show the unsigned-app notice once, after the welcome screen has had a chance
   // to render, so first-time Windows users understand the SmartScreen prompt.
-  setTimeout(function () { showUnsignedBetaNotice(false); }, 1200);
+  setTimeout(function () { showUnsignedAppNotice(false); }, 1200);
 })();

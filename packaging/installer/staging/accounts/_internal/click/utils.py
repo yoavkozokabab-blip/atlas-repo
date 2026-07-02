@@ -6,7 +6,6 @@ import re
 import sys
 import typing as t
 from functools import update_wrapper
-from gettext import gettext as _
 from types import ModuleType
 from types import TracebackType
 
@@ -58,10 +57,7 @@ def make_str(value: t.Any) -> str:
 
 
 def make_default_short_help(help: str, max_length: int = 45) -> str:
-    """Returns a condensed version of help string.
-
-    :meta private:
-    """
+    """Returns a condensed version of help string."""
     # Consider only the first paragraph.
     paragraph_end = help.find("\n\n")
 
@@ -117,14 +113,6 @@ class LazyFile:
     files for writing.
     """
 
-    name: str
-    mode: str
-    encoding: str | None
-    errors: str | None
-    atomic: bool
-    _f: t.IO[t.Any] | None
-    should_close: bool
-
     def __init__(
         self,
         filename: str | os.PathLike[str],
@@ -132,12 +120,14 @@ class LazyFile:
         encoding: str | None = None,
         errors: str | None = "strict",
         atomic: bool = False,
-    ) -> None:
-        self.name = os.fspath(filename)
+    ):
+        self.name: str = os.fspath(filename)
         self.mode = mode
         self.encoding = encoding
         self.errors = errors
         self.atomic = atomic
+        self._f: t.IO[t.Any] | None
+        self.should_close: bool
 
         if self.name == "-":
             self._f, self.should_close = open_stream(filename, mode, encoding, errors)
@@ -205,10 +195,8 @@ class LazyFile:
 
 
 class KeepOpenFile:
-    _file: t.IO[t.Any]
-
     def __init__(self, file: t.IO[t.Any]) -> None:
-        self._file = file
+        self._file: t.IO[t.Any] = file
 
     def __getattr__(self, name: str) -> t.Any:
         return getattr(self._file, name)
@@ -232,7 +220,7 @@ class KeepOpenFile:
 
 
 def echo(
-    message: object = None,
+    message: t.Any | None = None,
     file: t.IO[t.Any] | None = None,
     nl: bool = True,
     err: bool = False,
@@ -287,15 +275,14 @@ def echo(
         if file is None:
             return
 
-    match message:
-        case str() | bytes() | bytearray():
-            out = message
-        case None:
-            out = ""
-        case _:
-            out = str(message)
+    # Convert non bytes/text into the native string type.
+    if message is not None and not isinstance(message, (str, bytes, bytearray)):
+        out: str | bytes | bytearray | None = str(message)
+    else:
+        out = message
 
     if nl:
+        out = out or ""
         if isinstance(out, str):
             out += "\n"
         else:
@@ -311,6 +298,7 @@ def echo(
     # would expect. Eg: you can write to StringIO for other cases.
     if isinstance(out, (bytes, bytearray)):
         binary_file = _find_binary_writer(file)
+
         if binary_file is not None:
             file.flush()
             binary_file.write(out)
@@ -342,7 +330,7 @@ def get_binary_stream(name: t.Literal["stdin", "stdout", "stderr"]) -> t.BinaryI
     """
     opener = binary_streams.get(name)
     if opener is None:
-        raise TypeError(_("Unknown standard stream '{name}'").format(name=name))
+        raise TypeError(f"Unknown standard stream '{name}'")
     return opener()
 
 
@@ -363,7 +351,7 @@ def get_text_stream(
     """
     opener = text_streams.get(name)
     if opener is None:
-        raise TypeError(_("Unknown standard stream '{name}'").format(name=name))
+        raise TypeError(f"Unknown standard stream '{name}'")
     return opener(encoding, errors)
 
 
@@ -515,8 +503,6 @@ class PacifyFlushWrapper:
     other cleanup code, and the case where the underlying file is not a broken
     pipe, all calls and attributes are proxied.
     """
-
-    wrapped: t.IO[t.Any]
 
     def __init__(self, wrapped: t.IO[t.Any]) -> None:
         self.wrapped = wrapped

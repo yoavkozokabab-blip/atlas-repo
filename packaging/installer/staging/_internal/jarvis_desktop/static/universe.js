@@ -131,11 +131,11 @@ const ATLAS_UNIVERSE = (() => {
   // bulletproof path — a human sees actual balls.
   // ----------------------------------------------------------------------
   function baseNodeColorHex(node) {
-    if (node.in_cycle) return 0x9a7bff;             // purple — cycle member
+    if (node.in_cycle) return 0x8B9DFF;             // purple — cycle member
     const pct = U.riskPercentiles;
-    if (pct?.top1?.has(node.id)) return 0xff5c7a;   // red/pink — highest risk
-    if (pct?.top5?.has(node.id)) return 0xffc24b;   // amber — elevated risk
-    if (node.is_hub) return 0x3ef0ff;               // cyan — hub
+    if (pct?.top1?.has(node.id)) return 0xE5687A;   // red/pink — highest risk
+    if (pct?.top5?.has(node.id)) return 0xD6A23B;   // amber — elevated risk
+    if (node.is_hub) return 0x5CC8BE;               // cyan — hub
     if (isSubsystemNode(node)) return 0x5b9eff;     // blue — subsystem
     return 0x6f93ff;                                // bright blue — normal module
   }
@@ -181,10 +181,10 @@ const ATLAS_UNIVERSE = (() => {
       const base = mesh.userData.baseColor ?? baseNodeColorHex(n);
       let col = base;
       let scale = 1;
-      if (blastSet && blastSet.has(n.id)) col = 0xff8a44;
-      if (blastTarget === n.id) { col = 0xff2244; scale = 1.5; }
+      if (blastSet && blastSet.has(n.id)) col = 0xD98A4A;
+      if (blastTarget === n.id) { col = 0xE5687A; scale = 1.5; }
       if (selId === n.id) { col = 0xffffff; scale = 1.6; }
-      else if (hoverId === n.id) { col = 0xbdf2ff; scale = 1.32; }
+      else if (hoverId === n.id) { col = 0xCFE6FF; scale = 1.32; }
       else if (hasFocus && !focus.has(n.id)) { col = _dimColor(base); }
       mesh.material.color.set(col);
       mesh.scale.setScalar(scale);
@@ -423,7 +423,7 @@ const ATLAS_UNIVERSE = (() => {
     });
     fg.linkDirectionalParticleWidth((l) => (l.bridge ? 1.8 : 1.2));
     fg.linkDirectionalParticleSpeed((l) => 0.004 + (l.weight || 1) * 0.0012);
-    fg.linkDirectionalParticleColor((l) => (l.bridge ? "#42f5b0" : "#78a0ff"));
+    fg.linkDirectionalParticleColor((l) => (l.bridge ? "#5CC8BE" : "#78a0ff"));
   }
 
   function scheduleHoverUpdate(fg, node, callbacks) {
@@ -451,13 +451,13 @@ const ATLAS_UNIVERSE = (() => {
 
   function nodeColor(n, active, blast) {
     const dim = U.highlightState.focus.size > 0 && !active;
-    if (blast?.target === n.id) return "#ff2244";
-    if (blast?.affected?.has(n.id)) return "#ff8a44";
-    if (n.in_cycle) return active ? "#d4b8ff" : dim ? "#4a3868" : "#9a7bff";
+    if (blast?.target === n.id) return "#E5687A";
+    if (blast?.affected?.has(n.id)) return "#D98A4A";
+    if (n.in_cycle) return active ? "#B9C4FF" : dim ? "#4a3868" : "#8B9DFF";
     const pct = U.riskPercentiles;
-    if (pct?.top1?.has(n.id)) return active ? "#ff9db0" : dim ? "#6a3040" : "#ff5c7a";
-    if (pct?.top5?.has(n.id)) return active ? "#ffe08a" : dim ? "#6a5528" : "#ffc24b";
-    if (n.is_hub) return active ? "#8af0ff" : dim ? "#1a4850" : "#3ef0ff";
+    if (pct?.top1?.has(n.id)) return active ? "#F0A6B2" : dim ? "#6a3040" : "#E5687A";
+    if (pct?.top5?.has(n.id)) return active ? "#EBCF92" : dim ? "#6a5528" : "#D6A23B";
+    if (n.is_hub) return active ? "#9FE0D6" : dim ? "#1a4850" : "#5CC8BE";
     if (isSubsystemNode(n)) return active ? "#7ec8ff" : dim ? "#2a3d58" : "#5b9eff";
     return active ? "#9eb8ff" : dim ? "#2a3558" : "#5b76c8";
   }
@@ -517,7 +517,7 @@ const ATLAS_UNIVERSE = (() => {
     if (node.in_cycle) {
       const halo = new THREE.Mesh(
         new THREE.SphereGeometry(scale * 1.55, 12, 8),
-        new THREE.MeshBasicMaterial({ color: 0x9a7bff, transparent: true, opacity: 0.14, wireframe: true })
+        new THREE.MeshBasicMaterial({ color: 0x8B9DFF, transparent: true, opacity: 0.14, wireframe: true })
       );
       group.add(halo);
     }
@@ -525,13 +525,13 @@ const ATLAS_UNIVERSE = (() => {
     if (subsystem && topRisk) {
       const outline = new THREE.LineSegments(
         new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(scale * 1.12, 0)),
-        new THREE.LineBasicMaterial({ color: 0xff5c7a, transparent: true, opacity: 0.9 })
+        new THREE.LineBasicMaterial({ color: 0xE5687A, transparent: true, opacity: 0.9 })
       );
       group.add(outline);
     } else if (node.is_hub && !subsystem) {
       const ring = new THREE.Mesh(
         new THREE.TorusGeometry(scale * 2.0, scale * 0.1, 8, 28),
-        new THREE.MeshBasicMaterial({ color: 0x3ef0ff, transparent: true, opacity: 0.55 })
+        new THREE.MeshBasicMaterial({ color: 0x5CC8BE, transparent: true, opacity: 0.55 })
       );
       ring.rotation.x = Math.PI / 2;
       group.add(ring);
@@ -621,11 +621,11 @@ const ATLAS_UNIVERSE = (() => {
     const scene = fg.scene();
     // very light fog so edges recede slightly but nodes (fog:false)
     // and the scene never wash out. Heavy fog previously hid the graph.
-    scene.fog = new THREE.FogExp2(0x070b14, 0.00035);
+    scene.fog = new THREE.FogExp2(0x0B0F14, 0.00035);
     const amb = new THREE.AmbientLight(0x446688, 1.05);
-    const key = new THREE.PointLight(0x3ef0ff, 1.45, 12000);
+    const key = new THREE.PointLight(0x5CC8BE, 1.45, 12000);
     key.position.set(120, 80, 160);
-    const fill = new THREE.PointLight(0x9a7bff, 0.85, 12000);
+    const fill = new THREE.PointLight(0x8B9DFF, 0.85, 12000);
     fill.position.set(-140, -60, -80);
     scene.add(amb, key, fill);
     try {
@@ -1029,7 +1029,7 @@ const ATLAS_UNIVERSE = (() => {
       const s = byId[l.source] || byId[l.source?.id];
       const t = byId[l.target] || byId[l.target?.id];
       if (!s || !t) return;
-      const stroke = l.bridge ? "#42f5b0" : "#5b76c8";
+      const stroke = l.bridge ? "#5CC8BE" : "#5b76c8";
       const op = l.bridge ? 0.55 : (l.opacity || 0.2);
       svg += `<line x1="${s.galaxy_x}" y1="${s.galaxy_y}" x2="${t.galaxy_x}" y2="${t.galaxy_y}" stroke="${stroke}" stroke-opacity="${op}" stroke-width="${l.bridge ? 1.2 : 0.6}"/>`;
     });
@@ -1038,7 +1038,7 @@ const ATLAS_UNIVERSE = (() => {
       const r = subsystem
         ? Math.min(8, 2.5 + Math.sqrt(Math.min(n.visual_size || n.size || 6, 14)))
         : (n.is_hub ? 5 : 2.2);
-      const fill = n.in_cycle ? "#9a7bff" : subsystem ? "#5b9eff" : n.is_hub ? "#3ef0ff" : "#5b76c8";
+      const fill = n.in_cycle ? "#8B9DFF" : subsystem ? "#5b9eff" : n.is_hub ? "#5CC8BE" : "#5b76c8";
       svg += `<circle cx="${n.galaxy_x}" cy="${n.galaxy_y}" r="${r}" fill="${fill}"/>`;
       if (subsystem || n.is_hub) {
         svg += `<text x="${n.galaxy_x + 6}" y="${n.galaxy_y - 6}" fill="#9eb8ff" font-size="8" font-family="Inter,sans-serif">${escapeXml(n.label)}</text>`;

@@ -1,5 +1,5 @@
 "use strict";
-/* trust status, update banner, version display */
+/* Phase 175B — trust status, update banner, version display */
 
 const TRUST_LABELS = {
   Fresh: "fresh",
@@ -29,7 +29,7 @@ async function atlasRenderVersionTargets() {
   document.querySelectorAll("[data-atlas-version]").forEach(el => {
     el.textContent = line || cfg.version || "—";
   });
-  const email = (cfg && cfg.support_email) || "support@useatlas.dev";
+  const email = (cfg && cfg.support_email) || "atlas.repo.support@gmail.com";
   document.querySelectorAll("[data-atlas-support-email]").forEach(el => {
     if (el.tagName === "A") {
       el.href = "mailto:" + email;
@@ -45,10 +45,15 @@ function atlasTrustStatusClass(label) {
 }
 
 function atlasRenderTrustBar(payload) {
+  // Drive first-run gating: repo-dependent UI (advanced quick actions, recent
+  // activity, output-detail toggle) is hidden via CSS until a repo is scanned.
+  document.body.classList.toggle("atlas-no-repo", !(payload && payload.has_repo));
   const bar = document.getElementById("trustStatusBar");
   if (!bar) return;
   const label = (payload && payload.user_trust_label) || "Fresh";
-  if (!payload || label === "Fresh") {
+  // No active repository → the staleness bar is meaningless. Hide it so a fresh
+  // first run never shows a contradictory "Full rescan required".
+  if (!payload || payload.has_repo === false || label === "Fresh") {
     bar.style.display = "none";
     bar.innerHTML = "";
     return;
@@ -108,7 +113,7 @@ function atlasEnhanceAboutModal() {
   if (!card) return;
   const ver = document.createElement("p");
   ver.className = "muted tiny";
-  ver.innerHTML = 'Version <span data-atlas-version>—</span> · <a data-atlas-support-email href="mailto:support@useatlas.dev">support@useatlas.dev</a>';
+  ver.innerHTML = 'Version <span data-atlas-version>—</span> · <a data-atlas-support-email href="mailto:atlas.repo.support@gmail.com">atlas.repo.support@gmail.com</a>';
   const buttons = card.querySelector(".success-buttons");
   if (buttons) card.insertBefore(ver, buttons);
   else card.appendChild(ver);

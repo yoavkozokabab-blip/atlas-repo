@@ -9,7 +9,7 @@
   <script src="vendor/three.min.js"></script>
   <script src="vendor/3d-force-graph.min.js"></script>
 </head>
-<body class="mode-beginner auth-mode auth-loading">
+<body class="mode-beginner auth-mode auth-loading atlas-no-repo">
   <div id="bg-grid"></div>
   <div id="bg-glow"></div>
 
@@ -55,11 +55,11 @@
           </div>
         </div>
 
-        <!-- REGISTER (sectioned beta application wizard) -->
+        <!-- REGISTER (sectioned account setup wizard) -->
         <div id="acc-panel-register" class="auth-panel auth-wizard" style="display:none">
           <div class="auth-wizard-head">
-            <h2 class="auth-panel-title">Apply for beta access</h2>
-            <p class="auth-panel-lead muted">Atlas beta access is manually approved. Your code stays local.</p>
+            <h2 class="auth-panel-title">Create your account</h2>
+            <p class="auth-panel-lead muted">Your code stays on your machine.</p>
             <div class="auth-progress" aria-hidden="false">
               <div class="auth-progress-label">Step <span id="acc-step-num">1</span> of 5 · <span id="acc-step-name">Account</span></div>
               <div class="auth-progress-track"><div id="acc-progress-fill" class="auth-progress-fill" style="width:20%"></div></div>
@@ -211,31 +211,31 @@
               <div class="acc-step-title">Optional notes</div>
               <div class="acc-field">
                 <label for="acc-notes">Anything else? <span class="muted tiny">optional</span></label>
-                <textarea id="acc-notes" maxlength="1000" placeholder="Anything useful for the Atlas operator to know. Do not include code, secrets, or repository paths."></textarea>
+                <textarea id="acc-notes" maxlength="1000" placeholder="Anything useful for Atlas support to know. Do not include code, secrets, or repository paths."></textarea>
               </div>
-              <p class="muted tiny">You're all set — review your answers, then submit your application.</p>
+              <p class="muted tiny">You're all set — review your answers, then create your account.</p>
             </section>
           </div>
 
           <div class="auth-wizard-footer">
             <button id="acc-back-btn" class="btn ghost" type="button" onclick="atlasAccounts.wizardBack()" style="display:none">Back</button>
             <button id="acc-next-btn" class="btn primary auth-btn-primary" type="button" onclick="atlasAccounts.wizardNext()">Next</button>
-            <button id="acc-reg-btn" class="btn primary auth-btn-primary" type="button" onclick="atlasAccounts.register()" style="display:none">Submit application</button>
+            <button id="acc-reg-btn" class="btn primary auth-btn-primary" type="button" onclick="atlasAccounts.register()" style="display:none">Create account</button>
             <button class="btn ghost auth-wizard-signin" type="button" onclick="atlasAccounts.switchPanel('login')">Sign in instead</button>
           </div>
         </div>
 
-        <!-- APPLICATION SUBMITTED (completion screen) -->
+        <!-- ACCOUNT CREATED (completion screen) -->
         <div id="acc-panel-submitted" class="auth-panel" style="display:none">
           <div class="acc-state-icon" aria-hidden="true">✅</div>
-          <h2 class="auth-panel-title">Application submitted</h2>
-          <p class="acc-state-message">Your Atlas beta application has been received.</p>
+          <h2 class="auth-panel-title">Account created</h2>
+          <p class="acc-state-message">Your Atlas account is ready.</p>
           <div class="acc-nextsteps">
             <div class="acc-nextsteps-title">Next steps</div>
             <ol>
-              <li>Wait for approval.</li>
-              <li>You'll receive beta access from the Atlas operator.</li>
-              <li>Once approved, sign in and begin using Atlas.</li>
+              
+              
+              <li>Sign in and start using Atlas.</li>
             </ol>
           </div>
           <div class="acc-actions acc-actions-stack">
@@ -243,10 +243,10 @@
           </div>
         </div>
 
-        <!-- APPLICATION SUBMIT FAILED -->
+        <!-- ACCOUNT CREATE FAILED -->
         <div id="acc-panel-submit-failed" class="auth-panel" style="display:none">
           <div class="acc-state-icon" aria-hidden="true">!</div>
-          <h2 class="auth-panel-title" id="acc-submit-failed-title">Application not submitted</h2>
+          <h2 class="auth-panel-title" id="acc-submit-failed-title">Account not created</h2>
           <p class="acc-state-message" id="acc-submit-failed-message">We could not reach the Atlas account service.</p>
           <p class="acc-state-action muted" id="acc-submit-failed-detail">Your application has not been submitted yet. Your answers are saved locally.</p>
           <div class="acc-actions acc-actions-stack">
@@ -257,7 +257,7 @@
           </div>
         </div>
 
-        <!-- ACCOUNT STATE (blocked, pending, offline, etc.) -->
+        <!-- ACCOUNT STATE (blocked, offline, etc.) -->
         <div id="acc-panel-state" class="auth-panel" style="display:none">
           <div class="acc-state-icon" id="acc-state-icon" aria-hidden="true">⚠</div>
           <h2 class="auth-panel-title" id="acc-state-title">Account unavailable</h2>
@@ -289,45 +289,56 @@
 
   <div id="app-shell">
 
-  <!-- Top bar -->
+  <!-- Top bar — LEFT logo · CENTER workflows · RIGHT controls.
+       Single row, one user menu, no duplicate account entry points. -->
   <header class="topbar glass">
-    <div class="brand" onclick="go('home')">
+    <!-- LEFT -->
+    <div class="brand" onclick="go('home')" title="Atlas — Home">
       <span class="logo-mark">◈</span>
       <span class="logo-text">ATLAS</span>
-      <span class="logo-sub">Plan changes before Claude writes them.</span>
     </div>
+
+    <!-- CENTER — core workflows -->
     <nav class="nav" id="nav">
       <button data-view="home" class="active" onclick="go('home')">Home</button>
       <button data-view="scan" onclick="go('scan')">Scan</button>
-      <button data-view="center" data-lock="1" onclick="go('center')">Codebase Map</button>
+      <button data-view="center" data-lock="1" onclick="go('center')">Map</button>
       <button data-view="build" data-lock="1" onclick="go('build')">Change Plan</button>
       <button data-view="investigate" data-lock="1" onclick="go('investigate')">Debug</button>
-      <button data-view="impact" data-lock="1" onclick="go('impact')">What breaks?</button>
-      <button data-view="export" data-lock="1" data-beta-advanced="1" class="advanced-only" onclick="go('export')" title="Repository Context — create a Change Plan first">Repository Context</button>
-      <button data-view="accounts" onclick="go('accounts')" class="nav-accounts-btn" title="Account &amp; license">Account</button>
+      <button data-view="impact" data-lock="1" onclick="go('impact')">Impact</button>
+      <button data-view="export" data-lock="1" data-advanced-feature="1" class="advanced-only" onclick="go('export')" title="Repository Context — create a Change Plan first">Repository Context</button>
+    </nav>
+
+    <!-- RIGHT — repository selector, detail mode, user menu -->
+    <div class="topbar-right">
       <span class="billing-nav" id="billingNav" style="display:none">
         <a class="nav-link" href="usage.html">Usage</a>
         <a class="nav-link" href="pricing.html">Pricing</a>
         <a class="nav-link billing-admin" href="billing_admin.html">Admin</a>
       </span>
-    </nav>
-    <div class="repo-chip" id="repoChip">No repository</div>
-    <span class="demo-badge" id="demoBadge" style="display:none">Sample repository</span>
-    <span class="demo-badge massive" id="massiveBadge" style="display:none">Large repo (sampled)</span>
-    <button class="account-chip unsigned" id="accountChip" type="button" onclick="atlasAccounts && atlasAccounts.open()" title="Account &amp; license">Sign in</button>
-    <div class="topbar-actions">
-      <div class="mode-toggle" id="modeToggle" role="group" aria-label="Output detail" title="Simple: goal, files, copy prompt. Full detail: all evidence and analysis.">
+      <button class="repo-chip" id="repoChip" type="button" onclick="go('scan')" title="Repository — click to scan or switch">No repository</button>
+      <span class="demo-badge" id="demoBadge" style="display:none">Sample repository</span>
+      <span class="demo-badge massive" id="massiveBadge" style="display:none">Large repo (sampled)</span>
+      <button class="account-chip unsigned" id="accountChip" type="button" style="display:none" onclick="atlasAccounts && atlasAccounts.open()" title="Account &amp; license">Sign in</button>
+      <div class="mode-toggle needs-repo" id="modeToggle" role="group" aria-label="Output detail" title="Simple: goal, files, copy prompt. Full detail: all evidence and analysis.">
         <button type="button" class="active" data-mode="beginner" onclick="setOutputMode('beginner')">Simple</button>
         <button type="button" data-mode="advanced" onclick="setOutputMode('advanced')">Full detail</button>
       </div>
-      <a class="btn ghost small" href="quickstart.html">Quickstart</a>
-      <details class="help-menu">
-        <summary class="btn ghost small">Help &amp; more ▾</summary>
+      <details class="help-menu user-menu" id="userMenu" style="display:none">
+        <summary class="btn ghost small" id="userMenuSummary">Account ▾</summary>
         <div class="help-menu-pop glass">
-          <button class="btn ghost small" type="button" onclick="showAboutAtlas()">About Atlas</button>
+          <button class="btn ghost small" type="button" onclick="go('accounts')">Account</button>
+          <button class="btn ghost small" type="button" onclick="atlasAccounts.openDevices()">Devices</button>
+          <button class="btn ghost small admin-only" id="userMenuAdmin" type="button" style="display:none" onclick="go('admin')">Admin Workspace</button>
+          <div class="menu-divider" role="separator"></div>
+          <a class="btn ghost small" href="quickstart.html">Quickstart</a>
+          <a class="btn ghost small" href="docs.html">Documentation</a>
           <a class="btn ghost small" href="support.html">Support</a>
-          <button class="btn ghost small" type="button" onclick="copyBetaDiagnostics()" title="Copy version and scan stats — stays on your device">Copy diagnostics</button>
+          <button class="btn ghost small" type="button" onclick="showAboutAtlas()">Help &amp; about</button>
+          <button class="btn ghost small" type="button" onclick="copyDiagnostics()" title="Copy version and scan stats — stays on your device">Copy diagnostics</button>
           <button class="btn ghost small report-issue-btn" type="button" onclick="openReportIssue()">Report an issue</button>
+          <div class="menu-divider" role="separator"></div>
+          <button class="btn ghost small" type="button" onclick="atlasAccounts.logout()">Sign out</button>
         </div>
       </details>
     </div>
@@ -344,6 +355,88 @@
 
     <!-- ===================== SCREEN 1: HOME ===================== -->
     <section class="view active" id="view-home">
+      <!-- Onboarding dashboard for signed-in users. One clear
+           account-status indicator lives here; account details stay in the
+           user menu. -->
+      <div id="homeDashboard" class="home-dashboard" style="display:none">
+        <!-- Section 1 — Hero. First run shows product onboarding; after a scan
+             the personalized "Welcome back" status card is shown instead. -->
+        <header class="home-welcome glass needs-no-repo">
+          <div>
+            <h2 class="home-dash-welcome">Give Cursor and Claude repo memory</h2>
+            <p class="home-tagline">Scan a local repository. Atlas builds a private map on this machine, then helps your AI agent answer repo-aware questions.</p>
+            <div class="home-hero-cta" style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn primary" type="button" onclick="showHomeScanFocus();browseRepoFolder()">Scan local repository</button>
+              <button class="btn ghost" type="button" onclick="loadDemoMode('small')">Load sample repository</button>
+            </div>
+          </div>
+        </header>
+        <header class="home-welcome glass needs-repo">
+          <div>
+            <h2 class="home-dash-welcome" id="homeWelcome">Welcome back</h2>
+            <p class="home-tagline">Atlas helps you understand large repositories before your AI starts changing code.</p>
+            <p class="home-repo-line muted tiny" id="homeRepoStatus">No repository scanned yet</p>
+          </div>
+          <span class="status-pill" id="homeStatusPill">—</span>
+        </header>
+
+        <!-- Section 2 — Quick Actions -->
+        <section class="home-section">
+          <h3 class="home-section-title">Quick actions</h3>
+          <div class="quick-action-cards">
+            <button class="qa-card" type="button" onclick="showHomeScanFocus();browseRepoFolder()">
+              <span class="qa-icon" aria-hidden="true">🔍</span>
+              <span class="qa-title">Scan Repository</span>
+              <span class="qa-desc">Choose a repository and build understanding.</span>
+            </button>
+            <button class="qa-card needs-repo" type="button" onclick="go('investigate')">
+              <span class="qa-icon" aria-hidden="true">🐞</span>
+              <span class="qa-title">Find bug root cause</span>
+              <span class="qa-desc">Investigate bugs and root causes.</span>
+            </button>
+            <button class="qa-card needs-repo" type="button" onclick="go('build')">
+              <span class="qa-icon" aria-hidden="true">🛠</span>
+              <span class="qa-title">Change Plan</span>
+              <span class="qa-desc">Plan a code change before implementation.</span>
+            </button>
+            <button class="qa-card needs-repo" type="button" onclick="go('impact')">
+              <span class="qa-icon" aria-hidden="true">🌐</span>
+              <span class="qa-title">Impact analysis</span>
+              <span class="qa-desc">See what breaks before you edit.</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- Section 3 — Getting Started (auto-hides once usage history exists) -->
+        <section class="home-section" id="homeGettingStarted" style="display:none">
+          <h3 class="home-section-title">Getting started</h3>
+          <ol class="getting-started-steps">
+            <li><span class="gs-step">1</span> Scan a local repository</li>
+            <li><span class="gs-step">2</span> Connect Cursor or Claude</li>
+            <li><span class="gs-step">3</span> Ask a repo-aware question</li>
+            <li><span class="gs-step">4</span> Build a Change Plan</li>
+          </ol>
+        </section>
+
+        <!-- Section 4 — Recent Activity -->
+        <section class="home-section needs-repo">
+          <h3 class="home-section-title">Recent activity</h3>
+          <div class="recent-activity-grid">
+            <div class="recent-col glass">
+              <h4 class="recent-col-title">Recent analyses</h4>
+              <div id="homeRecentAnalyses"><span class="muted tiny">No analyses yet — scan a repository to get started.</span></div>
+            </div>
+            <div class="recent-col glass">
+              <h4 class="recent-col-title">Recent repositories</h4>
+              <div id="homeRecentRepos"><span class="muted tiny">No repositories yet.</span></div>
+            </div>
+            <div class="recent-col glass">
+              <h4 class="recent-col-title">Recent exports</h4>
+              <div id="homeRecentExports"><span class="muted tiny">No exports yet.</span></div>
+            </div>
+          </div>
+        </section>
+      </div>
       <div class="hero">
         <h1 class="hero-title">ATLAS</h1>
         <p class="hero-headline">Describe a change. Get the files, order, and risks.<br>Copy one prompt to Claude. Done.</p>
@@ -357,6 +450,22 @@
         </div>
         <div id="resumeScanCard" class="resume-scan-card glass" style="display:none"></div>
         <p class="muted tiny home-actions-help">Runs locally on your machine. <a href="#" onclick="startGuidedWalkthrough();return false;">Guided tour</a> · <a href="about.html">About Atlas</a></p>
+
+        <section class="mcp-setup glass" id="mcpSetupSection" aria-labelledby="mcpSetupTitle">
+          <h2 class="home-section-title" id="mcpSetupTitle">Connect Atlas to your AI editor</h2>
+          <p class="muted tiny">One click adds Atlas to Cursor or Claude Desktop. No PowerShell or manual JSON editing required.</p>
+          <div class="mcp-setup-actions">
+            <button class="btn primary" type="button" onclick="atlasMcpSetup.connectCursor()">Connect to Cursor</button>
+            <button class="btn primary" type="button" onclick="atlasMcpSetup.connectClaude()">Connect to Claude Desktop</button>
+            <button class="btn ghost" type="button" onclick="atlasMcpSetup.testMcp()">Test Atlas MCP</button>
+            <button class="btn ghost" type="button" onclick="atlasMcpSetup.showDiagnostics()">Show diagnostics</button>
+          </div>
+          <pre id="mcpSetupOutput" class="code tiny mcp-setup-output" style="display:none" aria-live="polite"></pre>
+          <div class="mcp-advanced" id="mcpAdvanced" style="display:none;margin-top:10px">
+            <button class="btn ghost small" type="button" onclick="atlasMcpSetup.copyConfig()">Copy MCP config (manual setup)</button>
+          </div>
+        </section>
+
         <details class="home-explore">
           <summary class="ask">What can Atlas do?</summary>
           <div class="cards">
@@ -589,7 +698,7 @@
       <h2 class="vh">Change Plan</h2>
       <p class="muted tiny" style="margin:-8px 4px 14px">Describe what you want to add or change. Atlas lists affected files, implementation order, and tests — then sends a ready prompt to your AI coding tool.</p>
       <div id="readyState"></div>
-      <div id="firstBuildBanner" class="beta-notice glass" style="display:none">
+      <div id="firstBuildBanner" class="product-notice glass" style="display:none">
         <b>Your first Change Plan</b> — keep the example below or type your own feature, then click <b>Create Change Plan</b>.
       </div>
       <div class="io glass">
@@ -676,6 +785,26 @@
     </section>
 
     <!-- ===================== SCREEN: ACCOUNTS (signed-in profile) ===================== -->
+    <!-- ===================== SCREEN: ACCOUNT STATUS DASHBOARD ===================== -->
+    <!-- Shown in-app (with branding + nav) for signed-in users whose account is not active. -->
+    <section class="view" id="view-status">
+      <div class="status-dash glass" id="statusDash">
+        <div class="status-dash-icon" id="statusDashIcon" aria-hidden="true">⏳</div>
+        <h1 class="status-dash-title" id="statusDashTitle">Application received</h1>
+        <p class="status-dash-message" id="statusDashMessage"></p>
+        <ul class="status-dash-steps" id="statusDashSteps"></ul>
+        <p class="status-dash-reason muted" id="statusDashReason" style="display:none"></p>
+        <p class="status-dash-eta muted tiny" id="statusDashEta" style="display:none"></p>
+        <div class="status-dash-actions">
+          <button class="btn primary" type="button" id="statusRefreshBtn" onclick="atlasAccounts.refreshStatus()">Refresh account status</button>
+          <button class="btn ghost" type="button" id="statusReapplyBtn" style="display:none" onclick="atlasAccounts.reapply()">Reapply (coming soon)</button>
+          <a class="btn ghost" href="support.html">Contact support</a>
+          <button class="btn ghost" type="button" onclick="atlasAccounts.logout()">Sign out</button>
+        </div>
+        <p class="muted tiny status-dash-foot" id="statusDashFoot"></p>
+      </div>
+    </section>
+
     <section class="view" id="view-accounts">
       <div class="accounts-wrap glass">
         <div id="acc-panel-profile">
@@ -684,11 +813,16 @@
             <tr><th>Email</th><td id="acc-profile-email">—</td></tr>
             <tr><th>Plan</th><td id="acc-profile-plan">—</td></tr>
             <tr><th>Status</th><td id="acc-profile-status">—</td></tr>
-            <tr><th>Beta access</th><td id="acc-profile-beta">—</td></tr>
+            <tr><th>Account</th><td id="acc-profile-account">—</td></tr>
           </table>
           <div id="acc-profile-offline" class="acc-offline-warn" style="display:none"></div>
           <h3 class="acc-section-head">Your devices</h3>
           <div id="acc-device-list"><p class="muted tiny">Loading…</p></div>
+          <div id="acc-admin-entry" class="acc-admin-entry" style="display:none">
+            <h3 class="acc-section-head">Administration</h3>
+            <p class="muted tiny" style="margin:0 0 10px">You have administrator access.</p>
+            <button class="btn primary" type="button" onclick="go('admin')">Open Admin Workspace</button>
+          </div>
           <div class="acc-actions">
             <button class="btn ghost" type="button" onclick="atlasAccounts.logout()">Sign out</button>
           </div>
@@ -696,7 +830,81 @@
       </div>
     </section>
 
+    <!-- ===================== SCREEN: ADMIN CONSOLE (admin/superadmin only) ===================== -->
+    <section class="view" id="view-admin">
+      <div class="page-head">
+        <h1 class="page-title">Admin Workspace</h1>
+        <p class="page-sub">Manage account status, users, licenses, and review activity. <span id="admin-health" class="admin-health"></span></p>
+      </div>
+      <div class="admin-tabs" role="tablist">
+        <button class="admin-tab active" data-tab="overview" onclick="adminConsole.tab('overview')">Overview</button>
+        <button class="admin-tab" data-tab="status" onclick="adminConsole.tab('status')">Account Status <span class="admin-badge" id="admin-status-count"></span></button>
+        <button class="admin-tab" data-tab="users" onclick="adminConsole.tab('users')">Users</button>
+        <button class="admin-tab" data-tab="access" onclick="adminConsole.tab('access')">Licenses / Access</button>
+        <button class="admin-tab" data-tab="feedback" onclick="adminConsole.tab('feedback')">Feedback</button>
+        <button class="admin-tab" data-tab="audit" onclick="adminConsole.tab('audit')">Audit Log</button>
+        <button class="btn ghost small admin-refresh" type="button" onclick="adminConsole.refresh()">↻ Refresh</button>
+      </div>
+
+      <div class="admin-pane" id="admin-pane-overview">
+        <div class="admin-kpis" id="admin-kpis"><p class="muted tiny">Loading…</p></div>
+      </div>
+
+      <div class="admin-pane" id="admin-pane-status" hidden>
+        <div id="admin-status-list"><p class="muted tiny">Loading…</p></div>
+      </div>
+
+      <div class="admin-pane" id="admin-pane-users" hidden>
+        <div class="admin-toolbar">
+          <input id="admin-user-search" type="search" placeholder="Search by email…" oninput="adminConsole.renderUsers()" />
+          <select id="admin-user-filter" onchange="adminConsole.renderUsers()">
+            <option value="">All statuses</option>
+            <option value="needs_attention">Needs attention</option>
+            <option value="active">Active</option>
+            <option value="suspended">Suspended</option>
+            <option value="disabled">Disabled</option>
+            <option value="banned">Banned</option>
+          </select>
+        </div>
+        <div class="admin-table-wrap"><table class="admin-table">
+          <thead><tr><th>Email</th><th>Status</th><th>Role</th><th>License</th><th>Account</th><th>Devices</th><th>Last seen</th><th>Actions</th></tr></thead>
+          <tbody id="admin-users-rows"><tr><td colspan="8" class="muted" style="padding:16px">Loading…</td></tr></tbody>
+        </table></div>
+      </div>
+
+      <div class="admin-pane" id="admin-pane-access" hidden>
+        <p class="muted tiny">Manual license &amp; access management (no payments). Pick a user from the Users tab, or edit below.</p>
+        <div id="admin-access-editor"><p class="muted tiny">Select a user in the Users tab → “License”.</p></div>
+      </div>
+
+      <div class="admin-pane" id="admin-pane-feedback" hidden>
+        <div class="admin-table-wrap"><table class="admin-table">
+          <thead><tr><th>Workflow</th><th>Useful</th><th>Category</th><th>Comment (redacted)</th><th>User email</th><th>When</th></tr></thead>
+          <tbody id="admin-feedback-rows"><tr><td colspan="6" class="muted" style="padding:16px">Loading…</td></tr></tbody>
+        </table></div>
+      </div>
+
+      <div class="admin-pane" id="admin-pane-audit" hidden>
+        <div class="admin-table-wrap"><table class="admin-table">
+          <thead><tr><th>When</th><th>Action</th><th>Actor</th><th>Target</th><th>Details</th></tr></thead>
+          <tbody id="admin-audit-rows"><tr><td colspan="5" class="muted" style="padding:16px">Loading…</td></tr></tbody>
+        </table></div>
+      </div>
+    </section>
+
   </main>
+
+  <!-- Admin confirmation modal (dangerous actions) -->
+  <div id="admin-confirm" class="admin-modal" style="display:none" role="dialog" aria-modal="true">
+    <div class="admin-modal-card glass">
+      <h3 id="admin-confirm-title">Confirm</h3>
+      <p id="admin-confirm-body" class="muted"></p>
+      <div class="admin-modal-actions">
+        <button class="btn ghost" type="button" onclick="adminConsole.closeConfirm()">Cancel</button>
+        <button class="btn danger" id="admin-confirm-ok" type="button">Confirm</button>
+      </div>
+    </div>
+  </div>
 
   </div><!-- /#app-shell -->
 
@@ -704,7 +912,7 @@
 
   <div id="welcomeScreen" class="welcome-screen" style="display:none">
     <div class="welcome-card glass">
-      <p class="onboard-eyebrow">Beta</p>
+      <p class="onboard-eyebrow">Atlas</p>
       <h1 class="welcome-title">Welcome to Atlas</h1>
       <p class="muted welcome-lead">Describe a change. Atlas names the files, order, and risks. Copy one prompt to Claude. <b>Under a minute to your first plan.</b></p>
       <div class="welcome-actions">
@@ -734,7 +942,7 @@
         <li>Maps architecture and risk in an interactive Codebase Map</li>
         <li>Generates grounded <b>Change Plans</b>, <b>Debug</b> analysis, and <b>What breaks?</b> results</li>
         <li>Sends ready-to-use context to Claude, Codex, and Cursor</li>
-        <li>Stores feedback and diagnostics on your device for beta support</li>
+        <li>Stores feedback and diagnostics on your device for support</li>
       </ul>
       <h3>What Atlas does not do</h3>
       <ul class="clean about-list muted">
@@ -754,7 +962,7 @@
   <!-- onboarding card — now points users to the welcome screen flow; kept for backwards compat -->
   <div id="onboarding" class="onboarding" style="display:none">
     <div class="onboarding-card glass">
-      <p class="onboard-eyebrow">Beta</p>
+      <p class="onboard-eyebrow">Atlas</p>
       <h2>Get started</h2>
       <p class="muted">Load a sample repository to see Atlas working in under a minute — no folder path needed.</p>
       <div class="onboard-actions">
@@ -770,11 +978,12 @@
   <script src="app.js"></script>
   <script src="feedback.js"></script>
   <script>document.body.dataset.fbHideButton = "1";</script>
-  <script src="atlas_beta.js"></script>
   <script src="atlas_polish.js"></script>
   <script src="atlas_zero_friction.js"></script>
   <script src="atlas_trust.js"></script>
   <script src="atlas_product.js"></script>
   <script src="atlas_accounts.js"></script>
+  <script src="atlas_admin.js"></script>
+  <script src="atlas_mcp_setup.js"></script>
 </body>
 </html>

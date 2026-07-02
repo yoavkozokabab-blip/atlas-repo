@@ -143,8 +143,7 @@ class HTTPConnection(Mapping[str, Any], Generic[StateT]):
 
     @property
     def path_params(self) -> dict[str, Any]:
-        path_params: dict[str, Any] = self.scope.get("path_params", {})
-        return path_params
+        return self.scope.get("path_params", {})
 
     @property
     def cookies(self) -> dict[str, str]:

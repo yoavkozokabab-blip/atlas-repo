@@ -15,10 +15,10 @@
 
   const AUTH_PANELS = ['acc-panel-login', 'acc-panel-register', 'acc-panel-state', 'acc-panel-submitted', 'acc-panel-submit-failed'];
 
-  const DRAFT_KEY = 'atlas_beta_application_draft_v1';
-  const DRAFT_SESSION_KEY = 'atlas_beta_application_session_v1';
+  const DRAFT_KEY = 'atlas_account_profile_draft_v1';
+  const DRAFT_SESSION_KEY = 'atlas_account_profile_session_v1';
 
-  // Beta application wizard state
+  // Account setup wizard state
   let _regStep = 1;
   let _regWired = false;
   const _REG_STEPS = 5;
@@ -29,14 +29,13 @@
     { match: /no atlas account/i, title: 'Account not found', message: 'No Atlas account was found for this email.', action: '' },
     { match: /incorrect password/i, title: 'Incorrect password', message: 'Incorrect password. Try again or reset it.', action: '' },
     { match: /invalid email or password/i, title: 'Incorrect sign-in', message: 'No Atlas account matched that email and password.', action: 'Check the email and password, then try again.' },
-    { match: /pending|waiting for beta approval/i, title: 'Beta approval pending', message: 'Your account was created and is waiting for beta approval.', action: 'The Atlas operator will approve beta access manually.' },
-    { match: /suspended/i, title: 'Account suspended', message: 'This account is suspended. Contact the Atlas operator.', action: '' },
+    { match: /suspended/i, title: 'Account suspended', message: 'This account is suspended. Contact support.', action: '' },
     { match: /banned/i, title: 'Account banned', message: 'This account is banned and cannot access Atlas.', action: '' },
-    { match: /expired|license|not currently active/i, title: 'Access inactive', message: 'Your Atlas access is not currently active.', action: 'Contact the Atlas operator if this looks wrong.' },
-    { match: /device.*revoked|no longer authorized/i, title: 'Device revoked', message: 'This device is no longer authorized for this account.', action: 'Sign in from an approved device or contact the Atlas operator.' },
+    { match: /expired|license|not currently active/i, title: 'Access inactive', message: 'Your Atlas access is not currently active.', action: 'Contact support if this looks wrong.' },
+    { match: /device.*revoked|no longer authorized/i, title: 'Device revoked', message: 'This device is no longer authorized for this account.', action: 'Sign in from an authorized device or contact support.' },
     { match: /too many login/i, title: 'Too many attempts', message: 'Sign-in is temporarily locked after several failed attempts.', action: 'Wait 15 minutes, then try again.' },
     { match: /device limit|device_limit/i, title: 'Device limit reached', message: 'This account is already signed in on the maximum number of devices.', action: 'Sign in on an existing device and remove an old device from Your Account, or contact support.' },
-    { match: /accounts service is not running/i, title: 'Sign-in unavailable', message: 'The Atlas accounts service is not running on this machine.', action: 'Restart Atlas. If the problem persists, check support docs or contact support@useatlas.dev.' },
+    { match: /accounts service is not running/i, title: 'Sign-in unavailable', message: 'The Atlas accounts service is not running on this machine.', action: 'Restart Atlas. If the problem persists, check support docs or contact atlas.repo.support@gmail.com.' },
     { match: /network error/i, title: 'Connection problem', message: 'Atlas could not reach the local accounts service.', action: 'Check your connection and restart Atlas, then try again.' },
   ];
 
@@ -106,29 +105,29 @@
     if (code === 'service_unavailable' || /could not reach|isn't available|unreachable|network error/i.test(raw)) {
       return {
         useSubmitFailedPanel: true,
-        title: 'Application not submitted',
+        title: 'Account not created',
         message: 'We could not reach the Atlas account service.',
-        detail: 'Your application has not been submitted yet. Your answers are saved locally.',
+        detail: 'Your account has not been created yet. Your answers are saved locally.',
       };
     }
     if (code === 'duplicate_email' || /already registered|already exists/i.test(raw)) {
       return {
         title: 'Email already registered',
         message: 'An account with this email already exists.',
-        detail: res.detail || 'Your application may already be on file. Try signing in instead.',
+        detail: res.detail || 'Your account may already exist. Try signing in instead.',
       };
     }
     if (res && res.account_created && !res.submitted) {
       return {
         title: 'Account created — profile not confirmed',
-        message: 'Your Atlas account was created, but we could not confirm your beta profile was saved.',
-        detail: 'Try signing in. If your application is missing, contact support@useatlas.dev with your email.',
+        message: 'Your Atlas account was created, but we could not confirm it was saved.',
+        detail: 'Try signing in. If your account is missing, contact atlas.repo.support@gmail.com with your email.',
       };
     }
     return {
-      title: 'Application not submitted',
+      title: 'Account not created',
       message: raw,
-      detail: 'Review your answers and try again, or contact support@useatlas.dev if this continues.',
+      detail: 'Review your answers and try again, or contact atlas.repo.support@gmail.com if this continues.',
     };
   }
 
@@ -137,7 +136,7 @@
     const panel = el('acc-panel-submit-failed');
     if (!panel) return;
     panel.style.display = '';
-    if (el('acc-submit-failed-title')) el('acc-submit-failed-title').textContent = spec.title || 'Application not submitted';
+    if (el('acc-submit-failed-title')) el('acc-submit-failed-title').textContent = spec.title || 'Account not created';
     if (el('acc-submit-failed-message')) el('acc-submit-failed-message').textContent = spec.message || '';
     if (el('acc-submit-failed-detail')) el('acc-submit-failed-detail').textContent = spec.detail || '';
     _setAuthMode(true);
@@ -244,7 +243,7 @@
     return {
       title: 'Sign-in failed',
       message: text,
-      action: 'Try again or contact support@useatlas.dev if the problem continues.',
+      action: 'Try again or contact atlas.repo.support@gmail.com if the problem continues.',
     };
   }
 
@@ -255,29 +254,23 @@
     const userStatus = (_state.user && _state.user.status) || '';
 
     if (userStatus === 'suspended' || status === 'suspended') {
-      return { icon: '!', title: 'Account suspended', message: 'This account is suspended. Contact the Atlas operator.', action: 'Atlas workflows are unavailable for this account.', showSignOut: true };
+      return { icon: '!', title: 'Account suspended', message: 'This account is suspended. Contact support.', action: 'Atlas workflows are unavailable for this account.', showSignOut: true };
     }
     if (userStatus === 'banned' || status === 'banned') {
       return { icon: '!', title: 'Account banned', message: 'This account is banned and cannot access Atlas.', action: 'Atlas workflows are unavailable for this account.', showSignOut: true };
     }
-    if (status === 'pending' || userStatus === 'pending') {
-      return { icon: '...', title: 'Beta access pending', message: 'Your account was created and is waiting for beta approval.', action: 'Atlas beta access is manually approved. Your code stays local.', showSignOut: true };
-    }
     if (status === 'device_revoked') {
-      return { icon: '!', title: 'Device revoked', message: 'This device is no longer authorized for this account.', action: 'Sign in from an approved device or contact the Atlas operator.', showSignOut: true };
+      return { icon: '!', title: 'Device revoked', message: 'This device is no longer authorized for this account.', action: 'Sign in from an authorized device or contact support.', showSignOut: true };
     }
-    if (status === 'expired' || status === 'license_check_failed') {
-      return { icon: '!', title: 'Access inactive', message: 'Your Atlas access is not currently active.', action: 'Contact the Atlas operator if this looks wrong.', showSignOut: true };
+    if (status === 'expired' || status === 'past_due' || status === 'canceled' || status === 'cancelled' || status === 'trial_missing_expiry' || status === 'license_check_failed') {
+      return { icon: '!', title: 'Access inactive', message: 'Your Atlas access is not currently active.', action: 'Contact support if this looks wrong.', showSignOut: true };
     }
 
     if (userStatus === 'suspended' || status === 'suspended') {
-      return { icon: '⏸', title: 'Account suspended', message: 'Your account is suspended and Atlas features are unavailable.', action: 'Contact support@useatlas.dev to restore access.', showSignOut: true };
+      return { icon: '⏸', title: 'Account suspended', message: 'Your account is suspended and Atlas features are unavailable.', action: 'Contact atlas.repo.support@gmail.com to restore access.', showSignOut: true };
     }
     if (userStatus === 'banned' || status === 'banned') {
-      return { icon: '🚫', title: 'Account banned', message: 'Your account has been banned from Atlas.', action: 'Contact support@useatlas.dev if you believe this is an error.', showSignOut: true };
-    }
-    if (status === 'pending' || userStatus === 'pending') {
-      return { icon: '⏳', title: 'Beta access pending', message: 'Your account is registered but beta access has not been granted yet.', action: 'We will email you when your access is approved. You can contact support@useatlas.dev for status updates.', showSignOut: true };
+      return { icon: '🚫', title: 'Account banned', message: 'Your account has been banned from Atlas.', action: 'Contact atlas.repo.support@gmail.com if you believe this is an error.', showSignOut: true };
     }
     if (status === 'offline_grace_expired') {
       return { icon: '📡', title: 'Offline grace expired', message: lic.message || 'Atlas has been offline too long without verifying your license.', action: 'Reconnect to the internet and sign in again to continue.', showSignOut: true };
@@ -289,7 +282,7 @@
       return { icon: '🔑', title: 'Session expired', message: lic.message || 'Your session is no longer valid.', action: 'Sign in again to continue using Atlas.', showSignOut: true };
     }
     if (_state.user && !lic.valid && status !== 'unauthenticated') {
-      return { icon: '🔒', title: 'License inactive', message: lic.message || 'Your Atlas license is not active.', action: 'Sign in again or contact support@useatlas.dev.', showSignOut: true };
+      return { icon: '🔒', title: 'License inactive', message: lic.message || 'Your Atlas license is not active.', action: 'Sign in again or contact atlas.repo.support@gmail.com.', showSignOut: true };
     }
     return null;
   }
@@ -314,6 +307,169 @@
     document.body.classList.toggle('auth-mode', on);
     document.body.classList.toggle('app-authenticated', !on);
     document.body.classList.remove('auth-loading');
+  }
+
+  // ── Account status taxonomy + in-app dashboards ───────────────
+  // Every signed-in account resolves to exactly one status. Active accounts get the
+  // product; inactive/rejected accounts get a tailored in-app dashboard — never a
+  // pre-login access wall.
+  function _accountStatus() {
+    if (!_state) return 'unknown';
+    const user = _state.user || {};
+    const lic = _state.license || {};
+    const us = String(user.status || '').toLowerCase();
+    const ls = String(lic.status || '').toLowerCase();
+    if (_state.authenticated) {
+      return 'active';
+    }
+    if (us === 'suspended' || us === 'banned' || ls === 'suspended' || ls === 'banned') return 'blocked';
+    return 'inactive';
+  }
+
+  // Feature flag — the "Reapply" affordance is a placeholder for a future cohort
+  // and stays hidden until the reapply flow exists (Part 6).
+  const REAPPLY_ENABLED = false;
+
+  const STATUS_DASH = {
+    inactive: {
+      // Calm/neutral — never error or warning styling (Part 5).
+      tone: 'neutral',
+      icon: 'ℹ️',
+      title: 'Account not active',
+      message: 'You are signed in and your account exists — Atlas access is just not available right now.',
+      steps: [
+        { label: 'Your account exists', done: true },
+        { label: 'You signed in successfully', done: true },
+        { label: 'Atlas access is currently unavailable', done: false },
+      ],
+      showRefresh: true,
+      showReapply: false,
+      foot: 'If you think this is a mistake, contact support and we will take a look.',
+    },
+  };
+
+  function _renderStatusDashboard(status) {
+    const spec = STATUS_DASH[status] || STATUS_DASH.inactive;
+    const set = (id, val) => { const e = el(id); if (e) e.textContent = val || ''; };
+    const dash = el('statusDash');
+    if (dash) dash.className = 'status-dash glass' + (spec.tone ? ' ' + spec.tone : '');
+    set('statusDashIcon', spec.icon);
+    set('statusDashTitle', spec.title);
+    set('statusDashMessage', spec.message);
+
+    const stepsEl = el('statusDashSteps');
+    if (stepsEl) {
+      const steps = spec.steps || [];
+      stepsEl.innerHTML = steps.map(s => `<li class="${s.done ? '' : 'muted-step'}">${_escHtml(s.label)}</li>`).join('');
+      stepsEl.style.display = steps.length ? '' : 'none';
+    }
+
+    const lic = (_state && _state.license) || {};
+    const reasonEl = el('statusDashReason');
+    if (reasonEl) {
+      const reason = (status === 'inactive' && lic.message && lic.status !== 'unauthenticated') ? lic.message : '';
+      reasonEl.textContent = reason ? ('Reason: ' + reason) : '';
+      reasonEl.style.display = reason ? '' : 'none';
+    }
+
+    const etaEl = el('statusDashEta');
+    if (etaEl) { etaEl.textContent = spec.eta || ''; etaEl.style.display = spec.eta ? '' : 'none'; }
+
+    const refreshBtn = el('statusRefreshBtn');
+    if (refreshBtn) refreshBtn.style.display = spec.showRefresh ? '' : 'none';
+    const reapplyBtn = el('statusReapplyBtn');
+    if (reapplyBtn) reapplyBtn.style.display = spec.showReapply ? '' : 'none';
+    set('statusDashFoot', spec.foot);
+  }
+
+  function _recentName(it) {
+    return it.repo_name || (it.repo_path || '').split(/[\\/]/).pop() || 'repository';
+  }
+
+  function _renderHomeRecent() {
+    const aBox = el('homeRecentAnalyses');
+    const rBox = el('homeRecentRepos');
+    const xBox = el('homeRecentExports');
+    const gs = el('homeGettingStarted');
+    const homeView = el('view-home');
+    if (homeView && !homeView.classList.contains('active')) return; // only fetch when visible
+
+    api('GET', '/api/repositories/recent').then(res => {
+      const items = (res && res.items) || [];
+      // Section 3: Getting Started auto-hides once there is usage history.
+      if (gs) gs.style.display = items.length ? 'none' : '';
+
+      if (aBox) {
+        aBox.innerHTML = items.length
+          ? items.slice(0, 4).map(it => {
+              const when = it.last_scan_at ? String(it.last_scan_at).slice(0, 10) : '';
+              return `<div class="home-recent-item"><span>${_escHtml(_recentName(it))}</span><span class="muted">${_escHtml(when)}</span></div>`;
+            }).join('')
+          : '<span class="muted tiny">No analyses yet — scan a repository to get started.</span>';
+      }
+      if (rBox) {
+        const seen = {}; const repos = [];
+        items.forEach(it => { const p = it.repo_path || it.repo_name; if (p && !seen[p]) { seen[p] = 1; repos.push(it); } });
+        rBox.innerHTML = repos.length
+          ? repos.slice(0, 4).map(it => `<div class="home-recent-item"><span>${_escHtml(_recentName(it))}</span></div>`).join('')
+          : '<span class="muted tiny">No repositories yet.</span>';
+      }
+    }).catch(() => {
+      if (aBox) aBox.innerHTML = '<span class="muted tiny">No analyses yet.</span>';
+      if (rBox) rBox.innerHTML = '<span class="muted tiny">No repositories yet.</span>';
+    });
+
+    // Recent exports — local history only (no server dependency / empty-state).
+    if (xBox) {
+      let exports = [];
+      try { exports = JSON.parse(localStorage.getItem('atlas_recent_exports') || '[]'); } catch (e) {}
+      xBox.innerHTML = (exports && exports.length)
+        ? exports.slice(0, 4).map(x => `<div class="home-recent-item"><span>${_escHtml(x.label || x.target || 'export')}</span><span class="muted">${_escHtml(String(x.at || '').slice(0, 10))}</span></div>`).join('')
+        : '<span class="muted tiny">No exports yet.</span>';
+    }
+  }
+
+  const _HOME_STATUS_PILL = {
+    active: { label: 'Active', cls: '' },
+    blocked: { label: 'Suspended', cls: 'bad' },
+    inactive: { label: 'Not active', cls: 'bad' },
+  };
+
+  function _renderHomeDashboard() {
+    const dash = el('homeDashboard');
+    if (!dash) return;
+    if (!_state || !_state.signed_in) { dash.style.display = 'none'; return; }
+    dash.style.display = '';
+
+    const user = _state.user || {};
+    const lic = _state.license || {};
+    const status = _accountStatus();
+    const name = (user.email || '').split('@')[0] || 'there';
+
+    const welcome = el('homeWelcome');
+    if (welcome) welcome.textContent = `Welcome back, ${name}`;
+
+    // Single, clear account-status indicator (Part 8): status + plan in one pill.
+    const pill = el('homeStatusPill');
+    if (pill) {
+      const s = _HOME_STATUS_PILL[status] || { label: status, cls: 'warn' };
+      const plan = lic.plan || 'free';
+      const planTitle = plan.charAt(0).toUpperCase() + plan.slice(1);
+      pill.textContent = s.label + ' · ' + planTitle + (lic._offline ? ' · offline' : '');
+      pill.className = 'status-pill' + (s.cls ? ' ' + s.cls : '');
+    }
+
+    const repoEl = el('homeRepoStatus');
+    if (repoEl) {
+      const summary = window.STATE && window.STATE.summary;
+      if (summary && summary.ok) {
+        const files = summary.file_count || summary.files || 0;
+        repoEl.innerHTML = `<a href="#" onclick="go('center');return false;">${_escHtml(summary.repo_name || 'Current repository')}</a> · ${files} files`;
+      } else {
+        repoEl.textContent = 'No repository scanned yet';
+      }
+    }
+    _renderHomeRecent();
   }
 
   function _enterApp(options) {
@@ -344,7 +500,7 @@
         icon: '⚠',
         title: 'Account restricted',
         message: 'Atlas features are unavailable for this account.',
-        action: 'Contact support@useatlas.dev for help.',
+        action: 'Contact atlas.repo.support@gmail.com for help.',
         showSignOut: true,
       });
       return;
@@ -363,13 +519,20 @@
 
   function openAccountScreen() {
     refreshState().then(() => {
-      if (!_state || !_state.authenticated) {
-        const block = _licenseBlockState();
-        if (block) showAccountScreen('blocked');
-        else showAccountScreen('login');
+      if (_state && _state.authenticated) {
+        showAccountScreen('profile');
         return;
       }
-      showAccountScreen('profile');
+      // Signed in but not active: keep them in-app on their status dashboard.
+      if (_state && _state.signed_in && _accountStatus() !== 'blocked') {
+        _enterApp({ goHome: false });
+        _renderStatusDashboard(_accountStatus());
+        if (typeof go === 'function') go('status');
+        return;
+      }
+      const block = _licenseBlockState();
+      if (block) showAccountScreen('blocked');
+      else showAccountScreen('login');
     });
   }
 
@@ -397,6 +560,22 @@
     }
     if (_state.authenticated) {
       _enterApp();
+      _renderHomeDashboard();
+      return;
+    }
+    // Signed in but not yet active — route into the app to a status dashboard
+    // (with branding + nav), never the pre-login access wall.
+    if (_state.signed_in) {
+      const status = _accountStatus();
+      if (status === 'blocked') {
+        const hard = _licenseBlockState();
+        if (hard) { showAccountScreen('blocked'); return; }
+      }
+      const firstReveal = !_appRevealed;
+      _enterApp({ goHome: false });
+      _renderStatusDashboard(status);
+      _renderHomeDashboard();
+      if (firstReveal && typeof go === 'function') go('status');
       return;
     }
     const block = _licenseBlockState();
@@ -428,7 +607,9 @@
       setLoading('acc-login-btn', false);
       if (res.ok) {
         if (el('acc-login-pwd')) el('acc-login-pwd').value = '';
-        setTimeout(() => refreshState().then(() => _enterApp({ goHome: true })), 300);
+        // refreshState() routes active accounts to home and inactive/rejected
+        // accounts to the in-app status dashboard. Never stranded.
+        setTimeout(() => refreshState(), 300);
       } else {
         const err = _formatLoginError(res.error || res.detail || res.message);
         setError('acc-login-error', `${err.message} ${err.action}`, err.title);
@@ -436,7 +617,7 @@
     });
   }
 
-  // ── Beta application wizard ───────────────────────────────────────────────
+  // ── Account setup wizard ───────────────────────────────────────────────
   function _companyFieldsRelevant() {
     const dev = selectedRadio('acc-current-dev');
     const use = fieldValue('acc-project-use');
@@ -545,7 +726,7 @@
     if (el('acc-notes')) el('acc-notes').addEventListener('input', () => saveDraft(false));
   }
 
-  function collectBetaProfile() {
+  function collectAccountProfile() {
     const devValue = selectedRadio('acc-current-dev');
     const companyRelevant = _companyFieldsRelevant();
     const profile = {
@@ -563,7 +744,7 @@
     };
     if (profile.currently_developer === null) return { error: 'Choose whether you currently work as a developer.' };
     const required = ['project_use', 'company_size', 'developer_experience', 'primary_role', 'repo_size'];
-    if (required.some(key => !profile[key])) return { error: 'Complete the required beta profile fields.' };
+    if (required.some(key => !profile[key])) return { error: 'Complete the required profile fields.' };
     if (!profile.coding_tools.length) return { error: 'Select at least one main coding tool.' };
     if (!profile.atlas_help.length) return { error: 'Select what you want Atlas to help with most.' };
     if (!profile.company_name) delete profile.company_name;
@@ -584,19 +765,12 @@
     const email = el('acc-reg-email') && el('acc-reg-email').value.trim();
     const password = el('acc-reg-pwd') && el('acc-reg-pwd').value;
     const confirm = el('acc-reg-pwd2') && el('acc-reg-pwd2').value;
-    const profileResult = collectBetaProfile();
-    if (profileResult.error) {
-      setError('acc-reg-error', profileResult.error, 'Beta profile incomplete');
-      return;
-    }
-
     setLoading('acc-reg-btn', true);
     saveDraft(false);
     api('POST', '/api/accounts/register', {
       email,
       password,
       confirm_password: confirm,
-      beta_profile: profileResult.profile,
     }).then(res => {
       setLoading('acc-reg-btn', false);
       if (res.ok && res.submitted !== false) {
@@ -665,20 +839,33 @@
     document.querySelectorAll('[data-lock="1"]').forEach(btn => {
       btn.disabled = !licenseValid;
       btn.title = (!licenseValid)
-        ? 'Sign in to unlock — free for beta users'
+        ? 'Sign in to unlock'
         : (btn.dataset.origTitle || '');
     });
 
     _updateAccountChip();
   }
 
+  function _isAdmin() {
+    const role = _state && _state.user && _state.user.role;
+    return role === 'admin' || role === 'superadmin';
+  }
+
   function _updateAccountChip() {
     const chip = el('accountChip');
-    if (!chip) return;
+    const menu = el('userMenu');
+    const summary = el('userMenuSummary');
+    const adminEntry = el('userMenuAdmin');
+    const accAdminEntry = el('acc-admin-entry');
 
-    if (!_state || !_state.authenticated) {
-      chip.textContent = 'Account';
-      chip.className = 'account-chip unsigned';
+    // Show the consolidated user menu for any signed-in account (including
+    // inactive/rejected) so they always have Account + Sign out and are
+    // never dependent on the loose pre-login chip.
+    if (!_state || !_state.signed_in) {
+      if (chip) { chip.textContent = 'Account'; chip.className = 'account-chip unsigned'; chip.style.display = ''; }
+      if (menu) menu.style.display = 'none';
+      if (adminEntry) adminEntry.style.display = 'none';
+      if (accAdminEntry) accAdminEntry.style.display = 'none';
       return;
     }
 
@@ -687,13 +874,19 @@
     const email = user.email || '';
     const plan = license.plan || 'free';
     const offline = license._offline ? ' (offline)' : '';
+    const admin = _isAdmin();
 
-    chip.textContent = `${email.split('@')[0]} · ${plan}${offline}`;
-    chip.className = 'account-chip signed-in' + (license._offline ? ' offline' : '');
+    // Signed in: show the consolidated user menu, hide the loose chip.
+    if (chip) { chip.textContent = `${email.split('@')[0]} · ${plan}${offline}`; chip.className = 'account-chip signed-in' + (license._offline ? ' offline' : ''); chip.style.display = 'none'; }
+    if (menu) menu.style.display = '';
+    if (summary) summary.textContent = `${email.split('@')[0]}${admin ? ' · admin' : ''} ▾`;
+    if (adminEntry) adminEntry.style.display = admin ? '' : 'none';
+    if (accAdminEntry) accAdminEntry.style.display = admin ? '' : 'none';
+    document.body.classList.toggle('role-admin', admin);
   }
 
   function _populateProfile() {
-    if (!_state || !_state.authenticated) return;
+    if (!_state || !_state.signed_in) return;
     const user = _state.user || {};
     const license = _state.license || {};
 
@@ -705,9 +898,6 @@
 
     const statusEl = el('acc-profile-status');
     if (statusEl) statusEl.textContent = license.status || user.status || '—';
-
-    const betaEl = el('acc-profile-beta');
-    if (betaEl) betaEl.textContent = user.beta_flag ? 'Yes' : 'No';
 
     const offlineEl = el('acc-profile-offline');
     if (offlineEl) {
@@ -728,6 +918,41 @@
     _pollTimer = setInterval(() => refreshState(), POLL_INTERVAL_MS);
   }
 
+  // Re-check account status against the server without sign out / sign in.
+  function refreshStatus() {
+    const btn = el('statusRefreshBtn');
+    let orig;
+    if (btn) { orig = btn.textContent; btn.disabled = true; btn.textContent = 'Checking…'; }
+    return refreshState().then(() => {
+      if (_state && _state.authenticated) {
+        _enterApp({ goHome: true });
+        _renderHomeDashboard();
+        if (typeof toast === 'function') toast('Your Atlas account is now active 🎉', 'success');
+      } else {
+        const status = _accountStatus();
+        _renderStatusDashboard(status);
+        _renderHomeDashboard();
+        if (typeof toast === 'function') toast('Status checked — no change yet.', 'info');
+      }
+    }).finally(() => {
+      if (btn) { btn.disabled = false; btn.textContent = orig || 'Refresh account status'; }
+    });
+  }
+
+  function reapply() {
+    if (typeof toast === 'function') toast('Reapplying will be available in a future release.', 'info');
+  }
+
+  // User-menu "Devices": open the account view and bring the device list into view.
+  function openDevices() {
+    if (typeof go === 'function') go('accounts');
+    refreshState().then(() => _populateProfile());
+    setTimeout(() => {
+      const list = el('acc-device-list');
+      if (list && list.scrollIntoView) { try { list.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {} }
+    }, 150);
+  }
+
   function init() {
     restoreDraft();
     refreshState().finally(() => {
@@ -739,8 +964,13 @@
     if (chip) chip.addEventListener('click', openAccountScreen);
 
     document.addEventListener('atlas:viewchange', e => {
-      if (e.detail && e.detail.view === 'accounts') {
+      if (!e.detail) return;
+      if (e.detail.view === 'accounts') {
         refreshState().then(() => _populateProfile());
+      } else if (e.detail.view === 'home') {
+        _renderHomeDashboard();
+      } else if (e.detail.view === 'status') {
+        _renderStatusDashboard(_accountStatus());
       }
     });
   }
@@ -758,9 +988,23 @@
     retrySubmit: retrySubmit,
     restoreDraft: restoreDraft,
     refresh: refreshState,
+    refreshStatus: refreshStatus,
+    reapply: reapply,
+    openDevices: openDevices,
+    accountStatus: _accountStatus,
     isAuthenticated: () => !!( _state && _state.authenticated),
+    isSignedIn: () => !!( _state && _state.signed_in),
+    isAdmin: _isAdmin,
     requireAccess: () => {
       if (_state && _state.authenticated) return true;
+      // Signed-in but not-active users are kept inside the app on their status
+      // dashboard rather than bounced to a pre-login wall.
+      if (_state && _state.signed_in && _accountStatus() !== 'blocked') {
+        _enterApp({ goHome: false });
+        _renderStatusDashboard(_accountStatus());
+        if (typeof go === 'function') go('status');
+        return false;
+      }
       const block = _licenseBlockState();
       if (block) showAccountScreen('blocked');
       else showAccountScreen('login');

@@ -1,4 +1,4 @@
-# Atlas — Quick start (beta)
+# Atlas — Quick start
 
 **Atlas maps your repository locally and helps you plan changes — it does not write or apply code.**
 
@@ -9,14 +9,10 @@
 3. In the browser, click **Load Sample Repository** (fastest path to your first Build Plan).
 4. Open **Build Plan**, keep the example text, click **Generate Change Plan**.
 
-## macOS / Linux
+## Platform support
 
-```bash
-cd path/to/local_jarvis
-python3 run_atlas.py
-```
-
-Then open `http://127.0.0.1:8777/` and use **Load Sample Repository**.
+Atlas is currently packaged for Windows. macOS and Linux installers are not supported in
+this release.
 
 ## Do not do this
 
@@ -25,7 +21,7 @@ Then open `http://127.0.0.1:8777/` and use **Load Sample Repository**.
 
 ## If something fails
 
-- Open **Support** in the app (or `support.html`) → **Download support bundle (.zip)** and send it to your beta contact.
+- Open **Support** in the app (or `support.html`) → **Download support bundle (.zip)** and send it to Atlas support.
 - Check Python: `py -3 --version` (Windows) or `python3 --version` (Mac/Linux).
 
 ## What to do with Export

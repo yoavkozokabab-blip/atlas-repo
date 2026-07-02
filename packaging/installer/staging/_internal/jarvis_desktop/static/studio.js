@@ -34,7 +34,7 @@ function setDots(active, total) {
 }
 
 /* ---- 3D graph ---- */
-function riskColor(s) { return s >= 50 ? "#ff5c7a" : s >= 25 ? "#ffbe5c" : s >= 12 ? "#9a8bff" : "#6bd5ff"; }
+function riskColor(s) { return s >= 50 ? "#E5687A" : s >= 25 ? "#D6A23B" : s >= 12 ? "#8B9DFF" : "#7AA2F7"; }
 function buildGraph() {
   const host = document.getElementById("graph");
   if (typeof ForceGraph3D === "undefined" || !S.data || !(S.data.nodes || []).length) {

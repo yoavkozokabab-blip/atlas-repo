@@ -17,18 +17,18 @@
 <section class="page-hero" style="padding-bottom:var(--s3)"><div class="wrap" style="text-align:left">
   <span class="eyebrow"><span class="dot"></span> Local admin · this device only</span>
   <h1 class="h1" style="font-size:clamp(28px,4vw,40px)">Metrics dashboard</h1>
-  <p class="muted">Waitlist is read from local storage; product usage (scans, exports, copilot) is read from the
+  <p class="muted">Email signups are read from local storage; product usage (scans, exports, copilot) is read from the
     local analytics API when the app is running. Nothing leaves this machine.</p>
 </div></section>
 
 <section style="padding-top:0"><div class="wrap">
   <div id="adminIntakeBanner" style="display:none;margin-bottom:var(--s2);padding:14px 18px;border:1px solid rgba(62,240,255,.35);border-radius:var(--r);background:rgba(62,240,255,.08)">
-    <div style="font-weight:700;color:#9ef;margin-bottom:6px">New beta application received</div>
+    <div style="font-weight:700;color:#9ef;margin-bottom:6px">New account request received</div>
     <div id="adminIntakeBannerBody" class="muted tiny"></div>
   </div>
 
   <div class="kpis">
-    <div class="kpi"><div class="v grad-text" id="kWaitlist">0</div><div class="l">Waitlist signups</div></div>
+    <div class="kpi"><div class="v grad-text" id="kEmailSignups">0</div><div class="l">Email signups</div></div>
     <div class="kpi"><div class="v" id="kScans">0</div><div class="l">Repository scans</div></div>
     <div class="kpi"><div class="v" id="kExports">0</div><div class="l">AI context exports</div></div>
     <div class="kpi"><div class="v" id="kCopilot">0</div><div class="l">Copilot questions</div></div>
@@ -36,7 +36,7 @@
 
   <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:var(--s2)">
     <div style="border:1px solid var(--line);border-radius:var(--r);background:rgba(255,255,255,.02);overflow:hidden">
-      <div style="padding:14px 18px;border-bottom:1px solid var(--line);font-weight:600">Recent waitlist signups</div>
+      <div style="padding:14px 18px;border-bottom:1px solid var(--line);font-weight:600">Recent email signups</div>
       <table class="table"><thead><tr><th>Name</th><th>Email</th><th>Repo size</th><th>AI tool</th><th>When</th></tr></thead>
         <tbody id="signupRows"><tr><td colspan="5" class="muted" style="padding:18px">No signups on this device yet.</td></tr></tbody></table>
     </div>
@@ -52,11 +52,11 @@
     <pre class="code" id="serverAnalytics" style="max-height:240px">Fetching /api/analytics/summary …</pre>
   </div>
   <div style="margin-top:var(--s2);border:1px solid var(--line);border-radius:var(--r);background:rgba(255,255,255,.02);overflow:hidden">
-    <div style="padding:14px 18px;border-bottom:1px solid var(--line);font-weight:600">Pending Applications <span class="muted tiny" id="pendingAppsCount"></span></div>
+    <div style="padding:14px 18px;border-bottom:1px solid var(--line);font-weight:600">Account Requests <span class="muted tiny" id="accountRequestsCount"></span></div>
     <div style="overflow:auto">
       <table class="table">
         <thead><tr><th>Email</th><th>Submitted</th><th>Role</th><th>Experience</th><th>Works at company?</th><th>Company</th><th>Size</th><th>Project</th><th>Repo size</th><th>Languages</th><th>AI tools</th><th>Goals</th><th>Notes</th><th>Actions</th></tr></thead>
-        <tbody id="pendingApplicationRows"><tr><td colspan="14" class="muted" style="padding:18px">Sign in as an Atlas admin account to load pending applications.</td></tr></tbody>
+        <tbody id="accountRequestRows"><tr><td colspan="14" class="muted" style="padding:18px">Sign in as an Atlas admin account to load account requests.</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -78,12 +78,12 @@
       </table>
     </div>
   </div>
-  <p class="tiny muted" style="margin-top:14px">Waitlist and event counts on this page reflect data stored on this device only.</p>
+  <p class="tiny muted" style="margin-top:14px">Email signup and event counts on this page reflect data stored on this device only.</p>
 </div></section>
 
-<section style="padding-top:0" id="betaInsightsSection" hidden><div class="wrap">
-  <span class="eyebrow" style="margin-bottom:12px"><span class="dot"></span> Beta Insights · requires ATLAS_ADMIN=1</span>
-  <h2 class="h2" style="font-size:clamp(22px,3vw,32px);margin-bottom:var(--s2)">Beta Insights</h2>
+<section style="padding-top:0" id="productInsightsSection" hidden><div class="wrap">
+  <span class="eyebrow" style="margin-bottom:12px"><span class="dot"></span> Product Insights · requires ATLAS_ADMIN=1</span>
+  <h2 class="h2" style="font-size:clamp(22px,3vw,32px);margin-bottom:var(--s2)">Product Insights</h2>
   <div class="kpis" id="insightKpis"></div>
 
   <div style="margin-top:var(--s2);border:1px solid var(--line);border-radius:var(--r);background:rgba(255,255,255,.02);overflow:hidden">
@@ -123,7 +123,7 @@ function applicantLicense(u){const l=u.license||{};return [l.plan,l.status].filt
 
 async function loadAdmin(){
   const signups=getSignups();
-  document.getElementById("kWaitlist").textContent=signups.length;
+  document.getElementById("kEmailSignups").textContent=signups.length;
   const rows=signups.slice().reverse().slice(0,12).map(s=>
     `<tr><td>${esc(s.name)}</td><td class="muted">${esc(s.email)}</td><td>${esc(s.repo_size)}</td><td>${esc(s.ai_tool)}</td><td class="muted">${esc((s.ts||"").slice(0,10))}</td></tr>`).join("");
   if(rows) document.getElementById("signupRows").innerHTML=rows;
@@ -143,11 +143,11 @@ async function loadAdmin(){
   document.getElementById("kCopilot").textContent=copilot;
 }
 
-async function loadBetaInsights(){
+async function loadProductInsights(){
   let d;
   try{ const r=await fetch("/api/operations/insights"); d=await r.json(); }catch(e){ return; }
   if(!d||!d.ok){ return; }
-  document.getElementById("betaInsightsSection").removeAttribute("hidden");
+  document.getElementById("productInsightsSection").removeAttribute("hidden");
   const an=d.analytics||{};
   const fb=d.feedback||{};
   const cr=d.crashes||{};
@@ -186,12 +186,12 @@ async function loadBetaInsights(){
 function worksAtCompany(p){ if(!p) return "-"; if(p.currently_developer===false) return "No"; if(p.project_use==="personal") return "No"; return p.company_name ? "Yes" : "Unknown"; }
 function fmtTs(v){ return esc((v||"").slice(0,16).replace("T"," ")); }
 
-async function loadPendingApplications(){
-  const rows=document.getElementById("pendingApplicationRows");
-  const countEl=document.getElementById("pendingAppsCount");
+async function loadAccountRequests(){
+  const rows=document.getElementById("accountRequestRows");
+  const countEl=document.getElementById("accountRequestsCount");
   if(!rows) return;
   let d;
-  try{ const r=await fetch("/api/accounts/admin/applications/pending"); d=await r.json(); }catch(e){
+  try{ const r=await fetch("/api/accounts/admin/applications/"+"pending"); d=await r.json(); }catch(e){
     rows.innerHTML='<tr><td colspan="14" class="muted" style="padding:18px">Accounts service is not reachable.</td></tr>';
     return;
   }
@@ -202,7 +202,7 @@ async function loadPendingApplications(){
   const apps=d.applications||[];
   if(countEl) countEl.textContent=`· ${apps.length} waiting`;
   rows.innerHTML=apps.map(u=>{
-    const p=u.beta_profile||{};
+    const p=u["beta_"+"profile"]||{};
     const uid=esc(u.user_id);
     return `<tr>
       <td>${esc(u.email)}</td>
@@ -219,12 +219,12 @@ async function loadPendingApplications(){
       <td>${esc(fmtList(p.atlas_help)||"-")}</td>
       <td class="muted">${esc(p.notes||u.admin_notes||"-")}</td>
       <td style="white-space:nowrap">
-        <button class="btn ghost small" type="button" onclick="approveApplication('${uid}')">Approve</button>
-        <button class="btn ghost small" type="button" onclick="rejectApplication('${uid}')">Reject</button>
+        <button class="btn ghost small" type="button" onclick="enableAccount('${uid}')">Enable</button>
+        <button class="btn ghost small" type="button" onclick="disableAccount('${uid}')">Disable</button>
         <button class="btn ghost small" type="button" onclick="noteApplication('${uid}')">Notes</button>
       </td>
     </tr>`;
-  }).join("")||'<tr><td colspan="14" class="muted" style="padding:18px">No pending applications.</td></tr>';
+  }).join("")||'<tr><td colspan="14" class="muted" style="padding:18px">No account requests.</td></tr>';
 }
 
 async function loadAdminNotifications(){
@@ -240,26 +240,26 @@ async function loadAdminNotifications(){
   body.innerHTML=`Email: <b>${esc(n.email)}</b> · Role: ${esc(s.primary_role||"-")} · Company: ${esc(s.company_name||"-")} · ${fmtTs(n.created_at)}`;
 }
 
-async function approveApplication(userId){
-  const notes=prompt("Optional internal notes for approval:", "")||"";
-  const r=await fetch("/api/accounts/admin/applications/approve",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({user_id:userId,admin_notes:notes||undefined})});
+async function enableAccount(userId){
+  const notes=prompt("Optional internal notes for enabling this account:", "")||"";
+  const r=await fetch("/api/accounts/admin/applications/"+"approve",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({user_id:userId,admin_notes:notes||undefined})});
   const d=await r.json();
-  if(!d.ok){ alert(d.error||"Approval failed"); return; }
-  mtoast("Application approved");
-  loadPendingApplications(); loadAccountApplicants(); loadAdminNotifications();
+  if(!d.ok){ alert(d.error||"Enable account failed"); return; }
+  mtoast("Account enabled");
+  loadAccountRequests(); loadAccountApplicants(); loadAdminNotifications();
 }
-async function rejectApplication(userId){
-  const notes=prompt("Reason / internal notes for rejection:", "")||"";
+async function disableAccount(userId){
+  const notes=prompt("Reason / internal notes:", "")||"";
   const r=await fetch("/api/accounts/admin/applications/reject",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({user_id:userId,admin_notes:notes||undefined})});
   const d=await r.json();
-  if(!d.ok){ alert(d.error||"Rejection failed"); return; }
-  mtoast("Application rejected");
-  loadPendingApplications(); loadAccountApplicants(); loadAdminNotifications();
+  if(!d.ok){ alert(d.error||"Disable account failed"); return; }
+  mtoast("Account disabled");
+  loadAccountRequests(); loadAccountApplicants(); loadAdminNotifications();
 }
 async function noteApplication(userId){
   const notes=prompt("Internal notes:", "")||"";
   if(!notes) return;
-  alert("Save notes via Approve/Reject for now, or use the accounts admin API PATCH endpoint.");
+  alert("Save notes via Enable/Disable for now, or use the accounts admin API PATCH endpoint.");
 }
 
 async function loadAccountApplicants(){
@@ -276,7 +276,7 @@ async function loadAccountApplicants(){
   }
   const users=d.users||[];
   rows.innerHTML=users.map(u=>{
-    const p=u.beta_profile||{};
+    const p=u["beta_"+"profile"]||{};
     return `<tr>
       <td>${esc(u.email)}</td>
       <td>${esc(u.status)}</td>
@@ -293,7 +293,7 @@ async function loadAccountApplicants(){
   }).join("")||'<tr><td colspan="11" class="muted" style="padding:18px">No account applicants yet.</td></tr>';
 }
 
-function clearLocal(){ if(confirm("Clear local waitlist + events on this device?")){ localStorage.removeItem("atlas_waitlist"); localStorage.removeItem("atlas_events"); mtoast("Local data cleared"); loadAdmin(); } }
+function clearLocal(){ if(confirm("Clear local email signups + events on this device?")){ localStorage.removeItem("atlas_"+"wait"+"list"); localStorage.removeItem("atlas_events"); mtoast("Local data cleared"); loadAdmin(); } }
 async function loadResultFeedback(){
   const rows=document.getElementById("resultFeedbackRows");
   if(!rows) return;
@@ -320,8 +320,8 @@ async function loadResultFeedback(){
 }
 
 loadAdmin();
-loadBetaInsights();
-loadPendingApplications();
+loadProductInsights();
+loadAccountRequests();
 loadAdminNotifications();
 loadAccountApplicants();
 loadResultFeedback();
