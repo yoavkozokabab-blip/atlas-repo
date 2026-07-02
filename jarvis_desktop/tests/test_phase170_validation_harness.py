@@ -12,6 +12,8 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 _HARNESS = ROOT / "benchmarks" / "phase170_real_llm_validation.py"
+if not _HARNESS.exists():
+    pytest.skip("benchmarks harness is not shipped in the product repo", allow_module_level=True)
 _spec = importlib.util.spec_from_file_location("phase170_harness", _HARNESS)
 assert _spec and _spec.loader
 phase170 = importlib.util.module_from_spec(_spec)

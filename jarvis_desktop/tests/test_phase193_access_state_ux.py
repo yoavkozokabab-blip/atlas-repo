@@ -101,6 +101,8 @@ _LIB = os.path.join(Path(__file__).resolve().parents[2], "accounts_service", ".l
 if _LIB not in sys.path:
     sys.path.insert(0, _LIB)
 
+pytest.importorskip("accounts_service", reason="accounts_service is dev-only; not shipped in the product repo")
+
 from fastapi.testclient import TestClient  # noqa: E402
 from accounts_service.database import Base, SessionLocal, engine  # noqa: E402
 from accounts_service.main import app  # noqa: E402

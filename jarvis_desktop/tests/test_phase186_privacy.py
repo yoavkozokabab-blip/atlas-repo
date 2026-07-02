@@ -30,6 +30,8 @@ if _ROOT not in sys.path:
 os.environ.setdefault("ATLAS_ACCOUNTS_DB", "sqlite:///./test_privacy_186.db")
 os.environ.setdefault("ATLAS_JWT_SECRET", "privacy-test-secret-186")
 
+pytest.importorskip("accounts_service", reason="accounts_service is dev-only; not shipped in the product repo")
+
 from fastapi.testclient import TestClient
 from accounts_service.main import app
 from accounts_service.database import Base, engine

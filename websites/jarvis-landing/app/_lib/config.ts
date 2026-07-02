@@ -1,21 +1,43 @@
 import crypto from "node:crypto";
+import fs from "node:fs";
+import path from "node:path";
 
 // Server-only configuration. Reads from environment; NEVER hardcodes secrets.
 function csv(v: string | undefined): string[] {
   return (v || "").split(",").map((s) => s.trim().toLowerCase()).filter(Boolean);
 }
 
-// AUTH_SECRET must be set in production. When unset (test/dev), we use an
-// ephemeral per-process secret (sessions reset on restart) and warn — we never
-// fall back to a hardcoded constant.
+// AUTH_SECRET must be set in production — a random per-process fallback would
+// silently invalidate every session on each cold start (and differ across
+// serverless instances), so we fail fast there instead. In dev/test the secret
+// is persisted under the data dir: Next dev compiles each route into its own
+// module graph, so a purely in-memory secret would differ between the register
+// route and the session check and every sign-up would bounce back to /login.
 let _ephemeral = "";
 function ephemeralSecret(): string {
+  if (process.env.NODE_ENV === "production") {
+    throw new Error(
+      "[atlas] AUTH_SECRET is not set. Set it in the host environment — sessions cannot work without a stable signing secret."
+    );
+  }
   if (!_ephemeral) {
-    _ephemeral = crypto.randomBytes(32).toString("hex");
-    if (process.env.NODE_ENV !== "production") {
-      console.warn(
-        "[atlas] AUTH_SECRET not set — using an ephemeral dev secret. Set AUTH_SECRET in .env.local for stable sessions."
-      );
+    const dir = process.env.ATLAS_WEB_DATA_DIR || ".data";
+    const file = path.join(dir, ".dev_auth_secret");
+    try {
+      _ephemeral = fs.readFileSync(file, "utf8").trim();
+    } catch {
+      /* first run — generate below */
+    }
+    if (!_ephemeral) {
+      _ephemeral = crypto.randomBytes(32).toString("hex");
+      try {
+        fs.mkdirSync(dir, { recursive: true });
+        fs.writeFileSync(file, _ephemeral, { mode: 0o600 });
+      } catch {
+        console.warn(
+          "[atlas] AUTH_SECRET not set and the dev secret could not be persisted — sessions will reset on restart."
+        );
+      }
     }
   }
   return _ephemeral;
