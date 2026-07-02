@@ -308,6 +308,37 @@ def get_system_identity(*, data_dir: Optional[str] = None) -> Dict[str, Any]:
 # Analytics event pipeline
 # --------------------------------------------------------------------------
 
+_ANALYTICS_TO_ACCOUNTS: Dict[str, tuple] = {
+    "app_started": ("app_started", {"launches": 1}),
+    "scan_completed": ("scan_completed", {"scans": 1}),
+    "change_plan_generated": ("change_plan_generated", {"change_plans": 1}),
+    "debug_generated": ("debug_generated", {"debug_runs": 1}),
+    "what_breaks_generated": ("what_breaks_generated", {"what_breaks_runs": 1}),
+    "export_copied": ("export_copied", {"exports": 1}),
+    "feedback_saved": ("feedback_submitted", {}),
+}
+
+_ACQUISITION_FROM_ANALYTICS: Dict[str, str] = {
+    "app_started": "app_installed",
+    "scan_completed": "first_scan",
+}
+
+
+def _bridge_accounts_telemetry(event: str) -> None:
+    """Best-effort mirror of local analytics into accounts service (Phase 199)."""
+    try:
+        from . import accounts_client
+        mapping = _ANALYTICS_TO_ACCOUNTS.get(event)
+        if mapping:
+            event_type, counters = mapping
+            accounts_client.send_analytics_event(event_type, PRODUCT_VERSION, **counters)
+        stage = _ACQUISITION_FROM_ANALYTICS.get(event)
+        if stage:
+            accounts_client.record_acquisition_event(stage)
+    except Exception:
+        pass
+
+
 def pipeline_track_event(event: str, **properties: Any) -> Dict[str, Any]:
     """Enrich and persist analytics events with installation identity."""
     name = (event or "").strip()
@@ -324,6 +355,7 @@ def pipeline_track_event(event: str, **properties: Any) -> Dict[str, Any]:
         **{k: v for k, v in safe_props.items() if v is not None},
     }
     result = analytics.track_event(name, **enriched)
+    _bridge_accounts_telemetry(name)
     if name in {"scan_crash", "app_crash"}:
         record_crash(
             name,

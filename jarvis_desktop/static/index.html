@@ -95,6 +95,14 @@
                 </div>
                 <div id="acc-reg-pwd2-msg" class="acc-field-error" role="alert"></div>
               </div>
+              <div class="acc-field">
+                <label for="acc-invite-code">Invite code <span class="muted tiny">optional</span></label>
+                <div class="acc-input-wrap">
+                  <span class="acc-input-icon" aria-hidden="true">🎟</span>
+                  <input id="acc-invite-code" type="text" autocomplete="off" placeholder="Private beta invite" maxlength="32" />
+                </div>
+                <div id="acc-invite-msg" class="acc-field-hint muted tiny"></div>
+              </div>
             </section>
 
             <!-- SECTION 2 — Developer Profile -->
@@ -730,6 +738,8 @@
             <div class="export-why-title">Repository Context</div>
             <p>Use this for a repo-wide context packet. For a specific feature or bug — use <b>Copy for Claude</b> on the Change Plan or Debug screen instead.</p>
           </div>
+          <label>Task</label>
+          <textarea id="agentTask" rows="4" placeholder="e.g. Fix login token replay in the desktop accounts client"></textarea>
           <label>Tool</label>
           <div class="seg" id="segTarget">
             <button class="active" data-v="claude">Claude</button>
@@ -743,10 +753,27 @@
           </div>
           <div class="tok-est"><span class="muted" title="Rough size estimate (characters ÷ 4)">Approximate size</span><span class="tok-big" id="tokEst">—</span></div>
           <div class="copy-row">
-            <button class="btn primary" id="copyExportBtn" onclick="copyExport()">Copy for Claude</button>
+            <button class="btn primary" id="copyExportBtn" onclick="generateAgentExport()">Generate task context</button>
+            <button class="btn ghost" onclick="copyExport()">Copy current</button>
             <button class="btn ghost" onclick="saveExport()">Download Markdown</button>
             <button class="btn ghost" onclick="downloadWorkflowMarkdownBundle()">Download workflow Markdown</button>
           </div>
+          <div class="copy-row">
+            <button class="btn ghost" type="button" onclick="copyForTarget('claude')">Copy for Claude</button>
+            <button class="btn ghost" type="button" onclick="copyForTarget('cursor')">Copy for Cursor</button>
+            <button class="btn ghost" type="button" onclick="copyForTarget('codex')">Copy for Codex</button>
+          </div>
+          <div class="copy-row">
+            <button class="btn ghost" type="button" onclick="loadClaudeIntegration()">Connect Claude</button>
+            <button class="btn ghost" type="button" onclick="copyClaudeMcpConfig()">Copy MCP config</button>
+            <button class="btn ghost" type="button" onclick="testClaudeMcp()">Test MCP</button>
+          </div>
+          <div class="copy-row">
+            <button class="btn ghost" type="button" onclick="writeCursorRule()">Write Cursor rule</button>
+            <button class="btn ghost" type="button" onclick="writeClaudeCodeBlock()">Update CLAUDE.md block</button>
+          </div>
+          <p class="muted tiny">Task exports stay local and do not include source bodies. Claude config writing requires confirmation and preserves existing MCP servers.</p>
+          <pre id="claudeMcpConfig" class="code tiny" style="max-height:180px;display:none"></pre>
           <p class="muted tiny">Token numbers are estimates (chars/4). No API keys required — copy &amp; paste into your tool.</p>
         </div>
         <div class="glass preview">
@@ -815,6 +842,7 @@
         <button class="admin-tab" data-tab="pending" onclick="adminConsole.tab('pending')">Pending <span class="admin-badge" id="admin-pending-count"></span></button>
         <button class="admin-tab" data-tab="users" onclick="adminConsole.tab('users')">Users</button>
         <button class="admin-tab" data-tab="access" onclick="adminConsole.tab('access')">Licenses / Access</button>
+        <button class="admin-tab" data-tab="launch" onclick="adminConsole.tab('launch')">Launch Readiness</button>
         <button class="admin-tab" data-tab="feedback" onclick="adminConsole.tab('feedback')">Feedback</button>
         <button class="admin-tab" data-tab="audit" onclick="adminConsole.tab('audit')">Audit Log</button>
         <button class="btn ghost small admin-refresh" type="button" onclick="adminConsole.refresh()">↻ Refresh</button>
@@ -851,10 +879,14 @@
         <div id="admin-access-editor"><p class="muted tiny">Select a user in the Users tab → “License”.</p></div>
       </div>
 
+      <div class="admin-pane" id="admin-pane-launch" hidden>
+        <div id="admin-launch-root"><p class="muted tiny">Loading…</p></div>
+      </div>
+
       <div class="admin-pane" id="admin-pane-feedback" hidden>
         <div class="admin-table-wrap"><table class="admin-table">
-          <thead><tr><th>Workflow</th><th>Useful</th><th>Category</th><th>Comment (redacted)</th><th>User email</th><th>When</th></tr></thead>
-          <tbody id="admin-feedback-rows"><tr><td colspan="6" class="muted" style="padding:16px">Loading…</td></tr></tbody>
+          <thead><tr><th>Category</th><th>Sentiment</th><th>NPS</th><th>Message</th><th>Status</th><th>When</th><th>Actions</th></tr></thead>
+          <tbody id="admin-feedback-rows"><tr><td colspan="7" class="muted" style="padding:16px">Loading…</td></tr></tbody>
         </table></div>
       </div>
 
@@ -958,6 +990,7 @@
   <script src="atlas_trust.js"></script>
   <script src="atlas_product.js"></script>
   <script src="atlas_accounts.js"></script>
+  <script src="atlas_acquisition.js"></script>
   <script src="atlas_admin.js"></script>
 </body>
 </html>

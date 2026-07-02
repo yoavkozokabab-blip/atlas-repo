@@ -127,7 +127,9 @@ def test_phase188_license_gating_disables_workflow_buttons():
 
 
 def test_phase188_admin_review_lists_profile_fields_without_hash_columns():
-    assert "Beta applicants" in ADMIN_HTML
+    # The applicants section was renamed "Beta applicants" -> "Pending Applications".
+    heading = "Pending Applications" if "Pending Applications" in ADMIN_HTML else "Beta applicants"
+    assert heading in ADMIN_HTML
     assert "/api/accounts/admin/users" in ADMIN_HTML
     assert "Company size" in ADMIN_HTML
     assert "Experience" in ADMIN_HTML
@@ -136,5 +138,5 @@ def test_phase188_admin_review_lists_profile_fields_without_hash_columns():
     assert "Notes" in ADMIN_HTML
 
     forbidden = re.compile(r"password_hash|refresh_hash|refresh_token|access_token", re.IGNORECASE)
-    applicant_section = ADMIN_HTML[ADMIN_HTML.find("Beta applicants") :]
+    applicant_section = ADMIN_HTML[ADMIN_HTML.find(heading):]
     assert not forbidden.search(applicant_section)

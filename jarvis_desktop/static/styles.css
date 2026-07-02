@@ -19,7 +19,7 @@
   /* Radius — every card shares one radius; pills/sm derive from it. */
   --radius:18px; --radius-sm:12px; --radius-pill:20px;
 }
-/* Design-system primitives (opt-in classes; see reports/phase194_design_system.md). */
+/* Design-system primitives. */
 .ds-h1{font-size:var(--h1);font-weight:var(--fw-bold);color:#eaf0ff;margin:0}
 .ds-h2{font-size:var(--h2);font-weight:var(--fw-bold);color:#eaf0ff;margin:0}
 .ds-h3{font-size:var(--h3);font-weight:var(--fw-med);color:#eaf0ff;margin:0}
@@ -855,6 +855,17 @@ body.auth-loading.auth-mode .auth-stage::after{
 .admin-kpi{border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025);padding:16px}
 .admin-kpi-v{font-size:26px;font-weight:700;color:#eaf0ff}
 .admin-kpi-l{font-size:12px;color:var(--muted);margin-top:4px}
+.admin-verdict{border-radius:14px;padding:18px 20px;margin-bottom:16px;border:1px solid var(--line)}
+.admin-verdict.strong_signal{background:rgba(80,200,120,.12);border-color:rgba(80,200,120,.35)}
+.admin-verdict.mixed_signal{background:rgba(255,190,80,.1);border-color:rgba(255,190,80,.35)}
+.admin-verdict.weak_signal{background:rgba(255,100,100,.1);border-color:rgba(255,100,100,.35)}
+.admin-verdict h2{margin:0 0 6px;font-size:18px}
+.admin-funnel{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin:12px 0}
+.admin-funnel-step{border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center}
+.admin-funnel-step b{display:block;font-size:20px}
+.admin-funnel-step span{font-size:11px;color:var(--muted)}
+.admin-rank-list{margin:0;padding:0;list-style:none}
+.admin-rank-list li{padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}
 
 .admin-app-card{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:12px}
 .admin-app-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:10px}

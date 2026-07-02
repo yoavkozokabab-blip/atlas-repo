@@ -11,6 +11,12 @@ from __future__ import annotations
 import json
 import mimetypes
 import os
+import shutil
+import subprocess
+import sys
+import threading
+import time
+import urllib.request
 from ipaddress import ip_address
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
@@ -32,6 +38,10 @@ PROTECTED_ACCOUNT_ROUTES = {
     ("POST", "/api/planning/impact"),
     ("POST", "/api/bug-investigation"),
     ("POST", "/api/context/export"),
+    ("POST", "/api/integrations/export"),
+    ("POST", "/api/integrations/claude/write-config"),
+    ("POST", "/api/integrations/cursor/write-rule"),
+    ("POST", "/api/integrations/claude-code/write-managed-block"),
     ("POST", "/api/copilot/ask"),
 }
 
@@ -111,7 +121,7 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
         ("POST", "/api/repositories/select"): lambda body, _query: api.select_repository(str(body.get("path", ""))),
         ("POST", "/api/repositories/validate"): lambda body, _query: api.validate_repository_path(str(body.get("path", ""))),
         ("POST", "/api/repositories/estimate"): lambda body, _query: api.pre_scan_estimate(str(body.get("path", "")), body.get("scope")),
-        ("POST", "/api/demo/load"): lambda body, _query: api.load_demo_mode(str(body.get("pack", "small"))),
+        ("POST", "/api/demo/load"): lambda body, _query: api.load_demo_mode(str(body.get("pack", "medium"))),
         ("GET", "/api/demo/packs"): lambda _body, _query: api.list_demo_packs(),
         ("POST", "/api/demo/export-bundle"): lambda _body, _query: api.export_demo_bundle(),
         ("POST", "/api/analytics/event"): _analytics_event,
@@ -185,6 +195,22 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
         # Phase 175B — product completion
         ("GET", "/api/product/config"): lambda _body, _query: api.product_config(),
         ("GET", "/api/product/update-check"): lambda _body, _query: api.check_product_update(),
+        ("GET", "/api/integrations/claude/config"): lambda _body, _query: api.agent_integrations_status(),
+        ("POST", "/api/integrations/claude/write-config"): lambda body, _query: api.write_claude_mcp_config(
+            confirm=body.get("confirm") is True
+        ),
+        ("POST", "/api/integrations/claude/test"): lambda _body, _query: api.test_claude_mcp_runtime(),
+        ("POST", "/api/integrations/export"): lambda body, _query: api.agent_export(
+            str(body.get("target", "claude")),
+            str(body.get("task", "")),
+            int(body.get("max_files") or 12),
+        ),
+        ("POST", "/api/integrations/cursor/write-rule"): lambda body, _query: api.write_cursor_rule(
+            str(body.get("task", ""))
+        ),
+        ("POST", "/api/integrations/claude-code/write-managed-block"): lambda body, _query: api.write_claude_code_block(
+            str(body.get("task", ""))
+        ),
         ("POST", "/api/feedback"): lambda body, _query: api.submit_feedback(body or {}),
         # Phase 189 — result feedback funnel
         ("POST", "/api/feedback/result"): lambda body, _query: api.submit_result_feedback(body or {}),
@@ -359,6 +385,66 @@ def _bind_http_server(host: str, port: int, *, attempts: int = 10):
     raise OSError(f"Could not bind {host}:{port}-{port + attempts - 1}")
 
 
+def _find_edge_executable() -> Optional[str]:
+    found = shutil.which("msedge") or shutil.which("msedge.exe")
+    if found:
+        return found
+    candidates = [
+        os.path.join(os.environ.get("ProgramFiles", ""), "Microsoft", "Edge", "Application", "msedge.exe"),
+        os.path.join(os.environ.get("ProgramFiles(x86)", ""), "Microsoft", "Edge", "Application", "msedge.exe"),
+        os.path.join(os.environ.get("LOCALAPPDATA", ""), "Microsoft", "Edge", "Application", "msedge.exe"),
+    ]
+    for candidate in candidates:
+        if candidate and os.path.isfile(candidate):
+            return candidate
+    return None
+
+
+def _open_url(url: str, *, mode: str = "browser") -> bool:
+    mode = (mode or "browser").strip().lower()
+    if mode == "app":
+        edge = _find_edge_executable()
+        if edge:
+            try:
+                subprocess.Popen(
+                    [edge, f"--app={url}", "--new-window"],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                    stdin=subprocess.DEVNULL,
+                    close_fds=True,
+                )
+                _log_launcher(f"opened app window: {url}")
+                return True
+            except OSError as exc:
+                _log_launcher(f"edge app-window open failed: {type(exc).__name__}: {exc}")
+    try:
+        import webbrowser
+
+        opened = bool(webbrowser.open(url))
+        if opened:
+            _log_launcher(f"opened browser: {url}")
+        return opened
+    except Exception as exc:  # no browser / sandbox
+        _log_launcher(f"browser open failed: {type(exc).__name__}: {exc}")
+        return False
+
+
+def _open_after_health(host: str, port: int, url: str, *, mode: str) -> None:
+    health_url = f"http://{host}:{port}/api/health"
+    for _ in range(60):
+        try:
+            with urllib.request.urlopen(health_url, timeout=0.5) as resp:
+                if 200 <= int(getattr(resp, "status", resp.getcode())) < 500:
+                    break
+        except OSError:
+            time.sleep(0.15)
+    opened = _open_url(url, mode=mode)
+    if not opened:
+        _log_launcher(f"could not auto-open; visit {url} manually")
+        if not getattr(sys, "frozen", False):
+            print(f"  Could not auto-open Atlas. Open this URL manually:\n    {url}")
+
+
 def _track_app_started() -> None:
     """Fire app_started analytics once per server launch — never raises."""
     try:
@@ -373,6 +459,7 @@ def run(
     port: int = 8777,
     *,
     open_browser: bool = True,
+    open_mode: str = "browser",
     start_path: str = "/",
 ) -> None:
     _track_app_started()
@@ -392,16 +479,12 @@ def run(
         print(f"  ATLAS — Repository Intelligence Platform")
         print(f"  Serving at http://{host}:{bound_port}/  (Ctrl+C to stop)")
     if open_browser:
-        opened = False
-        try:
-            import webbrowser
-            opened = bool(webbrowser.open(url))
-        except Exception as exc:  # no browser / sandbox
-            _log_launcher(f"browser open failed: {type(exc).__name__}: {exc}")
-        if not opened:
-            _log_launcher(f"browser did not auto-open; visit {url} manually")
-            if not getattr(__import__("sys"), "frozen", False):
-                print(f"  Could not auto-open a browser. Open this URL manually:\n    {url}")
+        threading.Thread(
+            target=_open_after_health,
+            args=(host, bound_port, url),
+            kwargs={"mode": open_mode},
+            daemon=True,
+        ).start()
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
@@ -472,7 +555,7 @@ def create_fastapi_app():  # pragma: no cover - exercised only when fastapi pres
         blocked = _account_gate_response()
         if blocked:
             return blocked
-        return api.load_demo_mode(str((await _body(request)).get("pack", "small")))
+        return api.load_demo_mode(str((await _body(request)).get("pack", "medium")))
 
     @app.get("/api/demo/packs")
     def _demo_packs():

@@ -14,6 +14,7 @@ from sqlalchemy.orm import Session
 
 from ..database import get_db
 from ..dependencies import get_current_user
+from ..billing_sync import BillingSyncError, sync_billing_license
 from ..models import Device, License, User, UsageDaily
 from ..schemas import DeviceOut, LicenseCheckResponse, LicenseOut, UserOut
 
@@ -26,7 +27,7 @@ def me(user: User = Depends(get_current_user)):
 
 
 @router.get("/license", response_model=LicenseCheckResponse)
-def license_check(user: User = Depends(get_current_user)):
+def license_check(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     """Desktop client polls this to validate license + get feature flags."""
     # Non-punitive, not-yet-active account states resolve to an invalid license
     # so the desktop app routes the user to an in-app status dashboard rather
@@ -48,6 +49,20 @@ def license_check(user: User = Depends(get_current_user)):
             beta_features=False,
             message=_INACTIVE_STATUS_MESSAGES[user.status],
         )
+    try:
+        synced = sync_billing_license(user, db)
+        if synced is not None:
+            db.refresh(user)
+    except BillingSyncError as exc:
+        return LicenseCheckResponse(
+            valid=False,
+            plan="free",
+            status="billing_sync_failed",
+            max_devices=1,
+            beta_features=False,
+            message=str(exc),
+        )
+
     lic = user.license
     if not lic:
         return LicenseCheckResponse(

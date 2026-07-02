@@ -28,6 +28,7 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 from builder_core import architectural_risk, repository_understanding
 from builder_core.bug_intelligence import depgraph
 
+from . import agent_integrations as _agent_integrations
 from . import analytics
 from . import atlas_export
 from . import first_impression as _fi
@@ -91,6 +92,9 @@ _DEMO_PACKS: Dict[str, Dict[str, Any]] = {
         "description": "Quick wow moment — 6 modules, one import cycle.",
         "path": os.path.join(_DEMO_ROOT, "small_repo"),
         "fallback": os.path.join(_DEMO_ROOT, "sample_repo"),
+        # Hidden from the user-facing selector (too trivial for a first impression);
+        # still loadable directly for tours/tests. Default is "medium".
+        "user_facing": False,
     },
     "medium": {
         "id": "medium",
@@ -560,10 +564,10 @@ def usage_post_event(body: Dict[str, Any]) -> Dict[str, Any]:
     )
 
 
-def demo_repo_path(pack: str = "small") -> str:
+def demo_repo_path(pack: str = "medium") -> str:
     """Resolve bundled demo repository path for a pack id."""
-    key = (pack or "small").strip().lower()
-    meta = _DEMO_PACKS.get(key) or _DEMO_PACKS["small"]
+    key = (pack or "medium").strip().lower()
+    meta = _DEMO_PACKS.get(key) or _DEMO_PACKS["medium"]
     primary = os.path.abspath(meta["path"])
     if os.path.isdir(primary):
         return primary
@@ -576,6 +580,8 @@ def demo_repo_path(pack: str = "small") -> str:
 def list_demo_packs() -> Dict[str, Any]:
     packs = []
     for meta in _DEMO_PACKS.values():
+        if not meta.get("user_facing", True):
+            continue  # hidden packs (e.g. "small") stay loadable but off the selector
         path = demo_repo_path(meta["id"])
         packs.append(
             {
@@ -586,7 +592,7 @@ def list_demo_packs() -> Dict[str, Any]:
                 "path": path,
             }
         )
-    return {"ok": True, "packs": packs, "default": "small"}
+    return {"ok": True, "packs": packs, "default": "medium"}
 
 
 def track_analytics_event(event: str, **properties: Any) -> Dict[str, Any]:
@@ -1027,9 +1033,9 @@ def _is_demo_path(path: str) -> bool:
     return False
 
 
-def load_demo_mode(pack: str = "small") -> Dict[str, Any]:
+def load_demo_mode(pack: str = "medium") -> Dict[str, Any]:
     """Load bundled demo repository into product state (clearly labeled demo)."""
-    pack_id = (pack or "small").strip().lower()
+    pack_id = (pack or "medium").strip().lower()
     meta = _DEMO_PACKS.get(pack_id)
     if not meta:
         return {"ok": False, "error": f"Unknown demo pack: {pack_id}", "code": "demo_unknown_pack"}
@@ -1746,6 +1752,59 @@ def check_product_update() -> Dict[str, Any]:
     return _ops.check_update_hardened()
 
 
+def agent_export(target: str, task: str, max_files: int = 12) -> Dict[str, Any]:
+    """Task-scoped export for Claude, Cursor, and Codex (no source bodies)."""
+    with _ti.state_guard():
+        refusal = _ti.require_fresh_context(_STATE, for_export=True)
+        if refusal:
+            return refusal
+        result = _agent_integrations.export_for_state(
+            dict(_STATE),
+            target=target,
+            task=task,
+            max_files=max(1, min(24, int(max_files or 12))),
+        )
+        if result.get("ok"):
+            track_analytics_event(
+                "agent_export_created",
+                target=result.get("target"),
+                confidence=result.get("confidence"),
+                tokens=int(result.get("estimated_tokens") or 0),
+            )
+            _record_usage("agent_export_created", target=result.get("target"))
+        return result
+
+
+def agent_integrations_status() -> Dict[str, Any]:
+    status = _agent_integrations.claude_config_status()
+    status["about"] = _agent_integrations.about_payload()
+    status["repo_open"] = bool(_STATE.get("scan"))
+    status["repo_path"] = str(_STATE.get("path") or "")
+    return status
+
+
+def write_claude_mcp_config(confirm: bool = False) -> Dict[str, Any]:
+    return _agent_integrations.write_claude_config(confirm=bool(confirm))
+
+
+def test_claude_mcp_runtime() -> Dict[str, Any]:
+    return _agent_integrations.test_mcp_runtime()
+
+
+def write_cursor_rule(task: str = "") -> Dict[str, Any]:
+    repo_path = str(_STATE.get("path") or "")
+    if not _STATE.get("scan") or not repo_path:
+        return {"ok": False, "code": "requires_scan", "error": "Scan a repository before writing a Cursor rule."}
+    return _agent_integrations.write_cursor_rule(repo_path, task=task)
+
+
+def write_claude_code_block(task: str = "") -> Dict[str, Any]:
+    repo_path = str(_STATE.get("path") or "")
+    if not _STATE.get("scan") or not repo_path:
+        return {"ok": False, "code": "requires_scan", "error": "Scan a repository before updating CLAUDE.md."}
+    return _agent_integrations.write_claude_managed_block(repo_path, task=task)
+
+
 def submit_feedback(body: Dict[str, Any]) -> Dict[str, Any]:
     """Phase 175B — submit feedback with optional remote destination (no source code)."""
     from .install_support import _redact_support_text
@@ -1821,6 +1880,24 @@ def submit_feedback(body: Dict[str, Any]) -> Dict[str, Any]:
     except Exception:
         pass
 
+    # Phase 199 — mirror to accounts service when signed in (structured beta feedback).
+    accounts_sent = False
+    try:
+        from . import accounts_client
+
+        nps_raw = body.get("nps_score")
+        nps_score = int(nps_raw) if nps_raw is not None and str(nps_raw).strip() != "" else None
+        acct = accounts_client.submit_accounts_feedback(
+            category,
+            message,
+            contact_email=email or None,
+            nps_score=nps_score,
+            workflow=str(body.get("workflow") or "").strip() or None,
+        )
+        accounts_sent = not acct.get("_unauthenticated") and not acct.get("_http_status")
+    except Exception:
+        accounts_sent = False
+
     if remote_sent:
         msg = "Feedback sent — thank you."
         destination = "remote"
@@ -1828,12 +1905,13 @@ def submit_feedback(body: Dict[str, Any]) -> Dict[str, Any]:
         msg = "Saved. We'll follow up at your email if provided."
         destination = "local_after_remote_fail"
     else:
-        msg = "Saved. Email support@useatlas.dev if you need immediate help."
+        msg = "Saved. Email yoavkozokabab@gmail.com if you need immediate help."
         destination = "local"
 
     return {
         "ok": True,
         "remote_sent": remote_sent,
+        "accounts_sent": accounts_sent,
         "destination": destination,
         "feedback_url_configured": bool(remote_url),
         "message": msg,

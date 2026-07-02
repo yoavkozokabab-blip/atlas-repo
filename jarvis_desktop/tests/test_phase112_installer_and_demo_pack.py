@@ -26,10 +26,15 @@ def test_demo_packs_list():
     packs = api.list_demo_packs()
     assert packs["ok"]
     ids = {p["id"] for p in packs["packs"]}
-    assert ids == {"small", "medium", "large"}
+    # "small" is hidden from the user-facing selector; default is "medium".
+    assert ids == {"medium", "large"}
+    assert "small" not in ids
+    assert packs["default"] == "medium"
     for pack_id in ids:
         assert api.demo_repo_path(pack_id)
         assert Path(api.demo_repo_path(pack_id)).is_dir()
+    # Hidden pack stays loadable directly (tours / tests / deep links).
+    assert api.load_demo_mode("small")["ok"]
 
 
 def test_load_demo_pack_sizes():
@@ -81,13 +86,25 @@ def test_analytics_routes():
     assert status == 200 and summary["exports"] >= 1
 
 
-def test_demo_routes():
+def test_demo_routes(beta_account):
     status, packs = server.dispatch("GET", "/api/demo/packs")
     assert status == 200 and packs["ok"]
     status, demo = server.dispatch("POST", "/api/demo/load", {"pack": "small"})
     assert status == 200 and demo["ok"] and demo["demo_mode"]
     status, bundle = server.dispatch("POST", "/api/demo/export-bundle")
     assert status == 200 and bundle["ok"] and bundle["content_base64"]
+
+
+def test_demo_load_blocked_without_account(monkeypatch):
+    # Production protection intact: with no signed-in account, the gate blocks.
+    monkeypatch.setattr(
+        server.accounts_client,
+        "get_account_state",
+        lambda: {"authenticated": False, "user": None, "license": {"valid": False}},
+    )
+    status, demo = server.dispatch("POST", "/api/demo/load", {"pack": "medium"})
+    assert status == 403
+    assert demo["code"] in ("account_required", "license_required")
 
 
 def test_tour_still_works_after_demo_load():

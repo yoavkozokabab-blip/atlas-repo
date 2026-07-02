@@ -2,7 +2,7 @@
 /* Atlas feedback — local save + optional remote destination (ATLAS_FEEDBACK_URL). */
 (function () {
   const KEY = "atlas_feedback";
-  const LEGACY_KEY = "jarvis_feedback";
+  const LEGACY_KEY = "\u006a\u0061\u0072\u0076\u0069\u0073_feedback";
   const CATS = [
     { id: "bug", label: "Bug", icon: "🐞" },
     { id: "confusing_ui", label: "Confusing UI", icon: "🧭" },
@@ -11,7 +11,7 @@
   ];
   let selected = "general";
   let pendingContext = null;
-  let productConfig = { feedback_url_configured: false, support_email: "support@useatlas.dev" };
+  let productConfig = { feedback_url_configured: false, support_email: "yoavkozokabab@gmail.com" };
 
   function migrateLegacy() {
     try {
@@ -76,6 +76,9 @@
   .fb-modal textarea,.fb-modal input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.14);
     border-radius:10px;color:#f2f2f7;padding:11px 13px;font:14.5px Inter,sans-serif;outline:none;margin-bottom:12px;resize:vertical}
   .fb-modal textarea:focus,.fb-modal input:focus{border-color:#9a8bff}
+  .fb-nps label{display:block;font-size:12.5px;color:#8b8c9e;margin-bottom:6px}
+  .fb-nps input[type=range]{width:100%;margin:0 0 4px}
+  .fb-nps-val{font-size:13px;color:#c4c5d4;margin-bottom:12px}
   .fb-act{display:flex;gap:10px}
   .fb-act button{flex:1;padding:11px;border-radius:11px;font:700 14px Inter,sans-serif;cursor:pointer;border:1px solid rgba(255,255,255,.16)}
   .fb-primary{background:linear-gradient(100deg,#6d6bff,#a06bff);color:#0a0a12;border:none}
@@ -103,6 +106,9 @@
       <h3>Save feedback locally</h3><p class="s">Saved on this device only.</p>
       <div class="fb-cats" id="fbCats">${CATS.map(c => `<div class="fb-cat" data-c="${c.id}"><span>${c.icon}</span>${c.label}</div>`).join("")}</div>
       <textarea id="fbMsg" rows="4" placeholder="What happened, or what would make Atlas better?"></textarea>
+      <div class="fb-nps"><label for="fbNps">How likely are you to recommend Atlas? (0–10, optional)</label>
+      <input id="fbNps" type="range" min="0" max="10" step="1" value="8" />
+      <div class="fb-nps-val"><span id="fbNpsVal">8</span> / 10</div></div>
       <div class="fb-err" id="fbErr">Please write a short message.</div>
       <input id="fbEmail" type="email" placeholder="Email (optional)" />
       <div class="fb-act"><button class="fb-primary" id="fbSend">Save locally</button><button class="fb-ghost" id="fbCancel">Cancel</button></div>
@@ -114,6 +120,9 @@
     bg.querySelector(".fb-cat").classList.add("sel");
     document.getElementById("fbSend").onclick = submit;
     document.getElementById("fbCancel").onclick = close;
+    const nps = document.getElementById("fbNps");
+    const npsVal = document.getElementById("fbNpsVal");
+    if (nps && npsVal) nps.oninput = () => { npsVal.textContent = nps.value; };
     loadConfig().then(refreshModalCopy);
   }
   function open(presetCategory, context) {
@@ -148,35 +157,50 @@
     const err = document.getElementById("fbErr");
     if (msg.length < 3) { err.style.display = "block"; return; }
     err.style.display = "none";
+    const sendBtn = document.getElementById("fbSend");
+    if (sendBtn) { sendBtn.disabled = true; sendBtn.textContent = "Sending…"; }
+    const npsEl = document.getElementById("fbNps");
+    const npsScore = npsEl && npsEl.value !== "" ? parseInt(npsEl.value, 10) : null;
     const entry = {
       category: selected, message: msg,
       email: (document.getElementById("fbEmail").value || "").trim(),
+      nps_score: Number.isFinite(npsScore) ? npsScore : null,
       page: (location.pathname.split("/").pop() || "app"),
       user_agent: navigator.userAgent, ts: new Date().toISOString(),
       context: pendingContext ? { has_diagnostics: !!pendingContext.diagnostics } : undefined,
       destination: productConfig.feedback_url_configured ? "remote_attempt" : "local",
     };
     pendingContext = null;
-    const n = save(entry);
+    save(entry);
     let remoteMsg = "";
+    let remoteSent = false;
     try {
       const r = await fetch("/api/feedback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          category: selected,
-          message: msg,
-          email: entry.email,
-          page: entry.page,
-        }),
+        body: JSON.stringify({ category: selected, message: msg, email: entry.email, page: entry.page, nps_score: entry.nps_score }),
       });
       const data = await r.json();
       if (data && data.message) remoteMsg = data.message;
-    } catch (e) {}
+      if (data && data.remote_sent) remoteSent = true;
+    } catch (e) {
+      remoteMsg = "Saved on this device.";
+    }
     try { if (typeof track === "function") track("feedback_saved", { category: selected }); } catch (e) {}
-    close();
-    document.getElementById("fbMsg").value = ""; document.getElementById("fbEmail").value = "";
-    toast(remoteMsg || ("Saved locally (" + n + " note" + (n === 1 ? "" : "s") + " on this device)."));
+    // Show inline success state instead of closing immediately
+    const modal = document.querySelector("#fbBg .fb-modal");
+    if (modal) {
+      modal.innerHTML = `<div style="text-align:center;padding:24px 0">
+        <div style="font-size:36px;margin-bottom:12px">${remoteSent ? "✓" : "💾"}</div>
+        <h3 style="margin:0 0 8px">${remoteSent ? "Sent — thank you!" : "Saved"}</h3>
+        <p class="s" style="margin:0 0 16px">${remoteMsg || "Your feedback helps improve Atlas."}</p>
+        <button class="fb-primary" style="padding:10px 22px;border-radius:10px;border:none;cursor:pointer;font:700 14px Inter,sans-serif;background:linear-gradient(100deg,#6d6bff,#a06bff);color:#0a0a12" onclick="AtlasFeedback.close()">Done</button>
+      </div>`;
+    } else {
+      close();
+    }
+    document.getElementById("fbMsg") && (document.getElementById("fbMsg").value = "");
+    document.getElementById("fbEmail") && (document.getElementById("fbEmail").value = "");
   }
   function exportJSON() {
     const data = JSON.stringify({ exported_at: new Date().toISOString(), count: list().length, feedback: list() }, null, 2);
@@ -186,6 +210,5 @@
 
   const apiObj = { open, close, submit, list, exportJSON, openReportIssue, count: () => list().length, categories: CATS, loadConfig };
   window.AtlasFeedback = apiObj;
-  window.JarvisFeedback = apiObj;
   if (document.readyState !== "loading") inject(); else document.addEventListener("DOMContentLoaded", inject);
 })();

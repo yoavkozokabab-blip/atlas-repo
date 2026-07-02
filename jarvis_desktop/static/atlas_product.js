@@ -1,5 +1,5 @@
 "use strict";
-/* Phase 175B — trust status, update banner, version display */
+/* trust status, update banner, version display */
 
 const TRUST_LABELS = {
   Fresh: "fresh",
@@ -29,7 +29,7 @@ async function atlasRenderVersionTargets() {
   document.querySelectorAll("[data-atlas-version]").forEach(el => {
     el.textContent = line || cfg.version || "—";
   });
-  const email = (cfg && cfg.support_email) || "support@useatlas.dev";
+  const email = (cfg && cfg.support_email) || "yoavkozokabab@gmail.com";
   document.querySelectorAll("[data-atlas-support-email]").forEach(el => {
     if (el.tagName === "A") {
       el.href = "mailto:" + email;
@@ -108,7 +108,7 @@ function atlasEnhanceAboutModal() {
   if (!card) return;
   const ver = document.createElement("p");
   ver.className = "muted tiny";
-  ver.innerHTML = 'Version <span data-atlas-version>—</span> · <a data-atlas-support-email href="mailto:support@useatlas.dev">support@useatlas.dev</a>';
+  ver.innerHTML = 'Version <span data-atlas-version>—</span> · <a data-atlas-support-email href="mailto:yoavkozokabab@gmail.com">yoavkozokabab@gmail.com</a>';
   const buttons = card.querySelector(".success-buttons");
   if (buttons) card.insertBefore(ver, buttons);
   else card.appendChild(ver);

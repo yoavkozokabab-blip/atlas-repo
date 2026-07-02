@@ -116,6 +116,8 @@ def accounts_register(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str,
                 "error": "An account with this email already exists.",
                 "detail": "Your application may already be on file. Try signing in instead.",
             }
+        if status >= 500:
+            return _service_unavailable_response()
         return {"ok": False, "code": "registration_failed", "submitted": False, "error": detail_text}
     return {"ok": True, "submitted": True, **result}
 
@@ -131,7 +133,7 @@ def accounts_login(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, An
         return {
             "ok": False,
             "code": "service_unavailable",
-            "error": "The Atlas accounts service isn't available right now. Please restart Atlas, and contact support@useatlas.dev if this keeps happening.",
+            "error": "The Atlas accounts service isn't available right now. Please restart Atlas, and contact yoavkozokabab@gmail.com if this keeps happening.",
         }
     result = accounts_client.login(
         email=email,
@@ -143,7 +145,7 @@ def accounts_login(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, An
         return {
             "ok": False,
             "code": "service_unavailable",
-            "error": "The Atlas accounts service isn't available right now. Please restart Atlas, and contact support@useatlas.dev if this keeps happening.",
+            "error": "The Atlas accounts service isn't available right now. Please restart Atlas, and contact yoavkozokabab@gmail.com if this keeps happening.",
         }
     if result.get("_http_status"):
         detail = result.get("detail", "Login failed")

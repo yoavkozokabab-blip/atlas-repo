@@ -33,7 +33,7 @@ _SERVICE_BASE = os.environ.get("ATLAS_ACCOUNTS_URL", "http://127.0.0.1:8788")
 
 def web_base() -> str:
     """Base URL of the website auth authority (Supabase-backed)."""
-    return (os.environ.get("ATLAS_WEB_URL") or "https://useatlas.dev").rstrip("/")
+    return (os.environ.get("ATLAS_WEB_URL") or "https://atlas-repo-chi.vercel.app").rstrip("/")
 
 
 def auth_mode() -> str:
@@ -383,7 +383,7 @@ def _web_license_from_result(result: Dict[str, Any]) -> Dict[str, Any]:
     approved = result.get("approved", True)
     if user.get("status") == "suspended":
         return {"valid": False, "plan": plan, "status": "suspended", "beta": True,
-                "message": "This account is suspended. Contact support@useatlas.dev."}
+                "message": "This account is suspended. Contact yoavkozokabab@gmail.com."}
     if not approved:
         return {"valid": False, "plan": plan, "status": "beta_pending", "beta": True,
                 "message": result.get("message")
@@ -574,13 +574,23 @@ def get_license_status() -> Dict[str, Any]:
 # ── Public API ────────────────────────────────────────────────────────────────
 
 def is_service_running() -> bool:
-    """Quick check if the accounts backend is reachable."""
+    """Check if the local accounts backend is reachable and can use its DB.
+
+    A stale dev service can keep ``/health`` green while auth/acquisition routes
+    return 500. Probe the read-only invite validation path as a lightweight DB
+    readiness check; a random missing invite should return ``valid: false``.
+    """
     if auth_mode() == "website":
         # The auth authority is the website; there is no local service to start.
         # Real reachability surfaces as errors on login/me calls.
         return True
     result = _call("GET", "/health")
-    return result.get("status") == "ok"
+    if result.get("status") != "ok":
+        return False
+    probe = _call("POST", "/acquisition/validate-invite", {"code": "ATLASHEALTHCHECK"})
+    if probe.get("_offline") or probe.get("_http_status"):
+        return False
+    return probe.get("valid") is False
 
 
 def register(

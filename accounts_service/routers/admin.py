@@ -6,7 +6,8 @@ _lib = os.path.join(os.path.dirname(os.path.dirname(__file__)), ".lib")
 if _lib not in sys.path:
     sys.path.insert(0, _lib)
 
-from datetime import date, datetime, timezone
+import secrets
+from datetime import date, datetime, timedelta, timezone
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -15,13 +16,15 @@ from sqlalchemy.orm import Session
 
 from ..database import get_db
 from ..dependencies import require_admin, require_superadmin
+from ..beta_acquisition import compute_launch_readiness, export_beta_users, feedback_summary, record_acquisition_event
 from ..models import (
-    AdminAuditLog, AdminNotification, Device, Feedback, License,
+    AdminAuditLog, AdminNotification, Device, Feedback, InviteCode, License,
     Session as DBSession, User, UsageDaily,
 )
 from ..schemas import (
     AdminAuditEntry, AdminDashboard, AdminNotificationOut, AdminUserOut, AdminUserUpdate,
-    ApplicationDecisionRequest, FeedbackOut, PendingApplicationOut,
+    ApplicationDecisionRequest, FeedbackOut, FeedbackUpdate, InviteCodeCreate, InviteCodeOut,
+    LaunchReadinessDashboard, PendingApplicationOut,
 )
 
 router = APIRouter(prefix="/admin", tags=["admin"])
@@ -200,6 +203,7 @@ def approve_application(
         AdminNotification.read_at == None,  # noqa: E711
     ).update({"read_at": datetime.now(timezone.utc).replace(tzinfo=None)})
     _audit(db, admin, "approve_application", user, metadata={"notes": body.admin_notes})
+    record_acquisition_event(db, "approved", user_id=user.user_id, dedupe_user=True)
     db.commit()
     db.refresh(user)
     return user
@@ -447,6 +451,7 @@ def maintenance_prune(
 @router.get("/feedback", response_model=List[FeedbackOut])
 def list_feedback(
     status: Optional[str] = Query(None),
+    category: Optional[str] = Query(None),
     limit: int = Query(50, le=200),
     admin: User = Depends(require_admin),
     db: Session = Depends(get_db),
@@ -454,4 +459,75 @@ def list_feedback(
     query = db.query(Feedback)
     if status:
         query = query.filter(Feedback.status == status)
+    if category:
+        query = query.filter(Feedback.category == category)
     return query.order_by(Feedback.created_at.desc()).limit(limit).all()
+
+
+@router.patch("/feedback/{feedback_id}", response_model=FeedbackOut)
+def update_feedback(
+    feedback_id: str,
+    body: FeedbackUpdate,
+    admin: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
+    entry = db.query(Feedback).filter(Feedback.feedback_id == feedback_id).first()
+    if not entry:
+        raise HTTPException(status_code=404, detail="Feedback not found")
+    if body.status:
+        entry.status = body.status
+    _audit(db, admin, "feedback_update", metadata={"feedback_id": feedback_id, "status": body.status})
+    db.commit()
+    db.refresh(entry)
+    return entry
+
+
+# ── Phase 199 — launch readiness & beta acquisition ────────────────────────
+@router.get("/launch-readiness", response_model=LaunchReadinessDashboard)
+def launch_readiness(admin: User = Depends(require_admin), db: Session = Depends(get_db)):
+    """Single dashboard answering: do users actually want Atlas?"""
+    return compute_launch_readiness(db)
+
+
+@router.get("/export/beta-users")
+def export_beta_users_csv(admin: User = Depends(require_admin), db: Session = Depends(get_db)):
+    return {"users": export_beta_users(db)}
+
+
+@router.get("/interview-summary")
+def interview_summary(admin: User = Depends(require_admin), db: Session = Depends(get_db)):
+    return feedback_summary(db)
+
+
+@router.get("/invites", response_model=List[InviteCodeOut])
+def list_invites(
+    limit: int = Query(50, le=200),
+    admin: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
+    return db.query(InviteCode).order_by(InviteCode.created_at.desc()).limit(limit).all()
+
+
+@router.post("/invites", response_model=InviteCodeOut, status_code=201)
+def create_invite(
+    body: InviteCodeCreate,
+    admin: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
+    code = secrets.token_hex(4).upper()
+    expires_at = None
+    if body.expires_days:
+        expires_at = datetime.now(timezone.utc).replace(tzinfo=None) + timedelta(days=body.expires_days)
+    invite = InviteCode(
+        code=code,
+        email=body.email.lower().strip() if body.email else None,
+        max_uses=body.max_uses,
+        created_by=admin.user_id,
+        expires_at=expires_at,
+        notes=body.notes,
+    )
+    db.add(invite)
+    _audit(db, admin, "invite_created", metadata={"code": code, "email": invite.email})
+    db.commit()
+    db.refresh(invite)
+    return invite
