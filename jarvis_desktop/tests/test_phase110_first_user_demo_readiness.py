@@ -81,7 +81,7 @@ def test_demo_mode_loads_sample_graph():
     assert res["ok"] is True
     assert res["demo_mode"] is True
     assert res["repo_name"].startswith("Atlas Demo")
-    assert res.get("demo_pack") == "medium"  # medium is the default sample pack
+    assert res.get("demo_pack") == "small"  # small is the instant default pack
     assert res["module_count"] >= 3
     graph = api.current_graph("module")
     assert graph["ok"] and graph["node_count"] >= 3

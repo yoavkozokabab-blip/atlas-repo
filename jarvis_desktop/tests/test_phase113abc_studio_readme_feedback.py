@@ -57,10 +57,12 @@ def test_showcase_readme_exists_and_complete():
     assert "does **not** replace" in md or "does not replace" in md  # positioning held
 
 
-def test_showcase_does_not_clobber_personal_assistant_readme():
-    # the original root README.md must remain the personal-assistant project doc
+def test_root_readme_is_the_atlas_product_doc():
+    # RC-1: the root README is the Atlas product doc (the old personal-assistant
+    # README is gone with the legacy codebase).
     root = open(os.path.join(ROOT, "README.md"), "r", encoding="utf-8").read()
-    assert "local_jarvis" in root  # untouched
+    assert root.lstrip().startswith("# Atlas")
+    assert "jarvis" not in root.lower()
 
 
 # ---------- 113C: Feedback collection ----------
@@ -68,9 +70,9 @@ def test_feedback_widget_has_required_categories_and_storage():
     js = _s("feedback.js")
     for cat in ("Bug", "Confusing UI", "Missing feature", "General feedback"):
         assert cat in js, f"feedback missing category: {cat}"
-    assert "localStorage" in js and "jarvis_feedback" in js     # store locally
+    assert "localStorage" in js and "atlas_feedback" in js     # store locally
     assert "exportJSON" in js                                   # export all as JSON
-    assert "JarvisFeedback" in js                               # public API
+    assert "AtlasFeedback" in js                                # public API
     assert "fb-btn" in js                                       # self-injecting button
 
 
@@ -81,7 +83,8 @@ def test_feedback_page_lists_and_exports():
 
 
 def test_feedback_widget_wired_into_marketing_pages():
-    for page in ("landing.html", "demo.html", "gallery.html", "beta.html"):
+    # beta.html was deleted with the beta-era pages (RC-1 open access).
+    for page in ("landing.html", "demo.html", "gallery.html"):
         assert "feedback.js" in _s(page), f"{page} does not include the feedback widget"
 
 

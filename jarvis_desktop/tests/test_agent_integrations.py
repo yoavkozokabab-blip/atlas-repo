@@ -95,7 +95,15 @@ def test_claude_config_write_preserves_existing_servers(tmp_path, monkeypatch):
     data = json.loads(config.read_text(encoding="utf-8"))
     assert "existing" in data["mcpServers"]
     assert "atlas" in data["mcpServers"]
-    assert Path(data["mcpServers"]["atlas"]["args"][0]).name == "run_atlas.py"
+    # Source mode points at run_atlas.py --mcp; with an installed Atlas.exe on
+    # the machine the config correctly points at the exe with --mcp instead.
+    entry = data["mcpServers"]["atlas"]
+    launcher = Path(entry["command"]).name.lower()
+    if launcher == "atlas.exe":
+        assert entry["args"] == ["--mcp"]
+    else:
+        assert Path(entry["args"][0]).name == "run_atlas.py"
+        assert entry["args"][-1] == "--mcp"
 
 
 def test_discover_claude_paths_includes_appdata_and_store(tmp_path, monkeypatch):

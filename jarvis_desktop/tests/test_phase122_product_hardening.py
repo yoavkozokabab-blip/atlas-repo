@@ -36,9 +36,9 @@ def test_simplified_nav_labels():
     for label in (
         "Codebase Map",
         "Change Plan",
-        "Investigate Bug",
+        "Debug",
         "What breaks?",
-        "Send to AI",
+        "Repository Context",
     ):
         assert label in html
     for removed in ("Command Center", "Bug Hunt", "data-view=\"intel\"", "data-view=\"bug\""):
@@ -59,9 +59,11 @@ def test_module_browse_panel_present():
     assert "filterModuleBrowseList" in APP_JS.read_text(encoding="utf-8")
 
 
-def test_product_version_atlas_hardening_lineage():
-    assert "phase12" in api.PRODUCT_VERSION
-    assert "atlas" in api.PRODUCT_VERSION or "domain" in api.PRODUCT_VERSION
+def test_product_version_is_release_grade():
+    # Phase-suffixed dev versions ("...phase12-atlas...") must never ship.
+    import re as _re
+    assert "phase" not in api.PRODUCT_VERSION
+    assert _re.fullmatch(r"\d+\.\d+\.\d+(-[0-9A-Za-z.]+)?", api.PRODUCT_VERSION)
 
 
 def test_investigation_grounded_paths_only(planner_scan):

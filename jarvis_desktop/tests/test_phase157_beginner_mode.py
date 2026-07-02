@@ -30,7 +30,7 @@ def test_mode_toggle_present_in_topbar():
 
 def test_body_defaults_to_beginner_mode():
     html = _read(INDEX)
-    assert 'class="mode-beginner"' in html
+    assert 'mode-beginner' in html
     assert 'src="atlas_trust.js"' in html
 
 

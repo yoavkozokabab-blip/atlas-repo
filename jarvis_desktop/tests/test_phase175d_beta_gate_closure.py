@@ -115,11 +115,13 @@ def test_run_atlas_has_startup_error_fallback():
 # --- Blocker 3: brand cleanup ---
 
 USER_FACING_STATIC = (
+    # beta.html / atlas_beta.js were deleted in RC-1; atlas_workflows.js and
+    # atlas_admin.js replaced/joined the shipped bundle.
     "index.html", "about.html", "contact.html", "support.html", "pricing.html",
-    "usage.html", "quickstart.html", "landing.html", "feedback.html", "beta.html",
+    "usage.html", "quickstart.html", "landing.html", "feedback.html",
     "gallery.html", "demo.html", "studio.html", "admin.html", "startup-error.html",
-    "app.js", "universe.js", "studio.js", "atlas_beta.js", "atlas_zero_friction.js",
-    "atlas_product.js", "feedback.js", "billing.js", "support.js",
+    "app.js", "universe.js", "studio.js", "atlas_workflows.js", "atlas_zero_friction.js",
+    "atlas_product.js", "atlas_admin.js", "feedback.js", "billing.js", "support.js",
 )
 
 

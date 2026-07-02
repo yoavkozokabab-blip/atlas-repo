@@ -201,7 +201,10 @@ class TestRootCauseEvidence:
         plan = result["plan"]
         root = plan.get("most_likely_root_cause") or ""
         # Should be honest — not a hallucinated file name
-        assert "enough" in root.lower() or "not localizable" in root.lower() or "insufficient" in root.lower() or root == "", (
+        assert ("enough" in root.lower() or "not localizable" in root.lower()
+                or "insufficient" in root.lower()
+                or "couldn't identify a confident root cause" in root.lower()
+                or root == ""), (
             f"Expected honest 'insufficient evidence' root cause, got: {root}"
         )
 

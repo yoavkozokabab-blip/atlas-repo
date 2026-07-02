@@ -91,7 +91,7 @@ def test_installer_build_runs_self_test():
 
 def test_browser_auto_open_failure_is_handled():
     text = _read(SERVER)
-    assert "browser did not auto-open" in text
+    assert "Could not auto-open Atlas" in text
     assert "_log_launcher" in text
 
 

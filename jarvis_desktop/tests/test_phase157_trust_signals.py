@@ -68,10 +68,10 @@ def test_confidence_badge_styles_exist():
 # --------------------------------------------------------------------------- #
 def test_unsigned_beta_notice_present():
     js = _read(TRUST)
-    assert "Atlas is an unsigned beta application" in js
+    assert "Atlas is an unsigned application" in js
     assert "SmartScreen" in js
     assert "Run anyway" in js
-    assert "showUnsignedBetaNotice" in js
+    assert "showUnsignedAppNotice" in js
 
 
 # --------------------------------------------------------------------------- #

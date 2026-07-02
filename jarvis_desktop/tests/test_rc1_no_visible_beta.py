@@ -56,6 +56,19 @@ SAFE_COMPAT_SNIPPETS = [
     'u["beta_"+"profile"]',
     ".admin-pill.s-active,.admin-pill.s-beta",
     ".admin-pill.s-pending",
+    # Admin-console code-only identifiers (accounts-service API action names,
+    # response fields and DOM ids). Never rendered as user-facing copy — the
+    # visible labels around them use access-management wording.
+    "'grant-beta'",
+    "'revoke-beta'",
+    '["beta", "standard"]',
+    'u.beta_flag',
+    'beta_flag: $("acc-edit-beta").checked',
+    'id="acc-edit-beta"',
+    '"/api/accounts/admin/export/beta-users"',
+    'r.invite',
+    'd.active_beta_users',
+    'v.beta_target',
 ]
 
 

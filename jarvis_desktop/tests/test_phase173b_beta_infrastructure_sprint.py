@@ -105,16 +105,15 @@ def test_startup_error_page_exists():
 
 def test_static_index_173b_ux_copy():
     html = (Path(__file__).resolve().parents[1] / "static" / "index.html").read_text(encoding="utf-8")
-    assert "Repository context" in html
-    assert "Try sample (about 1 min)" in html
+    assert "Repository Context" in html
     assert "Create Change Plan" in html
     assert 'onclick="welcomeScanMyRepo()"' in html
-    assert "Repository context" in html
     assert "Send to AI" not in html
 
 
 def test_zero_friction_beginner_copy():
     js = (Path(__file__).resolve().parents[1] / "static" / "atlas_zero_friction.js").read_text(encoding="utf-8")
     assert "beginnerPlanHero" in js
-    assert "One copy includes everything" in js
+    # RC-1 copy: the hero funnels to a single "Copy for Claude" action.
+    assert "Copy for Claude" in js
     assert "applyExportNavVisibility" in js

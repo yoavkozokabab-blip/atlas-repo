@@ -31,13 +31,15 @@ def test_home_has_welcome_and_tagline():
 def test_home_has_large_quick_action_cards():
     cards = INDEX[INDEX.find('class="quick-action-cards"'):]
     cards = cards[: cards.find("</section>")]
-    for title in ("Scan Repository", "Debug Issue", "Change Plan", "What Breaks?"):
+    # RC-1 copy: sharpened card titles (Debug Issue -> Find bug root cause,
+    # What Breaks? -> Impact analysis).
+    for title in ("Scan Repository", "Find bug root cause", "Change Plan", "Impact analysis"):
         assert title in cards, title
     for desc in (
         "Choose a repository and build understanding.",
         "Investigate bugs and root causes.",
         "Plan a code change before implementation.",
-        "Understand downstream impact.",
+        "See what breaks before you edit.",
     ):
         assert desc in cards, desc
     assert "qa-card" in CSS
@@ -47,7 +49,8 @@ def test_home_has_getting_started_that_can_autohide():
     assert 'id="homeGettingStarted"' in INDEX
     gs = INDEX[INDEX.find('id="homeGettingStarted"'):]
     gs = gs[: gs.find("</section>")]
-    for step in ("Scan a repository", "Open Codebase Map", "Generate a Change Plan", "Export to Claude"):
+    # RC-1 getting-started steps follow the real first-run journey.
+    for step in ("Scan a local repository", "Connect Cursor or Claude", "Ask a repo-aware question", "Build a Change Plan"):
         assert step in gs, step
     # Auto-hides once usage history exists.
     assert "homeGettingStarted" in ACCOUNTS_JS
@@ -87,19 +90,16 @@ def test_user_menu_contains_account_devices_admin_signout():
 
 
 # ── Parts 4-6 — Status dashboard tone + copy ─────────────────────────────────
-def test_pending_dashboard_is_success_toned():
-    spec = ACCOUNTS_JS[ACCOUNTS_JS.find("pending: {"):]
-    spec = spec[: spec.find("},")]
-    assert "tone: 'success'" in spec
-    assert "submitted successfully" in spec
-    assert "24" in spec and "72 hours" in spec
-    assert "close Atlas and return later" in spec
-    assert ".status-dash.success" in CSS
+def test_pending_dashboard_removed_with_open_access():
+    # RC-1 open self-serve: there is no application/queue state any more, so
+    # the "pending" status dashboard must be gone entirely.
+    assert "pending: {" not in ACCOUNTS_JS
+    assert "submitted successfully" not in ACCOUNTS_JS
 
 
 def test_inactive_dashboard_is_neutral_not_warning():
     spec = ACCOUNTS_JS[ACCOUNTS_JS.find("inactive: {"):]
-    spec = spec[: spec.find("rejected: {")]
+    spec = spec[: spec.find("};")]
     assert "tone: 'neutral'" in spec
     assert "signed in" in spec.lower()
     assert "account exists" in spec.lower()
@@ -108,13 +108,10 @@ def test_inactive_dashboard_is_neutral_not_warning():
     assert not re.search(r"error|failed|denied", copy, re.IGNORECASE)
 
 
-def test_rejected_dashboard_hides_reapply_behind_flag():
-    assert "REAPPLY_ENABLED = false" in ACCOUNTS_JS
-    spec = ACCOUNTS_JS[ACCOUNTS_JS.find("rejected: {"):]
-    spec = spec[: spec.find("};")]
-    assert "not approved" in spec.lower()
-    assert "showReapply: REAPPLY_ENABLED" in spec
-    assert "showRefresh: false" in spec
+def test_rejected_dashboard_removed_with_open_access():
+    # RC-1 open self-serve: no rejection state, no re-apply flow.
+    assert "rejected: {" not in ACCOUNTS_JS
+    assert "showReapply: true" not in ACCOUNTS_JS
 
 
 # ── Part 8 — UX cleanup: single status indicator on home ─────────────────────

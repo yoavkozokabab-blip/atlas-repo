@@ -116,6 +116,10 @@ def accounts_register(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str,
                 "error": "An account with this email already exists.",
                 "detail": "Your account may already exist. Try signing in instead.",
             }
+        if status >= 500:
+            # A backend fault is not the user's registration mistake — surface
+            # it as a retryable outage, never as "registration failed".
+            return _service_unavailable_response()
         return {"ok": False, "code": "registration_failed", "submitted": False, "error": detail_text}
     return {"ok": True, "submitted": True, **result}
 

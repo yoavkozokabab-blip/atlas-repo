@@ -207,8 +207,10 @@ def test_admin_inbox_only_returns_result_feedback(monkeypatch):
 STATIC = Path(__file__).resolve().parents[1] / "static"
 
 
-def test_frontend_funnel_present_in_atlas_beta_js():
-    js = (STATIC / "atlas_beta.js").read_text(encoding="utf-8")
+def test_frontend_funnel_present_in_atlas_workflows_js():
+    # RC-1 renamed the beta-era bundle; the result-feedback widget now lives
+    # in atlas_workflows.js (loaded by index.html).
+    js = (STATIC / "atlas_workflows.js").read_text(encoding="utf-8")
     assert "Was this useful?" in js
     assert "function resultFeedbackVote" in js
     assert "function resultFeedbackSend" in js

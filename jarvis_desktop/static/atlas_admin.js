@@ -46,7 +46,7 @@
     if (badge) badge.textContent = d.pending_applications ? String(d.pending_applications) : "";
     const kpis = [
       ["Total users", d.total_users], ["Pending applications", d.pending_applications],
-      ["Active beta users", d.beta_users], ["Active users", d.active_users],
+      ["Users with access", d.beta_users], ["Active users", d.active_users],
       ["Suspended", d.suspended_users], ["Banned", d.banned_users],
       ["Feedback pending", d.feedback_pending], ["Active devices", d.active_devices],
     ];
@@ -77,7 +77,7 @@
         <div class="admin-app-head">
           <div><b>${esc(a.email)}</b><span class="admin-app-time">${esc((a.created_at || "").slice(0, 16).replace("T", " "))}</span></div>
           <div class="admin-app-actions">
-            <button class="btn primary small" onclick="adminConsole.approve('${esc(a.user_id)}','${esc(a.email)}')">Approve beta</button>
+            <button class="btn primary small" onclick="adminConsole.approve('${esc(a.user_id)}','${esc(a.email)}')">Approve access</button>
             <button class="btn danger small" onclick="adminConsole.reject('${esc(a.user_id)}','${esc(a.email)}')">Reject</button>
             <button class="btn ghost small" onclick="adminConsole.note('${esc(a.user_id)}')">Add note</button>
           </div>
@@ -114,7 +114,7 @@
         <td>${esc(u.device_count || 0)}</td>
         <td class="muted">${esc(last)}</td>
         <td class="admin-row-actions">
-          ${u.status === "pending" || !u.beta_flag ? `<button class="btn ghost small" onclick="adminConsole.act('grant-beta','${esc(u.user_id)}','${esc(u.email)}')">Grant beta</button>` : `<button class="btn ghost small" onclick="adminConsole.act('revoke-beta','${esc(u.user_id)}','${esc(u.email)}')">Revoke beta</button>`}
+          ${u.status === "pending" || !u.beta_flag ? `<button class="btn ghost small" onclick="adminConsole.act('grant-beta','${esc(u.user_id)}','${esc(u.email)}')">Enable access</button>` : `<button class="btn ghost small" onclick="adminConsole.act('revoke-beta','${esc(u.user_id)}','${esc(u.email)}')">Disable access</button>`}
           <button class="btn ghost small" onclick="adminConsole.editLicense('${esc(u.user_id)}')">License</button>
           ${u.status === "suspended" || u.status === "banned" ? `<button class="btn ghost small" onclick="adminConsole.setStatus('${esc(u.user_id)}','active','${esc(u.email)}')">Reinstate</button>` : `<button class="btn ghost small" onclick="adminConsole.setStatus('${esc(u.user_id)}','suspended','${esc(u.email)}')">Suspend</button>`}
           <button class="btn ghost small danger-text" onclick="adminConsole.setStatus('${esc(u.user_id)}','banned','${esc(u.email)}')">Ban</button>
@@ -135,12 +135,12 @@
       <div class="admin-access-card glass">
         <h3>License &amp; access — ${esc(u.email)}</h3>
         <div class="admin-form-grid">
-          <label>Plan ${sel("acc-edit-plan", lic.plan || "free", [["free", "free"], ["beta", "beta"], ["pro", "pro"], ["enterprise", "enterprise (manual)"]])}</label>
-          <label>Status ${sel("acc-edit-status", u.status, [["pending", "pending"], ["active", "active"], ["beta", "beta"], ["suspended", "suspended"], ["banned", "banned"], ["expired", "expired"]])}</label>
+          <label>Plan ${sel("acc-edit-plan", lic.plan || "free", [["free", "free"], ["beta", "standard"], ["pro", "pro"], ["enterprise", "enterprise (manual)"]])}</label>
+          <label>Status ${sel("acc-edit-status", u.status, [["pending", "pending"], ["active", "active"], ["beta", "standard"], ["suspended", "suspended"], ["banned", "banned"], ["expired", "expired"]])}</label>
           <label>Role ${sel("acc-edit-role", u.role, [["user", "user"], ["admin", "admin"], ["superadmin", "superadmin"]])}</label>
           <label>Max devices <input id="acc-edit-devices" type="number" min="1" max="20" value="${esc((lic.max_devices) || 1)}" /></label>
           <label>Expiry (YYYY-MM-DD) <input id="acc-edit-expiry" type="text" placeholder="none" value="${esc((lic.expires_at || "").slice(0, 10))}" /></label>
-          <label class="admin-check"><input id="acc-edit-beta" type="checkbox" ${u.beta_flag ? "checked" : ""}/> Beta flag</label>
+          <label class="admin-check"><input id="acc-edit-beta" type="checkbox" ${u.beta_flag ? "checked" : ""}/> Access flag</label>
         </div>
         <div class="admin-modal-actions">
           <button class="btn ghost" onclick="adminConsole.tab('users')">Back to users</button>
@@ -194,12 +194,12 @@
       <div class="admin-verdict ${esc(v.verdict || "mixed_signal")}">
         <h2>Do users actually want Atlas?</h2>
         <p class="muted">${esc(v.headline || "")}</p>
-        <p class="tiny muted">Beta target: ${esc(d.active_beta_users || 0)} / ${esc(v.beta_target || 25)} users · progress ${esc(Math.round((v.beta_target_progress || 0) * 100))}%</p>
+        <p class="tiny muted">Adoption target: ${esc(d.active_beta_users || 0)} / ${esc(v.beta_target || 25)} users · progress ${esc(Math.round((v.beta_target_progress || 0) * 100))}%</p>
       </div>
       <div class="admin-kpis">
         ${[
-          ["Waitlist", d.waitlist_count],
-          ["Active beta", d.active_beta_users],
+          ["Sign-ups", d.waitlist_count],
+          ["Active accounts", d.active_beta_users],
           ["Weekly retention", pct(ret.weekly_retention_rate)],
           ["NPS", nps.nps_score == null ? "—" : nps.nps_score],
           ["Critical bugs", d.critical_bugs],
@@ -225,9 +225,9 @@
         </div>
       </div>
       <div class="admin-toolbar" style="margin-top:16px">
-        <button class="btn primary small" type="button" onclick="adminConsole.exportBetaUsers()">Export beta users</button>
+        <button class="btn primary small" type="button" onclick="adminConsole.exportBetaUsers()">Export users</button>
         <button class="btn ghost small" type="button" onclick="adminConsole.loadInterviewSummary()">Feedback summary</button>
-        <button class="btn ghost small" type="button" onclick="adminConsole.createInvite()">Create invite code</button>
+        <button class="btn ghost small" type="button" onclick="adminConsole.createInvite()">Create access code</button>
       </div>
       <div id="admin-launch-extra" class="muted tiny" style="margin-top:10px"></div>
       <div id="admin-invites-list" style="margin-top:12px"></div>`;
@@ -240,7 +240,7 @@
     const r = await api("/api/accounts/admin/invites");
     if (!r || !r.ok) { host.innerHTML = ""; return; }
     const items = r.invites || [];
-    if (!items.length) { host.innerHTML = "<p class='muted tiny'>No invite codes yet.</p>"; return; }
+    if (!items.length) { host.innerHTML = "<p class='muted tiny'>No access codes yet.</p>"; return; }
     host.innerHTML = `<table class="admin-table"><thead><tr><th>Code</th><th>Email</th><th>Uses</th><th>Status</th><th>Expires</th></tr></thead><tbody>${
       items.map((i) => `<tr><td><code>${esc(i.code)}</code></td><td>${esc(i.email || "—")}</td><td>${esc(i.use_count)}/${esc(i.max_uses)}</td><td>${esc(i.status)}</td><td class="muted">${esc((i.expires_at || "").slice(0, 10) || "—")}</td></tr>`).join("")
     }</tbody></table>`;
@@ -252,9 +252,9 @@
     const blob = new Blob([JSON.stringify(r.users || [], null, 2)], { type: "application/json" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = "atlas-beta-users.json";
+    a.download = "atlas-users.json";
     a.click();
-    toast("Exported beta users", "success");
+    toast("Exported users", "success");
   }
 
   async function loadInterviewSummary() {
@@ -267,10 +267,10 @@
   }
 
   async function createInvite() {
-    const email = window.prompt("Reserve for email (optional — leave blank for open invite):", "") || "";
+    const email = window.prompt("Reserve for email (optional — leave blank for an open code):", "") || "";
     const r = await api("/api/accounts/admin/invites", "POST", { email: email.trim() || undefined, max_uses: 1, expires_days: 30 });
     if (r && r.ok && r.invite) {
-      toast(`Invite created: ${r.invite.code}`, "success");
+      toast(`Access code created: ${r.invite.code}`, "success");
       loadInvites();
     } else toast((r && r.error) || "Create failed", "error");
   }
@@ -333,7 +333,7 @@
   }
 
   async function approve(uid, email) { await _post("/api/accounts/admin/applications/approve", { user_id: uid }, `Approved ${email}`); if (STATE.current === "pending") loadPending(); }
-  async function reject(uid, email) { confirmModal("Reject application", `Reject the beta application from ${email}? They will not get access.`, async () => { await _post("/api/accounts/admin/applications/reject", { user_id: uid }, `Rejected ${email}`); loadPending(); }); }
+  async function reject(uid, email) { confirmModal("Reject application", `Reject the sign-up application from ${email}? They will not get access.`, async () => { await _post("/api/accounts/admin/applications/reject", { user_id: uid }, `Rejected ${email}`); loadPending(); }); }
   function note(uid) {
     const text = window.prompt("Internal note for this applicant (operator-only):", "");
     if (text == null) return;

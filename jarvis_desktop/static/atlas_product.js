@@ -1,5 +1,5 @@
 "use strict";
-/* Phase 175B — trust status, update banner, version display */
+/* Trust status, update banner, version display */
 
 const TRUST_LABELS = {
   Fresh: "fresh",

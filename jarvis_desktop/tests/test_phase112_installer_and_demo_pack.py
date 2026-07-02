@@ -26,10 +26,9 @@ def test_demo_packs_list():
     packs = api.list_demo_packs()
     assert packs["ok"]
     ids = {p["id"] for p in packs["packs"]}
-    # "small" is hidden from the user-facing selector; default is "medium".
-    assert ids == {"medium", "large"}
-    assert "small" not in ids
-    assert packs["default"] == "medium"
+    # RC-1 exposes all three sizes; "small" is the instant first-run default.
+    assert ids == {"small", "medium", "large"}
+    assert packs["default"] == "small"
     for pack_id in ids:
         assert api.demo_repo_path(pack_id)
         assert Path(api.demo_repo_path(pack_id)).is_dir()
@@ -114,9 +113,11 @@ def test_tour_still_works_after_demo_load():
 
 
 def test_installer_files_exist():
+    # Canonical installer lives under packaging/installer (the legacy
+    # top-level installer/jarvis.iss was retired).
     root = Path(__file__).resolve().parents[2]
-    assert (root / "installer" / "jarvis.iss").is_file()
-    assert (root / "installer" / "README.md").is_file()
+    assert (root / "packaging" / "installer" / "Atlas.iss").is_file()
+    assert (root / "packaging" / "installer" / "installer_build.ps1").is_file()
     assert (root / "installer_build.ps1").is_file()
     assert (root / "Launch Atlas.bat").is_file()
     assert (root / "run_atlas.py").is_file()

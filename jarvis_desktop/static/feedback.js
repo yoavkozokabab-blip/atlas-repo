@@ -2,7 +2,6 @@
 /* Atlas feedback — local save + optional remote destination (ATLAS_FEEDBACK_URL). */
 (function () {
   const KEY = "atlas_feedback";
-  const LEGACY_KEY = "jarvis_feedback";
   const CATS = [
     { id: "bug", label: "Bug", icon: "🐞" },
     { id: "confusing_ui", label: "Confusing UI", icon: "🧭" },
@@ -13,16 +12,7 @@
   let pendingContext = null;
   let productConfig = { feedback_url_configured: false, support_email: "atlas.repo.support@gmail.com" };
 
-  function migrateLegacy() {
-    try {
-      if (localStorage.getItem(KEY)) return;
-      const legacy = localStorage.getItem(LEGACY_KEY);
-      if (legacy) localStorage.setItem(KEY, legacy);
-    } catch (e) {}
-  }
-
   function list() {
-    migrateLegacy();
     try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch (e) { return []; }
   }
   function save(entry) {
@@ -186,6 +176,5 @@
 
   const apiObj = { open, close, submit, list, exportJSON, openReportIssue, count: () => list().length, categories: CATS, loadConfig };
   window.AtlasFeedback = apiObj;
-  window.JarvisFeedback = apiObj;
   if (document.readyState !== "loading") inject(); else document.addEventListener("DOMContentLoaded", inject);
 })();

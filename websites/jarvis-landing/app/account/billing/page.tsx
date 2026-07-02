@@ -13,21 +13,21 @@ export default async function BillingPage() {
   const isPaid = user.plan !== "free";
   const isCanceled = user.planStatus === "canceled" || user.planStatus === "expired";
 
-  // Free-beta (Phase 186A): be honest — no subscription, no checkout, no charge.
+  // Paid plans are not live: be honest — no subscription, no checkout, no charge.
   if (!PAID_PLANS_ENABLED) {
     return (
       <div>
         <div className="card" style={{ marginBottom: 22 }}>
           <h3 style={{ marginBottom: 14 }}>Billing</h3>
           <dl className="kv">
-            <dt>Current plan</dt><dd>Free beta</dd>
-            <dt>Price</dt><dd>$0 — free during the invite beta</dd>
-            <dt>Status</dt><dd>Active (beta)</dd>
+            <dt>Current plan</dt><dd>Free</dd>
+            <dt>Price</dt><dd>$0 — free during the release candidate</dd>
+            <dt>Status</dt><dd>Active</dd>
           </dl>
         </div>
         <div className="note-accent" style={{ maxWidth: 640 }}>
-          <b>Atlas is in a free invite beta.</b> There is no subscription and no payment method on
-          file — nothing will ever be charged. Paid plans will be introduced after the beta, and
+          <b>Atlas is free right now.</b> There is no subscription and no payment method on
+          file — nothing will ever be charged. Paid plans aren&apos;t available yet, and
           we&apos;ll tell you before anything changes.
         </div>
       </div>

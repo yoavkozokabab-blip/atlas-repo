@@ -43,7 +43,8 @@ def test_empty_graph_root_cause_is_insufficient_evidence():
     assert res["ok"] is True
     plan = res["plan"]
     root = (plan.get("most_likely_root_cause") or "").lower()
-    assert "insufficient evidence" in root or "enough" in root, root
+    assert ("insufficient evidence" in root or "enough" in root
+            or "couldn't identify a confident root cause" in root), root
     assert plan.get("root_cause_evidence_score", 0) < plan.get("root_cause_threshold", 50)
 
 

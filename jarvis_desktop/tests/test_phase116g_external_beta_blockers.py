@@ -85,12 +85,12 @@ def test_ui_shows_partial_graph_warning_and_resolution_metrics():
 
     assert "Graph is partial: many imports could not be resolved." not in app
     assert "sum.graph_health?.notice" in app
-    assert "Resolved imports" in app
-    # Phase 134 — the cockpit now splits unresolved into internal vs external/stdlib
-    # vs dynamic/optional (clearer than a single ambiguous "Unresolved imports").
-    assert "Unresolved internal" in app
-    assert "External / stdlib" in app
-    assert "Dynamic / optional" in app
+    assert "import resolution" in app
+    # RC-1 simplified the cockpit to resolved/unresolved counts + ratio
+    # (the internal/external/dynamic three-way split was retired).
+    assert "resolved imports" in app
+    assert "unresolved imports" in app
+    assert "unresolved ratio" in app
 
 
 def test_native_picker_requests_foreground_window(monkeypatch):

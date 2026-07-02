@@ -716,6 +716,7 @@ def build_change_copy_prompt(
         f"## Likely files\n" + "\n".join(f"- `{f}`" for f in files) + "\n\n"
         "## Evidence\n"
         + "\n".join(f"- {e.get('signal')}: {e.get('why_it_matters')}" for e in _collect_evidence_change(plan)[:5])
+        + _domain_knowledge_prompt_block(plan)
         + "\n\n## Verification steps\n"
         + "\n".join(f"- {v}" for v in ver_lines)
         + "\n\n## Constraints\n"
@@ -724,6 +725,29 @@ def build_change_copy_prompt(
         "- Add or update tests for new behavior.\n"
         "- If the plan disagrees with the code, trust the code and report the mismatch.\n"
     )
+
+
+def _domain_knowledge_prompt_block(plan: Dict[str, Any]) -> str:
+    """Concept-specific guidance the agent would otherwise miss (e.g. EMA
+    warmup/lookahead pitfalls). Rendered only when the knowledge engine fired."""
+    dk = plan.get("domain_knowledge") or {}
+    if not dk.get("applied"):
+        return ""
+    lines = [
+        "",
+        "",
+        f"## DOMAIN KNOWLEDGE — {dk.get('concept_name') or dk.get('concept_id') or 'matched concept'}",
+    ]
+    quality = str(dk.get("concept_quality_score") or "").strip()
+    if quality:
+        lines.append(f"- Knowledge quality: {quality}")
+    why = str(dk.get("why_this_matters") or "").strip()
+    if why:
+        lines.append(f"- {why}")
+    risks = [str(r) for r in (dk.get("risks") or []) if r]
+    if risks:
+        lines.append("- Risks: " + "; ".join(risks[:3]))
+    return "\n".join(lines)
 
 
 def build_investigation_copy_prompt(

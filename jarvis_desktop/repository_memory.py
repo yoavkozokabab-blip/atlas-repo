@@ -416,6 +416,17 @@ def memory_text(memory: Dict[str, Any]) -> str:
             f"delta: {', '.join(parts) or 'minor changes'}  since {prev}"
         )
 
+    # Trust metadata (174D ship contract): the packet text itself must carry
+    # the scan signature + freshness so a pasted context can be traced back to
+    # the exact repository state and never silently replayed after changes.
+    sig = str(memory.get("scan_signature") or "")
+    if sig:
+        lines.append(f"scan_signature: {sig[:12]}")
+    fresh = str(memory.get("freshness_status") or "")
+    if fresh:
+        lines.append(f"freshness_status: {fresh}")
+    lines.append(f"replay_warning: {REPLAY_WARNING}")
+
     return "\n".join(lines)
 
 

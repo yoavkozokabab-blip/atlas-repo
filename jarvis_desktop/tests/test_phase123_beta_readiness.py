@@ -92,16 +92,20 @@ class TestInvestigationEngine:
     def test_markdown_has_all_sections(self):
         r = self._investigate("dashboard numbers are wrong")
         md = r["formatted"]
-        for section in ("A. Symptom summary", "B. Most likely root cause",
-                        "C. Ranked hypotheses", "D. Verification checklist",
-                        "E. Minimal fix strategy", "F. Risks of fixing incorrectly"):
+        # RC-1 result format (fb391aae): evidence-first sections + agent handoff.
+        for section in ("## Executive Summary", "## Most likely cause",
+                        "## Evidence", "## Ranked files",
+                        "## Verification steps",
+                        "## Next prompt for Claude / Cursor / Codex"):
             assert section in md, f"markdown missing: {section}"
 
     def test_claude_prompt_includes_hypotheses(self):
         r = self._investigate("unexpected stop loss")
         claude = r["prompts"]["claude"]
-        assert "Ranked hypotheses" in claude
-        assert "How to disprove" in claude
+        # RC-1 prompt format: goal + likely files + evidence + verification.
+        assert "## Most likely cause" in claude
+        assert "## Evidence" in claude
+        assert "## Verification steps" in claude
 
     def test_empty_symptom_fails_gracefully(self):
         _, r = server.dispatch("POST", "/api/planning/investigate", {"symptom": ""})
@@ -135,8 +139,11 @@ class TestBuildPlan:
         assert "flag" in rollback or "sandbox" in rollback
 
     def test_change_markdown_has_rollback(self):
+        # RC-1 markdown is an agent handoff; the rollback plan stays in the
+        # structured payload (asserted above) and verification covers rollback.
         r = self._plan("Add Redis caching")
-        assert "Rollback plan:" in r["formatted"]
+        assert "## Verification steps" in r["formatted"]
+        assert len(r["plan"]["rollback_plan"]) >= 2
 
     def test_ten_point_fields_present(self):
         r = self._plan("Add dark mode")

@@ -120,17 +120,27 @@ def _frontend_api_calls() -> set[tuple[str, str]]:
         STATIC_DIR / "admin.html",
         STATIC_DIR / "marketing.js",
     ]
+
+    def _add(method: str, raw: str) -> None:
+        # Literals ending in "/" are string-concatenation fragments (e.g. the
+        # admin page's "/applications/"+"pending" compat split) — the full path
+        # cannot be resolved statically; the joined endpoints have their own
+        # literal siblings elsewhere.
+        if raw.endswith("/"):
+            return
+        calls.add((method, server.normalize_api_path(raw)))
+
     for source in sources:
         text = source.read_text(encoding="utf-8")
         for match in re.finditer(r"""\bapi\(\s*["`](/api/[^"`?]+)(?:\?[^"`]*)?["`](?:\s*,\s*["`](GET|POST)["`])?""", text):
-            calls.add(((match.group(2) or "GET"), server.normalize_api_path(match.group(1))))
+            _add(match.group(2) or "GET", match.group(1))
         for match in re.finditer(r"""\bjget\(\s*["`](/api/[^"`?]+)""", text):
-            calls.add(("GET", server.normalize_api_path(match.group(1))))
+            _add("GET", match.group(1))
         for match in re.finditer(r"""\bjpost\(\s*["`](/api/[^"`?]+)""", text):
-            calls.add(("POST", server.normalize_api_path(match.group(1))))
+            _add("POST", match.group(1))
         for match in re.finditer(r"""\bfetch\(\s*"(/api/[^"?]+)"([^)]*)\)""", text):
             method = "POST" if re.search(r"""method\s*:\s*["']POST["']""", match.group(2)) else "GET"
-            calls.add((method, server.normalize_api_path(match.group(1))))
+            _add(method, match.group(1))
     return calls
 
 

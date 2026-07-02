@@ -70,8 +70,9 @@ class TestAtlasBranding:
         assert "JARVIS" not in html.split("<title>")[1].split("</title>")[0]
 
     def test_onboarding_says_atlas(self):
+        # RC-1 first-run onboarding hero (replaces the "Welcome to ATLAS" card).
         html = _html()
-        assert "Welcome to ATLAS" in html
+        assert "Give Cursor and Claude repo memory" in html
 
     def test_presentation_badge_says_atlas(self):
         html = _html()
@@ -79,27 +80,29 @@ class TestAtlasBranding:
 
     def test_hero_headline_present(self):
         html = _html()
-        assert "Map your repository before your AI reads it" in html
+        assert "Describe a change. Get the files, order, and risks." in html
 
     def test_hero_subheadline_present(self):
         html = _html()
-        assert "exports context for Claude, Codex and Cursor" in html
+        assert "Copy one prompt to Claude. Done." in html
 
     def test_steps_row_present(self):
+        # RC-1 replaced the steps-row banner with the Getting Started checklist.
         html = _html()
-        assert 'class="steps-row"' in html
-        assert "Scan architecture" in html
-        assert "Plan, investigate, export" in html
+        assert 'class="getting-started-steps"' in html
+        assert "Scan a local repository" in html
+        assert "Connect Cursor or Claude" in html
 
     def test_home_actions_present(self):
+        # RC-1 first-run Home shows exactly two actions: scan or load the sample.
         html = _html()
-        assert "Browse Repository" in html
-        assert "Watch Product Tour" in html
+        assert "Scan local repository" in html
+        assert "Load sample repository" in html
 
     def test_js_uses_atlas_keys(self):
         js = _js()
         assert 'atlas_recent_repos' in js
-        assert 'atlas_onboarding_done' in js
+        assert 'atlas_onboarding_v2_done' in js
 
     def test_js_export_filename_atlas(self):
         js = _js()
@@ -441,13 +444,13 @@ class TestUIStructure:
     def test_investigate_bug_section_present(self):
         html = _html()
         assert 'id="view-investigate"' in html
-        assert "Investigate Bug" in html
+        assert "Investigate bugs and root causes." in html
         assert "traceback" in html.lower() or "stack trace" in html.lower()
 
     def test_export_why_section_present(self):
         html = _html()
-        assert "Why this helps" in html
-        assert "before it starts guessing" in html
+        assert 'class="export-why"' in html
+        assert "repo-wide context packet" in html
 
     def test_graph_legend_present(self):
         html = _html()

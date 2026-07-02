@@ -57,10 +57,10 @@ class TestCardOrder:
             run.index("impactSemanticCard(r)"),
             run.index("impactBlastCard(r)"),
             run.index("impactArchSummary(r)"),
-            run.index("Direct impact"),
-            run.index("Indirect impact"),
+            run.index("Files that import this"),
+            run.index("Also affected through them"),
             run.index("Tests to run"),
-            run.index("Safe rollback"),
+            run.index("Verification steps"),
         ]
         assert order == sorted(order), "cards must precede file lists in the documented order"
 

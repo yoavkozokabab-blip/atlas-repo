@@ -118,7 +118,13 @@ def _data_dir() -> str:
 
 def _operations_dir(data_dir: Optional[str] = None) -> str:
     path = os.path.join(data_dir or _data_dir(), "operations")
-    os.makedirs(path, exist_ok=True)
+    try:
+        os.makedirs(path, exist_ok=True)
+    except OSError:
+        # A read-only or denied data dir must never break scans/health — the
+        # writers below already tolerate a missing directory (telemetry just
+        # degrades instead).
+        pass
     return path
 
 

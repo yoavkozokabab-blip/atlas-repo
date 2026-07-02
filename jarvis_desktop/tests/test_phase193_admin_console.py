@@ -23,7 +23,9 @@ APP_JS = (STATIC / "app.js").read_text(encoding="utf-8")
 # ── Navigation + Admin Console presence ──────────────────────────────────────
 def test_admin_console_view_and_tabs_present():
     assert 'id="view-admin"' in INDEX
-    for tab in ("overview", "pending", "users", "access", "feedback", "audit"):
+    # RC-1 open access: the "pending" applications tab was removed with the
+    # invite/approval flow; "status" and "launch" replaced it.
+    for tab in ("overview", "status", "users", "access", "feedback", "audit", "launch"):
         assert f'data-tab="{tab}"' in INDEX, tab
     assert 'id="admin-users-rows"' in INDEX
     assert 'id="admin-confirm"' in INDEX  # confirmation modal for dangerous actions
@@ -90,11 +92,17 @@ _LIB = os.path.join(Path(__file__).resolve().parents[2], "accounts_service", ".l
 if _LIB not in sys.path:
     sys.path.insert(0, _LIB)
 
-from fastapi.testclient import TestClient  # noqa: E402
-from accounts_service.database import Base, SessionLocal, engine  # noqa: E402
-from accounts_service.main import app  # noqa: E402
-from accounts_service.models import User  # noqa: E402
-from accounts_service.rate_limit import reset_rate_limit_store  # noqa: E402
+try:
+    from fastapi.testclient import TestClient  # noqa: E402
+    from accounts_service.database import Base, SessionLocal, engine  # noqa: E402
+    from accounts_service.main import app  # noqa: E402
+    from accounts_service.models import User  # noqa: E402
+    from accounts_service.rate_limit import reset_rate_limit_store  # noqa: E402
+    _HAS_ACCOUNTS = True
+except ModuleNotFoundError:
+    # accounts_service is dev-only; the static UI tests above still run in the
+    # product repo, only the backend admin-flow tests skip.
+    _HAS_ACCOUNTS = False
 
 PROFILE = {
     "currently_developer": True, "project_use": "work", "company_size": "2_10",
@@ -105,6 +113,9 @@ PROFILE = {
 
 @pytest.fixture(autouse=True)
 def _reset():
+    if not _HAS_ACCOUNTS:
+        yield
+        return
     reset_rate_limit_store()
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
@@ -114,6 +125,8 @@ def _reset():
 
 @pytest.fixture()
 def client():
+    if not _HAS_ACCOUNTS:
+        pytest.skip("accounts_service is dev-only; not shipped in the product repo")
     with TestClient(app) as c:
         yield c
 

@@ -135,9 +135,15 @@ def test_update_hardening_rejects_malformed_version(monkeypatch):
 def test_update_hardened_allows_valid_newer_version(monkeypatch):
     monkeypatch.setenv("ATLAS_UPDATE_CHECK_URL", "https://updates.example/version.json")
 
+    # Derive a strictly-newer minor bump from the current product version so
+    # the fixture stays valid as the product version moves.
+    from jarvis_desktop.product_info import PRODUCT_VERSION
+    _cur = PRODUCT_VERSION.split("-")[0].split(".")
+    _newer = f"{_cur[0]}.{int(_cur[1]) + 1}.0"
+
     class _Resp:
         def read(self):
-            return json.dumps({"version": "0.2.0-beta"}).encode("utf-8")
+            return json.dumps({"version": _newer}).encode("utf-8")
 
         status = 200
 

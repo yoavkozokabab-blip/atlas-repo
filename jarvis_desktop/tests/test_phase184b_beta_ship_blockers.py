@@ -99,14 +99,15 @@ def test_copy_for_ai_is_async_and_awaits_copy():
 
 # --- Blocker 3: version strings ---
 
-def test_product_version_is_beta():
-    assert product_info.PRODUCT_VERSION == "0.1.0-beta"
+def test_product_version_is_semver():
+    # RC-1 ships 1.0.0; the contract is a clean semver with no phase labels.
+    assert re.fullmatch(r"\d+\.\d+\.\d+(-[0-9A-Za-z.]+)?", product_info.PRODUCT_VERSION)
 
 
-def test_health_reports_beta_version():
+def test_health_reports_product_version():
     _fresh()
     health = api.health()
-    assert health.get("version") == "0.1.0-beta"
+    assert health.get("version") == product_info.PRODUCT_VERSION
     assert not PHASE_VERSION_RE.search(health.get("version") or "")
 
 
@@ -116,9 +117,9 @@ def test_user_facing_static_has_no_phase_version_strings(rel: str):
     assert not PHASE_VERSION_RE.search(text), f"{rel} still contains internal phase version"
 
 
-def test_installer_generated_version_is_beta():
+def test_installer_generated_version_matches_product():
     iss = (ROOT / "packaging" / "installer" / "generated_version.iss").read_text(encoding="utf-8")
-    assert 'MyAppVersion "0.1.0-beta"' in iss
+    assert f'MyAppVersion "{product_info.PRODUCT_VERSION}"' in iss
     assert not PHASE_VERSION_RE.search(iss)
 
 

@@ -3,8 +3,8 @@
    Stores locally (localStorage) with a backend-ready interface. No external calls. */
 
 const SIGNUP_BASE = 127;
-const SIGNUP_KEY = "jarvis_updates";
-const EV_KEY = "jarvis_events";
+const SIGNUP_KEY = "atlas_updates";
+const EV_KEY = "atlas_events";
 const ATLAS_LINKS = Object.freeze({
   github: "",
   x: "",

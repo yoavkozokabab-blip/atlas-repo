@@ -2,10 +2,7 @@
 const nextConfig = {
   compress: true,
   poweredByHeader: false,
-  reactStrictMode: true,
-  experimental: {
-    optimizePackageImports: ["lucide-react"]
-  }
+  reactStrictMode: true
 };
 
 export default nextConfig;
