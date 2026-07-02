@@ -93,6 +93,7 @@ class RegisterRequest(BaseModel):
     app_version: str = "unknown"
     platform: str = "unknown"
     beta_profile: Optional[BetaProfileCreate] = None
+    invite_code: Optional[str] = None
 
     @field_validator("password")
     @classmethod
@@ -310,6 +311,9 @@ class FeedbackCreate(BaseModel):
     category: str = "general"
     message: str
     contact_email: Optional[EmailStr] = None
+    workflow: Optional[str] = None
+    useful: Optional[bool] = None
+    nps_score: Optional[int] = None
 
     @field_validator("message")
     @classmethod
@@ -321,6 +325,28 @@ class FeedbackCreate(BaseModel):
             raise ValueError("Message too long")
         return text
 
+    @field_validator("nps_score")
+    @classmethod
+    def nps_range(cls, v: Optional[int]) -> Optional[int]:
+        if v is None:
+            return None
+        if v < 0 or v > 10:
+            raise ValueError("NPS score must be 0–10")
+        return v
+
+
+class FeedbackUpdate(BaseModel):
+    status: Optional[str] = None
+
+    @field_validator("status")
+    @classmethod
+    def valid_status(cls, v: Optional[str]) -> Optional[str]:
+        if v is None:
+            return None
+        if v not in ("pending", "reviewed", "closed"):
+            raise ValueError("Invalid feedback status")
+        return v
+
 
 class FeedbackOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -330,3 +356,83 @@ class FeedbackOut(BaseModel):
     message_redacted: str
     created_at: datetime
     status: str
+    workflow: Optional[str] = None
+    useful: Optional[bool] = None
+    sentiment: Optional[str] = None
+    nps_score: Optional[int] = None
+    user_id: Optional[str] = None
+
+
+# ── Phase 199 — beta acquisition ───────────────────────────────────────────
+class AcquisitionEventCreate(BaseModel):
+    stage: str
+    device_id: Optional[str] = None
+    source: str = "desktop"
+    metadata: Optional[dict] = None
+
+    @field_validator("stage")
+    @classmethod
+    def stage_valid(cls, v: str) -> str:
+        allowed = {
+            "landing_visit", "waitlist_signup", "app_installed", "registered",
+            "approved", "first_scan", "weekly_active", "nps_submitted",
+        }
+        stage = (v or "").strip()
+        if stage not in allowed:
+            raise ValueError("Invalid acquisition stage")
+        return stage
+
+
+class InviteCodeCreate(BaseModel):
+    email: Optional[EmailStr] = None
+    max_uses: int = 1
+    expires_days: Optional[int] = 30
+    notes: Optional[str] = None
+
+    @field_validator("max_uses")
+    @classmethod
+    def max_uses_positive(cls, v: int) -> int:
+        if v < 1 or v > 100:
+            raise ValueError("max_uses must be 1–100")
+        return v
+
+
+class InviteCodeOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    invite_id: str
+    code: str
+    email: Optional[str] = None
+    max_uses: int
+    use_count: int
+    status: str
+    created_at: datetime
+    expires_at: Optional[datetime] = None
+    notes: Optional[str] = None
+
+
+class InviteValidateRequest(BaseModel):
+    code: str
+
+
+class InviteValidateResponse(BaseModel):
+    valid: bool
+    email_hint: Optional[str] = None
+    message: str = ""
+
+
+class LaunchReadinessDashboard(BaseModel):
+    waitlist_count: int
+    active_beta_users: int
+    weekly_retention: dict
+    nps: dict
+    sentiment: dict
+    critical_bugs: int
+    open_feature_requests: int
+    feedback_pending: int
+    funnel_counts: dict
+    funnel_conversion: dict
+    top_feature_requests: list
+    top_complaints: list
+    launch_verdict: dict
+    invite_codes_active: int

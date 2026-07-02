@@ -6,7 +6,7 @@ import { rateLimit, clientIp, readJson } from "@/app/_lib/ratelimit";
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
-  if (!rateLimit(`login:${clientIp(req)}`, 8, 900_000)) {
+  if (!(await rateLimit(`login:${clientIp(req)}`, 8, 900_000))) {
     return NextResponse.json({ ok: false, error: "Too many login attempts. Please wait a few minutes." }, { status: 429 });
   }
   const body = await readJson(req);

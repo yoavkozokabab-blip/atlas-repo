@@ -414,12 +414,15 @@ function renderWorkflowQuickStarts(view) {
   if (!ex) return;
   const io = document.querySelector(`#view-${view} .io`);
   if (!io || io.querySelector(".workflow-examples")) return;
+  // Pre-fill the workflow input (e.g. the Change Plan box) with the pack-specific
+  // example so the first action names a real file. Never overwrite user input.
+  const field = $(ex.target);
+  if (field && !field.value.trim()) field.value = ex.text;
   const box = document.createElement("div");
   box.className = "workflow-examples glass";
   box.innerHTML = `<span class="muted tiny">Try an example:</span>
     <button class="btn small ghost" type="button">${esc(ex.text)}</button>`;
   box.querySelector("button").onclick = function () {
-    const field = $(ex.target);
     if (field) field.value = ex.text;
     window[ex.run]();
   };
@@ -666,7 +669,7 @@ async function renderDemoPackPicker() {
     host.innerHTML = `<span class="muted tiny">Sample repositories unavailable — restart Atlas or check your install.</span>`;
     return;
   }
-  let selected = STATE.demoPack || "small";
+  let selected = STATE.demoPack || "medium";
   try {
     const saved = localStorage.getItem(DEMO_PACK_KEY);
     if (saved) selected = saved;
@@ -2216,7 +2219,11 @@ const EXPORT_TARGET_LABEL = { claude: "Claude", codex: "Codex", cursor: "Cursor"
 
 function updateCopyExportLabel() {
   const btn = $("copyExportBtn");
-  if (btn) btn.textContent = `Copy for ${EXPORT_TARGET_LABEL[STATE.exportTarget] || "Claude"}`;
+  if (btn) btn.textContent = `Generate ${EXPORT_TARGET_LABEL[STATE.exportTarget] || "Claude"} context`;
+}
+
+function agentTaskText() {
+  return ($("agentTask")?.value || "").trim();
 }
 
 async function refreshExport() {
@@ -2244,6 +2251,108 @@ async function refreshExport() {
   // export result feedback funnel.
   const efs = $("exportFeedbackSlot");
   if (efs && typeof workflowFeedbackHtml === "function") efs.innerHTML = workflowFeedbackHtml("export");
+}
+
+async function generateAgentExport() {
+  if (!requireAtlasAccess("Agent export")) return;
+  updateCopyExportLabel();
+  const task = agentTaskText();
+  if (!task) {
+    toast("Describe the task first", "error");
+    if ($("agentTask")) $("agentTask").focus();
+    return;
+  }
+  const res = await api("/api/integrations/export", "POST", {
+    target: STATE.exportTarget,
+    task,
+    max_files: 12,
+  });
+  if (!res.ok) {
+    $("exportPreview").textContent = res.error || "Could not generate agent context.";
+    $("tokEst").textContent = "â€”";
+    $("previewMeta").textContent = res.code || "Export failed";
+    toast(res.error || "Agent export failed", "error");
+    return;
+  }
+  $("exportPreview").textContent = res.text;
+  $("tokEst").textContent = res.estimated_tokens;
+  $("previewMeta").textContent = `${res.target} Â· ${res.confidence} Â· ~${res.estimated_tokens} tokens`;
+  STATE._exportText = res.text;
+  STATE._agentExport = res;
+  STATE._agentExportTask = task;
+  toast(`Generated ${EXPORT_TARGET_LABEL[res.target] || res.target} context`, "success");
+}
+
+async function copyForTarget(target) {
+  STATE.exportTarget = target;
+  if ($("segTarget")) {
+    $("segTarget").querySelectorAll("button").forEach(b => b.classList.toggle("active", b.dataset.v === target));
+  }
+  const task = agentTaskText();
+  if (!task) {
+    toast("Describe the task first", "error");
+    if ($("agentTask")) $("agentTask").focus();
+    return;
+  }
+  if (!STATE._agentExport || STATE._agentExport.target !== target || STATE._agentExportTask !== task) {
+    await generateAgentExport();
+  }
+  if (STATE._exportText) copyText(STATE._exportText, `Copied ${EXPORT_TARGET_LABEL[target] || target} context`);
+}
+
+async function loadClaudeIntegration() {
+  if (!requireAtlasAccess("Claude integration")) return;
+  const res = await api("/api/integrations/claude/config");
+  const box = $("claudeMcpConfig");
+  if (box) {
+    box.style.display = "block";
+    box.textContent = res.copyable_json || JSON.stringify(res.snippet || {}, null, 2);
+  }
+  STATE._claudeMcpConfig = res.copyable_json || JSON.stringify(res.snippet || {}, null, 2);
+  if (!res.ok) {
+    toast(res.error || "Claude config unavailable", "error");
+    return;
+  }
+  const status = res.atlas_configured ? "Atlas is already in Claude Desktop config." : `Claude config: ${res.config_path}`;
+  $("previewMeta").textContent = status;
+  if (!res.atlas_configured && res.can_auto_write && confirm("Write Atlas MCP config to Claude Desktop now? Existing MCP servers will be preserved.")) {
+    const written = await api("/api/integrations/claude/write-config", "POST", { confirm: true });
+    if (written.ok) toast("Claude MCP config updated. Restart Claude Desktop to load Atlas.", "success");
+    else toast(written.error || "Could not write Claude config", "error");
+    await loadClaudeIntegration();
+  } else {
+    toast(res.atlas_configured ? "Claude MCP config found" : "Claude MCP config ready to copy");
+  }
+}
+
+async function copyClaudeMcpConfig() {
+  if (!STATE._claudeMcpConfig) await loadClaudeIntegration();
+  if (STATE._claudeMcpConfig) copyText(STATE._claudeMcpConfig, "Claude MCP config copied");
+}
+
+async function testClaudeMcp() {
+  if (!requireAtlasAccess("MCP test")) return;
+  const res = await api("/api/integrations/claude/test", "POST", {});
+  if (!res.ok) {
+    toast(res.error || "MCP test failed", "error");
+    return;
+  }
+  $("previewMeta").textContent = `MCP tools: ${res.tool_count}`;
+  toast(`MCP test passed (${res.tool_count} tools)`, "success");
+}
+
+async function writeCursorRule() {
+  if (!requireAtlasAccess("Cursor rule")) return;
+  const res = await api("/api/integrations/cursor/write-rule", "POST", { task: agentTaskText() });
+  if (res.ok) toast(`Cursor rule updated: ${res.path}`, "success");
+  else toast(res.error || "Could not write Cursor rule", "error");
+}
+
+async function writeClaudeCodeBlock() {
+  if (!requireAtlasAccess("Claude Code block")) return;
+  const res = await api("/api/integrations/claude-code/write-managed-block", "POST", { task: agentTaskText() });
+  if (res.ok) toast(`CLAUDE.md updated: ${res.path}`, "success");
+  else toast(res.error || "Could not update CLAUDE.md", "error");
 }
 async function copyExport() {
   if (!requireAtlasAccess("Copy/export")) return;

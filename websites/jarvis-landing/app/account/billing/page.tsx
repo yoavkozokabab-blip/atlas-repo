@@ -2,6 +2,7 @@ import Link from "next/link";
 import { currentUser } from "../../_lib/auth";
 import { PLANS } from "../../_lib/billing";
 import { ManageBillingButton, BillingActionButton, CheckoutButton } from "../../_components/client";
+import { PAID_PLANS_ENABLED } from "../../_config";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +12,27 @@ export default async function BillingPage() {
   const plan = PLANS[user.plan];
   const isPaid = user.plan !== "free";
   const isCanceled = user.planStatus === "canceled" || user.planStatus === "expired";
+
+  // Free-beta (Phase 186A): be honest — no subscription, no checkout, no charge.
+  if (!PAID_PLANS_ENABLED) {
+    return (
+      <div>
+        <div className="card" style={{ marginBottom: 22 }}>
+          <h3 style={{ marginBottom: 14 }}>Billing</h3>
+          <dl className="kv">
+            <dt>Current plan</dt><dd>Free beta</dd>
+            <dt>Price</dt><dd>$0 — free during the invite beta</dd>
+            <dt>Status</dt><dd>Active (beta)</dd>
+          </dl>
+        </div>
+        <div className="note-accent" style={{ maxWidth: 640 }}>
+          <b>Atlas is in a free invite beta.</b> There is no subscription and no payment method on
+          file — nothing will ever be charged. Paid plans will be introduced after the beta, and
+          we&apos;ll tell you before anything changes.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -30,11 +52,6 @@ export default async function BillingPage() {
         {isPaid && !isCanceled && <ManageBillingButton />}
         {isPaid && !isCanceled && <BillingActionButton action="cancel" label="Cancel subscription" />}
         {isCanceled && <BillingActionButton action="renew" label="Renew subscription" className="btn btn-primary" />}
-      </div>
-
-      <div className="note-accent" style={{ maxWidth: 640 }}>
-        <b>Test mode:</b> no real charges occur. Checkout simulates a trial locally;
-        live Stripe billing activates when keys are configured.
       </div>
 
       <p className="note" style={{ marginTop: 18 }}>

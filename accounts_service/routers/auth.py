@@ -12,6 +12,7 @@ from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.orm import Session
 
+from ..beta_acquisition import record_acquisition_event, redeem_invite_code
 from ..database import get_db
 from ..models import AdminNotification, BetaProfile, Device, EmailToken, License, Session as DBSession, User
 from ..rate_limit import check_rate_limit
@@ -133,6 +134,12 @@ def register(req: RegisterRequest, request: Request, db: Session = Depends(get_d
     if existing:
         raise HTTPException(status_code=409, detail="Email already registered.")
 
+    if req.invite_code:
+        try:
+            redeem_invite_code(db, req.invite_code, email)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+
     user = User(
         email=email,
         password_hash=hash_password(req.password),
@@ -147,6 +154,21 @@ def register(req: RegisterRequest, request: Request, db: Session = Depends(get_d
     lic = License(user_id=user.user_id, plan="free", status="active", max_devices=1)
     db.add(lic)
     db.flush()
+
+    # Invite code = instant beta access (no manual admin approval for invited strangers).
+    if req.invite_code:
+        user.beta_flag = True
+        user.status = "beta"
+        lic.plan = "beta"
+        lic.max_devices = 3
+        record_acquisition_event(
+            db,
+            "approved",
+            user_id=user.user_id,
+            device_id=req.device_id[:64],
+            metadata={"via": "invite_code"},
+            dedupe_user=True,
+        )
 
     if req.beta_profile:
         profile = BetaProfile(user_id=user.user_id, **req.beta_profile.model_dump())
@@ -172,6 +194,22 @@ def register(req: RegisterRequest, request: Request, db: Session = Depends(get_d
         ))
 
     _ensure_device(user, req.device_id, req.app_version, req.platform, db)
+    record_acquisition_event(
+        db,
+        "registered",
+        user_id=user.user_id,
+        device_id=req.device_id[:64],
+        dedupe_user=True,
+    )
+    if req.invite_code:
+        record_acquisition_event(
+            db,
+            "waitlist_signup",
+            user_id=user.user_id,
+            device_id=req.device_id[:64],
+            metadata={"via": "invite_code"},
+            dedupe_user=True,
+        )
     return _build_token_response(user, req.device_id, db)
 
 
@@ -193,10 +231,12 @@ def login(req: LoginRequest, request: Request, db: Session = Depends(get_db)):
     candidate_hash = user.password_hash if user else _DUMMY_HASH
     valid = verify_password(req.password, candidate_hash)
 
-    if not user:
-        raise HTTPException(status_code=401, detail="No Atlas account was found for this email.")
-    if not valid:
-        raise HTTPException(status_code=401, detail="Incorrect password. Try again or reset it.")
+    # Anti-enumeration (Phase 186D): return one identical response whether the
+    # email is unknown or the password is wrong. The dummy-hash verify above keeps
+    # timing roughly constant; this keeps the message constant too. Never reveal
+    # which field failed.
+    if not user or not valid:
+        raise HTTPException(status_code=401, detail="Invalid email or password.")
 
     if user.status in BLOCKED_STATUSES:
         reason_map = {

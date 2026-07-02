@@ -603,13 +603,23 @@ def get_license_status() -> Dict[str, Any]:
 # ── Public API ────────────────────────────────────────────────────────────────
 
 def is_service_running() -> bool:
-    """Quick check if the accounts backend is reachable."""
+    """Check if the local accounts backend is reachable and can use its DB.
+
+    A stale dev service can keep ``/health`` green while auth/acquisition routes
+    return 500. Probe the read-only invite validation path as a lightweight DB
+    readiness check; a random missing invite should return ``valid: false``.
+    """
     if auth_mode() == "website":
         # The auth authority is the website; there is no local service to start.
         # Real reachability surfaces as errors on login/me calls.
         return True
     result = _call("GET", "/health")
-    return result.get("status") == "ok"
+    if result.get("status") != "ok":
+        return False
+    probe = _call("POST", "/acquisition/validate-invite", {"code": "ATLASHEALTHCHECK"})
+    if probe.get("_offline") or probe.get("_http_status"):
+        return False
+    return probe.get("valid") is False
 
 
 def register(

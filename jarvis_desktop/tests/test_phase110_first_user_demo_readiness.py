@@ -81,7 +81,7 @@ def test_demo_mode_loads_sample_graph():
     assert res["ok"] is True
     assert res["demo_mode"] is True
     assert res["repo_name"].startswith("Atlas Demo")
-    assert res.get("demo_pack") == "small"
+    assert res.get("demo_pack") == "medium"  # medium is the default sample pack
     assert res["module_count"] >= 3
     graph = api.current_graph("module")
     assert graph["ok"] and graph["node_count"] >= 3
@@ -99,7 +99,7 @@ def test_context_export_requires_scan():
     assert res["ok"] is False
 
 
-def test_validate_and_demo_routes(tmp_path):
+def test_validate_and_demo_routes(tmp_path, beta_account):
     root = _repo(tmp_path)
     status, payload = server.dispatch("POST", "/api/repositories/validate", {"path": str(root)})
     assert status == 200 and payload["ok"]

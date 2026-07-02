@@ -56,6 +56,7 @@ _MEMORY_HASH_KEYS = (
     "scan_signature",
     "generated_by_version",
     "refresh_generation",
+    "agent_context",
 )
 
 
@@ -189,6 +190,15 @@ def build_memory(state: Dict[str, Any], *, generated_by_version: str = "") -> Di
     sig_v2 = scan.get("signature_v2") or {}
     scan_signature = sig_v2.get("signature") or (scan.get("cache") or {}).get("signature") or ""
 
+    # Agent-facing context (commands, deps, conventions, structure, pitfalls) —
+    # derived from analysis + repo manifest files. Enriches the canonical memory so
+    # Atlas can generate AGENTS.md / CLAUDE.md as outputs.
+    try:
+        from . import agent_context as _agent_context
+        agent_ctx = _agent_context.derive_agent_context(repo_path, scan, index)
+    except Exception:
+        agent_ctx = {}
+
     memory = {
         "version": MEMORY_VERSION,
         "repo_path": repo_path,
@@ -209,6 +219,7 @@ def build_memory(state: Dict[str, Any], *, generated_by_version: str = "") -> Di
         "refresh_generation": int((state.get("refresh_generation") or 0)),
         "session_count": 1,  # overwritten by merge_with_delta()
         "delta": None,       # overwritten by merge_with_delta()
+        "agent_context": agent_ctx,
     }
     memory["memory_hash"] = compute_memory_hash(memory)
     return memory
@@ -343,17 +354,9 @@ def memory_text(memory: Dict[str, Any]) -> str:
     mod_d = delta.get("modules_delta", 0)
     edge_d = delta.get("edges_delta", 0)
 
-    sig = str(memory.get("scan_signature") or "")
-    sig_short = sig[:12] if sig else "unknown"
-    freshness = memory.get("freshness_status") or "fresh"
     lines = [
         MEMORY_VERSION,
         f"repo: {memory.get('repo_name', 'repository')}  session: {session_n}",
-        f"scan_id: {memory.get('scan_id', '')}",
-        f"scan_signature: {sig_short}",
-        f"generated_at: {memory.get('scanned_at', '')}",
-        f"freshness_status: {freshness}",
-        f"replay_warning: {REPLAY_WARNING}",
     ]
 
     # Modules / edges line

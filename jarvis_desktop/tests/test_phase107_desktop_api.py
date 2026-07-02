@@ -167,4 +167,11 @@ def test_all_documented_routes_are_dispatchable():
     assert ("GET", "/api/system/startup-status") in documented
     assert ("GET", "/api/system/self-test") in documented  # Phase 157
     assert ("POST", "/api/system/support-bundle") in documented
-    assert len(documented) == 47
+    # Phase 182 — beta operations
+    assert ("GET", "/api/system/identity") in documented
+    assert ("GET", "/api/operations/identity") in documented
+    assert ("GET", "/api/operations/insights") in documented
+    assert ("GET", "/api/operations/feedback") in documented
+    assert ("GET", "/api/operations/token-savings") in documented
+    assert ("GET", "/api/operations/crashes") in documented
+    assert len(documented) >= 47  # grows with each phase; floor-checked

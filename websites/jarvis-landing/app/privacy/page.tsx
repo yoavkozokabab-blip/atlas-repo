@@ -42,9 +42,8 @@ export default function PrivacyPage() {
             from a misleading map.</p>
 
           <h2>Data &amp; contact</h2>
-          <p>For privacy questions, data requests, or security disclosures, contact
-            <a href={supportMailto("Atlas Privacy")}> {SUPPORT_EMAIL || "our contact page"}</a>. This page will be
-            expanded into a full policy ahead of public launch.</p>
+          <p>For privacy questions, data requests, or security disclosures, contact us via the
+            <a href={supportMailto("Atlas Privacy")}> {SUPPORT_EMAIL ? SUPPORT_EMAIL : "contact page"}</a>.</p>
 
           <p className="note">Last updated: 2026-06-13.</p>
         </div>

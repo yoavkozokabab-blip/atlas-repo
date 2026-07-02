@@ -3,7 +3,7 @@
 
 #define MyAppName "Atlas"
 #define MyAppPublisher "Atlas"
-#define MyAppURL "https://github.com/atlas"
+#define MyAppURL "https://github.com/yoavkozokabab-blip/atlas-repo"
 #define MyAppExeName "Atlas.exe"
 
 [Setup]

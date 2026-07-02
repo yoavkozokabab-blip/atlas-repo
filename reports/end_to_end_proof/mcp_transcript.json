@@ -1,0 +1,591 @@
+{
+  "exe": "C:\\J.A.R.V.I.S\\local_jarvis\\dist\\Atlas\\Atlas.exe",
+  "repo": "C:\\J.A.R.V.I.S\\local_jarvis\\external_repos\\requests",
+  "question": "Where is authentication implemented?",
+  "steps": [
+    {
+      "step": "initialize",
+      "ms": 164,
+      "summary": "serverInfo={'name': 'atlas-local', 'version': '0.1.0-beta'}"
+    },
+    {
+      "step": "tools/list (tools Claude would see)",
+      "ms": 0,
+      "summary": "17 tools: atlas_scan_repo, atlas_get_codebase_map, atlas_repo_summary, atlas_get_architecture, atlas_get_dependency_graph, atlas_find_relevant_files\u2026"
+    },
+    {
+      "step": "tools/call atlas_health",
+      "ms": 3,
+      "summary": "ok=True version=0.1.0-beta"
+    },
+    {
+      "step": "tools/call atlas_scan_repo",
+      "ms": 1494,
+      "summary": "ok=True files=125"
+    },
+    {
+      "step": "tools/call atlas_find_relevant_files",
+      "ms": 39,
+      "summary": "conf=HIGH files=['src/requests/auth.py', 'src/requests/utils.py', 'src/requests/models.py', 'src/requests/status_codes.py', 'src/requests/cookies.py', 'src/requests/structures.py']"
+    },
+    {
+      "step": "tools/call atlas_build_context_pack",
+      "ms": 37,
+      "summary": "conf=HIGH tokens=1386 top=[('src/requests/auth.py', None), ('src/requests/utils.py', None), ('src/requests/models.py', None), ('src/requests/status_codes.py', None), ('src/requests/cookies.py', None), ('src/requests/structures.py', None)]"
+    }
+  ],
+  "calls": {
+    "tools_list": [
+      "atlas_scan_repo",
+      "atlas_get_codebase_map",
+      "atlas_repo_summary",
+      "atlas_get_architecture",
+      "atlas_get_dependency_graph",
+      "atlas_find_relevant_files",
+      "atlas_build_context_pack",
+      "atlas_what_breaks",
+      "atlas_get_impact_analysis",
+      "atlas_plan_change",
+      "atlas_get_change_plan",
+      "atlas_find_file",
+      "atlas_repo_health",
+      "atlas_export_for_claude",
+      "atlas_export_for_cursor",
+      "atlas_export_for_codex",
+      "atlas_health"
+    ],
+    "atlas_health": {
+      "claude_desktop": {
+        "atlas_configured": true,
+        "can_auto_write": true,
+        "config_path": "C:\\Users\\babi2\\AppData\\Roaming\\Claude\\claude_desktop_config.json",
+        "config_source": "appdata_roaming",
+        "copyable_json": "{\n  \"mcpServers\": {\n    \"atlas\": {\n      \"command\": \"C:\\\\J.A.R.V.I.S\\\\local_jarvis\\\\dist\\\\Atlas\\\\Atlas.exe\",\n      \"args\": [\n        \"--mcp\"\n      ]\n    }\n  }\n}",
+        "discovered_paths": [
+          {
+            "exists": true,
+            "parent_exists": true,
+            "path": "C:\\Users\\babi2\\AppData\\Roaming\\Claude\\claude_desktop_config.json",
+            "source": "appdata_roaming"
+          },
+          {
+            "exists": false,
+            "parent_exists": false,
+            "path": "C:\\Users\\babi2\\AppData\\Local\\Claude\\claude_desktop_config.json",
+            "source": "localappdata_claude"
+          },
+          {
+            "exists": false,
+            "parent_exists": false,
+            "path": "C:\\Users\\babi2\\AppData\\Local\\AnthropicClaude\\claude_desktop_config.json",
+            "source": "localappdata_anthropic"
+          },
+          {
+            "exists": true,
+            "parent_exists": true,
+            "path": "C:\\Users\\babi2\\AppData\\Local\\Packages\\Claude_pzs8sxrjxfjjc\\LocalCache\\Roaming\\Claude\\claude_desktop_config.json",
+            "source": "microsoft_store:Claude_pzs8sxrjxfjjc"
+          },
+          {
+            "exists": false,
+            "parent_exists": false,
+            "path": "C:\\Users\\babi2\\AppData\\Local\\Packages\\Claude_pzs8sxrjxfjjc\\LocalState\\Claude\\claude_desktop_config.json",
+            "source": "microsoft_store:Claude_pzs8sxrjxfjjc"
+          },
+          {
+            "exists": false,
+            "parent_exists": false,
+            "path": "C:\\Users\\babi2\\AppData\\Local\\Packages\\Claude_pzs8sxrjxfjjc\\Roaming\\Claude\\claude_desktop_config.json",
+            "source": "microsoft_store:Claude_pzs8sxrjxfjjc"
+          }
+        ],
+        "existing_server_names": [
+          "atlas"
+        ],
+        "exists": true,
+        "invalid_json": false,
+        "ok": true,
+        "requires_confirmation": true,
+        "snippet": {
+          "mcpServers": {
+            "atlas": {
+              "args": [
+                "--mcp"
+              ],
+              "command": "C:\\J.A.R.V.I.S\\local_jarvis\\dist\\Atlas\\Atlas.exe"
+            }
+          }
+        }
+      },
+      "mcp_version": "0.1.0-beta",
+      "ok": true,
+      "privacy": {
+        "secrets_redacted": "[REDACTED]",
+        "source_bodies_returned_by_default": false,
+        "transport": "stdio-local"
+      },
+      "protocol_version": "2024-11-05",
+      "repo": {
+        "message": "No repository scanned yet.",
+        "ok": true,
+        "repo_path": "",
+        "repository_memory": null,
+        "scan": null,
+        "trust": null
+      },
+      "tool_count": 17
+    },
+    "atlas_scan_repo": {
+      "ok": true,
+      "scan": {
+        "cache": {
+          "hit": false,
+          "signature": "ae6514f3ce20b1c13609605beb6aea8bea3d91c9b63d6dc22e803540bf69bc59"
+        },
+        "degraded": false,
+        "dependency_edges": 66,
+        "file_count": 125,
+        "graph_health": {
+          "degraded": false,
+          "edges": 66,
+          "external_label": "external + stdlib imports",
+          "external_package_imports": 0,
+          "health_basis": "internal_unresolved",
+          "import_cycles": 0,
+          "label": "healthy",
+          "modules": 20,
+          "notice": "Internal graph is reliable: 0 unresolved internal import(s). The 26 external/stdlib import(s) are normal dependencies.",
+          "partial_reason": "",
+          "reason": "Graph health weights internal_missing and relative_resolution_issue; external_dependency and dynamic_import are expected in large apps.",
+          "reliability_category": "ok",
+          "reliable": true,
+          "resolved_imports": 66,
+          "scope": "production",
+          "unresolved_dynamic_optional": 28,
+          "unresolved_external": 26,
+          "unresolved_imports": 185,
+          "unresolved_internal": 0,
+          "unresolved_internal_ratio": 0.0,
+          "unresolved_ratio": 0.7371,
+          "unresolved_ratio_note": "External imports (targets outside the internal module set: third-party packages + standard library + any unresolved internal imports) \u00f7 all imports. High values are normal for apps with many dependencies."
+        },
+        "module_count": 20,
+        "repo_name": "requests"
+      }
+    },
+    "atlas_find_relevant_files": {
+      "confidence": "HIGH",
+      "confidence_score": 95,
+      "evidence": [
+        "Symbol index matched task terms.",
+        "Dependency graph proximity contributed."
+      ],
+      "excluded_files": [
+        {
+          "path": "docs/user/authentication.rst",
+          "reason": "documentation-only match",
+          "score": 98.0
+        },
+        {
+          "path": "src/requests/__version__.py",
+          "reason": "weak evidence after ranking",
+          "score": 18.0
+        },
+        {
+          "path": "src/requests/certs.py",
+          "reason": "weak evidence after ranking",
+          "score": 18.0
+        },
+        {
+          "path": "tests/test_structures.py",
+          "reason": "weak evidence after ranking",
+          "score": 16.0
+        },
+        {
+          "path": "tests/test_utils.py",
+          "reason": "weak evidence after ranking",
+          "score": 16.0
+        },
+        {
+          "path": "tests/utils.py",
+          "reason": "weak evidence after ranking",
+          "score": 16.0
+        }
+      ],
+      "ok": true,
+      "recommended_files": [
+        {
+          "path": "src/requests/auth.py",
+          "reasons": [
+            "name related to authentication, authentication-implemented",
+            "content mentions authentication, implemented",
+            "risk-ranked module",
+            "imports `src/requests/utils.py`"
+          ],
+          "role": "production_code",
+          "score": 118.0,
+          "subsystem": "src/requests"
+        },
+        {
+          "path": "src/requests/utils.py",
+          "reasons": [
+            "symbol match: io",
+            "content mentions authentication",
+            "historical/import hub",
+            "risk-ranked module"
+          ],
+          "role": "production_code",
+          "score": 114.0,
+          "subsystem": "src/requests"
+        },
+        {
+          "path": "src/requests/models.py",
+          "reasons": [
+            "content mentions authentication, implemented",
+            "historical/import hub",
+            "risk-ranked module",
+            "imports `src/requests/utils.py`"
+          ],
+          "role": "production_code",
+          "score": 92.0,
+          "subsystem": "src/requests"
+        },
+        {
+          "path": "src/requests/status_codes.py",
+          "reasons": [
+            "content mentions authentication, implemented",
+            "risk-ranked module",
+            "imported by `src/requests/models.py`",
+            "imports `src/requests/structures.py`"
+          ],
+          "role": "production_code",
+          "score": 84.0,
+          "subsystem": "src/requests"
+        },
+        {
+          "path": "src/requests/cookies.py",
+          "reasons": [
+            "content mentions implemented",
+            "historical/import hub",
+            "risk-ranked module",
+            "imported by `src/requests/utils.py`"
+          ],
+          "role": "production_code",
+          "score": 83.0,
+          "subsystem": "src/requests"
+        },
+        {
+          "path": "src/requests/structures.py",
+          "reasons": [
+            "content mentions implemented",
+            "historical/import hub",
+            "risk-ranked module",
+            "imported by `src/requests/utils.py`"
+          ],
+          "role": "production_code",
+          "score": 81.0,
+          "subsystem": "src/requests"
+        },
+        {
+          "path": "src/requests/sessions.py",
+          "reasons": [
+            "content mentions authentication",
+            "risk-ranked module",
+            "imports `src/requests/utils.py`",
+            "imports `src/requests/auth.py`"
+          ],
+          "role": "production_code",
+          "score": 78.0,
+          "subsystem": "src/requests"
+        },
+        {
+          "path": "src/requests/adapters.py",
+          "reasons": [
+            "content mentions authentication, implemented",
+            "imports `src/requests/utils.py`",
+            "imports `src/requests/auth.py`",
+            "imports `src/requests/models.py`"
+          ],
+          "role": "production_code",
+          "score": 74.0,
+          "subsystem": "src/requests"
+        },
+        {
+          "path": "src/requests/__init__.py",
+          "reasons": [
+            "imports `src/requests/utils.py`",
+            "imports `src/requests/models.py`",
+            "imports `src/requests/sessions.py`"
+          ],
+          "role": "production_code",
+          "score": 38.0,
+          "subsystem": "src/requests"
+        },
+        {
+          "path": "src/requests/_internal_utils.py",
+          "reasons": [
+            "imported by `src/requests/utils.py`",
+            "imported by `src/requests/auth.py`",
+            "imported by `src/requests/models.py`"
+          ],
+          "role": "production_code",
+          "score": 38.0,
+          "subsystem": "src/requests"
+        },
+        {
+          "path": "src/requests/_types.py",
+          "reasons": [
+            "imported by `src/requests/utils.py`",
+            "imported by `src/requests/models.py`",
+            "imported by `src/requests/sessions.py`"
+          ],
+          "role": "production_code",
+          "score": 38.0,
+          "subsystem": "src/requests"
+        },
+        {
+          "path": "src/requests/compat.py",
+          "reasons": [
+            "imported by `src/requests/utils.py`",
+            "imported by `src/requests/auth.py`",
+            "imported by `src/requests/models.py`"
+          ],
+          "role": "production_code",
+          "score": 38.0,
+          "subsystem": "src/requests"
+        }
+      ],
+      "related_tests": [
+        {
+          "path": "tests/test_requests.py",
+          "reasons": [
+            "test shares path terms with `src/requests/utils.py`",
+            "test shares path terms with `src/requests/auth.py`",
+            "test shares path terms with `src/requests/models.py`"
+          ],
+          "score": 32.0
+        }
+      ],
+      "task": "Where is authentication implemented?"
+    },
+    "atlas_build_context_pack": {
+      "confidence": "HIGH",
+      "confidence_reasons": [
+        "Symbol index matched task terms.",
+        "Dependency graph proximity contributed."
+      ],
+      "confidence_score": 95,
+      "dependency_notes": [
+        "`src/requests/auth.py` imports selected file(s): src/requests/_internal_utils.py, src/requests/compat.py, src/requests/cookies.py",
+        "`src/requests/auth.py` is imported by selected file(s): src/requests/adapters.py, src/requests/models.py, src/requests/sessions.py",
+        "`src/requests/utils.py` imports selected file(s): src/requests/_internal_utils.py, src/requests/_types.py, src/requests/compat.py",
+        "`src/requests/utils.py` is imported by selected file(s): src/requests/__init__.py, src/requests/adapters.py, src/requests/auth.py",
+        "`src/requests/models.py` imports selected file(s): src/requests/_internal_utils.py, src/requests/_types.py, src/requests/auth.py",
+        "`src/requests/models.py` is imported by selected file(s): src/requests/__init__.py, src/requests/adapters.py, src/requests/sessions.py",
+        "`src/requests/status_codes.py` imports selected file(s): src/requests/structures.py",
+        "`src/requests/status_codes.py` is imported by selected file(s): src/requests/__init__.py, src/requests/models.py, src/requests/sessions.py",
+        "`src/requests/cookies.py` imports selected file(s): src/requests/_internal_utils.py, src/requests/_types.py, src/requests/compat.py",
+        "`src/requests/cookies.py` is imported by selected file(s): src/requests/adapters.py, src/requests/auth.py, src/requests/models.py",
+        "`src/requests/structures.py` imports selected file(s): src/requests/compat.py",
+        "`src/requests/structures.py` is imported by selected file(s): src/requests/adapters.py, src/requests/models.py, src/requests/sessions.py"
+      ],
+      "excluded_files": [
+        {
+          "path": "docs/user/authentication.rst",
+          "reason": "documentation-only match",
+          "score": 98.0
+        },
+        {
+          "path": "src/requests/__version__.py",
+          "reason": "weak evidence after ranking",
+          "score": 18.0
+        },
+        {
+          "path": "src/requests/certs.py",
+          "reason": "weak evidence after ranking",
+          "score": 18.0
+        },
+        {
+          "path": "tests/test_structures.py",
+          "reason": "weak evidence after ranking",
+          "score": 16.0
+        },
+        {
+          "path": "tests/test_utils.py",
+          "reason": "weak evidence after ranking",
+          "score": 16.0
+        },
+        {
+          "path": "tests/utils.py",
+          "reason": "weak evidence after ranking",
+          "score": 16.0
+        }
+      ],
+      "impacted_subsystems": [
+        "src/requests",
+        "tests"
+      ],
+      "ok": true,
+      "recommended_files": [
+        {
+          "path": "src/requests/auth.py",
+          "reasons": [
+            "name related to authentication, authentication-implemented",
+            "content mentions authentication, implemented",
+            "risk-ranked module",
+            "imports `src/requests/utils.py`"
+          ],
+          "role": "production_code",
+          "score": 118.0,
+          "subsystem": "src/requests"
+        },
+        {
+          "path": "src/requests/utils.py",
+          "reasons": [
+            "symbol match: io",
+            "content mentions authentication",
+            "historical/import hub",
+            "risk-ranked module"
+          ],
+          "role": "production_code",
+          "score": 114.0,
+          "subsystem": "src/requests"
+        },
+        {
+          "path": "src/requests/models.py",
+          "reasons": [
+            "content mentions authentication, implemented",
+            "historical/import hub",
+            "risk-ranked module",
+            "imports `src/requests/utils.py`"
+          ],
+          "role": "production_code",
+          "score": 92.0,
+          "subsystem": "src/requests"
+        },
+        {
+          "path": "src/requests/status_codes.py",
+          "reasons": [
+            "content mentions authentication, implemented",
+            "risk-ranked module",
+            "imported by `src/requests/models.py`",
+            "imports `src/requests/structures.py`"
+          ],
+          "role": "production_code",
+          "score": 84.0,
+          "subsystem": "src/requests"
+        },
+        {
+          "path": "src/requests/cookies.py",
+          "reasons": [
+            "content mentions implemented",
+            "historical/import hub",
+            "risk-ranked module",
+            "imported by `src/requests/utils.py`"
+          ],
+          "role": "production_code",
+          "score": 83.0,
+          "subsystem": "src/requests"
+        },
+        {
+          "path": "src/requests/structures.py",
+          "reasons": [
+            "content mentions implemented",
+            "historical/import hub",
+            "risk-ranked module",
+            "imported by `src/requests/utils.py`"
+          ],
+          "role": "production_code",
+          "score": 81.0,
+          "subsystem": "src/requests"
+        },
+        {
+          "path": "src/requests/sessions.py",
+          "reasons": [
+            "content mentions authentication",
+            "risk-ranked module",
+            "imports `src/requests/utils.py`",
+            "imports `src/requests/auth.py`"
+          ],
+          "role": "production_code",
+          "score": 78.0,
+          "subsystem": "src/requests"
+        },
+        {
+          "path": "src/requests/adapters.py",
+          "reasons": [
+            "content mentions authentication, implemented",
+            "imports `src/requests/utils.py`",
+            "imports `src/requests/auth.py`",
+            "imports `src/requests/models.py`"
+          ],
+          "role": "production_code",
+          "score": 74.0,
+          "subsystem": "src/requests"
+        },
+        {
+          "path": "src/requests/__init__.py",
+          "reasons": [
+            "imports `src/requests/utils.py`",
+            "imports `src/requests/models.py`",
+            "imports `src/requests/sessions.py`"
+          ],
+          "role": "production_code",
+          "score": 38.0,
+          "subsystem": "src/requests"
+        },
+        {
+          "path": "src/requests/_internal_utils.py",
+          "reasons": [
+            "imported by `src/requests/utils.py`",
+            "imported by `src/requests/auth.py`",
+            "imported by `src/requests/models.py`"
+          ],
+          "role": "production_code",
+          "score": 38.0,
+          "subsystem": "src/requests"
+        },
+        {
+          "path": "src/requests/_types.py",
+          "reasons": [
+            "imported by `src/requests/utils.py`",
+            "imported by `src/requests/models.py`",
+            "imported by `src/requests/sessions.py`"
+          ],
+          "role": "production_code",
+          "score": 38.0,
+          "subsystem": "src/requests"
+        },
+        {
+          "path": "src/requests/compat.py",
+          "reasons": [
+            "imported by `src/requests/utils.py`",
+            "imported by `src/requests/auth.py`",
+            "imported by `src/requests/models.py`"
+          ],
+          "role": "production_code",
+          "score": 38.0,
+          "subsystem": "src/requests"
+        }
+      ],
+      "related_tests": [
+        {
+          "path": "tests/test_requests.py",
+          "reasons": [
+            "test shares path terms with `src/requests/utils.py`",
+            "test shares path terms with `src/requests/auth.py`",
+            "test shares path terms with `src/requests/models.py`"
+          ],
+          "score": 32.0
+        }
+      ],
+      "relevant_commands": [
+        "test: `make test`"
+      ],
+      "repo_name": "requests",
+      "task": "Where is authentication implemented?",
+      "token_estimate": 1386
+    }
+  },
+  "total_ms": 1738
+}

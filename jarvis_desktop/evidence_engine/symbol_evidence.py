@@ -239,6 +239,31 @@ def build_evidence_panel(
     return panel
 
 
+def _path_from_graph_key(key: str) -> str:
+    """Extract a clean file path from a graph node key or call-graph key.
+
+    Graph node IDs use the format ``type:path`` or ``type:path::qualname``.
+    Call-graph keys use ``path::qualname`` or bare symbol names.
+
+    Returns an empty string if the key does not resolve to a file path.
+    """
+    if not key:
+        return ""
+    # Strip qualname: "function:api/handlers.py::handle" -> "function:api/handlers.py"
+    path_part = key.split("::", 1)[0]
+    # Strip node type prefix when the prefix precedes the first "/" segment.
+    # e.g. "function:api/handlers.py" -> "api/handlers.py"
+    #      "module:api/routes.py"     -> "api/routes.py"
+    slash_pos = path_part.find("/")
+    colon_pos = path_part.find(":")
+    if 0 <= colon_pos < (slash_pos if slash_pos >= 0 else len(path_part)):
+        after_colon = path_part[colon_pos + 1:]
+        # Only treat it as a file path if there's a "/" after stripping the prefix
+        return after_colon if "/" in after_colon else ""
+    # No prefix — only return if it looks like a file path (contains "/")
+    return path_part if "/" in path_part else ""
+
+
 def impact_symbol_blast(
     store: Any,
     target_path: str,
@@ -254,16 +279,19 @@ def impact_symbol_blast(
     seen: Set[str] = set()
     for sym in syms[:12]:
         for caller in _caller_labels(call_graph, sym):
-            file_part = caller.split("::", 1)[0]
+            # Phase 178: strip node type prefix (e.g. "function:") from caller keys
+            file_part = _path_from_graph_key(caller)
             if file_part and file_part not in seen and _norm(file_part) != _norm(target):
                 seen.add(file_part)
                 extra_files.append(file_part)
                 extra_reasons.append(f"Symbol `{sym.qualname}` caller: {caller}")
 
     for dep in call_graph.who_depends_on_file(target)[:8]:
-        if dep not in seen:
-            seen.add(dep)
-            extra_files.append(dep)
+        # Phase 178: dep is a callee key (may have type prefix + qualname), extract path
+        file_part = _path_from_graph_key(dep)
+        if file_part and file_part not in seen and _norm(file_part) != _norm(target):
+            seen.add(file_part)
+            extra_files.append(file_part)
             extra_reasons.append(f"Call graph dependency from `{target}`")
 
     panel.graph_support.extend(extra_reasons[:6])

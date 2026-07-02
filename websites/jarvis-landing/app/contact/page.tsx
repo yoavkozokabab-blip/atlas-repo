@@ -33,8 +33,7 @@ export default function ContactPage() {
             </p>
           ) : (
             <div className="note-accent" style={{ marginBottom: 28, maxWidth: 720 }}>
-              The support email is configured via <code>NEXT_PUBLIC_SUPPORT_EMAIL</code> and
-              isn&apos;t set in this environment yet.
+              Use the topic cards below — each opens your email client with a pre-filled subject.
             </div>
           )}
 

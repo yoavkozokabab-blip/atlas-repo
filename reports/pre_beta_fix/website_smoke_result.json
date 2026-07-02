@@ -1,0 +1,77 @@
+{
+  "base_url": "http://127.0.0.1:3140",
+  "ok": true,
+  "results": [
+    {
+      "check": "GET /",
+      "status": 200,
+      "ms": 856,
+      "text_ok": true,
+      "passed": true
+    },
+    {
+      "check": "GET /login",
+      "status": 200,
+      "ms": 572,
+      "text_ok": true,
+      "passed": true
+    },
+    {
+      "check": "GET /download",
+      "status": 200,
+      "ms": 485,
+      "text_ok": true,
+      "passed": true
+    },
+    {
+      "check": "GET /pricing",
+      "status": 200,
+      "ms": 351,
+      "text_ok": true,
+      "passed": true
+    },
+    {
+      "check": "GET /contact",
+      "status": 200,
+      "ms": 378,
+      "text_ok": true,
+      "passed": true
+    },
+    {
+      "check": "GET /privacy",
+      "status": 200,
+      "ms": 369,
+      "text_ok": true,
+      "passed": true
+    },
+    {
+      "check": "GET /terms",
+      "status": 200,
+      "ms": 416,
+      "text_ok": true,
+      "passed": true
+    },
+    {
+      "check": "GET /api/health",
+      "status": 200,
+      "ms": 42,
+      "passed": true,
+      "backend": "file",
+      "persistence": "ephemeral",
+      "hostname": "",
+      "validation_passed": false
+    },
+    {
+      "check": "POST /api/auth/register",
+      "status": 201,
+      "ms": 309,
+      "passed": true
+    },
+    {
+      "check": "GET /download/atlas",
+      "status": 200,
+      "ms": 526,
+      "passed": null
+    }
+  ]
+}

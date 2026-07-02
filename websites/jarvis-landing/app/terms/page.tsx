@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <PageShell eyebrow="Legal" title="Terms of Use" intro="The basics of using Atlas. A full agreement will be published ahead of public launch.">
+    <PageShell eyebrow="Legal" title="Terms of Use" intro="The basics of using Atlas on your machine and in your repositories.">
       <section className="section" style={{ borderTop: "none", paddingTop: 8 }}>
         <div className="container prose">
           <h2>Using Atlas</h2>
@@ -29,7 +29,7 @@ export default function TermsPage() {
             responsible for reviewing changes before shipping them.</p>
           <h2>Contact</h2>
           <p>Questions: <a href={supportMailto("Atlas Terms")}>{SUPPORT_EMAIL || "contact us"}</a>.</p>
-          <p className="note">Last updated: 2026-06-13. This is a preliminary summary, not the final agreement.</p>
+          <p className="note">Last updated: 2026-06-13.</p>
         </div>
       </section>
     </PageShell>

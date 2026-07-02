@@ -46,7 +46,10 @@ def resolve_desktop_data_dir(*, force: bool = False) -> str:
     """Pick the first writable data directory; never require manual env vars."""
     global _RESOLVED_DIR, _FALLBACK_KIND
 
-    override = os.environ.get("JARVIS_DESKTOP_DATA", "").strip()
+    override = (
+        os.environ.get("ATLAS_DESKTOP_DATA", "").strip()
+        or os.environ.get("JARVIS_DESKTOP_DATA", "").strip()
+    )
     if override:
         path = os.path.abspath(override)
         _RESOLVED_DIR = path
@@ -78,5 +81,8 @@ def desktop_data_dir_info() -> dict:
     return {
         "path": _RESOLVED_DIR or desktop_data_dir(),
         "fallback": _FALLBACK_KIND,
-        "override_env": bool(os.environ.get("JARVIS_DESKTOP_DATA", "").strip()),
+        "override_env": bool(
+            os.environ.get("ATLAS_DESKTOP_DATA", "").strip()
+            or os.environ.get("JARVIS_DESKTOP_DATA", "").strip()
+        ),
     }

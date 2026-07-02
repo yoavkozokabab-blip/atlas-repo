@@ -81,6 +81,23 @@ def _norm(p: str) -> str:
     return (p or "").replace("\\", "/").strip()
 
 
+_NODE_PREFIXES = ("function:", "module:", "symbol:", "class:", "method:")
+
+
+def _clean_paths(paths: List[str]) -> List[str]:
+    """Strip internal graph-node type prefixes and drop bare symbol names."""
+    out: List[str] = []
+    for p in paths:
+        for prefix in _NODE_PREFIXES:
+            if p.startswith(prefix):
+                p = p[len(prefix):]
+                break
+        # Keep only if it looks like a real file path (has directory separator or known extension)
+        if "/" in p or p.endswith((".py", ".ts", ".js", ".tsx", ".jsx", ".go", ".java", ".rb", ".rs")):
+            out.append(p)
+    return out
+
+
 def _subsystem(path: str) -> str:
     n = _norm(path)
     return n.split("/")[0] if "/" in n else "(root)"
@@ -473,10 +490,10 @@ def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict
     def paths(ids) -> List[str]:
         return [_norm(nodes[i]["path"]) for i in ids if i in nodes]
 
-    direct_paths = paths(direct_ids)
-    indirect_paths = paths(indirect_ids)
-    forward_paths = paths(forward_ids)
-    sibling_paths = paths(sibling_ids)
+    direct_paths = _clean_paths(paths(direct_ids))
+    indirect_paths = _clean_paths(paths(indirect_ids))
+    forward_paths = _clean_paths(paths(forward_ids))
+    sibling_paths = _clean_paths(paths(sibling_ids))
     sib_importer_paths = [p for p in paths(sorted(sibling_importer_ids)) if p != tpath]
 
     # Combined affected set (seeds + importers + siblings), capped.
@@ -626,6 +643,7 @@ def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict
 
             store = EvidenceStore.from_dict(evidence_store)
             sym_files, sym_reasons, panel = impact_symbol_blast(store, tpath)
+            sym_files = _clean_paths(sym_files)
             if sym_files:
                 blast_merged = list(dict.fromkeys(direct_paths + sym_files))[:12]
                 result["direct_impact"] = blast_merged

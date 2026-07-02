@@ -7,7 +7,7 @@ import { rateLimit, clientIp, readJson } from "@/app/_lib/ratelimit";
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
-  if (!rateLimit(`forgot:${clientIp(req)}`, 5, 900_000)) {
+  if (!(await rateLimit(`forgot:${clientIp(req)}`, 5, 900_000))) {
     return NextResponse.json({ ok: true }); // generic: never reveal rate state per-email
   }
   const body = await readJson(req);

@@ -154,7 +154,8 @@ class TestImpactUI:
         block = app[app.index("async function runImpact"):]
         block = block[: block.index("function impactInspect")]
         assert "/api/planning/impact" in block
-        assert "Direct impact" in block
-        assert "Indirect impact" in block
-        assert "What may break" in block
-        assert "Safe rollback" in block
+        # labels updated Phase 180 — plain English replacements
+        assert "import this" in block        # was "Direct impact"
+        assert "Also affected" in block      # was "Indirect impact — transitive"
+        assert "watch out for" in block      # was "What may break" / "Risks of fixing incorrectly"
+        assert "Verification steps" in block # was "Safe rollback"

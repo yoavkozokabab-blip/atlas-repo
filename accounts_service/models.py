@@ -175,6 +175,7 @@ class UsageDaily(Base):
 
 # ── Feedback ───────────────────────────────────────────────────────────────
 FEEDBACK_STATUSES = ("pending", "reviewed", "closed")
+FEEDBACK_SENTIMENTS = ("positive", "neutral", "negative")
 
 
 class Feedback(Base):
@@ -186,8 +187,57 @@ class Feedback(Base):
     message_redacted = Column(String(2000), nullable=False)  # stripped of secrets
     created_at = Column(DateTime, nullable=False, default=_utcnow)
     status = Column(SAEnum(*FEEDBACK_STATUSES, name="feedback_status"), nullable=False, default="pending")
+    # Phase 199 — structured beta feedback
+    workflow = Column(String(64), nullable=True)
+    useful = Column(Boolean, nullable=True)
+    sentiment = Column(String(16), nullable=True)
+    nps_score = Column(Integer, nullable=True)
 
     user = relationship("User", back_populates="feedback")
+
+
+# ── Beta invite codes (Phase 199) ────────────────────────────────────────────
+INVITE_STATUSES = ("active", "expired", "revoked")
+
+
+class InviteCode(Base):
+    __tablename__ = "invite_codes"
+
+    invite_id = Column(String(36), primary_key=True, default=_uuid)
+    code = Column(String(32), unique=True, nullable=False, index=True)
+    email = Column(String(254), nullable=True)
+    max_uses = Column(Integer, nullable=False, default=1)
+    use_count = Column(Integer, nullable=False, default=0)
+    status = Column(String(16), nullable=False, default="active")
+    created_by = Column(String(36), nullable=True)
+    created_at = Column(DateTime, nullable=False, default=_utcnow)
+    expires_at = Column(DateTime, nullable=True)
+    notes = Column(Text, nullable=True)
+
+
+# ── Acquisition funnel events (Phase 199) ──────────────────────────────────
+ACQUISITION_STAGES = (
+    "landing_visit",
+    "waitlist_signup",
+    "app_installed",
+    "registered",
+    "approved",
+    "first_scan",
+    "weekly_active",
+    "nps_submitted",
+)
+
+
+class AcquisitionEvent(Base):
+    __tablename__ = "acquisition_events"
+
+    event_id = Column(String(36), primary_key=True, default=_uuid)
+    user_id = Column(String(36), ForeignKey("users.user_id", ondelete="SET NULL"), nullable=True, index=True)
+    device_id = Column(String(36), nullable=True, index=True)
+    stage = Column(String(64), nullable=False, index=True)
+    source = Column(String(64), nullable=False, default="desktop")
+    metadata_ = Column("metadata", JSON, nullable=True)
+    created_at = Column(DateTime, nullable=False, default=_utcnow, index=True)
 
 
 # ── Admin audit log ────────────────────────────────────────────────────────

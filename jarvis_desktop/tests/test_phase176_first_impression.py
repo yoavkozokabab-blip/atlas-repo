@@ -94,7 +94,7 @@ DEMO_FIRST_RUN = {
     "large": {
         "build": "Improve error handling in gateway/entry.py",
         "investigate": "API gateway returns 500 under load",
-        "impact": "gateway/entry.py",
+        "impact": "platform/kernel.py",
     },
 }
 
@@ -172,4 +172,12 @@ def test_app_js_pack_specific_demo_examples():
     js = open(os.path.join(STATIC, "app.js"), encoding="utf-8").read()
     assert "gateway/entry.py" in js
     assert "api/handlers.py" in js
+
+
+def test_app_js_prefills_workflow_input_on_demo_load():
+    # Blocker #1: the workflow input (Change Plan box) is pre-filled with the
+    # pack-specific example, without overwriting any existing user input.
+    js = open(os.path.join(STATIC, "app.js"), encoding="utf-8").read()
+    assert "!field.value.trim()" in js
+    assert "field.value = ex.text" in js
     assert "fiUserFacingStatus" in js

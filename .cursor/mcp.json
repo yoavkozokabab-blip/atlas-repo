@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "atlas": {
+      "command": "py",
+      "args": ["-3", "run_atlas.py", "--mcp"],
+      "cwd": "C:/J.A.R.V.I.S/local_jarvis"
+    }
+  }
+}
