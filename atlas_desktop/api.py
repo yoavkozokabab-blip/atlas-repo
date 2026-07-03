@@ -1177,8 +1177,12 @@ def _scan_repository_locked(path: Optional[str] = None, scope: Optional[Dict[str
             indexed_files=(_STATE.get("index") or {}).get("files"),
             include_content_hash=True,
         )
-        _STATE["scan"]["signature_v2"] = sig_v2
-        _STATE["scan"]["cache"] = {"hit": True, "signature": sig_v2["signature"]}
+        # Re-read the reference: a concurrent select/clear can null out
+        # _STATE["scan"] between the scan above and this write.
+        scan_obj = _STATE.get("scan")
+        if isinstance(scan_obj, dict):
+            scan_obj["signature_v2"] = sig_v2
+            scan_obj["cache"] = {"hit": True, "signature": sig_v2["signature"]}
         _STATE["scan_job"]["stage"] = "completed"
         recorder.mark(
             "cache_restore",

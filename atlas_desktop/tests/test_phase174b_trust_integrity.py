@@ -262,10 +262,16 @@ def test_concurrent_select_and_export_no_wrong_repo_memory(tmp_path):
     assert api.scan_repository(str(root_a))["ok"]
     mismatches: list[tuple[str, str]] = []
     barrier = threading.Barrier(2)
+    # Loops honor this flag so the threads ALWAYS terminate before the test
+    # returns — a join(timeout=...) alone leaks a still-running scan thread
+    # into every later test module under CPU load (order-dependent failures).
+    stop = threading.Event()
 
     def flip_paths() -> None:
         barrier.wait()
         for _ in range(30):
+            if stop.is_set():
+                return
             api.select_repository(str(root_b))
             api.select_repository(str(root_a))
             api.scan_repository(str(root_a))
@@ -273,6 +279,8 @@ def test_concurrent_select_and_export_no_wrong_repo_memory(tmp_path):
     def export_loop() -> None:
         barrier.wait()
         for _ in range(30):
+            if stop.is_set():
+                return
             pkt = api.session_export_packet()
             if not pkt.get("ok"):
                 continue
@@ -287,6 +295,10 @@ def test_concurrent_select_and_export_no_wrong_repo_memory(tmp_path):
     t2.start()
     t1.join(timeout=60)
     t2.join(timeout=60)
+    stop.set()
+    t1.join(timeout=120)
+    t2.join(timeout=120)
+    assert not t1.is_alive() and not t2.is_alive(), "race threads must not outlive the test"
     assert not mismatches
 
 
