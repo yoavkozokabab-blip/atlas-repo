@@ -9,6 +9,10 @@ from typing import List, Optional, Tuple
 
 _RESOLVED_DIR: Optional[str] = None
 _FALLBACK_KIND: Optional[str] = None
+# The env override the cached value was computed from ("" = no override), so a
+# changed/removed override invalidates the cache instead of leaking a stale
+# directory into later calls.
+_RESOLVED_FROM_OVERRIDE: Optional[str] = None
 
 
 def _is_writable(path: str) -> bool:
@@ -54,39 +58,47 @@ def _candidate_dirs() -> List[Tuple[str, str]]:
 
 
 def reset_desktop_data_dir_cache() -> None:
-    global _RESOLVED_DIR, _FALLBACK_KIND
+    global _RESOLVED_DIR, _FALLBACK_KIND, _RESOLVED_FROM_OVERRIDE
     _RESOLVED_DIR = None
     _FALLBACK_KIND = None
+    _RESOLVED_FROM_OVERRIDE = None
 
 
-def resolve_desktop_data_dir(*, force: bool = False) -> str:
-    """Pick the first writable data directory; never require manual env vars."""
-    global _RESOLVED_DIR, _FALLBACK_KIND
-
-    override = (
+def _current_override() -> str:
+    return (
         os.environ.get("ATLAS_DESKTOP_DATA", "").strip()
         # Legacy env name from pre-rename installs.
         or os.environ.get("JARVIS_DESKTOP_DATA", "").strip()
     )
+
+
+def resolve_desktop_data_dir(*, force: bool = False) -> str:
+    """Pick the first writable data directory; never require manual env vars."""
+    global _RESOLVED_DIR, _FALLBACK_KIND, _RESOLVED_FROM_OVERRIDE
+
+    override = _current_override()
     if override:
         path = os.path.abspath(override)
         _RESOLVED_DIR = path
         _FALLBACK_KIND = None
+        _RESOLVED_FROM_OVERRIDE = override
         return path
 
-    if _RESOLVED_DIR and not force:
+    if _RESOLVED_DIR and not force and not _RESOLVED_FROM_OVERRIDE:
         return _RESOLVED_DIR
 
     for path, kind in _candidate_dirs():
         if _is_writable(path):
             _RESOLVED_DIR = os.path.abspath(path)
             _FALLBACK_KIND = None if kind == "home" else kind
+            _RESOLVED_FROM_OVERRIDE = None
             return _RESOLVED_DIR
 
     fallback = os.path.join(tempfile.gettempdir(), "atlas_desktop_data")
     os.makedirs(fallback, exist_ok=True)
     _RESOLVED_DIR = os.path.abspath(fallback)
     _FALLBACK_KIND = "temp"
+    _RESOLVED_FROM_OVERRIDE = None
     return _RESOLVED_DIR
 
 
