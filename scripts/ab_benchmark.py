@@ -27,7 +27,7 @@ import time
 
 # Reuse the labeled tasks + gold + grep baseline from the retrieval benchmark.
 import atlas_value_benchmark as avb
-from jarvis_desktop import api, context_pack as cp
+from atlas_desktop import api, context_pack as cp
 
 OUT = "reports/phase186"
 SYSTEM = (

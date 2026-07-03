@@ -12,7 +12,7 @@ from builder_core.benchmark_framework.compact_packets import (
     HARD_TOKEN_CAPS,
     build_compact_packet,
     compare_formats_enabled,
-    format_jarvis_context,
+    format_atlas_context,
     measure_compact_corpus,
     packet_cap_compliant,
     resolve_packet_kind,
@@ -63,7 +63,7 @@ def test_cap_enforcement_reserves_metadata(tmp_path):
         scoring_rubric=["ranked"],
         required_evidence=["core/util.py"],
         baseline_mode="read-only",
-        jarvis_mode="use jarvis",
+        atlas_mode="use atlas",
     )
     result = ask.answer(index, task.prompt)
     compact, expanded, kind = build_compact_packet(result, task, index)
@@ -87,7 +87,7 @@ def test_arch_risk_packet_keeps_references(tmp_path):
         scoring_rubric=["ranked"],
         required_evidence=["core/util.py"],
         baseline_mode="read-only",
-        jarvis_mode="use jarvis",
+        atlas_mode="use atlas",
     )
     result = ask.answer(index, task.prompt)
     compact, _expanded, kind = build_compact_packet(result, task, index)
@@ -108,7 +108,7 @@ def test_contract_packet_preserves_source_kinds(tmp_path):
         scoring_rubric=["sources"],
         required_evidence=["typed.py", "builder_core/bug_intelligence/contract_facts.py"],
         baseline_mode="read-only",
-        jarvis_mode="use jarvis",
+        atlas_mode="use atlas",
     )
     result = ask.answer(index, task.prompt)
     compact, _expanded, kind = build_compact_packet(result, task, index)
@@ -147,7 +147,7 @@ def test_defect_packet_includes_buggy_and_fixed_fixtures(tmp_path):
             "classic_wrong_operator/fixed.py",
         ],
         baseline_mode="read-only",
-        jarvis_mode="use jarvis",
+        atlas_mode="use atlas",
     )
     index = indexer.build_index(str(root))
     result = ask.answer(index, task.prompt)
@@ -174,7 +174,7 @@ def test_impact_resolves_abbreviated_module_path(tmp_path):
         scoring_rubric=["impact"],
         required_evidence=["contract_facts.py"],
         baseline_mode="read-only",
-        jarvis_mode="use jarvis",
+        atlas_mode="use atlas",
     )
     result = ask.answer(index, task.prompt)
     compact, expanded, kind = build_compact_packet(result, task, index)
@@ -196,7 +196,7 @@ def test_verify_packet_excludes_corpus_paths(tmp_path):
         scoring_rubric=["types"],
         required_evidence=["test_evidence", "verification_evidence.py"],
         baseline_mode="read-only",
-        jarvis_mode="use jarvis",
+        atlas_mode="use atlas",
     )
     result = {
         "mode": "retrieval",
@@ -229,7 +229,7 @@ def test_task_specific_packets_differ_by_focus(tmp_path):
         scoring_rubric=["cycles"],
         required_evidence=["builder_core/bug_intelligence/depgraph.py"],
         baseline_mode="read-only",
-        jarvis_mode="use jarvis",
+        atlas_mode="use atlas",
     )
     impact_task = BenchmarkTask(
         task_id="impact01_config",
@@ -241,7 +241,7 @@ def test_task_specific_packets_differ_by_focus(tmp_path):
         scoring_rubric=["impact"],
         required_evidence=["config.py"],
         baseline_mode="read-only",
-        jarvis_mode="use jarvis",
+        atlas_mode="use atlas",
     )
     risk_compact, _, _ = build_compact_packet(ask.answer(index, risk_task.prompt), risk_task, index)
     impact_compact, _, _ = build_compact_packet(ask.answer(index, impact_task.prompt), impact_task, index)
@@ -253,7 +253,7 @@ def test_task_specific_packets_differ_by_focus(tmp_path):
 
 def test_prose_mode_skips_compact_comparison_by_default(tmp_path, monkeypatch):
     root = _mini_repo(tmp_path)
-    monkeypatch.delenv("JARVIS_CONTEXT_COMPARE_FORMATS", raising=False)
+    monkeypatch.delenv("Atlas_CONTEXT_COMPARE_FORMATS", raising=False)
     index = indexer.build_index(str(root))
     task = BenchmarkTask(
         task_id="t1",
@@ -265,11 +265,11 @@ def test_prose_mode_skips_compact_comparison_by_default(tmp_path, monkeypatch):
         scoring_rubric=["subsystems"],
         required_evidence=["core/"],
         baseline_mode="read-only",
-        jarvis_mode="use jarvis",
+        atlas_mode="use atlas",
     )
     result = ask.answer(index, task.prompt)
     assert compare_formats_enabled("prose") is False
-    _prose, meta = format_jarvis_context(result, task, index, packet_format="prose")
+    _prose, meta = format_atlas_context(result, task, index, packet_format="prose")
     assert meta["comparison"].get("comparison_skipped") is True
     assert meta["comparison"].get("compact_tokens") is None
 

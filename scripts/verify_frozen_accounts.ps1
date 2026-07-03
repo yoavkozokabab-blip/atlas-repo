@@ -3,7 +3,7 @@
 # verifies the accounts service comes up on :8788 with register/login working —
 # zero manual commands.
 $ErrorActionPreference = "Continue"
-$root = "C:\J.A.R.V.I.S\local_jarvis"
+$root = "C:\J.A.R.V.I.S\local_atlas"
 $setup = Join-Path $root "packaging\installer\output\Atlas_Setup.exe"
 $work = Join-Path $env:TEMP "atlas_fresh192"
 $installDir = Join-Path $work "App"

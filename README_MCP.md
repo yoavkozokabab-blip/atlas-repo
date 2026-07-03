@@ -47,7 +47,7 @@ to call `atlas_scan_repo` first (they report `scanned_now` so you know if a scan
 ```bash
 py -3 run_atlas.py --mcp
 # equivalent low-level entry:
-py -m jarvis_desktop.mcp_server
+py -m atlas_desktop.mcp_server
 ```
 
 It speaks newline-delimited JSON-RPC over stdio — that's how MCP clients launch it.
@@ -78,7 +78,7 @@ macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`):
   "mcpServers": {
     "atlas": {
       "command": "py",
-      "args": ["-m", "jarvis_desktop.mcp_server"],
+      "args": ["-m", "atlas_desktop.mcp_server"],
       "cwd": "C:/path/to/Atlas"
     }
   }
@@ -93,7 +93,7 @@ A ready-to-copy file is in `docs/examples/claude_desktop_config.json`.
 ## Connect Claude Code (CLI)
 
 ```bash
-claude mcp add atlas -- py -m jarvis_desktop.mcp_server
+claude mcp add atlas -- py -m atlas_desktop.mcp_server
 ```
 
 Run that from your Atlas directory (so `cwd` is correct), or add a project `.mcp.json`:
@@ -101,7 +101,7 @@ Run that from your Atlas directory (so `cwd` is correct), or add a project `.mcp
 ```json
 {
   "mcpServers": {
-    "atlas": { "command": "py", "args": ["-m", "jarvis_desktop.mcp_server"], "cwd": "C:/path/to/Atlas" }
+    "atlas": { "command": "py", "args": ["-m", "atlas_desktop.mcp_server"], "cwd": "C:/path/to/Atlas" }
   }
 }
 ```
@@ -113,7 +113,7 @@ Cursor → Settings → MCP → Add new server, or add `.cursor/mcp.json`:
 ```json
 {
   "mcpServers": {
-    "atlas": { "command": "py", "args": ["-m", "jarvis_desktop.mcp_server"], "cwd": "C:/path/to/Atlas" }
+    "atlas": { "command": "py", "args": ["-m", "atlas_desktop.mcp_server"], "cwd": "C:/path/to/Atlas" }
   }
 }
 ```
@@ -121,7 +121,7 @@ Cursor → Settings → MCP → Add new server, or add `.cursor/mcp.json`:
 ## Connect Codex / other MCP clients
 
 Any MCP client that launches a stdio server works. Point it at:
-`command = py`, `args = ["-m", "jarvis_desktop.mcp_server"]`, `cwd =` your Atlas directory.
+`command = py`, `args = ["-m", "atlas_desktop.mcp_server"]`, `cwd =` your Atlas directory.
 
 ## Example session
 

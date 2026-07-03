@@ -6,7 +6,7 @@ Usage:
     py -3 -m builder_core.cli remember "we chose X because Y"
     py -3 -m builder_core.cli decisions
 
-Local-only. Read-only except for files under <project>/.jarvis_builder/.
+Local-only. Read-only except for files under <project>/.atlas_builder/.
 """
 
 from __future__ import annotations
@@ -45,7 +45,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--version", action="version", version=f"builder_core {__version__}")
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p_init = sub.add_parser("init", help="Index a repository into .jarvis_builder/.")
+    p_init = sub.add_parser("init", help="Index a repository into .atlas_builder/.")
     _add_project_arg(p_init)
 
     p_ask = sub.add_parser("ask", help="Ask a question about the indexed repository.")
@@ -104,7 +104,7 @@ def build_parser() -> argparse.ArgumentParser:
     graph_export.add_argument(
         "--output",
         default="",
-        help="Output path (default: <project>/.jarvis_builder/depgraph.json).",
+        help="Output path (default: <project>/.atlas_builder/depgraph.json).",
     )
 
     from .bug_intelligence.impact import IMPACT_ENABLED
@@ -126,7 +126,7 @@ def build_parser() -> argparse.ArgumentParser:
                 help="Maximum listed dependents in summary.")
             p.add_argument(
                 "--json", nargs="?", const="", default=None,
-                help="Write deterministic JSON to PATH or .jarvis_builder/impact.json.")
+                help="Write deterministic JSON to PATH or .atlas_builder/impact.json.")
 
         p_impact_file = sub.add_parser(
             "impact-file", help="Impact analysis for a file (Phase 94B).")
@@ -430,7 +430,7 @@ def _cmd_graph_export(project: str, output: str) -> int:
 
     project_root = store.resolve_project_root(project)
     graph = depgraph.build_graph(project_root)
-    out_path = Path(output) if output else Path(project_root) / ".jarvis_builder" / "depgraph.json"
+    out_path = Path(output) if output else Path(project_root) / ".atlas_builder" / "depgraph.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(depgraph.export_json(graph), encoding="utf-8")
     print(f"Dependency graph written to {out_path}")
@@ -484,7 +484,7 @@ def _cmd_impact(
     )
 
     if json_path is not None:
-        out = Path(json_path) if json_path else Path(project_root) / ".jarvis_builder" / "impact.json"
+        out = Path(json_path) if json_path else Path(project_root) / ".atlas_builder" / "impact.json"
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(impact.export_json(result), encoding="utf-8")
         print(f"Impact analysis written to {out}")

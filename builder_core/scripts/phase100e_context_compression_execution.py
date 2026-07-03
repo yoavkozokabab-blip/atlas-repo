@@ -1,7 +1,7 @@
 """Phase 100E — context compression benchmark execution.
 
 Runs the Phase 100B protocol on architecture, impact, and repository-understanding
-tasks. Compares Arm A (simulated Claude-only file/grep context) vs Arm B (Claude+JARVIS
+tasks. Compares Arm A (simulated Claude-only file/grep context) vs Arm B (Claude+Atlas
 deterministic tools). Measures token-equivalent context, wall-clock, cost, and
 automated anchor-based quality. No detector or benchmark tuning.
 """
@@ -29,7 +29,7 @@ OUTPUT_DIR = ROOT / "reports" / "phase100e_run"
 REPORT_PATH = ROOT / "reports" / "phase100e_context_compression_execution.md"
 
 ARM_CLAUDE_ONLY = "claude_only"
-ARM_CLAUDE_JARVIS = "claude_plus_jarvis"
+ARM_CLAUDE_Atlas = "claude_plus_atlas"
 
 N_TRIALS = 3
 RUBRIC_VERSION = "phase100b-v1"
@@ -430,7 +430,7 @@ def run_arm_a(task: TaskSpec, trial: int) -> TrialResult:
     )
 
 
-def _run_jarvis_tool(
+def _run_atlas_tool(
     index: Dict[str, Any],
     spec: Dict[str, Any],
 ) -> Tuple[str, List[str], Dict[str, int], int]:
@@ -491,18 +491,18 @@ def _run_jarvis_tool(
         context_bytes += len(json.dumps(result, ensure_ascii=False)[:80_000])
         return text, [], tool_calls, context_bytes
 
-    raise ValueError(f"unknown jarvis tool: {tool}")
+    raise ValueError(f"unknown atlas tool: {tool}")
 
 
 def run_arm_b(task: TaskSpec, trial: int, index: Dict[str, Any]) -> TrialResult:
     started = time.perf_counter()
-    answer, sources, tool_calls, jarvis_bytes = _run_jarvis_tool(index, task.arm_b)
+    answer, sources, tool_calls, atlas_bytes = _run_atlas_tool(index, task.arm_b)
 
     task_prompt = task.prompt
     input_tokens = (
         SYSTEM_PROMPT_TOKENS
         + estimate_tokens(task_prompt)
-        + estimate_tokens("x" * jarvis_bytes)
+        + estimate_tokens("x" * atlas_bytes)
         + TURN_OVERHEAD_TOKENS
     )
     peak_context_tokens = input_tokens
@@ -515,7 +515,7 @@ def run_arm_b(task: TaskSpec, trial: int, index: Dict[str, Any]) -> TrialResult:
     quality, qdetail = score_quality(answer, sources, task)
     return TrialResult(
         task_id=task.task_id,
-        arm=ARM_CLAUDE_JARVIS,
+        arm=ARM_CLAUDE_Atlas,
         trial=trial,
         answer=answer,
         sources=sources,
@@ -603,29 +603,29 @@ def evaluate_verdict(
         return [by_task[t.task_id][arm][field] for t in tasks]
 
     total_a = sum(by_task[t.task_id][ARM_CLAUDE_ONLY]["total_tokens_median"] for t in tasks)
-    total_b = sum(by_task[t.task_id][ARM_CLAUDE_JARVIS]["total_tokens_median"] for t in tasks)
+    total_b = sum(by_task[t.task_id][ARM_CLAUDE_Atlas]["total_tokens_median"] for t in tasks)
     compression = total_a / total_b if total_b else None
 
     peak_a = sum(by_task[t.task_id][ARM_CLAUDE_ONLY]["peak_context_median"] for t in tasks)
-    peak_b = sum(by_task[t.task_id][ARM_CLAUDE_JARVIS]["peak_context_median"] for t in tasks)
+    peak_b = sum(by_task[t.task_id][ARM_CLAUDE_Atlas]["peak_context_median"] for t in tasks)
 
     cost_a = sum(by_task[t.task_id][ARM_CLAUDE_ONLY]["cost_usd_median"] for t in tasks)
-    cost_b = sum(by_task[t.task_id][ARM_CLAUDE_JARVIS]["cost_usd_median"] for t in tasks)
+    cost_b = sum(by_task[t.task_id][ARM_CLAUDE_Atlas]["cost_usd_median"] for t in tasks)
 
     time_a = sum(by_task[t.task_id][ARM_CLAUDE_ONLY]["wall_clock_s_median"] for t in tasks)
-    time_b = sum(by_task[t.task_id][ARM_CLAUDE_JARVIS]["wall_clock_s_median"] for t in tasks)
+    time_b = sum(by_task[t.task_id][ARM_CLAUDE_Atlas]["wall_clock_s_median"] for t in tasks)
 
     qual_a = statistics.mean([by_task[t.task_id][ARM_CLAUDE_ONLY]["quality_median"] for t in tasks])
-    qual_b = statistics.mean([by_task[t.task_id][ARM_CLAUDE_JARVIS]["quality_median"] for t in tasks])
+    qual_b = statistics.mean([by_task[t.task_id][ARM_CLAUDE_Atlas]["quality_median"] for t in tasks])
 
     def cat_compression(subset: Sequence[TaskSpec]) -> Optional[float]:
         a = sum(by_task[t.task_id][ARM_CLAUDE_ONLY]["total_tokens_median"] for t in subset)
-        b = sum(by_task[t.task_id][ARM_CLAUDE_JARVIS]["total_tokens_median"] for t in subset)
+        b = sum(by_task[t.task_id][ARM_CLAUDE_Atlas]["total_tokens_median"] for t in subset)
         return round(a / b, 3) if b else None
 
     fabrication_b = sum(
         1 for t in tasks
-        if by_task[t.task_id][ARM_CLAUDE_JARVIS]["quality_median"] == 0
+        if by_task[t.task_id][ARM_CLAUDE_Atlas]["quality_median"] == 0
         and by_task[t.task_id][ARM_CLAUDE_ONLY]["quality_median"] >= 3
     )
 
@@ -640,15 +640,15 @@ def evaluate_verdict(
 
     if controls:
         gates["control_integrity"] = all(
-            by_task[t.task_id][ARM_CLAUDE_JARVIS]["quality_median"]
+            by_task[t.task_id][ARM_CLAUDE_Atlas]["quality_median"]
             >= by_task[t.task_id][ARM_CLAUDE_ONLY]["quality_median"] - 0.2
-            and by_task[t.task_id][ARM_CLAUDE_JARVIS]["total_tokens_median"]
+            and by_task[t.task_id][ARM_CLAUDE_Atlas]["total_tokens_median"]
             <= by_task[t.task_id][ARM_CLAUDE_ONLY]["total_tokens_median"] * 1.25
             for t in controls
         )
     if traps:
         gates["trap_honesty"] = all(
-            by_task[t.task_id][ARM_CLAUDE_JARVIS]["quality_median"] >= 3 for t in traps
+            by_task[t.task_id][ARM_CLAUDE_Atlas]["quality_median"] >= 3 for t in traps
         )
 
     fail = (
@@ -708,24 +708,24 @@ def write_report(
         f"| Model (token pricing proxy) | `{PRICE_TABLE['model_id']}` |",
         f"| **Verdict** | **{verdict['verdict']}** |",
         f"| Suite compression ratio (A/B tokens) | {verdict['suite_compression_ratio']}× |",
-        f"| Mean quality Claude Only → +JARVIS | {verdict['mean_quality_a']} → {verdict['mean_quality_b']} (Δ {verdict['quality_delta']}) |",
+        f"| Mean quality Claude Only → +Atlas | {verdict['mean_quality_a']} → {verdict['mean_quality_b']} (Δ {verdict['quality_delta']}) |",
         f"| Elapsed | {elapsed_s:.1f}s |",
         "",
         "**Execution mode:** Deterministic harness measuring **tool-result context** for each arm.",
         "Arm A simulates Claude-only `read_file`/`grep` paths preregistered per task; Arm B invokes",
-        "live JARVIS `ask` / `graph summary` / `impact-*` tools. Token counts use chars÷4 (Phase 100B §3).",
+        "live Atlas `ask` / `graph summary` / `impact-*` tools. Token counts use chars÷4 (Phase 100B §3).",
         "Quality uses automated anchor matching (0–4); blinded human scoring is recommended before product claims.",
         "",
         "---",
         "",
         "## 2. Summary table (suite medians)",
         "",
-        "| Metric | Claude Only (A) | Claude + JARVIS (B) | Δ / ratio |",
+        "| Metric | Claude Only (A) | Claude + Atlas (B) | Δ / ratio |",
         "|--------|----------------:|--------------------:|-----------|",
-        f"| Total input tokens (sum of task medians) | {sum(by_task[t.task_id][ARM_CLAUDE_ONLY]['input_tokens_median'] for t in tasks):,.0f} | {sum(by_task[t.task_id][ARM_CLAUDE_JARVIS]['input_tokens_median'] for t in tasks):,.0f} | {verdict['suite_compression_ratio']}× |",
-        f"| Peak context tokens (sum of medians) | {sum(by_task[t.task_id][ARM_CLAUDE_ONLY]['peak_context_median'] for t in tasks):,.0f} | {sum(by_task[t.task_id][ARM_CLAUDE_JARVIS]['peak_context_median'] for t in tasks):,.0f} | {verdict['context_reduction_ratio']}× |",
-        f"| Wall-clock (sum of medians, s) | {sum(by_task[t.task_id][ARM_CLAUDE_ONLY]['wall_clock_s_median'] for t in tasks):.2f} | {sum(by_task[t.task_id][ARM_CLAUDE_JARVIS]['wall_clock_s_median'] for t in tasks):.2f} | {verdict['time_reduction']:.1%} reduction |",
-        f"| Cost USD (sum of medians) | ${sum(by_task[t.task_id][ARM_CLAUDE_ONLY]['cost_usd_median'] for t in tasks):.4f} | ${sum(by_task[t.task_id][ARM_CLAUDE_JARVIS]['cost_usd_median'] for t in tasks):.4f} | {verdict['cost_reduction']:.1%} reduction |",
+        f"| Total input tokens (sum of task medians) | {sum(by_task[t.task_id][ARM_CLAUDE_ONLY]['input_tokens_median'] for t in tasks):,.0f} | {sum(by_task[t.task_id][ARM_CLAUDE_Atlas]['input_tokens_median'] for t in tasks):,.0f} | {verdict['suite_compression_ratio']}× |",
+        f"| Peak context tokens (sum of medians) | {sum(by_task[t.task_id][ARM_CLAUDE_ONLY]['peak_context_median'] for t in tasks):,.0f} | {sum(by_task[t.task_id][ARM_CLAUDE_Atlas]['peak_context_median'] for t in tasks):,.0f} | {verdict['context_reduction_ratio']}× |",
+        f"| Wall-clock (sum of medians, s) | {sum(by_task[t.task_id][ARM_CLAUDE_ONLY]['wall_clock_s_median'] for t in tasks):.2f} | {sum(by_task[t.task_id][ARM_CLAUDE_Atlas]['wall_clock_s_median'] for t in tasks):.2f} | {verdict['time_reduction']:.1%} reduction |",
+        f"| Cost USD (sum of medians) | ${sum(by_task[t.task_id][ARM_CLAUDE_ONLY]['cost_usd_median'] for t in tasks):.4f} | ${sum(by_task[t.task_id][ARM_CLAUDE_Atlas]['cost_usd_median'] for t in tasks):.4f} | {verdict['cost_reduction']:.1%} reduction |",
         f"| Mean answer quality (0–4) | {verdict['mean_quality_a']} | {verdict['mean_quality_b']} | {verdict['quality_delta']:+.2f} |",
         "",
         "### Index build (Arm B, amortized separately)",
@@ -743,7 +743,7 @@ def write_report(
     for cat in ("architecture", "impact", "repository_understanding"):
         subset = [t for t in tasks if t.category == cat]
         qa = statistics.mean([by_task[t.task_id][ARM_CLAUDE_ONLY]["quality_median"] for t in subset])
-        qb = statistics.mean([by_task[t.task_id][ARM_CLAUDE_JARVIS]["quality_median"] for t in subset])
+        qb = statistics.mean([by_task[t.task_id][ARM_CLAUDE_Atlas]["quality_median"] for t in subset])
         comp = verdict["category_compression"].get(cat)
         lines.append(f"| {cat} | {len(subset)} | {comp}× | {qa:.2f} | {qb:.2f} |")
 
@@ -773,7 +773,7 @@ def write_report(
     ])
     for task in tasks:
         a = by_task[task.task_id][ARM_CLAUDE_ONLY]
-        b = by_task[task.task_id][ARM_CLAUDE_JARVIS]
+        b = by_task[task.task_id][ARM_CLAUDE_Atlas]
         ratio = (
             round(a["total_tokens_median"] / b["total_tokens_median"], 2)
             if b["total_tokens_median"]
@@ -803,7 +803,7 @@ def write_report(
         "",
         "- No live Claude API calls were made; arms differ only in **context delivered** to the agent.",
         "- Automated quality is anchor-based; product claims should add blinded human scoring (100B §6.2).",
-        "- Single-repo (`local_jarvis`); generalization requires re-pinning the manifest on other repos.",
+        "- Single-repo (`local_atlas`); generalization requires re-pinning the manifest on other repos.",
         "- Index-build cost is excluded from per-task steady-state medians but reported separately.",
         "",
     ])
@@ -829,7 +829,7 @@ def run_execution() -> Dict[str, Any]:
         "repo_commit": _git_head(),
         "price_table": PRICE_TABLE,
         "n_trials": N_TRIALS,
-        "arms": [ARM_CLAUDE_ONLY, ARM_CLAUDE_JARVIS],
+        "arms": [ARM_CLAUDE_ONLY, ARM_CLAUDE_Atlas],
         "task_ids": [t.task_id for t in tasks],
         "task_suite_hash": hashlib.sha256(
             json.dumps([t.task_id for t in tasks]).encode()
@@ -866,12 +866,12 @@ def run_execution() -> Dict[str, Any]:
             })
         by_task[task.task_id] = {
             ARM_CLAUDE_ONLY: aggregate_trials(trials_a),
-            ARM_CLAUDE_JARVIS: aggregate_trials(trials_b),
+            ARM_CLAUDE_Atlas: aggregate_trials(trials_b),
         }
 
     verdict = evaluate_verdict(tasks, by_task)
     init_tokens = index_build["estimated_context_tokens"]
-    steady_b = sum(by_task[t.task_id][ARM_CLAUDE_JARVIS]["total_tokens_median"] for t in tasks)
+    steady_b = sum(by_task[t.task_id][ARM_CLAUDE_Atlas]["total_tokens_median"] for t in tasks)
     steady_a = sum(by_task[t.task_id][ARM_CLAUDE_ONLY]["total_tokens_median"] for t in tasks)
     per_task_save = (steady_a - steady_b) / len(tasks) if len(tasks) else 0
     verdict["break_even_queries"] = (

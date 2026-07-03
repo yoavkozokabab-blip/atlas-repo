@@ -62,7 +62,7 @@ a = Analysis(
     hooksconfig={},
     runtime_hooks=[],
     excludes=[
-        "jarvis_desktop", "builder_core", "tkinter", "_tkinter",
+        "atlas_desktop", "builder_core", "tkinter", "_tkinter",
         "pytest", "tests", "voice", "browser", "trading", "playwright",
         "sounddevice", "faster_whisper", "onnxruntime", "pytesseract",
         "pyautogui", "mss", "PySide6", "external_repos", "matplotlib",

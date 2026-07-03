@@ -63,7 +63,7 @@ def test_over_cap_packet_is_not_marked_compliant(tmp_path):
         scoring_rubric=["plan"],
         required_evidence=["verification_evidence.py", "confirmed_defect_gate.py"],
         baseline_mode="read-only",
-        jarvis_mode="use jarvis",
+        atlas_mode="use atlas",
     )
     result = ask.answer(index, task.prompt)
     compact, expanded, kind = build_compact_packet(result, task, index)
@@ -92,7 +92,7 @@ def test_contract_rows_not_synthesized_from_prompt_keywords(tmp_path):
         scoring_rubric=["sources"],
         required_evidence=["typed.py"],
         baseline_mode="read-only",
-        jarvis_mode="use jarvis",
+        atlas_mode="use atlas",
     )
     result = ask.answer(index, task.prompt)
     compact, expanded, kind = build_compact_packet(result, task, index)
@@ -118,7 +118,7 @@ def test_risk01_and_risk02_packets_are_substantively_different(tmp_path):
         scoring_rubric=["ranking"],
         required_evidence=["builder_core/architectural_risk.py"],
         baseline_mode="read-only",
-        jarvis_mode="use jarvis",
+        atlas_mode="use atlas",
     )
     risk02 = BenchmarkTask(
         task_id="risk02_centrality_vs_risk",
@@ -130,7 +130,7 @@ def test_risk01_and_risk02_packets_are_substantively_different(tmp_path):
         scoring_rubric=["centrality"],
         required_evidence=["fan-in", "LOC", "cycle"],
         baseline_mode="read-only",
-        jarvis_mode="use jarvis",
+        atlas_mode="use atlas",
     )
     compact01, _, _ = build_compact_packet(ask.answer(index, risk01.prompt), risk01, index)
     compact02, _, _ = build_compact_packet(ask.answer(index, risk02.prompt), risk02, index)
@@ -157,7 +157,7 @@ def test_missing_contract_facts_emit_none_extracted(tmp_path):
         scoring_rubric=["none"],
         required_evidence=["empty.py"],
         baseline_mode="read-only",
-        jarvis_mode="use jarvis",
+        atlas_mode="use atlas",
     )
     compact, expanded, _kind = build_compact_packet(ask.answer(index, task.prompt), task, index)
     assert "CONTRACT_STATUS|VALUE=none_extracted" in compact
@@ -181,7 +181,7 @@ def test_concept_refs_do_not_resolve_to_silent_paths(tmp_path):
         scoring_rubric=["impact"],
         required_evidence=["impact", "depend"],
         baseline_mode="read-only",
-        jarvis_mode="use jarvis",
+        atlas_mode="use atlas",
     )
     compact, _expanded, _kind = build_compact_packet(ask.answer(index, task.prompt), task, index)
     assert "CONCEPT_REF|REF=impact" in compact
@@ -222,7 +222,7 @@ def test_ambiguous_required_evidence_emits_ambiguous_ref(tmp_path):
         scoring_rubric=["impact"],
         required_evidence=["config.py"],
         baseline_mode="read-only",
-        jarvis_mode="use jarvis",
+        atlas_mode="use atlas",
     )
     result = ask.answer(index, task.prompt)
     compact, _expanded, kind = build_compact_packet(result, task, index)
@@ -244,7 +244,7 @@ def test_cap_compliant_requires_actual_estimate_within_cap(tmp_path):
         scoring_rubric=["deps"],
         required_evidence=["config.py"],
         baseline_mode="read-only",
-        jarvis_mode="use jarvis",
+        atlas_mode="use atlas",
     )
     result = ask.answer(index, task.prompt)
     compact, expanded, kind = build_compact_packet(result, task, index)

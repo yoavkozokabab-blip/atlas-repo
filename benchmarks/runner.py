@@ -12,7 +12,7 @@ BENCHMARK_ROOT = Path(__file__).resolve().parent
 REPORT_PATH = BENCHMARK_ROOT.parent / "reports" / "phase130_repository_understanding_validation.md"
 RESULTS_PATH = BENCHMARK_ROOT / "results" / "latest_run.json"
 
-# Allow importing jarvis_desktop from repo root
+# Allow importing atlas_desktop from repo root
 sys.path.insert(0, str(BENCHMARK_ROOT.parent))
 
 from benchmarks.evaluator import evaluate_scenario  # noqa: E402
@@ -20,7 +20,7 @@ from benchmarks.schema import BenchmarkScenario, ScenarioResult, load_suite  # n
 
 
 def _reset_api_state() -> None:
-    from jarvis_desktop import api
+    from atlas_desktop import api
 
     api._STATE.update(
         {
@@ -36,7 +36,7 @@ def _reset_api_state() -> None:
 
 
 def _run_scenario(scenario: BenchmarkScenario) -> Dict[str, Any]:
-    from jarvis_desktop import api
+    from atlas_desktop import api
 
     repo_path = scenario.repo_path()
     if not repo_path.is_dir():

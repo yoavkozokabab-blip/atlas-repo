@@ -52,7 +52,7 @@ Source-mode equivalent:
     "atlas": {
       "command": "py",
       "args": ["-3", "run_atlas.py", "--mcp"],
-      "cwd": "C:/J.A.R.V.I.S/local_jarvis"
+      "cwd": "C:/J.A.R.V.I.S/local_atlas"
     }
   }
 }
@@ -69,7 +69,7 @@ claude mcp add atlas -- py -3 run_atlas.py --mcp     # run from your Atlas dir
 or a project `.mcp.json`:
 
 ```json
-{ "mcpServers": { "atlas": { "command": "py", "args": ["-3", "run_atlas.py", "--mcp"], "cwd": "C:/J.A.R.V.I.S/local_jarvis" } } }
+{ "mcpServers": { "atlas": { "command": "py", "args": ["-3", "run_atlas.py", "--mcp"], "cwd": "C:/J.A.R.V.I.S/local_atlas" } } }
 ```
 
 ## 4. Cursor
@@ -77,7 +77,7 @@ or a project `.mcp.json`:
 Cursor → Settings → MCP → Add new server, or `.cursor/mcp.json`:
 
 ```json
-{ "mcpServers": { "atlas": { "command": "py", "args": ["-3", "run_atlas.py", "--mcp"], "cwd": "C:/J.A.R.V.I.S/local_jarvis" } } }
+{ "mcpServers": { "atlas": { "command": "py", "args": ["-3", "run_atlas.py", "--mcp"], "cwd": "C:/J.A.R.V.I.S/local_atlas" } } }
 ```
 
 ## 5. Codex / any other MCP client

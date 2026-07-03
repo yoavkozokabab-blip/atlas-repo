@@ -25,7 +25,7 @@ class TokenBreakdown:
     """Labeled token estimates for one benchmark prompt/answer package."""
 
     raw_prompt: TokenEstimate
-    jarvis_context: TokenEstimate
+    atlas_context: TokenEstimate
     final_prompt_package: TokenEstimate
     answer_text: Optional[TokenEstimate] = None
 
@@ -34,7 +34,7 @@ class TokenBreakdown:
             "instrumentation_version": INSTRUMENTATION_VERSION,
             "estimator": "chars_per_4_estimate",
             "raw_prompt": self.raw_prompt.to_dict(),
-            "jarvis_context": self.jarvis_context.to_dict(),
+            "atlas_context": self.atlas_context.to_dict(),
             "final_prompt_package": self.final_prompt_package.to_dict(),
         }
         if self.answer_text is not None:
@@ -46,7 +46,7 @@ class TokenBreakdown:
         answer = data.get("answer_text")
         return cls(
             raw_prompt=TokenEstimate(**data["raw_prompt"]),
-            jarvis_context=TokenEstimate(**data["jarvis_context"]),
+            atlas_context=TokenEstimate(**data["atlas_context"]),
             final_prompt_package=TokenEstimate(**data["final_prompt_package"]),
             answer_text=TokenEstimate(**answer) if isinstance(answer, dict) else None,
         )
@@ -68,7 +68,7 @@ def estimated_count(text: Optional[str], *, manual_override: Optional[int] = Non
 def build_token_breakdown(
     *,
     raw_prompt: str,
-    jarvis_context: str,
+    atlas_context: str,
     final_prompt_package: str,
     answer_text: Optional[str] = None,
     answer_override: Optional[int] = None,
@@ -76,7 +76,7 @@ def build_token_breakdown(
     """Build a structured breakdown for benchmark run packages."""
     return TokenBreakdown(
         raw_prompt=estimate_tokens(raw_prompt),
-        jarvis_context=estimate_tokens(jarvis_context),
+        atlas_context=estimate_tokens(atlas_context),
         final_prompt_package=estimate_tokens(final_prompt_package),
         answer_text=estimate_tokens(answer_text, manual_override=answer_override)
         if answer_text is not None or answer_override is not None
@@ -91,7 +91,7 @@ def prompt_metadata_comment(breakdown: TokenBreakdown) -> str:
         "<!-- token_estimate metadata (Phase 104A; not a tokenizer measurement)",
         f"instrumentation_version: {parts['instrumentation_version']}",
         f"raw_prompt_tokens: {breakdown.raw_prompt.estimated_tokens}",
-        f"jarvis_context_tokens: {breakdown.jarvis_context.estimated_tokens}",
+        f"atlas_context_tokens: {breakdown.atlas_context.estimated_tokens}",
         f"final_prompt_package_tokens: {breakdown.final_prompt_package.estimated_tokens}",
     ]
     if breakdown.answer_text is not None:

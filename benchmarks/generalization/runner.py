@@ -28,14 +28,14 @@ RESULTS_DIR = Path(__file__).resolve().parent / "results"
 
 
 def _reset_state() -> None:
-    from jarvis_desktop import api
+    from atlas_desktop import api
     api._STATE.update({"path": None, "scan": None, "graph": None, "index": None,
                        "risks": None, "evidence_store": None, "architecture": None,
                        "scan_cache": {}})
 
 
 def run_repo(resolved: "registry.ResolvedRepo") -> Dict[str, Any]:
-    from jarvis_desktop import api
+    from atlas_desktop import api
 
     spec = resolved.spec
     base: Dict[str, Any] = {

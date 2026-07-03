@@ -22,14 +22,14 @@ from builder_core.tests.test_phase103_benchmark_framework import _log, _score, _
 def test_build_token_breakdown_labels_all_components():
     breakdown = build_token_breakdown(
         raw_prompt="Explain the repo.",
-        jarvis_context="MODE: bottleneck\nANSWER: hub",
+        atlas_context="MODE: bottleneck\nANSWER: hub",
         final_prompt_package="# Task\nExplain the repo.\n",
         answer_text="final answer text",
     )
     payload = breakdown.to_dict()
     assert payload["instrumentation_version"] == INSTRUMENTATION_VERSION
     assert payload["raw_prompt"]["estimated_tokens"] == estimate_tokens("Explain the repo.").estimated_tokens
-    assert payload["jarvis_context"]["estimated_tokens"] > 0
+    assert payload["atlas_context"]["estimated_tokens"] > 0
     assert payload["final_prompt_package"]["estimated_tokens"] > payload["raw_prompt"]["estimated_tokens"]
     assert payload["answer_text"]["estimated_tokens"] > 0
 
@@ -37,15 +37,15 @@ def test_build_token_breakdown_labels_all_components():
 def test_prompt_metadata_comment_is_embedded_in_generated_package(tmp_path):
     task = _task()
     out = tmp_path / "benchmarks"
-    generate_run_package([task], str(out), run_id="tok", jarvis_context_fn=lambda _t: "CTX")
+    generate_run_package([task], str(out), run_id="tok", atlas_context_fn=lambda _t: "CTX")
     task_root = out / "tok" / task.task_id
-    for mode in ("codex_alone", "jarvis_plus_codex"):
+    for mode in ("codex_alone", "atlas_plus_codex"):
         prompt_text = (task_root / f"{mode}.prompt.md").read_text(encoding="utf-8")
         assert "token_estimate metadata" in prompt_text
         assert "raw_prompt_tokens:" in prompt_text
         assert "final_prompt_package_tokens:" in prompt_text
-        if mode == "jarvis_plus_codex":
-            assert "jarvis_context_tokens:" in prompt_text
+        if mode == "atlas_plus_codex":
+            assert "atlas_context_tokens:" in prompt_text
             assert "CTX" in prompt_text
         breakdown = load_json(str(task_root / f"token_breakdown.{mode}.json"))
         assert breakdown["instrumentation_version"] == INSTRUMENTATION_VERSION
@@ -56,7 +56,7 @@ def test_prompt_metadata_comment_is_embedded_in_generated_package(tmp_path):
 
 def test_record_run_attaches_answer_tokens_without_changing_input(tmp_path):
     out = tmp_path / "benchmarks"
-    generate_run_package([_task()], str(out), run_id="rec", jarvis_context_fn=lambda _t: "CTX")
+    generate_run_package([_task()], str(out), run_id="rec", atlas_context_fn=lambda _t: "CTX")
     run_dir = out / "rec"
     answer_file = tmp_path / "answer.txt"
     answer_file.write_text("structured answer with evidence", encoding="utf-8")
@@ -99,14 +99,14 @@ def test_legacy_run_log_without_token_breakdown_still_validates():
 
 def test_summary_reports_average_input_output_and_reduction_by_mode():
     result = aggregate(
-        [_log("one", "codex_alone", 200, 10), _log("one", "jarvis_plus_codex", 100, 5)],
-        [_score("one", "codex_alone"), _score("one", "jarvis_plus_codex", 1)],
+        [_log("one", "codex_alone", 200, 10), _log("one", "atlas_plus_codex", 100, 5)],
+        [_score("one", "codex_alone"), _score("one", "atlas_plus_codex", 1)],
     )
     baseline = result["modes"]["codex_alone"]
-    jarvis = result["modes"]["jarvis_plus_codex"]
+    atlas = result["modes"]["atlas_plus_codex"]
     assert baseline["average_estimated_input_tokens"] == 190.0
     assert baseline["average_estimated_output_tokens"] == 10.0
-    assert jarvis["average_estimated_input_tokens"] == 90.0
+    assert atlas["average_estimated_input_tokens"] == 90.0
     assert result["average_estimated_token_reduction_percent"] == 50.0
     markdown = render_markdown(result, run_id="sample")
     assert "Average estimated input tokens" in markdown
@@ -116,7 +116,7 @@ def test_summary_reports_average_input_output_and_reduction_by_mode():
 def test_attach_answer_to_breakdown_preserves_existing_fields():
     base = build_token_breakdown(
         raw_prompt="q",
-        jarvis_context="",
+        atlas_context="",
         final_prompt_package="full",
     ).to_dict()
     updated = attach_answer_to_breakdown(base, "answer body")

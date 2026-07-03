@@ -21,7 +21,7 @@ $PyBuild = Join-Path $Root "packaging\pyinstaller\build_atlas_exe.ps1"
 
 function Write-InnoVersionDefines {
     $version = "1.0.0"
-    $productFile = Join-Path $Root "jarvis_desktop\product_info.py"
+    $productFile = Join-Path $Root "atlas_desktop\product_info.py"
     if (Test-Path $productFile) {
         $m = Select-String -Path $productFile -Pattern 'PRODUCT_VERSION\s*=\s*"([^"]+)"' | Select-Object -First 1
         if ($m) { $version = $m.Matches[0].Groups[1].Value }
@@ -55,10 +55,9 @@ function Write-InnoVersionDefines {
 
 function Ensure-Icon {
     $icon = Join-Path $AssetsDir "atlas.ico"
-    $legacy = Join-Path $Root "installer\assets\jarvis.ico"
     New-Item -ItemType Directory -Path $AssetsDir -Force | Out-Null
-    if (-not (Test-Path $icon) -and (Test-Path $legacy)) {
-        Copy-Item -LiteralPath $legacy -Destination $icon -Force
+    if (-not (Test-Path $icon)) {
+        throw "Missing installer icon: $icon"
     }
 }
 
@@ -98,7 +97,7 @@ function Test-StagedInstaller {
     if ($issText -notmatch "autodesktop") { $issues += "Atlas.iss does not create a desktop shortcut" }
     if ($issText -notmatch "\{group\}") { $issues += "Atlas.iss does not create a Start menu shortcut" }
     if ($issText -notmatch "InfoBeforeFile") { $issues += "Atlas.iss does not show install notes" }
-    $staticSupport = Join-Path $Staging "_internal\jarvis_desktop\static\support.html"
+    $staticSupport = Join-Path $Staging "_internal\atlas_desktop\static\support.html"
     if (-not (Test-Path $staticSupport)) {
         $staticSupport = Get-ChildItem -Path $Staging -Recurse -Filter "support.html" -ErrorAction SilentlyContinue | Select-Object -First 1
         if (-not $staticSupport) { $issues += "support.html missing from staged payload" }
@@ -143,10 +142,6 @@ $setup = Join-Path $OutputDir "Atlas_Setup.exe"
 if (-not (Test-Path $setup)) {
     throw "Expected installer not found: $setup"
 }
-$legacyOut = Join-Path $Root "installer\output\Atlas_Setup.exe"
-New-Item -ItemType Directory -Path (Split-Path $legacyOut) -Force | Out-Null
-Copy-Item -LiteralPath $setup -Destination $legacyOut -Force
 $item = Get-Item -LiteralPath $setup
 $setupMb = [Math]::Round($item.Length / 1048576, 2)
 Write-Host ("Built: {0} ({1} MB)" -f $setup, $setupMb) -ForegroundColor Green
-Write-Host "Copied: $legacyOut" -ForegroundColor DarkGray

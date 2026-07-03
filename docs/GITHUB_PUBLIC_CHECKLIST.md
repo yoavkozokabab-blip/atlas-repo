@@ -4,7 +4,7 @@ Run before flipping the repository to public.
 
 ## Must be present
 ```
-[ ] README.md describes Atlas (not JARVIS), with one-liner + GIF
+[ ] README.md describes Atlas (not Atlas), with one-liner + GIF
 [ ] LICENSE present and correct (proprietary vs OSS-core decided)
 [ ] Screenshots of the evidence / context-pack output
 [ ] Demo GIF (scan -> ask -> answer in <20s)
@@ -28,7 +28,7 @@ Run before flipping the repository to public.
 [ ] reports/         (internal audits/benchmarks)
 [ ] external_repos/  (third-party benchmark repos — never publish/ship)
 [ ] internal docs not meant for users (audit/strategy notes)
-[ ] the JARVIS graveyard if it confuses (voice/ browser/ autonomy/ ...)
+[ ] the Atlas graveyard if it confuses (voice/ browser/ autonomy/ ...)
 ```
 
 ## Before publishing

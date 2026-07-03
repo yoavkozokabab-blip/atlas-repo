@@ -2,7 +2,7 @@
 # Launches the verification harness (RunningAppFlowTest.exe) for each dialog
 # state, captures the dialog window, then closes the harness.
 $ErrorActionPreference = "Stop"
-$Root = "C:\J.A.R.V.I.S\local_jarvis"
+$Root = "C:\J.A.R.V.I.S\local_atlas"
 $Harness = Join-Path $Root "packaging\installer\_verify\RunningAppFlowTest.exe"
 $OutDir = Join-Path $Root "reports\installer_update_flow"
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null

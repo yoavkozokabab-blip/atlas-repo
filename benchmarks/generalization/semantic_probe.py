@@ -59,7 +59,7 @@ _PROMPT = "what breaks if I remove {phrase}"
 
 
 def _reset_state() -> None:
-    from jarvis_desktop import api
+    from atlas_desktop import api
     api._STATE.update({"path": None, "scan": None, "graph": None, "index": None,
                        "risks": None, "evidence_store": None, "architecture": None,
                        "scan_cache": {}})
@@ -93,7 +93,7 @@ def _classify(resp: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def probe_repo(resolved: "registry.ResolvedRepo") -> Dict[str, Any]:
-    from jarvis_desktop import api
+    from atlas_desktop import api
     spec = resolved.spec
     rec: Dict[str, Any] = {"id": spec.id, "display": spec.display, "language": spec.language,
                            "available": resolved.available,

@@ -28,7 +28,7 @@ from .finding import Finding, SECURITY_RISK
 
 MAX_BYTES = 400_000
 SKIP_DIRS = {
-    ".git", ".jarvis_builder", "__pycache__", "node_modules", ".venv", "venv",
+    ".git", ".atlas_builder", "__pycache__", "node_modules", ".venv", "venv",
     "env", "dist", "build", ".pytest_cache", ".mypy_cache", ".idea", ".vscode",
     "site-packages", ".tox", "target", "vendor", ".next", ".cache", "coverage",
     "htmlcov", ".gradle",

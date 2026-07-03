@@ -39,7 +39,7 @@ CDN-backed download URL. **Do this only after rebuilding the installer** (see
 ## Option B — `gh` CLI (faster)
 
 ```powershell
-cd C:\J.A.R.V.I.S\local_jarvis
+cd C:\J.A.R.V.I.S\local_atlas
 gh release create v1.0.0 `
   "packaging\installer\output\Atlas_Setup.exe" `
   "packaging\installer\output\Atlas_Setup.exe.sha256" `

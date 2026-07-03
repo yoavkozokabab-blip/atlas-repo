@@ -19,7 +19,7 @@ from typing import List, Optional
 # Conventional roots to probe for a checkout named like the repo id.
 _SEARCH_ROOTS = [
     Path(r"C:\J.A.R.V.I.S"),
-    Path(r"C:\J.A.R.V.I.S\local_jarvis\external_repos"),
+    Path(r"C:\J.A.R.V.I.S\the Atlas repo\external_repos"),
     Path(r"C:\repos"),
     Path(r"C:\src"),
     Path(os.path.expanduser("~")) / "source" / "repos",
@@ -85,8 +85,8 @@ REPOS: List[RepoSpec] = [
              impact_concepts=["the storage engine", "the collection manager", "search"]),
     # Extra real repositories available locally (broaden layout coverage beyond the
     # 11 marquee targets — different package structures, sizes and conventions).
-    RepoSpec("atlas_self", "Atlas (local_jarvis)", "python", "desktop tool", "python",
-             aliases=["local_jarvis"],
+    RepoSpec("atlas_self", "Atlas (the Atlas repo)", "python", "desktop tool", "python",
+             aliases=["the Atlas repo"],
              impact_concepts=["the impact engine", "the planning engine", "the architecture analyzer"]),
     RepoSpec("quixbugs", "QuixBugs", "python", "algorithms corpus", "python",
              aliases=["QuixBugs"],

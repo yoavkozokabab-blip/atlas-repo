@@ -10,9 +10,9 @@ ROOT = Path.cwd()
 
 def existing_datas():
     datas = [
-        ("jarvis_desktop/static", "jarvis_desktop/static"),
-        ("jarvis_desktop/demo", "jarvis_desktop/demo"),
-        ("jarvis_desktop/atlas_knowledge", "jarvis_desktop/atlas_knowledge"),
+        ("atlas_desktop/static", "atlas_desktop/static"),
+        ("atlas_desktop/demo", "atlas_desktop/demo"),
+        ("atlas_desktop/atlas_knowledge", "atlas_desktop/atlas_knowledge"),
     ]
     docs_quickstart = ROOT / "docs" / "ATLAS_QUICKSTART.md"
     if docs_quickstart.is_file():
@@ -22,7 +22,7 @@ def existing_datas():
 
 def desktop_hidden_imports():
     modules = []
-    for package in ("jarvis_desktop", "builder_core"):
+    for package in ("atlas_desktop", "builder_core"):
         modules.extend(
             name
             for name in collect_submodules(package)
@@ -32,7 +32,7 @@ def desktop_hidden_imports():
     return sorted(set(modules))
 
 
-icon_path = ROOT / "installer" / "assets" / "jarvis.ico"
+icon_path = ROOT / "packaging" / "installer" / "assets" / "atlas.ico"
 icon = str(icon_path) if icon_path.is_file() else None
 
 a = Analysis(

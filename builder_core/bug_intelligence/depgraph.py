@@ -334,11 +334,11 @@ def _finalize_graph(
         "graph_detail": detail,
     }
     if partial or timed_out:
-        out["jarvis_partial"] = True
+        out["atlas_partial"] = True
         out["degraded"] = True
         out["degraded_reason"] = "time_budget_exceeded" if timed_out else "partial_build"
     if timed_out:
-        out["jarvis_timed_out"] = True
+        out["atlas_timed_out"] = True
     return out
 
 
@@ -1037,9 +1037,9 @@ def build_graph(
         deadline=deadline,
         on_progress=on_progress,
     )
-    if timed_out_reading and not graph.get("jarvis_timed_out"):
-        graph["jarvis_timed_out"] = True
-        graph["jarvis_partial"] = True
+    if timed_out_reading and not graph.get("atlas_timed_out"):
+        graph["atlas_timed_out"] = True
+        graph["atlas_partial"] = True
         graph["degraded"] = True
         graph["degraded_reason"] = "time_budget_exceeded"
     degraded = bool(graph.get("degraded"))

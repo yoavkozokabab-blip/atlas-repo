@@ -3,7 +3,7 @@
 Deploy the Atlas landing on Vercel's **free** plan using the free `*.vercel.app` URL. No paid
 domain required. ~10 minutes. Do this **after** Supabase setup (`docs/SUPABASE_CLICK_BY_CLICK.md`).
 
-> Prereq: the repo is pushed to GitHub (the `local_jarvis` repo, branch with this code).
+> Prereq: the repo is pushed to GitHub (the `local_atlas` repo, branch with this code).
 
 ---
 
@@ -20,13 +20,13 @@ On the "Configure Project" screen:
 
 | Setting | Value |
 |---|---|
-| **Root Directory** | **`websites/jarvis-landing`** ← click **Edit** and set this. Critical — the app is a subfolder. |
+| **Root Directory** | **`websites/atlas-web`** ← click **Edit** and set this. Critical — the app is a subfolder. |
 | **Framework Preset** | **Next.js** (auto-detected once Root Directory is set) |
 | **Build Command** | leave default (`next build`) |
 | **Output Directory** | leave default (Next.js managed — do **not** set `out`) |
 | **Install Command** | leave default (`npm install`) |
 
-> If you don't set **Root Directory** to `websites/jarvis-landing`, the build will fail or
+> If you don't set **Root Directory** to `websites/atlas-web`, the build will fail or
 > deploy the wrong thing — the repo has multiple folders and lockfiles.
 
 ## 3. Add environment variables
@@ -86,5 +86,5 @@ Sign up with the email you put in `ADMIN_EMAILS`, then visit `/admin` (users + a
 ### Notes
 - The 42 MB installer is **never** deployed to Vercel or streamed through a function — it's
   hosted on GitHub Releases and the download route only redirects. The installer also lives
-  outside `websites/jarvis-landing`, so it isn't part of the Vercel build.
+  outside `websites/atlas-web`, so it isn't part of the Vercel build.
 - Free plan limits (bandwidth, function execution) are ample for the current launch.

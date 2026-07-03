@@ -8,7 +8,7 @@
 #    Win32_Process Name='Atlas.exe') and close (taskkill /IM then /F /T /IM)
 #    logic the installer uses.
 $ErrorActionPreference = "Stop"
-$Root = "C:\J.A.R.V.I.S\local_jarvis"
+$Root = "C:\J.A.R.V.I.S\local_atlas"
 $Setup = Join-Path $Root "packaging\installer\output\Atlas_Setup.exe"
 $DistAtlas = Join-Path $Root "dist\Atlas\Atlas.exe"
 $OutDir = Join-Path $Root "reports\installer_update_flow"

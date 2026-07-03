@@ -15,7 +15,7 @@ from builder_core.benchmark_framework.context_cache import (
     cache_enabled_from_env,
     cache_key,
 )
-from builder_core.benchmark_framework.context_profiling import profile_jarvis_context
+from builder_core.benchmark_framework.context_profiling import profile_atlas_context
 from builder_core.benchmark_framework.runner import (
     clear_benchmark_context_sessions,
     generate_run_package,
@@ -47,17 +47,17 @@ def _mini_repo(tmp_path: Path) -> Path:
 
 @pytest.fixture(autouse=True)
 def _reset_context_cache_state(monkeypatch):
-    monkeypatch.delenv("JARVIS_BENCHMARK_CONTEXT_CACHE", raising=False)
+    monkeypatch.delenv("Atlas_BENCHMARK_CONTEXT_CACHE", raising=False)
     clear_benchmark_context_sessions()
-    cache_root_glob = ".jarvis_builder/benchmark_context_cache"
+    cache_root_glob = ".atlas_builder/benchmark_context_cache"
     yield
     clear_benchmark_context_sessions()
-    monkeypatch.delenv("JARVIS_BENCHMARK_CONTEXT_CACHE", raising=False)
+    monkeypatch.delenv("Atlas_BENCHMARK_CONTEXT_CACHE", raising=False)
 
 
 @pytest.fixture
 def cache_on(monkeypatch):
-    monkeypatch.setenv("JARVIS_BENCHMARK_CONTEXT_CACHE", "1")
+    monkeypatch.setenv("Atlas_BENCHMARK_CONTEXT_CACHE", "1")
     assert cache_enabled_from_env()
 
 
@@ -78,7 +78,7 @@ def test_file_change_invalidates_disk_cache(cache_on, tmp_path):
     index = indexer.build_index(str(root))
     session = BenchmarkContextSession(str(root), index, enabled=True, packet_format="compact")
     session.get_dependency_graph()
-    cache_dir = root / ".jarvis_builder" / "benchmark_context_cache"
+    cache_dir = root / ".atlas_builder" / "benchmark_context_cache"
     assert cache_dir.is_dir()
     before = list(cache_dir.glob("*.json"))
     assert before
@@ -106,7 +106,7 @@ def test_compact_and_prose_use_separate_cache_artifacts(cache_on, tmp_path):
     compact_key = cache_key("dependency_graph", str(root), fingerprint, "compact")
     prose_key = cache_key("dependency_graph", str(root), fingerprint, "prose")
     assert compact_key != prose_key
-    cache_dir = root / ".jarvis_builder" / "benchmark_context_cache"
+    cache_dir = root / ".atlas_builder" / "benchmark_context_cache"
     assert (cache_dir / compact_key).is_file()
     assert (cache_dir / prose_key).is_file()
 
@@ -127,7 +127,7 @@ def test_context_profile_includes_cache_diagnostics(cache_on, tmp_path):
     assert "dependency_graph" in cache["stages"]
 
 
-def test_profile_jarvis_context_writes_cache_block(cache_on, tmp_path):
+def test_profile_atlas_context_writes_cache_block(cache_on, tmp_path):
     root = _mini_repo(tmp_path)
     index = indexer.build_index(str(root))
     task = BenchmarkTask(
@@ -140,9 +140,9 @@ def test_profile_jarvis_context_writes_cache_block(cache_on, tmp_path):
         scoring_rubric=["mentions imports"],
         required_evidence=["config.py"],
         baseline_mode="read-only",
-        jarvis_mode="use jarvis",
+        atlas_mode="use atlas",
     )
-    profile = profile_jarvis_context(task, index=index)
+    profile = profile_atlas_context(task, index=index)
     payload = profile.to_dict()
     assert "cache" in payload
     assert payload["cache"]["enabled"] is True
@@ -161,7 +161,7 @@ def test_cached_second_compact_build_is_faster_or_hits(cache_on, tmp_path):
         scoring_rubric=["fan-in"],
         required_evidence=["core/util.py"],
         baseline_mode="read-only",
-        jarvis_mode="use jarvis",
+        atlas_mode="use atlas",
     )
     result = ask.answer(index, task.prompt)
     session = get_benchmark_context_session(str(root), index, packet_format="compact")

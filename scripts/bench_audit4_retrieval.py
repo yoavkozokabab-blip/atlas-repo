@@ -32,9 +32,9 @@ Run: py -3 scripts/bench_audit4_retrieval.py
 from __future__ import annotations
 import json, math, os, re, sys, time, random
 
-ROOT = r"C:\J.A.R.V.I.S\local_jarvis"
+ROOT = r"C:\J.A.R.V.I.S\local_atlas"
 sys.path.insert(0, ROOT)
-from jarvis_desktop import api, context_pack as cp  # noqa: E402
+from atlas_desktop import api, context_pack as cp  # noqa: E402
 
 EXT = os.path.join(ROOT, "external_repos")
 random.seed(1234)
@@ -125,7 +125,7 @@ SUITES = [
         ("the BaseChatModel chat interface", "BaseChatModel", []),
         ("the core Document abstraction", "Document", []),
     ]),
-    (os.path.join(ROOT, "jarvis_desktop"), "atlas", [
+    (os.path.join(ROOT, "atlas_desktop"), "atlas", [
         ("rank task relevant files when building a context pack", "build_context_pack", []),
         ("analyze the root cause from a python stack trace", None, ["root_cause.py"]),
         ("repository memory freshness and drift detection", None, ["repository_memory.py"]),

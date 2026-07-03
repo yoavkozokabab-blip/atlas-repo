@@ -22,7 +22,7 @@ lost when Vercel redeploys. ~10 minutes. **Never paste secrets into chat, git, o
 
 1. In the left sidebar click **SQL Editor**.
 2. Click **+ New query**.
-3. Open the repo file **`websites/jarvis-landing/supabase/migrations/0001_init.sql`**, copy
+3. Open the repo file **`websites/atlas-web/supabase/migrations/0001_init.sql`**, copy
    its **entire** contents, and paste into the editor.
 4. Click **Run** (or Ctrl+Enter). You should see "Success. No rows returned."
 5. Verify: left sidebar → **Table Editor** → you should now see 4 tables:
@@ -91,7 +91,7 @@ Then submit an email signup on the site once, and confirm a row appears in
 
 ## Local testing (optional)
 
-Create `websites/jarvis-landing/.env.local` (gitignored) with the same vars to run the
+Create `websites/atlas-web/.env.local` (gitignored) with the same vars to run the
 production backend locally: `npm run dev`, then open `http://localhost:3000/api/health`.
 
 ---

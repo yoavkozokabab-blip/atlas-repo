@@ -107,7 +107,7 @@ def main() -> int:
         print(res.stdout.strip())
         if res.returncode != 0 or "Indexed project" not in res.stdout:
             failures.append("init")
-        index_path = os.path.join(root, ".jarvis_builder", "index.json")
+        index_path = os.path.join(root, ".atlas_builder", "index.json")
         if not os.path.exists(index_path):
             failures.append("index.json missing")
 
@@ -136,7 +136,7 @@ def main() -> int:
         print(res.stdout.strip())
         if "Decision stored" not in res.stdout:
             failures.append("remember")
-        decisions_path = os.path.join(root, ".jarvis_builder", "decisions.jsonl")
+        decisions_path = os.path.join(root, ".atlas_builder", "decisions.jsonl")
         if not os.path.exists(decisions_path):
             failures.append("decisions.jsonl missing")
 

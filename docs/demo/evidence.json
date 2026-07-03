@@ -1,7 +1,7 @@
 {
   "generated_at": "2026-06-18T10:46:48Z",
   "question": "Where is authentication implemented?",
-  "demo_repo": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\phase185_demo_workspace\\auth_demo_repo",
+  "demo_repo": "C:\\J.A.R.V.I.S\\local_atlas\\reports\\phase185_demo_workspace\\auth_demo_repo",
   "claude_desktop": {
     "config_path": "C:\\Users\\babi2\\AppData\\Roaming\\Claude\\claude_desktop_config.json",
     "config_source": "appdata_roaming",
@@ -49,7 +49,7 @@
     {
       "tool": "atlas_scan_repo",
       "arguments": {
-        "repo_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\phase185_demo_workspace\\auth_demo_repo"
+        "repo_path": "C:\\J.A.R.V.I.S\\local_atlas\\reports\\phase185_demo_workspace\\auth_demo_repo"
       },
       "response": {
         "codebase_map": {
@@ -99,7 +99,7 @@
           "module_count": 3,
           "ok": true,
           "repo_name": "auth_demo_repo",
-          "repo_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\phase185_demo_workspace\\auth_demo_repo",
+          "repo_path": "C:\\J.A.R.V.I.S\\local_atlas\\reports\\phase185_demo_workspace\\auth_demo_repo",
           "subsystem_count": 4,
           "subsystems": [
             {
@@ -255,7 +255,7 @@
           ]
         },
         "ok": true,
-        "repo_path": "C:\\J.A.R.V.I.S\\local_jarvis\\reports\\phase185_demo_workspace\\auth_demo_repo",
+        "repo_path": "C:\\J.A.R.V.I.S\\local_atlas\\reports\\phase185_demo_workspace\\auth_demo_repo",
         "scan": {
           "cache": {
             "hit": false,

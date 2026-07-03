@@ -18,7 +18,7 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from jarvis_desktop import api  # noqa: E402
+from atlas_desktop import api  # noqa: E402
 
 REPORTS = ROOT / "reports"
 P167 = ROOT / "phase167_raw_results.json"

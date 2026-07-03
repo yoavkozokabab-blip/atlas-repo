@@ -12,9 +12,9 @@ ROOT = SPEC_DIR.parents[1]
 
 def existing_datas():
     datas = [
-        (str(ROOT / "jarvis_desktop" / "static"), "jarvis_desktop/static"),
-        (str(ROOT / "jarvis_desktop" / "demo"), "jarvis_desktop/demo"),
-        (str(ROOT / "jarvis_desktop" / "atlas_knowledge"), "jarvis_desktop/atlas_knowledge"),
+        (str(ROOT / "atlas_desktop" / "static"), "atlas_desktop/static"),
+        (str(ROOT / "atlas_desktop" / "demo"), "atlas_desktop/demo"),
+        (str(ROOT / "atlas_desktop" / "atlas_knowledge"), "atlas_desktop/atlas_knowledge"),
     ]
     quickstart = ROOT / "docs" / "ATLAS_QUICKSTART.md"
     if quickstart.is_file():
@@ -27,7 +27,7 @@ def existing_datas():
 
 def desktop_hidden_imports():
     modules = []
-    for package in ("jarvis_desktop", "builder_core"):
+    for package in ("atlas_desktop", "builder_core"):
         modules.extend(
             name
             for name in collect_submodules(package)
@@ -38,8 +38,6 @@ def desktop_hidden_imports():
 
 
 icon_path = ROOT / "packaging" / "installer" / "assets" / "atlas.ico"
-if not icon_path.is_file():
-    icon_path = ROOT / "installer" / "assets" / "jarvis.ico"
 icon = str(icon_path) if icon_path.is_file() else None
 
 a = Analysis(

@@ -82,11 +82,11 @@ def _scan_inconsistent_return(root: str) -> Tuple[List[Dict[str, Any]], Dict[str
     repo_path = os.path.abspath(root)
     commit = harness._git(["rev-parse", "HEAD"], repo_path) or "unknown"
     repo = {
-        "id": "local-jarvis-pilot",
+        "id": "local-atlas-pilot",
         "path": repo_path,
         "commit": commit,
         "track": "pilot",
-        "label": "local_jarvis",
+        "label": "local_atlas",
     }
     started = time.perf_counter()
     results = engine.analyze_repository(repo_path)
@@ -544,7 +544,7 @@ def _render_report(metrics: Dict[str, Any], root: str) -> str:
         ## Summary
 
         Phase 96D measured whether Phase 96C contract-enriched packets improve human
-        review quality for **`inconsistent_return`** findings on **`local_jarvis`**.
+        review quality for **`inconsistent_return`** findings on **`local_atlas`**.
 
         Corpus: **{metrics['scan_meta']['inconsistent_return_count']}** findings (all
         `kind=pattern`, **0** verdict-eligible). Pilot sample: **{metrics['sample_size']}**
@@ -561,7 +561,7 @@ def _render_report(metrics: Dict[str, Any], root: str) -> str:
 
         | Step | Detail |
         |------|--------|
-        | Scan | Full `local_jarvis` via `engine.analyze_repository` ({metrics['scan_meta']['scan_seconds']}s) |
+        | Scan | Full `local_atlas` via `engine.analyze_repository` ({metrics['scan_meta']['scan_seconds']}s) |
         | Sample | {metrics['sample_size']} stratified (return_only {metrics['strata'].get('return_only', 0)}, return_and_caller {metrics['strata'].get('return_and_caller', 0)}, conflict_only {metrics['strata'].get('conflict_only', 0)}, caller_only {metrics['strata'].get('caller_only', 0)}) |
         | Baseline | Reviewer packets with `contract_review` stripped (pre-96C shape) |
         | Enriched | Same records with Phase 96C `contract_review` attached |
@@ -570,7 +570,7 @@ def _render_report(metrics: Dict[str, Any], root: str) -> str:
 
         Phase 95C/95E did **not** include `inconsistent_return` (406 advisory findings
         existed but 0 were verdict-eligible / in `review_sample.json`). This pilot uses
-        `local_jarvis` as the first human-review corpus for this rule.
+        `local_atlas` as the first human-review corpus for this rule.
 
         ---
 
@@ -711,7 +711,7 @@ def write_report(root: str | None = None) -> Path:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Phase 96D contract-enriched review pilot")
-    parser.add_argument("--root", default=None, help="local_jarvis root (default: repo root)")
+    parser.add_argument("--root", default=None, help="local_atlas root (default: repo root)")
     parser.add_argument(
         "--report-only",
         action="store_true",

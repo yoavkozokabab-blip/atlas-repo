@@ -1,4 +1,4 @@
-"""Phase 104C — compact fact packets for benchmark JARVIS context."""
+"""Phase 104C — compact fact packets for benchmark Atlas context."""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ from typing import TYPE_CHECKING, Any, Dict, List, Optional, Sequence, Tuple
 if TYPE_CHECKING:
     from .context_cache import BenchmarkContextSession
 
-from .jarvis_packet import format_jarvis_packet
+from .atlas_packet import format_atlas_packet
 from .schema import BenchmarkTask
 from .tokens import estimated_count
 
@@ -123,7 +123,7 @@ _METADATA_ROW_PREFIXES = (
 
 
 def packet_format_from_env() -> str:
-    value = os.environ.get("JARVIS_CONTEXT_PACKET_FORMAT", "prose").strip().lower()
+    value = os.environ.get("Atlas_CONTEXT_PACKET_FORMAT", "prose").strip().lower()
     return value if value in {"prose", "compact"} else "prose"
 
 
@@ -1461,7 +1461,7 @@ def build_compact_packet(
 def compare_formats_enabled(selected_format: str) -> bool:
     if selected_format == "compact":
         return True
-    value = os.environ.get("JARVIS_CONTEXT_COMPARE_FORMATS", "").strip().lower()
+    value = os.environ.get("Atlas_CONTEXT_COMPARE_FORMATS", "").strip().lower()
     return value in {"1", "true", "yes", "on"}
 
 
@@ -1498,7 +1498,7 @@ def measure_compact_corpus(
                 index = loader(repo_path)
                 index_cache[repo_path] = index
         result = ask.answer(index, task.prompt)
-        verbose = format_jarvis_packet(result)
+        verbose = format_atlas_packet(result)
         compact, expanded, kind = build_compact_packet(result, task, index)
         verbose_tokens = estimated_count(verbose)
         compact_tokens = estimated_count(compact)
@@ -1557,8 +1557,8 @@ def compare_context_formats(
     *,
     session: Optional["BenchmarkContextSession"] = None,
 ) -> Dict[str, Any]:
-    """Token accounting for verbose vs compact JARVIS context."""
-    verbose = format_jarvis_packet(result)
+    """Token accounting for verbose vs compact Atlas context."""
+    verbose = format_atlas_packet(result)
     compact, _expanded, kind = build_compact_packet(result, task, index, session=session)
     verbose_tokens = estimated_count(verbose)
     compact_tokens = estimated_count(compact)
@@ -1579,7 +1579,7 @@ def compare_context_formats(
     }
 
 
-def format_jarvis_context(
+def format_atlas_context(
     result: Dict[str, Any],
     task: BenchmarkTask,
     index: Dict[str, Any],
@@ -1587,12 +1587,12 @@ def format_jarvis_context(
     packet_format: Optional[str] = None,
     session: Optional["BenchmarkContextSession"] = None,
 ) -> Tuple[str, Dict[str, Any]]:
-    """Format JARVIS context using prose (default) or compact fact packets."""
+    """Format Atlas context using prose (default) or compact fact packets."""
     selected = (packet_format or packet_format_from_env()).lower()
     if compare_formats_enabled(selected):
         comparison = compare_context_formats(result, task, index, session=session)
     else:
-        verbose = format_jarvis_packet(result)
+        verbose = format_atlas_packet(result)
         comparison = {
             "instrumentation_version": COMPACT_INSTRUMENTATION_VERSION,
             "task_id": task.task_id,
@@ -1615,7 +1615,7 @@ def format_jarvis_context(
         if session is not None:
             meta["cache_diagnostics"] = session.diagnostics_dict()
         return compact, meta
-    prose = format_jarvis_packet(result)
+    prose = format_atlas_packet(result)
     comparison["selected_format"] = "prose"
     meta = {"comparison": comparison, "expanded": {"packet_format": "prose", "ask_mode": result.get("mode")}}
     if session is not None:

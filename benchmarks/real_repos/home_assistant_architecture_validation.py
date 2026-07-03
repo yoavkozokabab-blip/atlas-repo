@@ -17,7 +17,7 @@ HA_REPO = Path(os.environ.get("ATLAS_HA_REPO", str(ROOT / "external_repos" / "ho
 
 
 def validate(verbose: bool = True) -> int:
-    from jarvis_desktop import api
+    from atlas_desktop import api
 
     results = []
 

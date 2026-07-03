@@ -18,7 +18,7 @@ benchmarks/
 
 ## Run validation
 
-From `local_jarvis`:
+From `the Atlas repo`:
 
 ```powershell
 py -3 benchmarks/generate_suite.py

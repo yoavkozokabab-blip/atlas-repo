@@ -104,14 +104,14 @@ def _synthetic_claude_answer(tool_results: list[dict]) -> str:
 
 
 def main() -> int:
-    from jarvis_desktop import agent_integrations as ai
+    from atlas_desktop import agent_integrations as ai
 
     proof_dir = REPORTS / "phase185_demo_workspace"
     proof_dir.mkdir(parents=True, exist_ok=True)
     demo_repo = _make_demo_repo(proof_dir)
 
     proc = subprocess.Popen(
-        [sys.executable, "-m", "jarvis_desktop.mcp_server"],
+        [sys.executable, "-m", "atlas_desktop.mcp_server"],
         cwd=str(REPO_ROOT),
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,

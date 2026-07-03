@@ -36,7 +36,7 @@ def _any_contains(items: List[str], needles: Tuple[str, ...]) -> bool:
 
 
 def scan() -> Dict[str, Any]:
-    from jarvis_desktop import api
+    from atlas_desktop import api
 
     api._STATE.update({"path": None, "scan": None, "graph": None, "index": None,
                        "risks": None, "evidence_store": None, "scan_cache": {}})
@@ -44,7 +44,7 @@ def scan() -> Dict[str, Any]:
 
 
 def validate(verbose: bool = True) -> Dict[str, Any]:
-    from jarvis_desktop import api
+    from atlas_desktop import api
 
     results: List[Tuple[str, bool, str]] = []
 

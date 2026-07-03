@@ -7,7 +7,7 @@ There are two installer setups in the repo. **Use the canonical one:**
 | Path | Status |
 |---|---|
 | `packaging/installer/` (`Atlas.iss` + `installer_build.ps1`) | ✅ **canonical** — refreshes staging, auto-generates version, this is what the website serves |
-| `installer/` (`jarvis.iss`) | ⚠️ legacy (Phase 150) — do not use; bundles a stale top-level `staging/` |
+| `installer/` (`atlas.iss`) | ⚠️ legacy (Phase 150) — do not use; bundles a stale top-level `staging/` |
 
 The website download route resolves `packaging/installer/output/Atlas_Setup.exe` first, so that
 is the artifact that ships.
@@ -23,7 +23,7 @@ is the artifact that ships.
 
 ## Step 1 — Bump the version (30s)
 
-Single source of truth: `jarvis_desktop/product_info.py` → `PRODUCT_VERSION`.
+Single source of truth: `atlas_desktop/product_info.py` → `PRODUCT_VERSION`.
 Everything else (installer version, build_info, `generated_version.iss`, website
 `NEXT_PUBLIC_ATLAS_VERSION`) derives from it. Edit it, e.g. `1.0.1`.
 

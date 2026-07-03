@@ -1,6 +1,6 @@
 """Phase 186A desktop identity smoke test (website mode).
 
-Drives jarvis_desktop.accounts_client against a running website (ATLAS_WEB_URL)
+Drives atlas_desktop.accounts_client against a running website (ATLAS_WEB_URL)
 to prove the desktop authenticates against the SAME store as the website.
 
 Env required:
@@ -37,7 +37,7 @@ def web_post(path, body):
         return r.status, json.loads(r.read().decode())
 
 
-from jarvis_desktop import accounts_client as ac  # noqa: E402
+from atlas_desktop import accounts_client as ac  # noqa: E402
 
 print(f"mode={ac.auth_mode()} web_base={ac.web_base()}")
 check("desktop is in website auth mode", ac.auth_mode() == "website")

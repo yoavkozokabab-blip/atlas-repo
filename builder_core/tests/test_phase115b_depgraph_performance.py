@@ -63,4 +63,4 @@ def test_time_budget_returns_partial_graph(tmp_path, monkeypatch):
 
     monkeypatch.setattr(depgraph.time, "monotonic", fake_mono)
     graph = depgraph.build_graph(str(root), detail=depgraph.DETAIL_FULL, time_budget_sec=60.0)
-    assert graph.get("jarvis_partial") or graph.get("jarvis_timed_out")
+    assert graph.get("atlas_partial") or graph.get("atlas_timed_out")

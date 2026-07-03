@@ -2,7 +2,7 @@ __pycache__/
 .pytest_cache/
 .pytest_tmp/
 tests_tmp/
-.jarvis_builder/
+.atlas_builder/
 .env
 .env.*
 !.env.example
@@ -19,7 +19,7 @@ reports/autonomous_investigations/
 reports/assistant_state/
 reports/verification_plans/
 reports/trading_operations/
-reports/jarvis_logs/*.log
+reports/atlas_logs/*.log
 reports/benchmarks/
 
 # Phase 150 packaging tools and generated build intermediates

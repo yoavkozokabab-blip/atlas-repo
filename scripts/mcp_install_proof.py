@@ -1,6 +1,6 @@
 """Installed-Atlas MCP proof: drive the FROZEN Atlas.exe --mcp over real stdio.
 
-Unlike scripts/mcp_smoke_test.py (which spawns `python -m jarvis_desktop.mcp_server`),
+Unlike scripts/mcp_smoke_test.py (which spawns `python -m atlas_desktop.mcp_server`),
 this exercises the packaged windowed exe's `--mcp` stdout-rebind path against a real
 JSON-RPC-over-pipes client — the one piece that was previously unverified.
 

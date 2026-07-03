@@ -8,13 +8,13 @@ from typing import Any, Callable, Dict, Optional
 
 from . import FRAMEWORK_VERSION, SCHEMA_VERSION
 from .schema import BenchmarkTask, MODES, RunLog
-from .compact_packets import format_jarvis_context, packet_format_from_env
+from .compact_packets import format_atlas_context, packet_format_from_env
 from .context_cache import (
     BenchmarkContextSession,
     cache_enabled_from_env,
     write_context_profile,
 )
-from .jarvis_packet import format_jarvis_packet
+from .atlas_packet import format_atlas_packet
 from .schema import dump_json
 from .tokens import (
     INSTRUMENTATION_VERSION,
@@ -22,7 +22,7 @@ from .tokens import (
     prompt_metadata_comment,
 )
 
-JarvisContextFn = Callable[[BenchmarkTask], str]
+AtlasContextFn = Callable[[BenchmarkTask], str]
 _INDEX_CACHE: Dict[str, Any] = {}
 _CONTEXT_SESSIONS: Dict[str, BenchmarkContextSession] = {}
 
@@ -51,11 +51,11 @@ def _default_run_id() -> str:
     return "run_" + dt.datetime.now().strftime("%Y%m%d_%H%M%S")
 
 
-def default_jarvis_context(task: BenchmarkTask) -> str:
+def default_atlas_context(task: BenchmarkTask) -> str:
     """Collect deterministic local Builder Core context without network access."""
     try:
         if not task.repo_path or not os.path.isdir(task.repo_path):
-            return "[JARVIS context unavailable: repository path not found]"
+            return "[Atlas context unavailable: repository path not found]"
         from .. import ask, indexer
 
         repo_path = os.path.abspath(task.repo_path)
@@ -70,7 +70,7 @@ def default_jarvis_context(task: BenchmarkTask) -> str:
             if cache_enabled_from_env()
             else None
         )
-        context, packet_meta = format_jarvis_context(
+        context, packet_meta = format_atlas_context(
             result,
             task,
             index,
@@ -83,28 +83,28 @@ def default_jarvis_context(task: BenchmarkTask) -> str:
         _INDEX_CACHE[f"{repo_path}__packet_meta__{task.task_id}"] = packet_meta
         return context
     except Exception as exc:  # pragma: no cover - guarded fallback is environment-specific
-        return f"[JARVIS context unavailable: {type(exc).__name__}]"
+        return f"[Atlas context unavailable: {type(exc).__name__}]"
 
 
-def build_prompt(task: BenchmarkTask, mode: str, jarvis_context: str = "") -> str:
+def build_prompt(task: BenchmarkTask, mode: str, atlas_context: str = "") -> str:
     if mode not in MODES:
         raise ValueError(f"unsupported benchmark mode: {mode}")
     if mode == "codex_alone":
         context = (
             "Explore the repository using ordinary read-only repository tools. "
-            "Do not use precomputed JARVIS output."
+            "Do not use precomputed Atlas output."
         )
         mode_instructions = task.baseline_mode
     else:
         context = (
-            "Use the deterministic JARVIS context below as the starting point. "
+            "Use the deterministic Atlas context below as the starting point. "
             "Use targeted read-only repository checks when evidence needs confirmation.\n\n"
-            "## Precomputed JARVIS Context\n"
+            "## Precomputed Atlas Context\n"
             "```\n"
-            f"{jarvis_context}\n"
+            f"{atlas_context}\n"
             "```"
         )
-        mode_instructions = task.jarvis_mode
+        mode_instructions = task.atlas_mode
     return (
         f"# Phase 103 Benchmark Task: {task.task_id}\n\n"
         f"- Mode: `{mode}`\n"
@@ -126,11 +126,11 @@ def generate_run_package(
     out_dir: str,
     *,
     run_id: Optional[str] = None,
-    jarvis_context_fn: Optional[JarvisContextFn] = None,
+    atlas_context_fn: Optional[AtlasContextFn] = None,
 ) -> Dict[str, Any]:
     """Write prompts and editable run templates below reports/benchmarks."""
     package_id = run_id or _default_run_id()
-    context_fn = jarvis_context_fn or default_jarvis_context
+    context_fn = atlas_context_fn or default_atlas_context
     run_root = os.path.join(out_dir, package_id)
     os.makedirs(run_root, exist_ok=True)
     repo_paths: Dict[str, str] = {}
@@ -139,7 +139,7 @@ def generate_run_package(
         repo_paths[task.repo_id] = task.repo_path
         task_root = os.path.join(run_root, task.task_id)
         os.makedirs(os.path.join(task_root, "answers"), exist_ok=True)
-        jarvis_context = context_fn(task)
+        atlas_context = context_fn(task)
         repo_key = os.path.abspath(task.repo_path)
         packet_meta = _INDEX_CACHE.pop(f"{repo_key}__packet_meta__{task.task_id}", {})
         if packet_meta:
@@ -165,11 +165,11 @@ def generate_run_package(
                 )
         dump_json(task.to_dict(), os.path.join(task_root, "task.json"))
         for mode in MODES:
-            prompt = build_prompt(task, mode, jarvis_context)
-            context_for_mode = jarvis_context if mode == "jarvis_plus_codex" else ""
+            prompt = build_prompt(task, mode, atlas_context)
+            context_for_mode = atlas_context if mode == "atlas_plus_codex" else ""
             breakdown = build_token_breakdown(
                 raw_prompt=task.prompt,
-                jarvis_context=context_for_mode,
+                atlas_context=context_for_mode,
                 final_prompt_package=prompt,
             )
             prompt_name = f"{mode}.prompt.md"
@@ -207,7 +207,7 @@ def generate_run_package(
             "estimator": "chars_per_4_estimate",
             "fields": [
                 "raw_prompt",
-                "jarvis_context",
+                "atlas_context",
                 "final_prompt_package",
                 "answer_text",
             ],
@@ -238,7 +238,7 @@ def _score_template(task_id: str, mode: str) -> Dict[str, Any]:
 def _readme(manifest: Dict[str, Any]) -> str:
     return (
         f"# Phase 103 Benchmark Run: {manifest['run_id']}\n\n"
-        "This package compares Codex Alone with JARVIS + Codex. It is fully offline "
+        "This package compares Codex Alone with Atlas + Codex. It is fully offline "
         "and requires no API key.\n\n"
         "> Token numbers are estimates. Replace them with manual overrides when a "
         "trusted tool UI provides better counts.\n\n"
@@ -248,7 +248,7 @@ def _readme(manifest: Dict[str, Any]) -> str:
         "under `answers/`.\n"
         "2. Record timing, model/tool, estimated token counts, and notes with "
         "`record-run` or by editing `run_log.codex_alone.json`.\n"
-        "3. Repeat with `jarvis_plus_codex.prompt.md` in a fresh session.\n"
+        "3. Repeat with `atlas_plus_codex.prompt.md` in a fresh session.\n"
         "4. Score both answers with `score` or by editing the score JSON templates.\n"
         "5. Run `summary` to create `summary.json` and `summary.md`.\n\n"
         "```powershell\n"

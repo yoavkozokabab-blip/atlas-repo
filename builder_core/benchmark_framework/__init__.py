@@ -1,4 +1,4 @@
-"""Offline Phase 103 benchmark framework for Codex Alone vs JARVIS + Codex."""
+"""Offline Phase 103 benchmark framework for Codex Alone vs Atlas + Codex."""
 
 from __future__ import annotations
 

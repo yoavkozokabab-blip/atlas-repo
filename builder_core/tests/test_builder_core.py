@@ -1,7 +1,7 @@
 """Tests for the standalone Builder Core CLI MVP.
 
 All tests operate on a synthetic repo created under pytest's tmp_path, so they
-never touch the real JARVIS tree and never require network or an LLM.
+never touch the real Atlas tree and never require network or an LLM.
 """
 
 from __future__ import annotations
@@ -106,11 +106,11 @@ def test_index_categorizes_files(fake_repo):
     assert "tests/test_auth.py" in paths
 
 
-def test_index_is_written_under_jarvis_builder(fake_repo):
+def test_index_is_written_under_atlas_builder(fake_repo):
     index = indexer.build_index(fake_repo)
     path = store.save_index(fake_repo, index)
     assert os.path.basename(path) == "index.json"
-    assert ".jarvis_builder" in path
+    assert ".atlas_builder" in path
     assert os.path.exists(path)
     # round-trips as valid JSON
     with open(path, encoding="utf-8") as fh:
@@ -124,7 +124,7 @@ def test_index_only_writes_inside_memory_dir(fake_repo):
     store.save_index(fake_repo, index)
     after = set(os.listdir(fake_repo))
     # the only new top-level entry is the memory dir
-    assert after - before == {".jarvis_builder"}
+    assert after - before == {".atlas_builder"}
 
 
 # ---------------------------------------------------------------------------

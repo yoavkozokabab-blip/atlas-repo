@@ -1,8 +1,8 @@
 """
 Benchmark: current Atlas ranking vs a production-aware re-rank.
 
-Drives the REAL ranker (jarvis_desktop.context_pack.build_context_pack_from_state)
-on the actual jarvis_desktop scan, across 20 maintenance tasks whose gold files are
+Drives the REAL ranker (atlas_desktop.context_pack.build_context_pack_from_state)
+on the actual atlas_desktop scan, across 20 maintenance tasks whose gold files are
 this repo's PRODUCTION modules. Then re-ranks the SAME candidate set with a
 directory-ownership penalty (demo / external_repos / staging / packaging / build
 artifacts) and remeasures. No engine code is modified — the production-aware step
@@ -13,13 +13,13 @@ Run: py -3 scripts/bench_production_aware_ranking.py
 from __future__ import annotations
 import json, os, sys
 
-REPO = r"C:\J.A.R.V.I.S\local_jarvis"
-SCAN_TARGET = os.path.join(REPO, "jarvis_desktop")
+REPO = r"C:\J.A.R.V.I.S\local_atlas"
+SCAN_TARGET = os.path.join(REPO, "atlas_desktop")
 sys.path.insert(0, REPO)
 
-from jarvis_desktop import api, context_pack as cp  # noqa: E402
+from atlas_desktop import api, context_pack as cp  # noqa: E402
 try:
-    from jarvis_desktop import repository_memory as repo_memory  # noqa: E402
+    from atlas_desktop import repository_memory as repo_memory  # noqa: E402
 except Exception:
     repo_memory = None
 
@@ -155,7 +155,7 @@ def main():
 
     n = valid
     def pct(x): return round(100.0 * x / n, 1)
-    print(f"\n=== Production-aware ranking benchmark — {n} valid tasks (scan: jarvis_desktop) ===")
+    print(f"\n=== Production-aware ranking benchmark — {n} valid tasks (scan: atlas_desktop) ===")
     print(f"{'metric':<16}{'CURRENT':>12}{'PROD-AWARE':>14}")
     for key, label in (("h1", "Hit@1"), ("h3", "Hit@3"), ("h5", "Hit@5")):
         print(f"{label:<16}{pct(agg['cur'][key]):>11}%{pct(agg['prod'][key]):>13}%")

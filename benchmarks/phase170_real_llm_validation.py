@@ -23,7 +23,7 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from jarvis_desktop import api, atlas_export  # noqa: E402
+from atlas_desktop import api, atlas_export  # noqa: E402
 
 REPORTS = ROOT / "reports"
 RAW_OUT = ROOT / "phase170_raw_results.json"

@@ -22,7 +22,7 @@ import shutil
 import subprocess
 import time
 
-from jarvis_desktop import api, context_pack as cp
+from atlas_desktop import api, context_pack as cp
 
 
 def _resolve_rg():
@@ -47,7 +47,7 @@ RG = _resolve_rg()
 
 REPOS = {
     "requests": "external_repos/requests",
-    "atlas": "jarvis_desktop",
+    "atlas": "atlas_desktop",
     "langchain": "external_repos/langchain",
     "home_assistant": "external_repos/home_assistant",
 }

@@ -1,13 +1,13 @@
 """Smoke test for the Atlas MCP server (canonical runtime).
 
-Spawns ``py -m jarvis_desktop.mcp_server`` and drives it over stdio with real JSON-RPC:
+Spawns ``py -m atlas_desktop.mcp_server`` and drives it over stdio with real JSON-RPC:
 initialize -> tools/list -> scan -> a few tools/call. Exits non-zero on failure.
 
-It validates the SHIPPING server (`jarvis_desktop/mcp_server/runtime.py`). Notes where the
+It validates the SHIPPING server (`atlas_desktop/mcp_server/runtime.py`). Notes where the
 runtime diverges from the Part 2 design spec (`docs/MCP_SERVER_DESIGN.md`) are marked DIVERGENCE.
 
 Usage:
-    py scripts/mcp_smoke_test.py [repo_path]   # default: external_repos/requests (fast)
+    py scripts/mcp_smoke_test.py [repo_path]   # default: bundled demo repo (fast)
 """
 
 from __future__ import annotations
@@ -18,7 +18,12 @@ import subprocess
 import sys
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DEFAULT_REPO = os.path.join(REPO_ROOT, "external_repos", "requests")
+_DEFAULT_CANDIDATES = [
+    os.path.join(REPO_ROOT, "external_repos", "requests"),
+    os.path.join(REPO_ROOT, "atlas_desktop", "demo", "medium_repo"),
+    os.path.join(REPO_ROOT, "atlas_desktop", "demo", "small_repo"),
+]
+DEFAULT_REPO = next((p for p in _DEFAULT_CANDIDATES if os.path.isdir(p)), _DEFAULT_CANDIDATES[0])
 
 
 class Client:
@@ -90,9 +95,15 @@ def main() -> int:
     if not os.path.isdir(repo):
         print(f"FAIL: test repo not found: {repo}")
         return 2
+    # Repo-appropriate probe query/target: the requests checkout when present,
+    # otherwise the bundled demo repo shipped with Atlas.
+    if os.path.basename(repo) == "requests":
+        probe_query, probe_target = "session cookie handling", "src/requests/sessions.py"
+    else:
+        probe_query, probe_target = "api request handlers", "api/handlers.py"
 
     proc = subprocess.Popen(
-        [sys.executable, "-m", "jarvis_desktop.mcp_server"],
+        [sys.executable, "-m", "atlas_desktop.mcp_server"],
         cwd=REPO_ROOT, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
         text=True, env=dict(os.environ),
     )
@@ -134,12 +145,12 @@ def main() -> int:
         check("context pack has confidence", payload.get("confidence") in {"HIGH", "MEDIUM", "LOW"}, str(payload.get("confidence")))
         print(f"     -> top files: {files[:3]}  confidence={payload.get('confidence')}  tokens={payload.get('token_estimate')}")
 
-        payload = client.tool("atlas_find_file", {"query": "session cookie handling", "max_files": 5})
+        payload = client.tool("atlas_find_file", {"query": probe_query, "max_files": 5})
         results = payload.get("matches") or payload.get("files") or []
         check("find_file returns ranked results", payload.get("ok") is True and len(results) > 0, str(payload)[:200])
 
         # DIVERGENCE: runtime takes a single `target`, design spec takes `changed_files[]`.
-        payload = client.tool("atlas_what_breaks", {"target": "src/requests/sessions.py"})
+        payload = client.tool("atlas_what_breaks", {"target": probe_target})
         check("what_breaks ok", payload.get("ok") is True, str(payload)[:200])
 
         payload = client.tool("atlas_repo_health", {})

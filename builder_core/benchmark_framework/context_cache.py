@@ -25,12 +25,12 @@ CACHED_STAGES = (
 
 
 def cache_enabled_from_env() -> bool:
-    value = os.environ.get("JARVIS_BENCHMARK_CONTEXT_CACHE", "").strip().lower()
+    value = os.environ.get("Atlas_BENCHMARK_CONTEXT_CACHE", "").strip().lower()
     return value in {"1", "true", "yes", "on"}
 
 
 def _cache_root(repo_path: str) -> str:
-    return os.path.join(os.path.abspath(repo_path), ".jarvis_builder", "benchmark_context_cache")
+    return os.path.join(os.path.abspath(repo_path), ".atlas_builder", "benchmark_context_cache")
 
 
 def compute_repo_fingerprint(
@@ -62,7 +62,7 @@ def compute_repo_fingerprint(
             dirnames[:] = [
                 name
                 for name in dirnames
-                if name not in {".git", ".jarvis_builder", "__pycache__", "node_modules", ".venv"}
+                if name not in {".git", ".atlas_builder", "__pycache__", "node_modules", ".venv"}
             ]
             for name in filenames:
                 if not name.endswith(".py"):

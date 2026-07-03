@@ -5,7 +5,7 @@ from __future__ import annotations
 import sys
 import traceback
 
-from jarvis_desktop import analytics
+from atlas_desktop import analytics
 
 
 def main() -> int:

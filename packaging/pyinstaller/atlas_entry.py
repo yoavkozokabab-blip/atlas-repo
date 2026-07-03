@@ -31,7 +31,7 @@ def _prepare_runtime() -> None:
 
 def _log_fatal(message: str) -> None:
     try:
-        from jarvis_desktop.install_support import append_launcher_log
+        from atlas_desktop.install_support import append_launcher_log
 
         append_launcher_log(message[:8000])
     except Exception:
@@ -48,7 +48,7 @@ def _install_excepthook() -> None:
 
 def _open_support_fallback() -> None:
     try:
-        from jarvis_desktop import server
+        from atlas_desktop import server
 
         server.run(host="127.0.0.1", port=0, open_browser=True, start_path="/startup-error.html")
     except Exception as exc:

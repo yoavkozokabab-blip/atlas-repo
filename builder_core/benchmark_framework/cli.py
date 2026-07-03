@@ -1,4 +1,4 @@
-"""Offline CLI for Phase 103: Codex Alone vs JARVIS + Codex."""
+"""Offline CLI for Phase 103: Codex Alone vs Atlas + Codex."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import shutil
 import sys
 from typing import Any, List
 
-from .context_profiling import profile_jarvis_context, write_profile_report
+from .context_profiling import profile_atlas_context, write_profile_report
 from .runner import generate_run_package
 from .schema import (
     MODES,
@@ -69,9 +69,9 @@ def _cmd_generate(
     context_cache: bool = False,
 ) -> int:
     if context_cache:
-        os.environ["JARVIS_BENCHMARK_CONTEXT_CACHE"] = "1"
-    context_fn = (lambda _task: "[JARVIS context intentionally omitted]") if skip_context else None
-    manifest = generate_run_package(load_tasks(tasks_path), out_dir, run_id=run_id, jarvis_context_fn=context_fn)
+        os.environ["Atlas_BENCHMARK_CONTEXT_CACHE"] = "1"
+    context_fn = (lambda _task: "[Atlas context intentionally omitted]") if skip_context else None
+    manifest = generate_run_package(load_tasks(tasks_path), out_dir, run_id=run_id, atlas_context_fn=context_fn)
     print(f"Generated offline run package: {os.path.join(out_dir, manifest['run_id'])}")
     print(f"Tasks: {manifest['task_count']}; modes: {', '.join(manifest['modes'])}")
     print("Token numbers are estimates unless manually overridden.")
@@ -136,7 +136,7 @@ def _cmd_score(args: argparse.Namespace) -> int:
 
 def _cmd_profile_context(args: argparse.Namespace) -> int:
     if args.context_cache:
-        os.environ["JARVIS_BENCHMARK_CONTEXT_CACHE"] = "1"
+        os.environ["Atlas_BENCHMARK_CONTEXT_CACHE"] = "1"
     tasks = load_tasks(args.tasks)
     if args.limit > 0:
         tasks = tasks[: args.limit]
@@ -150,7 +150,7 @@ def _cmd_profile_context(args: argparse.Namespace) -> int:
         if cache_enabled_from_env():
             session = BenchmarkContextSession(args.repo or ".", shared_index)
     profiles = [
-        profile_jarvis_context(task, index=shared_index, session=session) for task in tasks
+        profile_atlas_context(task, index=shared_index, session=session) for task in tasks
     ]
     write_profile_report(args.out, profiles)
     print(f"Context profile report written: {args.out}")
@@ -209,11 +209,11 @@ def _build_parser() -> argparse.ArgumentParser:
     generate.add_argument("--tasks", default=DEFAULT_TASKS)
     generate.add_argument("--out", default=DEFAULT_OUT)
     generate.add_argument("--run-id")
-    generate.add_argument("--skip-jarvis-context", action="store_true")
+    generate.add_argument("--skip-atlas-context", action="store_true")
     generate.add_argument(
         "--context-cache",
         action="store_true",
-        help="Enable benchmark context disk cache (sets JARVIS_BENCHMARK_CONTEXT_CACHE=1).",
+        help="Enable benchmark context disk cache (sets Atlas_BENCHMARK_CONTEXT_CACHE=1).",
     )
 
     record = commands.add_parser("record-run", help="Record one completed manual run.")
@@ -248,7 +248,7 @@ def _build_parser() -> argparse.ArgumentParser:
 
     profile = commands.add_parser(
         "profile-context",
-        help="Profile JARVIS context generation time and token estimates (Phase 104B).",
+        help="Profile Atlas context generation time and token estimates (Phase 104B).",
     )
     profile.add_argument("--tasks", default=DEFAULT_TASKS)
     profile.add_argument(
@@ -259,13 +259,13 @@ def _build_parser() -> argparse.ArgumentParser:
     profile.add_argument(
         "--reuse-index",
         action="store_true",
-        help="Load .jarvis_builder/index.json once for all tasks (same repo).",
+        help="Load .atlas_builder/index.json once for all tasks (same repo).",
     )
     profile.add_argument("--repo", default=".", help="Project root when using --reuse-index.")
     profile.add_argument(
         "--context-cache",
         action="store_true",
-        help="Enable benchmark context disk cache (sets JARVIS_BENCHMARK_CONTEXT_CACHE=1).",
+        help="Enable benchmark context disk cache (sets Atlas_BENCHMARK_CONTEXT_CACHE=1).",
     )
     return parser
 
@@ -279,7 +279,7 @@ def main(argv: List[str] | None = None) -> int:
             args.tasks,
             args.out,
             args.run_id,
-            args.skip_jarvis_context,
+            args.skip_atlas_context,
             context_cache=args.context_cache,
         )
     if args.command == "record-run":

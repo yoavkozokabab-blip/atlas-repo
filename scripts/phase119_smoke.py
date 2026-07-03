@@ -8,7 +8,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 
-from jarvis_desktop import api, server  # noqa: E402
+from atlas_desktop import api, server  # noqa: E402
 
 
 def main() -> int:

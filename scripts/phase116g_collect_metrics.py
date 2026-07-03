@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from jarvis_desktop import api  # noqa: E402
+from atlas_desktop import api  # noqa: E402
 
 REPOS = {
     "fastapi": r"C:\J.A.R.V.I.S\fastapi",

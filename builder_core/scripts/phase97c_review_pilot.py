@@ -83,11 +83,11 @@ def _scan_inconsistent_return(root: str) -> Tuple[List[Dict[str, Any]], Dict[str
     repo_path = os.path.abspath(root)
     commit = harness._git(["rev-parse", "HEAD"], repo_path) or "unknown"
     repo = {
-        "id": "local-jarvis-pilot",
+        "id": "local-atlas-pilot",
         "path": repo_path,
         "commit": commit,
         "track": "pilot",
-        "label": "local_jarvis",
+        "label": "local_atlas",
     }
     started = time.perf_counter()
     results = engine.analyze_repository(repo_path)
@@ -587,7 +587,7 @@ def _render_report(metrics: Dict[str, Any], root: str) -> str:
         "",
         "Phase 97C measured whether Phase 97A verification evidence improves human",
         "review quality on top of Phase 96C contract-enriched packets for",
-        "**`inconsistent_return`** findings on **`local_jarvis`**. ",
+        "**`inconsistent_return`** findings on **`local_atlas`**. ",
         "",
         f"Corpus: **{metrics['scan_meta']['inconsistent_return_count']}** findings ",
         f"(**{metrics['scan_meta']['with_verification_evidence']}** with verification overlay). ",
@@ -605,7 +605,7 @@ def _render_report(metrics: Dict[str, Any], root: str) -> str:
         "",
         "| Step | Detail |",
         "|------|--------|",
-        f"| Scan | Full `local_jarvis` via `engine.analyze_repository` ({metrics['scan_meta']['scan_seconds']}s) |",
+        f"| Scan | Full `local_atlas` via `engine.analyze_repository` ({metrics['scan_meta']['scan_seconds']}s) |",
         f"| Sample | {metrics['sample_size']} cases; blocked {strata.get('blocked', 0)}, refuted {strata.get('refuted', 0)}, other {sum(v for k,v in strata.items() if k not in ('blocked','refuted'))} |",
         "| Baseline | Reviewer packets with `contract_review`, no `verification_evidence` |",
         "| Enriched | Same records with Phase 97A `verification_evidence` attached |",
@@ -729,7 +729,7 @@ def write_report(root: str | None = None) -> Path:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Phase 97C verification evidence review pilot")
-    parser.add_argument("--root", default=None, help="local_jarvis root")
+    parser.add_argument("--root", default=None, help="local_atlas root")
     parser.add_argument("--report-only", action="store_true", help="Regenerate report from artifacts")
     args = parser.parse_args()
     root = args.root or _repo_root()

@@ -8,7 +8,7 @@ import time
 from dataclasses import dataclass, field
 from typing import Any, Callable, Dict, List, Optional, Sequence
 
-from .jarvis_packet import format_jarvis_packet
+from .atlas_packet import format_atlas_packet
 from .schema import BenchmarkTask, dump_json
 from .tokens import estimated_count
 
@@ -228,7 +228,7 @@ def _finalize_percentages(stages: List[StageMeasurement]) -> None:
             stage.percent_of_total_tokens = 0.0
 
 
-def profile_jarvis_context(
+def profile_atlas_context(
     task: BenchmarkTask,
     *,
     index: Optional[Dict[str, Any]] = None,
@@ -345,7 +345,7 @@ def profile_jarvis_context(
     from .. import ask
 
     ask_result = ask.answer(index, task.prompt)
-    packet = format_jarvis_packet(ask_result)
+    packet = format_atlas_packet(ask_result)
     stages.append(_stage("context_assembly", start, packet))
 
     _finalize_percentages(stages)
@@ -431,7 +431,7 @@ def render_profile_report(
         "",
         "Each benchmark task is profiled by running read-only Builder Core stages ",
         "sequentially. `context_assembly` executes `ask.answer` and formats the offline ",
-        "JARVIS packet. Other stages measure their artifact size and wall time even when ",
+        "Atlas packet. Other stages measure their artifact size and wall time even when ",
         "that artifact is not fully duplicated in the final packet.",
         "",
         "## Aggregate by stage",

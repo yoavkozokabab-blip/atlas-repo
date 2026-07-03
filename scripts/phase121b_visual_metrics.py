@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from jarvis_desktop import api  # noqa: E402
+from atlas_desktop import api  # noqa: E402
 
 
 def bench_repo(label: str, path: Path) -> dict:
@@ -46,9 +46,9 @@ def bench_repo(label: str, path: Path) -> dict:
 
 def main() -> int:
     targets = [
-        ("ts_sample", ROOT / "jarvis_desktop" / "demo" / "ts_sample_repo"),
+        ("ts_sample", ROOT / "atlas_desktop" / "demo" / "ts_sample_repo"),
     ]
-    fastapi = Path(r"c:\J.A.R.V.I.S\local_jarvis\demo_repos\fastapi")
+    fastapi = Path(r"c:\J.A.R.V.I.S\local_atlas\demo_repos\fastapi")
     if fastapi.is_dir():
         targets.append(("fastapi", fastapi))
     out = [bench_repo(label, path) for label, path in targets]

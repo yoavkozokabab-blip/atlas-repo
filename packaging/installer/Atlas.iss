@@ -57,9 +57,9 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDi
 Filename: "{app}\{#MyAppExeName}"; Description: "Launch {#MyAppName}"; Flags: nowait postinstall skipifsilent
 
 [UninstallDelete]
-; Primary data dir is %USERPROFILE%\.jarvis_desktop (see jarvis_desktop/data_paths.py).
+; Primary data dir is %USERPROFILE%\.atlas_desktop (see atlas_desktop/data_paths.py).
 ; The old {userappdata} (=%APPDATA%) path never matched, leaving user data behind.
-Type: filesandordirs; Name: "{%USERPROFILE}\.jarvis_desktop"
+Type: filesandordirs; Name: "{%USERPROFILE}\.atlas_desktop"
 Type: filesandordirs; Name: "{localappdata}\Atlas\desktop_data"
 
 [Code]

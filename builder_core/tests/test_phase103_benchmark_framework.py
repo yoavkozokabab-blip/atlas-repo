@@ -34,7 +34,7 @@ def _task() -> BenchmarkTask:
         scoring_rubric=["Names source.", "Names tests."],
         required_evidence=["src/", "tests/"],
         baseline_mode="Use read-only tools.",
-        jarvis_mode="Verify JARVIS evidence.",
+        atlas_mode="Verify Atlas evidence.",
     )
 
 
@@ -71,7 +71,7 @@ def test_sample_schema_has_twenty_local_tasks_and_all_task_types():
     tasks = load_tasks(cli.DEFAULT_TASKS)
     assert failures == {}
     assert len(tasks) >= 20
-    assert {task.repo_id for task in tasks} == {"local_jarvis"}
+    assert {task.repo_id for task in tasks} == {"local_atlas"}
     assert set(TASK_TYPES).issubset({task.task_type for task in tasks})
 
 
@@ -87,18 +87,18 @@ def test_schema_validation_rejects_missing_fields_and_bad_type():
 def test_prompt_generation_produces_distinct_offline_modes():
     task = _task()
     baseline = build_prompt(task, "codex_alone")
-    jarvis = build_prompt(task, "jarvis_plus_codex", "LOCAL EVIDENCE")
-    assert "Do not use precomputed JARVIS output" in baseline
-    assert "Precomputed JARVIS Context" in jarvis
-    assert "LOCAL EVIDENCE" in jarvis
+    atlas = build_prompt(task, "atlas_plus_codex", "LOCAL EVIDENCE")
+    assert "Do not use precomputed Atlas output" in baseline
+    assert "Precomputed Atlas Context" in atlas
+    assert "LOCAL EVIDENCE" in atlas
     assert "API" not in baseline
 
 
 def test_run_package_generation_is_deterministic(tmp_path):
     first = tmp_path / "first"
     second = tmp_path / "second"
-    generate_run_package([_task()], str(first), run_id="stable", jarvis_context_fn=lambda _task: "LOCAL")
-    generate_run_package([_task()], str(second), run_id="stable", jarvis_context_fn=lambda _task: "LOCAL")
+    generate_run_package([_task()], str(first), run_id="stable", atlas_context_fn=lambda _task: "LOCAL")
+    generate_run_package([_task()], str(second), run_id="stable", atlas_context_fn=lambda _task: "LOCAL")
     first_files = {
         path.relative_to(first / "stable"): path.read_text(encoding="utf-8")
         for path in (first / "stable").rglob("*")
@@ -110,7 +110,7 @@ def test_run_package_generation_is_deterministic(tmp_path):
         if path.is_file()
     }
     assert first_files == second_files
-    assert set(MODES) == {"codex_alone", "jarvis_plus_codex"}
+    assert set(MODES) == {"codex_alone", "atlas_plus_codex"}
 
 
 def test_run_log_parsing_and_validation():
@@ -136,7 +136,7 @@ def test_token_estimator_is_labeled_and_supports_manual_override():
 def test_manual_score_aggregation_includes_quality_and_bug_accuracy():
     score = build_manual_score(
         task_id="defect",
-        mode="jarvis_plus_codex",
+        mode="atlas_plus_codex",
         correctness=5,
         evidence_quality=4,
         completeness=3,
@@ -159,12 +159,12 @@ def test_manual_score_aggregation_includes_quality_and_bug_accuracy():
 
 def test_summary_reports_reduction_speedup_quality_and_breakdown():
     result = aggregate(
-        [_log("one", "codex_alone", 200, 10), _log("one", "jarvis_plus_codex", 100, 5)],
-        [_score("one", "codex_alone"), _score("one", "jarvis_plus_codex", 1)],
+        [_log("one", "codex_alone", 200, 10), _log("one", "atlas_plus_codex", 100, 5)],
+        [_score("one", "codex_alone"), _score("one", "atlas_plus_codex", 1)],
     )
     markdown = render_markdown(result, run_id="sample")
     assert result["tasks_compared"] == 1
-    assert result["win_loss_tie"]["jarvis_plus_codex"] == 1
+    assert result["win_loss_tie"]["atlas_plus_codex"] == 1
     assert result["average_estimated_token_reduction_percent"] == 50.0
     assert result["average_speedup"] == 2.0
     assert result["average_quality_delta_points"] == 5.0
@@ -182,9 +182,9 @@ def test_empty_summary_uses_na_not_none():
 
 def test_cli_human_workflow_records_scores_and_writes_summary(tmp_path):
     out = tmp_path / "reports" / "benchmarks"
-    generate_run_package([_task()], str(out), run_id="manual", jarvis_context_fn=lambda _task: "LOCAL")
+    generate_run_package([_task()], str(out), run_id="manual", atlas_context_fn=lambda _task: "LOCAL")
     run_dir = out / "manual"
-    for mode, answer in (("codex_alone", "baseline answer"), ("jarvis_plus_codex", "JARVIS answer")):
+    for mode, answer in (("codex_alone", "baseline answer"), ("atlas_plus_codex", "Atlas answer")):
         answer_file = tmp_path / f"{mode}.txt"
         answer_file.write_text(answer, encoding="utf-8")
         assert cli.main(

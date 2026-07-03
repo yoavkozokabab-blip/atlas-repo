@@ -5,7 +5,7 @@
 ## Prerequisites
 
 1. Atlas installed and `run_atlas.py --mcp` configured in Claude Desktop (`claude_desktop_config.json`).
-2. Demo repository: `C:\J.A.R.V.I.S\local_jarvis\docs\demo\auth_demo_repo`
+2. Demo repository: `C:\J.A.R.V.I.S\local_atlas\docs\demo\auth_demo_repo`
 
 ## Steps (≈2 minutes)
 

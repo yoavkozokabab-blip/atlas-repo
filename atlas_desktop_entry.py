@@ -43,8 +43,8 @@ def _bundle_root() -> Path:
 
 def _support_html_path() -> Path | None:
     candidates = [
-        _bundle_root() / "jarvis_desktop" / "static" / "support.html",
-        Path(__file__).resolve().parent / "jarvis_desktop" / "static" / "support.html",
+        _bundle_root() / "atlas_desktop" / "static" / "support.html",
+        Path(__file__).resolve().parent / "atlas_desktop" / "static" / "support.html",
     ]
     for candidate in candidates:
         if candidate.is_file():
@@ -54,7 +54,7 @@ def _support_html_path() -> Path | None:
 
 def _diagnostics_dir() -> Path:
     try:
-        from jarvis_desktop.data_paths import desktop_data_dir
+        from atlas_desktop.data_paths import desktop_data_dir
 
         path = Path(desktop_data_dir())
     except Exception:

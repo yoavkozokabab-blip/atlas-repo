@@ -1,6 +1,0 @@
-{"ts": 1780527871.050719, "event": "scan_completed", "product": "phase137a-usage-billing-ready", "demo": false, "modules": 4, "edges": 0, "cache_hit": false, "massive_mode": false}
-{"ts": 1780527871.06479, "event": "impact_analyzed", "product": "phase137a-usage-billing-ready", "risk_level": "low", "confidence": "low"}
-{"ts": 1780527871.4180372, "event": "investigation_plan_created", "product": "phase137a-usage-billing-ready", "intent": "general", "confidence": "medium"}
-{"ts": 1780527871.47335, "event": "change_plan_created", "product": "phase137a-usage-billing-ready", "intent": "general", "confidence": "low-medium"}
-{"ts": 1780527871.474893, "event": "export_created", "product": "phase137a-usage-billing-ready", "target": "claude", "packet": "compact"}
-{"ts": 1780527871.4760563, "event": "export_created", "product": "phase137a-usage-billing-ready", "target": "claude", "packet": "verbose"}

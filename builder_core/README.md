@@ -3,7 +3,7 @@
 Builder Core is a standalone, local-only repository analysis CLI. It does not
 route through `main.py`, execute target code, modify source files, download
 repositories, or auto-fix findings. Its only target-repository writes are index
-files under `<project>/.jarvis_builder/`.
+files under `<project>/.atlas_builder/`.
 
 ## Commands
 

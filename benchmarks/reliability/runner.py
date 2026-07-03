@@ -2,7 +2,7 @@
 
 Exercises Atlas's scan pipeline across many repositories and REPEATEDLY on the
 locally-available ones, classifying every outcome with the reliability taxonomy
-(`jarvis_desktop/reliability.py`). It combines two evidence sources:
+(`atlas_desktop/reliability.py`). It combines two evidence sources:
 
   * LIVE: fresh scans of locally-available repos (each scanned multiple times) —
     proves Atlas can process repositories repeatedly without manual intervention,
@@ -31,7 +31,7 @@ from typing import Any, Dict, List, Optional
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from jarvis_desktop import reliability  # noqa: E402
+from atlas_desktop import reliability  # noqa: E402
 from benchmarks.generalization import registry  # noqa: E402
 
 RESULTS_DIR = Path(__file__).resolve().parent / "results"
@@ -58,7 +58,7 @@ def _peak_rss_mb() -> Optional[float]:
 
 
 def _reset_state() -> None:
-    from jarvis_desktop import api
+    from atlas_desktop import api
     api._STATE.update({"path": None, "scan": None, "graph": None, "index": None,
                        "risks": None, "evidence_store": None, "architecture": None,
                        "scan_cache": {}})
@@ -66,7 +66,7 @@ def _reset_state() -> None:
 
 def _probe_capabilities() -> Dict[str, Any]:
     """Did impact + investigation produce grounded, non-crashing output?"""
-    from jarvis_desktop import api
+    from atlas_desktop import api
     out = {"impact_ok": False, "investigation_ok": False}
     try:
         r = api.copilot_ask("what breaks if I remove the api layer", "none", "compact")
@@ -85,7 +85,7 @@ def _probe_capabilities() -> Dict[str, Any]:
 
 
 def scan_once(repo_id: str, path: str, attempt: int) -> Dict[str, Any]:
-    from jarvis_desktop import api
+    from atlas_desktop import api
     _reset_state()
     t0 = time.time()
     rss_before = _peak_rss_mb()

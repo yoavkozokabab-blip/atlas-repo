@@ -18,7 +18,7 @@ Test the Atlas MCP server against actual AI coding clients.
 ```
 command: py
 args:    ["-3", "run_atlas.py", "--mcp"]
-cwd:     C:/J.A.R.V.I.S/local_jarvis
+cwd:     C:/J.A.R.V.I.S/local_atlas
 ```
 After you rebuild + reinstall Atlas, switch to the installed app:
 ```
@@ -35,7 +35,7 @@ Edit `%APPDATA%\Claude\claude_desktop_config.json` — **merge** into existing `
     "atlas": {
       "command": "py",
       "args": ["-3", "run_atlas.py", "--mcp"],
-      "cwd": "C:/J.A.R.V.I.S/local_jarvis"
+      "cwd": "C:/J.A.R.V.I.S/local_atlas"
     }
   }
 }
@@ -45,13 +45,13 @@ Fully quit and reopen Claude Desktop. Click the tools (hammer) icon → "atlas" 
 
 ## Claude Code (CLI)
 ```bash
-claude mcp add atlas -- py -3 run_atlas.py --mcp   # run from C:\J.A.R.V.I.S\local_jarvis
+claude mcp add atlas -- py -3 run_atlas.py --mcp   # run from C:\J.A.R.V.I.S\local_atlas
 ```
 
 ## Cursor
 `.cursor/mcp.json` in your workspace (or Settings → MCP → Add):
 ```json
-{ "mcpServers": { "atlas": { "command": "py", "args": ["-3", "run_atlas.py", "--mcp"], "cwd": "C:/J.A.R.V.I.S/local_jarvis" } } }
+{ "mcpServers": { "atlas": { "command": "py", "args": ["-3", "run_atlas.py", "--mcp"], "cwd": "C:/J.A.R.V.I.S/local_atlas" } } }
 ```
 
 ## Codex / generic stdio client
@@ -82,7 +82,7 @@ claim a client passed if it wasn't actually run.
 
 ## Manual one-shot sanity check (no client)
 ```powershell
-cd C:\J.A.R.V.I.S\local_jarvis
+cd C:\J.A.R.V.I.S\local_atlas
 '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"t","version":"0"}}}' | py -3 run_atlas.py --mcp
 # expect one line: {"jsonrpc":"2.0","id":1,"result":{..."serverInfo":{"name":"atlas-local","version":"1.0.0"}}}
 ```

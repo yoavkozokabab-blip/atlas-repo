@@ -8,11 +8,11 @@ from builder_core.benchmark_framework.context_profiling import (
     PROFILING_VERSION,
     STAGE_NAMES,
     aggregate_stage_measurements,
-    profile_jarvis_context,
+    profile_atlas_context,
     render_profile_report,
 )
-from builder_core.benchmark_framework.jarvis_packet import format_jarvis_packet
-from builder_core.benchmark_framework.runner import default_jarvis_context
+from builder_core.benchmark_framework.atlas_packet import format_atlas_packet
+from builder_core.benchmark_framework.runner import default_atlas_context
 from builder_core.tests.test_phase103_benchmark_framework import _task
 
 
@@ -34,7 +34,7 @@ def test_profile_records_all_stages(tmp_path):
     _write(root / "README.md", "# sample\n")
     task = _task()
     task.repo_path = str(root)
-    profile = profile_jarvis_context(task, index_loader=_mini_index_loader)
+    profile = profile_atlas_context(task, index_loader=_mini_index_loader)
     names = [stage.name for stage in profile.stages]
     assert names == list(STAGE_NAMES)
     payload = profile.to_dict()
@@ -45,7 +45,7 @@ def test_profile_records_all_stages(tmp_path):
     assert profile.ask_mode
 
 
-def test_format_jarvis_packet_matches_default_context_shape(tmp_path, monkeypatch):
+def test_format_atlas_packet_matches_default_context_shape(tmp_path, monkeypatch):
     root = tmp_path / "repo"
     _write(root / "m.py", "def f():\n    return 0\n")
     task = _task()
@@ -61,8 +61,8 @@ def test_format_jarvis_packet_matches_default_context_shape(tmp_path, monkeypatc
 
     monkeypatch.setattr("builder_core.ask.answer", lambda _index, _q: fake_result)
     monkeypatch.setattr("builder_core.benchmark_framework.runner._INDEX_CACHE", {})
-    packet_via_runner = default_jarvis_context(task)
-    packet_via_formatter = format_jarvis_packet(fake_result)
+    packet_via_runner = default_atlas_context(task)
+    packet_via_formatter = format_atlas_packet(fake_result)
     assert packet_via_runner == packet_via_formatter
 
 
@@ -71,7 +71,7 @@ def test_render_profile_report_lists_top_contributors(tmp_path):
     _write(root / "m.py", "def f():\n    return 0\n")
     task = _task()
     task.repo_path = str(root)
-    profile = profile_jarvis_context(task, index_loader=_mini_index_loader)
+    profile = profile_atlas_context(task, index_loader=_mini_index_loader)
     markdown = render_profile_report([profile], title="Test Profile")
     assert "Top 20 largest token contributors" in markdown
     assert "Top 20 slowest contributors" in markdown

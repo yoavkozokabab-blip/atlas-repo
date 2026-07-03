@@ -8,13 +8,13 @@
 - [ ] `git status` reviewed; founder WIP committed or stashed
 - [ ] No secrets in tracked files (`git grep -iE "sk-|ghp_|password|jwt_secret ="`)
 - [ ] `.env` / `.env.local` NOT tracked
-- [ ] Root `README.md` says "Atlas" (not "local_jarvis")
+- [ ] Root `README.md` says "Atlas" (no legacy project names)
 - [ ] `LICENSE` present
 
 ## B. Tests
-- [ ] `py -m pytest jarvis_desktop/tests/test_rc1_fixes.py` passes
-- [ ] `py -m pytest jarvis_desktop/tests/test_context_pack_mvp.py jarvis_desktop/tests/test_root_cause.py jarvis_desktop/tests/test_mcp_server.py jarvis_desktop/tests/test_memory_replacement_mvp.py` passes
-- [ ] `py -m pytest jarvis_desktop/tests` reviewed; 0 failures OR every failure triaged as known/non-blocking
+- [ ] `py -m pytest atlas_desktop/tests/test_rc1_fixes.py` passes
+- [ ] `py -m pytest atlas_desktop/tests/test_context_pack_mvp.py atlas_desktop/tests/test_root_cause.py atlas_desktop/tests/test_mcp_server.py atlas_desktop/tests/test_memory_replacement_mvp.py` passes
+- [ ] `py -m pytest atlas_desktop/tests` reviewed; 0 failures OR every failure triaged as known/non-blocking
 - [ ] `py scripts/mcp_smoke_test.py` prints "SMOKE TEST PASSED"
 
 ## C. Engine sanity (source mode)
@@ -39,7 +39,7 @@
 - [ ] Run installer; SmartScreen behavior recorded (signed = no "unknown publisher")
 - [ ] Install completes without error
 - [ ] Atlas launches from Start menu
-- [ ] `%USERPROFILE%\.jarvis_desktop` data dir created
+- [ ] `%USERPROFILE%\.atlas_desktop` data dir created
 
 ## F. Agent connection (clean VM)
 - [ ] Claude Desktop config written (auto or manual) and valid JSON
@@ -63,7 +63,7 @@
 
 ## I. Uninstall
 - [ ] Uninstall via Windows "Apps & features"
-- [ ] `%USERPROFILE%\.jarvis_desktop` cleaned (correct data dir)
+- [ ] `%USERPROFILE%\.atlas_desktop` cleaned (correct data dir)
 - [ ] No leftover processes
 - [ ] Reinstall over same machine works
 

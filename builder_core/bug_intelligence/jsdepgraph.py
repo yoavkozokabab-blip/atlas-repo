@@ -33,8 +33,8 @@ RESOLVE_TRY = (
 SKIP_DIRS = {
     ".git", "__pycache__", "node_modules", ".venv", "venv", "env", "dist", "build",
     "out", "coverage", ".next", ".turbo", ".cache", "target", "vendor", ".gradle",
-    "site-packages", ".tox", "htmlcov", ".idea", ".vscode", ".jarvis_builder",
-    ".jarvis", "fixtures", "testdata", "__tests__",
+    "site-packages", ".tox", "htmlcov", ".idea", ".vscode", ".atlas_builder",
+    ".atlas", "fixtures", "testdata", "__tests__",
 }
 
 TEST_SEGMENTS = frozenset({"test", "tests"})
@@ -353,8 +353,8 @@ def build_graph_from_files(
         },
     }
     if deadline and time.monotonic() >= deadline:
-        out["jarvis_timed_out"] = True
-        out["jarvis_partial"] = True
+        out["atlas_timed_out"] = True
+        out["atlas_partial"] = True
         out["degraded"] = True
         out["degraded_reason"] = "time_budget_exceeded"
     return out

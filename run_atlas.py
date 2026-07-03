@@ -28,7 +28,7 @@ def _frozen_launch() -> bool:
 
 def _launcher_log(message: str) -> None:
     try:
-        from jarvis_desktop.install_support import append_launcher_log
+        from atlas_desktop.install_support import append_launcher_log
 
         append_launcher_log(message)
     except Exception:
@@ -43,7 +43,7 @@ def _install_source_excepthook() -> None:
         summary = "".join(traceback.format_exception(exc_type, exc, tb))
         _launcher_log("FATAL: " + summary[:8000])
         try:
-            from jarvis_desktop import operations as _ops
+            from atlas_desktop import operations as _ops
             _ops.record_crash(
                 "startup_crash",
                 str(exc)[:500] or exc_type.__name__,
@@ -53,7 +53,7 @@ def _install_source_excepthook() -> None:
         except Exception:
             pass
         try:
-            from jarvis_desktop import server
+            from atlas_desktop import server
 
             server.run(
                 host="127.0.0.1",
@@ -80,7 +80,7 @@ def _run_self_test_cli() -> int:
     import json
     import os
 
-    from jarvis_desktop.install_support import (
+    from atlas_desktop.install_support import (
         append_launcher_log,
         data_dir,
         installer_self_test,
@@ -127,7 +127,7 @@ def _run_mcp_stdio() -> int:
         _launcher_log(f"mcp stdio rebind failed: {type(exc).__name__}: {exc}")
 
     try:
-        from jarvis_desktop.mcp_server.runtime import serve_stdio
+        from atlas_desktop.mcp_server.runtime import serve_stdio
     except Exception as exc:
         _launcher_log(f"mcp import failed: {type(exc).__name__}: {exc}")
         return 1
@@ -161,8 +161,8 @@ def main() -> int:
     if getattr(args, "mcp", False):
         return _run_mcp_stdio()
 
-    from jarvis_desktop.install_support import append_launcher_log, installer_self_test, startup_checks
-    from jarvis_desktop import server
+    from atlas_desktop.install_support import append_launcher_log, installer_self_test, startup_checks
+    from atlas_desktop import server
 
     if not _frozen_launch():
         _install_source_excepthook()

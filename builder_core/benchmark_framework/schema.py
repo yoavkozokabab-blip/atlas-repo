@@ -18,7 +18,7 @@ TASK_TYPES = (
     "fix_planning",
 )
 
-MODES = ("codex_alone", "jarvis_plus_codex")
+MODES = ("codex_alone", "atlas_plus_codex")
 
 
 @dataclass
@@ -32,7 +32,7 @@ class BenchmarkTask:
     scoring_rubric: List[Dict[str, Any]] = field(default_factory=list)
     required_evidence: List[str] = field(default_factory=list)
     baseline_mode: str = ""
-    jarvis_mode: str = ""
+    atlas_mode: str = ""
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -140,7 +140,7 @@ def validate_task(data: Dict[str, Any]) -> List[str]:
         "scoring_rubric",
         "required_evidence",
         "baseline_mode",
-        "jarvis_mode",
+        "atlas_mode",
     )
     for key in required:
         if key not in data:
@@ -183,7 +183,7 @@ def validate_run_log(data: Dict[str, Any]) -> List[str]:
         if not isinstance(breakdown, dict):
             errors.append("token_breakdown must be an object when present")
         else:
-            for key in ("raw_prompt", "jarvis_context", "final_prompt_package"):
+            for key in ("raw_prompt", "atlas_context", "final_prompt_package"):
                 section = breakdown.get(key)
                 if not isinstance(section, dict) or "estimated_tokens" not in section:
                     errors.append(f"token_breakdown.{key}.estimated_tokens required")

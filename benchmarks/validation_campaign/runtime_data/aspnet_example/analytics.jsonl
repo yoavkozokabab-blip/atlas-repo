@@ -1,5 +1,0 @@
-{"ts": 1780592070.1653116, "event": "scan_completed", "product": "phase146b-true-beta-blocker-fixes", "demo": false, "modules": 1, "edges": 0, "cache_hit": false, "massive_mode": false}
-{"ts": 1780592070.1705093, "event": "impact_analyzed", "product": "phase146b-true-beta-blocker-fixes", "confidence": "low"}
-{"ts": 1780592070.4713435, "event": "investigation_plan_created", "product": "phase146b-true-beta-blocker-fixes", "intent": "general", "confidence": "low-medium"}
-{"ts": 1780592070.520877, "event": "change_plan_created", "product": "phase146b-true-beta-blocker-fixes", "intent": "general", "confidence": "low-medium"}
-{"ts": 1780592070.521917, "event": "export_created", "product": "phase146b-true-beta-blocker-fixes", "target": "claude", "packet": "compact"}

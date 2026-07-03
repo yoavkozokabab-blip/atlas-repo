@@ -2,7 +2,7 @@
 
 Walks an arbitrary project tree (read-only), classifies files, extracts a
 bounded set of text "chunks" for retrieval, and records git metadata. The
-result is a plain dict serialised to ``.jarvis_builder/index.json``.
+result is a plain dict serialised to ``.atlas_builder/index.json``.
 """
 
 from __future__ import annotations
@@ -169,7 +169,7 @@ def build_index(project_root: str) -> Dict[str, Any]:
         # prune skip dirs in-place for efficiency
         dirnames[:] = [
             d for d in dirnames
-            if d not in SKIP_DIRS and not d.startswith(".jarvis_builder")
+            if d not in SKIP_DIRS and not d.startswith(".atlas_builder")
         ]
         dirnames.sort()
         for fname in sorted(filenames):

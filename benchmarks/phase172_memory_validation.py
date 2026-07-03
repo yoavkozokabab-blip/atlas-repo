@@ -34,8 +34,8 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from jarvis_desktop import api, atlas_export
-from jarvis_desktop import repository_memory as rm
+from atlas_desktop import api, atlas_export
+from atlas_desktop import repository_memory as rm
 
 REPORTS = ROOT / "reports"
 RAW_OUT = ROOT / "phase172_raw_results.json"
@@ -193,7 +193,7 @@ def _get_index_paths(state: Dict[str, Any]) -> Set[str]:
 
 
 def run_repo(repo_id: str, repo_path: Path, *, data_dir: str) -> Tuple[Dict[str, Any], List[TrialResult]]:
-    os.environ["JARVIS_DESKTOP_DATA"] = data_dir
+    os.environ["ATLAS_DESKTOP_DATA"] = data_dir
 
     # Reset state between repos
     api._STATE.clear()
@@ -453,7 +453,7 @@ def main(repos: Optional[List[str]] = None) -> None:
     RAW_OUT.write_text(json.dumps(raw, indent=2), encoding="utf-8")
     print(f"\n[phase172] Wrote {RAW_OUT.name}", flush=True)
 
-    os.environ.pop("JARVIS_DESKTOP_DATA", None)
+    os.environ.pop("ATLAS_DESKTOP_DATA", None)
 
 
 if __name__ == "__main__":

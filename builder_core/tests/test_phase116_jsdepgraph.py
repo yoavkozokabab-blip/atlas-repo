@@ -10,7 +10,7 @@ from builder_core.bug_intelligence import jsdepgraph
 
 
 def _fixture_root() -> Path:
-    return Path(__file__).resolve().parents[2] / "jarvis_desktop" / "demo" / "ts_sample_repo"
+    return Path(__file__).resolve().parents[2] / "atlas_desktop" / "demo" / "ts_sample_repo"
 
 
 def test_relative_and_index_resolution():

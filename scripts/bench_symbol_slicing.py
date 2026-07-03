@@ -8,7 +8,7 @@ import os
 import sys
 import time
 
-from jarvis_desktop import api, context_pack as cp
+from atlas_desktop import api, context_pack as cp
 
 repo = os.path.abspath(sys.argv[1])
 task = sys.argv[2] if len(sys.argv) > 2 else "fix authentication timeout"

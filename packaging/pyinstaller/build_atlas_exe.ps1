@@ -22,7 +22,7 @@ $InstallerDir = Join-Path $Root "packaging\installer"
 
 function Write-BuildInfo {
     $version = "1.0.0"
-    $productFile = Join-Path $Root "jarvis_desktop\product_info.py"
+    $productFile = Join-Path $Root "atlas_desktop\product_info.py"
     if (Test-Path $productFile) {
         $m = Select-String -Path $productFile -Pattern 'PRODUCT_VERSION\s*=\s*"([^"]+)"' | Select-Object -First 1
         if ($m) { $version = $m.Matches[0].Groups[1].Value }
@@ -51,13 +51,8 @@ function Write-BuildInfo {
 function Ensure-Icon {
     $assets = Join-Path $InstallerDir "assets"
     $icon = Join-Path $assets "atlas.ico"
-    $legacy = Join-Path $Root "installer\assets\jarvis.ico"
     New-Item -ItemType Directory -Path $assets -Force | Out-Null
     if (Test-Path $icon) { return }
-    if (Test-Path $legacy) {
-        Copy-Item -LiteralPath $legacy -Destination $icon -Force
-        return
-    }
     $iconScript = @'
 import struct, pathlib
 path = pathlib.Path(r"ICONPATH")

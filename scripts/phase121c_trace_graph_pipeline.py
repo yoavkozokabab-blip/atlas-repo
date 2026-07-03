@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from jarvis_desktop import api  # noqa: E402
+from atlas_desktop import api  # noqa: E402
 
 DEFAULT_REPO = os.environ.get("ATLAS_TRACE_REPO", r"C:\FINAL_ALGO_TRADER")
 SAMPLE_DIR = ROOT / "reports" / "phase121c_samples"
@@ -92,7 +92,7 @@ def trace_repo(repo_path: str) -> Dict[str, Any]:
         all_import_edges=_count_import_edges(graph, resolved_only=False),
         graph_detail=graph.get("graph_detail"),
         degraded=graph.get("degraded"),
-        jarvis_partial=graph.get("jarvis_partial"),
+        atlas_partial=graph.get("atlas_partial"),
     )
 
     for view in ("module", "subsystem", "hierarchy"):

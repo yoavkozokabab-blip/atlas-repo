@@ -82,7 +82,7 @@ SYNTHETIC_FIXTURES: List[Tuple[str, str]] = [
     """)),
 ]
 
-LOCAL_JARVIS_SAMPLES = [
+LOCAL_Atlas_SAMPLES = [
     "core/results.py",
     "brain/router.py",
     "actions/phase45_actions.py",
@@ -308,7 +308,7 @@ def _quixbugs_files(root: str, n: int = 12) -> List[Tuple[str, str]]:
     return out
 
 
-def _local_jarvis_scan(root: str, max_files: int = 80) -> Dict[str, Any]:
+def _local_atlas_scan(root: str, max_files: int = 80) -> Dict[str, Any]:
     """Scan a broader file slice for source-volume statistics."""
     from builder_core.bug_intelligence import depgraph
 
@@ -340,11 +340,11 @@ def run_audit(local_root: str = ".") -> Dict[str, Any]:
     synth = audit_corpus("synthetic", SYNTHETIC_FIXTURES)
 
     local_items = []
-    for rel in LOCAL_JARVIS_SAMPLES:
+    for rel in LOCAL_Atlas_SAMPLES:
         text = _read_local(rel, local_root)
         if text:
             local_items.append((rel, text))
-    local = audit_corpus("local_jarvis", local_items)
+    local = audit_corpus("local_atlas", local_items)
 
     quix_items: List[Tuple[str, str]] = []
     quix_root = None
@@ -384,8 +384,8 @@ def run_audit(local_root: str = ".") -> Dict[str, Any]:
 
     return {
         "synthetic": synth,
-        "local_jarvis": local,
-        "local_jarvis_volume_scan": _local_jarvis_scan(local_root),
+        "local_atlas": local,
+        "local_atlas_volume_scan": _local_atlas_scan(local_root),
         "quixbugs": quix,
         "aggregate_by_source": {k: precision(v) for k, v in sorted(agg_source.items())},
         "aggregate_by_type": {k: precision(v) for k, v in sorted(agg_type.items())},

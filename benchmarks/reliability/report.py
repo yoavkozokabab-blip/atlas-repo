@@ -62,7 +62,7 @@ def render(d: Dict[str, Any]) -> str:
         L.append("No faults detected.")
 
     L += ["", "## Reliability features added (this phase)", "",
-          "1. **Degraded-scan auto-detection** (`jarvis_desktop/reliability.py`): every",
+          "1. **Degraded-scan auto-detection** (`atlas_desktop/reliability.py`): every",
           "   scan result is classified; degraded scans (0 modules, 0 edges, partial /",
           "   timed-out graph, unresolved-import explosion, memory pressure) surface a",
           "   warning immediately via `scan['reliability']` + `scan['health_warnings']`.",

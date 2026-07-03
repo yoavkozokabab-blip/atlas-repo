@@ -194,10 +194,10 @@ BASE_TOOLS = [
     },
 ]
 
-JARVIS_TOOLS = [
+Atlas_TOOLS = [
     {
-        "name": "jarvis_ask",
-        "description": "Query JARVIS repository intelligence (architecture, layout, risk).",
+        "name": "atlas_ask",
+        "description": "Query Atlas repository intelligence (architecture, layout, risk).",
         "input_schema": {
             "type": "object",
             "properties": {"question": {"type": "string"}},
@@ -205,12 +205,12 @@ JARVIS_TOOLS = [
         },
     },
     {
-        "name": "jarvis_graph_summary",
+        "name": "atlas_graph_summary",
         "description": "Dependency graph summary (cycles, top imported modules).",
         "input_schema": {"type": "object", "properties": {}},
     },
     {
-        "name": "jarvis_impact_file",
+        "name": "atlas_impact_file",
         "description": "Impact analysis for a repo-relative file path.",
         "input_schema": {
             "type": "object",
@@ -222,7 +222,7 @@ JARVIS_TOOLS = [
         },
     },
     {
-        "name": "jarvis_impact_module",
+        "name": "atlas_impact_module",
         "description": "Impact analysis for a top-level subsystem/module name.",
         "input_schema": {
             "type": "object",
@@ -240,9 +240,9 @@ def _system_prompt(arm: str, repo_root: str) -> str:
         "Cite real file paths that exist. Do not invent modules or dependencies. "
         "When uncertain, say so. Call submit_answer when finished."
     )
-    if arm == "claude_plus_jarvis":
+    if arm == "claude_plus_atlas":
         return (
-            base + " JARVIS tools (jarvis_ask, jarvis_graph_summary, jarvis_impact_*) "
+            base + " Atlas tools (atlas_ask, atlas_graph_summary, atlas_impact_*) "
             "return precomputed deterministic intelligence — prefer them over reading large files."
         )
     return base + " Use read_file, grep, list_dir, and glob to gather evidence."
@@ -257,15 +257,15 @@ def _execute_generic(name: str, inputs: Dict[str, Any], e100: Any, index: Dict[s
         return _tool_list_dir(str(inputs.get("path", ".")))
     if name == "glob":
         return _tool_glob(str(inputs["pattern"]))
-    if name == "jarvis_ask":
+    if name == "atlas_ask":
         result = e100.ask_mod.answer(index, str(inputs["question"]))
         return json.dumps(result, ensure_ascii=False, indent=2)
-    if name == "jarvis_graph_summary":
+    if name == "atlas_graph_summary":
         from builder_core.bug_intelligence import depgraph
 
         graph = e100._cached_depgraph(str(ROOT))
         return depgraph.format_summary(graph)
-    if name == "jarvis_impact_file":
+    if name == "atlas_impact_file":
         from builder_core.bug_intelligence import depgraph, impact
 
         graph = e100._cached_depgraph(str(ROOT))
@@ -277,7 +277,7 @@ def _execute_generic(name: str, inputs: Dict[str, Any], e100: Any, index: Dict[s
             include_transitive=bool(inputs.get("transitive")),
         )
         return impact.format_summary(result, top=20)
-    if name == "jarvis_impact_module":
+    if name == "atlas_impact_module":
         from builder_core.bug_intelligence import depgraph, impact
 
         graph = e100._cached_depgraph(str(ROOT))
@@ -301,7 +301,7 @@ def run_claude_task(
     e100: Any,
     index: Dict[str, Any],
 ) -> Dict[str, Any]:
-    tools = BASE_TOOLS + (JARVIS_TOOLS if arm == e100.ARM_CLAUDE_JARVIS else [])
+    tools = BASE_TOOLS + (Atlas_TOOLS if arm == e100.ARM_CLAUDE_Atlas else [])
     messages: List[Dict[str, Any]] = [{"role": "user", "content": task_prompt}]
     tool_calls: Dict[str, int] = {}
     input_tokens = 0
@@ -416,7 +416,7 @@ def run_execution(
     api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
     if not api_key:
         raise RuntimeError(
-            "ANTHROPIC_API_KEY is not set. Export it or add it to local_jarvis/.env before running."
+            "ANTHROPIC_API_KEY is not set. Export it or add it to local_atlas/.env before running."
         )
 
     import anthropic
@@ -461,7 +461,7 @@ def run_execution(
             run_b = run_claude_task(
                 client,
                 model=model,
-                arm=e100.ARM_CLAUDE_JARVIS,
+                arm=e100.ARM_CLAUDE_Atlas,
                 task_prompt=task.prompt,
                 e100=e100,
                 index=index,
@@ -469,7 +469,7 @@ def run_execution(
             qb, qdb = e100.score_quality(run_b["answer"], run_b["sources"], task)
             trials_b.append({**run_b, "quality": qb, "quality_detail": qdb, "trial": trial})
 
-            for payload, arm in ((run_a, e100.ARM_CLAUDE_ONLY), (run_b, e100.ARM_CLAUDE_JARVIS)):
+            for payload, arm in ((run_a, e100.ARM_CLAUDE_ONLY), (run_b, e100.ARM_CLAUDE_Atlas)):
                 raw_trials.append(
                     {
                         "task_id": task.task_id,
@@ -505,8 +505,8 @@ def run_execution(
 
         by_task[task.task_id] = {
             e100.ARM_CLAUDE_ONLY: e100.aggregate_trials(_to_trial_result(e100.ARM_CLAUDE_ONLY, trials_a)),
-            e100.ARM_CLAUDE_JARVIS: e100.aggregate_trials(
-                _to_trial_result(e100.ARM_CLAUDE_JARVIS, trials_b)
+            e100.ARM_CLAUDE_Atlas: e100.aggregate_trials(
+                _to_trial_result(e100.ARM_CLAUDE_Atlas, trials_b)
             ),
         }
 
@@ -541,7 +541,7 @@ def write_report(
     e100: Any,
 ) -> None:
     a_arm = e100.ARM_CLAUDE_ONLY
-    b_arm = e100.ARM_CLAUDE_JARVIS
+    b_arm = e100.ARM_CLAUDE_Atlas
 
     sum_in_a = sum(by_task[t.task_id][a_arm]["input_tokens_median"] for t in tasks)
     sum_in_b = sum(by_task[t.task_id][b_arm]["input_tokens_median"] for t in tasks)
@@ -579,7 +579,7 @@ def write_report(
         "",
         "## 2. Summary table (API-measured medians)",
         "",
-        "| Metric | Claude Only | Claude + JARVIS |",
+        "| Metric | Claude Only | Claude + Atlas |",
         "|--------|------------:|----------------:|",
         f"| **Input tokens** | {sum_in_a:,.0f} | {sum_in_b:,.0f} |",
         f"| **Output tokens** | {sum_out_a:,.0f} | {sum_out_b:,.0f} |",
@@ -652,12 +652,12 @@ def write_blocked_report(reason: str) -> None:
         "",
         "## How to run",
         "",
-        "1. Set `ANTHROPIC_API_KEY` in the environment or `local_jarvis/.env`.",
+        "1. Set `ANTHROPIC_API_KEY` in the environment or `local_atlas/.env`.",
         "2. Ensure index exists: `py -3 -m builder_core.cli init --project .`",
         "3. Run:",
         "",
         "```bash",
-        "cd local_jarvis",
+        "cd local_atlas",
         "py -3 -m builder_core.scripts.phase100f_real_claude_benchmark --trials 1",
         "```",
         "",
@@ -669,7 +669,7 @@ def write_blocked_report(reason: str) -> None:
         "",
         "- Same 20 tasks and anchor scoring as Phase 100E",
         "- Arm A: `read_file`, `grep`, `list_dir`, `glob`",
-        "- Arm B: generic tools + `jarvis_ask`, `jarvis_graph_summary`, `jarvis_impact_*`",
+        "- Arm B: generic tools + `atlas_ask`, `atlas_graph_summary`, `atlas_impact_*`",
         "- Real tokens, latency, and cost from Anthropic API responses",
         "",
     ]

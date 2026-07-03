@@ -1,7 +1,7 @@
 """Filesystem layer for builder_core project memory.
 
 The *only* place builder_core is permitted to write is
-``<project>/.jarvis_builder/``. Everything else is read-only.
+``<project>/.atlas_builder/``. Everything else is read-only.
 """
 
 from __future__ import annotations
@@ -35,12 +35,12 @@ def decisions_path(project_root: str) -> str:
 def ensure_memory_dir(project_root: str) -> str:
     path = memory_dir(project_root)
     if os.path.lexists(path) and os.path.islink(path):
-        raise ValueError(".jarvis_builder must not be a symbolic link.")
+        raise ValueError(".atlas_builder must not be a symbolic link.")
     os.makedirs(path, exist_ok=True)
     project_real = os.path.realpath(project_root)
     memory_real = os.path.realpath(path)
     if os.path.commonpath([project_real, memory_real]) != project_real:
-        raise ValueError(".jarvis_builder resolved outside the target project.")
+        raise ValueError(".atlas_builder resolved outside the target project.")
     return path
 
 

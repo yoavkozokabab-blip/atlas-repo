@@ -1,4 +1,4 @@
-# Install Python dependencies for local_jarvis
+# Install Python dependencies for local_atlas
 $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root

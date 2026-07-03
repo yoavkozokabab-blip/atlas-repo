@@ -16,7 +16,7 @@ These are not code. Until they're done, the live product loses data and has no d
 1. **Decide Track A vs Track B.** This determines whether the billing milestone (M3) is in scope.
 2. **Decide the identity model** (this is the single most important architecture call — see M1): does the **website Supabase store** become the one source of truth, or does the **FastAPI accounts_service** become a hosted service the website also uses? Recommendation: **make the website + Supabase canonical**; have the desktop authenticate to the hosted website API instead of spawning a local service.
 3. Provision **Supabase** (run `supabase/migrations/0001_init.sql`), set `SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY`, `AUTH_SECRET`, `NEXT_PUBLIC_SUPPORT_EMAIL`, `ADMIN_EMAILS`.
-4. Provision **Vercel** (Root Dir = `websites/jarvis-landing`), deploy, confirm `/api/health` reports `backend: "supabase"`.
+4. Provision **Vercel** (Root Dir = `websites/atlas-web`), deploy, confirm `/api/health` reports `backend: "supabase"`.
 5. **GitHub Release** the current `Atlas_Setup.exe` (commit `ce5f73805`, sha256 in `output/Atlas_Setup.exe.sha256`); set `ATLAS_INSTALLER_URL` to the asset URL.
 
 **Exit criteria:** `/api/health` green on Supabase; download button serves the installer; a web signup persists across a redeploy.
@@ -28,7 +28,7 @@ These are not code. Until they're done, the live product loses data and has no d
 Today: desktop → local `127.0.0.1:8788` accounts_service; website → Supabase; old serverless = third. A web account is not a desktop login. Fix this or the funnel is fiction.
 
 1. Choose canonical store per M0.2 (recommend website+Supabase).
-2. Point the desktop at the hosted accounts API: change `ATLAS_ACCOUNTS_URL` default (`jarvis_desktop/accounts_client.py:29`) to the deployed site, and **stop auto-spawning** the local service in production mode (`accounts_service_runner.py`) — keep local spawn only for dev.
+2. Point the desktop at the hosted accounts API: change `ATLAS_ACCOUNTS_URL` default (`atlas_desktop/accounts_client.py:29`) to the deployed site, and **stop auto-spawning** the local service in production mode (`accounts_service_runner.py`) — keep local spawn only for dev.
 3. Either (a) host `accounts_service` as the API the website also calls, **or** (b) add desktop-login endpoints to the Next.js app backed by the same Supabase `users` table. Pick one; do not keep both.
 4. Bridge **license/plan** into the desktop session so a web plan unlocks desktop features.
 5. Add a tiny integration test: register on web → log in from desktop client against the same backend.
@@ -58,7 +58,7 @@ The "connect Claude, scan, ask" flow has only ever run in-process and on the dev
 0. **(Track A interim)** Hide every paid CTA; set pricing page to "Pro coming soon"; keep Free + waitlist. *This alone unblocks a free launch.*
 1. Add the Stripe SDK to the Next.js app; implement a **real** `startCheckout` (Checkout Session) replacing the stub (`_lib/billing.ts:30`), gated by `liveChargesEnabled()` + real keys.
 2. Implement the **billing portal** (`_lib/billing.ts:55`) via Stripe Customer Portal.
-3. Port/rewrite the **webhook** from `~/jarvis_landing/api/stripe/webhook.js` into a Next.js route; verify `stripe-signature`; handle `checkout.session.completed`, `customer.subscription.updated/deleted`, `invoice.payment_failed`. Sync `plan/planStatus/stripeCustomerId` into the Supabase `users` row (fields already exist in `store.ts`).
+3. Port/rewrite the **webhook** from the legacy serverless landing (`api/stripe/webhook.js`) into a Next.js route; verify `stripe-signature`; handle `checkout.session.completed`, `customer.subscription.updated/deleted`, `invoice.payment_failed`. Sync `plan/planStatus/stripeCustomerId` into the Supabase `users` row (fields already exist in `store.ts`).
 4. Wire **cancel/upgrade/downgrade/refund/dunning** to Stripe, not local state mutation.
 5. Tie **license activation/revocation** (M1 bridge) to subscription status.
 6. Test in **Stripe test mode** end-to-end before any live key.
@@ -85,7 +85,7 @@ The "connect Claude, scan, ask" flow has only ever run in-process and on the dev
 2. **Remote error reporting (Part 8):** add lightweight opt-in crash/telemetry so prod issues are diagnosable without asking users for support bundles.
 3. **Performance (Part 9):** measure scan time / memory / pack latency on small→huge repos; document limits; cap or stream for huge repos given the single in-memory state model.
 4. **Auto-update** mechanism + in-app **changelog**.
-5. **SEO:** add `sitemap.xml` + `robots.txt` routes; fix `MyAppURL` placeholder in `Atlas.iss`; rename `public/jarvis-hero.png` and audit branding drift (jarvis→Atlas).
+5. **SEO:** add `sitemap.xml` + `robots.txt` routes; fix `MyAppURL` placeholder in `Atlas.iss`. (Branding drift audit done — repo is Atlas-only.)
 6. **In-app onboarding** for the MCP-config step (the main Part 2 friction point).
 7. Multi-repo/workspace, team accounts, cloud sync — **only if demanded by beta users.**
 
