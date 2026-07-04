@@ -220,10 +220,21 @@ def _shallow_graph_impact_refusal(target: str, scan: Dict[str, Any], *, detail: 
 
 
 def _reverse_forward_maps(graph: Dict[str, Any]) -> Tuple[Dict[str, Set[str]], Dict[str, Set[str]]]:
-    """importers[to] = {from...}; imports[from] = {to...} (resolved import edges)."""
+    """importers[to] = {from...}; imports[from] = {to...} (resolved import edges).
+
+    Cached per graph object: rebuilding these maps (and the evidence store) on
+    every call dominated per-question latency on large repos (django ~10s/q in
+    impact benchmark v1)."""
+    key = (id(graph), len(graph.get("edges", ())))
+    cached = _DERIVED_CACHE.get("maps")
+    if cached and cached[0] == key:
+        return cached[1], cached[2]
     importers: Dict[str, Set[str]] = {}
     imports: Dict[str, Set[str]] = {}
-    for e in graph.get("edges", []):
+    # Deferred (function-level) imports are kept out of graph stats/cycles but
+    # ARE real impact dependencies — the importer breaks when the target does.
+    edge_iter = list(graph.get("edges", [])) + list(graph.get("deferred_edges", []))
+    for e in edge_iter:
         if e.get("type") != "imports" or not e.get("resolved"):
             continue
         src, dst = e.get("from"), e.get("to")
@@ -231,7 +242,27 @@ def _reverse_forward_maps(graph: Dict[str, Any]) -> Tuple[Dict[str, Set[str]], D
             continue
         importers.setdefault(dst, set()).add(src)
         imports.setdefault(src, set()).add(dst)
+    _DERIVED_CACHE["maps"] = (key, importers, imports)
     return importers, imports
+
+
+# Per-scan derived-structure cache (reverse maps + evidence store). Keyed by
+# object identity + size so a rescan invalidates naturally; only the latest
+# scan is kept (the desktop holds one scan in memory at a time).
+_DERIVED_CACHE: Dict[str, Any] = {}
+
+
+def _cached_evidence_store(evidence_store: Dict[str, Any]):
+    from atlas_desktop.evidence_engine.evidence_builder import EvidenceStore
+
+    raw = evidence_store.get("symbol_index") or {}
+    key = (id(evidence_store), len(raw) if hasattr(raw, "__len__") else 0)
+    cached = _DERIVED_CACHE.get("store")
+    if cached and cached[0] == key:
+        return cached[1]
+    store = EvidenceStore.from_dict(evidence_store)
+    _DERIVED_CACHE["store"] = (key, store)
+    return store
 
 
 def _bfs_importers(start: str, importers: Dict[str, Set[str]], depth: int) -> Dict[str, int]:
@@ -316,6 +347,9 @@ def _blast_from_seeds(
             if nid not in d:
                 indirect.add(nid)
         forward |= imports.get(sid, set())
+    # Self-imports (e.g. under `if __name__ == "__main__"`) are never blast.
+    direct -= set(seed_ids)
+    indirect -= set(seed_ids)
     return sorted(direct), sorted(indirect), sorted(forward), seed_paths
 
 
@@ -474,7 +508,9 @@ def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict
             seed_ids, nodes, importers, imports
         )
     else:
-        direct_ids = sorted(importers.get(tid, set()))
+        # A module can import itself (e.g. inside `if __name__ == "__main__"`);
+        # it is never part of its own blast radius.
+        direct_ids = sorted(importers.get(tid, set()) - {tid})
         trans = _bfs_importers(tid, importers, _MAX_TRANSITIVE_DEPTH)
         indirect_ids = sorted(i for i in trans if i not in set(direct_ids))
         forward_ids = sorted(imports.get(tid, set()))
@@ -586,11 +622,20 @@ def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict
     if risk_level == "high":
         verification.append("High blast radius — stage behind a flag and roll out gradually.")
 
+    # Safe/won't-break claims must be judged against the FULL impacted set,
+    # not the display-capped `affected` list — a subsystem with importers
+    # beyond the cap was previously declared "untouched" (false reassurance,
+    # impact benchmark v1: sqlalchemy tools/, tornado maint/).
+    impacted_subs_full = sorted(
+        set(affected_subsystems)
+        | {_subsystem(p) for p in direct_paths}
+        | {_subsystem(p) for p in indirect_paths}
+    )
     arch_extra = _phase134_impact_enrichment(
         target_raw=target,
         tpath=tpath,
         affected=affected,
-        affected_subsystems=affected_subsystems,
+        affected_subsystems=impacted_subs_full,
         direct_paths=direct_paths,
         fan_in=fan_in,
         total_blast=total_blast,
@@ -614,7 +659,9 @@ def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict
         "confidence_cap_reason": confidence_cap_reason,
         "graph_health": graph_health_label(scan_data),
         "direct_impact": direct_paths,
+        "direct_impact_total": len(direct_paths),
         "indirect_impact": indirect_paths,
+        "indirect_impact_total": len(indirect_paths),
         "forward_dependencies": forward_paths,
         "affected_files": affected,
         "affected_file_count": len(affected),
@@ -635,22 +682,34 @@ def analyze_impact(target: str, state: Dict[str, Any], *, summary: Optional[Dict
     }
     result.update(arch_extra)
 
-    # Phase 163 — symbol + call-graph evidence panel (prefer references over path heuristics)
+    # Phase 163 (reworked after impact benchmark v1) — symbol/call-graph
+    # references are SECONDARY evidence. They must never overwrite or pad the
+    # resolved reverse-import `direct_impact` claim: the old merge truncated
+    # direct importers to 12 (recall collapse on high fan-in) and padded
+    # low-fan-in targets with ~12 name-match candidates (precision collapse).
     if evidence_store and evidence_store.get("symbol_index"):
         try:
-            from atlas_desktop.evidence_engine.evidence_builder import EvidenceStore
             from atlas_desktop.evidence_engine.symbol_evidence import build_evidence_panel, impact_symbol_blast
 
-            store = EvidenceStore.from_dict(evidence_store)
+            store = _cached_evidence_store(evidence_store)
             sym_files, sym_reasons, panel = impact_symbol_blast(store, tpath)
-            sym_files = _clean_paths(sym_files)
-            if sym_files:
-                blast_merged = list(dict.fromkeys(direct_paths + sym_files))[:12]
-                result["direct_impact"] = blast_merged
-                indirect_keep = list(result.get("indirect_impact") or [])
-                affected_merged = list(dict.fromkeys(blast_merged + indirect_keep + sym_files))[:_MAX_AFFECTED]
+            known = set(direct_paths) | set(indirect_paths) | {tpath}
+            sym_only = [p for p in _clean_paths(sym_files) if p not in known]
+            if sym_only:
+                result["symbol_references"] = sym_only[:16]
+                affected_merged = list(dict.fromkeys(
+                    list(result.get("affected_files") or []) + sym_only))[:_MAX_AFFECTED]
                 result["affected_files"] = affected_merged
                 result["potentially_affected_modules"] = affected_merged
+                if not direct_paths and not indirect_paths:
+                    # No resolved import edges at all — symbol callers are the
+                    # only signal. Say so honestly instead of presenting them
+                    # as import-backed direct impact.
+                    result["confidence"] = "low"
+                    result["note"] = (str(result.get("note") or "") +
+                                      " No resolved import edges for this target; "
+                                      "symbol-reference candidates are listed separately "
+                                      "under symbol_references.").strip()
             if not panel.repository_evidence:
                 panel = build_evidence_panel(store, [tpath], [], anchor_path=tpath)
                 panel.selected_because.insert(0, f"Impact on `{tpath}` — import graph + symbol index")
@@ -774,7 +833,7 @@ def _phase134_impact_enrichment(
 
     return {
         "architectural_blast_radius": architectural_blast_radius,
-        "affected_subsystems": sorted({_subsystem(p) for p in blast}),
+        "affected_subsystems": sorted(set(affected_subsystems) | {_subsystem(p) for p in blast}),
         "boundary_crossings": boundary_crossings[:12],
         "runtime_criticality": runtime_criticality,
         "safe_areas": safe_areas[:10],

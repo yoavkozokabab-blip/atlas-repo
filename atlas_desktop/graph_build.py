@@ -155,6 +155,8 @@ def merge_graphs(py_graph: Dict[str, Any], js_graph: Optional[Dict[str, Any]]) -
         "external_package_count": int(js_graph.get("external_package_count") or 0),
         "external_package_import_count": int(js_graph.get("external_package_import_count") or 0),
         "unresolved_import_count": len(unresolved["imports_external"]),
+        # Function-level imports: impact-only edges, excluded from stats/cycles.
+        "deferred_edges": list(py_graph.get("deferred_edges", [])),
     }
     merged["language_breakdown"] = _language_breakdown(merged)
     return merged

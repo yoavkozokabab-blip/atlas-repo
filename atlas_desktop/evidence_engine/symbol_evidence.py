@@ -286,13 +286,10 @@ def impact_symbol_blast(
                 extra_files.append(file_part)
                 extra_reasons.append(f"Symbol `{sym.qualname}` caller: {caller}")
 
-    for dep in call_graph.who_depends_on_file(target)[:8]:
-        # Phase 178: dep is a callee key (may have type prefix + qualname), extract path
-        file_part = _path_from_graph_key(dep)
-        if file_part and file_part not in seen and _norm(file_part) != _norm(target):
-            seen.add(file_part)
-            extra_files.append(file_part)
-            extra_reasons.append(f"Call graph dependency from `{target}`")
+    # Files the target depends on (callees / forward dependencies) are
+    # deliberately NOT added: impact blast must contain only files that depend
+    # on the target. Mixing directions produced verified false positives
+    # (impact benchmark v1: click utils -> _winconsole, pydantic decorator -> _internal/*).
 
     panel.graph_support.extend(extra_reasons[:6])
     panel.selected_because.insert(0, f"Impact anchored on `{target}` via symbol + call graph")

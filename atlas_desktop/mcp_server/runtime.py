@@ -514,8 +514,15 @@ def _compact_impact(result: Dict[str, Any]) -> Dict[str, Any]:
         "resolved_target": result.get("resolved_target") or result.get("target"),
         "risk_level": result.get("risk_level"),
         "confidence": result.get("confidence"),
-        "direct_impact": (result.get("direct_impact") or [])[:25],
-        "indirect_impact": (result.get("indirect_impact") or [])[:25],
+        # Full direct list (bounded only by a safety cap) + honest totals —
+        # silent truncation to 25 hid most of the blast radius on hot modules.
+        "direct_impact": (result.get("direct_impact") or [])[:200],
+        "direct_impact_total": result.get("direct_impact_total",
+                                          len(result.get("direct_impact") or [])),
+        "indirect_impact": (result.get("indirect_impact") or [])[:100],
+        "indirect_impact_total": result.get("indirect_impact_total",
+                                            len(result.get("indirect_impact") or [])),
+        "symbol_references": (result.get("symbol_references") or [])[:16],
         "affected_files": (result.get("affected_files") or [])[:40],
         "affected_subsystems": result.get("affected_subsystems") or [],
         "recommended_verification": result.get("recommended_verification") or [],

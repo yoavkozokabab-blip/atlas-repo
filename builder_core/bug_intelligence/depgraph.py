@@ -215,6 +215,18 @@ def _deadline_exceeded(deadline: Optional[float]) -> bool:
     return deadline is not None and time.monotonic() >= deadline
 
 
+class _DiscardList(list):
+    def append(self, item):  # noqa: A003 - deliberate no-op sink
+        pass
+
+
+_NULL_UNRESOLVED: Dict[str, List[Dict[str, Any]]] = {
+    "imports_external": _DiscardList(),
+    "calls_unresolved": _DiscardList(),
+    "references_unresolved": _DiscardList(),
+}
+
+
 def _append_module_import_edges(
     rel: str,
     tree: ast.AST,
@@ -222,25 +234,52 @@ def _append_module_import_edges(
     mm: Dict[str, Any],
     edges: List[Dict[str, Any]],
     unresolved: Dict[str, List[Dict[str, Any]]],
+    deferred_edges: Optional[List[Dict[str, Any]]] = None,
 ) -> None:
-    """Append resolved/unresolved import edges for one module (shared by full + imports detail)."""
-    for node in getattr(tree, "body", []):
+    """Append resolved/unresolved import edges for one module (shared by full + imports detail).
+
+    Scans the WHOLE module AST, not just top-level statements: imports inside
+    functions/methods (deferred imports) are real dependencies — the importer
+    still breaks when the target breaks (impact benchmark v1: click
+    `_termui_impl` imports `_winconsole` inside a function and was missed).
+    Deferred edges carry ``"deferred": True`` so consumers that only want
+    module-load-time coupling can filter them out.
+    """
+    # Load-time coupling = unconditional top-level imports only. Imports under
+    # `if TYPE_CHECKING:`, try/except guards, or inside functions are CONDITIONAL:
+    # real impact dependencies (deferred_edges) but not runtime import cycles —
+    # counting them as load-time made dense TYPE_CHECKING webs (rich) explode
+    # cycle enumeration.
+    top_ids: set = {id(n) for n in getattr(tree, "body", [])}
+    for node in ast.walk(tree):
+        if not isinstance(node, (ast.Import, ast.ImportFrom)):
+            continue
+        deferred = id(node) not in top_ids
+        if deferred and deferred_edges is None:
+            continue
+        # Deferred (function-level) imports are real impact dependencies but
+        # must NOT feed graph stats/cycle detection: lazy-import hubs like
+        # rich/__init__ create dense pseudo-cycles that blow up enumeration.
+        sink = deferred_edges if deferred else edges
+        unres = _NULL_UNRESOLVED if deferred else unresolved
+        edge_extra = {"deferred": True} if deferred else {}
         line = getattr(node, "lineno", 1)
         if isinstance(node, ast.Import):
             for alias in node.names:
                 target_mod = alias.name
                 tgt_path = mm["module_to_path"].get(target_mod)
                 if tgt_path is not None:
-                    edges.append({
+                    sink.append({
                         "type": "imports",
                         "from": mod_nid,
                         "to": node_id("module", tgt_path),
                         "line": line,
                         "resolved": True,
                         "target_module": target_mod,
+                        **edge_extra,
                     })
                 else:
-                    unresolved["imports_external"].append({
+                    unres["imports_external"].append({
                         "from_module": rel,
                         "line": line,
                         "target": target_mod,
@@ -263,16 +302,17 @@ def _append_module_import_edges(
                         sub = f"{base_pkg}.{alias.name}" if base_pkg else alias.name
                         tgt_path = mm["module_to_path"].get(sub)
                         if tgt_path is not None:
-                            edges.append({
+                            sink.append({
                                 "type": "imports",
                                 "from": mod_nid,
                                 "to": node_id("module", tgt_path),
                                 "line": line,
                                 "resolved": True,
                                 "target_module": sub,
+                                **edge_extra,
                             })
                         else:
-                            unresolved["imports_external"].append({
+                            unres["imports_external"].append({
                                 "from_module": rel,
                                 "line": line,
                                 "target": sub,
@@ -283,28 +323,61 @@ def _append_module_import_edges(
                 continue
             tgt_path = mm["module_to_path"].get(base)
             if tgt_path is not None:
-                edges.append({
+                sink.append({
                     "type": "imports",
                     "from": mod_nid,
                     "to": node_id("module", tgt_path),
                     "line": line,
                     "resolved": True,
                     "target_module": base,
+                    **edge_extra,
                 })
+                # `from a.b import c` also imports module a.b.c when c is a
+                # module file — edge to the submodule, not just the package.
+                for alias in node.names:
+                    if alias.name == "*":
+                        continue
+                    sub = f"{base}.{alias.name}"
+                    sub_path = mm["module_to_path"].get(sub)
+                    if sub_path is not None and sub_path != tgt_path:
+                        sink.append({
+                            "type": "imports",
+                            "from": mod_nid,
+                            "to": node_id("module", sub_path),
+                            "line": line,
+                            "resolved": True,
+                            "target_module": sub,
+                            **edge_extra,
+                        })
             else:
                 for alias in node.names:
                     if alias.name == "*":
-                        unresolved["imports_external"].append({
+                        unres["imports_external"].append({
                             "from_module": rel,
                             "line": line,
                             "target": base,
                             "reason": "star_import",
                         })
+                        continue
+                    # Base package itself is unknown, but `base.alias` may be a
+                    # known module (e.g. absolute import under a src/ root).
+                    sub = f"{base}.{alias.name}"
+                    sub_path = mm["module_to_path"].get(sub)
+                    if sub_path is not None:
+                        sink.append({
+                            "type": "imports",
+                            "from": mod_nid,
+                            "to": node_id("module", sub_path),
+                            "line": line,
+                            "resolved": True,
+                            "target_module": sub,
+                            **edge_extra,
+                        })
                     else:
-                        unresolved["imports_external"].append({
+                        unres["imports_external"].append({
                             "from_module": rel,
                             "line": line,
-                            "target": f"{base}.{alias.name}",
+                            "target": sub,
                             "reason": "third_party_or_unknown_module",
                         })
 
@@ -360,6 +433,7 @@ def _build_imports_detail_graph(
         }
     }
     edges: List[Dict[str, Any]] = []
+    deferred: List[Dict[str, Any]] = []
     unresolved: Dict[str, List[Dict[str, Any]]] = {
         "imports_external": [],
         "calls_unresolved": [],
@@ -429,11 +503,13 @@ def _build_imports_detail_graph(
             "line": 1,
             "resolved": True,
         })
-        _append_module_import_edges(rel, tree, mod_nid, mm, edges, unresolved)
+        _append_module_import_edges(rel, tree, mod_nid, mm, edges, unresolved, deferred)
 
     if on_progress:
         on_progress("import_edges", len(parsed), len(parsed))
-    return _finalize_graph(root, nodes, edges, unresolved, parse_errors, detail=DETAIL_IMPORTS)
+    graph = _finalize_graph(root, nodes, edges, unresolved, parse_errors, detail=DETAIL_IMPORTS)
+    graph["deferred_edges"] = deferred
+    return graph
 
 
 def build_graph_from_files(
@@ -471,6 +547,7 @@ def build_graph_from_files(
     text_by_rel = dict(file_list)
     nodes: Dict[str, Dict[str, Any]] = {}
     edges: List[Dict[str, Any]] = []
+    deferred: List[Dict[str, Any]] = []
     unresolved: Dict[str, List[Dict[str, Any]]] = {
         "imports_external": [],
         "calls_unresolved": [],
@@ -634,7 +711,7 @@ def build_graph_from_files(
             })
 
         it = imports.build_import_table(tree, _file_package(rel))
-        _append_module_import_edges(rel, tree, mod_nid, mm, edges, unresolved)
+        _append_module_import_edges(rel, tree, mod_nid, mm, edges, unresolved, deferred)
 
         cg = callgraph.build_call_graph(tree, rel)
         for caller_qual, callees in sorted(cg.get("edges", {}).items()):
@@ -750,7 +827,9 @@ def build_graph_from_files(
 
     if on_progress:
         on_progress("expand", len(parsed), len(parsed))
-    return _finalize_graph(root, nodes, edges, unresolved, parse_errors, detail=DETAIL_FULL)
+    graph = _finalize_graph(root, nodes, edges, unresolved, parse_errors, detail=DETAIL_FULL)
+    graph["deferred_edges"] = deferred
+    return graph
 
 
 def _degraded_graph(root: str, reason: str, count: int) -> Dict[str, Any]:
@@ -957,8 +1036,20 @@ def _import_cycles(edges: List[Dict[str, Any]]) -> List[List[str]]:
     seen: Set[Tuple[str, ...]] = set()
     stack: List[str] = []
     on_stack: Set[str] = set()
+    # The path-DFS is exponential on dense graphs. A pathological repo must
+    # degrade to a truncated cycle list, never hang the scan (found via a scan
+    # hang on rich's lazy-import hub during the impact-benchmark fix pass).
+    steps = 0
+    max_steps = 200_000
+
+    class _BudgetExhausted(Exception):
+        pass
 
     def dfs(node: str) -> None:
+        nonlocal steps
+        steps += 1
+        if steps > max_steps:
+            raise _BudgetExhausted()
         on_stack.add(node)
         stack.append(node)
         for nxt in sorted(adj.get(node, ())):
@@ -974,8 +1065,11 @@ def _import_cycles(edges: List[Dict[str, Any]]) -> List[List[str]]:
         stack.pop()
         on_stack.remove(node)
 
-    for start in sorted(adj):
-        dfs(start)
+    try:
+        for start in sorted(adj):
+            dfs(start)
+    except _BudgetExhausted:
+        pass  # truncated enumeration — cycles found so far are still valid
     cycles.sort(key=lambda c: c[0])
     return cycles
 
