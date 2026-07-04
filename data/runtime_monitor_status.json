@@ -1,9 +1,9 @@
 {
-  "updated_at": "2026-06-06T09:57:23.682503+00:00",
+  "updated_at": "2026-07-04T12:41:35.850391+00:00",
   "overall": "ok",
   "issues": [],
   "event_loop": {
-    "monitor_lag_seconds": 0.008,
+    "monitor_lag_seconds": 0.013,
     "warn_after_seconds": 5.0
   },
   "threads": {
@@ -24,70 +24,70 @@
     "jarvis_threads": [
       {
         "name": "jarvis-runtime-monitor",
-        "ident": 6352,
+        "ident": 9468,
         "daemon": true,
         "alive": true,
         "frame": "runtime_monitor.py:_thread_frame:46"
       },
       {
         "name": "jarvis-worker-runtime-0",
-        "ident": 11824,
+        "ident": 9464,
         "daemon": true,
         "alive": true,
         "frame": "threading.py:wait:359"
       },
       {
         "name": "jarvis-worker-runtime-1",
-        "ident": 6356,
+        "ident": 11692,
         "daemon": true,
         "alive": true,
         "frame": "threading.py:wait:359"
       },
       {
         "name": "jarvis-idle-proactive",
-        "ident": 10248,
+        "ident": 17760,
         "daemon": true,
         "alive": true,
         "frame": "threading.py:wait:363"
       },
       {
         "name": "jarvis-health-monitor",
-        "ident": 17452,
+        "ident": 4436,
         "daemon": true,
         "alive": true,
         "frame": "threading.py:wait:363"
       },
       {
         "name": "jarvis-watchdog",
-        "ident": 2136,
+        "ident": 4764,
         "daemon": true,
         "alive": true,
         "frame": "threading.py:wait:363"
       },
       {
         "name": "jarvis-overlay-queue",
-        "ident": 17828,
+        "ident": 5700,
         "daemon": true,
         "alive": true,
         "frame": "threading.py:wait:363"
       },
       {
         "name": "jarvis-overlay-qt",
-        "ident": 17524,
+        "ident": 5092,
         "daemon": true,
         "alive": true,
         "frame": "overlay_app.py:_run_qt_loop:630"
       },
       {
         "name": "jarvis-voice",
-        "ident": 17504,
+        "ident": 5180,
         "daemon": true,
         "alive": true,
         "frame": "microphone.py:record_until_enter:255"
       },
       {
         "name": "jarvis-wakeword",
-        "ident": 17512,
+        "ident": 5184,
         "daemon": true,
         "alive": true,
         "frame": "sounddevice.py:_raw_read:1213"
@@ -98,14 +98,14 @@
   "timeouts": [],
   "recoveries": [],
   "heartbeats_age_seconds": {
-    "overlay_queue": 0.016,
+    "overlay_queue": 0.061,
     "runtime_monitor": 0.0
   },
   "memory": {
-    "rss_mb": 37.83,
+    "rss_mb": 36.86,
     "growth_window_seconds": 300.0,
-    "growth_mb": -2.92,
-    "growth_mb_per_minute": -0.64,
+    "growth_mb": 0.55,
+    "growth_mb_per_minute": 0.12,
     "warn_growth_mb": 200.0,
     "sample_count": 120
   }
