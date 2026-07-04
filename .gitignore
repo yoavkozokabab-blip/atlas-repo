@@ -50,3 +50,7 @@ manual_context_pack_tests/
 manual_mcp_tests/
 tmp*
 *_raw_results.json
+
+data/*.json
+data/*.jsonl
+git_info.txt
