@@ -48,6 +48,7 @@ packaging/installer/output/
 packaging/installer/build_info.json
 packaging/installer/generated_version.iss
 installer/output/
+release/
 .env.local
 manual_context_pack_tests/
 manual_mcp_tests/
