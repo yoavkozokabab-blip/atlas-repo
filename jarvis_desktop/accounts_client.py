@@ -774,6 +774,25 @@ def get_admin_dashboard() -> Dict[str, Any]:
     return _call("GET", "/admin/dashboard", access_token=token)
 
 
+def get_admin_analytics_dashboard() -> Dict[str, Any]:
+    """Launch funnel analytics from the website Supabase store (admin only)."""
+    token = get_valid_access_token()
+    if not token:
+        return {"_unauthenticated": True}
+    if auth_mode() != "website":
+        return {
+            "ok": False,
+            "_http_status": 503,
+            "detail": "Cloud analytics require website auth (ATLAS_AUTH_MODE=website).",
+        }
+    return _call(
+        "GET",
+        "/api/auth/desktop/admin/analytics/dashboard",
+        access_token=token,
+        base=web_base(),
+    )
+
+
 def get_admin_audit_log(limit: int = 100) -> Dict[str, Any]:
     token = get_valid_access_token()
     if not token:

@@ -296,6 +296,17 @@ def accounts_admin_dashboard(_body: Dict[str, Any], _query: Dict[str, str]) -> D
     return _admin_result(accounts_client.get_admin_dashboard(), "dashboard", "Admin access required.")
 
 
+def accounts_admin_analytics_dashboard(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+    result = accounts_client.get_admin_analytics_dashboard()
+    if result.get("_unauthenticated"):
+        return {"ok": False, "error": "Admin account sign-in required."}
+    if result.get("ok") is True:
+        return result
+    if result.get("_http_status"):
+        return {"ok": False, "error": result.get("detail", "Analytics unavailable.")}
+    return {"ok": False, "error": result.get("error", "Analytics unavailable.")}
+
+
 def accounts_admin_audit_log(_body: Dict[str, Any], query: Dict[str, str]) -> Dict[str, Any]:
     try:
         limit = int(query.get("limit", "100"))
@@ -471,6 +482,7 @@ ACCOUNTS_ROUTES = {
     ("POST", "/api/accounts/admin/applications/reject"): accounts_admin_reject,
     # Phase 193 — Admin Console
     ("GET",  "/api/accounts/admin/dashboard"): accounts_admin_dashboard,
+    ("GET",  "/api/accounts/admin/analytics-dashboard"): accounts_admin_analytics_dashboard,
     ("GET",  "/api/accounts/admin/audit-log"): accounts_admin_audit_log,
     ("POST", "/api/accounts/admin/users/grant-beta"): accounts_admin_grant_beta,
     ("POST", "/api/accounts/admin/users/revoke-beta"): accounts_admin_revoke_beta,
