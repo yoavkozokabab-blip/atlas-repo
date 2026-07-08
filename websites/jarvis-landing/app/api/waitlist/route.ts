@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { store } from "@/app/_lib/store";
+import { trackEvent } from "@/app/_lib/analytics";
 import { rateLimit, clientIp } from "@/app/_lib/ratelimit";
 
 export const runtime = "nodejs";
@@ -31,6 +32,11 @@ export async function POST(request: Request) {
 
   try {
     const { duplicate } = await store.addWaitlist({ email, role, source: "jarvis-landing" });
+    await trackEvent({
+      event_name: "waitlist_joined",
+      source: "website",
+      metadata: { duplicate: !!duplicate },
+    });
     return NextResponse.json({
       ok: true,
       duplicate,

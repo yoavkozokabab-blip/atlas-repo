@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { SiteAnalytics } from "./_components/site-analytics";
 
 const TITLE = "Atlas — Local-first repository intelligence for AI engineering";
 const DESC =
@@ -46,7 +47,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <SiteAnalytics />
+        {children}
+      </body>
     </html>
   );
 }

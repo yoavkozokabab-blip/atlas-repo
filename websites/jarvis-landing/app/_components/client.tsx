@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { trackClientEvent } from "../_lib/analytics-client";
 
 async function postJson(url: string, body?: unknown) {
   const res = await fetch(url, {
@@ -34,9 +35,21 @@ export function AuthForm({ next }: { next: string }) {
         setInfo(String(data.message || "If an account exists, a reset link has been sent."));
         return;
       }
+      if (mode === "signup") {
+        await trackClientEvent("signup_started", { page: next || "/account" });
+      }
       const url = mode === "signup" ? "/api/auth/register" : "/api/auth/login";
       const { res, data } = await postJson(url, { email, password, name });
-      if (!res.ok) { setError(String(data.error || "Something went wrong.")); return; }
+      if (!res.ok) {
+        if (mode === "signup") {
+          await trackClientEvent("signup_failed", { reason: String(data.error || "unknown") });
+        }
+        setError(String(data.error || "Something went wrong."));
+        return;
+      }
+      if (mode === "signup") {
+        await trackClientEvent("signup_success", { page: next || "/account" });
+      }
       router.push(next || "/account");
       router.refresh();
     } finally {
@@ -176,6 +189,9 @@ export function AdminConsole() {
 
   return (
     <div>
+      <p style={{ marginBottom: 16 }}>
+        <a href="/admin/analytics" className="lnk">Launch analytics dashboard →</a>
+      </p>
       <div className="form" style={{ flexDirection: "row", maxWidth: 520, marginBottom: 18 }}>
         <input className="field" style={{ flex: 1 }} placeholder="Search by email or name" value={q}
           onChange={(e) => setQ(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") load(q); }} />

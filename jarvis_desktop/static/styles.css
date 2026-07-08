@@ -915,6 +915,16 @@ body:not(.atlas-no-repo) .needs-no-repo{display:none !important}
 .mcp-setup{margin:18px 0 24px;padding:18px}
 .mcp-setup-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
 .mcp-setup-output{margin-top:14px;max-height:260px;overflow:auto;white-space:pre-wrap}
+.mcp-agent-status{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:14px}
+.mcp-agent-card{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:rgba(255,255,255,.02)}
+.mcp-agent-card-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
+.mcp-agent-card-title{font-size:13px;font-weight:700;color:#eaf0ff}
+.mcp-agent-badge{font-size:10px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.mcp-agent-badge.available{color:#9be7b0;border-color:rgba(61,214,140,.35);background:rgba(61,214,140,.08)}
+.mcp-agent-badge.experimental{color:#f6d28b;border-color:rgba(246,210,139,.35);background:rgba(246,210,139,.08)}
+.mcp-agent-badge.connected{color:#9fd0ff;border-color:rgba(122,162,247,.35);background:rgba(122,162,247,.08)}
+.mcp-agent-desc{font-size:11.5px;color:var(--muted);line-height:1.45;margin:0}
+.mcp-agent-path{font-size:10.5px;color:var(--muted);margin-top:8px;word-break:break-all}
 .quick-action-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
 .qa-card{display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:left;padding:18px 18px 16px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.03);cursor:pointer;transition:.18s;color:var(--txt)}
 .qa-card:hover{border-color:rgba(122,162,247,.45);background:rgba(122,162,247,.06);transform:translateY(-2px);box-shadow:0 12px 30px rgba(0,0,0,.35)}

@@ -603,6 +603,9 @@
     }
 
     setLoading('acc-login-btn', true);
+    if (typeof trackAnalytics === 'function') {
+      trackAnalytics('desktop_login_started');
+    }
     api('POST', '/api/accounts/login', { email, password }).then(res => {
       setLoading('acc-login-btn', false);
       if (res.ok) {

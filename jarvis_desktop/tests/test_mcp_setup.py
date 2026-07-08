@@ -61,6 +61,59 @@ def test_claude_config_write_preserves_existing_servers(tmp_path, monkeypatch):
     assert "atlas" in data["mcpServers"]
 
 
+def test_codex_config_write_preserves_existing_servers(tmp_path, monkeypatch):
+    codex_dir = tmp_path / ".codex"
+    config = codex_dir / "config.toml"
+    codex_dir.mkdir(parents=True)
+    config.write_text(
+        "\n".join(
+            [
+                "[mcp_servers.existing]",
+                "command = 'tool.exe'",
+                "args = ['--ok']",
+                "enabled = true",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("CODEX_HOME", str(codex_dir))
+    monkeypatch.setattr(ai, "atlas_executable_path", lambda: str(tmp_path / "Atlas.exe"))
+    (tmp_path / "Atlas.exe").write_text("", encoding="utf-8")
+
+    denied = ai.write_codex_config(confirm=False)
+    assert denied["ok"] is False
+
+    written = ai.write_codex_config(confirm=True)
+    assert written["ok"] is True
+    assert written.get("backup_path")
+    text = config.read_text(encoding="utf-8")
+    assert "[mcp_servers.existing]" in text
+    assert "[mcp_servers.atlas]" in text
+    data, err = ai._load_codex_config(str(config))
+    assert err is None
+    assert ai._codex_atlas_configured(data)
+    assert data["mcp_servers"]["atlas"]["args"] == ["--mcp"]
+
+
+def test_list_mcp_agent_clients_includes_codex(monkeypatch, tmp_path):
+    cursor_dir = tmp_path / ".cursor"
+    cursor_dir.mkdir()
+    (cursor_dir / "mcp.json").write_text("{}", encoding="utf-8")
+    codex_dir = tmp_path / ".codex"
+    codex_dir.mkdir()
+    (codex_dir / "config.toml").write_text("", encoding="utf-8")
+    monkeypatch.setattr(ai, "cursor_config_path", lambda: str(cursor_dir / "mcp.json"))
+    monkeypatch.setattr(ai, "claude_desktop_config_path", lambda: str(tmp_path / "missing.json"))
+    monkeypatch.setattr(ai, "codex_config_path", lambda: str(codex_dir / "config.toml"))
+
+    agents = ai.list_mcp_agent_clients()
+    ids = {item["id"] for item in agents}
+    assert ids == {"cursor", "claude", "codex"}
+    codex = next(item for item in agents if item["id"] == "codex")
+    assert codex["availability"] == "experimental"
+
+
 def test_run_mcp_diagnostics_reports_checks(monkeypatch):
     monkeypatch.setattr(ai, "atlas_executable_path", lambda: "C:/missing/Atlas.exe")
     monkeypatch.setattr(

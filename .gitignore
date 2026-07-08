@@ -28,6 +28,7 @@ reports/benchmarks/
 .phase150_packaging_venv*/
 .phase150_tools/
 .phase150_install_test/
+.phase152_packaging_lib/
 build/
 
 # Phase 192 — accounts service build intermediates (shipped copy lives in dist/Atlas/accounts)
@@ -44,6 +45,8 @@ external_repos/
 *.jsonl
 packaging/installer/staging/
 packaging/installer/output/
+packaging/installer/build_info.json
+packaging/installer/generated_version.iss
 installer/output/
 .env.local
 manual_context_pack_tests/
@@ -54,3 +57,6 @@ tmp*
 data/*.json
 data/*.jsonl
 git_info.txt
+
+# Root npm lock (website lock lives under websites/jarvis-landing/)
+/package-lock.json

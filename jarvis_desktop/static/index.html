@@ -453,13 +453,15 @@
 
         <section class="mcp-setup glass" id="mcpSetupSection" aria-labelledby="mcpSetupTitle">
           <h2 class="home-section-title" id="mcpSetupTitle">Connect Atlas to your AI editor</h2>
-          <p class="muted tiny">One click adds Atlas to Cursor or Claude Desktop. No PowerShell or manual JSON editing required.</p>
+          <p class="muted tiny">One click adds Atlas as an MCP layer for Cursor, Claude, or Codex. No PowerShell or manual config editing required.</p>
           <div class="mcp-setup-actions">
             <button class="btn primary" type="button" onclick="atlasMcpSetup.connectCursor()">Connect to Cursor</button>
-            <button class="btn primary" type="button" onclick="atlasMcpSetup.connectClaude()">Connect to Claude Desktop</button>
+            <button class="btn primary" type="button" onclick="atlasMcpSetup.connectClaude()">Connect to Claude</button>
+            <button class="btn primary" type="button" onclick="atlasMcpSetup.connectCodex()">Connect to Codex</button>
             <button class="btn ghost" type="button" onclick="atlasMcpSetup.testMcp()">Test Atlas MCP</button>
             <button class="btn ghost" type="button" onclick="atlasMcpSetup.showDiagnostics()">Show diagnostics</button>
           </div>
+          <div id="mcpAgentStatus" class="mcp-agent-status" aria-live="polite"></div>
           <pre id="mcpSetupOutput" class="code tiny mcp-setup-output" style="display:none" aria-live="polite"></pre>
           <div class="mcp-advanced" id="mcpAdvanced" style="display:none;margin-top:10px">
             <button class="btn ghost small" type="button" onclick="atlasMcpSetup.copyConfig()">Copy MCP config (manual setup)</button>

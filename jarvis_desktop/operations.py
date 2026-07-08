@@ -10,6 +10,7 @@ import uuid
 from typing import Any, Dict, List, Optional, Tuple
 
 from . import analytics
+from . import cloud_analytics
 from .product_info import PRODUCT_VERSION, build_commit as _build_commit, check_for_update
 
 PIPELINE_VERSION = "1"
@@ -324,6 +325,18 @@ def pipeline_track_event(event: str, **properties: Any) -> Dict[str, Any]:
         **{k: v for k, v in safe_props.items() if v is not None},
     }
     result = analytics.track_event(name, **enriched)
+    try:
+        identity = get_installation_identity(touch=False)
+        cloud_analytics.track_cloud_event(
+            name,
+            source="desktop",
+            anonymous_id=str(identity.get("installation_id") or ""),
+            app_version=PRODUCT_VERSION,
+            platform=os.name,
+            metadata={k: v for k, v in enriched.items() if k in {"mode", "target", "packet", "ok", "agent", "first", "installation_id"}},
+        )
+    except Exception:
+        pass
     if name in {"scan_crash", "app_crash"}:
         record_crash(
             name,

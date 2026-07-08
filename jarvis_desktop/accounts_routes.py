@@ -127,6 +127,11 @@ def accounts_login(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, An
         return {"ok": False, "error": "email and password are required"}
     if not _valid_email(email):
         return {"ok": False, "error": "Enter a valid email address."}
+    try:
+        from . import cloud_analytics as _cloud
+        _cloud.track_cloud_event("desktop_login_started", source="desktop", platform=_platform_str())
+    except Exception:
+        pass
     if not accounts_service_runner.ensure_running():
         return {
             "ok": False,
@@ -147,7 +152,22 @@ def accounts_login(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, An
         }
     if result.get("_http_status"):
         detail = result.get("detail", "Login failed")
+        try:
+            from . import cloud_analytics as _cloud
+            _cloud.track_cloud_event(
+                "desktop_login_failed",
+                source="desktop",
+                platform=_platform_str(),
+                metadata={"reason": str(detail)[:80]},
+            )
+        except Exception:
+            pass
         return {"ok": False, "error": detail if isinstance(detail, str) else str(detail)}
+    try:
+        from . import cloud_analytics as _cloud
+        _cloud.track_cloud_event("desktop_login_success", source="desktop", platform=_platform_str())
+    except Exception:
+        pass
     return {"ok": True, **result}
 
 
@@ -164,7 +184,21 @@ def accounts_profile(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str,
 
 
 def accounts_license(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
-    return {"ok": True, **accounts_client.get_license_status()}
+    lic = accounts_client.get_license_status()
+    try:
+        from . import cloud_analytics as _cloud
+        if lic.get("valid"):
+            _cloud.track_cloud_event("desktop_me_success", source="desktop", platform=_platform_str())
+        elif lic.get("status") in {"unauthenticated", "account_unavailable", "offline_grace_expired"}:
+            _cloud.track_cloud_event(
+                "desktop_me_failed",
+                source="desktop",
+                platform=_platform_str(),
+                metadata={"reason": str(lic.get("status") or "unknown")},
+            )
+    except Exception:
+        pass
+    return {"ok": True, **lic}
 
 
 def accounts_devices(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:

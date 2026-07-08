@@ -4,6 +4,7 @@ import { Readable } from "node:stream";
 import path from "node:path";
 import { currentUser } from "@/app/_lib/auth";
 import { store, newId } from "@/app/_lib/store";
+import { trackEvent } from "@/app/_lib/analytics";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -37,6 +38,12 @@ async function recordDownload(userId: string, email: string, downloads: number):
     actorId: userId,
     actorEmail: email,
     action: "download_installer",
+  });
+  await trackEvent({
+    event_name: "desktop_installed",
+    source: "website",
+    user_id: userId,
+    metadata: { page: "/download/atlas" },
   });
 }
 

@@ -631,8 +631,33 @@ def _find_files(query: str, limit: int) -> Dict[str, Any]:
     )
 
 
+_CONTEXT_SERVE_TOOLS = frozenset({
+    "atlas_get_codebase_map",
+    "atlas_repo_summary",
+    "atlas_build_context_pack",
+    "atlas_find_relevant_files",
+    "atlas_export_for_claude",
+    "atlas_export_for_cursor",
+    "atlas_export_for_codex",
+})
+
+
+def _track_mcp_tool(name: str) -> None:
+    try:
+        from .. import usage_analytics as ua
+
+        ua.track_tool_call(name)
+        if name in _CONTEXT_SERVE_TOOLS:
+            ua.track_context_served("mcp")
+        if name.startswith("atlas_export_for_"):
+            ua.track_context_used(name.rsplit("_", 1)[-1])
+    except Exception:
+        pass
+
+
 def call_tool(name: str, arguments: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     args = arguments or {}
+    _track_mcp_tool(name)
     try:
         if name == "atlas_scan_repo":
             repo_path, err = _local_repo_path(str(args.get("repo_path") or ""))

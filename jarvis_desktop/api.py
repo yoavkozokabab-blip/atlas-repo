@@ -1554,6 +1554,7 @@ def _scan_repository_locked(path: Optional[str] = None, scope: Optional[Dict[str
         })
     _STATE["scan_job"]["stage"] = "completed"
     _STATE["scan_perf"] = recorder.snapshot()
+    first_repo = not bool(_STATE.get("_cloud_first_repo_sent"))
     track_analytics_event(
         "scan_completed",
         demo=bool(_STATE.get("demo_mode")),
@@ -1561,7 +1562,10 @@ def _scan_repository_locked(path: Optional[str] = None, scope: Optional[Dict[str
         edges=scan["dependency_edges"],
         cache_hit=False,
         massive_mode=massive_mode,
+        first=first_repo,
     )
+    if first_repo:
+        _STATE["_cloud_first_repo_sent"] = True
     _record_usage("scan_completed", cache_hit=False, massive_mode=massive_mode)
     _persist_scan_snapshot()
     return _attach_analytics_status(scan)
@@ -3570,6 +3574,12 @@ def context_export(target: str = "claude", packet: str = "compact", *, track: bo
         if track:
             track_analytics_event("export_created", target=target, packet=packet, tokens=est_tokens)
             _record_usage("export_created", target=target, packet=packet)
+            try:
+                from . import usage_analytics as _usage
+                _usage.track_context_served("export")
+                _usage.track_context_used(target)
+            except Exception:
+                pass
         return {
             "ok": True,
             "target": target,
@@ -4629,6 +4639,10 @@ def write_cursor_mcp_config(confirm: bool = False) -> Dict[str, Any]:
 
 def write_claude_mcp_config(confirm: bool = False) -> Dict[str, Any]:
     return _agent_integrations.write_claude_config(confirm=bool(confirm))
+
+
+def write_codex_mcp_config(confirm: bool = False) -> Dict[str, Any]:
+    return _agent_integrations.write_codex_config(confirm=bool(confirm))
 
 
 def agent_integrations_status() -> Dict[str, Any]:

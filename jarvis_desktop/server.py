@@ -196,6 +196,9 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
         ("POST", "/api/integrations/claude/write-config"): lambda body, _query: api.write_claude_mcp_config(
             body.get("confirm") is True or str(body.get("confirm", "")).lower() in {"1", "true", "yes"}
         ),
+        ("POST", "/api/integrations/codex/write-config"): lambda body, _query: api.write_codex_mcp_config(
+            body.get("confirm") is True or str(body.get("confirm", "")).lower() in {"1", "true", "yes"}
+        ),
         ("POST", "/api/integrations/mcp/test"): lambda _body, _query: api.test_claude_mcp_runtime(),
         ("POST", "/api/integrations/mcp/diagnostics"): lambda _body, _query: api.run_mcp_diagnostics(),
         ("GET", "/api/operations/result-feedback"): lambda _body, _query: api.operations_result_feedback_inbox(),

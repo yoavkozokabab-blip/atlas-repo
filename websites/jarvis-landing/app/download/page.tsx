@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteNav, SiteFooter } from "../_components/site";
+import { DownloadButton } from "../_components/download-button";
 import { currentUser } from "../_lib/auth";
 import { ENV } from "../_lib/config";
 
@@ -36,9 +37,9 @@ export default async function DownloadPage() {
 
               {user ? (
                 <>
-                  <a className="btn btn-primary btn-lg" href="/download/atlas" download style={{ marginTop: 16 }}>
+                  <DownloadButton className="btn btn-primary btn-lg" href="/download/atlas" style={{ marginTop: 16 }}>
                     Download for Windows
-                  </a>
+                  </DownloadButton>
                   <p className="dl-meta" style={{ marginTop: 12 }}>
                     Signed in as {user.email} · your code never leaves your machine
                   </p>
