@@ -1,6 +1,6 @@
-import { PageShell } from "../_components/site";
-import { AnalyticsDashboard } from "../_components/analytics-dashboard";
-import { requireAdmin } from "../_lib/auth";
+import { PageShell } from "../../_components/site";
+import { AnalyticsDashboard } from "../../_components/analytics-dashboard";
+import { requireAdmin } from "../../_lib/auth";
 
 export const dynamic = "force-dynamic";
 
