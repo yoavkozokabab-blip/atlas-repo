@@ -29,7 +29,7 @@
   }
 
   function fmtSec(sec) {
-    if (sec == null || Number.isNaN(sec)) return "—";
+    if (sec == null || Number.isNaN(sec)) return "0";
     if (sec < 60) return sec + "s";
     if (sec < 3600) return Math.round(sec / 60) + "m";
     return (sec / 3600).toFixed(1) + "h";
@@ -39,12 +39,16 @@
     const host = $("admin-analytics-root");
     if (!host) return;
     if (!data || !data.ok) {
-      host.innerHTML = `<p class="muted tiny">${esc((data && data.error) || "Launch analytics unavailable.")}</p>`;
+      const msg = (data && (data.error || data.detail)) || "Launch analytics unavailable.";
+      host.innerHTML = `<p class="bad tiny">${esc(msg)}</p>`;
       return;
     }
     STATE.analytics = data;
+    const notice = data.notice
+      ? `<p class="muted tiny" style="margin-bottom:10px">${esc(data.notice)}</p>`
+      : "";
     const funnelRows = (data.funnel || []).map((step) =>
-      `<tr><td>${esc(step.label)}</td><td>${esc(step.count)}</td><td>${step.conversionFromPrev == null ? "—" : esc(step.conversionFromPrev) + "%"}</td></tr>`
+      `<tr><td>${esc(step.label)}</td><td>${esc(step.count == null ? 0 : step.count)}</td><td>${step.conversionFromPrev == null ? "0%" : esc(step.conversionFromPrev) + "%"}</td></tr>`
     ).join("");
     const drop = data.drop_off
       ? `<p class="muted tiny">Biggest drop-off: <b>${esc(data.drop_off.from)} → ${esc(data.drop_off.to)}</b> (${esc(data.drop_off.dropPct)}% lost)</p>`
@@ -52,6 +56,7 @@
     host.innerHTML = `
       <h3 class="admin-section-title">Launch analytics</h3>
       <p class="muted tiny">From Supabase · ${esc(new Date(data.generated_at || Date.now()).toLocaleString())} · backend ${esc(data.backend || "—")}</p>
+      ${notice}
       <div class="admin-table-wrap" style="margin-top:10px">
         <table class="admin-table">
           <thead><tr><th>Funnel step</th><th>Count</th><th>Conversion</th></tr></thead>
@@ -63,10 +68,10 @@
         ${[
           ["Total TTFV", fmtSec((data.ttfv || {}).total_ttfv_sec)],
           ["Install → Open", fmtSec((data.ttfv || {}).install_to_open_sec)],
-          ["Day 1 retention", (data.retention && data.retention.d1 != null) ? data.retention.d1 + "%" : "—"],
-          ["Day 7 retention", (data.retention && data.retention.d7 != null) ? data.retention.d7 + "%" : "—"],
-          ["Most used agent", (data.agents && data.agents.most_used) || "—"],
-          ["Events tracked", data.events_total],
+          ["Day 1 retention", (data.retention && data.retention.d1 != null) ? data.retention.d1 + "%" : "0%"],
+          ["Day 7 retention", (data.retention && data.retention.d7 != null) ? data.retention.d7 + "%" : "0%"],
+          ["Most used agent", (data.agents && data.agents.most_used) || "0"],
+          ["Events tracked", data.events_total == null ? 0 : data.events_total],
         ].map(([l, v]) => `<div class="admin-kpi"><div class="admin-kpi-v">${esc(v)}</div><div class="admin-kpi-l">${esc(l)}</div></div>`).join("")}
       </div>
       <p class="muted tiny" style="margin-top:10px">

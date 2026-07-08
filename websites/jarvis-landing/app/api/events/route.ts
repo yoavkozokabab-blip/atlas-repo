@@ -24,5 +24,16 @@ export async function POST(req: Request) {
   if (result.skipped) {
     return NextResponse.json({ ok: false, error: result.error || "invalid_event" }, { status: 400 });
   }
-  return NextResponse.json({ ok: result.ok, persisted: result.ok });
+  if (!result.ok) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: result.error || "persist_failed",
+        detail: result.detail || "Analytics persistence failed. Check Supabase migrations 0003–0005.",
+        persisted: false,
+      },
+      { status: 503 }
+    );
+  }
+  return NextResponse.json({ ok: true, persisted: true });
 }

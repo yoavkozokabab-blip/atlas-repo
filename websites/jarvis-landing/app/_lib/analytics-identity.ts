@@ -214,15 +214,28 @@ export async function updateIdentityFromEvent(input: AnalyticsInput): Promise<vo
   }
 }
 
-export async function loadAllIdentities(limit = 5000): Promise<IdentityRow[]> {
+export async function loadAllIdentities(limit = 5000): Promise<{ data: IdentityRow[]; error?: string }> {
   if (ENV.hasSupabase) {
+    const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (!key) {
+      return { data: [], error: "Analytics backend is not configured." };
+    }
     const res = await sb(
       `analytics_identities?order=last_seen.desc&limit=${Math.min(limit, 10000)}`
     );
-    if (!res.ok) return [];
-    return (await res.json()) as IdentityRow[];
+    if (!res.ok) {
+      const body = await res.text().catch(() => "");
+      const hint = res.status === 404 || body.includes("analytics_identities")
+        ? " Run Supabase migrations 0003–0005 on the production project."
+        : "";
+      return {
+        data: [],
+        error: `Analytics backend error: analytics_identities query failed (${res.status}).${hint}`,
+      };
+    }
+    return { data: (await res.json()) as IdentityRow[] };
   }
-  return loadFileIdentities().slice(0, limit);
+  return { data: loadFileIdentities().slice(0, limit) };
 }
 
 export function retentionRates(identities: IdentityRow[]): { d1: number; d7: number; d30: number } {

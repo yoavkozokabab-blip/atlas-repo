@@ -5,6 +5,25 @@ import { ENV, validateSupabaseConfig } from "@/app/_lib/config";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+async function probeAnalyticsTable(): Promise<{ ok: boolean; detail?: string }> {
+  if (!ENV.hasSupabase) return { ok: true };
+  const raw = (process.env.SUPABASE_URL || "").trim().replace(/\/+$/, "").replace(/\/rest\/v1$/i, "");
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!raw || !key) return { ok: false, detail: "analytics env missing" };
+  const res = await fetch(`${raw}/rest/v1/analytics_events?select=id&limit=1`, {
+    cache: "no-store",
+    headers: { apikey: key, Authorization: `Bearer ${key}` },
+  });
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    return {
+      ok: false,
+      detail: `analytics_events probe failed (${res.status}): ${body.slice(0, 120)}`,
+    };
+  }
+  return { ok: true };
+}
+
 /**
  * Production health/readiness probe. No secrets returned — only booleans and the
  * active persistence backend. Use it after deploy to confirm the funnel is wired:
@@ -19,6 +38,11 @@ export async function GET() {
     try {
       // Cheap round-trip that proves connectivity + schema presence.
       await store.listWaitlist(1);
+      const analytics = await probeAnalyticsTable();
+      if (!analytics.ok) {
+        persistence = "error";
+        detail = analytics.detail;
+      }
     } catch (err) {
       persistence = "error";
       detail = err instanceof Error ? err.message.slice(0, 200) : "unknown";

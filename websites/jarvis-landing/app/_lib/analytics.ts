@@ -139,7 +139,7 @@ export function normalizeEventName(name: string): string {
 }
 
 /** Persist one analytics row. Never throws — failures are logged and swallowed. */
-export async function trackEvent(input: AnalyticsInput): Promise<{ ok: boolean; skipped?: boolean; error?: string }> {
+export async function trackEvent(input: AnalyticsInput): Promise<{ ok: boolean; skipped?: boolean; error?: string; detail?: string }> {
   const event_name = normalizeEventName(input.event_name);
   if (!event_name || !ALLOWED_EVENTS.has(event_name)) {
     return { ok: false, skipped: true, error: "event_not_allowed" };
@@ -165,8 +165,9 @@ export async function trackEvent(input: AnalyticsInput): Promise<{ ok: boolean; 
     await updateIdentityFromEvent({ ...input, event_name });
     return { ok: true };
   } catch (err) {
+    const detail = err instanceof Error ? err.message.slice(0, 160) : "unknown";
     console.error("[atlas] trackEvent failed:", event_name, err);
-    return { ok: false, error: "persist_failed" };
+    return { ok: false, error: "persist_failed", detail };
   }
 }
 

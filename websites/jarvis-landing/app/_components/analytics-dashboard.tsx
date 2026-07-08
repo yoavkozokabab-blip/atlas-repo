@@ -49,12 +49,15 @@ export function AnalyticsDashboard() {
   if (error) return <div className="note-accent">{error}</div>;
   if (!data) return <p>Loading analytics…</p>;
 
+  const notice = (data as DashboardData & { notice?: string }).notice;
+
   return (
     <div style={{ maxWidth: 960 }}>
       <p style={{ opacity: 0.7, marginBottom: 16 }}>
         Generated {new Date(data.generated_at).toLocaleString()} ·{" "}
         <Link href="/admin">← Admin home</Link>
       </p>
+      {notice ? <div className="note-accent" style={{ marginBottom: 16 }}>{notice}</div> : null}
 
       <h3 style={{ marginBottom: 12 }}>Launch funnel</h3>
       <table className="table" style={{ width: "100%", marginBottom: 24 }}>

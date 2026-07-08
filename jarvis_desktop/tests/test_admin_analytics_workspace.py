@@ -38,3 +38,34 @@ def test_admin_analytics_route_service_unavailable(monkeypatch):
     out = accounts_routes.accounts_admin_analytics_dashboard({}, {})
     assert out["ok"] is False
     assert "website auth" in out["error"].lower()
+
+
+def test_admin_analytics_forwards_backend_error(monkeypatch):
+    monkeypatch.setattr(
+        accounts_client,
+        "get_admin_analytics_dashboard",
+        lambda: {
+            "ok": False,
+            "error": "Analytics backend error: analytics_events query failed (403).",
+            "events_total": 0,
+        },
+    )
+    out = accounts_routes.accounts_admin_analytics_dashboard({}, {})
+    assert out["ok"] is False
+    assert "analytics_events query failed" in out["error"]
+
+
+def test_admin_analytics_forwards_empty_notice(monkeypatch):
+    monkeypatch.setattr(
+        accounts_client,
+        "get_admin_analytics_dashboard",
+        lambda: {
+            "ok": True,
+            "notice": "No analytics events found yet.",
+            "events_total": 0,
+            "funnel": [],
+        },
+    )
+    out = accounts_routes.accounts_admin_analytics_dashboard({}, {})
+    assert out["ok"] is True
+    assert out["notice"] == "No analytics events found yet."
