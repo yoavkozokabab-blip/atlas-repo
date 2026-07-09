@@ -41,7 +41,7 @@ SUPABASE_ANON_KEY          = <anon public>             ← optional
 AUTH_SECRET                = <32-byte hex>             ← node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ADMIN_EMAILS               = your-admin@example.com
 NEXT_PUBLIC_ATLAS_VERSION  = 1.0.0
-NEXT_PUBLIC_SUPPORT_EMAIL  = atlas.repo.support@gmail.com
+NEXT_PUBLIC_SUPPORT_EMAIL  = yoavkozokabab@gmail.com
 ATLAS_INSTALLER_URL        = <leave empty for now; set after the GitHub Release>
 ```
 

@@ -135,7 +135,7 @@ def accounts_login(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, An
         return {
             "ok": False,
             "code": "service_unavailable",
-            "error": "The Atlas accounts service isn't available right now. Please restart Atlas, and contact atlas.repo.support@gmail.com if this keeps happening.",
+            "error": "The Atlas accounts service isn't available right now. Please restart Atlas, and contact yoavkozokabab@gmail.com if this keeps happening.",
         }
     result = accounts_client.login(
         email=email,
@@ -147,7 +147,7 @@ def accounts_login(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, An
         return {
             "ok": False,
             "code": "service_unavailable",
-            "error": "The Atlas accounts service isn't available right now. Please restart Atlas, and contact atlas.repo.support@gmail.com if this keeps happening.",
+            "error": "The Atlas accounts service isn't available right now. Please restart Atlas, and contact yoavkozokabab@gmail.com if this keeps happening.",
         }
     if result.get("_http_status"):
         detail = result.get("detail", "Login failed")

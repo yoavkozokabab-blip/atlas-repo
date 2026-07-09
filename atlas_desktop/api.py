@@ -1836,7 +1836,7 @@ def submit_feedback(body: Dict[str, Any]) -> Dict[str, Any]:
         msg = "Saved. We'll follow up at your email if provided."
         destination = "local_after_remote_fail"
     else:
-        msg = "Saved. Email atlas.repo.support@gmail.com if you need immediate help."
+        msg = "Saved. Email yoavkozokabab@gmail.com if you need immediate help."
         destination = "local"
 
     return {

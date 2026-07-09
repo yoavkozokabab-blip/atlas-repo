@@ -12,7 +12,7 @@ from typing import Any, Dict, Optional
 
 PRODUCT_VERSION = "1.0.0"
 LAUNCH_BUILD_LABEL = "Atlas v1.0.0 launch build"
-DEFAULT_SUPPORT_EMAIL = "atlas.repo.support@gmail.com"
+DEFAULT_SUPPORT_EMAIL = "yoavkozokabab@gmail.com"
 
 _BUILD_DATE = time.strftime("%Y-%m-%d", time.gmtime())
 _BUILD_COMMIT_CACHE: Optional[str] = None
