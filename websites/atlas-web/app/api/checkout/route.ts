@@ -7,11 +7,10 @@ import { PAID_PLANS_ENABLED } from "@/app/_config";
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
-  // Free-beta guard (Phase 186A): no checkout — not even the local stub trial —
-  // while paid plans are disabled. Nothing here can grant a fake subscription.
+  // Guard for deployments that intentionally hide paid-plan actions.
   if (!PAID_PLANS_ENABLED) {
     return NextResponse.json(
-      { ok: false, error: "Atlas is in free beta — there is nothing to purchase yet." },
+      { ok: false, error: "Pro trial checkout is not available in this build." },
       { status: 403 }
     );
   }

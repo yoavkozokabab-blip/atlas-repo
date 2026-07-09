@@ -3,9 +3,9 @@
  *
  * Adds (UI only — no new intelligence, no backend changes):
  *  - clean boot loading screen teardown
- *  - "Send this to your AI coding tool" panel for Change Plan / Debug / What breaks?
+ *  - "Send this to your AI coding tool" panel for Plan Change / Debug / What breaks?
  *  - rich, safe-to-implement prompts for Claude / Cursor / Codex built from existing plan data
- *  - "You're ready." success recognition after the first Change Plan
+ *  - "You're ready." success recognition after the first Plan Change
  *  - broad-folder confirmation before scanning an obviously-too-large folder
  */
 
@@ -138,7 +138,7 @@ function zfChangePromptBody() {
     `Goal: ${request}`,
     p.estimated_change_size ? `Estimated size: ${p.estimated_change_size} · Risk: ${p.risk_level || "unknown"}` : "",
     "",
-    "## Repository context",
+    "## Repo memory",
     `- Repository: ${repo}`,
     `- Affected systems: ${zfList(p.affected_systems || p.likely_affected_subsystems).join(", ") || "none listed"}`,
     `- Entry points: ${zfList(p.entry_points).join(", ") || "none listed"}`,
@@ -328,7 +328,7 @@ function beginnerPlanHero(plan, kind) {
   if (typeof getOutputMode === "function" && getOutputMode() === "advanced") return pinnedCopyForClaude(kind);
   const stateResult = (window.STATE && kind === "build" && STATE.buildResult) ? STATE.buildResult : null;
   if (stateResult && stateResult.report) {
-    return renderStructuredReportHtml(stateResult.report, "Change Plan") + sendToAiPanel(kind, true);
+    return renderStructuredReportHtml(stateResult.report, "Plan Change") + sendToAiPanel(kind, true);
   }
   const p = plan || {};
   const goal = p.change_goal || p.goal || (document.getElementById("buildRequest") && document.getElementById("buildRequest").value) || "Your change";
@@ -416,7 +416,7 @@ function showHomeScanFocus() {
   document.body.classList.add("home-scan-focus");
   const banner = document.getElementById("homeScanBanner");
   if (banner) banner.style.display = "block";
-  if (typeof go === "function") go("home");
+  if (typeof go === "function") go("scan");
   const inp = document.getElementById("repoPath");
   if (inp) setTimeout(function () { inp.focus(); }, 120);
 }
@@ -442,7 +442,7 @@ function afterChangePlanSuccess() {
       <button class="btn primary big" type="button" onclick="copyForAi('claude','build')">Copy for Claude</button>
       <button class="btn small" type="button" onclick="copyForAi('cursor','build')">Copy for Cursor</button>
       <button class="btn small" type="button" onclick="copyForAi('codex','build')">Copy for Codex</button>
-      <button class="btn ghost small" type="button" onclick="go('home')">Try on your own repository</button>
+      <button class="btn ghost small" type="button" onclick="go('scan')">Try on your own repository</button>
     </div>
   </div>`;
   host.scrollIntoView({ behavior: "smooth", block: "nearest" });
@@ -471,7 +471,7 @@ function atlasShowBroadFolderModal(warnings, onContinue) {
   modal.style.display = "grid";
   const close = () => { modal.style.display = "none"; };
   modal.onclick = close;
-  modal.querySelector("#broadFolderChoose").onclick = () => { close(); if (typeof go === "function") go("home"); };
+  modal.querySelector("#broadFolderChoose").onclick = () => { close(); if (typeof go === "function") go("scan"); };
   modal.querySelector("#broadFolderContinue").onclick = () => { close(); if (typeof onContinue === "function") onContinue(); };
 }
 

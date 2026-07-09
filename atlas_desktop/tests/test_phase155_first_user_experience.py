@@ -30,15 +30,15 @@ def _read(path: Path) -> str:
 
 
 # --------------------------------------------------------------------------- #
-# 1. First launch shows only the three main actions
+# 1. First launch has two obvious first actions
 # --------------------------------------------------------------------------- #
-def test_first_launch_shows_three_main_actions():
+def test_first_launch_shows_task_oriented_first_actions():
     html = _read(INDEX)
-    home = html.split('class="home-actions"', 1)[1].split("</div>", 1)[0]
-    assert "Load Sample Repository" in home
-    assert "Scan My Repository" in home
-    assert "Learn more" in home
-    # Long tours are de-emphasized: not a primary action button.
+    home = html.split('id="homeDashboard"', 1)[1].split('<!-- Section 2', 1)[0]
+    assert "Scan local repository" in home
+    assert "Load sample repository" in home
+    assert "Give Claude Code and Cursor repo memory" in home
+    assert "See cited files" in home
     assert "Guided Walkthrough" not in home
 
 
@@ -61,7 +61,8 @@ def test_advanced_surfaces_are_deemphasized():
 # --------------------------------------------------------------------------- #
 def test_sample_repo_cta_exists():
     html = _read(INDEX)
-    assert "Create your first Change Plan" in html
+    assert "Load sample repository" in html
+    assert "Ask Atlas" in html
     assert 'id="scanSuccessTitle"' in html
 
 
@@ -70,10 +71,11 @@ def test_sample_success_recognition_message():
     assert "Atlas understood the sample repository." in app
 
 
-def test_sample_does_not_auto_jump_too_quickly():
-    # The old behavior force-navigated to Build Plan ~900ms after demo load.
-    polish = _read(STATIC / "atlas_polish.js")
-    assert "goToFirstBuildPlan()" not in polish.split("promptFirstBuildPlanAfterScan", 1)[1][:400]
+def test_sample_routes_to_ask_atlas_with_prompt():
+    app = _read(APP_JS)
+    assert "routeToAskAfterScan(scan)" in app
+    assert 'go("ask")' in app
+    assert "What breaks if I change services/auth.py?" in app
 
 
 # --------------------------------------------------------------------------- #
@@ -82,8 +84,9 @@ def test_sample_does_not_auto_jump_too_quickly():
 def test_scan_success_cta_exists():
     html = _read(INDEX)
     block = html.split('id="scanSuccess"', 1)[1].split("</section>", 1)[0]
-    assert "Create your first Change Plan" in block
-    assert "Explore Codebase Map" in block
+    assert "Ask first question" in block
+    assert "Open Map" in block
+    assert "Plan a change" in block
 
 
 # --------------------------------------------------------------------------- #
@@ -138,10 +141,12 @@ def test_frozen_launch_routes_failures_to_support_not_traceback():
 # --------------------------------------------------------------------------- #
 def test_nav_uses_plain_language_labels():
     html = _read(INDEX)
-    assert ">Codebase Map<" in html
-    assert ">Change Plan<" in html
+    nav = html[html.find('<nav class="nav"'): html.find("</nav>", html.find('<nav class="nav"'))]
+    assert ">Ask Atlas<" in nav
+    assert ">Plan Change<" in nav
+    assert ">Map<" in nav
     assert ">What breaks?<" in html
-    assert ">Repository Context<" in html
+    assert ">Repository Context<" not in nav
 
 
 def test_old_jargon_removed_from_nav():

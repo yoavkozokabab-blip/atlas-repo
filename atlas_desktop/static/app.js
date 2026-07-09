@@ -11,10 +11,12 @@ const LEGACY_RECENT_KEY = "\u006a\u0061\u0072\u0076\u0069\u0073_recent_repos";
 const ONBOARDING_KEY = "atlas_onboarding_v2_done";
 const WORKFLOW_HINT_KEY = "atlas_workflow_examples_seen";
 const DEMO_PACK_KEY = "atlas_demo_pack_v1";
+const DEFAULT_DEMO_PACK = "medium";
+const DEFAULT_FIRST_QUESTION = "What breaks if I change services/auth.py?";
 const GRAPH_HIERARCHY_THRESHOLD = 1000;
 const ATLAS_SHOW_GRAPH_DEBUG = false;
-const NAV_ALIASES = { intel: "center", bug: "investigate", map: "center", "command-center": "center" };
-const PROTECTED_VIEWS = new Set(["home", "scan", "center", "build", "investigate", "impact", "export"]);
+const NAV_ALIASES = { intel: "center", bug: "investigate", map: "center", "command-center": "center", copilot: "ask" };
+const PROTECTED_VIEWS = new Set(["home", "scan", "ask", "center", "build", "investigate", "impact", "export"]);
 
 function resolveDefaultGraphView(moduleCount) {
   return (moduleCount || 0) >= GRAPH_HIERARCHY_THRESHOLD ? "hierarchy" : "module";
@@ -318,7 +320,7 @@ function dismissOnboarding(skipDemo) {
 function onboardingLoadSample() {
   if (!requireAtlasAccess("Sample repository")) return;
   dismissOnboarding(true);
-  loadDemoMode("medium");
+  loadDemoMode(DEFAULT_DEMO_PACK);
 }
 
 function maybeShowOnboarding() {
@@ -339,11 +341,22 @@ function workflowEmptyHtml(title, body, primaryLabel, primaryFn, secondaryLabel,
   </div>`;
 }
 
+function repoRequiredEmptyHtml(body) {
+  return workflowEmptyHtml(
+    "Scan a repository first",
+    body || "Load the sample to see Atlas answer with cited files, or scan your own folder.",
+    "Load sample repository",
+    "loadDemoMode('medium')",
+    "Scan repository",
+    "go('scan')"
+  );
+}
+
 function renderWorkflowGate(view) {
   const map = {
-    build: { el: "buildOut", title: "Scan a repository first.", body: "Atlas needs a codebase to plan against. Scan your own folder, or load the bundled sample (about 60 seconds).", primary: "Choose a folder", fn: "go('home')", secondary: "Load Sample Repository", fn2: "loadDemoMode()" },
-    investigate: { el: "investigateOut", title: "Scan a repository first.", body: "Describe a symptom after Atlas has indexed your codebase.", primary: "Choose a folder", fn: "go('home')", secondary: "Load Sample Repository", fn2: "loadDemoMode()" },
-    impact: { el: "impactOut", title: "Scan a repository first.", body: "Enter a file or module path after scanning to see what depends on it.", primary: "Choose a folder", fn: "go('home')", secondary: "Load Sample Repository", fn2: "loadDemoMode()" },
+    build: { el: "buildOut", title: "Scan a repository first.", body: "Plan Change needs indexed files before it can name what to edit. Load the sample, or scan your own folder.", primary: "Load sample repository", fn: "loadDemoMode('medium')", secondary: "Scan repository", fn2: "go('scan')" },
+    investigate: { el: "investigateOut", title: "Scan a repository first.", body: "Debug needs the repository map before it can connect symptoms to likely files.", primary: "Load sample repository", fn: "loadDemoMode('medium')", secondary: "Scan repository", fn2: "go('scan')" },
+    impact: { el: "impactOut", title: "Scan a repository first.", body: "Impact needs a dependency graph before it can show what may break.", primary: "Load sample repository", fn: "loadDemoMode('medium')", secondary: "Scan repository", fn2: "go('scan')" },
   };
   const spec = map[view];
   if (!spec) return false;
@@ -414,7 +427,7 @@ function renderWorkflowQuickStarts(view) {
   if (!ex) return;
   const io = document.querySelector(`#view-${view} .io`);
   if (!io || io.querySelector(".workflow-examples")) return;
-  // Pre-fill the workflow input (e.g. the Change Plan box) with the pack-specific
+  // Pre-fill the workflow input (e.g. the Plan Change box) with the pack-specific
   // example so the first action names a real file. Never overwrite user input.
   const field = $(ex.target);
   if (field && !field.value.trim()) field.value = ex.text;
@@ -455,9 +468,9 @@ function showScanFailed(message, code) {
     not_found: ["Check spelling and drive letter.", "Click Validate before scanning."],
     no_code_files: ["Choose a folder that contains .py, .ts, .js, or similar source files.", "Load a sample repository to explore Atlas first."],
     permission_denied: ["Run Atlas from an account that can read the folder.", "Avoid Windows system folders and protected drives."],
-    partial_graph: ["You can still run Change Plan — some files may have fewer links.", "For your own repo: try scan scope “Only backend” or “Only Python”."],
+    partial_graph: ["You can still run Plan Change — some files may have fewer links.", "For your own repo: try scan scope “Only backend” or “Only Python”."],
     not_directory: ["Choose the repository root folder, not a single file.", "Use Browse or paste the parent directory path."],
-    symbols_missing: ["Change Plan and Debug may have fewer file anchors.", "Re-scan after fixing syntax errors in key entry files."],
+    symbols_missing: ["Plan Change and Debug may have fewer file anchors.", "Re-scan after fixing syntax errors in key entry files."],
   };
   $("scanFailedHints").innerHTML = (hints[code] || [
     "Load a sample repository to see Atlas working end-to-end.",
@@ -495,8 +508,10 @@ function renderScanSuccess(scan) {
     ? `<b style="color:var(--amber)">Most depended-on:</b> <span class="tag">${esc(riskPath)}</span> — changes here ripple furthest.`
     : `<span class="muted">No high-coupling modules found.</span>`;
 
-  $("scanSuccessActions").innerHTML = (scan.suggested_next_actions || []).map(a => `<li>${a}</li>`).join("") ||
-    "<li>Create your first Change Plan — describe a feature you want to add</li><li>Explore the Codebase Map</li>";
+  const nextActions = scan.demo_mode
+    ? [`Press Send on Ask Atlas to ask: ${DEFAULT_FIRST_QUESTION}`, "The answer will include cited evidence and relevant files."]
+    : ["Ask Atlas your first question about this repository.", "Use the Map, Debug, Impact, and Plan Change tools after that."];
+  $("scanSuccessActions").innerHTML = nextActions.map(a => `<li>${a}</li>`).join("");
   if (typeof renderScanReliabilityNotice === "function") renderScanReliabilityNotice(scan);
 
   // Populate the "What breaks?" file picker with top scanned files
@@ -605,7 +620,34 @@ function debouncedAutoValidate() {
   _autoValidateTimer = setTimeout(function () { validateRepoPath(false); }, 600);
 }
 
-function focusCopilot() { go("center"); setTimeout(() => $("askInput")?.focus(), 120); }
+function goToScanStart() {
+  go("scan");
+  setTimeout(() => $("repoPath")?.focus(), 120);
+}
+
+function focusCopilot() {
+  go("ask");
+  setTimeout(() => $("askInput")?.focus(), 120);
+}
+
+function primeAskAtlasPrompt(scan) {
+  const field = $("askInput");
+  if (field && !field.value.trim()) field.value = DEFAULT_FIRST_QUESTION;
+  const status = $("askStatus");
+  if (status) {
+    const repo = scan?.repo_name || STATE.summary?.repo_name || "Repository";
+    status.textContent = `${repo} indexed. Prompt ready — press Send.`;
+  }
+  if ($("suggest")) $("suggest").innerHTML = renderCopilotSuggestions(STATE.summary || scan || {});
+}
+
+function routeToAskAfterScan(scan) {
+  setTimeout(function () {
+    go("ask");
+    primeAskAtlasPrompt(scan);
+    toast("Repository indexed. Ask Atlas is ready.", "success");
+  }, scan?.demo_mode ? 250 : 650);
+}
 
 function finishScanSession(scan, pathLabel) {
   if (pathLabel && !scan.demo_mode) pushRecent(pathLabel, scan);
@@ -630,20 +672,14 @@ function finishScanSession(scan, pathLabel) {
       $("onboarding").style.display = "none";
     }
   } catch (e) {}
-  if (typeof promptFirstBuildPlanAfterScan === "function") promptFirstBuildPlanAfterScan(scan);
-  else if (scan.demo_mode || scan.module_count) {
-    setTimeout(function () {
-      go("center");
-      toast("Codebase Map ready — try Change Plan next", "success");
-    }, scan.demo_mode ? 400 : 1200);
-  }
+  routeToAskAfterScan(scan);
 }
 
 async function loadDemoMode(pack) {
   if (!requireAtlasAccess("Sample repository")) return;
   dismissOnboarding(true);
   if (typeof hideHomeScanFocus === "function") hideHomeScanFocus();
-  const packId = pack || STATE.demoPack || "medium";
+  const packId = pack || STATE.demoPack || DEFAULT_DEMO_PACK;
   go("scan");
   showScanPanel("running");
   $("scanPath").textContent = `Loading Atlas demo (${packId})…`;
@@ -669,7 +705,7 @@ async function renderDemoPackPicker() {
     host.innerHTML = `<span class="muted tiny">Sample repositories unavailable — restart Atlas or check your install.</span>`;
     return;
   }
-  let selected = STATE.demoPack || "medium";
+  let selected = STATE.demoPack || DEFAULT_DEMO_PACK;
   try {
     const saved = localStorage.getItem(DEMO_PACK_KEY);
     if (saved) selected = saved;
@@ -719,6 +755,11 @@ function go(view) {
     if (window.STATE && STATE.summary && STATE.summary.ok) document.body.classList.remove("atlas-no-repo");
     if (typeof atlasPollTrustStatus === "function") atlasPollTrustStatus();
   }
+  if (view === "scan") {
+    renderDemoPackPicker();
+    loadRecent();
+  }
+  if (view === "ask") renderAskPage();
   if (view === "export") refreshExport();
   if (view === "build" || view === "investigate" || view === "impact") {
     if (!STATE.summary?.ok) renderWorkflowGate(view);
@@ -856,10 +897,12 @@ async function resumePersistedScan(repoId) {
   }
   STATE.summary = r.summary || await api("/api/repositories/current/summary");
   unlockNav();
+  document.body.classList.remove("atlas-no-repo");
   updateRepoChip(r.repo_name || STATE.summary?.repo_name, false);
   renderResumeCard(null);
   toast(`Resumed ${r.repo_name || "repository"}`, "success");
-  go("build");
+  go("ask");
+  primeAskAtlasPrompt({ repo_name: r.repo_name || STATE.summary?.repo_name });
 }
 
 async function refreshPersistedScan(repoId, repoPath) {
@@ -1146,8 +1189,8 @@ function updateGraphMeta(data, perf) {
 async function renderCenter() {
   const sum = STATE.summary || (STATE.summary = await api("/api/repositories/current/summary"));
   if (!sum.ok) {
-    $("leftPanel").innerHTML = emptyStateHtml("Scan a repository first.", "Scan a folder or load a sample to explore the dependency map.", "Scan Repository", "go('home')");
-    $("graph3d").innerHTML = emptyStateHtml("Scan a repository first.", "Complete a scan to render the dependency map.", "Scan Repository", "go('home')");
+    $("leftPanel").innerHTML = repoRequiredEmptyHtml("Scan a folder or load the sample to explore architecture, dependencies, and risk hubs.");
+    $("graph3d").innerHTML = repoRequiredEmptyHtml("Complete a scan to render the dependency map.");
     $("suggest").innerHTML = "";
     $("moduleInspector").innerHTML = `<h3>Module Inspector</h3><p class="muted tiny">Scan a repository first.</p>`;
     ATLAS_UNIVERSE.renderTimeline($("timelinePanel"), null);
@@ -1301,7 +1344,7 @@ function renderPerformancePanel(health) {
       <div class="perf-row"><span>Total scan</span><b>${formatMs(scanPerf.total_duration_ms)}</b></div>
       <div class="perf-row"><span>Graph build</span><b>${formatMs(byStage.building_graph || byStage.building_dependency_graph)}</b></div>
       <div class="perf-row"><span>Evidence index</span><b>${formatMs(byStage.building_evidence_index)}</b></div>
-      <div class="perf-row"><span>Change Plan</span><b>${formatMs((wf.build_plan || {}).duration_ms)}</b></div>
+      <div class="perf-row"><span>Plan Change</span><b>${formatMs((wf.build_plan || {}).duration_ms)}</b></div>
       <div class="perf-row"><span>Debug</span><b>${formatMs((wf.investigation || {}).duration_ms)}</b></div>
       <div class="perf-row"><span>What breaks?</span><b>${formatMs((wf.impact || {}).duration_ms)}</b></div>
     </div>`;
@@ -1382,15 +1425,59 @@ function computeRiskPercentiles(nodes) {
   };
 }
 
+async function ensureRepoSummary() {
+  if (STATE.summary?.ok) return STATE.summary;
+  const sum = await api("/api/repositories/current/summary");
+  if (sum?.ok) {
+    STATE.summary = sum;
+    document.body.classList.remove("atlas-no-repo");
+    unlockNav();
+    updateRepoChip(sum.repo_name, sum.demo_mode);
+    updateWorkflowToolbars();
+  } else {
+    document.body.classList.add("atlas-no-repo");
+  }
+  return sum;
+}
+
+async function renderAskPage() {
+  const gate = $("askEmptyState");
+  const panel = $("askPanel");
+  const sum = await ensureRepoSummary();
+  if (!sum?.ok) {
+    if (panel) panel.style.display = "none";
+    if (gate) {
+      gate.style.display = "block";
+      gate.innerHTML = repoRequiredEmptyHtml(
+        "Load the sample, press Send, and see a cited answer about services/auth.py in under 30 seconds."
+      );
+    }
+    return;
+  }
+  if (gate) { gate.style.display = "none"; gate.innerHTML = ""; }
+  if (panel) panel.style.display = "block";
+  const status = $("askStatus");
+  if (status) status.textContent = `${sum.repo_name || "Repository"} indexed. Ask your first question.`;
+  if ($("suggest")) $("suggest").innerHTML = renderCopilotSuggestions(sum);
+}
+
 function defaultCopilotQuestions(summary) {
-  const qs = [
+  const qs = [];
+  const topHub = summary?.top_hubs?.[0]?.path;
+  if (summary?.demo_mode) {
+    qs.push(DEFAULT_FIRST_QUESTION);
+  }
+  if (topHub) {
+    const q = `What breaks if I change ${topHub}?`;
+    if (!qs.includes(q)) qs.push(q);
+  }
+  qs.push(
     "What does this repository do?",
     "Where should I start?",
-    "What are the top architectural risks?",
-  ];
-  if (summary?.top_hubs?.[0]?.path) qs.push(`What breaks if I change ${summary.top_hubs[0].path}?`);
-  if ((summary?.graph_health?.import_cycles || 0) > 0) qs.push("Show import cycles.");
-  qs.push("Generate a Claude prompt for this repo.");
+    "Rank the top architectural-risk modules and explain why."
+  );
+  if (summary?.import_cycle_count) qs.push("Where are the import cycles and how do I break them?");
+  qs.push("Prepare a compact context packet for Claude/Codex/Cursor.");
   return qs;
 }
 
@@ -1417,13 +1504,23 @@ async function askQuestion(q) {
 async function sendCopilotQuestion() {
   const question = ($("askInput").value || "").trim();
   if (!question) { toast("Enter a question"); return; }
+  const sum = await ensureRepoSummary();
+  if (!sum?.ok) {
+    renderAskPage();
+    toast("Scan a repository first", "error");
+    return;
+  }
   $("copilotLoading").style.display = "block";
   $("copilotCard").style.display = "none";
   const body = { question, target: "none", packet: "compact" };
   if (STATE.selectedNode) body.node_context = STATE.selectedNode;
   const res = await api("/api/copilot/ask", "POST", body);
   $("copilotLoading").style.display = "none";
-  if (!res.ok) { toast("✗ " + (res.error || "Copilot failed")); return; }
+  if (!res.ok) {
+    if (res.code === "no_repository" || res.code === "requires_scan") renderAskPage();
+    toast("✗ " + (res.error || "Ask Atlas failed"));
+    return;
+  }
   STATE.copilotResult = res;
   renderCopilotAnswer(res);
 }
@@ -1792,7 +1889,7 @@ async function copyContext(target) {
   copyText(text, `Copied ${target} context`);
 }
 
-/* ---------------- Change Plan ---------------- */
+/* ---------------- Plan Change ---------------- */
 function esc(s) { return String(s || "").replace(/</g, "&lt;"); }
 
 function renderLimitations(items) {
@@ -1885,13 +1982,13 @@ function renderDomainKnowledge(dk) {
 }
 
 async function runChangePlan() {
-  if (!requireAtlasAccess("Change Plan")) return;
+  if (!requireAtlasAccess("Plan Change")) return;
   const request = $("buildRequest")?.value.trim();
   if (!request) { toast("Describe the change you want"); return; }
   const r = await api("/api/planning/change", "POST", { request });
   const out = $("buildOut");
   if (!r.ok) {
-    out.innerHTML = workflowErrorHtml("Could not generate plan", r, "Try a more specific request or pick a module from the Repository Map.");
+    out.innerHTML = workflowErrorHtml("Could not generate plan", r, "Try a more specific request or pick a module from the Map.");
     return;
   }
   STATE.buildResult = r;
@@ -1910,7 +2007,7 @@ async function runChangePlan() {
     <div class="advanced-only">
     <div class="glass ocard">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-        <h3 style="margin:0">Change Plan</h3>
+        <h3 style="margin:0">Plan Change</h3>
         <span class="lvl ${p.confidence?.includes('high') ? 'low' : 'medium'}">${typeof atlasFriendlyConfidence === "function" ? atlasFriendlyConfidence(p.confidence) : esc(p.confidence)} confidence</span>
       </div>
       ${filesNote}
@@ -2234,8 +2331,8 @@ async function refreshExport() {
     $("exportPreview").innerHTML = emptyStateHtml(
       "Scan a repository first",
       "Load the sample or scan your own folder to preview repo-wide context for Claude, Cursor, or Codex.",
-      "Go to Home",
-      "go('home')"
+      "Scan repository",
+      "go('scan')"
     );
     $("tokEst").textContent = "—";
     $("previewMeta").textContent = "Scan first";
@@ -2399,7 +2496,10 @@ async function bootAtlasApp() {
       updateTelemetryWarning(STATE.summary);
       updateRepoChip(h.repo_name || STATE.summary?.repo_name, h.demo_mode);
       updateMassiveBadge(!!STATE.summary?.massive_mode);
-      if (STATE.summary?.ok) renderResumeCard(null);
+      if (STATE.summary?.ok) {
+        document.body.classList.remove("atlas-no-repo");
+        renderResumeCard(null);
+      }
     }
   } catch (e) {}
   loadRecent();

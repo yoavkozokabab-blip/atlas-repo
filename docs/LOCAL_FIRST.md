@@ -21,8 +21,8 @@ and MCP server, commit `69556ceeb`.)
   excludes source code, file paths, and prompt text from request payloads —
   `accounts_client.py`.)
 - Website usage produces standard server request logs (via Vercel).
-- Payments: **not enabled**. If enabled later, Stripe would handle them and
-  we would never see card numbers.
+- Payments: Paddle is Merchant of Record for paid subscriptions. Atlas does not
+  store payment details or card numbers.
 
 > When you connect Atlas to an AI agent (Claude, Cursor, Codex), that agent receives the
 > context Atlas returns. From that point the data is governed by **your agent vendor's**

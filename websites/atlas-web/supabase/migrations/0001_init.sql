@@ -22,7 +22,7 @@ create table if not exists public.users (
   plan_status        text not null default 'none',
   trial_ends_at      timestamptz,
   renews_at          timestamptz,
-  stripe_customer_id text,
+  paddle_customer_id text,
   created_at         timestamptz not null default now(),
   last_login_at      timestamptz,
   downloads          integer not null default 0

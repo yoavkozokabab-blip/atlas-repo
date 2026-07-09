@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SUPPORT_EMAIL, supportMailto } from "../_config";
+import { GITHUB_URL, SUPPORT_EMAIL, supportMailto } from "../_config";
 
 export function SiteNav() {
   return (
@@ -38,18 +38,22 @@ export function SiteFooter() {
           </div>
           <div>
             <h4>Product</h4>
-            <Link href="/features">Features</Link>
-            <Link href="/download">Download</Link>
+            <Link href="/pricing">Pricing</Link>
             <Link href="/docs">Docs</Link>
+            <Link href="/download">Download</Link>
+            <Link href="/features">Features</Link>
+          </div>
+          <div>
+            <h4>Legal</h4>
+            <Link href="/privacy">Privacy</Link>
+            <Link href="/terms">Terms</Link>
+            <Link href="/refund">Refund</Link>
+            <Link href="/security">Security</Link>
           </div>
           <div>
             <h4>Company</h4>
             <Link href="/contact">Contact</Link>
-            <Link href="/privacy">Privacy</Link>
-            <Link href="/terms">Terms</Link>
-          </div>
-          <div>
-            <h4>Support</h4>
+            <a href={GITHUB_URL} target="_blank" rel="noreferrer">GitHub</a>
             {SUPPORT_EMAIL ? (
               <a href={supportMailto()}>{SUPPORT_EMAIL}</a>
             ) : (
@@ -58,7 +62,7 @@ export function SiteFooter() {
             <Link href="/faq">FAQ</Link>
           </div>
         </div>
-        <div className="legal">© 2026 Atlas · Local-first repository intelligence.</div>
+        <div className="legal">© 2026 Atlas. Local-first repository intelligence.</div>
       </div>
     </footer>
   );

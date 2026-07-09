@@ -13,7 +13,6 @@ export default async function BillingPage() {
   const isPaid = user.plan !== "free";
   const isCanceled = user.planStatus === "canceled" || user.planStatus === "expired";
 
-  // Paid plans are not live: be honest — no subscription, no checkout, no charge.
   if (!PAID_PLANS_ENABLED) {
     return (
       <div>
@@ -21,14 +20,14 @@ export default async function BillingPage() {
           <h3 style={{ marginBottom: 14 }}>Billing</h3>
           <dl className="kv">
             <dt>Current plan</dt><dd>Free</dd>
-            <dt>Price</dt><dd>$0 — free during the release candidate</dd>
+            <dt>Price</dt><dd>$0 - Free plan</dd>
             <dt>Status</dt><dd>Active</dd>
           </dl>
         </div>
         <div className="note-accent" style={{ maxWidth: 640 }}>
-          <b>Atlas is free right now.</b> There is no subscription and no payment method on
-          file — nothing will ever be charged. Paid plans aren&apos;t available yet, and
-          we&apos;ll tell you before anything changes.
+          <b>You are on Free.</b> Pro is $19/month with a 7-day free trial when
+          enabled for your account. Secure payments are powered by Paddle, and
+          Atlas never stores your payment details.
         </div>
       </div>
     );
@@ -48,7 +47,7 @@ export default async function BillingPage() {
       </div>
 
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 20 }}>
-        {!isPaid && <CheckoutButton plan="pro" label="Start Pro trial" />}
+        {!isPaid && <CheckoutButton plan="pro" label="Start 7-day free trial" />}
         {isPaid && !isCanceled && <ManageBillingButton />}
         {isPaid && !isCanceled && <BillingActionButton action="cancel" label="Cancel subscription" />}
         {isCanceled && <BillingActionButton action="renew" label="Renew subscription" className="btn btn-primary" />}
@@ -56,7 +55,8 @@ export default async function BillingPage() {
 
       <p className="note" style={{ marginTop: 18 }}>
         To cancel, use the button above or the billing portal. See our{" "}
-        <Link href="/refund" style={{ color: "var(--accent)" }}>Refund</Link> and{" "}
+        <Link href="/refund" style={{ color: "var(--accent)" }}>Refund</Link>{" "}
+        and{" "}
         <Link href="/cancellation" style={{ color: "var(--accent)" }}>Cancellation</Link> policies.
       </p>
     </div>

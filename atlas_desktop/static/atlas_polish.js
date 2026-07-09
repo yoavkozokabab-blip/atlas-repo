@@ -1,5 +1,5 @@
 "use strict";
-/* Product polish: first Change Plan funnel, copy, installer friction (no new intelligence). */
+/* Product polish: first Plan Change funnel, copy, installer friction (no new intelligence). */
 
 const FIRST_BUILD_KEY = "atlas_first_build_plan_done";
 const FIRST_BUILD_PROMPT = "Add structured logging to API handlers";
@@ -12,7 +12,7 @@ function goToFirstBuildPlan() {
   setTimeout(function () {
     field && field.focus();
     if (typeof toast === "function") {
-      toast("Describe your change, then click Create Change Plan", "success");
+      toast("Describe your change, then click Create plan", "success");
     }
   }, 200);
 }
@@ -27,12 +27,12 @@ function promptFirstBuildPlanAfterScan(scan) {
   if (!scan || !scan.ok) return;
   // do NOT auto-jump. Let the success screen land so the user
   // clearly sees what Atlas understood, then chooses "Generate your first
-  // Change Plan" themselves.
+  // Plan Change" themselves.
   let done = false;
   try { done = localStorage.getItem(FIRST_BUILD_KEY) === "1"; } catch (e) {}
   if (done) return;
   if (typeof toast === "function") {
-    toast("Next: click \u201cCreate your first Change Plan\u201d", "success");
+    toast("Next: ask Atlas about the repository.", "success");
   }
 }
 
@@ -54,7 +54,7 @@ function renderScanReliabilityNotice(scan) {
   host.innerHTML = `<div class="product-notice warn">
     <b>Scan note</b>
     <ul class="clean tiny">${items.map(w => `<li>${escPolish(w)}</li>`).join("")}</ul>
-    <p class="muted tiny">You can still run Change Plan and What breaks? — results may list fewer grounded files. Try a narrower scan scope if this is your own repo.</p>
+    <p class="muted tiny">You can still use Plan Change and What breaks? — results may list fewer grounded files. Try a narrower scan scope if this is your own repo.</p>
   </div>`;
 }
 

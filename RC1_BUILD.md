@@ -59,7 +59,7 @@
 - [ ] Create/login an account in the desktop flow
 - [ ] Session persists across restart
 - [ ] Logout works
-- [ ] Paid CTAs hidden OR Stripe live (decision recorded)
+- [ ] Paid CTAs hidden OR Paddle live (decision recorded)
 
 ## I. Uninstall
 - [ ] Uninstall via Windows "Apps & features"

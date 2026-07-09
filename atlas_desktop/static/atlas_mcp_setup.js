@@ -14,12 +14,32 @@ const atlasMcpSetup = (() => {
     el.textContent = text;
   }
 
+  function setText(id, text, ok) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = text;
+    el.className = ok ? "connected" : "disconnected";
+  }
+
+  function renderHomeStatus(status) {
+    if (!status) return;
+    const claude = status.claude || {};
+    const cursor = status.cursor || {};
+    setText("mcpClaudeStatus", claude.atlas_configured ? "Connected" : "Not connected", !!claude.atlas_configured);
+    setText("mcpCursorStatus", cursor.atlas_configured ? "Connected" : "Not connected", !!cursor.atlas_configured);
+    setText("mcpCodexStatus", status.executable_exists ? "MCP ready" : "Not connected", !!status.executable_exists);
+  }
+
   async function loadStatus(force) {
-    if (cachedStatus && !force) return cachedStatus;
+    if (cachedStatus && !force) {
+      renderHomeStatus(cachedStatus);
+      return cachedStatus;
+    }
     cachedStatus = await api("/api/integrations/mcp/status");
     cachedJson =
       cachedStatus.copyable_json ||
       JSON.stringify(cachedStatus.snippet || {}, null, 2);
+    renderHomeStatus(cachedStatus);
     return cachedStatus;
   }
 

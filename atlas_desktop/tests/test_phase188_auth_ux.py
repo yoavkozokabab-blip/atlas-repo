@@ -102,7 +102,7 @@ def test_phase188_register_and_login_route_into_app_without_pending_screen():
 
 
 def test_phase188_workflow_views_and_actions_require_valid_access():
-    assert 'const PROTECTED_VIEWS = new Set(["home", "scan", "center", "build", "investigate", "impact", "export"])' in APP_JS
+    assert 'const PROTECTED_VIEWS = new Set(["home", "scan", "ask", "center", "build", "investigate", "impact", "export"])' in APP_JS
     assert 'PROTECTED_VIEWS.has(view) && !requireAtlasAccess("Atlas")' in APP_JS
 
     for marker in (
@@ -133,9 +133,9 @@ def test_phase188_license_gating_disables_workflow_buttons():
     assert 'data-lock="1"' in INDEX
 
     protected_labels = [
-        "Load Sample Repository",
-        "Scan Repository",
-        "Create Change Plan",
+        "Load sample repository",
+        "Scan local repository",
+        "Create plan",
         "Analyze symptom",
         "Show what breaks",
         "Copy for Claude",

@@ -12,7 +12,7 @@ const faqs = [
   ["Does Atlas replace Claude, Cursor or Codex?", "No — it makes them better by giving them your repository's real structure instead of letting them guess."],
   ["Will it invent files or give stale context?", "No. Atlas is evidence-backed and refuses stale or unverifiable context rather than hallucinating."],
   ["What platforms are supported?", "Windows today. macOS and Linux are on the roadmap — let us know on the contact page."],
-  ["Is it free?", "Yes — a free tier for one repository. Pro ($29/mo) adds unlimited repos, impact analysis, investigation, compression and risk detection; the 7-day trial starts in-app, no card."],
+  ["Is it free?", "Yes. Free is $0 with unlimited time, repository scanning, the local dependency graph, MCP integration, Ask Atlas, Debug, Impact analysis, change planning and the dependency map. Pro is $19/month with a 7-day free trial."],
   ["How do I cancel?", "Anytime from the billing portal; access continues to the end of the period."],
   ["Is the installer safe?", "Download Atlas from atlas-repo-chi.vercel.app. Windows SmartScreen may warn on first run for new or unsigned apps; confirm the source before continuing."]
 ] as const;

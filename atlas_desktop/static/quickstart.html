@@ -23,17 +23,17 @@
   </header>
 
   <main id="app" class="support-page">
-    <h2 class="vh">Quickstart — from zero to an AI prompt in 5 minutes</h2>
-    <p class="muted tiny support-lead">Atlas maps your codebase locally and turns a request into a grounded plan you can paste into Claude, Cursor, or Codex. It does not edit your files — you (or your AI tool) implement the change.</p>
+    <h2 class="vh">Quickstart — from zero to a repo-aware answer in 5 minutes</h2>
+    <p class="muted tiny support-lead">Atlas maps your codebase locally, answers repository questions with cited files, and prepares grounded context you can paste into Claude, Cursor, or Codex. It does not edit your files.</p>
 
     <section class="glass support-card">
       <h3>The 5-minute path</h3>
       <ol class="clean support-faq tiny">
         <li><b>Open Atlas.</b> Your browser opens automatically to the Home screen.</li>
-        <li><b>Click “Load Sample Repository.”</b> No folder path, no setup — Atlas indexes a small bundled codebase.</li>
-        <li><b>Read the success screen.</b> You'll see <i>“Atlas understood the sample repository”</i> with files indexed, modules, and dependency edges.</li>
-        <li><b>Click “Create your first Change Plan.”</b> Keep the example or type your own change. Atlas lists the affected files, implementation order, risks, and tests.</li>
-        <li><b>Click “Copy for Claude / Cursor / Codex.”</b> Paste it into your AI coding tool and ask it to implement the plan.</li>
+        <li><b>Click “Load sample repository.”</b> No folder path, no setup — Atlas indexes a bundled sample repository.</li>
+        <li><b>Land on Ask Atlas.</b> Atlas pre-fills <i>“What breaks if I change services/auth.py?”</i> so you can send a real repo question immediately.</li>
+        <li><b>Read the cited answer.</b> Atlas shows relevant files and evidence from the local repository map.</li>
+        <li><b>Use Plan Change when you are ready.</b> Describe a change to get affected files, implementation order, risks, and tests.</li>
       </ol>
     </section>
 
@@ -49,7 +49,8 @@
     <section class="glass support-card">
       <h3>What the words mean</h3>
       <ul class="clean support-faq tiny">
-        <li><b>Change Plan</b> — files, order, risks, and tests for a change you describe.</li>
+        <li><b>Ask Atlas</b> — repo-aware answers with cited files.</li>
+        <li><b>Plan Change</b> — files, order, risks, and tests for a change you describe.</li>
         <li><b>What breaks?</b> — which files import your target and may break if you change it.</li>
         <li><b>Codebase Map</b> — an interactive 3D view of modules and dependencies.</li>
         <li><b>Send to AI</b> — copy a ready prompt for Claude, Cursor, or Codex.</li>

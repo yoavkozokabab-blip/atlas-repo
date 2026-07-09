@@ -2,7 +2,7 @@
 /* trust signals, output detail level, and SmartScreen guidance.
  *
  * UI-only. No changes to intelligence, semantic resolver, benchmarks, billing,
- * or the marketing site. Every Change Plan / Debug / What-breaks result
+ * or the marketing site. Every Plan Change / Debug / What-breaks result
  * gets a consistent "Why Atlas believes this" block (evidence + confidence +
  * reason), and the user can switch between Simple and Full detail output.
  */

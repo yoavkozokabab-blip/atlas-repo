@@ -16,18 +16,22 @@ def _read(name: str) -> str:
 
 def test_canonical_workflow_names_in_index():
     html = _read("index.html")
-    assert "Change Plan" in html
-    assert "Create Change Plan" in html
+    assert "Ask Atlas" in html
+    assert "Plan Change" in html
+    assert "Create plan" in html
     assert "Debug" in html
     assert "What breaks?" in html
-    assert ">Codebase Map<" in html
+    assert ">Map<" in html
     assert "Build Plan" not in html
+    assert "Change Plan" not in html
     assert "Generate Change Plan" not in html
 
 
-def test_scan_success_uses_create_cta():
+def test_scan_success_uses_ask_cta():
     html = _read("index.html")
-    assert "Create your first Change Plan" in html
+    block = html.split('id="scanSuccess"', 1)[1].split("</section>", 1)[0]
+    assert "Ask first question" in block
+    assert "Plan a change" in block
 
 
 def test_demo_page_cleaned():
@@ -42,7 +46,7 @@ def test_support_copy_consistency():
     html = _read("support.html")
     assert "No Python required (installer)" in html
     assert "(installer)" in html and "(source" in html
-    assert "Create your first Change Plan" in html
+    assert "press Send in <b>Ask Atlas</b> to see cited files" in html
     assert "Rescan saved repository" in html
 
 
@@ -65,6 +69,7 @@ def test_marketing_and_changelog_naming():
     assert "What Breaks" in _read("landing.html")
     assert "<b>Debug</b>" in _read("changelog.html")
     assert "<b>What breaks?</b>" in _read("changelog.html")
+    assert "<b>Plan Change</b>" in _read("changelog.html")
     assert "debug results are ranked hypotheses" in _read("about.html")
 
 

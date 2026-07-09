@@ -21,7 +21,7 @@ export default async function BillingSuccessPage({
               your billing page.</p>
             {isStub && (
               <p className="note" style={{ marginTop: 12 }}>
-                (Test mode — no charge was made. Live billing activates when Stripe is connected.)
+                (Test mode — no charge was made. Live billing activates when Paddle is connected.)
               </p>
             )}
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 18 }}>

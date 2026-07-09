@@ -105,8 +105,10 @@ def test_startup_error_page_exists():
 
 def test_static_index_173b_ux_copy():
     html = (Path(__file__).resolve().parents[1] / "static" / "index.html").read_text(encoding="utf-8")
-    assert "Repository Context" in html
-    assert "Create Change Plan" in html
+    nav = html[html.find('<nav class="nav"'): html.find("</nav>", html.find('<nav class="nav"'))]
+    assert "Repository Context" not in nav
+    assert "Ask Atlas" in html
+    assert "Plan Change" in html
     assert 'onclick="welcomeScanMyRepo()"' in html
     assert "Send to AI" not in html
 

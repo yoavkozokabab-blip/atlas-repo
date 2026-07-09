@@ -60,8 +60,8 @@ export const ENV = {
   get hasSupabase(): boolean {
     return !!(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
   },
-  get hasStripe(): boolean {
-    return !!process.env.STRIPE_SECRET_KEY;
+  get hasPaddle(): boolean {
+    return !!process.env.PADDLE_API_KEY;
   },
   get paymentsMode(): "stub" | "test" | "live" {
     const m = process.env.PAYMENTS_MODE;
@@ -79,13 +79,13 @@ export const ENV = {
 };
 
 /**
- * Live charges require BOTH live mode AND a Stripe key. This build never returns
+ * Live charges require BOTH live mode AND a Paddle key. This build never returns
  * true for a stub/test deployment, and the checkout code additionally falls
  * through to the stub path — so no real money can move without a deliberate,
  * reviewed change.
  */
 export function liveChargesEnabled(): boolean {
-  return ENV.paymentsMode === "live" && ENV.hasStripe;
+  return ENV.paymentsMode === "live" && ENV.hasPaddle;
 }
 
 // ---------------------------------------------------------------------------

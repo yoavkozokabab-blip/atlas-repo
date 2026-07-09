@@ -34,14 +34,16 @@ def test_simplified_nav_labels():
     # Phase 155 — nav labels were de-jargoned for first-time users.
     html = INDEX.read_text(encoding="utf-8")
     for label in (
-        "Codebase Map",
-        "Change Plan",
+        "Ask Atlas",
+        "Plan Change",
         "Debug",
         "What breaks?",
-        "Repository Context",
+        "Advanced context export",
     ):
         assert label in html
-    for removed in ("Command Center", "Bug Hunt", "data-view=\"intel\"", "data-view=\"bug\""):
+    nav = html[html.find('<nav class="nav"'): html.find("</nav>", html.find('<nav class="nav"'))]
+    assert "Repository Context" not in nav
+    for removed in ("Command Center", "Bug Hunt", "Change Plan", "Repository Context", "data-view=\"intel\"", "data-view=\"bug\""):
         assert removed not in html
 
 
@@ -98,7 +100,7 @@ def test_graph_health_unresolved_ratio_note(planner_scan):
 
 def test_visible_nav_route_views_exist():
     html = INDEX.read_text(encoding="utf-8")
-    for view in ("home", "scan", "center", "build", "investigate", "impact", "export"):
+    for view in ("home", "scan", "ask", "center", "build", "investigate", "impact", "export"):
         assert f'id="view-{view}"' in html
 
 

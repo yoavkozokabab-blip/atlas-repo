@@ -35,7 +35,7 @@ Severity (blocks first value? Y/N):
 - Still active at 7 days, unprompted.
 
 ## "Would you pay?" questions
-- If the local tool stays free but a shared/governed team version is $29/mo/seat, would
+- If the local tool stays free but a shared/governed team version is $19/mo/seat, would
   your team pay?
 - What would it need to do for you to expense it?
 - What do you pay today for tools in this category?

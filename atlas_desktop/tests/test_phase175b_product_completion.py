@@ -155,7 +155,8 @@ def test_export_cta_primary_after_change_plan():
     html = (STATIC / "index.html").read_text(encoding="utf-8")
     zf = (STATIC / "atlas_zero_friction.js").read_text(encoding="utf-8")
     assert "Copy for Claude" in html
-    assert "Repository Context" in html
+    assert "Advanced context export" in html
+    assert "Repository Context" not in html
     assert "advanced" in html.lower()
     assert "memory-export-note" in zf
     assert "compact repository summary" in zf.lower()

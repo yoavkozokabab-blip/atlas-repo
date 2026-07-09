@@ -149,9 +149,9 @@ function buildWorkflowMarkdownBundle() {
     "",
   ];
   if (STATE.buildResult && STATE.buildResult.ok) {
-    parts.push("---", "", "## Change Plan", "", STATE.buildResult.formatted || "(no markdown body)", "");
+    parts.push("---", "", "## Plan Change", "", STATE.buildResult.formatted || "(no markdown body)", "");
   } else {
-    parts.push("## Change Plan", "", "_Not generated in this session._", "");
+    parts.push("## Plan Change", "", "_Not generated in this session._", "");
   }
   if (STATE.investigateResult && STATE.investigateResult.ok) {
     parts.push("---", "", "## Debug", "", STATE.investigateResult.formatted || "(no markdown body)", "");
@@ -238,7 +238,7 @@ function dismissWelcomeScreen(goHome) {
 function welcomeScanMyRepo() {
   dismissWelcomeScreen(false);
   if (typeof showHomeScanFocus === "function") showHomeScanFocus();
-  else if (typeof go === "function") go("home");
+  else if (typeof go === "function") go("scan");
 }
 
 function welcomeLoadSample() {
@@ -261,14 +261,14 @@ function maybeShowWelcomeScreen() {
 }
 
 const GUIDED_STEPS = [
-  { title: "Welcome", text: "Atlas prepares grounded Change Plans for your AI tools. It maps code locally and does not write patches for you.", action: null },
-  { title: "Sample repository", text: "We'll load a small bundled codebase so you can explore without cloning anything.", action: "load_sample" },
-  { title: "Repository Map", text: "The 3D map shows modules, dependencies, and architectural risk. Click nodes to inspect them.", view: "center", action: "wait_map" },
-  { title: "Your first Change Plan", text: "We will load a sample repo and generate a plan — affected files, order, and tests. You implement the change (or paste the export into Claude/Cursor).", view: "build", action: "build_example" },
+  { title: "Welcome", text: "Atlas gives your AI coding tools local repository memory. It maps code locally and does not write patches for you.", action: null },
+  { title: "Sample repository", text: "We'll load a bundled sample so you can explore without cloning anything.", action: "load_sample" },
+  { title: "Ask Atlas", text: "Press Send on the prefilled auth-file question. Answers use the local repository map and cite relevant files.", view: "ask", action: "ask_example" },
+  { title: "Repository Map", text: "The map shows modules, dependencies, and architectural risk. Click nodes to inspect them.", view: "center", action: "wait_map" },
+  { title: "Plan Change", text: "Describe a change to get affected files, order, and tests. You implement the change, or paste the prompt into Claude/Cursor.", view: "build", action: "build_example" },
   { title: "Debug", text: "Paste a symptom or traceback. Atlas ranks likely causes and verification steps.", view: "investigate", action: "investigate_example" },
   { title: "What breaks?", text: "Enter a file or module to see what depends on it before you edit.", view: "impact", action: "impact_example" },
-  { title: "Repository Context", text: "Copy repo-wide context for Claude, Cursor, or Codex — or download workflow markdown.", view: "export", action: null },
-  { title: "You're ready", text: "Scan your own repository from Home, or keep exploring the sample. Use Report Issue if something breaks.", action: "done" },
+  { title: "You're ready", text: "Scan your own repository from Scan, or keep exploring the sample. Use Report Issue if something breaks.", action: "done" },
 ];
 
 let _guidedIndex = 0;
@@ -299,6 +299,13 @@ async function runGuidedAction(action) {
   if (action === "wait_map") {
     if (typeof go === "function") go("center");
     if (typeof renderCenter === "function") await renderCenter();
+    return;
+  }
+  if (action === "ask_example") {
+    if (typeof go === "function") go("ask");
+    const field = $("askInput");
+    if (field) field.value = "What breaks if I change services/auth.py?";
+    if (typeof sendCopilotQuestion === "function") await sendCopilotQuestion();
     return;
   }
   if (action === "build_example") {

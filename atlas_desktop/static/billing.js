@@ -173,7 +173,7 @@
       cards.innerHTML = "";
       if (empty) {
         empty.style.display = "block";
-        empty.textContent = "Usage dashboard will appear after Atlas records local activity. Run a scan or create a Change Plan to populate metrics.";
+        empty.textContent = "Usage dashboard will appear after Atlas records local activity. Run a scan or use Plan Change to populate metrics.";
       }
       return;
     }
@@ -209,7 +209,7 @@
     [
       ["Scans this month", usage.scans_used],
       ["Repositories scanned", usage.repositories_used],
-      ["Change Plans", usage.build_plans],
+      ["Plan Changes", usage.build_plans],
       ["Debug", usage.investigations],
       ["What Breaks", usage.impacts],
       ["Exports", usage.exports_used],
@@ -219,7 +219,7 @@
 
     if (empty) {
       empty.style.display = hasData ? "none" : "block";
-      empty.textContent = d.empty_state_message || "No usage recorded yet. Run a scan or create a Change Plan to populate this dashboard.";
+      empty.textContent = d.empty_state_message || "No usage recorded yet. Run a scan or use Plan Change to populate this dashboard.";
     }
 
     var lim = document.getElementById("limits");
@@ -333,7 +333,7 @@
       ["Total events", d.total_events],
       ["Total scans", d.total_scans],
       ["Repositories", d.total_repositories],
-      ["Change Plans", d.total_build_plans],
+      ["Plan Changes", d.total_build_plans],
       ["Debug", d.total_investigations],
       ["What Breaks", d.total_impacts],
       ["Exports", d.total_exports],

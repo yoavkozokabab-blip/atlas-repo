@@ -59,9 +59,9 @@ same = (vs.get("user") or {}).get("email") == EMAIL
 check("verify_session authenticated", vs.get("authenticated") is True)
 check("/me returns the same user (email matches website signup)", same)
 
-# 4) license = valid free beta
+# 4) license = valid Free plan
 lic = ac.get_license_status()
-check("license valid for free beta", lic.get("valid") is True and lic.get("beta") is True)
+check("license valid for Free plan", lic.get("valid") is True and lic.get("beta") is True)
 
 # 5) tampered token rejected at the authority
 tok = ac.get_valid_access_token()

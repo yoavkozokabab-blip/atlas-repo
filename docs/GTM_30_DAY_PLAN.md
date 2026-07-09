@@ -38,7 +38,7 @@ Format: Day — Objective — Tasks — Output — Metric.
 22. 3 enterprise/team discovery calls — research — pains + WTP.
 23. Pricing test: ask retained users what they'd pay; collect LOI — pricing — verbal commits.
 24. Ship most-requested fix from week 3 — iteration — shipped.
-25. Wire real Stripe OR manual invoice for first willing payer — monetization — payment possible.
+25. Wire real Paddle OR manual invoice for first willing payer — monetization — payment possible.
 26. Close 1–2 paid pilots / signed intents — revenue — first $ or LOI.
 27. Referral asks + testimonials — growth — 2 referrals.
 28. Retention check: who's active at 7+ days? interview 3 churned — measurement — retention number.

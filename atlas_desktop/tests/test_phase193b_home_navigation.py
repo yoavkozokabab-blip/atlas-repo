@@ -25,20 +25,22 @@ def _nav_block() -> str:
 def test_home_has_welcome_and_tagline():
     assert 'id="homeWelcome"' in INDEX
     assert "class=\"home-tagline\"" in INDEX
-    assert "understand large repositories before your AI starts changing code" in INDEX
+    assert "Give Claude Code and Cursor repo memory" in INDEX
+    assert "Fastest path: load the sample repository" in INDEX
+    assert "See cited files" in INDEX
+    assert "Scan local repository" in INDEX
+    assert "Load sample repository" in INDEX
 
 
 def test_home_has_large_quick_action_cards():
     cards = INDEX[INDEX.find('class="quick-action-cards"'):]
     cards = cards[: cards.find("</section>")]
-    # RC-1 copy: sharpened card titles (Debug Issue -> Find bug root cause,
-    # What Breaks? -> Impact analysis).
-    for title in ("Scan Repository", "Find bug root cause", "Change Plan", "Impact analysis"):
+    assert 'home-section needs-repo' in INDEX[INDEX.find('<!-- Section 2'): INDEX.find('<!-- Section 3')]
+    for title in ("Ask Atlas", "Debug", "Impact"):
         assert title in cards, title
     for desc in (
-        "Choose a repository and build understanding.",
-        "Investigate bugs and root causes.",
-        "Plan a code change before implementation.",
+        "Ask repo-aware questions.",
+        "Find likely causes from symptoms or stack traces.",
         "See what breaks before you edit.",
     ):
         assert desc in cards, desc
@@ -49,8 +51,7 @@ def test_home_has_getting_started_that_can_autohide():
     assert 'id="homeGettingStarted"' in INDEX
     gs = INDEX[INDEX.find('id="homeGettingStarted"'):]
     gs = gs[: gs.find("</section>")]
-    # RC-1 getting-started steps follow the real first-run journey.
-    for step in ("Scan a local repository", "Connect Cursor or Claude", "Ask a repo-aware question", "Build a Change Plan"):
+    for step in ("Load the sample repository", "Press Send in Ask Atlas", "Review the cited files", "Scan your own repo when ready"):
         assert step in gs, step
     # Auto-hides once usage history exists.
     assert "homeGettingStarted" in ACCOUNTS_JS
@@ -70,8 +71,13 @@ def test_primary_nav_has_only_core_workflows():
     nav = _nav_block()
     assert "Account" not in nav
     assert 'data-view="accounts"' not in nav
-    for view in ("home", "scan", "center", "build", "investigate", "impact"):
+    assert "Repository Context" not in nav
+    expected = ("home", "scan", "ask", "investigate", "impact", "build", "center")
+    for view in expected:
         assert f'data-view="{view}"' in nav, view
+    labels = re.findall(r'data-view="([^"]+)".*?>([^<]+)</button>', nav)
+    assert [view for view, _ in labels] == list(expected)
+    assert [label for _, label in labels] == ["Home", "Scan", "Ask Atlas", "Debug", "Impact", "Plan Change", "Map"]
 
 
 # ── Part 3 — User menu restructure ───────────────────────────────────────────

@@ -1,9 +1,7 @@
-# Atlas Terms of Use (DRAFT)
+# Atlas Terms of Use
 
-> **Status: DRAFT — requires legal review before publishing.** Clauses needing counsel
-> are marked **[LAWYER REVIEW]**.
-> Effective date: _[set on publish]_
-> Contact: _[support email — owner to set before publishing]_
+> Effective date: 2026-07-09
+> Contact: support@useatlas.dev
 
 1. **Use of Atlas.** Atlas is provided under these terms. Features may change, degrade,
    or be removed without notice. **[LAWYER REVIEW]**
@@ -31,10 +29,10 @@
 7. **Account termination.** We may suspend or terminate accounts for breach of these
    terms. You may stop using Atlas and request account deletion at any time.
 
-8. **Payments and refunds.** Payments are **not enabled**. If/when paid
-   plans launch, billing will be handled by Stripe; trial, billing cycle, and refund
-   terms will be stated at that time. **[LAWYER REVIEW + confirm billing is live before
-   publishing any payment terms]**
+8. **Payments and refunds.** Atlas offers Free, Pro ($19/month), and Team
+   (Coming soon) plans. Pro includes a 7-day free trial. Paid Pro subscriptions
+   are processed by Paddle as Merchant of Record; Atlas does not store payment
+   details. Refund requests are reviewed under the Refund Policy.
 
 9. **Your repository responsibility.** You are responsible for ensuring you have the
    right to scan the code you point Atlas at, and for safeguarding your local data.
@@ -42,4 +40,4 @@
 10. **Changes.** We may update these terms; continued use after changes constitutes
     acceptance. **[LAWYER REVIEW]**
 
-11. **Contact.** _[support email — owner to set]_.
+11. **Contact.** support@useatlas.dev.

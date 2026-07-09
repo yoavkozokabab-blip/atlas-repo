@@ -1,8 +1,7 @@
-# Atlas Privacy Policy (DRAFT)
+# Atlas Privacy Policy
 
-> **Status: DRAFT — requires legal review before publishing.**
-> Effective date: _[set on publish]_
-> Contact: atlas.repo.support@gmail.com
+> Effective date: 2026-07-09
+> Contact: support@useatlas.dev
 
 ## Summary
 
@@ -19,9 +18,8 @@ checked by source inspection of the desktop and MCP server (see *Verification* b
 - **Local data (desktop / MCP):** repository indexes, logs, and usage analytics are
   written to your local Atlas data directory and are **not transmitted**. *(Local-only
   analytics: VERIFIED — `analytics.py` writes a local file; no remote endpoint.)*
-- **Payments:** none today. Payments are **not enabled**. If enabled later,
-  Stripe would process them and we would not store card numbers. *(Stripe live: NOT
-  ENABLED — do not treat as active.)*
+- **Payments:** Paddle is Merchant of Record for paid subscriptions. Atlas does not
+  store payment details or card numbers.
 
 ## 2. What stays on your machine
 
@@ -42,7 +40,7 @@ website request logs. **Your source code is not sent.**
 
 - **Supabase** — account database.
 - **Vercel** — website hosting and request logs.
-- **Stripe** — payments (only if/when enabled later).
+- **Paddle** — Merchant of Record for paid subscriptions.
 - **Email provider** — _[NEEDS OWNER CONFIRMATION: which provider, if any]_.
 
 ## 5. Retention
@@ -80,4 +78,4 @@ claim of any third-party security certification.**
 - Local-only analytics: **VERIFIED**.
 - Support email / domain control: **NEEDS OWNER CONFIRMATION**.
 - Vercel log retention, email provider, deletion wiring: **NEEDS OWNER CONFIRMATION**.
-- Stripe/payments: **NOT ENABLED**.
+- Paddle/payments: **Paddle is Merchant of Record; Atlas does not store payment details.**

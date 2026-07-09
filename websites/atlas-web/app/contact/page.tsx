@@ -1,19 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageShell } from "../_components/site";
-import { SUPPORT_EMAIL, supportMailto } from "../_config";
+import { GITHUB_URL, HELLO_EMAIL, SECURITY_EMAIL, SUPPORT_EMAIL, supportMailto } from "../_config";
 
 export const metadata: Metadata = {
   title: "Contact — Atlas",
   description: "Get in touch with the Atlas team — support, billing, security, feedback and partnerships."
 };
 
+function mailto(email: string, subject: string) {
+  return `mailto:${email}?subject=${encodeURIComponent(subject)}`;
+}
+
 const categories = [
-  { t: "Support", d: "Installs, accounts, scanning or anything not working.", subject: "Atlas Support" },
-  { t: "Billing", d: "Subscriptions, invoices, trials, refunds and cancellations.", subject: "Atlas Billing" },
-  { t: "Security", d: "Report a vulnerability or ask about our security practices.", subject: "Atlas Security Disclosure" },
-  { t: "Feedback", d: "Feature requests, bug reports and product ideas.", subject: "Atlas Feedback" },
-  { t: "Partnerships", d: "Integrations, teams, and working together.", subject: "Atlas Partnerships" }
+  { t: "Support", d: "Installs, accounts, scanning or anything not working.", href: supportMailto("Atlas Support"), label: SUPPORT_EMAIL },
+  { t: "Hello", d: "Product questions, partnerships and general notes.", href: mailto(HELLO_EMAIL, "Atlas"), label: HELLO_EMAIL },
+  { t: "Security", d: "Responsible disclosure and security questions.", href: mailto(SECURITY_EMAIL, "Atlas Security Disclosure"), label: SECURITY_EMAIL },
+  { t: "GitHub", d: "Issues, releases and source-visible project activity.", href: GITHUB_URL, label: "Open GitHub", external: true },
 ];
 
 export default function ContactPage() {
@@ -21,21 +24,13 @@ export default function ContactPage() {
     <PageShell
       eyebrow="Contact"
       title="Get in touch."
-      intro="Pick the topic that fits — every message reaches us directly. We read all of them."
+      intro="Support, product questions, security disclosures and GitHub links for Atlas."
     >
       <section className="section" style={{ borderTop: "none", paddingTop: 8 }}>
         <div className="container">
-          {SUPPORT_EMAIL ? (
-            <p className="lead" style={{ marginBottom: 28 }}>
-              Reach us at{" "}
-              <a href={supportMailto()} style={{ color: "var(--accent)" }}>{SUPPORT_EMAIL}</a>{" "}
-              — or use a topic below to pre-fill the subject.
-            </p>
-          ) : (
-            <div className="note-accent" style={{ marginBottom: 28, maxWidth: 720 }}>
-              Use the topic cards below — each opens your email client with a pre-filled subject.
-            </div>
-          )}
+          <p className="lead" style={{ marginBottom: 28 }}>
+            Expected response time: one to two business days. Security reports are prioritized.
+          </p>
 
           <div className="grid-3">
             {categories.map((c) => (
@@ -43,25 +38,22 @@ export default function ContactPage() {
                 <h3>{c.t}</h3>
                 <p>{c.d}</p>
                 <p style={{ marginTop: 12 }}>
-                  <a href={supportMailto(c.subject)} style={{ color: "var(--accent)" }}>
-                    Email {c.t.toLowerCase()}
+                  <a
+                    href={c.href}
+                    target={c.external ? "_blank" : undefined}
+                    rel={c.external ? "noreferrer" : undefined}
+                    style={{ color: "var(--accent)" }}
+                  >
+                    {c.label}
                   </a>
                 </p>
               </div>
             ))}
-            <div className="card">
-              <h3>macOS / Linux</h3>
-              <p>Want Atlas on your platform? Tell us — it helps us prioritize.</p>
-              <p style={{ marginTop: 12 }}>
-                <a href={supportMailto("Atlas on macOS/Linux")} style={{ color: "var(--accent)" }}>
-                  Request a build
-                </a>
-              </p>
-            </div>
           </div>
 
           <div className="container" style={{ marginTop: 32, padding: 0 }}>
             <Link className="btn btn-primary" href="/download">Download Atlas</Link>
+            <Link className="btn btn-ghost" href="/pricing" style={{ marginLeft: 10 }}>See pricing</Link>
           </div>
         </div>
       </section>

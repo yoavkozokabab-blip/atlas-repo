@@ -67,7 +67,7 @@ def test_phase185_mcp_demo_evidence_exists():
     if not EVIDENCE.is_file():
         pytest.skip("Run scripts/phase185_claude_demo_proof.py first")
     data = json.loads(EVIDENCE.read_text(encoding="utf-8"))
-    assert data["question"] == "Where is authentication implemented?"
+    assert data["question"] == "What breaks if I change services/auth.py?"
     trace = data.get("tool_trace") or []
     assert len(trace) >= 3
     names = [t["tool"] for t in trace]

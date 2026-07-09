@@ -1,0 +1,51 @@
+warning: in the working copy of 'atlas_desktop/static/about.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'atlas_desktop/static/app.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'atlas_desktop/static/atlas_mcp_setup.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'atlas_desktop/static/atlas_polish.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'atlas_desktop/static/atlas_trust.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'atlas_desktop/static/atlas_workflows.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'atlas_desktop/static/atlas_zero_friction.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'atlas_desktop/static/billing.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'atlas_desktop/static/changelog.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'atlas_desktop/static/demo.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'atlas_desktop/static/docs.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'atlas_desktop/static/index.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'atlas_desktop/static/landing.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'atlas_desktop/static/quickstart.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'atlas_desktop/static/styles.css', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'atlas_desktop/static/support.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'atlas_desktop/tests/test_phase122_product_hardening.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'atlas_desktop/tests/test_phase146_beta_polish.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'atlas_desktop/tests/test_phase155_first_user_experience.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'atlas_desktop/tests/test_phase173b_beta_infrastructure_sprint.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'atlas_desktop/tests/test_phase175b_product_completion.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'atlas_desktop/tests/test_phase184_ux_consistency.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'atlas_desktop/tests/test_phase188_auth_ux.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'atlas_desktop/tests/test_phase193_access_state_ux.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'atlas_desktop/tests/test_phase193b_home_navigation.py', LF will be replaced by CRLF the next time Git touches it
+ atlas_desktop/static/about.html                    |   4 [32m+[m[31m-[m
+ atlas_desktop/static/app.js                        | 164 [32m++++++++[m[31m--[m
+ atlas_desktop/static/atlas_mcp_setup.js            |  22 [32m+[m[31m-[m
+ atlas_desktop/static/atlas_polish.js               |  10 [32m+[m[31m-[m
+ atlas_desktop/static/atlas_trust.js                |   2 [32m+[m[31m-[m
+ atlas_desktop/static/atlas_workflows.js            |  23 [32m+[m[31m-[m
+ atlas_desktop/static/atlas_zero_friction.js        |  14 [32m+[m[31m-[m
+ atlas_desktop/static/billing.js                    |   8 [32m+[m[31m-[m
+ atlas_desktop/static/changelog.html                |   4 [32m+[m[31m-[m
+ atlas_desktop/static/demo.html                     |   4 [32m+[m[31m-[m
+ atlas_desktop/static/docs.html                     |   2 [32m+[m[31m-[m
+ atlas_desktop/static/index.html                    | 363 [32m+++++++++++[m[31m----------[m
+ atlas_desktop/static/landing.html                  |   2 [32m+[m[31m-[m
+ atlas_desktop/static/quickstart.html               |  15 [32m+[m[31m-[m
+ atlas_desktop/static/styles.css                    |  23 [32m+[m[31m-[m
+ atlas_desktop/static/support.html                  |   6 [32m+[m[31m-[m
+ .../tests/test_phase122_product_hardening.py       |  12 [32m+[m[31m-[m
+ atlas_desktop/tests/test_phase146_beta_polish.py   |  17 [32m+[m[31m-[m
+ .../tests/test_phase155_first_user_experience.py   |  36 [32m+[m[31m-[m
+ .../test_phase173b_beta_infrastructure_sprint.py   |   6 [32m+[m[31m-[m
+ .../tests/test_phase175b_product_completion.py     |   3 [32m+[m[31m-[m
+ .../tests/test_phase184_ux_consistency.py          |  17 [32m+[m[31m-[m
+ atlas_desktop/tests/test_phase188_auth_ux.py       |   8 [32m+[m[31m-[m
+ .../tests/test_phase193_access_state_ux.py         |   2 [32m+[m[31m-[m
+ .../tests/test_phase193b_home_navigation.py        |  24 [32m+[m[31m-[m
+ 25 files changed, 473 insertions(+), 318 deletions(-)

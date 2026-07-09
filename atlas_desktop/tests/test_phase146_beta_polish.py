@@ -1,4 +1,4 @@
-"""Phase 146 — beta polish (copy, onboarding, first Build Plan funnel)."""
+"""Phase 146 — beta polish (copy, onboarding, first Plan Change funnel)."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from atlas_desktop import api, server
+from atlas_desktop import api
 
 STATIC = Path(__file__).resolve().parents[1] / "static"
 ROOT = Path(__file__).resolve().parents[2]
@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 @pytest.fixture(autouse=True)
 def _demo_loaded():
-    server.dispatch("POST", "/api/demo/load", {"pack": "small"})
+    api.load_demo_mode("small")
     yield
 
 
@@ -24,11 +24,7 @@ def test_version_is_clean_semver():
 
 
 def test_first_build_plan_works_on_demo():
-    _, plan = server.dispatch(
-        "POST",
-        "/api/planning/change",
-        {"request": "Add structured logging to API handlers"},
-    )
+    plan = api.plan_change("Add structured logging to API handlers")
     assert plan["ok"] is True
     assert plan.get("formatted")
     assert (plan.get("plan") or {}).get("implementation_order")
@@ -39,13 +35,14 @@ def test_polish_ui_markers():
     app = (STATIC / "app.js").read_text(encoding="utf-8")
     polish = (STATIC / "atlas_polish.js").read_text(encoding="utf-8")
     support = (STATIC / "support.html").read_text(encoding="utf-8")
-    assert "Change Plan" in html
+    assert "Plan Change" in html
+    assert "Ask Atlas" in html
     assert "goToFirstBuildPlan" in html
     assert "promptFirstBuildPlanAfterScan" in polish
     assert "friendlyValidateMessage" in polish
     assert "markFirstBuildPlanDone" in app
     assert "pip install failed" in support and "requirements.txt" in support
-    assert "Load Sample Repository" in html
+    assert "Load sample repository" in html
     assert "Product Tour (auto)" not in html
 
 
