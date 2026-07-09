@@ -10,14 +10,22 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$InstallerDir = $PSScriptRoot
-$Root = (Resolve-Path (Join-Path $InstallerDir "..\..")).Path
-$Staging = Join-Path $InstallerDir "staging"
-$OutputDir = Join-Path $InstallerDir "output"
-$AssetsDir = Join-Path $InstallerDir "assets"
-$DistAtlas = Join-Path $Root "dist\Atlas"
-$AtlasExe = Join-Path $DistAtlas "Atlas.exe"
-$PyBuild = Join-Path $Root "packaging\pyinstaller\build_atlas_exe.ps1"
+$_bootstrapDir = $PSScriptRoot
+if (-not $_bootstrapDir -and $PSCommandPath) { $_bootstrapDir = Split-Path -Parent $PSCommandPath }
+if (-not $_bootstrapDir) { throw "Cannot resolve installer script path. Run .\packaging\installer\installer_build.ps1 directly." }
+$Common = Join-Path (Split-Path -Parent $_bootstrapDir) "packaging_common.ps1"
+if (-not (Test-Path -LiteralPath $Common)) { throw "Missing packaging module: $Common" }
+. $Common
+
+$InstallerDir = $_bootstrapDir
+$Root = Get-RepoRootFrom -ScriptDir $InstallerDir -LevelsUp 2
+Assert-AtlasRc1BuildRoot -Root $Root
+$Staging = Join-PathSafe $InstallerDir "staging"
+$OutputDir = Join-PathSafe $InstallerDir "output"
+$AssetsDir = Join-PathSafe $InstallerDir "assets"
+$DistAtlas = Join-PathSafe $Root "dist\Atlas"
+$AtlasExe = Join-PathSafe $DistAtlas "Atlas.exe"
+$PyBuild = Join-PathSafe $Root "packaging\pyinstaller\build_atlas_exe.ps1"
 
 function Write-InnoVersionDefines {
     $version = "1.0.0"
@@ -61,7 +69,7 @@ function Ensure-Icon {
     }
 }
 
-Write-Host "Atlas installer build (Phase 152)" -ForegroundColor Cyan
+Write-Host "Atlas installer build (Phase 152) - source: $Root" -ForegroundColor Cyan
 Write-InnoVersionDefines
 Ensure-Icon
 
@@ -84,13 +92,10 @@ if (Test-Path (Join-Path $AssetsDir "atlas.ico")) {
 
 Write-Host "Staged: $Staging" -ForegroundColor Green
 
-# Phase 157 — installer self-test (pre-compile): verify the staged payload and
-# that the installer script declares the shortcuts the self-test will look for.
 function Test-StagedInstaller {
     $issues = @()
     $stagedExe = Join-Path $Staging "Atlas.exe"
     if (-not (Test-Path $stagedExe)) { $issues += "missing staged Atlas.exe ($stagedExe)" }
-    # Phase 192 — the bundled accounts service must ship so installed users can register.
     $stagedAccounts = Join-Path $Staging "accounts\AtlasAccounts.exe"
     if (-not (Test-Path $stagedAccounts)) { $issues += "missing bundled accounts service ($stagedAccounts)" }
     $issText = Get-Content -Raw (Join-Path $InstallerDir "Atlas.iss")
@@ -102,12 +107,19 @@ function Test-StagedInstaller {
         $staticSupport = Get-ChildItem -Path $Staging -Recurse -Filter "support.html" -ErrorAction SilentlyContinue | Select-Object -First 1
         if (-not $staticSupport) { $issues += "support.html missing from staged payload" }
     }
+    $indexPath = Find-StagedIndexHtml -StagingRoot $Staging
+    if (-not $indexPath) {
+        $issues += "index.html missing from staged atlas_desktop/static payload"
+    } else {
+        $uxIssues = Test-HnLaunchUxPayload -IndexPath $indexPath
+        foreach ($ux in $uxIssues) { $issues += "HN launch UX: $ux" }
+    }
     if ($issues.Count -gt 0) {
         Write-Host "Installer self-test FAILED:" -ForegroundColor Red
         $issues | ForEach-Object { Write-Host "  - $_" -ForegroundColor Red }
         throw "Installer self-test failed with $($issues.Count) issue(s)."
     }
-    Write-Host "Installer self-test passed (staged payload + shortcuts + notes)." -ForegroundColor Green
+    Write-Host "Installer self-test passed (HN launch UX + staged payload + shortcuts + notes)." -ForegroundColor Green
 }
 Test-StagedInstaller
 
@@ -116,14 +128,7 @@ if ($SkipCompile) {
     exit 0
 }
 
-$Iscc = @(
-    (Join-Path $Root ".phase152_inno\ISCC.exe"),
-    (Join-Path $Root ".phase150_inno\ISCC.exe"),
-    "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe",
-    "$env:ProgramFiles\Inno Setup 6\ISCC.exe",
-    "ISCC.exe"
-) | Where-Object { Test-Path $_ } | Select-Object -First 1
-
+$Iscc = Find-InnoSetupCompiler -Root $Root
 if (-not $Iscc) {
     Write-Host "Inno Setup (ISCC.exe) not found. Staging is ready at $Staging" -ForegroundColor Yellow
     Write-Host "Install Inno Setup 6, then: ISCC.exe packaging\installer\Atlas.iss"

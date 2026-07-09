@@ -15,6 +15,7 @@ import shutil
 import subprocess
 import sys
 import time
+import tomllib
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
@@ -26,6 +27,7 @@ ATLAS_START = "<!-- ATLAS:START -->"
 ATLAS_END = "<!-- ATLAS:END -->"
 _CLAUDE_CONFIG_NAME = "claude_desktop_config.json"
 _CURSOR_CONFIG_NAME = "mcp.json"
+_CODEX_CONFIG_NAME = "config.toml"
 
 _TARGET_LABELS = {
     "claude": "Claude",
@@ -683,9 +685,267 @@ def write_claude_config(*, confirm: bool = False, server_name: str = "atlas") ->
     return result
 
 
+def _toml_single_quoted(value: str) -> str:
+    return "'" + str(value).replace("'", "''") + "'"
+
+
+def _toml_string_array(values: List[str]) -> str:
+    return "[" + ", ".join(_toml_single_quoted(v) for v in values) + "]"
+
+
+def _platform_default_codex_config_path() -> str:
+    codex_home = os.environ.get("CODEX_HOME", "").strip()
+    if codex_home:
+        return os.path.join(os.path.abspath(codex_home), _CODEX_CONFIG_NAME)
+    return os.path.join(os.path.expanduser("~"), ".codex", _CODEX_CONFIG_NAME)
+
+
+def discover_codex_config_paths() -> List[Dict[str, Any]]:
+    seen: set[str] = set()
+    out: List[Dict[str, Any]] = []
+
+    def add(path: str, source: str) -> None:
+        resolved = os.path.abspath(path)
+        if resolved in seen:
+            return
+        seen.add(resolved)
+        parent = os.path.dirname(resolved)
+        out.append(
+            {
+                "path": resolved,
+                "source": source,
+                "exists": os.path.isfile(resolved),
+                "parent_exists": os.path.isdir(parent),
+            }
+        )
+
+    add(_platform_default_codex_config_path(), "default")
+    local = os.environ.get("LOCALAPPDATA", "").strip()
+    if local:
+        add(os.path.join(local, "OpenAI", "Codex", _CODEX_CONFIG_NAME), "localappdata_openai_codex")
+    return out
+
+
+def codex_config_path() -> str:
+    for item in discover_codex_config_paths():
+        if item.get("exists"):
+            return str(item["path"])
+    return _platform_default_codex_config_path()
+
+
+def _codex_config_source_for_path(path: str) -> str:
+    target = os.path.abspath(path)
+    for item in discover_codex_config_paths():
+        if os.path.abspath(str(item.get("path") or "")) == target:
+            return str(item.get("source") or "discovered")
+    return "default"
+
+
+def _load_codex_config(path: str) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
+    target = Path(path)
+    if not target.is_file():
+        return {}, None
+    try:
+        return tomllib.loads(target.read_text(encoding="utf-8")), None
+    except (OSError, tomllib.TOMLDecodeError) as exc:
+        return None, str(exc)
+
+
+def _mcp_launch_entry() -> Dict[str, Any]:
+    command, args = _atlas_mcp_command()
+    entry: Dict[str, Any] = {"command": command, "args": list(args), "enabled": True}
+    if not command.lower().endswith("atlas.exe"):
+        root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+        entry["cwd"] = root
+    return entry
+
+
+def _render_codex_mcp_server_block(server_name: str = "atlas") -> str:
+    entry = _mcp_launch_entry()
+    lines = [
+        f"[mcp_servers.{server_name}]",
+        f"command = {_toml_single_quoted(str(entry['command']))}",
+        f"args = {_toml_string_array([str(v) for v in entry.get('args') or []])}",
+    ]
+    cwd = entry.get("cwd")
+    if cwd:
+        lines.append(f"cwd = {_toml_single_quoted(str(cwd))}")
+    lines.append("enabled = true")
+    return "\n".join(lines)
+
+
+def _remove_codex_mcp_server_sections(text: str, server_name: str) -> str:
+    prefix = f"mcp_servers.{server_name}"
+    lines = text.splitlines(keepends=True)
+    out: List[str] = []
+    skip = False
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith("[") and stripped.endswith("]"):
+            header = stripped[1:-1].strip()
+            if header == prefix or header.startswith(prefix + "."):
+                skip = True
+                continue
+            skip = False
+        if not skip:
+            out.append(line)
+    return "".join(out).rstrip()
+
+
+def _codex_server_names(data: Dict[str, Any]) -> List[str]:
+    servers = data.get("mcp_servers") if isinstance(data, dict) else {}
+    if not isinstance(servers, dict):
+        return []
+    return sorted(str(k) for k in servers.keys())
+
+
+def _codex_atlas_configured(data: Dict[str, Any], server_name: str = "atlas") -> bool:
+    servers = data.get("mcp_servers") if isinstance(data, dict) else {}
+    if not isinstance(servers, dict):
+        return False
+    entry = servers.get(server_name)
+    return isinstance(entry, dict) and bool(entry.get("command"))
+
+
+def codex_config_status() -> Dict[str, Any]:
+    path = codex_config_path()
+    discovered = discover_codex_config_paths()
+    entry = _mcp_launch_entry()
+    exists = os.path.exists(path)
+    server_names: List[str] = []
+    atlas_configured = False
+    invalid = False
+    parse_error = ""
+    data, err = _load_codex_config(path) if exists else ({}, None)
+    if err:
+        invalid = True
+        parse_error = err
+    elif isinstance(data, dict):
+        server_names = _codex_server_names(data)
+        atlas_configured = _codex_atlas_configured(data)
+    snippet_block = _render_codex_mcp_server_block()
+    return {
+        "ok": True,
+        "config_path": path,
+        "config_source": _codex_config_source_for_path(path),
+        "discovered_paths": discovered,
+        "exists": exists,
+        "invalid_toml": invalid,
+        "parse_error": parse_error,
+        "atlas_configured": atlas_configured,
+        "existing_server_names": server_names,
+        "snippet": entry,
+        "copyable_toml": snippet_block,
+        "can_auto_write": not invalid,
+        "requires_confirmation": True,
+        "availability": "experimental",
+    }
+
+
+def write_codex_config(*, confirm: bool = False, server_name: str = "atlas") -> Dict[str, Any]:
+    if not confirm:
+        return {
+            "ok": False,
+            "code": "confirmation_required",
+            "error": "Atlas will only write Codex MCP config after explicit confirmation.",
+        }
+    path = codex_config_path()
+    target = Path(path)
+    backup_path: Optional[str] = None
+    existing = ""
+    if target.is_file():
+        try:
+            existing = target.read_text(encoding="utf-8")
+        except OSError as exc:
+            return {
+                "ok": False,
+                "code": "read_failed",
+                "error": str(exc),
+                "config_path": path,
+                "fallback_toml": _render_codex_mcp_server_block(server_name),
+            }
+        data, err = _load_codex_config(path)
+        if err:
+            return {
+                "ok": False,
+                "code": "invalid_config",
+                "error": f"Codex config is not valid TOML: {err}",
+                "config_path": path,
+                "fallback_toml": _render_codex_mcp_server_block(server_name),
+            }
+        try:
+            backup_path = _backup_config_file(path)
+        except OSError as exc:
+            return {
+                "ok": False,
+                "code": "backup_failed",
+                "error": f"Could not back up existing config: {exc}",
+                "config_path": path,
+                "fallback_toml": _render_codex_mcp_server_block(server_name),
+            }
+    preserved = []
+    if existing:
+        data, _ = _load_codex_config(path)
+        if isinstance(data, dict):
+            preserved = [name for name in _codex_server_names(data) if name != server_name]
+
+    block = _render_codex_mcp_server_block(server_name)
+    merged = _remove_codex_mcp_server_sections(existing, server_name)
+    rendered = (merged.rstrip() + "\n\n" + block + "\n") if merged.strip() else (block + "\n")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    tmp = target.with_suffix(target.suffix + ".tmp")
+    try:
+        tmp.write_text(rendered, encoding="utf-8")
+        parsed, err = _load_codex_config(str(tmp))
+        if err:
+            return {
+                "ok": False,
+                "code": "validation_failed",
+                "error": f"Written TOML failed validation: {err}",
+                "config_path": path,
+                "fallback_toml": block,
+            }
+        if not isinstance(parsed, dict) or not _codex_atlas_configured(parsed, server_name):
+            return {
+                "ok": False,
+                "code": "validation_failed",
+                "error": "Written TOML did not contain a valid mcp_servers.atlas entry.",
+                "config_path": path,
+                "fallback_toml": block,
+            }
+        try:
+            os.replace(tmp, target)
+        except PermissionError:
+            target.write_text(rendered, encoding="utf-8")
+            try:
+                tmp.unlink(missing_ok=True)
+            except OSError:
+                pass
+    except OSError as exc:
+        return {
+            "ok": False,
+            "code": "write_failed",
+            "error": str(exc),
+            "config_path": path,
+            "fallback_toml": block,
+        }
+
+    return {
+        "ok": True,
+        "config_path": path,
+        "backup_path": backup_path,
+        "server_name": server_name,
+        "preserved_server_names": preserved,
+        "atlas_configured": True,
+        "executable_path": atlas_executable_path(),
+        "message": "Codex connected. Restart Codex to use Atlas.",
+    }
+
+
 def mcp_setup_status() -> Dict[str, Any]:
     cursor = cursor_config_status()
     claude = claude_config_status()
+    codex = codex_config_status()
     command, args = _atlas_mcp_command()
     return {
         "ok": True,
@@ -697,6 +957,7 @@ def mcp_setup_status() -> Dict[str, Any]:
         "copyable_json": json.dumps(mcp_snippet(), indent=2),
         "cursor": cursor,
         "claude": claude,
+        "codex": codex,
     }
 
 
@@ -761,6 +1022,7 @@ def run_mcp_diagnostics() -> Dict[str, Any]:
     exe = atlas_executable_path()
     cursor = cursor_config_status()
     claude = claude_config_status()
+    codex = codex_config_status()
     snippet = mcp_snippet()
     checks: List[Dict[str, Any]] = []
 
@@ -797,6 +1059,12 @@ def run_mcp_diagnostics() -> Dict[str, Any]:
     else:
         add("Claude Desktop MCP config (optional until connected)", True, "Not configured yet")
 
+    if codex.get("atlas_configured"):
+        add("Codex MCP config exists", codex.get("exists"), codex.get("config_path", ""))
+        add("Codex MCP config TOML valid", not codex.get("invalid_toml"), codex.get("config_path", ""))
+    else:
+        add("Codex MCP config (optional until connected)", True, "Not configured yet")
+
     runtime = test_mcp_runtime()
     add("Atlas MCP runtime loads tools", runtime.get("ok"), runtime.get("error") or f"{runtime.get('tool_count', 0)} tools")
 
@@ -808,7 +1076,9 @@ def run_mcp_diagnostics() -> Dict[str, Any]:
         "checks": checks,
         "cursor_config_path": cursor.get("config_path"),
         "claude_config_path": claude.get("config_path"),
+        "codex_config_path": codex.get("config_path"),
         "copyable_json": json.dumps(snippet, indent=2),
+        "copyable_codex_toml": codex.get("copyable_toml"),
         "runtime": runtime,
     }
 

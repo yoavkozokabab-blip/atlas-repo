@@ -65,7 +65,7 @@ export default async function DownloadPage() {
               <ol className="steps" style={{ marginTop: 16 }}>
                 <li>Run the installer and launch Atlas.</li>
                 <li>Load the bundled sample repository, or point Atlas at your own.</li>
-                <li>Describe a change and generate your first Change Plan.</li>
+                <li>Ask Atlas a repo-aware question, then try your first Plan Change.</li>
                 <li>Click <b>Copy for Claude / Cursor / Codex</b> and paste it into your AI tool.</li>
               </ol>
 

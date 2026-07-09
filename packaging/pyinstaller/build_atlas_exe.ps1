@@ -11,21 +11,33 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$ScriptDir = $PSScriptRoot
-$Root = (Resolve-Path (Join-Path $ScriptDir "..\..")).Path
-$Spec = Join-Path $ScriptDir "atlas.spec"
-$PackagingLib = Join-Path $Root ".phase152_packaging_lib"
-$DistDir = Join-Path $Root "dist"
-$WorkDir = Join-Path $Root "build\pyinstaller"
-$AtlasExe = Join-Path $DistDir "Atlas\Atlas.exe"
-$InstallerDir = Join-Path $Root "packaging\installer"
+$_bootstrapDir = $PSScriptRoot
+if (-not $_bootstrapDir -and $PSCommandPath) { $_bootstrapDir = Split-Path -Parent $PSCommandPath }
+if (-not $_bootstrapDir) { throw "Cannot resolve packaging script path. Run .\packaging\pyinstaller\build_atlas_exe.ps1 directly." }
+$Common = Join-Path (Split-Path -Parent $_bootstrapDir) "packaging_common.ps1"
+if (-not (Test-Path -LiteralPath $Common)) { throw "Missing packaging module: $Common" }
+. $Common
+
+$ScriptDir = $_bootstrapDir
+$Root = Get-RepoRootFrom -ScriptDir $ScriptDir -LevelsUp 2
+Assert-AtlasRc1BuildRoot -Root $Root
+$Spec = Join-PathSafe $ScriptDir "atlas.spec"
+$PackagingLib = Join-PathSafe $Root ".phase152_packaging_lib"
+$DistDir = Join-PathSafe $Root "dist"
+$DistAtlas = Join-PathSafe $DistDir "Atlas"
+$WorkDir = Join-PathSafe $Root "build\pyinstaller"
+$AtlasExe = Join-PathSafe $DistAtlas "Atlas.exe"
+$InstallerDir = Join-PathSafe $Root "packaging\installer"
 
 function Write-BuildInfo {
     $version = "1.0.0"
+    $launchLabel = "Atlas v1.0.0 launch build"
     $productFile = Join-Path $Root "atlas_desktop\product_info.py"
     if (Test-Path $productFile) {
         $m = Select-String -Path $productFile -Pattern 'PRODUCT_VERSION\s*=\s*"([^"]+)"' | Select-Object -First 1
         if ($m) { $version = $m.Matches[0].Groups[1].Value }
+        $lm = Select-String -Path $productFile -Pattern 'LAUNCH_BUILD_LABEL\s*=\s*"([^"]+)"' | Select-Object -First 1
+        if ($lm) { $launchLabel = $lm.Matches[0].Groups[1].Value }
     }
     $commit = ""
     try {
@@ -36,9 +48,11 @@ function Write-BuildInfo {
     $info = @{
         product = "ATLAS"
         version = $version
+        launch_build_label = $launchLabel
         build_date = (Get-Date -Format "yyyy-MM-ddTHH:mm:ss")
         commit = $commit
         entry = "Atlas.exe"
+        source_root = $Root
     }
     $out = Join-Path $InstallerDir "build_info.json"
     New-Item -ItemType Directory -Path $InstallerDir -Force | Out-Null
@@ -72,12 +86,12 @@ entry = struct.pack("<BBBBHHII", 16, 16, 0, 0, 1, 32, len(bmp), 22)
 path.write_bytes(icon_dir + entry + bmp)
 print("Created icon:", path)
 '@.Replace('ICONPATH', $icon.Replace('\', '\\'))
-    $tmp = Join-Path $env:TEMP "atlas_icon_gen.py"
+    $tmp = Join-PathSafe $(if ($env:TEMP) { $env:TEMP } else { [System.IO.Path]::GetTempPath() }) "atlas_icon_gen.py"
     Set-Content -Path $tmp -Value $iconScript -Encoding UTF8
     py -3 $tmp
 }
 
-Write-Host "Atlas PyInstaller build (Phase 152)" -ForegroundColor Cyan
+Write-Host "Atlas PyInstaller build (Phase 152) - source: $Root" -ForegroundColor Cyan
 Write-BuildInfo
 Ensure-Icon
 
@@ -95,12 +109,15 @@ if ($Clean) {
 }
 
 $oldPythonPath = $env:PYTHONPATH
+$prevEap = $ErrorActionPreference
 try {
     $env:PYTHONPATH = if ($oldPythonPath) { "$PackagingLib;$oldPythonPath" } else { $PackagingLib }
+    $ErrorActionPreference = "Continue"
     Push-Location $Root
-    & py -3 -m PyInstaller.__main__ --noconfirm --clean --distpath $DistDir --workpath $WorkDir $Spec
+    & py -3 -m PyInstaller.__main__ --noconfirm --clean --distpath $DistDir --workpath $WorkDir $Spec 2>&1 | Out-Host
     if ($LASTEXITCODE -ne 0) { throw "PyInstaller failed with exit code $LASTEXITCODE" }
 } finally {
+    $ErrorActionPreference = $prevEap
     $env:PYTHONPATH = $oldPythonPath
     Pop-Location
 }
@@ -112,6 +129,15 @@ $item = Get-Item -LiteralPath $AtlasExe
 $exeMb = [Math]::Round($item.Length / 1048576, 2)
 Write-Host ("Built: {0} ({1} MB)" -f $AtlasExe, $exeMb) -ForegroundColor Green
 
+$stagedIndex = Find-StagedIndexHtml -StagingRoot $DistAtlas
+if (-not $stagedIndex) { throw "Packaged index.html not found under $DistAtlas" }
+$uxIssues = Test-HnLaunchUxPayload -IndexPath $stagedIndex
+if ($uxIssues.Count -gt 0) {
+    $uxIssues | ForEach-Object { Write-Host "  - $_" -ForegroundColor Red }
+    throw "Packaged UI failed HN launch UX checks."
+}
+Write-Host "Packaged UI verified: Ask Atlas, no Repository Context, launch build marker." -ForegroundColor Green
+
 # Phase 192 — build the frozen Atlas Accounts Service (AtlasAccounts.exe) and
 # bundle it inside the Atlas folder under accounts\ so Atlas.exe can launch it.
 $AccountsSpec = Join-Path $ScriptDir "accounts.spec"
@@ -120,19 +146,24 @@ $AccountsDist = Join-Path $DistDir "AtlasAccounts"
 $AccountsWork = Join-Path $Root "build\pyinstaller_accounts"
 if (Test-Path $AccountsSpec) {
     $oldPP = $env:PYTHONPATH
+    $prevEap = $ErrorActionPreference
     try {
         $env:PYTHONPATH = ($PackagingLib, $AccountsLib, $Root, $oldPP | Where-Object { $_ }) -join ';'
+        $ErrorActionPreference = "Continue"
         Push-Location $Root
-        & py -3 -m PyInstaller.__main__ --noconfirm --clean --distpath $DistDir --workpath $AccountsWork $AccountsSpec
+        & py -3 -m PyInstaller.__main__ --noconfirm --clean --distpath $DistDir --workpath $AccountsWork $AccountsSpec 2>&1 | Out-Host
         if ($LASTEXITCODE -ne 0) { throw "Accounts PyInstaller failed with exit code $LASTEXITCODE" }
     } finally {
+        $ErrorActionPreference = $prevEap
         $env:PYTHONPATH = $oldPP
         Pop-Location
     }
     $AccountsExe = Join-Path $AccountsDist "AtlasAccounts.exe"
     if (-not (Test-Path $AccountsExe)) { throw "Expected accounts executable not built: $AccountsExe" }
-    # Copy the accounts one-folder bundle into dist\Atlas\accounts\ (shipped together).
-    $AccountsTarget = Join-Path $DistAtlas "accounts"
+    if (-not (Test-Path -LiteralPath $DistAtlas)) {
+        throw "Main Atlas dist folder missing: $DistAtlas (PyInstaller must finish before accounts bundling)."
+    }
+    $AccountsTarget = Join-PathSafe $DistAtlas "accounts"
     if (Test-Path $AccountsTarget) { Remove-Item -LiteralPath $AccountsTarget -Recurse -Force }
     New-Item -ItemType Directory -Path $AccountsTarget -Force | Out-Null
     Copy-Item -Path (Join-Path $AccountsDist "*") -Destination $AccountsTarget -Recurse -Force

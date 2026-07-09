@@ -40,6 +40,7 @@ PROTECTED_ACCOUNT_ROUTES = {
     ("POST", "/api/context/export"),
     ("POST", "/api/integrations/export"),
     ("POST", "/api/integrations/claude/write-config"),
+    ("POST", "/api/integrations/codex/write-config"),
     ("POST", "/api/integrations/cursor/write-rule"),
     ("POST", "/api/integrations/claude-code/write-managed-block"),
     ("POST", "/api/copilot/ask"),
@@ -196,9 +197,6 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
         ("GET", "/api/product/config"): lambda _body, _query: api.product_config(),
         ("GET", "/api/product/update-check"): lambda _body, _query: api.check_product_update(),
         ("GET", "/api/integrations/claude/config"): lambda _body, _query: api.agent_integrations_status(),
-        ("POST", "/api/integrations/claude/write-config"): lambda body, _query: api.write_claude_mcp_config(
-            confirm=body.get("confirm") is True
-        ),
         ("POST", "/api/integrations/claude/test"): lambda _body, _query: api.test_claude_mcp_runtime(),
         ("POST", "/api/integrations/export"): lambda body, _query: api.agent_export(
             str(body.get("target", "claude")),
@@ -220,6 +218,9 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
             body.get("confirm") is True or str(body.get("confirm", "")).lower() in {"1", "true", "yes"}
         ),
         ("POST", "/api/integrations/claude/write-config"): lambda body, _query: api.write_claude_mcp_config(
+            body.get("confirm") is True or str(body.get("confirm", "")).lower() in {"1", "true", "yes"}
+        ),
+        ("POST", "/api/integrations/codex/write-config"): lambda body, _query: api.write_codex_mcp_config(
             body.get("confirm") is True or str(body.get("confirm", "")).lower() in {"1", "true", "yes"}
         ),
         ("POST", "/api/integrations/mcp/test"): lambda _body, _query: api.test_claude_mcp_runtime(),

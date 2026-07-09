@@ -438,8 +438,11 @@
   function _renderHomeDashboard() {
     const dash = el('homeDashboard');
     if (!dash) return;
-    if (!_state || !_state.signed_in) { dash.style.display = 'none'; return; }
     dash.style.display = '';
+
+    if (!_state || !_state.signed_in) {
+      return;
+    }
 
     const user = _state.user || {};
     const lic = _state.license || {};

@@ -15,7 +15,7 @@ export default function RefundPage() {
           <p>Refunds are reviewed case by case. This policy does not promise automatic
             refunds, and your local consumer rights may provide additional remedies.</p>
           <p>Paddle acts as Merchant of Record for Atlas paid subscriptions. Paddle may
-            process approved refunds and related billing adjustments.</p>
+            process refunds and related billing adjustments.</p>
           <p>To request a review, contact support with the email on your Atlas account,
             the charge date and a short description of the issue.</p>
           <p className="note">Last updated: 2026-07-09. See also Cancellation and Terms.</p>

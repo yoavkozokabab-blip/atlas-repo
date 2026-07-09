@@ -940,17 +940,17 @@ def pre_scan_estimate(path: str, scope: Optional[Dict[str, Any]] = None) -> Dict
 
 def _scan_next_actions(scan: Dict[str, Any]) -> List[str]:
     actions = [
-        "Explore the dependency graph in Command Center",
-        "Ask Copilot: What does this repository do?",
-        "Ask Copilot: What are the top architectural risks?",
+        "Explore the dependency graph in Map",
+        "Ask Atlas: What does this repository do?",
+        "Ask Atlas: What are the top architectural risks?",
     ]
     if scan.get("top_hubs"):
         hub = scan["top_hubs"][0].get("path") or scan["top_hubs"][0].get("module")
         if hub:
-            actions.append(f"Ask Copilot: What breaks if I change {hub}?")
+            actions.append(f"Ask Atlas: What breaks if I change {hub}?")
     if scan.get("import_cycle_count"):
-        actions.append("Ask Copilot: Show import cycles")
-    actions.append("Export a compact Claude/Codex/Cursor context packet")
+        actions.append("Ask Atlas: Show import cycles")
+    actions.append("Connect Claude, Cursor, or Codex to Atlas")
     return actions
 
 
@@ -3182,7 +3182,7 @@ def plan_change(request: str) -> Dict[str, Any]:
         if not _STATE.get("scan") or not _scan_matches_current_path():
             return {
                 "ok": False,
-                "error": "Scan required — select a repository and scan before creating a Change Plan.",
+                "error": "Scan required — select a repository and scan before creating a Plan Change.",
                 "code": "requires_rescan",
             }
         t0 = time.time()
@@ -4632,6 +4632,10 @@ def write_cursor_mcp_config(confirm: bool = False) -> Dict[str, Any]:
 
 def write_claude_mcp_config(confirm: bool = False) -> Dict[str, Any]:
     return _agent_integrations.write_claude_config(confirm=bool(confirm))
+
+
+def write_codex_mcp_config(confirm: bool = False) -> Dict[str, Any]:
+    return _agent_integrations.write_codex_config(confirm=bool(confirm))
 
 
 def agent_integrations_status() -> Dict[str, Any]:

@@ -1,6 +1,6 @@
 "use strict";
 /* Atlas Admin Console.
-   In-app admin/superadmin control center: overview, pending applications,
+   In-app admin/superadmin control center: overview, account requests,
    users, manual license/access, feedback inbox, audit log.
    All actions go through the existing backend authorization (the signed-in
    account's admin token, proxied via /api/accounts/admin/*). */
@@ -9,7 +9,7 @@
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]));
   const toast = (m, k) => { if (typeof window.toast === "function") window.toast(m, k); };
 
-  const STATE = { users: [], pending: [], dashboard: {}, feedback: [], audit: [], loaded: false, current: "overview" };
+  const STATE = { users: [], accountRequests: [], dashboard: {}, feedback: [], audit: [], loaded: false, current: "overview" };
 
   async function api(path, method, body) {
     try {
@@ -45,15 +45,15 @@
     const badge = $("admin-pending-count");
     if (badge) badge.textContent = d.pending_applications ? String(d.pending_applications) : "";
     const kpis = [
-      ["Total users", d.total_users], ["Pending applications", d.pending_applications],
-      ["Users with access", d.beta_users], ["Active users", d.active_users],
-      ["Suspended", d.suspended_users], ["Banned", d.banned_users],
-      ["Feedback pending", d.feedback_pending], ["Active devices", d.active_devices],
+      ["Total users", d.total_users], ["Account requests", d.pending_applications],
+      ["Users", d.beta_users], ["Active users", d.active_users],
+      ["Suspended", d.suspended_users], ["Disabled", d.banned_users],
+      ["Feedback to review", d.feedback_pending], ["Active devices", d.active_devices],
     ];
     host.innerHTML = kpis.map(([l, v]) => `<div class="admin-kpi"><div class="admin-kpi-v">${esc(v == null ? "—" : v)}</div><div class="admin-kpi-l">${esc(l)}</div></div>`).join("");
   }
 
-  // ── Pending applications ─────────────────────────────────────────────────────
+  // ── Account requests ─────────────────────────────────────────────────────────
   function profileRows(p) {
     p = p || {};
     const list = (v) => Array.isArray(v) ? v.join(", ") : (v || "—");
@@ -70,15 +70,15 @@
     const host = $("admin-pending-list");
     const r = await api("/api/accounts/admin/applications/pending");
     if (!r || !r.ok) { host.innerHTML = `<p class="muted">${esc((r && r.error) || "Admin access required.")}</p>`; return; }
-    STATE.pending = r.applications || [];
-    if (!STATE.pending.length) { host.innerHTML = '<p class="muted admin-empty">No pending applications. 🎉</p>'; return; }
-    host.innerHTML = STATE.pending.map((a) => `
+    STATE.accountRequests = r.applications || [];
+    if (!STATE.accountRequests.length) { host.innerHTML = '<p class="muted admin-empty">No account requests.</p>'; return; }
+    host.innerHTML = STATE.accountRequests.map((a) => `
       <div class="admin-app-card glass" data-uid="${esc(a.user_id)}">
         <div class="admin-app-head">
           <div><b>${esc(a.email)}</b><span class="admin-app-time">${esc((a.created_at || "").slice(0, 16).replace("T", " "))}</span></div>
           <div class="admin-app-actions">
-            <button class="btn primary small" onclick="adminConsole.approve('${esc(a.user_id)}','${esc(a.email)}')">Approve access</button>
-            <button class="btn danger small" onclick="adminConsole.reject('${esc(a.user_id)}','${esc(a.email)}')">Reject</button>
+            <button class="btn primary small" onclick="adminConsole.approve('${esc(a.user_id)}','${esc(a.email)}')">Enable account</button>
+            <button class="btn danger small" onclick="adminConsole.reject('${esc(a.user_id)}','${esc(a.email)}')">Disable account</button>
             <button class="btn ghost small" onclick="adminConsole.note('${esc(a.user_id)}')">Add note</button>
           </div>
         </div>
@@ -114,10 +114,10 @@
         <td>${esc(u.device_count || 0)}</td>
         <td class="muted">${esc(last)}</td>
         <td class="admin-row-actions">
-          ${u.status === "pending" || !u.beta_flag ? `<button class="btn ghost small" onclick="adminConsole.act('grant-beta','${esc(u.user_id)}','${esc(u.email)}')">Enable access</button>` : `<button class="btn ghost small" onclick="adminConsole.act('revoke-beta','${esc(u.user_id)}','${esc(u.email)}')">Disable access</button>`}
+          ${u.status === "pending" || !u.beta_flag ? `<button class="btn ghost small" onclick="adminConsole.act('grant-beta','${esc(u.user_id)}','${esc(u.email)}')">Enable account</button>` : `<button class="btn ghost small" onclick="adminConsole.act('revoke-beta','${esc(u.user_id)}','${esc(u.email)}')">Disable account</button>`}
           <button class="btn ghost small" onclick="adminConsole.editLicense('${esc(u.user_id)}')">License</button>
-          ${u.status === "suspended" || u.status === "banned" ? `<button class="btn ghost small" onclick="adminConsole.setStatus('${esc(u.user_id)}','active','${esc(u.email)}')">Reinstate</button>` : `<button class="btn ghost small" onclick="adminConsole.setStatus('${esc(u.user_id)}','suspended','${esc(u.email)}')">Suspend</button>`}
-          <button class="btn ghost small danger-text" onclick="adminConsole.setStatus('${esc(u.user_id)}','banned','${esc(u.email)}')">Ban</button>
+          ${u.status === "suspended" || u.status === "banned" ? `<button class="btn ghost small" onclick="adminConsole.setStatus('${esc(u.user_id)}','active','${esc(u.email)}')">Enable account</button>` : `<button class="btn ghost small" onclick="adminConsole.setStatus('${esc(u.user_id)}','suspended','${esc(u.email)}')">Suspend</button>`}
+          <button class="btn ghost small danger-text" onclick="adminConsole.setStatus('${esc(u.user_id)}','banned','${esc(u.email)}')">Disable account</button>
           <button class="btn ghost small" onclick="adminConsole.act('force-logout','${esc(u.user_id)}','${esc(u.email)}')">Force logout</button>
         </td>
       </tr>`;
@@ -136,7 +136,7 @@
         <h3>License &amp; access — ${esc(u.email)}</h3>
         <div class="admin-form-grid">
           <label>Plan ${sel("acc-edit-plan", lic.plan || "free", [["free", "free"], ["beta", "standard"], ["pro", "pro"], ["enterprise", "enterprise (manual)"]])}</label>
-          <label>Status ${sel("acc-edit-status", u.status, [["pending", "pending"], ["active", "active"], ["beta", "standard"], ["suspended", "suspended"], ["banned", "banned"], ["expired", "expired"]])}</label>
+          <label>Status ${sel("acc-edit-status", u.status, [["pending", "inactive"], ["active", "active"], ["beta", "standard"], ["suspended", "suspended"], ["banned", "disabled"], ["expired", "expired"]])}</label>
           <label>Role ${sel("acc-edit-role", u.role, [["user", "user"], ["admin", "admin"], ["superadmin", "superadmin"]])}</label>
           <label>Max devices <input id="acc-edit-devices" type="number" min="1" max="20" value="${esc((lic.max_devices) || 1)}" /></label>
           <label>Expiry (YYYY-MM-DD) <input id="acc-edit-expiry" type="text" placeholder="none" value="${esc((lic.expires_at || "").slice(0, 10))}" /></label>
@@ -146,7 +146,7 @@
           <button class="btn ghost" onclick="adminConsole.tab('users')">Back to users</button>
           <button class="btn primary" onclick="adminConsole.saveLicense('${esc(uid)}')">Save changes</button>
         </div>
-        <p class="muted tiny">Manual access management only — no payments. Role changes require superadmin.</p>
+        <p class="muted tiny">Manual account management only — no payments. Role changes require superadmin.</p>
       </div>`;
   }
 
@@ -209,11 +209,19 @@
       </div>
       <h3 class="admin-section-title">Acquisition funnel</h3>
       <div class="admin-funnel">
-        ${["landing_visit", "waitlist_signup", "app_installed", "registered", "approved", "first_scan", "weekly_active"].map((s) =>
-          `<div class="admin-funnel-step"><b>${esc(funnel[s] || 0)}</b><span>${esc(s.replace(/_/g, " "))}</span></div>`
+        ${[
+          ["landing_visit", "Landing visits"],
+          ["waitlist_signup", "Account sign-ups"],
+          ["app_installed", "App installs"],
+          ["registered", "Registered"],
+          ["approved", "Active"],
+          ["first_scan", "First scan"],
+          ["weekly_active", "Weekly active"],
+        ].map(([s, label]) =>
+          `<div class="admin-funnel-step"><b>${esc(funnel[s] || 0)}</b><span>${esc(label)}</span></div>`
         ).join("")}
       </div>
-      <p class="muted tiny">Registered→approved: ${pct(conv.registered_to_approved)} · Approved→first scan: ${pct(conv.approved_to_first_scan)}</p>
+      <p class="muted tiny">Registered→active: ${pct(conv.registered_to_approved)} · Active→first scan: ${pct(conv.approved_to_first_scan)}</p>
       <div class="admin-launch-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
         <div class="glass" style="padding:14px;border-radius:12px">
           <h4>Top feature requests</h4>
@@ -227,11 +235,9 @@
       <div class="admin-toolbar" style="margin-top:16px">
         <button class="btn primary small" type="button" onclick="adminConsole.exportBetaUsers()">Export users</button>
         <button class="btn ghost small" type="button" onclick="adminConsole.loadInterviewSummary()">Feedback summary</button>
-        <button class="btn ghost small" type="button" onclick="adminConsole.createInvite()">Create access code</button>
       </div>
       <div id="admin-launch-extra" class="muted tiny" style="margin-top:10px"></div>
-      <div id="admin-invites-list" style="margin-top:12px"></div>`;
-    loadInvites();
+      `;
   }
 
   async function loadInvites() {
@@ -240,7 +246,7 @@
     const r = await api("/api/accounts/admin/invites");
     if (!r || !r.ok) { host.innerHTML = ""; return; }
     const items = r.invites || [];
-    if (!items.length) { host.innerHTML = "<p class='muted tiny'>No access codes yet.</p>"; return; }
+    if (!items.length) { host.innerHTML = ""; return; }
     host.innerHTML = `<table class="admin-table"><thead><tr><th>Code</th><th>Email</th><th>Uses</th><th>Status</th><th>Expires</th></tr></thead><tbody>${
       items.map((i) => `<tr><td><code>${esc(i.code)}</code></td><td>${esc(i.email || "—")}</td><td>${esc(i.use_count)}/${esc(i.max_uses)}</td><td>${esc(i.status)}</td><td class="muted">${esc((i.expires_at || "").slice(0, 10) || "—")}</td></tr>`).join("")
     }</tbody></table>`;
@@ -270,7 +276,7 @@
     const email = window.prompt("Reserve for email (optional — leave blank for an open code):", "") || "";
     const r = await api("/api/accounts/admin/invites", "POST", { email: email.trim() || undefined, max_uses: 1, expires_days: 30 });
     if (r && r.ok && r.invite) {
-      toast(`Access code created: ${r.invite.code}`, "success");
+      toast("Created", "success");
       loadInvites();
     } else toast((r && r.error) || "Create failed", "error");
   }
@@ -332,8 +338,8 @@
     return r;
   }
 
-  async function approve(uid, email) { await _post("/api/accounts/admin/applications/approve", { user_id: uid }, `Approved ${email}`); if (STATE.current === "pending") loadPending(); }
-  async function reject(uid, email) { confirmModal("Reject application", `Reject the sign-up application from ${email}? They will not get access.`, async () => { await _post("/api/accounts/admin/applications/reject", { user_id: uid }, `Rejected ${email}`); loadPending(); }); }
+  async function approve(uid, email) { await _post("/api/accounts/admin/applications/approve", { user_id: uid }, `Enabled ${email}`); if (STATE.current === "pending") loadPending(); }
+  async function reject(uid, email) { confirmModal("Disable account", `Disable the account request from ${email}? They will not get access.`, async () => { await _post("/api/accounts/admin/applications/reject", { user_id: uid }, `Disabled ${email}`); loadPending(); }); }
   function note(uid) {
     const text = window.prompt("Internal note for this applicant (operator-only):", "");
     if (text == null) return;
@@ -346,9 +352,9 @@
     else run();
   }
   function setStatus(uid, status, email) {
-    const danger = { suspended: "Suspend", banned: "Ban" };
+    const danger = { suspended: "Suspend", banned: "Disable" };
     const run = () => _post("/api/accounts/admin/users/update", { user_id: uid, status }, `${email} → ${status}`);
-    if (danger[status]) confirmModal(danger[status] + " user", `${danger[status]} ${email}? This blocks their access${status === "banned" ? " permanently (until reinstated)" : ""}.`, run);
+    if (danger[status]) confirmModal(danger[status] + " account", `${danger[status]} ${email}? This blocks their access.`, run);
     else run();
   }
 
@@ -377,6 +383,6 @@
   window.adminConsole = {
     tab, refresh, enter, approve, reject, note, act, setStatus,
     editLicense, saveLicense, renderUsers, closeConfirm,
-    exportBetaUsers, loadInterviewSummary, createInvite, markFeedback,
+    exportBetaUsers, loadInterviewSummary, markFeedback,
   };
 })();

@@ -200,7 +200,7 @@ async function loadAccountRequests(){
     return;
   }
   const apps=d.applications||[];
-  if(countEl) countEl.textContent=`· ${apps.length} waiting`;
+  if(countEl) countEl.textContent=`· ${apps.length} open`;
   rows.innerHTML=apps.map(u=>{
     const p=u["beta_"+"profile"]||{};
     const uid=esc(u.user_id);

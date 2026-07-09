@@ -24,45 +24,38 @@ def _nav_block() -> str:
 # ── Part 1 — Real home page (onboarding dashboard) ───────────────────────────
 def test_home_has_welcome_and_tagline():
     assert 'id="homeWelcome"' in INDEX
-    assert "class=\"home-tagline\"" in INDEX
+    assert "class=\"launch-lead\"" in INDEX
     assert "Give Claude Code and Cursor repo memory" in INDEX
-    assert "Fastest path: load the sample repository" in INDEX
-    assert "See cited files" in INDEX
+    assert "Scan a repository. Atlas builds a local map" in INDEX
     assert "Scan local repository" in INDEX
     assert "Load sample repository" in INDEX
 
 
 def test_home_has_large_quick_action_cards():
-    cards = INDEX[INDEX.find('class="quick-action-cards"'):]
+    cards = INDEX[INDEX.find('class="action-cards"'):]
     cards = cards[: cards.find("</section>")]
-    assert 'home-section needs-repo' in INDEX[INDEX.find('<!-- Section 2'): INDEX.find('<!-- Section 3')]
+    assert 'class="action-cards"' in INDEX
     for title in ("Ask Atlas", "Debug", "Impact"):
         assert title in cards, title
     for desc in (
-        "Ask repo-aware questions.",
+        "Ask repo-aware questions with cited files.",
         "Find likely causes from symptoms or stack traces.",
         "See what breaks before you edit.",
     ):
         assert desc in cards, desc
-    assert "qa-card" in CSS
+    assert "action-card" in CSS
 
 
-def test_home_has_getting_started_that_can_autohide():
-    assert 'id="homeGettingStarted"' in INDEX
-    gs = INDEX[INDEX.find('id="homeGettingStarted"'):]
-    gs = gs[: gs.find("</section>")]
-    for step in ("Load the sample repository", "Press Send in Ask Atlas", "Review the cited files", "Scan your own repo when ready"):
-        assert step in gs, step
-    # Auto-hides once usage history exists.
-    assert "homeGettingStarted" in ACCOUNTS_JS
-    assert "gs.style.display = items.length ? 'none' : ''" in ACCOUNTS_JS
+def test_home_has_hn_demo_link():
+    assert 'data-view="hn"' in INDEX
+    assert "Try Atlas in 30 seconds" in INDEX
+    assert 'id="view-hn"' in INDEX
 
 
-def test_home_recent_activity_three_columns_with_empty_states():
+def test_home_recent_activity_columns_with_empty_states():
     assert 'id="homeRecentAnalyses"' in INDEX
     assert 'id="homeRecentRepos"' in INDEX
-    assert 'id="homeRecentExports"' in INDEX
-    for empty in ("No analyses yet", "No repositories yet", "No exports yet"):
+    for empty in ("No analyses yet", "No repositories yet"):
         assert empty in INDEX, empty
 
 
@@ -72,12 +65,14 @@ def test_primary_nav_has_only_core_workflows():
     assert "Account" not in nav
     assert 'data-view="accounts"' not in nav
     assert "Repository Context" not in nav
-    expected = ("home", "scan", "ask", "investigate", "impact", "build", "center")
+    expected = ("home", "scan", "hn", "ask", "investigate", "impact", "build", "center")
     for view in expected:
         assert f'data-view="{view}"' in nav, view
     labels = re.findall(r'data-view="([^"]+)".*?>([^<]+)</button>', nav)
     assert [view for view, _ in labels] == list(expected)
-    assert [label for _, label in labels] == ["Home", "Scan", "Ask Atlas", "Debug", "Impact", "Plan Change", "Map"]
+    assert [label for _, label in labels] == [
+        "Home", "Scan", "HN demo", "Ask Atlas", "Debug", "Impact", "Plan Change", "Map"
+    ]
 
 
 # ── Part 3 — User menu restructure ───────────────────────────────────────────
@@ -124,7 +119,7 @@ def test_rejected_dashboard_removed_with_open_access():
 def test_home_has_single_status_indicator():
     # Exactly one status pill on the home dashboard (no duplicate plan badge).
     dash = INDEX[INDEX.find('id="homeDashboard"'):]
-    dash = dash[: dash.find('<div class="hero">')]
+    dash = dash[: dash.find('id="view-hn"')]
     assert dash.count('class="status-pill"') == 1
     assert 'id="homePlanPill"' not in INDEX
     # Status + plan are combined into the one pill.

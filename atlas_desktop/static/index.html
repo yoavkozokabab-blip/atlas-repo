@@ -302,7 +302,8 @@
     <nav class="nav" id="nav">
       <button data-view="home" class="active" onclick="go('home')">Home</button>
       <button data-view="scan" onclick="go('scan')">Scan</button>
-      <button data-view="ask" onclick="go('ask')">Ask Atlas</button>
+      <button data-view="hn" class="needs-no-repo" onclick="go('hn')">HN demo</button>
+      <button data-view="ask" class="needs-repo" onclick="go('ask')">Ask Atlas</button>
       <button data-view="investigate" data-lock="1" class="needs-repo" onclick="go('investigate')">Debug</button>
       <button data-view="impact" data-lock="1" class="needs-repo" onclick="go('impact')">Impact</button>
       <button data-view="build" data-lock="1" class="needs-repo" onclick="go('build')">Plan Change</button>
@@ -355,169 +356,210 @@
 
     <!-- ===================== SCREEN 1: HOME ===================== -->
     <section class="view active" id="view-home">
-      <!-- Onboarding dashboard for signed-in users. One clear
-           account-status indicator lives here; account details stay in the
-           user menu. -->
-      <div id="homeDashboard" class="home-dashboard" style="display:none">
-        <!-- Section 1 — task-oriented launchpad. -->
-        <header class="home-welcome glass needs-no-repo">
-          <div>
-            <h2 class="home-dash-welcome">Give Claude Code and Cursor repo memory</h2>
-            <p class="home-tagline">Fastest path: load the sample repository, press Send in Ask Atlas, and see cited files for an auth change.</p>
-            <div class="home-hero-cta" style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
-              <button class="btn primary big" type="button" onclick="loadDemoMode('medium')">Load sample repository</button>
-              <button class="btn ghost big" type="button" onclick="goToScanStart()">Scan local repository</button>
-            </div>
-            <div class="home-demo-path" aria-label="Fast demo path">
-              <span class="home-demo-step"><b>1</b> Load sample</span>
-              <span class="home-demo-step"><b>2</b> Ask Atlas</span>
-              <span class="home-demo-step"><b>3</b> See cited files</span>
-            </div>
+      <div id="homeDashboard" class="home-dashboard launch-page">
+        <!-- First-run hero -->
+        <header class="launch-hero glass needs-no-repo">
+          <h1>Give Claude Code and Cursor repo memory</h1>
+          <p class="launch-lead">Scan a repository. Atlas builds a local map, then answers repo-aware questions with cited files.</p>
+          <div class="launch-cta">
+            <button class="btn primary big" type="button" onclick="loadDemoMode('medium')">Load sample repository</button>
+            <button class="btn ghost big" type="button" onclick="goToScanStart()">Scan local repository</button>
           </div>
+          <p class="launch-link muted tiny">New here? Try the <a href="#" onclick="go('hn');return false">HN demo</a> — value in under 30 seconds.</p>
         </header>
-        <header class="home-welcome glass needs-repo">
-          <div>
-            <h2 class="home-dash-welcome" id="homeWelcome">Welcome back</h2>
-            <p class="home-tagline">Repository indexed. Ask Atlas a repo-aware question, or use Debug and Impact when you need a sharper next step.</p>
-            <p class="home-repo-line muted tiny" id="homeRepoStatus">No repository scanned yet</p>
+
+        <!-- Return-user hero -->
+        <header class="launch-hero glass needs-repo">
+          <h2 id="homeWelcome">Welcome back</h2>
+          <p class="launch-lead">Repository indexed. Ask Atlas a repo-aware question, or use Impact and Debug for sharper next steps.</p>
+          <p class="home-repo-line muted tiny" id="homeRepoStatus">No repository scanned yet</p>
+          <div class="launch-cta" style="margin-top:16px">
+            <button class="btn primary big" type="button" onclick="go('ask')">Ask Atlas</button>
+            <button class="btn ghost" type="button" onclick="go('scan')">Scan another repository</button>
           </div>
-          <span class="status-pill" id="homeStatusPill">—</span>
+          <span class="status-pill" id="homeStatusPill" style="margin-top:12px;display:inline-block">—</span>
         </header>
+
         <div id="resumeScanCard" class="resume-scan-card glass" style="display:none"></div>
 
-        <!-- Section 2 — Quick Actions -->
+        <!-- Action cards -->
         <section class="home-section needs-repo">
-          <h3 class="home-section-title">Tools for this repository</h3>
-          <div class="quick-action-cards">
-            <button class="qa-card" type="button" onclick="go('ask')">
-              <span class="qa-icon" aria-hidden="true">?</span>
-              <span class="qa-title">Ask Atlas</span>
-              <span class="qa-desc">Ask repo-aware questions.</span>
+          <div class="action-cards">
+            <button class="action-card action-card-featured" type="button" onclick="go('ask')">
+              <span class="ac-icon" aria-hidden="true">?</span>
+              <span class="ac-title">Ask Atlas</span>
+              <span class="ac-desc">Ask repo-aware questions with cited files.</span>
             </button>
-            <button class="qa-card" type="button" onclick="go('investigate')">
-              <span class="qa-icon" aria-hidden="true">!</span>
-              <span class="qa-title">Debug</span>
-              <span class="qa-desc">Find likely causes from symptoms or stack traces.</span>
+            <button class="action-card" type="button" onclick="go('impact')">
+              <span class="ac-icon" aria-hidden="true">↳</span>
+              <span class="ac-title">Impact</span>
+              <span class="ac-desc">See what breaks before you edit.</span>
             </button>
-            <button class="qa-card" type="button" onclick="go('impact')">
-              <span class="qa-icon" aria-hidden="true">↳</span>
-              <span class="qa-title">Impact</span>
-              <span class="qa-desc">See what breaks before you edit.</span>
+            <button class="action-card" type="button" onclick="go('investigate')">
+              <span class="ac-icon" aria-hidden="true">!</span>
+              <span class="ac-title">Debug</span>
+              <span class="ac-desc">Find likely causes from symptoms or stack traces.</span>
             </button>
           </div>
         </section>
 
-        <!-- Section 3 — Getting Started (auto-hides once usage history exists) -->
-        <section class="home-section" id="homeGettingStarted" style="display:none">
-          <h3 class="home-section-title">Getting started</h3>
-          <ol class="getting-started-steps">
-            <li><span class="gs-step">1</span> Load the sample repository</li>
-            <li><span class="gs-step">2</span> Press Send in Ask Atlas</li>
-            <li><span class="gs-step">3</span> Review the cited files</li>
-            <li><span class="gs-step">4</span> Scan your own repo when ready</li>
-          </ol>
-        </section>
-
-        <!-- Section 4 — MCP status -->
-        <section class="mcp-setup glass needs-repo" id="mcpSetupSection" aria-labelledby="mcpSetupTitle">
-          <h2 class="home-section-title" id="mcpSetupTitle">MCP connections</h2>
+        <!-- MCP connections -->
+        <section class="mcp-setup glass" id="mcpSetupSection" aria-labelledby="mcpSetupTitle">
+          <h2 class="home-section-title" id="mcpSetupTitle">Connect your AI tools</h2>
           <p class="muted tiny">Atlas is the local repo-memory layer for Claude, Cursor, and Codex. Your source stays on this machine.</p>
-          <div class="mcp-status-grid" id="mcpStatusGrid" aria-live="polite">
-            <div class="mcp-status-card"><span>Claude</span><b id="mcpClaudeStatus">Checking…</b><button class="btn ghost small" type="button" onclick="atlasMcpSetup.connectClaude()">Connect</button></div>
-            <div class="mcp-status-card"><span>Cursor</span><b id="mcpCursorStatus">Checking…</b><button class="btn ghost small" type="button" onclick="atlasMcpSetup.connectCursor()">Connect</button></div>
-            <div class="mcp-status-card"><span>Codex</span><b id="mcpCodexStatus">Checking…</b><button class="btn ghost small" type="button" onclick="atlasMcpSetup.copyConfig()">Copy config</button></div>
-          </div>
-          <div class="mcp-setup-actions">
-            <button class="btn ghost" type="button" onclick="atlasMcpSetup.testMcp()">Test Atlas MCP</button>
-            <button class="btn ghost" type="button" onclick="atlasMcpSetup.showDiagnostics()">Show diagnostics</button>
-          </div>
-          <pre id="mcpSetupOutput" class="code tiny mcp-setup-output" style="display:none" aria-live="polite"></pre>
-          <div class="mcp-advanced" id="mcpAdvanced" style="display:none;margin-top:10px">
-            <button class="btn ghost small" type="button" onclick="atlasMcpSetup.copyConfig()">Copy MCP config manually</button>
+          <div class="mcp-tool-grid" id="mcpToolGrid" aria-live="polite">
+            <article class="mcp-tool-card" id="mcpClaudeCard">
+              <div class="mcp-tool-card-top">
+                <h3 class="mcp-tool-card-title">Claude</h3>
+                <p class="mcp-tool-card-status disconnected" id="mcpClaudeStatus">Checking…</p>
+              </div>
+              <div class="mcp-tool-card-actions">
+                <button class="btn ghost small mcp-connect-btn" id="mcpClaudeBtn" type="button" onclick="atlasMcpSetup.connectClaude()">Connect to Claude</button>
+                <button class="btn ghost small" type="button" onclick="atlasMcpSetup.testTool('claude')">Test Claude</button>
+                <button class="btn ghost small" type="button" onclick="atlasMcpSetup.showManualSetup('claude')">Advanced manual setup</button>
+              </div>
+              <div class="mcp-tool-test" id="mcpClaudeTest" hidden>
+                <p class="mcp-tool-test-summary" id="mcpClaudeTestSummary"></p>
+                <button class="btn ghost tiny mcp-tool-details-btn" type="button" id="mcpClaudeDetailsBtn" onclick="atlasMcpSetup.toggleToolDetails('claude')" hidden>Show details</button>
+                <pre class="mcp-tool-tools-list code tiny" id="mcpClaudeToolsList" hidden></pre>
+              </div>
+            </article>
+            <article class="mcp-tool-card" id="mcpCursorCard">
+              <div class="mcp-tool-card-top">
+                <h3 class="mcp-tool-card-title">Cursor</h3>
+                <p class="mcp-tool-card-status disconnected" id="mcpCursorStatus">Checking…</p>
+              </div>
+              <div class="mcp-tool-card-actions">
+                <button class="btn ghost small mcp-connect-btn" id="mcpCursorBtn" type="button" onclick="atlasMcpSetup.connectCursor()">Connect to Cursor</button>
+                <button class="btn ghost small" type="button" onclick="atlasMcpSetup.testTool('cursor')">Test Cursor</button>
+                <button class="btn ghost small" type="button" onclick="atlasMcpSetup.showManualSetup('cursor')">Advanced manual setup</button>
+              </div>
+              <div class="mcp-tool-test" id="mcpCursorTest" hidden>
+                <p class="mcp-tool-test-summary" id="mcpCursorTestSummary"></p>
+                <button class="btn ghost tiny mcp-tool-details-btn" type="button" id="mcpCursorDetailsBtn" onclick="atlasMcpSetup.toggleToolDetails('cursor')" hidden>Show details</button>
+                <pre class="mcp-tool-tools-list code tiny" id="mcpCursorToolsList" hidden></pre>
+              </div>
+            </article>
+            <article class="mcp-tool-card" id="mcpCodexCard">
+              <div class="mcp-tool-card-top">
+                <h3 class="mcp-tool-card-title">Codex</h3>
+                <p class="mcp-tool-card-status disconnected" id="mcpCodexStatus">Checking…</p>
+              </div>
+              <div class="mcp-tool-card-actions">
+                <button class="btn ghost small mcp-connect-btn" id="mcpCodexBtn" type="button" onclick="atlasMcpSetup.connectCodex()">Connect to Codex</button>
+                <button class="btn ghost small" type="button" onclick="atlasMcpSetup.testTool('codex')">Test Codex</button>
+                <button class="btn ghost small" type="button" onclick="atlasMcpSetup.showManualSetup('codex')">Advanced manual setup</button>
+              </div>
+              <div class="mcp-tool-test" id="mcpCodexTest" hidden>
+                <p class="mcp-tool-test-summary" id="mcpCodexTestSummary"></p>
+                <button class="btn ghost tiny mcp-tool-details-btn" type="button" id="mcpCodexDetailsBtn" onclick="atlasMcpSetup.toggleToolDetails('codex')" hidden>Show details</button>
+                <pre class="mcp-tool-tools-list code tiny" id="mcpCodexToolsList" hidden></pre>
+              </div>
+            </article>
           </div>
         </section>
 
-        <!-- Section 5 — Recent Activity -->
-        <section class="home-section needs-repo">
+        <!-- Recent activity (signed-in, repo loaded) -->
+        <section class="home-section needs-repo" id="homeRecentSection" style="display:none">
           <h3 class="home-section-title">Recent activity</h3>
           <div class="recent-activity-grid">
             <div class="recent-col glass">
               <h4 class="recent-col-title">Recent analyses</h4>
-              <div id="homeRecentAnalyses"><span class="muted tiny">No analyses yet — scan a repository to get started.</span></div>
+              <div id="homeRecentAnalyses"><span class="muted tiny">No analyses yet.</span></div>
             </div>
             <div class="recent-col glass">
               <h4 class="recent-col-title">Recent repositories</h4>
               <div id="homeRecentRepos"><span class="muted tiny">No repositories yet.</span></div>
-            </div>
-            <div class="recent-col glass">
-              <h4 class="recent-col-title">Recent exports</h4>
-              <div id="homeRecentExports"><span class="muted tiny">No exports yet.</span></div>
             </div>
           </div>
         </section>
       </div>
     </section>
 
+    <!-- ===================== HN DEMO ===================== -->
+    <section class="view" id="view-hn">
+      <div class="launch-page hn-demo-page">
+        <header class="launch-hero glass">
+          <h1>Try Atlas in 30 seconds</h1>
+          <p class="launch-lead">Load the sample repository, ask one question, and see cited files — no folder path needed.</p>
+          <div class="launch-cta">
+            <button class="btn primary big" type="button" id="hnLoadBtn" onclick="startHnDemo()">Load sample repository</button>
+          </div>
+          <div class="launch-steps hn-progress" id="hnProgress" aria-label="Demo progress">
+            <span class="launch-step" id="hnStep1"><b>1</b> Load sample repo</span>
+            <span class="launch-step" id="hnStep2"><b>2</b> Ask Atlas</span>
+            <span class="launch-step" id="hnStep3"><b>3</b> See cited files</span>
+          </div>
+        </header>
+      </div>
+    </section>
+
     <!-- ===================== SCREEN 2: SCAN ===================== -->
     <section class="view" id="view-scan">
-      <h2 class="vh">Scan repository</h2>
-      <div class="repo-pick glass">
-        <label for="repoPath">Choose a folder to scan</label>
-        <p class="muted tiny picker-help">Atlas runs locally — your code is never uploaded.</p>
-        <div class="folder-guidance">
-          <p class="muted tiny"><span class="guide-ok">Recommended</span> your project root — the folder that holds your source code.</p>
-          <p class="muted tiny"><span class="guide-avoid">Avoid</span> <code>node_modules</code>, <code>.git</code>, your whole C: drive, or Desktop/Downloads.</p>
-        </div>
-        <div class="pick-row">
-          <input id="repoPath" type="text" placeholder="C:\projects\my-app  or  /home/dev/my-app" value="" autocomplete="off" oninput="debouncedAutoValidate()" />
-          <button class="btn browse-btn" id="browseRepoBtn" type="button" onclick="browseRepoFolder()">Browse</button>
-        </div>
-        <div class="path-error" id="pathError" style="display:none"></div>
-        <div class="path-ok muted tiny" id="pathOk" style="display:none"></div>
-        <details class="scope-advanced">
-          <summary class="muted tiny">Scan options</summary>
-          <div class="scope-wrap">
-            <label>Scope</label>
-            <div class="scope-grid">
-              <select id="scopeMode">
-                <option value="entire_repo">Entire repository</option>
-                <option value="folder">Specific folder</option>
-                <option value="python_only">Only Python</option>
-                <option value="backend">Only backend</option>
-                <option value="frontend">Only frontend</option>
-                <option value="custom">Custom patterns</option>
-              </select>
-              <input id="scopeFolder" type="text" placeholder="folder path (for Specific folder)" />
-            </div>
-            <div class="scope-grid">
-              <input id="scopeInclude" type="text" placeholder="include patterns, comma-separated (custom)" />
-              <input id="scopeExclude" type="text" placeholder="exclude patterns, comma-separated (custom)" />
-            </div>
-            <label class="graph-toggle edge-toggle"><input type="checkbox" id="manualMassiveMode"> Very large repository (faster scan, samples key files)</label>
-            <div id="preScanEstimate" class="muted tiny"></div>
+      <div id="scanPicker" class="scan-page">
+        <header class="launch-hero glass scan-hero">
+          <h2 class="scan-progress-title">Scan a repository</h2>
+          <p class="launch-lead">Atlas indexes your code locally. Your source code stays on this machine.</p>
+          <div class="launch-cta">
+            <button class="btn primary big" type="button" onclick="loadDemoMode('medium')">Load sample repository</button>
+            <button class="btn ghost big" type="button" onclick="expandScanLocal()">Scan local repository</button>
           </div>
-        </details>
-        <div class="pick-actions">
-          <button class="btn primary big" type="button" onclick="loadDemoMode('medium')">Load sample repository</button>
-          <button class="btn ghost big" type="button" id="scanBtn" disabled onclick="scanFlow()">Scan selected folder</button>
+        </header>
+
+        <div id="scanLocalPanel" class="scan-local-panel glass collapsed">
+          <button class="scan-local-toggle" type="button" onclick="toggleScanLocal()">▸ Local folder path</button>
+          <div class="scan-local-body">
+            <label for="repoPath">Folder to scan</label>
+            <p class="muted tiny picker-help">Choose your project root — the folder that holds your source code.</p>
+            <div class="pick-row">
+              <input id="repoPath" type="text" placeholder="C:\projects\my-app" value="" autocomplete="off" oninput="debouncedAutoValidate()" />
+              <button class="btn browse-btn" id="browseRepoBtn" type="button" onclick="browseRepoFolder()">Browse</button>
+            </div>
+            <div class="path-error" id="pathError" style="display:none"></div>
+            <div class="path-ok muted tiny" id="pathOk" style="display:none"></div>
+            <details class="scope-advanced">
+              <summary class="muted tiny">Scan options</summary>
+              <div class="scope-wrap">
+                <label>Scope</label>
+                <div class="scope-grid">
+                  <select id="scopeMode">
+                    <option value="entire_repo">Entire repository</option>
+                    <option value="folder">Specific folder</option>
+                    <option value="python_only">Only Python</option>
+                    <option value="backend">Only backend</option>
+                    <option value="frontend">Only frontend</option>
+                    <option value="custom">Custom patterns</option>
+                  </select>
+                  <input id="scopeFolder" type="text" placeholder="folder path (for Specific folder)" />
+                </div>
+                <div class="scope-grid">
+                  <input id="scopeInclude" type="text" placeholder="include patterns, comma-separated (custom)" />
+                  <input id="scopeExclude" type="text" placeholder="exclude patterns, comma-separated (custom)" />
+                </div>
+                <label class="graph-toggle edge-toggle"><input type="checkbox" id="manualMassiveMode"> Very large repository (faster scan, samples key files)</label>
+                <div id="preScanEstimate" class="muted tiny"></div>
+              </div>
+            </details>
+            <div class="pick-actions">
+              <button class="btn primary" type="button" id="scanBtn" disabled onclick="scanFlow()">Scan selected folder</button>
+            </div>
+          </div>
         </div>
-        <div class="demo-pack glass">
-          <label>Sample repository size</label>
-          <p class="muted tiny">Fastest demo path: load the bundled sample, then press Send in Ask Atlas to see cited files.</p>
-          <div id="demoPackList" class="demo-pack-grid"></div>
-        </div>
-        <div class="recent">
-          <span class="recent-title">Recent scanned repositories</span>
-          <div id="recentList" class="recent-list"><span class="muted">No history yet — scan a repository or load a sample to populate this list.</span></div>
+
+        <div class="recent-compact glass">
+          <div class="recent-compact-head">
+            <span class="recent-compact-title">Recent repositories</span>
+            <button class="btn ghost small" id="recentShowAllBtn" type="button" style="display:none" onclick="toggleRecentExpanded()">Show all</button>
+          </div>
+          <div id="recentList" class="recent-list"><span class="muted tiny">No history yet — load the sample or scan a folder.</span></div>
         </div>
       </div>
-      <div id="scanRunning">
-        <div class="scan-path glass" id="scanPath">—</div>
-        <div class="scan-path glass" id="scanModeInfo" style="display:none"></div>
-        <div class="scan-wrap">
-          <div class="stages glass" id="stages"></div>
-          <div class="metrics glass" id="scanMetrics"><div class="skeleton-grid" id="scanSkeleton"></div></div>
-        </div>
+
+      <div id="scanRunning" class="scan-progress-panel glass" style="display:none">
+        <h3 class="scan-progress-title">Indexing repository</h3>
+        <p class="scan-progress-sub muted" id="scanPath">—</p>
+        <p class="scan-progress-sub muted" id="scanModeInfo" style="display:none"></p>
+        <div class="stages" id="stages"></div>
         <div class="scan-foot"><div class="bar"><div class="bar-fill" id="scanBar"></div></div><span id="scanPct">0%</span><button class="btn ghost small" type="button" onclick="cancelCurrentScan()">Cancel scan</button></div>
       </div>
       <div id="scanSuccess" class="scan-result glass" style="display:none">
@@ -565,7 +607,7 @@
               <input id="askInput" type="text" placeholder="Ask about this repository…" />
               <button class="btn primary" id="askSend" onclick="sendCopilotQuestion()">Send</button>
             </div>
-            <div class="suggest ask-suggestions" id="suggest"></div>
+            <div class="suggest ask-suggestions" id="suggest" role="listbox" aria-label="Suggested questions"></div>
             <div class="copilot-loading" id="copilotLoading" style="display:none">Analyzing repository…</div>
             <div class="copilot-card glass" id="copilotCard" style="display:none">
               <div class="copilot-card-head">
@@ -784,9 +826,7 @@
             <button class="btn ghost" type="button" onclick="copyForTarget('codex')">Copy for Codex</button>
           </div>
           <div class="copy-row">
-            <button class="btn ghost" type="button" onclick="loadClaudeIntegration()">Connect Claude</button>
-            <button class="btn ghost" type="button" onclick="copyClaudeMcpConfig()">Copy MCP config</button>
-            <button class="btn ghost" type="button" onclick="testClaudeMcp()">Test MCP</button>
+            <button class="btn ghost" type="button" onclick="go('home'); setTimeout(() => document.getElementById('mcpSetupSection')?.scrollIntoView({behavior:'smooth',block:'start'}), 80)">Connect AI tools</button>
           </div>
           <div class="copy-row">
             <button class="btn ghost" type="button" onclick="writeCursorRule()">Write Cursor rule</button>
@@ -997,7 +1037,22 @@
     </div>
   </div>
 
+  <div id="mcpManualModal" class="admin-modal" style="display:none" role="dialog" aria-labelledby="mcpManualTitle">
+    <div class="admin-modal-card glass about-card">
+      <p class="onboard-eyebrow" id="mcpManualEyebrow">MCP setup</p>
+      <h3 id="mcpManualTitle">Advanced manual setup</h3>
+      <p class="muted" id="mcpManualReason">Paste this config manually if automatic setup is unavailable.</p>
+      <p class="muted tiny"><b>Config path:</b> <span id="mcpManualPath">—</span></p>
+      <pre id="mcpManualSnippet" class="code tiny mcp-manual-snippet"></pre>
+      <div class="success-buttons">
+        <button class="btn primary" type="button" onclick="atlasMcpSetup.closeManualSetup()">Close</button>
+        <button class="btn ghost" type="button" onclick="atlasMcpSetup.copyManualConfig()">Copy manual config</button>
+      </div>
+    </div>
+  </div>
+
   <div id="toast" class="toast"></div>
+  <footer id="appBuildMarker" class="app-build-marker muted tiny" aria-label="Build version">Atlas v1.0.0 launch build</footer>
   <script src="universe.js"></script>
   <script src="atlas_copy.js"></script>
   <script src="app.js"></script>

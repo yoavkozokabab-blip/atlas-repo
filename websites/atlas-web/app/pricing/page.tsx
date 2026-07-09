@@ -41,7 +41,7 @@ export default function PricingPage() {
                   <li>Ask Atlas</li>
                   <li>Debug</li>
                   <li>Impact analysis</li>
-                  <li>Change planning</li>
+                  <li>Plan Change workflows</li>
                   <li>Dependency map</li>
                 </ul>
                 <Link className="btn btn-primary btn-lg" href="/download">Start free</Link>
@@ -60,7 +60,7 @@ export default function PricingPage() {
                   <li>Snapshot history</li>
                   <li>Advanced search</li>
                   <li>Priority indexing</li>
-                  <li>Early access features</li>
+                  <li>Priority workflow improvements</li>
                   <li>Priority support</li>
                 </ul>
                 <Link className="btn btn-primary btn-lg" href="/checkout/plan/pro">Start 7-day free trial</Link>

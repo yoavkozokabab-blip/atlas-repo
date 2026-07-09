@@ -37,7 +37,7 @@ export default async function DownloadsPage() {
       </div>
       <h3>Release notes</h3>
       <ul className="prose" style={{ paddingLeft: 20 }}>
-        <li>v{ENV.appVersion} — local-first repository memory, Change Plan, Impact, Investigation, and Claude/Cursor/Codex export.</li>
+        <li>v{ENV.appVersion} — local-first repository memory, Plan Change, Impact, Debug, and Claude/Cursor/Codex connection.</li>
       </ul>
     </div>
   );

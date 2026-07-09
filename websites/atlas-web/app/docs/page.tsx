@@ -5,7 +5,7 @@ import { SUPPORT_EMAIL, supportMailto } from "../_config";
 
 export const metadata: Metadata = {
   title: "Docs — Atlas",
-  description: "Getting started with Atlas: install, scan a repository, generate a Change Plan, and export AI-ready context."
+  description: "Getting started with Atlas: install, scan a repository, ask Atlas, and connect Claude, Cursor, or Codex."
 };
 
 export default function DocsPage() {
@@ -27,21 +27,24 @@ export default function DocsPage() {
             bundled demo. Atlas scans locally and builds the dependency graph, subsystem map and
             risk model — your code never leaves your machine.</p>
 
-          <h2>3. Generate a Change Plan</h2>
+          <h2>3. Ask Atlas</h2>
+          <p>Ask a repo-aware question such as <code>Where is authentication implemented?</code>.
+            Atlas answers with cited files and evidence from the indexed repository.</p>
+
+          <h2>4. Plan a change</h2>
           <p>Describe a change (e.g. <code>add authentication</code>). Atlas returns the files to
             inspect first, what may break, and the verification steps — grounded in your real code,
             with a confidence rating.</p>
 
-          <h2>4. Export context for your AI</h2>
-          <p>Click <b>Copy for Claude / Cursor / Codex</b>. Atlas produces a compact, evidence-backed
-            context packet. Paste it into your tool so it starts with your repo&apos;s structure instead of
-            re-reading files.</p>
+          <h2>5. Connect your AI tool</h2>
+          <p>Connect Claude, Cursor, or Codex from the Atlas home screen so your coding agent can
+            use the local repository memory.</p>
 
           <h2>Workflows</h2>
           <ul>
-            <li><b>Change Plan</b> — plan a change with the exact files and order.</li>
-            <li><b>Impact</b> — see what depends on a file and which tests to run (Pro).</li>
-            <li><b>Investigation</b> — trace a symptom to likely files with evidence (Pro).</li>
+            <li><b>Plan Change</b> — plan a change with the exact files and order.</li>
+            <li><b>Impact</b> — see what depends on a file and which tests to run.</li>
+            <li><b>Debug</b> — trace a symptom to likely files with evidence.</li>
           </ul>
 
           <p className="note" style={{ marginTop: 24 }}>

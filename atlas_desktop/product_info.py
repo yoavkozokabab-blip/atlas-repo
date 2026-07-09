@@ -11,6 +11,7 @@ import urllib.request
 from typing import Any, Dict, Optional
 
 PRODUCT_VERSION = "1.0.0"
+LAUNCH_BUILD_LABEL = "Atlas v1.0.0 launch build"
 DEFAULT_SUPPORT_EMAIL = "atlas.repo.support@gmail.com"
 
 _BUILD_DATE = time.strftime("%Y-%m-%d", time.gmtime())
@@ -63,6 +64,7 @@ def update_check_url() -> str:
 def version_info() -> Dict[str, Any]:
     return {
         "version": PRODUCT_VERSION,
+        "launch_build_label": LAUNCH_BUILD_LABEL,
         "build_commit": build_commit(),
         "build_date": build_date(),
         "product": "ATLAS",

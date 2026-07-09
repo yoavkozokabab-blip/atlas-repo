@@ -20,7 +20,7 @@ export default function PrivacyPage() {
           <ul>
             <li>Repository scanning and file reading</li>
             <li>The dependency graph, subsystem map and architecture analysis</li>
-            <li>Risk detection, impact analysis and change planning</li>
+            <li>Risk detection, impact analysis and Plan Change workflows</li>
             <li>Generation of the AI context packet</li>
           </ul>
           <p>Your source code is read and analyzed entirely on your device. Atlas does not upload

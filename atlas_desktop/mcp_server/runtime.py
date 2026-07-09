@@ -154,7 +154,7 @@ TOOLS: List[Dict[str, Any]] = [
     },
     {
         "name": "atlas_plan_change",
-        "description": "Build a read-only Atlas Change Plan for the current scan.",
+        "description": "Build a read-only Atlas Plan Change for the current scan.",
         "inputSchema": _schema(
             properties={
                 "repo_path": {"type": "string", "description": "Optional path that must match the current scan."},
@@ -165,7 +165,7 @@ TOOLS: List[Dict[str, Any]] = [
     },
     {
         "name": "atlas_get_change_plan",
-        "description": "Alias of Atlas Change Plan: build a read-only change plan for the current scan.",
+        "description": "Alias of Atlas Plan Change: build a read-only change plan for the current scan.",
         "inputSchema": _schema(
             properties={
                 "repo_path": {"type": "string", "description": "Optional path that must match the current scan."},

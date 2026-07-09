@@ -3,9 +3,9 @@ import { store, User } from "./store";
 
 export const PLANS = {
   free: { id: "free", name: "Free", price: 0, interval: null as null | "month", trialDays: 0,
-    blurb: "Repository scanning, local dependency graph, MCP integration, Claude Code, Cursor, Codex, Ask Atlas, Debug, Impact analysis, change planning and dependency map." },
+    blurb: "Repository scanning, local dependency graph, MCP integration, Claude Code, Cursor, Codex, Ask Atlas, Debug, Impact analysis, Plan Change and dependency map." },
   pro: { id: "pro", name: "Pro", price: 19, interval: "month" as const, trialDays: 7,
-    blurb: "Everything in Free plus unlimited repositories, unlimited indexing, cloud account sync, snapshot history, advanced search, priority indexing, early access features and priority support." },
+    blurb: "Everything in Free plus unlimited repositories, unlimited indexing, cloud account sync, snapshot history, advanced search, priority indexing and priority support." },
   team: {
     id: "team",
     name: "Team",

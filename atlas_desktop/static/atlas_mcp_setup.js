@@ -1,33 +1,83 @@
-/** One-click MCP setup for Cursor and Claude Desktop (local only). */
+/** One-click MCP setup for Cursor, Claude Desktop, and Codex (local only). */
 const atlasMcpSetup = (() => {
   let cachedStatus = null;
   let cachedJson = "";
+  let manualSnippet = "";
+  let manualTool = "";
 
-  function outputEl() {
-    return document.getElementById("mcpSetupOutput");
+  const CONNECT_LABELS = {
+    claude: "Connect to Claude",
+    cursor: "Connect to Cursor",
+    codex: "Connect to Codex",
+  };
+
+  const TOOL_LABELS = {
+    claude: "Claude",
+    cursor: "Cursor",
+    codex: "Codex",
+  };
+
+  function toolKey(tool) {
+    const key = String(tool || "").toLowerCase();
+    return TOOL_LABELS[key] ? key : "";
   }
 
-  function showOutput(text) {
-    const el = outputEl();
-    if (!el) return;
-    el.style.display = "block";
-    el.textContent = text;
+  function toolId(tool) {
+    const key = toolKey(tool);
+    return key ? key.charAt(0).toUpperCase() + key.slice(1) : "";
   }
 
-  function setText(id, text, ok) {
+  function setText(id, text, state) {
     const el = document.getElementById(id);
     if (!el) return;
     el.textContent = text;
-    el.className = ok ? "connected" : "disconnected";
+    if (state) el.className = `mcp-tool-card-status ${state}`;
+  }
+
+  function setConnectButton(id, connected, manual, tool) {
+    const btn = document.getElementById(id);
+    if (!btn) return;
+    const label = CONNECT_LABELS[tool] || "Connect";
+    if (manual) {
+      btn.textContent = label;
+      btn.classList.remove("primary");
+      btn.classList.add("ghost");
+      return;
+    }
+    btn.textContent = connected ? "Reconnect" : label;
+    btn.classList.toggle("primary", !connected);
+    btn.classList.toggle("ghost", !!connected);
   }
 
   function renderHomeStatus(status) {
     if (!status) return;
     const claude = status.claude || {};
     const cursor = status.cursor || {};
-    setText("mcpClaudeStatus", claude.atlas_configured ? "Connected" : "Not connected", !!claude.atlas_configured);
-    setText("mcpCursorStatus", cursor.atlas_configured ? "Connected" : "Not connected", !!cursor.atlas_configured);
-    setText("mcpCodexStatus", status.executable_exists ? "MCP ready" : "Not connected", !!status.executable_exists);
+    const codex = status.codex || {};
+    const claudeOn = !!claude.atlas_configured;
+    const cursorOn = !!cursor.atlas_configured;
+    const codexOn = !!codex.atlas_configured;
+    const codexManual = !codexOn && codex.can_auto_write === false;
+
+    setText(
+      "mcpClaudeStatus",
+      claudeOn ? "Connected" : "Not connected",
+      claudeOn ? "connected" : "disconnected"
+    );
+    setText(
+      "mcpCursorStatus",
+      cursorOn ? "Connected" : "Not connected",
+      cursorOn ? "connected" : "disconnected"
+    );
+    setText(
+      "mcpCodexStatus",
+      codexOn ? "Codex connected" : (codexManual ? "Manual setup required" : "Not connected"),
+      codexOn ? "connected" : (codexManual ? "manual" : "disconnected")
+    );
+
+    setConnectButton("mcpClaudeBtn", claudeOn, false, "claude");
+    setConnectButton("mcpCursorBtn", cursorOn, false, "cursor");
+    setConnectButton("mcpCodexBtn", codexOn, codexManual, "codex");
   }
 
   async function loadStatus(force) {
@@ -43,97 +93,185 @@ const atlasMcpSetup = (() => {
     return cachedStatus;
   }
 
-  function formatFailure(res) {
-    const lines = [
-      `Config path: ${res.config_path || "(unknown)"}`,
-      `Error: ${res.error || res.code || "Write failed"}`,
-      "",
-      "Copy this JSON manually:",
-      res.fallback_json || cachedJson,
-    ];
-    return lines.join("\n");
+  function manualSnippetFor(tool, failureRes) {
+    const key = toolKey(tool);
+    const agent = (cachedStatus && cachedStatus[key]) || {};
+    if (key === "codex") {
+      return failureRes?.fallback_toml || agent.copyable_toml || "";
+    }
+    return failureRes?.fallback_json || agent.copyable_json || cachedJson;
+  }
+
+  function manualPathFor(tool, failureRes) {
+    const key = toolKey(tool);
+    const agent = (cachedStatus && cachedStatus[key]) || {};
+    if (failureRes?.config_path) return failureRes.config_path;
+    if (agent.config_path) return agent.config_path;
+    if (key === "codex") return "~/.codex/config.toml";
+    if (key === "cursor") return "~/.cursor/mcp.json";
+    return "~/AppData/Roaming/Claude/claude_desktop_config.json";
+  }
+
+  function showManualSetup(tool, failureRes) {
+    const key = toolKey(tool);
+    if (!key) return;
+    manualTool = key;
+    manualSnippet = manualSnippetFor(key, failureRes);
+    const modal = document.getElementById("mcpManualModal");
+    const eyebrow = document.getElementById("mcpManualEyebrow");
+    const title = document.getElementById("mcpManualTitle");
+    const reason = document.getElementById("mcpManualReason");
+    const path = document.getElementById("mcpManualPath");
+    const snippet = document.getElementById("mcpManualSnippet");
+    const label = TOOL_LABELS[key];
+    if (eyebrow) eyebrow.textContent = `${label} MCP`;
+    if (title) {
+      title.textContent =
+        failureRes?.error || failureRes?.code ? "Manual setup required" : "Advanced manual setup";
+    }
+    if (reason) {
+      reason.textContent =
+        failureRes?.error ||
+        failureRes?.code ||
+        `Paste this ${key === "codex" ? "TOML" : "JSON"} into your ${label} config if automatic setup is unavailable.`;
+    }
+    if (path) path.textContent = manualPathFor(key, failureRes);
+    if (snippet) snippet.textContent = manualSnippet;
+    if (modal) modal.style.display = "grid";
+    if (key === "codex" && (failureRes?.error || failureRes?.code)) {
+      setText("mcpCodexStatus", "Manual setup required", "manual");
+      setConnectButton("mcpCodexBtn", false, true, "codex");
+    }
+  }
+
+  function closeManualSetup() {
+    const modal = document.getElementById("mcpManualModal");
+    if (modal) modal.style.display = "none";
+  }
+
+  function copyManualConfig() {
+    if (!manualSnippet) return;
+    const label = TOOL_LABELS[manualTool] || "MCP";
+    copyText(manualSnippet, `${label} manual config copied`);
+  }
+
+  async function connectAgent(tool, endpoint, successFallback, errorFallback) {
+    const res = await api(endpoint, "POST", { confirm: true });
+    if (res.ok) {
+      closeManualSetup();
+      toast(res.message || successFallback, "success");
+      await loadStatus(true);
+      return res;
+    }
+    showManualSetup(tool, res);
+    toast(res.error || errorFallback, "error");
+    return res;
   }
 
   async function connectCursor() {
-    const res = await api("/api/integrations/cursor/write-config", "POST", {
-      confirm: true,
-    });
-    if (res.ok) {
-      toast(
-        res.message ||
-          "Atlas was added to Cursor. Restart Cursor, then open Settings → MCP and confirm Atlas is connected.",
-        "success"
-      );
-      showOutput(
-        `${res.message || "Cursor config updated."}\n\nPath: ${res.config_path}\nExecutable: ${res.executable_path || ""}`
-      );
-      await loadStatus(true);
-      return;
-    }
-    showOutput(formatFailure(res));
-    toast(res.error || "Could not write Cursor MCP config", "error");
+    return connectAgent(
+      "cursor",
+      "/api/integrations/cursor/write-config",
+      "Atlas was added to Cursor. Restart Cursor, then open Settings → MCP and confirm Atlas is connected.",
+      "Could not write Cursor MCP config"
+    );
   }
 
   async function connectClaude() {
-    const res = await api("/api/integrations/claude/write-config", "POST", {
-      confirm: true,
-    });
-    if (res.ok) {
-      toast(
-        res.message ||
-          "Atlas was added to Claude Desktop. Restart Claude Desktop to load Atlas.",
-        "success"
-      );
-      showOutput(
-        `${res.message || "Claude config updated."}\n\nPath: ${res.config_path}\nExecutable: ${res.executable_path || ""}`
-      );
-      await loadStatus(true);
-      return;
-    }
-    showOutput(formatFailure(res));
-    toast(res.error || "Could not write Claude Desktop MCP config", "error");
-  }
-
-  async function copyConfig() {
-    await loadStatus(false);
-    if (cachedJson) copyText(cachedJson, "MCP config copied");
-  }
-
-  async function testMcp() {
-    const res = await api("/api/integrations/mcp/test", "POST", {});
-    if (!res.ok) {
-      showOutput(`FAIL — MCP runtime test\n${res.error || "Unknown error"}`);
-      toast(res.error || "MCP test failed", "error");
-      return;
-    }
-    showOutput(
-      `PASS — MCP runtime test\nTools: ${res.tool_count}\n${(res.tools || []).join(", ")}`
+    return connectAgent(
+      "claude",
+      "/api/integrations/claude/write-config",
+      "Atlas was added to Claude Desktop. Restart Claude Desktop to load Atlas.",
+      "Could not write Claude Desktop MCP config"
     );
-    toast(`MCP test passed (${res.tool_count} tools)`, "success");
   }
 
-  async function showDiagnostics() {
-    const res = await api("/api/integrations/mcp/diagnostics", "POST", {});
-    const lines = (res.checks || []).map((item) => {
-      const mark = item.ok ? "PASS" : "FAIL";
-      const detail = item.detail ? ` — ${item.detail}` : "";
-      return `${mark}: ${item.name}${detail}`;
-    });
-    lines.unshift(`Atlas executable: ${res.executable_path || "(unknown)"}`);
-    lines.push("");
-    lines.push(res.passed ? "Overall: PASS" : "Overall: FAIL");
-    showOutput(lines.join("\n"));
-    const adv = document.getElementById("mcpAdvanced");
-    if (adv) adv.style.display = "flex";  // reveal manual "Copy MCP config" once diagnostics is open
-    toast(res.passed ? "MCP diagnostics passed" : "MCP diagnostics found issues", res.passed ? "success" : "error");
+  async function connectCodex() {
+    const res = await api("/api/integrations/codex/write-config", "POST", { confirm: true });
+    if (res.ok) {
+      closeManualSetup();
+      toast("Codex connected. Restart Codex to use Atlas.", "success");
+      await loadStatus(true);
+      return res;
+    }
+    showManualSetup("codex", res);
+    toast(res.error || "Automatic Codex connection failed — manual setup required", "error");
+    return res;
+  }
+
+  function resetToolDetails(tool) {
+    const id = toolId(tool);
+    const testEl = document.getElementById(`mcp${id}Test`);
+    const summaryEl = document.getElementById(`mcp${id}TestSummary`);
+    const detailsBtn = document.getElementById(`mcp${id}DetailsBtn`);
+    const toolsList = document.getElementById(`mcp${id}ToolsList`);
+    if (testEl) testEl.hidden = true;
+    if (summaryEl) summaryEl.textContent = "";
+    if (detailsBtn) detailsBtn.hidden = true;
+    if (toolsList) {
+      toolsList.textContent = "";
+      toolsList.hidden = true;
+    }
+  }
+
+  async function testTool(tool) {
+    const key = toolKey(tool);
+    if (!key) return;
+    const id = toolId(key);
+    const label = TOOL_LABELS[key];
+    const testEl = document.getElementById(`mcp${id}Test`);
+    const summaryEl = document.getElementById(`mcp${id}TestSummary`);
+    const detailsBtn = document.getElementById(`mcp${id}DetailsBtn`);
+    const toolsList = document.getElementById(`mcp${id}ToolsList`);
+    const res = await api("/api/integrations/mcp/test", "POST", {});
+    if (testEl) testEl.hidden = false;
+    if (!res.ok) {
+      if (summaryEl) {
+        summaryEl.textContent = `FAIL — ${res.error || "Unknown error"}`;
+        summaryEl.className = "mcp-tool-test-summary fail";
+      }
+      if (detailsBtn) detailsBtn.hidden = true;
+      if (toolsList) toolsList.hidden = true;
+      toast(res.error || `Test ${label} failed`, "error");
+      return res;
+    }
+    if (summaryEl) {
+      summaryEl.textContent = `PASS — ${res.tool_count} tools available`;
+      summaryEl.className = "mcp-tool-test-summary pass";
+    }
+    if (toolsList) {
+      toolsList.textContent = (res.tools || []).join("\n");
+      toolsList.hidden = true;
+    }
+    if (detailsBtn) {
+      detailsBtn.hidden = !(res.tools || []).length;
+      detailsBtn.textContent = "Show details";
+    }
+    toast(`Test ${label} passed (${res.tool_count} tools)`, "success");
+    return res;
+  }
+
+  function toggleToolDetails(tool) {
+    const key = toolKey(tool);
+    if (!key) return;
+    const id = toolId(key);
+    const list = document.getElementById(`mcp${id}ToolsList`);
+    const btn = document.getElementById(`mcp${id}DetailsBtn`);
+    if (!list || !btn) return;
+    const show = list.hidden;
+    list.hidden = !show;
+    btn.textContent = show ? "Hide details" : "Show details";
   }
 
   return {
     connectCursor,
     connectClaude,
-    copyConfig,
-    testMcp,
-    showDiagnostics,
+    connectCodex,
+    testTool,
+    showManualSetup,
+    closeManualSetup,
+    copyManualConfig,
+    toggleToolDetails,
     loadStatus,
   };
 })();

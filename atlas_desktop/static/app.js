@@ -12,11 +12,17 @@ const ONBOARDING_KEY = "atlas_onboarding_v2_done";
 const WORKFLOW_HINT_KEY = "atlas_workflow_examples_seen";
 const DEMO_PACK_KEY = "atlas_demo_pack_v1";
 const DEFAULT_DEMO_PACK = "medium";
-const DEFAULT_FIRST_QUESTION = "What breaks if I change services/auth.py?";
+const DEFAULT_FIRST_QUESTION = "Where is authentication implemented?";
+const HN_FIRST_QUESTION = "Where is authentication implemented?";
+const NAV_ALIASES = { intel: "center", bug: "investigate", map: "center", "command-center": "center", copilot: "ask", hn: "hn" };
+const PROTECTED_VIEWS = new Set(["home", "scan", "hn", "ask", "center", "build", "investigate", "impact", "export"]);
+const RECENT_MAX_VISIBLE = 4;
+const RECENT_HIDE_PATTERNS = [/^test_/i, /^repo_a$/i, /smoke/i, /fixture/i, /^debug_/i];
 const GRAPH_HIERARCHY_THRESHOLD = 1000;
 const ATLAS_SHOW_GRAPH_DEBUG = false;
-const NAV_ALIASES = { intel: "center", bug: "investigate", map: "center", "command-center": "center", copilot: "ask" };
-const PROTECTED_VIEWS = new Set(["home", "scan", "ask", "center", "build", "investigate", "impact", "export"]);
+let _recentExpanded = false;
+let _hnDemoActive = false;
+let _suggestDelegated = false;
 
 function resolveDefaultGraphView(moduleCount) {
   return (moduleCount || 0) >= GRAPH_HIERARCHY_THRESHOLD ? "hierarchy" : "module";
@@ -344,19 +350,19 @@ function workflowEmptyHtml(title, body, primaryLabel, primaryFn, secondaryLabel,
 function repoRequiredEmptyHtml(body) {
   return workflowEmptyHtml(
     "Scan a repository first",
-    body || "Load the sample to see Atlas answer with cited files, or scan your own folder.",
+    body || "Atlas needs a local code map before it can answer repo-aware questions.",
     "Load sample repository",
     "loadDemoMode('medium')",
-    "Scan repository",
+    "Scan local repository",
     "go('scan')"
   );
 }
 
 function renderWorkflowGate(view) {
   const map = {
-    build: { el: "buildOut", title: "Scan a repository first.", body: "Plan Change needs indexed files before it can name what to edit. Load the sample, or scan your own folder.", primary: "Load sample repository", fn: "loadDemoMode('medium')", secondary: "Scan repository", fn2: "go('scan')" },
-    investigate: { el: "investigateOut", title: "Scan a repository first.", body: "Debug needs the repository map before it can connect symptoms to likely files.", primary: "Load sample repository", fn: "loadDemoMode('medium')", secondary: "Scan repository", fn2: "go('scan')" },
-    impact: { el: "impactOut", title: "Scan a repository first.", body: "Impact needs a dependency graph before it can show what may break.", primary: "Load sample repository", fn: "loadDemoMode('medium')", secondary: "Scan repository", fn2: "go('scan')" },
+    build: { el: "buildOut", title: "Scan a repository first.", body: "Plan Change needs indexed files before it can name what to edit.", primary: "Load sample repository", fn: "loadDemoMode('medium')", secondary: "Scan local repository", fn2: "go('scan')" },
+    investigate: { el: "investigateOut", title: "Scan a repository first.", body: "Debug needs the repository map before it can connect symptoms to likely files.", primary: "Load sample repository", fn: "loadDemoMode('medium')", secondary: "Scan local repository", fn2: "go('scan')" },
+    impact: { el: "impactOut", title: "Scan a repository first.", body: "Impact needs a dependency graph before it can show what may break.", primary: "Load sample repository", fn: "loadDemoMode('medium')", secondary: "Scan local repository", fn2: "go('scan')" },
   };
   const spec = map[view];
   if (!spec) return false;
@@ -443,13 +449,54 @@ function renderWorkflowQuickStarts(view) {
 }
 
 function showScanPanel(which) {
+  const picker = $("scanPicker");
+  if (picker) picker.style.display = (which === "running" || which === "success" || which === "failed") ? "none" : "block";
   $("scanRunning").style.display = which === "running" ? "block" : "none";
   $("scanSuccess").style.display = which === "success" ? "block" : "none";
   $("scanFailed").style.display = which === "failed" ? "block" : "none";
 }
 
+function expandScanLocal() {
+  const panel = $("scanLocalPanel");
+  if (panel) {
+    panel.classList.remove("collapsed");
+    const toggle = panel.querySelector(".scan-local-toggle");
+    if (toggle) toggle.textContent = "▾ Local folder path";
+  }
+  setTimeout(() => $("repoPath")?.focus(), 80);
+}
+
+function toggleScanLocal() {
+  const panel = $("scanLocalPanel");
+  if (!panel) return;
+  panel.classList.toggle("collapsed");
+  const toggle = panel.querySelector(".scan-local-toggle");
+  if (toggle) toggle.textContent = panel.classList.contains("collapsed") ? "▸ Local folder path" : "▾ Local folder path";
+}
+
+function updateHnProgress(step) {
+  [1, 2, 3].forEach((n) => {
+    const el = $("hnStep" + n);
+    if (!el) return;
+    el.classList.remove("done", "active");
+    if (n < step) el.classList.add("done");
+    else if (n === step) el.classList.add("active");
+  });
+}
+
+async function startHnDemo() {
+  if (!requireAtlasAccess("HN demo")) return;
+  _hnDemoActive = true;
+  updateHnProgress(1);
+  const btn = $("hnLoadBtn");
+  if (btn) { btn.disabled = true; btn.textContent = "Loading sample…"; }
+  await loadDemoMode("medium");
+  if (btn) { btn.disabled = false; btn.textContent = "Load sample repository"; }
+}
+
 function renderScanSkeleton() {
-  $("scanSkeleton").innerHTML = Array.from({ length: 8 }, () => '<div class="skeleton"></div>').join("");
+  const sk = $("scanSkeleton");
+  if (sk) sk.innerHTML = Array.from({ length: 3 }, () => '<div class="skeleton"></div>').join("");
 }
 
 function showScanFailed(message, code) {
@@ -631,21 +678,25 @@ function focusCopilot() {
 }
 
 function primeAskAtlasPrompt(scan) {
+  const question = _hnDemoActive ? HN_FIRST_QUESTION : DEFAULT_FIRST_QUESTION;
   const field = $("askInput");
-  if (field && !field.value.trim()) field.value = DEFAULT_FIRST_QUESTION;
+  if (field) field.value = question;
   const status = $("askStatus");
   if (status) {
     const repo = scan?.repo_name || STATE.summary?.repo_name || "Repository";
-    status.textContent = `${repo} indexed. Prompt ready — press Send.`;
+    status.textContent = `${repo} indexed. Press Send or pick a suggested question.`;
   }
   if ($("suggest")) $("suggest").innerHTML = renderCopilotSuggestions(STATE.summary || scan || {});
+  updateHnProgress(2);
 }
 
 function routeToAskAfterScan(scan) {
   setTimeout(function () {
     go("ask");
     primeAskAtlasPrompt(scan);
-    toast("Repository indexed. Ask Atlas is ready.", "success");
+    updateHnProgress(3);
+    toast("Repository indexed. Ask your first question.", "success");
+    _hnDemoActive = false;
   }, scan?.demo_mode ? 250 : 650);
 }
 
@@ -680,6 +731,7 @@ async function loadDemoMode(pack) {
   dismissOnboarding(true);
   if (typeof hideHomeScanFocus === "function") hideHomeScanFocus();
   const packId = pack || STATE.demoPack || DEFAULT_DEMO_PACK;
+  if (_hnDemoActive) updateHnProgress(1);
   go("scan");
   showScanPanel("running");
   $("scanPath").textContent = `Loading Atlas demo (${packId})…`;
@@ -748,17 +800,14 @@ function go(view) {
     setTimeout(renderCenter, 60);
   }
   if (view === "home") {
-    renderDemoPackPicker();
-    // First-run gate is removed synchronously by finishScanSession after any scan
-    // and re-asserted only when a repo is genuinely absent. Reveal it here if a
-    // scan summary already exists, then let the trust poll confirm/clear.
     if (window.STATE && STATE.summary && STATE.summary.ok) document.body.classList.remove("atlas-no-repo");
     if (typeof atlasPollTrustStatus === "function") atlasPollTrustStatus();
   }
   if (view === "scan") {
-    renderDemoPackPicker();
+    showScanPanel(null);
     loadRecent();
   }
+  if (view === "hn") updateHnProgress(STATE.summary?.ok ? 3 : 1);
   if (view === "ask") renderAskPage();
   if (view === "export") refreshExport();
   if (view === "build" || view === "investigate" || view === "impact") {
@@ -815,6 +864,38 @@ function normalizeRecentEntry(raw) {
   };
 }
 
+function isHiddenRecentRepo(entry) {
+  const name = (entry.name || entry.path || "").split(/[\\/]/).pop() || "";
+  const base = name.replace(/\.(py|js|ts)$/i, "");
+  if (RECENT_HIDE_PATTERNS.some((p) => p.test(name) || p.test(base))) return true;
+  if (/^app$/i.test(base) && (entry.path || "").split(/[\\/]/).length <= 3) return true;
+  return false;
+}
+
+function dedupeRecentList(list) {
+  const seenPaths = new Set();
+  const seenNames = new Set();
+  const out = [];
+  for (const raw of list) {
+    const e = normalizeRecentEntry(raw);
+    if (!e || !e.path) continue;
+    const pathKey = e.path.toLowerCase().replace(/\\/g, "/");
+    const nameKey = (e.name || "").toLowerCase();
+    if (seenPaths.has(pathKey)) continue;
+    if (nameKey && seenNames.has(nameKey)) continue;
+    if (isHiddenRecentRepo(e)) continue;
+    seenPaths.add(pathKey);
+    if (nameKey) seenNames.add(nameKey);
+    out.push(e);
+  }
+  return out;
+}
+
+function toggleRecentExpanded() {
+  _recentExpanded = !_recentExpanded;
+  loadRecent();
+}
+
 async function loadRecent() {
   let list = [];
   try {
@@ -841,17 +922,19 @@ async function loadRecent() {
       } catch (e3) {}
     }
   }
-  list = list.map(normalizeRecentEntry).filter(e => e && e.path);
+  list = dedupeRecentList(list.map(normalizeRecentEntry).filter((e) => e && e.path));
   const box = $("recentList");
+  const showAllBtn = $("recentShowAllBtn");
   if (!box) return;
   if (!list.length) {
-    box.innerHTML = '<span class="muted">No history yet — scan a repository or load a sample to populate this list.</span>';
+    box.innerHTML = '<span class="muted tiny">No history yet — load the sample or scan a folder.</span>';
+    if (showAllBtn) showAllBtn.style.display = "none";
     return;
   }
-  box.innerHTML = list.map(entry => {
+  const visible = _recentExpanded ? list : list.slice(0, RECENT_MAX_VISIBLE);
+  box.innerHTML = visible.map(entry => {
     const when = entry.scanned_at ? entry.scanned_at.replace("T", " ").slice(0, 16) : "last session";
-    const gh = entry.graph_health ? ` · graph: ${entry.graph_health}` : "";
-    const meta = `${entry.files || "—"} files · ${entry.modules || "—"} modules${gh}`;
+    const meta = `${entry.files || "—"} files · ${entry.modules || "—"} modules`;
     const resume = entry.repo_id && entry.can_resume
       ? ` onclick="resumePersistedScan(${JSON.stringify(entry.repo_id)})"`
       : ` onclick="selectRecentPath(${JSON.stringify(entry.path)})"`;
@@ -861,6 +944,14 @@ async function loadRecent() {
       <span class="recent-when muted tiny">${esc(when)}</span>
     </button>`;
   }).join("");
+  if (showAllBtn) {
+    if (list.length > RECENT_MAX_VISIBLE) {
+      showAllBtn.style.display = "";
+      showAllBtn.textContent = _recentExpanded ? "Show less" : "Show all";
+    } else {
+      showAllBtn.style.display = "none";
+    }
+  }
 }
 
 function renderResumeCard(card) {
@@ -986,8 +1077,7 @@ function pushRecent(p, scan) {
 }
 
 /* ---------------- Scan flow ---------------- */
-const STAGES = ["Indexing repository", "Building dependency graph", "Extracting architecture",
-  "Detecting architectural risks", "Extracting contracts", "Generating verification evidence", "Preparing export context"];
+const STAGES = ["Indexing files…", "Building dependency graph…", "Preparing Ask Atlas…"];
 
 const STAGE_LABEL_INDEX = {};
 STAGES.forEach((label, i) => { STAGE_LABEL_INDEX[label] = i; });
@@ -999,16 +1089,19 @@ function applyScanStatus(status) {
   setBar(pct);
   let idx = STAGE_LABEL_INDEX[label];
   if (idx === undefined) {
-    const partial = STAGES.findIndex(s => label.startsWith(s));
-    idx = partial >= 0 ? partial : 0;
+    const lower = label.toLowerCase();
+    if (lower.includes("index") || lower.includes("scan") || lower.includes("file")) idx = 0;
+    else if (lower.includes("graph") || lower.includes("depend") || lower.includes("architect")) idx = 1;
+    else idx = 2;
   }
+  const mapped = Math.min(idx, STAGES.length - 1);
   STAGES.forEach((_, i) => {
-    if (i < idx) setStage(i, "done");
-    else if (i === idx) setStage(i, "run");
+    if (i < mapped) setStage(i, "done");
+    else if (i === mapped) setStage(i, "run");
     else setStage(i, "todo");
   });
-  const lbl = $("st" + idx)?.querySelector(".lbl");
-  if (lbl && label && label !== STAGES[idx]) lbl.textContent = label;
+  const lbl = $("st" + mapped)?.querySelector(".lbl");
+  if (lbl) lbl.textContent = STAGES[mapped];
 }
 
 async function pollScanProgress(stopRef) {
@@ -1076,7 +1169,8 @@ async function executeScanFlow(validation) {
   } else {
     $("scanModeInfo").style.display = "none";
   }
-  $("scanMetrics").innerHTML = metricGrid(scan);
+  const metrics = $("scanMetrics");
+  if (metrics) metrics.innerHTML = metricGrid(scan);
   STATE.summary = await api("/api/repositories/current/summary");
   STATE.sessionExport = await api("/api/repositories/current/session-export");
   STATE.exportMode = "MINIMAL_EXPORT";
@@ -1449,7 +1543,7 @@ async function renderAskPage() {
     if (gate) {
       gate.style.display = "block";
       gate.innerHTML = repoRequiredEmptyHtml(
-        "Load the sample, press Send, and see a cited answer about services/auth.py in under 30 seconds."
+        "Atlas needs a local code map before it can answer repo-aware questions."
       );
     }
     return;
@@ -1461,43 +1555,52 @@ async function renderAskPage() {
   if ($("suggest")) $("suggest").innerHTML = renderCopilotSuggestions(sum);
 }
 
-function defaultCopilotQuestions(summary) {
-  const qs = [];
-  const topHub = summary?.top_hubs?.[0]?.path;
-  if (summary?.demo_mode) {
-    qs.push(DEFAULT_FIRST_QUESTION);
-  }
-  if (topHub) {
-    const q = `What breaks if I change ${topHub}?`;
-    if (!qs.includes(q)) qs.push(q);
-  }
-  qs.push(
-    "What does this repository do?",
-    "Where should I start?",
-    "Rank the top architectural-risk modules and explain why."
-  );
-  if (summary?.import_cycle_count) qs.push("Where are the import cycles and how do I break them?");
-  qs.push("Prepare a compact context packet for Claude/Codex/Cursor.");
-  return qs;
-}
-
-function nodeCopilotQuestions(node) {
-  const path = node.path || node.label || "this module";
+function launchCopilotQuestions() {
   return [
-    `Explain module ${path}`,
-    `What breaks if I change ${path}?`,
-    `Who imports ${path}?`,
-    `Generate a Claude prompt for ${path}`,
+    "Where is authentication implemented?",
+    "What breaks if I change services/auth.py?",
+    "Explain the request flow.",
+    "Which files should I read first?",
+    "What does this repository do?",
   ];
 }
 
+function defaultCopilotQuestions(summary) {
+  const qs = launchCopilotQuestions();
+  const topHub = summary?.top_hubs?.[0]?.path;
+  if (topHub) {
+    const q = `What breaks if I change ${topHub}?`;
+    if (!qs.includes(q)) qs.splice(1, 0, q);
+  }
+  return qs.slice(0, 6);
+}
+
+function escAttr(s) {
+  return String(s || "").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+}
+
+function ensureSuggestDelegation() {
+  if (_suggestDelegated) return;
+  const host = $("suggest");
+  if (!host) return;
+  host.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-prompt]");
+    if (!btn) return;
+    const q = btn.getAttribute("data-prompt");
+    if (q) askQuestion(q);
+  });
+  _suggestDelegated = true;
+}
+
 function renderCopilotSuggestions(summary) {
+  ensureSuggestDelegation();
   const qs = STATE.selectedNode ? nodeCopilotQuestions(STATE.selectedNode) : defaultCopilotQuestions(summary);
-  return qs.map(q => `<div class="sg" onclick="askQuestion(${JSON.stringify(q)})">${q}</div>`).join("");
+  return qs.map((q) => `<button type="button" class="sg" data-prompt="${escAttr(q)}">${esc(q)}</button>`).join("");
 }
 
 async function askQuestion(q) {
-  $("askInput").value = q;
+  const field = $("askInput");
+  if (field) field.value = q;
   await sendCopilotQuestion();
 }
 
@@ -2469,7 +2572,7 @@ async function bootAtlasApp() {
   if (_atlasAppBooted) return;
   _atlasAppBooted = true;
   updateWorkflowToolbars();
-  renderDemoPackPicker();
+  ensureSuggestDelegation();
   wireSeg("segTarget", "exportTarget"); wireSeg("segPacket", "exportPacket");
   $("askInput").addEventListener("keydown", e => { if (e.key === "Enter") sendCopilotQuestion(); });
   $("repoPath").addEventListener("keydown", e => { if (e.key === "Enter") validateRepoPath(true); });
@@ -2503,6 +2606,10 @@ async function bootAtlasApp() {
     }
   } catch (e) {}
   loadRecent();
+  showScanPanel(null);
+  const hash = (location.hash || "").replace(/^#\/?/, "").toLowerCase();
+  const pathTail = (location.pathname || "").split("/").pop().toLowerCase();
+  if (hash === "hn" || pathTail === "hn") go("hn");
 }
 window.bootAtlasApp = bootAtlasApp;
 document.addEventListener("atlas:authenticated", bootAtlasApp);

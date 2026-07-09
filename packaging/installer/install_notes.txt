@@ -31,7 +31,7 @@ Getting value in under 5 minutes
 --------------------------------
 1. Click "Load Sample Repository".
 2. Read the success screen.
-3. Click "Generate your first Change Plan".
+3. Click "Generate your first Plan Change".
 4. Click "Copy for Claude / Cursor / Codex" and paste it into your AI tool.
 
 Atlas plans and explains changes; it does not edit your files for you.
