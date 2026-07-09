@@ -1,4 +1,4 @@
-﻿import crypto from "node:crypto";
+import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -7,7 +7,7 @@ function csv(v: string | undefined): string[] {
   return (v || "").split(",").map((s) => s.trim().toLowerCase()).filter(Boolean);
 }
 
-// AUTH_SECRET must be set in production â€” a random per-process fallback would
+// AUTH_SECRET must be set in production — a random per-process fallback would
 // silently invalidate every session on each cold start (and differ across
 // serverless instances), so we fail fast there instead. In dev/test the secret
 // is persisted under the data dir: Next dev compiles each route into its own
@@ -17,7 +17,7 @@ let _ephemeral = "";
 function ephemeralSecret(): string {
   if (process.env.NODE_ENV === "production") {
     throw new Error(
-      "[atlas] AUTH_SECRET is not set. Set it in the host environment â€” sessions cannot work without a stable signing secret."
+      "[atlas] AUTH_SECRET is not set. Set it in the host environment — sessions cannot work without a stable signing secret."
     );
   }
   if (!_ephemeral) {
@@ -26,7 +26,7 @@ function ephemeralSecret(): string {
     try {
       _ephemeral = fs.readFileSync(file, "utf8").trim();
     } catch {
-      /* first run â€” generate below */
+      /* first run — generate below */
     }
     if (!_ephemeral) {
       _ephemeral = crypto.randomBytes(32).toString("hex");
@@ -35,7 +35,7 @@ function ephemeralSecret(): string {
         fs.writeFileSync(file, _ephemeral, { mode: 0o600 });
       } catch {
         console.warn(
-          "[atlas] AUTH_SECRET not set and the dev secret could not be persisted â€” sessions will reset on restart."
+          "[atlas] AUTH_SECRET not set and the dev secret could not be persisted — sessions will reset on restart."
         );
       }
     }
@@ -108,12 +108,12 @@ export function paddleWebhookConfigured(): boolean {
 
 // ---------------------------------------------------------------------------
 // Supabase config validation (production env reconciliation).
-// Validates ONLY the variables this codebase actually consumes â€” SUPABASE_URL
+// Validates ONLY the variables this codebase actually consumes — SUPABASE_URL
 // and SUPABASE_SERVICE_ROLE_KEY (raw PostgREST + service role; see _lib/store.ts
 // and _lib/ratelimit.ts). The app does NOT use createClient / anon key /
 // NEXT_PUBLIC_SUPABASE_*, so those are not required and not validated here.
 //
-// No project id is hardcoded â€” drift is caught by surfacing the resolved
+// No project id is hardcoded — drift is caught by surfacing the resolved
 // hostname via /api/health so an operator can see a wrong/stale project.
 // ---------------------------------------------------------------------------
 export interface SupabaseConfigCheck {

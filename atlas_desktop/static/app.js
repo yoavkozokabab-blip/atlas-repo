@@ -2469,14 +2469,14 @@ async function generateAgentExport() {
   });
   if (!res.ok) {
     $("exportPreview").textContent = res.error || "Could not generate agent context.";
-    $("tokEst").textContent = "â€”";
+    $("tokEst").textContent = "—";
     $("previewMeta").textContent = res.code || "Export failed";
     toast(res.error || "Agent export failed", "error");
     return;
   }
   $("exportPreview").textContent = res.text;
   $("tokEst").textContent = res.estimated_tokens;
-  $("previewMeta").textContent = `${res.target} Â· ${res.confidence} Â· ~${res.estimated_tokens} tokens`;
+  $("previewMeta").textContent = `${res.target} · ${res.confidence} · ~${res.estimated_tokens} tokens`;
   STATE._exportText = res.text;
   STATE._agentExport = res;
   STATE._agentExportTask = task;

@@ -4101,6 +4101,14 @@ def classify_copilot_question(question: str) -> str:
         return "repository_understanding"
     if any(token in q for token in ("dependenc", "depend on")):
         return "dependency"
+    if any(token in q for token in ("where is", "where are", "where does", "where do", "where's",
+                                    "implemented", "implement", "handled", "defined",
+                                    "which files", "what files", "which modules", "find the code",
+                                    "locate ", "look for")):
+        return "location"
+    if any(token in q for token in ("request flow", "data flow", "control flow", "explain the",
+                                    "how does", "walk me through", "overview")):
+        return "repository_understanding"
     return "unknown"
 
 
@@ -4545,6 +4553,54 @@ def _answer_context_export(question: str, packet: str) -> Dict[str, Any]:
     )
 
 
+def _answer_location(question: str, packet: str) -> Dict[str, Any]:
+    """Answer "where is X implemented?"-style questions with ranked, cited files
+    from the task-scoped context pack engine (same machinery as the MCP
+    atlas_find_relevant_files tool)."""
+    from .context_pack import build_context_pack_from_state
+
+    repo_path = str(_STATE.get("path") or (_STATE.get("scan") or {}).get("repo_path") or "")
+    try:
+        pack = build_context_pack_from_state(repo_path, question, _STATE, include_snippets=False, max_files=8)
+    except Exception:
+        pack = {}
+    recommended = [item for item in (pack.get("recommended_files") or []) if item.get("path")]
+    if not pack.get("ok") or not recommended:
+        return _answer_repository_understanding(question, packet)
+
+    lines: List[str] = []
+    evidence: List[str] = []
+    files: List[str] = []
+    for item in recommended[:6]:
+        path = str(item["path"])
+        files.append(path)
+        reason = str(item.get("selection_reason") or "; ".join(item.get("reasons") or [])[:160] or "ranked relevant")
+        lines.append(f"- `{path}` — {reason}")
+        symbols = [str(s.get("qualname") or s.get("name") or "") for s in (item.get("matched_symbols") or [])[:3]]
+        symbols = [s for s in symbols if s]
+        if symbols:
+            evidence.append(f"{path}: {', '.join(symbols)}")
+    for test in (pack.get("related_tests") or [])[:3]:
+        path = str(test.get("path") or "")
+        if path and path not in files:
+            files.append(path)
+    answer = "Most relevant files, ranked by local evidence:\n" + "\n".join(lines)
+    if not evidence:
+        evidence = [str(r) for r in (pack.get("confidence_reasons") or [])[:4]]
+    return _copilot_envelope(
+        "location",
+        answer,
+        evidence=evidence,
+        files=files[:12],
+        risk_level="low",
+        suggested_prompt=f"Read the cited files and explain how they answer: {question}",
+        suggested_action=f"Open `{files[0]}` first." if files else "Open the top cited file first.",
+        confidence=str(pack.get("confidence") or "medium"),
+        limitations=["Ranking is deterministic from the local index; verify in the cited files."],
+        packet=packet,
+    )
+
+
 def _answer_unknown(question: str, packet: str) -> Dict[str, Any]:
     scan = _STATE.get("scan") or {}
     suggestions = _recommended_questions(scan)
@@ -4619,6 +4675,8 @@ def copilot_ask(
         return _answer_dependency(question, node_context, packet)
     if mode == "context_export":
         return _answer_context_export(question, packet)
+    if mode == "location":
+        return _answer_location(question, packet)
     return _answer_unknown(question, packet)
 
 
