@@ -1,16 +1,16 @@
-"use strict";
-/* Atlas feedback — local save + optional remote destination (ATLAS_FEEDBACK_URL). */
+﻿"use strict";
+/* Atlas feedback â€” local save + optional remote destination (ATLAS_FEEDBACK_URL). */
 (function () {
   const KEY = "atlas_feedback";
   const CATS = [
-    { id: "bug", label: "Bug", icon: "🐞" },
-    { id: "confusing_ui", label: "Confusing UI", icon: "🧭" },
-    { id: "missing_feature", label: "Missing feature", icon: "✨" },
-    { id: "general", label: "General feedback", icon: "💬" },
+    { id: "bug", label: "Bug", icon: "ðŸž" },
+    { id: "confusing_ui", label: "Confusing UI", icon: "ðŸ§­" },
+    { id: "missing_feature", label: "Missing feature", icon: "âœ¨" },
+    { id: "general", label: "General feedback", icon: "ðŸ’¬" },
   ];
   let selected = "general";
   let pendingContext = null;
-  let productConfig = { feedback_url_configured: false, support_email: "atlas.repo.support@gmail.com" };
+  let productConfig = { feedback_url_configured: false, support_email: "yoavkozokabab@gmail.com" };
 
   function list() {
     try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch (e) { return []; }
@@ -42,9 +42,9 @@
 
   function submitHint() {
     if (productConfig.feedback_url_configured) {
-      return "Sends a redacted summary to Atlas — no source code. Also saved on this device.";
+      return "Sends a redacted summary to Atlas â€” no source code. Also saved on this device.";
     }
-    return "Saved locally — send a support bundle manually if you need help.";
+    return "Saved locally â€” send a support bundle manually if you need help.";
   }
 
   const css = `
@@ -85,7 +85,7 @@
     if (document.getElementById("fb-style")) return;
     const st = document.createElement("style"); st.id = "fb-style"; st.textContent = css; document.head.appendChild(st);
     if (!document.querySelector(".fb-btn") && !document.body.dataset.fbHideButton) {
-      const b = document.createElement("button"); b.className = "fb-btn"; b.innerHTML = "💬 Feedback";
+      const b = document.createElement("button"); b.className = "fb-btn"; b.innerHTML = "ðŸ’¬ Feedback";
       b.onclick = open; document.body.appendChild(b);
     }
     const bg = document.createElement("div"); bg.className = "fb-bg"; bg.id = "fbBg";
@@ -118,7 +118,7 @@
     if (context && context.diagnostics) {
       const ta = document.getElementById("fbMsg");
       if (ta && !ta.value.trim()) {
-        ta.value = "Describe the issue here. Diagnostics are redacted — no source code is uploaded.";
+        ta.value = "Describe the issue here. Diagnostics are redacted â€” no source code is uploaded.";
       }
     }
     document.getElementById("fbBg").classList.add("on");

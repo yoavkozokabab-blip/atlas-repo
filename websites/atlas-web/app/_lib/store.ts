@@ -34,6 +34,7 @@ export interface User {
   trialEndsAt?: string | null;
   renewsAt?: string | null;
   paddleCustomerId?: string | null;
+  paddleSubscriptionId?: string | null;
   createdAt: string;
   lastLoginAt?: string | null;
   downloads: number;
@@ -199,6 +200,7 @@ function userToRow(u: Partial<User>): Row {
   if (u.trialEndsAt !== undefined) r.trial_ends_at = u.trialEndsAt ?? null;
   if (u.renewsAt !== undefined) r.renews_at = u.renewsAt ?? null;
   if (u.paddleCustomerId !== undefined) r.paddle_customer_id = u.paddleCustomerId ?? null;
+  if (u.paddleSubscriptionId !== undefined) r.paddle_subscription_id = u.paddleSubscriptionId ?? null;
   if (u.createdAt !== undefined) r.created_at = u.createdAt;
   if (u.lastLoginAt !== undefined) r.last_login_at = u.lastLoginAt ?? null;
   if (u.downloads !== undefined) r.downloads = u.downloads;
@@ -217,6 +219,7 @@ function rowToUser(r: Row): User {
     trialEndsAt: (r.trial_ends_at as string) ?? null,
     renewsAt: (r.renews_at as string) ?? null,
     paddleCustomerId: (r.paddle_customer_id as string) ?? null,
+    paddleSubscriptionId: (r.paddle_subscription_id as string) ?? null,
     createdAt: String(r.created_at ?? new Date().toISOString()),
     lastLoginAt: (r.last_login_at as string) ?? null,
     downloads: Number(r.downloads ?? 0),

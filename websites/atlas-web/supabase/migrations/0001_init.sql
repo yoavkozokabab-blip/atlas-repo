@@ -23,6 +23,7 @@ create table if not exists public.users (
   trial_ends_at      timestamptz,
   renews_at          timestamptz,
   paddle_customer_id text,
+  paddle_subscription_id text,
   created_at         timestamptz not null default now(),
   last_login_at      timestamptz,
   downloads          integer not null default 0

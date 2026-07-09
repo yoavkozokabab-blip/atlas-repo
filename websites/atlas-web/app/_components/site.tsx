@@ -15,8 +15,7 @@ export function SiteNav() {
           <Link href="/download">Download</Link>
         </nav>
         <div className="nav-cta">
-          <Link className="btn btn-ghost" href="/login">Sign in</Link>
-          <Link className="btn btn-primary" href="/download">Download</Link>
+          <Link className="btn btn-primary" href="/download">Download Atlas</Link>
         </div>
       </div>
     </header>

@@ -1,4 +1,4 @@
-import crypto from "node:crypto";
+﻿import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -7,7 +7,7 @@ function csv(v: string | undefined): string[] {
   return (v || "").split(",").map((s) => s.trim().toLowerCase()).filter(Boolean);
 }
 
-// AUTH_SECRET must be set in production — a random per-process fallback would
+// AUTH_SECRET must be set in production â€” a random per-process fallback would
 // silently invalidate every session on each cold start (and differ across
 // serverless instances), so we fail fast there instead. In dev/test the secret
 // is persisted under the data dir: Next dev compiles each route into its own
@@ -17,7 +17,7 @@ let _ephemeral = "";
 function ephemeralSecret(): string {
   if (process.env.NODE_ENV === "production") {
     throw new Error(
-      "[atlas] AUTH_SECRET is not set. Set it in the host environment — sessions cannot work without a stable signing secret."
+      "[atlas] AUTH_SECRET is not set. Set it in the host environment â€” sessions cannot work without a stable signing secret."
     );
   }
   if (!_ephemeral) {
@@ -26,7 +26,7 @@ function ephemeralSecret(): string {
     try {
       _ephemeral = fs.readFileSync(file, "utf8").trim();
     } catch {
-      /* first run — generate below */
+      /* first run â€” generate below */
     }
     if (!_ephemeral) {
       _ephemeral = crypto.randomBytes(32).toString("hex");
@@ -35,7 +35,7 @@ function ephemeralSecret(): string {
         fs.writeFileSync(file, _ephemeral, { mode: 0o600 });
       } catch {
         console.warn(
-          "[atlas] AUTH_SECRET not set and the dev secret could not be persisted — sessions will reset on restart."
+          "[atlas] AUTH_SECRET not set and the dev secret could not be persisted â€” sessions will reset on restart."
         );
       }
     }
@@ -63,6 +63,21 @@ export const ENV = {
   get hasPaddle(): boolean {
     return !!process.env.PADDLE_API_KEY;
   },
+  get paddleApiKey(): string {
+    return process.env.PADDLE_API_KEY || "";
+  },
+  get paddleEnvironment(): "sandbox" | "production" {
+    return process.env.PADDLE_ENVIRONMENT === "production" ? "production" : "sandbox";
+  },
+  get paddleProPriceId(): string {
+    return process.env.PADDLE_PRO_PRICE_ID || "";
+  },
+  get paddleWebhookSecret(): string {
+    return process.env.PADDLE_WEBHOOK_SECRET || "";
+  },
+  get appUrl(): string {
+    return (process.env.NEXT_PUBLIC_APP_URL || process.env.APP_URL || "http://localhost:3000").replace(/\/+$/, "");
+  },
   get paymentsMode(): "stub" | "test" | "live" {
     const m = process.env.PAYMENTS_MODE;
     return m === "live" || m === "test" ? m : "stub";
@@ -78,24 +93,27 @@ export const ENV = {
   },
 };
 
-/**
- * Live charges require BOTH live mode AND a Paddle key. This build never returns
- * true for a stub/test deployment, and the checkout code additionally falls
- * through to the stub path — so no real money can move without a deliberate,
- * reviewed change.
- */
+/**`n * Live charges require live mode plus complete Paddle checkout configuration.`n * Stub/test deployments cannot create a paid checkout.`n */
 export function liveChargesEnabled(): boolean {
-  return ENV.paymentsMode === "live" && ENV.hasPaddle;
+  return ENV.paymentsMode === "live" && ENV.hasPaddle && !!ENV.paddleProPriceId;
+}
+
+export function paddleCheckoutConfigured(): boolean {
+  return ENV.hasPaddle && !!ENV.paddleProPriceId;
+}
+
+export function paddleWebhookConfigured(): boolean {
+  return !!ENV.paddleWebhookSecret;
 }
 
 // ---------------------------------------------------------------------------
 // Supabase config validation (production env reconciliation).
-// Validates ONLY the variables this codebase actually consumes — SUPABASE_URL
+// Validates ONLY the variables this codebase actually consumes â€” SUPABASE_URL
 // and SUPABASE_SERVICE_ROLE_KEY (raw PostgREST + service role; see _lib/store.ts
 // and _lib/ratelimit.ts). The app does NOT use createClient / anon key /
 // NEXT_PUBLIC_SUPABASE_*, so those are not required and not validated here.
 //
-// No project id is hardcoded — drift is caught by surfacing the resolved
+// No project id is hardcoded â€” drift is caught by surfacing the resolved
 // hostname via /api/health so an operator can see a wrong/stale project.
 // ---------------------------------------------------------------------------
 export interface SupabaseConfigCheck {

@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Atlas — Support &amp; diagnostics</title>
+  <title>Atlas â€” Support &amp; diagnostics</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -12,7 +12,7 @@
   <div id="bg-glow"></div>
   <header class="topbar glass">
     <div class="brand" onclick="location.href='index.html'">
-      <span class="logo-mark">◈</span>
+      <span class="logo-mark">â—ˆ</span>
       <span class="logo-text">ATLAS</span>
       <span class="logo-sub">Support</span>
     </div>
@@ -22,51 +22,51 @@
   </header>
   <main id="app" class="support-page">
     <h2 class="vh">Support &amp; diagnostics</h2>
-    <p class="muted tiny support-lead">Something went wrong, or you want to check Atlas? You're in the right place. Nothing here is uploaded — reports stay on your device unless you send them yourself. New users: start with <b>Load sample repository</b>, then press Send in <b>Ask Atlas</b> to see cited files.</p>
+    <p class="muted tiny support-lead">Something went wrong, or you want to check Atlas? You're in the right place. Nothing here is uploaded â€” reports stay on your device unless you send them yourself. New users: start with <b>Load sample repository</b>, then press Send in <b>Ask Atlas</b> to see cited files.</p>
 
     <section class="glass support-card">
       <h3>Install notes</h3>
       <ul class="clean support-faq tiny">
-        <li><b>Windows</b> — Atlas ships as a Windows desktop app. Launch it from the Start menu or desktop shortcut.</li>
-        <li><b>No Python required (installer)</b> — If you used <code>Atlas_Setup.exe</code>, everything is bundled. You do not need to install Python.</li>
-        <li><b>Source mode (developers)</b> — If you run Atlas from source, you need <b>Python 3.10+</b>. Use <code>py -3 run_atlas.py</code> on Windows or <code>python3 run_atlas.py</code> on macOS/Linux.</li>
+        <li><b>Windows</b> â€” Atlas ships as a Windows desktop app. Launch it from the Start menu or desktop shortcut.</li>
+        <li><b>No Python required (installer)</b> â€” If you used <code>Atlas_Setup.exe</code>, everything is bundled. You do not need to install Python.</li>
+        <li><b>Source mode (developers)</b> â€” If you run Atlas from source, you need <b>Python 3.10+</b>. Use <code>py -3 run_atlas.py</code> on Windows or <code>python3 run_atlas.py</code> on macOS/Linux.</li>
       </ul>
     </section>
 
     <section class="glass support-card">
       <h3>Common fixes</h3>
       <ul class="clean support-faq tiny">
-        <li><b>App won’t start (installer)</b> — Reinstall from <code>Atlas_Setup.exe</code>, run <b>Installer self-test</b> below, and check Start menu / desktop shortcuts. Python is <b>not</b> required for the installer build.</li>
-        <li><b>App won’t start (source / developers)</b> — Install <b>Python 3.10+</b>. On Windows use <code>py -3 run_atlas.py</code> or <code>Launch Atlas.bat</code>. On Mac/Linux use <code>python3 run_atlas.py</code>.</li>
-        <li><b>pip install failed</b> — Do <b>not</b> run the monorepo <code>requirements.txt</code>. Atlas desktop needs no pip packages for the built-in server.</li>
-        <li><b>Scan never finishes</b> — Avoid scanning <code>node_modules</code>, <code>.git</code>, or <code>.venv</code>. Use scan scope on the Scan page.</li>
-        <li><b>Empty or odd results</b> — Try Load sample repository first; then <b>Rescan saved repository</b> below.</li>
-        <li><b>“It won’t write code”</b> — Expected. Atlas plans and exports context; you or your AI assistant implements changes.</li>
+        <li><b>App wonâ€™t start (installer)</b> â€” Reinstall from <code>Atlas_Setup.exe</code>, run <b>Installer self-test</b> below, and check Start menu / desktop shortcuts. Python is <b>not</b> required for the installer build.</li>
+        <li><b>App wonâ€™t start (source / developers)</b> â€” Install <b>Python 3.10+</b>. On Windows use <code>py -3 run_atlas.py</code> or <code>Launch Atlas.bat</code>. On Mac/Linux use <code>python3 run_atlas.py</code>.</li>
+        <li><b>pip install failed</b> â€” Do <b>not</b> run the monorepo <code>requirements.txt</code>. Atlas desktop needs no pip packages for the built-in server.</li>
+        <li><b>Scan never finishes</b> â€” Avoid scanning <code>node_modules</code>, <code>.git</code>, or <code>.venv</code>. Use scan scope on the Scan page.</li>
+        <li><b>Empty or odd results</b> â€” Try Load sample repository first; then <b>Rescan saved repository</b> below.</li>
+        <li><b>â€œIt wonâ€™t write codeâ€</b> â€” Expected. Atlas plans and exports context; you or your AI assistant implements changes.</li>
       </ul>
     </section>
 
     <div class="support-grid">
       <section class="glass support-card">
         <h3>Environment</h3>
-        <div id="envChecks" class="support-checks"><p class="muted tiny">Loading…</p></div>
+        <div id="envChecks" class="support-checks"><p class="muted tiny">Loadingâ€¦</p></div>
       </section>
       <section class="glass support-card">
         <h3>Atlas version</h3>
-        <p class="support-version" id="atlasVersion" data-atlas-version>—</p>
-        <p class="muted tiny">Build <span id="atlasBuildCommit">—</span> · <span id="atlasBuildDate">—</span></p>
+        <p class="support-version" id="atlasVersion" data-atlas-version>â€”</p>
+        <p class="muted tiny">Build <span id="atlasBuildCommit">â€”</span> Â· <span id="atlasBuildDate">â€”</span></p>
         <h3 style="margin-top:16px">Context status</h3>
-        <p id="trustStatusLabel" class="support-trust-label">—</p>
+        <p id="trustStatusLabel" class="support-trust-label">â€”</p>
         <h3 style="margin-top:16px">Contact</h3>
-        <p class="tiny"><a href="mailto:atlas.repo.support@gmail.com" data-atlas-support-email>atlas.repo.support@gmail.com</a></p>
+        <p class="tiny"><a href="mailto:yoavkozokabab@gmail.com" data-atlas-support-email>yoavkozokabab@gmail.com</a></p>
         <h3 style="margin-top:16px">Scan health</h3>
-        <div id="scanHealth" class="muted tiny">—</div>
+        <div id="scanHealth" class="muted tiny">â€”</div>
       </section>
     </div>
 
     <section class="glass support-card">
       <h3>Installer self-test</h3>
       <p class="muted tiny" style="margin:0 0 10px">Verifies that the Atlas app, install shortcuts, and browser auto-open are working.</p>
-      <div id="selfTestResults" class="support-checks"><p class="muted tiny">Loading…</p></div>
+      <div id="selfTestResults" class="support-checks"><p class="muted tiny">Loadingâ€¦</p></div>
       <div class="success-buttons" style="margin-top:10px">
         <button class="btn ghost" type="button" onclick="supportRunSelfTest()">Re-run self-test</button>
       </div>
@@ -74,7 +74,7 @@
 
     <section class="glass support-card support-actions-card">
       <h3>Recovery actions</h3>
-      <p class="muted tiny" style="margin:0 0 10px">These run on your machine. Diagnostics and the support bundle are saved locally — Atlas does not send them anywhere. The support bundle is saved to your browser's <b>Downloads</b> folder.</p>
+      <p class="muted tiny" style="margin:0 0 10px">These run on your machine. Diagnostics and the support bundle are saved locally â€” Atlas does not send them anywhere. The support bundle is saved to your browser's <b>Downloads</b> folder.</p>
       <div class="success-buttons">
         <button class="btn primary" type="button" onclick="supportRebuildIndex()">Rescan saved repository</button>
         <button class="btn ghost" type="button" onclick="supportClearCache()">Clear temporary scan cache</button>
@@ -88,7 +88,7 @@
     <section class="glass support-card" id="recentIssuesSection" style="display:none">
       <h3>Recent Issues</h3>
       <p class="muted tiny" style="margin:0 0 10px">Locally recorded crash and error events. No stack traces are shown by default. All data stays on this device.</p>
-      <div id="recentIssuesList"><p class="muted tiny">Loading…</p></div>
+      <div id="recentIssuesList"><p class="muted tiny">Loadingâ€¦</p></div>
     </section>
   </main>
   <div id="toast" class="toast"></div>

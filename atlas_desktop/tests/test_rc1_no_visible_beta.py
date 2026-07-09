@@ -45,6 +45,7 @@ VISIBLE_FILES = [
     "websites/atlas-web/app/checkout/plan/[plan]/page.tsx",
     "websites/atlas-web/app/download/page.tsx",
     "websites/atlas-web/app/faq/page.tsx",
+    "websites/atlas-web/app/hn/page.tsx",
     "websites/atlas-web/app/page.tsx",
     "websites/atlas-web/app/pricing/page.tsx",
     "websites/atlas-web/docs/SUPABASE_SETUP.md",
@@ -211,3 +212,32 @@ def test_rc1_desktop_plan_and_usage_payloads_have_no_beta_language():
     for name, payload in payloads.items():
         _walk_strings(payload, name, offenders)
     assert offenders == [], "Beta/waitlist language in rendered desktop payload:\n" + "\n".join(offenders)
+
+
+def test_launch_download_is_not_login_gated():
+    page = (ROOT / "websites/atlas-web/app/download/page.tsx").read_text(encoding="utf-8")
+    route = (ROOT / "websites/atlas-web/app/download/atlas/route.ts").read_text(encoding="utf-8")
+    assert "currentUser" not in page
+    assert "login?next=/download" not in page
+    assert "login?next=/download" not in route
+    assert "No signup required" in page
+    assert "Download Atlas" in page
+
+
+def test_launch_billing_does_not_fake_pro_trial():
+    billing = (ROOT / "websites/atlas-web/app/_lib/billing.ts").read_text(encoding="utf-8")
+    pricing = (ROOT / "websites/atlas-web/app/pricing/page.tsx").read_text(encoding="utf-8")
+    assert "PADDLE_PRO_PRICE_ID" in billing
+    assert "billing_not_configured" in billing
+    assert "STUB" not in billing
+    assert "trialEnds = new Date" not in billing
+    assert "mode=stub" not in billing
+    assert "Coming soon" in pricing
+    assert "stub" not in (ROOT / "websites/atlas-web/app/billing/success/page.tsx").read_text(encoding="utf-8").lower()
+
+
+def test_hn_page_has_requested_launch_claims():
+    hn = (ROOT / "websites/atlas-web/app/hn/page.tsx").read_text(encoding="utf-8")
+    assert "Try persistent repo memory in 30 seconds" in hn
+    assert "Built for developers who are tired of re-explaining the same codebase to AI coding agents." in hn
+    assert "No signup required · Local-first · Your code stays on your machine" in hn

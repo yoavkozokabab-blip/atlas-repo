@@ -123,12 +123,75 @@ def test_codex_write_endpoint_registered():
     assert ("POST", "/api/integrations/codex/write-config") in server.ROUTES
 
 
+def test_mcp_write_config_routes_are_local_not_account_gated():
+    from atlas_desktop import server
+
+    local_routes = {
+        ("POST", "/api/integrations/cursor/write-config"),
+        ("POST", "/api/integrations/claude/write-config"),
+        ("POST", "/api/integrations/codex/write-config"),
+    }
+    assert local_routes.issubset(set(server.ROUTES))
+    assert local_routes.isdisjoint(server.PROTECTED_ACCOUNT_ROUTES)
+
+
+def test_mcp_write_config_dispatch_calls_real_handlers_without_account(monkeypatch):
+    from atlas_desktop import server
+
+    monkeypatch.setattr(
+        server.accounts_client,
+        "get_account_state",
+        lambda: {"authenticated": False, "user": None, "license": {"valid": False}},
+    )
+    called = []
+    monkeypatch.setattr(server.api, "write_claude_mcp_config", lambda confirm=False: called.append(("claude", confirm)) or {"ok": True, "config_path": "claude.json"})
+    monkeypatch.setattr(server.api, "write_cursor_mcp_config", lambda confirm=False: called.append(("cursor", confirm)) or {"ok": True, "config_path": "cursor.json"})
+    monkeypatch.setattr(server.api, "write_codex_mcp_config", lambda confirm=False: called.append(("codex", confirm)) or {"ok": True, "config_path": "config.toml"})
+
+    for tool in ("claude", "cursor", "codex"):
+        status, payload = server.dispatch("POST", f"/api/integrations/{tool}/write-config", {"confirm": True})
+        assert status == 200
+        assert payload["ok"] is True
+
+    assert called == [("claude", True), ("cursor", True), ("codex", True)]
+
+
+def test_fastapi_mcp_write_routes_exist_in_installed_runtime_source():
+    source = (Path(__file__).resolve().parents[1] / "server.py").read_text(encoding="utf-8")
+    for path in (
+        "/api/integrations/cursor/write-config",
+        "/api/integrations/claude/write-config",
+        "/api/integrations/codex/write-config",
+    ):
+        assert f'@app.post("{path}")' in source
+
+
 def test_connect_codex_js_uses_write_endpoint_not_clipboard():
     js = (Path(__file__).resolve().parents[1] / "static" / "atlas_mcp_setup.js").read_text(encoding="utf-8")
     connect = js[js.find("async function connectCodex"): js.find("function resetToolDetails")]
     assert "/api/integrations/codex/write-config" in connect
     assert "copyText" not in connect
     assert "copyManualConfig" not in connect
+
+
+def test_primary_mcp_connect_buttons_call_api_and_do_not_copy():
+    js = (Path(__file__).resolve().parents[1] / "static" / "atlas_mcp_setup.js").read_text(encoding="utf-8")
+    helper = js[js.find("async function connectAgent"): js.find("async function connectCursor")]
+    assert "api(endpoint, \"POST\", { confirm: true })" in helper
+    for name, endpoint in {
+        "connectClaude": "/api/integrations/claude/write-config",
+        "connectCursor": "/api/integrations/cursor/write-config",
+        "connectCodex": "/api/integrations/codex/write-config",
+    }.items():
+        start = js.find(f"async function {name}")
+        end = js.find("\n  async function", start + 1)
+        if end == -1:
+            end = js.find("\n  function", start + 1)
+        block = js[start:end]
+        assert start != -1
+        assert endpoint in block
+        assert "copyText" not in block
+        assert "navigator.clipboard" not in block
 
 
 def test_mcp_home_section_has_per_tool_cards_not_global_actions():

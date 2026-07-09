@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 /* Trust status, update banner, version display */
 
 const TRUST_LABELS = {
@@ -20,16 +20,16 @@ function atlasFormatVersionLine(cfg) {
   const parts = [cfg.version];
   if (cfg.build_commit && cfg.build_commit !== "unknown") parts.push(cfg.build_commit);
   if (cfg.build_date) parts.push(cfg.build_date);
-  return parts.join(" · ");
+  return parts.join(" Â· ");
 }
 
 async function atlasRenderVersionTargets() {
   const cfg = await atlasFetchProductConfig();
   const line = atlasFormatVersionLine(cfg);
   document.querySelectorAll("[data-atlas-version]").forEach(el => {
-    el.textContent = line || cfg.version || "—";
+    el.textContent = line || cfg.version || "â€”";
   });
-  const email = (cfg && cfg.support_email) || "atlas.repo.support@gmail.com";
+  const email = (cfg && cfg.support_email) || "yoavkozokabab@gmail.com";
   document.querySelectorAll("[data-atlas-support-email]").forEach(el => {
     if (el.tagName === "A") {
       el.href = "mailto:" + email;
@@ -51,7 +51,7 @@ function atlasRenderTrustBar(payload) {
   const bar = document.getElementById("trustStatusBar");
   if (!bar) return;
   const label = (payload && payload.user_trust_label) || "Fresh";
-  // No active repository → the staleness bar is meaningless. Hide it so a fresh
+  // No active repository â†’ the staleness bar is meaningless. Hide it so a fresh
   // first run never shows a contradictory "Full rescan required".
   if (!payload || payload.has_repo === false || label === "Fresh") {
     bar.style.display = "none";
@@ -113,7 +113,7 @@ function atlasEnhanceAboutModal() {
   if (!card) return;
   const ver = document.createElement("p");
   ver.className = "muted tiny";
-  ver.innerHTML = 'Version <span data-atlas-version>—</span> · <a data-atlas-support-email href="mailto:atlas.repo.support@gmail.com">atlas.repo.support@gmail.com</a>';
+  ver.innerHTML = 'Version <span data-atlas-version>â€”</span> Â· <a data-atlas-support-email href="mailto:yoavkozokabab@gmail.com">yoavkozokabab@gmail.com</a>';
   const buttons = card.querySelector(".success-buttons");
   if (buttons) card.insertBefore(ver, buttons);
   else card.appendChild(ver);

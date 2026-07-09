@@ -1,13 +1,15 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteNav, SiteFooter } from "../_components/site";
+import { proCheckoutReady } from "../_lib/billing";
 
 export const metadata: Metadata = {
-  title: "Pricing — Atlas",
-  description: "Simple pricing for serious codebases. Download Atlas free and start with local-first repository intelligence."
+  title: "Pricing - Atlas",
+  description: "Atlas pricing: Free local app today, Pro planned at $19/month with Paddle checkout when billing is configured.",
 };
 
 export default function PricingPage() {
+  const proReady = proCheckoutReady();
   return (
     <>
       <SiteNav />
@@ -15,11 +17,9 @@ export default function PricingPage() {
         <section className="page-head">
           <div className="container">
             <p className="eyebrow">Pricing</p>
-            <h1 className="page-title">Simple pricing for serious codebases.</h1>
+            <h1 className="page-title">Simple pricing for repo memory.</h1>
             <p className="lead" style={{ marginTop: 18 }}>
-              Start free, then upgrade to Pro when you want unlimited repositories,
-              sync and priority indexing. Atlas stays local-first: repository
-              indexing happens on your machine.
+              Start with the local Windows app. Pro billing is powered by Paddle as Merchant of Record when checkout is configured.
             </p>
           </div>
         </section>
@@ -30,55 +30,54 @@ export default function PricingPage() {
               <div className="tier">
                 <h3>Free</h3>
                 <div className="price">$0</div>
-                <p className="note">Unlimited time.</p>
+                <p className="note">Core local app.</p>
                 <ul>
-                  <li>Repository scanning</li>
-                  <li>Local dependency graph</li>
-                  <li>MCP integration</li>
-                  <li>Claude Code</li>
-                  <li>Cursor</li>
-                  <li>Codex</li>
+                  <li>Local repository scan</li>
                   <li>Ask Atlas</li>
+                  <li>MCP integration</li>
+                  <li>Impact</li>
                   <li>Debug</li>
-                  <li>Impact analysis</li>
-                  <li>Plan Change workflows</li>
-                  <li>Dependency map</li>
+                  <li>Plan Change</li>
+                  <li>Map</li>
                 </ul>
-                <Link className="btn btn-primary btn-lg" href="/download">Start free</Link>
+                <Link className="btn btn-primary btn-lg" href="/download">Download Atlas</Link>
               </div>
 
               <div className="tier feat">
-                <p className="badge ok" style={{ marginBottom: 10 }}>Most Popular</p>
+                <p className="badge ok" style={{ marginBottom: 10 }}>Pro</p>
                 <h3>Pro</h3>
                 <div className="price">$19<small>/month</small></div>
-                <p className="note">7-day free trial.</p>
+                <p className="note">7-day trial when checkout is enabled.</p>
                 <ul>
                   <li>Everything in Free</li>
-                  <li>Unlimited repositories</li>
-                  <li>Unlimited indexing</li>
-                  <li>Cloud account sync</li>
+                  <li>Unlimited repositories and indexing</li>
+                  <li>Cloud sync</li>
                   <li>Snapshot history</li>
                   <li>Advanced search</li>
                   <li>Priority indexing</li>
-                  <li>Priority workflow improvements</li>
+                  <li>New Pro capabilities as they ship</li>
                   <li>Priority support</li>
                 </ul>
-                <Link className="btn btn-primary btn-lg" href="/checkout/plan/pro">Start 7-day free trial</Link>
+                {proReady ? (
+                  <Link className="btn btn-primary btn-lg" href="/checkout/plan/pro">Start 7-day trial</Link>
+                ) : (
+                  <button className="btn btn-primary btn-lg" disabled>Coming soon</button>
+                )}
                 <div className="note-accent" style={{ marginTop: 18 }}>
-                  <p style={{ margin: 0 }}><b>Secure payments powered by Paddle.</b></p>
-                  <p style={{ margin: "6px 0 0" }}>Atlas never stores your payment details.</p>
+                  <p style={{ margin: 0 }}><b>Paddle is the Merchant of Record.</b></p>
+                  <p style={{ margin: "6px 0 0" }}>Atlas does not store payment card details. Pro checkout stays disabled until Paddle credentials are configured.</p>
                 </div>
               </div>
 
               <div className="tier">
-                <p className="badge muted" style={{ marginBottom: 10 }}>Coming Soon</p>
+                <p className="badge muted" style={{ marginBottom: 10 }}>Coming soon</p>
                 <h3>Team</h3>
-                <div className="price">Coming soon</div>
-                <p className="note">For teams that want shared Atlas workflows.</p>
+                <div className="price">Contact</div>
+                <p className="note">No Team subscription billing today.</p>
                 <ul>
-                  <li>Contact us</li>
-                  <li>No Team subscription billing today</li>
-                  <li>Designed for shared team workflows</li>
+                  <li>Shared workflows</li>
+                  <li>Team setup discussion</li>
+                  <li>Security and deployment questions</li>
                 </ul>
                 <Link className="btn btn-ghost btn-lg" href="/contact">Contact us</Link>
               </div>

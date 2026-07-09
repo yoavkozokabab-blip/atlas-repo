@@ -1,12 +1,13 @@
 // Public, non-secret site configuration sourced from environment variables.
-// The support email is sourced from NEXT_PUBLIC_SUPPORT_EMAIL (set it in
-// .env.local for local dev and in your host's environment for production). A
-// neutral shared support address is used as the fallback so we never expose a
-// maintainer's personal inbox. See .env.example.
-export const SUPPORT_EMAIL = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "support@useatlas.dev";
-export const HELLO_EMAIL = process.env.NEXT_PUBLIC_HELLO_EMAIL || "hello@useatlas.dev";
-export const SECURITY_EMAIL = process.env.NEXT_PUBLIC_SECURITY_EMAIL || "security@useatlas.dev";
+// The launch contact inbox is intentionally visible across public surfaces.
+export const SUPPORT_EMAIL = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "yoavkozokabab@gmail.com";
+export const HELLO_EMAIL = process.env.NEXT_PUBLIC_HELLO_EMAIL || "yoavkozokabab@gmail.com";
+export const SECURITY_EMAIL = process.env.NEXT_PUBLIC_SECURITY_EMAIL || "yoavkozokabab@gmail.com";
 export const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL || "https://github.com/useatlas";
+export const DOWNLOAD_URL =
+  process.env.NEXT_PUBLIC_DOWNLOAD_URL ||
+  process.env.ATLAS_INSTALLER_URL ||
+  "/download/atlas";
 
 /**
  * Paid plan visibility.

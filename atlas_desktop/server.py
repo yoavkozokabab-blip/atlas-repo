@@ -39,8 +39,6 @@ PROTECTED_ACCOUNT_ROUTES = {
     ("POST", "/api/bug-investigation"),
     ("POST", "/api/context/export"),
     ("POST", "/api/integrations/export"),
-    ("POST", "/api/integrations/claude/write-config"),
-    ("POST", "/api/integrations/codex/write-config"),
     ("POST", "/api/integrations/cursor/write-rule"),
     ("POST", "/api/integrations/claude-code/write-managed-block"),
     ("POST", "/api/copilot/ask"),
@@ -48,7 +46,7 @@ PROTECTED_ACCOUNT_ROUTES = {
 
 
 def _account_gate_failure() -> Optional[Dict[str, Any]]:
-    """Return a 403 payload when beta account/license enforcement should block."""
+    """Return a 403 payload when account/license enforcement should block."""
     state = accounts_client.get_account_state()
     license_status = state.get("license") or {}
     user = state.get("user")
@@ -706,6 +704,32 @@ def create_fastapi_app():  # pragma: no cover - exercised only when fastapi pres
             return blocked
         b = await _body(request)
         return api.context_export(str(b.get("target", "claude")), str(b.get("packet", "compact")))
+
+    @app.get("/api/integrations/mcp/status")
+    def _mcp_status():
+        return api.mcp_setup_status()
+
+    @app.post("/api/integrations/cursor/write-config")
+    async def _cursor_write_config(request: Request):
+        body = await _body(request)
+        confirm = body.get("confirm") is True or str(body.get("confirm", "")).lower() in {"1", "true", "yes"}
+        return api.write_cursor_mcp_config(confirm)
+
+    @app.post("/api/integrations/claude/write-config")
+    async def _claude_write_config(request: Request):
+        body = await _body(request)
+        confirm = body.get("confirm") is True or str(body.get("confirm", "")).lower() in {"1", "true", "yes"}
+        return api.write_claude_mcp_config(confirm)
+
+    @app.post("/api/integrations/codex/write-config")
+    async def _codex_write_config(request: Request):
+        body = await _body(request)
+        confirm = body.get("confirm") is True or str(body.get("confirm", "")).lower() in {"1", "true", "yes"}
+        return api.write_codex_mcp_config(confirm)
+
+    @app.post("/api/integrations/mcp/test")
+    def _mcp_test():
+        return api.test_claude_mcp_runtime()
 
     @app.post("/api/copilot/ask")
     async def _copilot(request: Request):

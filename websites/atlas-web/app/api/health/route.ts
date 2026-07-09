@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { store } from "@/app/_lib/store";
-import { ENV, validateSupabaseConfig } from "@/app/_lib/config";
+import { ENV, paddleCheckoutConfigured, validateSupabaseConfig } from "@/app/_lib/config";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -46,8 +46,10 @@ export async function GET() {
     config: {
       hasSupabase: ENV.hasSupabase,
       hasAuthSecret: !!process.env.AUTH_SECRET,
-      hasInstallerUrl: !!process.env.ATLAS_INSTALLER_URL || !!process.env.ATLAS_INSTALLER_PATH,
+      hasInstallerUrl: !!process.env.NEXT_PUBLIC_DOWNLOAD_URL || !!process.env.ATLAS_INSTALLER_URL || !!process.env.ATLAS_INSTALLER_PATH,
       paymentsMode: ENV.paymentsMode,
+      paddleCheckoutConfigured: paddleCheckoutConfigured(),
+      paddleWebhookConfigured: !!ENV.paddleWebhookSecret,
     },
     supabase,
     ...(detail ? { detail } : {}),

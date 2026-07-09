@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { currentUser } from "../../_lib/auth";
-import { PLANS } from "../../_lib/billing";
+import { PLANS, proCheckoutReady } from "../../_lib/billing";
 import { ManageBillingButton, BillingActionButton, CheckoutButton } from "../../_components/client";
 import { PAID_PLANS_ENABLED } from "../../_config";
 
@@ -12,6 +12,7 @@ export default async function BillingPage() {
   const plan = PLANS[user.plan];
   const isPaid = user.plan !== "free";
   const isCanceled = user.planStatus === "canceled" || user.planStatus === "expired";
+  const proReady = proCheckoutReady();
 
   if (!PAID_PLANS_ENABLED) {
     return (
@@ -47,7 +48,8 @@ export default async function BillingPage() {
       </div>
 
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 20 }}>
-        {!isPaid && <CheckoutButton plan="pro" label="Start 7-day free trial" />}
+        {!isPaid && proReady && <CheckoutButton plan="pro" label="Start 7-day free trial" />}
+        {!isPaid && !proReady && <button className="btn btn-primary" disabled>Pro coming soon</button>}
         {isPaid && !isCanceled && <ManageBillingButton />}
         {isPaid && !isCanceled && <BillingActionButton action="cancel" label="Cancel subscription" />}
         {isCanceled && <BillingActionButton action="renew" label="Renew subscription" className="btn btn-primary" />}

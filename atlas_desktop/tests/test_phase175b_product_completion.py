@@ -1,4 +1,4 @@
-"""Phase 175B — product completion polish for beta."""
+﻿"""Phase 175B â€” product completion polish for beta."""
 
 from __future__ import annotations
 
@@ -54,14 +54,14 @@ def test_product_config_endpoint():
     assert cfg["payments_active"] is False
     assert cfg["checkout_enabled"] is False
     assert "Billing is not enabled" in cfg["billing_message"]
-    assert cfg["support_email"] == "atlas.repo.support@gmail.com"
+    assert cfg["support_email"] == "yoavkozokabab@gmail.com"
 
 
 def test_support_email_visible_on_contact_and_support():
     contact = (STATIC / "contact.html").read_text(encoding="utf-8")
     support = (STATIC / "support.html").read_text(encoding="utf-8")
-    assert "atlas.repo.support@gmail.com" in contact
-    assert "atlas.repo.support@gmail.com" in support
+    assert "yoavkozokabab@gmail.com" in contact
+    assert "yoavkozokabab@gmail.com" in support
     assert "not configured yet" not in contact.lower()
 
 
@@ -182,4 +182,4 @@ def test_startup_status_includes_semver_and_support_email():
     _, env = server.dispatch("GET", "/api/system/startup-status")
     assert env["version"] == "1.0.0"
     assert env.get("build_commit")
-    assert env.get("support_email") == "atlas.repo.support@gmail.com"
+    assert env.get("support_email") == "yoavkozokabab@gmail.com"

@@ -19,7 +19,13 @@ export async function POST(req: Request) {
   const body = await readJson(req);
   const plan = String(body.plan ?? "");
   if (!isPlanId(plan)) return NextResponse.json({ ok: false, error: "invalid_plan" }, { status: 400 });
-  // Stub mode: grants a local trial, never charges. See billing.ts.
-  const r = await startCheckout(user, plan);
-  return NextResponse.json({ ok: true, mode: r.mode, url: r.url });
+  try {
+    const r = await startCheckout(user, plan);
+    return NextResponse.json({ ok: true, mode: r.mode, url: r.url });
+  } catch (err) {
+    const code = typeof err === "object" && err && "code" in err ? String((err as { code: unknown }).code) : "checkout_failed";
+    const message = err instanceof Error ? err.message : "Checkout failed.";
+    const status = code === "billing_not_configured" || code === "team_not_billed" ? 503 : 500;
+    return NextResponse.json({ ok: false, error: code, message }, { status });
+  }
 }
