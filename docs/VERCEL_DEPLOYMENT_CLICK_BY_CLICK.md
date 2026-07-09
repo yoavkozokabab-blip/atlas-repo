@@ -49,6 +49,22 @@ ATLAS_INSTALLER_URL        = <leave empty for now; set after the GitHub Release>
 (`docs/GITHUB_RELEASE_CLICK_BY_CLICK.md`). Until then the download button returns a clear
 "installer not available" message — not a crash.
 
+### Paddle (only when enabling paid Pro checkout)
+
+Pro checkout stays disabled ("Coming soon") until these are set. Do NOT set them until the
+Paddle account, product, and webhook are actually configured:
+
+```
+PADDLE_API_KEY        = <Paddle API key>            ← secret, server-only
+PADDLE_PRO_PRICE_ID   = <price id for Pro $19/mo>
+PADDLE_WEBHOOK_SECRET = <webhook signing secret>    ← secret, server-only
+PADDLE_ENVIRONMENT    = sandbox | production        ← defaults to sandbox
+PAYMENTS_MODE         = live                        ← anything else = no live charges
+```
+
+Point the Paddle webhook at `https://<your-url>/api/paddle/webhook`. Signature verification
+rejects requests when `PADDLE_WEBHOOK_SECRET` is missing or wrong.
+
 ## 4. Deploy
 
 Click **Deploy**. Wait ~1–2 minutes. You'll get a URL like `https://atlas-web-xxxx.vercel.app`.

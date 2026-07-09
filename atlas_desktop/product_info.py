@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import os
 import subprocess
+import sys
 import time
 import urllib.error
 import urllib.request
@@ -27,6 +28,19 @@ def build_commit() -> str:
     if env:
         _BUILD_COMMIT_CACHE = env
         return env
+    # Packaged builds ship build_info.json; prefer it over `git`, which would
+    # otherwise pick up whatever repository happens to contain the install dir.
+    if getattr(sys, "frozen", False):
+        try:
+            root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+            info_path = os.path.join(root, "packaging", "installer", "build_info.json")
+            with open(info_path, encoding="utf-8-sig") as fh:
+                commit = str(json.load(fh).get("commit") or "").strip()
+            if commit:
+                _BUILD_COMMIT_CACHE = commit
+                return commit
+        except (OSError, ValueError):
+            pass
     try:
         root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
         proc = subprocess.run(
