@@ -3,7 +3,7 @@
 Give your AI coding agent (Claude Code, Claude Desktop, Cursor, Codex) direct access to
 Atlas's repository intelligence. Ask, mid-task:
 
-> "Ask Atlas what files matter for implementing Stripe checkout."
+> "Ask Atlas what files matter for implementing OAuth login."
 > "Ask Atlas what breaks if I change `sessions.py`."
 
 The server is **local-first** (nothing leaves your machine), **read-only** (it never
