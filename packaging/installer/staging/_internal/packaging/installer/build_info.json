@@ -1,7 +1,9 @@
 {
-    "build_date":  "2026-07-03T16:00:36",
-    "commit":  "44169315",
+    "commit":  "68cadfbb",
     "version":  "1.0.0",
-    "entry":  "Atlas.exe",
-    "product":  "ATLAS"
+    "source_root":  "C:\\J.A.R.V.I.S\\atlas-rc1-clean",
+    "launch_build_label":  "Atlas v1.0.0 launch build",
+    "build_date":  "2026-07-10T02:58:22",
+    "product":  "ATLAS",
+    "entry":  "Atlas.exe"
 }

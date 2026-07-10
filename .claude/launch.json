@@ -9,6 +9,15 @@
         "cd /d \"C:\\J.A.R.V.I.S\\atlas-rc1-clean\\websites\\atlas-web\" && npm run dev"
       ],
       "port": 3000
+    },
+    {
+      "name": "atlas-desktop",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": [
+        "/c",
+        "cd /d \"C:\\J.A.R.V.I.S\\atlas-rc1-clean\" && py -3 run_atlas.py --no-browser"
+      ],
+      "port": 8777
     }
   ]
 }
