@@ -1,5 +1,5 @@
 ﻿import Link from "next/link";
-import { SiteNav, SiteFooter } from "./_components/site";
+import { SiteNav, SiteFooter, InstallFlow } from "./_components/site";
 
 const flows = [
   ["1", "Download Atlas", "Install the Windows app and open your repo locally."],
@@ -34,9 +34,12 @@ export default function Home() {
                 questions, debug issues, and plan changes with cited files.
               </p>
               <div className="hero-actions">
-                <Link className="btn btn-primary btn-lg" href="/download">Download Atlas</Link>
+                <Link className="btn btn-primary btn-lg" href="/download" data-evt="download_click">Download Atlas</Link>
               </div>
               <p className="hero-note">No signup required · Local-first · Your code stays on your machine</p>
+              <div style={{ marginTop: 22 }}>
+                <InstallFlow />
+              </div>
             </div>
             <ProductPanel />
           </div>

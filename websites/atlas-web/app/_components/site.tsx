@@ -11,7 +11,7 @@ export function SiteNav() {
         </Link>
         <nav className="nav-links" aria-label="Primary">
           <Link href="/features">Features</Link>
-          <Link href="/docs">Docs</Link>
+          <Link href="/docs" data-evt="docs_click">Docs</Link>
           <Link href="/download">Download</Link>
         </nav>
         <div className="nav-cta">
@@ -41,6 +41,10 @@ export function SiteFooter() {
             <Link href="/docs">Docs</Link>
             <Link href="/download">Download</Link>
             <Link href="/features">Features</Link>
+            <Link href="/changelog">Changelog</Link>
+            <Link href="/roadmap">Roadmap</Link>
+            <Link href="/compare">Compare</Link>
+            <Link href="/benchmarks">Benchmarks</Link>
           </div>
           <div>
             <h4>Legal</h4>
@@ -64,6 +68,22 @@ export function SiteFooter() {
         <div className="legal">© 2026 Atlas. Local-first repository intelligence.</div>
       </div>
     </footer>
+  );
+}
+
+/** Four-step install strip: Download → Install → Load sample → Connect. */
+export function InstallFlow() {
+  return (
+    <div className="install-flow" aria-label="Install steps">
+      <span className="if-step">Download</span>
+      <span className="if-arrow" aria-hidden>→</span>
+      <span className="if-step">Install</span>
+      <span className="if-arrow" aria-hidden>→</span>
+      <span className="if-step">Load sample repository</span>
+      <span className="if-arrow" aria-hidden>→</span>
+      <span className="if-step">Connect Claude / Cursor / Codex</span>
+      <span className="muted" style={{ fontFamily: "var(--font-mono)", fontSize: "0.8rem" }}>· No login required</span>
+    </div>
   );
 }
 

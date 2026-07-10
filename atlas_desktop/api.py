@@ -4684,16 +4684,22 @@ def mcp_setup_status() -> Dict[str, Any]:
     return _agent_integrations.mcp_setup_status()
 
 
+def _tracked_mcp_write(tool: str, result: Dict[str, Any]) -> Dict[str, Any]:
+    # Local-only analytics: tool name + outcome, never config contents or paths.
+    track_analytics_event("mcp_connect", tool=tool, ok=bool(result.get("ok")), code=result.get("code") or "")
+    return result
+
+
 def write_cursor_mcp_config(confirm: bool = False) -> Dict[str, Any]:
-    return _agent_integrations.write_cursor_config(confirm=bool(confirm))
+    return _tracked_mcp_write("cursor", _agent_integrations.write_cursor_config(confirm=bool(confirm)))
 
 
 def write_claude_mcp_config(confirm: bool = False) -> Dict[str, Any]:
-    return _agent_integrations.write_claude_config(confirm=bool(confirm))
+    return _tracked_mcp_write("claude", _agent_integrations.write_claude_config(confirm=bool(confirm)))
 
 
 def write_codex_mcp_config(confirm: bool = False) -> Dict[str, Any]:
-    return _agent_integrations.write_codex_config(confirm=bool(confirm))
+    return _tracked_mcp_write("codex", _agent_integrations.write_codex_config(confirm=bool(confirm)))
 
 
 def agent_integrations_status() -> Dict[str, Any]:

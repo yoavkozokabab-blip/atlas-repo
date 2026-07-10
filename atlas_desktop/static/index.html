@@ -471,6 +471,10 @@
               <h4 class="recent-col-title">Recent repositories</h4>
               <div id="homeRecentRepos"><span class="muted tiny">No repositories yet.</span></div>
             </div>
+            <div class="recent-col glass">
+              <h4 class="recent-col-title">Activity</h4>
+              <div id="activityList"><span class="muted tiny">No activity yet.</span></div>
+            </div>
           </div>
         </section>
       </div>
@@ -1028,12 +1032,18 @@
   <div id="onboarding" class="onboarding" style="display:none">
     <div class="onboarding-card glass">
       <p class="onboard-eyebrow">Atlas</p>
-      <h2>Get started</h2>
-      <p class="muted">Load a sample repository to see Atlas working in under a minute — no folder path needed.</p>
+      <h2>Welcome to Atlas</h2>
+      <ol class="onboard-steps">
+        <li><b>Load the sample repository</b> — no folder path needed.</li>
+        <li><b>Ask your first repo-aware question</b> — the answer cites real files.</li>
+        <li><b>Connect Claude, Cursor, or Codex</b> — one click writes the MCP config.</li>
+        <li><b>Done</b> — your agent has persistent repo memory.</li>
+      </ol>
       <div class="onboard-actions">
         <button class="btn primary" onclick="onboardingLoadSample()">Load sample repository</button>
-        <button class="btn ghost" onclick="dismissOnboarding(false)">Scan my own repository</button>
+        <button class="btn ghost" onclick="dismissOnboarding(false)">Skip — scan my own repository</button>
       </div>
+      <p class="muted tiny" style="margin:12px 0 0">This screen only shows once. Press <b>Ctrl+K</b> anytime for the command palette.</p>
     </div>
   </div>
 
@@ -1044,15 +1054,57 @@
       <p class="muted" id="mcpManualReason">Paste this config manually if automatic setup is unavailable.</p>
       <p class="muted tiny"><b>Config path:</b> <span id="mcpManualPath">—</span></p>
       <pre id="mcpManualSnippet" class="code tiny mcp-manual-snippet"></pre>
+      <p class="muted tiny" id="mcpManualCause" style="display:none"><b>Possible cause:</b> the config file's folder doesn't exist yet, or Atlas can't write to it. Retrying usually works after the agent has been run once.</p>
       <div class="success-buttons">
-        <button class="btn primary" type="button" onclick="atlasMcpSetup.closeManualSetup()">Close</button>
+        <button class="btn primary" type="button" id="mcpManualRetryBtn" style="display:none" onclick="atlasMcpSetup.retryConnect()">Retry connect</button>
         <button class="btn ghost" type="button" onclick="atlasMcpSetup.copyManualConfig()">Copy manual config</button>
+        <button class="btn ghost" type="button" onclick="atlasMcpSetup.closeManualSetup()">Close</button>
       </div>
     </div>
   </div>
 
   <div id="toast" class="toast"></div>
-  <footer id="appBuildMarker" class="app-build-marker muted tiny" aria-label="Build version">Atlas v1.0.0 launch build</footer>
+
+  <!-- Command palette (Ctrl/Cmd+K) -->
+  <div id="cmdPalette" class="admin-modal" style="display:none" role="dialog" aria-label="Command palette">
+    <div class="cp-card glass">
+      <input id="cmdPaletteInput" type="text" placeholder="Type a command… (Esc to close)" autocomplete="off" />
+      <div id="cmdPaletteList" class="cp-list"></div>
+    </div>
+  </div>
+
+  <!-- Keyboard shortcuts (?) -->
+  <div id="shortcutsModal" class="admin-modal" style="display:none" role="dialog" aria-label="Keyboard shortcuts">
+    <div class="admin-modal-card glass">
+      <p class="onboard-eyebrow">Keyboard</p>
+      <h3>Shortcuts</h3>
+      <dl class="kv-shortcuts">
+        <dt><kbd>Ctrl</kbd>+<kbd>K</kbd></dt><dd>Command palette</dd>
+        <dt><kbd>Ctrl</kbd>+<kbd>Enter</kbd></dt><dd>Submit Ask Atlas question</dd>
+        <dt><kbd>Esc</kbd></dt><dd>Close modal / palette</dd>
+        <dt><kbd>H</kbd></dt><dd>Home</dd>
+        <dt><kbd>S</kbd></dt><dd>Scan</dd>
+        <dt><kbd>A</kbd></dt><dd>Ask Atlas (repo loaded)</dd>
+        <dt><kbd>?</kbd></dt><dd>This list</dd>
+      </dl>
+      <div class="success-buttons">
+        <button class="btn primary" type="button" onclick="atlasShortcuts.close()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Guided demo tour bar -->
+  <div id="demoTour" class="demo-tour glass" style="display:none" role="status" aria-label="Demo tour">
+    <span class="dt-step muted tiny">Demo 1/5</span>
+    <div class="dt-text">
+      <b class="dt-title"></b>
+      <span class="dt-body muted"></span>
+    </div>
+    <button class="btn primary small dt-cta" type="button">Next</button>
+    <button class="btn ghost small" type="button" onclick="atlasDemoTour.end()">Skip tour</button>
+  </div>
+
+  <footer id="appBuildMarker" class="app-build-marker muted tiny" aria-label="Build version">Atlas v1.0.0 launch build · <a href="mailto:yoavkozokabab@gmail.com?subject=Atlas%20feedback" style="color:inherit">Report bug / Suggest feature</a></footer>
   <script src="universe.js"></script>
   <script src="atlas_copy.js"></script>
   <script src="app.js"></script>
@@ -1067,5 +1119,6 @@
   <script src="atlas_acquisition.js"></script>
   <script src="atlas_admin.js"></script>
   <script src="atlas_mcp_setup.js"></script>
+  <script src="atlas_launch_ux.js"></script>
 </body>
 </html>

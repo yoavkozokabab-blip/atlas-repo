@@ -28,7 +28,7 @@ export default function DownloadPage() {
             <div className="dl-card">
               <h3>Atlas for Windows</h3>
               <p className="dl-meta">Atlas_Setup.exe · v{ENV.appVersion} · Windows 10 / 11</p>
-              <a className="btn btn-primary btn-lg" href="/download/atlas" style={{ marginTop: 16 }}>
+              <a className="btn btn-primary btn-lg" href="/download/atlas" style={{ marginTop: 16 }} data-evt="download_click">
                 Download Atlas
               </a>
               <p className="dl-meta" style={{ marginTop: 12 }}>

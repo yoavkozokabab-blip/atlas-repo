@@ -59,9 +59,9 @@ export default function PricingPage() {
                   <li>Priority support</li>
                 </ul>
                 {proReady ? (
-                  <Link className="btn btn-primary btn-lg" href="/checkout/plan/pro">Start 7-day trial</Link>
+                  <Link className="btn btn-primary btn-lg" href="/checkout/plan/pro" data-evt="pro_cta_click">Start 7-day trial</Link>
                 ) : (
-                  <button className="btn btn-primary btn-lg" disabled>Coming soon</button>
+                  <button className="btn btn-primary btn-lg" disabled data-evt="pro_cta_click">Coming soon</button>
                 )}
                 <div className="note-accent" style={{ marginTop: 18 }}>
                   <p style={{ margin: 0 }}><b>Paddle is the Merchant of Record.</b></p>

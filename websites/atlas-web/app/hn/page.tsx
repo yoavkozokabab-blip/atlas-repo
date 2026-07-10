@@ -1,6 +1,6 @@
 ﻿import type { Metadata } from "next";
 import Link from "next/link";
-import { SiteNav, SiteFooter } from "../_components/site";
+import { SiteNav, SiteFooter, InstallFlow } from "../_components/site";
 import { GITHUB_URL, SUPPORT_EMAIL } from "../_config";
 
 export const metadata: Metadata = {
@@ -32,9 +32,12 @@ export default function HackerNewsPage() {
                 Atlas indexes your repository locally, then gives Claude Code, Cursor, and Codex cited context for questions, debugging, and change planning.
               </p>
               <div className="hero-actions">
-                <Link className="btn btn-primary btn-lg" href="/download">Download Atlas</Link>
+                <Link className="btn btn-primary btn-lg" href="/download" data-evt="download_click">Download Atlas</Link>
               </div>
               <p className="hero-note">No signup required · Local-first · Your code stays on your machine</p>
+              <div style={{ marginTop: 22 }}>
+                <InstallFlow />
+              </div>
             </div>
             <div className="product-panel">
               <div className="product-top"><span>Sample flow</span><span className="status-dot">Local</span></div>
@@ -101,6 +104,7 @@ export default function HackerNewsPage() {
             ))}
             <p style={{ marginTop: 24 }}>
               <a className="btn btn-ghost" href={GITHUB_URL} target="_blank" rel="noreferrer">GitHub release</a>{" "}
+              <Link className="btn btn-ghost" href="/changelog">Changelog</Link>{" "}
               <a className="btn btn-ghost" href={`mailto:${SUPPORT_EMAIL}`}>Contact</a>
             </p>
           </div>

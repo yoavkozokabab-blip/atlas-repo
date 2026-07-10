@@ -65,6 +65,19 @@ PAYMENTS_MODE         = live                        ← anything else = no live 
 Point the Paddle webhook at `https://<your-url>/api/paddle/webhook`. Signature verification
 rejects requests when `PADDLE_WEBHOOK_SECRET` is missing or wrong.
 
+### Launch analytics (optional)
+
+The site ships a privacy-safe analytics stub that is completely inert until you set:
+
+```
+NEXT_PUBLIC_ANALYTICS_URL = <collector endpoint that accepts sendBeacon POSTs>
+```
+
+When set, the site beacons aggregate event names only — `page_view`, `hn_page_view`,
+`pricing_view`, `download_click`, `pro_cta_click`, `docs_click` — with the pathname and a
+timestamp. No repository data, no prompts, no user identifiers. Any endpoint that accepts
+a JSON POST works (a serverless function, Plausible-style collector, etc.).
+
 ## 4. Deploy
 
 Click **Deploy**. Wait ~1–2 minutes. You'll get a URL like `https://atlas-web-xxxx.vercel.app`.

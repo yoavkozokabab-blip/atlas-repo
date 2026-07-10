@@ -27,7 +27,8 @@ REQUIRED_ROUTES = {
 }
 
 PLACEHOLDER_PATTERNS = (
-    "coming soon",
+    # "coming soon" is intentionally allowed: the launch pricing spec requires
+    # Team to be labeled "Coming soon" (no Team billing exists yet).
     "ahead of public launch",
     "preliminary summary",
     "lorem ipsum",
@@ -101,6 +102,10 @@ def test_no_placeholder_links_or_copy_in_marketing_pages():
 def test_internal_route_links_are_known():
     known = {
         "/",
+        "/changelog",
+        "/roadmap",
+        "/compare",
+        "/benchmarks",
         "/download",
         "/download/atlas",
         "/pricing",

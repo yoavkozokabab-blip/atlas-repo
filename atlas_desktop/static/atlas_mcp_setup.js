@@ -137,6 +137,15 @@ const atlasMcpSetup = (() => {
     }
     if (path) path.textContent = manualPathFor(key, failureRes);
     if (snippet) snippet.textContent = manualSnippet;
+    // A failure opened this modal: surface the likely cause and offer Retry.
+    const failed = !!(failureRes && (failureRes.error || failureRes.code));
+    const cause = document.getElementById("mcpManualCause");
+    const retry = document.getElementById("mcpManualRetryBtn");
+    if (cause) cause.style.display = failed ? "block" : "none";
+    if (retry) {
+      retry.style.display = failed ? "inline-block" : "none";
+      retry.textContent = `Retry ${label} connect`;
+    }
     if (modal) modal.style.display = "grid";
     if (key === "codex" && (failureRes?.error || failureRes?.code)) {
       setText("mcpCodexStatus", "Manual setup required", "manual");
@@ -156,16 +165,26 @@ const atlasMcpSetup = (() => {
   }
 
   async function connectAgent(tool, endpoint, successFallback, errorFallback) {
+    const label = TOOL_LABELS[toolKey(tool)] || "Agent";
+    window.atlasActivity?.add(`${label} MCP connect clicked`);
     const res = await api(endpoint, "POST", { confirm: true });
     if (res.ok) {
       closeManualSetup();
       toast(res.message || successFallback, "success");
+      window.atlasActivity?.add(`${label} connected via MCP`);
       await loadStatus(true);
       return res;
     }
     showManualSetup(tool, res);
     toast(res.error || errorFallback, "error");
+    window.atlasActivity?.add(`${label} MCP config write failed`);
     return res;
+  }
+
+  function retryConnect() {
+    if (manualTool === "cursor") return connectCursor();
+    if (manualTool === "codex") return connectCodex();
+    return connectClaude();
   }
 
   async function connectCursor() {
@@ -187,15 +206,18 @@ const atlasMcpSetup = (() => {
   }
 
   async function connectCodex() {
+    window.atlasActivity?.add("Codex MCP connect clicked");
     const res = await api("/api/integrations/codex/write-config", "POST", { confirm: true });
     if (res.ok) {
       closeManualSetup();
       toast("Codex connected. Restart Codex to use Atlas.", "success");
+      window.atlasActivity?.add("Codex connected via MCP");
       await loadStatus(true);
       return res;
     }
     showManualSetup("codex", res);
     toast(res.error || "Automatic Codex connection failed — manual setup required", "error");
+    window.atlasActivity?.add("Codex MCP config write failed");
     return res;
   }
 
@@ -267,6 +289,7 @@ const atlasMcpSetup = (() => {
     connectCursor,
     connectClaude,
     connectCodex,
+    retryConnect,
     testTool,
     showManualSetup,
     closeManualSetup,

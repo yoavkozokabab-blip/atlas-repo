@@ -696,6 +696,7 @@ function routeToAskAfterScan(scan) {
     primeAskAtlasPrompt(scan);
     updateHnProgress(3);
     toast("Repository indexed. Ask your first question.", "success");
+    if (_hnDemoActive && window.atlasDemoTour) atlasDemoTour.start();
     _hnDemoActive = false;
   }, scan?.demo_mode ? 250 : 650);
 }
@@ -703,6 +704,7 @@ function routeToAskAfterScan(scan) {
 function finishScanSession(scan, pathLabel) {
   if (pathLabel && !scan.demo_mode) pushRecent(pathLabel, scan);
   else if (scan.demo_mode) pushRecent(scan.repo_path || "Atlas Demo", scan);
+  window.atlasActivity?.add(scan.demo_mode ? "Sample repository indexed" : "Repository indexed");
   STATE.graph = null;
   STATE.graph3d = null;
   STATE.graphPerf = null;
@@ -1615,6 +1617,7 @@ async function sendCopilotQuestion() {
   }
   $("copilotLoading").style.display = "block";
   $("copilotCard").style.display = "none";
+  window.atlasActivity?.add("Ask Atlas question submitted");
   const body = { question, target: "none", packet: "compact" };
   if (STATE.selectedNode) body.node_context = STATE.selectedNode;
   const res = await api("/api/copilot/ask", "POST", body);
@@ -2088,6 +2091,7 @@ async function runChangePlan() {
   if (!requireAtlasAccess("Plan Change")) return;
   const request = $("buildRequest")?.value.trim();
   if (!request) { toast("Describe the change you want"); return; }
+  window.atlasActivity?.add("Plan Change run");
   const r = await api("/api/planning/change", "POST", { request });
   const out = $("buildOut");
   if (!r.ok) {
@@ -2172,6 +2176,7 @@ async function runInvestigationPlan() {
   if (!requireAtlasAccess("Debug")) return;
   const symptom = $("investigateSymptom")?.value.trim();
   if (!symptom) { toast("Describe the symptom"); return; }
+  window.atlasActivity?.add("Debug run");
   const r = await api("/api/planning/investigate", "POST", { symptom });
   const out = $("investigateOut");
   if (!r.ok) {
@@ -2259,6 +2264,7 @@ async function runImpact() {
   if (!requireAtlasAccess("What Breaks")) return;
   const target = $("impactTarget").value.trim();
   if (!target) { toast("Enter a file or module"); return; }
+  window.atlasActivity?.add("Impact analysis run");
   const r = await api("/api/planning/impact", "POST", { target });
   const out = $("impactOut");
   if (!r.ok) {
@@ -2574,7 +2580,7 @@ async function bootAtlasApp() {
   updateWorkflowToolbars();
   ensureSuggestDelegation();
   wireSeg("segTarget", "exportTarget"); wireSeg("segPacket", "exportPacket");
-  $("askInput").addEventListener("keydown", e => { if (e.key === "Enter") sendCopilotQuestion(); });
+  $("askInput").addEventListener("keydown", e => { if (e.key === "Enter") sendCopilotQuestion(); }); // plain Enter and Ctrl/Cmd+Enter both submit
   $("repoPath").addEventListener("keydown", e => { if (e.key === "Enter") validateRepoPath(true); });
   ["scopeMode", "scopeFolder", "scopeInclude", "scopeExclude", "manualMassiveMode"].forEach(id => {
     const el = $(id);

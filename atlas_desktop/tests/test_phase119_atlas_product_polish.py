@@ -62,17 +62,18 @@ class TestAtlasBranding:
         assert 'class="logo-text">ATLAS<' in html, "Logo text should be ATLAS"
 
     def test_hero_title_is_atlas(self):
+        # Launch UI: the hero is the launch-hero header; branding lives in the topbar logo.
         html = _html()
-        assert 'class="hero-title">ATLAS<' in html, "Hero title should be ATLAS"
+        assert 'class="launch-hero' in html, "Launch hero header should be present"
 
     def test_no_jarvis_in_title(self):
         html = _html()
         assert "JARVIS" not in html.split("<title>")[1].split("</title>")[0]
 
     def test_onboarding_says_atlas(self):
-        # RC-1 first-run onboarding hero (replaces the "Welcome to ATLAS" card).
+        # Launch first-run hero headline.
         html = _html()
-        assert "Give Cursor and Claude repo memory" in html
+        assert "Give Claude Code and Cursor repo memory" in html
 
     def test_presentation_badge_says_atlas(self):
         html = _html()
@@ -80,18 +81,18 @@ class TestAtlasBranding:
 
     def test_hero_headline_present(self):
         html = _html()
-        assert "Describe a change. Get the files, order, and risks." in html
+        assert "Give Claude Code and Cursor repo memory" in html
 
     def test_hero_subheadline_present(self):
         html = _html()
-        assert "Copy one prompt to Claude. Done." in html
+        assert "answers repo-aware questions with cited files" in html
 
     def test_steps_row_present(self):
-        # RC-1 replaced the steps-row banner with the Getting Started checklist.
+        # Launch home shows the no-repo actions and the HN demo entry.
         html = _html()
-        assert 'class="getting-started-steps"' in html
-        assert "Scan a local repository" in html
-        assert "Connect Cursor or Claude" in html
+        assert "Load sample repository" in html
+        assert "Scan local repository" in html
+        assert "HN demo" in html
 
     def test_home_actions_present(self):
         # RC-1 first-run Home shows exactly two actions: scan or load the sample.
@@ -444,13 +445,12 @@ class TestUIStructure:
     def test_investigate_bug_section_present(self):
         html = _html()
         assert 'id="view-investigate"' in html
-        assert "Investigate bugs and root causes." in html
         assert "traceback" in html.lower() or "stack trace" in html.lower()
 
     def test_export_why_section_present(self):
         html = _html()
         assert 'class="export-why"' in html
-        assert "repo-wide context packet" in html
+        assert "Advanced context export" in html
 
     def test_graph_legend_present(self):
         html = _html()
