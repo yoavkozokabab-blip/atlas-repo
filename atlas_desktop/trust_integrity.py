@@ -15,7 +15,10 @@ import time
 from contextlib import contextmanager
 from typing import Any, Dict, List, Optional, Set, Tuple
 
-SIGNATURE_VERSION = 2
+# v3: manifest entries are sorted before hashing and the persisted scan
+# signature uses the same live-walk basis as restore validation, so identical
+# file sets always produce identical signatures across processes.
+SIGNATURE_VERSION = 3
 
 _STATE_LOCK = threading.RLock()
 
@@ -137,6 +140,11 @@ def _manifest_entries(
                     part += f":{_content_hash(abs_path)}"
                 entries.append(part)
 
+    # Sort the complete manifest before hashing so the signature depends only
+    # on the file SET and per-file metadata — never on traversal order. This is
+    # what lets a persisted signature match a fresh live walk of an unchanged
+    # repository across process restarts.
+    entries.sort()
     manifest_hash = hashlib.sha256("\n".join(entries).encode("utf-8", errors="ignore")).hexdigest()
     return len(entries), total_size, total_mtime, manifest_hash
 

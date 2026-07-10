@@ -525,12 +525,35 @@ def save_scan_state(
     return {"ok": True, "repo_id": rid, "record": record, "partial": partial}
 
 
+def get_active_repo_id(data_dir: str) -> str:
+    """Explicitly-active repository (the last one scanned or resumed)."""
+    reg_path = _registry_path(data_dir)
+    if not os.path.isfile(reg_path):
+        return ""
+    try:
+        return str(_json_read(reg_path).get("active_repo_id") or "")
+    except (OSError, json.JSONDecodeError):
+        return ""
+
+
+def set_active_repo_id(data_dir: str, repo_id: str) -> None:
+    reg_path = _registry_path(data_dir)
+    try:
+        reg = _json_read(reg_path) if os.path.isfile(reg_path) else {"scans": []}
+    except (OSError, json.JSONDecodeError):
+        reg = {"scans": []}
+    reg["active_repo_id"] = str(repo_id or "")
+    _json_write(reg_path, reg)
+
+
 def _update_registry(data_dir: str, record: Dict[str, Any]) -> None:
     reg_path = _registry_path(data_dir)
     try:
         reg = _json_read(reg_path) if os.path.isfile(reg_path) else {"scans": []}
     except (OSError, json.JSONDecodeError):
         reg = {"scans": []}
+    # The most recently scanned repository is the explicit active one.
+    reg["active_repo_id"] = str(record.get("repo_id") or reg.get("active_repo_id") or "")
     scans = [s for s in reg.get("scans") or [] if s.get("repo_id") != record.get("repo_id")]
     scans.insert(0, {
         "repo_id": record.get("repo_id"),
@@ -549,6 +572,18 @@ def _update_registry(data_dir: str, record: Dict[str, Any]) -> None:
     scans.sort(key=lambda s: s.get("last_scan_at") or "", reverse=True)
     reg["scans"] = scans[:MAX_SCANS]
     _json_write(reg_path, reg)
+
+
+def list_registry_rows(data_dir: str) -> List[Dict[str, Any]]:
+    """Raw registry rows, most recent first — no per-repo live validation."""
+    reg_path = _registry_path(data_dir)
+    if not os.path.isfile(reg_path):
+        return []
+    try:
+        reg = _json_read(reg_path)
+    except (OSError, json.JSONDecodeError):
+        return []
+    return [dict(row) for row in reg.get("scans") or [] if row.get("repo_id")]
 
 
 def list_recent_scans(data_dir: str) -> List[Dict[str, Any]]:

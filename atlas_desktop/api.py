@@ -232,6 +232,87 @@ def bootstrap_persistence(*, auto_restore: bool = True) -> Dict[str, Any]:
     return status
 
 
+def restore_persisted_session() -> Dict[str, Any]:
+    """Deterministic restore of the persisted repository state for a fresh
+    process (used by the MCP server before requiring a scan).
+
+    Selection rules — never guess:
+    - the explicit active repo (last scanned/resumed) wins when its scan is valid;
+    - otherwise, if exactly one persisted repo exists and is valid, restore it;
+    - if several exist and none is explicitly active, report selection_required;
+    - stale/invalid scans are reported with the reason, never silently used.
+    """
+    started = time.time()
+    data_dir = _desktop_data_dir()
+    if _STATE.get("scan"):
+        return {"ok": True, "status": "already_loaded", "repo_id": _repo_memory.repo_id(str(_STATE.get("path") or ""))}
+    try:
+        # Registry rows only — validating every persisted repo would walk each
+        # one; only the selected candidate is validated below.
+        recent = _persist.list_registry_rows(data_dir)
+    except Exception as exc:
+        return {"ok": False, "status": "registry_unreadable", "message": f"{type(exc).__name__}: {exc}"}
+    if not recent:
+        return {"ok": False, "status": "none", "message": "No persisted scans."}
+
+    active_id = _persist.get_active_repo_id(data_dir)
+    candidate = None
+    if active_id:
+        candidate = next((r for r in recent if r.get("repo_id") == active_id), None)
+    if candidate is None:
+        if len(recent) == 1:
+            candidate = recent[0]
+        else:
+            return {
+                "ok": False,
+                "status": "selection_required",
+                "message": "Multiple persisted repositories exist and none is marked active. "
+                           "Scan the one you want (atlas_scan_repo) to select it.",
+                "repositories": [
+                    {
+                        "repo_id": r.get("repo_id"),
+                        "repo_name": r.get("repo_name"),
+                        "repo_path": r.get("repo_path"),
+                        "last_scan_at": r.get("last_scan_at"),
+                    }
+                    for r in recent
+                ],
+            }
+
+    rid = str(candidate.get("repo_id") or "")
+    bundle = _persist.load_scan_state(data_dir, rid)
+    if not bundle:
+        return {"ok": False, "status": "sidecar_missing", "repo_id": rid,
+                "message": "Persisted scan record exists but its data files are missing. Rescan required."}
+    record = bundle.get("record") or {}
+    validation = _persist.validate_scan_state(record, str(record.get("repo_path") or ""))
+    if validation.get("status") != "valid":
+        return {
+            "ok": False,
+            "status": validation.get("status") or "invalid",
+            "repo_id": rid,
+            "repo_path": record.get("repo_path"),
+            "message": validation.get("message"),
+            "validation": validation,
+        }
+    if not bundle.get("graph") or not bundle.get("index"):
+        return {"ok": False, "status": "sidecar_missing", "repo_id": rid,
+                "message": "Persisted scan is incomplete (graph/index sidecar missing or corrupted). Rescan required."}
+    result = _persist.restore_into_state(_STATE, bundle, data_dir=data_dir)
+    return {
+        "ok": True,
+        "status": "restored",
+        "repo_id": rid,
+        "repo_name": record.get("repo_name"),
+        "repo_path": record.get("repo_path"),
+        "scan_version": record.get("atlas_version"),
+        "memory_trusted": result.get("memory_trusted"),
+        "validation": validation,
+        "restore_ms": int(round((time.time() - started) * 1000)),
+        "graph_rebuilt": False,
+    }
+
+
 def list_recent_repositories() -> Dict[str, Any]:
     with _ti.state_guard():
         bootstrap_persistence(auto_restore=False)
@@ -269,6 +350,7 @@ def resume_persisted_repository(repo_id: str) -> Dict[str, Any]:
         if not bundle.get("graph") or not bundle.get("index"):
             return {"ok": False, "error": "Saved scan is incomplete — run a full rescan.", "code": "partial_scan"}
         _persist.restore_into_state(_STATE, bundle, data_dir=_desktop_data_dir())
+        _persist.set_active_repo_id(_desktop_data_dir(), repo_id)
         return {
             "ok": True,
             "repo_id": repo_id,
@@ -1132,10 +1214,8 @@ def _scan_repository_locked(path: Optional[str] = None, scope: Optional[Dict[str
     cache = _STATE.setdefault("scan_cache", {})
     cached = cache.get(cache_key)
     if cached:
-        idx_files = (cached.get("index") or {}).get("files")
-        live_sig = _ti.compute_signature_v2(
-            repo, scope_data, indexed_files=idx_files, include_content_hash=bool(idx_files)
-        )
+        # Same live-walk basis as the stored signature and restore validation.
+        live_sig = _ti.compute_signature_v2(repo, scope_data, include_content_hash=True)
         stored_sig = (cached.get("scan") or {}).get("signature_v2") or {}
         if stored_sig.get("signature") != live_sig.get("signature"):
             cached = None
@@ -1171,12 +1251,8 @@ def _scan_repository_locked(path: Optional[str] = None, scope: Optional[Dict[str
                 "evidence_store": cached.get("evidence_store") or {},
             }
         )
-        sig_v2 = _ti.compute_signature_v2(
-            repo,
-            scope_data,
-            indexed_files=(_STATE.get("index") or {}).get("files"),
-            include_content_hash=True,
-        )
+        # Same live-walk basis as the fresh-scan signature and restore validation.
+        sig_v2 = _ti.compute_signature_v2(repo, scope_data, include_content_hash=True)
         # Re-read the reference: a concurrent select/clear can null out
         # _STATE["scan"] between the scan above and this write.
         scan_obj = _STATE.get("scan")
@@ -1395,9 +1471,9 @@ def _scan_repository_locked(path: Optional[str] = None, scope: Optional[Dict[str
         "scope": scope_data,
         "cache": {"hit": False, "signature": cache_key},
     }
-    sig_v2 = _ti.compute_signature_v2(
-        repo, scope_data, indexed_files=index["files"], include_content_hash=True
-    )
+    # Live-walk basis (indexed_files omitted) — the SAME computation restore
+    # validation performs, so an unchanged repo validates across processes.
+    sig_v2 = _ti.compute_signature_v2(repo, scope_data, include_content_hash=True)
     scan["signature_v2"] = sig_v2
     scan["cache"] = {"hit": False, "signature": sig_v2["signature"]}
     signature = sig_v2["signature"]

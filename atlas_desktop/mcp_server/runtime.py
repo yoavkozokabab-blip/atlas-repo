@@ -364,9 +364,55 @@ def _current_repo() -> str:
     return os.path.abspath(str(api._STATE.get("path") or ""))
 
 
+# Fresh --mcp processes restore the persisted repository state lazily, once,
+# before any tool is allowed to demand a rescan. The result is cached so a
+# failed restore (stale/selection_required/none) is reported consistently
+# without re-walking the repository on every tool call.
+_RESTORE_STATUS: Optional[Dict[str, Any]] = None
+
+
+def _ensure_session_restored() -> Dict[str, Any]:
+    global _RESTORE_STATUS
+    if api._STATE.get("scan"):
+        return _RESTORE_STATUS or {"ok": True, "status": "already_loaded"}
+    if _RESTORE_STATUS is None or _RESTORE_STATUS.get("status") in {"already_loaded", "restored"}:
+        try:
+            _RESTORE_STATUS = api.restore_persisted_session()
+        except Exception as exc:  # never let restore break a tool call
+            _RESTORE_STATUS = {"ok": False, "status": "restore_failed", "message": f"{type(exc).__name__}: {exc}"}
+    return _RESTORE_STATUS
+
+
+def _reset_restore_status() -> None:
+    global _RESTORE_STATUS
+    _RESTORE_STATUS = None
+
+
 def _scan_ready(repo_path: str = "") -> Optional[Dict[str, Any]]:
     if not api._STATE.get("scan"):
-        return _err("requires_scan", "Run `atlas_scan_repo` before using this tool.")
+        restore = _ensure_session_restored()
+        if not api._STATE.get("scan"):
+            status = str(restore.get("status") or "none")
+            if status == "selection_required":
+                return _err(
+                    "repository_selection_required",
+                    restore.get("message") or "Multiple persisted repositories exist. Scan the one you want.",
+                    repositories=restore.get("repositories") or [],
+                )
+            if status == "stale":
+                return _err(
+                    "stale_scan",
+                    f"A persisted scan exists but the repository changed since it was taken "
+                    f"({restore.get('message') or 'contents differ'}). Run `atlas_scan_repo` to refresh it.",
+                    repo_path=restore.get("repo_path") or "",
+                )
+            if status in {"version_mismatch", "sidecar_missing", "path_missing", "wrong_repo"}:
+                return _err(
+                    "requires_scan",
+                    f"Persisted scan cannot be restored ({status}): {restore.get('message') or ''} "
+                    "Run `atlas_scan_repo`.",
+                )
+            return _err("requires_scan", "Run `atlas_scan_repo` before using this tool.")
     if repo_path:
         full, err = _local_repo_path(repo_path)
         if err:
@@ -648,6 +694,7 @@ def _agent_export(target: str, args: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def _health_payload() -> Dict[str, Any]:
+    restore = _ensure_session_restored()
     if api._STATE.get("scan"):
         repo_health = call_tool("atlas_repo_health", {})
     else:
@@ -659,11 +706,29 @@ def _health_payload() -> Dict[str, Any]:
             "repository_memory": None,
             "message": "No repository scanned yet.",
         }
+    try:
+        from ..data_paths import desktop_data_dir as _data_dir
+        data_dir = _data_dir()
+    except Exception:
+        data_dir = ""
+    persistence = {
+        "data_dir": data_dir,
+        "status": restore.get("status"),
+        "restored_repo_id": restore.get("repo_id") or "",
+        "restored_repo_path": restore.get("repo_path") or (api._STATE.get("path") if api._STATE.get("scan") else "") or "",
+        "scan_version": restore.get("scan_version") or "",
+        "validation": (restore.get("validation") or {}).get("status") or "",
+        "restore_ms": restore.get("restore_ms"),
+        "graph_rebuilt": bool(restore.get("graph_rebuilt", False)),
+        "memory_trusted": restore.get("memory_trusted"),
+        "message": restore.get("message") or "",
+    }
     return _ok(
         mcp_version=ATLAS_MCP_VERSION,
         protocol_version=MCP_PROTOCOL_VERSION,
         tool_count=len(TOOLS),
         repo=repo_health,
+        persistence=persistence,
         claude_desktop=agent_integrations.claude_config_status(),
         privacy={
             "transport": "stdio-local",
@@ -730,6 +795,7 @@ def call_tool(name: str, arguments: Optional[Dict[str, Any]] = None) -> Dict[str
             result = api.scan_repository(repo_path, args.get("scope"))
             if not result.get("ok"):
                 return _sanitize(result)
+            _reset_restore_status()  # an explicit scan supersedes any cached restore outcome
             summary = _compact_summary(limit=12)
             return _sanitize(_ok(
                 repo_path=repo_path,
