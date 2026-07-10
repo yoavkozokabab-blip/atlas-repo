@@ -150,3 +150,8 @@ if (-not (Test-Path $setup)) {
 $item = Get-Item -LiteralPath $setup
 $setupMb = [Math]::Round($item.Length / 1048576, 2)
 Write-Host ("Built: {0} ({1} MB)" -f $setup, $setupMb) -ForegroundColor Green
+
+# Always regenerate the SHA256 sidecar so it can never go stale against the artifact.
+$hash = (Get-FileHash -LiteralPath $setup -Algorithm SHA256).Hash
+[System.IO.File]::WriteAllText("$setup.sha256", $hash, (New-Object System.Text.UTF8Encoding $false))
+Write-Host ("SHA256: {0}" -f $hash) -ForegroundColor Green
