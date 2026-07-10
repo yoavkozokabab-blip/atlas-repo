@@ -266,6 +266,73 @@ def _norm_path(path: str) -> str:
     return (path or "").replace("\\", "/").strip()
 
 
+# Bare repository alias: a single identifier with no path separators or drive
+# letter (e.g. "controlled_atlas_reference"). Aliases resolve ONLY through the
+# benchmark repositories manifest — never by guessing, never via demo repos.
+_REPO_ALIAS_RE = re.compile(r"^[A-Za-z0-9_][A-Za-z0-9_.-]*$")
+
+
+def _repositories_manifest_path() -> Optional[str]:
+    env = os.environ.get("ATLAS_BENCH_REPOSITORIES", "").strip()
+    if env:
+        return env if os.path.isfile(env) else None
+    root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+    candidate = os.path.join(root, "benchmarks", "agent_atlas_comparison", "repositories.json")
+    return candidate if os.path.isfile(candidate) else None
+
+
+def _resolve_repository_alias(alias: str) -> Tuple[Optional[str], Optional[Dict[str, Any]]]:
+    """Resolve a bare alias strictly from repositories.json. No fallbacks."""
+    manifest = _repositories_manifest_path()
+    if not manifest:
+        return None, _err(
+            "unknown_repository_alias",
+            f"`{alias}` is not an existing directory, and no repository manifest is available "
+            "to resolve it as an alias. Pass an absolute filesystem path, or set "
+            "ATLAS_BENCH_REPOSITORIES to a repositories.json manifest.",
+            repo_path=alias,
+        )
+    try:
+        with open(manifest, encoding="utf-8-sig") as fh:
+            data = json.load(fh)
+    except (OSError, json.JSONDecodeError) as exc:
+        return None, _err(
+            "repository_manifest_invalid",
+            f"Could not read repository manifest {manifest}: {exc}",
+            repo_path=alias,
+        )
+    entries = {str(e.get("id") or ""): e for e in data.get("repositories") or [] if e.get("id")}
+    entry = entries.get(alias)
+    if entry is None:
+        return None, _err(
+            "unknown_repository_alias",
+            f"Repository alias `{alias}` is not defined in {manifest}. "
+            "Atlas will not guess or substitute another repository.",
+            repo_path=alias,
+            known_ids=sorted(entries),
+        )
+    rel = str(entry.get("path") or "").strip()
+    if not rel:
+        return None, _err(
+            "repository_alias_unresolvable",
+            f"Alias `{alias}` has no local path in the manifest (source={entry.get('source') or 'unknown'}). "
+            "Check the repository out first and pass its absolute path.",
+            repo_path=alias,
+        )
+    if os.path.isabs(rel):
+        full = os.path.abspath(rel)
+    else:
+        base = str((data.get("source_checkout") or {}).get("path") or "").strip() or os.path.dirname(manifest)
+        full = os.path.abspath(os.path.join(base, rel))
+    if not os.path.isdir(full):
+        return None, _err(
+            "repository_alias_unresolvable",
+            f"Alias `{alias}` resolves to {full}, which does not exist. Atlas will not substitute another repository.",
+            repo_path=full,
+        )
+    return full, None
+
+
 def _local_repo_path(path: str) -> Tuple[Optional[str], Optional[Dict[str, Any]]]:
     raw = str(path or "").strip()
     if not raw:
@@ -273,6 +340,21 @@ def _local_repo_path(path: str) -> Tuple[Optional[str], Optional[Dict[str, Any]]
     if re.match(r"^[a-zA-Z][a-zA-Z0-9+.-]*://", raw):
         return None, _err("remote_repo_not_allowed", "Atlas MCP only accepts local filesystem paths.")
     full = os.path.abspath(raw)
+    bare_identifier = bool(_REPO_ALIAS_RE.match(raw)) and os.sep not in raw and "/" not in raw
+    if bare_identifier:
+        # Bare identifiers resolve through the repositories manifest FIRST so a
+        # benchmark alias can never be shadowed by a same-named local directory.
+        resolved, alias_err = _resolve_repository_alias(raw)
+        if resolved:
+            return resolved, None
+        # A KNOWN alias that cannot be resolved is a hard failure — falling back
+        # to a same-named directory would be exactly the silent substitution
+        # this function exists to prevent.
+        if alias_err and alias_err.get("code") in {"repository_alias_unresolvable", "repository_manifest_invalid"}:
+            return None, alias_err
+        if os.path.isdir(full):
+            return full, None  # a real relative directory, not a manifest alias
+        return None, alias_err
     if not os.path.isdir(full):
         return None, _err("repo_not_found", "Repository path does not exist or is not a directory.", repo_path=full)
     return full, None
