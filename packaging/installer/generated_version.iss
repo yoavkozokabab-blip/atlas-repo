@@ -2,4 +2,4 @@
 #define MyAppVersion "1.0.0"
 #define MyAppVersionInfo "1.0.0.0"
 #define MyBuildDate "2026-07-11"
-#define MyCommitHash "faf7e6dc"
+#define MyCommitHash "5b83d57d"

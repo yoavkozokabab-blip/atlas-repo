@@ -16,8 +16,9 @@ dependency graph. No account required.
 
 1. Download `Atlas_Setup.exe` below and verify the SHA256.
 2. Run the installer (per-user, no admin rights required), then launch Atlas.
-3. Load the bundled sample repository or scan your own folder.
-4. Click **Connect** for Claude Desktop, Cursor, or Codex — Atlas writes the MCP config
+3. Choose **Continue without an account** (fully local, no signup) or sign in.
+4. Load the bundled sample repository or scan your own folder.
+5. Click **Connect** for Claude Desktop, Cursor, or Codex — Atlas writes the MCP config
    with a timestamped backup and preserves your other MCP servers. Restart the agent.
 
 **Windows SmartScreen:** this installer is not code-signed yet, so SmartScreen shows a
@@ -56,10 +57,10 @@ install from this release page.
 
 ```
 Atlas_Setup.exe SHA256:
-53DDF70E756A760B7BD55F98AD59492D4FC043D5DAAB8CA827EDF29D3FEC371B
+23E882490013F5745BB9156FBD6269B3646E470D0065E4705E6D41699AA08554
 ```
 
-Built from commit `faf7e6dc`.
+Built from commit `5b83d57d`.
 
 ## Contact & changelog
 

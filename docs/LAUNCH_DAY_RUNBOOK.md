@@ -1,7 +1,7 @@
 # Atlas v1.0 — Launch Day Runbook (Tuesday)
 
 Owner: Yoav · Support inbox: yoavkozokabab@gmail.com
-Final build: commit `faf7e6dc`, installer SHA256 `53DDF70E756A760B7BD55F98AD59492D4FC043D5DAAB8CA827EDF29D3FEC371B`.
+Final build: commit `5b83d57d` (guest mode), installer SHA256 `23E882490013F5745BB9156FBD6269B3646E470D0065E4705E6D41699AA08554`.
 
 ## Pre-launch checklist (run the morning of)
 
@@ -40,7 +40,7 @@ Final build: commit `faf7e6dc`, installer SHA256 `53DDF70E756A760B7BD55F98AD5949
 | What broke | Action |
 |---|---|
 | Website deploy bad | `vercel rollback` to the previous production deployment (or redeploy previous commit) |
-| Installer bad | Edit the GitHub release: re-upload previous known-good asset (`packaging/installer/output/` history in git: commit `c243cdd5` = 3f0ce7a0 build, SHA `CECD…381C`) and update the SHA in the notes + `NEXT_PUBLIC_INSTALLER_SHA256` |
+| Installer bad | Edit the GitHub release: re-upload previous known-good asset (`packaging/installer/output/` history in git: commit `cf47c9c1` = faf7e6dc build, SHA `53DD…371B` — note it predates guest mode, so the sign-in wall returns) and update the SHA in the notes + `NEXT_PUBLIC_INSTALLER_SHA256` |
 | Download path broken | Point `ATLAS_INSTALLER_URL` / `NEXT_PUBLIC_DOWNLOAD_URL` env at the GitHub asset URL directly and redeploy (env change only) |
 | Checkout misbehaving | It ships disabled. If it was enabled: unset `PADDLE_API_KEY`/`PADDLE_PRO_PRICE_ID` and redeploy — pricing reverts to "Coming soon" automatically |
 | Emergency notice | Prepend a banner in `app/layout.tsx` (single div, no dependency) and redeploy |
