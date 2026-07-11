@@ -3,7 +3,13 @@
 export const SUPPORT_EMAIL = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "yoavkozokabab@gmail.com";
 export const HELLO_EMAIL = process.env.NEXT_PUBLIC_HELLO_EMAIL || "yoavkozokabab@gmail.com";
 export const SECURITY_EMAIL = process.env.NEXT_PUBLIC_SECURITY_EMAIL || "yoavkozokabab@gmail.com";
-export const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL || "https://github.com/useatlas";
+export const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL || "https://github.com/yoavkozokabab-blip/atlas-repo";
+export const GITHUB_RELEASE_URL =
+  process.env.NEXT_PUBLIC_GITHUB_RELEASE_URL || `${GITHUB_URL}/releases/latest`;
+/** SHA256 of the published Atlas_Setup.exe — shown on /hn and /download. */
+export const INSTALLER_SHA256 =
+  process.env.NEXT_PUBLIC_INSTALLER_SHA256 ||
+  "CECD2FC356D9548DC62A162C106C22803FE06678B12C19F9248F8AE2F74B381C";
 export const DOWNLOAD_URL =
   process.env.NEXT_PUBLIC_DOWNLOAD_URL ||
   process.env.ATLAS_INSTALLER_URL ||

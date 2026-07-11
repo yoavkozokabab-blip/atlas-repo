@@ -30,6 +30,26 @@ export default function SecurityPage() {
           <p>Paid subscription billing is handled by Paddle as Merchant of Record. Atlas
             never stores your payment details.</p>
 
+          <h2 id="data-flow">Data flow, stage by stage</h2>
+          <div className="flow" aria-label="Atlas data flow" style={{ margin: "14px 0 18px" }}>
+            <div className="row"><span className="tag local">Local</span> 1. Indexing — Atlas reads the selected folder on your machine. Nothing is transmitted.</div>
+            <div className="row"><span className="tag local">Local</span> 2. Storage — scans, graphs, and repository memory live in <code>~/.atlas_desktop</code> on your disk.</div>
+            <div className="row"><span className="tag local">Local</span> 3. MCP retrieval — your agent queries Atlas over local stdio. Nothing is transmitted off-machine.</div>
+            <div className="row"><span className="tag net">Agent&apos;s path</span> 4. Agent → model provider — the agent you connected (Claude, Cursor, Codex) may send retrieved context to its own model provider under that provider&apos;s terms. This is your agent&apos;s existing data path, not a new Atlas connection.</div>
+            <div className="row"><span className="tag net">Aggregate</span> 5. Analytics — event names and basic metadata only. Never repository contents, prompts, secrets, or raw file paths.</div>
+            <div className="row"><span className="tag net">Paddle</span> 6. Billing — payment details are handled by Paddle as Merchant of Record. Atlas never stores card data.</div>
+          </div>
+          <p>Atlas does not upload repository contents to Atlas servers during indexing, and Atlas
+            never trains AI models on customer repositories.</p>
+
+          <h2>Deleting local Atlas data</h2>
+          <p>Everything Atlas knows about your repositories lives in one folder. To delete it
+            without uninstalling: close Atlas, then delete <code>%USERPROFILE%\.atlas_desktop</code>{" "}
+            (scans, indexes, repository memory, local analytics, and logs). Uninstalling Atlas
+            removes both the application and that data directory — a full uninstall leaves no
+            repository data behind. MCP config backups are stored next to each agent&apos;s config
+            file as <code>*.atlas-backup-&lt;timestamp&gt;</code> and are yours to keep or delete.</p>
+
           <h2>Responsible disclosure</h2>
           <p>If you believe you found a security issue, email{" "}
             <a href={`mailto:${SECURITY_EMAIL}?subject=Atlas%20Security%20Disclosure`}>
