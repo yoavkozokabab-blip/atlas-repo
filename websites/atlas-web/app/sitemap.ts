@@ -1,15 +1,20 @@
 import type { MetadataRoute } from "next";
 
-const BASE = "https://useatlas.dev";
+const BASE = (process.env.NEXT_PUBLIC_APP_URL || "https://atlas-repo-chi.vercel.app").replace(/\/+$/, "");
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
   const pages: Array<[path: string, priority: number]> = [
     ["/", 1],
+    ["/hn", 0.9],
     ["/features", 0.9],
     ["/download", 0.9],
     ["/docs", 0.8],
     ["/pricing", 0.7],
+    ["/compare", 0.7],
+    ["/benchmarks", 0.6],
+    ["/changelog", 0.6],
+    ["/roadmap", 0.6],
     ["/faq", 0.6],
     ["/contact", 0.5],
     ["/security", 0.4],
