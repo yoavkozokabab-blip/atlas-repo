@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { SiteNav, SiteFooter } from "../_components/site";
 import { ENV } from "../_lib/config";
+import { GITHUB_RELEASE_URL, INSTALLER_SHA256 } from "../_config";
 
 export const metadata: Metadata = {
   title: "Download Atlas - Windows",
@@ -27,7 +28,7 @@ export default function DownloadPage() {
           <div className="container grid-2">
             <div className="dl-card">
               <h3>Atlas for Windows</h3>
-              <p className="dl-meta">Atlas_Setup.exe · v{ENV.appVersion} · Windows 10 / 11</p>
+              <p className="dl-meta">Atlas_Setup.exe · v{ENV.appVersion} · 30 MB · Windows 10 / 11</p>
               <a className="btn btn-primary btn-lg" href="/download/atlas" style={{ marginTop: 16 }} data-evt="download_click">
                 Download Atlas
               </a>
@@ -38,6 +39,13 @@ export default function DownloadPage() {
                 <b>Windows SmartScreen may show a warning on first run.</b> Confirm
                 you downloaded Atlas from the official release link before continuing.
               </div>
+              <p className="dl-meta" style={{ marginTop: 14, wordBreak: "break-all" }}>
+                SHA256: <code>{INSTALLER_SHA256}</code>
+                <br />
+                <a href={GITHUB_RELEASE_URL} target="_blank" rel="noreferrer" style={{ color: "var(--accent)" }}>
+                  Verify against the GitHub release
+                </a>
+              </p>
             </div>
 
             <div>

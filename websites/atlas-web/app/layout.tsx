@@ -1,9 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
-const TITLE = "Atlas — Local-first repository intelligence for AI engineering";
+const TITLE = "Atlas — Persistent repo memory for Claude Code, Cursor, and Codex";
 const DESC =
-  "Atlas maps your codebase locally into architecture, a dependency graph, risk and impact — then exports evidence-backed context so Claude, Codex and Cursor start with the structure instead of re-reading files. Your code never leaves your machine.";
+  "Atlas indexes your repository locally into a dependency graph and evidence store, then serves it to Claude Code, Cursor, and Codex over MCP. Scans persist across fresh agent sessions and are validated against the live repo. Indexing never leaves your machine.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://atlas-repo-chi.vercel.app"),
