@@ -56,10 +56,10 @@ install from this release page.
 
 ```
 Atlas_Setup.exe SHA256:
-CECD2FC356D9548DC62A162C106C22803FE06678B12C19F9248F8AE2F74B381C
+53DDF70E756A760B7BD55F98AD59492D4FC043D5DAAB8CA827EDF29D3FEC371B
 ```
 
-Built from commit `3f0ce7a0`.
+Built from commit `faf7e6dc`.
 
 ## Contact & changelog
 

@@ -1,7 +1,7 @@
 # Atlas v1.0 — Launch Day Runbook (Tuesday)
 
 Owner: Yoav · Support inbox: yoavkozokabab@gmail.com
-Final build: commit `3f0ce7a0`, installer SHA256 `CECD2FC356D9548DC62A162C106C22803FE06678B12C19F9248F8AE2F74B381C`.
+Final build: commit `faf7e6dc`, installer SHA256 `53DDF70E756A760B7BD55F98AD59492D4FC043D5DAAB8CA827EDF29D3FEC371B`.
 
 ## Pre-launch checklist (run the morning of)
 
@@ -40,7 +40,7 @@ Final build: commit `3f0ce7a0`, installer SHA256 `CECD2FC356D9548DC62A162C106C22
 | What broke | Action |
 |---|---|
 | Website deploy bad | `vercel rollback` to the previous production deployment (or redeploy previous commit) |
-| Installer bad | Edit the GitHub release: re-upload previous known-good asset (`packaging/installer/output/` history in git: commit `9fddef4e` = 68cadfbb build, SHA `5352…82AE`) and update the SHA in the notes + `NEXT_PUBLIC_INSTALLER_SHA256` |
+| Installer bad | Edit the GitHub release: re-upload previous known-good asset (`packaging/installer/output/` history in git: commit `c243cdd5` = 3f0ce7a0 build, SHA `CECD…381C`) and update the SHA in the notes + `NEXT_PUBLIC_INSTALLER_SHA256` |
 | Download path broken | Point `ATLAS_INSTALLER_URL` / `NEXT_PUBLIC_DOWNLOAD_URL` env at the GitHub asset URL directly and redeploy (env change only) |
 | Checkout misbehaving | It ships disabled. If it was enabled: unset `PADDLE_API_KEY`/`PADDLE_PRO_PRICE_ID` and redeploy — pricing reverts to "Coming soon" automatically |
 | Emergency notice | Prepend a banner in `app/layout.tsx` (single div, no dependency) and redeploy |
