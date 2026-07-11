@@ -46,7 +46,7 @@ PROTECTED_ACCOUNT_ROUTES = {
 
 
 def _account_gate_failure() -> Optional[Dict[str, Any]]:
-    """Return a 403 payload when account/license enforcement should block."""
+    """Return a 403 payload when local workflow access should block."""
     state = accounts_client.get_account_state()
     license_status = state.get("license") or {}
     user = state.get("user")
@@ -57,11 +57,11 @@ def _account_gate_failure() -> Optional[Dict[str, Any]]:
             "error": "Atlas account license is not active.",
             "license": license_status,
         }
-    if not state.get("authenticated"):
+    if not accounts_client.has_local_workflow_access(state):
         return {
             "ok": False,
             "code": "account_required",
-            "error": "Sign in with an active Atlas account to use this workflow.",
+            "error": "Sign in or continue locally without an account to use this workflow.",
             "license": license_status,
         }
     return None

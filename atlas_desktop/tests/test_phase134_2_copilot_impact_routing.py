@@ -21,6 +21,8 @@ REF_REPO = Path(__file__).resolve().parents[2] / "benchmarks" / "repos" / "atlas
 HA_REPO = Path(os.environ.get("ATLAS_HA_REPO",
                str(Path(__file__).resolve().parents[2] / "external_repos" / "home_assistant")))
 
+pytestmark = pytest.mark.usefixtures("local_guest_account")
+
 
 # --------------------------------------------------------------------------
 # Pure parser / intent (no scan)

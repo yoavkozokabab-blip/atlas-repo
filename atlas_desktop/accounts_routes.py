@@ -72,6 +72,14 @@ def accounts_state(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, A
     return accounts_client.get_account_state()
 
 
+def accounts_guest_start(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+    return accounts_client.start_guest_session()
+
+
+def accounts_guest_clear(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+    return accounts_client.clear_guest_session()
+
+
 def accounts_register(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
     email = str(body.get("email", "")).strip()
     password = str(body.get("password", ""))
@@ -429,6 +437,8 @@ ACCOUNTS_ROUTES = {
     ("POST", "/api/accounts/register"):       accounts_register,
     ("POST", "/api/accounts/login"):          accounts_login,
     ("POST", "/api/accounts/logout"):         accounts_logout,
+    ("POST", "/api/accounts/guest/start"):    accounts_guest_start,
+    ("POST", "/api/accounts/guest/clear"):    accounts_guest_clear,
     ("GET",  "/api/accounts/profile"):        accounts_profile,
     ("GET",  "/api/accounts/license"):        accounts_license,
     ("GET",  "/api/accounts/devices"):        accounts_devices,

@@ -51,7 +51,8 @@
           </div>
           <div class="acc-actions acc-actions-stack">
             <button id="acc-login-btn" class="btn primary auth-btn-primary" type="button" onclick="atlasAccounts.login()">Sign In</button>
-            <button class="btn ghost auth-btn-secondary" type="button" onclick="atlasAccounts.switchPanel('register')">Create Account</button>
+            <button class="btn ghost auth-btn-secondary" type="button" onclick="atlasAccounts.switchPanel('register')">Create free account</button>
+            <button id="acc-guest-btn" class="btn ghost auth-btn-secondary" type="button" onclick="atlasAccounts.startGuest()">Continue without an account</button>
           </div>
         </div>
 
@@ -873,6 +874,7 @@
       <div class="accounts-wrap glass">
         <div id="acc-panel-profile">
           <h2>Your Account</h2>
+          <p id="acc-guest-note" class="muted" style="display:none">Sign in to manage your account and future cloud features. Your local scans and MCP setup stay on this machine.</p>
           <table class="acc-table">
             <tr><th>Email</th><td id="acc-profile-email">—</td></tr>
             <tr><th>Plan</th><td id="acc-profile-plan">—</td></tr>

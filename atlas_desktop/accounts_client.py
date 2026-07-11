@@ -21,6 +21,7 @@ import sys
 import time
 import urllib.error
 import urllib.request
+import uuid
 from datetime import datetime, timezone
 from typing import Any, Dict, Optional
 
@@ -67,6 +68,9 @@ _SIGNED_STATE_KEYS = (
     "user",
     "license",
     "license_checked_at",
+    "guest",
+    "guest_id",
+    "guest_created_at",
 )
 _SENSITIVE_STATE_KEYS = {
     "access_token",
@@ -75,6 +79,9 @@ _SENSITIVE_STATE_KEYS = {
     "user",
     "license",
     "license_checked_at",
+    "guest",
+    "guest_id",
+    "guest_created_at",
 }
 
 # ── File helpers ──────────────────────────────────────────────────────────────
@@ -154,6 +161,85 @@ def _save_state(state: Dict[str, Any]) -> None:
             json.dump(unsigned, f, indent=2)
     except OSError:
         pass
+
+
+def _utc_now_iso() -> str:
+    return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def _guest_state_valid(state: Dict[str, Any]) -> bool:
+    if state.get("guest") is not True:
+        return False
+    guest_id = str(state.get("guest_id") or "")
+    created_at = str(state.get("guest_created_at") or "")
+    if not guest_id or not created_at:
+        return False
+    try:
+        uuid.UUID(guest_id)
+    except ValueError:
+        return False
+    return True
+
+
+def _guest_license() -> Dict[str, Any]:
+    return {
+        "valid": True,
+        "plan": "guest",
+        "status": "guest_local",
+        "message": "Using Atlas locally without an account.",
+        "local_only": True,
+    }
+
+
+def _blocked_real_account_state(state: Dict[str, Any]) -> bool:
+    user = state.get("user") if isinstance(state.get("user"), dict) else {}
+    license_status = state.get("license") if isinstance(state.get("license"), dict) else {}
+    statuses = {
+        str(user.get("status") or "").lower(),
+        str(license_status.get("status") or "").lower(),
+        str(state.get("last_auth_error") or "").lower(),
+    }
+    return bool(statuses.intersection({"suspended", "banned", "device_revoked"}))
+
+
+def start_guest_session() -> Dict[str, Any]:
+    """Create or restore a local-only guest identity without network access."""
+    state = _load_state()
+    if state.get("_state_integrity_error"):
+        return {
+            "ok": False,
+            "code": "local_state_tampered",
+            "error": "Atlas account cache integrity failed. Please sign in again.",
+        }
+    if _blocked_real_account_state(state):
+        return {
+            "ok": False,
+            "code": "real_account_restricted",
+            "error": "This Atlas account is restricted. Sign out or contact support.",
+        }
+    if not _guest_state_valid(state):
+        state["guest"] = True
+        state["guest_id"] = str(uuid.uuid4())
+        state["guest_created_at"] = _utc_now_iso()
+    state.pop("last_auth_error", None)
+    _save_state(state)
+    return {"ok": True, **get_account_state()}
+
+
+def clear_guest_session() -> Dict[str, Any]:
+    """Clear only the guest/account UI state; never repository persistence."""
+    state = _load_state()
+    for key in ("guest", "guest_id", "guest_created_at"):
+        state.pop(key, None)
+    _save_state(state)
+    return {"ok": True, **get_account_state()}
+
+
+def has_local_workflow_access(state: Dict[str, Any]) -> bool:
+    """True for an active real account or a valid local guest entitlement."""
+    if state.get("authenticated") is True:
+        return True
+    return bool(state.get("guest") is True and state.get("local_access") is True)
 
 
 def cached_identity() -> Dict[str, Any]:
@@ -298,6 +384,9 @@ def _clear_auth_state(state: Optional[Dict[str, Any]] = None, reason: str = "") 
         "user",
         "license",
         "license_checked_at",
+        "guest",
+        "guest_id",
+        "guest_created_at",
     ):
         state.pop(key, None)
     if reason:
@@ -392,6 +481,8 @@ def _persist_token_response(result: Dict[str, Any], state: Optional[Dict] = None
     if "license" in result and result["license"]:
         state["license"] = result["license"]
         state["license_checked_at"] = time.time()
+    for key in ("guest", "guest_id", "guest_created_at"):
+        state.pop(key, None)
     _save_state(state)
 
 
@@ -438,6 +529,8 @@ def _persist_web_session(result: Dict[str, Any], state: Optional[Dict[str, Any]]
     state["license"] = _web_license_from_result(result)
     state["license_checked_at"] = time.time()
     state.pop("last_auth_error", None)
+    for key in ("guest", "guest_id", "guest_created_at"):
+        state.pop(key, None)
     _save_state(state)
 
 
@@ -524,6 +617,8 @@ def get_license_status() -> Dict[str, Any]:
             "_offline": False,
             "message": "Atlas account cache integrity failed. Please sign in again.",
         }
+    if _guest_state_valid(state) and not state.get("access_token"):
+        return _guest_license()
     if auth_mode() == "website":
         return _web_license_status()
     token = get_valid_access_token()
@@ -962,8 +1057,9 @@ def get_interview_summary() -> Dict[str, Any]:
 
 def get_account_state() -> Dict[str, Any]:
     """Return a combined state object for the frontend accounts screen."""
-    license_status = get_license_status()
     state = _load_state()
+    guest_valid = _guest_state_valid(state) and not state.get("access_token")
+    license_status = _guest_license() if guest_valid else get_license_status()
     if state.get("_state_integrity_error"):
         license_status = {
             "valid": False,
@@ -979,14 +1075,22 @@ def get_account_state() -> Dict[str, Any]:
     # active license. Such users must reach an
     # in-app status dashboard rather than a pre-login access wall (Phase 193).
     signed_in = bool(token and user)
+    local_access = bool(authenticated or guest_valid)
 
     return {
         "authenticated": authenticated,
         "signed_in": signed_in,
+        "guest": bool(guest_valid),
+        "guest_id": str(state.get("guest_id") or "") if guest_valid else "",
+        "guest_created_at": str(state.get("guest_created_at") or "") if guest_valid else "",
+        "local_access": local_access,
+        "account_required_features": not authenticated,
         "user": user,
         "license": license_status,
+        "plan": license_status.get("plan") or "free",
+        "status": license_status.get("status") or "unauthenticated",
         "device_id": get_device_id(),
-        "service_online": bool(token and not license_status.get("_offline") and not license_status.get("_http_status")),
+        "service_online": bool(not guest_valid and token and not license_status.get("_offline") and not license_status.get("_http_status")),
         "state_integrity_error": bool(state.get("_state_integrity_error")),
         "last_auth_error": state.get("last_auth_error"),
     }

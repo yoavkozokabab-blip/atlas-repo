@@ -26,7 +26,8 @@ def test_phase188_auth_layout_is_dedicated_and_polished():
     assert "body.auth-mode #app-shell{display:none !important}" in CSS
     assert "body.auth-mode #auth-layout{display:flex}" in CSS
     assert "Sign in" in INDEX
-    assert "Create Account" in INDEX
+    assert "Create free account" in INDEX
+    assert "Continue without an account" in INDEX
     assert "Create your account" in INDEX
     assert "Your code stays on your machine." in INDEX
     assert 'id="acc-login-email-msg"' in INDEX
@@ -123,6 +124,9 @@ def test_phase188_workflow_views_and_actions_require_valid_access():
         assert "requireAtlasAccess" in _snippet_after(marker), marker
 
     assert "requireAccess: () => {" in ACCOUNTS_JS
+    assert "startGuest: startGuest" in ACCOUNTS_JS
+    assert "api('POST', '/api/accounts/guest/start'" in ACCOUNTS_JS
+    assert "_state && (_state.authenticated || _state.local_access)" in ACCOUNTS_JS
     assert "showAccountScreen('blocked')" in ACCOUNTS_JS
     assert "showAccountScreen('login')" in ACCOUNTS_JS
 

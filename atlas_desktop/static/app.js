@@ -247,11 +247,11 @@ function toast(msg, kind) {
 function requireAtlasAccess(actionLabel) {
   if (window.atlasAccounts && typeof window.atlasAccounts.requireAccess === "function") {
     const ok = window.atlasAccounts.requireAccess();
-    if (!ok) toast(`${actionLabel || "Atlas"} requires you to sign in`, "error");
+    if (!ok) toast(`${actionLabel || "Atlas"} requires sign-in or local guest mode`, "error");
     return ok;
   }
   if (document.body.classList.contains("auth-mode")) {
-    toast(`${actionLabel || "Atlas"} requires you to sign in`, "error");
+    toast(`${actionLabel || "Atlas"} requires sign-in or local guest mode`, "error");
     return false;
   }
   return true;

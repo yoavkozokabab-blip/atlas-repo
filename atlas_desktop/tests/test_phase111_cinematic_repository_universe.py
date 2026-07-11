@@ -116,7 +116,7 @@ def test_copilot_impact_includes_graph_highlight(scanned):
     assert isinstance(highlight.get("node_ids"), list)
 
 
-def test_server_routes_phase111():
+def test_server_routes_phase111(scanned):
     status, payload = server.dispatch("GET", "/api/repositories/current/timeline")
     assert status == 200
     assert "snapshots" in payload

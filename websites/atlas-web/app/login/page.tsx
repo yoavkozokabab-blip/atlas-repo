@@ -18,7 +18,7 @@ export default async function LoginPage({
     <PageShell
       eyebrow="Account"
       title="Sign in to Atlas"
-      intro="Create an account or sign in to download Atlas and manage your plan."
+      intro="Create an account or sign in to manage your plan. The Windows download also supports local guest mode."
     >
       <section className="section" style={{ borderTop: "none", paddingTop: 8 }}>
         <div className="container">

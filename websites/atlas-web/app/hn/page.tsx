@@ -29,14 +29,12 @@ export default function HackerNewsPage() {
               <h1>Persistent repository context across fresh coding-agent sessions</h1>
               <p>
                 Atlas indexes your repository locally into a dependency graph, subsystem map, and
-                evidence store — then serves it to Claude Code, Cursor, and Codex over MCP. Kill
-                the agent, open a new session tomorrow: the context is still there, validated
-                against the current state of your repo.
+                evidence store — then serves it to Claude Code, Cursor, and Codex over MCP. Built for developers who are tired of re-explaining the same codebase to AI coding agents. Kill the agent, open a new session tomorrow: the context is still there, validated against the current state of your repo.
               </p>
               <div className="hero-actions">
                 <Link className="btn btn-primary btn-lg" href="/download" data-evt="download_click">Download Atlas</Link>
               </div>
-              <p className="hero-note">No signup required · Local-first indexing · Windows v1.0</p>
+              <p className="hero-note">No signup required · Continue without an account · Local-first indexing · Your code stays on your machine · Windows v1.0</p>
               <div style={{ marginTop: 22 }}>
                 <InstallFlow />
               </div>
@@ -117,7 +115,7 @@ export default function HackerNewsPage() {
 
         <section className="section compact-section">
           <div className="container grid-3">
-            <div className="card"><h3>30-second flow</h3><p>Install → open Atlas → load the sample repository (or scan your own) → ask &quot;Where is authentication implemented?&quot; → get cited files → connect your agent.</p></div>
+            <div className="card"><h3>30-second flow</h3><p>Install → open Atlas → continue without an account → load the sample repository (or scan your own) → ask &quot;Where is authentication implemented?&quot; → get cited files → connect your agent.</p></div>
             <div className="card"><h3>Languages</h3><p>Deep import/dependency analysis: Python and JavaScript/TypeScript. Scanned at file level: Go, Rust, Java, C#, Ruby, and other common source files. Large monorepos index slower — an active work item.</p></div>
             <div className="card"><h3>SmartScreen</h3><p>The installer is not code-signed yet, so Windows SmartScreen warns on first run (&quot;More info → Run anyway&quot;). Verify the download: SHA256 is published below and on the GitHub release.</p></div>
           </div>

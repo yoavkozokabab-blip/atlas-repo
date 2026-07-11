@@ -29,6 +29,8 @@ from atlas_desktop import server
 
 STATIC_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "static")
 
+pytestmark = pytest.mark.usefixtures("local_guest_account")
+
 
 # --------------------------------------------------------------------------
 # Helpers

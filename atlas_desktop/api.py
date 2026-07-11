@@ -4778,6 +4778,18 @@ def write_codex_mcp_config(confirm: bool = False) -> Dict[str, Any]:
     return _tracked_mcp_write("codex", _agent_integrations.write_codex_config(confirm=bool(confirm)))
 
 
+def agent_export(target: str = "claude", task: str = "", max_files: int = 12) -> Dict[str, Any]:
+    return _agent_integrations.export_for_state(_STATE, target=target, task=task, max_files=max_files)
+
+
+def write_cursor_rule(task: str = "") -> Dict[str, Any]:
+    return _agent_integrations.write_cursor_rule(str(_STATE.get("path") or ""), task=task)
+
+
+def write_claude_code_block(task: str = "") -> Dict[str, Any]:
+    return _agent_integrations.write_claude_managed_block(str(_STATE.get("path") or ""), task=task)
+
+
 def agent_integrations_status() -> Dict[str, Any]:
     status = _agent_integrations.mcp_setup_status()
     status["about"] = _agent_integrations.about_payload()

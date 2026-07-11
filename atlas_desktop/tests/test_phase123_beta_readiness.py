@@ -20,6 +20,8 @@ from atlas_desktop import api, planning_engine, server
 
 STATIC = Path(__file__).resolve().parents[1] / "static"
 
+pytestmark = pytest.mark.usefixtures("local_guest_account")
+
 
 def _universe_js() -> str:
     return (STATIC / "universe.js").read_text(encoding="utf-8")

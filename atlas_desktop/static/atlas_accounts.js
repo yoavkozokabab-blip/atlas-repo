@@ -440,6 +440,28 @@
     if (!dash) return;
     dash.style.display = '';
 
+    if (_state && _state.guest && _state.local_access) {
+      const welcome = el('homeWelcome');
+      if (welcome) welcome.textContent = 'Local guest mode';
+      const pill = el('homeStatusPill');
+      if (pill) {
+        pill.textContent = 'Local guest mode';
+        pill.className = 'status-pill';
+      }
+      const repoEl = el('homeRepoStatus');
+      if (repoEl) {
+        const summary = window.STATE && window.STATE.summary;
+        if (summary && summary.ok) {
+          const files = summary.file_count || summary.files || 0;
+          repoEl.innerHTML = `<a href="#" onclick="go('center');return false;">${_escHtml(summary.repo_name || 'Current repository')}</a> · ${files} files`;
+        } else {
+          repoEl.textContent = 'No repository scanned yet';
+        }
+      }
+      _renderHomeRecent();
+      return;
+    }
+
     if (!_state || !_state.signed_in) {
       return;
     }
@@ -522,6 +544,10 @@
 
   function openAccountScreen() {
     refreshState().then(() => {
+      if (_state && _state.guest && _state.local_access) {
+        showAccountScreen('profile');
+        return;
+      }
       if (_state && _state.authenticated) {
         showAccountScreen('profile');
         return;
@@ -562,6 +588,11 @@
       return;
     }
     if (_state.authenticated) {
+      _enterApp();
+      _renderHomeDashboard();
+      return;
+    }
+    if (_state.guest && _state.local_access) {
       _enterApp();
       _renderHomeDashboard();
       return;
@@ -621,6 +652,24 @@
   }
 
   // ── Account setup wizard ───────────────────────────────────────────────
+  function startGuest() {
+    const btn = el('acc-guest-btn');
+    let orig;
+    if (btn) { orig = btn.textContent; btn.disabled = true; btn.textContent = 'Starting locally...'; }
+    api('POST', '/api/accounts/guest/start', {}).then(res => {
+      if (!res.ok) {
+        setError('acc-login-error', res.error || 'Could not start local guest mode.', 'Local mode unavailable');
+        return;
+      }
+      _state = res;
+      _enterApp({ goHome: true });
+      _renderHomeDashboard();
+      if (typeof toast === 'function') toast('Using Atlas locally without an account.', 'success');
+    }).finally(() => {
+      if (btn) { btn.disabled = false; btn.textContent = orig || 'Continue without an account'; }
+    });
+  }
+
   function _companyFieldsRelevant() {
     const dev = selectedRadio('acc-current-dev');
     const use = fieldValue('acc-project-use');
@@ -835,7 +884,7 @@
   }
 
   function _applyLicenseGating() {
-    const licenseValid = _state && _state.license && _state.license.valid;
+    const licenseValid = !!(_state && ((_state.license && _state.license.valid) || _state.local_access));
     const licStatus = (_state && _state.license && _state.license.status) || '';
     const blocked = licStatus === 'suspended' || licStatus === 'banned';
 
@@ -864,6 +913,15 @@
     // Show the consolidated user menu for any signed-in account (including
     // inactive/rejected) so they always have Account + Sign out and are
     // never dependent on the loose pre-login chip.
+    if (_state && _state.guest && _state.local_access) {
+      if (chip) { chip.textContent = 'Local guest mode'; chip.className = 'account-chip signed-in guest'; chip.style.display = ''; }
+      if (menu) menu.style.display = 'none';
+      if (adminEntry) adminEntry.style.display = 'none';
+      if (accAdminEntry) accAdminEntry.style.display = 'none';
+      document.body.classList.remove('role-admin');
+      return;
+    }
+
     if (!_state || !_state.signed_in) {
       if (chip) { chip.textContent = 'Account'; chip.className = 'account-chip unsigned'; chip.style.display = ''; }
       if (menu) menu.style.display = 'none';
@@ -889,6 +947,25 @@
   }
 
   function _populateProfile() {
+    const guestNote = el('acc-guest-note');
+    const deviceHead = document.querySelector('#acc-panel-profile .acc-section-head');
+    const deviceList = el('acc-device-list');
+    if (_state && _state.guest && _state.local_access) {
+      if (guestNote) guestNote.style.display = '';
+      if (el('acc-profile-email')) el('acc-profile-email').textContent = 'Local guest mode';
+      if (el('acc-profile-plan')) el('acc-profile-plan').textContent = 'guest';
+      if (el('acc-profile-status')) el('acc-profile-status').textContent = 'local only';
+      if (el('acc-profile-account')) el('acc-profile-account').textContent = 'No account connected';
+      if (el('acc-profile-offline')) el('acc-profile-offline').style.display = 'none';
+      if (deviceHead) deviceHead.style.display = 'none';
+      if (deviceList) {
+        deviceList.innerHTML = '<p class="muted tiny">Sign in to manage devices. Local scans remain on this machine.</p>';
+        deviceList.style.display = '';
+      }
+      return;
+    }
+    if (guestNote) guestNote.style.display = 'none';
+    if (deviceHead) deviceHead.style.display = '';
     if (!_state || !_state.signed_in) return;
     const user = _state.user || {};
     const license = _state.license || {};
@@ -997,9 +1074,11 @@
     accountStatus: _accountStatus,
     isAuthenticated: () => !!( _state && _state.authenticated),
     isSignedIn: () => !!( _state && _state.signed_in),
+    isGuest: () => !!( _state && _state.guest),
     isAdmin: _isAdmin,
+    startGuest: startGuest,
     requireAccess: () => {
-      if (_state && _state.authenticated) return true;
+      if (_state && (_state.authenticated || _state.local_access)) return true;
       // Signed-in but not-active users are kept inside the app on their status
       // dashboard rather than bounced to a pre-login wall.
       if (_state && _state.signed_in && _accountStatus() !== 'blocked') {

@@ -238,6 +238,7 @@ def test_launch_billing_does_not_fake_pro_trial():
 
 def test_hn_page_has_requested_launch_claims():
     hn = (ROOT / "websites/atlas-web/app/hn/page.tsx").read_text(encoding="utf-8")
-    assert "Try persistent repo memory in 30 seconds" in hn
+    assert "Continue without an account" in hn
     assert "Built for developers who are tired of re-explaining the same codebase to AI coding agents." in hn
-    assert "No signup required · Local-first · Your code stays on your machine" in hn
+    assert "No signup required" in hn
+    assert "Your code stays on your machine" in hn

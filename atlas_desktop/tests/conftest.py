@@ -37,3 +37,31 @@ def beta_account(monkeypatch):
         lambda: dict(_AUTHENTICATED_BETA_STATE),
     )
     return dict(_AUTHENTICATED_BETA_STATE)
+
+
+@pytest.fixture
+def local_guest_account(monkeypatch):
+    """Make local-workflow routes reachable by simulating the UI Guest Mode choice.
+
+    Direct API tests do not click the first-launch auth screen, so they need to
+    opt in to the same local-only entitlement that the UI creates.
+    """
+    state = {
+        "authenticated": False,
+        "signed_in": False,
+        "local_access": True,
+        "guest": True,
+        "guest_id": "00000000-0000-4000-8000-000000000001",
+        "license": {
+            "valid": True,
+            "plan": "guest",
+            "status": "guest_local",
+            "local_only": True,
+        },
+        "device_id": "test-guest-device",
+        "service_online": False,
+        "state_integrity_error": False,
+        "last_auth_error": None,
+    }
+    monkeypatch.setattr(server.accounts_client, "get_account_state", lambda: dict(state))
+    return dict(state)
