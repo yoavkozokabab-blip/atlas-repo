@@ -1,0 +1,13 @@
+{
+  "run_set_id": "pilot_24_manual_v2",
+  "created_at": "2026-07-10T11:23:01+00:00",
+  "record_count": 24,
+  "conditions": [
+    "codex_no_atlas",
+    "codex_with_atlas",
+    "cursor_no_atlas",
+    "cursor_with_atlas"
+  ],
+  "status": "pending_manual_or_external_run",
+  "notes": "Pending records are not benchmark results until a real response is captured."
+}

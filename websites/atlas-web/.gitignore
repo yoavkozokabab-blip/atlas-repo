@@ -10,3 +10,4 @@ out
 
 # Local test-mode data store (users, audit) — never commit
 .data
+.vercel

@@ -1,0 +1,19 @@
+{
+  "task_id": "task_004",
+  "title": "Impact of losing FastAPI dependency overrides",
+  "repository_id": "fastapi",
+  "category": "impact",
+  "difficulty": "hard",
+  "gold_file": "gold/task_004.md",
+  "condition_order": [
+    "codex_no_atlas",
+    "cursor_with_atlas",
+    "cursor_no_atlas",
+    "codex_with_atlas"
+  ],
+  "prompt": "In FastAPI, what is likely to break if dependency_overrides_provider stops being passed into dependency solving for routes? Cite files/tests and downstream behavior. Answer with sections: Summary, Evidence files, Reasoning, Caveats, Confidence.",
+  "metadata": {
+    "expected_repo_commit": "7cb06f360dd44efac059848df1a9beee7643b018",
+    "repeat_count_target": 3
+  }
+}

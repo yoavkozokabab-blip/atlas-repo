@@ -1,0 +1,19 @@
+{
+  "task_id": "task_003",
+  "title": "Explain FastAPI HTTP request validation lifecycle",
+  "repository_id": "fastapi",
+  "category": "architecture",
+  "difficulty": "hard",
+  "gold_file": "gold/task_003.md",
+  "condition_order": [
+    "cursor_with_atlas",
+    "codex_no_atlas",
+    "codex_with_atlas",
+    "cursor_no_atlas"
+  ],
+  "prompt": "In FastAPI, explain the request validation and dependency-resolution lifecycle from route registration to calling an endpoint for an HTTP request. Cite files/functions. Answer with sections: Summary, Evidence files, Reasoning, Caveats, Confidence.",
+  "metadata": {
+    "expected_repo_commit": "7cb06f360dd44efac059848df1a9beee7643b018",
+    "repeat_count_target": 3
+  }
+}

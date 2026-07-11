@@ -1,0 +1,8 @@
+{
+  "task_id": "pilot_002",
+  "repo_id": "requests",
+  "category": "retrieval",
+  "difficulty": "medium",
+  "prompt": "Which file defines HTTP retry behavior for outgoing requests, and what library implements the retry policy?",
+  "gold_file": "gold/pilot_002.md"
+}

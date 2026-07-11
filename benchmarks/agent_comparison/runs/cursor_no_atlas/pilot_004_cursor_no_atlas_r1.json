@@ -1,0 +1,120 @@
+{
+  "run_id": "pilot_004_cursor_no_atlas_r1",
+  "blind_id": "run_N_014",
+  "task_id": "pilot_004",
+  "condition": "cursor_no_atlas",
+  "agent": "cursor",
+  "atlas_enabled": false,
+  "repeat": 1,
+  "prompt": "What is likely to break if auth/session.py changes? List affected modules and why.",
+  "repo_id": "atlas_reference",
+  "repo_path": "C:\\J.A.R.V.I.S\\atlas-rc1-clean\\benchmarks\\repos\\atlas_reference",
+  "repo_commit_sha": "fixture:4167abb8d67f4286",
+  "execution_backend": "automated_stand_in",
+  "model_tool_version": "pilot_automated_stand_in_v1; codex_cli=unavailable; cursor_cli=present_not_automated",
+  "started_at": "2026-07-10T10:54:48+00:00",
+  "ended_at": "2026-07-10T10:54:48+00:00",
+  "latency_seconds": 0.010240600000543054,
+  "ok": true,
+  "error": "",
+  "response_text": "Baseline read-only search (keywords: import, session, login, depend). Top matches:\n\n### auth/login.py (score=3)\n```python\nfrom auth.session import create_session\n\ndef login(user, password):\n    return create_session(user)\n```\n\n### db/postgres.py (score=2)\n```python\nfrom sqlalchemy import create_engine\n\nengine = create_engine(\"postgresql://localhost/app\")\n\ndef get_session():\n    return engine.connect()\n```\n\n### api/routes.py (score=1)\n```python\nfrom auth.middleware import auth_middleware\nfrom api.rate_limit import rate_limit_middleware\n\ndef register_routes(app):\n    app.use(auth_middleware)\n    app.use(rate_limit_middleware)\n```\n\n### auth/session.py (score=1)\n```python\ndef create_session(user):\n    return {\"user\": user}\n```\n\n### cache/cache_layer.py (score=1)\n```python\nfrom cache.redis_client import RedisClient\n\ncache = RedisClient()\n\ndef get_cached(key):\n    return cache.get(key)\n```\n\n### registry/signal_registry.py (score=1)\n```python\nfrom indicators.indicator_registry import IndicatorRegistry\n\nclass SignalRegistry(IndicatorRegistry):\n    def register_signal(self, name, fn):\n        return fn\n```\n\n### services/http_client.py (score=1)\n```python\nimport time\n\ndef fetch(url):\n    for attempt in range(3):\n        try:\n            return url\n        except Exception:\n            time.sleep(2 ** attempt)\n```\n\n### signals/pipeline.py (score=1)\n```python\nfrom registry.signal_registry import SignalRegistry\n\nregistry = SignalRegistry()\n\ndef run_signals(bars):\n    return registry\n```",
+  "tool_calls": [
+    {
+      "tool": "read_file",
+      "path": "api/routes.py",
+      "keyword_score": 1
+    },
+    {
+      "tool": "read_file",
+      "path": "auth/login.py",
+      "keyword_score": 3
+    },
+    {
+      "tool": "read_file",
+      "path": "auth/session.py",
+      "keyword_score": 1
+    },
+    {
+      "tool": "read_file",
+      "path": "cache/cache_layer.py",
+      "keyword_score": 1
+    },
+    {
+      "tool": "read_file",
+      "path": "db/postgres.py",
+      "keyword_score": 2
+    },
+    {
+      "tool": "read_file",
+      "path": "registry/signal_registry.py",
+      "keyword_score": 1
+    },
+    {
+      "tool": "read_file",
+      "path": "services/http_client.py",
+      "keyword_score": 1
+    },
+    {
+      "tool": "read_file",
+      "path": "signals/pipeline.py",
+      "keyword_score": 1
+    },
+    {
+      "tool": "read_file",
+      "path": "tests/test_auth.py",
+      "keyword_score": 1
+    },
+    {
+      "tool": "read_file",
+      "path": "tests/test_indicators.py",
+      "keyword_score": 1
+    },
+    {
+      "tool": "read_file",
+      "path": "trading/backtest_engine.py",
+      "keyword_score": 1
+    },
+    {
+      "tool": "read_file",
+      "path": "trading/order_service.py",
+      "keyword_score": 1
+    },
+    {
+      "tool": "read_file",
+      "path": "trading/paper_trading.py",
+      "keyword_score": 1
+    }
+  ],
+  "atlas_tool_calls": [],
+  "files_inspected": [
+    "api/rate_limit.py",
+    "api/routes.py",
+    "auth/login.py",
+    "auth/middleware.py",
+    "auth/session.py",
+    "billing/stripe_billing.py",
+    "billing/stripe_webhooks.py",
+    "cache/cache_layer.py",
+    "cache/redis_client.py",
+    "config/feature_flags.py",
+    "db/migrations/001_initial.py",
+    "db/postgres.py",
+    "indicators/indicator_registry.py",
+    "indicators/sma.py",
+    "middleware/request_logging.py",
+    "middleware/tracing.py",
+    "registry/signal_registry.py",
+    "services/http_client.py",
+    "signals/pipeline.py",
+    "tests/test_auth.py",
+    "tests/test_indicators.py",
+    "trading/backtest_config.py",
+    "trading/backtest_engine.py",
+    "trading/execution.py",
+    "trading/order_service.py",
+    "trading/paper_config.py",
+    "trading/paper_trading.py"
+  ],
+  "retries": 0,
+  "notes": ""
+}

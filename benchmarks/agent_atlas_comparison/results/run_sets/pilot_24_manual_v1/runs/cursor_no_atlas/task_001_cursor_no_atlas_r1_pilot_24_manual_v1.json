@@ -1,0 +1,77 @@
+{
+  "schema_version": 2,
+  "run_id": "task_001_cursor_no_atlas_r1_pilot_24_manual_v1",
+  "anonymous_id": "run_64833b0c3543",
+  "run_set_id": "pilot_24_manual_v1",
+  "created_at": "2026-07-10T11:22:17+00:00",
+  "started_at": null,
+  "ended_at": null,
+  "status": "pending_manual_or_external_run",
+  "condition": "cursor_no_atlas",
+  "task_id": "task_001",
+  "repository_id": "controlled_atlas_reference",
+  "repository_commit_sha": "218f14b90cdc23cb57e4aeccfcf247e999186f77",
+  "category": "retrieval",
+  "difficulty": "easy",
+  "prompt_sha256": "4cd79e3579a8dae1977dcbdb887ed5578a57ee66d2ed1f76743c87a45d33da30",
+  "prompt": "In repository controlled_atlas_reference, where is authentication implemented and where is it mounted into request handling? Cite the files and functions that matter. Answer with sections: Summary, Evidence files, Reasoning, Caveats, Confidence.",
+  "runner": {
+    "agent": "cursor",
+    "atlas_enabled": false,
+    "provider": "cursor",
+    "adapter": "no_atlas",
+    "model": null,
+    "tool_version": null,
+    "system_instructions_fingerprint": null
+  },
+  "response_text": "",
+  "observations": {
+    "latency_ms": null,
+    "time_to_first_tool_call_ms": null,
+    "time_to_first_useful_answer_ms": null,
+    "atlas_indexing_ms": null,
+    "mcp_retrieval_latency_ms": null,
+    "token_usage": {
+      "user_prompt_tokens": {
+        "value": 40,
+        "status": "estimated"
+      },
+      "system_context_tokens": {
+        "value": null,
+        "status": "unavailable"
+      },
+      "output_tokens": {
+        "value": null,
+        "status": "unavailable"
+      },
+      "total_tokens": {
+        "value": null,
+        "status": "unavailable"
+      },
+      "atlas_mcp_response_tokens": {
+        "value": null,
+        "status": "unavailable"
+      }
+    },
+    "tool_calls": [],
+    "atlas_calls": [],
+    "files_opened": [],
+    "search_calls": null,
+    "file_read_calls": null,
+    "failed_tool_calls": null,
+    "retries": 0,
+    "errors": [],
+    "telemetry_quality": {
+      "user_prompt_tokens": "estimated",
+      "system_context_tokens": "unavailable",
+      "output_tokens": "unavailable",
+      "latency": "unavailable",
+      "tool_calls": "unavailable",
+      "files_opened": "unavailable"
+    }
+  },
+  "scores": {},
+  "condition_evidence": {},
+  "cold_start": null,
+  "notes": ""
+}

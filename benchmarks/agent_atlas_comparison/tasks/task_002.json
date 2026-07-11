@@ -1,0 +1,19 @@
+{
+  "task_id": "task_002",
+  "title": "Locate Requests retry behavior",
+  "repository_id": "requests",
+  "category": "cross_file_reasoning",
+  "difficulty": "medium",
+  "gold_file": "gold/task_002.md",
+  "condition_order": [
+    "codex_with_atlas",
+    "cursor_no_atlas",
+    "codex_no_atlas",
+    "cursor_with_atlas"
+  ],
+  "prompt": "In Requests, where is HTTP retry behavior configured for the default transport adapter, and how does a Session reach that adapter for a request? Cite files/functions. Answer with sections: Summary, Evidence files, Reasoning, Caveats, Confidence.",
+  "metadata": {
+    "expected_repo_commit": "f361ead047be5cb873174218582f7d8b9fcd9f49",
+    "repeat_count_target": 3
+  }
+}

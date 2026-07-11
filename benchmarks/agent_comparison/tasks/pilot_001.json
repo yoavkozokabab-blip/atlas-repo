@@ -1,0 +1,8 @@
+{
+  "task_id": "pilot_001",
+  "repo_id": "atlas_reference",
+  "category": "retrieval",
+  "difficulty": "easy",
+  "prompt": "Where is authentication implemented in this repository? Name the primary modules and their roles.",
+  "gold_file": "gold/pilot_001.md"
+}

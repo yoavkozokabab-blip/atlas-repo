@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "run_id": "task_001_cursor_with_atlas_r1_2026-07-10T110443Z0000",
+  "anonymous_id": "run_a5bfd433ba95",
+  "created_at": "2026-07-10T11:04:43+00:00",
+  "started_at": null,
+  "ended_at": "2026-07-10T11:04:43+00:00",
+  "condition": "cursor_with_atlas",
+  "task_id": "task_001",
+  "repository_id": "controlled_atlas_reference",
+  "repository_commit_sha": "218f14b90cdc23cb57e4aeccfcf247e999186f77",
+  "category": "retrieval",
+  "difficulty": "easy",
+  "prompt_sha256": "4cd79e3579a8dae1977dcbdb887ed5578a57ee66d2ed1f76743c87a45d33da30",
+  "prompt": "In repository controlled_atlas_reference, where is authentication implemented and where is it mounted into request handling? Cite the files and functions that matter. Answer with sections: Summary, Evidence files, Reasoning, Caveats, Confidence.",
+  "status": "technical_failure",
+  "response_text": "",
+  "runner": {
+    "agent": "cursor",
+    "atlas_required": true,
+    "model": null,
+    "tool_version": null,
+    "system_instructions_fingerprint": null
+  },
+  "observations": {
+    "latency_ms": null,
+    "time_to_first_correct_answer_ms": null,
+    "token_usage": null,
+    "tool_calls": [],
+    "atlas_calls": [],
+    "files_opened": [],
+    "errors": [
+      "No non-interactive Codex/Cursor runner is configured in this workspace; Atlas MCP health was verified, but no valid reset-run benchmark response was produced."
+    ],
+    "retries": 0
+  },
+  "manual_scores": null,
+  "notes": "No non-interactive Codex/Cursor runner is configured in this workspace; Atlas MCP health was verified, but no valid reset-run benchmark response was produced."
+}

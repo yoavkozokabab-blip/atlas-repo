@@ -1,0 +1,8 @@
+{
+  "task_id": "pilot_003",
+  "repo_id": "atlas_reference",
+  "category": "architecture",
+  "difficulty": "medium",
+  "prompt": "Explain the request lifecycle in this repository from API entry through authentication middleware to order execution. Cite the files involved.",
+  "gold_file": "gold/pilot_003.md"
+}

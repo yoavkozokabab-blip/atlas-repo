@@ -1,0 +1,77 @@
+{
+  "schema_version": 2,
+  "run_id": "task_005_cursor_with_atlas_r1_pilot_24_manual_v2",
+  "anonymous_id": "run_56bb67ea218a",
+  "run_set_id": "pilot_24_manual_v2",
+  "created_at": "2026-07-10T11:23:01+00:00",
+  "started_at": null,
+  "ended_at": null,
+  "status": "pending_manual_or_external_run",
+  "condition": "cursor_with_atlas",
+  "task_id": "task_005",
+  "repository_id": "requests",
+  "repository_commit_sha": "f361ead047be5cb873174218582f7d8b9fcd9f49",
+  "category": "debugging",
+  "difficulty": "medium",
+  "prompt_sha256": "4d703f50d49af08e24e79f15ac73522d793fc2a7f748c4ceb6eccc9b91361fc5",
+  "prompt": "A user reports `requests.exceptions.InvalidSchema: No connection adapters were found for 'ftp://example.com'` when calling `requests.get(...)`. Identify the likely root cause, the relevant code path, and the first files to inspect. Cite files/functions. Answer with sections: Summary, Evidence files, Reasoning, Caveats, Confidence.",
+  "runner": {
+    "agent": "cursor",
+    "atlas_enabled": true,
+    "provider": "cursor",
+    "adapter": "atlas",
+    "model": null,
+    "tool_version": null,
+    "system_instructions_fingerprint": null
+  },
+  "response_text": "",
+  "observations": {
+    "latency_ms": null,
+    "time_to_first_tool_call_ms": null,
+    "time_to_first_useful_answer_ms": null,
+    "atlas_indexing_ms": null,
+    "mcp_retrieval_latency_ms": null,
+    "token_usage": {
+      "user_prompt_tokens": {
+        "value": 77,
+        "status": "estimated"
+      },
+      "system_context_tokens": {
+        "value": null,
+        "status": "unavailable"
+      },
+      "output_tokens": {
+        "value": null,
+        "status": "unavailable"
+      },
+      "total_tokens": {
+        "value": null,
+        "status": "unavailable"
+      },
+      "atlas_mcp_response_tokens": {
+        "value": null,
+        "status": "unavailable"
+      }
+    },
+    "tool_calls": [],
+    "atlas_calls": [],
+    "files_opened": [],
+    "search_calls": null,
+    "file_read_calls": null,
+    "failed_tool_calls": null,
+    "retries": 0,
+    "errors": [],
+    "telemetry_quality": {
+      "user_prompt_tokens": "estimated",
+      "system_context_tokens": "unavailable",
+      "output_tokens": "unavailable",
+      "latency": "unavailable",
+      "tool_calls": "unavailable",
+      "files_opened": "unavailable"
+    }
+  },
+  "scores": {},
+  "condition_evidence": {},
+  "cold_start": null,
+  "notes": ""
+}

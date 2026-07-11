@@ -1,0 +1,5 @@
+condition,run_count,mean_total_score,median_total_score,task_success_rate,mean_correctness,mean_citation_accuracy,mean_hallucination_avoidance
+codex_no_atlas,6,25.94,26.44,1.0,4.6,3.96,5.0
+codex_with_atlas,6,25.49,24.67,1.0,3.8,4.17,5.0
+cursor_no_atlas,6,25.94,26.44,1.0,4.6,3.96,5.0
+cursor_with_atlas,6,25.49,24.67,1.0,3.8,4.17,5.0

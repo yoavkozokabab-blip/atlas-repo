@@ -1,0 +1,5 @@
+condition,runs,completed_runs,scored_runs,technical_failures,mean_accuracy_percent,median_accuracy_percent,pass_rate_percent,mean_latency_ms,median_latency_ms,mean_total_tokens,median_total_tokens,mean_tool_calls,mean_files_opened
+codex_no_atlas,6,0,0,0,,,,,,,,,
+codex_with_atlas,6,0,0,0,,,,,,,,,
+cursor_no_atlas,6,0,0,0,,,,,,,,,
+cursor_with_atlas,6,0,0,0,,,,,,,,,

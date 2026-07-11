@@ -1,0 +1,19 @@
+{
+  "task_id": "task_005",
+  "title": "Debug Requests InvalidSchema for unsupported URL scheme",
+  "repository_id": "requests",
+  "category": "debugging",
+  "difficulty": "medium",
+  "gold_file": "gold/task_005.md",
+  "condition_order": [
+    "cursor_no_atlas",
+    "cursor_with_atlas",
+    "codex_with_atlas",
+    "codex_no_atlas"
+  ],
+  "prompt": "A user reports `requests.exceptions.InvalidSchema: No connection adapters were found for 'ftp://example.com'` when calling `requests.get(...)`. Identify the likely root cause, the relevant code path, and the first files to inspect. Cite files/functions. Answer with sections: Summary, Evidence files, Reasoning, Caveats, Confidence.",
+  "metadata": {
+    "expected_repo_commit": "f361ead047be5cb873174218582f7d8b9fcd9f49",
+    "repeat_count_target": 3
+  }
+}

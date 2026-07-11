@@ -1,0 +1,42 @@
+{
+  "version": "pilot-v1",
+  "updated": "2026-07-10",
+  "repositories": [
+    {
+      "id": "atlas_reference",
+      "tier": "small",
+      "label": "Atlas controlled reference repo",
+      "path": "benchmarks/repos/atlas_reference",
+      "type": "controlled_fixture",
+      "file_count_py": 27,
+      "commit_sha": null,
+      "fixture_content_sha256_prefix": "4167abb8d67f4286",
+      "notes": "Synthetic trading/auth reference with known gold answers. Not a git checkout; SHA is content hash of all .py files."
+    },
+    {
+      "id": "requests",
+      "tier": "medium",
+      "label": "psf/requests",
+      "path": "external_repos/requests",
+      "type": "git",
+      "remote": "https://github.com/psf/requests.git",
+      "tag": "v2.32.3",
+      "commit_sha": "0e322af87745eff34caffe4df68456ebc20d9068",
+      "file_count_approx": 30,
+      "notes": "Real-world HTTP client library; ~500-3000 files in full tree but Python surface is moderate."
+    }
+  ],
+  "planned_full_benchmark": [
+    {
+      "id": "fastapi",
+      "tier": "medium",
+      "status": "not_pinned_yet"
+    },
+    {
+      "id": "home_assistant",
+      "tier": "large",
+      "status": "not_pinned_yet",
+      "path": "external_repos/home_assistant"
+    }
+  ]
+}

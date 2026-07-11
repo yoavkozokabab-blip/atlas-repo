@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "run_id": "task_006_codex_no_atlas_r1_2026-07-10T110443Z0000",
+  "anonymous_id": "run_9548a8b171e8",
+  "created_at": "2026-07-10T11:04:43+00:00",
+  "started_at": null,
+  "ended_at": "2026-07-10T11:04:43+00:00",
+  "condition": "codex_no_atlas",
+  "task_id": "task_006",
+  "repository_id": "home_assistant_core",
+  "repository_commit_sha": "2989e6bcdf639489d2073276603a3c38d49eee21",
+  "category": "negative_control",
+  "difficulty": "medium",
+  "prompt_sha256": "de6ef4d2adf233c389806393587aa8ec8c271972967ecdeadbf15833d9b56f31",
+  "prompt": "In Home Assistant Core, is there a built-in integration/domain named `atlas_repository_context`? Verify from repository evidence; do not infer from package names. Cite files or absence checks. Answer with sections: Summary, Evidence files, Reasoning, Caveats, Confidence.",
+  "status": "technical_failure",
+  "response_text": "",
+  "runner": {
+    "agent": "codex",
+    "atlas_required": false,
+    "model": null,
+    "tool_version": null,
+    "system_instructions_fingerprint": null
+  },
+  "observations": {
+    "latency_ms": null,
+    "time_to_first_correct_answer_ms": null,
+    "token_usage": null,
+    "tool_calls": [],
+    "atlas_calls": [],
+    "files_opened": [],
+    "errors": [
+      "No non-interactive Codex/Cursor runner is configured in this workspace; Atlas MCP health was verified, but no valid reset-run benchmark response was produced."
+    ],
+    "retries": 0
+  },
+  "manual_scores": null,
+  "notes": "No non-interactive Codex/Cursor runner is configured in this workspace; Atlas MCP health was verified, but no valid reset-run benchmark response was produced."
+}

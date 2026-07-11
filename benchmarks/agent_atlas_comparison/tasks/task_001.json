@@ -1,0 +1,19 @@
+{
+  "task_id": "task_001",
+  "title": "Locate controlled auth implementation and mounting",
+  "repository_id": "controlled_atlas_reference",
+  "category": "retrieval",
+  "difficulty": "easy",
+  "gold_file": "gold/task_001.md",
+  "condition_order": [
+    "cursor_no_atlas",
+    "codex_with_atlas",
+    "cursor_with_atlas",
+    "codex_no_atlas"
+  ],
+  "prompt": "In repository controlled_atlas_reference, where is authentication implemented and where is it mounted into request handling? Cite the files and functions that matter. Answer with sections: Summary, Evidence files, Reasoning, Caveats, Confidence.",
+  "metadata": {
+    "expected_repo_commit": "218f14b90cdc23cb57e4aeccfcf247e999186f77",
+    "repeat_count_target": 3
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "generated_at": "2026-07-10",
+  "benchmark_root": "benchmarks/agent_atlas_comparison",
+  "source_checkout": {
+    "path": "C:\\J.A.R.V.I.S\\atlas-rc1-clean",
+    "commit_sha": "218f14b90cdc23cb57e4aeccfcf247e999186f77"
+  },
+  "repositories": [
+    {
+      "id": "controlled_atlas_reference",
+      "role": "small_controlled",
+      "source": "local",
+      "path": "benchmarks/repos/atlas_reference",
+      "commit_sha": "218f14b90cdc23cb57e4aeccfcf247e999186f77",
+      "branch": null,
+      "remote_url": null,
+      "observed_tree_file_count": 27,
+      "verification": [
+        "rg --files benchmarks\\repos\\atlas_reference | Measure-Object"
+      ],
+      "notes": "Controlled 27-file repo already present in the Atlas checkout. Useful for exact gold answers, but not sufficient by itself."
+    },
+    {
+      "id": "requests",
+      "role": "small_medium_real",
+      "source": "github",
+      "path": null,
+      "commit_sha": "f361ead047be5cb873174218582f7d8b9fcd9f49",
+      "branch": "main",
+      "remote_url": "https://github.com/psf/requests.git",
+      "observed_tree_file_count": 130,
+      "verification": [
+        "git ls-remote https://github.com/psf/requests.git refs/heads/main",
+        "git clone --filter=blob:none --sparse --depth 1 --branch main https://github.com/psf/requests.git %TEMP%\\atlas_agent_bench_requests_f361ead",
+        "git -C %TEMP%\\atlas_agent_bench_requests_f361ead rev-parse HEAD",
+        "git -C %TEMP%\\atlas_agent_bench_requests_f361ead ls-tree -r --name-only HEAD | Measure-Object"
+      ],
+      "notes": "Used for retrieval and debugging pilot tasks."
+    },
+    {
+      "id": "fastapi",
+      "role": "medium_real",
+      "source": "github",
+      "path": null,
+      "commit_sha": "7cb06f360dd44efac059848df1a9beee7643b018",
+      "branch": "master",
+      "remote_url": "https://github.com/fastapi/fastapi.git",
+      "observed_tree_file_count": 3019,
+      "verification": [
+        "git ls-remote https://github.com/fastapi/fastapi.git refs/heads/master",
+        "git clone --filter=blob:none --sparse --depth 1 --branch master https://github.com/fastapi/fastapi.git %TEMP%\\atlas_agent_bench_fastapi_7cb06f",
+        "git -C %TEMP%\\atlas_agent_bench_fastapi_7cb06f rev-parse HEAD",
+        "git -C %TEMP%\\atlas_agent_bench_fastapi_7cb06f ls-tree -r --name-only HEAD | Measure-Object"
+      ],
+      "notes": "Slightly above the requested 3,000-file medium upper bound by tree count; acceptable for pilot, but document this if published."
+    },
+    {
+      "id": "home_assistant_core",
+      "role": "large_real",
+      "source": "github",
+      "path": null,
+      "commit_sha": "2989e6bcdf639489d2073276603a3c38d49eee21",
+      "branch": "dev",
+      "remote_url": "https://github.com/home-assistant/core.git",
+      "observed_tree_file_count": 26551,
+      "verification": [
+        "git ls-remote https://github.com/home-assistant/core.git refs/heads/dev",
+        "git clone --filter=blob:none --sparse --depth 1 --branch dev https://github.com/home-assistant/core.git %TEMP%\\atlas_agent_bench_homeassistant_2989e6",
+        "git -C %TEMP%\\atlas_agent_bench_homeassistant_2989e6 rev-parse HEAD",
+        "git -C %TEMP%\\atlas_agent_bench_homeassistant_2989e6 ls-tree -r --name-only HEAD | Measure-Object"
+      ],
+      "notes": "Used for large-repo negative-control pilot task."
+    }
+  ]
+}

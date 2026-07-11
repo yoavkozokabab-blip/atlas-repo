@@ -1,0 +1,19 @@
+{
+  "task_id": "task_006",
+  "title": "Negative control for nonexistent Home Assistant integration",
+  "repository_id": "home_assistant_core",
+  "category": "negative_control",
+  "difficulty": "medium",
+  "gold_file": "gold/task_006.md",
+  "condition_order": [
+    "codex_with_atlas",
+    "codex_no_atlas",
+    "cursor_with_atlas",
+    "cursor_no_atlas"
+  ],
+  "prompt": "In Home Assistant Core, is there a built-in integration/domain named `atlas_repository_context`? Verify from repository evidence; do not infer from package names. Cite files or absence checks. Answer with sections: Summary, Evidence files, Reasoning, Caveats, Confidence.",
+  "metadata": {
+    "expected_repo_commit": "2989e6bcdf639489d2073276603a3c38d49eee21",
+    "repeat_count_target": 3
+  }
+}

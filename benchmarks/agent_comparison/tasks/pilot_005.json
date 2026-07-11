@@ -1,0 +1,8 @@
+{
+  "task_id": "pilot_005",
+  "repo_id": "atlas_reference",
+  "category": "debugging",
+  "difficulty": "medium",
+  "prompt": "Given this error: \"AttributeError: 'NoneType' object has no attribute 'get'\" in auth/middleware.py when handling Authorization headers, identify the likely root cause and the first files to inspect.",
+  "gold_file": "gold/pilot_005.md"
+}

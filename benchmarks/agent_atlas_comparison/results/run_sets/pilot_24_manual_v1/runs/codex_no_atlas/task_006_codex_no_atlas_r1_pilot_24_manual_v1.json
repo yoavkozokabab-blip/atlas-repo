@@ -1,0 +1,77 @@
+{
+  "schema_version": 2,
+  "run_id": "task_006_codex_no_atlas_r1_pilot_24_manual_v1",
+  "anonymous_id": "run_127ca87e02aa",
+  "run_set_id": "pilot_24_manual_v1",
+  "created_at": "2026-07-10T11:22:17+00:00",
+  "started_at": null,
+  "ended_at": null,
+  "status": "pending_manual_or_external_run",
+  "condition": "codex_no_atlas",
+  "task_id": "task_006",
+  "repository_id": "home_assistant_core",
+  "repository_commit_sha": "2989e6bcdf639489d2073276603a3c38d49eee21",
+  "category": "negative_control",
+  "difficulty": "medium",
+  "prompt_sha256": "de6ef4d2adf233c389806393587aa8ec8c271972967ecdeadbf15833d9b56f31",
+  "prompt": "In Home Assistant Core, is there a built-in integration/domain named `atlas_repository_context`? Verify from repository evidence; do not infer from package names. Cite files or absence checks. Answer with sections: Summary, Evidence files, Reasoning, Caveats, Confidence.",
+  "runner": {
+    "agent": "codex",
+    "atlas_enabled": false,
+    "provider": "codex",
+    "adapter": "no_atlas",
+    "model": null,
+    "tool_version": null,
+    "system_instructions_fingerprint": null
+  },
+  "response_text": "",
+  "observations": {
+    "latency_ms": null,
+    "time_to_first_tool_call_ms": null,
+    "time_to_first_useful_answer_ms": null,
+    "atlas_indexing_ms": null,
+    "mcp_retrieval_latency_ms": null,
+    "token_usage": {
+      "user_prompt_tokens": {
+        "value": 52,
+        "status": "estimated"
+      },
+      "system_context_tokens": {
+        "value": null,
+        "status": "unavailable"
+      },
+      "output_tokens": {
+        "value": null,
+        "status": "unavailable"
+      },
+      "total_tokens": {
+        "value": null,
+        "status": "unavailable"
+      },
+      "atlas_mcp_response_tokens": {
+        "value": null,
+        "status": "unavailable"
+      }
+    },
+    "tool_calls": [],
+    "atlas_calls": [],
+    "files_opened": [],
+    "search_calls": null,
+    "file_read_calls": null,
+    "failed_tool_calls": null,
+    "retries": 0,
+    "errors": [],
+    "telemetry_quality": {
+      "user_prompt_tokens": "estimated",
+      "system_context_tokens": "unavailable",
+      "output_tokens": "unavailable",
+      "latency": "unavailable",
+      "tool_calls": "unavailable",
+      "files_opened": "unavailable"
+    }
+  },
+  "scores": {},
+  "condition_evidence": {},
+  "cold_start": null,
+  "notes": ""
+}

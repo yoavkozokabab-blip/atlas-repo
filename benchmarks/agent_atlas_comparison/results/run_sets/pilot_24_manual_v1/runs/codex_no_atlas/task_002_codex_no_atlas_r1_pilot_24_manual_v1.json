@@ -1,0 +1,77 @@
+{
+  "schema_version": 2,
+  "run_id": "task_002_codex_no_atlas_r1_pilot_24_manual_v1",
+  "anonymous_id": "run_f41576924e16",
+  "run_set_id": "pilot_24_manual_v1",
+  "created_at": "2026-07-10T11:22:17+00:00",
+  "started_at": null,
+  "ended_at": null,
+  "status": "pending_manual_or_external_run",
+  "condition": "codex_no_atlas",
+  "task_id": "task_002",
+  "repository_id": "requests",
+  "repository_commit_sha": "f361ead047be5cb873174218582f7d8b9fcd9f49",
+  "category": "cross_file_reasoning",
+  "difficulty": "medium",
+  "prompt_sha256": "3a2eecfe78ef3ea24ea61fbec6817d66f0259ebd962d5e7f672fba8768106d67",
+  "prompt": "In Requests, where is HTTP retry behavior configured for the default transport adapter, and how does a Session reach that adapter for a request? Cite files/functions. Answer with sections: Summary, Evidence files, Reasoning, Caveats, Confidence.",
+  "runner": {
+    "agent": "codex",
+    "atlas_enabled": false,
+    "provider": "codex",
+    "adapter": "no_atlas",
+    "model": null,
+    "tool_version": null,
+    "system_instructions_fingerprint": null
+  },
+  "response_text": "",
+  "observations": {
+    "latency_ms": null,
+    "time_to_first_tool_call_ms": null,
+    "time_to_first_useful_answer_ms": null,
+    "atlas_indexing_ms": null,
+    "mcp_retrieval_latency_ms": null,
+    "token_usage": {
+      "user_prompt_tokens": {
+        "value": 47,
+        "status": "estimated"
+      },
+      "system_context_tokens": {
+        "value": null,
+        "status": "unavailable"
+      },
+      "output_tokens": {
+        "value": null,
+        "status": "unavailable"
+      },
+      "total_tokens": {
+        "value": null,
+        "status": "unavailable"
+      },
+      "atlas_mcp_response_tokens": {
+        "value": null,
+        "status": "unavailable"
+      }
+    },
+    "tool_calls": [],
+    "atlas_calls": [],
+    "files_opened": [],
+    "search_calls": null,
+    "file_read_calls": null,
+    "failed_tool_calls": null,
+    "retries": 0,
+    "errors": [],
+    "telemetry_quality": {
+      "user_prompt_tokens": "estimated",
+      "system_context_tokens": "unavailable",
+      "output_tokens": "unavailable",
+      "latency": "unavailable",
+      "tool_calls": "unavailable",
+      "files_opened": "unavailable"
+    }
+  },
+  "scores": {},
+  "condition_evidence": {},
+  "cold_start": null,
+  "notes": ""
+}

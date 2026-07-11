@@ -1,0 +1,77 @@
+{
+  "schema_version": 2,
+  "run_id": "task_003_cursor_with_atlas_r1_pilot_24_manual_v2",
+  "anonymous_id": "run_c3a1ea8b5a42",
+  "run_set_id": "pilot_24_manual_v2",
+  "created_at": "2026-07-10T11:23:01+00:00",
+  "started_at": null,
+  "ended_at": null,
+  "status": "pending_manual_or_external_run",
+  "condition": "cursor_with_atlas",
+  "task_id": "task_003",
+  "repository_id": "fastapi",
+  "repository_commit_sha": "7cb06f360dd44efac059848df1a9beee7643b018",
+  "category": "architecture",
+  "difficulty": "hard",
+  "prompt_sha256": "d459c4f1f60780bebe9bf0fc27056778e70a2c6f6667f2033e03ee5ec5562fb9",
+  "prompt": "In FastAPI, explain the request validation and dependency-resolution lifecycle from route registration to calling an endpoint for an HTTP request. Cite files/functions. Answer with sections: Summary, Evidence files, Reasoning, Caveats, Confidence.",
+  "runner": {
+    "agent": "cursor",
+    "atlas_enabled": true,
+    "provider": "cursor",
+    "adapter": "atlas",
+    "model": null,
+    "tool_version": null,
+    "system_instructions_fingerprint": null
+  },
+  "response_text": "",
+  "observations": {
+    "latency_ms": null,
+    "time_to_first_tool_call_ms": null,
+    "time_to_first_useful_answer_ms": null,
+    "atlas_indexing_ms": null,
+    "mcp_retrieval_latency_ms": null,
+    "token_usage": {
+      "user_prompt_tokens": {
+        "value": 44,
+        "status": "estimated"
+      },
+      "system_context_tokens": {
+        "value": null,
+        "status": "unavailable"
+      },
+      "output_tokens": {
+        "value": null,
+        "status": "unavailable"
+      },
+      "total_tokens": {
+        "value": null,
+        "status": "unavailable"
+      },
+      "atlas_mcp_response_tokens": {
+        "value": null,
+        "status": "unavailable"
+      }
+    },
+    "tool_calls": [],
+    "atlas_calls": [],
+    "files_opened": [],
+    "search_calls": null,
+    "file_read_calls": null,
+    "failed_tool_calls": null,
+    "retries": 0,
+    "errors": [],
+    "telemetry_quality": {
+      "user_prompt_tokens": "estimated",
+      "system_context_tokens": "unavailable",
+      "output_tokens": "unavailable",
+      "latency": "unavailable",
+      "tool_calls": "unavailable",
+      "files_opened": "unavailable"
+    }
+  },
+  "scores": {},
+  "condition_evidence": {},
+  "cold_start": null,
+  "notes": ""
+}

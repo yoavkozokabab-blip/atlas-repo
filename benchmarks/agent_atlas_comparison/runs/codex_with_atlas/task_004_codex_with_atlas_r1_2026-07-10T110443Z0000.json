@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "run_id": "task_004_codex_with_atlas_r1_2026-07-10T110443Z0000",
+  "anonymous_id": "run_b8f340e6fb22",
+  "created_at": "2026-07-10T11:04:43+00:00",
+  "started_at": null,
+  "ended_at": "2026-07-10T11:04:43+00:00",
+  "condition": "codex_with_atlas",
+  "task_id": "task_004",
+  "repository_id": "fastapi",
+  "repository_commit_sha": "7cb06f360dd44efac059848df1a9beee7643b018",
+  "category": "impact",
+  "difficulty": "hard",
+  "prompt_sha256": "c2f706dd8633de7616ff2c9137b3ad3ac97fd1f758cda5c5ddfa1ecc7b3b3e51",
+  "prompt": "In FastAPI, what is likely to break if dependency_overrides_provider stops being passed into dependency solving for routes? Cite files/tests and downstream behavior. Answer with sections: Summary, Evidence files, Reasoning, Caveats, Confidence.",
+  "status": "technical_failure",
+  "response_text": "",
+  "runner": {
+    "agent": "codex",
+    "atlas_required": true,
+    "model": null,
+    "tool_version": null,
+    "system_instructions_fingerprint": null
+  },
+  "observations": {
+    "latency_ms": null,
+    "time_to_first_correct_answer_ms": null,
+    "token_usage": null,
+    "tool_calls": [],
+    "atlas_calls": [],
+    "files_opened": [],
+    "errors": [
+      "No non-interactive Codex/Cursor runner is configured in this workspace; Atlas MCP health was verified, but no valid reset-run benchmark response was produced."
+    ],
+    "retries": 0
+  },
+  "manual_scores": null,
+  "notes": "No non-interactive Codex/Cursor runner is configured in this workspace; Atlas MCP health was verified, but no valid reset-run benchmark response was produced."
+}

@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "run_id": "task_003_codex_no_atlas_r1_2026-07-10T110443Z0000",
+  "anonymous_id": "run_7a7c3ccb8449",
+  "created_at": "2026-07-10T11:04:43+00:00",
+  "started_at": null,
+  "ended_at": "2026-07-10T11:04:43+00:00",
+  "condition": "codex_no_atlas",
+  "task_id": "task_003",
+  "repository_id": "fastapi",
+  "repository_commit_sha": "7cb06f360dd44efac059848df1a9beee7643b018",
+  "category": "architecture",
+  "difficulty": "hard",
+  "prompt_sha256": "d459c4f1f60780bebe9bf0fc27056778e70a2c6f6667f2033e03ee5ec5562fb9",
+  "prompt": "In FastAPI, explain the request validation and dependency-resolution lifecycle from route registration to calling an endpoint for an HTTP request. Cite files/functions. Answer with sections: Summary, Evidence files, Reasoning, Caveats, Confidence.",
+  "status": "technical_failure",
+  "response_text": "",
+  "runner": {
+    "agent": "codex",
+    "atlas_required": false,
+    "model": null,
+    "tool_version": null,
+    "system_instructions_fingerprint": null
+  },
+  "observations": {
+    "latency_ms": null,
+    "time_to_first_correct_answer_ms": null,
+    "token_usage": null,
+    "tool_calls": [],
+    "atlas_calls": [],
+    "files_opened": [],
+    "errors": [
+      "No non-interactive Codex/Cursor runner is configured in this workspace; Atlas MCP health was verified, but no valid reset-run benchmark response was produced."
+    ],
+    "retries": 0
+  },
+  "manual_scores": null,
+  "notes": "No non-interactive Codex/Cursor runner is configured in this workspace; Atlas MCP health was verified, but no valid reset-run benchmark response was produced."
+}

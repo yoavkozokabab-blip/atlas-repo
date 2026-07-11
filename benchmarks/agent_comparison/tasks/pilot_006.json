@@ -1,0 +1,8 @@
+{
+  "task_id": "pilot_006",
+  "repo_id": "atlas_reference",
+  "category": "negative_control",
+  "difficulty": "easy",
+  "prompt": "Does this repository implement a GraphQL API server? If yes, where? If no, say so explicitly and do not invent GraphQL files.",
+  "gold_file": "gold/pilot_006.md"
+}

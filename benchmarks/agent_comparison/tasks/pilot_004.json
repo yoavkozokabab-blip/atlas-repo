@@ -1,0 +1,8 @@
+{
+  "task_id": "pilot_004",
+  "repo_id": "atlas_reference",
+  "category": "impact",
+  "difficulty": "medium",
+  "prompt": "What is likely to break if auth/session.py changes? List affected modules and why.",
+  "gold_file": "gold/pilot_004.md"
+}

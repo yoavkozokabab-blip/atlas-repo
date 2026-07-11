@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "run_id": "task_005_codex_no_atlas_r1_2026-07-10T110443Z0000",
+  "anonymous_id": "run_f31f5f3d05c8",
+  "created_at": "2026-07-10T11:04:43+00:00",
+  "started_at": null,
+  "ended_at": "2026-07-10T11:04:43+00:00",
+  "condition": "codex_no_atlas",
+  "task_id": "task_005",
+  "repository_id": "requests",
+  "repository_commit_sha": "f361ead047be5cb873174218582f7d8b9fcd9f49",
+  "category": "debugging",
+  "difficulty": "medium",
+  "prompt_sha256": "4d703f50d49af08e24e79f15ac73522d793fc2a7f748c4ceb6eccc9b91361fc5",
+  "prompt": "A user reports `requests.exceptions.InvalidSchema: No connection adapters were found for 'ftp://example.com'` when calling `requests.get(...)`. Identify the likely root cause, the relevant code path, and the first files to inspect. Cite files/functions. Answer with sections: Summary, Evidence files, Reasoning, Caveats, Confidence.",
+  "status": "technical_failure",
+  "response_text": "",
+  "runner": {
+    "agent": "codex",
+    "atlas_required": false,
+    "model": null,
+    "tool_version": null,
+    "system_instructions_fingerprint": null
+  },
+  "observations": {
+    "latency_ms": null,
+    "time_to_first_correct_answer_ms": null,
+    "token_usage": null,
+    "tool_calls": [],
+    "atlas_calls": [],
+    "files_opened": [],
+    "errors": [
+      "No non-interactive Codex/Cursor runner is configured in this workspace; Atlas MCP health was verified, but no valid reset-run benchmark response was produced."
+    ],
+    "retries": 0
+  },
+  "manual_scores": null,
+  "notes": "No non-interactive Codex/Cursor runner is configured in this workspace; Atlas MCP health was verified, but no valid reset-run benchmark response was produced."
+}

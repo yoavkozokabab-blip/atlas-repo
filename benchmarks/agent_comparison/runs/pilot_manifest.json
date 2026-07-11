@@ -1,0 +1,235 @@
+{
+  "phase": "pilot_v1",
+  "started_at": "2026-07-10T10:54:21+00:00",
+  "execution_backend": "automated_stand_in",
+  "model_tool_version": "pilot_automated_stand_in_v1; codex_cli=unavailable; cursor_cli=present_not_automated",
+  "repeats": 1,
+  "seed": 42,
+  "conditions": [
+    "codex_no_atlas",
+    "codex_with_atlas",
+    "cursor_no_atlas",
+    "cursor_with_atlas"
+  ],
+  "runs": [
+    {
+      "run_id": "pilot_001_codex_with_atlas_r1",
+      "blind_id": "run_A_001",
+      "condition": "codex_with_atlas",
+      "task_id": "pilot_001",
+      "ok": true,
+      "latency_seconds": 4.231317400000989,
+      "path": "runs\\codex_with_atlas\\pilot_001_codex_with_atlas_r1.json"
+    },
+    {
+      "run_id": "pilot_001_cursor_no_atlas_r1",
+      "blind_id": "run_B_002",
+      "condition": "cursor_no_atlas",
+      "task_id": "pilot_001",
+      "ok": true,
+      "latency_seconds": 0.006019499996909872,
+      "path": "runs\\cursor_no_atlas\\pilot_001_cursor_no_atlas_r1.json"
+    },
+    {
+      "run_id": "pilot_001_codex_no_atlas_r1",
+      "blind_id": "run_C_003",
+      "condition": "codex_no_atlas",
+      "task_id": "pilot_001",
+      "ok": true,
+      "latency_seconds": 0.006801900002756156,
+      "path": "runs\\codex_no_atlas\\pilot_001_codex_no_atlas_r1.json"
+    },
+    {
+      "run_id": "pilot_001_cursor_with_atlas_r1",
+      "blind_id": "run_D_004",
+      "condition": "cursor_with_atlas",
+      "task_id": "pilot_001",
+      "ok": true,
+      "latency_seconds": 4.166999499997473,
+      "path": "runs\\cursor_with_atlas\\pilot_001_cursor_with_atlas_r1.json"
+    },
+    {
+      "run_id": "pilot_002_cursor_no_atlas_r1",
+      "blind_id": "run_E_005",
+      "condition": "cursor_no_atlas",
+      "task_id": "pilot_002",
+      "ok": true,
+      "latency_seconds": 0.13997780000499915,
+      "path": "runs\\cursor_no_atlas\\pilot_002_cursor_no_atlas_r1.json"
+    },
+    {
+      "run_id": "pilot_002_codex_with_atlas_r1",
+      "blind_id": "run_F_006",
+      "condition": "codex_with_atlas",
+      "task_id": "pilot_002",
+      "ok": true,
+      "latency_seconds": 5.434956799996144,
+      "path": "runs\\codex_with_atlas\\pilot_002_codex_with_atlas_r1.json"
+    },
+    {
+      "run_id": "pilot_002_cursor_with_atlas_r1",
+      "blind_id": "run_G_007",
+      "condition": "cursor_with_atlas",
+      "task_id": "pilot_002",
+      "ok": true,
+      "latency_seconds": 4.904698099999223,
+      "path": "runs\\cursor_with_atlas\\pilot_002_cursor_with_atlas_r1.json"
+    },
+    {
+      "run_id": "pilot_002_codex_no_atlas_r1",
+      "blind_id": "run_H_008",
+      "condition": "codex_no_atlas",
+      "task_id": "pilot_002",
+      "ok": true,
+      "latency_seconds": 0.014425200002733618,
+      "path": "runs\\codex_no_atlas\\pilot_002_codex_no_atlas_r1.json"
+    },
+    {
+      "run_id": "pilot_003_cursor_with_atlas_r1",
+      "blind_id": "run_I_009",
+      "condition": "cursor_with_atlas",
+      "task_id": "pilot_003",
+      "ok": true,
+      "latency_seconds": 4.169396800003597,
+      "path": "runs\\cursor_with_atlas\\pilot_003_cursor_with_atlas_r1.json"
+    },
+    {
+      "run_id": "pilot_003_codex_with_atlas_r1",
+      "blind_id": "run_J_010",
+      "condition": "codex_with_atlas",
+      "task_id": "pilot_003",
+      "ok": true,
+      "latency_seconds": 4.155382099997951,
+      "path": "runs\\codex_with_atlas\\pilot_003_codex_with_atlas_r1.json"
+    },
+    {
+      "run_id": "pilot_003_cursor_no_atlas_r1",
+      "blind_id": "run_K_011",
+      "condition": "cursor_no_atlas",
+      "task_id": "pilot_003",
+      "ok": true,
+      "latency_seconds": 0.006354999997711275,
+      "path": "runs\\cursor_no_atlas\\pilot_003_cursor_no_atlas_r1.json"
+    },
+    {
+      "run_id": "pilot_003_codex_no_atlas_r1",
+      "blind_id": "run_L_012",
+      "condition": "codex_no_atlas",
+      "task_id": "pilot_003",
+      "ok": true,
+      "latency_seconds": 0.006615999998757616,
+      "path": "runs\\codex_no_atlas\\pilot_003_codex_no_atlas_r1.json"
+    },
+    {
+      "run_id": "pilot_004_codex_no_atlas_r1",
+      "blind_id": "run_M_013",
+      "condition": "codex_no_atlas",
+      "task_id": "pilot_004",
+      "ok": true,
+      "latency_seconds": 0.00758289999794215,
+      "path": "runs\\codex_no_atlas\\pilot_004_codex_no_atlas_r1.json"
+    },
+    {
+      "run_id": "pilot_004_cursor_no_atlas_r1",
+      "blind_id": "run_N_014",
+      "condition": "cursor_no_atlas",
+      "task_id": "pilot_004",
+      "ok": true,
+      "latency_seconds": 0.010240600000543054,
+      "path": "runs\\cursor_no_atlas\\pilot_004_cursor_no_atlas_r1.json"
+    },
+    {
+      "run_id": "pilot_004_cursor_with_atlas_r1",
+      "blind_id": "run_O_015",
+      "condition": "cursor_with_atlas",
+      "task_id": "pilot_004",
+      "ok": true,
+      "latency_seconds": 4.20616219999647,
+      "path": "runs\\cursor_with_atlas\\pilot_004_cursor_with_atlas_r1.json"
+    },
+    {
+      "run_id": "pilot_004_codex_with_atlas_r1",
+      "blind_id": "run_P_016",
+      "condition": "codex_with_atlas",
+      "task_id": "pilot_004",
+      "ok": true,
+      "latency_seconds": 4.205315700004576,
+      "path": "runs\\codex_with_atlas\\pilot_004_codex_with_atlas_r1.json"
+    },
+    {
+      "run_id": "pilot_005_codex_no_atlas_r1",
+      "blind_id": "run_Q_017",
+      "condition": "codex_no_atlas",
+      "task_id": "pilot_005",
+      "ok": true,
+      "latency_seconds": 0.006589099997654557,
+      "path": "runs\\codex_no_atlas\\pilot_005_codex_no_atlas_r1.json"
+    },
+    {
+      "run_id": "pilot_005_cursor_with_atlas_r1",
+      "blind_id": "run_R_018",
+      "condition": "cursor_with_atlas",
+      "task_id": "pilot_005",
+      "ok": true,
+      "latency_seconds": 4.192188900000474,
+      "path": "runs\\cursor_with_atlas\\pilot_005_cursor_with_atlas_r1.json"
+    },
+    {
+      "run_id": "pilot_005_cursor_no_atlas_r1",
+      "blind_id": "run_S_019",
+      "condition": "cursor_no_atlas",
+      "task_id": "pilot_005",
+      "ok": true,
+      "latency_seconds": 0.0067127000002074055,
+      "path": "runs\\cursor_no_atlas\\pilot_005_cursor_no_atlas_r1.json"
+    },
+    {
+      "run_id": "pilot_005_codex_with_atlas_r1",
+      "blind_id": "run_T_020",
+      "condition": "codex_with_atlas",
+      "task_id": "pilot_005",
+      "ok": true,
+      "latency_seconds": 4.178300999999919,
+      "path": "runs\\codex_with_atlas\\pilot_005_codex_with_atlas_r1.json"
+    },
+    {
+      "run_id": "pilot_006_cursor_no_atlas_r1",
+      "blind_id": "run_U_021",
+      "condition": "cursor_no_atlas",
+      "task_id": "pilot_006",
+      "ok": true,
+      "latency_seconds": 0.004958500001521315,
+      "path": "runs\\cursor_no_atlas\\pilot_006_cursor_no_atlas_r1.json"
+    },
+    {
+      "run_id": "pilot_006_codex_with_atlas_r1",
+      "blind_id": "run_V_022",
+      "condition": "codex_with_atlas",
+      "task_id": "pilot_006",
+      "ok": true,
+      "latency_seconds": 4.1634393999993335,
+      "path": "runs\\codex_with_atlas\\pilot_006_codex_with_atlas_r1.json"
+    },
+    {
+      "run_id": "pilot_006_cursor_with_atlas_r1",
+      "blind_id": "run_W_023",
+      "condition": "cursor_with_atlas",
+      "task_id": "pilot_006",
+      "ok": true,
+      "latency_seconds": 4.1573034999964875,
+      "path": "runs\\cursor_with_atlas\\pilot_006_cursor_with_atlas_r1.json"
+    },
+    {
+      "run_id": "pilot_006_codex_no_atlas_r1",
+      "blind_id": "run_X_024",
+      "condition": "codex_no_atlas",
+      "task_id": "pilot_006",
+      "ok": true,
+      "latency_seconds": 0.006389899994246662,
+      "path": "runs\\codex_no_atlas\\pilot_006_codex_no_atlas_r1.json"
+    }
+  ],
+  "failures": [],
+  "ended_at": "2026-07-10T10:55:13+00:00",
+  "run_count": 24
+}

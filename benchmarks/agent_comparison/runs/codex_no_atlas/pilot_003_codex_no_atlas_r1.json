@@ -1,0 +1,120 @@
+{
+  "run_id": "pilot_003_codex_no_atlas_r1",
+  "blind_id": "run_L_012",
+  "task_id": "pilot_003",
+  "condition": "codex_no_atlas",
+  "agent": "codex",
+  "atlas_enabled": false,
+  "repeat": 1,
+  "prompt": "Explain the request lifecycle in this repository from API entry through authentication middleware to order execution. Cite the files involved.",
+  "repo_id": "atlas_reference",
+  "repo_path": "C:\\J.A.R.V.I.S\\atlas-rc1-clean\\benchmarks\\repos\\atlas_reference",
+  "repo_commit_sha": "fixture:4167abb8d67f4286",
+  "execution_backend": "automated_stand_in",
+  "model_tool_version": "pilot_automated_stand_in_v1; codex_cli=unavailable; cursor_cli=present_not_automated",
+  "started_at": "2026-07-10T10:54:48+00:00",
+  "ended_at": "2026-07-10T10:54:48+00:00",
+  "latency_seconds": 0.006615999998757616,
+  "ok": true,
+  "error": "",
+  "response_text": "Baseline read-only search (keywords: auth, login, session, middleware, jwt, routes, order, execution). Top matches:\n\n### api/routes.py (score=3)\n```python\nfrom auth.middleware import auth_middleware\nfrom api.rate_limit import rate_limit_middleware\n\ndef register_routes(app):\n    app.use(auth_middleware)\n    app.use(rate_limit_middleware)\n```\n\n### auth/login.py (score=3)\n```python\nfrom auth.session import create_session\n\ndef login(user, password):\n    return create_session(user)\n```\n\n### auth/middleware.py (score=3)\n```python\ndef authenticate_jwt(token):\n    return token is not None\n\ndef auth_middleware(request, next_handler):\n    authenticate_jwt(request.headers.get(\"Authorization\"))\n    return next_handler(request)\n```\n\n### tests/test_auth.py (score=3)\n```python\ndef test_auth():\n    from auth.middleware import authenticate_jwt\n    assert authenticate_jwt(\"token\")\n```\n\n### trading/order_service.py (score=2)\n```python\nfrom trading.execution import execute_order\n\ndef place_order(order):\n    return execute_order(order)\n```\n\n### api/rate_limit.py (score=1)\n```python\ndef rate_limit_middleware(request):\n    return request\n```\n\n### auth/session.py (score=1)\n```python\ndef create_session(user):\n    return {\"user\": user}\n```\n\n### db/postgres.py (score=1)\n```python\nfrom sqlalchemy import create_engine\n\nengine = create_engine(\"postgresql://localhost/app\")\n\ndef get_session():\n    return engine.connect()\n```",
+  "tool_calls": [
+    {
+      "tool": "read_file",
+      "path": "api/rate_limit.py",
+      "keyword_score": 1
+    },
+    {
+      "tool": "read_file",
+      "path": "api/routes.py",
+      "keyword_score": 3
+    },
+    {
+      "tool": "read_file",
+      "path": "auth/login.py",
+      "keyword_score": 3
+    },
+    {
+      "tool": "read_file",
+      "path": "auth/middleware.py",
+      "keyword_score": 3
+    },
+    {
+      "tool": "read_file",
+      "path": "auth/session.py",
+      "keyword_score": 1
+    },
+    {
+      "tool": "read_file",
+      "path": "db/postgres.py",
+      "keyword_score": 1
+    },
+    {
+      "tool": "read_file",
+      "path": "middleware/request_logging.py",
+      "keyword_score": 1
+    },
+    {
+      "tool": "read_file",
+      "path": "middleware/tracing.py",
+      "keyword_score": 1
+    },
+    {
+      "tool": "read_file",
+      "path": "tests/test_auth.py",
+      "keyword_score": 3
+    },
+    {
+      "tool": "read_file",
+      "path": "trading/backtest_config.py",
+      "keyword_score": 1
+    },
+    {
+      "tool": "read_file",
+      "path": "trading/execution.py",
+      "keyword_score": 1
+    },
+    {
+      "tool": "read_file",
+      "path": "trading/order_service.py",
+      "keyword_score": 2
+    },
+    {
+      "tool": "read_file",
+      "path": "trading/paper_config.py",
+      "keyword_score": 1
+    }
+  ],
+  "atlas_tool_calls": [],
+  "files_inspected": [
+    "api/rate_limit.py",
+    "api/routes.py",
+    "auth/login.py",
+    "auth/middleware.py",
+    "auth/session.py",
+    "billing/stripe_billing.py",
+    "billing/stripe_webhooks.py",
+    "cache/cache_layer.py",
+    "cache/redis_client.py",
+    "config/feature_flags.py",
+    "db/migrations/001_initial.py",
+    "db/postgres.py",
+    "indicators/indicator_registry.py",
+    "indicators/sma.py",
+    "middleware/request_logging.py",
+    "middleware/tracing.py",
+    "registry/signal_registry.py",
+    "services/http_client.py",
+    "signals/pipeline.py",
+    "tests/test_auth.py",
+    "tests/test_indicators.py",
+    "trading/backtest_config.py",
+    "trading/backtest_engine.py",
+    "trading/execution.py",
+    "trading/order_service.py",
+    "trading/paper_config.py",
+    "trading/paper_trading.py"
+  ],
+  "retries": 0,
+  "notes": ""
+}

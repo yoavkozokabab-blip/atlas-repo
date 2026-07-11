@@ -27,6 +27,19 @@ py -3 benchmarks/runner.py
 
 Report: `reports/phase130_repository_understanding_validation.md`
 
+## Agent comparison benchmark (Codex/Cursor ± Atlas)
+
+Pilot harness for comparing Codex and Cursor with/without Atlas MCP lives in
+`benchmarks/agent_comparison/` (does not replace Phase 130 or Phase 103 work).
+
+```powershell
+py -3 benchmarks/agent_comparison/scripts/run_benchmark.py validate
+py -3 benchmarks/agent_comparison/scripts/run_benchmark.py prepare
+py -3 benchmarks/agent_comparison/scripts/run_benchmark.py pilot
+py -3 benchmarks/agent_comparison/scripts/score_results.py --pilot
+py -3 benchmarks/agent_comparison/scripts/summarize_results.py --pilot
+```
+
 ## Metrics
 
 | Metric | Definition |
