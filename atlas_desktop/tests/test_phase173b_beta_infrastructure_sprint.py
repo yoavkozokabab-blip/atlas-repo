@@ -108,7 +108,8 @@ def test_static_index_173b_ux_copy():
     nav = html[html.find('<nav class="nav"'): html.find("</nav>", html.find('<nav class="nav"'))]
     assert "Repository Context" not in nav
     assert "Ask Atlas" in html
-    assert "Plan Change" in html
+    assert 'data-view="build"' in nav
+    assert "Implementation Plan" in html
     assert 'onclick="welcomeScanMyRepo()"' in html
     assert "Send to AI" not in html
 

@@ -16,11 +16,11 @@ def _read(name: str) -> str:
 
 def test_canonical_workflow_names_in_index():
     html = _read("index.html")
-    assert "Ask Atlas" in html
-    assert "Plan Change" in html
-    assert "Create plan" in html
-    assert "Debug" in html
-    assert "What breaks?" in html
+    assert "Repository Analysis" in html
+    assert "Implementation Plan" in html
+    assert "Build implementation plan" in html
+    assert "Failure Investigation" in html
+    assert "Change Impact" in html
     assert ">Map<" in html
     assert "Build Plan" not in html
     assert "Change Plan" not in html
@@ -30,8 +30,8 @@ def test_canonical_workflow_names_in_index():
 def test_scan_success_uses_ask_cta():
     html = _read("index.html")
     block = html.split('id="scanSuccess"', 1)[1].split("</section>", 1)[0]
-    assert "Ask first question" in block
-    assert "Plan a change" in block
+    assert "Analyze repository" in block
+    assert "Open Map" in block
 
 
 def test_demo_page_cleaned():
@@ -70,6 +70,8 @@ def test_marketing_and_changelog_naming():
     assert "<b>Debug</b>" in _read("changelog.html")
     assert "<b>What breaks?</b>" in _read("changelog.html")
     assert "<b>Plan Change</b>" in _read("changelog.html")
+    # about.html keeps its committed copy — the secondary-surface vocabulary
+    # rewrite is deferred to its own change (see engineering-analyst checkpoint).
     assert "debug results are ranked hypotheses" in _read("about.html")
 
 

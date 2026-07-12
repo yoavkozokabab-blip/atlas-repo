@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ATLAS — Repository Intelligence Platform</title>
   <link rel="stylesheet" href="styles.css" />
+  <!-- Premium experience layer — presentation-only polish, loaded last so it wins the cascade. -->
+  <link rel="stylesheet" href="premium.css" />
+  <!-- Ask Atlas report styling — scoped to the Ask view (.axr / #copilotAnswer). -->
+  <link rel="stylesheet" href="ask_report.css" />
+  <link rel="stylesheet" href="investigation.css" />
   <!-- 3D dependency graph (bundled locally for offline use). -->
   <script src="vendor/three.min.js"></script>
   <script src="vendor/3d-force-graph.min.js"></script>
@@ -304,10 +309,10 @@
       <button data-view="home" class="active" onclick="go('home')">Home</button>
       <button data-view="scan" onclick="go('scan')">Scan</button>
       <button data-view="hn" class="needs-no-repo" onclick="go('hn')">HN demo</button>
-      <button data-view="ask" class="needs-repo" onclick="go('ask')">Ask Atlas</button>
+      <button data-view="ask" class="needs-repo" onclick="go('ask')">Ask</button>
       <button data-view="investigate" data-lock="1" class="needs-repo" onclick="go('investigate')">Debug</button>
       <button data-view="impact" data-lock="1" class="needs-repo" onclick="go('impact')">Impact</button>
-      <button data-view="build" data-lock="1" class="needs-repo" onclick="go('build')">Plan Change</button>
+      <button data-view="build" data-lock="1" class="needs-repo" onclick="go('build')">Plan</button>
       <button data-view="center" data-lock="1" class="needs-repo" onclick="go('center')">Map</button>
     </nav>
 
@@ -389,11 +394,11 @@
             <div>
               <p class="atlas-home-kicker">Index complete</p>
               <h1 id="homeIndexedTitle" tabindex="-1">Repository ready.</h1>
-              <p class="atlas-home-lead" id="homeIndexedLead">Atlas already knows this repository. Connect the coding agent you use next, or ask Atlas directly.</p>
+              <p class="atlas-home-lead" id="homeIndexedLead">Atlas already knows this repository. Connect the coding agent you use next, or open repository analysis.</p>
             </div>
             <div class="atlas-home-actions">
               <button class="btn primary" type="button" onclick="focusHomeAgentConnections()">Connect an agent</button>
-              <button class="btn ghost" type="button" onclick="go('ask')">Ask Atlas now</button>
+              <button class="btn ghost" type="button" onclick="go('ask')">Open repository analysis</button>
             </div>
           </header>
           <dl class="atlas-home-facts" aria-label="Current repository facts">
@@ -434,12 +439,12 @@
         <section class="atlas-home-state atlas-home-productive" data-home-panel="productive" aria-labelledby="homeProductiveTitle" hidden>
           <header class="atlas-home-productive-head">
             <p class="atlas-home-kicker" id="homeProductiveKicker">Repository context ready</p>
-            <h1 id="homeProductiveTitle" tabindex="-1">What do you want to understand or change?</h1>
+            <h1 id="homeProductiveTitle" tabindex="-1">Start an engineering investigation.</h1>
             <p class="atlas-home-lead"><strong id="homeProductiveRepoName">Current repository</strong> <span id="homeProductiveContext">is ready in Atlas and connected to</span> <span id="homeConnectedAgents">your agent</span>.</p>
           </header>
           <form class="atlas-home-ask" onsubmit="submitHomeAsk(event)">
-            <label for="homeAskInput">Ask about this repository</label>
-            <div><input id="homeAskInput" type="text" autocomplete="off" placeholder="Ask about this repository&hellip;" /><button class="btn primary" type="submit">Ask Atlas</button></div>
+            <label for="homeAskInput">Engineering question</label>
+            <div><input id="homeAskInput" type="text" autocomplete="off" placeholder="Describe what you need to understand&hellip;" /><button class="btn primary" type="submit">Run analysis</button></div>
           </form>
           <div class="atlas-home-suggestions" aria-label="Suggested actions">
             <button type="button" onclick="routeHomeSuggestion('ask','Where is authentication implemented?')">Find where authentication is implemented</button>
@@ -475,10 +480,10 @@
         <!-- Return-user hero -->
         <header class="launch-hero glass needs-repo">
           <h2>Welcome back</h2>
-          <p class="launch-lead">Repository indexed. Ask Atlas a repo-aware question, or use Impact and Debug for sharper next steps.</p>
+          <p class="launch-lead">Repository indexed. Open a repository analysis, trace change impact, or investigate a failure against cited evidence.</p>
           <p class="home-repo-line muted tiny">No repository scanned yet</p>
           <div class="launch-cta" style="margin-top:16px">
-            <button class="btn primary big" type="button" onclick="go('ask')">Ask Atlas</button>
+            <button class="btn primary big" type="button" onclick="go('ask')">Open repository analysis</button>
             <button class="btn ghost" type="button" onclick="go('scan')">Scan another repository</button>
           </div>
           <span class="status-pill" style="margin-top:12px;display:inline-block">—</span>
@@ -491,18 +496,18 @@
           <div class="action-cards">
             <button class="action-card action-card-featured" type="button" onclick="go('ask')">
               <span class="ac-icon" aria-hidden="true">?</span>
-              <span class="ac-title">Ask Atlas</span>
-              <span class="ac-desc">Ask repo-aware questions with cited files.</span>
+              <span class="ac-title">Repository Analysis</span>
+              <span class="ac-desc">Investigate architecture and behavior with cited files.</span>
             </button>
             <button class="action-card" type="button" onclick="go('impact')">
               <span class="ac-icon" aria-hidden="true">↳</span>
-              <span class="ac-title">Impact</span>
-              <span class="ac-desc">See what breaks before you edit.</span>
+              <span class="ac-title">Change Impact</span>
+              <span class="ac-desc">Trace blast radius before you edit.</span>
             </button>
             <button class="action-card" type="button" onclick="go('investigate')">
               <span class="ac-icon" aria-hidden="true">!</span>
-              <span class="ac-title">Debug</span>
-              <span class="ac-desc">Find likely causes from symptoms or stack traces.</span>
+              <span class="ac-title">Failure Investigation</span>
+              <span class="ac-desc">Rank likely causes from symptoms or stack traces.</span>
             </button>
           </div>
         </section>
@@ -590,14 +595,14 @@
       <div class="launch-page hn-demo-page">
         <header class="launch-hero glass">
           <h1>Try Atlas in 30 seconds</h1>
-          <p class="launch-lead">Load the sample repository, ask one question, and see cited files — no folder path needed.</p>
+          <p class="launch-lead">Load the sample repository, run one analysis, and inspect cited files — no folder path needed.</p>
           <div class="launch-cta">
             <button class="btn primary big" type="button" id="hnLoadBtn" onclick="startHnDemo()">Load sample repository</button>
           </div>
           <div class="launch-steps hn-progress" id="hnProgress" aria-label="Demo progress">
             <span class="launch-step" id="hnStep1"><b>1</b> Load sample repo</span>
-            <span class="launch-step" id="hnStep2"><b>2</b> Ask Atlas</span>
-            <span class="launch-step" id="hnStep3"><b>3</b> See cited files</span>
+            <span class="launch-step" id="hnStep2"><b>2</b> Run analysis</span>
+            <span class="launch-step" id="hnStep3"><b>3</b> Inspect evidence</span>
           </div>
         </header>
       </div>
@@ -680,7 +685,7 @@
         <h4 class="success-actions-title">Next</h4>
         <ul class="clean" id="scanSuccessActions"></ul>
         <div class="success-buttons">
-          <button class="btn primary big" onclick="focusCopilot()">Ask first question</button>
+          <button class="btn primary big" onclick="focusCopilot()">Analyze repository</button>
           <button class="btn ghost" onclick="go('center')">Open Map</button>
           <button class="btn ghost" onclick="goToFirstBuildPlan()">Plan a change</button>
         </div>
@@ -699,25 +704,27 @@
 
     <!-- ===================== SCREEN 3: ASK ATLAS ===================== -->
     <section class="view" id="view-ask">
-      <div class="ask-page">
+      <div class="ask-page analysis-workspace">
         <div id="askEmptyState"></div>
         <div class="ask-panel glass" id="askPanel">
-          <div class="ask-page-head">
+          <div class="ask-page-head workspace-head">
             <div>
-              <h2 class="vh">Ask Atlas</h2>
-              <p class="muted">Ask about the indexed repository. Atlas answers with cited evidence and relevant files.</p>
-              <p class="muted tiny" id="askStatus">Repository indexed. Ask your first question.</p>
+              <p class="workspace-kicker">Engineering investigation</p>
+              <h2 class="vh">Repository Analysis</h2>
+              <p class="muted">Atlas resolves repository evidence, ranks relevant files, and produces a reviewable engineering report.</p>
+              <p class="muted tiny" id="askStatus">Repository indexed. Define an investigation.</p>
             </div>
             <button class="btn ghost" type="button" onclick="go('scan')">Scan another repository</button>
           </div>
           <div class="copilot ask-copilot">
             <div class="selected-node glass" id="selectedNodeCard" style="display:none"></div>
-            <div class="ask-row ask-row-primary">
-              <input id="askInput" type="text" placeholder="Ask about this repository…" />
-              <button class="btn primary" id="askSend" onclick="sendCopilotQuestion()">Send</button>
+            <label class="investigation-label" for="askInput">Investigation brief</label>
+            <div class="ask-row ask-row-primary investigation-input">
+              <input id="askInput" type="text" placeholder="Describe the architecture, behavior, risk, or code path to investigate…" />
+              <button class="btn primary" id="askSend" onclick="sendCopilotQuestion()">Run analysis</button>
             </div>
-            <div class="suggest ask-suggestions" id="suggest" role="listbox" aria-label="Suggested questions"></div>
-            <div class="copilot-loading" id="copilotLoading" style="display:none">Analyzing repository…</div>
+            <div class="suggest ask-suggestions" id="suggest" role="listbox" aria-label="Investigation templates"></div>
+            <div class="copilot-loading" id="copilotLoading" style="display:none">Scoping investigation…</div>
             <div class="copilot-card glass" id="copilotCard" style="display:none">
               <div class="copilot-card-head">
                 <span class="pill" id="copilotMode">mode</span>
@@ -742,14 +749,14 @@
               <details class="copilot-more">
                 <summary>More actions</summary>
                 <div class="copy-row" id="copilotMoreActions">
-                  <button class="btn small" onclick="copyCopilotAnswer()">Copy answer</button>
+                  <button class="btn small" onclick="copyCopilotAnswer()">Copy report</button>
                   <button class="btn small" onclick="copyCopilotTarget('claude')">Copy Claude</button>
                   <button class="btn small" onclick="copyCopilotTarget('codex')">Copy Codex</button>
                   <button class="btn small" onclick="copyCopilotTarget('cursor')">Copy Cursor</button>
                 </div>
               </details>
             </div>
-            <div class="copilot-out" id="copilotOut"><span class="muted">Press Send to ask the sample question, or pick a prompt below. Answers show cited evidence and relevant files from the indexed repository.</span></div>
+            <div class="copilot-out" id="copilotOut"><span class="muted">Choose an investigation template or describe a specific engineering question. Results include evidence, relevant files, confidence, and limits.</span></div>
           </div>
         </div>
       </div>
@@ -842,59 +849,59 @@
             <button class="btn small ghost" onclick="genInspectorPrompt('cursor')">Cursor</button>
           </div>
           <div class="map-ask-cta glass">
-            <h3>Ask Atlas</h3>
-            <p class="muted tiny">Open the full question page for repo-aware answers with cited files.</p>
-            <button class="btn primary" type="button" onclick="focusCopilot()">Ask about this repo</button>
+            <h3>Repository Analysis</h3>
+            <p class="muted tiny">Investigate the selected architecture with cited repository evidence.</p>
+            <button class="btn primary" type="button" onclick="focusCopilot()">Analyze selection</button>
           </div>
         </aside>
       </div>
     </section>
 
     <!-- ===================== SCREEN: PLAN CHANGE ===================== -->
-    <section class="view" id="view-build">
-      <h2 class="vh">Plan Change</h2>
-      <p class="muted tiny" style="margin:-8px 4px 14px">Plan a change before you edit. Atlas lists affected files, implementation order, and tests — then sends a ready prompt to your AI coding tool.</p>
+    <section class="view analysis-workspace" id="view-build">
+      <header class="workspace-head"><p class="workspace-kicker">Engineering investigation</p><h2 class="vh">Implementation Plan</h2>
+      <p class="muted">Atlas identifies affected systems, implementation order, tests, and delivery risks before code changes begin.</p></header>
       <div id="readyState"></div>
       <div id="firstBuildBanner" class="product-notice glass" style="display:none">
-        <b>Your first planned change</b> — keep the example below or type your own feature, then click <b>Create plan</b>.
+        <b>Your first implementation plan</b> — keep the example below or define the change you are evaluating.
       </div>
-      <div class="io glass">
-        <label>What do you want to add or change?</label>
+      <div class="io glass investigation-input">
+        <label>Change brief</label>
         <textarea id="buildRequest" rows="4" placeholder="e.g. Add user authentication&#10;Add request rate limiting&#10;Add audit logging"></textarea>
-        <button class="btn primary" onclick="runChangePlan()">Create plan</button>
+        <button class="btn primary" onclick="runChangePlan()">Build implementation plan</button>
       </div>
       <div class="workflow-toolbar glass" id="buildToolbar" style="display:none">
         <button class="btn small ghost" type="button" onclick="downloadWorkflowMarkdownBundle()">Download Markdown</button>
       </div>
       <div id="buildHistory"></div>
-      <div id="buildOut" class="out"><div class="glass empty-panel"><h3 style="margin:0 0 8px">Scan a repository first.</h3><p class="muted" style="margin:0 0 14px">Plan Change needs indexed files before it can name what to edit. Load the sample, or scan your own folder.</p><div class="success-buttons"><button class="btn primary" type="button" onclick="loadDemoMode('medium')">Load sample repository</button><button class="btn ghost" type="button" onclick="go('scan')">Scan repository</button></div></div></div>
+      <div id="buildOut" class="out"><div class="glass empty-panel"><h3 style="margin:0 0 8px">Scan a repository first.</h3><p class="muted" style="margin:0 0 14px">Implementation planning needs indexed files before Atlas can name an edit sequence. Load the sample, or scan your own folder.</p><div class="success-buttons"><button class="btn primary" type="button" onclick="loadDemoMode('medium')">Load sample repository</button><button class="btn ghost" type="button" onclick="go('scan')">Scan repository</button></div></div></div>
     </section>
 
     <!-- ===================== SCREEN: DEBUG ===================== -->
-    <section class="view" id="view-investigate">
-      <h2 class="vh">Debug</h2>
-      <p class="muted tiny" style="margin:-8px 4px 14px">Why is this crashing? Describe what's going wrong or paste a stack trace. Atlas ranks likely causes — verify each one before fixing.</p>
-      <div class="io glass">
-        <label>What is going wrong?</label>
+    <section class="view analysis-workspace" id="view-investigate">
+      <header class="workspace-head"><p class="workspace-kicker">Engineering investigation</p><h2 class="vh">Failure Investigation</h2>
+      <p class="muted">Atlas correlates the observed failure with repository structure, ranks hypotheses, and defines verification steps.</p></header>
+      <div class="io glass investigation-input">
+        <label>Observed failure</label>
         <textarea id="investigateSymptom" rows="6" placeholder="e.g. API requests fail intermittently under load&#10;Dashboard shows stale data after deploy&#10;Payments fail silently after the last deploy&#10;&#10;Or paste a traceback with file paths…"></textarea>
-        <button class="btn primary" onclick="runInvestigationPlan()">Analyze symptom</button>
+        <button class="btn primary" onclick="runInvestigationPlan()">Investigate failure</button>
       </div>
       <div class="workflow-toolbar glass" id="investigateToolbar" style="display:none">
         <button class="btn small ghost" type="button" onclick="downloadWorkflowMarkdownBundle()">Download Markdown</button>
       </div>
       <div id="investigateHistory"></div>
-      <div id="investigateOut" class="out"><div class="glass empty-panel"><h3 style="margin:0 0 8px">Scan a repository first.</h3><p class="muted" style="margin:0 0 14px">Debug needs the repository map before it can connect symptoms to likely files.</p><div class="success-buttons"><button class="btn primary" type="button" onclick="loadDemoMode('medium')">Load sample repository</button><button class="btn ghost" type="button" onclick="go('scan')">Scan repository</button></div></div></div>
+      <div id="investigateOut" class="out"><div class="glass empty-panel"><h3 style="margin:0 0 8px">Scan a repository first.</h3><p class="muted" style="margin:0 0 14px">Failure investigation needs repository evidence before Atlas can rank likely causes.</p><div class="success-buttons"><button class="btn primary" type="button" onclick="loadDemoMode('medium')">Load sample repository</button><button class="btn ghost" type="button" onclick="go('scan')">Scan repository</button></div></div></div>
     </section>
 
     <!-- ===================== SCREEN 5: WHAT BREAKS? ===================== -->
-    <section class="view" id="view-impact">
-      <h2 class="vh">What breaks?</h2>
-      <p class="muted tiny" style="margin:-8px 4px 14px">See which files import your target — what may break if you change it.</p>
-      <div class="io glass">
-        <label>Which file are you about to change?</label>
+    <section class="view analysis-workspace" id="view-impact">
+      <header class="workspace-head"><p class="workspace-kicker">Engineering investigation</p><h2 class="vh">Change Impact</h2>
+      <p class="muted">Atlas traces direct and transitive dependencies, affected tests, and unresolved dynamic risk for a proposed target.</p></header>
+      <div class="io glass investigation-input">
+        <label>Change target</label>
         <div class="pick-row">
           <input id="impactTarget" type="text" placeholder="e.g. services/auth.py — or pick from scanned files below" />
-          <button class="btn primary" onclick="runImpact()">Show what breaks</button>
+          <button class="btn primary" onclick="runImpact()">Analyze impact</button>
         </div>
         <div id="impactFilePicker" class="muted tiny" style="margin-top:6px"></div>
       </div>
@@ -902,17 +909,18 @@
         <button class="btn small ghost" type="button" onclick="downloadWorkflowMarkdownBundle()">Download Markdown</button>
       </div>
       <div id="impactHistory"></div>
-      <div id="impactOut" class="out"><div class="glass empty-panel"><h3 style="margin:0 0 8px">Scan a repository first.</h3><p class="muted" style="margin:0 0 14px">Impact needs a dependency graph before it can show what may break.</p><div class="success-buttons"><button class="btn primary" type="button" onclick="loadDemoMode('medium')">Load sample repository</button><button class="btn ghost" type="button" onclick="go('scan')">Scan repository</button></div></div></div>
+      <div id="impactOut" class="out"><div class="glass empty-panel"><h3 style="margin:0 0 8px">Scan a repository first.</h3><p class="muted" style="margin:0 0 14px">Change impact needs a dependency graph before Atlas can trace the blast radius.</p><div class="success-buttons"><button class="btn primary" type="button" onclick="loadDemoMode('medium')">Load sample repository</button><button class="btn ghost" type="button" onclick="go('scan')">Scan repository</button></div></div></div>
     </section>
 
     <!-- ===================== SCREEN: ADVANCED CONTEXT EXPORT ===================== -->
-    <section class="view" id="view-export">
-      <h2 class="vh">Advanced context export</h2>
+    <section class="view analysis-workspace" id="view-export">
+      <header class="workspace-head"><p class="workspace-kicker">Engineering handoff</p><h2 class="vh">Agent Handoff</h2>
+      <p class="muted">Package the current repository evidence and task constraints for an external coding agent.</p></header>
       <div class="export-grid">
         <div class="glass controls">
           <div class="export-why">
-            <div class="export-why-title">Advanced context export</div>
-            <p>MCP is the primary repo-memory path. Use this advanced export only when you need a manual task packet; for a specific feature or bug, use <b>Copy for Claude</b> on Plan Change or Debug.</p>
+            <div class="export-why-title">Evidence package</div>
+            <p>MCP is the primary repository-memory path. Use this advanced export only when you need a manual evidence package; for a specific feature or failure, create an Implementation Plan or Failure Investigation first.</p>
           </div>
           <label>Task</label>
           <textarea id="agentTask" rows="4" placeholder="e.g. Fix login token replay in the desktop accounts client"></textarea>
@@ -1094,9 +1102,9 @@
     <div class="welcome-card glass">
       <p class="onboard-eyebrow">Atlas</p>
       <h1 class="welcome-title">Welcome to Atlas</h1>
-      <p class="muted welcome-lead">Load the sample, press Send in Ask Atlas, then connect Claude, Cursor, or Codex over MCP. <b>Under a minute to your first answer.</b></p>
+      <p class="muted welcome-lead">Load the sample, run repository analysis, then connect Claude, Cursor, or Codex over MCP. <b>Under a minute to your first evidence report.</b></p>
       <div class="welcome-actions">
-        <button class="btn primary big" type="button" onclick="welcomeLoadSample()">Load sample &amp; ask Atlas</button>
+        <button class="btn primary big" type="button" onclick="welcomeLoadSample()">Load sample &amp; run analysis</button>
         <button class="btn ghost big" type="button" onclick="welcomeScanMyRepo()">Scan my repository</button>
       </div>
       <p class="muted tiny welcome-foot">No API key · indexing stays on your machine · <a href="about.html" class="welcome-link">About</a></p>
@@ -1120,8 +1128,8 @@
       <ul class="clean about-list">
         <li>Scans your codebase locally — files, modules, imports, and dependency edges</li>
         <li>Maps architecture and risk in an interactive Codebase Map</li>
-        <li>Generates grounded <b>Plan Change</b>, <b>Debug</b> analysis, and <b>What breaks?</b> results</li>
-        <li>Sends ready-to-use context to Claude, Codex, and Cursor</li>
+        <li>Produces grounded <b>Repository Analysis</b>, <b>Implementation Plans</b>, <b>Failure Investigations</b>, and <b>Change Impact</b> reports</li>
+        <li>Packages repository evidence for Claude, Codex, and Cursor</li>
         <li>Stores feedback and diagnostics on your device for support</li>
       </ul>
       <h3>What Atlas does not do</h3>
@@ -1129,7 +1137,7 @@
         <li>Does not upload your source code to the cloud for analysis</li>
         <li>Does not apply patches, run git commands, or edit files automatically</li>
         <li>Does not replace your IDE, test runner, or production monitoring</li>
-        <li>Does not guarantee a single correct root cause — debug results are ranked hypotheses with verification steps</li>
+        <li>Does not guarantee a single correct root cause — failure investigations rank hypotheses with verification steps</li>
         <li>Does not require an API key for core repository scanning</li>
       </ul>
       <div class="success-buttons">
@@ -1146,7 +1154,7 @@
       <h2>Welcome to Atlas</h2>
       <ol class="onboard-steps">
         <li><b>Load the sample repository</b> — no folder path needed.</li>
-        <li><b>Ask your first repo-aware question</b> — the answer cites real files.</li>
+        <li><b>Run your first repository analysis</b> — the report cites real files.</li>
         <li><b>Connect Claude, Cursor, or Codex</b> — one click writes the MCP config.</li>
         <li><b>Done</b> — your agent has persistent repo memory.</li>
       </ol>
@@ -1191,11 +1199,11 @@
       <h3>Shortcuts</h3>
       <dl class="kv-shortcuts">
         <dt><kbd>Ctrl</kbd>+<kbd>K</kbd></dt><dd>Command palette</dd>
-        <dt><kbd>Ctrl</kbd>+<kbd>Enter</kbd></dt><dd>Submit Ask Atlas question</dd>
+        <dt><kbd>Ctrl</kbd>+<kbd>Enter</kbd></dt><dd>Run repository analysis</dd>
         <dt><kbd>Esc</kbd></dt><dd>Close modal / palette</dd>
         <dt><kbd>H</kbd></dt><dd>Home</dd>
         <dt><kbd>S</kbd></dt><dd>Scan</dd>
-        <dt><kbd>A</kbd></dt><dd>Ask Atlas (repo loaded)</dd>
+        <dt><kbd>A</kbd></dt><dd>Open repository analysis</dd>
         <dt><kbd>?</kbd></dt><dd>This list</dd>
       </dl>
       <div class="success-buttons">
@@ -1231,5 +1239,7 @@
   <script src="atlas_admin.js"></script>
   <script src="atlas_mcp_setup.js"></script>
   <script src="atlas_launch_ux.js"></script>
+  <!-- Ask Atlas report renderer — overrides Ask-only globals after app.js. -->
+  <script src="ask_report.js"></script>
 </body>
 </html>

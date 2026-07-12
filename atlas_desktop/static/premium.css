@@ -1,0 +1,381 @@
+/* =============================================================================
+   Atlas — Premium Experience Layer
+   -----------------------------------------------------------------------------
+   Additive polish loaded AFTER styles.css. Pure presentation: no logic, no
+   markup, no backend coupling. Extends the calm, hairline-driven design language
+   already established by the `.atlas-home` component (the `--atlas-*` tokens) to
+   the rest of the application, and dials back the legacy "neon" treatment so the
+   product reads as a premium desktop app rather than a sci-fi dashboard.
+
+   Organized by the design review tasks:
+     1. Tokens & rhythm          5. Ask Atlas analysis report
+     2. Noise reduction          6. Home refinements
+     3. Buttons & controls       7. Micro-interactions
+     4. Consistency (radii…)     8. Empty / loading / focus states
+   Everything here is reversible by removing the <link> in index.html.
+   ============================================================================ */
+
+/* -----------------------------------------------------------------------------
+   1. TOKENS & RHYTHM
+   A single, restrained scale layered on top of the existing variables so shared
+   components resolve to one language instead of two competing ones.
+   -------------------------------------------------------------------------- */
+:root{
+  /* Unified radii — collapse the 12/14/16/20/22px sprawl into three steps. */
+  --r-sm:8px;      /* chips, pills, small controls */
+  --r-md:10px;     /* buttons, inputs, list rows   */
+  --r-lg:14px;     /* cards, panels                */
+
+  /* Calm elevation — soft, neutral shadows instead of colored glows. */
+  --elev-1:0 1px 2px rgba(2,6,12,.4);
+  --elev-2:0 6px 20px -12px rgba(2,6,12,.7);
+  --elev-3:0 18px 48px -24px rgba(2,6,12,.85);
+
+  /* A readable measure for long-form content (analysis reports). */
+  --measure:70ch;
+
+  /* Standard motion, matching the atlas easing already in use. */
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --dur-1:120ms;
+  --dur-2:180ms;
+}
+
+html{ -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
+
+/* Refined native affordances — small details that signal quality. */
+::selection{ background:rgba(120,169,255,.28); color:#fff; }
+*{ scrollbar-width:thin; scrollbar-color:var(--atlas-line-strong) transparent; }
+*::-webkit-scrollbar{ width:10px; height:10px; }
+*::-webkit-scrollbar-thumb{
+  background:var(--atlas-line-strong); border-radius:99px;
+  border:2px solid transparent; background-clip:content-box;
+}
+*::-webkit-scrollbar-thumb:hover{ background:#465264; background-clip:content-box; }
+
+/* One consistent focus ring everywhere — accessibility + polish. */
+a:focus-visible,button:focus-visible,input:focus-visible,
+textarea:focus-visible,select:focus-visible,summary:focus-visible,
+[tabindex]:focus-visible{
+  outline:2px solid var(--atlas-focus);
+  outline-offset:2px;
+  border-radius:var(--r-sm);
+}
+/* Kill the legacy sci-fi mouse focus outline; keep it only for keyboard users. */
+:focus:not(:focus-visible){ outline:none; }
+
+/* -----------------------------------------------------------------------------
+   2. NOISE REDUCTION
+   Remove decorative glows and neon text-shadows from application chrome and
+   content. The graph/map "universe" stage keeps its glow on purpose — it is a
+   data visualization — so nothing under .graph-stage is touched here.
+   -------------------------------------------------------------------------- */
+.metric .mv,
+.stat b,
+.gauge .gv,
+.hero-title,
+.vh,
+.ds-h1,.ds-h2,.ds-h3{
+  text-shadow:none;
+}
+
+/* Soften the ambient background so content, not the backdrop, carries the eye. */
+#bg-grid{ opacity:.35; }
+#bg-glow{ opacity:.6; }
+
+/* Metrics/stats: keep the accent hue but drop the neon shimmer. */
+.metric{ background:var(--atlas-surface-1); border-color:var(--atlas-line); border-radius:var(--r-md); }
+.metric .mv{ color:var(--atlas-ink-strong); font-weight:650; }
+.metric .ml{ color:var(--atlas-ink-muted); }
+
+/* Repo chip: quieter by default, reveals intent on hover. */
+.repo-chip{
+  color:var(--atlas-ink); background:var(--atlas-surface-1);
+  border-color:var(--atlas-line); border-radius:var(--r-sm);
+  box-shadow:none;
+}
+.repo-chip:hover{ border-color:var(--atlas-line-strong); background:var(--atlas-surface-2); color:var(--atlas-ink-strong); }
+
+/* -----------------------------------------------------------------------------
+   3. BUTTONS & CONTROLS
+   One button system. Primary = solid action color (no glow). Secondary = hairline
+   ghost. Consistent height, radius, and a subtle press interaction.
+   -------------------------------------------------------------------------- */
+.btn{
+  border-radius:var(--r-md);
+  font-weight:560;
+  transition:background var(--dur-1) var(--ease),
+             border-color var(--dur-1) var(--ease),
+             color var(--dur-1) var(--ease),
+             transform var(--dur-1) var(--ease),
+             box-shadow var(--dur-1) var(--ease);
+}
+.btn:active{ transform:translateY(.5px) scale(.995); }
+
+.btn.primary{
+  background:var(--atlas-action);
+  color:var(--atlas-action-ink);
+  border:1px solid var(--atlas-action);
+  box-shadow:var(--elev-1);          /* was: 28px cyan glow */
+  font-weight:650;
+}
+.btn.primary:hover{
+  background:var(--atlas-action-hover);
+  border-color:var(--atlas-action-hover);
+  filter:none;
+  transform:translateY(-1px);
+  box-shadow:var(--elev-2);
+}
+.btn.primary:active{ transform:translateY(0); box-shadow:var(--elev-1); }
+
+.btn.ghost{
+  background:transparent;
+  border:1px solid var(--atlas-line-strong);
+  color:var(--atlas-ink-strong);
+}
+.btn.ghost:hover{ background:var(--atlas-surface-2); border-color:var(--atlas-action); color:var(--atlas-ink-strong); }
+
+.btn.small{ border-radius:var(--r-sm); }
+
+/* Inputs share the button geometry so rows align to one grid. */
+.pick-row input,textarea,.ask-row input,#askInput{
+  border-radius:var(--r-md);
+  border-color:var(--atlas-line-strong);
+  background:var(--atlas-canvas);
+  transition:border-color var(--dur-1) var(--ease), box-shadow var(--dur-1) var(--ease);
+}
+.pick-row input:focus,textarea:focus,.ask-row input:focus,#askInput:focus{
+  border-color:var(--atlas-action);
+  box-shadow:0 0 0 3px rgba(120,169,255,.14);
+}
+
+/* Pills — one shape, semantic color only. */
+.pill{ border-radius:var(--r-sm); font-weight:560; }
+
+/* -----------------------------------------------------------------------------
+   4. CONSISTENCY — RADII
+   Normalize the remaining large radii toward the unified scale.
+   -------------------------------------------------------------------------- */
+.card,.glass,.copilot-card,.copilot-out,.repo-pick,.metrics,.stages{
+  border-radius:var(--r-lg);
+}
+.nav button,.recent-list .rr{ border-radius:var(--r-sm); }
+
+/* Cards: calmer resting state, intentional lift on hover. */
+.card{
+  background:var(--atlas-surface-1);
+  border:1px solid var(--atlas-line);
+  transition:transform var(--dur-2) var(--ease), border-color var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease);
+}
+.card:hover{
+  transform:translateY(-2px);
+  border-color:var(--atlas-line-strong);
+  box-shadow:var(--elev-3);
+}
+
+/* Top navigation: quieter idle, clear single active state. */
+.nav button{ transition:color var(--dur-1) var(--ease), background var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease); }
+.nav button.active{ background:var(--atlas-surface-3); border-color:var(--atlas-line-strong); color:var(--atlas-ink-strong); }
+
+/* -----------------------------------------------------------------------------
+   5. ASK ATLAS — PROFESSIONAL ANALYSIS REPORT
+   The report content is already produced by renderStructuredReportHtml(); this
+   restyles it to read like a real analyst document: strong executive summary,
+   scannable section labels, hairline separators instead of boxes, generous
+   line-height, monospaced file paths, and a clear confidence footer.
+   -------------------------------------------------------------------------- */
+.ask-page{ max-width:900px; }
+.ask-panel{
+  padding:var(--space-6);
+  border-radius:var(--r-lg);
+  background:var(--atlas-surface-1);
+  border:1px solid var(--atlas-line);
+  box-shadow:var(--elev-2);
+}
+.ask-page-head{ padding-bottom:var(--space-4); border-bottom:1px solid var(--atlas-line); margin-bottom:var(--space-5); }
+.ask-page-head .vh{ font-size:22px; color:var(--atlas-ink-strong); }
+.ask-page-head .muted{ color:var(--atlas-ink-muted); }
+
+/* Primary question row — the one obvious action on this screen. */
+.ask-row-primary input{
+  background:var(--atlas-canvas);
+  border:1px solid var(--atlas-line-strong);
+  color:var(--atlas-ink-strong);
+  font-size:16px;
+}
+.ask-row-primary input::placeholder{ color:var(--atlas-ink-muted); }
+
+/* The report card itself: a clean sheet, not a glowing panel. */
+.structured-report,
+.ask-page .copilot-card{
+  background:var(--atlas-surface-1);
+  border:1px solid var(--atlas-line);
+  border-radius:var(--r-lg);
+  box-shadow:none;
+  padding:var(--space-6);
+  color:var(--atlas-ink);
+  font-size:14.5px;
+  line-height:1.65;
+}
+.structured-report.beginner-plan-card{
+  background:var(--atlas-surface-1);           /* was tinted blue gradient */
+  border-color:var(--atlas-line);
+}
+
+/* Report title = document heading. */
+.structured-report .beginner-plan-title{
+  font-size:13px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--atlas-ink-muted);
+  font-weight:650;
+  margin:0 0 var(--space-4);
+}
+
+/* Section rhythm: whitespace + one hairline, no nested borders/boxes. */
+.structured-report .beginner-plan-section{
+  margin:0;
+  padding:var(--space-4) 0;
+  border-top:1px solid var(--atlas-line);
+  max-width:var(--measure);
+}
+.structured-report .beginner-plan-section:first-of-type{ border-top:0; padding-top:0; }
+
+/* Section labels: quiet small-caps eyebrow. */
+.structured-report .report-label,
+.copilot-label{
+  display:block;
+  font-size:11px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--atlas-ink-muted);
+  font-weight:650;
+  margin-bottom:var(--space-2);
+}
+
+/* Executive summary ("Direct answer") — the one line the eye lands on first. */
+.structured-report .beginner-plan-section:first-of-type .report-label{ color:var(--atlas-action); }
+.structured-report .beginner-plan-section:first-of-type p{
+  font-size:17px;
+  line-height:1.5;
+  color:var(--atlas-ink-strong);
+  font-weight:500;
+  margin:0;
+}
+.structured-report p{ color:var(--atlas-ink); margin:0; }
+.structured-report .tiny{ font-size:13px; }
+
+/* Evidence & file lists: clean, no bullets-as-noise, hairline-separated rows. */
+.structured-report ul.clean,
+.structured-report ol.clean{
+  margin:0; padding:0; list-style:none;
+  display:flex; flex-direction:column; gap:var(--space-3);
+}
+.structured-report ul.clean li,
+.structured-report ol.clean li{
+  position:relative;
+  padding-left:var(--space-4);
+  color:var(--atlas-ink);
+}
+.structured-report ul.clean li::before{
+  content:""; position:absolute; left:0; top:.62em;
+  width:5px; height:5px; border-radius:50%;
+  background:var(--atlas-action);
+}
+.structured-report ol.clean{ counter-reset:step; }
+.structured-report ol.clean li{ counter-increment:step; }
+.structured-report ol.clean li::before{
+  content:counter(step);
+  position:absolute; left:0; top:.05em;
+  font:650 11px/1.4 ui-monospace,Consolas,monospace;
+  color:var(--atlas-ink-muted);
+}
+.structured-report .mono,
+.structured-report .beginner-plan-section .mono{
+  font:600 13px ui-monospace,Consolas,monospace;
+  color:var(--atlas-ink-strong);
+}
+.structured-report .muted{ color:var(--atlas-ink-muted); }
+
+/* "What cannot be concluded" — honest limits, gently flagged not alarming. */
+.structured-report .beginner-plan-section:has(.report-label){}
+.structured-report .report-label + ul.clean li::before{ background:var(--atlas-stale); }
+
+/* Confidence footer reads as a signed conclusion. */
+.structured-report .beginner-plan-section:last-child{
+  margin-top:var(--space-2);
+  border-top:1px solid var(--atlas-line-strong);
+}
+.structured-report .beginner-plan-section:last-child .report-label{ color:var(--atlas-ink-muted); }
+
+/* Copilot card chrome (mode/risk/labels/answer) aligned to the same language. */
+.copilot-card-head{ gap:var(--space-2); margin-bottom:var(--space-4); }
+.copilot-answer{ color:var(--atlas-ink); line-height:1.65; }
+.copilot-out{
+  background:var(--atlas-canvas-soft);
+  border:1px solid var(--atlas-line);
+  border-radius:var(--r-md);
+  color:var(--atlas-ink-muted);
+}
+.copilot-more summary{ color:var(--atlas-ink-muted); cursor:pointer; }
+.copilot-more summary:hover{ color:var(--atlas-ink-strong); }
+
+/* -----------------------------------------------------------------------------
+   6. HOME REFINEMENTS
+   The atlas-home component is already strong; these are light touches so its
+   status facts read as trustworthy data and freshness state is unmistakable.
+   -------------------------------------------------------------------------- */
+.atlas-home-facts dd,
+.atlas-home-compact-facts dd{ color:var(--atlas-ink-strong); }
+.atlas-home-facts dt{ letter-spacing:.02em; }
+.atlas-home-state-label.is-fresh{ color:var(--atlas-success); font-weight:650; }
+.atlas-home-state-label.is-stale{ color:var(--atlas-stale); font-weight:650; }
+
+/* Primary ask box on the productive home = the single primary CTA. */
+.atlas-home-ask input:focus{ border-color:var(--atlas-action); box-shadow:0 0 0 3px rgba(120,169,255,.14); }
+
+/* -----------------------------------------------------------------------------
+   7. MICRO-INTERACTIONS
+   Subtle, fast, consistent. Nothing bounces; everything settles.
+   -------------------------------------------------------------------------- */
+.view.active{ animation:premium-view-in var(--dur-2) var(--ease); }
+@keyframes premium-view-in{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:none; } }
+
+.recent-list .rr,.tag{ transition:border-color var(--dur-1) var(--ease), background var(--dur-1) var(--ease), color var(--dur-1) var(--ease); }
+.recent-list .rr:hover,.tag:hover{ border-color:var(--atlas-line-strong); color:var(--atlas-ink-strong); }
+
+/* Loading: a calm shimmer instead of a static line. */
+.copilot-loading{
+  color:var(--atlas-ink-muted);
+  position:relative; padding-left:22px;
+}
+.copilot-loading::before{
+  content:""; position:absolute; left:0; top:50%; margin-top:-7px;
+  width:14px; height:14px; border-radius:50%;
+  border:2px solid var(--atlas-line-strong);
+  border-top-color:var(--atlas-action);
+  animation:premium-spin .7s linear infinite;
+}
+@keyframes premium-spin{ to{ transform:rotate(360deg); } }
+
+/* Respect reduced-motion preferences. */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{ animation-duration:.001ms !important; transition-duration:.001ms !important; }
+}
+
+/* -----------------------------------------------------------------------------
+   8. EMPTY / SUGGESTION STATES
+   Make suggested prompts feel like affordances, not decoration.
+   -------------------------------------------------------------------------- */
+.suggest .sg,.ask-suggestions .sg{
+  border-radius:var(--r-sm);
+  border:1px solid var(--atlas-line);
+  background:var(--atlas-surface-1);
+  color:var(--atlas-ink);
+  transition:border-color var(--dur-1) var(--ease), background var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
+}
+.suggest .sg:hover,.ask-suggestions .sg:hover{
+  border-color:var(--atlas-action);
+  background:var(--atlas-surface-2);
+  color:var(--atlas-ink-strong);
+  transform:translateY(-1px);
+}

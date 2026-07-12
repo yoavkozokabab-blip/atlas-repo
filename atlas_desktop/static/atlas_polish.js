@@ -32,7 +32,7 @@ function promptFirstBuildPlanAfterScan(scan) {
   try { done = localStorage.getItem(FIRST_BUILD_KEY) === "1"; } catch (e) {}
   if (done) return;
   if (typeof toast === "function") {
-    toast("Next: ask Atlas about the repository.", "success");
+    toast("Repository evidence is ready for analysis.", "success");
   }
 }
 
@@ -54,7 +54,7 @@ function renderScanReliabilityNotice(scan) {
   host.innerHTML = `<div class="product-notice warn">
     <b>Scan note</b>
     <ul class="clean tiny">${items.map(w => `<li>${escPolish(w)}</li>`).join("")}</ul>
-    <p class="muted tiny">You can still use Plan Change and What breaks? — results may list fewer grounded files. Try a narrower scan scope if this is your own repo.</p>
+    <p class="muted tiny">You can still build an Implementation Plan or run Change Impact analysis, but results may contain fewer grounded files. Try a narrower scan scope if this is your own repository.</p>
   </div>`;
 }
 

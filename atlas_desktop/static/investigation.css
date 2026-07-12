@@ -1,0 +1,389 @@
+/* Atlas engineering-investigation language.
+   Presentation only: existing routes, handlers, state, and endpoints remain authoritative. */
+
+.analysis-workspace {
+  width: min(100%, var(--atlas-content-max, 1120px));
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-4) var(--space-8, 64px);
+}
+
+.workspace-head {
+  display: block;
+  margin: 0 0 var(--space-6);
+  padding: 0 0 var(--space-5);
+  border-bottom: 1px solid var(--atlas-line, #252c35);
+}
+
+.workspace-head .vh {
+  margin: 0;
+  color: var(--atlas-ink-strong, #f3f6fb);
+  font-size: 30px;
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+
+.workspace-head > div > .vh { margin: 0; }
+.workspace-head .muted,
+.workspace-head > div > .muted {
+  max-width: 760px;
+  margin: var(--space-3) 0 0;
+  color: var(--atlas-ink, #c3cbd6);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.workspace-head .tiny { color: var(--atlas-ink-muted, #8994a3); }
+.workspace-kicker {
+  margin: 0 0 var(--space-2);
+  color: var(--atlas-action, #78a9ff);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.investigation-label,
+.investigation-input > label {
+  display: block;
+  margin: 0 0 var(--space-2);
+  color: var(--atlas-ink-muted, #8994a3);
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.analysis-workspace .investigation-input,
+.analysis-workspace .io.investigation-input {
+  width: 100%;
+  max-width: none;
+  margin: 0 0 var(--space-4);
+  padding: var(--space-5);
+  border: 1px solid var(--atlas-line-strong, #36404d);
+  border-radius: var(--atlas-radius, 7px);
+  background: var(--atlas-surface-1, #12161b);
+  box-shadow: none;
+}
+
+.analysis-workspace .investigation-input input,
+.analysis-workspace .investigation-input textarea {
+  width: 100%;
+  border-color: var(--atlas-line-strong, #36404d);
+  border-radius: var(--atlas-radius, 7px);
+  background: var(--atlas-canvas, #090b0e);
+  color: var(--atlas-ink-strong, #f3f6fb);
+  box-shadow: none;
+}
+
+.analysis-workspace .investigation-input textarea {
+  min-height: 112px;
+  resize: vertical;
+  line-height: 1.55;
+}
+
+.analysis-workspace .investigation-input .btn.primary,
+.analysis-workspace .io.investigation-input > .btn.primary {
+  width: fit-content;
+  margin-top: var(--space-3);
+}
+
+.ask-page.analysis-workspace { max-width: var(--atlas-content-max, 1120px); }
+.ask-page .ask-panel,
+.ask-page .ask-copilot {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.ask-page .ask-page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-5);
+}
+
+.ask-page .investigation-label { margin-top: var(--space-2); }
+.ask-page .ask-row-primary.investigation-input {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-3);
+  padding: var(--space-4);
+}
+
+.ask-page .ask-row-primary.investigation-input .btn { margin: 0; }
+.ask-suggestions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 var(--space-5);
+  margin: var(--space-4) 0 var(--space-6);
+  border-top: 1px solid var(--atlas-line, #252c35);
+}
+
+.ask-suggestions .sg,
+.ask-page .ask-suggestions .sg {
+  min-height: 44px;
+  padding: var(--space-3) 0;
+  border: 0;
+  border-bottom: 1px solid var(--atlas-line, #252c35);
+  border-radius: 0;
+  background: transparent;
+  color: var(--atlas-ink, #c3cbd6);
+  box-shadow: none;
+  transform: none;
+}
+
+.ask-suggestions .sg:hover {
+  border-color: var(--atlas-line-strong, #36404d);
+  background: transparent;
+  color: var(--atlas-ink-strong, #f3f6fb);
+  transform: none;
+}
+
+.ask-page .axr-empty {
+  max-width: 920px;
+  margin-top: var(--space-6);
+}
+
+.ask-page .axr-empty-lead {
+  max-width: 720px;
+  color: var(--atlas-ink, #c3cbd6);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.ask-page .axr-empty-caps {
+  display: flex;
+  gap: var(--space-4);
+  margin: var(--space-5) 0 var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--atlas-line, #252c35);
+}
+
+.ask-page .axr-empty-caps span {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--atlas-ink-muted, #8994a3);
+  font-size: 11px;
+  letter-spacing: 0;
+}
+
+.ask-page .axr-eg-grid {
+  display: block;
+  border-top: 1px solid var(--atlas-line, #252c35);
+}
+
+.ask-page .axr-eg {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-4);
+  width: 100%;
+  min-height: 58px;
+  padding: var(--space-3) 0;
+  border: 0;
+  border-bottom: 1px solid var(--atlas-line, #252c35);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  text-align: left;
+  transform: none;
+}
+
+.ask-page .axr-eg:hover {
+  border-color: var(--atlas-line-strong, #36404d);
+  background: transparent;
+  transform: none;
+}
+
+.ask-page .axr-eg-ico { display: none; }
+.ask-page .axr-eg-body { min-width: 0; }
+.ask-page .axr-eg-q { color: var(--atlas-ink-strong, #f3f6fb); font-size: 13.5px; }
+.ask-page .axr-eg-h { margin-top: var(--space-1); color: var(--atlas-ink-muted, #8994a3); font-size: 12px; }
+.ask-page .axr-eg-go {
+  align-self: center;
+  color: var(--atlas-action, #78a9ff);
+  font-size: 0;
+  font-weight: 650;
+}
+.ask-page .axr-eg-go::after { content: "Run"; font-size: 11px; text-transform: uppercase; }
+
+.ask-page .copilot-loading {
+  margin: var(--space-5) 0;
+  padding: var(--space-4) var(--space-4) var(--space-4) 42px;
+  border-top: 1px solid var(--atlas-line, #252c35);
+  border-bottom: 1px solid var(--atlas-line, #252c35);
+  background: transparent;
+}
+
+.ask-page .copilot-card,
+.ask-page .axr-card {
+  border-radius: var(--atlas-radius, 7px);
+  box-shadow: none;
+}
+
+.ask-page .axr-ev-card,
+.ask-page .axr-file-card,
+.ask-page .axr-cmp-col,
+.ask-page .axr-stat {
+  border-radius: var(--atlas-radius-sm, 4px);
+  box-shadow: none;
+}
+
+.analysis-workspace .workflow-toolbar {
+  justify-content: flex-end;
+  margin: var(--space-3) 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.analysis-workspace .out {
+  width: 100%;
+  max-width: none;
+  margin-top: var(--space-5);
+}
+
+.analysis-workspace .out > .glass,
+.analysis-workspace .out .report-section,
+.analysis-workspace .out .domain-panel,
+.analysis-workspace .out .trust-block {
+  border-radius: var(--atlas-radius, 7px);
+  box-shadow: none;
+}
+
+.analysis-workspace .out .report-section {
+  margin: 0;
+  padding: var(--space-5) 0;
+  border: 0;
+  border-top: 1px solid var(--atlas-line, #252c35);
+  background: transparent;
+}
+
+.analysis-workspace .out .report-label,
+.analysis-workspace .out .copilot-label {
+  color: var(--atlas-ink-muted, #8994a3);
+  letter-spacing: 0;
+}
+
+.analysis-workspace .workflow-ready-state {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.55fr);
+  gap: 28px;
+  padding: 18px 0;
+  border-top: 1px solid var(--atlas-line, #252c35);
+  border-bottom: 1px solid var(--atlas-line, #252c35);
+}
+
+.analysis-workspace .workflow-ready-state h3 {
+  margin: 5px 0 6px;
+  font-size: 15px;
+}
+
+.analysis-workspace .workflow-ready-state p {
+  margin: 0;
+  color: var(--atlas-ink-muted, #8994a3);
+  line-height: 1.55;
+}
+
+.analysis-workspace .workflow-ready-state dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+
+.analysis-workspace .workflow-ready-state dl div { min-width: 0; }
+.analysis-workspace .workflow-ready-state dt {
+  color: var(--atlas-ink-muted, #8994a3);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+.analysis-workspace .workflow-ready-state dd {
+  margin: 5px 0 0;
+  overflow: hidden;
+  color: var(--atlas-ink-strong, #f3f6fb);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Repository indexing is evidence preparation, not onboarding marketing. */
+.scan-page .scan-hero,
+.scan-progress-panel,
+.scan-result {
+  border-radius: var(--atlas-radius, 7px);
+  background: var(--atlas-canvas-soft, #0d1014);
+  box-shadow: none;
+}
+
+.scan-page .scan-hero {
+  padding: var(--space-6) 0;
+  border: 0;
+  border-bottom: 1px solid var(--atlas-line, #252c35);
+  background: transparent;
+}
+
+.scan-page .scan-local-panel,
+.scan-page .recent-compact {
+  border-radius: var(--atlas-radius, 7px);
+  box-shadow: none;
+}
+
+/* Architecture Map: preserve the graph, quiet the surrounding chrome. */
+.center-grid > .panel,
+.map-metrics,
+.graph-toolbar,
+.graph-legend,
+.timeline-panel,
+.module-browse-panel {
+  border-radius: var(--atlas-radius, 7px);
+  box-shadow: none;
+}
+
+.map-ask-cta {
+  margin-top: var(--space-5);
+  padding: var(--space-5) 0 0;
+  border: 0;
+  border-top: 1px solid var(--atlas-line, #252c35);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.map-ask-cta .btn { width: 100%; }
+
+/* Agent handoff reads as a packaging tool, not a prompt playground. */
+#view-export .export-grid { align-items: start; }
+#view-export .controls,
+#view-export .preview {
+  border-radius: var(--atlas-radius, 7px);
+  box-shadow: none;
+}
+
+#view-export .preview-head,
+#view-export .export-why-title { color: var(--atlas-ink-strong, #f3f6fb); }
+
+@media (max-width: 860px) {
+  .analysis-workspace { padding: var(--space-4) var(--space-3) var(--space-7); }
+  .analysis-workspace .workflow-ready-state { grid-template-columns: 1fr; }
+  .app-build-marker {
+    position: static;
+    display: block;
+    padding: 10px 16px;
+    text-align: right;
+  }
+  .ask-page .ask-page-head { flex-direction: column; }
+  .ask-page .ask-row-primary.investigation-input { grid-template-columns: 1fr; }
+  .ask-page .ask-row-primary.investigation-input .btn { width: 100%; }
+  .ask-suggestions { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .analysis-workspace *,
+  .analysis-workspace *::before,
+  .analysis-workspace *::after { scroll-behavior: auto !important; }
+}

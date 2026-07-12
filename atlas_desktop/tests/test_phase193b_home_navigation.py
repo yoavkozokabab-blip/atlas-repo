@@ -61,7 +61,7 @@ def test_primary_nav_has_only_core_workflows():
     labels = re.findall(r'data-view="([^"]+)".*?>([^<]+)</button>', nav)
     assert [view for view, _ in labels] == list(expected)
     assert [label for _, label in labels] == [
-        "Home", "Scan", "HN demo", "Ask Atlas", "Debug", "Impact", "Plan Change", "Map"
+        "Home", "Scan", "HN demo", "Ask", "Debug", "Impact", "Plan", "Map"
     ]
 
 

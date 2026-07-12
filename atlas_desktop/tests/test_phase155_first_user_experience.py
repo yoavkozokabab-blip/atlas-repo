@@ -35,10 +35,10 @@ def _read(path: Path) -> str:
 def test_first_launch_shows_task_oriented_first_actions():
     html = _read(INDEX)
     home = html.split('id="homeDashboard"', 1)[1].split('<!-- Section 2', 1)[0]
-    assert "Scan local repository" in home
-    assert "Load sample repository" in home
-    assert "Give Claude Code and Cursor repo memory" in home
-    assert "See cited files" in home
+    assert "Scan a local repository" in home
+    assert "Try the sample repository" in home
+    assert "Give your coding agents persistent repo context" in home
+    assert "graph, evidence, and memory" in home
     assert "Guided Walkthrough" not in home
 
 
@@ -62,7 +62,7 @@ def test_advanced_surfaces_are_deemphasized():
 def test_sample_repo_cta_exists():
     html = _read(INDEX)
     assert "Load sample repository" in html
-    assert "Ask Atlas" in html
+    assert "Repository Analysis" in html
     assert 'id="scanSuccessTitle"' in html
 
 
@@ -84,9 +84,9 @@ def test_sample_routes_to_ask_atlas_with_prompt():
 def test_scan_success_cta_exists():
     html = _read(INDEX)
     block = html.split('id="scanSuccess"', 1)[1].split("</section>", 1)[0]
-    assert "Ask first question" in block
+    assert "Analyze repository" in block
     assert "Open Map" in block
-    assert "Plan a change" in block
+    assert "Open Map" in block
 
 
 # --------------------------------------------------------------------------- #
@@ -94,11 +94,11 @@ def test_scan_success_cta_exists():
 # --------------------------------------------------------------------------- #
 def test_export_to_ai_buttons_exist():
     js = _read(ZERO_FRICTION)
-    assert "Copy for Claude" in js
-    assert "Copy for Cursor" in js
-    assert "Copy for Codex" in js
+    assert "Copy Claude handoff" in js
+    assert "Copy Cursor handoff" in js
+    assert "Copy Codex handoff" in js
     assert "Download Markdown" in js
-    assert "Paste into Claude, Cursor, or Codex and ask it to implement" in js
+    assert "Review the evidence package" in js
 
 
 def test_send_to_ai_panel_wired_into_workflows():
@@ -142,10 +142,11 @@ def test_frozen_launch_routes_failures_to_support_not_traceback():
 def test_nav_uses_plain_language_labels():
     html = _read(INDEX)
     nav = html[html.find('<nav class="nav"'): html.find("</nav>", html.find('<nav class="nav"'))]
-    assert ">Ask Atlas<" in nav
-    assert ">Plan Change<" in nav
+    assert ">Ask<" in nav
+    assert ">Debug<" in nav
+    assert ">Plan<" in nav
     assert ">Map<" in nav
-    assert ">What breaks?<" in html
+    assert ">Impact<" in nav
     assert ">Repository Context<" not in nav
 
 

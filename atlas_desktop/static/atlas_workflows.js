@@ -119,7 +119,7 @@ function impactResultMarkdown(r) {
   if (!r || !r.ok) return "";
   if (r.formatted) return r.formatted;
   const lines = [
-    `# What breaks if ${r.target || "this module"} changes`,
+    `# Change impact: ${r.target || "this module"}`,
     "",
     `- Risk: ${r.risk_level || "unknown"}`,
     `- Confidence: ${r.confidence || "medium"}`,
@@ -149,19 +149,19 @@ function buildWorkflowMarkdownBundle() {
     "",
   ];
   if (STATE.buildResult && STATE.buildResult.ok) {
-    parts.push("---", "", "## Plan Change", "", STATE.buildResult.formatted || "(no markdown body)", "");
+    parts.push("---", "", "## Implementation Plan", "", STATE.buildResult.formatted || "(no markdown body)", "");
   } else {
-    parts.push("## Plan Change", "", "_Not generated in this session._", "");
+    parts.push("## Implementation Plan", "", "_Not generated in this session._", "");
   }
   if (STATE.investigateResult && STATE.investigateResult.ok) {
-    parts.push("---", "", "## Debug", "", STATE.investigateResult.formatted || "(no markdown body)", "");
+    parts.push("---", "", "## Failure Investigation", "", STATE.investigateResult.formatted || "(no markdown body)", "");
   } else {
-    parts.push("## Debug", "", "_Not generated in this session._", "");
+    parts.push("## Failure Investigation", "", "_Not generated in this session._", "");
   }
   if (STATE.impactResult && STATE.impactResult.ok) {
     parts.push("---", "", impactResultMarkdown(STATE.impactResult), "");
   } else {
-    parts.push("## What breaks?", "", "_Not generated in this session._", "");
+    parts.push("## Change Impact", "", "_Not generated in this session._", "");
   }
   return parts.join("\n");
 }
@@ -269,11 +269,11 @@ function maybeShowWelcomeScreen() {
 const GUIDED_STEPS = [
   { title: "Welcome", text: "Atlas gives your AI coding tools local repository memory. It maps code locally and does not write patches for you.", action: null },
   { title: "Sample repository", text: "We'll load a bundled sample so you can explore without cloning anything.", action: "load_sample" },
-  { title: "Ask Atlas", text: "Press Send on the prefilled auth-file question. Answers use the local repository map and cite relevant files.", view: "ask", action: "ask_example" },
+  { title: "Repository Analysis", text: "Run the prepared authentication investigation. The report uses the local repository map and cites relevant files.", view: "ask", action: "ask_example" },
   { title: "Repository Map", text: "The map shows modules, dependencies, and architectural risk. Click nodes to inspect them.", view: "center", action: "wait_map" },
-  { title: "Plan Change", text: "Describe a change to get affected files, order, and tests. You implement the change, or paste the prompt into Claude/Cursor.", view: "build", action: "build_example" },
-  { title: "Debug", text: "Paste a symptom or traceback. Atlas ranks likely causes and verification steps.", view: "investigate", action: "investigate_example" },
-  { title: "What breaks?", text: "Enter a file or module to see what depends on it before you edit.", view: "impact", action: "impact_example" },
+  { title: "Implementation Plan", text: "Define a change to identify affected files, implementation order, tests, and delivery risks.", view: "build", action: "build_example" },
+  { title: "Failure Investigation", text: "Provide a symptom or traceback. Atlas ranks likely causes and verification steps.", view: "investigate", action: "investigate_example" },
+  { title: "Change Impact", text: "Select a file or module to trace direct and transitive consequences before editing.", view: "impact", action: "impact_example" },
   { title: "You're ready", text: "Scan your own repository from Scan, or keep exploring the sample. Use Report Issue if something breaks.", action: "done" },
 ];
 

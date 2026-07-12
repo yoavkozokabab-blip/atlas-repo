@@ -35,8 +35,8 @@ def test_polish_ui_markers():
     app = (STATIC / "app.js").read_text(encoding="utf-8")
     polish = (STATIC / "atlas_polish.js").read_text(encoding="utf-8")
     support = (STATIC / "support.html").read_text(encoding="utf-8")
-    assert "Plan Change" in html
-    assert "Ask Atlas" in html
+    assert "Implementation Plan" in html
+    assert "Repository Analysis" in html
     assert "goToFirstBuildPlan" in html
     assert "promptFirstBuildPlanAfterScan" in polish
     assert "friendlyValidateMessage" in polish

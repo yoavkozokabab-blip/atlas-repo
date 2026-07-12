@@ -34,10 +34,10 @@ def test_primary_nav_matches_launch_order_and_hides_context_export():
         ("home", "Home"),
         ("scan", "Scan"),
         ("hn", "HN demo"),
-        ("ask", "Ask Atlas"),
+        ("ask", "Ask"),
         ("investigate", "Debug"),
         ("impact", "Impact"),
-        ("build", "Plan Change"),
+        ("build", "Plan"),
         ("center", "Map"),
     ]
     assert "Repository Context" not in nav
@@ -62,7 +62,7 @@ def test_hn_demo_page_exists():
     assert "Try Atlas in 30 seconds" in hn
     assert "Load sample repository" in hn
     assert "startHnDemo" in hn
-    assert "See cited files" in hn
+    assert "Inspect evidence" in hn
     assert "function startHnDemo" in APP_JS
 
 
@@ -77,7 +77,7 @@ def test_scan_is_repository_loading_surface():
 def test_ask_atlas_page_has_real_prompt_flow_and_empty_state():
     ask = _section("ask")
     assert 'id="askInput"' in ask
-    assert "Ask about this repository" in ask
+    assert "Investigation brief" in ask
     assert 'id="copilotEvidence"' in ask
     assert 'id="copilotFiles"' in ask
     for prompt in (
@@ -98,7 +98,7 @@ def test_sample_and_real_scans_route_to_ask_atlas():
     assert "function routeToAskAfterScan" in APP_JS
     assert 'go("ask")' in APP_JS
     assert "primeAskAtlasPrompt(scan)" in APP_JS
-    assert "Ask your first question" in APP_JS
+    assert "Define an investigation or choose a template" in APP_JS
 
 
 def test_sample_first_question_returns_cited_files():
@@ -123,9 +123,9 @@ def test_sample_first_question_returns_cited_files():
 
 def test_repo_required_pages_have_useful_empty_states():
     for view, explanation in {
-        "build": "Plan Change needs indexed files",
-        "investigate": "Debug needs the repository map",
-        "impact": "Impact needs a dependency graph",
+        "build": "Implementation planning needs indexed files",
+        "investigate": "Failure investigation needs repository evidence",
+        "impact": "Change impact needs a dependency graph",
     }.items():
         section = _section(view)
         assert "Scan a repository first" in section

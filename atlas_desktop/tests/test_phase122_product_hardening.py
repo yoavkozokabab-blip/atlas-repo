@@ -34,11 +34,11 @@ def test_simplified_nav_labels():
     # Phase 155 — nav labels were de-jargoned for first-time users.
     html = INDEX.read_text(encoding="utf-8")
     for label in (
-        "Ask Atlas",
-        "Plan Change",
-        "Debug",
-        "What breaks?",
-        "Advanced context export",
+        "Repository Analysis",
+        "Implementation Plan",
+        "Failure Investigation",
+        "Change Impact",
+        "Agent Handoff",
     ):
         assert label in html
     nav = html[html.find('<nav class="nav"'): html.find("</nav>", html.find('<nav class="nav"'))]

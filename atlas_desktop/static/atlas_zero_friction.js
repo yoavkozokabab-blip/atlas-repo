@@ -254,7 +254,7 @@ async function copyForAi(tool, kind) {
   }
   let ok = false;
   if (typeof copyText === "function") {
-    ok = await copyText(text, `Copied prompt for ${ZF_TOOL_LABEL[tool] || tool}`);
+    ok = await copyText(text, `Copied engineering handoff for ${ZF_TOOL_LABEL[tool] || tool}`);
   }
   if (ok && typeof toast === "function") {
     toast("Paste into Claude and ask it to implement step by step", "success");
@@ -313,14 +313,26 @@ function renderStructuredReportHtml(report, title) {
     if (v.rules_out) line += `<div class="muted tiny">Rules out if: ${esc(v.rules_out)}</div>`;
     return line + "</li>";
   }).join("");
+  // Optional analysis-document sections (backward compatible; only rendered
+  // when the report supplies them).
+  const reasoning = report.reasoning
+    ? `<div class="beginner-plan-section"><span class="report-label">Reasoning</span><p class="tiny">${esc(report.reasoning)}</p></div>` : "";
+  const cannot = (report.cannot_conclude || []).filter(Boolean);
+  const cannotHtml = cannot.length
+    ? `<div class="beginner-plan-section"><span class="report-label">What cannot be concluded</span><ul class="clean tiny">${cannot.map(function (c) { return `<li>${esc(c)}</li>`; }).join("")}</ul></div>` : "";
+  const nextAction = report.next_action
+    ? `<div class="beginner-plan-section"><span class="report-label">Suggested next action</span><p class="tiny">${esc(report.next_action)}</p></div>` : "";
   return `<div class="beginner-plan-card glass structured-report">
     <h3 class="beginner-plan-title">${esc(title || "Analysis")}</h3>
-    <div class="beginner-plan-section"><span class="report-label">Executive summary</span><p>${esc(report.executive_summary || "")}</p></div>
-    <div class="beginner-plan-section"><span class="report-label">Confidence</span><p>${esc(conf.level || "Low")} · Evidence: ${esc(conf.evidence_strength || "Weak")}<span class="muted tiny">${conf.reason ? " — " + esc(conf.reason) : ""}</span></p></div>
+    <div class="beginner-plan-section"><span class="report-label">Direct answer</span><p>${esc(report.executive_summary || "")}</p></div>
     ${dir.title ? `<div class="beginner-plan-section"><span class="report-label">${esc(dir.title)}</span></div>` : ""}${dirItems}
+    ${reasoning}
     ${evidence ? `<div class="beginner-plan-section"><span class="report-label">Evidence</span><ul class="clean tiny">${evidence}</ul></div>` : ""}
-    ${ranked ? `<div class="beginner-plan-section"><span class="report-label">Ranked files</span><ol class="clean tiny">${ranked}</ol></div>` : ""}
+    ${ranked ? `<div class="beginner-plan-section"><span class="report-label">Relevant files</span><ol class="clean tiny">${ranked}</ol></div>` : ""}
+    ${cannotHtml}
     ${verify ? `<div class="beginner-plan-section"><span class="report-label">Verification steps</span><ol class="clean tiny">${verify}</ol></div>` : ""}
+    ${nextAction}
+    <div class="beginner-plan-section"><span class="report-label">Confidence</span><p class="tiny">${esc(conf.level || "Low")} · ${esc(conf.evidence_strength || "Weak")} evidence${conf.reason ? " — " + esc(conf.reason) : ""}</p></div>
   </div>`;
 }
 
@@ -328,7 +340,7 @@ function beginnerPlanHero(plan, kind) {
   if (typeof getOutputMode === "function" && getOutputMode() === "advanced") return pinnedCopyForClaude(kind);
   const stateResult = (window.STATE && kind === "build" && STATE.buildResult) ? STATE.buildResult : null;
   if (stateResult && stateResult.report) {
-    return renderStructuredReportHtml(stateResult.report, "Plan Change") + sendToAiPanel(kind, true);
+    return renderStructuredReportHtml(stateResult.report, "Implementation Plan") + sendToAiPanel(kind, true);
   }
   const p = plan || {};
   const goal = p.change_goal || p.goal || (document.getElementById("buildRequest") && document.getElementById("buildRequest").value) || "Your change";
@@ -351,7 +363,7 @@ function beginnerInvestigateHero(plan) {
   if (typeof getOutputMode === "function" && getOutputMode() === "advanced") return pinnedCopyForClaude("investigate");
   const stateResult = (window.STATE && STATE.investigateResult) ? STATE.investigateResult : null;
   if (stateResult && stateResult.report) {
-    return renderStructuredReportHtml(stateResult.report, "Debug analysis") + sendToAiPanel("investigate", true);
+    return renderStructuredReportHtml(stateResult.report, "Failure Investigation") + sendToAiPanel("investigate", true);
   }
   const p = plan || {};
   const goal = p.symptom_summary || p.symptom || (document.getElementById("investigateSymptom") && document.getElementById("investigateSymptom").value) || "Your symptom";
@@ -359,7 +371,7 @@ function beginnerInvestigateHero(plan) {
   const files = zfList(hyps.flatMap(function (h) { return h.files_involved || []; }), 5);
   const order = zfList(p.verification_checklist || p.minimal_fix_strategy, 5);
   return `<div class="beginner-plan-card glass" data-kind="investigate">
-    <h3 class="beginner-plan-title">Debug result</h3>
+    <h3 class="beginner-plan-title">Failure Investigation</h3>
     <div class="beginner-plan-section"><span class="report-label">Symptom</span><p>${_zfEsc(goal)}</p></div>
     <div class="beginner-plan-section"><span class="report-label">Files</span><ul class="clean tiny">${files.length ? files.map(f => `<li>${_zfEsc(f)}</li>`).join("") : "<li class='muted'>Add a file path or error message for better grounding</li>"}</ul></div>
     <div class="beginner-plan-section"><span class="report-label">How to confirm</span><ol class="clean tiny">${order.length ? order.map(s => `<li>${_zfEsc(s)}</li>`).join("") : "<li class='muted'>Switch to Full detail for ranked hypotheses</li>"}</ol></div>
@@ -388,19 +400,19 @@ function beginnerImpactHero(result) {
 
 /* ---------------- the panel ---------------- */
 function sendToAiPanel(kind, insideBeginner) {
-  const extra = insideBeginner ? "" : `<p class="muted tiny">Includes everything Claude needs. Paste once per new chat.</p>`;
-  const memNote = `<p class="muted tiny memory-export-note">Sends a compact repository summary plus this plan — not your whole codebase.</p>`;
+  const extra = insideBeginner ? "" : `<p class="muted tiny">A bounded engineering handoff for the selected coding agent.</p>`;
+  const memNote = `<p class="muted tiny memory-export-note">Includes a compact repository summary, evidence, and plan — not source bodies.</p>`;
   return `<div class="send-to-ai glass" data-kind="${kind}">
-    <h3 class="send-to-ai-title">${insideBeginner ? "Copy for Claude" : "Copy for your AI tool"}</h3>
+    <h3 class="send-to-ai-title">${insideBeginner ? "Claude handoff" : "Agent handoff"}</h3>
     ${extra}
     ${memNote}
     <div class="copy-row copy-row-primary">
-      <button class="btn primary${insideBeginner ? " big" : " small"}" type="button" onclick="copyForAi('claude','${kind}')">Copy for Claude</button>
-      <button class="btn small" type="button" onclick="copyForAi('cursor','${kind}')">Copy for Cursor</button>
-      <button class="btn small" type="button" onclick="copyForAi('codex','${kind}')">Copy for Codex</button>
+      <button class="btn primary${insideBeginner ? " big" : " small"}" type="button" onclick="copyForAi('claude','${kind}')">Copy Claude handoff</button>
+      <button class="btn small" type="button" onclick="copyForAi('cursor','${kind}')">Copy Cursor handoff</button>
+      <button class="btn small" type="button" onclick="copyForAi('codex','${kind}')">Copy Codex handoff</button>
       <button class="btn ghost small advanced-only" type="button" onclick="downloadAiMarkdown('${kind}')">Download Markdown</button>
     </div>
-    <p class="muted tiny send-to-ai-next">Paste into Claude, Cursor, or Codex and ask it to implement step by step.</p>
+    <p class="muted tiny send-to-ai-next">Review the evidence package, then provide it to the coding agent responsible for implementation.</p>
   </div>`;
 }
 
@@ -437,7 +449,7 @@ function afterChangePlanSuccess() {
   try { localStorage.setItem(ZF_READY_KEY, "1"); } catch (e) {}
   host.innerHTML = `<div class="ready-state glass">
     <h2 class="ready-title">You're ready.</h2>
-    <p class="muted">Atlas turned a request into a grounded plan. Send it to your AI coding tool and start implementing.</p>
+    <p class="muted">Atlas produced a grounded implementation plan with repository evidence. Review it, then hand it to the responsible coding agent.</p>
     <div class="copy-row">
       <button class="btn primary big" type="button" onclick="copyForAi('claude','build')">Copy for Claude</button>
       <button class="btn small" type="button" onclick="copyForAi('cursor','build')">Copy for Cursor</button>

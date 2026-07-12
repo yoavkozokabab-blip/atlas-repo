@@ -452,7 +452,8 @@ class TestUIStructure:
     def test_export_why_section_present(self):
         html = _html()
         assert 'class="export-why"' in html
-        assert "Advanced context export" in html
+        assert "Agent Handoff" in html
+        assert "Evidence package" in html
 
     def test_graph_legend_present(self):
         html = _html()

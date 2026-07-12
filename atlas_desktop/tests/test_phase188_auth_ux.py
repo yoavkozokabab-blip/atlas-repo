@@ -139,9 +139,9 @@ def test_phase188_license_gating_disables_workflow_buttons():
     protected_labels = [
         "Load sample repository",
         "Scan local repository",
-        "Create plan",
-        "Analyze symptom",
-        "Show what breaks",
+        "Build implementation plan",
+        "Investigate failure",
+        "Analyze impact",
         "Copy for Claude",
     ]
     for label in protected_labels:

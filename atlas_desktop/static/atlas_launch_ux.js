@@ -62,23 +62,23 @@ const atlasActivity = (() => {
 window.atlasActivity = atlasActivity;
 
 /* ------------------------------------------------------------------ *
- * Guided demo tour (sample repo → Ask → Impact → Debug → Plan Change)
+ * Guided demo tour (sample repo → analysis → impact → failure → plan)
  * ------------------------------------------------------------------ */
 const atlasDemoTour = (() => {
   // Example inputs match the "medium" sample pack the HN demo loads.
   const STEPS = [
     {
       id: "ask",
-      title: "Ask Atlas",
-      body: "Press Send to get a cited answer from the sample repository.",
-      cta: "Send question",
+      title: "Repository Analysis",
+      body: "Run the prepared investigation to produce a cited engineering report.",
+      cta: "Run analysis",
       run() { if (typeof sendCopilotQuestion === "function") sendCopilotQuestion(); },
     },
     {
       id: "impact",
-      title: "Impact",
-      body: "See what likely breaks before you edit a heavily-imported file.",
-      cta: "Run Impact on api/handlers.py",
+      title: "Change Impact",
+      body: "Trace likely breakage before editing a heavily imported file.",
+      cta: "Analyze api/handlers.py",
       run() {
         go("impact");
         const t = document.getElementById("impactTarget");
@@ -88,9 +88,9 @@ const atlasDemoTour = (() => {
     },
     {
       id: "investigate",
-      title: "Debug",
-      body: "Start from a symptom — Atlas ranks likely causes with evidence.",
-      cta: "Run a Debug example",
+      title: "Failure Investigation",
+      body: "Start from an observed symptom. Atlas ranks likely causes against repository evidence.",
+      cta: "Investigate a failure",
       run() {
         go("investigate");
         const t = document.getElementById("investigateSymptom");
@@ -100,9 +100,9 @@ const atlasDemoTour = (() => {
     },
     {
       id: "build",
-      title: "Plan Change",
-      body: "Describe a change and get the files, order, and risks.",
-      cta: "Plan an example change",
+      title: "Implementation Plan",
+      body: "Define a change and inspect affected files, sequencing, and risk.",
+      cta: "Build an implementation plan",
       run() {
         go("build");
         const t = document.getElementById("buildRequest");
@@ -174,11 +174,11 @@ const atlasPalette = (() => {
   const ACTIONS = [
     { label: "Load sample repository", hint: "Index the bundled demo repo", run: () => loadDemoMode("medium") },
     { label: "Scan local repository", hint: "Point Atlas at a folder", run: () => go("scan") },
-    { label: "Ask Atlas", hint: "Repo-aware questions with cited files", run: () => go("ask"), needsRepo: true },
-    { label: "Impact", hint: "What breaks if a file changes", run: () => go("impact"), needsRepo: true },
-    { label: "Debug", hint: "From symptom to likely causes", run: () => go("investigate"), needsRepo: true },
-    { label: "Plan Change", hint: "Files, order, and risks for a change", run: () => go("build"), needsRepo: true },
-    { label: "Map", hint: "Repository dependency map", run: () => go("center"), needsRepo: true },
+    { label: "Repository Analysis", hint: "Investigate with cited repository evidence", run: () => go("ask"), needsRepo: true },
+    { label: "Change Impact", hint: "Trace direct and transitive consequences", run: () => go("impact"), needsRepo: true },
+    { label: "Failure Investigation", hint: "Rank causes and verification steps", run: () => go("investigate"), needsRepo: true },
+    { label: "Implementation Plan", hint: "Files, order, tests, and delivery risks", run: () => go("build"), needsRepo: true },
+    { label: "Architecture Map", hint: "Inspect repository dependencies and risk", run: () => go("center"), needsRepo: true },
     { label: "Connect Claude", hint: "Write Claude Desktop MCP config", run: () => atlasMcpSetup.connectClaude() },
     { label: "Connect Cursor", hint: "Write Cursor MCP config", run: () => atlasMcpSetup.connectCursor() },
     { label: "Connect Codex", hint: "Write Codex MCP config", run: () => atlasMcpSetup.connectCodex() },
