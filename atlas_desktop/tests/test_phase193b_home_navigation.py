@@ -22,28 +22,18 @@ def _nav_block() -> str:
 
 
 # ── Part 1 — Real home page (onboarding dashboard) ───────────────────────────
-def test_home_has_welcome_and_tagline():
+def test_home_has_state_led_first_run_message():
     assert 'id="homeWelcome"' in INDEX
-    assert "class=\"launch-lead\"" in INDEX
-    assert "Give Claude Code and Cursor repo memory" in INDEX
-    assert "Scan a repository. Atlas builds a local map" in INDEX
-    assert "Scan local repository" in INDEX
-    assert "Load sample repository" in INDEX
+    assert "Give your coding agents persistent repo context." in INDEX
+    assert "Scan once. Atlas restores the repository graph" in INDEX
+    assert "Scan a local repository" in INDEX
+    assert "Try the sample repository" in INDEX
 
 
-def test_home_has_large_quick_action_cards():
-    cards = INDEX[INDEX.find('class="action-cards"'):]
-    cards = cards[: cards.find("</section>")]
-    assert 'class="action-cards"' in INDEX
-    for title in ("Ask Atlas", "Debug", "Impact"):
-        assert title in cards, title
-    for desc in (
-        "Ask repo-aware questions with cited files.",
-        "Find likely causes from symptoms or stack traces.",
-        "See what breaks before you edit.",
-    ):
-        assert desc in cards, desc
-    assert "action-card" in CSS
+def test_home_has_productive_task_suggestions():
+    for title in ("Ask Atlas", "Investigate an error", "See what breaks", "Plan a safe change"):
+        assert title in INDEX, title
+    assert "atlas-home-suggestions" in CSS
 
 
 def test_home_has_hn_demo_link():
@@ -52,11 +42,11 @@ def test_home_has_hn_demo_link():
     assert 'id="view-hn"' in INDEX
 
 
-def test_home_recent_activity_columns_with_empty_states():
+def test_home_has_compact_recent_activity():
     assert 'id="homeRecentAnalyses"' in INDEX
     assert 'id="homeRecentRepos"' in INDEX
-    for empty in ("No analyses yet", "No repositories yet"):
-        assert empty in INDEX, empty
+    assert 'id="activityList"' in INDEX
+    assert "Recent useful activity" in INDEX
 
 
 # ── Part 2 — Account removed from main navigation ────────────────────────────
@@ -117,10 +107,10 @@ def test_rejected_dashboard_removed_with_open_access():
 
 # ── Part 8 — UX cleanup: single status indicator on home ─────────────────────
 def test_home_has_single_status_indicator():
-    # Exactly one status pill on the home dashboard (no duplicate plan badge).
+    # Account status remains in the global shell; Home is driven by product state.
     dash = INDEX[INDEX.find('id="homeDashboard"'):]
     dash = dash[: dash.find('id="view-hn"')]
-    assert dash.count('class="status-pill"') == 1
+    assert dash.count('class="status-pill"') == 1  # inert legacy template only
     assert 'id="homePlanPill"' not in INDEX
     # Status + plan are combined into the one pill.
     assert "s.label + ' · ' + planTitle" in ACCOUNTS_JS

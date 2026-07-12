@@ -1,0 +1,77 @@
+:root {
+  color-scheme: dark;
+
+  /* Typography */
+  --font-display: "Aptos Display", "Segoe UI", system-ui, sans-serif;
+  --font-ui: "Aptos", "Segoe UI", system-ui, sans-serif;
+  --font-code: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+  --type-hero: 56px;
+  --type-page: 36px;
+  --type-section: 24px;
+  --type-title: 18px;
+  --type-body: 15px;
+  --type-small: 13px;
+  --type-label: 12px;
+  --line-tight: 1.08;
+  --line-body: 1.6;
+
+  /* Color */
+  --ink-strong: #f3f6fb;
+  --ink: #c3cbd6;
+  --ink-muted: #8994a3;
+  --ink-faint: #65707d;
+  --canvas: #090b0e;
+  --canvas-soft: #0d1014;
+  --surface-1: #12161b;
+  --surface-2: #171c22;
+  --surface-3: #1e252d;
+  --paper: #e8edf4;
+  --paper-ink: #151a20;
+  --line: #252c35;
+  --line-strong: #36404d;
+  --atlas-blue: #78a9ff;
+  --atlas-blue-strong: #9bc0ff;
+  --atlas-blue-ink: #08111f;
+  --evidence: #65d4c2;
+  --success: #64d88e;
+  --warning: #e8b65b;
+  --stale: #e2a45d;
+  --danger: #ff7f91;
+  --focus: #b8d3ff;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+  /* Shape and motion */
+  --radius-sm: 4px;
+  --radius: 7px;
+  --shadow-float: 0 24px 72px rgba(0, 0, 0, 0.42);
+  --motion-fast: 140ms;
+  --motion-standard: 190ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* Layout */
+  --app-max: 1480px;
+  --content-max: 1120px;
+  --reading-max: 760px;
+  --appbar-height: 58px;
+  --control-height: 40px;
+}
+
+@media (max-width: 720px) {
+  :root {
+    --type-hero: 40px;
+    --type-page: 30px;
+    --type-section: 22px;
+    --space-8: 48px;
+    --space-9: 64px;
+  }
+}

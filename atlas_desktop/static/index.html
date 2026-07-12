@@ -357,7 +357,110 @@
 
     <!-- ===================== SCREEN 1: HOME ===================== -->
     <section class="view active" id="view-home">
-      <div id="homeDashboard" class="home-dashboard launch-page">
+      <div id="homeDashboard" class="atlas-home" data-home-state="empty">
+        <div hidden aria-hidden="true">
+          <span id="homeWelcome"></span><span id="homeRepoStatus"></span><span id="homeStatusPill"></span>
+          <div id="homeRecentAnalyses"></div><div id="homeRecentRepos"></div>
+        </div>
+        <div id="resumeScanCard" class="resume-scan-card glass" style="display:none"></div>
+
+        <section class="atlas-home-state atlas-home-empty" data-home-panel="empty" aria-labelledby="homeEmptyTitle">
+          <div class="atlas-home-focus">
+            <p class="atlas-home-kicker">Persistent repository context</p>
+            <h1 id="homeEmptyTitle" tabindex="-1">Give your coding agents persistent repo context.</h1>
+            <p class="atlas-home-lead">Scan once. Atlas restores the repository graph, evidence, and memory in every fresh Claude Code, Cursor, or Codex session.</p>
+            <div class="atlas-home-actions">
+              <button class="btn primary big" type="button" onclick="goToScanStart()">Scan a local repository</button>
+              <button class="btn ghost big" type="button" onclick="loadDemoMode('medium')">Try the sample repository</button>
+            </div>
+            <p class="atlas-home-trust">Local-first <span aria-hidden="true">&middot;</span> No signup required <span aria-hidden="true">&middot;</span> Your repository stays on this machine</p>
+          </div>
+          <ol class="atlas-home-flow" aria-label="How Atlas restores repository context">
+            <li><span>01</span><strong>Scan</strong><small>Read the repository locally</small></li>
+            <li class="atlas-home-flow-arrow" aria-hidden="true">&rarr;</li>
+            <li><span>02</span><strong>Build context</strong><small>Graph, evidence, and memory persist</small></li>
+            <li class="atlas-home-flow-arrow" aria-hidden="true">&rarr;</li>
+            <li><span>03</span><strong>Restore</strong><small>Fresh agent sessions start informed</small></li>
+          </ol>
+        </section>
+
+        <section class="atlas-home-state atlas-home-indexed" data-home-panel="indexed" aria-labelledby="homeIndexedTitle" hidden>
+          <header class="atlas-home-ready-head">
+            <div>
+              <p class="atlas-home-kicker">Index complete</p>
+              <h1 id="homeIndexedTitle" tabindex="-1">Repository ready.</h1>
+              <p class="atlas-home-lead" id="homeIndexedLead">Atlas already knows this repository. Connect the coding agent you use next, or ask Atlas directly.</p>
+            </div>
+            <div class="atlas-home-actions">
+              <button class="btn primary" type="button" onclick="focusHomeAgentConnections()">Connect an agent</button>
+              <button class="btn ghost" type="button" onclick="go('ask')">Ask Atlas now</button>
+            </div>
+          </header>
+          <dl class="atlas-home-facts" aria-label="Current repository facts">
+            <div><dt>Repository</dt><dd id="homeRepoName"></dd></div>
+            <div><dt>Files indexed</dt><dd id="homeFileCount"></dd></div>
+            <div><dt>Graph nodes</dt><dd id="homeNodeCount"></dd></div>
+            <div><dt>Graph edges</dt><dd id="homeEdgeCount"></dd></div>
+            <div><dt>Last indexed</dt><dd id="homeLastIndexed"></dd></div>
+            <div><dt>Persistence</dt><dd id="homeRestoreStatus"></dd></div>
+            <div><dt>Freshness</dt><dd id="homeFreshness">Checking</dd></div>
+          </dl>
+
+          <section class="atlas-home-agents" id="mcpSetupSection" aria-labelledby="mcpSetupTitle">
+            <div class="atlas-home-section-head">
+              <div><p class="atlas-home-kicker">Agent connection</p><h2 id="mcpSetupTitle">Choose where Atlas should restore context</h2></div>
+              <span class="atlas-home-local-note">Local configuration</span>
+            </div>
+            <div class="mcp-tool-grid" id="mcpToolGrid" aria-live="polite">
+              <article class="mcp-tool-card" id="mcpClaudeCard">
+                <div class="mcp-tool-card-top"><h3 class="mcp-tool-card-title">Claude Code</h3><p class="mcp-tool-card-status disconnected" id="mcpClaudeStatus">Checking&hellip;</p></div>
+                <div class="mcp-tool-card-actions"><button class="btn ghost small mcp-connect-btn" id="mcpClaudeBtn" type="button" onclick="atlasMcpSetup.connectClaude()">Connect to Claude</button></div>
+                <details class="mcp-home-advanced"><summary>Advanced</summary><div class="mcp-tool-card-actions"><button class="btn ghost small" type="button" onclick="atlasMcpSetup.testTool('claude')">Test Claude</button><button class="btn ghost small" type="button" onclick="atlasMcpSetup.showManualSetup('claude')">Manual setup</button></div><div class="mcp-tool-test" id="mcpClaudeTest" hidden><p class="mcp-tool-test-summary" id="mcpClaudeTestSummary"></p><button class="btn ghost tiny mcp-tool-details-btn" type="button" id="mcpClaudeDetailsBtn" onclick="atlasMcpSetup.toggleToolDetails('claude')" hidden>Show details</button><pre class="mcp-tool-tools-list code tiny" id="mcpClaudeToolsList" hidden></pre></div></details>
+              </article>
+              <article class="mcp-tool-card" id="mcpCursorCard">
+                <div class="mcp-tool-card-top"><h3 class="mcp-tool-card-title">Cursor</h3><p class="mcp-tool-card-status disconnected" id="mcpCursorStatus">Checking&hellip;</p></div>
+                <div class="mcp-tool-card-actions"><button class="btn ghost small mcp-connect-btn" id="mcpCursorBtn" type="button" onclick="atlasMcpSetup.connectCursor()">Connect to Cursor</button></div>
+                <details class="mcp-home-advanced"><summary>Advanced</summary><div class="mcp-tool-card-actions"><button class="btn ghost small" type="button" onclick="atlasMcpSetup.testTool('cursor')">Test Cursor</button><button class="btn ghost small" type="button" onclick="atlasMcpSetup.showManualSetup('cursor')">Manual setup</button></div><div class="mcp-tool-test" id="mcpCursorTest" hidden><p class="mcp-tool-test-summary" id="mcpCursorTestSummary"></p><button class="btn ghost tiny mcp-tool-details-btn" type="button" id="mcpCursorDetailsBtn" onclick="atlasMcpSetup.toggleToolDetails('cursor')" hidden>Show details</button><pre class="mcp-tool-tools-list code tiny" id="mcpCursorToolsList" hidden></pre></div></details>
+              </article>
+              <article class="mcp-tool-card" id="mcpCodexCard">
+                <div class="mcp-tool-card-top"><h3 class="mcp-tool-card-title">Codex</h3><p class="mcp-tool-card-status disconnected" id="mcpCodexStatus">Checking&hellip;</p></div>
+                <div class="mcp-tool-card-actions"><button class="btn ghost small mcp-connect-btn" id="mcpCodexBtn" type="button" onclick="atlasMcpSetup.connectCodex()">Connect to Codex</button></div>
+                <details class="mcp-home-advanced"><summary>Advanced</summary><div class="mcp-tool-card-actions"><button class="btn ghost small" type="button" onclick="atlasMcpSetup.testTool('codex')">Test Codex</button><button class="btn ghost small" type="button" onclick="atlasMcpSetup.showManualSetup('codex')">Manual setup</button></div><div class="mcp-tool-test" id="mcpCodexTest" hidden><p class="mcp-tool-test-summary" id="mcpCodexTestSummary"></p><button class="btn ghost tiny mcp-tool-details-btn" type="button" id="mcpCodexDetailsBtn" onclick="atlasMcpSetup.toggleToolDetails('codex')" hidden>Show details</button><pre class="mcp-tool-tools-list code tiny" id="mcpCodexToolsList" hidden></pre></div></details>
+              </article>
+            </div>
+          </section>
+        </section>
+
+        <section class="atlas-home-state atlas-home-productive" data-home-panel="productive" aria-labelledby="homeProductiveTitle" hidden>
+          <header class="atlas-home-productive-head">
+            <p class="atlas-home-kicker" id="homeProductiveKicker">Repository context ready</p>
+            <h1 id="homeProductiveTitle" tabindex="-1">What do you want to understand or change?</h1>
+            <p class="atlas-home-lead"><strong id="homeProductiveRepoName">Current repository</strong> <span id="homeProductiveContext">is ready in Atlas and connected to</span> <span id="homeConnectedAgents">your agent</span>.</p>
+          </header>
+          <form class="atlas-home-ask" onsubmit="submitHomeAsk(event)">
+            <label for="homeAskInput">Ask about this repository</label>
+            <div><input id="homeAskInput" type="text" autocomplete="off" placeholder="Ask about this repository&hellip;" /><button class="btn primary" type="submit">Ask Atlas</button></div>
+          </form>
+          <div class="atlas-home-suggestions" aria-label="Suggested actions">
+            <button type="button" onclick="routeHomeSuggestion('ask','Where is authentication implemented?')">Find where authentication is implemented</button>
+            <button type="button" onclick="routeHomeSuggestion('impact')">See what breaks if I change a file</button>
+            <button type="button" onclick="routeHomeSuggestion('ask','Trace a request across this repository')">Trace a request across the repository</button>
+            <button type="button" onclick="routeHomeSuggestion('investigate')">Investigate an error</button>
+            <button type="button" onclick="routeHomeSuggestion('build')">Plan a safe change</button>
+          </div>
+          <div class="atlas-home-secondary">
+            <section aria-labelledby="homeCurrentStateTitle">
+              <div class="atlas-home-section-head"><h2 id="homeCurrentStateTitle">Current repository</h2><span id="homeProductiveFreshness" class="atlas-home-state-label">Checking</span></div>
+              <dl class="atlas-home-compact-facts"><div><dt>Repository</dt><dd id="homeCompactRepo"></dd></div><div><dt>Files</dt><dd id="homeCompactFiles"></dd></div><div><dt>Connections</dt><dd id="homeCompactAgents"></dd></div></dl>
+            </section>
+            <section id="homeRecentSection" aria-labelledby="homeActivityTitle">
+              <div class="atlas-home-section-head"><h2 id="homeActivityTitle">Recent useful activity</h2></div>
+              <div id="activityList"><span class="muted tiny">No activity yet.</span></div>
+            </section>
+          </div>
+        </section>
+
+        <template class="atlas-home-legacy">
         <!-- First-run hero -->
         <header class="launch-hero glass needs-no-repo">
           <h1>Give Claude Code and Cursor repo memory</h1>
@@ -371,17 +474,17 @@
 
         <!-- Return-user hero -->
         <header class="launch-hero glass needs-repo">
-          <h2 id="homeWelcome">Welcome back</h2>
+          <h2>Welcome back</h2>
           <p class="launch-lead">Repository indexed. Ask Atlas a repo-aware question, or use Impact and Debug for sharper next steps.</p>
-          <p class="home-repo-line muted tiny" id="homeRepoStatus">No repository scanned yet</p>
+          <p class="home-repo-line muted tiny">No repository scanned yet</p>
           <div class="launch-cta" style="margin-top:16px">
             <button class="btn primary big" type="button" onclick="go('ask')">Ask Atlas</button>
             <button class="btn ghost" type="button" onclick="go('scan')">Scan another repository</button>
           </div>
-          <span class="status-pill" id="homeStatusPill" style="margin-top:12px;display:inline-block">—</span>
+          <span class="status-pill" style="margin-top:12px;display:inline-block">—</span>
         </header>
 
-        <div id="resumeScanCard" class="resume-scan-card glass" style="display:none"></div>
+        <div class="resume-scan-card glass" style="display:none"></div>
 
         <!-- Action cards -->
         <section class="home-section needs-repo">
@@ -405,79 +508,80 @@
         </section>
 
         <!-- MCP connections -->
-        <section class="mcp-setup glass" id="mcpSetupSection" aria-labelledby="mcpSetupTitle">
-          <h2 class="home-section-title" id="mcpSetupTitle">Connect your AI tools</h2>
+        <section class="mcp-setup glass" aria-labelledby="legacyMcpSetupTitle">
+          <h2 class="home-section-title" id="legacyMcpSetupTitle">Connect your AI tools</h2>
           <p class="muted tiny">Atlas is the local repo-memory layer for Claude, Cursor, and Codex. Your source stays on this machine.</p>
-          <div class="mcp-tool-grid" id="mcpToolGrid" aria-live="polite">
-            <article class="mcp-tool-card" id="mcpClaudeCard">
+          <div class="mcp-tool-grid" aria-live="polite">
+            <article class="mcp-tool-card">
               <div class="mcp-tool-card-top">
                 <h3 class="mcp-tool-card-title">Claude</h3>
-                <p class="mcp-tool-card-status disconnected" id="mcpClaudeStatus">Checking…</p>
+                <p class="mcp-tool-card-status disconnected">Checking…</p>
               </div>
               <div class="mcp-tool-card-actions">
-                <button class="btn ghost small mcp-connect-btn" id="mcpClaudeBtn" type="button" onclick="atlasMcpSetup.connectClaude()">Connect to Claude</button>
+                <button class="btn ghost small mcp-connect-btn" type="button" onclick="atlasMcpSetup.connectClaude()">Connect to Claude</button>
                 <button class="btn ghost small" type="button" onclick="atlasMcpSetup.testTool('claude')">Test Claude</button>
                 <button class="btn ghost small" type="button" onclick="atlasMcpSetup.showManualSetup('claude')">Advanced manual setup</button>
               </div>
-              <div class="mcp-tool-test" id="mcpClaudeTest" hidden>
-                <p class="mcp-tool-test-summary" id="mcpClaudeTestSummary"></p>
-                <button class="btn ghost tiny mcp-tool-details-btn" type="button" id="mcpClaudeDetailsBtn" onclick="atlasMcpSetup.toggleToolDetails('claude')" hidden>Show details</button>
-                <pre class="mcp-tool-tools-list code tiny" id="mcpClaudeToolsList" hidden></pre>
+              <div class="mcp-tool-test" hidden>
+                <p class="mcp-tool-test-summary"></p>
+                <button class="btn ghost tiny mcp-tool-details-btn" type="button" onclick="atlasMcpSetup.toggleToolDetails('claude')" hidden>Show details</button>
+                <pre class="mcp-tool-tools-list code tiny" hidden></pre>
               </div>
             </article>
-            <article class="mcp-tool-card" id="mcpCursorCard">
+            <article class="mcp-tool-card">
               <div class="mcp-tool-card-top">
                 <h3 class="mcp-tool-card-title">Cursor</h3>
-                <p class="mcp-tool-card-status disconnected" id="mcpCursorStatus">Checking…</p>
+                <p class="mcp-tool-card-status disconnected">Checking…</p>
               </div>
               <div class="mcp-tool-card-actions">
-                <button class="btn ghost small mcp-connect-btn" id="mcpCursorBtn" type="button" onclick="atlasMcpSetup.connectCursor()">Connect to Cursor</button>
+                <button class="btn ghost small mcp-connect-btn" type="button" onclick="atlasMcpSetup.connectCursor()">Connect to Cursor</button>
                 <button class="btn ghost small" type="button" onclick="atlasMcpSetup.testTool('cursor')">Test Cursor</button>
                 <button class="btn ghost small" type="button" onclick="atlasMcpSetup.showManualSetup('cursor')">Advanced manual setup</button>
               </div>
-              <div class="mcp-tool-test" id="mcpCursorTest" hidden>
-                <p class="mcp-tool-test-summary" id="mcpCursorTestSummary"></p>
-                <button class="btn ghost tiny mcp-tool-details-btn" type="button" id="mcpCursorDetailsBtn" onclick="atlasMcpSetup.toggleToolDetails('cursor')" hidden>Show details</button>
-                <pre class="mcp-tool-tools-list code tiny" id="mcpCursorToolsList" hidden></pre>
+              <div class="mcp-tool-test" hidden>
+                <p class="mcp-tool-test-summary"></p>
+                <button class="btn ghost tiny mcp-tool-details-btn" type="button" onclick="atlasMcpSetup.toggleToolDetails('cursor')" hidden>Show details</button>
+                <pre class="mcp-tool-tools-list code tiny" hidden></pre>
               </div>
             </article>
-            <article class="mcp-tool-card" id="mcpCodexCard">
+            <article class="mcp-tool-card">
               <div class="mcp-tool-card-top">
                 <h3 class="mcp-tool-card-title">Codex</h3>
-                <p class="mcp-tool-card-status disconnected" id="mcpCodexStatus">Checking…</p>
+                <p class="mcp-tool-card-status disconnected">Checking…</p>
               </div>
               <div class="mcp-tool-card-actions">
-                <button class="btn ghost small mcp-connect-btn" id="mcpCodexBtn" type="button" onclick="atlasMcpSetup.connectCodex()">Connect to Codex</button>
+                <button class="btn ghost small mcp-connect-btn" type="button" onclick="atlasMcpSetup.connectCodex()">Connect to Codex</button>
                 <button class="btn ghost small" type="button" onclick="atlasMcpSetup.testTool('codex')">Test Codex</button>
                 <button class="btn ghost small" type="button" onclick="atlasMcpSetup.showManualSetup('codex')">Advanced manual setup</button>
               </div>
-              <div class="mcp-tool-test" id="mcpCodexTest" hidden>
-                <p class="mcp-tool-test-summary" id="mcpCodexTestSummary"></p>
-                <button class="btn ghost tiny mcp-tool-details-btn" type="button" id="mcpCodexDetailsBtn" onclick="atlasMcpSetup.toggleToolDetails('codex')" hidden>Show details</button>
-                <pre class="mcp-tool-tools-list code tiny" id="mcpCodexToolsList" hidden></pre>
+              <div class="mcp-tool-test" hidden>
+                <p class="mcp-tool-test-summary"></p>
+                <button class="btn ghost tiny mcp-tool-details-btn" type="button" onclick="atlasMcpSetup.toggleToolDetails('codex')" hidden>Show details</button>
+                <pre class="mcp-tool-tools-list code tiny" hidden></pre>
               </div>
             </article>
           </div>
         </section>
 
         <!-- Recent activity (signed-in, repo loaded) -->
-        <section class="home-section needs-repo" id="homeRecentSection" style="display:none">
+        <section class="home-section needs-repo" style="display:none">
           <h3 class="home-section-title">Recent activity</h3>
           <div class="recent-activity-grid">
             <div class="recent-col glass">
               <h4 class="recent-col-title">Recent analyses</h4>
-              <div id="homeRecentAnalyses"><span class="muted tiny">No analyses yet.</span></div>
+              <div><span class="muted tiny">No analyses yet.</span></div>
             </div>
             <div class="recent-col glass">
               <h4 class="recent-col-title">Recent repositories</h4>
-              <div id="homeRecentRepos"><span class="muted tiny">No repositories yet.</span></div>
+              <div><span class="muted tiny">No repositories yet.</span></div>
             </div>
             <div class="recent-col glass">
               <h4 class="recent-col-title">Activity</h4>
-              <div id="activityList"><span class="muted tiny">No activity yet.</span></div>
+              <div><span class="muted tiny">No activity yet.</span></div>
             </div>
           </div>
         </section>
+        </template>
       </div>
     </section>
 
@@ -620,6 +724,7 @@
                 <span class="lvl" id="copilotRisk">risk</span>
               </div>
               <div id="copilotImpactSummary"></div>
+              <div id="copilotImpactHierarchy"></div>
               <div class="copilot-answer" id="copilotAnswer"></div>
               <div class="copilot-section" id="copilotEvidenceWrap" style="display:none">
                 <div class="copilot-label">Cited evidence</div>
@@ -633,12 +738,16 @@
                 <div class="copilot-label">Suggested next action</div>
                 <div class="muted tiny" id="copilotAction"></div>
               </div>
-              <div class="copy-row">
-                <button class="btn small" onclick="copyCopilotAnswer()">Copy answer</button>
-                <button class="btn small" onclick="copyCopilotTarget('claude')">Copy Claude</button>
-                <button class="btn small" onclick="copyCopilotTarget('codex')">Copy Codex</button>
-                <button class="btn small" onclick="copyCopilotTarget('cursor')">Copy Cursor</button>
-              </div>
+              <div class="copilot-primary-actions" id="copilotPrimaryActions"></div>
+              <details class="copilot-more">
+                <summary>More actions</summary>
+                <div class="copy-row" id="copilotMoreActions">
+                  <button class="btn small" onclick="copyCopilotAnswer()">Copy answer</button>
+                  <button class="btn small" onclick="copyCopilotTarget('claude')">Copy Claude</button>
+                  <button class="btn small" onclick="copyCopilotTarget('codex')">Copy Codex</button>
+                  <button class="btn small" onclick="copyCopilotTarget('cursor')">Copy Cursor</button>
+                </div>
+              </details>
             </div>
             <div class="copilot-out" id="copilotOut"><span class="muted">Press Send to ask the sample question, or pick a prompt below. Answers show cited evidence and relevant files from the indexed repository.</span></div>
           </div>

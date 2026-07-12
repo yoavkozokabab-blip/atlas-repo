@@ -253,6 +253,12 @@ function welcomeStartWalkthrough() {
 }
 
 function maybeShowWelcomeScreen() {
+  // The state-led Home owns first-run guidance; do not cover its Scan/Sample
+  // hierarchy with the historical second welcome screen.
+  if ($("homeDashboard")?.classList.contains("atlas-home")) {
+    dismissWelcomeScreen(false);
+    return;
+  }
   try {
     if (localStorage.getItem(WELCOME_KEY) === "1") return;
   } catch (e) {}

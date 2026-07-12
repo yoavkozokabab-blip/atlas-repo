@@ -58,14 +58,14 @@ def test_status_dashboard_titles_match_spec():
         assert title in ACCOUNTS_JS, title
 
 
-def test_home_dashboard_present_with_quick_actions():
+def test_home_dashboard_present_with_productive_actions():
     assert 'id="homeDashboard"' in INDEX
     assert 'id="homeWelcome"' in INDEX
     assert 'id="homeStatusPill"' in INDEX
     assert 'id="homeRepoStatus"' in INDEX
     assert 'id="homeRecentAnalyses"' in INDEX
-    quick = INDEX[INDEX.find('class="quick-action-cards"'):]
-    for action in ("Ask Atlas", "Debug", "Impact"):
+    quick = INDEX[INDEX.find('class="atlas-home-suggestions"'):]
+    for action in ("Ask Atlas", "Investigate an error", "See what breaks"):
         assert action in quick, action
 
 

@@ -5,7 +5,9 @@ const STATE = {
   selectedNode: null, copilotResult: null, showEdges: true, riskPercentiles: null,
   demoMode: false, tourStops: null, screenshotMode: false, demoPack: "medium", productTourActive: false,
   massiveMode: false, lastEstimate: null, hierarchy: { level: "subsystem", subsystem: "", package: "", module: "" },
+  homeHealth: null, homeMcpStatus: null, homeTrustStatus: null, homeRecent: [],
 };
+window.STATE = STATE;
 const RECENT_KEY = "atlas_recent_repos";
 const LEGACY_RECENT_KEY = "\u006a\u0061\u0072\u0076\u0069\u0073_recent_repos";
 const ONBOARDING_KEY = "atlas_onboarding_v2_done";
@@ -779,6 +781,139 @@ function selectDemoPack(id) {
   loadDemoMode(id);
 }
 
+const HOME_AGENT_LABELS = { claude: "Claude Code", cursor: "Cursor", codex: "Codex" };
+
+function homeConnectedAgents(status) {
+  return Object.keys(HOME_AGENT_LABELS).filter(key => !!status?.[key]?.atlas_configured);
+}
+
+function setHomeText(id, value) {
+  const el = $(id);
+  if (el) el.textContent = value;
+}
+
+function homeMetric(value) {
+  if (value === null || value === undefined || value === "") return "";
+  return Number.isFinite(Number(value)) ? Number(value).toLocaleString() : "";
+}
+
+function homeDisplayName(value) {
+  return String(value || "").replace(/[-_]+/g, " ").replace(/\s+/g, " ").trim();
+}
+
+function setHomeFact(id, value) {
+  const el = $(id);
+  if (!el) return;
+  const visible = value !== null && value !== undefined && String(value).trim() !== "";
+  el.textContent = visible ? String(value) : "";
+  if (el.parentElement) el.parentElement.hidden = !visible;
+}
+
+function homeLastIndexed(summary, recent) {
+  const repoPath = String(summary?.repo_path || "").toLowerCase().replace(/\\/g, "/");
+  const match = (recent || []).find(item => String(item.repo_path || "").toLowerCase().replace(/\\/g, "/") === repoPath);
+  if (!match?.last_scan_at) return "";
+  const date = new Date(match.last_scan_at);
+  return Number.isNaN(date.getTime()) ? String(match.last_scan_at) : date.toLocaleString();
+}
+
+function renderHomeExperience(update) {
+  if (update?.mcpStatus) STATE.homeMcpStatus = update.mcpStatus;
+  if (update?.trustStatus) STATE.homeTrustStatus = update.trustStatus;
+  if (Array.isArray(update?.recent)) STATE.homeRecent = update.recent;
+  const dash = $("homeDashboard");
+  if (!dash) return "empty";
+
+  const summary = STATE.summary;
+  const hasRepo = !!summary?.ok;
+  const agents = homeConnectedAgents(STATE.homeMcpStatus);
+  const state = !hasRepo ? "empty" : (agents.length ? "productive" : "indexed");
+  dash.dataset.homeState = state;
+  dash.querySelectorAll("[data-home-panel]").forEach(panel => {
+    const active = panel.dataset.homePanel === state;
+    panel.hidden = !active;
+    panel.setAttribute("aria-hidden", active ? "false" : "true");
+  });
+
+  if (!hasRepo) return state;
+  const repoName = homeDisplayName(summary.repo_name) || "Current repository";
+  const fileCount = homeMetric(summary.file_count);
+  const agentNames = agents.map(key => HOME_AGENT_LABELS[key]);
+  const agentText = agentNames.length ? agentNames.join(", ") : "No agent connected";
+  const trustLabel = STATE.homeTrustStatus?.user_trust_label || "Checking";
+  const restored = !!STATE.homeHealth?.persistence?.restored;
+  const stale = trustLabel !== "Fresh" && trustLabel !== "Checking";
+
+  setHomeFact("homeRepoName", repoName);
+  setHomeFact("homeFileCount", fileCount);
+  setHomeFact("homeNodeCount", homeMetric(summary.module_count));
+  setHomeFact("homeEdgeCount", homeMetric(summary.dependency_edges));
+  setHomeFact("homeLastIndexed", homeLastIndexed(summary, STATE.homeRecent));
+  setHomeFact("homeRestoreStatus", restored ? "Repository restored" : "Ready for fresh agent sessions");
+  setHomeText("homeFreshness", trustLabel);
+  setHomeText("homeIndexedTitle", stale ? "Repository needs refresh." : "Repository ready.");
+  setHomeText("homeIndexedLead", stale
+    ? "Repository changed since the last index. Refresh before relying on graph evidence."
+    : "Atlas already knows this repository. Connect the coding agent you use next, or ask Atlas directly.");
+  setHomeText("homeProductiveKicker", stale ? "Repository context needs refresh" : "Repository context ready");
+  setHomeText("homeProductiveRepoName", repoName);
+  setHomeText("homeProductiveContext", stale
+    ? "changed since indexing. Refresh before relying on graph evidence. Connected agent:"
+    : "is ready in Atlas and connected to");
+  setHomeText("homeConnectedAgents", agentNames.join(" and ") || "your agent");
+  setHomeText("homeCompactRepo", repoName);
+  setHomeText("homeCompactFiles", fileCount);
+  setHomeText("homeCompactAgents", agentText);
+  setHomeText("homeProductiveFreshness", trustLabel);
+  [$("homeFreshness"), $("homeProductiveFreshness")].forEach(el => {
+    if (!el) return;
+    el.classList.toggle("is-fresh", trustLabel === "Fresh");
+    el.classList.toggle("is-stale", stale);
+  });
+  window.atlasActivity?.render();
+  return state;
+}
+
+async function refreshHomeExperience() {
+  renderHomeExperience();
+  if (!STATE.summary?.ok) return;
+  const [trust, recent] = await Promise.all([
+    api("/api/repositories/current/trust-status").catch(() => null),
+    api("/api/repositories/recent").catch(() => null),
+  ]);
+  renderHomeExperience({
+    trustStatus: trust?.ok ? trust : null,
+    recent: recent?.ok ? (recent.items || []) : STATE.homeRecent,
+  });
+}
+
+function focusHomeAgentConnections() {
+  const section = $("mcpSetupSection");
+  section?.scrollIntoView({ block: "start", behavior: "smooth" });
+  const disconnected = homeConnectedAgents(STATE.homeMcpStatus);
+  const next = ["claude", "cursor", "codex"].find(key => !disconnected.includes(key)) || "claude";
+  setTimeout(() => $(`mcp${next.charAt(0).toUpperCase() + next.slice(1)}Btn`)?.focus(), 180);
+}
+
+function submitHomeAsk(event) {
+  event?.preventDefault();
+  const source = $("homeAskInput");
+  const prompt = String(source?.value || "").trim();
+  if (!prompt) { source?.focus(); return; }
+  if ($("askInput")) $("askInput").value = prompt;
+  go("ask");
+  sendCopilotQuestion();
+}
+
+function routeHomeSuggestion(view, prompt) {
+  if (view === "ask" && prompt && $("askInput")) $("askInput").value = prompt;
+  go(view);
+  const targets = { ask: "askInput", impact: "impactTarget", investigate: "investigateSymptom", build: "buildRequest" };
+  setTimeout(() => $(targets[view])?.focus(), 60);
+}
+
+window.renderHomeExperience = renderHomeExperience;
+
 function go(view) {
   if (document.body.classList.contains('auth-mode') && view !== 'accounts') return;
   view = NAV_ALIASES[view] || view;
@@ -804,6 +939,8 @@ function go(view) {
   if (view === "home") {
     if (window.STATE && STATE.summary && STATE.summary.ok) document.body.classList.remove("atlas-no-repo");
     if (typeof atlasPollTrustStatus === "function") atlasPollTrustStatus();
+    refreshHomeExperience();
+    setTimeout(() => $("homeDashboard")?.querySelector("[data-home-panel]:not([hidden]) h1")?.focus(), 60);
   }
   if (view === "scan") {
     showScanPanel(null);
@@ -2589,6 +2726,7 @@ async function bootAtlasApp() {
   });
   try {
     const h = await api("/api/health");
+    STATE.homeHealth = h;
     updateTelemetryWarning(h);
     applyBillingNav(!!h.billing_ui_enabled, true);
     if (h.billing_ui_enabled) {
@@ -2611,6 +2749,7 @@ async function bootAtlasApp() {
       }
     }
   } catch (e) {}
+  refreshHomeExperience();
   loadRecent();
   showScanPanel(null);
   const hash = (location.hash || "").replace(/^#\/?/, "").toLowerCase();

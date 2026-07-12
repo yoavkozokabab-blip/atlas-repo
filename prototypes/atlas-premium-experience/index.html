@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Atlas Premium Experience Study</title>
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="prototype.css" />
+</head>
+<body>
+  <a class="skip-link" href="#prototype-main">Skip to content</a>
+
+  <header class="review-bar" aria-label="Design review controls">
+    <div class="review-brand">
+      <span class="atlas-mark" aria-hidden="true"></span>
+      <span>Atlas experience study</span>
+    </div>
+    <div class="segmented" aria-label="Choose product surface">
+      <button class="is-selected" type="button" data-surface-target="desktop">Desktop</button>
+      <button type="button" data-surface-target="website">Website</button>
+    </div>
+    <p class="review-note">Isolated prototype. No production behavior.</p>
+  </header>
+
+  <main id="prototype-main">
+    <section id="surface-desktop" class="surface is-active" aria-label="Desktop application prototype">
+      <div class="desktop-frame">
+        <header class="appbar">
+          <button class="brand-button" type="button" data-desktop-target="home" aria-label="Atlas Home">
+            <span class="atlas-mark" aria-hidden="true"></span>
+            <strong>Atlas</strong>
+          </button>
+          <button class="repo-switcher" type="button" data-toast="Repository switcher stays compact and shows up to four recent repositories.">
+            <span class="status-dot status-ready" aria-hidden="true"></span>
+            <span class="repo-switcher-copy"><strong>atlas-rc1-clean</strong><small>main at 8ebcf2ce</small></span>
+          </button>
+          <nav class="app-nav" aria-label="Atlas tools">
+            <button class="is-selected" type="button" data-desktop-target="home">Home</button>
+            <button type="button" data-desktop-target="ask">Ask</button>
+            <button type="button" data-desktop-target="impact">Impact</button>
+            <button type="button" data-desktop-target="debug">Debug</button>
+            <button type="button" data-desktop-target="plan">Plan</button>
+            <button type="button" data-desktop-target="map">Map</button>
+          </nav>
+          <div class="app-actions">
+            <button class="quiet-button connection-button" type="button" data-toast="Claude Code and Codex are connected. Cursor needs restart.">
+              <span class="status-dot status-warning" aria-hidden="true"></span>
+              Agents
+            </button>
+            <button class="icon-command" type="button" data-command-open aria-label="Open command palette">Search</button>
+            <button class="mode-button" type="button" data-toast="Atlas works locally. Sign in only for account, billing, and future sync features.">Local mode</button>
+          </div>
+        </header>
+
+        <div class="mobile-tool-nav" aria-label="Atlas tools on small windows">
+          <button class="is-selected" type="button" data-desktop-target="home">Home</button>
+          <button type="button" data-desktop-target="ask">Ask</button>
+          <button type="button" data-desktop-target="impact">Impact</button>
+          <button type="button" data-desktop-target="debug">Debug</button>
+          <button type="button" data-desktop-target="plan">Plan</button>
+          <button type="button" data-desktop-target="map">Map</button>
+        </div>
+
+        <div class="desktop-content">
+          <section class="desktop-view is-active" id="desktop-home" data-desktop-view="home">
+            <div class="state-review-control">
+              <span>Home state</span>
+              <div class="segmented" aria-label="Choose Home state">
+                <button class="is-selected" type="button" data-home-target="empty">No repository</button>
+                <button type="button" data-home-target="indexed">Repository ready</button>
+                <button type="button" data-home-target="productive">Ready and connected</button>
+              </div>
+            </div>
+
+            <section class="home-state is-active" data-home-state="empty">
+              <div class="home-focus">
+                <p class="kicker">Persistent local repository intelligence</p>
+                <h1>Give your coding agents persistent repo context.</h1>
+                <p class="home-lead">Scan once. Atlas restores the repository graph, evidence, and memory in every fresh Claude Code, Cursor, or Codex session.</p>
+                <div class="primary-actions">
+                  <button class="button button-primary" type="button" data-home-target="indexed">Scan a local repository</button>
+                  <button class="button button-secondary" type="button" data-home-target="indexed">Try the sample repository</button>
+                </div>
+                <ul class="trust-line" aria-label="Atlas trust details">
+                  <li>Local-first</li>
+                  <li>No signup required</li>
+                  <li>Your repository stays on this machine</li>
+                </ul>
+              </div>
+              <ol class="context-sequence" aria-label="Atlas workflow">
+                <li><span class="sequence-number">01</span><strong>Scan</strong><p>Files, symbols, and relationships become a persistent local index.</p></li>
+                <li><span class="sequence-number">02</span><strong>Connect</strong><p>Atlas preserves existing MCP servers and adds one local connection.</p></li>
+                <li><span class="sequence-number">03</span><strong>Start with context</strong><p>Fresh sessions receive selected files, relationships, and evidence.</p></li>
+              </ol>
+            </section>
+
+            <section class="home-state" data-home-state="indexed" hidden>
+              <div class="repository-ready-layout">
+                <div>
+                  <p class="kicker success-text">Repository ready</p>
+                  <h1>Atlas already knows this repository.</h1>
+                  <p class="home-lead">The local index is ready to restore in a fresh agent session. Connect the tool you use next.</p>
+                  <dl class="repo-facts">
+                    <div><dt>Repository</dt><dd>atlas-rc1-clean</dd></div>
+                    <div><dt>Indexed</dt><dd>1,248 files</dd></div>
+                    <div><dt>Graph</dt><dd>3,912 nodes / 8,406 edges</dd></div>
+                    <div><dt>Last indexed</dt><dd>2 minutes ago</dd></div>
+                    <div><dt>Fresh-session restore</dt><dd class="success-text">Ready</dd></div>
+                    <div><dt>Storage</dt><dd>Local only</dd></div>
+                  </dl>
+                  <div class="primary-actions">
+                    <button class="button button-primary" type="button" data-toast="Connection sheet: choose Claude Code, Cursor, or Codex.">Connect an agent</button>
+                    <button class="button button-quiet" type="button" data-desktop-target="ask">Ask Atlas now</button>
+                  </div>
+                </div>
+                <div class="agent-connection-list" aria-label="Agent connection choices">
+                  <button type="button" data-toast="Ready to add Atlas while preserving unrelated MCP servers."><span>Claude Code</span><small>Not connected</small><strong>Connect</strong></button>
+                  <button type="button" data-toast="Ready to add Atlas while preserving unrelated MCP servers."><span>Cursor</span><small>Not connected</small><strong>Connect</strong></button>
+                  <button type="button" data-toast="Ready to add Atlas while preserving unrelated MCP servers."><span>Codex</span><small>Not connected</small><strong>Connect</strong></button>
+                </div>
+              </div>
+            </section>
+
+            <section class="home-state" data-home-state="productive" hidden>
+              <div class="productive-home">
+                <div class="productive-heading">
+                  <div>
+                    <p class="kicker">atlas-rc1-clean / index fresh</p>
+                    <h1>What do you want to understand or change?</h1>
+                  </div>
+                  <span class="inline-state"><span class="status-dot status-ready" aria-hidden="true"></span>2 agents connected</span>
+                </div>
+                <form class="dominant-ask" data-prototype-form>
+                  <label for="home-question">Ask about this repository</label>
+                  <div><input id="home-question" name="question" value="Where is authentication implemented?" /><button class="button button-primary" type="submit">Ask Atlas</button></div>
+                </form>
+                <div class="task-suggestions" aria-label="Suggested tasks">
+                  <button type="button" data-desktop-target="ask">Find where authentication is implemented</button>
+                  <button type="button" data-desktop-target="impact">See what breaks if I change a file</button>
+                  <button type="button" data-desktop-target="map">Trace a request across the repository</button>
+                  <button type="button" data-desktop-target="debug">Investigate an error</button>
+                  <button type="button" data-desktop-target="plan">Plan a safe change</button>
+                </div>
+                <div class="home-activity-grid">
+                  <section><div class="section-heading"><h2>Useful activity</h2><button type="button">View all</button></div><ul class="activity-list"><li><span>Asked where auth is implemented</span><time>4m</time></li><li><span>Impact on accounts_client.py</span><time>18m</time></li><li><span>Restored index in Codex</span><time>Today</time></li></ul></section>
+                  <section><div class="section-heading"><h2>Repository state</h2><span class="success-text">Fresh</span></div><dl class="compact-facts"><div><dt>Last change</dt><dd>Guest mode release</dd></div><div><dt>Branch</dt><dd>design/atlas-premium-experience</dd></div><div><dt>Connections</dt><dd>Claude Code, Codex</dd></div></dl></section>
+                </div>
+              </div>
+            </section>
+          </section>
+
+          <section class="desktop-view" id="desktop-ask" data-desktop-view="ask" hidden>
+            <header class="analysis-page-head">
+              <div><p class="kicker">atlas-rc1-clean <span class="success-text">Index fresh</span></p><h1>Ask Atlas</h1></div>
+              <button class="button button-secondary" type="button" data-toast="Repository switcher opened.">Switch repository</button>
+            </header>
+            <form class="analysis-query" data-prototype-form>
+              <label for="ask-question">Ask about this repository</label>
+              <div><input id="ask-question" value="Where is authentication implemented?" /><button class="button button-primary" type="submit">Ask</button></div>
+            </form>
+            <div class="answer-layout">
+              <article class="answer-document">
+                <p class="document-label">Answer</p>
+                <h2>Authentication is split between the desktop account state, local API routes, and the workflow gate.</h2>
+                <p><code>accounts_client.py</code> owns persisted identity and local-mode state. <code>accounts_routes.py</code> exposes account and guest actions. <code>server.py</code> checks whether a signed-in or local-mode identity may run protected workflows. The browser UI starts local mode from <code>atlas_accounts.js</code>.</p>
+                <section class="evidence-section">
+                  <div class="document-section-title"><h3>Evidence</h3><span>4 direct sources</span></div>
+                  <ol class="evidence-list">
+                    <li><button type="button" data-toast="Open atlas_desktop/accounts_client.py at start_guest_session"><span class="evidence-kind direct">Direct</span><code>atlas_desktop/accounts_client.py</code><strong>start_guest_session()</strong><p>Creates or restores the local-only identity and persists it without a network call.</p></button></li>
+                    <li><button type="button" data-toast="Open atlas_desktop/accounts_client.py at has_local_workflow_access"><span class="evidence-kind direct">Direct</span><code>atlas_desktop/accounts_client.py</code><strong>has_local_workflow_access()</strong><p>Returns true for an authenticated account or valid local-mode state.</p></button></li>
+                    <li><button type="button" data-toast="Open atlas_desktop/accounts_routes.py at accounts_guest_start"><span class="evidence-kind direct">Direct</span><code>atlas_desktop/accounts_routes.py</code><strong>accounts_guest_start()</strong><p>Maps the local guest action to the account-state client.</p></button></li>
+                    <li><button type="button" data-toast="Open atlas_desktop/server.py at _account_gate_failure"><span class="evidence-kind related">Related</span><code>atlas_desktop/server.py</code><strong>_account_gate_failure()</strong><p>Applies the access check below the visual login screen.</p></button></li>
+                  </ol>
+                </section>
+                <section class="reasoning-section"><h3>Why Atlas believes this</h3><p>The cited functions form the complete path from UI action to persisted state to request-time workflow authorization. The account and billing endpoints remain separate from local repository workflows.</p></section>
+                <section class="caveat-section"><h3>Caveat</h3><p>The exact website authentication authority depends on the packaged app mode. This answer describes the desktop boundary and local-mode path.</p></section>
+              </article>
+              <aside class="answer-rail" aria-label="Answer details">
+                <div><span class="rail-label">Confidence</span><strong>High</strong><p>Direct implementation and route evidence.</p></div>
+                <div><span class="rail-label">Relevant files</span><button type="button">accounts_client.py</button><button type="button">accounts_routes.py</button><button type="button">server.py</button><button type="button">atlas_accounts.js</button></div>
+                <div><span class="rail-label">Continue</span><button type="button" data-desktop-target="impact">Run Impact</button><button type="button" data-desktop-target="map">Show in Map</button><button type="button" data-toast="Editor handoff is shown only when a supported editor target is available.">Open in editor</button></div>
+              </aside>
+            </div>
+          </section>
+
+          <section class="desktop-view" id="desktop-impact" data-desktop-view="impact" hidden>
+            <header class="analysis-page-head">
+              <div><p class="kicker">Change safely</p><h1>Impact</h1><p>If this changes, what could break?</p></div>
+              <span class="inline-state"><span class="status-dot status-ready" aria-hidden="true"></span>Graph fresh</span>
+            </header>
+            <div class="impact-input-band">
+              <div class="segmented" aria-label="Impact input mode"><button class="is-selected" type="button">File</button><button type="button">Symbol</button><button type="button">Describe change</button></div>
+              <form data-prototype-form><label for="impact-target">File to change</label><div><input id="impact-target" value="atlas_desktop/accounts_client.py" /><button class="button button-primary" type="submit">Analyze impact</button></div></form>
+            </div>
+            <section class="risk-summary-band">
+              <div><span class="risk-level warning-text">Medium risk</span><h2>Local account state is shared by workflow access and account UI.</h2><p>3 direct dependents, 5 likely transitive dependents, and 4 focused test groups.</p></div>
+              <dl><div><dt>Confidence</dt><dd>High</dd></div><div><dt>Static radius</dt><dd>8 files</dd></div><div><dt>Manual checks</dt><dd>2</dd></div></dl>
+            </section>
+            <section class="blast-section">
+              <div class="section-heading"><div><p class="document-label">Blast radius</p><h2>Dependency paths from the change</h2></div><button type="button" data-desktop-target="map">Open in Map</button></div>
+              <div class="blast-grid" aria-label="Impact relationship graph">
+                <div class="blast-column origin"><span>Origin</span><button type="button"><code>accounts_client.py</code><small>local account state</small></button></div>
+                <div class="blast-column direct"><span>Directly affected</span><button type="button"><code>accounts_routes.py</code><small>guest and account routes</small></button><button type="button"><code>server.py</code><small>workflow access gate</small></button><button type="button"><code>atlas_accounts.js</code><small>local-mode UI state</small></button></div>
+                <div class="blast-column likely"><span>Likely affected</span><button type="button"><code>test_guest_mode.py</code><small>persistence and access</small></button><button type="button"><code>test_phase188_auth_ux.py</code><small>first-launch behavior</small></button><button type="button"><code>api.py</code><small>protected workflow dispatch</small></button></div>
+              </div>
+              <div class="impact-detail-grid">
+                <section><h3>Tests affected</h3><ul><li>Guest mode focused suite</li><li>Authentication UX routes</li><li>Direct API workflow gates</li><li>Fresh-process persistence</li></ul></section>
+                <section><h3>Needs manual verification</h3><ul><li>Upgrade from local mode preserves repository state</li><li>Packaged app uses the expected website auth authority</li></ul></section>
+                <section><h3>Unknown or dynamic risk</h3><p>Account-state consumers reached through runtime route tables are not fully represented by static imports.</p></section>
+              </div>
+              <div class="impact-primary-action"><button class="button button-primary" type="button" data-desktop-target="plan">Create change plan</button></div>
+            </section>
+          </section>
+
+          <section class="desktop-view" id="desktop-debug" data-desktop-view="debug" hidden>
+            <header class="analysis-page-head"><div><p class="kicker">Structured investigation</p><h1>Debug</h1><p>Trace a symptom to evidence before choosing a fix.</p></div></header>
+            <form class="analysis-query" data-prototype-form><label for="debug-symptom">Error, stack trace, or symptom</label><div><input id="debug-symptom" value="Guest session disappears after restart" /><button class="button button-primary" type="submit">Investigate</button></div></form>
+            <div class="hypothesis-layout"><section class="root-cause"><p class="document-label">Likely root cause</p><h2>The saved account state is rejected during load-time integrity validation.</h2><p>Start with the state digest and guest-state validation path before changing the UI.</p></section><ol class="hypothesis-stack"><li><strong>State signature mismatch</strong><p>Compare the persisted payload fields with <code>_state_digest()</code>.</p><span>High confidence</span></li><li><strong>Guest marker cleared by auth refresh</strong><p>Verify whether the website-mode refresh path calls <code>_clear_auth_state()</code>.</p><span>Medium confidence</span></li><li><strong>Wrong data directory</strong><p>Confirm the packaged process resolves the same Atlas data root after restart.</p><span>Medium confidence</span></li></ol></div>
+          </section>
+
+          <section class="desktop-view" id="desktop-plan" data-desktop-view="plan" hidden>
+            <header class="analysis-page-head"><div><p class="kicker">Grounded implementation path</p><h1>Plan change</h1><p>What should change, in what order, and what should be verified?</p></div></header>
+            <div class="plan-layout"><aside><span class="rail-label">Goal</span><h2>Preserve local repository state when a user signs in later.</h2><dl><div><dt>Risk</dt><dd>Medium</dd></div><div><dt>Files</dt><dd>4</dd></div><div><dt>Tests</dt><dd>5 groups</dd></div></dl></aside><ol class="implementation-path"><li><span>01</span><div><strong>Separate identity transition from repository state</strong><p><code>accounts_client.py</code> should update account fields without clearing scan persistence.</p></div></li><li><span>02</span><div><strong>Keep route contracts stable</strong><p>Reuse the current account endpoints and response shape.</p></div></li><li><span>03</span><div><strong>Verify fresh-process restore</strong><p>Run local-mode, sign-in transition, restart, and MCP tests.</p></div></li><li><span>04</span><div><strong>Document rollback boundary</strong><p>Revert only identity migration if account activation fails; leave local scans untouched.</p></div></li></ol></div>
+          </section>
+
+          <section class="desktop-view" id="desktop-map" data-desktop-view="map" hidden>
+            <header class="map-toolbar"><div><p class="kicker">Repository architecture</p><h1>Map</h1></div><label>Find file or symbol<input type="search" value="authentication" /></label><div class="segmented" aria-label="Map preset"><button class="is-selected" type="button">Architecture</button><button type="button">Authentication</button><button type="button">Request flow</button><button type="button">High risk</button></div></header>
+            <div class="architecture-map"><section><span>Desktop UI</span><button type="button">atlas_accounts.js</button><button type="button">app.js</button></section><section><span>Local API</span><button type="button">accounts_routes.py</button><button type="button">server.py</button></section><section><span>Identity state</span><button class="is-focused" type="button">accounts_client.py</button><button type="button">data_paths.py</button></section><section><span>Website authority</span><button type="button">app/_lib/auth.ts</button><button type="button">api/auth/desktop/*</button></section></div>
+            <div class="map-selection"><div><span class="rail-label">Selected</span><strong>accounts_client.py</strong><p>Owns local guest state, website tokens, account validation, and the workflow access predicate.</p></div><button class="button button-secondary" type="button" data-desktop-target="ask">Ask about this</button><button class="button button-primary" type="button" data-desktop-target="impact">Run Impact</button></div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section id="surface-website" class="surface" aria-label="Public website prototype" hidden>
+      <div class="website-frame">
+        <header class="site-nav">
+          <a class="site-brand" href="#website-hero"><span class="atlas-mark" aria-hidden="true"></span><strong>Atlas</strong></a>
+          <nav aria-label="Website"><a href="#website-proof">Product</a><a href="#website-impact">Impact</a><a href="#website-trust">Security</a></nav>
+          <a class="button button-primary" href="#download">Download Atlas</a>
+        </header>
+
+        <main>
+          <section class="website-hero" id="website-hero">
+            <div class="session-scene" aria-label="Atlas persistence across coding-agent sessions">
+              <div class="scene-column scan-column"><span class="scene-label">Session 1</span><strong>Repository indexed</strong><code>1,248 files</code><code>3,912 symbols</code><code>8,406 relationships</code><span class="scene-state success-text">Saved locally</span></div>
+              <div class="scene-column restore-column"><span class="scene-label">Fresh session</span><strong>Context restored</strong><code>graph: ready</code><code>evidence: ready</code><code>rescan: no</code><span class="scene-state evidence-text">12 ms controlled test</span></div>
+              <div class="scene-column answer-column"><span class="scene-label">Connected agent</span><strong>Where is authentication implemented?</strong><code>accounts_client.py</code><code>accounts_routes.py</code><code>server.py</code><span class="scene-state">Cited context</span></div>
+            </div>
+            <div class="website-hero-copy">
+              <p class="kicker">Local repository intelligence that persists</p>
+              <h1>Persistent repository context for Claude Code, Cursor, and Codex.</h1>
+              <p>Your coding agent should not rediscover the same repository every session. Atlas indexes locally, restores its graph and evidence in fresh sessions, and returns cited files for questions, debugging, and change planning.</p>
+              <div class="primary-actions"><a class="button button-primary" href="#download">Download Atlas</a><a class="button button-secondary" href="#website-proof">See the 30-second flow</a></div>
+              <ul class="trust-line"><li>Windows v1.0</li><li>No signup required</li><li>Local-first</li></ul>
+            </div>
+            <a class="proof-peek" href="#website-proof"><span>Product proof</span><strong>Fresh sessions start with cited repository context.</strong></a>
+          </section>
+
+          <section class="website-proof" id="website-proof">
+            <div class="section-intro"><p class="kicker">Product proof</p><h2>Ask once. See the files and the reason.</h2><p>Controlled test repository, 27 files. Scope is labeled so a measured result never becomes a broad claim.</p></div>
+            <div class="proof-document">
+              <div class="proof-question"><span>Question</span><strong>Where is authentication implemented?</strong></div>
+              <div class="proof-answer"><span>Direct answer</span><h3>Authentication is enforced in the middleware and mounted by the route registry.</h3><p><code>auth/middleware.py</code> validates the token. <code>api/routes.py</code> attaches the middleware to protected routes.</p></div>
+              <div class="proof-files"><button type="button"><code>auth/middleware.py</code><span>authenticate_jwt(), auth_middleware()</span><strong>Direct evidence</strong></button><button type="button"><code>api/routes.py</code><span>register_routes(app)</span><strong>Request wiring</strong></button><button type="button"><code>tests/test_auth.py</code><span>protected-route coverage</span><strong>Supporting test</strong></button></div>
+              <dl class="restore-proof"><div><dt>Fresh agent session</dt><dd>Yes</dd></div><div><dt>Restore</dt><dd>8-12 ms</dd></div><div><dt>Graph rebuilt</dt><dd>No</dd></div><div><dt>Scope</dt><dd>Controlled 27-file repository</dd></div></dl>
+            </div>
+          </section>
+
+          <section class="website-impact" id="website-impact">
+            <div class="section-intro"><p class="kicker">Change impact</p><h2>See the blast radius before the edit.</h2><p>Atlas separates direct dependencies, likely transitive impact, tests, and static-analysis unknowns.</p></div>
+            <div class="web-impact-demo"><div class="web-origin"><span>Selected symbol</span><strong>AuthStore.login</strong><code>app/auth.py</code></div><div class="web-impact-paths"><div><span>Directly affected</span><strong>routes.login</strong><strong>session.create</strong></div><div><span>Likely affected</span><strong>tests/test_auth.py</strong><strong>account recovery</strong></div><div class="uncertain"><span>Needs verification</span><strong>dynamic plugin callbacks</strong></div></div></div>
+          </section>
+
+          <section class="website-trust" id="website-trust">
+            <div class="section-intro"><p class="kicker">Local-first, shown plainly</p><h2>Know where repository data goes.</h2></div>
+            <ol class="data-flow"><li><strong>Repository</strong><span>Read from the folder you choose</span></li><li><strong>Atlas local index</strong><span>Files, symbols, graph, and persistence stay local</span></li><li><strong>Selected evidence</strong><span>Only the context chosen for the connected agent</span></li><li><strong>Claude, Cursor, or Codex</strong><span>Handled according to that tool's model-provider terms</span></li></ol>
+          </section>
+
+          <section class="website-download" id="download"><p class="kicker">Windows v1.0</p><h2>Start locally. Add an account only when you need account or billing features.</h2><a class="button button-primary" href="#download" data-toast="Download action is intentionally inert in this isolated prototype.">Download Atlas</a></section>
+        </main>
+      </div>
+    </section>
+  </main>
+
+  <div class="command-overlay" data-command-overlay hidden>
+    <div class="command-dialog" role="dialog" aria-modal="true" aria-labelledby="command-title">
+      <label id="command-title" for="command-input">Go to a tool or repository</label>
+      <input id="command-input" type="search" placeholder="Ask, Impact, Map, or a file path" />
+      <ul><li><button type="button" data-command-target="ask"><strong>Ask Atlas</strong><span>Evidence-backed repository answer</span></button></li><li><button type="button" data-command-target="impact"><strong>Impact</strong><span>See what could break</span></button></li><li><button type="button" data-command-target="map"><strong>Map</strong><span>Find files, symbols, and relationships</span></button></li></ul>
+    </div>
+  </div>
+  <div class="toast" role="status" aria-live="polite" aria-atomic="true" data-toast-region hidden></div>
+  <script src="prototype.js"></script>
+</body>
+</html>

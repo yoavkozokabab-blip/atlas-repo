@@ -78,6 +78,9 @@ const atlasMcpSetup = (() => {
     setConnectButton("mcpClaudeBtn", claudeOn, false, "claude");
     setConnectButton("mcpCursorBtn", cursorOn, false, "cursor");
     setConnectButton("mcpCodexBtn", codexOn, codexManual, "codex");
+    if (typeof window.renderHomeExperience === "function") {
+      window.renderHomeExperience({ mcpStatus: status });
+    }
   }
 
   async function loadStatus(force) {

@@ -205,7 +205,8 @@ def test_mcp_home_section_has_per_tool_cards_not_global_actions():
     assert "Test Claude" in section
     assert "Test Cursor" in section
     assert "Test Codex" in section
-    assert "Advanced manual setup" in section
+    assert "Manual setup" in section
+    assert section.count('class="mcp-home-advanced"') == 3
     assert "Test connection" not in section
     assert "Copy MCP config" not in section
     assert 'id="mcpSetupOutput"' not in section
