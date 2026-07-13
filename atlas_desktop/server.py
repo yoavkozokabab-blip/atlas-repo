@@ -12,11 +12,11 @@ import json
 import mimetypes
 import os
 import shutil
+import socket
 import subprocess
 import sys
 import threading
 import time
-import urllib.request
 from ipaddress import ip_address
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
@@ -24,6 +24,7 @@ from typing import Any, Callable, Dict, Optional, Tuple
 
 from . import accounts_client, api, system_browse
 from . import accounts_service_runner
+from . import runtime_startup
 from .billing import service as billing_service
 from .accounts_routes import ACCOUNTS_ROUTES
 
@@ -43,6 +44,17 @@ PROTECTED_ACCOUNT_ROUTES = {
     ("POST", "/api/integrations/claude-code/write-managed-block"),
     ("POST", "/api/copilot/ask"),
 }
+
+
+class AtlasHTTPServer(ThreadingHTTPServer):
+    """Own a loopback port exclusively, including on Windows."""
+
+    allow_reuse_address = False
+
+    def server_bind(self) -> None:
+        if os.name == "nt" and hasattr(socket, "SO_EXCLUSIVEADDRUSE"):
+            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
+        super().server_bind()
 
 
 def _account_gate_failure() -> Optional[Dict[str, Any]]:
@@ -321,6 +333,23 @@ class AtlasHandler(BaseHTTPRequestHandler):
     def _route_api(self) -> None:
         parsed = urlparse(self.path)
         path = normalize_api_path(parsed.path)
+        if path == runtime_startup.HANDSHAKE_PATH:
+            query_items = parse_qs(parsed.query or "")
+            challenge = str((query_items.get("challenge") or [""])[0])
+            identity = getattr(self.server, "atlas_runtime_identity", None) or {}
+            if not challenge or not identity:
+                self._send_json(400, {"ok": False, "error": "runtime handshake unavailable"})
+                return
+            self._send_json(
+                200,
+                runtime_startup.handshake_payload(
+                    challenge,
+                    port=int(self.server.server_address[1]),
+                    pid=int(identity.get("pid") or os.getpid()),
+                    instance_id=str(identity.get("instance_id") or ""),
+                ),
+            )
+            return
         if path == "/api/system/browse-folder" and not _is_loopback_host(str(self.client_address[0])):
             self._send_json(
                 403,
@@ -394,6 +423,31 @@ def _bind_http_server(host: str, port: int, *, attempts: int = 10):
     raise OSError(f"Could not bind {host}:{port}-{port + attempts - 1}")
 
 
+def _select_runtime(host: str, preferred_port: int):
+    """Select a safe port or reuse only a cryptographically verified Atlas."""
+    last_exc: Optional[OSError] = None
+    for candidate in runtime_startup.controlled_ports(preferred_port):
+        try:
+            httpd = AtlasHTTPServer((host, candidate), AtlasHandler)
+            return httpd, int(httpd.server_address[1]), None
+        except OSError as exc:
+            if not _port_bind_retryable(exc):
+                raise
+            last_exc = exc
+            # A concurrent process can bind immediately before it starts
+            # serving. Bounded retries close that startup race.
+            existing = runtime_startup.probe_atlas(host, candidate, attempts=12)
+            if existing:
+                _log_launcher(f"verified existing Atlas runtime on port {candidate}")
+                return None, candidate, existing
+            _log_launcher(
+                f"port {candidate} occupied by foreign or unready service; trying controlled fallback"
+            )
+    if last_exc:
+        raise last_exc
+    raise OSError("No controlled Atlas desktop ports are available")
+
+
 def _find_edge_executable() -> Optional[str]:
     found = shutil.which("msedge") or shutil.which("msedge.exe")
     if found:
@@ -439,14 +493,10 @@ def _open_url(url: str, *, mode: str = "browser") -> bool:
 
 
 def _open_after_health(host: str, port: int, url: str, *, mode: str) -> None:
-    health_url = f"http://{host}:{port}/api/health"
     for _ in range(60):
-        try:
-            with urllib.request.urlopen(health_url, timeout=0.5) as resp:
-                if 200 <= int(getattr(resp, "status", resp.getcode())) < 500:
-                    break
-        except OSError:
-            time.sleep(0.15)
+        if runtime_startup.probe_atlas(host, port, timeout=0.5):
+            break
+        time.sleep(0.15)
     opened = _open_url(url, mode=mode)
     if not opened:
         _log_launcher(f"could not auto-open; visit {url} manually")
@@ -474,16 +524,27 @@ def run(
     _track_app_started()
     accounts_service_runner.ensure_running_async()
     try:
-        httpd, bound_port = _bind_http_server(host, port)
+        httpd, bound_port, existing = _select_runtime(host, port)
     except OSError as exc:
         _log_launcher(f"bind failed on {host}:{port}: {type(exc).__name__}: {exc}")
         httpd, bound_port = _bind_http_server(host, 0, attempts=1)
+        existing = None
         start_path = "/startup-error.html"
         _log_launcher(f"recovered on ephemeral port {bound_port} with startup-error page")
     if bound_port != port:
         _log_launcher(f"serving on alternate port {bound_port} (requested {port})")
     path = start_path if start_path.startswith("/") else f"/{start_path}"
     url = f"http://{host}:{bound_port}{path}"
+    if existing:
+        if open_browser:
+            _open_url(url, mode=open_mode)
+        return
+    identity = runtime_startup.new_instance_identity(bound_port)
+    httpd.atlas_runtime_identity = identity
+    try:
+        runtime_startup.write_runtime_descriptor(identity)
+    except OSError as exc:
+        _log_launcher(f"runtime descriptor write failed: {type(exc).__name__}: {exc}")
     if not getattr(__import__("sys"), "frozen", False):
         print(f"  ATLAS — Repository Intelligence Platform")
         print(f"  Serving at http://{host}:{bound_port}/  (Ctrl+C to stop)")
