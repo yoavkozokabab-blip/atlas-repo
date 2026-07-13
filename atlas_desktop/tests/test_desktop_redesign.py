@@ -34,7 +34,7 @@ def test_desktop_shell_uses_existing_local_api_contracts():
     assert 'byId("mcpSetupSection")' in js
     assert "Promise.allSettled" in js
     assert "request_failures" in js
-    assert "startupReady && installerReady && memoryVerified" in js
+    assert "startupReady && installerReady && repositoryReady && memoryVerified" in js
 
 
 def test_desktop_shell_includes_keyboard_and_status_affordances():
