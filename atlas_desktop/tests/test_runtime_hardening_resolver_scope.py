@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from builder_core import repository_understanding as ru
+from builder_core.unresolved_imports import classify_graph_unresolved
 from builder_core.bug_intelligence import depgraph, engine, jsdepgraph
 
 
@@ -79,3 +80,6 @@ def test_non_code_asset_import_is_expected_unresolved_not_internal_defect(tmp_pa
             "reason": "asset_import",
         }
     ]
+    classified = classify_graph_unresolved(graph)
+    assert classified["internal_unresolved_count"] == 0
+    assert classified["breakdown"]["external_dependency"] == 1

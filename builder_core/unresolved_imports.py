@@ -71,6 +71,9 @@ def classify_unresolved_entry(
     from_path = _norm(entry.get("from_module") or from_module_path)
     parts = from_path.lower().split("/")
 
+    if reason == "asset_import":
+        return "external_dependency"
+
     if target.startswith("."):
         return "relative_resolution_issue"
 
