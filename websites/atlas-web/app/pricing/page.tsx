@@ -1,6 +1,6 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
-import { SiteNav, SiteFooter } from "../_components/site";
+import { PageShell, PremiumSection, TrustBlock } from "../_components/site";
 import { proCheckoutReady } from "../_lib/billing";
 
 export const metadata: Metadata = {
@@ -8,84 +8,73 @@ export const metadata: Metadata = {
   description: "Atlas pricing: Free local app today, Pro planned at $19/month with Paddle checkout when billing is configured.",
 };
 
+const free = ["Local repository scan", "Ask Atlas", "MCP integration", "Impact", "Debug", "Plan Change", "Map"];
+const pro = [
+  "Everything in Free",
+  "Unlimited repositories and indexing",
+  "Cloud sync",
+  "Snapshot history",
+  "Advanced search",
+  "Priority indexing",
+  "New Pro capabilities as they ship",
+  "Priority support",
+];
+const team = ["Shared workflows", "Team setup discussion", "Security and deployment questions"];
+
 export default function PricingPage() {
   const proReady = proCheckoutReady();
   return (
-    <>
-      <SiteNav />
-      <main>
-        <section className="page-head">
-          <div className="container">
-            <p className="eyebrow">Pricing</p>
-            <h1 className="page-title">Simple pricing for repo memory.</h1>
-            <p className="lead" style={{ marginTop: 18 }}>
-              Start with the local Windows app. Pro billing is powered by Paddle as Merchant of Record when checkout is configured.
-            </p>
+    <PageShell
+      eyebrow="Pricing"
+      title="Simple pricing for repo memory."
+      intro="Start with the local Windows app. Pro billing is powered by Paddle as Merchant of Record when checkout is configured."
+    >
+      <PremiumSection>
+        <div className="tiers premium-tiers">
+          <div className="tier">
+            <p className="eyebrow">Free</p>
+            <h3>Core local app</h3>
+            <div className="price">$0</div>
+            <p className="note">Available today.</p>
+            <ul>{free.map((item) => <li key={item}>{item}</li>)}</ul>
+            <Link className="btn-mag" href="/download">Download Atlas <span className="arw" aria-hidden>→</span></Link>
           </div>
-        </section>
 
-        <section className="section" style={{ borderTop: "none", paddingTop: 24 }}>
-          <div className="container">
-            <div className="tiers">
-              <div className="tier">
-                <h3>Free</h3>
-                <div className="price">$0</div>
-                <p className="note">Core local app.</p>
-                <ul>
-                  <li>Local repository scan</li>
-                  <li>Ask Atlas</li>
-                  <li>MCP integration</li>
-                  <li>Impact</li>
-                  <li>Debug</li>
-                  <li>Plan Change</li>
-                  <li>Map</li>
-                </ul>
-                <Link className="btn btn-primary btn-lg" href="/download">Download Atlas</Link>
-              </div>
-
-              <div className="tier feat">
-                <p className="badge ok" style={{ marginBottom: 10 }}>Pro</p>
-                <h3>Pro</h3>
-                <div className="price">$19<small>/month</small></div>
-                <p className="note">7-day trial when checkout is enabled.</p>
-                <ul>
-                  <li>Everything in Free</li>
-                  <li>Unlimited repositories and indexing</li>
-                  <li>Cloud sync</li>
-                  <li>Snapshot history</li>
-                  <li>Advanced search</li>
-                  <li>Priority indexing</li>
-                  <li>New Pro capabilities as they ship</li>
-                  <li>Priority support</li>
-                </ul>
-                {proReady ? (
-                  <Link className="btn btn-primary btn-lg" href="/checkout/plan/pro" data-evt="pro_cta_click">Start 7-day trial</Link>
-                ) : (
-                  <button className="btn btn-primary btn-lg" disabled data-evt="pro_cta_click">Coming soon</button>
-                )}
-                <div className="note-accent" style={{ marginTop: 18 }}>
-                  <p style={{ margin: 0 }}><b>Paddle is the Merchant of Record.</b></p>
-                  <p style={{ margin: "6px 0 0" }}>Atlas does not store payment card details. Pro checkout stays disabled until Paddle credentials are configured.</p>
-                </div>
-              </div>
-
-              <div className="tier">
-                <p className="badge muted" style={{ marginBottom: 10 }}>Coming soon</p>
-                <h3>Team</h3>
-                <div className="price">Contact</div>
-                <p className="note">No Team subscription billing today.</p>
-                <ul>
-                  <li>Shared workflows</li>
-                  <li>Team setup discussion</li>
-                  <li>Security and deployment questions</li>
-                </ul>
-                <Link className="btn btn-ghost btn-lg" href="/contact">Contact us</Link>
-              </div>
+          <div className="tier feat">
+            <p className="eyebrow">Pro</p>
+            <h3>Capacity features</h3>
+            <div className="price">$19<small>/month</small></div>
+            <p className="note">7-day trial when checkout is enabled.</p>
+            <ul>{pro.map((item) => <li key={item}>{item}</li>)}</ul>
+            {proReady ? (
+              <Link className="btn-mag" href="/checkout/plan/pro" data-evt="pro_cta_click">Start 7-day trial <span className="arw" aria-hidden>→</span></Link>
+            ) : (
+              <button className="btn btn-primary btn-lg" disabled data-evt="pro_cta_click">Coming soon</button>
+            )}
+            <div className="note-accent" style={{ marginTop: 18 }}>
+              <p style={{ margin: 0 }}><b>Paddle is the Merchant of Record.</b></p>
+              <p style={{ margin: "6px 0 0" }}>Atlas does not store payment card details. Pro checkout stays disabled until Paddle credentials are configured.</p>
             </div>
           </div>
-        </section>
-      </main>
-      <SiteFooter />
-    </>
+
+          <div className="tier">
+            <p className="eyebrow">Team</p>
+            <h3>Discussion only</h3>
+            <div className="price">Contact</div>
+            <p className="note">No Team subscription billing today.</p>
+            <ul>{team.map((item) => <li key={item}>{item}</li>)}</ul>
+            <Link className="btn-line" href="/contact">Contact us</Link>
+          </div>
+        </div>
+      </PremiumSection>
+
+      <PremiumSection
+        eyebrow="Trust"
+        title="No pricing magic hidden behind the page."
+        intro="The public page reflects current billing behavior: Free is available, Pro checkout depends on configured Paddle credentials, and Team billing does not exist today."
+      >
+        <TrustBlock />
+      </PremiumSection>
+    </PageShell>
   );
 }
