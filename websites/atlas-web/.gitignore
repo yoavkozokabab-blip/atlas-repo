@@ -1,0 +1,16 @@
+.next
+node_modules
+out
+*.tsbuildinfo
+
+# Local environment config — never commit (contact email, API keys, secrets)
+.env
+.env.local
+.env*.local
+
+# Local test-mode data store (users, audit) — never commit
+.data
+.vercel
+
+# QA screenshot output
+qa/shots/

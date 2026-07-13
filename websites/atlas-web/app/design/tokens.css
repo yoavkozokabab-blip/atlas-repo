@@ -1,0 +1,55 @@
+/* Atlas — design tokens. Living Map system. Single source of design truth.
+   Consumed by globals.css and all marketing components. */
+
+:root {
+  /* ---- surfaces: warm-neutral graphite, layered (never flat black) ---- */
+  --void: #070908;
+  --bg-0: #0A0C0C;
+  --bg-1: #0F1312;
+  --bg-2: #141918;
+  --bg-3: #1A211F;
+  --line: rgba(233, 240, 236, 0.08);
+  --line-2: rgba(233, 240, 236, 0.14);
+  --line-3: rgba(233, 240, 236, 0.22);
+
+  /* ---- foreground: warm off-white, never harsh pure white in body ---- */
+  --text-0: #ECEFEC;
+  --text-1: #A7B2AD;
+  /* --text-2: muted, but still WCAG-AA (>=4.5:1) on every surface token */
+  --text-2: #8A938C;
+
+  /* ---- accent: one mineral teal = active memory / detected context ---- */
+  --accent: #5FD3BE;
+  --accent-bright: #8CF0DC;
+  --accent-deep: #2C6F66;
+  --accent-ink: #04110E;
+  --accent-soft: rgba(95, 211, 190, 0.12);
+  --accent-line: rgba(95, 211, 190, 0.28);
+
+  /* ---- semantic states only (never decorative) ---- */
+  --ok: #4FBF8B;
+  --warn: #D6A23B;
+  --risk: #E5687A;
+
+  /* ---- type ---- */
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+
+  /* ---- shape / space ---- */
+  --r-sm: 8px;
+  --r: 12px;
+  --r-lg: 18px;
+  --maxw: 1200px;
+  --gutter: clamp(20px, 5vw, 64px);
+
+  /* ---- motion ---- */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* ---- z ---- */
+  --z-scene: 0;
+  --z-content: 1;
+  --z-nav: 50;
+  --z-overlay: 100;
+}

@@ -1,0 +1,118 @@
+import Link from "next/link";
+import { GITHUB_URL, SUPPORT_EMAIL, supportMailto } from "../_config";
+
+export function SiteNav() {
+  return (
+    <header className="nav">
+      <div className="container nav-inner">
+        <Link className="brand" href="/" aria-label="Atlas home">
+          <span className="brand-mark" aria-hidden />
+          Atlas
+        </Link>
+        <nav className="nav-links" aria-label="Primary">
+          <Link href="/features">Features</Link>
+          <Link href="/docs" data-evt="docs_click">Docs</Link>
+          <Link href="/download">Download</Link>
+        </nav>
+        <div className="nav-cta">
+          <Link className="btn btn-primary" href="/download">Download Atlas</Link>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+export function SiteFooter() {
+  return (
+    <footer className="footer">
+      <div className="container">
+        <div className="footer-grid">
+          <div>
+            <Link className="brand" href="/" aria-label="Atlas home">
+              <span className="brand-mark" aria-hidden /> Atlas
+            </Link>
+            <p className="muted" style={{ marginTop: 14, fontSize: "0.88rem", maxWidth: "34ch" }}>
+              Local-first repository intelligence for AI-assisted engineering.
+            </p>
+          </div>
+          <div>
+            <h4>Product</h4>
+            <Link href="/pricing">Pricing</Link>
+            <Link href="/docs">Docs</Link>
+            <Link href="/download">Download</Link>
+            <Link href="/features">Features</Link>
+            <Link href="/changelog">Changelog</Link>
+            <Link href="/roadmap">Roadmap</Link>
+            <Link href="/compare">Compare</Link>
+            <Link href="/benchmarks">Benchmarks</Link>
+          </div>
+          <div>
+            <h4>Legal</h4>
+            <Link href="/privacy">Privacy</Link>
+            <Link href="/terms">Terms</Link>
+            <Link href="/refund">Refund</Link>
+            <Link href="/security">Security</Link>
+          </div>
+          <div>
+            <h4>Company</h4>
+            <Link href="/contact">Contact</Link>
+            <a href={GITHUB_URL} target="_blank" rel="noreferrer">GitHub</a>
+            {SUPPORT_EMAIL ? (
+              <a href={supportMailto()}>{SUPPORT_EMAIL}</a>
+            ) : (
+              <Link href="/contact">Contact us</Link>
+            )}
+            <Link href="/faq">FAQ</Link>
+          </div>
+        </div>
+        <div className="legal">© 2026 Atlas. Local-first repository intelligence.</div>
+      </div>
+    </footer>
+  );
+}
+
+/** Four-step install strip: Download → Install → Load sample → Connect. */
+export function InstallFlow() {
+  return (
+    <div className="install-flow" aria-label="Install steps">
+      <span className="if-step">Download</span>
+      <span className="if-arrow" aria-hidden>→</span>
+      <span className="if-step">Install</span>
+      <span className="if-arrow" aria-hidden>→</span>
+      <span className="if-step">Load sample repository</span>
+      <span className="if-arrow" aria-hidden>→</span>
+      <span className="if-step">Connect Claude / Cursor / Codex</span>
+      <span className="muted" style={{ fontFamily: "var(--font-mono)", fontSize: "0.8rem" }}>· No login required</span>
+    </div>
+  );
+}
+
+/** Standard page shell for content pages (nav + hero header + footer). */
+export function PageShell({
+  eyebrow,
+  title,
+  intro,
+  children,
+}: {
+  eyebrow: string;
+  title: string;
+  intro?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <>
+      <SiteNav />
+      <main id="main-content">
+        <section className="page-head">
+          <div className="container">
+            <p className="eyebrow">{eyebrow}</p>
+            <h1 className="page-title">{title}</h1>
+            {intro ? <p className="lead" style={{ marginTop: 18 }}>{intro}</p> : null}
+          </div>
+        </section>
+        {children}
+      </main>
+      <SiteFooter />
+    </>
+  );
+}
