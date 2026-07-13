@@ -78,6 +78,7 @@ export function SiteFooter() {
             <Link href="/benchmarks">Benchmarks</Link>
             <Link href="/compare">Compare</Link>
             <Link href="/changelog">Changelog</Link>
+            <Link href="/releases">Releases</Link>
             <Link href="/roadmap">Roadmap</Link>
             <Link href="/faq">FAQ</Link>
           </div>
@@ -91,6 +92,7 @@ export function SiteFooter() {
           </div>
           <div>
             <h4>Company</h4>
+            <Link href="/about">About</Link>
             <Link href="/docs">Docs</Link>
             <Link href="/contact">Contact</Link>
             <a href={GITHUB_URL} target="_blank" rel="noreferrer">GitHub</a>
