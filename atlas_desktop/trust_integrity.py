@@ -456,7 +456,11 @@ def assess_staleness(state: Dict[str, Any]) -> Dict[str, Any]:
         git_head_changed = bool(prev_git and live_git and prev_git != live_git)
 
     changed = detect_changed_files(state)
-    if not changed and (not prev or live.get("signature") == prev.get("signature")):
+    if (
+        not changed
+        and not git_head_changed
+        and (not prev or live.get("signature") == prev.get("signature"))
+    ):
         return base
 
     ctx = state.get("workflow_context") or {}
