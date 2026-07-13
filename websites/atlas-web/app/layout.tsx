@@ -1,5 +1,15 @@
 import type { Metadata, Viewport } from "next";
+import { Space_Grotesk } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 import "./globals.css";
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
+});
 
 const TITLE = "Atlas — Persistent repo memory for Claude Code, Cursor, and Codex";
 const DESC =
@@ -35,7 +45,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0B0F14",
+  themeColor: "#070908",
   colorScheme: "dark",
   width: "device-width",
   initialScale: 1
@@ -52,8 +62,12 @@ export default function RootLayout({
   children
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className={`${spaceGrotesk.variable} ${GeistSans.variable} ${GeistMono.variable}`}
+    >
       <body>
+        <a href="#main-content" className="skip-link">Skip to content</a>
         {children}
         {ANALYTICS_URL ? (
           <script dangerouslySetInnerHTML={{ __html: ANALYTICS_SNIPPET }} />

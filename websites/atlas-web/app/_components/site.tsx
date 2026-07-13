@@ -102,7 +102,7 @@ export function PageShell({
   return (
     <>
       <SiteNav />
-      <main>
+      <main id="main-content">
         <section className="page-head">
           <div className="container">
             <p className="eyebrow">{eyebrow}</p>
