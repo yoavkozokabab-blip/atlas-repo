@@ -1,0 +1,4 @@
+interface:
+  display_name: "Atlas Desktop Design and QA"
+  short_description: "Design and verify the Atlas desktop experience"
+  default_prompt: "Use $atlas-desktop-design-qa to audit, redesign, and verify an Atlas desktop workflow."
