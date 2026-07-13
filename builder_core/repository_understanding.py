@@ -102,16 +102,23 @@ def _parts(rel_path: str) -> List[str]:
     return rel_path.replace("\\", "/").lower().split("/")
 
 
-def is_generated_runtime_path(rel_path: str, *, is_dir: bool = False) -> bool:
-    """Identify Atlas/packager/test outputs that are never first-party source."""
+def is_transient_runtime_path(rel_path: str, *, is_dir: bool = False) -> bool:
+    """Identify transient copies that should be pruned before file collection."""
     normalized = rel_path.replace("\\", "/").lower().strip("/")
     parts = normalized.split("/") if normalized else []
-    if any(part in _GENERATED_PARTS for part in parts):
-        return True
     if any(part.startswith(_GENERATED_DIR_PREFIXES) for part in parts):
         return True
     candidate = normalized + ("/" if is_dir and normalized else "")
     return any(candidate.startswith(prefix) for prefix in _GENERATED_PATH_PREFIXES)
+
+
+def is_generated_runtime_path(rel_path: str, *, is_dir: bool = False) -> bool:
+    """Identify generated or transient paths that are never first-party source."""
+    normalized = rel_path.replace("\\", "/").lower().strip("/")
+    parts = normalized.split("/") if normalized else []
+    return any(part in _GENERATED_PARTS for part in parts) or is_transient_runtime_path(
+        normalized, is_dir=is_dir
+    )
 
 
 def classify_file_role(

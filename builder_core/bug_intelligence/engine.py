@@ -184,7 +184,7 @@ def _collect_python_files(root: str) -> List[tuple]:
         dirnames[:] = [
             d for d in dirnames
             if d not in SKIP_DIRS
-            and not ru.is_generated_runtime_path(
+            and not ru.is_transient_runtime_path(
                 f"{rel_dir}/{d}" if rel_dir else d, is_dir=True
             )
         ]
