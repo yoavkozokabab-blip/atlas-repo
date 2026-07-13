@@ -228,14 +228,16 @@
     const report = byId("diagnosticsReport");
     if (!summary || !grid || !report) return;
     summary.innerHTML = `${statusPill("Running", "neutral")} Checking local services and persisted state…`;
-    const [health, diagnostics, startup, selfTest, mcp] = await Promise.all([
+    const diagnosticRequests = await Promise.allSettled([
       api("/api/health"),
       api("/api/system/diagnostics"),
       api("/api/system/startup-status"),
       api("/api/system/self-test"),
       api("/api/integrations/mcp/status"),
     ]);
-    const allOk = [health, diagnostics, startup, selfTest, mcp].every((item) => item && item.ok);
+    const [health, diagnostics, startup, selfTest, mcp] = diagnosticRequests.map((request) => request.status === "fulfilled" ? request.value : null);
+    const requestFailures = diagnosticRequests.filter((request) => request.status === "rejected");
+    const allOk = requestFailures.length === 0 && [health, diagnostics, startup, selfTest, mcp].every((item) => item && item.ok);
     const memory = diagnostics && diagnostics.trust_integrity || {};
     const scan = diagnostics && diagnostics.scan_statistics || {};
     const agents = connectedAgents(mcp);
@@ -249,7 +251,7 @@
       renderDiagnosticCard("Installer runtime", !!(selfTest && selfTest.ok && selfTest.ready), selfTest && `${list(selfTest.checks).filter((item) => item.ok).length} runtime checks passed`),
       renderDiagnosticCard("Agent connections", !!(mcp && mcp.ok), agents.length ? `${agents.map((name) => name === "claude" ? "Claude" : name === "codex" ? "Codex" : "Cursor").join(", ")} configured` : "MCP configuration available; no agent reported configured"),
     ].join("");
-    shell.diagnostics = { generated_at: new Date().toISOString(), health, diagnostics, startup, self_test: selfTest, mcp: {
+    shell.diagnostics = { generated_at: new Date().toISOString(), request_failures: requestFailures.map((request) => text(request.reason && request.reason.message, "Request failed")), health, diagnostics, startup, self_test: selfTest, mcp: {
       ok: !!(mcp && mcp.ok), executable_exists: !!(mcp && mcp.executable_exists), connected_agents: agents,
     } };
     report.textContent = JSON.stringify(shell.diagnostics, null, 2);
