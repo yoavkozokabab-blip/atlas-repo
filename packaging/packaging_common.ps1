@@ -76,7 +76,11 @@ function Test-HnLaunchUxPayload {
     param([Parameter(Mandatory = $true)][string]$IndexPath)
     $html = Get-Content -LiteralPath $IndexPath -Raw -ErrorAction Stop
     $issues = @()
-    if ($html -notmatch ">Ask Atlas<") { $issues += "nav missing Ask Atlas" }
+    if ($html -notmatch 'data-view="ask"[^>]*>Ask</button>') { $issues += "nav missing Ask" }
+    if ($html -notmatch 'data-view="center"[^>]*>Graph</button>') { $issues += "nav missing Graph" }
+    foreach ($view in @("memory", "files", "agents", "diagnostics", "settings")) {
+        if ($html -notmatch ('id="view-' + $view + '"')) { $issues += "workspace missing $view" }
+    }
     if ($html -match ">Repository Context<") { $issues += "nav still has Repository Context (old UI)" }
     if ($html -notmatch "Load sample repository") { $issues += "home missing Load sample repository" }
     if ($html -notmatch "Atlas v1\.0\.0 launch build") { $issues += "missing launch build marker" }

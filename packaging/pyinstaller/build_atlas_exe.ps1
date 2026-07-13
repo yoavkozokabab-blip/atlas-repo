@@ -136,7 +136,7 @@ if ($uxIssues.Count -gt 0) {
     $uxIssues | ForEach-Object { Write-Host "  - $_" -ForegroundColor Red }
     throw "Packaged UI failed HN launch UX checks."
 }
-Write-Host "Packaged UI verified: Ask Atlas, no Repository Context, launch build marker." -ForegroundColor Green
+Write-Host "Packaged UI verified: desktop workspaces, no Repository Context, launch build marker." -ForegroundColor Green
 
 # Phase 192 — build the frozen Atlas Accounts Service (AtlasAccounts.exe) and
 # bundle it inside the Atlas folder under accounts\ so Atlas.exe can launch it.
