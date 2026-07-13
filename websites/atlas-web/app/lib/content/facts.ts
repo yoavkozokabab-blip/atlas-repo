@@ -8,7 +8,7 @@
 export const AGENTS = ["Claude Code", "Cursor", "Codex"] as const;
 
 export const facts = {
-  mcpTools: 7,
+  mcpTools: 18,
   restoreMsLabel: "8–11ms",
   coldScanLabel: "~2–4s",
   // sample / demo repo

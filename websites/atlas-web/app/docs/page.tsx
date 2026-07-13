@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageShell, InstallFlow } from "../_components/site";
 import { SUPPORT_EMAIL, supportMailto } from "../_config";
-import { facts } from "../lib/content/facts";
 
 export const metadata: Metadata = {
   title: "Docs — Atlas",
@@ -42,7 +41,7 @@ export default function DocsPage() {
             point. Nothing in demo mode touches your own code.</p>
 
           <h2 id="mcp">MCP setup</h2>
-          <p>Atlas ships a local MCP server ({facts.mcpTools} tools) that Claude Desktop, Cursor, and Codex can call.
+          <p>Atlas ships a local MCP server (18 tools) that Claude Desktop, Cursor, and Codex can call.
             Each integration on the home screen has its own status, <b>Connect</b>, <b>Test</b>, and an{" "}
             <b>Advanced manual setup</b> fallback that shows the exact file path and snippet.</p>
           <h3 id="claude">Claude</h3>

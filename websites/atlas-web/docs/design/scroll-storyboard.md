@@ -38,7 +38,7 @@ browser frame): Ask Atlas answer with citations, Impact list, Debug path. Uses r
 **Act 6 — Proof (content-led).**
 Slow, quiet, dense. Real numbers only: sample repo 18 files, index ~4s, ask 1–30ms; 50-scenario
 recall 0.95/0.98/0.97; harness ships in-repo + reproduce commands; local-first guarantees;
-platform = Windows; MCP 7 tools. Link to /benchmarks with the honest limitations.
+platform = Windows; MCP 18 tools. Link to /benchmarks with the honest limitations.
 
 **Act 7 — Converge + CTA (p→1) → Converge state.**
 Canvas returns; nodes gather into the Atlas mark. *Give your coding agent a persistent

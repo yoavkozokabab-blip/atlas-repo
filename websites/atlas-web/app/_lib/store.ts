@@ -66,19 +66,11 @@ export interface WaitlistEntry {
   createdAt: string;
 }
 
-export interface AnalyticsEntry {
-  id: string;
-  event: string;
-  path: string;
-  createdAt: string;
-}
-
 interface DBShape {
   users: User[];
   audit: AuditEntry[];
   resetTokens: { token: string; email: string; exp: number }[];
   waitlist: WaitlistEntry[];
-  analytics: AnalyticsEntry[];
 }
 
 export function newId(): string {
@@ -98,8 +90,6 @@ export interface Store {
   /** Returns duplicate:true if the email was already captured (idempotent). */
   addWaitlist(w: { email: string; role?: string; source?: string }): Promise<{ ok: boolean; duplicate: boolean }>;
   listWaitlist(limit?: number): Promise<WaitlistEntry[]>;
-  recordAnalytics(e: { event: string; path: string }): Promise<void>;
-  listAnalytics(limit?: number): Promise<AnalyticsEntry[]>;
   /** Identifies the active backend for health checks / diagnostics. */
   backend(): "supabase" | "file";
 }
@@ -109,8 +99,7 @@ export interface Store {
 // ---------------------------------------------------------------------------
 
 function dbPath(): string {
-  const root = path.isAbsolute(ENV.dataDir) ? ENV.dataDir : path.join(process.cwd(), ENV.dataDir);
-  return path.join(root, "atlas-web.json");
+  return path.join(process.cwd(), ENV.dataDir, "atlas-web.json");
 }
 function load(): DBShape {
   try {
@@ -120,10 +109,9 @@ function load(): DBShape {
       audit: d.audit || [],
       resetTokens: d.resetTokens || [],
       waitlist: d.waitlist || [],
-      analytics: d.analytics || [],
     };
   } catch {
-    return { users: [], audit: [], resetTokens: [], waitlist: [], analytics: [] };
+    return { users: [], audit: [], resetTokens: [], waitlist: [] };
   }
 }
 function persist(db: DBShape): void {
@@ -191,12 +179,6 @@ const fileStore: Store = {
     return { ok: true, duplicate: false };
   },
   listWaitlist: async (limit = 1000) => load().waitlist.slice(-limit).reverse(),
-  recordAnalytics: async (e) => {
-    const db = load();
-    db.analytics.push({ id: newId(), event: e.event, path: e.path, createdAt: new Date().toISOString() });
-    persist(db);
-  },
-  listAnalytics: async (limit = 1000) => load().analytics.slice(-limit).reverse(),
 };
 
 // ---------------------------------------------------------------------------
@@ -382,33 +364,6 @@ const supabaseStore: Store = {
       role: (r.role as string) ?? undefined,
       source: (r.source as string) ?? undefined,
       createdAt: String(r.created_at ?? new Date().toISOString()),
-    }));
-  },
-  recordAnalytics: async (e) => {
-    await sbRows(
-      await sb("analytics_events", {
-        method: "POST",
-        headers: { Prefer: "return=minimal" },
-        body: JSON.stringify({
-          id: newId(),
-          event_name: e.event,
-          source: "atlas-web",
-          metadata: { path: e.path },
-        }),
-      }),
-      "analytics-insert"
-    );
-  },
-  listAnalytics: async (limit = 1000) => {
-    const rows = await sbRows(
-      await sb(`analytics_events?order=created_at.desc&limit=${Math.max(1, Math.min(limit, 1000))}`),
-      "listAnalytics"
-    );
-    return rows.map((r) => ({
-      id: String(r.id),
-      event: String(r.event_name),
-      path: String((r.metadata as Record<string, unknown> | null)?.path || "/"),
-      createdAt: String(r.created_at),
     }));
   },
 };

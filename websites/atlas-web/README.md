@@ -8,7 +8,7 @@ Next.js website for Atlas, local-first memory and context for AI coding agents.
 - React + TypeScript
 - CSS-only motion for low JavaScript overhead
 - `next/image` optimized hero asset
-- Persisted account, email update, analytics, and download routes
+- Small server route for email update signups
 
 ## Run Locally
 
@@ -31,7 +31,7 @@ npm run start
 ```text
 app/page.tsx              Landing page sections
 app/globals.css           Visual system, layout, animation, responsiveness
-app/api/.../route.ts      Account, signup, analytics, and download endpoints
+app/api/.../route.ts      Email signup POST endpoint
 ```
 
 ## Design Notes
@@ -44,12 +44,11 @@ app/api/.../route.ts      Account, signup, analytics, and download endpoints
 
 ## Email Signups
 
-The signup endpoint validates email and writes through the shared store. Production
-uses Supabase; local development uses an isolated JSON file under:
+The signup endpoint validates email and appends JSONL records to:
 
 ```text
-.data/atlas-web.json
+.email-signups/submissions.jsonl
 ```
 
-See `docs/SUPABASE_SETUP.md` for schema, environment, and verification steps. Production
-refuses local-file writes so a missing Supabase configuration cannot silently lose signups.
+For hosted production, connect the signup route to your email platform,
+CRM, database, or queue before launch.

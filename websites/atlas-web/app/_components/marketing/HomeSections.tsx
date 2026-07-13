@@ -81,7 +81,7 @@ export default function HomeSections() {
               <span>mcp config</span>
               <span className="muted">Model Context Protocol · stdio</span>
             </div>
-            <pre className="mono" tabIndex={0} aria-label="Atlas MCP config example">{`{
+            <pre className="mono">{`{
   "mcpServers": {
     "atlas": { "command": "Atlas.exe", "args": ["--mcp"] }
   }

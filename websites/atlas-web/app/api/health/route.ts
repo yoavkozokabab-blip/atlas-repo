@@ -19,7 +19,6 @@ export async function GET() {
     try {
       // Cheap round-trip that proves connectivity + schema presence.
       await store.listWaitlist(1);
-      await store.listAnalytics(1);
     } catch (err) {
       persistence = "error";
       detail = err instanceof Error ? err.message.slice(0, 200) : "unknown";
@@ -48,7 +47,6 @@ export async function GET() {
       hasSupabase: ENV.hasSupabase,
       hasAuthSecret: !!process.env.AUTH_SECRET,
       hasInstallerUrl: !!process.env.NEXT_PUBLIC_DOWNLOAD_URL || !!process.env.ATLAS_INSTALLER_URL || !!process.env.ATLAS_INSTALLER_PATH,
-      analyticsCollector: true,
       paymentsMode: ENV.paymentsMode,
       paddleCheckoutConfigured: paddleCheckoutConfigured(),
       paddleWebhookConfigured: !!ENV.paddleWebhookSecret,

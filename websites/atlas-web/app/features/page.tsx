@@ -1,107 +1,57 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  AsymSection,
-  EvidenceBlock,
-  IntegrationStatusBlock,
-  MetricBlock,
-  PageShell,
-  PremiumSection,
-  TechnicalDiagram,
-  TrustBlock,
-} from "../_components/site";
-import { facts } from "../lib/content/facts";
+import { SiteNav, SiteFooter } from "../_components/site";
 
 export const metadata: Metadata = {
-  title: "Product - Atlas",
-  description:
-    "Dependency graph, impact analysis, investigation mode, risk detection and evidence-backed AI context export - all local-first.",
+  title: "Features — Atlas",
+  description: "Dependency graph, impact analysis, investigation mode, risk detection and evidence-backed AI context export — all local-first."
 };
 
-const capabilities = [
-  ["Dependency graph", "A local map of modules, imports, hubs, cycles and dependency paths."],
-  ["Ask Atlas", "Repo-aware questions answered with cited files from the local evidence store."],
-  ["Impact", "Deterministic what-breaks analysis from the resolved graph before you edit."],
-  ["Debug", "Start from a symptom or traceback and get a grounded investigation path."],
-  ["Plan Change", "Generate a change plan around the files and symbols Atlas found."],
-  ["MCP export", "Serve the same local index to Claude Code, Cursor and Codex."],
-] as const;
+const features = [
+  { ic: "{}", t: "Dependency graph", d: "A precise, navigable map of how your modules really connect — hubs, cycles and blast radius — built locally from your source." },
+  { ic: "Δ", t: "Impact analysis", d: "Change a file and see exactly what depends on it and which tests to run before you ship. Stop guessing at blast radius." },
+  { ic: "?", t: "Investigation mode", d: "Trace a symptom to the likely files with grounded evidence — Atlas cites the code it reasoned from, it doesn't guess." },
+  { ic: "!", t: "Risk detection", d: "Surface the architectural risk hotspots — high fan-in modules, cycles, fragile seams — that make changes dangerous." },
+  { ic: "⌘", t: "AI context export", d: "One click to a compact, evidence-backed context packet for Claude, Codex or Cursor. No internal noise, no stale data." },
+  { ic: "◐", t: "Local-first", d: "No upload, no cloud scan. Scanning and analysis run on your machine; only the context you copy ever leaves it." }
+];
 
 export default function FeaturesPage() {
   return (
-    <PageShell
-      eyebrow="Product"
-      title="The missing memory layer for AI engineering."
-      intro="Atlas builds the repository structure your coding agent cannot keep in context: dependencies, citations, impact paths and validated local memory."
-    >
-      <PremiumSection>
-        <AsymSection
-          eyebrow="Capabilities"
-          title="Ask about behavior, not filenames."
-          intro="Atlas is not a chatbot over your repo. It is a deterministic local index your agents can query when they need grounded context."
-          aside={<MetricBlock metrics={[
-            [String(facts.mcpTools), "MCP tools"],
-            [facts.restoreMsLabel, "fresh-session restore"],
-            [facts.askLatencyLabel, "Ask Atlas latency"],
-          ]} />}
-        >
-          <ul className="premium-list">
-            {capabilities.map(([title, body], i) => (
-              <li key={title}>
-                <span className="num">{String(i + 1).padStart(2, "0")}</span>
-                <div>
-                  <h3>{title}</h3>
-                  <p>{body}</p>
+    <>
+      <SiteNav />
+      <main>
+        <section className="page-head">
+          <div className="container">
+            <p className="eyebrow">Features</p>
+            <h1 className="page-title">Everything your AI is missing about your repo.</h1>
+            <p className="lead" style={{ marginTop: 18 }}>
+              Atlas computes the structure an AI actually needs — locally,
+              deterministically, and grounded in your real code.
+            </p>
+          </div>
+        </section>
+
+        <section className="section" style={{ borderTop: "none", paddingTop: 24 }}>
+          <div className="container">
+            <div className="grid-3">
+              {features.map((f) => (
+                <div className="card" key={f.t}>
+                  <div className="ic mono" aria-hidden>{f.ic}</div>
+                  <h3>{f.t}</h3>
+                  <p>{f.d}</p>
                 </div>
-              </li>
-            ))}
-          </ul>
-        </AsymSection>
-      </PremiumSection>
-
-      <PremiumSection
-        eyebrow="Evidence"
-        title="Every answer has a trail back to the code."
-        intro="Atlas gives the agent file-level evidence rather than asking it to infer structure from a shrinking prompt window."
-      >
-        <div className="grid-2">
-          <EvidenceBlock
-            question="Where is authentication implemented?"
-            rows={[
-              { path: "app/_lib/auth.ts", relation: "core", reason: "session signing, cookies and account lookup" },
-              { path: "app/api/auth/login/route.ts", relation: "entry", reason: "public login request handling" },
-              { path: "app/account/page.tsx", relation: "surface", reason: "signed-in account state and links" },
-            ]}
-          />
-          <TechnicalDiagram
-            title="repo memory"
-            items={[
-              ["Scan", "Read local source files and resolve symbols/imports."],
-              ["Map", "Build graph relationships and evidence rows."],
-              ["Serve", "Expose cited context to agents through MCP."],
-            ]}
-          />
-        </div>
-      </PremiumSection>
-
-      <PremiumSection
-        eyebrow="Integrations"
-        title="One local index, multiple agents."
-        intro="Atlas complements your coding agent; it does not replace it."
-      >
-        <IntegrationStatusBlock />
-      </PremiumSection>
-
-      <PremiumSection
-        eyebrow="Limits"
-        title="The honest parts are part of the product."
-      >
-        <TrustBlock />
-        <div className="page-actions">
-          <Link className="btn-mag" href="/download">Download Atlas <span className="arw" aria-hidden>→</span></Link>
-          <Link className="btn-line" href="/benchmarks">Read benchmarks</Link>
-        </div>
-      </PremiumSection>
-    </PageShell>
+              ))}
+            </div>
+            <div className="cta" style={{ marginTop: 56 }}>
+              <h2>See it on your own codebase.</h2>
+              <p className="center" style={{ marginTop: 14, marginBottom: 28 }}>Free to start · local-first.</p>
+              <Link className="btn btn-primary btn-lg" href="/download">Download Atlas</Link>
+            </div>
+          </div>
+        </section>
+      </main>
+      <SiteFooter />
+    </>
   );
 }

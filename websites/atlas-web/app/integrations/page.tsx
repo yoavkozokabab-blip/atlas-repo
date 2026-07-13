@@ -1,13 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  AsymSection,
-  EvidenceBlock,
-  IntegrationStatusBlock,
-  PageShell,
-  PremiumSection,
-  TechnicalDiagram,
-} from "../_components/site";
+import { PageShell } from "../_components/site";
 import { facts } from "../lib/content/facts";
 
 export const metadata: Metadata = {
@@ -17,71 +10,60 @@ export const metadata: Metadata = {
 };
 
 const integrations = [
-  ["Claude Code", "Supported", "Connect Atlas as an MCP server and ask repo-aware questions from your Claude Code workflow."],
-  ["Cursor", "Supported", "Give Cursor cited local context instead of re-explaining the same files each session."],
-  ["Codex", "Supported", "Use Atlas context when planning changes, debugging behavior, or mapping an unfamiliar repo."],
-  ["MCP-compatible clients", "Experimental", `Atlas exposes ${facts.mcpTools} MCP tools. Validate against your client before relying on it.`],
-] as const;
+  {
+    name: "Claude Code",
+    support: "Supported",
+    what: "Connect Atlas as an MCP server and ask repo-aware questions from your Claude Code workflow.",
+    how: "Add the Atlas MCP server to your Claude Code config; Atlas launches in stdio mode and shares your local index.",
+  },
+  {
+    name: "Cursor",
+    support: "Supported",
+    what: "Give Cursor cited local context instead of re-explaining the same files each session.",
+    how: "Register the Atlas MCP server in Cursor's MCP settings; the same local index is reused.",
+  },
+  {
+    name: "Codex",
+    support: "Supported",
+    what: "Use Atlas context when planning changes, debugging behavior, or mapping an unfamiliar repo.",
+    how: "Point Codex's MCP configuration at the Atlas server; no repository upload is involved.",
+  },
+  {
+    name: "MCP (any compatible client)",
+    support: "Experimental",
+    what: `Atlas exposes ${facts.mcpTools} MCP tools (scan, ask, impact, root-cause, health and more).`,
+    how: "Any MCP-compatible client can connect over stdio. Validate against your client before relying on it.",
+  },
+];
 
 export default function Integrations() {
   return (
     <PageShell
       eyebrow="Integrations"
       title="Built for the agents you already use."
-      intro="Atlas serves cited repository context to coding agents over MCP. Support levels and limitations stay explicit."
+      intro="Atlas serves cited repository context to coding agents over the Model Context Protocol. Support levels and limitations are stated honestly."
     >
-      <PremiumSection>
-        <IntegrationStatusBlock />
-      </PremiumSection>
-
-      <PremiumSection>
-        <AsymSection
-          eyebrow="Support"
-          title="One index, three primary agents."
-          intro="The desktop app owns the local index and config writes. Agents consume it through their MCP support."
-        >
-          <ul className="premium-list">
-            {integrations.map(([name, support, body], index) => (
-              <li key={name}>
-                <span className="num">{String(index + 1).padStart(2, "0")}</span>
-                <div>
-                  <h3>{name} <span className={`integ-badge ${support === "Supported" ? "ok" : "exp"}`}>{support}</span></h3>
-                  <p>{body}</p>
+      <section className="section" style={{ borderTop: "none", paddingTop: 8 }}>
+        <div className="container">
+          <div className="grid-2" style={{ alignItems: "stretch", gap: 22 }}>
+            {integrations.map((it) => (
+              <div className="card" key={it.name}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                  <h3 style={{ margin: 0 }}>{it.name}</h3>
+                  <span className={`badge ${it.support === "Supported" ? "ok" : "warn"}`}>{it.support}</span>
                 </div>
-              </li>
+                <p style={{ marginBottom: 12 }}>{it.what}</p>
+                <p className="mono muted" style={{ fontSize: "0.84rem" }}>{it.how}</p>
+              </div>
             ))}
-          </ul>
-        </AsymSection>
-      </PremiumSection>
-
-      <PremiumSection
-        eyebrow="Config"
-        title="The shape is boring on purpose."
-        intro="Atlas launches as a local stdio MCP server. The desktop app writes the exact client config and keeps backups."
-      >
-        <div className="grid-2">
-          <TechnicalDiagram
-            title="mcp handoff"
-            items={[
-              ["Connect", "Choose Claude, Cursor or Codex in the Atlas desktop app."],
-              ["Write config", "Atlas adds only its own MCP entry and preserves existing servers."],
-              ["Restart agent", "The agent loads the config and can query the local index."],
-            ]}
-          />
-          <EvidenceBlock
-            question="What does an agent receive?"
-            rows={[
-              { path: "scan index", relation: "local", reason: "repository graph and evidence store stay on disk" },
-              { path: "MCP response", relation: "selected", reason: "only cited context returned by the query" },
-              { path: "model provider", relation: "agent path", reason: "your agent may send selected context under its own terms" },
-            ]}
-          />
+          </div>
+          <p style={{ marginTop: 30 }} className="note">
+            Every integration reuses the same local index — your source stays on your machine. See the{" "}
+            <Link href="/docs">docs</Link> for exact configuration and the{" "}
+            <Link href="/security">security page</Link> for what leaves the device.
+          </p>
         </div>
-        <div className="page-actions">
-          <Link className="btn-mag" href="/docs#mcp">Read MCP setup <span className="arw" aria-hidden>→</span></Link>
-          <Link className="btn-line" href="/security#data-flow">Review data flow</Link>
-        </div>
-      </PremiumSection>
+      </section>
     </PageShell>
   );
 }

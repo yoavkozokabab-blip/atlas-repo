@@ -14,9 +14,9 @@ No extra npm dependency is used — the adapter calls Supabase's PostgREST REST 
 ## 1. Create the project & schema
 
 1. Create a project at https://supabase.com (or use an existing one).
-2. **SQL Editor → New query →** apply every file in `supabase/migrations/` in numeric order
-   (`0001`, `0002`, then `0003`). (Or, with the Supabase CLI linked: `supabase db push`.)
-   These migrations create the website, rate-limit, and analytics tables, enable RLS, and add
+2. **SQL Editor → New query →** paste `supabase/migrations/0001_init.sql` → **Run**.
+   (Or, with the Supabase CLI linked: `supabase db push`.)
+   This creates the website tables, enables RLS, and adds
    **no** public policies — only the service role can read/write.
 
 ## 2. Configure environment variables
@@ -41,11 +41,14 @@ Redeploy after setting them (Vercel env changes need a new deployment).
    `backend: "file"` or `persistence: "ephemeral"` in production = **NOT wired** — fix env vars.
    `persistence: "error"` = schema missing or bad key — re-run the migration / recheck the key.
 
-2. **Email signup round-trip:** submit the Product updates form twice with the
-   same test address. The first response must create a row and the second must
-   report a duplicate. Confirm the row in Supabase. It must **survive a redeploy**.
+2. **Email signup round-trip:**
+   ```bash
+   curl -s -X POST https://<domain>/<signup-endpoint> -F email=test@example.com -F role=dev
+   # { "ok": true, "duplicate": false, ... }   then repeat -> "duplicate": true
+   ```
+   Confirm the row in Supabase. It must **survive a redeploy**.
 
-3. **Account round-trip:** create an account at `/login`, redeploy, then log in again at `/login`.
+3. **Account round-trip:** register at `/register`, redeploy, then log in at `/login`.
    Success after a redeploy proves durable persistence (the old file backend would lose it).
 
 4. **Admin export:** as an `ADMIN_EMAILS` user, download the email signup CSV.

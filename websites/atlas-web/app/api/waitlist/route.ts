@@ -11,7 +11,7 @@ export const runtime = "nodejs";
  * Duplicate emails are idempotent (no error, no double row).
  */
 export async function POST(request: Request) {
-  if (!(await rateLimit(`updates:${clientIp(request)}`, 12, 3_600_000))) {
+  if (!rateLimit(`updates:${clientIp(request)}`, 12, 3_600_000)) {
     return NextResponse.json(
       { ok: false, message: "Too many attempts. Please try again later." },
       { status: 429 }
@@ -21,7 +21,6 @@ export async function POST(request: Request) {
   const form = await request.formData();
   const email = String(form.get("email") || "").trim().toLowerCase();
   const role = String(form.get("role") || "").trim().slice(0, 80);
-  const source = String(form.get("source") || "atlas-web").trim().slice(0, 80);
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return NextResponse.json(
@@ -31,7 +30,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { duplicate } = await store.addWaitlist({ email, role, source: source || "atlas-web" });
+    const { duplicate } = await store.addWaitlist({ email, role, source: "atlas-web" });
     return NextResponse.json({
       ok: true,
       duplicate,

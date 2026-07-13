@@ -1,4 +1,4 @@
--- Atlas website — shared, atomic rate limiting.
+-- Atlas website — shared, atomic rate limiting (Phase 186D).
 -- Apply via: Supabase Dashboard → SQL Editor → paste & run,
 --        or: supabase db push
 --
@@ -27,7 +27,7 @@ create or replace function public.atlas_rate_limit_hit(
 ) returns boolean
 language plpgsql
 security definer
-set search_path = ''
+set search_path = public
 as $$
 declare
   v_window_start bigint;
@@ -49,6 +49,3 @@ begin
   return v_count <= p_max;
 end;
 $$;
-
-revoke execute on function public.atlas_rate_limit_hit(text, integer, integer) from public, anon, authenticated;
-grant execute on function public.atlas_rate_limit_hit(text, integer, integer) to service_role;
