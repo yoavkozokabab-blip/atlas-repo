@@ -442,6 +442,7 @@ def _build_scan_record(
         "repo_id": rid,
         "scan_id": mem.get("scan_id") or scan.get("scan_id") or "",
         "scan_signature": sig,
+        "signature_version": int((scan.get("signature_v2") or {}).get("version") or 3),
         "graph_signature": sig,
         "file_count": int(scan.get("file_count") or 0),
         "module_count": int(scan.get("module_count") or 0),
@@ -664,6 +665,7 @@ def validate_scan_state(
             stored_path,
             scope_data,
             include_content_hash=True,
+            signature_version=int(scan_state.get("signature_version") or 3),
         )
         live = str(live_sig.get("signature") or "")
     except Exception:

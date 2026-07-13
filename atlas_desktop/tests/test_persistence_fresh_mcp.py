@@ -100,7 +100,7 @@ def test_walk_and_recomputed_walk_agree(tmp_path):
     first = ti.compute_signature_v2(repo, scope, include_content_hash=True)
     second = ti.compute_signature_v2(repo, scope, include_content_hash=True)
     assert first["signature"] == second["signature"]
-    assert first["version"] == 3
+    assert first["version"] == 4
 
 
 def test_added_removed_changed_file_invalidates(tmp_path):

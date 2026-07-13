@@ -15,10 +15,10 @@ import time
 from contextlib import contextmanager
 from typing import Any, Dict, List, Optional, Set, Tuple
 
-# v3: manifest entries are sorted before hashing and the persisted scan
-# signature uses the same live-walk basis as restore validation, so identical
-# file sets always produce identical signatures across processes.
-SIGNATURE_VERSION = 3
+# v4: content hashes, not timestamps or Git worktree dirtiness, define identity.
+# v3 remains readable so an in-place/silent update can restore an existing scan.
+SIGNATURE_VERSION = 4
+LEGACY_SIGNATURE_VERSION = 3
 
 _STATE_LOCK = threading.RLock()
 
@@ -27,6 +27,31 @@ _SKIP_DIRS = {
     ".git", ".hg", ".svn", "__pycache__", "node_modules", ".venv", "venv",
     "dist", "build", ".tox", ".pytest_cache", ".mypy_cache", "external_repos",
 }
+_GENERATED_DIR_PREFIXES = (
+    ".checkpoint_", ".design_runtime", ".home_checkpoint_", ".manual_py_temp",
+    ".phase", ".pytest_", ".redesign_", "pytest_",
+)
+_GENERATED_PATH_PREFIXES = (
+    "packaging/installer/output/",
+    "packaging/installer/staging/",
+)
+_GENERATED_FILES = {
+    "packaging/installer/build_info.json",
+    "packaging/installer/generated_version.iss",
+}
+
+
+def _ignored_generated_path(rel: str, *, is_dir: bool = False) -> bool:
+    normalized = rel.replace("\\", "/").strip("/")
+    parts = normalized.split("/") if normalized else []
+    if any(part in _SKIP_DIRS for part in parts):
+        return True
+    if any(part.startswith(_GENERATED_DIR_PREFIXES) for part in parts):
+        return True
+    candidate = normalized + ("/" if is_dir and normalized else "")
+    if any(candidate.startswith(prefix) for prefix in _GENERATED_PATH_PREFIXES):
+        return True
+    return normalized in _GENERATED_FILES
 
 
 @contextmanager
@@ -89,6 +114,7 @@ def _manifest_entries(
     indexed_files: Optional[List[Dict[str, Any]]] = None,
     *,
     include_content_hash: bool = False,
+    signature_version: int = SIGNATURE_VERSION,
 ) -> Tuple[int, int, int, str]:
     """Return file_count, total_size, total_mtime, manifest_hash."""
     from . import api as _api  # local import — scope/file rules live in api
@@ -112,16 +138,31 @@ def _manifest_entries(
                 mtime = 0
             total_size += size
             total_mtime += mtime
-            part = f"{rel}:{size}:{mtime}"
-            if include_content_hash:
-                part += f":{_content_hash(abs_path)}"
+            if include_content_hash and signature_version >= 4:
+                part = f"{rel}:{size}:{_content_hash(abs_path)}"
+            else:
+                part = f"{rel}:{size}:{mtime}"
+                if include_content_hash:
+                    part += f":{_content_hash(abs_path)}"
             entries.append(part)
     else:
         for dirpath, dirnames, filenames in os.walk(root):
-            dirnames[:] = sorted(d for d in dirnames if d not in _SKIP_DIRS)
+            rel_dir = os.path.relpath(dirpath, root).replace("\\", "/")
+            rel_dir = "" if rel_dir == "." else rel_dir
+            if signature_version >= 4:
+                dirnames[:] = sorted(
+                    d for d in dirnames
+                    if not _ignored_generated_path(
+                        f"{rel_dir}/{d}" if rel_dir else d, is_dir=True
+                    )
+                )
+            else:
+                dirnames[:] = sorted(d for d in dirnames if d not in _SKIP_DIRS)
             for name in sorted(filenames):
                 abs_path = os.path.join(dirpath, name)
                 rel = os.path.relpath(abs_path, root).replace("\\", "/")
+                if signature_version >= 4 and _ignored_generated_path(rel):
+                    continue
                 ext = os.path.splitext(name)[1].lower()
                 if _api._is_binary_ext(ext) or ext in {".log", ".tmp", ".cache", ".lock"}:
                     continue
@@ -135,9 +176,12 @@ def _manifest_entries(
                 mtime = int(st.st_mtime)
                 total_size += size
                 total_mtime += mtime
-                part = f"{rel}:{size}:{mtime}"
-                if include_content_hash:
-                    part += f":{_content_hash(abs_path)}"
+                if include_content_hash and signature_version >= 4:
+                    part = f"{rel}:{size}:{_content_hash(abs_path)}"
+                else:
+                    part = f"{rel}:{size}:{mtime}"
+                    if include_content_hash:
+                        part += f":{_content_hash(abs_path)}"
                 entries.append(part)
 
     # Sort the complete manifest before hashing so the signature depends only
@@ -155,16 +199,21 @@ def compute_signature_v2(
     *,
     indexed_files: Optional[List[Dict[str, Any]]] = None,
     include_content_hash: bool = False,
+    signature_version: int = SIGNATURE_VERSION,
 ) -> Dict[str, Any]:
     """Signature v2 — git metadata + full indexed manifest + scope aggregates."""
     abspath = os.path.abspath(root)
     scope_norm = dict(scope or {})
     git = git_metadata(abspath)
     file_count, total_size, total_mtime, manifest_hash = _manifest_entries(
-        abspath, scope_norm, indexed_files, include_content_hash=include_content_hash
+        abspath,
+        scope_norm,
+        indexed_files,
+        include_content_hash=include_content_hash,
+        signature_version=signature_version,
     )
     payload = {
-        "version": SIGNATURE_VERSION,
+        "version": signature_version,
         "root": abspath,
         "scope": scope_norm,
         "git_head": git.get("head"),
@@ -175,8 +224,19 @@ def compute_signature_v2(
         "total_mtime": total_mtime,
         "manifest_hash": manifest_hash,
     }
+    if signature_version >= 4:
+        identity = {
+            "version": signature_version,
+            "root": abspath,
+            "scope": scope_norm,
+            "file_count": file_count,
+            "total_size": total_size,
+            "manifest_hash": manifest_hash,
+        }
+    else:
+        identity = payload
     digest = hashlib.sha256(
-        json.dumps(payload, sort_keys=True, default=str).encode("utf-8", errors="ignore")
+        json.dumps(identity, sort_keys=True, default=str).encode("utf-8", errors="ignore")
     ).hexdigest()
     payload["signature"] = digest
     return payload
@@ -263,7 +323,10 @@ def detect_changed_files(state: Dict[str, Any]) -> List[str]:
         except OSError:
             changed.append(rel)
             continue
-        if live != meta:
+        if (
+            live.get("size") != meta.get("size")
+            or live.get("content_hash") != meta.get("content_hash")
+        ):
             changed.append(rel)
     for f in (state.get("index") or {}).get("files") or []:
         rel = _norm_path(str(f.get("path") or ""))
@@ -381,9 +444,11 @@ def assess_staleness(state: Dict[str, Any]) -> Dict[str, Any]:
         }
 
     scope = scan.get("scope") or state.get("last_scope") or {"mode": "entire_repo"}
-    index_files = (state.get("index") or {}).get("files")
-    live = compute_signature_v2(str(path), scope, indexed_files=index_files, include_content_hash=bool(index_files))
     prev = stored_signature(state)
+    signature_version = int((prev or {}).get("version") or LEGACY_SIGNATURE_VERSION)
+    live = compute_signature_v2(
+        str(path), scope, include_content_hash=True, signature_version=signature_version
+    )
     git_head_changed = False
     if prev:
         prev_git = prev.get("git_head")
@@ -706,9 +771,14 @@ def trust_integrity_diagnostics(state: Dict[str, Any]) -> Dict[str, Any]:
     path = state.get("path") or scan.get("repo_path")
     if path and scan:
         scope = scan.get("scope") or state.get("last_scope") or {"mode": "entire_repo"}
-        index_files = (state.get("index") or {}).get("files")
         try:
-            live = compute_signature_v2(str(path), scope, indexed_files=index_files)
+            prev = stored_signature(state) or {}
+            live = compute_signature_v2(
+                str(path),
+                scope,
+                include_content_hash=True,
+                signature_version=int(prev.get("version") or LEGACY_SIGNATURE_VERSION),
+            )
             stale = verify_scan_fresh(state)
         except Exception as exc:
             stale = {"ok": False, "status": "signature_error", "error": str(exc)}
