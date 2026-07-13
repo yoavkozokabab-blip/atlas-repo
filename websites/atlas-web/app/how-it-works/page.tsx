@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { PageShell } from "../_components/site";
+import { InstallationBlock, PageShell, PremiumSection, TechnicalDiagram } from "../_components/site";
 import { facts } from "../lib/content/facts";
 
 export const metadata: Metadata = {
@@ -9,14 +9,13 @@ export const metadata: Metadata = {
     "The Atlas pipeline: connect a repository, scan files and symbols, build relationships, create persistent memory, connect coding agents, and retrieve cited context during work.",
 };
 
-const steps = [
-  ["Connect a repository", "Open a local repo in the Atlas desktop app. Nothing is uploaded — indexing runs on your machine."],
-  ["Scan files and symbols", `Atlas parses files, symbols and imports. The built-in sample repo (${facts.sampleFiles} files) indexes in ${facts.sampleIndexLabel}.`],
-  ["Build relationships", "A dependency graph and evidence store capture how modules, callers and callees relate."],
-  ["Create persistent memory", `The map is written to disk and validated against the live repo. Fresh agent sessions restore it in ${facts.restoreMsLabel}.`],
-  ["Connect coding agents", `Claude Code, Cursor and Codex connect over MCP (${facts.mcpTools} tools). No re-explaining the repo each session.`],
-  ["Retrieve cited context", `Ask where behavior lives or what a change affects; Atlas returns cited files in ${facts.askLatencyLabel} — deterministic lookups, no model in the loop.`],
-  ["Update as the project changes", "Re-scans produce deltas; stale scans are refused rather than served, so the memory stays trustworthy."],
+const steps: Array<[string, string]> = [
+  ["Open a local repository", "Atlas reads the selected folder on your machine. Repository contents are not uploaded during indexing."],
+  ["Parse files and imports", `The built-in ${facts.sampleFiles}-file sample indexes in ${facts.sampleIndexLabel}; larger repos depend on hardware and size.`],
+  ["Build graph evidence", "Modules, symbols, import paths and evidence rows become a dependency map the app can validate."],
+  ["Persist memory", `Fresh sessions restore the saved scan in ${facts.restoreMsLabel} when the repository signature still matches.`],
+  ["Connect agents", `Claude Code, Cursor and Codex use the same ${facts.mcpTools}-tool MCP surface.`],
+  ["Return cited context", `Ask Atlas responds in ${facts.askLatencyLabel} after indexing, with cited files rather than model guesses.`],
 ];
 
 export default function HowItWorks() {
@@ -24,23 +23,41 @@ export default function HowItWorks() {
     <PageShell
       eyebrow="How it works"
       title="From raw repository to persistent memory."
-      intro="Atlas turns a repository into a structured, cited memory that survives across agent sessions. Every step runs locally."
+      intro="Atlas turns local source into a validated map that survives fresh agent sessions."
     >
-      <section className="section" style={{ borderTop: "none", paddingTop: 8 }}>
-        <div className="container" style={{ maxWidth: 860 }}>
-          <ol className="steps" style={{ gap: 22 }}>
-            {steps.map(([title, body]) => (
-              <li key={title}>
-                <h3 style={{ marginBottom: 6 }}>{title}</h3>
-                <p>{body}</p>
-              </li>
-            ))}
+      <PremiumSection>
+        <TechnicalDiagram title="local pipeline" items={steps} />
+      </PremiumSection>
+
+      <PremiumSection
+        eyebrow="Install path"
+        title="Start with the Windows app."
+        intro="The public site does not change the download architecture: the installer route and GitHub release verification remain the source of truth."
+      >
+        <InstallationBlock />
+      </PremiumSection>
+
+      <PremiumSection
+        eyebrow="Next"
+        title="Connect the agents you already use."
+      >
+        <div className="asym">
+          <div>
+            <p className="lead">
+              Atlas writes local MCP config for supported agents only when you explicitly connect from the desktop app.
+            </p>
+            <div className="page-actions">
+              <Link className="btn-mag" href="/integrations">View integrations <span className="arw" aria-hidden>→</span></Link>
+              <Link className="btn-line" href="/docs#mcp">MCP docs</Link>
+            </div>
+          </div>
+          <ol className="premium-list">
+            <li><span className="num">01</span><div><h3>Claude Code</h3><p>Use Atlas as an MCP server from your Claude workflow.</p></div></li>
+            <li><span className="num">02</span><div><h3>Cursor</h3><p>Reuse the same local repository index inside Cursor.</p></div></li>
+            <li><span className="num">03</span><div><h3>Codex</h3><p>Give Codex cited repository context for planning and debugging.</p></div></li>
           </ol>
-          <p style={{ marginTop: 32 }}>
-            <Link className="btn-mag" href="/download">Download Atlas <span className="arw" aria-hidden>→</span></Link>
-          </p>
         </div>
-      </section>
+      </PremiumSection>
     </PageShell>
   );
 }
