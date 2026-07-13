@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PageShell } from "../_components/site";
+import { PageShell, PremiumSection, ReleaseVersionBlock } from "../_components/site";
 
 export const metadata: Metadata = {
   title: "Changelog - Atlas",
@@ -12,9 +12,9 @@ const releases = [
     date: "2026-07-10",
     label: "Launch build",
     items: [
-      "Ask Atlas: repo-aware questions answered with cited files from the local index, including “where is X implemented?” routing.",
+      "Ask Atlas: repo-aware questions answered with cited files from the local index, including where-is-X-implemented routing.",
       "HN-ready first-run flow: load the sample repository, ask a prefilled question, and see cited files in about 30 seconds.",
-      "One-click MCP setup for Claude Desktop, Cursor, and Codex — each with independent status, connect, test, and manual fallback.",
+      "One-click MCP setup for Claude Desktop, Cursor, and Codex - each with independent status, connect, test, and manual fallback.",
       "Local-first repository indexing: dependency graph, subsystem map, and impact analysis built entirely on your machine.",
       "Impact, Debug, and Plan Change workflows grounded in the scanned repository.",
       "Paddle billing prepared for the Pro plan ($19/month, 7-day trial). Checkout stays disabled until Paddle credentials are configured.",
@@ -30,23 +30,22 @@ export default function ChangelogPage() {
       title="What's new in Atlas."
       intro="Release notes for the Atlas desktop app and website."
     >
-      <section className="section" style={{ borderTop: "none", paddingTop: 8 }}>
-        <div className="container prose" style={{ maxWidth: 780 }}>
+      <PremiumSection>
+        <ReleaseVersionBlock />
+      </PremiumSection>
+      <PremiumSection>
+        <div className="container prose" style={{ maxWidth: 780, padding: 0 }}>
           {releases.map((r) => (
             <div key={r.version}>
-              <h2>
-                {r.version} <span className="badge ok" style={{ marginLeft: 10, verticalAlign: "middle" }}>{r.label}</span>
-              </h2>
+              <h2>{r.version} <span className="badge ok" style={{ marginLeft: 10, verticalAlign: "middle" }}>{r.label}</span></h2>
               <p className="note">{r.date}</p>
               <ul>
-                {r.items.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
+                {r.items.map((item) => <li key={item}>{item}</li>)}
               </ul>
             </div>
           ))}
         </div>
-      </section>
+      </PremiumSection>
     </PageShell>
   );
 }
