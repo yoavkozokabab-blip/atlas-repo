@@ -76,7 +76,7 @@ def is_production_js_file(rel_posix: str) -> bool:
     from .. import repository_understanding as ru
 
     parts = rel_posix.replace("\\", "/").split("/")
-    if any(seg in SKIP_DIRS for seg in parts):
+    if any(seg in SKIP_DIRS for seg in parts) or ru.is_generated_runtime_path(rel_posix):
         return False
     filename = parts[-1] if parts else rel_posix
     if _is_test_path(rel_posix, filename):
@@ -85,10 +85,20 @@ def is_production_js_file(rel_posix: str) -> bool:
 
 
 def collect_js_ts_files(root: str) -> List[Tuple[str, str]]:
+    from .. import repository_understanding as ru
+
     root_abs = os.path.abspath(root)
     out: List[Tuple[str, str]] = []
     for dirpath, dirnames, filenames in os.walk(root_abs):
-        dirnames[:] = sorted(d for d in dirnames if d not in SKIP_DIRS)
+        rel_dir = os.path.relpath(dirpath, root_abs).replace("\\", "/")
+        rel_dir = "" if rel_dir == "." else rel_dir
+        dirnames[:] = sorted(
+            d for d in dirnames
+            if d not in SKIP_DIRS
+            and not ru.is_generated_runtime_path(
+                f"{rel_dir}/{d}" if rel_dir else d, is_dir=True
+            )
+        )
         for name in sorted(filenames):
             ext = os.path.splitext(name)[1].lower()
             if ext not in JS_EXTENSIONS:

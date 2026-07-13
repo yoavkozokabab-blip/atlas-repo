@@ -64,6 +64,14 @@ _GENERATED_PARTS = {
     "backups", "build", "coverage", "dist", "generated", "htmlcov", "node_modules",
     "site-packages", "target", "tests_tmp", "vendor", "generated_snippets",
 }
+_GENERATED_DIR_PREFIXES = (
+    ".checkpoint_", ".design_runtime", ".home_checkpoint_", ".manual_py_temp",
+    ".phase", ".pytest_", ".redesign_", "atlaspytesttemp", "pytest_",
+)
+_GENERATED_PATH_PREFIXES = (
+    "packaging/installer/output/",
+    "packaging/installer/staging/",
+)
 _TEST_PARTS = {"__tests__", "spec", "test", "tests"}
 _ENTRY_NAMES = (
     "main.py",
@@ -94,6 +102,18 @@ def _parts(rel_path: str) -> List[str]:
     return rel_path.replace("\\", "/").lower().split("/")
 
 
+def is_generated_runtime_path(rel_path: str, *, is_dir: bool = False) -> bool:
+    """Identify Atlas/packager/test outputs that are never first-party source."""
+    normalized = rel_path.replace("\\", "/").lower().strip("/")
+    parts = normalized.split("/") if normalized else []
+    if any(part in _GENERATED_PARTS for part in parts):
+        return True
+    if any(part.startswith(_GENERATED_DIR_PREFIXES) for part in parts):
+        return True
+    candidate = normalized + ("/" if is_dir and normalized else "")
+    return any(candidate.startswith(prefix) for prefix in _GENERATED_PATH_PREFIXES)
+
+
 def classify_file_role(
     rel_path: str, ext: str | None = None, *, project_root: str | None = None
 ) -> str:
@@ -105,7 +125,7 @@ def classify_file_role(
     dirs = set(parts[:-1])
     root_name = os.path.basename(os.path.abspath(project_root or "")).lower()
 
-    if dirs & _GENERATED_PARTS or name.endswith((".pyc", ".min.js", ".min.css")):
+    if is_generated_runtime_path(rel_path) or name.endswith((".pyc", ".min.js", ".min.css")):
         return "generated"
     if (
         dirs & _BENCHMARK_PARTS

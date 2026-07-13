@@ -174,10 +174,20 @@ def analyze_file(path: str, project_root: Optional[str] = None,
 
 
 def _collect_python_files(root: str) -> List[tuple]:
+    from .. import repository_understanding as ru
+
     root = os.path.abspath(root)
     out: List[tuple] = []
     for dirpath, dirnames, filenames in os.walk(root):
-        dirnames[:] = [d for d in dirnames if d not in SKIP_DIRS]
+        rel_dir = os.path.relpath(dirpath, root).replace("\\", "/")
+        rel_dir = "" if rel_dir == "." else rel_dir
+        dirnames[:] = [
+            d for d in dirnames
+            if d not in SKIP_DIRS
+            and not ru.is_generated_runtime_path(
+                f"{rel_dir}/{d}" if rel_dir else d, is_dir=True
+            )
+        ]
         for fname in filenames:
             if fname.endswith(".py"):
                 abs_path = os.path.join(dirpath, fname)
