@@ -145,7 +145,7 @@ def test_nav_uses_plain_language_labels():
     assert ">Ask<" in nav
     assert ">Debug<" in nav
     assert ">Plan<" in nav
-    assert ">Map<" in nav
+    assert ">Graph<" in nav
     assert ">Impact<" in nav
     assert ">Repository Context<" not in nav
 

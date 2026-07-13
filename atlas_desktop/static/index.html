@@ -6,15 +6,16 @@
   <title>ATLAS — Repository Intelligence Platform</title>
   <link rel="stylesheet" href="styles.css" />
   <!-- Premium experience layer — presentation-only polish, loaded last so it wins the cascade. -->
-  <link rel="stylesheet" href="premium.css" />
   <!-- Ask Atlas report styling — scoped to the Ask view (.axr / #copilotAnswer). -->
   <link rel="stylesheet" href="ask_report.css" />
   <link rel="stylesheet" href="investigation.css" />
+  <link rel="stylesheet" href="desktop-redesign.css" />
   <!-- 3D dependency graph (bundled locally for offline use). -->
   <script src="vendor/three.min.js"></script>
   <script src="vendor/3d-force-graph.min.js"></script>
 </head>
-<body class="mode-beginner auth-mode auth-loading atlas-no-repo">
+<body class="mode-beginner auth-mode auth-loading atlas-no-repo atlas-desktop-v2">
+  <a class="skip-link" href="#app">Skip to workspace</a>
   <div id="bg-grid"></div>
   <div id="bg-glow"></div>
 
@@ -297,33 +298,46 @@
 
   <!-- Top bar — LEFT logo · CENTER workflows · RIGHT controls.
        Single row, one user menu, no duplicate account entry points. -->
-  <header class="topbar glass">
+  <header class="topbar glass" aria-label="Atlas application shell">
     <!-- LEFT -->
-    <div class="brand" onclick="go('home')" title="Atlas — Home">
+    <button class="brand" type="button" onclick="go('home')" aria-label="Atlas Home">
       <span class="logo-mark">◈</span>
       <span class="logo-text">ATLAS</span>
-    </div>
+    </button>
 
     <!-- CENTER — core workflows -->
-    <nav class="nav" id="nav">
-      <button data-view="home" class="active" onclick="go('home')">Home</button>
-      <button data-view="scan" onclick="go('scan')">Scan</button>
-      <button data-view="hn" class="needs-no-repo" onclick="go('hn')">HN demo</button>
-      <button data-view="ask" class="needs-repo" onclick="go('ask')">Ask</button>
-      <button data-view="investigate" data-lock="1" class="needs-repo" onclick="go('investigate')">Debug</button>
-      <button data-view="impact" data-lock="1" class="needs-repo" onclick="go('impact')">Impact</button>
-      <button data-view="build" data-lock="1" class="needs-repo" onclick="go('build')">Plan</button>
-      <button data-view="center" data-lock="1" class="needs-repo" onclick="go('center')">Map</button>
+    <nav class="nav" id="nav" aria-label="Atlas workspaces">
+      <span class="nav-section-label">Repository</span>
+      <button data-view="home" class="active" onclick="go('home')" aria-label="Home">Home</button>
+      <button data-view="memory" class="needs-repo" onclick="go('memory')" aria-label="Memory">Memory</button>
+      <button data-view="files" class="needs-repo" onclick="go('files')" aria-label="Files">Files</button>
+      <button data-view="center" data-lock="1" class="needs-repo" onclick="go('center')" aria-label="Graph">Graph</button>
+      <span class="nav-section-label">Investigate</span>
+      <button data-view="ask" class="needs-repo" onclick="go('ask')" aria-label="Ask">Ask</button>
+      <button data-view="impact" data-lock="1" class="needs-repo" onclick="go('impact')" aria-label="Impact">Impact</button>
+      <button data-view="investigate" data-lock="1" class="needs-repo" onclick="go('investigate')" aria-label="Debug">Debug</button>
+      <button data-view="build" data-lock="1" class="needs-repo" onclick="go('build')" aria-label="Plan">Plan</button>
+      <span class="nav-section-label">Operate</span>
+      <button data-view="agents" onclick="go('agents')" aria-label="Agents">Agents</button>
+      <button data-view="diagnostics" onclick="go('diagnostics')" aria-label="Diagnostics">Diagnostics</button>
+      <button data-view="settings" class="nav-settings" onclick="go('settings')" aria-label="Settings">Settings</button>
+      <button data-view="scan" class="legacy-route" onclick="go('scan')" aria-hidden="true" tabindex="-1">Scan</button>
+      <button data-view="hn" class="legacy-route needs-no-repo" onclick="go('hn')" aria-hidden="true" tabindex="-1">Sample</button>
     </nav>
 
     <!-- RIGHT — repository selector, detail mode, user menu -->
     <div class="topbar-right">
+      <div class="global-readiness" id="globalReadiness" role="status" aria-live="polite">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span id="globalReadinessLabel">Starting</span>
+      </div>
+      <button class="command-trigger" id="commandTrigger" type="button" onclick="atlasPalette.open()" aria-label="Open command palette"><span>Command</span><kbd>Ctrl K</kbd></button>
       <span class="billing-nav" id="billingNav" style="display:none">
         <a class="nav-link" href="usage.html">Usage</a>
         <a class="nav-link" href="pricing.html">Pricing</a>
         <a class="nav-link billing-admin" href="billing_admin.html">Admin</a>
       </span>
-      <button class="repo-chip" id="repoChip" type="button" onclick="go('scan')" title="Repository — click to scan or switch">No repository</button>
+      <button class="repo-chip" id="repoChip" type="button" onclick="go('scan')" title="Repository — select, scan, or switch">Select repository</button>
       <span class="demo-badge" id="demoBadge" style="display:none">Sample repository</span>
       <span class="demo-badge massive" id="massiveBadge" style="display:none">Large repo (sampled)</span>
       <button class="account-chip unsigned" id="accountChip" type="button" style="display:none" onclick="atlasAccounts && atlasAccounts.open()" title="Account &amp; license">Sign in</button>
@@ -358,7 +372,7 @@
     Usage stats temporarily unavailable — scanning and plans still work.
   </div>
 
-  <main id="app">
+  <main id="app" tabindex="-1">
 
     <!-- ===================== SCREEN 1: HOME ===================== -->
     <section class="view active" id="view-home">
@@ -674,7 +688,7 @@
         <p class="scan-progress-sub muted" id="scanPath">—</p>
         <p class="scan-progress-sub muted" id="scanModeInfo" style="display:none"></p>
         <div class="stages" id="stages"></div>
-        <div class="scan-foot"><div class="bar"><div class="bar-fill" id="scanBar"></div></div><span id="scanPct">0%</span><button class="btn ghost small" type="button" onclick="cancelCurrentScan()">Cancel scan</button></div>
+        <div class="scan-foot"><div class="bar" id="scanProgress" role="progressbar" aria-label="Repository scan progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill" id="scanBar"></div></div><span id="scanPct">0%</span><button class="btn ghost small" type="button" onclick="cancelCurrentScan()">Cancel scan</button></div>
       </div>
       <div id="scanSuccess" class="scan-result glass" style="display:none">
         <h3 id="scanSuccessTitle">Atlas understood your repository.</h3>
@@ -810,9 +824,10 @@
           <div class="graph-mode-badge" id="graphModeBadge" style="display:none" aria-live="polite">Module Graph</div>
           <p class="graph-entity-summary" id="graphEntitySummary" style="display:none" aria-live="polite"></p>
           <div class="graph-render-diagnostics glass" id="graphRenderDiagnostics" style="display:none" aria-live="polite"></div>
-          <div id="graph3d"></div>
+          <p id="graphInstructions" class="sr-only">Use Show module list to browse and select nodes with the keyboard. The graph is a visual representation of the same repository relationships.</p>
+          <div id="graph3d" role="region" aria-label="Repository relationship graph" aria-describedby="graphInstructions" tabindex="0"></div>
           <div class="module-browse-panel glass" id="moduleBrowsePanel" style="display:none" aria-label="Module list fallback">
-            <div class="mbp-head"><h4>Module list</h4><span class="muted tiny" id="moduleBrowseSummary"></span></div>
+            <div class="mbp-head"><h4>Module list</h4><span class="muted tiny" id="moduleBrowseSummary"></span><button class="btn ghost small" id="moduleBrowseToggle" type="button" aria-expanded="false" onclick="toggleModuleBrowsePanel()">Show module list</button></div>
             <input type="search" id="moduleBrowseFilter" class="mbp-filter" placeholder="Filter modules…" oninput="filterModuleBrowseList()" />
             <ul class="clean mbp-list" id="moduleBrowseList"></ul>
           </div>
@@ -948,7 +963,7 @@
             <button class="btn ghost" type="button" onclick="copyForTarget('codex')">Copy for Codex</button>
           </div>
           <div class="copy-row">
-            <button class="btn ghost" type="button" onclick="go('home'); setTimeout(() => document.getElementById('mcpSetupSection')?.scrollIntoView({behavior:'smooth',block:'start'}), 80)">Connect AI tools</button>
+            <button class="btn ghost" type="button" onclick="go('agents')">Connect AI tools</button>
           </div>
           <div class="copy-row">
             <button class="btn ghost" type="button" onclick="writeCursorRule()">Write Cursor rule</button>
@@ -963,6 +978,73 @@
           <pre id="exportPreview" class="code">Scan a repository first — then preview repo-wide context for Claude, Cursor, or Codex.</pre>
           <div id="exportFeedbackSlot"></div>
         </div>
+      </div>
+    </section>
+
+    <!-- ===================== MEMORY ===================== -->
+    <section class="view atlas-workspace" id="view-memory" aria-labelledby="memoryTitle">
+      <header class="workspace-titlebar">
+        <div><p class="workspace-kicker">Repository knowledge</p><h1 id="memoryTitle" tabindex="-1">Project Memory</h1><p>Inspect what Atlas retained, how current it is, and which evidence supports it.</p></div>
+        <button class="btn ghost" type="button" onclick="go('scan')">Refresh repository</button>
+      </header>
+      <div class="status-strip" id="memoryStatusStrip" role="status" aria-live="polite"></div>
+      <div class="workspace-split memory-layout">
+        <section class="workspace-primary" aria-labelledby="memoryOverviewTitle">
+          <div class="section-heading"><h2 id="memoryOverviewTitle">Memory overview</h2><span id="memoryFreshnessLabel" class="state-label">Checking</span></div>
+          <dl class="fact-table" id="memoryFacts"></dl>
+          <div class="section-heading"><h2>Evidence and concepts</h2></div>
+          <div id="memoryEvidence" class="technical-list"></div>
+        </section>
+        <aside class="workspace-inspector" aria-labelledby="memoryHistoryTitle">
+          <div class="section-heading"><h2 id="memoryHistoryTitle">Recent history</h2></div>
+          <div id="memoryHistory" class="technical-list"></div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===================== FILES ===================== -->
+    <section class="view atlas-workspace" id="view-files" aria-labelledby="filesTitle">
+      <header class="workspace-titlebar">
+        <div><p class="workspace-kicker">Repository explorer</p><h1 id="filesTitle" tabindex="-1">Files and Symbols</h1><p>Search indexed modules, inspect relationships, and continue into evidence or impact.</p></div>
+        <button class="btn ghost" type="button" onclick="go('center')">Open graph</button>
+      </header>
+      <div class="workspace-split files-layout">
+        <section class="workspace-primary" aria-labelledby="filesTableTitle">
+          <div class="explorer-toolbar"><label for="filesSearch">Filter indexed files</label><input id="filesSearch" type="search" placeholder="Path, module, or symbol…" oninput="atlasDesktopShell.filterFiles()" /><span id="filesCount" class="state-label"></span></div>
+          <h2 id="filesTableTitle" class="sr-only">Indexed files</h2>
+          <div class="table-scroll" role="region" aria-labelledby="filesTableTitle" tabindex="0">
+            <table class="data-table"><thead><tr><th scope="col">File or module</th><th scope="col">Relationships</th><th scope="col">Risk</th><th scope="col">Action</th></tr></thead><tbody id="filesTableBody"></tbody></table>
+          </div>
+        </section>
+        <aside class="workspace-inspector" id="filesInspector" aria-labelledby="filesInspectorTitle">
+          <h2 id="filesInspectorTitle">Inspector</h2><p class="muted">Select a file to inspect indexed evidence and relationships.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===================== AGENTS ===================== -->
+    <section class="view atlas-workspace" id="view-agents" aria-labelledby="agentsTitle">
+      <header class="workspace-titlebar"><div><p class="workspace-kicker">Local integrations</p><h1 id="agentsTitle" tabindex="-1">Agents</h1><p>Connect Atlas to Claude Code, Cursor, or Codex and verify the tools they can use.</p></div><button class="btn ghost" type="button" onclick="go('export')">Advanced handoff</button></header>
+      <div id="agentsStatusSummary" class="status-strip" role="status" aria-live="polite"></div>
+      <div id="agentsHost"></div>
+    </section>
+
+    <!-- ===================== DIAGNOSTICS ===================== -->
+    <section class="view atlas-workspace" id="view-diagnostics" aria-labelledby="diagnosticsTitle">
+      <header class="workspace-titlebar"><div><p class="workspace-kicker">Operational health</p><h1 id="diagnosticsTitle" tabindex="-1">Diagnostics</h1><p>Check the local backend, scan engine, storage, persistence, and MCP runtime.</p></div><div class="title-actions"><button class="btn primary" type="button" onclick="atlasDesktopShell.refreshDiagnostics()">Run checks</button><a class="btn ghost" href="support.html">Recovery tools</a></div></header>
+      <div id="diagnosticsSummary" class="diagnostic-summary" aria-live="polite"></div>
+      <div class="diagnostic-grid" id="diagnosticsGrid"></div>
+      <section class="diagnostic-report" aria-labelledby="diagnosticReportTitle"><div class="section-heading"><h2 id="diagnosticReportTitle">Diagnostic report</h2><button class="btn ghost small" type="button" onclick="atlasDesktopShell.copyDiagnosticReport()">Copy report</button></div><pre id="diagnosticsReport" class="code"></pre></section>
+    </section>
+
+    <!-- ===================== SETTINGS ===================== -->
+    <section class="view atlas-workspace" id="view-settings" aria-labelledby="settingsTitle">
+      <header class="workspace-titlebar"><div><p class="workspace-kicker">Application preferences</p><h1 id="settingsTitle" tabindex="-1">Settings</h1><p>Review local storage, privacy, appearance, repository defaults, and account state.</p></div></header>
+      <div class="settings-sections">
+        <section><div class="section-heading"><h2>Account</h2><button class="btn ghost small" type="button" onclick="atlasAccounts && atlasAccounts.open()">Manage account</button></div><p id="settingsAccountState" class="muted">Checking account state…</p></section>
+        <section><div class="section-heading"><h2>Local storage and privacy</h2><a class="btn ghost small" href="privacy.html">Privacy details</a></div><dl class="fact-table" id="settingsStorageFacts"></dl><p>Repository indexing and Atlas memory remain on this machine. Connected coding agents may send selected context to their own configured model provider.</p></section>
+        <section><div class="section-heading"><h2>Appearance and accessibility</h2></div><p>Atlas follows the operating system’s reduced-motion and browser zoom settings. The desktop workbench uses the high-contrast graphite theme.</p></section>
+        <section><div class="section-heading"><h2>Advanced recovery</h2><a class="btn ghost small" href="support.html">Open recovery tools</a></div><p>Cache clearing, index rebuilding, self-test, logs, and support bundle export are separated in Diagnostics to prevent accidental data changes.</p></section>
       </div>
     </section>
 
@@ -1083,7 +1165,7 @@
   </main>
 
   <!-- Admin confirmation modal (dangerous actions) -->
-  <div id="admin-confirm" class="admin-modal" style="display:none" role="dialog" aria-modal="true">
+  <div id="admin-confirm" class="admin-modal" style="display:none" role="dialog" aria-modal="true" aria-labelledby="admin-confirm-title">
     <div class="admin-modal-card glass">
       <h3 id="admin-confirm-title">Confirm</h3>
       <p id="admin-confirm-body" class="muted"></p>
@@ -1098,10 +1180,10 @@
 
   <button class="btn ghost screenshot-exit" id="screenshotExitBtn" type="button" onclick="exitPresentationMode()">Exit screenshot</button>
 
-  <div id="welcomeScreen" class="welcome-screen" style="display:none">
+  <div id="welcomeScreen" class="welcome-screen" style="display:none" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
     <div class="welcome-card glass">
       <p class="onboard-eyebrow">Atlas</p>
-      <h1 class="welcome-title">Welcome to Atlas</h1>
+      <h1 class="welcome-title" id="welcomeTitle">Welcome to Atlas</h1>
       <p class="muted welcome-lead">Load the sample, run repository analysis, then connect Claude, Cursor, or Codex over MCP. <b>Under a minute to your first evidence report.</b></p>
       <div class="welcome-actions">
         <button class="btn primary big" type="button" onclick="welcomeLoadSample()">Load sample &amp; run analysis</button>
@@ -1121,9 +1203,9 @@
     </div>
   </div>
 
-  <div id="aboutAtlasModal" class="about-modal" style="display:none" onclick="closeAboutAtlas()">
+  <div id="aboutAtlasModal" class="about-modal" style="display:none" role="dialog" aria-modal="true" aria-labelledby="aboutAtlasTitle" onclick="closeAboutAtlas()">
     <div class="about-card glass" onclick="event.stopPropagation()">
-      <h2>About Atlas</h2>
+      <h2 id="aboutAtlasTitle">About Atlas</h2>
       <h3>What Atlas does</h3>
       <ul class="clean about-list">
         <li>Scans your codebase locally — files, modules, imports, and dependency edges</li>
@@ -1148,10 +1230,10 @@
   </div>
 
   <!-- onboarding card — now points users to the welcome screen flow; kept for backwards compat -->
-  <div id="onboarding" class="onboarding" style="display:none">
+  <div id="onboarding" class="onboarding" style="display:none" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle">
     <div class="onboarding-card glass">
       <p class="onboard-eyebrow">Atlas</p>
-      <h2>Welcome to Atlas</h2>
+      <h2 id="onboardingTitle">Welcome to Atlas</h2>
       <ol class="onboard-steps">
         <li><b>Load the sample repository</b> — no folder path needed.</li>
         <li><b>Run your first repository analysis</b> — the report cites real files.</li>
@@ -1166,7 +1248,7 @@
     </div>
   </div>
 
-  <div id="mcpManualModal" class="admin-modal" style="display:none" role="dialog" aria-labelledby="mcpManualTitle">
+  <div id="mcpManualModal" class="admin-modal" style="display:none" role="dialog" aria-modal="true" aria-labelledby="mcpManualTitle">
     <div class="admin-modal-card glass about-card">
       <p class="onboard-eyebrow" id="mcpManualEyebrow">MCP setup</p>
       <h3 id="mcpManualTitle">Advanced manual setup</h3>
@@ -1182,10 +1264,10 @@
     </div>
   </div>
 
-  <div id="toast" class="toast"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
   <!-- Command palette (Ctrl/Cmd+K) -->
-  <div id="cmdPalette" class="admin-modal" style="display:none" role="dialog" aria-label="Command palette">
+  <div id="cmdPalette" class="admin-modal" style="display:none" role="dialog" aria-modal="true" aria-label="Command palette">
     <div class="cp-card glass">
       <input id="cmdPaletteInput" type="text" placeholder="Type a command… (Esc to close)" autocomplete="off" />
       <div id="cmdPaletteList" class="cp-list"></div>
@@ -1193,7 +1275,7 @@
   </div>
 
   <!-- Keyboard shortcuts (?) -->
-  <div id="shortcutsModal" class="admin-modal" style="display:none" role="dialog" aria-label="Keyboard shortcuts">
+  <div id="shortcutsModal" class="admin-modal" style="display:none" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts">
     <div class="admin-modal-card glass">
       <p class="onboard-eyebrow">Keyboard</p>
       <h3>Shortcuts</h3>
@@ -1241,5 +1323,6 @@
   <script src="atlas_launch_ux.js"></script>
   <!-- Ask Atlas report renderer — overrides Ask-only globals after app.js. -->
   <script src="ask_report.js"></script>
+  <script src="desktop-shell.js"></script>
 </body>
 </html>

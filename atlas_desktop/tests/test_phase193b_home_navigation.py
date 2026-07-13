@@ -50,19 +50,24 @@ def test_home_has_compact_recent_activity():
 
 
 # ── Part 2 — Account removed from main navigation ────────────────────────────
-def test_primary_nav_has_only_core_workflows():
+def test_primary_nav_exposes_durable_desktop_workspaces():
     nav = _nav_block()
     assert "Account" not in nav
     assert 'data-view="accounts"' not in nav
     assert "Repository Context" not in nav
-    expected = ("home", "scan", "hn", "ask", "investigate", "impact", "build", "center")
+    expected = (
+        "home", "memory", "files", "center", "ask", "impact", "investigate",
+        "build", "agents", "diagnostics", "settings", "scan", "hn",
+    )
     for view in expected:
         assert f'data-view="{view}"' in nav, view
     labels = re.findall(r'data-view="([^"]+)".*?>([^<]+)</button>', nav)
     assert [view for view, _ in labels] == list(expected)
     assert [label for _, label in labels] == [
-        "Home", "Scan", "HN demo", "Ask", "Debug", "Impact", "Plan", "Map"
+        "Home", "Memory", "Files", "Graph", "Ask", "Impact", "Debug", "Plan",
+        "Agents", "Diagnostics", "Settings", "Scan", "Sample",
     ]
+    assert nav.count("legacy-route") == 2
 
 
 # ── Part 3 — User menu restructure ───────────────────────────────────────────

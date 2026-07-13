@@ -540,6 +540,7 @@
       restoreDraft();
     }
     _setAuthMode(true);
+    requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: 'auto' }));
   }
 
   function openAccountScreen() {
@@ -734,7 +735,7 @@
     const body = document.querySelector('#acc-panel-register .auth-wizard-body');
     if (body) body.scrollTop = 0;
     const first = document.querySelector(`#acc-panel-register .acc-step[data-step="${_regStep}"] input, #acc-panel-register .acc-step[data-step="${_regStep}"] select, #acc-panel-register .acc-step[data-step="${_regStep}"] textarea`);
-    if (first) { try { first.focus(); } catch (e) {} }
+    if (first) { try { first.focus({ preventScroll: true }); } catch (e) {} }
   }
 
   function resetRegisterWizard() {

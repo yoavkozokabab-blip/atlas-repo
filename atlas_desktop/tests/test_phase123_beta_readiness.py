@@ -205,11 +205,13 @@ class TestInformationArchitecture:
         for path in ("/api/planning/change", "/api/planning/investigate", "/api/planning/impact"):
             assert server.route_is_registered("POST", path)
 
-    def test_planning_impact_returns_simulation(self):
+    def test_planning_impact_returns_simulation(self, monkeypatch):
+        monkeypatch.setattr(server, "_account_gate_failure", lambda: None)
+        assert api.load_demo_mode("medium")["ok"]
         _, c = server.dispatch("POST", "/api/planning/change", {"request": "Add caching"})
-        target = (c["plan"].get("files_to_inspect_first") or ["x"])[0]
+        target = (c["plan"].get("files_to_inspect_first") or ["services/auth.py"])[0]
         _, i = server.dispatch("POST", "/api/planning/impact", {"target": target})
-        assert i["ok"]
+        assert i["ok"], i
         assert "simulation" in i
 
     def test_nav_has_build_and_investigate(self):

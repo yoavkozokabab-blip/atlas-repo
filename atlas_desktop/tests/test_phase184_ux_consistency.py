@@ -21,7 +21,8 @@ def test_canonical_workflow_names_in_index():
     assert "Build implementation plan" in html
     assert "Failure Investigation" in html
     assert "Change Impact" in html
-    assert ">Map<" in html
+    assert ">Graph<" in html
+    assert "Codebase Map" in html
     assert "Build Plan" not in html
     assert "Change Plan" not in html
     assert "Generate Change Plan" not in html

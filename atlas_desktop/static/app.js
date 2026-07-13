@@ -17,7 +17,7 @@ const DEFAULT_DEMO_PACK = "medium";
 const DEFAULT_FIRST_QUESTION = "Where is authentication implemented?";
 const HN_FIRST_QUESTION = "Where is authentication implemented?";
 const NAV_ALIASES = { intel: "center", bug: "investigate", map: "center", "command-center": "center", copilot: "ask", hn: "hn" };
-const PROTECTED_VIEWS = new Set(["home", "scan", "hn", "ask", "center", "build", "investigate", "impact", "export"]);
+const PROTECTED_VIEWS = new Set(["home", "scan", "hn", "memory", "files", "ask", "center", "build", "investigate", "impact", "export"]);
 const RECENT_MAX_VISIBLE = 4;
 const RECENT_HIDE_PATTERNS = [/^test_/i, /^repo_a$/i, /smoke/i, /fixture/i, /^debug_/i];
 const GRAPH_HIERARCHY_THRESHOLD = 1000;
@@ -950,9 +950,15 @@ function go(view) {
   document.querySelectorAll("#nav button").forEach(b => {
     const target = NAV_ALIASES[b.dataset.view] || b.dataset.view;
     b.classList.toggle("active", target === view);
+    if (target === view) b.setAttribute("aria-current", "page");
+    else b.removeAttribute("aria-current");
   });
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
   document.dispatchEvent(new CustomEvent("atlas:viewchange", { detail: { view } }));
+  if (el && view !== "home") {
+    setTimeout(() => el.querySelector("h1[tabindex='-1'], h2[tabindex='-1'], h1, h2")?.focus({ preventScroll: true }), 60);
+  }
   if (view === "center") {
     trackAnalytics("graph_opened");
     api("/api/usage/event", "POST", { event_type: "repository_map_opened" }).catch(function () {});
@@ -1188,7 +1194,7 @@ function renderWorkflowHistory(workflowType, hostId) {
       ${items.map(it => `<div class="workflow-history-item">
         <button class="btn ghost small" type="button" onclick="reopenHistoryItem(${JSON.stringify(it.history_id)}, ${JSON.stringify(workflowType)})">${esc((it.request_text || "").slice(0, 48))}</button>
         <span class="muted tiny">${esc((it.created_at || "").slice(0, 16).replace("T", " "))}</span>
-        ${it.export_allowed === false ? `<span class="workflow-history-stale">Refresh before exporting</span>` : ""}
+        ${(it.historical_only || it.stale_reason) ? `<span class="workflow-history-stale">${esc(it.stale_reason || "Historical result — reopen to verify")}</span>` : ""}
       </div>`).join("")}
     </div>`;
   }).catch(() => { host.innerHTML = ""; });
@@ -1343,7 +1349,12 @@ async function executeScanFlow(validation) {
   }
 }
 function setStage(i, cls) { const el = $("st" + i); if (el) el.className = "stage " + cls; }
-function setBar(pct) { $("scanBar").style.width = pct + "%"; $("scanPct").textContent = Math.round(pct) + "%"; }
+function setBar(pct) {
+  const value = Math.max(0, Math.min(100, Math.round(pct)));
+  $("scanBar").style.width = value + "%";
+  $("scanPct").textContent = value + "%";
+  $("scanProgress")?.setAttribute("aria-valuenow", String(value));
+}
 async function cancelCurrentScan() {
   const res = await api("/api/repositories/current/cancel-scan", "POST", {});
   if (res.ok) toast("Cancel requested", "success");
@@ -1500,9 +1511,9 @@ function renderMapHeader(sum) {
 function setMapWarning(graph, sum) {
   const el = $("graphWarning");
   if (!el) return;
-  const full = [graph.render_warning, sum.graph_health?.notice].filter(Boolean).join(" ");
-  if (!full) { el.style.display = "none"; return; }
   const partial = (sum.graph_health?.label || "") !== "healthy";
+  const full = [graph.render_warning, partial ? sum.graph_health?.notice : ""].filter(Boolean).join(" ");
+  if (!full) { el.style.display = "none"; el.textContent = ""; return; }
   const concise = partial
     ? "Some file links could not be resolved. Most missing links are external or dynamic imports."
     : "Some dependencies could not be resolved.";
@@ -1539,30 +1550,44 @@ function renderModuleBrowsePanel(graph, sum) {
   const list = $("moduleBrowseList");
   if (!panel || !list) return;
   const view = STATE.graphView || "module";
-  const nodes = (graph?.nodes || []).filter(n => n.type === "module" && n.path);
-  const showList = view === "module" && nodes.length > 0;
+  const nodes = (graph?.nodes || []).filter(n => n.path || n.name || n.id);
+  const showList = nodes.length > 0;
   panel.style.display = showList ? "block" : "none";
   if (!showList) return;
+  if (!panel.dataset.initialized) {
+    panel.dataset.initialized = "1";
+    panel.classList.add("is-collapsed");
+  }
   const totals = graphUnderlyingTotals(sum, graph);
   const summary = $("moduleBrowseSummary");
-  if (summary) summary.textContent = `Top hubs · ${nodes.length.toLocaleString()} visible of ${totals.modules.toLocaleString()} modules`;
+  if (summary) summary.textContent = `${graphModeTitle(view, graph)} list · ${nodes.length.toLocaleString()} visible of ${totals.modules.toLocaleString()} modules`;
   const ranked = [...nodes].sort((a, b) => (b.fan_in || 0) - (a.fan_in || 0) || (b.risk_score || 0) - (a.risk_score || 0));
   STATE.moduleBrowseNodes = ranked;
   filterModuleBrowseList();
+}
+
+function toggleModuleBrowsePanel() {
+  const panel = $("moduleBrowsePanel");
+  const button = $("moduleBrowseToggle");
+  if (!panel || !button) return;
+  const expanded = panel.classList.toggle("is-collapsed") === false;
+  button.setAttribute("aria-expanded", String(expanded));
+  button.textContent = expanded ? "Hide module list" : "Show module list";
+  if (expanded) setTimeout(() => $("moduleBrowseFilter")?.focus(), 30);
 }
 
 function filterModuleBrowseList() {
   const list = $("moduleBrowseList");
   if (!list || !STATE.moduleBrowseNodes) return;
   const q = ($("moduleBrowseFilter")?.value || "").trim().toLowerCase();
-  const items = STATE.moduleBrowseNodes.filter(n => !q || (n.path || "").toLowerCase().includes(q)).slice(0, 100);
+  const items = STATE.moduleBrowseNodes.filter(n => !q || `${n.path || ""} ${n.name || ""}`.toLowerCase().includes(q)).slice(0, 100);
   list.innerHTML = items.map(n => {
-    const path = n.path || "";
+    const path = n.path || n.name || n.id || "";
     const fi = n.fan_in || 0, fo = n.fan_out || 0;
     const risk = n.risk_score || 0;
     const sub = n.subsystem || "";
     const rc = risk >= 60 ? "var(--red)" : risk >= 35 ? "var(--amber)" : risk >= 15 ? "var(--cyan)" : "var(--green)";
-    return `<li><button type="button" class="mbp-item" onclick="selectModuleFromList(${JSON.stringify(path)})">
+    return `<li><button type="button" class="mbp-item" aria-label="Inspect ${esc(path)}" onclick="selectModuleFromList(${JSON.stringify(path)})">
       <span class="mbp-path">${esc(path)}</span>
       <span class="mbp-meta"><b style="color:${rc}">risk ${risk}</b> · ${fi} dependents · ${fo} imports</span>
     </button></li>`;
@@ -1571,7 +1596,7 @@ function filterModuleBrowseList() {
 
 function selectModuleFromList(path) {
   if (!path || !STATE.graph) return;
-  const node = (STATE.graph.nodes || []).find(n => n.path === path);
+  const node = (STATE.graph.nodes || []).find(n => (n.path || n.name || n.id) === path);
   if (node) showNode(node);
 }
 

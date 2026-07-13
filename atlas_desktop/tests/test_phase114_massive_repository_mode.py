@@ -128,7 +128,8 @@ def test_hierarchy_graph_levels(tmp_path):
     assert mod["counts"]["files"] == mod["counts"]["modules"]
 
 
-def test_server_routes_for_massive_mode(tmp_path):
+def test_server_routes_for_massive_mode(tmp_path, monkeypatch):
+    monkeypatch.setattr(server, "_account_gate_failure", lambda: None)
     root = _repo(tmp_path)
     assert server.dispatch("POST", "/api/repositories/estimate", {"path": str(root)})[1]["ok"]
     assert server.dispatch("POST", "/api/repositories/scan", {"path": str(root), "scope": {"mode": "backend"}})[1]["ok"]

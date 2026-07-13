@@ -27,22 +27,28 @@ def _section(view: str) -> str:
     return INDEX[start:] if end < 0 else INDEX[start:end]
 
 
-def test_primary_nav_matches_launch_order_and_hides_context_export():
+def test_primary_nav_matches_desktop_workspace_order_and_hides_context_export():
     nav = INDEX[INDEX.find('<nav class="nav"'): INDEX.find("</nav>", INDEX.find('<nav class="nav"'))]
     labels = re.findall(r'data-view="([^"]+)".*?>([^<]+)</button>', nav)
     assert labels == [
         ("home", "Home"),
-        ("scan", "Scan"),
-        ("hn", "HN demo"),
+        ("memory", "Memory"),
+        ("files", "Files"),
+        ("center", "Graph"),
         ("ask", "Ask"),
-        ("investigate", "Debug"),
         ("impact", "Impact"),
+        ("investigate", "Debug"),
         ("build", "Plan"),
-        ("center", "Map"),
+        ("agents", "Agents"),
+        ("diagnostics", "Diagnostics"),
+        ("settings", "Settings"),
+        ("scan", "Scan"),
+        ("hn", "Sample"),
     ]
     assert "Repository Context" not in nav
-    assert 'class="needs-no-repo"' in nav
-    assert 'class="needs-repo"' in nav
+    assert "needs-no-repo" in nav
+    assert "needs-repo" in nav
+    assert nav.count("legacy-route") == 2
 
 
 def test_home_points_to_scan_and_sample_without_full_scan_form():
