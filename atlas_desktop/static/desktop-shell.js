@@ -237,18 +237,20 @@
     ]);
     const [health, diagnostics, startup, selfTest, mcp] = diagnosticRequests.map((request) => request.status === "fulfilled" ? request.value : null);
     const requestFailures = diagnosticRequests.filter((request) => request.status === "rejected");
-    const allOk = requestFailures.length === 0 && [health, diagnostics, startup, selfTest, mcp].every((item) => item && item.ok);
     const memory = diagnostics && diagnostics.trust_integrity || {};
     const scan = diagnostics && diagnostics.scan_statistics || {};
     const agents = connectedAgents(mcp);
     const memoryVerified = memory.memory_persistence_status === "ok" || !!(health && health.persistence && health.persistence.ok && health.persistence.restored);
+    const startupReady = !!(startup && startup.ok && startup.startup && startup.startup.ready);
+    const installerReady = !!(selfTest && selfTest.ok && selfTest.ready);
+    const allOk = requestFailures.length === 0 && !!(health && health.ok) && !!(diagnostics && diagnostics.ok) && startupReady && installerReady && memoryVerified && !!(mcp && mcp.ok);
     summary.innerHTML = `${statusPill(allOk ? "Operational" : "Review needed", allOk ? "ready" : "warning")} ${allOk ? "The local backend, storage, index, and integration checks responded successfully." : "One or more local checks need attention. Review the report before recovery actions."}`;
     grid.innerHTML = [
       renderDiagnosticCard("Local backend", !!(health && health.ok), health && (health.version ? `Atlas ${health.version}` : health.status)),
-      renderDiagnosticCard("Startup readiness", !!(startup && startup.ok && startup.startup && startup.startup.ready), startup && startup.startup && `${list(startup.startup.checks).filter((item) => item.ok).length} startup checks passed`),
+      renderDiagnosticCard("Startup readiness", startupReady, startup && startup.startup && `${list(startup.startup.checks).filter((item) => item.ok).length} startup checks passed`),
       renderDiagnosticCard("Repository index", !!(diagnostics && diagnostics.ok && !memory.scan_stale), scan.module_count !== undefined ? `${number(scan.module_count)} modules · ${number(scan.dependency_edges)} dependencies` : "No repository is currently indexed"),
       renderDiagnosticCard("Signed memory", memoryVerified, memoryVerified ? "Persisted repository state restored and verified" : memory.memory_persistence_error),
-      renderDiagnosticCard("Installer runtime", !!(selfTest && selfTest.ok && selfTest.ready), selfTest && `${list(selfTest.checks).filter((item) => item.ok).length} runtime checks passed`),
+      renderDiagnosticCard("Installer runtime", installerReady, selfTest && `${list(selfTest.checks).filter((item) => item.ok).length} runtime checks passed`),
       renderDiagnosticCard("Agent connections", !!(mcp && mcp.ok), agents.length ? `${agents.map((name) => name === "claude" ? "Claude" : name === "codex" ? "Codex" : "Cursor").join(", ")} configured` : "MCP configuration available; no agent reported configured"),
     ].join("");
     shell.diagnostics = { generated_at: new Date().toISOString(), request_failures: requestFailures.map((request) => text(request.reason && request.reason.message, "Request failed")), health, diagnostics, startup, self_test: selfTest, mcp: {
