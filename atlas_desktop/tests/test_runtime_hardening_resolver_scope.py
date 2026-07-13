@@ -55,3 +55,27 @@ def test_js_graph_excludes_generated_copies_without_losing_real_edge(tmp_path):
     graph = jsdepgraph.build_graph(str(tmp_path))
     assert len([e for e in graph["edges"] if e.get("type") == "imports"]) == 1
     assert graph["unresolved"]["imports_external"] == []
+
+
+def test_relative_package_attribute_resolves_to_known_package_without_fake_module(tmp_path):
+    _write(tmp_path / "pkg" / "__init__.py", "VERSION = '1'\n")
+    _write(tmp_path / "pkg" / "cli.py", "from . import VERSION\n")
+    graph = depgraph.build_graph(str(tmp_path), detail=depgraph.DETAIL_IMPORTS)
+    imports = [edge for edge in graph["edges"] if edge.get("type") == "imports"]
+    assert len(imports) == 1
+    assert imports[0]["to"] == "module:pkg/__init__.py"
+    assert imports[0]["target_module"] == "pkg"
+    assert imports[0]["target_symbol"] == "VERSION"
+    assert graph["unresolved"]["imports_external"] == []
+
+
+def test_non_code_asset_import_is_expected_unresolved_not_internal_defect(tmp_path):
+    _write(tmp_path / "src" / "layout.tsx", "import './globals.css';\n")
+    graph = jsdepgraph.build_graph(str(tmp_path))
+    assert graph["unresolved"]["imports_external"] == [
+        {
+            "from_module": "src/layout.tsx",
+            "target": "./globals.css",
+            "reason": "asset_import",
+        }
+    ]

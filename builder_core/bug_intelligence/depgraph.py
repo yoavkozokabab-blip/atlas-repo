@@ -296,6 +296,7 @@ def _append_module_import_edges(
                 if node.module:
                     base = f"{base_pkg}.{node.module}" if base_pkg else node.module
                 else:
+                    base_path = mm["module_to_path"].get(base_pkg) if base_pkg else None
                     for alias in node.names:
                         if alias.name == "*":
                             continue
@@ -309,6 +310,19 @@ def _append_module_import_edges(
                                 "line": line,
                                 "resolved": True,
                                 "target_module": sub,
+                                **edge_extra,
+                            })
+                        elif base_path is not None:
+                            # ``from . import CONSTANT`` depends on the known
+                            # package __init__, not on a fabricated submodule.
+                            sink.append({
+                                "type": "imports",
+                                "from": mod_nid,
+                                "to": node_id("module", base_path),
+                                "line": line,
+                                "resolved": True,
+                                "target_module": base_pkg,
+                                "target_symbol": alias.name,
                                 **edge_extra,
                             })
                         else:

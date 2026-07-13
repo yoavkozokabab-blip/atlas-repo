@@ -56,6 +56,10 @@ DYNAMIC_IMPORT_RE = re.compile(
 MAX_FILE_BYTES = 400_000
 # VS Code-scale monorepos exceed the Python depgraph cap; JS/TS uses a higher limit.
 JS_MAX_FILES = 12_000
+ASSET_EXTENSIONS = frozenset({
+    ".css", ".less", ".sass", ".scss", ".svg", ".png", ".jpg", ".jpeg",
+    ".gif", ".webp", ".woff", ".woff2", ".ttf", ".otf",
+})
 
 
 def _language_for_ext(ext: str) -> str:
@@ -297,10 +301,15 @@ def build_graph_from_files(
                         "reason": "third_party_or_unknown_module",
                     })
                 else:
+                    asset_ext = os.path.splitext(spec.split("?", 1)[0])[1].lower()
                     unresolved_external.append({
                         "from_module": rel,
                         "target": spec,
-                        "reason": "unresolved_relative_or_alias",
+                        "reason": (
+                            "asset_import"
+                            if asset_ext in ASSET_EXTENSIONS
+                            else "unresolved_relative_or_alias"
+                        ),
                     })
                 continue
 
