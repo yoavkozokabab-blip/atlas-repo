@@ -24,10 +24,6 @@ export default function HeroCine() {
   return (
     <section className="hero-cine" id="top">
       <div className="hero-cine-inner">
-        <p className="hero-eyebrow fade-seq" style={{ animationDelay: "0.1s" }}>
-          <span className="dot" aria-hidden /> Local-first repository memory · MCP
-        </p>
-
         <h1>
           <Reveal text="Your codebase," base={0.15} />
           <br />
