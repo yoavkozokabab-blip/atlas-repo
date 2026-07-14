@@ -32,6 +32,10 @@ Run: py -3 scripts/bench_audit4_retrieval.py
 from __future__ import annotations
 import json, math, os, re, sys, time, random
 
+from verification_isolation import activate_isolated_atlas_data
+
+activate_isolated_atlas_data("bench-audit4-retrieval")
+
 ROOT = r"C:\J.A.R.V.I.S\local_atlas"
 sys.path.insert(0, ROOT)
 from atlas_desktop import api, context_pack as cp  # noqa: E402

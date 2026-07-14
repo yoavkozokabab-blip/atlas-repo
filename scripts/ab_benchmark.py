@@ -25,6 +25,10 @@ import statistics as st
 import sys
 import time
 
+from verification_isolation import activate_isolated_atlas_data
+
+activate_isolated_atlas_data("ab-benchmark")
+
 # Reuse the labeled tasks + gold + grep baseline from the retrieval benchmark.
 import atlas_value_benchmark as avb
 from atlas_desktop import api, context_pack as cp

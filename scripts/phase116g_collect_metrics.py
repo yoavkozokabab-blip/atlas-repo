@@ -7,6 +7,10 @@ import sys
 import time
 from pathlib import Path
 
+from verification_isolation import activate_isolated_atlas_data
+
+activate_isolated_atlas_data("phase116g-collect-metrics")
+
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 

@@ -12,8 +12,10 @@ STATIC = Path(__file__).resolve().parents[1] / "static"
 
 
 @pytest.fixture(autouse=True)
-def _demo_loaded():
-    server.dispatch("POST", "/api/demo/load", {"pack": "small"})
+def _demo_loaded(local_guest_account):
+    status, payload = server.dispatch("POST", "/api/demo/load", {"pack": "small"})
+    assert status == 200, payload
+    assert payload["ok"] is True
     yield
 
 

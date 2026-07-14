@@ -5,6 +5,10 @@ from __future__ import annotations
 import os
 import sys
 
+from verification_isolation import activate_isolated_atlas_data
+
+activate_isolated_atlas_data("phase119-smoke")
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 

@@ -14,16 +14,50 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 import subprocess
 import sys
+import tempfile
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_SOURCE_EXTENSIONS = {".py", ".js", ".jsx", ".ts", ".tsx", ".go", ".rs", ".java", ".cs"}
+
+
+def _contains_source_files(path: str) -> bool:
+    if not os.path.isdir(path):
+        return False
+    return any(
+        os.path.splitext(filename)[1].lower() in _SOURCE_EXTENSIONS
+        for _, _, filenames in os.walk(path)
+        for filename in filenames
+    )
+
+
 _DEFAULT_CANDIDATES = [
     os.path.join(REPO_ROOT, "external_repos", "requests"),
     os.path.join(REPO_ROOT, "atlas_desktop", "demo", "medium_repo"),
     os.path.join(REPO_ROOT, "atlas_desktop", "demo", "small_repo"),
 ]
-DEFAULT_REPO = next((p for p in _DEFAULT_CANDIDATES if os.path.isdir(p)), _DEFAULT_CANDIDATES[0])
+DEFAULT_REPO = next((p for p in _DEFAULT_CANDIDATES if _contains_source_files(p)), _DEFAULT_CANDIDATES[-1])
+
+
+def _isolated_child_env() -> tuple[dict[str, str], str]:
+    """Return a fail-closed, disposable Atlas data root for the MCP child."""
+    data_root = tempfile.mkdtemp(prefix="atlas-mcp-smoke-")
+    user_home = os.environ.get("USERPROFILE", "").strip() or os.path.expanduser("~")
+    protected_root = os.path.abspath(os.path.join(user_home, ".atlas_desktop"))
+    if os.path.normcase(os.path.abspath(data_root)) == os.path.normcase(protected_root):
+        raise RuntimeError("MCP smoke test refused the canonical Atlas data root")
+    env = dict(os.environ)
+    env.update(
+        {
+            "ATLAS_TEST_MODE": "1",
+            "ATLAS_TEST_PROTECTED_DATA_ROOT": protected_root,
+            "ATLAS_DESKTOP_DATA": data_root,
+            "JARVIS_DESKTOP_DATA": data_root,
+        }
+    )
+    return env, data_root
 
 
 class Client:
@@ -98,14 +132,17 @@ def main() -> int:
     # Repo-appropriate probe query/target: the requests checkout when present,
     # otherwise the bundled demo repo shipped with Atlas.
     if os.path.basename(repo) == "requests":
+        task = "add retry with exponential backoff to the HTTP adapter"
         probe_query, probe_target = "session cookie handling", "src/requests/sessions.py"
     else:
+        task = "add authentication checks to API request handlers"
         probe_query, probe_target = "api request handlers", "api/handlers.py"
 
+    child_env, data_root = _isolated_child_env()
     proc = subprocess.Popen(
         [sys.executable, "-m", "atlas_desktop.mcp_server"],
         cwd=REPO_ROOT, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-        text=True, env=dict(os.environ),
+        text=True, env=child_env,
     )
     client = Client(proc)
     failures = []
@@ -119,6 +156,12 @@ def main() -> int:
         init = (client.call("initialize", {"protocolVersion": "2024-11-05", "capabilities": {},
                                            "clientInfo": {"name": "smoke", "version": "0"}}).get("result") or {})
         check("initialize returns serverInfo", str(init.get("serverInfo", {}).get("name", "")).startswith("atlas"), str(init))
+        check("initialize negotiates MCP 2024-11-05", init.get("protocolVersion") == "2024-11-05", str(init))
+        print(
+            f"     -> server={init.get('serverInfo', {}).get('name')} "
+            f"version={init.get('serverInfo', {}).get('version')} "
+            f"protocol={init.get('protocolVersion')}"
+        )
         client.notify("notifications/initialized")
 
         resp = client.call("tools/list")
@@ -126,6 +169,7 @@ def main() -> int:
         expected = {"atlas_scan_repo", "atlas_get_codebase_map", "atlas_build_context_pack",
                     "atlas_what_breaks", "atlas_plan_change", "atlas_find_file", "atlas_repo_health"}
         check("tools/list exposes all 7 tools", expected.issubset(set(tools)), f"got {tools}")
+        print(f"     -> advertised tools ({len(tools)}): {', '.join(tools)}")
 
         # Error contract: missing required arg -> structured error.
         payload = client.tool("atlas_build_context_pack", {})
@@ -136,9 +180,12 @@ def main() -> int:
         check("atlas_scan_repo ok", payload.get("ok") is True, str(payload)[:300])
         check("scan reports modules", (_find_key(payload, "module_count") or 0) > 0, str(payload)[:200])
 
+        payload = client.tool("atlas_get_codebase_map", {"limit": 8})
+        check("get_codebase_map ok", payload.get("ok") is True, str(payload)[:300])
+
         # Headline tool.
         payload = client.tool("atlas_build_context_pack",
-                              {"task": "add retry with exponential backoff to the HTTP adapter", "max_files": 8})
+                              {"task": task, "max_files": 8})
         files = [f["path"] for f in (payload.get("recommended_files") or [])]
         check("context pack ok", payload.get("ok") is True, str(payload)[:300])
         check("context pack returns files", len(files) > 0, str(files))
@@ -153,6 +200,12 @@ def main() -> int:
         payload = client.tool("atlas_what_breaks", {"target": probe_target})
         check("what_breaks ok", payload.get("ok") is True, str(payload)[:200])
 
+        payload = client.tool(
+            "atlas_plan_change",
+            {"request": task},
+        )
+        check("plan_change ok", payload.get("ok") is True, str(payload)[:300])
+
         payload = client.tool("atlas_repo_health", {})
         check("repo_health ok", payload.get("ok") is True, str(payload)[:200])
         blob = json.dumps(payload).lower()
@@ -162,8 +215,13 @@ def main() -> int:
     finally:
         try:
             proc.terminate()
+            proc.wait(timeout=10)
         except Exception:
-            pass
+            try:
+                proc.kill()
+            except Exception:
+                pass
+        shutil.rmtree(data_root, ignore_errors=True)
 
     print()
     if failures:

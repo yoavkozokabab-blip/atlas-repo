@@ -8,6 +8,10 @@ import sys
 import time
 from pathlib import Path
 
+from verification_isolation import activate_isolated_atlas_data
+
+activate_isolated_atlas_data("phase121b-visual-metrics")
+
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))

@@ -15,6 +15,8 @@ import subprocess
 import sys
 import time
 
+from verification_isolation import activate_isolated_atlas_data
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 EXE = os.path.abspath(sys.argv[1]) if len(sys.argv) > 1 else os.path.join(ROOT, "dist", "Atlas", "Atlas.exe")
 REPO = os.path.abspath(sys.argv[2]) if len(sys.argv) > 2 else os.path.join(ROOT, "external_repos", "requests")
@@ -59,6 +61,7 @@ def tool_payload(resp):
 
 
 def main():
+    data_root = activate_isolated_atlas_data("e2e-beta-proof")
     os.makedirs(OUT, exist_ok=True)
     steps = []
 
@@ -67,8 +70,21 @@ def main():
         print(f"  [{ms:>6} ms] {name}: {summary}")
         return payload
 
-    proc = subprocess.Popen([EXE, "--mcp"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
-    transcript = {"exe": EXE, "repo": REPO, "question": QUESTION, "steps": steps, "calls": {}}
+    proc = subprocess.Popen(
+        [EXE, "--mcp"],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        env=dict(os.environ),
+    )
+    transcript = {
+        "exe": EXE,
+        "repo": REPO,
+        "question": QUESTION,
+        "isolated_data_root": str(data_root),
+        "steps": steps,
+        "calls": {},
+    }
     t_start = time.time()
     client = Client(proc)
     try:

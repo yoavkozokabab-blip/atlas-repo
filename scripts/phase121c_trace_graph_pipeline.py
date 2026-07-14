@@ -9,6 +9,10 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List
 
+from verification_isolation import activate_isolated_atlas_data
+
+activate_isolated_atlas_data("phase121c-trace-graph")
+
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))

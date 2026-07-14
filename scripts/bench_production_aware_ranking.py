@@ -13,6 +13,10 @@ Run: py -3 scripts/bench_production_aware_ranking.py
 from __future__ import annotations
 import json, os, sys
 
+from verification_isolation import activate_isolated_atlas_data
+
+activate_isolated_atlas_data("bench-production-aware-ranking")
+
 REPO = r"C:\J.A.R.V.I.S\local_atlas"
 SCAN_TARGET = os.path.join(REPO, "atlas_desktop")
 sys.path.insert(0, REPO)

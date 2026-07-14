@@ -39,6 +39,17 @@ def _accounts_data_dir() -> str:
 
         base = desktop_data_dir()
     except Exception:
+        # Tests must fail closed if the mandatory Atlas data-root guard rejects
+        # a missing or protected override. Falling back to LOCALAPPDATA here
+        # would let the accounts-service child mutate real user state even
+        # though the desktop registry itself was isolated.
+        if os.environ.get("ATLAS_TEST_MODE", "").strip().lower() in {
+            "1",
+            "true",
+            "yes",
+            "on",
+        }:
+            raise
         base = os.environ.get("LOCALAPPDATA") or os.path.expanduser("~")
         base = os.path.join(base, "Atlas")
     data_dir = os.path.join(base, "accounts_service")
@@ -65,10 +76,22 @@ def _service_env() -> dict:
     """Environment for the accounts service: writable DB + JWT secret paths."""
     env = os.environ.copy()
     data_dir = _accounts_data_dir()
-    env.setdefault("ATLAS_ACCOUNTS_DATA_DIR", data_dir)
-    if not env.get("ATLAS_ACCOUNTS_DB"):
-        db_path = os.path.join(data_dir, "atlas_accounts.db").replace(os.sep, "/")
+    db_path = os.path.join(data_dir, "atlas_accounts.db").replace(os.sep, "/")
+    test_mode = env.get("ATLAS_TEST_MODE", "").strip().lower() in {
+        "1",
+        "true",
+        "yes",
+        "on",
+    }
+    if test_mode:
+        # Pytest and verification children must not inherit a repository-local
+        # or canonical accounts database from the supervisor environment.
+        env["ATLAS_ACCOUNTS_DATA_DIR"] = data_dir
         env["ATLAS_ACCOUNTS_DB"] = f"sqlite:///{db_path}"
+    else:
+        env.setdefault("ATLAS_ACCOUNTS_DATA_DIR", data_dir)
+        if not env.get("ATLAS_ACCOUNTS_DB"):
+            env["ATLAS_ACCOUNTS_DB"] = f"sqlite:///{db_path}"
     return env
 
 

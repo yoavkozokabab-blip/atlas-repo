@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from atlas_desktop import data_paths, persistence
+from atlas_desktop import accounts_service_runner, data_paths, persistence
 
 
 _SEEN_TEST_ROOTS: set[str] = set()
@@ -86,3 +86,26 @@ def test_child_process_refuses_protected_root(tmp_path):
     assert completed.returncode != 0
     assert "protected canonical data root" in completed.stderr
     assert not protected.exists()
+
+
+def test_accounts_service_supervisor_cannot_bypass_missing_override(monkeypatch):
+    monkeypatch.delenv("ATLAS_DESKTOP_DATA", raising=False)
+    monkeypatch.delenv("JARVIS_DESKTOP_DATA", raising=False)
+    data_paths.reset_desktop_data_dir_cache()
+    with pytest.raises(RuntimeError, match="requires ATLAS_DESKTOP_DATA"):
+        accounts_service_runner._accounts_data_dir()
+
+
+def test_accounts_service_child_environment_inherits_isolated_root(
+    isolated_atlas_data_root,
+    monkeypatch,
+):
+    monkeypatch.setenv("ATLAS_ACCOUNTS_DATA_DIR", "C:/outside-atlas-test-root")
+    monkeypatch.setenv("ATLAS_ACCOUNTS_DB", "sqlite:///./outside-atlas-test.db")
+    env = accounts_service_runner._service_env()
+    expected_root = os.path.normcase(str(isolated_atlas_data_root.resolve()))
+    assert os.path.normcase(str(Path(env["ATLAS_DESKTOP_DATA"]).resolve())) == expected_root
+    assert os.path.normcase(str(Path(env["JARVIS_DESKTOP_DATA"]).resolve())) == expected_root
+    db_url = env["ATLAS_ACCOUNTS_DB"]
+    assert db_url.startswith("sqlite:///")
+    assert os.path.normcase(db_url.removeprefix("sqlite:///")).startswith(expected_root)

@@ -22,6 +22,10 @@ import shutil
 import subprocess
 import time
 
+from verification_isolation import activate_isolated_atlas_data
+
+activate_isolated_atlas_data("atlas-value-benchmark")
+
 from atlas_desktop import api, context_pack as cp
 
 

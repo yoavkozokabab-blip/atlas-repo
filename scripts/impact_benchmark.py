@@ -36,6 +36,8 @@ import sys
 import time
 from typing import Any, Dict, List, Optional, Set, Tuple
 
+from verification_isolation import activate_isolated_atlas_data
+
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 EXTERNAL = r"C:\J.A.R.V.I.S\local_jarvis\external_repos"
 SCRATCH = os.environ.get(
@@ -340,9 +342,7 @@ def cmd_regold(suite_path: str) -> None:
 # --------------------------------------------------------------------------
 
 def cmd_run(suite_path: str, out_path: str, repos_filter: Optional[Set[str]]) -> None:
-    data_dir = os.path.join(os.path.dirname(out_path), ".atlas_bench_data")
-    os.makedirs(data_dir, exist_ok=True)
-    os.environ.setdefault("ATLAS_DESKTOP_DATA", data_dir)
+    activate_isolated_atlas_data("impact-benchmark")
     sys.path.insert(0, REPO_ROOT)
     from atlas_desktop import api  # noqa: E402
     from atlas_desktop.mcp_server import runtime  # noqa: E402

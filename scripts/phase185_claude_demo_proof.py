@@ -15,6 +15,8 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+from verification_isolation import activate_isolated_atlas_data
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
@@ -104,6 +106,7 @@ def _synthetic_claude_answer(tool_results: list[dict]) -> str:
 
 
 def main() -> int:
+    data_root = activate_isolated_atlas_data("phase185-claude-demo-proof")
     from atlas_desktop import agent_integrations as ai
 
     proof_dir = REPORTS / "phase185_demo_workspace"
@@ -172,6 +175,7 @@ def main() -> int:
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "question": QUESTION,
         "demo_repo": str(demo_repo),
+        "isolated_data_root": str(data_root),
         "claude_desktop": {
             "config_path": claude_status.get("config_path"),
             "config_source": claude_status.get("config_source"),

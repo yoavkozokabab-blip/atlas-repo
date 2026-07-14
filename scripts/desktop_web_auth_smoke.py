@@ -6,13 +6,18 @@ to prove the desktop authenticates against the SAME store as the website.
 Env required:
   ATLAS_AUTH_MODE=website
   ATLAS_WEB_URL=http://127.0.0.1:3111   (a running `next dev`)
-  ATLAS_DESKTOP_DATA=<temp dir>         (isolate test state)
+
+The script always creates its own unique temporary Atlas data root.
 """
 import json
 import os
 import sys
 import time
 import urllib.request
+
+from verification_isolation import activate_isolated_atlas_data
+
+activate_isolated_atlas_data("desktop-web-auth-smoke")
 
 BASE = os.environ["ATLAS_WEB_URL"].rstrip("/")
 EMAIL = f"desktop.smoke.{int(time.time())}@example.com"

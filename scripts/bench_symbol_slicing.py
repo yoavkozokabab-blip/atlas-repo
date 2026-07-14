@@ -8,6 +8,10 @@ import os
 import sys
 import time
 
+from verification_isolation import activate_isolated_atlas_data
+
+activate_isolated_atlas_data("bench-symbol-slicing")
+
 from atlas_desktop import api, context_pack as cp
 
 repo = os.path.abspath(sys.argv[1])

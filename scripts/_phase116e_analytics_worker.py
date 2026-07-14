@@ -5,6 +5,10 @@ from __future__ import annotations
 import sys
 import traceback
 
+from verification_isolation import activate_isolated_atlas_data
+
+activate_isolated_atlas_data("phase116e-analytics-worker")
+
 from atlas_desktop import analytics
 
 
