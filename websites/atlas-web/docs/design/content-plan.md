@@ -36,7 +36,7 @@ analysis service. User decides what context to send to an agent. Installer is cu
 the published installer is shown for verification (`INSTALLER_SHA256` in `_config.ts`).
 
 **Distribution:** GitHub `yoavkozokabab-blip/atlas-repo`, **v1.0.0** released; download via
-`/download/atlas` → GitHub asset (no login). Production site: atlas-repo-chi.vercel.app.
+`/download/atlas` remains suspended until a verified installer is approved. Canonical production site: atlas-repo-wu76.vercel.app.
 
 **Pricing:** Free (local, no signup) / **Pro $19/mo** (7-day trial, no card up front) / Team —
 coming soon. Payments run through Paddle (MoR); live charging is not yet wired (Team + Pro
