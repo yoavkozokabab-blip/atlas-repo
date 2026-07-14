@@ -1,10 +1,8 @@
 import Link from "next/link";
 import AtlasMark from "./AtlasMark";
+import InstallerWaitState, { INSTALLER_WAIT_LABEL } from "./InstallerWaitState";
 import {
-  DOWNLOAD_URL,
-  GITHUB_RELEASE_URL,
   GITHUB_URL,
-  INSTALLER_SHA256,
   SUPPORT_EMAIL,
   supportMailto,
 } from "../_config";
@@ -29,9 +27,7 @@ export function SiteNav() {
           <a className="cnav-ghost" href={GITHUB_URL} target="_blank" rel="noreferrer">
             GitHub
           </a>
-          <Link className="btn-mag" href="/download" data-evt="download_click">
-            Download <span className="arw" aria-hidden>→</span>
-          </Link>
+          <InstallerWaitState compact />
         </div>
       </div>
     </header>
@@ -52,15 +48,12 @@ export function SiteFooter() {
               The index lives on your machine; agents get cited context when you ask.
             </p>
             <div className="footer-meta mono">
-              <span>v{facts.version}</span>
               <span>{facts.platform}</span>
               <span>{facts.mcpTools} MCP tools</span>
             </div>
           </div>
           <div className="footer-cta">
-            <Link className="btn-mag" href="/download" data-evt="download_click">
-              Download Atlas <span className="arw" aria-hidden>→</span>
-            </Link>
+            <InstallerWaitState />
             <Link className="btn-line" href="/docs">Read docs</Link>
           </div>
         </div>
@@ -71,7 +64,7 @@ export function SiteFooter() {
             <Link href="/how-it-works">How it works</Link>
             <Link href="/integrations">Integrations</Link>
             <Link href="/pricing">Pricing</Link>
-            <Link href="/download">Download</Link>
+            <span className="footer-disabled-link" aria-disabled="true">{INSTALLER_WAIT_LABEL}</span>
           </div>
           <div>
             <h4>Proof</h4>
@@ -96,7 +89,6 @@ export function SiteFooter() {
             <Link href="/docs">Docs</Link>
             <Link href="/contact">Contact</Link>
             <a href={GITHUB_URL} target="_blank" rel="noreferrer">GitHub</a>
-            <a href={GITHUB_RELEASE_URL} target="_blank" rel="noreferrer">Latest release</a>
             {SUPPORT_EMAIL ? (
               <a href={supportMailto()}>{SUPPORT_EMAIL}</a>
             ) : (
@@ -105,19 +97,19 @@ export function SiteFooter() {
           </div>
         </div>
         <div className="legal">
-          © 2026 Atlas. Local-first repository intelligence. Windows only today;
-          installer may show SmartScreen until signing is complete.
+          © 2026 Atlas. Local-first repository intelligence. Windows downloads are
+          paused during final installed-app verification.
         </div>
       </div>
     </footer>
   );
 }
 
-/** Four-step install strip: Download -> Install -> Load sample -> Connect. */
+/** Four-step install strip shown for the flow after verified downloads reopen. */
 export function InstallFlow() {
   return (
     <div className="install-flow" aria-label="Install steps">
-      <span className="if-step">Download</span>
+      <span className="if-step">Verified download</span>
       <span className="if-arrow" aria-hidden>→</span>
       <span className="if-step">Install</span>
       <span className="if-arrow" aria-hidden>→</span>
@@ -316,20 +308,8 @@ export function InstallationBlock() {
   return (
     <div className="install-block">
       <div>
-        <p className="eyebrow">Windows release</p>
-        <h3>Atlas_Setup.exe · v{facts.version}</h3>
-        <p className="dl-meta">SHA256: <code>{INSTALLER_SHA256}</code></p>
-        <p className="note" style={{ marginTop: 10 }}>
-          No signup required. Windows SmartScreen may warn until the installer is signed.
-        </p>
-      </div>
-      <div className="install-actions">
-        <a className="btn-mag" href={DOWNLOAD_URL} data-evt="download_click">
-          Download Atlas <span className="arw" aria-hidden>→</span>
-        </a>
-        <a className="btn-line" href={GITHUB_RELEASE_URL} target="_blank" rel="noreferrer">
-          Verify release
-        </a>
+        <p className="eyebrow">Windows build status</p>
+        <InstallerWaitState />
       </div>
     </div>
   );
@@ -369,16 +349,16 @@ export function ReleaseVersionBlock() {
   return (
     <div className="release-block">
       <div>
-        <span className="mono">current release</span>
-        <strong>Atlas v{facts.version}</strong>
+        <span className="mono">Windows distribution</span>
+        <strong>Verification in progress</strong>
       </div>
       <div>
         <span className="mono">platform</span>
         <strong>{facts.platform}</strong>
       </div>
       <div>
-        <span className="mono">distribution</span>
-        <strong>Unsigned installer</strong>
+        <span className="mono">availability</span>
+        <strong>Downloads temporarily paused</strong>
       </div>
     </div>
   );

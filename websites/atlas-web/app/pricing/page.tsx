@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import InstallerWaitState from "../_components/InstallerWaitState";
 import { PageShell, PremiumSection, TrustBlock } from "../_components/site";
 import { proCheckoutReady } from "../_lib/billing";
 
@@ -27,7 +28,7 @@ export default function PricingPage() {
     <PageShell
       eyebrow="Pricing"
       title="Simple pricing for repo memory."
-      intro="Start with the local Windows app. Pro billing is powered by Paddle as Merchant of Record when checkout is configured."
+      intro="The local Windows app is free. Downloads are temporarily paused during final installed-app verification. Pro billing is powered by Paddle as Merchant of Record when checkout is configured."
     >
       <PremiumSection>
         <div className="tiers premium-tiers">
@@ -35,9 +36,9 @@ export default function PricingPage() {
             <p className="eyebrow">Free</p>
             <h3>Core local app</h3>
             <div className="price">$0</div>
-            <p className="note">Available today.</p>
+            <p className="note">Windows downloads temporarily paused during verification.</p>
             <ul>{free.map((item) => <li key={item}>{item}</li>)}</ul>
-            <Link className="btn-mag" href="/download">Download Atlas <span className="arw" aria-hidden>→</span></Link>
+            <InstallerWaitState />
           </div>
 
           <div className="tier feat">

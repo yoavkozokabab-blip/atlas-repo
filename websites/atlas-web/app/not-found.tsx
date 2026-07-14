@@ -1,4 +1,5 @@
 import Link from "next/link";
+import InstallerWaitState from "./_components/InstallerWaitState";
 import { SiteNav, SiteFooter } from "./_components/site";
 
 // App Router 404 page. Providing this (plus global-error.tsx) makes Next render
@@ -24,7 +25,7 @@ export default function NotFound() {
             </p>
             <div style={{ marginTop: 26, display: "flex", gap: 12, flexWrap: "wrap" }}>
               <Link className="btn btn-primary" href="/">Back to home</Link>
-              <Link className="btn btn-ghost" href="/download">Download Atlas</Link>
+              <InstallerWaitState />
             </div>
           </div>
         </section>

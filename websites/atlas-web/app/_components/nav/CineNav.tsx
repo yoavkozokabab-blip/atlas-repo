@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import AtlasMark from "../AtlasMark";
+import InstallerWaitState from "../InstallerWaitState";
 import { GITHUB_URL } from "../../_config";
 
 const LINKS = [
@@ -84,9 +85,7 @@ export default function CineNav() {
             <a className="cnav-ghost" href={GITHUB_URL} target="_blank" rel="noreferrer">
               GitHub
             </a>
-            <Link className="btn-mag" href="/download" data-evt="download_click">
-              Download <span className="arw" aria-hidden>→</span>
-            </Link>
+            <InstallerWaitState compact />
             <button
               ref={burgerRef}
               className="cnav-burger"
@@ -125,10 +124,7 @@ export default function CineNav() {
             </a>
           </nav>
           <div className="mobile-panel-foot">
-            <Link className="btn-mag" href="/download" onClick={() => setOpen(false)}>
-              Download Atlas <span className="arw" aria-hidden>→</span>
-            </Link>
-            <span className="mono muted">v1.0.0 · Windows · No signup</span>
+            <InstallerWaitState />
           </div>
         </div>
       )}

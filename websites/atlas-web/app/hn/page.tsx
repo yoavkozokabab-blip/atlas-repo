@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteNav, SiteFooter, InstallFlow } from "../_components/site";
-import { GITHUB_RELEASE_URL, GITHUB_URL, INSTALLER_SHA256, SUPPORT_EMAIL } from "../_config";
+import InstallerWaitState from "../_components/InstallerWaitState";
+import { GITHUB_URL, SUPPORT_EMAIL } from "../_config";
 
 export const metadata: Metadata = {
   title: "Atlas for Hacker News",
   description:
-    "Persistent repository context across fresh coding-agent sessions. Local-first indexing for Claude Code, Cursor, and Codex. Windows v1.0.",
+    "Persistent repository context across fresh coding-agent sessions. Local-first indexing for Claude Code, Cursor, and Codex.",
 };
 
 const faq = [
@@ -32,9 +33,9 @@ export default function HackerNewsPage() {
                 evidence store — then serves it to Claude Code, Cursor, and Codex over MCP. Built for developers who are tired of re-explaining the same codebase to AI coding agents. Kill the agent, open a new session tomorrow: the context is still there, validated against the current state of your repo.
               </p>
               <div className="hero-actions">
-                <Link className="btn btn-primary btn-lg" href="/download" data-evt="download_click">Download Atlas</Link>
+                <InstallerWaitState />
               </div>
-              <p className="hero-note">No signup required · Continue without an account · Local-first indexing · Your code stays on your machine · Windows v1.0</p>
+              <p className="hero-note">Local-first indexing · Your code stays on your machine</p>
               <div style={{ marginTop: 22 }}>
                 <InstallFlow />
               </div>
@@ -117,7 +118,7 @@ export default function HackerNewsPage() {
           <div className="container grid-3">
             <div className="card"><h3>30-second flow</h3><p>Install → open Atlas → continue without an account → load the sample repository (or scan your own) → ask &quot;Where is authentication implemented?&quot; → get cited files → connect your agent.</p></div>
             <div className="card"><h3>Languages</h3><p>Deep import/dependency analysis: Python and JavaScript/TypeScript. Scanned at file level: Go, Rust, Java, C#, Ruby, and other common source files. Large monorepos index slower — an active work item.</p></div>
-            <div className="card"><h3>SmartScreen</h3><p>The installer is not code-signed yet, so Windows SmartScreen warns on first run (&quot;More info → Run anyway&quot;). Verify the download: SHA256 is published below and on the GitHub release.</p></div>
+            <div className="card"><h3>Windows build</h3><p>Downloads are temporarily paused while the latest desktop build completes final installed-app verification.</p></div>
           </div>
         </section>
 
@@ -133,12 +134,9 @@ export default function HackerNewsPage() {
                 especially critical — is the point of posting here.</p>
             </div>
             <div className="card">
-              <h3>Verify the build</h3>
-              <p className="note" style={{ wordBreak: "break-all" }}>
-                Atlas_Setup.exe SHA256:<br /><code>{INSTALLER_SHA256}</code>
-              </p>
+              <h3>Windows build status</h3>
+              <InstallerWaitState />
               <p style={{ marginTop: 14 }}>
-                <a className="btn btn-ghost" href={GITHUB_RELEASE_URL} target="_blank" rel="noreferrer">GitHub release</a>{" "}
                 <Link className="btn btn-ghost" href="/changelog">Changelog</Link>{" "}
                 <a className="btn btn-ghost" href={`mailto:${SUPPORT_EMAIL}`}>Contact</a>
               </p>
