@@ -45,19 +45,34 @@ function Join-PathSafe {
     return (Join-Path $Base $Child)
 }
 
-function Assert-AtlasRc1BuildRoot {
+function Assert-AtlasBuildRoot {
     param([Parameter(Mandatory = $true)][string]$Root)
-    $leaf = Split-Path -Leaf $Root
-    if ($leaf -ne "atlas-rc1-clean") {
-        throw @"
-Installer must be built from C:\J.A.R.V.I.S\atlas-rc1-clean only.
-Current repo root: $Root
-Do not build from local_jarvis or any other tree.
-"@
-    }
     $index = Join-Path $Root "atlas_desktop\static\index.html"
     if (-not (Test-Path -LiteralPath $index)) {
         throw "Missing atlas_desktop static UI at $index"
+    }
+    $gitRoot = (& git -C $Root rev-parse --show-toplevel 2>$null)
+    if ($LASTEXITCODE -ne 0 -or -not $gitRoot) {
+        throw "Atlas packaging requires a Git worktree: $Root"
+    }
+    $resolvedRoot = (Resolve-Path -LiteralPath $Root).Path.TrimEnd('\')
+    $resolvedGitRoot = (Resolve-Path -LiteralPath $gitRoot).Path.TrimEnd('\')
+    if ($resolvedRoot -ne $resolvedGitRoot) {
+        throw "Packaging root does not match the Git worktree root: $resolvedRoot (git: $resolvedGitRoot)"
+    }
+    & git -C $Root merge-base --is-ancestor 135d93d3488d4d6216018dcdeaa71ec64662d91e HEAD 2>$null
+    if ($LASTEXITCODE -ne 0) {
+        throw "Atlas packaging requires a checkout descended from persistence baseline 135d93d3."
+    }
+    $dirtySource = @(& git -C $Root status --porcelain=v1 --untracked-files=all -- atlas_desktop builder_core accounts_service 2>$null)
+    if ($LASTEXITCODE -ne 0) {
+        throw "Could not verify Atlas source cleanliness at $Root"
+    }
+    if ($dirtySource.Count -gt 0) {
+        throw @"
+Atlas packaged source is dirty. Commit or remove scoped source changes before building:
+$($dirtySource -join "`n")
+"@
     }
 }
 

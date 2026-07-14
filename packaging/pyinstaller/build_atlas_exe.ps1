@@ -20,7 +20,7 @@ if (-not (Test-Path -LiteralPath $Common)) { throw "Missing packaging module: $C
 
 $ScriptDir = $_bootstrapDir
 $Root = Get-RepoRootFrom -ScriptDir $ScriptDir -LevelsUp 2
-Assert-AtlasRc1BuildRoot -Root $Root
+Assert-AtlasBuildRoot -Root $Root
 $Spec = Join-PathSafe $ScriptDir "atlas.spec"
 $PackagingLib = Join-PathSafe $Root ".phase152_packaging_lib"
 $DistDir = Join-PathSafe $Root "dist"
