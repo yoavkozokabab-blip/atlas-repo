@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import InstallerWaitState from "../_components/InstallerWaitState";
 import { PageShell } from "../_components/site";
 import { GITHUB_URL, HELLO_EMAIL, SECURITY_EMAIL, SUPPORT_EMAIL, supportMailto } from "../_config";
 
@@ -52,7 +53,7 @@ export default function ContactPage() {
           </div>
 
           <div className="container" style={{ marginTop: 32, padding: 0 }}>
-            <Link className="btn btn-primary" href="/download">Download Atlas</Link>
+            <InstallerWaitState />
             <Link className="btn btn-ghost" href="/pricing" style={{ marginLeft: 10 }}>See pricing</Link>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import InstallerWaitState from "../_components/InstallerWaitState";
 import { PageShell, PremiumSection, TrustBlock } from "../_components/site";
 
 export const metadata: Metadata = {
@@ -51,7 +52,7 @@ export default function ComparePage() {
           Built-in behavior of other tools changes over time; check their docs for current details. This table describes how Atlas complements them.
         </p>
         <div className="page-actions">
-          <Link className="btn-mag" href="/download">Download Atlas <span className="arw" aria-hidden>→</span></Link>
+          <InstallerWaitState />
           <Link className="btn-line" href="/benchmarks">See benchmarks</Link>
         </div>
       </PremiumSection>
