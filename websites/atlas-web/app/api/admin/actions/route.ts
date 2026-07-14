@@ -1,23 +1,24 @@
-import { NextResponse } from "next/server";
 import { requireAdmin } from "@/app/_lib/auth";
 import { store, toSafe, newId, type User } from "@/app/_lib/store";
 import { readJson } from "@/app/_lib/ratelimit";
+import { privateJson, unavailableJson } from "@/app/_lib/http";
 
 export const runtime = "nodejs";
 
 const ALLOWED = new Set(["suspend", "restore", "revoke_license", "grant_pro"]);
 
 export async function POST(req: Request) {
+  try {
   const admin = await requireAdmin();
-  if (!admin) return NextResponse.json({ ok: false, error: "forbidden" }, { status: 403 });
+  if (!admin) return privateJson({ ok: false, error: "forbidden" }, { status: 403 });
 
   const body = await readJson(req);
   const action = String(body.action ?? "");
   const targetId = String(body.targetId ?? "");
-  if (!ALLOWED.has(action)) return NextResponse.json({ ok: false, error: "invalid_action" }, { status: 400 });
+  if (!ALLOWED.has(action)) return privateJson({ ok: false, error: "invalid_action" }, { status: 400 });
 
   const target = await store.getById(targetId);
-  if (!target) return NextResponse.json({ ok: false, error: "user_not_found" }, { status: 404 });
+  if (!target) return privateJson({ ok: false, error: "user_not_found" }, { status: 404 });
 
   let patch: Partial<User> = {};
   if (action === "suspend") patch = { status: "suspended" };
@@ -39,5 +40,8 @@ export async function POST(req: Request) {
     meta: patch as Record<string, unknown>,
   });
 
-  return NextResponse.json({ ok: true, user: updated ? toSafe(updated) : null });
+  return privateJson({ ok: true, user: updated ? toSafe(updated) : null });
+  } catch {
+    return unavailableJson();
+  }
 }

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/app/_lib/auth";
 import { store } from "@/app/_lib/store";
+import { privateJson, unavailableJson } from "@/app/_lib/http";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -9,8 +10,9 @@ export const dynamic = "force-dynamic";
  * Admin: export email signups.
  */
 export async function GET(req: Request) {
+  try {
   const admin = await requireAdmin();
-  if (!admin) return NextResponse.json({ ok: false, error: "forbidden" }, { status: 403 });
+  if (!admin) return privateJson({ ok: false, error: "forbidden" }, { status: 403 });
 
   const entries = await store.listWaitlist(5000);
   const format = new URL(req.url).searchParams.get("format");
@@ -31,5 +33,8 @@ export async function GET(req: Request) {
     });
   }
 
-  return NextResponse.json({ ok: true, count: entries.length, backend: store.backend(), entries });
+  return privateJson({ ok: true, count: entries.length, backend: store.backend(), entries });
+  } catch {
+    return unavailableJson();
+  }
 }

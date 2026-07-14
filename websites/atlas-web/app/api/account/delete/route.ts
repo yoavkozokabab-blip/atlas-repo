@@ -1,18 +1,19 @@
-import { NextResponse } from "next/server";
 import { currentUser, clearSession } from "@/app/_lib/auth";
 import { store, newId } from "@/app/_lib/store";
 import { readJson } from "@/app/_lib/ratelimit";
+import { privateJson, unavailableJson } from "@/app/_lib/http";
 
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
-  const user = await currentUser();
-  if (!user) return NextResponse.json({ ok: false, error: "auth_required" }, { status: 401 });
+  try {
+    const user = await currentUser();
+    if (!user) return privateJson({ ok: false, error: "auth_required" }, { status: 401 });
 
   // Destructive: require an explicit confirmation field from the client.
   const body = await readJson(req);
   if (String(body.confirm ?? "") !== "DELETE") {
-    return NextResponse.json({ ok: false, error: "confirmation_required" }, { status: 400 });
+    return privateJson({ ok: false, error: "confirmation_required" }, { status: 400 });
   }
 
   await store.audit({
@@ -26,5 +27,8 @@ export async function POST(req: Request) {
   });
   await store.remove(user.id);
   await clearSession();
-  return NextResponse.json({ ok: true });
+    return privateJson({ ok: true });
+  } catch {
+    return unavailableJson();
+  }
 }
