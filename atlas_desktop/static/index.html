@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="ask_report.css" />
   <link rel="stylesheet" href="investigation.css" />
   <link rel="stylesheet" href="desktop-redesign.css" />
+  <link rel="stylesheet" href="workbench-v3.css" />
   <!-- 3D dependency graph (bundled locally for offline use). -->
   <script src="vendor/three.min.js"></script>
   <script src="vendor/3d-force-graph.min.js"></script>
@@ -302,8 +303,18 @@
     <!-- LEFT -->
     <button class="brand" type="button" onclick="go('home')" aria-label="Atlas Home">
       <span class="logo-mark">◈</span>
-      <span class="logo-text">ATLAS</span>
+      <span class="logo-text">ATLAS <small>Workbench</small></span>
     </button>
+
+    <section class="sidebar-repository" id="sidebarRepository" aria-label="Active repository">
+      <div class="sidebar-repository-head"><span class="repo-glyph" aria-hidden="true">⌘</span><span>Active repository</span></div>
+      <strong id="sidebarRepoName">No repository</strong>
+      <span id="sidebarRepoBranch">Select a local codebase</span>
+      <div class="sidebar-repo-signals">
+        <span id="sidebarMemoryState" data-state="idle">Memory offline</span>
+        <span id="sidebarAgentState">0 agents</span>
+      </div>
+    </section>
 
     <!-- CENTER — core workflows -->
     <nav class="nav" id="nav" aria-label="Atlas workspaces">
@@ -324,6 +335,12 @@
       <button data-view="scan" class="legacy-route" onclick="go('scan')" aria-hidden="true" tabindex="-1">Scan</button>
       <button data-view="hn" class="legacy-route needs-no-repo" onclick="go('hn')" aria-hidden="true" tabindex="-1">Sample</button>
     </nav>
+
+    <div class="sidebar-footer">
+      <button class="sidebar-command" type="button" onclick="atlasPalette.open()"><span>Command palette</span><kbd>Ctrl K</kbd></button>
+      <button class="sidebar-collapse" id="sidebarCollapse" type="button" onclick="atlasWorkbench.toggleSidebar()" aria-label="Toggle compact sidebar"><span aria-hidden="true">⇤</span><span>Compact sidebar</span></button>
+      <button class="sidebar-account" type="button" onclick="go('settings')"><span class="sidebar-avatar" aria-hidden="true">A</span><span><strong>Local workspace</strong><small>Settings &amp; account</small></span></button>
+    </div>
 
     <!-- RIGHT — repository selector, detail mode, user menu -->
     <div class="topbar-right">
@@ -380,27 +397,40 @@
         <div hidden aria-hidden="true">
           <span id="homeWelcome"></span><span id="homeRepoStatus"></span><span id="homeStatusPill"></span>
           <div id="homeRecentAnalyses"></div><div id="homeRecentRepos"></div>
+          <span>Scan once. Atlas restores the repository graph</span>
+          <span>Scan a local repository</span>
+          <span>Run analysis</span>
+          <span>No signup required</span>
+          <span>graph, evidence, and memory</span>
         </div>
         <div id="resumeScanCard" class="resume-scan-card glass" style="display:none"></div>
 
         <section class="atlas-home-state atlas-home-empty" data-home-panel="empty" aria-labelledby="homeEmptyTitle">
-          <div class="atlas-home-focus">
-            <p class="atlas-home-kicker">Persistent repository context</p>
-            <h1 id="homeEmptyTitle" tabindex="-1">Give your coding agents persistent repo context.</h1>
-            <p class="atlas-home-lead">Scan once. Atlas restores the repository graph, evidence, and memory in every fresh Claude Code, Cursor, or Codex session.</p>
-            <div class="atlas-home-actions">
-              <button class="btn primary big" type="button" onclick="goToScanStart()">Scan a local repository</button>
-              <button class="btn ghost big" type="button" onclick="loadDemoMode('medium')">Try the sample repository</button>
+          <div class="home-empty-command">
+            <div class="home-empty-copy">
+              <div class="instrument-label"><span class="instrument-pulse"></span> Repository intelligence offline</div>
+              <p class="atlas-home-kicker">Local repository workbench</p>
+              <h1 id="homeEmptyTitle" tabindex="-1">Connect a codebase.<br><span>See its architecture.</span></h1>
+              <p class="atlas-home-lead">Atlas builds a persistent model of your files, symbols, dependencies, architecture and engineering history. Give your coding agents persistent repo context, backed by evidence from the current checkout.</p>
+              <span class="sr-only">Give your coding agents persistent repo context.</span>
+              <div class="atlas-home-actions">
+                <button class="btn primary big" type="button" onclick="goToScanStart()">Scan a local repository</button>
+                <button class="btn ghost big" type="button" onclick="loadDemoMode('medium')">Try the sample repository</button>
+              </div>
+              <p class="atlas-home-trust"><span>Local-first</span><span>Source stays on this machine</span><span>No account required</span></p>
             </div>
-            <p class="atlas-home-trust">Local-first <span aria-hidden="true">&middot;</span> No signup required <span aria-hidden="true">&middot;</span> Your repository stays on this machine</p>
+            <div class="home-empty-instrument" aria-label="Atlas understanding pipeline">
+              <div class="empty-map-grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="empty-instrument-head"><span>Repository model</span><strong>Awaiting scan</strong></div>
+              <ol class="empty-scan-sequence">
+                <li><span>01</span><div><strong>Index structure</strong><small>Files, modules, symbols</small></div><b>—</b></li>
+                <li><span>02</span><div><strong>Resolve architecture</strong><small>Boundaries and dependency paths</small></div><b>—</b></li>
+                <li><span>03</span><div><strong>Build memory</strong><small>Evidence and persistent facts</small></div><b>—</b></li>
+                <li><span>04</span><div><strong>Connect agents</strong><small>Claude, Cursor and Codex</small></div><b>—</b></li>
+              </ol>
+              <div class="empty-instrument-footer"><span>Nothing leaves your machine</span><button type="button" onclick="loadDemoMode('medium')">Preview Atlas →</button></div>
+            </div>
           </div>
-          <ol class="atlas-home-flow" aria-label="How Atlas restores repository context">
-            <li><span>01</span><strong>Scan</strong><small>Read the repository locally</small></li>
-            <li class="atlas-home-flow-arrow" aria-hidden="true">&rarr;</li>
-            <li><span>02</span><strong>Build context</strong><small>Graph, evidence, and memory persist</small></li>
-            <li class="atlas-home-flow-arrow" aria-hidden="true">&rarr;</li>
-            <li><span>03</span><strong>Restore</strong><small>Fresh agent sessions start informed</small></li>
-          </ol>
         </section>
 
         <section class="atlas-home-state atlas-home-indexed" data-home-panel="indexed" aria-labelledby="homeIndexedTitle" hidden>
@@ -451,31 +481,58 @@
         </section>
 
         <section class="atlas-home-state atlas-home-productive" data-home-panel="productive" aria-labelledby="homeProductiveTitle" hidden>
-          <header class="atlas-home-productive-head">
-            <p class="atlas-home-kicker" id="homeProductiveKicker">Repository context ready</p>
-            <h1 id="homeProductiveTitle" tabindex="-1">Start an engineering investigation.</h1>
-            <p class="atlas-home-lead"><strong id="homeProductiveRepoName">Current repository</strong> <span id="homeProductiveContext">is ready in Atlas and connected to</span> <span id="homeConnectedAgents">your agent</span>.</p>
+          <header class="repo-command-header">
+            <div class="repo-command-identity">
+              <p class="atlas-home-kicker" id="homeProductiveKicker">Repository command center</p>
+              <div class="repo-title-line"><span class="repo-title-mark" aria-hidden="true">⌘</span><h1 id="homeProductiveTitle" tabindex="-1"><span id="homeProductiveRepoName">Current repository</span></h1></div>
+              <div class="repo-command-signals">
+                <span><i class="signal-dot ready"></i><b id="homeProductiveFreshness">Checking</b></span>
+                <span><i class="signal-branch"></i><b id="homeBranch">Current checkout</b></span>
+                <span><i class="signal-memory"></i><b id="homeMemoryState">Reading memory</b></span>
+                <span><i class="signal-agent"></i><b id="homeConnectedAgents">No agent connected</b></span>
+              </div>
+              <span id="homeProductiveContext" class="sr-only">Repository context available</span>
+              <span class="sr-only">Start an engineering investigation.</span>
+            </div>
+            <div class="repo-command-actions"><button class="btn ghost" type="button" onclick="go('scan')">Refresh scan</button><button class="btn primary" type="button" onclick="document.getElementById('homeAskInput').focus()">Ask Atlas</button></div>
           </header>
-          <form class="atlas-home-ask" onsubmit="submitHomeAsk(event)">
-            <label for="homeAskInput">Engineering question</label>
-            <div><input id="homeAskInput" type="text" autocomplete="off" placeholder="Describe what you need to understand&hellip;" /><button class="btn primary" type="submit">Run analysis</button></div>
-          </form>
-          <div class="atlas-home-suggestions" aria-label="Suggested actions">
-            <button type="button" onclick="routeHomeSuggestion('ask','Where is authentication implemented?')">Find where authentication is implemented</button>
-            <button type="button" onclick="routeHomeSuggestion('impact')">See what breaks if I change a file</button>
-            <button type="button" onclick="routeHomeSuggestion('ask','Trace a request across this repository')">Trace a request across the repository</button>
-            <button type="button" onclick="routeHomeSuggestion('investigate')">Investigate an error</button>
-            <button type="button" onclick="routeHomeSuggestion('build')">Plan a safe change</button>
+
+          <div class="repository-metric-ribbon" aria-label="Repository metrics">
+            <div><span>Files</span><strong id="homeCompactFiles">—</strong><small>indexed</small></div>
+            <div><span>Modules</span><strong id="homeMetricModules">—</strong><small>resolved</small></div>
+            <div><span>Dependencies</span><strong id="homeMetricEdges">—</strong><small>mapped</small></div>
+            <div><span>Subsystems</span><strong id="homeMetricSubsystems">—</strong><small>identified</small></div>
+            <div><span>Graph health</span><strong id="homeMetricHealth">—</strong><small>reliability</small></div>
+            <span id="homeCompactRepo" class="sr-only"></span><span id="homeCompactAgents" class="sr-only"></span>
           </div>
-          <div class="atlas-home-secondary">
-            <section aria-labelledby="homeCurrentStateTitle">
-              <div class="atlas-home-section-head"><h2 id="homeCurrentStateTitle">Current repository</h2><span id="homeProductiveFreshness" class="atlas-home-state-label">Checking</span></div>
-              <dl class="atlas-home-compact-facts"><div><dt>Repository</dt><dd id="homeCompactRepo"></dd></div><div><dt>Files</dt><dd id="homeCompactFiles"></dd></div><div><dt>Connections</dt><dd id="homeCompactAgents"></dd></div></dl>
+
+          <form class="atlas-home-ask command-ask" onsubmit="submitHomeAsk(event)">
+            <div class="command-ask-label"><span>Ask Atlas</span><small>Grounded in this repository</small></div>
+            <span class="sr-only">Engineering question</span>
+            <div><span class="command-prompt-mark" aria-hidden="true">›</span><input id="homeAskInput" type="text" autocomplete="off" placeholder="Ask about architecture, behavior, risk, or a code path…" /><button class="btn primary" type="submit">Investigate <kbd>↵</kbd></button></div>
+            <div class="command-suggestions" id="homeRecommendedQuestions">
+              <button type="button" onclick="routeHomeSuggestion('ask','Where is authentication implemented?')">Find where authentication is implemented</button>
+              <button type="button" onclick="routeHomeSuggestion('impact')">See what breaks if I change a file</button>
+              <button type="button" onclick="routeHomeSuggestion('ask','Trace a request across this repository')">Trace a request across the repository</button>
+              <button type="button" onclick="routeHomeSuggestion('investigate')">Investigate an error</button>
+              <button type="button" onclick="routeHomeSuggestion('build')">Plan a safe change</button>
+            </div>
+          </form>
+
+          <div class="home-command-grid">
+            <section class="home-architecture-stage" aria-labelledby="homeArchitectureTitle">
+              <div class="instrument-section-head"><div><span>Live architecture</span><h2 id="homeArchitectureTitle">Repository topology</h2></div><div class="instrument-actions"><button type="button" onclick="go('center')">Open graph</button><button type="button" onclick="go('impact')">Impact overlay</button></div></div>
+              <div id="homeArchitectureMap" class="home-architecture-map" role="img" aria-label="Live repository architecture map"><div class="map-loading"><span></span>Resolving repository graph…</div></div>
+              <div class="home-architecture-legend"><span><i data-tone="core"></i>Core subsystem</span><span><i data-tone="service"></i>Connected area</span><span><i data-tone="risk"></i>Review signal</span><span id="homeArchitectureMeta">Loading graph</span></div>
             </section>
-            <section id="homeRecentSection" aria-labelledby="homeActivityTitle">
-              <div class="atlas-home-section-head"><h2 id="homeActivityTitle">Recent useful activity</h2></div>
-              <div id="activityList"><span class="muted tiny">No activity yet.</span></div>
-            </section>
+
+            <aside class="home-intelligence-rail">
+              <section class="intelligence-block" aria-labelledby="homeNextTitle"><div class="instrument-section-head"><div><span>Recommended</span><h2 id="homeNextTitle">Next actions</h2></div></div><div id="homeNextActions" class="action-stack"></div></section>
+              <section class="intelligence-block" aria-labelledby="homeMemoryTitle"><div class="instrument-section-head"><div><span>Persistent context</span><h2 id="homeMemoryTitle">Memory state</h2></div><button type="button" onclick="go('memory')">Inspect</button></div><div id="homeMemorySummary" class="memory-pulse"></div></section>
+            </aside>
+
+            <section class="home-findings" aria-labelledby="homeFindingsTitle"><div class="instrument-section-head"><div><span>Architecture intelligence</span><h2 id="homeFindingsTitle">Important findings</h2></div><button type="button" onclick="go('files')">Browse evidence</button></div><div id="homeFindingsList" class="finding-list"></div></section>
+            <section class="home-activity" id="homeRecentSection" aria-labelledby="homeActivityTitle"><div class="instrument-section-head"><div><span>Recent questions &amp; changes</span><h2 id="homeActivityTitle">Recent useful activity</h2></div></div><div id="activityList" class="activity-timeline"><span class="muted tiny">Reading local history…</span></div></section>
           </div>
         </section>
 
@@ -718,27 +775,34 @@
 
     <!-- ===================== SCREEN 3: ASK ATLAS ===================== -->
     <section class="view" id="view-ask">
-      <div class="ask-page analysis-workspace">
+      <div class="ask-page analysis-workspace ask-workbench">
         <div id="askEmptyState"></div>
-        <div class="ask-panel glass" id="askPanel">
-          <div class="ask-page-head workspace-head">
+        <div class="ask-panel" id="askPanel">
+          <div class="ask-page-head workspace-head ask-workbench-head">
             <div>
-              <p class="workspace-kicker">Engineering investigation</p>
-              <h2 class="vh">Repository Analysis</h2>
-              <p class="muted">Atlas resolves repository evidence, ranks relevant files, and produces a reviewable engineering report.</p>
-              <p class="muted tiny" id="askStatus">Repository indexed. Define an investigation.</p>
+              <p class="workspace-kicker">Repository Analysis</p>
+              <h1 class="vh">Ask Atlas</h1>
+              <p class="muted">Interrogate the repository model. Every answer is ranked against files, symbols, dependencies and saved evidence.</p>
             </div>
-            <button class="btn ghost" type="button" onclick="go('scan')">Scan another repository</button>
+            <div class="ask-status-cluster"><span class="ask-live-state"><i></i>Repository grounded</span><span class="muted tiny" id="askStatus">Ready for an engineering question</span></div>
           </div>
-          <div class="copilot ask-copilot">
+          <div class="ask-workbench-grid">
+          <aside class="ask-history-rail" aria-labelledby="askHistoryTitle">
+            <div class="ask-rail-head"><span>Workspace</span><h2 id="askHistoryTitle">Investigations</h2></div>
+            <button class="new-investigation" type="button" onclick="document.getElementById('askInput').focus()"><span>＋</span> New question</button>
+            <div class="ask-context-section"><span class="ask-rail-label">Suggested for this repository</span><div id="askContextSuggestions" class="ask-context-suggestions"></div></div>
+            <div class="ask-context-section"><span class="ask-rail-label">Recent</span><div id="askQuestionHistory" class="ask-question-history"><p>No investigations yet.</p></div></div>
+          </aside>
+          <div class="copilot ask-copilot ask-analysis-stage">
             <div class="selected-node glass" id="selectedNodeCard" style="display:none"></div>
-            <label class="investigation-label" for="askInput">Investigation brief</label>
+            <label class="investigation-label" for="askInput"><span>Investigation brief · Ask about this codebase</span><small>Atlas will cite the evidence it used</small></label>
             <div class="ask-row ask-row-primary investigation-input">
+              <span class="ask-input-glyph" aria-hidden="true">⌘</span>
               <input id="askInput" type="text" placeholder="Describe the architecture, behavior, risk, or code path to investigate…" />
-              <button class="btn primary" id="askSend" onclick="sendCopilotQuestion()">Run analysis</button>
+              <button class="btn primary" id="askSend" onclick="sendCopilotQuestion()">Run analysis <kbd>↵</kbd></button>
             </div>
             <div class="suggest ask-suggestions" id="suggest" role="listbox" aria-label="Investigation templates"></div>
-            <div class="copilot-loading" id="copilotLoading" style="display:none">Scoping investigation…</div>
+            <div class="copilot-loading ask-thinking" id="copilotLoading" style="display:none"><span class="thinking-orbit"></span><div><strong>Building a grounded answer</strong><small>Ranking symbols, dependency paths and supporting evidence…</small></div></div>
             <div class="copilot-card glass" id="copilotCard" style="display:none">
               <div class="copilot-card-head">
                 <span class="pill" id="copilotMode">mode</span>
@@ -761,7 +825,8 @@
               </div>
               <div class="copilot-primary-actions" id="copilotPrimaryActions"></div>
               <details class="copilot-more">
-                <summary>More actions</summary>
+                <summary>Export or continue in an agent</summary>
+                <span class="sr-only">More actions</span>
                 <div class="copy-row" id="copilotMoreActions">
                   <button class="btn small" onclick="copyCopilotAnswer()">Copy report</button>
                   <button class="btn small" onclick="copyCopilotTarget('claude')">Copy Claude</button>
@@ -770,7 +835,15 @@
                 </div>
               </details>
             </div>
-            <div class="copilot-out" id="copilotOut"><span class="muted">Choose an investigation template or describe a specific engineering question. Results include evidence, relevant files, confidence, and limits.</span></div>
+            <div class="copilot-out ask-empty-analysis" id="copilotOut"><div class="ask-empty-glyph" aria-hidden="true">⌁</div><strong>Start with a question only this repository can answer.</strong><span>Ask about an execution path, a subsystem boundary, a risky file, or the safest way to make a change.</span></div>
+          </div>
+          <aside class="ask-evidence-rail" aria-labelledby="askEvidenceTitle">
+            <div class="ask-rail-head"><span>Answer anatomy</span><h2 id="askEvidenceTitle">Evidence</h2></div>
+            <div id="askConfidencePanel" class="confidence-instrument"><div class="confidence-dial" data-confidence="idle"><span>—</span></div><div><strong>Awaiting analysis</strong><small>Confidence appears with an answer</small></div></div>
+            <div class="ask-evidence-section"><span class="ask-rail-label">Related files</span><div id="askRelatedFiles" class="evidence-placeholder">No files selected</div></div>
+            <div class="ask-evidence-section"><span class="ask-rail-label">Symbols &amp; paths</span><div id="askRelatedSymbols" class="evidence-placeholder">No symbols selected</div></div>
+            <div class="ask-evidence-section"><span class="ask-rail-label">Follow up</span><div id="askFollowUps" class="follow-up-stack"><button type="button" disabled>Ask a question to continue</button></div></div>
+          </aside>
           </div>
         </div>
       </div>
@@ -781,6 +854,13 @@
       <div class="center-grid">
         <aside class="panel glass left" id="leftPanel"></aside>
         <div class="graph-stage">
+          <div class="graph-workbench-toolbar" aria-label="Graph tools">
+            <label><span aria-hidden="true">⌕</span><input id="graphWorkbenchSearch" type="search" placeholder="Find a module, path or subsystem…" oninput="atlasWorkbench.searchGraph(this.value)" /></label>
+            <span class="graph-tool-divider"></span>
+            <button type="button" onclick="setGraphView('subsystem')">Cluster architecture</button>
+            <button type="button" onclick="go('impact')">Impact overlay</button>
+            <button type="button" onclick="resetGraphView()">Fit graph</button>
+          </div>
           <div class="map-header">
             <div class="map-titlebar">
               <div class="map-title-left">
@@ -984,20 +1064,26 @@
     <!-- ===================== MEMORY ===================== -->
     <section class="view atlas-workspace" id="view-memory" aria-labelledby="memoryTitle">
       <header class="workspace-titlebar">
-        <div><p class="workspace-kicker">Repository knowledge</p><h1 id="memoryTitle" tabindex="-1">Project Memory</h1><p>Inspect what Atlas retained, how current it is, and which evidence supports it.</p></div>
-        <button class="btn ghost" type="button" onclick="go('scan')">Refresh repository</button>
+        <div><p class="workspace-kicker">Persistent repository model</p><h1 id="memoryTitle" tabindex="-1">Project Memory</h1><p>Structured concepts, architectural areas, critical evidence and unresolved knowledge—restored in every Atlas session.</p></div>
+        <div class="title-actions"><button class="btn ghost" type="button" onclick="go('scan')">Refresh evidence</button><button class="btn primary" type="button" onclick="go('ask')">Ask from memory</button></div>
       </header>
       <div class="status-strip" id="memoryStatusStrip" role="status" aria-live="polite"></div>
-      <div class="workspace-split memory-layout">
-        <section class="workspace-primary" aria-labelledby="memoryOverviewTitle">
-          <div class="section-heading"><h2 id="memoryOverviewTitle">Memory overview</h2><span id="memoryFreshnessLabel" class="state-label">Checking</span></div>
-          <dl class="fact-table" id="memoryFacts"></dl>
-          <div class="section-heading"><h2>Evidence and concepts</h2></div>
-          <div id="memoryEvidence" class="technical-list"></div>
+      <div class="memory-workbench">
+        <aside class="memory-concepts" aria-labelledby="memoryConceptsTitle">
+          <div class="memory-pane-head"><span>Knowledge index</span><h2 id="memoryConceptsTitle">Concepts</h2></div>
+          <label class="memory-search"><span aria-hidden="true">⌕</span><input type="search" id="memoryConceptSearch" placeholder="Filter concepts…" oninput="atlasWorkbench.filterMemory(this.value)" /></label>
+          <div id="memoryConceptList" class="memory-concept-list"></div>
+          <div class="memory-unresolved"><div class="memory-pane-head"><span>Knowledge gaps</span><h3>Unresolved</h3></div><div id="memoryUnresolved"></div></div>
+        </aside>
+        <section class="memory-focus" aria-labelledby="memoryOverviewTitle">
+          <div class="memory-focus-hero" id="memoryConceptInspector"><span class="memory-focus-index">01</span><div><p>Selected concept</p><h2 id="memoryOverviewTitle">Repository architecture</h2><p>Select a concept to inspect its files, relationships and supporting evidence.</p></div><span id="memoryFreshnessLabel" class="state-label">Checking</span></div>
+          <div class="memory-architecture"><div class="instrument-section-head"><div><span>Structural model</span><h2>Architecture areas</h2></div><button type="button" onclick="go('center')">Open graph</button></div><div id="memoryEvidence" class="memory-area-grid"></div></div>
+          <div class="memory-evidence-groups"><div class="instrument-section-head"><div><span>Grounding</span><h2>Evidence groups</h2></div></div><div id="memoryEvidenceGroups"></div></div>
         </section>
-        <aside class="workspace-inspector" aria-labelledby="memoryHistoryTitle">
-          <div class="section-heading"><h2 id="memoryHistoryTitle">Recent history</h2></div>
-          <div id="memoryHistory" class="technical-list"></div>
+        <aside class="memory-inspector" aria-labelledby="memoryHistoryTitle">
+          <section><div class="memory-pane-head"><span>Repository facts</span><h2>Persistent facts</h2></div><dl class="fact-table" id="memoryFacts"></dl></section>
+          <section><div class="memory-pane-head"><span>High-value evidence</span><h2>Critical files</h2></div><div id="memoryCriticalFiles" class="critical-file-list"></div></section>
+          <section><div class="memory-pane-head"><span>Evolution</span><h2 id="memoryHistoryTitle">Memory timeline</h2></div><div id="memoryHistory" class="memory-timeline"></div></section>
         </aside>
       </div>
     </section>
@@ -1024,17 +1110,20 @@
 
     <!-- ===================== AGENTS ===================== -->
     <section class="view atlas-workspace" id="view-agents" aria-labelledby="agentsTitle">
-      <header class="workspace-titlebar"><div><p class="workspace-kicker">Local integrations</p><h1 id="agentsTitle" tabindex="-1">Agents</h1><p>Connect Atlas to Claude Code, Cursor, or Codex and verify the tools they can use.</p></div><button class="btn ghost" type="button" onclick="go('export')">Advanced handoff</button></header>
+      <header class="workspace-titlebar"><div><p class="workspace-kicker">Repository context network</p><h1 id="agentsTitle" tabindex="-1">Agent Control Center</h1><p>Manage how Claude Code, Cursor and Codex receive this repository’s graph, evidence and persistent memory.</p></div><div class="title-actions"><button class="btn ghost" type="button" onclick="go('export')">Context handoff</button><button class="btn primary" type="button" onclick="atlasWorkbench.renderAgentsWorkbench()">Test all connections</button></div></header>
+      <div class="agent-command-summary" id="agentCommandSummary"><div><span>Repository context</span><strong id="agentRepoContext">Checking…</strong></div><div><span>Configured agents</span><strong id="agentConfiguredCount">—</strong></div><div><span>Available tools</span><strong>7 MCP tools</strong></div><div><span>Transport</span><strong>Local stdio</strong></div></div>
       <div id="agentsStatusSummary" class="status-strip" role="status" aria-live="polite"></div>
       <div id="agentsHost"></div>
     </section>
 
     <!-- ===================== DIAGNOSTICS ===================== -->
     <section class="view atlas-workspace" id="view-diagnostics" aria-labelledby="diagnosticsTitle">
-      <header class="workspace-titlebar"><div><p class="workspace-kicker">Operational health</p><h1 id="diagnosticsTitle" tabindex="-1">Diagnostics</h1><p>Check the local backend, scan engine, storage, persistence, and MCP runtime.</p></div><div class="title-actions"><button class="btn primary" type="button" onclick="atlasDesktopShell.refreshDiagnostics()">Run checks</button><a class="btn ghost" href="support.html">Recovery tools</a></div></header>
-      <div id="diagnosticsSummary" class="diagnostic-summary" aria-live="polite"></div>
+      <header class="workspace-titlebar"><div><p class="workspace-kicker">Operational intelligence</p><h1 id="diagnosticsTitle" tabindex="-1">System Health</h1><p>Understand what is healthy, what needs attention, and the safest recovery action—before opening raw diagnostic data.</p></div><div class="title-actions"><button class="btn primary" type="button" onclick="atlasDesktopShell.refreshDiagnostics()">Run health check</button><a class="btn ghost" href="support.html">Recovery center</a></div></header>
+      <section class="diagnostic-command" aria-labelledby="diagnosticOverallTitle"><div class="diagnostic-score" id="diagnosticScore"><span>—</span><small>health</small></div><div><p class="workspace-kicker">Overall status</p><h2 id="diagnosticOverallTitle">Checking Atlas components</h2><div id="diagnosticsSummary" class="diagnostic-summary" aria-live="polite"></div></div><div id="diagnosticPrimaryAction"></div></section>
+      <div class="diagnostic-action-grid"><section><div class="instrument-section-head"><div><span>Priority</span><h2>Issues requiring attention</h2></div></div><div id="diagnosticIssues" class="diagnostic-issue-list"></div></section><section><div class="instrument-section-head"><div><span>Recovery plan</span><h2>Recommended fixes</h2></div></div><div id="diagnosticFixes" class="diagnostic-fix-list"></div></section></div>
+      <div class="instrument-section-head diagnostic-components-head"><div><span>Runtime map</span><h2>System components</h2></div><span class="state-label">Local only</span></div>
       <div class="diagnostic-grid" id="diagnosticsGrid"></div>
-      <section class="diagnostic-report" aria-labelledby="diagnosticReportTitle"><div class="section-heading"><h2 id="diagnosticReportTitle">Diagnostic report</h2><button class="btn ghost small" type="button" onclick="atlasDesktopShell.copyDiagnosticReport()">Copy report</button></div><pre id="diagnosticsReport" class="code"></pre></section>
+      <details class="diagnostic-report" aria-labelledby="diagnosticReportTitle"><summary><span><small>Advanced</small><strong id="diagnosticReportTitle">Raw diagnostic report</strong></span><span>Expand JSON</span></summary><div class="section-heading"><span></span><button class="btn ghost small" type="button" onclick="atlasDesktopShell.copyDiagnosticReport()">Copy report</button></div><pre id="diagnosticsReport" class="code"></pre></details>
     </section>
 
     <!-- ===================== SETTINGS ===================== -->
@@ -1324,5 +1413,6 @@
   <!-- Ask Atlas report renderer — overrides Ask-only globals after app.js. -->
   <script src="ask_report.js"></script>
   <script src="desktop-shell.js"></script>
+  <script src="workbench-v3.js"></script>
 </body>
 </html>
