@@ -72,7 +72,14 @@ function atlasRenderTrustBar(payload) {
 async function atlasPollTrustStatus() {
   try {
     if (typeof api !== "function") return;
-    const data = await api("/api/repositories/current/trust-status");
+    if (!window.atlasTrustPollTimer && !window.atlasTrustRequest) {
+      window.atlasTrustPollTimer = window.setTimeout(() => {
+        window.atlasTrustPollTimer = null;
+        if (!window.atlasTrustRequest) window.atlasTrustRequest = api("/api/repositories/current/trust-status").catch(() => null);
+      }, 7000);
+    }
+    while (!window.atlasTrustRequest) await new Promise((resolve) => window.setTimeout(resolve, 100));
+    const data = await window.atlasTrustRequest;
     if (data && data.ok) atlasRenderTrustBar(data);
   } catch (e) {}
 }

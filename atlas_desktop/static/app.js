@@ -899,14 +899,21 @@ function renderHomeExperience(update) {
 async function refreshHomeExperience() {
   renderHomeExperience();
   if (!STATE.summary?.ok) return;
-  const [trust, recent] = await Promise.all([
-    api("/api/repositories/current/trust-status").catch(() => null),
-    api("/api/repositories/recent").catch(() => null),
-  ]);
+  const recent = await api("/api/repositories/recent").catch(() => null);
   renderHomeExperience({
-    trustStatus: trust?.ok ? trust : null,
     recent: recent?.ok ? (recent.items || []) : STATE.homeRecent,
   });
+  if (!window.atlasHomeTrustTimer) {
+    window.atlasHomeTrustTimer = window.setTimeout(async () => {
+      window.atlasHomeTrustTimer = null;
+      if (!window.atlasTrustRequest) window.atlasTrustRequest = api("/api/repositories/current/trust-status").catch(() => null);
+      const trust = await window.atlasTrustRequest;
+      renderHomeExperience({
+        trustStatus: trust?.ok ? trust : null,
+        recent: recent?.ok ? (recent.items || []) : STATE.homeRecent,
+      });
+    }, 7000);
+  }
 }
 
 function focusHomeAgentConnections() {
