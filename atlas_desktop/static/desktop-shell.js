@@ -346,10 +346,14 @@
     if (host && setup && setup.parentElement !== host) host.appendChild(setup);
     if (!status) return;
     status.innerHTML = `${statusPill("Checking", "neutral")} Reading local MCP configuration…`;
-    const result = await atlasMcpSetup.loadStatus(true);
+    const [result, repository] = await Promise.all([
+      atlasMcpSetup.loadStatus(true),
+      api("/api/repositories/current/summary").catch(() => null),
+    ]);
     const agents = connectedAgents(result);
+    const contextReady = !!(repository && repository.ok);
     status.innerHTML = result && result.ok
-      ? `${statusPill(agents.length ? "Connected" : "Ready to connect", agents.length ? "ready" : "neutral")} ${agents.length ? `${agents.length} coding agent${agents.length === 1 ? " is" : "s are"} configured to use Atlas MCP.` : "Choose an agent below. Atlas will preserve its existing configuration and ask before writing."}`
+      ? `${statusPill(agents.length ? (contextReady ? "Connected" : "Configured — select a repository") : "Ready to connect", agents.length && contextReady ? "ready" : "neutral")} ${agents.length ? `${agents.length} coding agent${agents.length === 1 ? " is" : "s are"} configured to use Atlas MCP${contextReady ? ` with ${escapeHtml(repository.repo_name || "repository")} context.` : "; repository context is not active yet."}` : "Choose an agent below. Atlas will preserve its existing configuration and ask before writing."}`
       : `${statusPill("Unavailable", "warning")} MCP status could not be read. Open Diagnostics for details.`;
   }
 

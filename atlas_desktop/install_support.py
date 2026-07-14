@@ -271,14 +271,21 @@ def environment_status() -> Dict[str, Any]:
     from . import api
 
     startup = startup_checks()
+    staleness = None
+    try:
+        staleness = api._ti.assess_staleness(api._STATE)
+    except Exception:
+        # The existing health/diagnostic guards below retain the precise error
+        # response if repository identity cannot be evaluated.
+        pass
     health: Dict[str, Any] = {"ok": False}
     try:
-        health = api.beta_system_health()
+        health = api.beta_system_health(staleness=staleness)
     except Exception as exc:
         health = {"ok": False, "error": f"{type(exc).__name__}: {exc}"}
     diag: Dict[str, Any] = {}
     try:
-        diag = api.beta_diagnostics()
+        diag = api.beta_diagnostics(staleness=staleness)
     except Exception as exc:
         diag = {"ok": False, "error": str(exc)}
     from . import product_info as pi
@@ -301,7 +308,8 @@ def environment_status() -> Dict[str, Any]:
             "launcher_log": launcher_log_path(),
         },
         "trust_integrity": __import__("atlas_desktop.trust_integrity", fromlist=["trust_integrity_diagnostics"]).trust_integrity_diagnostics(
-            __import__("atlas_desktop.api", fromlist=["_STATE"])._STATE
+            __import__("atlas_desktop.api", fromlist=["_STATE"])._STATE,
+            staleness=staleness,
         ),
     }
 

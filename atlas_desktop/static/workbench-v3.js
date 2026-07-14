@@ -389,7 +389,7 @@
 
   function decorateAgentCards(status, summary) {
     const connected = agentNames(status);
-    if (byId("agentRepoContext")) byId("agentRepoContext").textContent = summary?.ok ? `${summary.repo_name} · ${num(summary.module_count)} modules` : "No repository selected";
+    if (byId("agentRepoContext")) byId("agentRepoContext").textContent = summary?.ok ? `${summary.repo_name} · ${num(summary.module_count)} modules` : "Select a repository";
     if (byId("agentConfiguredCount")) byId("agentConfiguredCount").textContent = `${connected.length} / 3`;
     const cards = [{ key: "claude", id: "mcpClaudeCard" }, { key: "cursor", id: "mcpCursorCard" }, { key: "codex", id: "mcpCodexCard" }];
     cards.forEach(({ key, id }) => {
@@ -400,9 +400,9 @@
       let meta = card.querySelector(".agent-runtime-meta");
       if (!meta) { meta = document.createElement("div"); meta.className = "agent-runtime-meta"; card.querySelector(".mcp-tool-card-top")?.after(meta); }
       meta.innerHTML = [
-        ["Connection", configured ? "Authenticated" : "Not configured"],
+        ["Connection", configured ? (summary?.ok ? "Connected" : "Configured — select a repository") : "Not configured"],
         ["Last handshake", clean(data.last_handshake || data.last_tested_at, configured ? "Configuration verified" : "Never")],
-        ["Repository context", summary?.ok ? summary.repo_name : "Unavailable"],
+        ["Repository context", summary?.ok ? summary.repo_name : "Select a repository"],
         ["Configuration", clean(data.config_status || data.status, configured ? "Atlas MCP present" : "Action required")],
       ].map(([label, value]) => `<div class="agent-meta-row"><span>${escapeHtml(label)}</span><b>${escapeHtml(value)}</b></div>`).join("") + `<div class="agent-tool-list"><span>health</span><span>scan</span><span>find files</span><span>ask</span><span>impact</span><span>debug</span><span>plan</span></div>`;
     });

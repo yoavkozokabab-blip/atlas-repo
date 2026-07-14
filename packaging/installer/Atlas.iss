@@ -56,11 +56,10 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDi
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "Launch {#MyAppName}"; Flags: nowait postinstall skipifsilent
 
-[UninstallDelete]
-; Primary data dir is %USERPROFILE%\.atlas_desktop (see atlas_desktop/data_paths.py).
-; The old {userappdata} (=%APPDATA%) path never matched, leaving user data behind.
-Type: filesandordirs; Name: "{%USERPROFILE}\.atlas_desktop"
-Type: filesandordirs; Name: "{localappdata}\Atlas\desktop_data"
+; Atlas repository scans, account/session state, settings and history are user
+; data, not installer payload. They are intentionally absent from [Files] and
+; intentionally excluded from uninstall deletion, so installs, in-place updates,
+; and uninstalls never overwrite or delete a user's repository memory.
 
 [Code]
 { ============================================================================

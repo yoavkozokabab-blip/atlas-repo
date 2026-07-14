@@ -1,4 +1,4 @@
-"""Resolve a writable Atlas desktop data directory (startup + analytics + usage)."""
+"""Resolve Atlas' stable per-user desktop data directory."""
 
 from __future__ import annotations
 
@@ -13,6 +13,7 @@ _FALLBACK_KIND: Optional[str] = None
 # changed/removed override invalidates the cache instead of leaking a stale
 # directory into later calls.
 _RESOLVED_FROM_OVERRIDE: Optional[str] = None
+_MIGRATION_RESULT: Optional[dict] = None
 
 
 def _is_writable(path: str) -> bool:
@@ -27,29 +28,29 @@ def _is_writable(path: str) -> bool:
         return False
 
 
-# Pre-rename installs stored data under this name; migrated once at startup.
+# Pre-rename installs stored data under this name. Validated migration copies
+# it; path resolution itself never renames user data.
 _LEGACY_HOME_DIR_NAME = ".jarvis_desktop"
 
 
-def _migrate_legacy_home_dir(home: str, new_dir: str) -> None:
-    """One-time rename of the legacy data dir so existing installs keep their
-    scans, settings and session after the product rename."""
-    legacy = os.path.join(home, _LEGACY_HOME_DIR_NAME)
-    if os.path.isdir(legacy) and not os.path.exists(new_dir):
-        try:
-            os.rename(legacy, new_dir)
-        except OSError:
-            pass
+def _user_home() -> str:
+    """Return the per-user profile without cwd or executable-directory input."""
+    if os.name == "nt":
+        profile = os.environ.get("USERPROFILE", "").strip()
+        if profile:
+            return os.path.abspath(profile)
+    return os.path.abspath(os.path.expanduser("~"))
+
+
+def canonical_desktop_data_dir() -> str:
+    return os.path.join(_user_home(), ".atlas_desktop")
 
 
 def _candidate_dirs() -> List[Tuple[str, str]]:
-    home = os.path.expanduser("~")
     local_app = os.environ.get("LOCALAPPDATA", "").strip()
     temp = tempfile.gettempdir()
-    new_home = os.path.join(home, ".atlas_desktop")
-    _migrate_legacy_home_dir(home, new_home)
     out: List[Tuple[str, str]] = [
-        (new_home, "home"),
+        (canonical_desktop_data_dir(), "home"),
     ]
     if local_app:
         out.append((os.path.join(local_app, "Atlas", "desktop_data"), "localappdata"))
@@ -58,10 +59,11 @@ def _candidate_dirs() -> List[Tuple[str, str]]:
 
 
 def reset_desktop_data_dir_cache() -> None:
-    global _RESOLVED_DIR, _FALLBACK_KIND, _RESOLVED_FROM_OVERRIDE
+    global _RESOLVED_DIR, _FALLBACK_KIND, _RESOLVED_FROM_OVERRIDE, _MIGRATION_RESULT
     _RESOLVED_DIR = None
     _FALLBACK_KIND = None
     _RESOLVED_FROM_OVERRIDE = None
+    _MIGRATION_RESULT = None
 
 
 def _current_override() -> str:
@@ -106,13 +108,60 @@ def desktop_data_dir() -> str:
     return resolve_desktop_data_dir()
 
 
+def historical_desktop_data_dirs() -> List[str]:
+    """Known product roots eligible for validated one-time discovery."""
+    home = _user_home()
+    roots = [os.path.join(home, _LEGACY_HOME_DIR_NAME)]
+    local_app = os.environ.get("LOCALAPPDATA", "").strip()
+    if local_app:
+        roots.append(os.path.join(local_app, "Atlas", "desktop_data"))
+    roots.append(os.path.join(tempfile.gettempdir(), "atlas_desktop_data"))
+    canonical = os.path.normcase(os.path.abspath(canonical_desktop_data_dir()))
+    return [
+        os.path.abspath(path)
+        for path in roots
+        if os.path.normcase(os.path.abspath(path)) != canonical
+    ]
+
+
+def ensure_repository_state_migrated(*, source_roots: Optional[List[str]] = None) -> dict:
+    """Discover valid historical scans without crossing override boundaries."""
+    global _MIGRATION_RESULT
+    effective = desktop_data_dir()
+    if _current_override() and source_roots is None:
+        _MIGRATION_RESULT = {
+            "status": "skipped_override",
+            "canonical_root": canonical_desktop_data_dir(),
+            "effective_root": effective,
+        }
+        return dict(_MIGRATION_RESULT)
+    if _MIGRATION_RESULT is not None and source_roots is None:
+        return dict(_MIGRATION_RESULT)
+    from .persistence_migration import migrate_repository_state
+
+    _MIGRATION_RESULT = migrate_repository_state(
+        canonical_root=canonical_desktop_data_dir(),
+        source_roots=source_roots or historical_desktop_data_dirs(),
+        force=source_roots is not None,
+    )
+    return dict(_MIGRATION_RESULT)
+
+
 def desktop_data_dir_info() -> dict:
     resolve_desktop_data_dir()
+    effective = _RESOLVED_DIR or desktop_data_dir()
     return {
-        "path": _RESOLVED_DIR or desktop_data_dir(),
+        "path": effective,
+        "canonical_path": canonical_desktop_data_dir(),
+        "registry_path": os.path.join(effective, "scans", "registry.json"),
+        "scans_path": os.path.join(effective, "scans"),
+        "account_session_path": os.path.join(effective, "accounts_state.json"),
+        "repository_history_path": os.path.join(effective, "histories"),
+        "settings_path": "browser localStorage for the Atlas runtime origin",
         "fallback": _FALLBACK_KIND,
         "override_env": bool(
             os.environ.get("ATLAS_DESKTOP_DATA", "").strip()
             or os.environ.get("JARVIS_DESKTOP_DATA", "").strip()
         ),
+        "migration": dict(_MIGRATION_RESULT or {}),
     }

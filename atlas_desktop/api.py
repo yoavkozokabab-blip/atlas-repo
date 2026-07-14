@@ -185,6 +185,15 @@ def bootstrap_persistence(*, auto_restore: bool = True) -> Dict[str, Any]:
     global _PERSISTENCE_BOOTSTRAPPED
     status: Dict[str, Any] = {"ok": True, "restored": False, "resume_card": None}
     try:
+        from .data_paths import ensure_repository_state_migrated
+
+        status["migration"] = ensure_repository_state_migrated()
+    except Exception as exc:
+        status["migration"] = {
+            "status": "failed_safe",
+            "error": f"{type(exc).__name__}: {exc}",
+        }
+    try:
         _persist.cleanup_old_scans(_desktop_data_dir())
     except Exception:
         pass
@@ -2071,7 +2080,7 @@ def refresh_changed_files(paths: Optional[List[str]] = None) -> Dict[str, Any]:
         return _tr.refresh_files(_STATE, list(files))
 
 
-def beta_diagnostics() -> Dict[str, Any]:
+def beta_diagnostics(*, staleness: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     """Phase 141 — support bundle: version, scan stats, repository size."""
     scan = _STATE.get("scan") or {}
     summary = current_summary()
@@ -2110,7 +2119,9 @@ def beta_diagnostics() -> Dict[str, Any]:
         "scope": scan.get("scope") or _STATE.get("last_scope"),
         "reliability": scan.get("reliability") or {},
         "data_dir": _desktop_data_dir_for_diagnostics(),
-        "trust_integrity": _ti.trust_integrity_diagnostics(_STATE),
+        "trust_integrity": _ti.trust_integrity_diagnostics(
+            _STATE, staleness=staleness
+        ),
     }
 
 
@@ -2123,7 +2134,7 @@ def _desktop_data_dir_for_diagnostics() -> Dict[str, Any]:
         return {"path": "", "fallback": None, "override_env": False}
 
 
-def beta_system_health() -> Dict[str, Any]:
+def beta_system_health(*, staleness: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     """Phase 139 — consolidated system health for the beta dashboard."""
     summary = current_summary()
     if not summary.get("ok"):
@@ -2131,7 +2142,8 @@ def beta_system_health() -> Dict[str, Any]:
     gh = summary.get("graph_health") or {}
     ev = summary.get("evidence_coverage") or {}
     perf = _STATE.get("scan_perf") or {}
-    staleness = _ti.assess_staleness(_STATE)
+    if staleness is None:
+        staleness = _ti.assess_staleness(_STATE)
     gh_label = gh.get("label") or "unknown"
     return {
         "ok": True,

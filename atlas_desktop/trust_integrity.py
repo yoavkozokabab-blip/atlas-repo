@@ -449,6 +449,9 @@ def assess_staleness(state: Dict[str, Any]) -> Dict[str, Any]:
     live = compute_signature_v2(
         str(path), scope, include_content_hash=True, signature_version=signature_version
     )
+    # Keep the live identity from this traversal so diagnostics can report it
+    # without walking and hashing a large repository a second time.
+    base["live_signature"] = live.get("signature")
     git_head_changed = False
     if prev:
         prev_git = prev.get("git_head")
@@ -767,33 +770,33 @@ def gate_weak_graph_workflow(state: Dict[str, Any], result: Dict[str, Any], work
     }
 
 
-def trust_integrity_diagnostics(state: Dict[str, Any]) -> Dict[str, Any]:
+def trust_integrity_diagnostics(
+    state: Dict[str, Any],
+    *,
+    staleness: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
     """Expose trust-integrity status for support bundles."""
     scan = state.get("scan") or {}
-    live = None
-    stale = None
-    path = state.get("path") or scan.get("repo_path")
-    if path and scan:
-        scope = scan.get("scope") or state.get("last_scope") or {"mode": "entire_repo"}
+    if staleness is None:
         try:
-            prev = stored_signature(state) or {}
-            live = compute_signature_v2(
-                str(path),
-                scope,
-                include_content_hash=True,
-                signature_version=int(prev.get("version") or LEGACY_SIGNATURE_VERSION),
-            )
-            stale = verify_scan_fresh(state)
+            staleness = assess_staleness(state)
         except Exception as exc:
-            stale = {"ok": False, "status": "signature_error", "error": str(exc)}
+            staleness = {
+                "fresh": False,
+                "status": "signature_error",
+                "message": str(exc),
+                "changed_files": [],
+                "targeted_refresh_available": False,
+                "repo_changed_outside_plan": False,
+            }
     gh = scan.get("graph_health") or {}
-    staleness = assess_staleness(state)
+    is_stale = not bool(staleness.get("fresh"))
     return {
         "signature_version": SIGNATURE_VERSION,
         "stored_signature": (stored_signature(state) or {}).get("signature"),
-        "live_signature": (live or {}).get("signature"),
-        "scan_stale": bool(stale),
-        "stale_status": (stale or {}).get("status"),
+        "live_signature": staleness.get("live_signature"),
+        "scan_stale": is_stale,
+        "stale_status": staleness.get("status") if is_stale else None,
         "targeted_refresh_available": staleness.get("targeted_refresh_available", False),
         "repo_changed_outside_plan": staleness.get("repo_changed_outside_plan", False),
         "changed_files": staleness.get("changed_files", []),
