@@ -41,7 +41,7 @@ Edit `%APPDATA%\Claude\claude_desktop_config.json` — **merge** into existing `
 }
 ```
 Fully quit and reopen Claude Desktop. Click the tools (hammer) icon → "atlas" should list
-7 tools.
+18 tools.
 
 ## Claude Code (CLI)
 ```bash
@@ -65,7 +65,7 @@ Same command/args as above.
 |---|---|---|
 | Server boots | client connects, no "failed to start" | atlas appears in tools |
 | `initialize` | automatic on connect | client shows atlas connected |
-| `tools/list` | open the tools menu | 7 tools: scan_repo, get_codebase_map, build_context_pack, what_breaks, plan_change, find_file, repo_health |
+| `tools/list` | open the tools menu | 18 tools; the seven primary workflow tools include scan_repo, get_codebase_map, build_context_pack, what_breaks, plan_change, find_file, and repo_health |
 | `atlas_scan_repo` | "Ask Atlas to scan C:\path\to\repo" | returns module/dependency counts |
 | `atlas_build_context_pack` | "Ask Atlas what files matter for implementing Stripe checkout" | recommended files + reasons + confidence |
 | `atlas_what_breaks` | "Ask Atlas what breaks if I change src/auth/session.ts" | impacted files + tests |

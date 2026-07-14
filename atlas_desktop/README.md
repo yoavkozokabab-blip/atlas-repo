@@ -76,7 +76,7 @@ Answers use scan data only — not a cloud LLM.
 ## Known limitations
 
 - **Path input** — Browsers cannot pick full filesystem paths natively; paste the path manually.
-- **Impact analysis** — Direct importers only (transitive Phase 94B not wired in UI).
+- **Impact analysis** — Transitive resolved imports are included; dynamic runtime loading can still be incomplete.
 - **Bug Hunt** — Heuristic path matching, not semantic defect analysis.
 - **3D graph** — Loaded from CDN (`3d-force-graph`); offline falls back to text hubs.
 - **Large repos** — Graph display capped at 5000 modules; scan still indexes full graph.

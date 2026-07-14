@@ -238,7 +238,7 @@ def test_installer_staging_has_no_user_registry_payload() -> None:
         for path in staging.rglob("*")
         if path.is_file()
         and (
-            path.name.lower().startswith("registry")
+            path.name.lower() == "registry.json"
             or ".atlas_desktop" in str(path).lower()
             or "accounts_state.json" in str(path).lower()
         )

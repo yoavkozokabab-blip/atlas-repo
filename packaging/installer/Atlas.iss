@@ -1,4 +1,4 @@
-; Atlas — Windows installer (Inno Setup 6, Phase 152)
+; Atlas — Windows installer (Inno Setup 6)
 #include "generated_version.iss"
 
 #define MyAppName "Atlas"

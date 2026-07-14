@@ -1,4 +1,4 @@
-# Atlas — Inno Setup installer build (Phase 152)
+# Atlas — Inno Setup installer build
 # Usage:
 #   .\packaging\installer\installer_build.ps1
 #   .\packaging\installer\installer_build.ps1 -SkipPackage
@@ -69,7 +69,7 @@ function Ensure-Icon {
     }
 }
 
-Write-Host "Atlas installer build (Phase 152) - source: $Root" -ForegroundColor Cyan
+Write-Host "Atlas installer build - source: $Root" -ForegroundColor Cyan
 Write-InnoVersionDefines
 Ensure-Icon
 

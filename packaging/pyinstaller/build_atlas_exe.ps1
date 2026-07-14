@@ -1,4 +1,4 @@
-# Atlas Desktop — PyInstaller one-folder build (Phase 152)
+# Atlas Desktop — PyInstaller one-folder build
 # Usage:
 #   .\packaging\pyinstaller\build_atlas_exe.ps1
 #   .\packaging\pyinstaller\build_atlas_exe.ps1 -Clean
@@ -91,7 +91,7 @@ print("Created icon:", path)
     py -3 $tmp
 }
 
-Write-Host "Atlas PyInstaller build (Phase 152) - source: $Root" -ForegroundColor Cyan
+Write-Host "Atlas PyInstaller build - source: $Root" -ForegroundColor Cyan
 Write-BuildInfo
 Ensure-Icon
 

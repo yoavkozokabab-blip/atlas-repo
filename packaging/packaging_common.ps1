@@ -105,6 +105,9 @@ function Test-HnLaunchUxPayload {
 function Find-InnoSetupCompiler {
     param([string]$Root)
     $candidates = [System.Collections.Generic.List[string]]::new()
+    if ($env:ATLAS_INNO_COMPILER) {
+        $candidates.Add($env:ATLAS_INNO_COMPILER)
+    }
     if ($Root) {
         $candidates.Add((Join-Path $Root ".phase152_inno\ISCC.exe"))
         $candidates.Add((Join-Path $Root ".phase150_inno\ISCC.exe"))
