@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { trackAnalyticsEvent } from "./AnalyticsClient";
 
 async function postJson(url: string, body?: unknown) {
   const res = await fetch(url, {
@@ -35,10 +36,30 @@ export function AuthForm({ next }: { next: string }) {
         return;
       }
       const url = mode === "signup" ? "/api/auth/register" : "/api/auth/login";
+      const startedEvent = mode === "signup" ? "signup_started" : "login_started";
+      const successEvent = mode === "signup" ? "signup_success" : "login_success";
+      const failedEvent = mode === "signup" ? "signup_failed" : "login_failed";
+      trackAnalyticsEvent(startedEvent, { deduplicationKey: crypto.randomUUID() });
       const { res, data } = await postJson(url, { email, password, name });
-      if (!res.ok) { setError(String(data.error || "Something went wrong.")); return; }
+      if (!res.ok) {
+        trackAnalyticsEvent(failedEvent, {
+          properties: { http_status: res.status, reason_code: `http_${res.status}` },
+          deduplicationKey: crypto.randomUUID(),
+        });
+        setError(String(data.error || "Something went wrong."));
+        return;
+      }
+      trackAnalyticsEvent(successEvent, { deduplicationKey: crypto.randomUUID() });
       router.push(next || "/account");
       router.refresh();
+    } catch {
+      if (mode !== "forgot") {
+        trackAnalyticsEvent(mode === "signup" ? "signup_failed" : "login_failed", {
+          properties: { reason_code: "network_error" },
+          deduplicationKey: crypto.randomUUID(),
+        });
+      }
+      setError("Account service is temporarily unavailable. Please try again.");
     } finally {
       setBusy(false);
     }
@@ -155,6 +176,146 @@ type AdminUser = {
 };
 type AdminAudit = { id: string; at: string; actorEmail: string; action: string; targetEmail?: string };
 
+type AnalyticsSummary = {
+  since: string;
+  timezone: string;
+  environment: string | null;
+  build_commit: string | null;
+  include_internal: boolean;
+  unique_visitors: number;
+  sessions: number;
+  page_views: number;
+  downloads_attempted: number;
+  downloads_unavailable: number;
+  successful_installs: number;
+  first_launches: number;
+  scans_completed: number;
+  ask_completed: number;
+  agents_connected: number;
+  signup_success: number;
+  signup_failed: number;
+  active_users: number;
+  returning_users: number;
+  top_routes: { route: string; views: number }[];
+};
+
+function percentage(numerator: number, denominator: number) {
+  if (!denominator) return "0.0%";
+  return `${((numerator / denominator) * 100).toFixed(1)}%`;
+}
+
+function AnalyticsDashboard() {
+  const [days, setDays] = useState(7);
+  const [environment, setEnvironment] = useState("production");
+  const [build, setBuild] = useState("");
+  const [includeInternal, setIncludeInternal] = useState(false);
+  const [summary, setSummary] = useState<AnalyticsSummary | null>(null);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const params = new URLSearchParams({
+      days: String(days),
+      environment,
+      include_internal: String(includeInternal),
+    });
+    if (build) params.set("build", build);
+    setLoading(true);
+    setError("");
+    fetch(`/api/admin/analytics?${params}`, { cache: "no-store", signal: controller.signal })
+      .then(async (res) => ({ res, data: await res.json().catch(() => ({})) }))
+      .then(({ res, data }) => {
+        if (!res.ok) throw new Error(String(data.error || "analytics_unavailable"));
+        setSummary(data.summary as AnalyticsSummary);
+      })
+      .catch((err) => {
+        if (err instanceof DOMException && err.name === "AbortError") return;
+        setSummary(null);
+        setError("Analytics are unavailable for the selected environment.");
+      })
+      .finally(() => setLoading(false));
+    return () => controller.abort();
+  }, [days, environment, build, includeInternal]);
+
+  const metrics = summary
+    ? [
+        ["Unique visitors", summary.unique_visitors],
+        ["Sessions", summary.sessions],
+        ["Page views", summary.page_views],
+        ["Download attempts", summary.downloads_attempted],
+        ["Download unavailable", summary.downloads_unavailable],
+        ["Installations", summary.successful_installs],
+        ["First launches", summary.first_launches],
+        ["Signup success", summary.signup_success],
+        ["Signup failed", summary.signup_failed],
+        ["Active users", summary.active_users],
+        ["Returning users", summary.returning_users],
+        ["Scan completed", summary.scans_completed],
+        ["Ask completed", summary.ask_completed],
+        ["Agents connected", summary.agents_connected],
+      ]
+    : [];
+
+  return (
+    <section aria-labelledby="analytics-heading" style={{ marginBottom: 40 }}>
+      <h3 id="analytics-heading">Product analytics</h3>
+      <p className="muted">
+        UTC aggregates. Production is selected by default; preview and internal traffic stay separate.
+      </p>
+      <div className="form" style={{ flexDirection: "row", flexWrap: "wrap", alignItems: "end", marginBottom: 18 }}>
+        <div className="field">
+          <label htmlFor="analytics-days">Range</label>
+          <select id="analytics-days" value={days} onChange={(e) => setDays(Number(e.target.value))}>
+            <option value={1}>1 day</option><option value={7}>7 days</option><option value={30}>30 days</option>
+          </select>
+        </div>
+        <div className="field">
+          <label htmlFor="analytics-environment">Environment</label>
+          <select id="analytics-environment" value={environment} onChange={(e) => setEnvironment(e.target.value)}>
+            <option value="production">Production</option><option value="preview">Preview</option>
+            <option value="development">Development</option><option value="test">Test</option>
+            <option value="unknown">Unknown / legacy</option>
+          </select>
+        </div>
+        <div className="field">
+          <label htmlFor="analytics-build">Build commit (optional)</label>
+          <input id="analytics-build" className="mono" value={build} onChange={(e) => setBuild(e.target.value.trim())} placeholder="7-40 hex chars" />
+        </div>
+        <label style={{ display: "flex", gap: 8, alignItems: "center", paddingBottom: 10 }}>
+          <input type="checkbox" checked={includeInternal} onChange={(e) => setIncludeInternal(e.target.checked)} />
+          Include internal traffic
+        </label>
+      </div>
+      {loading && <p className="muted">Loading analytics...</p>}
+      {error && <div className="note-accent">{error}</div>}
+      {summary && !loading && (
+        <>
+          <div className="grid-3" style={{ marginBottom: 18 }}>
+            {metrics.map(([label, value]) => (
+              <div className="card" key={String(label)}><div className="muted">{label}</div><strong>{value}</strong></div>
+            ))}
+          </div>
+          <p className="muted">
+            Download CTR {percentage(summary.downloads_attempted, summary.unique_visitors)} · Signup conversion {percentage(summary.signup_success, summary.unique_visitors)} · Returning-user rate {percentage(summary.returning_users, summary.active_users)}
+          </p>
+          <h4>Top routes</h4>
+          <table className="tbl">
+            <thead><tr><th>Route</th><th>Views</th></tr></thead>
+            <tbody>
+              {summary.top_routes.map((row) => <tr key={row.route}><td className="mono">{row.route}</td><td>{row.views}</td></tr>)}
+              {summary.top_routes.length === 0 && <tr><td colSpan={2} className="muted">No matching route views.</td></tr>}
+            </tbody>
+          </table>
+          <div className="note-accent" style={{ marginTop: 18 }}>
+            Funnel totals are partial whenever the corresponding canonical event is not emitted by a verified website or desktop flow. Missing events are shown as zero, never estimated.
+          </div>
+        </>
+      )}
+    </section>
+  );
+}
+
 export function AdminConsole() {
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [audit, setAudit] = useState<AdminAudit[]>([]);
@@ -176,6 +337,7 @@ export function AdminConsole() {
 
   return (
     <div>
+      <AnalyticsDashboard />
       <div className="form" style={{ flexDirection: "row", maxWidth: 520, marginBottom: 18 }}>
         <input className="field" style={{ flex: 1 }} placeholder="Search by email or name" value={q}
           onChange={(e) => setQ(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") load(q); }} />

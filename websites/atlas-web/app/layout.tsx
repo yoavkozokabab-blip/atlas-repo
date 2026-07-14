@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Space_Grotesk } from "next/font/google";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
+import AnalyticsClient from "./_components/AnalyticsClient";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -51,13 +52,6 @@ export const viewport: Viewport = {
   initialScale: 1
 };
 
-// Launch analytics stub: aggregate event names only (page_view, download_click,
-// hn_page_view, pricing_view, pro_cta_click, docs_click). No repository data,
-// no prompts, no personal data — just the event name and pathname. Entirely
-// inert unless NEXT_PUBLIC_ANALYTICS_URL points at a collector endpoint.
-const ANALYTICS_URL = process.env.NEXT_PUBLIC_ANALYTICS_URL || "";
-const ANALYTICS_SNIPPET = `(function(){var u=${JSON.stringify(ANALYTICS_URL)};if(!u||!navigator.sendBeacon)return;var send=function(e){try{navigator.sendBeacon(u,JSON.stringify({event:e,path:location.pathname,ts:Date.now()}))}catch(_){}};send(location.pathname==="/hn"?"hn_page_view":location.pathname==="/pricing"?"pricing_view":"page_view");document.addEventListener("click",function(ev){var el=ev.target&&ev.target.closest&&ev.target.closest("[data-evt]");if(el)send(el.getAttribute("data-evt"))},true);})();`;
-
 export default function RootLayout({
   children
 }: Readonly<{ children: React.ReactNode }>) {
@@ -68,10 +62,8 @@ export default function RootLayout({
     >
       <body>
         <a href="#main-content" className="skip-link">Skip to content</a>
+        <AnalyticsClient />
         {children}
-        {ANALYTICS_URL ? (
-          <script dangerouslySetInnerHTML={{ __html: ANALYTICS_SNIPPET }} />
-        ) : null}
       </body>
     </html>
   );

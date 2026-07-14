@@ -12,6 +12,7 @@ export default function InstallerWaitState({
     <div
       className={`installer-wait${compact ? " installer-wait--compact" : ""}`}
       role="status"
+      data-analytics-state="download-unavailable"
     >
       <span className="btn-mag installer-wait-action" aria-disabled="true">
         {INSTALLER_WAIT_LABEL}

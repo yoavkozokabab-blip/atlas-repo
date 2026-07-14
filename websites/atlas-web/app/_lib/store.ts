@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
 import { ENV } from "./config";
+import type { AnalyticsRow } from "./analytics-server";
 
 // ---------------------------------------------------------------------------
 // Data model + pluggable async store.
@@ -258,6 +259,15 @@ async function sbRows(res: Response, ctx: string): Promise<Row[]> {
   if (!text) return [];
   return JSON.parse(text) as Row[];
 }
+async function sbValue<T>(res: Response, ctx: string): Promise<T> {
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error(`supabase ${ctx} failed: ${res.status} ${body.slice(0, 300)}`);
+  }
+  const text = await res.text();
+  if (!text) throw new Error(`supabase ${ctx} returned an empty response`);
+  return JSON.parse(text) as T;
+}
 const enc = encodeURIComponent;
 
 const supabaseStore: Store = {
@@ -380,3 +390,62 @@ export function getStore(): Store {
 }
 
 export const store = getStore();
+
+export async function recordAnalyticsEvent(
+  row: AnalyticsRow
+): Promise<{ recorded: boolean }> {
+  if (!ENV.hasSupabase) return { recorded: false };
+  const rows = await sbRows(
+    await sb("analytics_events?on_conflict=deduplication_key", {
+      method: "POST",
+      headers: { Prefer: "resolution=ignore-duplicates,return=representation" },
+      body: JSON.stringify(row),
+    }),
+    "analytics-event"
+  );
+  return { recorded: rows.length === 1 };
+}
+
+export type AnalyticsSummary = {
+  since: string;
+  timezone: "UTC";
+  environment: string | null;
+  build_commit: string | null;
+  include_internal: boolean;
+  unique_visitors: number;
+  sessions: number;
+  page_views: number;
+  downloads_attempted: number;
+  downloads_unavailable: number;
+  successful_installs: number;
+  first_launches: number;
+  scans_completed: number;
+  ask_completed: number;
+  agents_connected: number;
+  signup_success: number;
+  signup_failed: number;
+  active_users: number;
+  returning_users: number;
+  top_routes: { route: string; views: number }[];
+};
+
+export async function analyticsSummary(input: {
+  since: string;
+  environment?: string | null;
+  buildCommit?: string | null;
+  includeInternal?: boolean;
+}): Promise<AnalyticsSummary> {
+  if (!ENV.hasSupabase) throw new Error("analytics backend unavailable");
+  return sbValue<AnalyticsSummary>(
+    await sb("rpc/atlas_analytics_summary", {
+      method: "POST",
+      body: JSON.stringify({
+        p_since: input.since,
+        p_environment: input.environment || null,
+        p_build_commit: input.buildCommit || null,
+        p_include_internal: input.includeInternal === true,
+      }),
+    }),
+    "analytics-summary"
+  );
+}
