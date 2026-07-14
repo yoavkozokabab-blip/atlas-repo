@@ -841,12 +841,6 @@ p { margin: 0; color: var(--text-1); }
     background: linear-gradient(180deg, rgba(10,12,12,0.7) 0%, rgba(10,12,12,0.35) 40%, rgba(10,12,12,0.72) 100%);
   }
 }
-.hero-eyebrow {
-  display: inline-flex; align-items: center; gap: 9px;
-  font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.04em;
-  color: var(--accent); text-transform: uppercase; margin-bottom: 26px;
-}
-.hero-eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px 1px var(--accent); }
 .hero-cine h1 {
   font-family: var(--font-display); font-weight: 600;
   font-size: clamp(2.9rem, 8.4vw, 8.4rem); line-height: 0.96;
