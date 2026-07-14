@@ -10,6 +10,7 @@ out
 
 # Local test-mode data store (users, audit) — never commit
 .data
+.qa-data/
 .vercel
 
 # QA screenshot output

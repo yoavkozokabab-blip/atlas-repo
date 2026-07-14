@@ -1,4 +1,4 @@
--- Atlas website — shared, atomic rate limiting (Phase 186D).
+-- Atlas website — shared, atomic rate limiting.
 -- Apply via: Supabase Dashboard → SQL Editor → paste & run,
 --        or: supabase db push
 --

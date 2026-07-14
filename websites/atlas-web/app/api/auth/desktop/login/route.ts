@@ -4,7 +4,7 @@ import { rateLimit, clientIp, readJson } from "@/app/_lib/ratelimit";
 
 export const runtime = "nodejs";
 
-// Desktop login (Phase 186A) — same user store as the website. Keeps the generic
+// Desktop login — same user store as the website. Keeps the generic
 // anti-enumeration error from loginUser. Returns a Bearer token.
 export async function POST(req: Request) {
   if (!(await rateLimit(`desktop-login:${clientIp(req)}`, 8, 900_000))) {

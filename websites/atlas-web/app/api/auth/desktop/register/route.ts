@@ -4,7 +4,7 @@ import { rateLimit, clientIp, readJson } from "@/app/_lib/ratelimit";
 
 export const runtime = "nodejs";
 
-// Desktop registration (Phase 186A) — same user store as the website, returns a
+// Desktop registration — same user store as the website, returns a
 // Bearer token instead of setting a cookie.
 export async function POST(req: Request) {
   if (!(await rateLimit(`desktop-register:${clientIp(req)}`, 10, 3_600_000))) {

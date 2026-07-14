@@ -121,7 +121,7 @@ export async function loginUser(email: string, password: string): Promise<AuthRe
   return { ok: true, user };
 }
 
-// --- Desktop (bearer-token) auth (Phase 186A) ---
+// --- Desktop bearer-token auth ---
 // The desktop is a native client, not a browser, so it authenticates with a
 // Bearer token instead of the httpOnly cookie. It hits the SAME Supabase-backed
 // user store as the website — one account, one identity. The token is the same
@@ -140,7 +140,7 @@ export async function userFromBearer(req: Request): Promise<User | null> {
   return u;
 }
 /**
- * Access rule (Phase 187 — open self-serve). Any registered, non-suspended user
+ * Access rule: any registered, non-suspended user
  * can use Atlas. Account control is via `status` (suspended) only, enforced in
  * loginUser/currentUser, which never return a suspended user.
  */

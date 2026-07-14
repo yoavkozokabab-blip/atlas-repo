@@ -21,6 +21,7 @@ export async function POST(request: Request) {
   const form = await request.formData();
   const email = String(form.get("email") || "").trim().toLowerCase();
   const role = String(form.get("role") || "").trim().slice(0, 80);
+  const source = String(form.get("source") || "atlas-web").trim().slice(0, 80);
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return NextResponse.json(
@@ -30,7 +31,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { duplicate } = await store.addWaitlist({ email, role, source: "atlas-web" });
+    const { duplicate } = await store.addWaitlist({ email, role, source: source || "atlas-web" });
     return NextResponse.json({
       ok: true,
       duplicate,

@@ -9,7 +9,7 @@ number outside this file. Nothing below is invented; each is verifiable in-repo.
 locally into a **dependency graph + evidence store**; serves **cited context** to coding agents
 over **MCP**. Windows desktop app. No signup required (guest mode).
 
-**Agents:** Claude Code, Cursor, Codex — via the Atlas MCP server (**18 tools** in current
+**Agents:** Claude Code, Cursor, Codex — via the Atlas MCP server (**7 tools** in current
 build). Config-write hardening verified.
 
 **Persistence:** Scans persist across fresh MCP sessions and are validated against the live repo

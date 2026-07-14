@@ -1,4 +1,4 @@
-// Rate limiting (Phase 186D).
+// Rate limiting.
 //
 // Serverless reality: a per-process Map does NOT rate-limit on Vercel, because
 // each instance/invocation has its own memory. So in production we use a SHARED,

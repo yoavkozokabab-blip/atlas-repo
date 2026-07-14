@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PageShell, PremiumSection } from "../_components/site";
+import { UpdatesSignupForm } from "../_components/updates-signup";
 
 export const metadata: Metadata = {
   title: "Roadmap - Atlas",
@@ -60,6 +61,13 @@ export default function RoadmapPage() {
             </div>
           ))}
         </div>
+      </PremiumSection>
+      <PremiumSection
+        eyebrow="Product updates"
+        title="Follow Atlas as it ships."
+        intro="Get occasional release and platform updates. No marketing lists and no repository data."
+      >
+        <UpdatesSignupForm source="roadmap" />
       </PremiumSection>
     </PageShell>
   );

@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 /**
- * Email update signup. Posts to the legacy signup endpoint and handles success,
+ * Email update signup. Posts to the persisted signup endpoint and handles success,
  * duplicate and error states inline.
  */
 export function UpdatesSignupForm({
@@ -25,7 +25,8 @@ export function UpdatesSignupForm({
     try {
       const body = new FormData();
       body.set("email", email);
-      body.set("role", role || source);
+      body.set("role", role);
+      body.set("source", source);
       const res = await fetch("/api/" + "wait" + "list", { method: "POST", body });
       const data = (await res.json().catch(() => ({}))) as { ok?: boolean; message?: string };
       if (res.ok && data.ok) {
