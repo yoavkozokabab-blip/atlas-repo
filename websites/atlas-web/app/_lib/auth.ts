@@ -24,9 +24,9 @@ export function verifyPassword(pw: string, stored: string): boolean {
 function sign(data: string): string {
   return crypto.createHmac("sha256", ENV.authSecret).update(data).digest("base64url");
 }
-export function createToken(userId: string): string {
+export function createToken(userId: string, ttlSeconds = SESSION_TTL_S): string {
   const payload = Buffer.from(
-    JSON.stringify({ sub: userId, exp: Math.floor(Date.now() / 1000) + SESSION_TTL_S })
+    JSON.stringify({ sub: userId, exp: Math.floor(Date.now() / 1000) + ttlSeconds })
   ).toString("base64url");
   return `${payload}.${sign(payload)}`;
 }
@@ -58,7 +58,13 @@ export async function setSession(userId: string): Promise<void> {
 }
 export async function clearSession(): Promise<void> {
   const c = await cookies();
-  c.set(COOKIE, "", { httpOnly: true, path: "/", maxAge: 0 });
+  c.set(COOKIE, "", {
+    httpOnly: true,
+    secure: ENV.isProd,
+    sameSite: "lax",
+    path: "/",
+    maxAge: 0,
+  });
 }
 export async function currentUser(): Promise<User | null> {
   const c = await cookies();

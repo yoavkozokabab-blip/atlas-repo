@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
 import { userFromBearer, entitlement } from "@/app/_lib/auth";
+import { privateJson, unavailableJson } from "@/app/_lib/http";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -8,7 +8,11 @@ export const dynamic = "force-dynamic";
 // token to learn the current account + plan/subscription state. Single source of
 // truth for feature gating.
 export async function GET(req: Request) {
-  const u = await userFromBearer(req);
-  if (!u) return NextResponse.json({ ok: false, error: "auth_required" }, { status: 401 });
-  return NextResponse.json({ ok: true, ...entitlement(u) });
+  try {
+    const u = await userFromBearer(req);
+    if (!u) return privateJson({ ok: false, error: "auth_required" }, { status: 401 });
+    return privateJson({ ok: true, ...entitlement(u) });
+  } catch {
+    return unavailableJson();
+  }
 }
