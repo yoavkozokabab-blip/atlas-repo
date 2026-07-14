@@ -5,6 +5,7 @@
     files: [],
     diagnostics: null,
     readinessTimer: null,
+    trustTimer: null,
     trustPromise: null,
     trustValue: null,
   };
@@ -38,6 +39,21 @@
     return ["claude", "cursor", "codex"].filter((key) => status[key] && status[key].atlas_configured);
   }
 
+  function scheduleTrustCheck(delay = 6000) {
+    if (shell.trustPromise || shell.trustTimer) return;
+    shell.trustTimer = window.setTimeout(() => {
+      shell.trustTimer = null;
+      shell.trustPromise = window.atlasTrustRequest || api("/api/repositories/current/trust-status");
+      window.atlasTrustRequest = shell.trustPromise;
+      shell.trustPromise.then((value) => {
+        shell.trustValue = value;
+        updateGlobalStatus();
+        if (document.querySelector('.view.active')?.id === "view-memory") renderMemory();
+        return value;
+      }).catch(() => null);
+    }, delay);
+  }
+
   async function updateGlobalStatus() {
     const readiness = byId("globalReadiness");
     const label = byId("globalReadinessLabel");
@@ -55,17 +71,10 @@
         label.textContent = "Select a repository";
         return;
       }
-      if (!shell.trustPromise) {
-        shell.trustPromise = window.atlasTrustRequest || api("/api/repositories/current/trust-status");
-        window.atlasTrustRequest = shell.trustPromise;
-        shell.trustPromise = shell.trustPromise.then((value) => {
-          shell.trustValue = value;
-          return value;
-        }).catch(() => null);
-      }
       const card = health?.persistence?.resume_card;
       const startupFresh = card?.freshness_status === "fresh" && card?.validation_status === "valid";
       const trust = shell.trustValue || (startupFresh ? { fresh: true, user_trust_label: "Fresh" } : null);
+      scheduleTrustCheck();
       if (!trust) {
         readiness.dataset.state = "neutral";
         label.textContent = "Verifying memory";
@@ -89,14 +98,6 @@
     if (!status || !facts || !evidence || !history) return;
 
     status.innerHTML = `${statusPill("Checking", "neutral")} Reading signed local repository memory…`;
-    if (!shell.trustPromise) {
-      shell.trustPromise = window.atlasTrustRequest || api("/api/repositories/current/trust-status");
-      window.atlasTrustRequest = shell.trustPromise;
-      shell.trustPromise = shell.trustPromise.then((value) => {
-        shell.trustValue = value;
-        return value;
-      }).catch(() => null);
-    }
     const [summary, historyData, diagnostics, healthPayload] = await Promise.all([
       api("/api/repositories/current/summary"),
       api("/api/history"),
@@ -117,6 +118,7 @@
     const card = healthPayload?.persistence?.resume_card;
     const startupFresh = card?.freshness_status === "fresh" && card?.validation_status === "valid";
     const trust = shell.trustValue || (startupFresh ? { fresh: true, user_trust_label: "Fresh" } : null);
+    scheduleTrustCheck();
 
     const isStale = !!(trust && (trust.scan_stale || trust.fresh === false || trust.stale_status));
     const trustLabel = trust ? text(trust.user_trust_label || trust.label, isStale ? "Needs refresh" : "Fresh") : "Verifying";

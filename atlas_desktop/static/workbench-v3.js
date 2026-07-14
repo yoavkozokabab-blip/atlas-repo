@@ -232,7 +232,6 @@
     const token = ++workbench.homeRenderToken;
     const stateSummary = window.STATE?.summary?.ok ? window.STATE.summary : null;
     const mcpClient = typeof atlasMcpSetup !== "undefined" ? atlasMcpSetup : null;
-    const trustRequest = getTrust();
     const [summary, graph, history, recent, agents, health] = await Promise.all([
       stateSummary || get("/api/repositories/current/summary"),
       get("/api/repositories/current/graph?view=subsystem"),
@@ -247,6 +246,7 @@
     if (typeof renderHomeExperience === "function") renderHomeExperience({ trustStatus: trust, recent: list(recent?.items), mcpStatus: agents });
     syncSidebar(summary, trust, agents);
     renderHomeDetails(summary, trust, graph, workbench.history, list(recent?.items), agents, health);
+    const trustRequest = getTrust();
     trustRequest.then((liveTrust) => {
       if (!liveTrust || token !== workbench.homeRenderToken) return;
       workbench.trust = liveTrust;
@@ -299,17 +299,11 @@
   }
 
   async function renderMemoryWorkbench() {
-    const trustRequest = getTrust();
     const [summary, history, diagnostics, health, graph] = await Promise.all([
       get("/api/repositories/current/summary"), get("/api/history"), get("/api/system/diagnostics"), get("/api/health"), get("/api/repositories/current/graph?view=module"),
     ]);
     if (!summary?.ok) return;
     const trust = workbench.trust || trustFromHealth(health);
-    trustRequest.then((liveTrust) => {
-      if (!liveTrust) return;
-      workbench.trust = liveTrust;
-      applyMemoryTrust(liveTrust, summary, health);
-    });
     const concepts = list(summary.subsystems).map(conceptFromSubsystem);
     if (!concepts.length) concepts.push({ name: "Repository structure", count: summary.module_count, description: summary.explanation || "Repository-wide structural model.", files: summary.entry_points || [], dependencies: [] });
     workbench.memoryConcepts = concepts;
@@ -334,6 +328,11 @@
     const gaps = byId("memoryUnresolved");
     const unresolved = Number(summary.graph_health?.unresolved_internal || 0);
     if (gaps) gaps.innerHTML = unresolved ? `<div class="memory-gap">${num(unresolved)} internal imports need resolution</div>` : `<div class="memory-gap">No unresolved internal dependency knowledge</div>`;
+    getTrust().then((liveTrust) => {
+      if (!liveTrust) return;
+      workbench.trust = liveTrust;
+      applyMemoryTrust(liveTrust, summary, health);
+    });
   }
 
   async function renderAskContext() {
