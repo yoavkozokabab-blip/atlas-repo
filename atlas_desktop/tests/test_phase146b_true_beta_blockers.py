@@ -17,8 +17,16 @@ def _demo_loaded():
     yield
 
 
-def test_startup_ready_without_env_override(monkeypatch):
+def test_startup_ready_without_env_override(monkeypatch, tmp_path):
+    # Exercise production fallback behavior against a fake user profile. Test
+    # mode deliberately refuses a missing override because it could otherwise
+    # resolve to the real user's canonical registry.
+    fake_home = tmp_path / "fake-user"
+    monkeypatch.setenv("USERPROFILE", str(fake_home))
+    monkeypatch.setenv("HOME", str(fake_home))
+    monkeypatch.setenv("ATLAS_TEST_MODE", "0")
     monkeypatch.delenv("ATLAS_DESKTOP_DATA", raising=False)
+    monkeypatch.delenv("JARVIS_DESKTOP_DATA", raising=False)
     from atlas_desktop.data_paths import reset_desktop_data_dir_cache
 
     reset_desktop_data_dir_cache()

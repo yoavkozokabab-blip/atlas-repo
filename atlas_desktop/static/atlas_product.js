@@ -70,32 +70,22 @@ function atlasRenderTrustBar(payload) {
 }
 
 async function atlasPollTrustStatus() {
+  const options = arguments[0] || {};
   if (typeof api !== "function") return null;
-  if (window.atlasTrustRequest) {
-    try {
-      const current = await window.atlasTrustRequest;
-      if (current && current.ok) atlasRenderTrustBar(current);
-      return current;
-    } catch (_error) {
-      window.atlasTrustRequest = null;
-      return null;
+  if (typeof document !== "undefined" && document.hidden && options.force !== true) return null;
+  if (window.atlasTrustPollPromise) return window.atlasTrustPollPromise;
+  const request = typeof window.requestAtlasTrustStatus === "function"
+    ? window.requestAtlasTrustStatus({ optional: true, force: options.force === true })
+    : api("/api/repositories/current/trust-status", "GET", undefined, { optional: true, force: options.force === true });
+  window.atlasTrustPollPromise = request;
+  return request.then((data) => {
+    if (data && data.ok) {
+      atlasRenderTrustBar(data);
+      try { document.dispatchEvent(new CustomEvent("atlas:trust-status", { detail: data })); } catch (_error) {}
     }
-  }
-  if (window.atlasTrustPollTimer) return null;
-  return new Promise((resolve) => {
-    window.atlasTrustPollTimer = window.setTimeout(() => {
-      window.atlasTrustPollTimer = null;
-      const request = typeof window.requestAtlasTrustStatus === "function"
-        ? window.requestAtlasTrustStatus()
-        : api("/api/repositories/current/trust-status");
-      window.atlasTrustRequest = request;
-      request.then((data) => {
-        if (data && data.ok) atlasRenderTrustBar(data);
-        resolve(data || null);
-      }).catch(() => resolve(null)).finally(() => {
-        if (window.atlasTrustRequest === request) window.atlasTrustRequest = null;
-      });
-    }, 7000);
+    return data || null;
+  }).catch(() => null).finally(() => {
+    if (window.atlasTrustPollPromise === request) window.atlasTrustPollPromise = null;
   });
 }
 
@@ -143,11 +133,22 @@ function atlasEnhanceAboutModal() {
 
 (function atlasProductBoot() {
   function boot() {
+    if (window.atlasProductBooted) return;
+    window.atlasProductBooted = true;
     atlasEnhanceAboutModal();
     atlasRenderVersionTargets();
     atlasPollTrustStatus();
     atlasCheckForUpdate();
-    setInterval(atlasPollTrustStatus, 45000);
+    window.atlasTrustInterval = window.atlasTrustInterval || setInterval(() => {
+      if (!document.hidden) atlasPollTrustStatus();
+    }, 45000);
+    document.documentElement?.setAttribute("data-atlas-trust-intervals", "1");
+    if (!window.atlasTrustVisibilityListener) {
+      window.atlasTrustVisibilityListener = true;
+      document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) atlasPollTrustStatus();
+      });
+    }
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else boot();

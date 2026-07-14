@@ -68,6 +68,30 @@ def test_controlled_atlas_reference_resolves_from_manifest(monkeypatch):
     assert result["scan"]["file_count"] > 0
 
 
+def test_relative_manifest_path_uses_owning_checkout_not_stale_source_path(monkeypatch, tmp_path):
+    checkout = tmp_path / "current-checkout"
+    repo = checkout / "benchmarks" / "repos" / "reference"
+    repo.mkdir(parents=True)
+    manifest = checkout / "benchmarks" / "agent_atlas_comparison" / "repositories.json"
+    manifest.parent.mkdir(parents=True)
+    manifest.write_text(
+        json.dumps(
+            {
+                "benchmark_root": "benchmarks/agent_atlas_comparison",
+                "source_checkout": {"path": str(tmp_path / "old-checkout")},
+                "repositories": [{"id": "reference", "path": "benchmarks/repos/reference"}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("ATLAS_BENCH_REPOSITORIES", str(manifest))
+
+    resolved, err = runtime._resolve_repository_alias("reference")
+
+    assert err is None
+    assert os.path.normcase(resolved) == os.path.normcase(str(repo))
+
+
 def test_unknown_alias_fails_loudly_without_scanning(monkeypatch):
     _fresh()
     monkeypatch.delenv("ATLAS_BENCH_REPOSITORIES", raising=False)

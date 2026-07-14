@@ -281,6 +281,28 @@ def _repositories_manifest_path() -> Optional[str]:
     return candidate if os.path.isfile(candidate) else None
 
 
+def _manifest_checkout_root(manifest: str, data: Dict[str, Any]) -> str:
+    """Return the checkout root that owns a portable benchmark manifest.
+
+    ``source_checkout.path`` records where evidence was originally generated and
+    may legitimately point at a different checkout later.  Relative repository
+    paths are therefore anchored to ``benchmark_root`` and the manifest's actual
+    location.  Older manifests without that field retain the legacy source path
+    behavior.
+    """
+    benchmark_root = str(data.get("benchmark_root") or "").strip()
+    if benchmark_root:
+        parts = [part for part in re.split(r"[\\/]", benchmark_root) if part and part != "."]
+        root = os.path.dirname(os.path.abspath(manifest))
+        for _ in parts:
+            root = os.path.dirname(root)
+        expected_manifest_dir = os.path.normcase(os.path.abspath(os.path.join(root, *parts)))
+        actual_manifest_dir = os.path.normcase(os.path.dirname(os.path.abspath(manifest)))
+        if expected_manifest_dir == actual_manifest_dir:
+            return root
+    return str((data.get("source_checkout") or {}).get("path") or "").strip() or os.path.dirname(manifest)
+
+
 def _resolve_repository_alias(alias: str) -> Tuple[Optional[str], Optional[Dict[str, Any]]]:
     """Resolve a bare alias strictly from repositories.json. No fallbacks."""
     manifest = _repositories_manifest_path()
@@ -322,7 +344,7 @@ def _resolve_repository_alias(alias: str) -> Tuple[Optional[str], Optional[Dict[
     if os.path.isabs(rel):
         full = os.path.abspath(rel)
     else:
-        base = str((data.get("source_checkout") or {}).get("path") or "").strip() or os.path.dirname(manifest)
+        base = _manifest_checkout_root(manifest, data)
         full = os.path.abspath(os.path.join(base, rel))
     if not os.path.isdir(full):
         return None, _err(

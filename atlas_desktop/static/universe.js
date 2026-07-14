@@ -965,13 +965,38 @@ const ATLAS_UNIVERSE = (() => {
   }
 
   function destroyGraph() {
+    const previous = U.fg;
+    // ForceGraph3D owns an animation frame, controls, geometries, materials and
+    // a WebGL context. Dropping only our reference leaves those resources alive
+    // when route activation rebuilds the Graph workspace.
+    U.fg = null;
     stopPulseLoop();
     stopCameraDrift();
     stopTour();
     if (U.hoverRaf) cancelAnimationFrame(U.hoverRaf);
+    if (previous) {
+      try { previous.pauseAnimation?.(); } catch (e) { /* best-effort teardown */ }
+      try {
+        previous.scene?.().traverse?.((object) => {
+          object.geometry?.dispose?.();
+          const materials = Array.isArray(object.material) ? object.material : [object.material];
+          materials.filter(Boolean).forEach((material) => {
+            Object.values(material).forEach((value) => value?.isTexture && value.dispose?.());
+            material.dispose?.();
+          });
+        });
+      } catch (e) { /* best-effort teardown */ }
+      try { previous.controls?.()?.dispose?.(); } catch (e) { /* best-effort teardown */ }
+      try { previous.graphData?.({ nodes: [], links: [] }); } catch (e) { /* best-effort teardown */ }
+      try {
+        const renderer = previous.renderer?.();
+        renderer?.renderLists?.dispose?.();
+        renderer?.dispose?.();
+        renderer?.forceContextLoss?.();
+      } catch (e) { /* best-effort teardown */ }
+    }
     U.hoverRaf = null;
     U.lastHoverId = null;
-    U.fg = null;
     U.subsystemView = false;
     U.sceneNodeScale = 1;
     U.forceVisibleModule = false;

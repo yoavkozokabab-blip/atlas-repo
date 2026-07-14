@@ -48,7 +48,7 @@ def _expect_shape(payload: dict) -> None:
     assert set(payload["copy_targets"]) == {"claude", "codex", "cursor"}
 
 
-def test_copilot_route_shape(scanned):
+def test_copilot_route_shape(scanned, local_guest_account):
     status, payload = server.dispatch(
         "POST",
         "/api/copilot/ask",

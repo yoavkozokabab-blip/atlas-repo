@@ -9,6 +9,11 @@
   const ALLOWED_REQUEST_HEADERS = new Set(["accept", "content-type"]);
   const states = { runtime: "starting", account: "unknown", repository: "unknown", graph: "idle", trust: "unknown", auxiliary: "unknown" };
   const trace = [];
+  const coordinatedInflight = new Map();
+  const coordinatedCache = new Map();
+  const coordinatorTrace = [];
+  const coordinatorStats = { starts: 0, completed: 0, failed: 0, timeouts: 0, coalesced: 0, cacheHits: 0, maxInflight: 0 };
+  let repositoryGeneration = 0;
   let runtimeIdentityPromise = null;
   let runtimeIdentityValue = null;
 
@@ -255,6 +260,159 @@
     }
   }
 
+  function canonicalGetKey(path) {
+    const resolved = resolveApiUrl(path);
+    const params = new URLSearchParams(resolved.search);
+    params.sort();
+    const query = params.toString();
+    return `GET ${resolved.pathname}${query ? `?${query}` : ""}`;
+  }
+
+  function cacheWindowMs(pathname) {
+    if (pathname === "/api/system/diagnostics") return 30_000;
+    if (pathname === "/api/repositories/recent") return 300_000;
+    if (pathname === "/api/history" || pathname === "/api/history/item") return 300_000;
+    if (pathname === "/api/repositories/current/system-health") return 30_000;
+    if (pathname === "/api/repositories/current/trust-status") return 30_000;
+    if (pathname === "/api/repositories/current/graph") return 30_000;
+    if (pathname === "/api/integrations/mcp/status") return 10_000;
+    if (pathname === "/api/product/config") return 60_000;
+    if (pathname === "/api/repositories/current/summary") return 5_000;
+    if (pathname === "/api/health") return 5_000;
+    return 0;
+  }
+
+  function recordCoordinator(entry) {
+    if (entry.type === "start") coordinatorStats.starts += 1;
+    if (entry.type === "complete") coordinatorStats.completed += 1;
+    if (entry.type === "failed") {
+      coordinatorStats.failed += 1;
+      if (entry.kind === "timeout") coordinatorStats.timeouts += 1;
+    }
+    if (entry.type === "coalesced") coordinatorStats.coalesced += 1;
+    if (entry.type === "cache_hit") coordinatorStats.cacheHits += 1;
+    coordinatorStats.maxInflight = Math.max(coordinatorStats.maxInflight, coordinatedInflight.size);
+    coordinatorTrace.push(entry);
+    if (coordinatorTrace.length > TRACE_LIMIT) coordinatorTrace.splice(0, coordinatorTrace.length - TRACE_LIMIT);
+    const root = global.document && global.document.documentElement;
+    if (root && typeof root.setAttribute === "function") {
+      root.setAttribute("data-atlas-request-coordinator", JSON.stringify({
+        inflight: coordinatedInflight.size,
+        cache: coordinatedCache.size,
+        repositoryGeneration,
+        stats: coordinatorStats,
+        heapUsed: Number(global.performance && global.performance.memory && global.performance.memory.usedJSHeapSize || 0),
+        trace: coordinatorTrace,
+      }));
+    }
+  }
+
+  function cancellationError(reason) {
+    const error = new Error(reason || "Atlas request cancelled.");
+    error.name = "AbortError";
+    error.kind = "cancelled";
+    error.code = "request_cancelled";
+    error.expected = true;
+    return error;
+  }
+
+  function attachConsumer(shared, signal) {
+    if (!signal) return shared;
+    if (signal.aborted) return Promise.reject(cancellationError("Atlas request cancelled before it started."));
+    return new Promise((resolve, reject) => {
+      const cancel = () => reject(cancellationError("Atlas request cancelled because its view is no longer active."));
+      signal.addEventListener("abort", cancel, { once: true });
+      shared.then((value) => {
+        signal.removeEventListener("abort", cancel);
+        resolve(value);
+      }, (error) => {
+        signal.removeEventListener("abort", cancel);
+        reject(error);
+      });
+    });
+  }
+
+  function invalidateCoordinated(reason) {
+    repositoryGeneration += 1;
+    coordinatedCache.clear();
+    recordCoordinator({ type: "invalidate", reason: String(reason || "state_change"), at: new Date().toISOString(), repositoryGeneration });
+    try {
+      global.document && global.document.dispatchEvent(new CustomEvent("atlas:repository-invalidated", {
+        detail: { reason: String(reason || "state_change"), repositoryGeneration },
+      }));
+    } catch (_error) {}
+  }
+
+  function mutationInvalidationScope(pathname) {
+    if (
+      pathname.startsWith("/api/repositories/")
+      || pathname === "/api/demo/load"
+      || pathname === "/api/system/clear-cache"
+      || pathname === "/api/system/rebuild-index"
+    ) return "repository";
+    if (pathname.startsWith("/api/copilot/") || pathname.startsWith("/api/planning/")) return "history";
+    return "";
+  }
+
+  function coordinatedRequest(path, options) {
+    const settings = options || {};
+    const method = String(settings.method || "GET").toUpperCase();
+    const resolved = resolveApiUrl(path);
+    if (method !== "GET") {
+      return request(path, settings).then((payload) => {
+        if (payload && payload.ok) {
+          const scope = mutationInvalidationScope(resolved.pathname);
+          if (scope) invalidateCoordinated(scope);
+        }
+        return payload;
+      });
+    }
+
+    const key = canonicalGetKey(path);
+    const now = Date.now();
+    const cached = coordinatedCache.get(key);
+    const ttl = cacheWindowMs(resolved.pathname);
+    if (!settings.force && cached && cached.expiresAt > now) {
+      recordCoordinator({ type: "cache_hit", key, at: new Date(now).toISOString(), ageMs: now - cached.storedAt, repositoryGeneration });
+      return attachConsumer(Promise.resolve(cached.value), settings.signal);
+    }
+
+    const active = coordinatedInflight.get(key);
+    if (active) {
+      active.consumers += 1;
+      recordCoordinator({ type: "coalesced", key, at: new Date(now).toISOString(), consumers: active.consumers, visible: !(global.document && global.document.hidden), repositoryGeneration });
+      return attachConsumer(active.promise, settings.signal);
+    }
+
+    const startedAt = now;
+    const requestSettings = { ...settings };
+    delete requestSettings.signal;
+    delete requestSettings.force;
+    delete requestSettings.optional;
+    const entry = { key, consumers: 1, startedAt, promise: null };
+    const shared = request(path, requestSettings).then((payload) => {
+      if (ttl > 0 && payload && payload.ok) {
+        coordinatedCache.set(key, { value: payload, storedAt: Date.now(), expiresAt: Date.now() + ttl, repositoryGeneration });
+      }
+      recordCoordinator({ type: "complete", key, at: new Date().toISOString(), durationMs: Date.now() - startedAt, consumers: entry.consumers, repositoryGeneration });
+      return payload;
+    }).catch((error) => {
+      if (settings.optional && cached && cached.value) {
+        recordCoordinator({ type: "stale_fallback", key, at: new Date().toISOString(), durationMs: Date.now() - startedAt, kind: error && error.kind, repositoryGeneration });
+        return cached.value;
+      }
+      recordCoordinator({ type: "failed", key, at: new Date().toISOString(), durationMs: Date.now() - startedAt, kind: error && error.kind, repositoryGeneration });
+      throw error;
+    }).finally(() => {
+      if (coordinatedInflight.get(key) === entry) coordinatedInflight.delete(key);
+      recordCoordinator({ type: "settled", key, at: new Date().toISOString(), repositoryGeneration });
+    });
+    entry.promise = shared;
+    coordinatedInflight.set(key, entry);
+    recordCoordinator({ type: "start", key, at: new Date(startedAt).toISOString(), visible: !(global.document && global.document.hidden), repositoryGeneration });
+    return attachConsumer(shared, settings.signal);
+  }
+
   function getTrace() {
     return trace.map((item) => ({ ...item, headers: { ...(item.headers || {}) }, responseHeaders: { ...(item.responseHeaders || {}) } }));
   }
@@ -279,6 +437,18 @@
     ensureRuntimeIdentity,
     runtimeIdentity: () => runtimeIdentityValue && { ...runtimeIdentityValue },
     AtlasTransportError,
+  });
+  global.atlasRequestCoordinator = Object.freeze({
+    request: coordinatedRequest,
+    invalidate: invalidateCoordinated,
+    getState: () => ({
+      inflight: Array.from(coordinatedInflight.keys()),
+      cache: Array.from(coordinatedCache.keys()),
+      trace: coordinatorTrace.map((item) => ({ ...item })),
+      stats: { ...coordinatorStats },
+      heapUsed: Number(global.performance && global.performance.memory && global.performance.memory.usedJSHeapSize || 0),
+      repositoryGeneration,
+    }),
   });
   publishTrace();
 })(window);
@@ -508,24 +678,29 @@ async function trackAnalytics(event, props) {
   } catch (e) { /* local-only, never block UX */ }
 }
 
-async function api(path, method = "GET", body, transportOptions = {}) {
+function api(path, method = "GET", body, transportOptions = {}) {
   const raw = String(path || "");
   const splitAt = raw.indexOf("?");
   const pathPart = splitAt >= 0 ? raw.slice(0, splitAt) : raw;
   const queryPart = splitAt >= 0 ? raw.slice(splitAt + 1) : "";
   const normalizedPath = pathPart.replace(/\/+$/, "") || "/api";
   const normalized = queryPart ? `${normalizedPath}?${queryPart}` : normalizedPath;
-  if (!window.atlasTransport) throw new Error("Atlas runtime transport is unavailable");
-  const payload = await window.atlasTransport.request(normalized, {
+  if (!window.atlasTransport) return Promise.reject(new Error("Atlas runtime transport is unavailable"));
+  const request = window.atlasRequestCoordinator && typeof window.atlasRequestCoordinator.request === "function"
+    ? window.atlasRequestCoordinator.request
+    : window.atlasTransport.request;
+  const payloadPromise = request(normalized, {
     ...transportOptions,
     method,
     body,
     requireAtlasIdentity: normalizedPath === "/api/health" || transportOptions.requireAtlasIdentity === true,
   });
-  if (payload && !payload.ok && String(payload.error || "").startsWith("Unknown endpoint")) {
-    console.error("Atlas API route missing:", method, normalized, payload.error);
-  }
-  return payload;
+  return payloadPromise.then((payload) => {
+    if (payload && !payload.ok && String(payload.error || "").startsWith("Unknown endpoint")) {
+      console.error("Atlas API route missing:", method, normalized, payload.error);
+    }
+    return payload;
+  });
 }
 window.api = api;
 
@@ -541,13 +716,14 @@ function requestAtlasRuntimeIdentity() {
 }
 window.requestAtlasRuntimeIdentity = requestAtlasRuntimeIdentity;
 
-function requestAtlasTrustStatus() {
-  if (window.atlasTrustRequest) return window.atlasTrustRequest;
-  const request = api("/api/repositories/current/trust-status");
+function requestAtlasTrustStatus(options = {}) {
+  const request = Object.keys(options).length
+    ? api("/api/repositories/current/trust-status", "GET", undefined, { optional: true, ...options })
+    : api("/api/repositories/current/trust-status");
   window.atlasTrustRequest = request;
-  request.then((value) => {
-    if ((!value || !value.ok) && window.atlasTrustRequest === request) window.atlasTrustRequest = null;
-  }).catch(() => {
+  request.then(() => {
+    if (window.atlasTrustRequest === request) window.atlasTrustRequest = null;
+  }, () => {
     if (window.atlasTrustRequest === request) window.atlasTrustRequest = null;
   });
   return request;

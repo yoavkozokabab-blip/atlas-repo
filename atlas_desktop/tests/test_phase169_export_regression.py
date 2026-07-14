@@ -26,7 +26,7 @@ FORBIDDEN_MINIMAL = (
 )
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture()
 def scanned_repo():
     api._STATE.clear()  # type: ignore[attr-defined]
     scan = api.scan_repository(str(REF_REPO))

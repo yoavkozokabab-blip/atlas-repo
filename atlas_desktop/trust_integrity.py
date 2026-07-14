@@ -417,7 +417,9 @@ def record_workflow_context(
     state["active_memory_ref"] = ctx["memory_ref"]
 
 
-def assess_staleness(state: Dict[str, Any]) -> Dict[str, Any]:
+def assess_staleness(
+    state: Dict[str, Any], *, live_signature: Optional[Dict[str, Any]] = None
+) -> Dict[str, Any]:
     """Classify repo changes vs last scan and Atlas plan scope."""
     scan = state.get("scan")
     path = state.get("path") or (scan or {}).get("repo_path")
@@ -446,17 +448,17 @@ def assess_staleness(state: Dict[str, Any]) -> Dict[str, Any]:
     scope = scan.get("scope") or state.get("last_scope") or {"mode": "entire_repo"}
     prev = stored_signature(state)
     signature_version = int((prev or {}).get("version") or LEGACY_SIGNATURE_VERSION)
-    live = compute_signature_v2(
+    live = live_signature or compute_signature_v2(
         str(path), scope, include_content_hash=True, signature_version=signature_version
     )
-    # Keep the live identity from this traversal so diagnostics can report it
-    # without walking and hashing a large repository a second time.
-    base["live_signature"] = live.get("signature")
     git_head_changed = False
     if prev:
         prev_git = prev.get("git_head")
         live_git = live.get("git_head")
         git_head_changed = bool(prev_git and live_git and prev_git != live_git)
+
+    if not git_head_changed and prev and live.get("signature") == prev.get("signature"):
+        return base
 
     changed = detect_changed_files(state)
     if (
@@ -774,29 +776,46 @@ def trust_integrity_diagnostics(
     state: Dict[str, Any],
     *,
     staleness: Optional[Dict[str, Any]] = None,
+    live_signature: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """Expose trust-integrity status for support bundles."""
     scan = state.get("scan") or {}
+    live = live_signature
+    stale = None
+    path = state.get("path") or scan.get("repo_path")
+    if staleness is None and path and scan:
+        scope = scan.get("scope") or state.get("last_scope") or {"mode": "entire_repo"}
+        try:
+            prev = stored_signature(state) or {}
+            live = compute_signature_v2(
+                str(path),
+                scope,
+                include_content_hash=True,
+                signature_version=int(prev.get("version") or LEGACY_SIGNATURE_VERSION),
+            )
+            staleness = assess_staleness(state, live_signature=live)
+            if not staleness.get("fresh"):
+                stale = {
+                    "ok": False,
+                    "status": staleness.get("status") or "stale_scan",
+                    "trust_status": staleness,
+                }
+        except Exception as exc:
+            stale = {"ok": False, "status": "signature_error", "error": str(exc)}
+    gh = scan.get("graph_health") or {}
     if staleness is None:
         try:
-            staleness = assess_staleness(state)
+            staleness = assess_staleness(state, live_signature=live)
         except Exception as exc:
-            staleness = {
-                "fresh": False,
-                "status": "signature_error",
-                "message": str(exc),
-                "changed_files": [],
-                "targeted_refresh_available": False,
-                "repo_changed_outside_plan": False,
-            }
-    gh = scan.get("graph_health") or {}
-    is_stale = not bool(staleness.get("fresh"))
+            staleness = {"fresh": False, "status": "signature_error", "error": str(exc)}
     return {
         "signature_version": SIGNATURE_VERSION,
         "stored_signature": (stored_signature(state) or {}).get("signature"),
-        "live_signature": staleness.get("live_signature"),
-        "scan_stale": is_stale,
-        "stale_status": staleness.get("status") if is_stale else None,
+        "live_signature": staleness.get("live_signature") or (live or {}).get("signature"),
+        "scan_stale": bool(stale or not staleness.get("fresh", False)),
+        "stale_status": (stale or {}).get("status") or (
+            None if staleness.get("fresh") else staleness.get("status")
+        ),
         "targeted_refresh_available": staleness.get("targeted_refresh_available", False),
         "repo_changed_outside_plan": staleness.get("repo_changed_outside_plan", False),
         "changed_files": staleness.get("changed_files", []),

@@ -13,6 +13,7 @@ Search ``MOCK``/``TODO`` for those spots.
 from __future__ import annotations
 
 import base64
+import copy
 import fnmatch
 import hashlib
 import io
@@ -21,6 +22,7 @@ import math
 import os
 import re
 import time
+import threading
 import uuid
 import zipfile
 from typing import Any, Dict, List, Optional, Set, Tuple
@@ -141,6 +143,74 @@ _STATE: Dict[str, Any] = {
 }
 
 _PERSISTENCE_BOOTSTRAPPED = False
+_PERSISTENCE_BOOTSTRAP_LOCK = threading.Lock()
+_TRUST_WORK_LOCK = threading.Lock()
+_TRUST_CACHE: Dict[str, Any] = {"key": None, "at": 0.0, "status": None}
+_DIAGNOSTICS_WORK_LOCK = threading.Lock()
+_DIAGNOSTICS_CACHE: Dict[str, Any] = {"key": None, "at": 0.0, "value": None}
+
+
+def _trust_state_snapshot() -> Dict[str, Any]:
+    """Copy only freshness inputs while holding the shared state lock briefly."""
+    with _ti.state_guard():
+        index = _STATE.get("index") or {}
+        return {
+            "path": _STATE.get("path"),
+            "scan": copy.deepcopy(_STATE.get("scan")),
+            "last_scope": copy.deepcopy(_STATE.get("last_scope")),
+            "file_manifest": copy.deepcopy(_STATE.get("file_manifest") or {}),
+            "index": {"files": copy.deepcopy(index.get("files") or [])},
+            "workflow_context": copy.deepcopy(_STATE.get("workflow_context") or {}),
+            "active_memory_ref": _STATE.get("active_memory_ref"),
+            "refresh_generation": int(_STATE.get("refresh_generation") or 0),
+            "memory_persistence_status": _STATE.get("memory_persistence_status", "unknown"),
+            "memory_persistence_error": _STATE.get("memory_persistence_error"),
+        }
+
+
+def _trust_snapshot_key(snapshot: Dict[str, Any]) -> str:
+    signature = (_ti.stored_signature(snapshot) or {}).get("signature") or ""
+    return "|".join((
+        str(snapshot.get("path") or ""),
+        str(signature),
+        str(snapshot.get("refresh_generation") or 0),
+        str(id(_ti.assess_staleness)),
+        _json.dumps(snapshot.get("last_scope") or {}, sort_keys=True, default=str),
+    ))
+
+
+def _responsive_staleness(*, max_age_seconds: float = 30.0) -> Tuple[Dict[str, Any], Dict[str, Any]]:
+    """Single-flight expensive filesystem freshness work without blocking state reads."""
+    snapshot = _trust_state_snapshot()
+    key = _trust_snapshot_key(snapshot)
+    now = time.monotonic()
+    with _TRUST_WORK_LOCK:
+        cached = _TRUST_CACHE.get("status")
+        if cached is not None and _TRUST_CACHE.get("key") == key and now - float(_TRUST_CACHE.get("at") or 0.0) <= max_age_seconds:
+            return copy.deepcopy(cached), snapshot
+        status = _ti.assess_staleness(snapshot)
+        _TRUST_CACHE.update({"key": key, "at": time.monotonic(), "status": copy.deepcopy(status)})
+        return status, snapshot
+
+
+def _responsive_trust_diagnostics(
+    *,
+    staleness: Optional[Dict[str, Any]] = None,
+    snapshot: Optional[Dict[str, Any]] = None,
+    max_age_seconds: float = 30.0,
+) -> Dict[str, Any]:
+    snapshot = snapshot or _trust_state_snapshot()
+    key = _trust_snapshot_key(snapshot)
+    now = time.monotonic()
+    with _DIAGNOSTICS_WORK_LOCK:
+        cached = _DIAGNOSTICS_CACHE.get("value")
+        if cached is not None and _DIAGNOSTICS_CACHE.get("key") == key and now - float(_DIAGNOSTICS_CACHE.get("at") or 0.0) <= max_age_seconds:
+            return copy.deepcopy(cached)
+        if staleness is None:
+            staleness, snapshot = _responsive_staleness(max_age_seconds=max_age_seconds)
+        value = _ti.trust_integrity_diagnostics(snapshot, staleness=staleness)
+        _DIAGNOSTICS_CACHE.update({"key": key, "at": time.monotonic(), "value": copy.deepcopy(value)})
+        return value
 
 
 def _persist_scan_snapshot() -> None:
@@ -180,7 +250,7 @@ def _save_workflow_history(workflow_type: str, request_text: str, result: Dict[s
         pass
 
 
-def bootstrap_persistence(*, auto_restore: bool = True) -> Dict[str, Any]:
+def _bootstrap_persistence_impl(*, auto_restore: bool = True) -> Dict[str, Any]:
     """Startup hook — cleanup, optional restore of freshest valid scan."""
     global _PERSISTENCE_BOOTSTRAPPED
     status: Dict[str, Any] = {"ok": True, "restored": False, "resume_card": None}
@@ -234,11 +304,24 @@ def bootstrap_persistence(*, auto_restore: bool = True) -> Dict[str, Any]:
     if auto_restore and validation.get("status") == "valid" and record.get("repo_id"):
         bundle = _persist.load_scan_state(_desktop_data_dir(), record["repo_id"])
         if bundle and bundle.get("graph") and bundle.get("index"):
-            _persist.restore_into_state(_STATE, bundle, data_dir=_desktop_data_dir())
+            with _ti.state_guard():
+                _persist.restore_into_state(_STATE, bundle, data_dir=_desktop_data_dir())
             status["restored"] = True
     _STATE["persistence_status"] = status
     _PERSISTENCE_BOOTSTRAPPED = True
     return status
+
+
+def bootstrap_persistence(*, auto_restore: bool = True) -> Dict[str, Any]:
+    """Single-flight startup restore; filesystem validation never holds the state lock."""
+    with _PERSISTENCE_BOOTSTRAP_LOCK:
+        if _PERSISTENCE_BOOTSTRAPPED:
+            return _STATE.get("persistence_status") or {
+                "ok": True,
+                "restored": bool(_STATE.get("scan")),
+                "resume_card": None,
+            }
+        return _bootstrap_persistence_impl(auto_restore=auto_restore)
 
 
 def restore_persisted_session() -> Dict[str, Any]:
@@ -323,10 +406,9 @@ def restore_persisted_session() -> Dict[str, Any]:
 
 
 def list_recent_repositories() -> Dict[str, Any]:
-    with _ti.state_guard():
-        bootstrap_persistence(auto_restore=False)
-        items = _persist.list_recent_scans(_desktop_data_dir())
-        return {"ok": True, "items": items}
+    bootstrap_persistence(auto_restore=False)
+    items = _persist.list_recent_scans(_desktop_data_dir())
+    return {"ok": True, "items": items}
 
 
 def resume_persisted_repository(repo_id: str) -> Dict[str, Any]:
@@ -1806,27 +1888,25 @@ def export_support_bundle() -> Dict[str, Any]:
 
 def trust_integrity_status() -> Dict[str, Any]:
     """Expose staleness / targeted-refresh state for UI (no automatic actions)."""
-    with _ti.state_guard():
-        status = _ti.assess_staleness(_STATE)
-        ctx = _STATE.get("workflow_context") or {}
-        scan = _STATE.get("scan") or {}
-        gh = scan.get("graph_health") or {}
-        graph_label = gh.get("label") if isinstance(gh, dict) else str(gh or "")
-        user_label = _product.user_trust_label(status, graph_label=graph_label)
-        return {
-            "ok": True,
-            # Whether a repository is actively scanned. The trust/staleness bar is
-            # meaningless with no repo, so the UI hides it when this is false
-            # (avoids a contradictory "Full rescan required" on a fresh first run).
-            "has_repo": bool(_STATE.get("scan") or _STATE.get("path")),
-            "trust_status": status,
-            "user_trust_label": user_label,
-            "targeted_refresh_available": status.get("targeted_refresh_available", False),
-            "repo_changed_outside_plan": status.get("repo_changed_outside_plan", False),
-            "workflow_context": ctx if ctx else None,
-            "refresh_generation": int(_STATE.get("refresh_generation") or 0),
-            "active_memory_ref": _STATE.get("active_memory_ref"),
-        }
+    status, snapshot = _responsive_staleness()
+    ctx = snapshot.get("workflow_context") or {}
+    scan = snapshot.get("scan") or {}
+    gh = scan.get("graph_health") or {}
+    graph_label = gh.get("label") if isinstance(gh, dict) else str(gh or "")
+    user_label = _product.user_trust_label(status, graph_label=graph_label)
+    return {
+        "ok": True,
+        # Whether a repository is actively scanned. The trust/staleness bar is
+        # meaningless with no repo, so the UI hides it when this is false.
+        "has_repo": bool(scan or snapshot.get("path")),
+        "trust_status": status,
+        "user_trust_label": user_label,
+        "targeted_refresh_available": status.get("targeted_refresh_available", False),
+        "repo_changed_outside_plan": status.get("repo_changed_outside_plan", False),
+        "workflow_context": ctx if ctx else None,
+        "refresh_generation": int(snapshot.get("refresh_generation") or 0),
+        "active_memory_ref": snapshot.get("active_memory_ref"),
+    }
 
 
 def product_config() -> Dict[str, Any]:
@@ -2086,6 +2166,9 @@ def beta_diagnostics(*, staleness: Optional[Dict[str, Any]] = None) -> Dict[str,
     summary = current_summary()
     gh = (summary.get("graph_health") or {}) if summary.get("ok") else {}
     perf = _STATE.get("scan_perf") or {}
+    snapshot = None
+    if staleness is None:
+        staleness, snapshot = _responsive_staleness()
     return {
         "ok": True,
         "product": "ATLAS",
@@ -2119,8 +2202,8 @@ def beta_diagnostics(*, staleness: Optional[Dict[str, Any]] = None) -> Dict[str,
         "scope": scan.get("scope") or _STATE.get("last_scope"),
         "reliability": scan.get("reliability") or {},
         "data_dir": _desktop_data_dir_for_diagnostics(),
-        "trust_integrity": _ti.trust_integrity_diagnostics(
-            _STATE, staleness=staleness
+        "trust_integrity": _responsive_trust_diagnostics(
+            staleness=staleness, snapshot=snapshot
         ),
     }
 
@@ -2143,7 +2226,7 @@ def beta_system_health(*, staleness: Optional[Dict[str, Any]] = None) -> Dict[st
     ev = summary.get("evidence_coverage") or {}
     perf = _STATE.get("scan_perf") or {}
     if staleness is None:
-        staleness = _ti.assess_staleness(_STATE)
+        staleness, _snapshot = _responsive_staleness()
     gh_label = gh.get("label") or "unknown"
     return {
         "ok": True,

@@ -742,8 +742,8 @@ vm.runInContext(source, context);
     assert result["requested"] == [
         "/api/repositories/current/summary",
         "/api/history",
-        "/api/system/diagnostics",
         "/api/health",
+        "/api/repositories/current/trust-status",
     ]
     assert not any("/scan" in path for path in result["requested"])
 

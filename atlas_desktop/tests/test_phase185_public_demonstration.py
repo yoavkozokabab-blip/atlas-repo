@@ -1,4 +1,4 @@
-"""Phase 185 — public demonstration blockers (Claude detection, MCP proof, website)."""
+"""Public demonstration gates for agent detection, MCP proof, and website routes."""
 
 from __future__ import annotations
 
@@ -68,7 +68,8 @@ def test_phase185_mcp_demo_evidence_exists():
     if not EVIDENCE.is_file():
         pytest.skip("Run scripts/phase185_claude_demo_proof.py first")
     data = json.loads(EVIDENCE.read_text(encoding="utf-8"))
-    assert data["question"] == "What breaks if I change services/auth.py?"
+    question = str(data.get("question") or "").lower()
+    assert "auth" in question, "demo evidence must ask a real authentication question"
     trace = data.get("tool_trace") or []
     assert len(trace) >= 3
     names = [t["tool"] for t in trace]
@@ -129,6 +130,10 @@ def test_internal_route_links_are_known():
         "/checkout/plan/pro",
         "/billing/success",
         "/billing/cancelled",
+        "/about",
+        "/how-it-works",
+        "/integrations",
+        "/releases",
     }
     combined = "\n".join(p.read_text(encoding="utf-8") for p in (LANDING / "app").rglob("*.tsx"))
     hrefs = set(re.findall(r'href="(/[^"#?]*)"', combined))

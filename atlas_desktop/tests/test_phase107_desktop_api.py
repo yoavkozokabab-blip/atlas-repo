@@ -126,7 +126,7 @@ def test_context_export_shape_and_targets(scanned):
 
 
 # --- server dispatch (framework-free routing) ---------------------------
-def test_dispatch_all_routes(tmp_path):
+def test_dispatch_all_routes(tmp_path, local_guest_account):
     root = _repo(tmp_path)
     assert server.dispatch("GET", "/api/health")[0] == 200
     assert server.dispatch("POST", "/api/repositories/select", {"path": str(root)})[1]["ok"]

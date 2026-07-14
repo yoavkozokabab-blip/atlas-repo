@@ -10,6 +10,9 @@
     memoryConcepts: [],
     selectedConcept: 0,
     homeRenderToken: 0,
+    memoryRenderToken: 0,
+    scheduledViews: new Map(),
+    initialized: false,
   };
 
   const byId = (id) => document.getElementById(id);
@@ -293,12 +296,22 @@
     if (facts && summary?.ok) facts.innerHTML = [["Repository", summary.repo_name], ["Freshness", known ? (fresh ? "Current" : "Review") : "Verifying"], ["Persistence", restored ? "Restored" : "Local"], ["Concepts", workbench.memoryConcepts.length], ["Modules", summary.module_count], ["Graph", summary.graph_health?.label]].map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join("");
   }
 
-  async function renderMemoryWorkbench() {
-    const [summary, history, diagnostics, health, graph] = await Promise.all([
-      get("/api/repositories/current/summary"), get("/api/history"), get("/api/system/diagnostics"), get("/api/health"), get("/api/repositories/current/graph?view=module"),
+  async function renderMemoryWorkbench(context = null) {
+    if (!context && window.atlasDesktopShell && typeof window.atlasDesktopShell.renderMemory === "function") {
+      return window.atlasDesktopShell.renderMemory();
+    }
+    const token = ++workbench.memoryRenderToken;
+    const [summary, history, health, graph] = await Promise.all([
+      context?.summary || get("/api/repositories/current/summary"),
+      context?.history || get("/api/history"),
+      context?.health || get("/api/health"),
+      context?.graph || get("/api/repositories/current/graph?view=module"),
     ]);
+    if (token !== workbench.memoryRenderToken) return null;
+    const active = document.querySelector(".view.active");
+    if (active && active.id !== "view-memory") return null;
     if (!summary?.ok) return;
-    const trust = workbench.trust || trustFromHealth(health);
+    const trust = context?.trust || workbench.trust || trustFromHealth(health);
     const concepts = list(summary.subsystems).map(conceptFromSubsystem);
     if (!concepts.length) concepts.push({ name: "Repository structure", count: summary.module_count, description: summary.explanation || "Repository-wide structural model.", files: summary.entry_points || [], dependencies: [] });
     workbench.memoryConcepts = concepts;
@@ -448,26 +461,42 @@
         const nextHomeState = home.dataset.homeState || "";
         if (nextHomeState === previousHomeState) return;
         previousHomeState = nextHomeState;
-        if (nextHomeState === "productive") window.setTimeout(renderHomeWorkbench, 30);
+        if (nextHomeState === "productive") scheduleView("home", renderHomeWorkbench, 30);
       }).observe(home, { attributes: true, attributeFilter: ["data-home-state"] });
     }
   }
 
+  function scheduleView(view, renderer, delay = 0) {
+    const pending = workbench.scheduledViews.get(view);
+    if (pending) window.clearTimeout(pending);
+    const timer = window.setTimeout(() => {
+      workbench.scheduledViews.delete(view);
+      const active = document.querySelector(".view.active");
+      if (active && active.id !== `view-${view}`) return;
+      renderer();
+    }, delay);
+    workbench.scheduledViews.set(view, timer);
+  }
+
   function onView(view) {
-    if (view === "home") renderHomeWorkbench();
-    if (view === "memory") window.setTimeout(renderMemoryWorkbench, 40);
-    if (view === "ask") window.setTimeout(renderAskContext, 40);
-    if (view === "agents") window.setTimeout(renderAgentsWorkbench, 80);
-    if (view === "diagnostics") window.setTimeout(decorateDiagnostics, 300);
+    if (view === "home") scheduleView("home", renderHomeWorkbench, 20);
+    if (view === "ask") scheduleView("ask", renderAskContext, 40);
+    if (view === "agents") scheduleView("agents", renderAgentsWorkbench, 80);
+    if (view === "diagnostics") scheduleView("diagnostics", decorateDiagnostics, 300);
   }
 
   function init() {
+    if (workbench.initialized) return;
+    workbench.initialized = true;
     restoreSidebar();
     installObservers();
     document.addEventListener("atlas:viewchange", (event) => onView(event.detail?.view));
-    document.addEventListener("atlas:authenticated", () => window.setTimeout(renderHomeWorkbench, 100));
-    window.setTimeout(renderHomeWorkbench, 180);
-    window.setTimeout(renderAskContext, 240);
+    document.addEventListener("atlas:authenticated", () => {
+      const active = document.querySelector(".view.active");
+      onView(active?.id?.replace(/^view-/, "") || "home");
+    });
+    const active = document.querySelector(".view.active");
+    onView(active?.id?.replace(/^view-/, "") || "home");
   }
 
   Object.assign(workbench, { toggleSidebar, renderHomeWorkbench, renderMemoryWorkbench, renderAskContext, renderAgentsWorkbench, decorateDiagnostics, selectMemoryConcept, filterMemory, searchGraph, syncAskEvidence });

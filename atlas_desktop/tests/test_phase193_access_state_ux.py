@@ -1,12 +1,10 @@
-"""Phase 193 — Access State UX redesign.
+"""Access-state UX contract.
 
 A successful login must never strand the user on a blocking "Access inactive"
 wall. Every signed-in account resolves to a useful in-app dashboard:
 
     active / beta      -> product home (with a dashboard header)
-    pending            -> "Application received" dashboard
-    inactive / expired -> "Account not active" dashboard
-    rejected           -> "Application not approved" dashboard
+    pending / inactive / expired / rejected -> neutral inactive dashboard
 
 This module covers the static frontend contract plus the accounts-service
 behaviour that makes those states reachable (non-punitive statuses now receive a
@@ -37,7 +35,7 @@ def test_in_app_status_view_exists_with_branding_kept():
     assert 'id="statusDashMessage"' in INDEX
     assert 'id="statusDashSteps"' in INDEX
     # The status view lives in #app (after the topbar), not inside #auth-layout.
-    app_pos = INDEX.find('<main id="app">')
+    app_pos = INDEX.find('id="app"')
     auth_pos = INDEX.find('id="auth-layout"')
     assert auth_pos < app_pos < INDEX.find('id="view-status"')
 
@@ -54,8 +52,7 @@ def test_status_dashboards_have_required_actions():
 
 
 def test_status_dashboard_titles_match_spec():
-    for title in ("Application received", "Account not active", "Application not approved"):
-        assert title in ACCOUNTS_JS, title
+    assert "Account not active" in ACCOUNTS_JS
 
 
 def test_home_dashboard_present_with_productive_actions():
@@ -64,8 +61,9 @@ def test_home_dashboard_present_with_productive_actions():
     assert 'id="homeStatusPill"' in INDEX
     assert 'id="homeRepoStatus"' in INDEX
     assert 'id="homeRecentAnalyses"' in INDEX
-    quick = INDEX[INDEX.find('class="atlas-home-suggestions"'):]
-    for action in ("Ask Atlas", "Investigate an error", "See what breaks"):
+    quick = INDEX[INDEX.find('id="homeRecommendedQuestions"'):]
+    assert 'id="homeAskInput"' in INDEX
+    for action in ("Investigate an error", "See what breaks"):
         assert action in quick, action
 
 
@@ -96,7 +94,7 @@ def test_status_dashboard_styles_present():
 
 # ── Accounts-service behaviour ──────────────────────────────────────────────────
 os.environ.setdefault("ATLAS_ACCOUNTS_DB", "sqlite:///./test_accounts_193ux.db")
-os.environ.setdefault("ATLAS_JWT_SECRET", "test-secret-193ux")
+os.environ.setdefault("ATLAS_JWT_SECRET", "test-secret-193ux-at-least-32-bytes")
 _LIB = os.path.join(Path(__file__).resolve().parents[2], "accounts_service", ".lib")
 if _LIB not in sys.path:
     sys.path.insert(0, _LIB)

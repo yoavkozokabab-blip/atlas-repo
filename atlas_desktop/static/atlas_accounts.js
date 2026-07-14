@@ -46,7 +46,10 @@
       return Promise.resolve({ ok: false, code: 'transport_unavailable', error: 'Account endpoint unavailable', transport_error: true, transport_kind: 'unavailable' });
     }
     const accountRequest = String(path || '').startsWith('/api/accounts/');
-    return window.atlasTransport.request(path, { method, body, ...(accountRequest ? { scope: 'account' } : {}) }).catch(error => ({
+    const request = window.atlasRequestCoordinator && typeof window.atlasRequestCoordinator.request === 'function'
+      ? window.atlasRequestCoordinator.request
+      : window.atlasTransport.request;
+    return request(path, { method, body, ...(accountRequest ? { scope: 'account' } : {}) }).catch(error => ({
       ok: false,
       code: error && error.code || 'transport_network_error',
       error: error && error.kind === 'timeout'

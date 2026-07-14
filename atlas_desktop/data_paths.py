@@ -14,6 +14,8 @@ _FALLBACK_KIND: Optional[str] = None
 # directory into later calls.
 _RESOLVED_FROM_OVERRIDE: Optional[str] = None
 _MIGRATION_RESULT: Optional[dict] = None
+_TEST_MODE_ENV = "ATLAS_TEST_MODE"
+_PROTECTED_ROOT_ENV = "ATLAS_TEST_PROTECTED_DATA_ROOT"
 
 
 def _is_writable(path: str) -> bool:
@@ -44,6 +46,46 @@ def _user_home() -> str:
 
 def canonical_desktop_data_dir() -> str:
     return os.path.join(_user_home(), ".atlas_desktop")
+
+
+def _env_truthy(name: str) -> bool:
+    return os.environ.get(name, "").strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _normalized_path(path: str) -> str:
+    return os.path.normcase(os.path.abspath(os.path.realpath(path)))
+
+
+def protected_test_data_root() -> str:
+    """Return the real user root tests are forbidden to access.
+
+    The test supervisor captures this before tests can monkeypatch USERPROFILE.
+    Standalone test-mode children fall back to the process' canonical root.
+    """
+    configured = os.environ.get(_PROTECTED_ROOT_ENV, "").strip()
+    return os.path.abspath(configured or canonical_desktop_data_dir())
+
+
+def assert_safe_test_data_dir(path: str) -> str:
+    """Fail closed when test mode targets the real Atlas user-data tree."""
+    resolved = os.path.abspath(path or "")
+    if not _env_truthy(_TEST_MODE_ENV):
+        return resolved
+    if not path:
+        raise RuntimeError("Atlas test mode requires an explicit isolated data root.")
+
+    candidate = _normalized_path(resolved)
+    protected = _normalized_path(protected_test_data_root())
+    try:
+        inside_protected = os.path.commonpath([candidate, protected]) == protected
+    except ValueError:
+        inside_protected = candidate == protected
+    if inside_protected:
+        raise RuntimeError(
+            "Atlas test mode refused the protected canonical data root: "
+            f"{protected_test_data_root()}"
+        )
+    return resolved
 
 
 def _candidate_dirs() -> List[Tuple[str, str]]:
@@ -79,15 +121,17 @@ def resolve_desktop_data_dir(*, force: bool = False) -> str:
     global _RESOLVED_DIR, _FALLBACK_KIND, _RESOLVED_FROM_OVERRIDE
 
     override = _current_override()
+    if _env_truthy(_TEST_MODE_ENV) and not override:
+        raise RuntimeError("Atlas test mode requires ATLAS_DESKTOP_DATA for every process.")
     if override:
-        path = os.path.abspath(override)
+        path = assert_safe_test_data_dir(override)
         _RESOLVED_DIR = path
         _FALLBACK_KIND = None
         _RESOLVED_FROM_OVERRIDE = override
         return path
 
     if _RESOLVED_DIR and not force and not _RESOLVED_FROM_OVERRIDE:
-        return _RESOLVED_DIR
+        return assert_safe_test_data_dir(_RESOLVED_DIR)
 
     for path, kind in _candidate_dirs():
         if _is_writable(path):

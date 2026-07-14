@@ -19,6 +19,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 from . import repository_memory as _repo_memory
+from .data_paths import assert_safe_test_data_dir
 from .product_info import PRODUCT_VERSION
 
 MAX_SCANS = 10
@@ -111,6 +112,7 @@ def _compute_history_integrity_hash(record: Dict[str, Any]) -> str:
 
 
 def _security_dir(data_dir: str) -> str:
+    data_dir = assert_safe_test_data_dir(data_dir)
     path = os.path.join(data_dir, "security")
     os.makedirs(path, exist_ok=True)
     return path
@@ -324,12 +326,14 @@ def _parse_iso(ts: str) -> Optional[datetime]:
 
 
 def _scans_root(data_dir: str) -> str:
+    data_dir = assert_safe_test_data_dir(data_dir)
     path = os.path.join(data_dir, "scans")
     os.makedirs(path, exist_ok=True)
     return path
 
 
 def _histories_root(data_dir: str) -> str:
+    data_dir = assert_safe_test_data_dir(data_dir)
     path = os.path.join(data_dir, "histories")
     os.makedirs(path, exist_ok=True)
     return path

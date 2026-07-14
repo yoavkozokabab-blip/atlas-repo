@@ -8,6 +8,15 @@
     trustTimer: null,
     trustPromise: null,
     trustValue: null,
+    memory: {
+      state: "idle",
+      generation: 0,
+      repositoryKey: "",
+      controller: null,
+      data: null,
+      lastError: null,
+    },
+    initialized: false,
   };
 
   const byId = (id) => document.getElementById(id);
@@ -40,7 +49,7 @@
   }
 
   function scheduleTrustCheck(delay = 6000) {
-    if (shell.trustPromise || shell.trustTimer) return;
+    if (shell.trustValue || shell.trustPromise || shell.trustTimer || document.hidden) return;
     shell.trustTimer = window.setTimeout(() => {
       shell.trustTimer = null;
       const request = typeof window.requestAtlasTrustStatus === "function"
@@ -51,7 +60,7 @@
         if (!value || !value.ok) return;
         shell.trustValue = value;
         updateGlobalStatus();
-        if (document.querySelector('.view.active')?.id === "view-memory") renderMemory();
+        try { document.dispatchEvent(new CustomEvent("atlas:trust-status", { detail: value })); } catch (_error) {}
       }).catch(() => null).finally(() => {
         if (shell.trustPromise === request) shell.trustPromise = null;
       });
@@ -108,7 +117,7 @@
     const card = health?.persistence?.resume_card;
     const startupFresh = card?.freshness_status === "fresh" && card?.validation_status === "valid";
     const trust = shell.trustValue || (startupFresh ? { fresh: true, user_trust_label: "Fresh" } : null);
-    scheduleTrustCheck();
+    if (!trust) scheduleTrustCheck();
     if (!trust) {
       readiness.dataset.state = "neutral";
       label.textContent = "Verifying memory";
@@ -119,7 +128,7 @@
     label.textContent = stale ? "Repository changed" : "Memory current";
   }
 
-  async function renderMemory() {
+  async function renderMemoryLegacy() {
     const status = byId("memoryStatusStrip");
     const freshness = byId("memoryFreshnessLabel");
     const facts = byId("memoryFacts");
@@ -131,7 +140,7 @@
     const memoryRequests = await Promise.allSettled([
       api("/api/repositories/current/summary"),
       api("/api/history"),
-      api("/api/system/diagnostics"),
+      Promise.resolve(null),
       api("/api/health"),
     ]);
     const [summaryResult, historyResult, diagnosticsResult, healthResult] = memoryRequests;
@@ -206,6 +215,184 @@
     history.innerHTML = items.length
       ? items.slice(0, 12).map((item) => `<article class="technical-row"><strong>${escapeHtml(item.title || item.request_text || item.workflow_type || "Analysis")}</strong><span>${escapeHtml(item.created_at || item.updated_at || "Saved locally")}</span></article>`).join("")
       : emptyState("No saved investigations or plans for this repository yet.");
+  }
+
+  function memoryRepositoryKey(summary = window.STATE && STATE.summary) {
+    return text(summary && (summary.repo_id || summary.repo_path || summary.repo_name), "");
+  }
+
+  function memoryViewIsActive() {
+    const active = document.querySelector(".view.active");
+    return !active || active.id === "view-memory";
+  }
+
+  function memoryRequestIsCurrent(generation, repositoryKey) {
+    if (generation !== shell.memory.generation || !memoryViewIsActive()) return false;
+    const currentKey = memoryRepositoryKey();
+    return !repositoryKey || !currentKey || currentKey === repositoryKey;
+  }
+
+  function setMemoryState(state, generation, detail = {}) {
+    if (generation !== shell.memory.generation) return false;
+    shell.memory.state = state;
+    shell.memory.lastError = detail.error || null;
+    const host = byId("memoryStatusStrip");
+    if (host) host.dataset.memoryState = state;
+    try { document.dispatchEvent(new CustomEvent("atlas:memory-state", { detail: { state, generation, ...detail } })); } catch (_error) {}
+    return true;
+  }
+
+  function cancelMemoryRender(reason = "navigation", reset = false) {
+    if (shell.memory.controller) shell.memory.controller.abort(reason);
+    shell.memory.controller = null;
+    shell.memory.generation += 1;
+    if (reset) {
+      shell.memory.state = "idle";
+      shell.memory.repositoryKey = "";
+      shell.memory.data = null;
+      shell.memory.lastError = null;
+    }
+  }
+
+  function paintMemorySnapshot(summary, historyData, healthPayload, liveTrust, generation) {
+    const status = byId("memoryStatusStrip");
+    const freshness = byId("memoryFreshnessLabel");
+    const facts = byId("memoryFacts");
+    const evidence = byId("memoryEvidence");
+    const history = byId("memoryHistory");
+    if (!status || !freshness || !facts || !evidence || !history || !summary || !summary.ok) return null;
+    const card = healthPayload?.persistence?.resume_card;
+    const startupFresh = card?.freshness_status === "fresh" && card?.validation_status === "valid";
+    const trust = liveTrust || shell.trustValue || (startupFresh ? { fresh: true, user_trust_label: "Fresh" } : null);
+    const isStale = !!(trust && (trust.scan_stale || trust.fresh === false || trust.stale_status || trust.trust_status?.fresh === false));
+    const trustLabel = trust ? text(trust.user_trust_label || trust.label, isStale ? "Needs refresh" : "Fresh") : "Verifying";
+    const restored = !!(healthPayload?.persistence?.ok && healthPayload?.persistence?.restored);
+    const stableState = trust ? (isStale ? "loaded_review_needed" : "loaded_fresh") : "partial";
+    setMemoryState(stableState, generation);
+    status.innerHTML = `${statusPill(trustLabel, trust ? (isStale ? "warning" : "ready") : "neutral")} ${trust ? (isStale ? "Repository files changed after the stored scan. Refresh before relying on downstream analysis." : "Repository memory matches the last verified scan and is ready for analysis.") : "Signed facts are loaded. Live freshness can be retried without blocking Memory."}`;
+    freshness.textContent = trustLabel;
+    freshness.dataset.state = trust ? (isStale ? "warning" : "ready") : "neutral";
+
+    const coverage = summary.evidence_coverage || {};
+    const graphHealth = summary.graph_health || {};
+    facts.innerHTML = factRows([
+      ["Repository", summary.repo_name],
+      ["Indexed files", number(summary.file_count)],
+      ["Modules", number(summary.module_count)],
+      ["Dependencies", number(summary.dependency_edges)],
+      ["Indexed symbols", number(coverage.symbol_count)],
+      ["Files with symbol evidence", number(coverage.files_with_symbols)],
+      ["Graph reliability", graphHealth.label || summary.graph_quality || "Unknown"],
+      ["Signed persistence", restored ? "Restored and verified" : "Verified locally"],
+    ]);
+
+    const evidenceItems = [];
+    list(summary.subsystems).slice(0, 8).forEach((item) => {
+      const isName = typeof item === "string";
+      evidenceItems.push({
+        title: isName ? item : (item.name || item.label || item.subsystem || "Subsystem"),
+        meta: isName ? "Indexed architectural subsystem" : `${number(item.module_count || item.modules || item.file_count || item.production_files)} indexed modules or files`,
+      });
+    });
+    list(summary.top_boundaries).slice(0, 6).forEach((item) => evidenceItems.push({
+      title: item.label || item.name || item.path || item.source || "Dependency boundary",
+      meta: item.reason || item.explanation || item.target || "High-value architectural boundary",
+    }));
+    evidence.innerHTML = evidenceItems.length
+      ? evidenceItems.map((item) => `<article class="technical-row"><strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(item.meta)}</span></article>`).join("")
+      : `<article class="technical-row"><strong>${number(coverage.symbol_count)} symbols indexed</strong><span>${escapeHtml(graphHealth.notice || "Atlas has structural repository evidence available.")}</span></article>`;
+    const items = list(historyData && historyData.items);
+    history.innerHTML = items.length
+      ? items.slice(0, 12).map((item) => `<article class="technical-row"><strong>${escapeHtml(item.title || item.request_text || item.workflow_type || "Analysis")}</strong><span>${escapeHtml(item.created_at || item.updated_at || "Saved locally")}</span></article>`).join("")
+      : emptyState("No saved investigations or plans for this repository yet.");
+    return stableState;
+  }
+
+  async function renderMemory(options = {}) {
+    const status = byId("memoryStatusStrip");
+    const freshness = byId("memoryFreshnessLabel");
+    const facts = byId("memoryFacts");
+    const evidence = byId("memoryEvidence");
+    const history = byId("memoryHistory");
+    if (!status || !freshness || !facts || !evidence || !history) return null;
+
+    if (shell.memory.controller) shell.memory.controller.abort("superseded");
+    const controller = typeof window.AbortController === "function"
+      ? new window.AbortController()
+      : { signal: undefined, abort() {} };
+    const generation = ++shell.memory.generation;
+    const initialKey = memoryRepositoryKey();
+    shell.memory.controller = controller;
+    const retained = shell.memory.data && shell.memory.repositoryKey === initialKey ? shell.memory.data : null;
+    if (!retained) {
+      setMemoryState("loading", generation);
+      status.innerHTML = `${statusPill("Checking", "neutral")} Reading signed local repository memory...`;
+    }
+
+    const requestOptions = { signal: controller.signal, force: options.force === true };
+    const optionalOptions = { ...requestOptions, optional: true };
+    const summaryRequest = api("/api/repositories/current/summary", "GET", undefined, requestOptions);
+    const historyRequest = api("/api/history", "GET", undefined, optionalOptions);
+    const healthRequest = api("/api/health", "GET", undefined, optionalOptions);
+    const trustRequest = typeof window.requestAtlasTrustStatus === "function"
+      ? window.requestAtlasTrustStatus(optionalOptions)
+      : api("/api/repositories/current/trust-status", "GET", undefined, optionalOptions);
+    const optionalSettled = Promise.allSettled([historyRequest, healthRequest, trustRequest]);
+
+    let summary;
+    try {
+      summary = await summaryRequest;
+    } catch (error) {
+      if (error && (error.kind === "cancelled" || error.name === "AbortError")) return null;
+      if (!memoryRequestIsCurrent(generation, initialKey)) return null;
+      if (retained) return paintMemorySnapshot(retained.summary, retained.history, retained.health, retained.trust, generation);
+      const timedOut = error && error.kind === "timeout";
+      setMemoryState("failed", generation, { error: error && error.message });
+      status.innerHTML = `${statusPill(timedOut ? "Timed out" : "Unavailable", "warning")} Repository memory could not be read. <button class="btn small ghost" type="button" onclick="atlasDesktopShell.renderMemory({force:true})">Retry</button>`;
+      freshness.textContent = timedOut ? "Timed out" : "Unavailable";
+      freshness.dataset.state = "warning";
+      facts.innerHTML = factRows([["Repository", "Endpoint unavailable"], ["Persistence", "Stored locally"]]);
+      evidence.innerHTML = emptyState("Repository evidence is temporarily unavailable.");
+      history.innerHTML = emptyState("Memory history is temporarily unavailable.");
+      return "failed";
+    }
+
+    if (!memoryRequestIsCurrent(generation, initialKey)) return null;
+    if (!summary || !summary.ok) {
+      setMemoryState("idle", generation);
+      status.innerHTML = `${statusPill("No repository", "warning")} Scan or resume a repository to create project memory.`;
+      freshness.textContent = "Unavailable";
+      freshness.dataset.state = "warning";
+      facts.innerHTML = factRows([["Repository", "Not selected"], ["Persistence", "Local only"]]);
+      evidence.innerHTML = emptyState("Evidence will appear after the first successful scan.");
+      history.innerHTML = emptyState("No repository history is available yet.");
+      return "idle";
+    }
+
+    const repositoryKey = memoryRepositoryKey(summary);
+    if (window.STATE) window.STATE.summary = summary;
+    shell.memory.repositoryKey = repositoryKey;
+    shell.memory.data = {
+      summary,
+      history: retained && retained.history,
+      health: retained && retained.health,
+      trust: retained && retained.trust,
+    };
+    paintMemorySnapshot(summary, shell.memory.data.history, shell.memory.data.health, shell.memory.data.trust, generation);
+    const settled = await optionalSettled;
+    if (!memoryRequestIsCurrent(generation, repositoryKey)) return null;
+    const historyData = settled[0].status === "fulfilled" ? settled[0].value : (retained && retained.history);
+    const healthPayload = settled[1].status === "fulfilled" ? settled[1].value : (retained && retained.health);
+    const liveTrust = settled[2].status === "fulfilled" && settled[2].value && settled[2].value.ok ? settled[2].value : null;
+    if (liveTrust) shell.trustValue = liveTrust;
+    const trust = liveTrust || shell.trustValue || (retained && retained.trust);
+    shell.memory.data = { summary, history: historyData, health: healthPayload, trust };
+    const state = paintMemorySnapshot(summary, historyData, healthPayload, trust, generation);
+    shell.memory.controller = null;
+    if (window.atlasWorkbench && typeof window.atlasWorkbench.renderMemoryWorkbench === "function") {
+      window.atlasWorkbench.renderMemoryWorkbench({ summary, history: historyData, health: healthPayload, trust, generation }).catch(() => null);
+    }
+    return state;
   }
 
   function fileRow(node) {
@@ -300,7 +487,7 @@
     </article>`;
   }
 
-  async function refreshDiagnostics() {
+  async function refreshDiagnostics(options = { force: true }) {
     const summary = byId("diagnosticsSummary");
     const grid = byId("diagnosticsGrid");
     const report = byId("diagnosticsReport");
@@ -308,7 +495,7 @@
     summary.innerHTML = `${statusPill("Running", "neutral")} Checking local services and persisted state…`;
     const diagnosticRequests = await Promise.allSettled([
       api("/api/health"),
-      api("/api/system/diagnostics"),
+      api("/api/system/diagnostics", "GET", undefined, { force: options.force === true }),
       api("/api/system/startup-status"),
       api("/api/system/self-test"),
       api("/api/integrations/mcp/status"),
@@ -346,11 +533,9 @@
     if (host && setup && setup.parentElement !== host) host.appendChild(setup);
     if (!status) return;
     status.innerHTML = `${statusPill("Checking", "neutral")} Reading local MCP configuration…`;
-    const [result, repository] = await Promise.all([
-      atlasMcpSetup.loadStatus(true),
-      api("/api/repositories/current/summary").catch(() => null),
-    ]);
+    const result = await atlasMcpSetup.loadStatus(true);
     const agents = connectedAgents(result);
+    const repository = window.STATE && STATE.summary;
     const contextReady = !!(repository && repository.ok);
     status.innerHTML = result && result.ok
       ? `${statusPill(agents.length ? (contextReady ? "Connected" : "Configured — select a repository") : "Ready to connect", agents.length && contextReady ? "ready" : "neutral")} ${agents.length ? `${agents.length} coding agent${agents.length === 1 ? " is" : "s are"} configured to use Atlas MCP${contextReady ? ` with ${escapeHtml(repository.repo_name || "repository")} context.` : "; repository context is not active yet."}` : "Choose an agent below. Atlas will preserve its existing configuration and ask before writing."}`
@@ -361,22 +546,26 @@
     const account = byId("settingsAccountState");
     const facts = byId("settingsStorageFacts");
     if (!account || !facts) return;
-    const diagnostics = await api("/api/system/diagnostics");
+    const [health, product] = await Promise.all([
+      api("/api/health", "GET", undefined, { optional: true }),
+      api("/api/product/config", "GET", undefined, { optional: true }),
+    ]);
     let accountLabel = "Local mode";
     if (window.atlasAccounts) {
       if (atlasAccounts.isSignedIn && atlasAccounts.isSignedIn()) accountLabel = "Signed in";
       else if (atlasAccounts.isGuest && atlasAccounts.isGuest()) accountLabel = "Local guest session";
     }
     account.textContent = `${accountLabel}. Repository scans and memory remain available locally.`;
-    const dataDir = diagnostics && diagnostics.data_dir || {};
-    const trust = diagnostics && diagnostics.trust_integrity || {};
+    const persistence = health && health.persistence || {};
+    const dataDir = persistence.data_dir || persistence.storage || {};
+    const trust = shell.trustValue || {};
     facts.innerHTML = factRows([
-      ["Data directory", dataDir.path],
+      ["Data directory", dataDir.path || persistence.path || "Managed local storage"],
       ["Environment override", yesNo(dataDir.override_env)],
-      ["Memory persistence", trust.memory_persistence_status === "ok" ? "Verified" : text(trust.memory_persistence_status, "Not reported")],
-      ["Repository changed", yesNo(trust.scan_stale)],
-      ["Version", diagnostics && diagnostics.version],
-      ["Build commit", diagnostics && diagnostics.build_commit],
+      ["Memory persistence", persistence.ok ? "Verified" : "Available locally"],
+      ["Repository changed", yesNo(trust.scan_stale || trust.fresh === false)],
+      ["Version", product && product.version],
+      ["Build commit", product && product.build_commit],
     ]);
   }
 
@@ -417,14 +606,17 @@
 
   function onViewChange(view) {
     if (view === "memory") renderMemory();
+    else cancelMemoryRender("navigation");
     if (view === "files") renderFiles();
     if (view === "agents") renderAgents();
-    if (view === "diagnostics") refreshDiagnostics();
+    if (view === "diagnostics") refreshDiagnostics({ force: false });
     if (view === "settings") renderSettings();
     updateGlobalStatus();
   }
 
   function init() {
+    if (shell.initialized) return;
+    shell.initialized = true;
     enablePseudoControlKeyboard();
     syncDialogAccessibility();
     const setup = byId("mcpSetupSection");
@@ -436,6 +628,22 @@
     };
     document.addEventListener("atlas:viewchange", (event) => onViewChange(event.detail && event.detail.view));
     document.addEventListener("atlas:authenticated", updateGlobalStatus);
+    document.addEventListener("atlas:repository-invalidated", () => {
+      shell.trustValue = null;
+      cancelMemoryRender("repository_switch", true);
+    });
+    document.addEventListener("atlas:trust-status", (event) => {
+      const value = event.detail;
+      if (!value || !value.ok) return;
+      shell.trustValue = value;
+      if (memoryViewIsActive() && shell.memory.data) {
+        shell.memory.data.trust = value;
+        paintMemorySnapshot(shell.memory.data.summary, shell.memory.data.history, shell.memory.data.health, value, shell.memory.generation);
+      }
+    });
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) updateGlobalStatus();
+    });
     let wasAuthMode = document.body.classList.contains("auth-mode");
     new MutationObserver(() => {
       const isAuthMode = document.body.classList.contains("auth-mode");
@@ -443,13 +651,17 @@
       wasAuthMode = isAuthMode;
     }).observe(document.body, { attributes: true, attributeFilter: ["class"] });
     updateGlobalStatus();
-    shell.readinessTimer = window.setInterval(updateGlobalStatus, 30000);
+    shell.readinessTimer = window.setInterval(() => {
+      if (!document.hidden) updateGlobalStatus();
+    }, 30000);
+    document.documentElement?.setAttribute("data-atlas-readiness-intervals", "1");
   }
 
   window.atlasDesktopShell = Object.assign(shell, {
     init,
     updateGlobalStatus,
     renderMemory,
+    cancelMemoryRender,
     renderFiles,
     filterFiles,
     inspectFile,
