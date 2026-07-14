@@ -11,7 +11,7 @@ export const runtime = "nodejs";
  * Duplicate emails are idempotent (no error, no double row).
  */
 export async function POST(request: Request) {
-  if (!rateLimit(`updates:${clientIp(request)}`, 12, 3_600_000)) {
+  if (!(await rateLimit(`updates:${clientIp(request)}`, 12, 3_600_000))) {
     return NextResponse.json(
       { ok: false, message: "Too many attempts. Please try again later." },
       { status: 429 }
