@@ -5,6 +5,8 @@
     files: [],
     diagnostics: null,
     readinessTimer: null,
+    trustPromise: null,
+    trustValue: null,
   };
 
   const byId = (id) => document.getElementById(id);
@@ -42,15 +44,33 @@
     if (!readiness || !label) return;
 
     try {
-      const summary = (window.STATE && STATE.summary && STATE.summary.ok)
-        ? STATE.summary
-        : await api("/api/repositories/current/summary");
+      const [summary, health] = await Promise.all([
+        (window.STATE && STATE.summary && STATE.summary.ok)
+          ? STATE.summary
+          : api("/api/repositories/current/summary"),
+        api("/api/health"),
+      ]);
       if (!summary || !summary.ok) {
         readiness.dataset.state = "idle";
         label.textContent = "Select a repository";
         return;
       }
-      const trust = await api("/api/repositories/current/trust-status");
+      if (!shell.trustPromise) {
+        shell.trustPromise = window.atlasTrustRequest || api("/api/repositories/current/trust-status");
+        window.atlasTrustRequest = shell.trustPromise;
+        shell.trustPromise = shell.trustPromise.then((value) => {
+          shell.trustValue = value;
+          return value;
+        }).catch(() => null);
+      }
+      const card = health?.persistence?.resume_card;
+      const startupFresh = card?.freshness_status === "fresh" && card?.validation_status === "valid";
+      const trust = shell.trustValue || (startupFresh ? { fresh: true, user_trust_label: "Fresh" } : null);
+      if (!trust) {
+        readiness.dataset.state = "neutral";
+        label.textContent = "Verifying memory";
+        return;
+      }
       const stale = trust && (trust.scan_stale || trust.fresh === false || trust.stale_status);
       readiness.dataset.state = stale ? "warning" : "ready";
       label.textContent = stale ? "Repository changed" : "Memory current";
@@ -69,9 +89,16 @@
     if (!status || !facts || !evidence || !history) return;
 
     status.innerHTML = `${statusPill("Checking", "neutral")} Reading signed local repository memory…`;
-    const [summary, trust, historyData, diagnostics, healthPayload] = await Promise.all([
+    if (!shell.trustPromise) {
+      shell.trustPromise = window.atlasTrustRequest || api("/api/repositories/current/trust-status");
+      window.atlasTrustRequest = shell.trustPromise;
+      shell.trustPromise = shell.trustPromise.then((value) => {
+        shell.trustValue = value;
+        return value;
+      }).catch(() => null);
+    }
+    const [summary, historyData, diagnostics, healthPayload] = await Promise.all([
       api("/api/repositories/current/summary"),
-      api("/api/repositories/current/trust-status"),
       api("/api/history"),
       api("/api/system/diagnostics"),
       api("/api/health"),
@@ -87,13 +114,17 @@
       return;
     }
 
+    const card = healthPayload?.persistence?.resume_card;
+    const startupFresh = card?.freshness_status === "fresh" && card?.validation_status === "valid";
+    const trust = shell.trustValue || (startupFresh ? { fresh: true, user_trust_label: "Fresh" } : null);
+
     const isStale = !!(trust && (trust.scan_stale || trust.fresh === false || trust.stale_status));
-    const trustLabel = text(trust && (trust.user_trust_label || trust.label), isStale ? "Needs refresh" : "Fresh");
+    const trustLabel = trust ? text(trust.user_trust_label || trust.label, isStale ? "Needs refresh" : "Fresh") : "Verifying";
     const persistence = diagnostics && diagnostics.trust_integrity && diagnostics.trust_integrity.memory_persistence_status;
     const restored = !!(healthPayload && healthPayload.persistence && healthPayload.persistence.ok && healthPayload.persistence.restored);
-    status.innerHTML = `${statusPill(trustLabel, isStale ? "warning" : "ready")} ${isStale ? "Repository files changed after the stored scan. Refresh before relying on downstream analysis." : "Repository memory matches the last verified scan and is ready for analysis."}`;
+    status.innerHTML = `${statusPill(trustLabel, trust ? (isStale ? "warning" : "ready") : "neutral")} ${trust ? (isStale ? "Repository files changed after the stored scan. Refresh before relying on downstream analysis." : "Repository memory matches the last verified scan and is ready for analysis.") : "Live repository freshness is still being checked."}`;
     freshness.textContent = trustLabel;
-    freshness.dataset.state = isStale ? "warning" : "ready";
+    freshness.dataset.state = trust ? (isStale ? "warning" : "ready") : "neutral";
 
     const coverage = summary.evidence_coverage || {};
     const health = summary.graph_health || {};

@@ -34,6 +34,16 @@
     } catch (_error) { return null; }
   };
   const get = (path) => typeof window.api === "function" ? apiSafe(path) : endpoint(path);
+  const getTrust = () => {
+    if (!window.atlasTrustRequest) window.atlasTrustRequest = get("/api/repositories/current/trust-status");
+    return window.atlasTrustRequest;
+  };
+
+  function trustFromHealth(health) {
+    const card = health?.persistence?.resume_card;
+    const fresh = card?.freshness_status === "fresh" && card?.validation_status === "valid";
+    return fresh ? { ok: true, fresh: true, user_trust_label: "Fresh", source: "startup_validation" } : null;
+  }
 
   function toggleSidebar() {
     const compact = document.body.classList.toggle("sidebar-compact");
@@ -222,9 +232,9 @@
     const token = ++workbench.homeRenderToken;
     const stateSummary = window.STATE?.summary?.ok ? window.STATE.summary : null;
     const mcpClient = typeof atlasMcpSetup !== "undefined" ? atlasMcpSetup : null;
-    const [summary, trust, graph, history, recent, agents, health] = await Promise.all([
+    const trustRequest = getTrust();
+    const [summary, graph, history, recent, agents, health] = await Promise.all([
       stateSummary || get("/api/repositories/current/summary"),
-      get("/api/repositories/current/trust-status"),
       get("/api/repositories/current/graph?view=subsystem"),
       get("/api/history"),
       get("/api/repositories/recent"),
@@ -232,10 +242,18 @@
       get("/api/health"),
     ]);
     if (token !== workbench.homeRenderToken) return;
+    const trust = workbench.trust || trustFromHealth(health);
     workbench.summary = summary; workbench.trust = trust; workbench.graph = graph; workbench.history = list(history?.items); workbench.agents = agents;
     if (typeof renderHomeExperience === "function") renderHomeExperience({ trustStatus: trust, recent: list(recent?.items), mcpStatus: agents });
     syncSidebar(summary, trust, agents);
     renderHomeDetails(summary, trust, graph, workbench.history, list(recent?.items), agents, health);
+    trustRequest.then((liveTrust) => {
+      if (!liveTrust || token !== workbench.homeRenderToken) return;
+      workbench.trust = liveTrust;
+      if (typeof renderHomeExperience === "function") renderHomeExperience({ trustStatus: liveTrust, recent: list(recent?.items), mcpStatus: agents });
+      syncSidebar(summary, liveTrust, agents);
+      renderHomeDetails(summary, liveTrust, graph, workbench.history, list(recent?.items), agents, health);
+    });
   }
 
   function conceptFromSubsystem(item, index) {
@@ -263,13 +281,35 @@
     byId("memoryConceptList")?.querySelectorAll(".memory-concept-button").forEach((button) => { button.hidden = !!needle && !button.textContent.toLowerCase().includes(needle); });
   }
 
+  function applyMemoryTrust(trust, summary, health) {
+    const fresh = !!(trust && (trust.fresh === true || trust.trust_status?.fresh === true || trust.user_trust_label === "Fresh"));
+    const known = !!trust;
+    const restored = !!health?.persistence?.restored;
+    const freshness = byId("memoryFreshnessLabel");
+    if (freshness) {
+      freshness.textContent = known ? (fresh ? "Fresh" : "Review") : "Verifying";
+      freshness.dataset.state = known ? (fresh ? "ready" : "warning") : "neutral";
+    }
+    const status = byId("memoryStatusStrip");
+    if (status) status.innerHTML = known
+      ? `<span class="state-label" data-state="${fresh ? "ready" : "warning"}">${fresh ? "Fresh" : "Review"}</span> ${fresh ? "Signed repository memory matches the current checkout." : "Repository evidence changed after the stored scan."}`
+      : `<span class="state-label" data-state="neutral">Verifying</span> Live repository freshness is still being checked.`;
+    const facts = byId("memoryFacts");
+    if (facts && summary?.ok) facts.innerHTML = [["Repository", summary.repo_name], ["Freshness", known ? (fresh ? "Current" : "Review") : "Verifying"], ["Persistence", restored ? "Restored" : "Local"], ["Concepts", workbench.memoryConcepts.length], ["Modules", summary.module_count], ["Graph", summary.graph_health?.label]].map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join("");
+  }
+
   async function renderMemoryWorkbench() {
-    const [summary, trust, history, diagnostics, health, graph] = await Promise.all([
-      get("/api/repositories/current/summary"), get("/api/repositories/current/trust-status"), get("/api/history"), get("/api/system/diagnostics"), get("/api/health"), get("/api/repositories/current/graph?view=module"),
+    const trustRequest = getTrust();
+    const [summary, history, diagnostics, health, graph] = await Promise.all([
+      get("/api/repositories/current/summary"), get("/api/history"), get("/api/system/diagnostics"), get("/api/health"), get("/api/repositories/current/graph?view=module"),
     ]);
     if (!summary?.ok) return;
-    const fresh = trust && (trust.fresh === true || trust.trust_status?.fresh === true || trust.user_trust_label === "Fresh");
-    const restored = !!health?.persistence?.restored;
+    const trust = workbench.trust || trustFromHealth(health);
+    trustRequest.then((liveTrust) => {
+      if (!liveTrust) return;
+      workbench.trust = liveTrust;
+      applyMemoryTrust(liveTrust, summary, health);
+    });
     const concepts = list(summary.subsystems).map(conceptFromSubsystem);
     if (!concepts.length) concepts.push({ name: "Repository structure", count: summary.module_count, description: summary.explanation || "Repository-wide structural model.", files: summary.entry_points || [], dependencies: [] });
     workbench.memoryConcepts = concepts;
@@ -285,8 +325,7 @@
     const coverage = summary.evidence_coverage || {};
     const groupHost = byId("memoryEvidenceGroups");
     if (groupHost) groupHost.innerHTML = [["Symbols", num(coverage.symbol_count)], ["Files grounded", num(coverage.files_with_symbols)], ["Dependency edges", num(summary.dependency_edges)]].map(([label, value]) => `<article class="evidence-group"><strong>${label}</strong><span>${value} evidence records</span></article>`).join("");
-    const facts = byId("memoryFacts");
-    if (facts) facts.innerHTML = [["Repository", summary.repo_name], ["Freshness", fresh ? "Current" : "Review"], ["Persistence", restored ? "Restored" : "Local"], ["Concepts", concepts.length], ["Modules", summary.module_count], ["Graph", summary.graph_health?.label]].map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join("");
+    applyMemoryTrust(trust, summary, health);
     const nodes = list(graph?.nodes).slice().sort((a, b) => Number(b.risk_score || b.fan_in || 0) - Number(a.risk_score || a.fan_in || 0));
     const critical = byId("memoryCriticalFiles");
     if (critical) critical.innerHTML = nodes.slice(0, 6).map((node) => `<article class="critical-file"><strong>${escapeHtml(node.path || node.name || node.label || node.id)}</strong><span>${num(node.fan_in)} incoming · risk ${clean(node.risk_score, "low")}</span></article>`).join("") || `<p class="muted tiny">No critical files reported.</p>`;
@@ -295,7 +334,6 @@
     const gaps = byId("memoryUnresolved");
     const unresolved = Number(summary.graph_health?.unresolved_internal || 0);
     if (gaps) gaps.innerHTML = unresolved ? `<div class="memory-gap">${num(unresolved)} internal imports need resolution</div>` : `<div class="memory-gap">No unresolved internal dependency knowledge</div>`;
-    if (byId("memoryStatusStrip")) byId("memoryStatusStrip").innerHTML = `<span class="state-label" data-state="${fresh ? "ready" : "warning"}">${fresh ? "Fresh" : "Review"}</span> ${fresh ? "Signed repository memory matches the current checkout." : "Repository evidence changed after the stored scan."}`;
   }
 
   async function renderAskContext() {
