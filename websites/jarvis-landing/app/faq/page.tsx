@@ -14,7 +14,7 @@ const faqs = [
   ["What platforms are supported?", "Windows today. macOS and Linux are on the roadmap — let us know on the contact page."],
   ["Is it free?", "Yes — a free tier for one repository. Pro ($29/mo) adds unlimited repos, impact analysis, investigation, compression and risk detection; the 7-day trial starts in-app, no card."],
   ["How do I cancel?", "Anytime from the billing portal; access continues to the end of the period."],
-  ["Is the installer safe?", "Download Atlas from atlas-repo-chi.vercel.app. Windows SmartScreen may warn on first run for new or unsigned apps; confirm the source before continuing."]
+  ["Is the installer safe?", "Download Atlas from atlas-repo-wu76.vercel.app. Windows SmartScreen may warn on first run for new or unsigned apps; confirm the source before continuing."]
 ] as const;
 
 export default function FaqPage() {

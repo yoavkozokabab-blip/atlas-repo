@@ -10,6 +10,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/account", "/admin", "/api/", "/billing/", "/checkout/"],
       },
     ],
-    sitemap: `${(process.env.NEXT_PUBLIC_APP_URL || "https://atlas-repo-chi.vercel.app").replace(/\/+$/, "")}/sitemap.xml`,
+    sitemap: `${(process.env.NEXT_PUBLIC_APP_URL || "https://atlas-repo-wu76.vercel.app").replace(/\/+$/, "")}/sitemap.xml`,
   };
 }

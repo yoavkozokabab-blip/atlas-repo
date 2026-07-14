@@ -8,7 +8,7 @@ The connected intended project is `atlas-prod`, reference `wggjguqcxmskhjznexum`
 
 Public probes found two materially different deployments:
 
-- `atlas-repo-chi.vercel.app` reports healthy persistence against `wggjguqcxmskhjznexum`. The packaged desktop account client defaults to this domain. Its `/download/atlas` route still returns HTTP 302 to `https://github.com/yoavkozokabab-blip/atlas-repo/releases/download/v1.0.0/Atlas_Setup.exe`; the request was not followed and the installer was not downloaded.
+- The legacy Vercel project reported healthy persistence against `wggjguqcxmskhjznexum` before consolidation. Its stale installer redirect was identified without following or downloading the asset.
 - The requested production domain `atlas-repo-wu76.vercel.app` reports HTTP 503 and resolves `SUPABASE_URL` to unconnected project reference `qfwmfllcqbngrowzbfpc`.
 
 Therefore the requested production website is not pointing to the connected intended project, and installer suspension is inconsistent across live Atlas aliases. Vercel Preview could not be inventoried because the locally available Vercel credential is invalid. No environment values were printed or changed.
@@ -23,7 +23,7 @@ Therefore the requested production website is not pointing to the connected inte
 | `AUTH_SECRET` | example only, unset | unknown | present | website-issued bearer token only |
 | `ADMIN_EMAILS` | example only, unset | unknown | unknown | not used |
 | Analytics-specific keys | none; canonical collector is same-origin | unknown | none required | current desktop analytics are local-only |
-| `ATLAS_WEB_URL` | not a website variable | n/a | n/a | optional; defaults to `atlas-repo-chi.vercel.app` |
+| `ATLAS_WEB_URL` | not a website variable | n/a | n/a | optional; defaults to the canonical `atlas-repo-wu76.vercel.app` site |
 | `ATLAS_AUTH_MODE` | n/a | n/a | n/a | packaged default `website`, source default `local` |
 
 The service-role key is referenced only from server modules (`store.ts` and `ratelimit.ts`). No browser bundle imports it and no `NEXT_PUBLIC_` service credential exists.

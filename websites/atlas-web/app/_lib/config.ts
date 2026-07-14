@@ -76,7 +76,10 @@ export const ENV = {
     return process.env.PADDLE_WEBHOOK_SECRET || "";
   },
   get appUrl(): string {
-    return (process.env.NEXT_PUBLIC_APP_URL || process.env.APP_URL || "http://localhost:3000").replace(/\/+$/, "");
+    const fallback = process.env.NODE_ENV === "production"
+      ? "https://atlas-repo-wu76.vercel.app"
+      : "http://localhost:3000";
+    return (process.env.NEXT_PUBLIC_APP_URL || process.env.APP_URL || fallback).replace(/\/+$/, "");
   },
   get paymentsMode(): "stub" | "test" | "live" {
     const m = process.env.PAYMENTS_MODE;

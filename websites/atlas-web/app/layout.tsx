@@ -17,7 +17,7 @@ const DESC =
   "Atlas indexes your repository locally into a dependency graph and evidence store, then serves it to Claude Code, Cursor, and Codex over MCP. Scans persist across fresh agent sessions and are validated against the live repo. Indexing never leaves your machine.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://atlas-repo-chi.vercel.app"),
+  metadataBase: new URL("https://atlas-repo-wu76.vercel.app"),
   title: TITLE,
   description: DESC,
   applicationName: "Atlas",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: "website",
-    url: "https://atlas-repo-chi.vercel.app",
+    url: "https://atlas-repo-wu76.vercel.app",
     siteName: "Atlas",
     title: TITLE,
     description: DESC
