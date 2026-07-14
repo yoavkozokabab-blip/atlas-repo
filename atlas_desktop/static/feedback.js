@@ -29,8 +29,9 @@
 
   async function loadConfig() {
     try {
-      const r = await fetch("/api/product/config");
-      const data = await r.json();
+      const data = typeof window.api === "function"
+        ? await window.api("/api/product/config")
+        : null;
       if (data && data.ok) productConfig = data;
     } catch (e) {}
     return productConfig;
@@ -150,17 +151,14 @@
     const n = save(entry);
     let remoteMsg = "";
     try {
-      const r = await fetch("/api/feedback", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      const data = typeof window.api === "function"
+        ? await window.api("/api/feedback", "POST", {
           category: selected,
           message: msg,
           email: entry.email,
           page: entry.page,
-        }),
-      });
-      const data = await r.json();
+        })
+        : null;
       if (data && data.message) remoteMsg = data.message;
     } catch (e) {}
     try { if (typeof track === "function") track("feedback_saved", { category: selected }); } catch (e) {}

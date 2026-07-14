@@ -10,6 +10,8 @@
   let _screenMode = 'login';
   let _pollTimer = null;
   let _appRevealed = false;
+  let _accountTransportState = 'unknown';
+  let _accountRetryTimer = null;
 
   const POLL_INTERVAL_MS = 60_000;
 
@@ -40,11 +42,19 @@
   ];
 
   function api(method, path, body) {
-    return fetch(path, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      body: body ? JSON.stringify(body) : undefined,
-    }).then(r => r.json()).catch(() => ({ ok: false, error: 'Network error' }));
+    if (!window.atlasTransport) {
+      return Promise.resolve({ ok: false, code: 'transport_unavailable', error: 'Account endpoint unavailable', transport_error: true, transport_kind: 'unavailable' });
+    }
+    const accountRequest = String(path || '').startsWith('/api/accounts/');
+    return window.atlasTransport.request(path, { method, body, ...(accountRequest ? { scope: 'account' } : {}) }).catch(error => ({
+      ok: false,
+      code: error && error.code || 'transport_network_error',
+      error: error && error.kind === 'timeout'
+        ? (accountRequest ? 'Account request timed out' : 'Repository request timed out')
+        : (accountRequest ? 'Account endpoint unavailable' : 'Repository endpoint unavailable'),
+      transport_error: true,
+      transport_kind: error && error.kind || 'network_error',
+    }));
   }
 
   function el(id) { return document.getElementById(id); }
@@ -569,11 +579,55 @@
   window.openAccountScreen = openAccountScreen;
   window.showAccPanel = showAccountScreen;
 
+  function _setAccountTransportState(state, detail) {
+    _accountTransportState = state;
+    const chip = el('accountChip');
+    const root = document.documentElement;
+    if (root) root.setAttribute('data-atlas-account-state', state);
+    if (chip) {
+      chip.dataset.transportState = state;
+      if (state === 'unavailable' || state === 'timed_out') {
+        chip.title = state === 'timed_out'
+          ? 'Account check timed out. Repository features remain available.'
+          : 'Account endpoint unavailable. Repository features remain available.';
+        if (!_state) {
+          chip.textContent = state === 'timed_out' ? 'Account timed out' : 'Account unavailable';
+          chip.className = 'account-chip unsigned';
+          chip.style.display = '';
+        }
+      } else {
+        delete chip.dataset.transportState;
+        chip.title = 'Account & license';
+      }
+    }
+    document.dispatchEvent(new CustomEvent('atlas:account-status', { detail: { state, ...(detail || {}) } }));
+  }
+
+  function _scheduleAccountRetry() {
+    if (_accountRetryTimer) return;
+    _accountRetryTimer = window.setTimeout(() => {
+      _accountRetryTimer = null;
+      refreshState();
+    }, 1500);
+  }
+
   function refreshState() {
     return api('GET', '/api/accounts/state').then(data => {
+      if (!data || data.transport_error || data.ok === false) {
+        const state = data && data.transport_kind === 'timeout' ? 'timed_out' : 'unavailable';
+        _setAccountTransportState(state, { code: data && data.code || 'account_unavailable' });
+        _scheduleAccountRetry();
+        if (!_state && !_appRevealed) _enterApp();
+        return data || { ok: false, error: 'Account endpoint unavailable', transport_error: true };
+      }
       _state = data;
+      if (_accountRetryTimer) {
+        window.clearTimeout(_accountRetryTimer);
+        _accountRetryTimer = null;
+      }
       _updateAccountChip();
       _applyLicenseGating();
+      _setAccountTransportState('available');
       _syncLayoutFromState();
       return data;
     });
@@ -1077,6 +1131,7 @@
     isSignedIn: () => !!( _state && _state.signed_in),
     isGuest: () => !!( _state && _state.guest),
     isAdmin: _isAdmin,
+    transportState: () => _accountTransportState,
     startGuest: startGuest,
     requireAccess: () => {
       if (_state && (_state.authenticated || _state.local_access)) return true;

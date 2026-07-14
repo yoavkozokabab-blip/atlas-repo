@@ -1,3 +1,289 @@
+/* Atlas runtime transport boundary. Keep this first: account and workbench clients delegate here. */
+(function (global) {
+  "use strict";
+
+  const TRACE_LIMIT = 200;
+  const DEFAULT_TIMEOUT_MS = 15_000;
+  const RUNTIME_PROTOCOL = "atlas-desktop-runtime-v1";
+  const RUNTIME_PRODUCT = "Atlas Desktop";
+  const ALLOWED_REQUEST_HEADERS = new Set(["accept", "content-type"]);
+  const states = { runtime: "starting", account: "unknown", repository: "unknown", graph: "idle", trust: "unknown", auxiliary: "unknown" };
+  const trace = [];
+  let runtimeIdentityPromise = null;
+  let runtimeIdentityValue = null;
+
+  class AtlasTransportError extends Error {
+    constructor(kind, message, detail) {
+      super(message);
+      this.name = "AtlasTransportError";
+      this.kind = kind;
+      this.code = kind === "timeout" ? "request_timed_out" : `transport_${kind}`;
+      Object.assign(this, detail || {});
+    }
+  }
+
+  function runtimeOrigin() {
+    const raw = String(global.location && global.location.origin || "");
+    let parsed;
+    try { parsed = new URL(raw); } catch (_error) {
+      throw new AtlasTransportError("invalid_origin", "Atlas must be served by its local runtime.", { pageOrigin: raw });
+    }
+    const loopback = parsed.hostname === "127.0.0.1" || parsed.hostname === "localhost" || parsed.hostname === "[::1]" || parsed.hostname === "::1";
+    if (parsed.protocol !== "http:" || !loopback || !parsed.port) {
+      throw new AtlasTransportError("invalid_origin", "Atlas must be served from a verified loopback runtime origin.", { pageOrigin: raw });
+    }
+    return parsed.origin;
+  }
+
+  const origin = runtimeOrigin();
+
+  function inferScope(path) {
+    if (path.startsWith("/api/accounts/")) return "account";
+    if (path === "/api/health" || path.startsWith("/api/runtime/")) return "runtime";
+    if (path.includes("trust-status")) return "trust";
+    if (path.includes("graph")) return "graph";
+    if (path.startsWith("/api/repositories/") || path === "/api/history" || path === "/api/system/diagnostics") return "repository";
+    return "auxiliary";
+  }
+
+  function resolveApiUrl(path) {
+    const raw = String(path || "");
+    if ((raw !== "/api" && !raw.startsWith("/api/")) || raw.startsWith("//") || raw.includes("\\")) {
+      throw new AtlasTransportError("origin_mismatch", "Atlas API requests must use a root-relative /api path.", { requestPath: raw, pageOrigin: origin });
+    }
+    const resolved = new URL(raw, `${origin}/`);
+    if (resolved.origin !== origin || resolved.username || resolved.password) {
+      throw new AtlasTransportError("origin_mismatch", "Atlas blocked an API request outside the active runtime origin.", {
+        requestUrl: resolved.href,
+        requestOrigin: resolved.origin,
+        pageOrigin: origin,
+      });
+    }
+    return resolved;
+  }
+
+  function publishTrace() {
+    const root = global.document && global.document.documentElement;
+    if (!root || typeof root.setAttribute !== "function") return;
+    root.setAttribute("data-atlas-runtime-origin", origin);
+    root.setAttribute("data-atlas-runtime-state", states.runtime);
+    root.setAttribute("data-atlas-account-state", states.account);
+    root.setAttribute("data-atlas-repository-state", states.repository);
+    root.setAttribute("data-atlas-graph-state", states.graph);
+    root.setAttribute("data-atlas-trust-state", states.trust);
+    root.setAttribute("data-atlas-auxiliary-state", states.auxiliary);
+    root.setAttribute("data-atlas-transport-trace", JSON.stringify(trace));
+  }
+
+  function setState(scope, value, detail) {
+    if (Object.prototype.hasOwnProperty.call(states, scope)) states[scope] = value;
+    publishTrace();
+    try {
+      global.document && global.document.dispatchEvent(new CustomEvent("atlas:transport-state", {
+        detail: { scope, state: value, ...(detail || {}) },
+      }));
+    } catch (_error) {}
+  }
+
+  function record(entry) {
+    trace.push(entry);
+    if (trace.length > TRACE_LIMIT) trace.splice(0, trace.length - TRACE_LIMIT);
+    publishTrace();
+  }
+
+  function safeResponseHeaders(headers) {
+    const result = {};
+    try {
+      headers.forEach((value, name) => {
+        const lowered = String(name).toLowerCase();
+        if (lowered !== "set-cookie" && lowered !== "authorization" && lowered !== "proxy-authorization") result[lowered] = value;
+      });
+    } catch (_error) {}
+    return result;
+  }
+
+  function requestStartState(scope) {
+    if (scope === "graph") return "loading";
+    if (scope === "runtime" && states.runtime === "starting") return "starting";
+    return "checking";
+  }
+
+  function requestSuccessState(scope) {
+    return scope === "graph" ? "loaded" : "available";
+  }
+
+  function runtimeChallenge() {
+    const bytes = new Uint8Array(18);
+    if (global.crypto && typeof global.crypto.getRandomValues === "function") {
+      global.crypto.getRandomValues(bytes);
+    } else {
+      for (let index = 0; index < bytes.length; index += 1) bytes[index] = Math.floor(Math.random() * 256);
+    }
+    return Array.from(bytes, (value) => value.toString(16).padStart(2, "0")).join("");
+  }
+
+  function ensureRuntimeIdentity() {
+    if (runtimeIdentityValue) return Promise.resolve(runtimeIdentityValue);
+    if (runtimeIdentityPromise) return runtimeIdentityPromise;
+    const challenge = runtimeChallenge();
+    runtimeIdentityPromise = request(
+      `/api/runtime/handshake?challenge=${encodeURIComponent(challenge)}`,
+      {
+        scope: "runtime",
+        requireOk: true,
+        requireRuntimeHandshake: true,
+        handshakeChallenge: challenge,
+        skipRuntimeHandshake: true,
+      },
+    ).then((identity) => {
+      runtimeIdentityValue = identity;
+      const root = global.document && global.document.documentElement;
+      if (root && typeof root.setAttribute === "function") root.setAttribute("data-atlas-runtime-protocol", identity.protocol);
+      return identity;
+    }).catch((error) => {
+      runtimeIdentityPromise = null;
+      throw error;
+    });
+    return runtimeIdentityPromise;
+  }
+
+  async function request(path, options) {
+    const settings = options || {};
+    const resolved = resolveApiUrl(path);
+    const method = String(settings.method || "GET").toUpperCase();
+    const scope = settings.scope || inferScope(resolved.pathname);
+    if (resolved.pathname !== "/api/runtime/handshake" && settings.skipRuntimeHandshake !== true) {
+      await ensureRuntimeIdentity();
+    }
+    const hasBody = settings.body !== undefined && settings.body !== null;
+    const headers = new Headers(settings.headers || {});
+    headers.set("Accept", "application/json");
+    if (hasBody) headers.set("Content-Type", "application/json");
+    else headers.delete("Content-Type");
+    for (const name of headers.keys()) {
+      if (!ALLOWED_REQUEST_HEADERS.has(String(name).toLowerCase())) {
+        throw new AtlasTransportError("unsafe_header", `Atlas blocked unsupported request header: ${name}`, { requestUrl: resolved.href, scope });
+      }
+    }
+
+    const controller = new AbortController();
+    const timeoutMs = Math.max(1, Number(settings.timeoutMs || DEFAULT_TIMEOUT_MS));
+    const started = Date.now();
+    const entry = {
+      id: `${started}-${trace.length + 1}`,
+      pageOrigin: origin,
+      requestOrigin: resolved.origin,
+      requestUrl: resolved.href,
+      method,
+      credentials: "same-origin",
+      mode: "same-origin",
+      headers: Object.fromEntries(headers.entries()),
+      hasBody,
+      scope,
+      startedAt: new Date(started).toISOString(),
+      status: null,
+      outcome: "pending",
+    };
+    record(entry);
+    setState(scope, requestStartState(scope), { requestUrl: resolved.href });
+
+    const timer = global.setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const response = await global.fetch(`${resolved.pathname}${resolved.search}`, {
+        method,
+        headers,
+        body: hasBody ? JSON.stringify(settings.body) : undefined,
+        credentials: "same-origin",
+        mode: "same-origin",
+        signal: controller.signal,
+      });
+      entry.status = response.status;
+      entry.statusText = response.statusText;
+      entry.responseHeaders = safeResponseHeaders(response.headers);
+      entry.durationMs = Date.now() - started;
+      let payload;
+      try { payload = await response.json(); } catch (_error) {
+        throw new AtlasTransportError("invalid_response", "Atlas runtime returned a non-JSON response.", { requestUrl: resolved.href, status: response.status, scope });
+      }
+      if (settings.requireAtlasIdentity && (!payload || payload.ok !== true || payload.product !== "ATLAS")) {
+        throw new AtlasTransportError("identity_mismatch", "The selected listener did not identify itself as Atlas.", { requestUrl: resolved.href, status: response.status, scope });
+      }
+      if (settings.requireRuntimeHandshake) {
+        const activePort = Number(new URL(origin).port);
+        const proof = String(payload && payload.proof || "");
+        if (
+          !payload
+          || payload.ok !== true
+          || payload.product !== RUNTIME_PRODUCT
+          || payload.protocol !== RUNTIME_PROTOCOL
+          || payload.challenge !== settings.handshakeChallenge
+          || Number(payload.port) !== activePort
+          || !Number.isInteger(Number(payload.pid))
+          || Number(payload.pid) <= 0
+          || !String(payload.instance_id || "")
+          || !/^[a-f0-9]{64}$/i.test(proof)
+        ) {
+          throw new AtlasTransportError("identity_mismatch", "The selected listener failed the Atlas runtime handshake.", { requestUrl: resolved.href, status: response.status, scope });
+        }
+      }
+      if (settings.requireOk && (!response.ok || !payload || payload.ok !== true)) {
+        throw new AtlasTransportError("http_error", String(payload && payload.error || `Atlas runtime returned HTTP ${response.status}.`), { requestUrl: resolved.href, status: response.status, scope });
+      }
+      entry.outcome = response.ok ? "success" : "http_error";
+      setState(scope, response.ok ? requestSuccessState(scope) : "http_error", { status: response.status, requestUrl: resolved.href });
+      publishTrace();
+      return payload;
+    } catch (error) {
+      let transportError = error;
+      if (!(error instanceof AtlasTransportError)) {
+        const timedOut = controller.signal.aborted || (error && error.name === "AbortError");
+        transportError = new AtlasTransportError(timedOut ? "timeout" : "network_error", timedOut ? "Atlas request timed out." : "Atlas runtime request failed.", {
+          requestUrl: resolved.href,
+          scope,
+          cause: String(error && (error.message || error) || "unknown error"),
+        });
+      }
+      entry.outcome = transportError.kind;
+      entry.error = transportError.message;
+      entry.durationMs = Date.now() - started;
+      const failureState = transportError.kind === "timeout" ? "timed_out" : transportError.kind === "http_error" ? "http_error" : "unavailable";
+      setState(scope, failureState, { kind: transportError.kind, requestUrl: resolved.href });
+      publishTrace();
+      throw transportError;
+    } finally {
+      global.clearTimeout(timer);
+    }
+  }
+
+  function getTrace() {
+    return trace.map((item) => ({ ...item, headers: { ...(item.headers || {}) }, responseHeaders: { ...(item.responseHeaders || {}) } }));
+  }
+
+  function getStates() {
+    return { ...states };
+  }
+
+  function clearTrace() {
+    trace.splice(0, trace.length);
+    publishTrace();
+  }
+
+  global.atlasTransport = Object.freeze({
+    origin,
+    request,
+    resolveApiUrl: (path) => resolveApiUrl(path).href,
+    setState,
+    getStates,
+    getTrace,
+    clearTrace,
+    ensureRuntimeIdentity,
+    runtimeIdentity: () => runtimeIdentityValue && { ...runtimeIdentityValue },
+    AtlasTransportError,
+  });
+  publishTrace();
+})(window);
+
+/* Atlas application. */
 "use strict";
 const STATE = {
   repo: null, summary: null, graph: null, graphView: "module", graphPerf: null,
@@ -222,23 +508,51 @@ async function trackAnalytics(event, props) {
   } catch (e) { /* local-only, never block UX */ }
 }
 
-async function api(path, method = "GET", body) {
+async function api(path, method = "GET", body, transportOptions = {}) {
   const raw = String(path || "");
   const splitAt = raw.indexOf("?");
   const pathPart = splitAt >= 0 ? raw.slice(0, splitAt) : raw;
   const queryPart = splitAt >= 0 ? raw.slice(splitAt + 1) : "";
   const normalizedPath = pathPart.replace(/\/+$/, "") || "/api";
   const normalized = queryPart ? `${normalizedPath}?${queryPart}` : normalizedPath;
-  const opt = { method, headers: { "Content-Type": "application/json" } };
-  if (body) opt.body = JSON.stringify(body);
-  const r = await fetch(normalized, opt);
-  let payload = {};
-  try { payload = await r.json(); } catch (e) { payload = { ok: false, error: "Invalid server response" }; }
-  if (!payload.ok && String(payload.error || "").startsWith("Unknown endpoint")) {
+  if (!window.atlasTransport) throw new Error("Atlas runtime transport is unavailable");
+  const payload = await window.atlasTransport.request(normalized, {
+    ...transportOptions,
+    method,
+    body,
+    requireAtlasIdentity: normalizedPath === "/api/health" || transportOptions.requireAtlasIdentity === true,
+  });
+  if (payload && !payload.ok && String(payload.error || "").startsWith("Unknown endpoint")) {
     console.error("Atlas API route missing:", method, normalized, payload.error);
   }
   return payload;
 }
+window.api = api;
+
+function requestAtlasRuntimeIdentity() {
+  if (!window.atlasTransport || typeof window.atlasTransport.ensureRuntimeIdentity !== "function") {
+    return Promise.reject(Object.assign(new Error("Atlas runtime handshake unavailable"), { kind: "identity_mismatch" }));
+  }
+  return window.atlasTransport.ensureRuntimeIdentity().then((identity) => {
+    STATE.runtimeIdentity = identity;
+    document.documentElement?.setAttribute("data-atlas-runtime-protocol", identity.protocol);
+    return identity;
+  });
+}
+window.requestAtlasRuntimeIdentity = requestAtlasRuntimeIdentity;
+
+function requestAtlasTrustStatus() {
+  if (window.atlasTrustRequest) return window.atlasTrustRequest;
+  const request = api("/api/repositories/current/trust-status");
+  window.atlasTrustRequest = request;
+  request.then((value) => {
+    if ((!value || !value.ok) && window.atlasTrustRequest === request) window.atlasTrustRequest = null;
+  }).catch(() => {
+    if (window.atlasTrustRequest === request) window.atlasTrustRequest = null;
+  });
+  return request;
+}
+window.requestAtlasTrustStatus = requestAtlasTrustStatus;
 function $(id) { return document.getElementById(id); }
 function toast(msg, kind) {
   const t = $("toast");
@@ -850,7 +1164,7 @@ function renderHomeExperience(update) {
   const hasRepo = !!summary?.ok;
   const agents = homeConnectedAgents(STATE.homeMcpStatus);
   const state = !hasRepo ? "empty" : (agents.length ? "productive" : "indexed");
-  dash.dataset.homeState = state;
+  if (dash.dataset.homeState !== state) dash.dataset.homeState = state;
   dash.querySelectorAll("[data-home-panel]").forEach(panel => {
     const active = panel.dataset.homePanel === state;
     panel.hidden = !active;
@@ -906,8 +1220,7 @@ async function refreshHomeExperience() {
   if (!window.atlasHomeTrustTimer) {
     window.atlasHomeTrustTimer = window.setTimeout(async () => {
       window.atlasHomeTrustTimer = null;
-      if (!window.atlasTrustRequest) window.atlasTrustRequest = api("/api/repositories/current/trust-status").catch(() => null);
-      const trust = await window.atlasTrustRequest;
+      const trust = await requestAtlasTrustStatus().catch(() => null);
       renderHomeExperience({
         trustStatus: trust?.ok ? trust : null,
         recent: recent?.ok ? (recent.items || []) : STATE.homeRecent,
@@ -1387,14 +1700,14 @@ async function fetchGraphPayload() {
   if (view === "hierarchy") {
     const h = STATE.hierarchy || { level: "subsystem", subsystem: "", package: "" };
     if (h.level === "package") {
-      return api(`/api/repositories/current/hierarchy-graph?level=package&parent=${encodeURIComponent(h.subsystem || "")}`);
+      return api(`/api/repositories/current/hierarchy-graph?level=package&parent=${encodeURIComponent(h.subsystem || "")}`, "GET", undefined, { requireOk: true });
     }
     if (h.level === "module") {
-      return api(`/api/repositories/current/hierarchy-graph?level=module&parent=${encodeURIComponent(h.package || h.subsystem || "")}`);
+      return api(`/api/repositories/current/hierarchy-graph?level=module&parent=${encodeURIComponent(h.package || h.subsystem || "")}`, "GET", undefined, { requireOk: true });
     }
-    return api("/api/repositories/current/hierarchy-graph?level=subsystem");
+    return api("/api/repositories/current/hierarchy-graph?level=subsystem", "GET", undefined, { requireOk: true });
   }
-  return api(`/api/repositories/current/graph?view=${encodeURIComponent(view)}`);
+  return api(`/api/repositories/current/graph?view=${encodeURIComponent(view)}`, "GET", undefined, { requireOk: true });
 }
 
 function setGraphView(view, options = {}) {
@@ -1461,7 +1774,19 @@ function updateGraphMeta(data, perf) {
 }
 
 async function renderCenter() {
-  const sum = STATE.summary || (STATE.summary = await api("/api/repositories/current/summary"));
+  let sum = STATE.summary;
+  if (!sum) {
+    try {
+      sum = STATE.summary = await api("/api/repositories/current/summary");
+    } catch (error) {
+      $("leftPanel").innerHTML = repoRequiredEmptyHtml("Repository endpoint unavailable. Retry when the local runtime responds.");
+      $("graph3d").innerHTML = repoRequiredEmptyHtml(error?.kind === "timeout" ? "Graph request timed out." : "Repository graph is temporarily unavailable.");
+      $("suggest").innerHTML = "";
+      $("moduleInspector").innerHTML = `<h3>Module Inspector</h3><p class="muted tiny">Repository endpoint unavailable.</p>`;
+      window.atlasTransport?.setState("repository", error?.kind === "timeout" ? "timed_out" : "unavailable", { kind: error?.kind || "network_error" });
+      return;
+    }
+  }
   if (!sum.ok) {
     $("leftPanel").innerHTML = repoRequiredEmptyHtml("Scan a folder or load the sample to explore architecture, dependencies, and risk hubs.");
     $("graph3d").innerHTML = repoRequiredEmptyHtml("Complete a scan to render the dependency map.");
@@ -1473,7 +1798,17 @@ async function renderCenter() {
   renderHealthCockpit(sum);
   renderMapHeader(sum);
   $("suggest").innerHTML = renderCopilotSuggestions(sum);
-  const graph = STATE.graph || (STATE.graph = await fetchGraphPayload());
+  let graph = STATE.graph;
+  if (!graph) {
+    try {
+      graph = STATE.graph = await fetchGraphPayload();
+    } catch (error) {
+      $("graph3d").innerHTML = repoRequiredEmptyHtml(error?.kind === "timeout" ? "Graph request timed out. Retry Graph." : "Graph endpoint unavailable. Retry Graph.");
+      $("moduleInspector").innerHTML = `<h3>Module Inspector</h3><p class="muted tiny">Graph data is temporarily unavailable.</p>`;
+      window.atlasTransport?.setState("graph", error?.kind === "timeout" ? "timed_out" : "unavailable", { kind: error?.kind || "network_error" });
+      return;
+    }
+  }
   const bc = $("mapBreadcrumb");
   if (STATE.graphView === "hierarchy") {
     if (bc) bc.style.display = "flex";
@@ -1715,7 +2050,13 @@ function computeRiskPercentiles(nodes) {
 
 async function ensureRepoSummary() {
   if (STATE.summary?.ok) return STATE.summary;
-  const sum = await api("/api/repositories/current/summary");
+  let sum;
+  try {
+    sum = await api("/api/repositories/current/summary");
+  } catch (error) {
+    window.atlasTransport?.setState("repository", error?.kind === "timeout" ? "timed_out" : "unavailable", { kind: error?.kind || "network_error" });
+    return { ok: false, transport_error: true, error: error?.message || "Repository endpoint unavailable" };
+  }
   if (sum?.ok) {
     STATE.summary = sum;
     document.body.classList.remove("atlas-no-repo");
@@ -2915,9 +3256,13 @@ function saveExport() {
 
 /* ---------------- Boot (deferred until authenticated) ---------------- */
 let _atlasAppBooted = false;
-async function bootAtlasApp() {
-  if (_atlasAppBooted) return;
-  _atlasAppBooted = true;
+let _atlasAppWired = false;
+let _atlasBootPromise = null;
+let _atlasBootRetryTimer = null;
+
+function wireAtlasApp() {
+  if (_atlasAppWired) return;
+  _atlasAppWired = true;
   updateWorkflowToolbars();
   ensureSuggestDelegation();
   wireSeg("segTarget", "exportTarget"); wireSeg("segPacket", "exportPacket");
@@ -2928,37 +3273,59 @@ async function bootAtlasApp() {
     if (!el) return;
     el.addEventListener("change", () => validateRepoPath(false));
   });
-  try {
-    const h = await api("/api/health");
-    STATE.homeHealth = h;
-    updateTelemetryWarning(h);
-    applyBillingNav(!!h.billing_ui_enabled, true);
-    if (h.billing_ui_enabled) {
-      try {
-        const me = await api("/api/usage/me");
-        applyBillingNav(true, !!(me.user && me.user.role === "admin"));
-      } catch (e) {}
-    }
-    if (h.persistence?.resume_card) renderResumeCard(h.persistence.resume_card);
-    if (h.repository_open || h.persistence?.restored) {
-      unlockNav();
-      updateScanBtnState(true);
-      STATE.summary = await api("/api/repositories/current/summary");
-      updateTelemetryWarning(STATE.summary);
-      updateRepoChip(h.repo_name || STATE.summary?.repo_name, h.demo_mode);
-      updateMassiveBadge(!!STATE.summary?.massive_mode);
-      if (STATE.summary?.ok) {
-        document.body.classList.remove("atlas-no-repo");
-        renderResumeCard(null);
+}
+
+async function bootAtlasApp() {
+  if (_atlasAppBooted) return true;
+  if (_atlasBootPromise) return _atlasBootPromise;
+  wireAtlasApp();
+  _atlasBootPromise = (async () => {
+    try {
+      await requestAtlasRuntimeIdentity();
+      const h = await api("/api/health");
+      STATE.homeHealth = h;
+      updateTelemetryWarning(h);
+      applyBillingNav(!!h.billing_ui_enabled, true);
+      if (h.billing_ui_enabled) {
+        try {
+          const me = await api("/api/usage/me");
+          applyBillingNav(true, !!(me.user && me.user.role === "admin"));
+        } catch (e) {}
       }
+      if (h.persistence?.resume_card) renderResumeCard(h.persistence.resume_card);
+      if (h.repository_open || h.persistence?.restored) {
+        unlockNav();
+        updateScanBtnState(true);
+        STATE.summary = await api("/api/repositories/current/summary", "GET", undefined, { requireOk: true });
+        updateTelemetryWarning(STATE.summary);
+        updateRepoChip(h.repo_name || STATE.summary?.repo_name, h.demo_mode);
+        updateMassiveBadge(!!STATE.summary?.massive_mode);
+        if (STATE.summary?.ok) {
+          document.body.classList.remove("atlas-no-repo");
+          renderResumeCard(null);
+        }
+      }
+      _atlasAppBooted = true;
+      refreshHomeExperience();
+      loadRecent();
+      showScanPanel(null);
+      const hash = (location.hash || "").replace(/^#\/?/, "").toLowerCase();
+      const pathTail = (location.pathname || "").split("/").pop().toLowerCase();
+      if (hash === "hn" || pathTail === "hn") go("hn");
+      return true;
+    } catch (_error) {
+      if (!_atlasBootRetryTimer) {
+        _atlasBootRetryTimer = window.setTimeout(() => {
+          _atlasBootRetryTimer = null;
+          bootAtlasApp();
+        }, 1200);
+      }
+      return false;
+    } finally {
+      _atlasBootPromise = null;
     }
-  } catch (e) {}
-  refreshHomeExperience();
-  loadRecent();
-  showScanPanel(null);
-  const hash = (location.hash || "").replace(/^#\/?/, "").toLowerCase();
-  const pathTail = (location.pathname || "").split("/").pop().toLowerCase();
-  if (hash === "hn" || pathTail === "hn") go("hn");
+  })();
+  return _atlasBootPromise;
 }
 window.bootAtlasApp = bootAtlasApp;
 document.addEventListener("atlas:authenticated", bootAtlasApp);

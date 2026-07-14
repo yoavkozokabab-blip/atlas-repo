@@ -13,12 +13,8 @@
 
   async function api(path, method, body) {
     try {
-      const r = await fetch(path, {
-        method: method || "GET",
-        headers: { "Content-Type": "application/json" },
-        body: body ? JSON.stringify(body) : undefined,
-      });
-      return await r.json();
+      if (typeof window.api !== "function") return { ok: false, error: "Runtime transport unavailable" };
+      return await window.api(path, method || "GET", body);
     } catch (e) {
       return { ok: false, error: "Network error" };
     }

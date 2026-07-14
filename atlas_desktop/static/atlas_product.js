@@ -70,18 +70,33 @@ function atlasRenderTrustBar(payload) {
 }
 
 async function atlasPollTrustStatus() {
-  try {
-    if (typeof api !== "function") return;
-    if (!window.atlasTrustPollTimer && !window.atlasTrustRequest) {
-      window.atlasTrustPollTimer = window.setTimeout(() => {
-        window.atlasTrustPollTimer = null;
-        if (!window.atlasTrustRequest) window.atlasTrustRequest = api("/api/repositories/current/trust-status").catch(() => null);
-      }, 7000);
+  if (typeof api !== "function") return null;
+  if (window.atlasTrustRequest) {
+    try {
+      const current = await window.atlasTrustRequest;
+      if (current && current.ok) atlasRenderTrustBar(current);
+      return current;
+    } catch (_error) {
+      window.atlasTrustRequest = null;
+      return null;
     }
-    while (!window.atlasTrustRequest) await new Promise((resolve) => window.setTimeout(resolve, 100));
-    const data = await window.atlasTrustRequest;
-    if (data && data.ok) atlasRenderTrustBar(data);
-  } catch (e) {}
+  }
+  if (window.atlasTrustPollTimer) return null;
+  return new Promise((resolve) => {
+    window.atlasTrustPollTimer = window.setTimeout(() => {
+      window.atlasTrustPollTimer = null;
+      const request = typeof window.requestAtlasTrustStatus === "function"
+        ? window.requestAtlasTrustStatus()
+        : api("/api/repositories/current/trust-status");
+      window.atlasTrustRequest = request;
+      request.then((data) => {
+        if (data && data.ok) atlasRenderTrustBar(data);
+        resolve(data || null);
+      }).catch(() => resolve(null)).finally(() => {
+        if (window.atlasTrustRequest === request) window.atlasTrustRequest = null;
+      });
+    }, 7000);
+  });
 }
 
 async function atlasRefreshChangedFiles() {

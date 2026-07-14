@@ -43,14 +43,18 @@
     if (shell.trustPromise || shell.trustTimer) return;
     shell.trustTimer = window.setTimeout(() => {
       shell.trustTimer = null;
-      shell.trustPromise = window.atlasTrustRequest || api("/api/repositories/current/trust-status");
-      window.atlasTrustRequest = shell.trustPromise;
-      shell.trustPromise.then((value) => {
+      const request = typeof window.requestAtlasTrustStatus === "function"
+        ? window.requestAtlasTrustStatus()
+        : api("/api/repositories/current/trust-status");
+      shell.trustPromise = request;
+      request.then((value) => {
+        if (!value || !value.ok) return;
         shell.trustValue = value;
         updateGlobalStatus();
         if (document.querySelector('.view.active')?.id === "view-memory") renderMemory();
-        return value;
-      }).catch(() => null);
+      }).catch(() => null).finally(() => {
+        if (shell.trustPromise === request) shell.trustPromise = null;
+      });
     }, delay);
   }
 
@@ -59,34 +63,60 @@
     const label = byId("globalReadinessLabel");
     if (!readiness || !label) return;
 
-    try {
-      const [summary, health] = await Promise.all([
-        (window.STATE && STATE.summary && STATE.summary.ok)
-          ? STATE.summary
-          : api("/api/repositories/current/summary"),
-        api("/api/health"),
-      ]);
-      if (!summary || !summary.ok) {
-        readiness.dataset.state = "idle";
-        label.textContent = "Select a repository";
-        return;
-      }
-      const card = health?.persistence?.resume_card;
-      const startupFresh = card?.freshness_status === "fresh" && card?.validation_status === "valid";
-      const trust = shell.trustValue || (startupFresh ? { fresh: true, user_trust_label: "Fresh" } : null);
-      scheduleTrustCheck();
-      if (!trust) {
-        readiness.dataset.state = "neutral";
-        label.textContent = "Verifying memory";
-        return;
-      }
-      const stale = trust && (trust.scan_stale || trust.fresh === false || trust.stale_status);
-      readiness.dataset.state = stale ? "warning" : "ready";
-      label.textContent = stale ? "Repository changed" : "Memory current";
-    } catch (_error) {
+    const identityRequest = typeof window.requestAtlasRuntimeIdentity === "function"
+      ? window.requestAtlasRuntimeIdentity()
+      : Promise.reject(Object.assign(new Error("Atlas runtime handshake unavailable"), { kind: "identity_mismatch" }));
+    const summaryRequest = (window.STATE && STATE.summary && STATE.summary.ok)
+      ? Promise.resolve(STATE.summary)
+      : api("/api/repositories/current/summary");
+    const [identityResult, healthResult, summaryResult] = await Promise.allSettled([
+      identityRequest,
+      api("/api/health"),
+      summaryRequest,
+    ]);
+    const identity = identityResult.status === "fulfilled" ? identityResult.value : null;
+    const health = healthResult.status === "fulfilled" ? healthResult.value : null;
+    if (
+      identityResult.status === "rejected"
+      || !identity
+      || identity.product !== "Atlas Desktop"
+      || identity.protocol !== "atlas-desktop-runtime-v1"
+      || Number(identity.port) !== Number(new URL(window.location.origin).port)
+      || healthResult.status === "rejected"
+      || !health
+      || !health.ok
+      || health.product !== "ATLAS"
+    ) {
+      const reason = identityResult.status === "rejected"
+        ? identityResult.reason
+        : healthResult.status === "rejected" ? healthResult.reason : null;
       readiness.dataset.state = "error";
-      label.textContent = "Backend unavailable";
+      label.textContent = reason && reason.kind === "timeout" ? "Runtime timed out" : "Backend unavailable";
+      return;
     }
+    if (summaryResult.status === "rejected") {
+      readiness.dataset.state = "warning";
+      label.textContent = summaryResult.reason && summaryResult.reason.kind === "timeout" ? "Repository timed out" : "Repository unavailable";
+      return;
+    }
+    const summary = summaryResult.value;
+    if (!summary || !summary.ok) {
+      readiness.dataset.state = "idle";
+      label.textContent = "Select a repository";
+      return;
+    }
+    const card = health?.persistence?.resume_card;
+    const startupFresh = card?.freshness_status === "fresh" && card?.validation_status === "valid";
+    const trust = shell.trustValue || (startupFresh ? { fresh: true, user_trust_label: "Fresh" } : null);
+    scheduleTrustCheck();
+    if (!trust) {
+      readiness.dataset.state = "neutral";
+      label.textContent = "Verifying memory";
+      return;
+    }
+    const stale = trust && (trust.scan_stale || trust.fresh === false || trust.stale_status);
+    readiness.dataset.state = stale ? "warning" : "ready";
+    label.textContent = stale ? "Repository changed" : "Memory current";
   }
 
   async function renderMemory() {
@@ -98,12 +128,27 @@
     if (!status || !facts || !evidence || !history) return;
 
     status.innerHTML = `${statusPill("Checking", "neutral")} Reading signed local repository memory…`;
-    const [summary, historyData, diagnostics, healthPayload] = await Promise.all([
+    const memoryRequests = await Promise.allSettled([
       api("/api/repositories/current/summary"),
       api("/api/history"),
       api("/api/system/diagnostics"),
       api("/api/health"),
     ]);
+    const [summaryResult, historyResult, diagnosticsResult, healthResult] = memoryRequests;
+    if (summaryResult.status === "rejected") {
+      const timedOut = summaryResult.reason && summaryResult.reason.kind === "timeout";
+      status.innerHTML = `${statusPill(timedOut ? "Timed out" : "Unavailable", "warning")} Repository memory could not be read from the local runtime.`;
+      freshness.textContent = timedOut ? "Timed out" : "Unavailable";
+      freshness.dataset.state = "warning";
+      facts.innerHTML = factRows([["Repository", "Endpoint unavailable"], ["Persistence", "Stored locally"]]);
+      evidence.innerHTML = emptyState("Repository evidence is temporarily unavailable. Retry Memory.");
+      history.innerHTML = emptyState("Memory history is temporarily unavailable.");
+      return;
+    }
+    const summary = summaryResult.value;
+    const historyData = historyResult.status === "fulfilled" ? historyResult.value : null;
+    const diagnostics = diagnosticsResult.status === "fulfilled" ? diagnosticsResult.value : null;
+    const healthPayload = healthResult.status === "fulfilled" ? healthResult.value : null;
 
     if (!summary || !summary.ok) {
       status.innerHTML = `${statusPill("No repository", "warning")} Scan or resume a repository to create project memory.`;

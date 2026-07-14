@@ -27,16 +27,18 @@
   const apiSafe = async (path) => {
     try { return await window.api(path); } catch (_error) { return null; }
   };
-  const endpoint = async (path) => {
-    try {
-      const response = await fetch(path, { headers: { Accept: "application/json" } });
-      return response.ok ? await response.json() : null;
-    } catch (_error) { return null; }
-  };
-  const get = (path) => typeof window.api === "function" ? apiSafe(path) : endpoint(path);
+  const get = (path) => typeof window.api === "function" ? apiSafe(path) : Promise.resolve(null);
   const getTrust = () => {
-    if (!window.atlasTrustRequest) window.atlasTrustRequest = get("/api/repositories/current/trust-status");
-    return window.atlasTrustRequest;
+    if (typeof window.requestAtlasTrustStatus === "function") return window.requestAtlasTrustStatus().catch(() => null);
+    if (window.atlasTrustRequest) return window.atlasTrustRequest;
+    const request = get("/api/repositories/current/trust-status");
+    window.atlasTrustRequest = request;
+    request.then((value) => {
+      if (!value && window.atlasTrustRequest === request) window.atlasTrustRequest = null;
+    }).catch(() => {
+      if (window.atlasTrustRequest === request) window.atlasTrustRequest = null;
+    });
+    return request;
   };
 
   function trustFromHealth(health) {
@@ -180,14 +182,6 @@
   function renderHomeDetails(summary, trust, graph, history, recent, agents, health) {
     if (!summary?.ok) return;
     const dashboard = byId("homeDashboard");
-    if (dashboard?.dataset.homeState === "indexed") {
-      dashboard.dataset.homeState = "productive";
-      dashboard.querySelectorAll("[data-home-panel]").forEach((panel) => {
-        const active = panel.dataset.homePanel === "productive";
-        panel.hidden = !active;
-        panel.setAttribute("aria-hidden", active ? "false" : "true");
-      });
-    }
     const connected = agentNames(agents);
     const graphHealth = summary.graph_health || {};
     const fresh = trust && (trust.fresh === true || trust.trust_status?.fresh === true || trust.user_trust_label === "Fresh");
@@ -243,6 +237,7 @@
     if (token !== workbench.homeRenderToken) return;
     const trust = workbench.trust || trustFromHealth(health);
     workbench.summary = summary; workbench.trust = trust; workbench.graph = graph; workbench.history = list(history?.items); workbench.agents = agents;
+    if (summary?.ok && window.STATE) window.STATE.summary = summary;
     if (typeof renderHomeExperience === "function") renderHomeExperience({ trustStatus: trust, recent: list(recent?.items), mcpStatus: agents });
     syncSidebar(summary, trust, agents);
     renderHomeDetails(summary, trust, graph, workbench.history, list(recent?.items), agents, health);
@@ -447,7 +442,15 @@
     const diagnosticGrid = byId("diagnosticsGrid");
     if (diagnosticGrid) new MutationObserver(() => window.setTimeout(decorateDiagnostics, 20)).observe(diagnosticGrid, { subtree: true, childList: true, attributes: true });
     const home = byId("homeDashboard");
-    if (home) new MutationObserver(() => { if (home.dataset.homeState === "productive") window.setTimeout(renderHomeWorkbench, 30); }).observe(home, { attributes: true, attributeFilter: ["data-home-state"] });
+    if (home) {
+      let previousHomeState = home.dataset.homeState || "";
+      new MutationObserver(() => {
+        const nextHomeState = home.dataset.homeState || "";
+        if (nextHomeState === previousHomeState) return;
+        previousHomeState = nextHomeState;
+        if (nextHomeState === "productive") window.setTimeout(renderHomeWorkbench, 30);
+      }).observe(home, { attributes: true, attributeFilter: ["data-home-state"] });
+    }
   }
 
   function onView(view) {

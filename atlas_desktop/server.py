@@ -97,6 +97,57 @@ def normalize_api_path(path: str) -> str:
     return cleaned or "/"
 
 
+def _parse_loopback_authority(value: str) -> Optional[Tuple[str, int]]:
+    """Parse a loopback Host/authority with an explicit port."""
+    raw = (value or "").strip()
+    if not raw or "," in raw or "@" in raw:
+        return None
+    try:
+        parsed = urlparse(f"//{raw}")
+        hostname = (parsed.hostname or "").lower()
+        port = parsed.port
+    except ValueError:
+        return None
+    if (
+        not hostname
+        or port is None
+        or not _is_loopback_host(hostname)
+        or parsed.username
+        or parsed.password
+        or parsed.params
+        or parsed.query
+        or parsed.fragment
+        or parsed.path
+    ):
+        return None
+    return hostname, int(port)
+
+
+def _parse_loopback_origin(value: str) -> Optional[Tuple[str, int]]:
+    """Parse an HTTP Origin containing only a loopback authority."""
+    raw = (value or "").strip()
+    try:
+        parsed = urlparse(raw)
+        hostname = (parsed.hostname or "").lower()
+        port = parsed.port
+    except ValueError:
+        return None
+    if (
+        parsed.scheme.lower() != "http"
+        or not hostname
+        or port is None
+        or not _is_loopback_host(hostname)
+        or parsed.username
+        or parsed.password
+        or parsed.params
+        or parsed.query
+        or parsed.fragment
+        or parsed.path not in ("", "/")
+    ):
+        return None
+    return hostname, int(port)
+
+
 def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
     """Single source of truth for API routing (stdlib + tests + route audit)."""
 
@@ -249,7 +300,7 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
     }
 
 
-ROUTES = tuple(sorted(_route_handlers().keys()))
+ROUTES = tuple(sorted((*_route_handlers().keys(), ("GET", runtime_startup.HANDSHAKE_PATH))))
 
 
 # --------------------------------------------------------------------------
@@ -266,6 +317,12 @@ def dispatch(
     query = query or {}
     method = method.upper()
     path = normalize_api_path(path)
+    if (method, path) == ("GET", runtime_startup.HANDSHAKE_PATH):
+        return 400, {
+            "ok": False,
+            "code": "http_context_required",
+            "error": "The Atlas runtime handshake requires the active HTTP listener context.",
+        }
     handler = _route_handlers().get((method, path))
     try:
         if handler is None:
@@ -283,7 +340,8 @@ def dispatch(
 
 
 def route_is_registered(method: str, path: str) -> bool:
-    return (method.upper(), normalize_api_path(path)) in _route_handlers()
+    key = (method.upper(), normalize_api_path(path))
+    return key == ("GET", runtime_startup.HANDSHAKE_PATH) or key in _route_handlers()
 
 
 # --------------------------------------------------------------------------
@@ -291,25 +349,82 @@ def route_is_registered(method: str, path: str) -> bool:
 # --------------------------------------------------------------------------
 class AtlasHandler(BaseHTTPRequestHandler):
     server_version = "AtlasDesktop/119"
+    _CORS_METHODS = ("GET", "POST")
+    _CORS_HEADERS = frozenset({"accept", "content-type"})
+    _CLIENT_DISCONNECT_ERRORS = (BrokenPipeError, ConnectionAbortedError, ConnectionResetError)
 
     def log_message(self, *args: Any) -> None:  # quiet console
         pass
 
-    def _send_json(self, status: int, payload: Dict[str, Any]) -> None:
-        data = json.dumps(payload, ensure_ascii=False).encode("utf-8")
-        self.send_response(status)
-        self.send_header("Content-Type", "application/json; charset=utf-8")
-        self.send_header("Content-Length", str(len(data)))
-        self.send_header("Access-Control-Allow-Origin", "*")
-        self.end_headers()
-        self.wfile.write(data)
+    def _authorize_api_request(self) -> Tuple[bool, Optional[str]]:
+        """Allow only loopback clients addressing this exact runtime origin."""
+        if not _is_loopback_host(str(self.client_address[0])):
+            return False, None
+        host = _parse_loopback_authority(str(self.headers.get("Host") or ""))
+        expected_port = int(self.server.server_address[1])
+        if host is None or host[1] != expected_port:
+            return False, None
+        origin_value = self.headers.get("Origin")
+        if origin_value is None:
+            return True, None
+        origin = _parse_loopback_origin(str(origin_value))
+        if origin is None or origin != host:
+            return False, None
+        return True, str(origin_value).strip()
 
-    def _read_body(self) -> Dict[str, Any]:
+    def _write_response(
+        self,
+        status: int,
+        headers: Tuple[Tuple[str, str], ...],
+        body: bytes = b"",
+    ) -> bool:
+        """Write a complete response while treating client disconnects as local cancellation."""
+        try:
+            self.send_response(status)
+            for name, value in headers:
+                self.send_header(name, value)
+            self.end_headers()
+            if body:
+                self.wfile.write(body)
+            return True
+        except self._CLIENT_DISCONNECT_ERRORS:
+            # The frontend uses bounded timeouts. A response abandoned by that
+            # client must not emit a traceback or disturb other runtime calls.
+            return False
+
+    def _send_json(
+        self,
+        status: int,
+        payload: Dict[str, Any],
+        extra_headers: Tuple[Tuple[str, str], ...] = (),
+    ) -> None:
+        data = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+        headers = [
+            ("Content-Type", "application/json; charset=utf-8"),
+            ("Content-Length", str(len(data))),
+            *extra_headers,
+        ]
+        cors_origin = getattr(self, "_atlas_cors_origin", None)
+        if cors_origin:
+            headers.extend(
+                [
+                    ("Access-Control-Allow-Origin", str(cors_origin)),
+                    ("Vary", "Origin"),
+                ]
+            )
+        self._write_response(status, tuple(headers), data)
+
+    def _read_body(self) -> Optional[Dict[str, Any]]:
         length = int(self.headers.get("Content-Length", 0) or 0)
         if not length:
             return {}
         try:
-            return json.loads(self.rfile.read(length).decode("utf-8") or "{}")
+            raw = self.rfile.read(length)
+            if len(raw) != length:
+                return None
+            return json.loads(raw.decode("utf-8") or "{}")
+        except self._CLIENT_DISCONNECT_ERRORS:
+            return None
         except (ValueError, UnicodeDecodeError):
             return {}
 
@@ -324,16 +439,39 @@ class AtlasHandler(BaseHTTPRequestHandler):
         ctype = mimetypes.guess_type(target)[0] or "application/octet-stream"
         with open(target, "rb") as fh:
             data = fh.read()
-        self.send_response(200)
-        self.send_header("Content-Type", ctype)
-        self.send_header("Content-Length", str(len(data)))
-        self.end_headers()
-        self.wfile.write(data)
+        self._write_response(
+            200,
+            (("Content-Type", ctype), ("Content-Length", str(len(data)))),
+            data,
+        )
 
     def _route_api(self) -> None:
+        authorized, cors_origin = self._authorize_api_request()
+        self._atlas_cors_origin = cors_origin if authorized else None
+        if not authorized:
+            self._send_json(
+                403,
+                {
+                    "ok": False,
+                    "code": "untrusted_runtime_origin",
+                    "error": "Atlas API requests must come from this local runtime origin.",
+                },
+            )
+            return
         parsed = urlparse(self.path)
         path = normalize_api_path(parsed.path)
         if path == runtime_startup.HANDSHAKE_PATH:
+            if self.command != "GET":
+                self._send_json(
+                    405,
+                    {
+                        "ok": False,
+                        "code": "method_not_allowed",
+                        "error": "The Atlas runtime handshake is GET-only.",
+                    },
+                    (("Allow", "GET, OPTIONS"),),
+                )
+                return
             query_items = parse_qs(parsed.query or "")
             challenge = str((query_items.get("challenge") or [""])[0])
             identity = getattr(self.server, "atlas_runtime_identity", None) or {}
@@ -364,7 +502,10 @@ class AtlasHandler(BaseHTTPRequestHandler):
             return
         query_items = parse_qs(parsed.query or "")
         query = {key: values[0] for key, values in query_items.items() if values}
-        status, payload = dispatch(self.command, path, self._read_body() if self.command == "POST" else None, query)
+        request_body = self._read_body() if self.command == "POST" else None
+        if self.command == "POST" and request_body is None:
+            return
+        status, payload = dispatch(self.command, path, request_body, query)
         self._send_json(status, payload)
 
     def do_GET(self) -> None:
@@ -378,6 +519,55 @@ class AtlasHandler(BaseHTTPRequestHandler):
             self._route_api()
         else:
             self._send_json(404, {"ok": False, "error": "not found"})
+
+    def do_OPTIONS(self) -> None:
+        path = normalize_api_path(self.path.split("?", 1)[0])
+        if not path.startswith("/api/"):
+            self._send_json(404, {"ok": False, "error": "not found"})
+            return
+        authorized, cors_origin = self._authorize_api_request()
+        self._atlas_cors_origin = cors_origin if authorized else None
+        requested_method = str(self.headers.get("Access-Control-Request-Method") or "").upper()
+        requested_headers = {
+            item.strip().lower()
+            for item in str(self.headers.get("Access-Control-Request-Headers") or "").split(",")
+            if item.strip()
+        }
+        if path == runtime_startup.HANDSHAKE_PATH:
+            route_methods = ("GET",)
+        else:
+            route_methods = tuple(method for method in self._CORS_METHODS if route_is_registered(method, path))
+        if (
+            not authorized
+            or requested_method not in route_methods
+            or not requested_headers.issubset(self._CORS_HEADERS)
+        ):
+            self._atlas_cors_origin = None
+            self._send_json(
+                403,
+                {
+                    "ok": False,
+                    "code": "cors_request_rejected",
+                    "error": "Atlas rejected an untrusted preflight request.",
+                },
+            )
+            return
+        response_headers = [
+            ("Content-Length", "0"),
+            ("Allow", ", ".join((*route_methods, "OPTIONS"))),
+            ("Access-Control-Allow-Methods", ", ".join(route_methods)),
+        ]
+        if requested_headers:
+            allowed = [name for name in ("Accept", "Content-Type") if name.lower() in requested_headers]
+            response_headers.append(("Access-Control-Allow-Headers", ", ".join(allowed)))
+        if cors_origin:
+            response_headers.extend(
+                [
+                    ("Access-Control-Allow-Origin", cors_origin),
+                    ("Vary", "Origin"),
+                ]
+            )
+        self._write_response(204, tuple(response_headers))
 
 
 def _log_launcher(message: str) -> None:
@@ -570,14 +760,129 @@ def run(
 def create_fastapi_app():  # pragma: no cover - exercised only when fastapi present
     """Return a FastAPI app exposing the same routes. Requires `pip install fastapi uvicorn`."""
     from fastapi import FastAPI, Request
-    from fastapi.responses import JSONResponse, FileResponse
+    from fastapi.responses import JSONResponse, FileResponse, Response
     from fastapi.staticfiles import StaticFiles
+    from starlette.requests import ClientDisconnect
+
+    # ``from __future__ import annotations`` stores nested endpoint annotations
+    # as strings. Make FastAPI's optional Request type resolvable when this
+    # compatibility app is constructed, without importing FastAPI at startup.
+    globals()["Request"] = Request
 
     app = FastAPI(title="Atlas — Repository Intelligence Platform", version=api.PRODUCT_VERSION)
+    app.state.atlas_runtime_identities = {}
+
+    def _fastapi_route_methods(path: str) -> Tuple[str, ...]:
+        """Return only methods implemented by an exact FastAPI API route."""
+        methods = set()
+        for route in app.routes:
+            route_path = getattr(route, "path", None)
+            if route_path and normalize_api_path(str(route_path)) == path:
+                methods.update(str(method).upper() for method in (getattr(route, "methods", None) or ()))
+        return tuple(method for method in AtlasHandler._CORS_METHODS if method in methods)
+
+    def _fastapi_runtime_authority(request: Request) -> Tuple[bool, Optional[str], int]:
+        """Authorize the ASGI request against its actual loopback listener."""
+        client = request.scope.get("client") or ("", 0)
+        server_address = request.scope.get("server") or ("", 0)
+        try:
+            client_host = str(client[0])
+            listener_port = int(server_address[1])
+        except (IndexError, TypeError, ValueError):
+            return False, None, 0
+        if not _is_loopback_host(client_host) or listener_port <= 0:
+            return False, None, 0
+        host = _parse_loopback_authority(str(request.headers.get("host") or ""))
+        if host is None or host[1] != listener_port:
+            return False, None, listener_port
+        origin_value = request.headers.get("origin")
+        if origin_value is None:
+            return True, None, listener_port
+        origin = _parse_loopback_origin(str(origin_value))
+        if origin is None or origin != host:
+            return False, None, listener_port
+        return True, str(origin_value).strip(), listener_port
+
+    @app.middleware("http")
+    async def _enforce_runtime_transport_boundary(request: Request, call_next):
+        path = normalize_api_path(str(request.scope.get("path") or request.url.path))
+        if not path.startswith("/api/"):
+            return await call_next(request)
+
+        authorized, cors_origin, _listener_port = _fastapi_runtime_authority(request)
+        if not authorized:
+            return JSONResponse(
+                status_code=403,
+                content={
+                    "ok": False,
+                    "code": "untrusted_runtime_origin",
+                    "error": "Atlas API requests must come from this local runtime origin.",
+                },
+            )
+
+        if request.method.upper() == "OPTIONS":
+            requested_method = str(request.headers.get("access-control-request-method") or "").upper()
+            requested_headers = {
+                item.strip().lower()
+                for item in str(request.headers.get("access-control-request-headers") or "").split(",")
+                if item.strip()
+            }
+            route_methods = _fastapi_route_methods(path)
+            if (
+                requested_method not in route_methods
+                or not requested_headers.issubset(AtlasHandler._CORS_HEADERS)
+            ):
+                return JSONResponse(
+                    status_code=403,
+                    content={
+                        "ok": False,
+                        "code": "cors_request_rejected",
+                        "error": "Atlas rejected an untrusted preflight request.",
+                    },
+                )
+            headers = {
+                "Content-Length": "0",
+                "Allow": ", ".join((*route_methods, "OPTIONS")),
+                "Access-Control-Allow-Methods": ", ".join(route_methods),
+            }
+            if requested_headers:
+                allowed = [
+                    name
+                    for name in ("Accept", "Content-Type")
+                    if name.lower() in requested_headers
+                ]
+                headers["Access-Control-Allow-Headers"] = ", ".join(allowed)
+            if cors_origin:
+                headers["Access-Control-Allow-Origin"] = cors_origin
+                headers["Vary"] = "Origin"
+            return Response(status_code=204, headers=headers)
+
+        if path == runtime_startup.HANDSHAKE_PATH and request.method.upper() != "GET":
+            return JSONResponse(
+                status_code=405,
+                content={
+                    "ok": False,
+                    "code": "method_not_allowed",
+                    "error": "The Atlas runtime handshake is GET-only.",
+                },
+                headers={"Allow": "GET, OPTIONS"},
+            )
+
+        response = await call_next(request)
+        if cors_origin:
+            response.headers["Access-Control-Allow-Origin"] = cors_origin
+            vary = str(response.headers.get("Vary") or "")
+            if "origin" not in {item.strip().lower() for item in vary.split(",") if item.strip()}:
+                response.headers["Vary"] = f"{vary}, Origin".strip(", ")
+        return response
 
     async def _body(request: Request) -> Dict[str, Any]:
         try:
             return await request.json()
+        except ClientDisconnect:
+            # Never turn an abandoned state-changing request into an empty
+            # payload whose endpoint defaults can still execute.
+            raise
         except Exception:
             return {}
 
@@ -586,6 +891,33 @@ def create_fastapi_app():  # pragma: no cover - exercised only when fastapi pres
         if blocked:
             return JSONResponse(status_code=403, content=blocked)
         return None
+
+    @app.get(runtime_startup.HANDSHAKE_PATH)
+    def _runtime_handshake(request: Request, challenge: str = ""):
+        server_address = request.scope.get("server") or ("", 0)
+        try:
+            port = int(server_address[1])
+        except (IndexError, TypeError, ValueError):
+            port = 0
+        if not challenge or port <= 0:
+            return JSONResponse(
+                status_code=400,
+                content={"ok": False, "error": "runtime handshake unavailable"},
+            )
+        identity = app.state.atlas_runtime_identities.get(port)
+        if not identity:
+            identity = runtime_startup.new_instance_identity(port)
+            app.state.atlas_runtime_identities[port] = identity
+            try:
+                runtime_startup.write_runtime_descriptor(identity)
+            except OSError:
+                pass
+        return runtime_startup.handshake_payload(
+            challenge,
+            port=port,
+            pid=int(identity.get("pid") or os.getpid()),
+            instance_id=str(identity.get("instance_id") or ""),
+        )
 
     @app.get("/api/health")
     def _health():

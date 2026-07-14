@@ -4,11 +4,8 @@
   function post(stage, metadata) {
     const body = { stage: stage, source: "desktop" };
     if (metadata) body.metadata = metadata;
-    fetch("/api/accounts/acquisition/event", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    }).catch(function () {});
+    if (typeof window.api !== "function") return;
+    window.api("/api/accounts/acquisition/event", "POST", body).catch(function () {});
   }
 
   try {
