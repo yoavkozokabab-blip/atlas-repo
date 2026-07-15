@@ -124,6 +124,32 @@ def test_fresh_installed_launch_discovers_recent_repository(
     assert len(persistence.list_registry_rows(str(canonical))) == 1
 
 
+def test_read_only_persistence_probe_does_not_block_later_auto_restore(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    source = tmp_path / "legacy"
+    canonical = tmp_path / "canonical"
+    repo = _mini_repo(tmp_path)
+    rid = _scan_into(source, repo, monkeypatch)
+    migrated = persistence_migration.migrate_repository_state(
+        canonical_root=str(canonical), source_roots=[str(source)]
+    )
+    assert migrated["migrated_repo_ids"] == [rid]
+    monkeypatch.setenv("ATLAS_DESKTOP_DATA", str(canonical))
+    data_paths.reset_desktop_data_dir_cache()
+    _fresh_state()
+
+    preview = api.bootstrap_persistence(auto_restore=False)
+    assert preview["restored"] is False
+    assert preview["resume_card"]["can_resume"] is True
+    assert api._STATE.get("scan") is None
+
+    restored = api.bootstrap_persistence(auto_restore=True)
+    assert restored["restored"] is True
+    assert api._STATE["path"] == str(repo)
+    assert repository_memory.repo_id(api._STATE["path"]) == rid
+
+
 def test_installer_never_resolves_or_deletes_elevated_user_data() -> None:
     script = INSTALLER.read_text(encoding="utf-8")
     assert "PrivilegesRequired=lowest" in script

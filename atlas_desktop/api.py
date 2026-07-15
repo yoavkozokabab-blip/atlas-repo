@@ -314,13 +314,24 @@ def _bootstrap_persistence_impl(*, auto_restore: bool = True) -> Dict[str, Any]:
 
 def bootstrap_persistence(*, auto_restore: bool = True) -> Dict[str, Any]:
     """Single-flight startup restore; filesystem validation never holds the state lock."""
+    global _PERSISTENCE_BOOTSTRAPPED
     with _PERSISTENCE_BOOTSTRAP_LOCK:
         if _PERSISTENCE_BOOTSTRAPPED:
-            return _STATE.get("persistence_status") or {
+            status = _STATE.get("persistence_status") or {
                 "ok": True,
                 "restored": bool(_STATE.get("scan")),
                 "resume_card": None,
             }
+            resume_card = status.get("resume_card") or {}
+            if (
+                auto_restore
+                and not _STATE.get("scan")
+                and not status.get("restored")
+                and resume_card.get("can_resume")
+            ):
+                _PERSISTENCE_BOOTSTRAPPED = False
+                return _bootstrap_persistence_impl(auto_restore=True)
+            return status
         return _bootstrap_persistence_impl(auto_restore=auto_restore)
 
 
