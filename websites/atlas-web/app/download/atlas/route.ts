@@ -33,7 +33,9 @@ async function recordDownloadIfSignedIn(): Promise<void> {
 }
 
 export async function GET() {
-  const hostedUrl = DOWNLOAD_URL && DOWNLOAD_URL !== "/download/atlas" ? DOWNLOAD_URL : process.env.ATLAS_INSTALLER_URL;
+  const hostedUrl =
+    process.env.ATLAS_INSTALLER_URL ||
+    (DOWNLOAD_URL && DOWNLOAD_URL !== "/download/atlas" ? DOWNLOAD_URL : undefined);
   if (hostedUrl) {
     await recordDownloadIfSignedIn();
     return NextResponse.redirect(hostedUrl, 302);

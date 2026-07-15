@@ -299,7 +299,7 @@ export function InstallationBlock() {
         </p>
       </div>
       <div className="install-actions">
-        <a className="btn-mag" href={DOWNLOAD_URL} data-evt="download_click">
+        <a className="btn-mag" href="/download/atlas" data-evt="download_click">
           Download Atlas <span className="arw" aria-hidden>→</span>
         </a>
         <a className="btn-line" href={GITHUB_RELEASE_URL} target="_blank" rel="noreferrer">

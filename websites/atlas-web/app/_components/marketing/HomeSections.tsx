@@ -174,7 +174,7 @@ export default function HomeSections() {
               </p>
             </div>
             <div className="dl-strip-cta">
-              <Link className="btn-mag" href={DOWNLOAD_URL} data-evt="download_click">
+              <Link className="btn-mag" href="/download/atlas" data-evt="download_click">
                 Download Atlas <span className="arw" aria-hidden>→</span>
               </Link>
               <a className="btn-line" href={GITHUB_URL} target="_blank" rel="noreferrer">View on GitHub</a>
