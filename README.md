@@ -7,8 +7,8 @@ repository into a dependency graph and symbol index, then gives Claude Code, Cur
 and any MCP-compatible agent the exact files, symbols, and blast radius needed for a task.
 
 **Website:** https://atlas-repo-wu76.vercel.app  
-**Download (Windows v1.0.1):** https://atlas-repo-wu76.vercel.app/download/atlas  
-**Status:** **1.0.1, Windows only** — proprietary, source-visible on GitHub.
+**Download (Windows v1.0.2):** https://atlas-repo-wu76.vercel.app/download/atlas  
+**Status:** **1.0.2, Windows only** — proprietary, source-visible on GitHub.
 
 ![Atlas repository overview — dependency graph, memory, and grounded Ask on a demo repository](docs/assets/atlas-hero.png)
 
@@ -50,37 +50,37 @@ Honest scope: this measures **retrieval quality**, not end-to-end task outcomes.
 
 ### Home — repository overview
 
-![Atlas Home — modules, dependencies, subsystems, and Fresh memory on Atlas Demo](docs/screenshots/v1.0.1/atlas-home.png)
+![Atlas Home — modules, dependencies, subsystems, and Fresh memory on Atlas Demo](docs/screenshots/v1.0.2/atlas-home.png)
 
 At-a-glance metrics (files, modules, edges, subsystems) with graph health and suggested next actions.
 
 ### Ask Atlas — grounded answers with evidence
 
-![Ask Atlas — authentication question with cited files and confidence](docs/screenshots/v1.0.1/atlas-ask.png)
+![Ask Atlas — authentication question with cited files and confidence](docs/screenshots/v1.0.2/atlas-ask.png)
 
 Deterministic lookups against the local index — cited file paths, not hallucinated summaries.
 
 ### Dependency graph
 
-![Atlas dependency graph — subsystem topology for the demo repository](docs/screenshots/v1.0.1/atlas-graph.png)
+![Atlas dependency graph — subsystem topology for the demo repository](docs/screenshots/v1.0.2/atlas-graph.png)
 
 Interactive module/subsystem graph built from resolved imports.
 
 ### Impact analysis
 
-![Atlas impact analysis — blast radius for services/auth.py](docs/screenshots/v1.0.1/atlas-impact.png)
+![Atlas impact analysis — blast radius for services/auth.py](docs/screenshots/v1.0.2/atlas-impact.png)
 
 Static import-graph impact: direct and transitive dependents with cited evidence.
 
 ### Agents / MCP
 
-![Atlas Agents — Claude Code, Cursor, and Codex MCP configuration cards](docs/screenshots/v1.0.1/atlas-agents.png)
+![Atlas Agents — Claude Code, Cursor, and Codex MCP configuration cards](docs/screenshots/v1.0.2/atlas-agents.png)
 
 Configure Claude Code, Cursor, and Codex with backed-up MCP entries — **Configured**, not falsely “Connected”.
 
 ### Memory
 
-![Atlas Memory — Fresh restored repository memory](docs/screenshots/v1.0.1/atlas-memory.png)
+![Atlas Memory — Fresh restored repository memory](docs/screenshots/v1.0.2/atlas-memory.png)
 
 Persisted repository memory with freshness and trust status validated against the live checkout.
 
