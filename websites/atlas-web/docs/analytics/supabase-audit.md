@@ -1,27 +1,33 @@
 # Atlas Supabase and production-data audit
 
-Snapshot: 2026-07-15 UTC. Discovery was read-only through the connected Supabase project and public HTTP probes. Secret values were not read into this report.
+Snapshot: 2026-07-15 UTC. Discovery was performed through the connected Supabase project and public HTTP probes. Secret values were not printed or committed.
 
 ## Project and environment identity
 
 The connected intended project is `atlas-prod`, reference `wggjguqcxmskhjznexum`, in `us-east-2`, status `ACTIVE_HEALTHY`, Postgres 17 (`17.6.1.127`), URL `https://wggjguqcxmskhjznexum.supabase.co`. A second connected project, `atlas-waitlist` (`lkbpwhxhvxgawzzxkgjy`, `eu-west-1`), is inactive and is not the production account store.
 
-Public probes found two materially different deployments:
+Initial public probes found two materially different deployments:
 
 - The legacy Vercel project reported healthy persistence against `wggjguqcxmskhjznexum` before consolidation. Its stale installer redirect was identified without following or downloading the asset.
 - The requested production domain `atlas-repo-wu76.vercel.app` reports HTTP 503 and resolves `SUPABASE_URL` to unconnected project reference `qfwmfllcqbngrowzbfpc`.
 
-Therefore the requested production website is not pointing to the connected intended project, and installer suspension is inconsistent across live Atlas aliases. Vercel Preview could not be inventoried because the locally available Vercel credential is invalid. No environment values were printed or changed.
+Current consolidation status:
+
+- Canonical production is `atlas-repo-wu76.vercel.app`.
+- `/api/health` reports `backend="supabase"`, `persistence="ok"`, and Supabase hostname `wggjguqcxmskhjznexum.supabase.co`.
+- Browser Supabase anon variables are absent from production health output.
+- Installer downloads are intentionally suspended; `/download/atlas` returns HTTP 503 with `Cache-Control: no-store` and no `Location` header.
+- Legacy `atlas-repo-chi` public aliases were removed after dependency checks; the legacy project is no longer an active production dependency.
 
 | Variable | Local working copy | Vercel Preview | Requested Production | Desktop runtime |
 |---|---|---|---|---|
-| `SUPABASE_URL` | example only, unset | unknown | present; wrong project ref | not used |
+| `SUPABASE_URL` | example only, unset | unknown | present; `wggjguqcxmskhjznexum` | not used |
 | `SUPABASE_SERVICE_ROLE_KEY` | example only, unset | unknown | present | not used |
-| `NEXT_PUBLIC_SUPABASE_URL` | absent / unused | unknown | not required by code | not used |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | absent / unused | unknown | health endpoint reports an anon key present | not used |
-| `SUPABASE_ANON_KEY` | example only; health display only | unknown | presence cannot be distinguished from public alias | not used |
+| `NEXT_PUBLIC_SUPABASE_URL` | absent / unused | unknown | absent | not used |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | absent / unused | unknown | absent | not used |
+| `SUPABASE_ANON_KEY` | example only; health display only | unknown | absent from health output | not used |
 | `AUTH_SECRET` | example only, unset | unknown | present | website-issued bearer token only |
-| `ADMIN_EMAILS` | example only, unset | unknown | unknown | not used |
+| `ADMIN_EMAILS` | example only, unset | unknown | present | not used |
 | Analytics-specific keys | none; canonical collector is same-origin | unknown | none required | current desktop analytics are local-only |
 | `ATLAS_WEB_URL` | not a website variable | n/a | n/a | optional; defaults to the canonical `atlas-repo-wu76.vercel.app` site |
 | `ATLAS_AUTH_MODE` | n/a | n/a | n/a | packaged default `website`, source default `local` |
@@ -75,11 +81,11 @@ Risks and corrections:
 - Supabase Auth email verification, redirect allowlists, CAPTCHA, MFA, and leaked-password protection do not protect the 12 custom accounts. The advisor still reports Supabase Auth leaked-password protection disabled for its one separate user.
 - Password reset had no delivery or consumption flow and logged a raw local reset link. Production now returns an honest unavailable response and does not create or log a reset token.
 - Auth/account/admin JSON now uses private, no-store caching and converts database outages into generic 503 responses rather than cacheable or raw failures.
-- Duplicate signup is checked before insert but remains susceptible to a concurrent race; the database unique constraint preserves integrity, while the losing request may surface as unavailable instead of duplicate.
-- Account deletion and billing/admin multi-step writes are not transactional.
-- The requested production deployment cannot currently register, restore sessions, or authorize admins because its database fetch fails.
+- Duplicate signup is checked before insert and the database unique-constraint race is mapped back to the same duplicate-account response instead of a generic outage.
+- Account self-deletion now uses server-only RPC `atlas_delete_account(uuid,text)` so analytics anonymization, reset-token cleanup, audit insertion, and user deletion occur in one database transaction.
+- The canonical production deployment can register, restore sessions, reject duplicate signups, and delete a QA account against `atlas-prod`; the dedicated QA user/audit data was cleaned after verification.
 
-The desktop does not contain a Supabase key. In packaged website-auth mode it calls `/api/auth/desktop/login`, `/register`, `/me`, and `/logout`. Guest/local mode uses local state and the legacy local account service. Desktop product analytics remain local JSONL and do not populate Supabase. The desktop authority default is the healthy `atlas-repo-chi` deployment, not the requested `atlas-repo-wu76` deployment.
+The desktop does not contain a Supabase key. In packaged website-auth mode it calls `/api/auth/desktop/login`, `/register`, `/me`, and `/logout` on the canonical website authority. Guest/local mode uses local state and the legacy local account service. Desktop product analytics remain local JSONL and do not populate Supabase until a verified desktop release emits the canonical events.
 
 ## Event quality
 
@@ -93,8 +99,8 @@ There are no Edge Functions and no real-time analytics subscription. The website
 
 Connected-project API logs contained no recent entries. Postgres logs showed missing `supabase_migrations.schema_migrations` lookups caused by the audit tooling; the project has no recorded migrations despite manually existing schema. Auth logs showed a normal GoTrue restart plus deprecation warnings, not application login activity.
 
-Migration `20260714211752_secure_auth_analytics_data.sql` was created with rollback notes and preserved all rows. It was not applied because the requested production deployment points to a different project and a migration against `atlas-prod` would not repair that deployment. No production data was updated, deleted, or relabeled.
+Migrations `20260715002312_secure_auth_analytics_data` and `20260715022446_account_delete_rpc` are applied to `atlas-prod`. Existing product rows were preserved. The account-delete RPC is `SECURITY DEFINER`, has `search_path=public`, and is executable by `service_role` only; `anon` and `authenticated` cannot execute it.
 
 ## Current decision
 
-Analytics and Supabase are both NO-GO for production reporting until Vercel project identity is reconciled, the alternate live installer redirect is suspended, the migration is reviewed/applied to the actual production project, canonical website changes are deployed, Preview separation is proven, dedicated QA events are queried once, and desktop events exist for every downstream funnel claim.
+Supabase-backed website auth and partial website analytics are GO for canonical production. Installer downloads remain intentionally suspended until APP RELEASE GO. Downstream desktop funnel totals must remain partial/zero until a verified desktop build emits canonical install, launch, scan, Ask, and agent events.
