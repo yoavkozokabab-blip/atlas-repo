@@ -27,7 +27,7 @@ export const facts = {
   impactRepos: 20,
   impactQuestions: 100,
   // distribution
-  version: "1.0.1",
+  version: "1.0.2",
   platform: "Windows",
 } as const;
 
