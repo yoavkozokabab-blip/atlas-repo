@@ -543,7 +543,7 @@
             ? "Not configured"
             : contextReady
               ? "Repository context ready"
-              : "Configured",
+              : "Configured — select a repository",
           agents.length && contextReady ? "ready" : "neutral"
         )} ${
           agents.length
