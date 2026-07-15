@@ -15,7 +15,7 @@ Run before flipping the repository to public.
 [ ] SECURITY.md (private vuln reporting; links to docs/LOCAL_FIRST.md)
 [ ] CONTRIBUTING.md
 [ ] .github/ISSUE_TEMPLATE (bug, feature, feedback)
-[ ] Release notes for v1.0.0
+[ ] Release notes for v1.0.1
 [ ] PRIVACY.md and TERMS.md reviewed by counsel
 ```
 
