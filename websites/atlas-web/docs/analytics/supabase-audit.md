@@ -16,7 +16,7 @@ Current consolidation status:
 - Canonical production is `atlas-repo-wu76.vercel.app`.
 - `/api/health` reports `backend="supabase"`, `persistence="ok"`, and Supabase hostname `wggjguqcxmskhjznexum.supabase.co`.
 - Browser Supabase anon variables are absent from production health output.
-- Installer downloads are intentionally suspended; `/download/atlas` returns HTTP 503 with `Cache-Control: no-store` and no `Location` header.
+- Installer downloads are restored after installed-app verification; `/download/atlas` returns HTTP 302 to the verified GitHub Release asset and the downloaded executable SHA256 is `AD1687D5585EE36ABC3F8AE6802E046D1661DF2950982E58B18351C91B2FF82F`.
 - Legacy `atlas-repo-chi` public aliases were removed after dependency checks; the legacy project is no longer an active production dependency.
 
 | Variable | Local working copy | Vercel Preview | Requested Production | Desktop runtime |
@@ -103,4 +103,4 @@ Migrations `20260715002312_secure_auth_analytics_data` and `20260715022446_accou
 
 ## Current decision
 
-Supabase-backed website auth and partial website analytics are GO for canonical production. Installer downloads remain intentionally suspended until APP RELEASE GO. Downstream desktop funnel totals must remain partial/zero until a verified desktop build emits canonical install, launch, scan, Ask, and agent events.
+Supabase-backed website auth, website analytics, and verified installer downloads are GO for canonical production. Downstream desktop funnel totals must remain partial/zero until a verified desktop build emits canonical install, launch, scan, Ask, and agent events.
