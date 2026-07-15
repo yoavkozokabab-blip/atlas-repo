@@ -44,6 +44,8 @@ external_repos/
 *.jsonl
 packaging/installer/staging/
 packaging/installer/output/
+packaging/installer/build_info.json
+packaging/installer/generated_version.iss
 installer/output/
 .env.local
 manual_context_pack_tests/

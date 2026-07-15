@@ -81,6 +81,21 @@ def test_build_info_when_present():
     data = json.loads(info_path.read_text(encoding="utf-8-sig"))
     assert data.get("version")
     assert data.get("build_date")
+    commit = data.get("commit")
+    if commit:
+        assert re.fullmatch(r"[0-9a-f]{40}", commit)
+
+
+def test_packaging_embeds_full_commit_hash():
+    pyinstaller = (PKG / "pyinstaller" / "build_atlas_exe.ps1").read_text(encoding="utf-8")
+    installer = (PKG / "installer" / "installer_build.ps1").read_text(encoding="utf-8")
+    product_info = (ROOT / "atlas_desktop" / "product_info.py").read_text(encoding="utf-8")
+    assert "rev-parse HEAD" in pyinstaller
+    assert "rev-parse HEAD" in installer
+    assert '"rev-parse", "HEAD"' in product_info
+    assert "rev-parse --short HEAD" not in pyinstaller
+    assert "rev-parse --short HEAD" not in installer
+    assert '"--short", "HEAD"' not in product_info
 
 
 def test_phase152_report_exists():

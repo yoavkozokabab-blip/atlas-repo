@@ -42,7 +42,7 @@ function Write-BuildInfo {
     $commit = ""
     try {
         Push-Location $Root
-        $commit = (git rev-parse --short HEAD 2>$null)
+        $commit = (git rev-parse HEAD 2>$null)
     } catch { }
     finally { Pop-Location }
     $info = @{

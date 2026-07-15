@@ -37,7 +37,7 @@ function Write-InnoVersionDefines {
     $commit = "unknown"
     try {
         Push-Location $Root
-        $hash = git rev-parse --short HEAD 2>$null
+        $hash = git rev-parse HEAD 2>$null
         if ($hash) { $commit = $hash }
     } catch { }
     finally { Pop-Location }

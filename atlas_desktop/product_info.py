@@ -20,7 +20,7 @@ _BUILD_COMMIT_CACHE: Optional[str] = None
 
 
 def build_commit() -> str:
-    """Best-effort git short SHA or env override."""
+    """Best-effort exact git SHA or env override."""
     global _BUILD_COMMIT_CACHE
     if _BUILD_COMMIT_CACHE:
         return _BUILD_COMMIT_CACHE
@@ -44,7 +44,7 @@ def build_commit() -> str:
     try:
         root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
         proc = subprocess.run(
-            ["git", "-C", root, "rev-parse", "--short", "HEAD"],
+            ["git", "-C", root, "rev-parse", "HEAD"],
             capture_output=True,
             text=True,
             timeout=2,
