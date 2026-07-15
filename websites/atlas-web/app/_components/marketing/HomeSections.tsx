@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { facts } from "../../lib/content/facts";
-import { GITHUB_URL, DOWNLOAD_URL, INSTALLER_SHA256 } from "../../_config";
+import { GITHUB_URL, INSTALLER_SHA256 } from "../../_config";
 
 const capabilities = [
   ["01", "Ask Atlas", "Where behavior lives, why a module matters, which files are involved — answered with real citations from the local index."],
