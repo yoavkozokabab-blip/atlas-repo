@@ -78,12 +78,24 @@ export function newId(): string {
   return crypto.randomUUID();
 }
 
+export class DuplicateEmailError extends Error {
+  constructor() {
+    super("duplicate_email");
+    this.name = "DuplicateEmailError";
+  }
+}
+
+export function isDuplicateEmailError(error: unknown): boolean {
+  return error instanceof DuplicateEmailError;
+}
+
 export interface Store {
   getByEmail(email: string): Promise<User | undefined>;
   getById(id: string): Promise<User | undefined>;
   create(u: User): Promise<User>;
   update(id: string, patch: Partial<User>): Promise<User | undefined>;
   remove(id: string): Promise<void>;
+  deleteAccount(u: Pick<User, "id" | "email">): Promise<void>;
   list(): Promise<User[]>;
   audit(e: AuditEntry): Promise<void>;
   auditList(limit?: number): Promise<AuditEntry[]>;
@@ -136,6 +148,9 @@ const fileStore: Store = {
   getById: async (id) => load().users.find((u) => u.id === id),
   create: async (u) => {
     const db = load();
+    if (db.users.some((existing) => existing.email.toLowerCase() === u.email.toLowerCase())) {
+      throw new DuplicateEmailError();
+    }
     db.users.push(u);
     persist(db);
     return u;
@@ -151,6 +166,21 @@ const fileStore: Store = {
   remove: async (id) => {
     const db = load();
     db.users = db.users.filter((u) => u.id !== id);
+    persist(db);
+  },
+  deleteAccount: async (u) => {
+    const db = load();
+    db.resetTokens = db.resetTokens.filter((t) => t.email.toLowerCase() !== u.email.toLowerCase());
+    db.audit.push({
+      id: newId(),
+      at: new Date().toISOString(),
+      actorId: u.id,
+      actorEmail: u.email,
+      action: "account_self_delete",
+      targetId: u.id,
+      targetEmail: u.email,
+    });
+    db.users = db.users.filter((existing) => existing.id !== u.id);
     persist(db);
   },
   list: async () => load().users,
@@ -187,6 +217,34 @@ const fileStore: Store = {
 // ---------------------------------------------------------------------------
 
 type Row = Record<string, unknown>;
+
+class SupabaseStoreError extends Error {
+  status: number;
+  body: string;
+  code?: string;
+
+  constructor(ctx: string, status: number, body: string) {
+    super(`supabase ${ctx} failed: ${status} ${body.slice(0, 300)}`);
+    this.name = "SupabaseStoreError";
+    this.status = status;
+    this.body = body;
+    try {
+      const parsed = JSON.parse(body) as { code?: unknown };
+      if (typeof parsed.code === "string") this.code = parsed.code;
+    } catch {
+      // Preserve the raw body for server logs; callers should use typed guards.
+    }
+  }
+}
+
+function isUniqueEmailViolation(error: unknown): boolean {
+  if (!(error instanceof SupabaseStoreError)) return false;
+  const body = error.body.toLowerCase();
+  return (
+    error.code === "23505" &&
+    (body.includes("users_email_key") || body.includes("users_email_idx") || body.includes("email"))
+  );
+}
 
 function userToRow(u: Partial<User>): Row {
   const r: Row = {};
@@ -253,7 +311,7 @@ async function sb(pathAndQuery: string, init: RequestInit = {}): Promise<Respons
 async function sbRows(res: Response, ctx: string): Promise<Row[]> {
   if (!res.ok) {
     const body = await res.text().catch(() => "");
-    throw new Error(`supabase ${ctx} failed: ${res.status} ${body.slice(0, 300)}`);
+    throw new SupabaseStoreError(ctx, res.status, body);
   }
   const text = await res.text();
   if (!text) return [];
@@ -262,11 +320,17 @@ async function sbRows(res: Response, ctx: string): Promise<Row[]> {
 async function sbValue<T>(res: Response, ctx: string): Promise<T> {
   if (!res.ok) {
     const body = await res.text().catch(() => "");
-    throw new Error(`supabase ${ctx} failed: ${res.status} ${body.slice(0, 300)}`);
+    throw new SupabaseStoreError(ctx, res.status, body);
   }
   const text = await res.text();
   if (!text) throw new Error(`supabase ${ctx} returned an empty response`);
   return JSON.parse(text) as T;
+}
+async function sbOk(res: Response, ctx: string): Promise<void> {
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new SupabaseStoreError(ctx, res.status, body);
+  }
 }
 const enc = encodeURIComponent;
 
@@ -284,15 +348,20 @@ const supabaseStore: Store = {
     return rows[0] ? rowToUser(rows[0]) : undefined;
   },
   create: async (u) => {
-    const rows = await sbRows(
-      await sb("users", {
-        method: "POST",
-        headers: { Prefer: "return=representation" },
-        body: JSON.stringify(userToRow(u)),
-      }),
-      "create"
-    );
-    return rows[0] ? rowToUser(rows[0]) : u;
+    try {
+      const rows = await sbRows(
+        await sb("users", {
+          method: "POST",
+          headers: { Prefer: "return=representation" },
+          body: JSON.stringify(userToRow(u)),
+        }),
+        "create"
+      );
+      return rows[0] ? rowToUser(rows[0]) : u;
+    } catch (error) {
+      if (isUniqueEmailViolation(error)) throw new DuplicateEmailError();
+      throw error;
+    }
   },
   update: async (id, patch) => {
     const rows = await sbRows(
@@ -308,24 +377,39 @@ const supabaseStore: Store = {
   remove: async (id) => {
     await sbRows(await sb(`users?id=eq.${enc(id)}`, { method: "DELETE" }), "remove");
   },
+  deleteAccount: async (u) => {
+    await sbOk(
+      await sb("rpc/atlas_delete_account", {
+        method: "POST",
+        body: JSON.stringify({
+          p_user_id: u.id,
+          p_user_email: u.email.toLowerCase(),
+        }),
+      }),
+      "deleteAccount"
+    );
+  },
   list: async () => {
     const rows = await sbRows(await sb("users?order=created_at.desc"), "list");
     return rows.map(rowToUser);
   },
   audit: async (e) => {
-    await sb("audit", {
-      method: "POST",
-      body: JSON.stringify({
-        id: e.id,
-        at: e.at,
-        actor_id: e.actorId,
-        actor_email: e.actorEmail,
-        action: e.action,
-        target_id: e.targetId ?? null,
-        target_email: e.targetEmail ?? null,
-        meta: e.meta ?? null,
+    await sbRows(
+      await sb("audit", {
+        method: "POST",
+        body: JSON.stringify({
+          id: e.id,
+          at: e.at,
+          actor_id: e.actorId,
+          actor_email: e.actorEmail,
+          action: e.action,
+          target_id: e.targetId ?? null,
+          target_email: e.targetEmail ?? null,
+          meta: e.meta ?? null,
+        }),
       }),
-    });
+      "audit"
+    );
   },
   auditList: async (limit = 200) => {
     const rows = await sbRows(await sb(`audit?order=at.desc&limit=${limit}`), "auditList");
@@ -341,10 +425,13 @@ const supabaseStore: Store = {
     }));
   },
   addResetToken: async (t) => {
-    await sb("reset_tokens", {
-      method: "POST",
-      body: JSON.stringify({ token: t.token, email: t.email.toLowerCase(), exp: t.exp }),
-    });
+    await sbRows(
+      await sb("reset_tokens", {
+        method: "POST",
+        body: JSON.stringify({ token: t.token, email: t.email.toLowerCase(), exp: t.exp }),
+      }),
+      "reset-token"
+    );
   },
   addWaitlist: async (w) => {
     const email = w.email.toLowerCase();

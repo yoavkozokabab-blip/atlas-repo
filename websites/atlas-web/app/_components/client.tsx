@@ -32,7 +32,7 @@ export function AuthForm({ next }: { next: string }) {
     try {
       if (mode === "forgot") {
         const { data } = await postJson("/api/auth/forgot", { email });
-        setInfo(String(data.message || "If an account exists, a reset link has been sent."));
+        setInfo(String(data.message || "Password reset is temporarily unavailable. Contact support for account help."));
         return;
       }
       const url = mode === "signup" ? "/api/auth/register" : "/api/auth/login";
@@ -93,7 +93,7 @@ export function AuthForm({ next }: { next: string }) {
         {error && <p style={{ color: "var(--risk)", fontSize: "0.9rem" }}>{error}</p>}
         {info && <p style={{ color: "var(--ok)", fontSize: "0.9rem" }}>{info}</p>}
         <button className="btn btn-primary" type="submit" disabled={busy}>
-          {busy ? "Please wait…" : mode === "signup" ? "Create account" : mode === "forgot" ? "Send reset link" : "Sign in"}
+          {busy ? "Please wait…" : mode === "signup" ? "Create account" : mode === "forgot" ? "Get account help" : "Sign in"}
         </button>
       </form>
     </div>

@@ -6,6 +6,7 @@ const secret = process.env.ATLAS_QA_AUTH_SECRET || "qa-only-stable-secret-with-m
 const password = "qa-password-2026";
 const suffix = crypto.randomUUID().slice(0, 8);
 const userEmail = `atlas-user-${suffix}@example.invalid`;
+const deleteEmail = `atlas-delete-${suffix}@example.invalid`;
 const adminEmail = "atlas-admin-qa@example.invalid";
 
 function sessionCookie(response) {
@@ -59,6 +60,28 @@ const duplicate = await json("/api/auth/register", {
 });
 assert.equal(duplicate.response.status, 400);
 
+const deleteRegistered = await json("/api/auth/register", {
+  method: "POST",
+  body: { email: deleteEmail, password },
+});
+assert.equal(deleteRegistered.response.status, 201);
+const deleteMissingConfirmation = await json("/api/account/delete", {
+  method: "POST",
+  cookie: deleteRegistered.cookie,
+  body: { confirm: "delete" },
+});
+assert.equal(deleteMissingConfirmation.response.status, 400);
+const accountDelete = await json("/api/account/delete", {
+  method: "POST",
+  cookie: deleteRegistered.cookie,
+  body: { confirm: "DELETE" },
+});
+assert.equal(accountDelete.response.status, 200);
+assert.match(accountDelete.response.headers.get("set-cookie") || "", /Max-Age=0/i);
+const deletedSession = await json("/api/auth/session", { cookie: deleteRegistered.cookie });
+assert.equal(deletedSession.response.status, 200);
+assert.equal(deletedSession.data.user, null);
+
 const invalid = await json("/api/auth/login", {
   method: "POST",
   body: { email: userEmail, password: "incorrect-password" },
@@ -99,6 +122,7 @@ console.log(JSON.stringify({
   signed_in_restore: "PASS",
   expired_session: "PASS",
   duplicate_email: "PASS",
+  account_delete: "PASS",
   invalid_credentials: "PASS",
   unauthorized_admin: "PASS",
   authorized_admin: "PASS",
