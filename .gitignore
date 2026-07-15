@@ -39,6 +39,9 @@ data/
 dist/
 reports/
 screenshots/
+!docs/screenshots/
+!docs/screenshots/v1.0.1/
+!docs/screenshots/v1.0.1/**
 external_repos/
 *.db
 *.jsonl
