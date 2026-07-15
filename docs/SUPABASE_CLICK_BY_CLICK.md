@@ -55,7 +55,7 @@ SUPABASE_SERVICE_ROLE_KEY  = <service_role secret key>
 SUPABASE_ANON_KEY          = <anon public key>          # optional, not used server-side yet
 AUTH_SECRET                = <run the command below>
 ADMIN_EMAILS               = your-admin@example.com    # your admin email(s), comma-separated
-NEXT_PUBLIC_ATLAS_VERSION  = 1.0.0
+NEXT_PUBLIC_ATLAS_VERSION  = 1.0.1
 ```
 
 Generate `AUTH_SECRET` (stable login sessions across redeploys) — run locally:

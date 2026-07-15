@@ -8,7 +8,7 @@
 - A clean Windows 10/11 machine or VM (no prior Atlas install).
 - The verified installer published to GitHub Releases.
   Current launch asset: `Atlas_Setup.exe`, SHA256
-  `AD1687D5585EE36ABC3F8AE6802E046D1661DF2950982E58B18351C91B2FF82F`.
+  `93AAC567999B0E3D0AAA30AA6E4FBFC9DCFF605DD35DC1D0E1523F4D066B5649`.
 - The website live on Vercel with `ATLAS_INSTALLER_URL` set.
 
 ## Steps (mark PASS / FAIL / NOTE)
@@ -26,7 +26,7 @@
 | 9 | Describe a task → **Generate context pack** | returns recommended files + reasons + confidence; **Copy for Claude/Cursor/Codex** works | |
 | 10 | **What breaks** for a file | shows impacted files + tests to run | |
 | 11 | MCP: wire Claude Desktop to `Atlas.exe --mcp` (see `docs/MCP_REAL_CLIENT_TEST.md`) | tools list shows `atlas_*`; one `tools/call` returns data | |
-| 12 | Add/Remove Programs | shows **Atlas 1.0.0** | |
+| 12 | Add/Remove Programs | shows **Atlas 1.0.1** | |
 | 13 | Uninstall via Start Menu **Uninstall Atlas** (or Apps & features) | uninstalls cleanly, no errors | |
 | 14 | After uninstall, check leftovers | App files and Start Menu/desktop shortcuts are removed. Repository memory in `%USERPROFILE%\.atlas_desktop` is user data and must not be deleted accidentally unless the uninstaller explicitly offers and confirms a data wipe. | |
 

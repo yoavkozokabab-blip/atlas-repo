@@ -35,10 +35,10 @@ analysis service. User decides what context to send to an agent. Installer is cu
 **unsigned** (SmartScreen warning) — state this honestly on /download and /security. SHA256 of
 the published installer is shown for verification (`INSTALLER_SHA256` in `_config.ts`).
 
-**Distribution:** GitHub `yoavkozokabab-blip/atlas-repo`, **v1.0.0** released; download via
+**Distribution:** GitHub `yoavkozokabab-blip/atlas-repo`, **v1.0.1** released; download via
 `/download/atlas` redirects to the verified GitHub Release asset. Canonical production site:
 atlas-repo-wu76.vercel.app. Current installer SHA256:
-`AD1687D5585EE36ABC3F8AE6802E046D1661DF2950982E58B18351C91B2FF82F`.
+`93AAC567999B0E3D0AAA30AA6E4FBFC9DCFF605DD35DC1D0E1523F4D066B5649`.
 
 **Pricing:** Free (local, no signup) / **Pro $19/mo** (7-day trial, no card up front) / Team —
 coming soon. Payments run through Paddle (MoR); live charging is not yet wired (Team + Pro

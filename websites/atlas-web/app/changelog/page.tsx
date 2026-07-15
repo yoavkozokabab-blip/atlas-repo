@@ -8,6 +8,16 @@ export const metadata: Metadata = {
 
 const releases = [
   {
+    version: "v1.0.1",
+    date: "2026-07-15",
+    label: "Verified installer",
+    items: [
+      "Rebuilt from the exact embedded desktop source commit and published as a fresh GitHub Release asset.",
+      "Installed-app verification confirmed fallback-port launch isolation, restored repository memory, no silent rescan, and no requests to an occupied Aurora port.",
+      "Website download metadata and checksum now point at the verified v1.0.1 installer.",
+    ],
+  },
+  {
     version: "v1.0.0",
     date: "2026-07-10",
     label: "Launch build",

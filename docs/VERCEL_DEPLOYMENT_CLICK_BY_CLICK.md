@@ -40,9 +40,9 @@ SUPABASE_SERVICE_ROLE_KEY  = <service_role secret>     ← secret, server-only
 SUPABASE_ANON_KEY          = <anon public>             ← optional
 AUTH_SECRET                = <32-byte hex>             ← node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ADMIN_EMAILS               = your-admin@example.com
-NEXT_PUBLIC_ATLAS_VERSION  = 1.0.0
+NEXT_PUBLIC_ATLAS_VERSION  = 1.0.1
 NEXT_PUBLIC_SUPPORT_EMAIL  = atlas.repo.support@gmail.com
-ATLAS_INSTALLER_URL        = https://github.com/yoavkozokabab-blip/atlas-repo/releases/download/v1.0.0/Atlas_Setup.exe
+ATLAS_INSTALLER_URL        = https://github.com/yoavkozokabab-blip/atlas-repo/releases/download/v1.0.1/Atlas_Setup.exe
 ```
 
 `ATLAS_INSTALLER_URL` must point at the verified GitHub Release asset

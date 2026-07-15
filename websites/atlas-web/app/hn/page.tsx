@@ -90,7 +90,7 @@ export default function HackerNewsPage() {
               </p>
               <p className="note" style={{ marginTop: 12 }}>
                 Measured on the controlled 27-file benchmark repository that ships in the Atlas
-                source, on one Windows dev machine, using the installed v1.0.0 build: cold scan
+                source, on one Windows dev machine, using the installed v1.0.1 build: cold scan
                 2.22 s; restore into a fresh installed MCP process 8–11 ms with no graph rebuild,
                 verified separately for the Claude, Cursor, and Codex launch paths. That is the
                 full scope of this claim — no agent-accuracy or token numbers are claimed.

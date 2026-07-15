@@ -8,7 +8,7 @@ It parses your repository into a real dependency graph and symbol index, then gi
 
 Your AI writes code fast. Atlas helps it understand what it is about to touch.
 
-> Status: **1.0.0, Windows only.**
+> Status: **1.0.1, Windows only.**
 
 ---
 

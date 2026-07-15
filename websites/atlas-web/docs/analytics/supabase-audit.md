@@ -16,7 +16,7 @@ Current consolidation status:
 - Canonical production is `atlas-repo-wu76.vercel.app`.
 - `/api/health` reports `backend="supabase"`, `persistence="ok"`, and Supabase hostname `wggjguqcxmskhjznexum.supabase.co`.
 - Browser Supabase anon variables are absent from production health output.
-- Installer downloads are restored after installed-app verification; `/download/atlas` returns HTTP 302 to the verified GitHub Release asset and the downloaded executable SHA256 is `AD1687D5585EE36ABC3F8AE6802E046D1661DF2950982E58B18351C91B2FF82F`.
+- Installer downloads are restored after installed-app verification; `/download/atlas` returns HTTP 302 to the verified GitHub Release asset and the downloaded executable SHA256 is `93AAC567999B0E3D0AAA30AA6E4FBFC9DCFF605DD35DC1D0E1523F4D066B5649`.
 - Legacy `atlas-repo-chi` public aliases were removed after dependency checks; the legacy project is no longer an active production dependency.
 
 | Variable | Local working copy | Vercel Preview | Requested Production | Desktop runtime |
