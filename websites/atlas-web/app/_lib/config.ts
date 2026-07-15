@@ -89,7 +89,7 @@ export const ENV = {
     return process.env.NODE_ENV === "production";
   },
   get appVersion(): string {
-    return process.env.NEXT_PUBLIC_ATLAS_VERSION || "1.0.0";
+    return process.env.NEXT_PUBLIC_ATLAS_VERSION || "1.0.3";
   },
 };
 

@@ -128,7 +128,7 @@ export default function CineNav() {
             <Link className="btn-mag" href="/download" onClick={() => setOpen(false)}>
               Download Atlas <span className="arw" aria-hidden>→</span>
             </Link>
-            <span className="mono muted">v1.0.0 · Windows · No signup</span>
+            <span className="mono muted">v1.0.3 · Windows · No signup</span>
           </div>
         </div>
       )}
