@@ -2,7 +2,6 @@ import Link from "next/link";
 import AtlasMark from "./AtlasMark";
 import SiteNav from "./nav/SiteNav";
 import {
-  DOWNLOAD_URL,
   GITHUB_RELEASE_URL,
   GITHUB_URL,
   INSTALLER_SHA256,
