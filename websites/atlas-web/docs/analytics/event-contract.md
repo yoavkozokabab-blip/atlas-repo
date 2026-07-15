@@ -20,7 +20,7 @@ Every accepted event includes: UUID `id`, server `created_at`, exact `event_name
 | `site_visit` | website | First mounted Atlas page in a browser session | none | none | anonymous ID + session ID | forbidden | 90 days |
 | `page_view` | website | One completed route transition | route | none | session ID + route | forbidden | 90 days |
 | `download_clicked` | website | A user activates a real `/download` link | route, `surface` | none | unique click UUID | forbidden | 90 days |
-| `download_unavailable_seen` | website | A rendered page contains the verified download-suspended state | route | none | session ID + route | forbidden | 90 days |
+| `download_unavailable_seen` | website | A rendered page contains a verified temporary download-unavailable state | route | none | session ID + route | forbidden | 90 days |
 | `github_clicked` | website | A user activates an external GitHub link | route, `href_kind=github` | none | unique click UUID | forbidden | 90 days |
 | `docs_clicked` | website | A user activates an Atlas docs link | route, `href_kind=docs` | none | unique click UUID | forbidden | 90 days |
 | `pricing_viewed` | website | `/pricing` route is viewed | route | none | session ID + route | forbidden | 90 days |
@@ -34,7 +34,7 @@ Every accepted event includes: UUID `id`, server `created_at`, exact `event_name
 | `installer_download_started` | server | The installer route starts a verified asset response | version/build | none | request/asset UUID | forbidden | 90 days |
 | `installer_download_completed` | server | A trusted delivery provider confirms a full asset transfer | version/build | `http_status` | delivery UUID | forbidden | 90 days |
 
-`contact_submitted` is not emitted because the current contact page is `mailto:` only. `installer_download_started` and `installer_download_completed` are not emitted while downloads are suspended. A browser click is not evidence of a completed download.
+`contact_submitted` is not emitted because the current contact page is `mailto:` only. Website click events alone are not evidence of a completed installer download; completion must be proven by the served executable matching the verified release SHA256 or by a trusted delivery-provider signal.
 
 ## Desktop events
 
