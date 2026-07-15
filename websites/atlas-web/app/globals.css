@@ -1,5 +1,6 @@
 /* Atlas — design system (dark-first). Living Map. Tokens in ./design/tokens.css */
 @import "./design/tokens.css";
+@import "./design/polish-v102.css";
 
 /* Legacy aliases so existing content pages keep working under the new palette. */
 :root {
@@ -229,9 +230,11 @@ p { margin: 0; color: var(--text-1); }
   transition: right 0.18s var(--ease);
 }
 .site-nav .nav-links a:hover::after { right: 0; }
+.site-nav .site-nav-burger { display: none; }
 @media (max-width: 980px) {
   .site-nav .nav-links { display: none; }
   .site-nav .cnav-ghost { display: none; }
+  .site-nav .site-nav-burger { display: inline-flex; }
 }
 
 .premium-head {
@@ -450,7 +453,7 @@ p { margin: 0; color: var(--text-1); }
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 20px;
-  padding: 24px 4px;
+  padding: 24px 12px;
   border-bottom: 1px solid var(--line);
 }
 .premium-list .num {
