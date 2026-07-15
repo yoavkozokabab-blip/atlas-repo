@@ -36,12 +36,47 @@
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
 
+  /* ---- spacing scale (4px base) ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 48px;
+  --space-10: 64px;
+  --space-11: 80px;
+  --space-12: 96px;
+
+  /* ---- typography scale ---- */
+  --text-display: clamp(2.4rem, 5.2vw, 3.6rem);
+  --text-h1: clamp(2.1rem, 4.4vw, 3rem);
+  --text-h2: clamp(1.8rem, 3.6vw, 2.5rem);
+  --text-h3: 1.2rem;
+  --text-body: 1rem;
+  --text-small: 0.875rem;
+  --text-label: 0.82rem;
+  --leading-body: 1.6;
+  --leading-tight: 1.15;
+  --leading-heading: 1.08;
+  --prose-width: 65ch;
+
+  /* ---- controls ---- */
+  --control-sm: 32px;
+  --control-md: 40px;
+  --control-lg: 44px;
+  --card-pad: 24px;
+  --card-pad-mobile: 16px;
+
   /* ---- shape / space ---- */
   --r-sm: 8px;
   --r: 12px;
   --r-lg: 18px;
   --maxw: 1200px;
-  --gutter: clamp(20px, 5vw, 64px);
+  --gutter: clamp(16px, 4vw, 64px);
+  --header-h: 74px;
 
   /* ---- motion ---- */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);

@@ -1,0 +1,253 @@
+/* Atlas v1.0.2 launch polish — spacing, typography, controls, clipping fixes */
+
+html {
+  scroll-padding-top: calc(var(--header-h) + var(--space-3));
+}
+
+body {
+  line-height: var(--leading-body);
+  overflow-x: clip;
+}
+
+.container {
+  padding-inline: var(--gutter);
+}
+
+/* ---- buttons: consistent dimensions ---- */
+.btn,
+.btn-mag,
+.btn-line,
+.btn-primary,
+.btn-ghost {
+  min-height: var(--control-md);
+  padding-inline: var(--space-5);
+  line-height: 1.2;
+}
+
+.btn-lg,
+.btn-mag.btn-lg {
+  min-height: var(--control-lg);
+  padding-inline: var(--space-6);
+}
+
+.btn:disabled,
+.btn-mag:disabled,
+.btn-line:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn-primary:hover {
+  background: var(--accent-bright);
+}
+
+/* ---- cards: consistent padding, no border clipping ---- */
+.card,
+.dl-card,
+.tier,
+.faq details,
+.terminal,
+.graph-card,
+.band {
+  padding: var(--card-pad);
+}
+
+@media (max-width: 640px) {
+  .card,
+  .dl-card,
+  .tier,
+  .band,
+  .install-block {
+    padding: var(--card-pad-mobile);
+  }
+}
+
+.card h3,
+.dl-card h3 {
+  margin-bottom: var(--space-3);
+}
+
+/* ---- premium page headers: avoid over-narrow titles ---- */
+.premium-head .page-title {
+  max-width: 18ch;
+}
+
+.premium-head {
+  padding-inline: 0;
+}
+
+/* ---- prose & long copy ---- */
+.prose {
+  max-width: var(--prose-width);
+}
+
+.prose p,
+.lead,
+.note {
+  line-height: var(--leading-body);
+}
+
+.prose code,
+.dl-meta code,
+.dl-meta,
+pre,
+code {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.dl-card .dl-meta {
+  line-height: 1.55;
+  padding-block: var(--space-1);
+}
+
+/* ---- forms ---- */
+.field input,
+input.field,
+.inp,
+textarea.field {
+  min-height: var(--control-md);
+  padding: var(--space-3) var(--space-4);
+}
+
+.field label {
+  margin-bottom: var(--space-1);
+}
+
+.field + .field {
+  margin-top: var(--space-2);
+}
+
+/* ---- navigation: active route ---- */
+.cnav-links a[aria-current="page"],
+.site-nav .nav-links a[aria-current="page"] {
+  color: var(--text-0);
+}
+
+.cnav-links a[aria-current="page"]::after,
+.site-nav .nav-links a[aria-current="page"]::after {
+  right: 0;
+}
+
+.cnav-burger {
+  min-width: var(--control-md);
+  min-height: var(--control-md);
+}
+
+.cnav-burger:focus-visible,
+.mobile-panel .cnav-burger:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---- mobile panel ---- */
+.mobile-panel {
+  padding: var(--space-5) var(--gutter) var(--space-8);
+}
+
+.mobile-links a {
+  padding: var(--space-3) 0;
+  line-height: 1.2;
+}
+
+.mobile-panel-foot {
+  padding-top: var(--space-4);
+  width: 100%;
+}
+
+/* ---- tables & release blocks ---- */
+.table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-inline: calc(-1 * var(--space-2));
+  padding-inline: var(--space-2);
+}
+
+.release-block > div,
+.trust-row,
+.tech-step {
+  padding: var(--space-4) var(--space-5);
+}
+
+/* ---- footer ---- */
+.footer-grid,
+.footer-top {
+  gap: var(--space-6);
+}
+
+.footer a {
+  padding-block: var(--space-2);
+}
+
+/* ---- section rhythm ---- */
+.section,
+.premium-section {
+  padding-block: clamp(var(--space-10), 8vw, var(--space-12));
+}
+
+.page-head {
+  padding: clamp(var(--space-9), 8vw, var(--space-10)) 0 var(--space-6);
+}
+
+.page-actions,
+.hero-actions,
+.hero-cta,
+.install-actions {
+  gap: var(--space-3);
+}
+
+/* ---- alerts / badges ---- */
+.dl-warn,
+.note-accent {
+  padding: var(--space-4) var(--space-5);
+  line-height: var(--leading-body);
+}
+
+.badge,
+.tag,
+.flow .tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: var(--space-1) var(--space-3);
+  line-height: 1.3;
+}
+
+/* ---- sticky header anchor offset ---- */
+[id] {
+  scroll-margin-top: calc(var(--header-h) + var(--space-4));
+}
+
+@media (max-width: 900px) {
+  :root {
+    --header-h: 62px;
+  }
+
+  .hero-cine {
+    padding-top: calc(var(--header-h) + var(--space-8));
+  }
+
+  .hero-cta .btn-mag,
+  .hero-cta .btn-line {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 360px) {
+  :root {
+    --gutter: 14px;
+  }
+
+  .premium-head .page-title {
+    max-width: none;
+    font-size: clamp(2rem, 10vw, 2.6rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-panel {
+    animation: none;
+  }
+}
