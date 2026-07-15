@@ -39,9 +39,10 @@ def test_no_user_facing_jarvis_in_primary_pages():
 
 
 def test_semver_version_in_api():
-    assert api.PRODUCT_VERSION == "1.0.0"
+    v = product_info.PRODUCT_VERSION
+    assert api.PRODUCT_VERSION == v
     _, health = server.dispatch("GET", "/api/health")
-    assert health["version"] == "1.0.0"
+    assert health["version"] == v
     assert "build_commit" in health
     assert "build_date" in health
 
@@ -49,7 +50,7 @@ def test_semver_version_in_api():
 def test_product_config_endpoint():
     _, cfg = server.dispatch("GET", "/api/product/config")
     assert cfg["ok"] is True
-    assert cfg["version"] == "1.0.0"
+    assert cfg["version"] == product_info.PRODUCT_VERSION
     assert cfg["billing_enabled"] is False
     assert cfg["payments_active"] is False
     assert cfg["checkout_enabled"] is False
@@ -181,6 +182,6 @@ def test_trust_status_visible():
 
 def test_startup_status_includes_semver_and_support_email():
     _, env = server.dispatch("GET", "/api/system/startup-status")
-    assert env["version"] == "1.0.0"
+    assert env["version"] == product_info.PRODUCT_VERSION
     assert env.get("build_commit")
     assert env.get("support_email") == "yoavkozokabab@gmail.com"
