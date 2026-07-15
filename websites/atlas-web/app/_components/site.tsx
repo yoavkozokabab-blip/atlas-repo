@@ -1,5 +1,6 @@
 import Link from "next/link";
 import AtlasMark from "./AtlasMark";
+import SiteNav from "./nav/SiteNav";
 import {
   DOWNLOAD_URL,
   GITHUB_RELEASE_URL,
@@ -10,33 +11,7 @@ import {
 } from "../_config";
 import { AGENTS, facts, limitations } from "../lib/content/facts";
 
-export function SiteNav() {
-  return (
-    <header className="nav site-nav">
-      <div className="container nav-inner site-nav-inner">
-        <Link className="brand site-brand" href="/" aria-label="Atlas home">
-          <AtlasMark size={26} className="mark" />
-          Atlas
-        </Link>
-        <nav className="nav-links" aria-label="Primary">
-          <Link href="/features">Product</Link>
-          <Link href="/how-it-works">How it works</Link>
-          <Link href="/integrations">Integrations</Link>
-          <Link href="/docs" data-evt="docs_click">Docs</Link>
-          <Link href="/pricing">Pricing</Link>
-        </nav>
-        <div className="nav-cta">
-          <a className="cnav-ghost" href={GITHUB_URL} target="_blank" rel="noreferrer">
-            GitHub
-          </a>
-          <Link className="btn-mag" href="/download" data-evt="download_click">
-            Download <span className="arw" aria-hidden>→</span>
-          </Link>
-        </div>
-      </div>
-    </header>
-  );
-}
+export { default as SiteNav } from "./nav/SiteNav";
 
 export function SiteFooter() {
   return (

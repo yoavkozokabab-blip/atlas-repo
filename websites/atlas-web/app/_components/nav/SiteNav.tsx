@@ -14,28 +14,19 @@ const LINKS = [
   ["Pricing", "/pricing"],
 ] as const;
 
-export default function CineNav() {
+export default function SiteNav() {
   const pathname = usePathname();
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-
-  const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
   const burgerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     if (!open) return;
 
-    // move focus into the panel, trap Tab within it, Escape closes
     const trigger = burgerRef.current;
     const panel = panelRef.current;
     const focusables = panel
@@ -48,9 +39,8 @@ export default function CineNav() {
     focusables[0]?.focus();
 
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setOpen(false);
-      } else if (e.key === "Tab" && focusables.length) {
+      if (e.key === "Escape") setOpen(false);
+      else if (e.key === "Tab" && focusables.length) {
         const first = focusables[0];
         const last = focusables[focusables.length - 1];
         if (e.shiftKey && document.activeElement === first) {
@@ -66,26 +56,26 @@ export default function CineNav() {
     return () => {
       document.body.style.overflow = "";
       document.removeEventListener("keydown", onKey);
-      trigger?.focus(); // return focus to the trigger
+      trigger?.focus();
     };
   }, [open]);
 
   return (
     <>
-      <header className={`cnav${scrolled ? " scrolled" : ""}`}>
-        <div className="cnav-inner">
-          <Link className="cbrand" href="/" aria-label="Atlas home">
+      <header className="nav site-nav">
+        <div className="container nav-inner site-nav-inner">
+          <Link className="brand site-brand" href="/" aria-label="Atlas home">
             <AtlasMark size={26} className="mark" />
             Atlas
           </Link>
-          <nav className="cnav-links" aria-label="Primary">
+          <nav className="nav-links" aria-label="Primary">
             {LINKS.map(([label, href]) => (
               <Link key={href} href={href} aria-current={isActive(href) ? "page" : undefined}>
                 {label}
               </Link>
             ))}
           </nav>
-          <div className="cnav-right">
+          <div className="nav-cta">
             <a className="cnav-ghost" href={GITHUB_URL} target="_blank" rel="noreferrer">
               GitHub
             </a>
@@ -94,7 +84,7 @@ export default function CineNav() {
             </Link>
             <button
               ref={burgerRef}
-              className="cnav-burger"
+              className="cnav-burger site-nav-burger"
               aria-label="Open menu"
               aria-expanded={open}
               onClick={() => setOpen(true)}
@@ -133,7 +123,6 @@ export default function CineNav() {
             <Link className="btn-mag" href="/download" onClick={() => setOpen(false)}>
               Download Atlas <span className="arw" aria-hidden>→</span>
             </Link>
-            <span className="mono muted">v1.0.1 · Windows · No signup</span>
           </div>
         </div>
       )}
