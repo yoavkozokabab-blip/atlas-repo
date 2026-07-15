@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 import { cookies } from "next/headers";
 import { ENV } from "./config";
-import { store, User, SafeUser, toSafe, newId } from "./store";
+import { isDuplicateEmailError, store, User, SafeUser, toSafe, newId } from "./store";
 
 const COOKIE = "atlas_session";
 const SESSION_TTL_S = 60 * 60 * 24 * 7; // 7 days
@@ -109,8 +109,15 @@ export async function registerUser(email: string, password: string, name?: strin
     lastLoginAt: now,
     downloads: 0,
   };
-  await store.create(user);
-  return { ok: true, user };
+  try {
+    const created = await store.create(user);
+    return { ok: true, user: created };
+  } catch (error) {
+    if (isDuplicateEmailError(error)) {
+      return { ok: false, error: "An account with this email already exists." };
+    }
+    throw error;
+  }
 }
 
 // Dummy hash so unknown-email logins still run a KDF (reduces enumeration timing).

@@ -1,5 +1,5 @@
 import { currentUser, clearSession } from "@/app/_lib/auth";
-import { store, newId } from "@/app/_lib/store";
+import { store } from "@/app/_lib/store";
 import { readJson } from "@/app/_lib/ratelimit";
 import { privateJson, unavailableJson } from "@/app/_lib/http";
 
@@ -16,16 +16,7 @@ export async function POST(req: Request) {
     return privateJson({ ok: false, error: "confirmation_required" }, { status: 400 });
   }
 
-  await store.audit({
-    id: newId(),
-    at: new Date().toISOString(),
-    actorId: user.id,
-    actorEmail: user.email,
-    action: "account_self_delete",
-    targetId: user.id,
-    targetEmail: user.email,
-  });
-  await store.remove(user.id);
+  await store.deleteAccount(user);
   await clearSession();
     return privateJson({ ok: true });
   } catch {
