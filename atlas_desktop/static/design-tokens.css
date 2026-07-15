@@ -1,0 +1,25 @@
+/* Atlas desktop design tokens — v1.0.2 launch polish */
+:root {
+  --atlas-space-1: 4px;
+  --atlas-space-2: 8px;
+  --atlas-space-3: 12px;
+  --atlas-space-4: 16px;
+  --atlas-space-5: 20px;
+  --atlas-space-6: 24px;
+  --atlas-space-7: 32px;
+  --atlas-space-8: 40px;
+
+  --atlas-control-sm: 32px;
+  --atlas-control-md: 38px;
+  --atlas-control-lg: 42px;
+
+  --atlas-text-body: 13px;
+  --atlas-text-meta: 11px;
+  --atlas-text-title: 15px;
+  --atlas-leading-body: 1.55;
+  --atlas-leading-tight: 1.25;
+
+  --atlas-card-pad: 16px;
+  --atlas-card-pad-lg: 20px;
+  --atlas-focus: rgba(85, 228, 207, 0.55);
+}

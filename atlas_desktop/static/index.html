@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="investigation.css" />
   <link rel="stylesheet" href="desktop-redesign.css" />
   <link rel="stylesheet" href="workbench-v3.css" />
+  <link rel="stylesheet" href="design-tokens.css" />
+  <link rel="stylesheet" href="ui-polish-v102.css" />
   <!-- 3D dependency graph (bundled locally for offline use). -->
   <script src="vendor/three.min.js"></script>
   <script src="vendor/3d-force-graph.min.js"></script>
@@ -489,7 +491,7 @@
                 <span><i class="signal-dot ready"></i><b id="homeProductiveFreshness">Checking</b></span>
                 <span><i class="signal-branch"></i><b id="homeBranch">Current checkout</b></span>
                 <span><i class="signal-memory"></i><b id="homeMemoryState">Reading memory</b></span>
-                <span><i class="signal-agent"></i><b id="homeConnectedAgents">No agent connected</b></span>
+                <span><i class="signal-agent"></i><b id="homeConnectedAgents">No agent configured</b></span>
               </div>
               <span id="homeProductiveContext" class="sr-only">Repository context available</span>
               <span class="sr-only">Start an engineering investigation.</span>
@@ -1394,7 +1396,7 @@
     <button class="btn ghost small" type="button" onclick="atlasDemoTour.end()">Skip tour</button>
   </div>
 
-  <footer id="appBuildMarker" class="app-build-marker muted tiny" aria-label="Build version">Atlas v1.0.0 launch build · <a href="mailto:yoavkozokabab@gmail.com?subject=Atlas%20feedback" style="color:inherit">Report bug / Suggest feature</a></footer>
+  <footer id="appBuildMarker" class="app-build-marker muted tiny" aria-label="Build version"><span data-atlas-version>Atlas v1.0.2</span> · <a href="mailto:yoavkozokabab@gmail.com?subject=Atlas%20feedback" style="color:inherit">Report bug / Suggest feature</a></footer>
   <script src="universe.js"></script>
   <script src="atlas_copy.js"></script>
   <script src="app.js"></script>

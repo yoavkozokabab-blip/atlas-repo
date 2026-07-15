@@ -538,11 +538,23 @@
     const repository = window.STATE && STATE.summary;
     const contextReady = !!(repository && repository.ok);
     status.innerHTML = result && result.ok
-      ? `${statusPill(agents.length ? (contextReady ? "Connected" : "Configured — select a repository") : "Ready to connect", agents.length && contextReady ? "ready" : "neutral")} ${agents.length ? `${agents.length} coding agent${agents.length === 1 ? " is" : "s are"} configured to use Atlas MCP${contextReady ? ` with ${escapeHtml(repository.repo_name || "repository")} context.` : "; repository context is not active yet."}` : "Choose an agent below. Atlas will preserve its existing configuration and ask before writing."}`
-      : `${statusPill("Unavailable", "warning")} MCP status could not be read. Open Diagnostics for details.`;
-    if (result && result.ok && agents.length && contextReady) {
-      status.innerHTML = status.innerHTML.replace(">Connected<", ">Configured<").replace(" context.", " context is ready.");
-    }
+      ? `${statusPill(
+          !agents.length
+            ? "Not configured"
+            : contextReady
+              ? "Repository context ready"
+              : "Configured",
+          agents.length && contextReady ? "ready" : "neutral"
+        )} ${
+          agents.length
+            ? `${agents.length} coding agent${agents.length === 1 ? " is" : "s are"} configured to use Atlas MCP${
+                contextReady
+                  ? ` with ${escapeHtml(repository.repo_name || "repository")} context.`
+                  : "; load or select a repository for MCP context."
+              }`
+            : "Choose an agent below. Atlas will preserve its existing configuration and ask before writing."
+        }`
+      : `${statusPill("Error", "warning")} MCP status could not be read. Open Diagnostics for details.`;
   }
 
   async function renderSettings() {

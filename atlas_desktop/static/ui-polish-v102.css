@@ -1,0 +1,185 @@
+/* Atlas desktop UI polish — v1.0.2 launch */
+
+@import url("design-tokens.css");
+
+/* Global readability & clipping */
+body.atlas-desktop-v2:not(.auth-mode) {
+  overflow-x: clip;
+}
+
+body.atlas-desktop-v2:not(.auth-mode) #app > .view {
+  padding: var(--atlas-space-6) clamp(var(--atlas-space-5), 2.5vw, var(--atlas-space-8)) 70px;
+}
+
+/* Sidebar navigation — larger targets, clearer active state */
+body.atlas-desktop-v2:not(.auth-mode) .nav button {
+  min-height: var(--atlas-control-sm);
+  padding: var(--atlas-space-2) var(--atlas-space-3);
+  line-height: var(--atlas-leading-tight);
+  font-size: var(--atlas-text-body);
+}
+
+body.atlas-desktop-v2:not(.auth-mode) .sidebar-footer button {
+  min-height: var(--atlas-control-sm);
+  padding: var(--atlas-space-2) var(--atlas-space-3);
+}
+
+.sidebar-repository {
+  padding: var(--atlas-space-4);
+  margin: var(--atlas-space-3) var(--atlas-space-3) var(--atlas-space-2);
+}
+
+/* Cards & instrument panels */
+.instrument-section-head,
+.command-ask,
+.repo-command-header,
+.agent-card,
+.settings-card,
+.diagnostics-summary,
+.home-panel,
+.wb-card {
+  padding: var(--atlas-card-pad-lg);
+}
+
+.wb-card,
+.home-panel,
+.agent-card {
+  border-radius: 4px;
+}
+
+/* Buttons */
+button.primary,
+.btn.primary,
+.atlas-home-actions .btn.primary,
+.repo-command-actions .btn,
+.agent-card .btn,
+.settings-card .btn {
+  min-height: var(--atlas-control-lg);
+  padding: 0 var(--atlas-space-5);
+  line-height: 1.2;
+}
+
+button.ghost,
+.btn.ghost,
+.btn.ghost.small {
+  min-height: var(--atlas-control-md);
+  padding: 0 var(--atlas-space-4);
+}
+
+/* Typography floor */
+body.atlas-desktop-v2:not(.auth-mode) .nav-section-label {
+  font-size: 9px;
+  letter-spacing: 0.06em;
+}
+
+body.atlas-desktop-v2:not(.auth-mode) p,
+body.atlas-desktop-v2:not(.auth-mode) .fact-table dd,
+body.atlas-desktop-v2:not(.auth-mode) .home-empty-copy .atlas-home-lead {
+  font-size: max(13px, var(--atlas-text-body));
+  line-height: var(--atlas-leading-body);
+}
+
+/* Long paths */
+.sidebar-repository > strong,
+.sidebar-repository > span,
+.repo-title-line h1,
+.fact-table dd,
+.file-row .path,
+.evidence-path {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+/* Focus rings */
+body.atlas-desktop-v2:not(.auth-mode) button:focus-visible,
+body.atlas-desktop-v2:not(.auth-mode) a:focus-visible,
+body.atlas-desktop-v2:not(.auth-mode) input:focus-visible,
+body.atlas-desktop-v2:not(.auth-mode) textarea:focus-visible {
+  outline: 2px solid var(--atlas-focus);
+  outline-offset: 2px;
+}
+
+/* Modals */
+.modal-card,
+.dialog-card {
+  max-height: min(88vh, 760px);
+  overflow: auto;
+  padding: var(--atlas-space-6);
+}
+
+/* Graph controls */
+.graph-toolbar,
+.universe-toolbar {
+  gap: var(--atlas-space-2);
+  padding: var(--atlas-space-3);
+}
+
+/* Agents cards consistency */
+.agent-card {
+  display: grid;
+  gap: var(--atlas-space-3);
+}
+
+.agent-card .agent-status {
+  min-height: var(--atlas-control-sm);
+  display: inline-flex;
+  align-items: center;
+  padding: var(--atlas-space-1) var(--atlas-space-3);
+}
+
+/* Diagnostics */
+.diagnostics-summary {
+  margin-bottom: var(--atlas-space-4);
+}
+
+.diagnostics-details {
+  padding: var(--atlas-space-4);
+}
+
+/* Settings version marker */
+.app-build-marker {
+  padding: var(--atlas-space-2) var(--atlas-space-4);
+  line-height: var(--atlas-leading-body);
+}
+
+/* Auth screens */
+.auth-card {
+  padding: clamp(var(--atlas-space-6), 4vw, var(--atlas-space-8));
+}
+
+.acc-field input,
+.acc-field textarea {
+  min-height: var(--atlas-control-md);
+  padding: var(--atlas-space-3) var(--atlas-space-4);
+}
+
+/* Compact layouts */
+@media (max-width: 1280px) {
+  .repository-metric-ribbon {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .home-empty-command {
+    grid-template-columns: 1fr;
+    padding: var(--atlas-space-6);
+  }
+}
+
+@media (max-width: 1024px) {
+  body.atlas-desktop-v2:not(.auth-mode) #app > .view {
+    padding-inline: var(--atlas-space-4);
+  }
+
+  .repository-metric-ribbon {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
