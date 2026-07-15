@@ -46,6 +46,25 @@ PROTECTED_ACCOUNT_ROUTES = {
 }
 
 
+def _favicon_path() -> Optional[str]:
+    """Return the packaged Atlas icon used for the browser favicon, if present."""
+    here = os.path.abspath(os.path.dirname(__file__))
+    candidates = [
+        # Installed PyInstaller layout: {app}\assets\atlas.ico while this file
+        # lives under {app}\_internal\atlas_desktop.
+        os.path.join(here, "..", "..", "assets", "atlas.ico"),
+        # Source/dev layout.
+        os.path.join(here, "..", "packaging", "installer", "assets", "atlas.ico"),
+        # Frozen internal-data fallback, if a future spec includes installer assets.
+        os.path.join(here, "..", "packaging", "installer", "assets", "atlas.ico"),
+    ]
+    for candidate in candidates:
+        path = os.path.abspath(candidate)
+        if os.path.isfile(path):
+            return path
+    return None
+
+
 class AtlasHTTPServer(ThreadingHTTPServer):
     """Own a loopback port exclusively, including on Windows."""
 
@@ -432,6 +451,19 @@ class AtlasHandler(BaseHTTPRequestHandler):
         rel = self.path.split("?", 1)[0].lstrip("/")
         if rel in ("", "index.html"):
             rel = "index.html"
+        if rel == "favicon.ico":
+            icon = _favicon_path()
+            if icon:
+                with open(icon, "rb") as fh:
+                    data = fh.read()
+                self._write_response(
+                    200,
+                    (("Content-Type", "image/x-icon"), ("Content-Length", str(len(data)))),
+                    data,
+                )
+                return
+            self._write_response(204, (("Content-Length", "0"),))
+            return
         target = os.path.normpath(os.path.join(STATIC_DIR, rel))
         if not target.startswith(os.path.abspath(STATIC_DIR)) or not os.path.isfile(target):
             self._send_json(404, {"ok": False, "error": "not found"})

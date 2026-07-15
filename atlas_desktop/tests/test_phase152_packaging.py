@@ -98,6 +98,14 @@ def test_packaging_embeds_full_commit_hash():
     assert '"--short", "HEAD"' not in product_info
 
 
+def test_desktop_serves_favicon_from_packaged_icon():
+    server = (ROOT / "atlas_desktop" / "server.py").read_text(encoding="utf-8")
+    assert 'rel == "favicon.ico"' in server
+    assert "image/x-icon" in server
+    assert "assets\", \"atlas.ico" in server
+    assert (PKG / "installer" / "assets" / "atlas.ico").is_file()
+
+
 def test_phase152_report_exists():
     report = ROOT / "reports" / "phase152_windows_installer.md"
     if not report.is_file():
