@@ -1,5 +1,4 @@
 import Link from "next/link";
-import InstallerWaitState from "../InstallerWaitState";
 import { copy } from "../../lib/content/facts";
 
 /** Splits a phrase into mask-reveal words with a staggered delay. */
@@ -36,7 +35,9 @@ export default function HeroCine() {
         </p>
 
         <div className="hero-cta fade-seq" style={{ animationDelay: "0.75s" }}>
-          <InstallerWaitState />
+          <Link className="btn-mag" href="/download" data-evt="download_click">
+            Download Atlas <span className="arw" aria-hidden>→</span>
+          </Link>
           <Link className="btn-line" href="/how-it-works">
             See how it works
           </Link>

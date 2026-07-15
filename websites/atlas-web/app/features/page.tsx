@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import InstallerWaitState from "../_components/InstallerWaitState";
 import {
   AsymSection,
   EvidenceBlock,
@@ -99,7 +98,7 @@ export default function FeaturesPage() {
       >
         <TrustBlock />
         <div className="page-actions">
-          <InstallerWaitState />
+          <Link className="btn-mag" href="/download">Download Atlas <span className="arw" aria-hidden>→</span></Link>
           <Link className="btn-line" href="/benchmarks">Read benchmarks</Link>
         </div>
       </PremiumSection>

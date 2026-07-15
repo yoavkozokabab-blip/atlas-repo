@@ -1,7 +1,6 @@
 import Link from "next/link";
-import InstallerWaitState from "../InstallerWaitState";
 import { facts } from "../../lib/content/facts";
-import { GITHUB_URL } from "../../_config";
+import { GITHUB_URL, DOWNLOAD_URL, INSTALLER_SHA256 } from "../../_config";
 
 const capabilities = [
   ["01", "Ask Atlas", "Where behavior lives, why a module matters, which files are involved — answered with real citations from the local index."],
@@ -25,7 +24,7 @@ const metrics = [
 ] as const;
 
 const faqs = [
-  ["When will Windows downloads reopen?", "The latest Atlas desktop build is undergoing final installed-app verification. Downloads will reopen when the verified installer is ready."],
+  ["Do I need an account to download Atlas?", "No. Download the Windows installer and start locally — there's a guest mode with no signup."],
   ["Does Atlas replace my AI coding agent?", "No. Atlas gives Claude Code, Cursor, and Codex a persistent, cited memory of your repository that they can use."],
   ["Does Atlas upload my source code?", "No. Repository indexing runs on your machine. You decide what context to send to an agent."],
   ["How is this different from repeated file search?", "Atlas builds a dependency graph + evidence store once and restores it in milliseconds across sessions, returning ranked, cited files — not a fresh grep each time."],
@@ -169,13 +168,15 @@ export default function HomeSections() {
         <div className="container">
           <div className="dl-strip">
             <div>
-              <h2>Atlas for Windows.</h2>
+              <h2>Download Atlas.</h2>
               <p className="mono dl-strip-meta">
-                Windows downloads are temporarily paused while the build is verified.
+                {facts.platform} · v{facts.version} · SHA-256 {INSTALLER_SHA256.slice(0, 12).toLowerCase()}… · no signup
               </p>
             </div>
             <div className="dl-strip-cta">
-              <InstallerWaitState />
+              <Link className="btn-mag" href={DOWNLOAD_URL} data-evt="download_click">
+                Download Atlas <span className="arw" aria-hidden>→</span>
+              </Link>
               <a className="btn-line" href={GITHUB_URL} target="_blank" rel="noreferrer">View on GitHub</a>
             </div>
           </div>

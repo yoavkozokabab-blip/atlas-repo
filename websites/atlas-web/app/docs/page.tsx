@@ -22,11 +22,10 @@ export default function DocsPage() {
           </div>
 
           <h2 id="install">Install</h2>
-          <p>The latest Atlas desktop build is undergoing final installed-app verification.
-            Downloads will reopen when the verified installer is ready.</p>
-          <p>After downloads reopen, the Windows installer will be self-contained — no Python
-            required, no admin rights, no account. On first launch Atlas starts a local server and
-            opens in your browser.</p>
+          <p>Download <Link href="/download">Atlas for Windows</Link> and run the installer. It&apos;s
+            self-contained — no Python required, no admin rights, no account. On first launch Atlas
+            starts a local server and opens in your browser. Windows SmartScreen may warn on first
+            run because the installer is not yet code-signed; this is expected for new software.</p>
 
           <h2 id="quickstart">Quickstart</h2>
           <ol className="steps">

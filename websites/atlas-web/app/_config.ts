@@ -4,6 +4,16 @@ export const SUPPORT_EMAIL = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "yoavkozok
 export const HELLO_EMAIL = process.env.NEXT_PUBLIC_HELLO_EMAIL || "yoavkozokabab@gmail.com";
 export const SECURITY_EMAIL = process.env.NEXT_PUBLIC_SECURITY_EMAIL || "yoavkozokabab@gmail.com";
 export const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL || "https://github.com/yoavkozokabab-blip/atlas-repo";
+export const GITHUB_RELEASE_URL =
+  process.env.NEXT_PUBLIC_GITHUB_RELEASE_URL || `${GITHUB_URL}/releases/tag/v1.0.0`;
+/** SHA256 of the published Atlas_Setup.exe — shown on /hn and /download. */
+export const INSTALLER_SHA256 =
+  process.env.NEXT_PUBLIC_INSTALLER_SHA256 ||
+  "AD1687D5585EE36ABC3F8AE6802E046D1661DF2950982E58B18351C91B2FF82F";
+export const DOWNLOAD_URL =
+  process.env.NEXT_PUBLIC_DOWNLOAD_URL ||
+  process.env.ATLAS_INSTALLER_URL ||
+  "/download/atlas";
 
 /**
  * Paid plan visibility.

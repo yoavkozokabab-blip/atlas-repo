@@ -46,7 +46,7 @@ export async function GET() {
     config: {
       hasSupabase: ENV.hasSupabase,
       hasAuthSecret: !!process.env.AUTH_SECRET,
-      installerDownloadsEnabled: false,
+      hasInstallerUrl: !!process.env.NEXT_PUBLIC_DOWNLOAD_URL || !!process.env.ATLAS_INSTALLER_URL || !!process.env.ATLAS_INSTALLER_PATH,
       paymentsMode: ENV.paymentsMode,
       paddleCheckoutConfigured: paddleCheckoutConfigured(),
       paddleWebhookConfigured: !!ENV.paddleWebhookSecret,

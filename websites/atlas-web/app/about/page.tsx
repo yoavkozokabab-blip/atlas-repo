@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import InstallerWaitState from "../_components/InstallerWaitState";
 import { PageShell, PremiumSection, TrustBlock } from "../_components/site";
 
 export const metadata: Metadata = {
@@ -30,7 +29,7 @@ export default function AboutPage() {
       <PremiumSection eyebrow="Limits" title="The constraints are public too.">
         <TrustBlock />
         <div className="page-actions">
-          <InstallerWaitState />
+          <Link className="btn-mag" href="/download">Download Atlas <span className="arw" aria-hidden>→</span></Link>
           <Link className="btn-line" href="/contact">Contact</Link>
         </div>
       </PremiumSection>

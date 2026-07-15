@@ -1,5 +1,4 @@
 import Link from "next/link";
-import InstallerWaitState from "../_components/InstallerWaitState";
 import { currentUser } from "../_lib/auth";
 import { LogoutButton } from "../_components/client";
 
@@ -30,7 +29,7 @@ export default async function AccountOverview() {
       </div>
 
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-        <InstallerWaitState />
+        <Link className="btn btn-primary" href="/account/downloads">Download Atlas</Link>
         {user.plan !== "free"
           ? <Link className="btn btn-ghost" href="/account/billing">Manage billing</Link>
           : null}
