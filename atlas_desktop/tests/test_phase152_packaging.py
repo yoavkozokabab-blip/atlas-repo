@@ -103,9 +103,12 @@ def test_packaging_embeds_full_commit_hash():
 
 def test_desktop_serves_favicon_from_packaged_icon():
     server = (ROOT / "atlas_desktop" / "server.py").read_text(encoding="utf-8")
+    build_script = (PKG / "pyinstaller" / "build_atlas_exe.ps1").read_text(encoding="utf-8")
     assert 'rel == "favicon.ico"' in server
     assert "image/x-icon" in server
     assert "assets\", \"atlas.ico" in server
+    assert "DistAssets" in build_script
+    assert "assets\\atlas.ico" in build_script
     assert (PKG / "installer" / "assets" / "atlas.ico").is_file()
 
 

@@ -129,6 +129,13 @@ $item = Get-Item -LiteralPath $AtlasExe
 $exeMb = [Math]::Round($item.Length / 1048576, 2)
 Write-Host ("Built: {0} ({1} MB)" -f $AtlasExe, $exeMb) -ForegroundColor Green
 
+$DistAssets = Join-PathSafe $DistAtlas "assets"
+$InstallerIcon = Join-PathSafe $InstallerDir "assets\atlas.ico"
+if (Test-Path -LiteralPath $InstallerIcon) {
+    New-Item -ItemType Directory -Path $DistAssets -Force | Out-Null
+    Copy-Item -LiteralPath $InstallerIcon -Destination (Join-PathSafe $DistAssets "atlas.ico") -Force
+}
+
 $stagedIndex = Find-StagedIndexHtml -StagingRoot $DistAtlas
 if (-not $stagedIndex) { throw "Packaged index.html not found under $DistAtlas" }
 $uxIssues = Test-HnLaunchUxPayload -IndexPath $stagedIndex
