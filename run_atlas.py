@@ -235,6 +235,7 @@ def main() -> int:
             host=args.host,
             port=args.port,
             open_browser=not args.no_browser,
+            open_mode="app" if _frozen_launch() else "browser",
             start_path=open_path,
         )
     except OSError as exc:
@@ -245,6 +246,7 @@ def main() -> int:
             host=args.host,
             port=0,
             open_browser=not args.no_browser,
+            open_mode="app" if _frozen_launch() else "browser",
             start_path="/startup-error.html",
         )
         return 1
