@@ -11,8 +11,8 @@ import urllib.error
 import urllib.request
 from typing import Any, Dict, Optional
 
-PRODUCT_VERSION = "1.0.0"
-LAUNCH_BUILD_LABEL = "Atlas v1.0.0 launch build"
+PRODUCT_VERSION = "1.0.1"
+LAUNCH_BUILD_LABEL = "Atlas v1.0.1 launch build"
 DEFAULT_SUPPORT_EMAIL = "yoavkozokabab@gmail.com"
 
 _BUILD_DATE = time.strftime("%Y-%m-%d", time.gmtime())
