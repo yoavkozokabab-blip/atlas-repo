@@ -8,6 +8,17 @@ export const metadata: Metadata = {
 
 const releases = [
   {
+    version: "v1.0.2",
+    date: "2026-07-15",
+    label: "UI/UX polish",
+    items: [
+      "Desktop workbench spacing, card padding, and typography refinements across Home, Memory, Files, Graph, Ask, Impact, Agents, Diagnostics, and Settings.",
+      "Agents screen no longer shows a false Connected state; configuration cards reflect verified MCP setup accurately.",
+      "Version labels, footer metadata, and build markers updated to v1.0.2 with embedded source commit f3d864e9.",
+      "Rebuilt Windows installer from verified source; in-place update preserves repository memory without silent rescan.",
+    ],
+  },
+  {
     version: "v1.0.1",
     date: "2026-07-15",
     label: "Verified installer",
