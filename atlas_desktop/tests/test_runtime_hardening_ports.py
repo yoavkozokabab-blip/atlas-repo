@@ -36,17 +36,30 @@ def test_preferred_port_free_binds_preferred(monkeypatch):
         httpd.server_close()
 
 
-def test_preferred_port_occupied_by_verified_atlas_is_reused(monkeypatch):
+def test_preferred_port_occupied_by_verified_atlas_uses_fallback_without_probe(monkeypatch):
     httpd = server.AtlasHTTPServer(("127.0.0.1", 0), server.AtlasHandler)
     port = int(httpd.server_address[1])
     httpd.atlas_runtime_identity = runtime_startup.new_instance_identity(port)
+    fallback_probe = ThreadingHTTPServer(("127.0.0.1", 0), server.AtlasHandler)
+    fallback_port = int(fallback_probe.server_address[1])
+    fallback_probe.server_close()
     thread = _serve(httpd)
-    monkeypatch.setattr(runtime_startup, "controlled_ports", lambda _preferred: [port])
+    probe_calls = []
+    monkeypatch.setattr(
+        runtime_startup, "controlled_ports", lambda _preferred: [port, fallback_port]
+    )
+    monkeypatch.setattr(
+        runtime_startup,
+        "probe_atlas",
+        lambda _host, candidate, **_kwargs: probe_calls.append(candidate) or None,
+    )
     try:
         selected_httpd, selected, existing = server._select_runtime("127.0.0.1", port)
-        assert selected_httpd is None
-        assert selected == port
-        assert existing["product"] == runtime_startup.PRODUCT
+        assert selected_httpd is not None
+        assert selected == fallback_port
+        assert existing is None
+        assert port not in probe_calls
+        selected_httpd.server_close()
     finally:
         httpd.shutdown()
         httpd.server_close()

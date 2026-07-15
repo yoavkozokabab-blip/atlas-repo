@@ -656,6 +656,11 @@ def _select_runtime(host: str, preferred_port: int):
             if not _port_bind_retryable(exc):
                 raise
             last_exc = exc
+            if candidate == preferred_port:
+                _log_launcher(
+                    f"preferred port {candidate} is occupied; selecting controlled fallback without probing it"
+                )
+                continue
             # A concurrent process can bind immediately before it starts
             # serving. Bounded retries close that startup race.
             existing = runtime_startup.probe_atlas(host, candidate, attempts=12)
