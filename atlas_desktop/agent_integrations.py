@@ -628,7 +628,7 @@ def write_cursor_config(*, confirm: bool = False, server_name: str = "atlas") ->
     )
     if result.get("ok"):
         result["message"] = (
-            "Atlas was added to Cursor. Restart Cursor, then open Settings → MCP and confirm Atlas is connected."
+            "Atlas was added to Cursor. Restart Cursor, then open Settings → MCP and confirm Atlas appears."
         )
     return result
 
@@ -938,7 +938,7 @@ def write_codex_config(*, confirm: bool = False, server_name: str = "atlas") -> 
         "preserved_server_names": preserved,
         "atlas_configured": True,
         "executable_path": atlas_executable_path(),
-        "message": "Codex connected. Restart Codex to use Atlas.",
+        "message": "Codex configured. Restart Codex to use Atlas.",
     }
 
 
@@ -1051,19 +1051,19 @@ def run_mcp_diagnostics() -> Dict[str, Any]:
         add("Cursor MCP config exists", cursor.get("exists"), cursor.get("config_path", ""))
         add("Cursor MCP config JSON valid", not cursor.get("invalid_json"), cursor.get("config_path", ""))
     else:
-        add("Cursor MCP config (optional until connected)", True, "Not configured yet")
+        add("Cursor MCP config (optional until configured)", True, "Not configured yet")
 
     if claude.get("atlas_configured"):
         add("Claude Desktop MCP config exists", claude.get("exists"), claude.get("config_path", ""))
         add("Claude Desktop MCP config JSON valid", not claude.get("invalid_json"), claude.get("config_path", ""))
     else:
-        add("Claude Desktop MCP config (optional until connected)", True, "Not configured yet")
+        add("Claude Desktop MCP config (optional until configured)", True, "Not configured yet")
 
     if codex.get("atlas_configured"):
         add("Codex MCP config exists", codex.get("exists"), codex.get("config_path", ""))
         add("Codex MCP config TOML valid", not codex.get("invalid_toml"), codex.get("config_path", ""))
     else:
-        add("Codex MCP config (optional until connected)", True, "Not configured yet")
+        add("Codex MCP config (optional until configured)", True, "Not configured yet")
 
     runtime = test_mcp_runtime()
     add("Atlas MCP runtime loads tools", runtime.get("ok"), runtime.get("error") or f"{runtime.get('tool_count', 0)} tools")

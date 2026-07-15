@@ -196,7 +196,7 @@
     setText("homeMetricEdges", num(summary.dependency_edges));
     setText("homeMetricSubsystems", num(summary.subsystem_count));
     setText("homeMetricHealth", clean(graphHealth.label, "Unknown"));
-    setText("homeConnectedAgents", connected.length ? connected.join(" · ") : "No agent connected");
+    setText("homeConnectedAgents", connected.length ? connected.join(" · ") : "No agent configured");
     const questions = byId("homeRecommendedQuestions");
     if (questions) {
       questions.innerHTML = questionButtons(summary.recommended_questions, 4);
@@ -214,7 +214,7 @@
       ["Freshness", fresh ? "Current" : "Review needed"],
       ["Persistence", restored ? "Restored" : "Available locally"],
       ["Evidence", `${num(summary.evidence_coverage?.symbol_count)} symbols`],
-      ["Connected agents", connected.length ? connected.join(", ") : "None"],
+      ["Configured agents", connected.length ? connected.join(", ") : "None"],
     ].map(([label, value]) => `<div class="memory-pulse-row"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`).join("");
     const findings = byId("homeFindingsList");
     if (findings) {
@@ -413,7 +413,7 @@
       let meta = card.querySelector(".agent-runtime-meta");
       if (!meta) { meta = document.createElement("div"); meta.className = "agent-runtime-meta"; card.querySelector(".mcp-tool-card-top")?.after(meta); }
       meta.innerHTML = [
-        ["Connection", configured ? (summary?.ok ? "Connected" : "Configured — select a repository") : "Not configured"],
+        ["Connection", configured ? (summary?.ok ? "Configured; repository context ready" : "Configured — select a repository") : "Not configured"],
         ["Last handshake", clean(data.last_handshake || data.last_tested_at, configured ? "Configuration verified" : "Never")],
         ["Repository context", summary?.ok ? summary.repo_name : "Select a repository"],
         ["Configuration", clean(data.config_status || data.status, configured ? "Atlas MCP present" : "Action required")],

@@ -44,7 +44,7 @@ const atlasMcpSetup = (() => {
       btn.classList.add("ghost");
       return;
     }
-    btn.textContent = connected ? "Reconnect" : label;
+    btn.textContent = connected ? "Update config" : label;
     btn.classList.toggle("primary", !connected);
     btn.classList.toggle("ghost", !!connected);
   }
@@ -61,17 +61,17 @@ const atlasMcpSetup = (() => {
 
     setText(
       "mcpClaudeStatus",
-      claudeOn ? "Connected" : "Not connected",
+      claudeOn ? "Configured" : "Not configured",
       claudeOn ? "connected" : "disconnected"
     );
     setText(
       "mcpCursorStatus",
-      cursorOn ? "Connected" : "Not connected",
+      cursorOn ? "Configured" : "Not configured",
       cursorOn ? "connected" : "disconnected"
     );
     setText(
       "mcpCodexStatus",
-      codexOn ? "Codex connected" : (codexManual ? "Manual setup required" : "Not connected"),
+      codexOn ? "Codex configured" : (codexManual ? "Manual setup required" : "Not configured"),
       codexOn ? "connected" : (codexManual ? "manual" : "disconnected")
     );
 
@@ -174,7 +174,7 @@ const atlasMcpSetup = (() => {
     if (res.ok) {
       closeManualSetup();
       toast(res.message || successFallback, "success");
-      window.atlasActivity?.add(`${label} connected via MCP`);
+      window.atlasActivity?.add(`${label} configured for MCP`);
       await loadStatus(true);
       return res;
     }
@@ -194,7 +194,7 @@ const atlasMcpSetup = (() => {
     return connectAgent(
       "cursor",
       "/api/integrations/cursor/write-config",
-      "Atlas was added to Cursor. Restart Cursor, then open Settings → MCP and confirm Atlas is connected.",
+      "Atlas was added to Cursor. Restart Cursor, then open Settings → MCP and confirm Atlas appears.",
       "Could not write Cursor MCP config"
     );
   }
@@ -213,8 +213,8 @@ const atlasMcpSetup = (() => {
     const res = await api("/api/integrations/codex/write-config", "POST", { confirm: true });
     if (res.ok) {
       closeManualSetup();
-      toast("Codex connected. Restart Codex to use Atlas.", "success");
-      window.atlasActivity?.add("Codex connected via MCP");
+      toast("Codex configured. Restart Codex to use Atlas.", "success");
+      window.atlasActivity?.add("Codex configured for MCP");
       await loadStatus(true);
       return res;
     }

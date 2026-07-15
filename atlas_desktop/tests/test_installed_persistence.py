@@ -226,7 +226,9 @@ def test_ui_distinguishes_configured_agent_without_repository_context() -> None:
     )
     assert "Configured — select a repository" in shell
     assert "Configured — select a repository" in workbench
-    assert 'summary?.ok ? "Connected"' in workbench
+    assert "Configured; repository context ready" in workbench
+    assert 'summary?.ok ? "Connected"' not in workbench
+    assert '"Connected agents"' not in workbench
 
 
 def test_installer_staging_has_no_user_registry_payload() -> None:

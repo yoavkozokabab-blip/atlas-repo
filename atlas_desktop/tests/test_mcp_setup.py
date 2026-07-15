@@ -107,7 +107,7 @@ def test_codex_config_write_preserves_existing_servers(tmp_path, monkeypatch):
     written = ai.write_codex_config(confirm=True)
     assert written["ok"] is True
     assert written.get("backup_path")
-    assert written.get("message") == "Codex connected. Restart Codex to use Atlas."
+    assert written.get("message") == "Codex configured. Restart Codex to use Atlas."
     text = config.read_text(encoding="utf-8")
     assert "[mcp_servers.existing]" in text
     assert "[mcp_servers.atlas]" in text

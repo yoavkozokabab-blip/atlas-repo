@@ -517,10 +517,10 @@
       renderDiagnosticCard("Repository index", repositoryReady, scan.module_count !== undefined ? `${number(scan.module_count)} modules · ${number(scan.dependency_edges)} dependencies` : "No repository is currently indexed"),
       renderDiagnosticCard("Signed memory", memoryVerified, memoryVerified ? "Persisted repository state restored and verified" : memory.memory_persistence_error),
       renderDiagnosticCard("Installer runtime", installerReady, selfTest && `${list(selfTest.checks).filter((item) => item.ok).length} runtime checks passed`),
-      renderDiagnosticCard("Agent connections", !!(mcp && mcp.ok), agents.length ? `${agents.map((name) => name === "claude" ? "Claude" : name === "codex" ? "Codex" : "Cursor").join(", ")} configured` : "MCP configuration available; no agent reported configured"),
+      renderDiagnosticCard("Agent configuration", !!(mcp && mcp.ok), agents.length ? `${agents.map((name) => name === "claude" ? "Claude" : name === "codex" ? "Codex" : "Cursor").join(", ")} configured` : "MCP configuration available; no agent reported configured"),
     ].join("");
     shell.diagnostics = { generated_at: new Date().toISOString(), request_failures: requestFailures.map((request) => text(request.reason && request.reason.message, "Request failed")), health, diagnostics, startup, self_test: selfTest, mcp: {
-      ok: !!(mcp && mcp.ok), executable_exists: !!(mcp && mcp.executable_exists), connected_agents: agents,
+      ok: !!(mcp && mcp.ok), executable_exists: !!(mcp && mcp.executable_exists), configured_agents: agents,
     } };
     report.textContent = JSON.stringify(shell.diagnostics, null, 2);
     updateGlobalStatus();
@@ -540,6 +540,9 @@
     status.innerHTML = result && result.ok
       ? `${statusPill(agents.length ? (contextReady ? "Connected" : "Configured — select a repository") : "Ready to connect", agents.length && contextReady ? "ready" : "neutral")} ${agents.length ? `${agents.length} coding agent${agents.length === 1 ? " is" : "s are"} configured to use Atlas MCP${contextReady ? ` with ${escapeHtml(repository.repo_name || "repository")} context.` : "; repository context is not active yet."}` : "Choose an agent below. Atlas will preserve its existing configuration and ask before writing."}`
       : `${statusPill("Unavailable", "warning")} MCP status could not be read. Open Diagnostics for details.`;
+    if (result && result.ok && agents.length && contextReady) {
+      status.innerHTML = status.innerHTML.replace(">Connected<", ">Configured<").replace(" context.", " context is ready.");
+    }
   }
 
   async function renderSettings() {
