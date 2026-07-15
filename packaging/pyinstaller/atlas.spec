@@ -22,6 +22,9 @@ def existing_datas():
     build_info = SPEC_DIR.parent / "installer" / "build_info.json"
     if build_info.is_file():
         datas.append((str(build_info), "packaging/installer"))
+    icon = SPEC_DIR.parent / "installer" / "assets" / "atlas.ico"
+    if icon.is_file():
+        datas.append((str(icon), "assets"))
     return datas
 
 

@@ -31,6 +31,8 @@ def test_spec_includes_required_assets():
     assert "external_repos" in text
     assert 'name="Atlas"' in text
     assert "console=False" in text
+    assert '"assets"' in text
+    assert "atlas.ico" in text
 
 
 def test_inno_references_atlas_exe():
@@ -68,6 +70,7 @@ def test_dist_layout_when_built():
     if not demo.is_dir():
         demo = next(DIST.rglob("small_repo"), None)
     assert demo and demo.is_dir(), "sample demo repo missing from dist"
+    assert (DIST / "assets" / "atlas.ico").is_file(), "packaged icon missing from dist"
     joined = "\n".join(str(p) for p in DIST.rglob("*")).lower()
     assert "external_repos" not in joined
     assert "\\.git\\" not in joined.replace("/", "\\")
