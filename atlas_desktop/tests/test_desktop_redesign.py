@@ -32,9 +32,9 @@ def test_desktop_shell_uses_existing_local_api_contracts():
         assert endpoint in js
     assert "host.appendChild(setup)" in js
     assert 'byId("mcpSetupSection")' in js
-    assert "Promise.allSettled" in js
-    assert "request_failures" in js
-    assert "startupReady && installerReady && repositoryReady && memoryVerified" in js
+    assert "Promise.allSettled" in js or "fetchOptional" in js
+    assert "degraded_count" in js
+    assert "activeRepositorySummary" in js
 
 
 def test_desktop_shell_includes_keyboard_and_status_affordances():

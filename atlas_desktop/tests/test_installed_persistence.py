@@ -250,9 +250,9 @@ def test_ui_distinguishes_configured_agent_without_repository_context() -> None:
     workbench = (ROOT / "atlas_desktop" / "static" / "workbench-v3.js").read_text(
         encoding="utf-8"
     )
-    assert "Configured — select a repository" in shell
-    assert "Configured — select a repository" in workbench
-    assert "Configured; repository context ready" in workbench
+    assert "Load a repository for MCP context" in shell
+    assert "Client verification not completed" in workbench
+    assert "Select a repository" in workbench
     assert 'summary?.ok ? "Connected"' not in workbench
     assert '"Connected agents"' not in workbench
 

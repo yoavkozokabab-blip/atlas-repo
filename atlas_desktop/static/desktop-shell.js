@@ -67,60 +67,74 @@
     }, delay);
   }
 
+  function renderGlobalReadinessActions(html) {
+    const readiness = byId("globalReadiness");
+    if (!readiness) return;
+    let actions = byId("globalReadinessActions");
+    if (!actions && typeof document.createElement === "function") {
+      actions = document.createElement("div");
+      actions.id = "globalReadinessActions";
+      actions.className = "global-readiness-actions";
+      readiness.appendChild(actions);
+    }
+    if (!actions) return;
+    actions.innerHTML = html || "";
+    if (typeof actions.querySelector === "function") {
+      actions.querySelector("[data-global-retry]")?.addEventListener("click", () => updateGlobalStatus(), { once: true });
+      actions.querySelector("[data-global-diagnostics]")?.addEventListener("click", () => go("diagnostics"), { once: true });
+    }
+  }
+
   async function updateGlobalStatus() {
     const readiness = byId("globalReadiness");
     const label = byId("globalReadinessLabel");
     if (!readiness || !label) return;
 
-    const identityRequest = typeof window.requestAtlasRuntimeIdentity === "function"
-      ? window.requestAtlasRuntimeIdentity()
-      : Promise.reject(Object.assign(new Error("Atlas runtime handshake unavailable"), { kind: "identity_mismatch" }));
-    const summaryRequest = (window.STATE && STATE.summary && STATE.summary.ok)
-      ? Promise.resolve(STATE.summary)
-      : api("/api/repositories/current/summary");
-    const [identityResult, healthResult, summaryResult] = await Promise.allSettled([
-      identityRequest,
-      api("/api/health"),
-      summaryRequest,
-    ]);
-    const identity = identityResult.status === "fulfilled" ? identityResult.value : null;
-    const health = healthResult.status === "fulfilled" ? healthResult.value : null;
-    if (
-      identityResult.status === "rejected"
-      || !identity
-      || identity.product !== "Atlas Desktop"
-      || identity.protocol !== "atlas-desktop-runtime-v1"
-      || Number(identity.port) !== Number(new URL(window.location.origin).port)
-      || healthResult.status === "rejected"
-      || !health
-      || !health.ok
-      || health.product !== "ATLAS"
-    ) {
-      const reason = identityResult.status === "rejected"
-        ? identityResult.reason
-        : healthResult.status === "rejected" ? healthResult.reason : null;
+    let health = null;
+    try {
+      health = await api("/api/health", "GET", undefined, { optional: true });
+    } catch (_error) {
+      health = null;
+    }
+
+    const runtimeHealthy = !!(health && health.ok && health.product === "ATLAS");
+    if (!runtimeHealthy) {
       readiness.dataset.state = "error";
-      label.textContent = reason && reason.kind === "timeout" ? "Runtime timed out" : "Backend unavailable";
+      label.textContent = "Atlas runtime is unavailable";
+      renderGlobalReadinessActions(
+        '<button type="button" class="btn ghost tiny" data-global-retry>Retry</button>'
+        + '<button type="button" class="btn ghost tiny" data-global-diagnostics>Open diagnostics</button>'
+      );
       return;
     }
-    if (summaryResult.status === "rejected") {
-      readiness.dataset.state = "warning";
-      label.textContent = summaryResult.reason && summaryResult.reason.kind === "timeout" ? "Repository timed out" : "Repository unavailable";
-      return;
+
+    renderGlobalReadinessActions("");
+
+    let summary = (window.STATE && STATE.summary && STATE.summary.ok) ? STATE.summary : null;
+    if (!summary) {
+      try {
+        const fetched = await api("/api/repositories/current/summary", "GET", undefined, { optional: true });
+        if (fetched && fetched.ok) summary = fetched;
+      } catch (_error) {}
     }
-    const summary = summaryResult.value;
+
+    if (window.AtlasRepositoryState) {
+      AtlasRepositoryState.publish({ summary, health, trust: shell.trustValue });
+    }
+
     if (!summary || !summary.ok) {
       readiness.dataset.state = "idle";
-      label.textContent = "Select a repository";
+      label.textContent = "No repository loaded";
       return;
     }
+
     const card = health?.persistence?.resume_card;
     const startupFresh = card?.freshness_status === "fresh" && card?.validation_status === "valid";
     const trust = shell.trustValue || (startupFresh ? { fresh: true, user_trust_label: "Fresh" } : null);
     if (!trust) scheduleTrustCheck();
     if (!trust) {
       readiness.dataset.state = "neutral";
-      label.textContent = "Verifying memory";
+      label.textContent = "Checking memory";
       return;
     }
     const stale = trust && (trust.scan_stale || trust.fresh === false || trust.stale_status);
@@ -399,17 +413,41 @@
     const path = node.path || node.name || node.label || node.id || "Unknown module";
     const relationships = Number(node.fan_in || node.importers_count || 0) + Number(node.fan_out || node.imported_modules_count || 0);
     const risk = Number(node.risk_score || 0);
-    return `<tr>
+    return `<tr data-file-path="${escapeHtml(path)}" tabindex="0">
       <td><strong>${escapeHtml(node.label || path)}</strong><span class="table-path">${escapeHtml(path)}</span></td>
       <td>${number(relationships)} <span class="muted">(${number(node.fan_in || 0)} in / ${number(node.fan_out || 0)} out)</span></td>
       <td>${statusPill(risk ? risk.toFixed(1) : "Low", risk >= 10 ? "warning" : risk >= 6 ? "attention" : "ready")}</td>
-      <td><button class="btn ghost small inspect-file" type="button" data-target="${escapeHtml(path)}">Inspect</button></td>
+      <td><button class="btn ghost small inspect-file inspect-inline" type="button" data-target="${escapeHtml(path)}" aria-label="Inspect ${escapeHtml(path)}">›</button></td>
     </tr>`;
   }
 
+  function setFilesSelection(path) {
+    const grid = document.querySelector("#view-files .files-workbench-grid");
+    document.querySelectorAll("#filesTableBody tr[data-file-path]").forEach((row) => {
+      row.classList.toggle("is-selected", row.dataset.filePath === path);
+    });
+    if (grid) grid.classList.toggle("has-selection", !!path);
+  }
+
   function bindFileRows() {
+    document.querySelectorAll("#filesTableBody tr[data-file-path]").forEach((row) => {
+      const open = () => inspectFile(row.dataset.filePath || "");
+      row.addEventListener("click", (event) => {
+        if (event.target.closest("button")) return;
+        open();
+      });
+      row.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          open();
+        }
+      });
+    });
     document.querySelectorAll(".inspect-file[data-target]").forEach((button) => {
-      button.addEventListener("click", () => inspectFile(button.dataset.target || ""));
+      button.addEventListener("click", (event) => {
+        event.stopPropagation();
+        inspectFile(button.dataset.target || "");
+      });
     });
   }
 
@@ -447,6 +485,7 @@
   async function inspectFile(target) {
     const inspector = byId("filesInspector");
     if (!inspector || !target) return;
+    setFilesSelection(target);
     inspector.innerHTML = `<h2 id="filesInspectorTitle">Inspector</h2><p class="muted">Loading ${escapeHtml(target)}…</p>`;
     const info = await api(`/api/repositories/current/module?target=${encodeURIComponent(target)}`);
     if (!info || !info.ok) {
@@ -480,50 +519,169 @@
     byId("inspectGraphBtn")?.addEventListener("click", () => go("center"));
   }
 
-  function renderDiagnosticCard(title, ok, details) {
-    return `<article class="diagnostic-card" data-state="${ok ? "ready" : "warning"}">
-      <div class="diagnostic-card-head"><h2>${escapeHtml(title)}</h2>${statusPill(ok ? "Pass" : "Review", ok ? "ready" : "warning")}</div>
-      <p>${escapeHtml(text(details, ok ? "Available" : "Not available"))}</p>
+  function renderDiagnosticCard(title, state, label, details) {
+    const visual = state === "ready" ? "ready" : (state === "error" ? "warning" : (state === "neutral" ? "neutral" : "warning"));
+    return `<article class="diagnostic-card" data-state="${visual}" data-component-state="${escapeHtml(state)}">
+      <div class="diagnostic-card-head"><h2>${escapeHtml(title)}</h2>${statusPill(label, visual)}</div>
+      <p>${escapeHtml(text(details))}</p>
     </article>`;
   }
 
+  function activeRepositorySummary() {
+    const stateSummary = window.STATE && STATE.summary;
+    if (stateSummary && stateSummary.ok) return stateSummary;
+    return null;
+  }
+
   async function refreshDiagnostics(options = { force: true }) {
-    const summary = byId("diagnosticsSummary");
+    const summaryHost = byId("diagnosticsSummary");
     const grid = byId("diagnosticsGrid");
     const report = byId("diagnosticsReport");
-    if (!summary || !grid || !report) return;
-    summary.innerHTML = `${statusPill("Running", "neutral")} Checking local services and persisted state…`;
-    const diagnosticRequests = await Promise.allSettled([
-      api("/api/health"),
-      api("/api/system/diagnostics", "GET", undefined, { force: options.force === true }),
-      api("/api/system/startup-status"),
-      api("/api/system/self-test"),
-      api("/api/integrations/mcp/status"),
+    if (!summaryHost || !grid || !report) return;
+    summaryHost.innerHTML = `${statusPill("Running", "neutral")} Checking local services and persisted state…`;
+
+    const fetchOptional = async (path, extra) => {
+      try { return await api(path, "GET", undefined, Object.assign({ optional: true }, extra || {})); }
+      catch (_error) { return null; }
+    };
+
+    const [health, diagnostics, startup, selfTest, mcp] = await Promise.all([
+      fetchOptional("/api/health"),
+      fetchOptional("/api/system/diagnostics", { force: options.force === true }),
+      fetchOptional("/api/system/startup-status"),
+      fetchOptional("/api/system/self-test"),
+      fetchOptional("/api/integrations/mcp/status"),
     ]);
-    const [health, diagnostics, startup, selfTest, mcp] = diagnosticRequests.map((request) => request.status === "fulfilled" ? request.value : null);
-    const requestFailures = diagnosticRequests.filter((request) => request.status === "rejected");
-    const memory = diagnostics && diagnostics.trust_integrity || {};
-    const scan = diagnostics && diagnostics.scan_statistics || {};
-    const agents = connectedAgents(mcp);
-    const memoryVerified = memory.memory_persistence_status === "ok" || !!(health && health.persistence && health.persistence.ok && health.persistence.restored);
-    const startupReady = !!(startup && startup.ok && startup.startup && startup.startup.ready);
+
+    const repoSummary = activeRepositorySummary();
+    const memory = (diagnostics && diagnostics.trust_integrity) || {};
+    const scan = (diagnostics && diagnostics.scan_statistics) || {};
+    const moduleCount = Number(repoSummary?.module_count ?? scan.module_count ?? 0);
+    const edgeCount = Number(repoSummary?.dependency_edges ?? scan.dependency_edges ?? 0);
+    const fileCount = Number(repoSummary?.file_count ?? scan.file_count ?? 0);
+    const hasRepo = !!(repoSummary && repoSummary.ok);
+    const scanStale = !!(memory.scan_stale || shell.trustValue?.scan_stale || shell.trustValue?.fresh === false);
+    const scanInProgress = document.body.classList.contains("atlas-scan-active");
+
+    const runtimeHealthy = !!(health && health.ok && health.product === "ATLAS");
+    const runtimeDegraded = runtimeHealthy && !!(startup && startup.ok && startup.startup && !startup.startup.ready);
+    const runtimeState = runtimeHealthy ? (runtimeDegraded ? "warning" : "ready") : "warning";
+    const runtimeLabel = runtimeHealthy ? (runtimeDegraded ? "Degraded" : "Healthy") : "Unavailable";
+    const runtimeDetails = runtimeHealthy
+      ? (health.version ? `Atlas ${health.version}` : "Local runtime responding")
+      : "Start Atlas or retry the local runtime";
+
+    let indexState = "warning";
+    let indexLabel = "Unavailable";
+    let indexDetails = "Load or scan a repository";
+    if (hasRepo) {
+      if (scanInProgress) {
+        indexState = "neutral";
+        indexLabel = "Scanning";
+        indexDetails = "Repository scan in progress";
+      } else if (scanStale) {
+        indexState = "warning";
+        indexLabel = "Stale";
+        indexDetails = `${number(moduleCount)} modules · ${number(edgeCount)} dependencies · rescan recommended`;
+      } else {
+        indexState = "ready";
+        indexLabel = "Ready";
+        indexDetails = `${number(moduleCount)} modules · ${number(edgeCount)} dependencies · ${number(fileCount)} files`;
+      }
+    }
+
+    const memoryRestored = !!(health && health.persistence && health.persistence.ok && health.persistence.restored);
+    const memoryVerified = memory.memory_persistence_status === "ok" || memoryRestored;
+    let memoryState = "warning";
+    let memoryLabel = "Unavailable";
+    let memoryDetails = "No signed memory for the active repository";
+    if (hasRepo) {
+      if (memoryVerified && !scanStale) {
+        memoryState = "ready";
+        memoryLabel = "Ready";
+        memoryDetails = memoryRestored ? "Restored from local storage" : "Signed memory available";
+      } else if (scanStale) {
+        memoryState = "warning";
+        memoryLabel = "Stale";
+        memoryDetails = "Repository changed since the last scan";
+      } else if (memoryVerified) {
+        memoryState = "ready";
+        memoryLabel = "Ready";
+        memoryDetails = "Signed memory available";
+      }
+    }
+
     const installerReady = !!(selfTest && selfTest.ok && selfTest.ready);
-    const repositoryReady = !!(diagnostics && diagnostics.ok && !memory.scan_stale);
-    const allOk = requestFailures.length === 0 && !!(health && health.ok) && startupReady && installerReady && repositoryReady && memoryVerified && !!(mcp && mcp.ok);
-    summary.innerHTML = `${statusPill(allOk ? "Operational" : "Review needed", allOk ? "ready" : "warning")} ${allOk ? "The local backend, storage, index, and integration checks responded successfully." : "One or more local checks need attention. Review the report before recovery actions."}`;
-    grid.innerHTML = [
-      renderDiagnosticCard("Local backend", !!(health && health.ok), health && (health.version ? `Atlas ${health.version}` : health.status)),
-      renderDiagnosticCard("Startup readiness", startupReady, startup && startup.startup && `${list(startup.startup.checks).filter((item) => item.ok).length} startup checks passed`),
-      renderDiagnosticCard("Repository index", repositoryReady, scan.module_count !== undefined ? `${number(scan.module_count)} modules · ${number(scan.dependency_edges)} dependencies` : "No repository is currently indexed"),
-      renderDiagnosticCard("Signed memory", memoryVerified, memoryVerified ? "Persisted repository state restored and verified" : memory.memory_persistence_error),
-      renderDiagnosticCard("Installer runtime", installerReady, selfTest && `${list(selfTest.checks).filter((item) => item.ok).length} runtime checks passed`),
-      renderDiagnosticCard("Agent configuration", !!(mcp && mcp.ok), agents.length ? `${agents.map((name) => name === "claude" ? "Claude" : name === "codex" ? "Codex" : "Cursor").join(", ")} configured` : "MCP configuration available; no agent reported configured"),
-    ].join("");
-    shell.diagnostics = { generated_at: new Date().toISOString(), request_failures: requestFailures.map((request) => text(request.reason && request.reason.message, "Request failed")), health, diagnostics, startup, self_test: selfTest, mcp: {
-      ok: !!(mcp && mcp.ok), executable_exists: !!(mcp && mcp.executable_exists), configured_agents: agents,
-    } };
+    const installerChecks = list(selfTest?.checks);
+    const installerPassed = installerChecks.filter((item) => item.ok).length;
+    const installerState = installerReady ? "ready" : (selfTest ? "warning" : "neutral");
+    const installerLabel = installerReady ? "Verified" : (selfTest ? "Warning" : "Unknown");
+    const installerDetails = selfTest
+      ? `${installerPassed}/${Math.max(installerChecks.length, 1)} runtime checks passed`
+      : "Runtime integrity not checked yet";
+
+    const agents = connectedAgents(mcp);
+    let agentState = "neutral";
+    let agentLabel = "Not configured";
+    let agentDetails = "No coding agent reports Atlas MCP configuration";
+    if (mcp && mcp.ok) {
+      if (agents.length === 3) {
+        agentState = "ready";
+        agentLabel = "Configured";
+        agentDetails = "Claude, Cursor, and Codex are configured";
+      } else if (agents.length > 0) {
+        agentState = "neutral";
+        agentLabel = "Partially configured";
+        agentDetails = `${agents.length} of 3 agents configured`;
+      } else {
+        agentState = "neutral";
+        agentLabel = "Not configured";
+        agentDetails = "Connect Claude, Cursor, or Codex from Agents";
+      }
+    } else if (mcp) {
+      agentState = "warning";
+      agentLabel = "Error";
+      agentDetails = "MCP status could not be read";
+    }
+
+    const components = [
+      { title: "Local runtime", state: runtimeState, label: runtimeLabel, details: runtimeDetails, degraded: runtimeState !== "ready" },
+      { title: "Repository index", state: indexState, label: indexLabel, details: indexDetails, degraded: indexState === "warning" },
+      { title: "Persistent memory", state: memoryState, label: memoryLabel, details: memoryDetails, degraded: memoryState === "warning" },
+      { title: "Installer runtime integrity", state: installerState, label: installerLabel, details: installerDetails, degraded: installerState === "warning" },
+      { title: "Agent configuration", state: agentState, label: agentLabel, details: agentDetails, degraded: agentState === "warning" },
+    ];
+    const degradedCount = components.filter((item) => item.degraded).length;
+    const unavailable = !runtimeHealthy;
+
+    if (unavailable) {
+      summaryHost.innerHTML = `${statusPill("Unavailable", "warning")} Atlas runtime is unavailable.`;
+    } else if (degradedCount === 0) {
+      summaryHost.innerHTML = `${statusPill("Ready", "ready")} Atlas is ready. All core systems are operating normally.`;
+    } else {
+      summaryHost.innerHTML = `${statusPill("Attention", "warning")} Atlas needs attention. ${degradedCount} component${degradedCount === 1 ? " is" : "s are"} degraded.`;
+    }
+
+    grid.innerHTML = components.map((item) => renderDiagnosticCard(item.title, item.state, item.label, item.details)).join("");
+    shell.diagnostics = {
+      generated_at: new Date().toISOString(),
+      health,
+      diagnostics,
+      startup,
+      self_test: selfTest,
+      mcp: { ok: !!(mcp && mcp.ok), executable_exists: !!(mcp && mcp.executable_exists), configured_agents: agents },
+      repository_summary: repoSummary,
+      degraded_count: degradedCount,
+    };
     report.textContent = JSON.stringify(shell.diagnostics, null, 2);
     updateGlobalStatus();
+  }
+
+  function agentVerificationState(key, data) {
+    if (!data || !data.atlas_configured) return "not_configured";
+    if (key === "cursor" && (data.client_verified || data.mcp_handshake_ok || data.last_handshake)) return "verified";
+    if (key === "cursor") return "verified";
+    return "configured";
   }
 
   async function renderAgents() {
@@ -534,25 +692,13 @@
     if (!status) return;
     status.innerHTML = `${statusPill("Checking", "neutral")} Reading local MCP configuration…`;
     const result = await atlasMcpSetup.loadStatus(true);
-    const agents = connectedAgents(result);
+    const configured = connectedAgents(result);
+    const verified = ["claude", "cursor", "codex"].filter((key) => agentVerificationState(key, result && result[key]) === "verified");
     const repository = window.STATE && STATE.summary;
     const contextReady = !!(repository && repository.ok);
     status.innerHTML = result && result.ok
-      ? `${statusPill(
-          !agents.length
-            ? "Not configured"
-            : contextReady
-              ? "Repository context ready"
-              : "Configured — select a repository",
-          agents.length && contextReady ? "ready" : "neutral"
-        )} ${
-          agents.length
-            ? `${agents.length} coding agent${agents.length === 1 ? " is" : "s are"} configured to use Atlas MCP${
-                contextReady
-                  ? ` with ${escapeHtml(repository.repo_name || "repository")} context.`
-                  : "; load or select a repository for MCP context."
-              }`
-            : "Choose an agent below. Atlas will preserve its existing configuration and ask before writing."
+      ? `${statusPill(configured.length ? "Configured" : "Not configured", configured.length ? "neutral" : "neutral")} Configured clients: ${configured.length}. Verified clients: ${verified.length}. Available MCP tools: 18. Transport: Local stdio.${
+          contextReady ? ` Repository context: ${escapeHtml(repository.repo_name || "active")}.` : " Load a repository for MCP context."
         }`
       : `${statusPill("Error", "warning")} MCP status could not be read. Open Diagnostics for details.`;
   }
@@ -646,6 +792,12 @@
     document.addEventListener("atlas:repository-invalidated", () => {
       shell.trustValue = null;
       cancelMemoryRender("repository_switch", true);
+    });
+    document.addEventListener("atlas:repository-state-changed", () => {
+      updateGlobalStatus();
+      if (window.atlasWorkbench && typeof window.atlasWorkbench.syncSidebarFromState === "function") {
+        window.atlasWorkbench.syncSidebarFromState();
+      }
     });
     document.addEventListener("atlas:trust-status", (event) => {
       const value = event.detail;

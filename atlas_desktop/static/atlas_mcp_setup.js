@@ -44,7 +44,7 @@ const atlasMcpSetup = (() => {
       btn.classList.add("ghost");
       return;
     }
-    btn.textContent = connected ? "Update config" : label;
+    btn.textContent = connected ? "Review configuration" : label;
     btn.classList.toggle("primary", !connected);
     btn.classList.toggle("ghost", !!connected);
   }

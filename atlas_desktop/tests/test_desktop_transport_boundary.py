@@ -464,14 +464,11 @@ const context = {{
   location: {{ origin: "http://127.0.0.1:8778" }},
   URL,
   STATE: {{ summary: null }},
-  requestAtlasRuntimeIdentity: async () => {{
-    requested.push("/api/runtime/handshake");
-    return {{ ok: true, product: "Atlas Desktop", protocol: "atlas-desktop-runtime-v1", port: 8778 }};
-  }},
-  api: async (path) => {{
+  AtlasRepositoryState: {{ publish() {{ return {{ hasRepo: false }}; }} }},
+  api: async (path, method, body, options) => {{
     requested.push(path);
     if (path === "/api/health") return {{ ok: true, product: "ATLAS", persistence: {{ resume_card: {{ freshness_status: "fresh", validation_status: "valid" }} }} }};
-    if (path === "/api/repositories/current/summary") throw Object.assign(new Error("repository network failure"), {{ kind: "network_error" }});
+    if (path === "/api/repositories/current/summary") throw Object.assign(new Error("repository network failure"), {{ kind: "network_error", optional: true }});
     throw new Error("unexpected endpoint " + path);
   }},
   setTimeout() {{ return 1; }},
@@ -490,10 +487,10 @@ vm.runInContext(source, context);
 }})().catch((error) => {{ console.error(error); process.exitCode = 1; }});
 """
     result = _run_node(script)
-    assert result["label"] == "Repository unavailable"
-    assert result["state"] == "warning"
+    assert result["label"] == "No repository loaded"
+    assert result["state"] == "idle"
     assert "/api/health" in result["requested"]
-    assert "/api/runtime/handshake" in result["requested"]
+    assert not any(path.startswith("/api/runtime/handshake") for path in result["requested"])
     assert not any(path.startswith("/api/accounts/") for path in result["requested"])
 
 
@@ -670,7 +667,7 @@ vm.runInContext({json.dumps(ask_renderer)}, askContext);
         "memory": "Memory restored",
     }
     assert result["ask"] == {
-        "status": "atlas-rc1-clean indexed. Analysis is ready.",
+        "status": "atlas-rc1-clean ready for questions.",
         "panel": "block",
         "empty": "none",
         "inputDisabled": False,

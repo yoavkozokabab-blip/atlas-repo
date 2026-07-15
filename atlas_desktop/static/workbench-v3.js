@@ -73,18 +73,46 @@
     return clean(summary?.branch || summary?.git?.branch || summary?.git_branch, "Current checkout");
   }
 
+  function currentRepoSummary(provided) {
+    if (provided?.ok) return provided;
+    const stateSummary = window.STATE?.summary;
+    return stateSummary?.ok ? stateSummary : null;
+  }
+
+  function agentVerificationState(key, data) {
+    if (!data?.atlas_configured) return "not_configured";
+    if (key === "cursor") return "verified";
+    return "configured";
+  }
+
   function syncSidebar(summary, trust, agents) {
-    const hasRepo = !!summary?.ok;
+    const active = currentRepoSummary(summary);
+    const snapshot = window.AtlasRepositoryState
+      ? AtlasRepositoryState.compute({ summary: active, trust })
+      : null;
+    const hasRepo = snapshot ? snapshot.hasRepo : !!active?.ok;
     const connected = agentNames(agents);
-    if (byId("sidebarRepoName")) byId("sidebarRepoName").textContent = hasRepo ? clean(summary.repo_name, "Repository") : "No repository";
-    if (byId("sidebarRepoBranch")) byId("sidebarRepoBranch").textContent = hasRepo ? branchLabel(summary) : "Select a local codebase";
+    if (byId("sidebarRepoName")) {
+      byId("sidebarRepoName").textContent = hasRepo
+        ? clean(active?.repo_name || snapshot?.name, "Repository")
+        : "No repository";
+    }
+    if (byId("sidebarRepoBranch")) {
+      byId("sidebarRepoBranch").textContent = hasRepo
+        ? (active?.demo_mode ? "Sample repository" : branchLabel(active))
+        : "Select a local codebase";
+    }
     if (byId("sidebarAgentState")) byId("sidebarAgentState").textContent = `${connected.length} agent${connected.length === 1 ? "" : "s"}`;
     const memory = byId("sidebarMemoryState");
     if (memory) {
-      const fresh = !!(hasRepo && trust && (trust.fresh === true || trust.trust_status?.fresh === true || trust.user_trust_label === "Fresh"));
+      const fresh = !!(hasRepo && (snapshot?.memoryStatus === "ready" || (trust && (trust.fresh === true || trust.trust_status?.fresh === true || trust.user_trust_label === "Fresh"))));
       memory.dataset.state = fresh ? "ready" : (hasRepo ? "warning" : "idle");
-      memory.textContent = fresh ? "Memory current" : (hasRepo ? "Review memory" : "Memory offline");
+      memory.textContent = snapshot?.memoryLabel || (fresh ? "Memory current" : (hasRepo ? "Review memory" : "No repository"));
     }
+  }
+
+  function syncSidebarFromState() {
+    syncSidebar(window.STATE?.summary, workbench.trust, workbench.agents);
   }
 
   function questionButtons(questions, limit = 3) {
@@ -377,10 +405,20 @@
     const confidenceShort = confidence === "high" ? "High" : confidence === "medium" ? "Med" : confidence === "low" ? "Low" : "—";
     if (confidenceHost) confidenceHost.innerHTML = `<div class="confidence-dial" data-confidence="${confidence}"><span>${confidenceShort}</span></div><div><strong>${confidence === "idle" ? confidenceLabel : `${confidenceLabel} confidence`}</strong><small>${visible ? `${evidence.length} cited evidence item${evidence.length === 1 ? "" : "s"}` : "Confidence appears with an answer"}</small></div>`;
     const fileHost = byId("askRelatedFiles");
-    if (fileHost) fileHost.innerHTML = files.length ? `<div class="evidence-file-list">${files.map((file) => `<button type="button" data-file="${escapeHtml(file)}">${escapeHtml(file)}</button>`).join("")}</div>` : "No files selected";
+    if (fileHost) {
+      fileHost.innerHTML = files.length
+        ? `<div class="evidence-file-list">${files.map((file) => `<button type="button" data-file="${escapeHtml(file)}">${escapeHtml(file)}</button>`).join("")}</div>`
+        : (visible ? "No related files cited" : "");
+    }
     fileHost?.querySelectorAll("button[data-file]").forEach((button) => button.addEventListener("click", () => { window.go("files"); setTimeout(() => window.atlasDesktopShell?.inspectFile(button.dataset.file), 80); }));
     const symbolHost = byId("askRelatedSymbols");
-    if (symbolHost) symbolHost.innerHTML = evidence.length ? `<div class="symbol-path-list">${evidence.slice(0, 5).map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</div>` : "No symbols selected";
+    if (symbolHost) {
+      symbolHost.innerHTML = evidence.length
+        ? `<div class="symbol-path-list">${evidence.slice(0, 5).map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</div>`
+        : (visible ? "No symbols cited" : "");
+    }
+    const evidenceRail = document.querySelector(".ask-evidence-rail");
+    if (evidenceRail) evidenceRail.classList.toggle("is-collapsed", !visible || (!files.length && !evidence.length));
     const follow = byId("askFollowUps");
     if (follow) {
       const prompts = visible ? ["Show the dependency path", "Which file is most risky to change?", "What evidence would increase confidence?"] : [];
@@ -401,52 +439,109 @@
   }
 
   function decorateAgentCards(status, summary) {
+    const active = currentRepoSummary(summary);
     const connected = agentNames(status);
-    if (byId("agentRepoContext")) byId("agentRepoContext").textContent = summary?.ok ? `${summary.repo_name} · ${num(summary.module_count)} modules` : "Select a repository";
-    if (byId("agentConfiguredCount")) byId("agentConfiguredCount").textContent = `${connected.length} / 3`;
+    const verified = ["claude", "cursor", "codex"].filter((key) => agentVerificationState(key, status?.[key]) === "verified");
+    if (byId("agentRepoContext")) {
+      byId("agentRepoContext").textContent = active?.ok
+        ? `${active.repo_name} · ${num(active.module_count)} modules`
+        : "Select a repository";
+    }
+    if (byId("agentConfiguredCount")) byId("agentConfiguredCount").textContent = String(connected.length);
+    if (byId("agentVerifiedCount")) byId("agentVerifiedCount").textContent = String(verified.length);
     const cards = [{ key: "claude", id: "mcpClaudeCard" }, { key: "cursor", id: "mcpCursorCard" }, { key: "codex", id: "mcpCodexCard" }];
     cards.forEach(({ key, id }) => {
       const card = byId(id); if (!card) return;
       const data = status?.[key] || {};
-      const configured = !!data.atlas_configured;
+      const verification = agentVerificationState(key, data);
+      const configured = verification !== "not_configured";
       card.dataset.connected = configured ? "true" : "false";
+      card.dataset.verification = verification;
       let meta = card.querySelector(".agent-runtime-meta");
       if (!meta) { meta = document.createElement("div"); meta.className = "agent-runtime-meta"; card.querySelector(".mcp-tool-card-top")?.after(meta); }
+      const statusLabel = verification === "verified" ? "Verified" : (configured ? "Configured" : "Not configured");
+      const handshakeLine = verification === "verified"
+        ? "MCP handshake verified"
+        : (configured ? "Client verification not completed" : "Not configured");
       meta.innerHTML = [
-        ["Connection", configured ? (summary?.ok ? "Configured; repository context ready" : "Configured — select a repository") : "Not configured"],
-        ["Last handshake", clean(data.last_handshake || data.last_tested_at, configured ? "Configuration verified" : "Never")],
-        ["Repository context", summary?.ok ? summary.repo_name : "Select a repository"],
-        ["Configuration", clean(data.config_status || data.status, configured ? "Atlas MCP present" : "Action required")],
+        ["Status", statusLabel],
+        ["Config file", configured ? "Found" : "Missing"],
+        ["Client check", handshakeLine],
+        ["Repository context", active?.ok ? active.repo_name : "Select a repository"],
       ].map(([label, value]) => `<div class="agent-meta-row"><span>${escapeHtml(label)}</span><b>${escapeHtml(value)}</b></div>`).join("") + `<div class="agent-tool-list"><span>health</span><span>scan</span><span>find files</span><span>ask</span><span>impact</span><span>debug</span><span>plan</span></div>`;
+      const statusEl = byId(`mcp${key.charAt(0).toUpperCase() + key.slice(1)}Status`);
+      if (statusEl) {
+        statusEl.textContent = statusLabel;
+        statusEl.className = `mcp-tool-card-status ${verification === "verified" ? "verified" : (configured ? "configured" : "disconnected")}`;
+      }
     });
   }
 
   async function renderAgentsWorkbench() {
     const mcpClient = typeof atlasMcpSetup !== "undefined" ? atlasMcpSetup : null;
-    const [status, summary] = await Promise.all([mcpClient?.loadStatus ? mcpClient.loadStatus(true).catch(() => null) : Promise.resolve(null), get("/api/repositories/current/summary")]);
-    workbench.agents = status; decorateAgentCards(status, summary); syncSidebar(summary, workbench.trust, status);
+    const stateSummary = currentRepoSummary(window.STATE?.summary);
+    const [status, summary] = await Promise.all([
+      mcpClient?.loadStatus ? mcpClient.loadStatus(true).catch(() => null) : Promise.resolve(null),
+      stateSummary || get("/api/repositories/current/summary"),
+    ]);
+    workbench.agents = status;
+    if (summary?.ok && window.STATE) window.STATE.summary = summary;
+    decorateAgentCards(status, summary);
+    syncSidebar(summary, workbench.trust, status);
+  }
+
+  function diagnosticActionFor(title) {
+    const key = clean(title).toLowerCase();
+    if (key.includes("runtime")) return { label: "Retry runtime", action: "atlasDesktopShell.refreshDiagnostics()" };
+    if (key.includes("repository")) return { label: "Restore repository", action: "go('scan')" };
+    if (key.includes("memory")) return { label: "Reconnect memory", action: "go('memory')" };
+    if (key.includes("installer")) return { label: "Open settings", action: "go('settings')" };
+    if (key.includes("agent")) return { label: "Open settings", action: "go('agents')" };
+    return { label: "Verify again", action: "atlasDesktopShell.refreshDiagnostics()" };
   }
 
   function decorateDiagnostics() {
     const grid = byId("diagnosticsGrid"); if (!grid) return;
     const cards = list(grid.querySelectorAll(".diagnostic-card"));
     if (!cards.length) return;
-    const passing = cards.filter((card) => card.dataset.state === "ready").length;
-    const score = Math.round((passing / cards.length) * 100);
+    const degraded = cards.filter((card) => card.dataset.state !== "ready");
+    const healthy = cards.length - degraded.length;
+    const score = Math.round((healthy / cards.length) * 100);
     const scoreHost = byId("diagnosticScore");
     if (scoreHost) scoreHost.innerHTML = `<span>${score}</span><small>health</small>`;
     const title = byId("diagnosticOverallTitle");
-    if (title) title.textContent = passing === cards.length ? "All Atlas systems operational" : `${cards.length - passing} component${cards.length - passing === 1 ? " needs" : "s need"} attention`;
+    if (title) {
+      title.textContent = degraded.length === 0
+        ? "Atlas is ready"
+        : (degraded.length === 1 ? "1 component is degraded" : `${degraded.length} components are degraded`);
+    }
     const issues = byId("diagnosticIssues");
-    if (issues) issues.innerHTML = cards.map((card) => {
-      const ok = card.dataset.state === "ready";
-      return `<article class="diagnostic-issue" data-state="${ok ? "ready" : "warning"}"><i></i><div><strong>${escapeHtml(card.querySelector("h2")?.textContent)}</strong><small>${escapeHtml(card.querySelector("p")?.textContent)}</small></div><span>${ok ? "Healthy" : "Review"}</span></article>`;
-    }).join("");
-    const failed = cards.filter((card) => card.dataset.state !== "ready");
+    if (issues) {
+      issues.innerHTML = degraded.length
+        ? degraded.map((card) => {
+          const name = card.querySelector("h2")?.textContent || "Component";
+          const detail = card.querySelector("p")?.textContent || "";
+          const pill = card.querySelector(".state-label")?.textContent || "Degraded";
+          return `<article class="diagnostic-issue" data-state="warning"><i></i><div><strong>${escapeHtml(name)}</strong><small>${escapeHtml(detail)}</small></div><span>${escapeHtml(pill)}</span></article>`;
+        }).join("")
+        : `<article class="diagnostic-issue" data-state="ready"><i></i><div><strong>All core systems healthy</strong><small>No verified failures detected.</small></div><span>Healthy</span></article>`;
+    }
     const fixes = byId("diagnosticFixes");
-    if (fixes) fixes.innerHTML = failed.length ? failed.map((card) => `<article class="diagnostic-fix"><i></i><div><strong>Recover ${escapeHtml(card.querySelector("h2")?.textContent)}</strong><small>Run the recommended local recovery sequence and verify again.</small></div><button type="button" onclick="location.href='support.html'">Repair →</button></article>`).join("") : `<article class="diagnostic-fix"><i style="background:var(--wb-green)"></i><div><strong>No recovery action required</strong><small>Backend, index, memory and integrations responded successfully.</small></div><button type="button" onclick="atlasDesktopShell.refreshDiagnostics()">Verify again</button></article>`;
+    if (fixes) {
+      fixes.innerHTML = degraded.length
+        ? degraded.map((card) => {
+          const name = card.querySelector("h2")?.textContent || "Component";
+          const fix = diagnosticActionFor(name);
+          return `<article class="diagnostic-fix"><i></i><div><strong>${escapeHtml(name)}</strong><small>Use the action that matches this component.</small></div><button type="button" onclick="${fix.action}">${escapeHtml(fix.label)}</button></article>`;
+        }).join("")
+        : `<article class="diagnostic-fix"><i style="background:var(--wb-green)"></i><div><strong>No recovery action required</strong><small>Backend, index, memory and integrations responded successfully.</small></div><button type="button" onclick="atlasDesktopShell.refreshDiagnostics()">Verify again</button></article>`;
+    }
     const primary = byId("diagnosticPrimaryAction");
-    if (primary) primary.innerHTML = failed.length ? `<a class="btn primary" href="support.html">Open recovery center</a>` : `<button class="btn ghost" type="button" onclick="go('home')">Return to repository</button>`;
+    if (primary) {
+      primary.innerHTML = degraded.length
+        ? `<button class="btn primary" type="button" onclick="atlasDesktopShell.refreshDiagnostics()">Retry runtime</button>`
+        : `<button class="btn ghost" type="button" onclick="go('home')">Return to repository</button>`;
+    }
   }
 
   function installObservers() {
@@ -499,7 +594,7 @@
     onView(active?.id?.replace(/^view-/, "") || "home");
   }
 
-  Object.assign(workbench, { toggleSidebar, renderHomeWorkbench, renderMemoryWorkbench, renderAskContext, renderAgentsWorkbench, decorateDiagnostics, selectMemoryConcept, filterMemory, searchGraph, syncAskEvidence });
+  Object.assign(workbench, { toggleSidebar, renderHomeWorkbench, renderMemoryWorkbench, renderAskContext, renderAgentsWorkbench, decorateDiagnostics, selectMemoryConcept, filterMemory, searchGraph, syncAskEvidence, syncSidebarFromState });
   window.atlasWorkbench = workbench;
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();

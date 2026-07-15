@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="workbench-v3.css" />
   <link rel="stylesheet" href="design-tokens.css" />
   <link rel="stylesheet" href="ui-polish-v102.css" />
+  <link rel="stylesheet" href="ui-polish-v103.css" />
   <!-- 3D dependency graph (bundled locally for offline use). -->
   <script src="vendor/three.min.js"></script>
   <script src="vendor/3d-force-graph.min.js"></script>
@@ -784,9 +785,9 @@
             <div>
               <p class="workspace-kicker">Repository Analysis</p>
               <h1 class="vh">Ask Atlas</h1>
-              <p class="muted">Interrogate the repository model. Every answer is ranked against files, symbols, dependencies and saved evidence.</p>
+              <p class="muted">Ask a question about the repository.</p>
             </div>
-            <div class="ask-status-cluster"><span class="ask-live-state"><i></i>Repository grounded</span><span class="muted tiny" id="askStatus">Ready for an engineering question</span></div>
+            <div class="ask-status-cluster"><span class="ask-live-state"><i></i>Repository active</span><span class="muted tiny" id="askStatus">Ask a question about this codebase</span></div>
           </div>
           <div class="ask-workbench-grid">
           <aside class="ask-history-rail" aria-labelledby="askHistoryTitle">
@@ -957,7 +958,7 @@
     <!-- ===================== SCREEN: PLAN CHANGE ===================== -->
     <section class="view analysis-workspace" id="view-build">
       <header class="workspace-head"><p class="workspace-kicker">Engineering investigation</p><h2 class="vh">Implementation Plan</h2>
-      <p class="muted">Atlas identifies affected systems, implementation order, tests, and delivery risks before code changes begin.</p></header>
+      <p class="muted">Plan the change before editing code.</p></header>
       <div id="readyState"></div>
       <div id="firstBuildBanner" class="product-notice glass" style="display:none">
         <b>Your first implementation plan</b> — keep the example below or define the change you are evaluating.
@@ -977,7 +978,7 @@
     <!-- ===================== SCREEN: DEBUG ===================== -->
     <section class="view analysis-workspace" id="view-investigate">
       <header class="workspace-head"><p class="workspace-kicker">Engineering investigation</p><h2 class="vh">Failure Investigation</h2>
-      <p class="muted">Atlas correlates the observed failure with repository structure, ranks hypotheses, and defines verification steps.</p></header>
+      <p class="muted">Trace a failure through the repository.</p></header>
       <div class="io glass investigation-input">
         <label>Observed failure</label>
         <textarea id="investigateSymptom" rows="6" placeholder="e.g. API requests fail intermittently under load&#10;Dashboard shows stale data after deploy&#10;Payments fail silently after the last deploy&#10;&#10;Or paste a traceback with file paths…"></textarea>
@@ -993,7 +994,7 @@
     <!-- ===================== SCREEN 5: WHAT BREAKS? ===================== -->
     <section class="view analysis-workspace" id="view-impact">
       <header class="workspace-head"><p class="workspace-kicker">Engineering investigation</p><h2 class="vh">Change Impact</h2>
-      <p class="muted">Atlas traces direct and transitive dependencies, affected tests, and unresolved dynamic risk for a proposed target.</p></header>
+      <p class="muted">See what depends on a file before changing it.</p></header>
       <div class="io glass investigation-input">
         <label>Change target</label>
         <div class="pick-row">
@@ -1112,8 +1113,8 @@
 
     <!-- ===================== AGENTS ===================== -->
     <section class="view atlas-workspace" id="view-agents" aria-labelledby="agentsTitle">
-      <header class="workspace-titlebar"><div><p class="workspace-kicker">Repository context network</p><h1 id="agentsTitle" tabindex="-1">Agent Control Center</h1><p>Manage how Claude Code, Cursor and Codex receive this repository’s graph, evidence and persistent memory.</p></div><div class="title-actions"><button class="btn ghost" type="button" onclick="go('export')">Context handoff</button><button class="btn primary" type="button" onclick="atlasWorkbench.renderAgentsWorkbench()">Test all connections</button></div></header>
-      <div class="agent-command-summary" id="agentCommandSummary"><div><span>Active repository</span><strong id="agentRepoContext">Checking…</strong></div><div><span>Configured agents</span><strong id="agentConfiguredCount">—</strong></div><div><span>Available tools</span><strong>18 MCP tools</strong></div><div><span>Transport</span><strong>Local stdio</strong></div></div>
+      <header class="workspace-titlebar"><div><p class="workspace-kicker">Agents</p><h1 id="agentsTitle" tabindex="-1">Agent Control Center</h1><p>Connect Claude, Cursor, and Codex to this repository through Atlas MCP.</p></div><div class="title-actions"><button class="btn ghost" type="button" onclick="go('export')">Context handoff</button><button class="btn primary" type="button" onclick="atlasWorkbench.renderAgentsWorkbench()">Verify available clients</button></div></header>
+      <div class="agent-command-summary" id="agentCommandSummary"><div><span>Active repository</span><strong id="agentRepoContext">Checking…</strong></div><div><span>Configured clients</span><strong id="agentConfiguredCount">—</strong></div><div><span>Verified clients</span><strong id="agentVerifiedCount">—</strong></div><div><span>Available MCP tools</span><strong>18</strong></div><div><span>Transport</span><strong>Local stdio</strong></div></div>
       <div id="agentsStatusSummary" class="status-strip" role="status" aria-live="polite"></div>
       <div id="agentsHost"></div>
     </section>
@@ -1396,9 +1397,10 @@
     <button class="btn ghost small" type="button" onclick="atlasDemoTour.end()">Skip tour</button>
   </div>
 
-  <footer id="appBuildMarker" class="app-build-marker muted tiny" aria-label="Build version"><span data-atlas-version>Atlas v1.0.2</span> · <a href="mailto:yoavkozokabab@gmail.com?subject=Atlas%20feedback" style="color:inherit">Report bug / Suggest feature</a></footer>
+  <footer id="appBuildMarker" class="app-build-marker muted tiny" aria-label="Build version"><span data-atlas-version>Atlas 1.0.3</span> · <a href="mailto:yoavkozokabab@gmail.com?subject=Atlas%20bug%20report" style="color:inherit">Report a bug</a> · <a href="mailto:yoavkozokabab@gmail.com?subject=Atlas%20feature%20request" style="color:inherit">Suggest a feature</a></footer>
   <script src="universe.js"></script>
   <script src="atlas_copy.js"></script>
+  <script src="atlas_repository_state.js"></script>
   <script src="app.js"></script>
   <script src="feedback.js"></script>
   <script>document.body.dataset.fbHideButton = "1";</script>

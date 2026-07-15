@@ -2239,6 +2239,10 @@ async function ensureRepoSummary() {
     unlockNav();
     updateRepoChip(sum.repo_name, sum.demo_mode);
     updateWorkflowToolbars();
+    try {
+      if (window.AtlasRepositoryState) window.AtlasRepositoryState.publish({ summary: sum });
+      document.dispatchEvent(new CustomEvent("atlas:repository-state-changed"));
+    } catch (_error) {}
   } else {
     document.body.classList.add("atlas-no-repo");
   }
@@ -2262,7 +2266,10 @@ async function renderAskPage() {
   if (gate) { gate.style.display = "none"; gate.innerHTML = ""; }
   if (panel) panel.style.display = "block";
   const status = $("askStatus");
-  if (status) status.textContent = `${sum.repo_name || "Repository"} indexed. Analysis is ready.`;
+  if (status) status.textContent = `${sum.repo_name || "Repository"} ready for questions.`;
+  const askRoot = $("view-ask");
+  const live = askRoot && askRoot.querySelector ? askRoot.querySelector(".ask-live-state") : null;
+  if (live) live.innerHTML = `<i></i>${escapeHtml(sum.repo_name || "Repository active")}`;
   if ($("suggest")) $("suggest").innerHTML = renderCopilotSuggestions(sum);
 }
 
