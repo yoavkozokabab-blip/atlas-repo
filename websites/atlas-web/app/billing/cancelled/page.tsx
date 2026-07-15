@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { PageShell } from "../../_components/site";
-import InstallerWaitState from "../../_components/InstallerWaitState";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +12,7 @@ export default function BillingCancelledPage() {
             <p>No problem — nothing was charged. You can start your trial whenever you&apos;re ready.</p>
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 18 }}>
               <Link className="btn btn-primary" href="/pricing">Back to pricing</Link>
-              <InstallerWaitState />
+              <Link className="btn btn-ghost" href="/download">Download free</Link>
             </div>
           </div>
         </div>

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 const faqs = [
   ["What is Atlas?", "Atlas is local-first repository memory for AI coding agents. It indexes your repo on your machine and returns cited files for questions, debugging, impact analysis, and change planning."],
-  ["When will Windows downloads reopen?", "The latest Atlas desktop build is undergoing final installed-app verification. Downloads will reopen when the verified installer is ready."],
+  ["Do I need an account to download Atlas?", "No. The Windows installer is available directly from the Download page."],
   ["Does my code leave my machine?", "Repository indexing runs locally. Atlas does not upload your source code to a hosted indexing service."],
   ["What can leave my machine?", "Only the context you explicitly copy or send to another tool. If you paste Atlas output into Claude Code, Cursor, Codex, or another service, that service receives what you sent."],
   ["Does Atlas replace Claude Code, Cursor, or Codex?", "No. Atlas gives those agents repository memory and cited local context."],
@@ -21,7 +21,7 @@ const faqs = [
   ["Is Atlas open source?", "The source is publicly visible on GitHub, but it ships under a proprietary license — it is source-visible, not open source."],
   ["Why $19/month for Pro?", "The core app is free with no account. $19 is planned for capacity features (unlimited repos, sync, snapshots) built on paid infrastructure — priced to sustain a solo-built product without ads or data monetization. Pro checkout is not enabled until Paddle billing is fully verified."],
   ["Why Windows only?", "Because shipping one platform well beat shipping three badly. The core is portable Python; macOS and Linux are on the roadmap after the Windows build proves itself."],
-  ["Why are Windows downloads paused?", "The latest Atlas desktop build is undergoing final installed-app verification. Downloads will reopen when the verified installer is ready."],
+  ["Why is the installer unsigned?", "Code-signing certificates for a new publisher take time and identity verification, which is in progress. Until then, Windows SmartScreen will warn on first run — verify the SHA256 published on the download page and the GitHub release before installing."],
   ["Can Atlas be wrong about impact?", "Yes. Impact analysis covers statically resolved imports; dynamic dispatch, reflection, string-based imports, and runtime wiring are invisible to it. Every result cites the evidence used so you can verify before acting."],
   ["Does Atlas preserve my existing MCP configuration?", "Yes. Connect writes only the atlas entry, keeps every other MCP server untouched, creates a timestamped backup of your config file first, and validates the resulting JSON/TOML before replacing it."],
   ["Why does Atlas need repository read access?", "Indexing means reading source files to build the dependency graph and symbol evidence — locally. Atlas never needs write access to your code and never uploads it during indexing."],

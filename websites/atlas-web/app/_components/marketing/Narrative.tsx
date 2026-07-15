@@ -1,5 +1,4 @@
 import Link from "next/link";
-import InstallerWaitState from "../InstallerWaitState";
 import { facts } from "../../lib/content/facts";
 import { GITHUB_URL } from "../../_config";
 
@@ -85,13 +84,15 @@ export default function Narrative() {
             <p className="nact-eyebrow">04 · Persistent memory</p>
             <h2>Give your coding agent a persistent<br />understanding of your project.</h2>
             <div className="nact-cta">
-              <InstallerWaitState />
+              <Link className="btn-mag" href="/download" data-evt="download_click">
+                Download Atlas <span className="arw" aria-hidden>→</span>
+              </Link>
               <a className="btn-line" href={GITHUB_URL} target="_blank" rel="noreferrer">
                 View on GitHub
               </a>
             </div>
             <p className="nact-note mono">
-              {facts.platform} · MCP · {facts.mcpTools} tools · no signup
+              {facts.platform} · v{facts.version} · MCP · {facts.mcpTools} tools · no signup
             </p>
           </div>
         </div>

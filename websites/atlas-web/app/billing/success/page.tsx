@@ -1,6 +1,5 @@
 ﻿import Link from "next/link";
 import { PageShell } from "../../_components/site";
-import InstallerWaitState from "../../_components/InstallerWaitState";
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +21,7 @@ export default async function BillingSuccessPage({
               will reflect the latest status after the webhook is received.
             </p>
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 18 }}>
-              <InstallerWaitState />
+              <Link className="btn btn-primary" href="/download">Download Atlas</Link>
               <Link className="btn btn-ghost" href="/account/billing">Manage billing</Link>
             </div>
           </div>
