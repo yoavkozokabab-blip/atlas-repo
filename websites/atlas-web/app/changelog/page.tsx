@@ -8,6 +8,18 @@ export const metadata: Metadata = {
 
 const releases = [
   {
+    version: "v1.0.3",
+    date: "2026-07-15",
+    label: "HN polish",
+    items: [
+      "Fixed global runtime banner showing false timeouts while the local backend was healthy.",
+      "Unified repository state across sidebar, diagnostics, and main screens.",
+      "Diagnostics now reports truthful component health instead of stale optional-endpoint failures.",
+      "Agents screen distinguishes configured clients from verified clients (Cursor verified; Claude/Codex configured).",
+      "Copy, layout, and footer cleanup for clearer first-run presentation.",
+    ],
+  },
+  {
     version: "v1.0.2",
     date: "2026-07-15",
     label: "UI/UX polish",

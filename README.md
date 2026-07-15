@@ -7,8 +7,8 @@ repository into a dependency graph and symbol index, then gives Claude Code, Cur
 and any MCP-compatible agent the exact files, symbols, and blast radius needed for a task.
 
 **Website:** https://atlas-repo-wu76.vercel.app  
-**Download (Windows v1.0.2):** https://atlas-repo-wu76.vercel.app/download/atlas  
-**Status:** **1.0.2, Windows only** — proprietary, source-visible on GitHub.
+**Download (Windows v1.0.3):** https://atlas-repo-wu76.vercel.app/download/atlas  
+**Status:** **1.0.3, Windows only** — proprietary, source-visible on GitHub.
 
 ![Atlas repository overview — dependency graph, memory, and grounded Ask on a demo repository](docs/assets/atlas-hero.png)
 
