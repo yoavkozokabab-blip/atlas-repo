@@ -1,8 +1,8 @@
 # GitHub Release — Click-by-Click (for Yoav)
 
 Publish the Atlas installer as a GitHub Release so the website can link to a stable, versioned,
-CDN-backed download URL. **Do this only after rebuilding the installer** (see
-`reports/installer_rebuild_report.md` — the 06-15 build predates this session's fixes).
+CDN-backed download URL. Do this only after the clean-source installed-app release gate passes
+and the downloaded production executable matches the verified installer SHA256.
 
 > ⚠️ Don't publish until you've decided the repo is OK to expose. If the repo is private, the
 > release asset URL still works for anyone with the link, but the repo stays private.
@@ -13,7 +13,8 @@ CDN-backed download URL. **Do this only after rebuilding the installer** (see
 
 1. Push the branch to GitHub.
 2. Repo → **Releases** (right sidebar) → **Draft a new release**.
-3. **Choose a tag** → type `v1.0.0` → **Create new tag on publish**.
+3. **Choose a tag** → use the semantic version for the verified build. The tag must point to
+   the exact source commit embedded in the installer.
 4. **Release title:** `Atlas 1.0.0`.
 5. **Describe this release** (notes):
    ```
@@ -24,7 +25,7 @@ CDN-backed download URL. **Do this only after rebuilding the installer** (see
    - MCP server (experimental): Atlas.exe --mcp for Claude Desktop / Cursor / Codex.
    - Unsigned build: Windows SmartScreen may warn — More info → Run anyway.
 
-   SHA256 in Atlas_Setup.exe.sha256.
+   SHA256 and build commit in the release notes and `Atlas_Setup.exe.sha256`.
    ```
 6. **Attach binaries** — drag in both files:
    - `packaging\installer\output\Atlas_Setup.exe`
@@ -44,7 +45,8 @@ gh release create v1.0.0 `
   "packaging\installer\output\Atlas_Setup.exe" `
   "packaging\installer\output\Atlas_Setup.exe.sha256" `
   --title "Atlas 1.0.0" `
-  --notes "Atlas 1.0.0 (Windows). Unsigned build; SHA256 in the .sha256 asset."
+  --target <exact-verified-source-commit> `
+  --notes "Atlas 1.0.0 (Windows). Unsigned build; SHA256 and build commit in the release notes."
 # Print the asset URL:
 gh release view v1.0.0 --json assets --jq '.assets[].url'
 ```
@@ -55,7 +57,7 @@ In **Vercel → Settings → Environment Variables** set:
 ```
 ATLAS_INSTALLER_URL = https://github.com/<owner>/<repo>/releases/download/v1.0.0/Atlas_Setup.exe
 ```
-**Redeploy.** Verify: signed-in, click Download → it should 302-redirect to the GitHub asset,
+**Redeploy.** Verify: anonymous and signed-in download paths 302-redirect to the GitHub asset,
 and the downloaded file's SHA256 must match the `.sha256` you published.
 
 ## Future releases

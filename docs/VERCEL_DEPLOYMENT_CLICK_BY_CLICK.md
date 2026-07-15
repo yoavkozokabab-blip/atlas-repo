@@ -42,12 +42,12 @@ AUTH_SECRET                = <32-byte hex>             ← node -e "console.log(
 ADMIN_EMAILS               = your-admin@example.com
 NEXT_PUBLIC_ATLAS_VERSION  = 1.0.0
 NEXT_PUBLIC_SUPPORT_EMAIL  = atlas.repo.support@gmail.com
-ATLAS_INSTALLER_URL        = <leave empty for now; set after the GitHub Release>
+ATLAS_INSTALLER_URL        = https://github.com/yoavkozokabab-blip/atlas-repo/releases/download/v1.0.0/Atlas_Setup.exe
 ```
 
-`ATLAS_INSTALLER_URL` is added once you publish the installer
-(`docs/GITHUB_RELEASE_CLICK_BY_CLICK.md`). Until then the download button returns a clear
-"installer not available" message — not a crash.
+`ATLAS_INSTALLER_URL` must point at the verified GitHub Release asset
+(`docs/GITHUB_RELEASE_CLICK_BY_CLICK.md`). If downloads are ever suspended again, the route must
+return an honest no-download state rather than redirecting to a stale asset.
 
 ## 4. Deploy
 
@@ -72,9 +72,8 @@ Env-var changes don't apply to existing deployments. After editing them:
    Resubmit the same email → duplicate-account message.
 3. **Pages:** click through `/`, `/download`, `/pricing`, `/features`, `/faq`, `/login` — all
    should load.
-4. **Download:** before the GitHub Release, the button shows the "create account / installer
-   not available" path. After you set `ATLAS_INSTALLER_URL` + redeploy, a signed-in user's
-   download 302-redirects to the GitHub asset.
+4. **Download:** `/download/atlas` 302-redirects to the verified GitHub asset. Download the file
+   and confirm its SHA256 matches the release notes.
 
 ## 7. Admin
 
@@ -84,7 +83,7 @@ Sign up with the email you put in `ADMIN_EMAILS`, then visit `/admin` (users + a
 ---
 
 ### Notes
-- The 42 MB installer is **never** deployed to Vercel or streamed through a function — it's
+- The installer is **never** deployed to Vercel or streamed through a function — it's
   hosted on GitHub Releases and the download route only redirects. The installer also lives
   outside `websites/jarvis-landing`, so it isn't part of the Vercel build.
 - Free plan limits (bandwidth, function execution) are ample for the current launch.
