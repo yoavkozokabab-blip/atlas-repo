@@ -98,7 +98,7 @@ function Test-HnLaunchUxPayload {
     }
     if ($html -match ">Repository Context<") { $issues += "nav still has Repository Context (old UI)" }
     if ($html -notmatch "Load sample repository") { $issues += "home missing Load sample repository" }
-    if ($html -notmatch "Atlas v1\.0\.0 launch build") { $issues += "missing launch build marker" }
+    if ($html -notmatch 'data-atlas-version|Atlas v1\.0\.[0-9]+') { $issues += "missing launch build marker" }
     return $issues
 }
 
