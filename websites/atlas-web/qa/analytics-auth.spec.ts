@@ -14,8 +14,9 @@ import {
 import { buildAnalyticsRow } from "../app/_lib/analytics-server";
 import { createToken, hashPassword, verifyPassword, verifySessionToken, verifyToken } from "../app/_lib/auth";
 import { PAID_PLANS_ENABLED } from "../app/_config";
-import { proCheckoutReady } from "../app/_lib/billing";
+import { BILLING_NOT_AVAILABLE, DisabledBillingProvider, proCheckoutReady } from "../app/_lib/billing";
 import { isTrustedBrowserWrite } from "../app/_lib/request-security";
+import { hasPaidAccess, transitionEntitlement } from "../app/_lib/billing-state";
 
 test.beforeEach(() => {
   const env = process.env as Record<string, string | undefined>;
@@ -134,6 +135,28 @@ test("migration keeps browser roles server-only", () => {
 test("paid checkout remains source-disabled regardless of environment configuration", () => {
   expect(PAID_PLANS_ENABLED).toBe(false);
   expect(proCheckoutReady()).toBe(false);
+});
+
+test("disabled billing has no checkout, portal, cancellation, or webhook side effect", async () => {
+  const provider = new DisabledBillingProvider();
+  const user = { id: "qa-user", email: "qa@example.com" } as never;
+  await expect(provider.createCheckout(user, "pro")).rejects.toMatchObject({ code: BILLING_NOT_AVAILABLE });
+  await expect(provider.createCustomerPortalSession(user)).rejects.toMatchObject({ code: BILLING_NOT_AVAILABLE });
+  await expect(provider.cancelImmediately(user)).rejects.toMatchObject({ code: BILLING_NOT_AVAILABLE });
+  expect(provider.verifyWebhook("{}", "ts=1;h1=00")).toBe(false);
+  expect(await provider.processWebhookEvent({ event_type: "subscription.created" })).toEqual({ ok: true, action: "ignored_billing_disabled" });
+});
+
+test("billing state transitions fail closed and reject out-of-order resurrection", () => {
+  const active = { state: "active" as const, revision: 1, observedAt: "2026-07-17T10:00:00.000Z" };
+  const scheduled = transitionEntitlement(active, { kind: "schedule_cancellation", observedAt: "2026-07-17T10:01:00.000Z" });
+  expect(scheduled.state).toBe("cancel_scheduled");
+  expect(hasPaidAccess(scheduled.state)).toBe(true);
+  const canceled = transitionEntitlement(scheduled, { kind: "cancel_immediately", observedAt: "2026-07-17T10:02:00.000Z" });
+  expect(canceled.state).toBe("canceled");
+  expect(hasPaidAccess(canceled.state)).toBe(false);
+  expect(transitionEntitlement(canceled, { kind: "provider_observed", state: "active", observedAt: "2026-07-17T10:01:30.000Z" })).toEqual(canceled);
+  expect(hasPaidAccess("unknown")).toBe(false);
 });
 
 test("browser writes reject hostile origins while allowing same-origin and native requests", () => {

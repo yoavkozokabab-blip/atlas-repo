@@ -1,5 +1,6 @@
 import { currentUser } from "@/app/_lib/auth";
-import { cancelSubscription, renewSubscription } from "@/app/_lib/billing";
+import { BILLING_NOT_AVAILABLE, cancelSubscription, renewSubscription } from "@/app/_lib/billing";
+import { PAID_PLANS_ENABLED } from "@/app/_config";
 import { store, toSafe, newId } from "@/app/_lib/store";
 import { readJson } from "@/app/_lib/ratelimit";
 import { privateJson, unavailableJson } from "@/app/_lib/http";
@@ -12,6 +13,7 @@ export async function POST(req: Request) {
   if (!isTrustedBrowserWrite(req)) return csrfRejected();
   const user = await currentUser();
   if (!user) return privateJson({ ok: false, error: "auth_required" }, { status: 401 });
+  if (!PAID_PLANS_ENABLED) return privateJson({ ok: false, error: BILLING_NOT_AVAILABLE }, { status: 503 });
   const body = await readJson(req);
   const action = String(body.action ?? "cancel");
 

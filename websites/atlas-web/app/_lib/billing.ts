@@ -31,6 +31,7 @@ export const PLANS = {
 } as const;
 
 export type PlanId = keyof typeof PLANS;
+export const BILLING_NOT_AVAILABLE = "BILLING_NOT_AVAILABLE" as const;
 export function isPlanId(p: string): p is PlanId {
   return p === "free" || p === "pro" || p === "team";
 }
@@ -41,9 +42,72 @@ export interface CheckoutResult {
 }
 
 export interface BillingUnavailable {
-  code: "billing_not_configured" | "team_not_billed";
+  code: typeof BILLING_NOT_AVAILABLE | "team_not_billed";
   message: string;
 }
+
+/** Provider-neutral billing contract. v1.0.5 always selects DisabledBillingProvider. */
+export type PaddleEvent = {
+  event_type?: string;
+  data?: {
+    id?: string;
+    status?: string;
+    customer_id?: string;
+    subscription_id?: string;
+    current_billing_period?: { ends_at?: string };
+    next_billed_at?: string | null;
+    custom_data?: { user_id?: string; plan?: string };
+  };
+};
+
+export interface BillingProvider {
+  createCheckout(user: User, plan: PlanId): Promise<CheckoutResult>;
+  getSubscription(user: User): Promise<{ id: string | null; status: PlanStatus }>;
+  reconcileSubscription(user: User): Promise<{ status: PlanStatus }>;
+  scheduleCancellation(user: User): Promise<void>;
+  cancelImmediately(user: User): Promise<void>;
+  removeScheduledCancellation(user: User): Promise<void>;
+  createCustomerPortalSession(user: User): Promise<CheckoutResult>;
+  verifyWebhook(rawBody: string, header: string | null): boolean;
+  processWebhookEvent(event: PaddleEvent): Promise<{ ok: boolean; action: string }>;
+}
+
+export class DisabledBillingProvider implements BillingProvider {
+  private unavailable(): never { throw unavailable(BILLING_NOT_AVAILABLE); }
+  async createCheckout(_user: User, _plan: PlanId): Promise<CheckoutResult> { return this.unavailable(); }
+  async getSubscription(_user: User): Promise<{ id: string | null; status: PlanStatus }> { return this.unavailable(); }
+  async reconcileSubscription(_user: User): Promise<{ status: PlanStatus }> { return this.unavailable(); }
+  async scheduleCancellation(_user: User): Promise<void> { return this.unavailable(); }
+  async cancelImmediately(_user: User): Promise<void> { return this.unavailable(); }
+  async removeScheduledCancellation(_user: User): Promise<void> { return this.unavailable(); }
+  async createCustomerPortalSession(_user: User): Promise<CheckoutResult> { return this.unavailable(); }
+  verifyWebhook(_rawBody: string, _header: string | null): boolean { return false; }
+  async processWebhookEvent(_event: PaddleEvent): Promise<{ ok: boolean; action: string }> {
+    return { ok: true, action: "ignored_billing_disabled" };
+  }
+}
+
+/**
+ * Dormant Paddle adapter. It is dependency-injected so lifecycle behavior can
+ * be exhaustively tested without live credentials. `activeProvider` below is
+ * intentionally never this class in v1.0.5.
+ */
+export class PaddleBillingProvider implements BillingProvider {
+  constructor(private readonly operations: BillingProvider) {}
+  createCheckout(user: User, plan: PlanId) { return this.operations.createCheckout(user, plan); }
+  getSubscription(user: User) { return this.operations.getSubscription(user); }
+  reconcileSubscription(user: User) { return this.operations.reconcileSubscription(user); }
+  scheduleCancellation(user: User) { return this.operations.scheduleCancellation(user); }
+  cancelImmediately(user: User) { return this.operations.cancelImmediately(user); }
+  removeScheduledCancellation(user: User) { return this.operations.removeScheduledCancellation(user); }
+  createCustomerPortalSession(user: User) { return this.operations.createCustomerPortalSession(user); }
+  verifyWebhook(rawBody: string, header: string | null) { return this.operations.verifyWebhook(rawBody, header); }
+  processWebhookEvent(event: PaddleEvent) { return this.operations.processWebhookEvent(event); }
+}
+
+// Immutable by design: no environment value or client input can enable Paddle.
+const activeProvider: BillingProvider = new DisabledBillingProvider();
+export function billingProvider(): BillingProvider { return activeProvider; }
 
 function paddleApiBase(): string {
   return ENV.paddleEnvironment === "production" ? "https://api.paddle.com" : "https://sandbox-api.paddle.com";
@@ -77,14 +141,14 @@ export function proCheckoutReady(): boolean {
 }
 
 export async function startCheckout(user: User, plan: PlanId): Promise<CheckoutResult> {
-  if (!PAID_PLANS_ENABLED) throw unavailable("billing_not_configured");
+  if (!PAID_PLANS_ENABLED) return billingProvider().createCheckout(user, plan);
   if (plan === "team") throw unavailable("team_not_billed");
   if (plan === "free") {
     await store.update(user.id, { plan: "free", planStatus: "none", trialEndsAt: null, renewsAt: null });
     return { mode: "local", url: "/account" };
   }
 
-  if (!paddleCheckoutConfigured()) throw unavailable("billing_not_configured");
+  if (!paddleCheckoutConfigured()) throw unavailable(BILLING_NOT_AVAILABLE);
 
   const data = await paddleRequest<unknown>("/transactions", {
     method: "POST",
@@ -112,16 +176,19 @@ export async function startCheckout(user: User, plan: PlanId): Promise<CheckoutR
   return { mode: "paddle", url };
 }
 
-export function billingPortal(_user: User): CheckoutResult {
+export async function billingPortal(user: User): Promise<CheckoutResult> {
+  if (!PAID_PLANS_ENABLED) return billingProvider().createCustomerPortalSession(user);
   return { mode: "local", url: "/account/billing" };
 }
 
 export async function cancelSubscription(user: User): Promise<void> {
+  if (!PAID_PLANS_ENABLED) return billingProvider().cancelImmediately(user);
   await store.update(user.id, { planStatus: "canceled" });
 }
 
 export async function renewSubscription(user: User): Promise<void> {
-  if (!user.paddleSubscriptionId) throw unavailable("billing_not_configured");
+  if (!PAID_PLANS_ENABLED) return billingProvider().removeScheduledCancellation(user);
+  if (!user.paddleSubscriptionId) throw unavailable(BILLING_NOT_AVAILABLE);
   await store.update(user.id, { planStatus: "active" });
 }
 
@@ -129,7 +196,7 @@ function unavailable(code: BillingUnavailable["code"]): Error & BillingUnavailab
   const message =
     code === "team_not_billed"
       ? "Team billing is not available yet. Contact Atlas for team access."
-      : "Pro checkout is not configured yet. Set PADDLE_API_KEY, PADDLE_PRO_PRICE_ID, and PADDLE_WEBHOOK_SECRET.";
+      : "Billing is not available in this build.";
   return Object.assign(new Error(message), { code, message });
 }
 
@@ -140,7 +207,7 @@ function timingSafeEqual(a: string, b: string): boolean {
 }
 
 export function verifyPaddleSignature(rawBody: string, header: string | null): boolean {
-  if (!paddleWebhookConfigured() || !header) return false;
+  if (!PAID_PLANS_ENABLED || !paddleWebhookConfigured() || !header) return false;
   const parts = Object.fromEntries(
     header.split(";").map((part) => {
       const [k, v] = part.split("=");
@@ -153,19 +220,6 @@ export function verifyPaddleSignature(rawBody: string, header: string | null): b
   const expected = crypto.createHmac("sha256", ENV.paddleWebhookSecret).update(`${ts}:${rawBody}`).digest("hex");
   return timingSafeEqual(expected, sig);
 }
-
-type PaddleEvent = {
-  event_type?: string;
-  data?: {
-    id?: string;
-    status?: string;
-    customer_id?: string;
-    subscription_id?: string;
-    current_billing_period?: { ends_at?: string };
-    next_billed_at?: string | null;
-    custom_data?: { user_id?: string; plan?: string };
-  };
-};
 
 function planStatusFromPaddle(status?: string): PlanStatus {
   if (status === "trialing") return "trialing";
@@ -190,6 +244,7 @@ async function findWebhookUser(data: NonNullable<PaddleEvent["data"]>): Promise<
 }
 
 export async function handlePaddleEvent(event: PaddleEvent): Promise<{ ok: boolean; action: string }> {
+  if (!PAID_PLANS_ENABLED) return billingProvider().processWebhookEvent(event);
   const eventType = event.event_type || "unknown";
   const data = event.data || {};
   const user = await findWebhookUser(data);
