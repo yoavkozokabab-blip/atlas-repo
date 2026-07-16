@@ -67,11 +67,21 @@ export interface WaitlistEntry {
   createdAt: string;
 }
 
+/** Server-authoritative authentication session. */
+export interface Session {
+  id: string;
+  userId: string;
+  createdAt: string;
+  expiresAt: string;
+  revokedAt?: string | null;
+}
+
 interface DBShape {
   users: User[];
   audit: AuditEntry[];
   resetTokens: { token: string; email: string; exp: number }[];
   waitlist: WaitlistEntry[];
+  sessions: Session[];
 }
 
 export function newId(): string {
@@ -103,6 +113,10 @@ export interface Store {
   /** Returns duplicate:true if the email was already captured (idempotent). */
   addWaitlist(w: { email: string; role?: string; source?: string }): Promise<{ ok: boolean; duplicate: boolean }>;
   listWaitlist(limit?: number): Promise<WaitlistEntry[]>;
+  createSession(session: Session): Promise<void>;
+  getSession(id: string): Promise<Session | undefined>;
+  revokeSession(id: string): Promise<void>;
+  revokeSessionsForUser(userId: string): Promise<void>;
   /** Identifies the active backend for health checks / diagnostics. */
   backend(): "supabase" | "file";
 }
@@ -122,9 +136,10 @@ function load(): DBShape {
       audit: d.audit || [],
       resetTokens: d.resetTokens || [],
       waitlist: d.waitlist || [],
+      sessions: d.sessions || [],
     };
   } catch {
-    return { users: [], audit: [], resetTokens: [], waitlist: [] };
+    return { users: [], audit: [], resetTokens: [], waitlist: [], sessions: [] };
   }
 }
 function persist(db: DBShape): void {
@@ -210,6 +225,26 @@ const fileStore: Store = {
     return { ok: true, duplicate: false };
   },
   listWaitlist: async (limit = 1000) => load().waitlist.slice(-limit).reverse(),
+  createSession: async (session) => {
+    const db = load();
+    db.sessions.push(session);
+    persist(db);
+  },
+  getSession: async (id) => load().sessions.find((session) => session.id === id),
+  revokeSession: async (id) => {
+    const db = load();
+    const session = db.sessions.find((entry) => entry.id === id);
+    if (session && !session.revokedAt) session.revokedAt = new Date().toISOString();
+    persist(db);
+  },
+  revokeSessionsForUser: async (userId) => {
+    const db = load();
+    const now = new Date().toISOString();
+    for (const session of db.sessions) {
+      if (session.userId === userId && !session.revokedAt) session.revokedAt = now;
+    }
+    persist(db);
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -333,6 +368,16 @@ async function sbOk(res: Response, ctx: string): Promise<void> {
   }
 }
 const enc = encodeURIComponent;
+
+function rowToSession(row: Row): Session {
+  return {
+    id: String(row.id),
+    userId: String(row.user_id),
+    createdAt: String(row.created_at),
+    expiresAt: String(row.expires_at),
+    revokedAt: (row.revoked_at as string) ?? null,
+  };
+}
 
 const supabaseStore: Store = {
   backend: () => "supabase",
@@ -462,6 +507,46 @@ const supabaseStore: Store = {
       source: (r.source as string) ?? undefined,
       createdAt: String(r.created_at ?? new Date().toISOString()),
     }));
+  },
+  createSession: async (session) => {
+    await sbRows(
+      await sb("atlas_sessions", {
+        method: "POST",
+        body: JSON.stringify({
+          id: session.id,
+          user_id: session.userId,
+          created_at: session.createdAt,
+          expires_at: session.expiresAt,
+          revoked_at: session.revokedAt ?? null,
+        }),
+      }),
+      "create-session"
+    );
+  },
+  getSession: async (id) => {
+    const rows = await sbRows(
+      await sb(`atlas_sessions?id=eq.${enc(id)}&limit=1`),
+      "get-session"
+    );
+    return rows[0] ? rowToSession(rows[0]) : undefined;
+  },
+  revokeSession: async (id) => {
+    await sbRows(
+      await sb(`atlas_sessions?id=eq.${enc(id)}&revoked_at=is.null`, {
+        method: "PATCH",
+        body: JSON.stringify({ revoked_at: new Date().toISOString() }),
+      }),
+      "revoke-session"
+    );
+  },
+  revokeSessionsForUser: async (userId) => {
+    await sbRows(
+      await sb(`atlas_sessions?user_id=eq.${enc(userId)}&revoked_at=is.null`, {
+        method: "PATCH",
+        body: JSON.stringify({ revoked_at: new Date().toISOString() }),
+      }),
+      "revoke-user-sessions"
+    );
   },
 };
 

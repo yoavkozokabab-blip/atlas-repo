@@ -1,4 +1,4 @@
-import { loginUser, createToken, entitlement } from "@/app/_lib/auth";
+import { loginUser, issueSessionToken, entitlement } from "@/app/_lib/auth";
 import { rateLimit, clientIp, readJson } from "@/app/_lib/ratelimit";
 import { privateJson, unavailableJson } from "@/app/_lib/http";
 
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     const body = await readJson(req);
     const r = await loginUser(String(body.email ?? ""), String(body.password ?? ""));
     if (!r.ok) return privateJson({ ok: false, error: r.error }, { status: 401 });
-    return privateJson({ ok: true, token: createToken(r.user.id), ...entitlement(r.user) });
+    return privateJson({ ok: true, token: await issueSessionToken(r.user.id), ...entitlement(r.user) });
   } catch {
     return unavailableJson();
   }

@@ -18,6 +18,10 @@ export async function POST(req: Request) {
     return privateJson({ ok: false, error: "confirmation_required" }, { status: 400 });
   }
 
+  // Explicitly revoke every session before deleting the account. The database
+  // migration also cascades sessions on deletion, but this keeps the invariant
+  // true for the local/test backend and records fail closed on partial failure.
+  await store.revokeSessionsForUser(user.id);
   await store.deleteAccount(user);
   await clearSession();
     return privateJson({ ok: true });

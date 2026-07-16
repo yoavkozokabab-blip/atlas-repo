@@ -12,7 +12,7 @@ import {
   sanitizeRoute,
 } from "../app/_lib/analytics-contract";
 import { buildAnalyticsRow } from "../app/_lib/analytics-server";
-import { createToken, hashPassword, verifyPassword, verifyToken } from "../app/_lib/auth";
+import { createToken, hashPassword, verifyPassword, verifySessionToken, verifyToken } from "../app/_lib/auth";
 import { PAID_PLANS_ENABLED } from "../app/_config";
 import { proCheckoutReady } from "../app/_lib/billing";
 import { isTrustedBrowserWrite } from "../app/_lib/request-security";
@@ -94,8 +94,23 @@ test("password hashes and signed sessions validate and expire", () => {
   const valid = createToken("qa-user", 60);
   const expired = createToken("qa-user", -1);
   expect(verifyToken(valid)).toBe("qa-user");
+  expect(verifySessionToken(valid)?.sid).toHaveLength(36);
   expect(verifyToken(expired)).toBeNull();
   expect(verifyToken(`${valid}tampered`)).toBeNull();
+});
+
+test("authenticated requests are bound to an opaque server session record", () => {
+  const auth = fs.readFileSync(path.join(process.cwd(), "app", "_lib", "auth.ts"), "utf8");
+  const migration = fs.readFileSync(
+    path.join(process.cwd(), "supabase", "migrations", "20260717103000_v105_server_authoritative_sessions.sql"),
+    "utf8"
+  );
+  expect(auth).toContain("await store.getSession(claims.sid)");
+  expect(auth).toContain("await store.revokeSession(claims.sid)");
+  expect(auth).toContain("crypto.randomBytes(32)");
+  expect(migration).toContain("atlas_sessions");
+  expect(migration).toContain("enable row level security");
+  expect(migration).toContain("on delete cascade");
 });
 
 test("migration keeps browser roles server-only", () => {

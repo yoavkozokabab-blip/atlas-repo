@@ -1,11 +1,15 @@
 import { NextResponse } from "next/server";
+import { bearerToken, verifySessionToken } from "@/app/_lib/auth";
+import { store } from "@/app/_lib/store";
 
 export const runtime = "nodejs";
 
-// Desktop logout (Phase 186A). The token is a stateless signed token, so the
-// client discards it. TRUE server-side revocation requires the `sessions` table
-// in identity_architecture.md §6 (deferred). Best-effort 204 for now.
-export async function POST() {
+// Desktop logout revokes the opaque server session, so a copied Bearer token
+// cannot be reused after the client signs out.
+export async function POST(req: Request) {
+  const token = bearerToken(req);
+  const claims = token ? verifySessionToken(token) : null;
+  if (claims) await store.revokeSession(claims.sid);
   return new NextResponse(null, {
     status: 204,
     headers: {

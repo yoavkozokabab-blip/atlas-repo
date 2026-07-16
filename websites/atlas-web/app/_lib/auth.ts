@@ -24,13 +24,14 @@ export function verifyPassword(pw: string, stored: string): boolean {
 function sign(data: string): string {
   return crypto.createHmac("sha256", ENV.authSecret).update(data).digest("base64url");
 }
-export function createToken(userId: string, ttlSeconds = SESSION_TTL_S): string {
+export function createToken(userId: string, ttlSeconds = SESSION_TTL_S, sessionId = newId()): string {
   const payload = Buffer.from(
-    JSON.stringify({ sub: userId, exp: Math.floor(Date.now() / 1000) + ttlSeconds })
+    JSON.stringify({ sub: userId, sid: sessionId, exp: Math.floor(Date.now() / 1000) + ttlSeconds })
   ).toString("base64url");
   return `${payload}.${sign(payload)}`;
 }
-export function verifyToken(token: string): string | null {
+export type SessionClaims = { sub: string; sid: string; exp: number };
+export function verifySessionToken(token: string): SessionClaims | null {
   const [payload, sig] = (token || "").split(".");
   if (!payload || !sig) return null;
   const expected = sign(payload);
@@ -38,17 +39,42 @@ export function verifyToken(token: string): string | null {
   const b = Buffer.from(expected);
   if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return null;
   try {
-    const { sub, exp } = JSON.parse(Buffer.from(payload, "base64url").toString());
-    if (!sub || typeof exp !== "number" || exp < Math.floor(Date.now() / 1000)) return null;
-    return sub as string;
+    const { sub, sid, exp } = JSON.parse(Buffer.from(payload, "base64url").toString());
+    if (!sub || !sid || typeof exp !== "number" || exp < Math.floor(Date.now() / 1000)) return null;
+    return { sub: String(sub), sid: String(sid), exp };
   } catch {
     return null;
   }
 }
+export function verifyToken(token: string): string | null {
+  return verifySessionToken(token)?.sub ?? null;
+}
+
+async function activeSession(token: string): Promise<SessionClaims | null> {
+  const claims = verifySessionToken(token);
+  if (!claims) return null;
+  const session = await store.getSession(claims.sid);
+  if (!session || session.userId !== claims.sub || session.revokedAt) return null;
+  if (Date.parse(session.expiresAt) < Date.now()) {
+    await store.revokeSession(session.id);
+    return null;
+  }
+  return claims;
+}
+
+export async function issueSessionToken(userId: string, ttlSeconds = SESSION_TTL_S): Promise<string> {
+  const id = crypto.randomBytes(32).toString("base64url");
+  const now = new Date();
+  const expiresAt = new Date(now.getTime() + ttlSeconds * 1000).toISOString();
+  await store.createSession({ id, userId, createdAt: now.toISOString(), expiresAt, revokedAt: null });
+  return createToken(userId, ttlSeconds, id);
+}
 
 export async function setSession(userId: string): Promise<void> {
   const c = await cookies();
-  c.set(COOKIE, createToken(userId), {
+  // Login creates a fresh opaque server session; an existing cookie is never
+  // reused, preventing session fixation.
+  c.set(COOKIE, await issueSessionToken(userId), {
     httpOnly: true,
     secure: ENV.isProd,
     sameSite: "lax",
@@ -58,6 +84,9 @@ export async function setSession(userId: string): Promise<void> {
 }
 export async function clearSession(): Promise<void> {
   const c = await cookies();
+  const token = c.get(COOKIE)?.value;
+  const claims = token ? verifySessionToken(token) : null;
+  if (claims) await store.revokeSession(claims.sid);
   c.set(COOKIE, "", {
     httpOnly: true,
     secure: ENV.isProd,
@@ -70,9 +99,9 @@ export async function currentUser(): Promise<User | null> {
   const c = await cookies();
   const tok = c.get(COOKIE)?.value;
   if (!tok) return null;
-  const uid = verifyToken(tok);
-  if (!uid) return null;
-  const u = await store.getById(uid);
+  const claims = await activeSession(tok);
+  if (!claims) return null;
+  const u = await store.getById(claims.sub);
   if (!u || u.status === "suspended") return null;
   return u;
 }
@@ -146,9 +175,9 @@ export function bearerToken(req: Request): string | null {
 export async function userFromBearer(req: Request): Promise<User | null> {
   const tok = bearerToken(req);
   if (!tok) return null;
-  const uid = verifyToken(tok);
-  if (!uid) return null;
-  const u = await store.getById(uid);
+  const claims = await activeSession(tok);
+  if (!claims) return null;
+  const u = await store.getById(claims.sub);
   if (!u || u.status === "suspended") return null;
   return u;
 }
