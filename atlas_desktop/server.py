@@ -9,6 +9,7 @@ those who install fastapi/uvicorn, but it is **not** required.
 from __future__ import annotations
 
 import json
+import hmac
 import mimetypes
 import os
 import shutil
@@ -19,6 +20,7 @@ import threading
 import time
 from ipaddress import ip_address
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from http.cookies import SimpleCookie
 from urllib.parse import parse_qs, urlparse
 from typing import Any, Callable, Dict, Optional, Tuple
 
@@ -44,6 +46,7 @@ PROTECTED_ACCOUNT_ROUTES = {
     ("POST", "/api/integrations/claude-code/write-managed-block"),
     ("POST", "/api/copilot/ask"),
 }
+MAX_API_BODY_BYTES = 64 * 1024
 
 
 def _favicon_path() -> Optional[str]:
@@ -392,13 +395,31 @@ class AtlasHandler(BaseHTTPRequestHandler):
         expected_port = int(self.server.server_address[1])
         if host is None or host[1] != expected_port:
             return False, None
+        path = normalize_api_path(urlparse(self.path).path)
         origin_value = self.headers.get("Origin")
         if origin_value is None:
-            return True, None
-        origin = _parse_loopback_origin(str(origin_value))
-        if origin is None or origin != host:
-            return False, None
-        return True, str(origin_value).strip()
+            cors_origin = None
+        else:
+            origin = _parse_loopback_origin(str(origin_value))
+            if origin is None or origin != host:
+                return False, None
+            cors_origin = str(origin_value).strip()
+
+        # The discovery handshake intentionally remains token-free so a new
+        # Atlas process can prove an occupied port is its own runtime. Every
+        # other local API route requires the current runtime's opaque cookie.
+        if path != runtime_startup.HANDSHAKE_PATH and self.command != "OPTIONS":
+            identity = getattr(self.server, "atlas_runtime_identity", None) or {}
+            expected = str(identity.get("runtime_token") or "")
+            try:
+                parsed_cookie = SimpleCookie(str(self.headers.get("Cookie") or ""))
+                received = parsed_cookie.get("atlas_runtime_token")
+                actual = received.value if received else ""
+            except (TypeError, ValueError):
+                actual = ""
+            if not expected or not hmac.compare_digest(actual, expected):
+                return False, None
+        return True, cors_origin
 
     def _write_response(
         self,
@@ -443,21 +464,53 @@ class AtlasHandler(BaseHTTPRequestHandler):
         self._write_response(status, tuple(headers), data)
 
     def _read_body(self) -> Optional[Dict[str, Any]]:
-        length = int(self.headers.get("Content-Length", 0) or 0)
+        self._body_error: Optional[str] = None
+        try:
+            length = int(self.headers.get("Content-Length", 0) or 0)
+        except ValueError:
+            self._body_error = "invalid_content_length"
+            return None
+        if length < 0 or length > MAX_API_BODY_BYTES:
+            self._body_error = "payload_too_large"
+            return None
         if not length:
             return {}
         try:
             raw = self.rfile.read(length)
             if len(raw) != length:
                 return None
-            return json.loads(raw.decode("utf-8") or "{}")
+            parsed = json.loads(raw.decode("utf-8") or "{}")
+            if not isinstance(parsed, dict):
+                self._body_error = "invalid_json_object"
+                return None
+            return parsed
         except self._CLIENT_DISCONNECT_ERRORS:
             return None
         except (ValueError, UnicodeDecodeError):
-            return {}
+            self._body_error = "invalid_json"
+            return None
 
     def _serve_static(self) -> None:
-        rel = self.path.split("?", 1)[0].lstrip("/")
+        parsed_url = urlparse(self.path)
+        supplied = str((parse_qs(parsed_url.query).get("atlas_runtime_token") or [""])[0])
+        if supplied:
+            identity = getattr(self.server, "atlas_runtime_identity", None) or {}
+            expected = str(identity.get("runtime_token") or "")
+            if not expected or not hmac.compare_digest(supplied, expected):
+                self._send_json(403, {"ok": False, "code": "invalid_runtime_token"})
+                return
+            target = parsed_url.path or "/"
+            self._write_response(
+                302,
+                (
+                    ("Location", target),
+                    ("Set-Cookie", f"atlas_runtime_token={expected}; HttpOnly; SameSite=Strict; Path=/"),
+                    ("Referrer-Policy", "no-referrer"),
+                    ("Content-Length", "0"),
+                ),
+            )
+            return
+        rel = parsed_url.path.lstrip("/")
         if rel in ("", "index.html"):
             rel = "index.html"
         if rel == "favicon.ico":
@@ -543,8 +596,17 @@ class AtlasHandler(BaseHTTPRequestHandler):
             return
         query_items = parse_qs(parsed.query or "")
         query = {key: values[0] for key, values in query_items.items() if values}
+        content_type = str(self.headers.get("Content-Type") or "")
+        if self.command == "POST" and content_type and not content_type.lower().startswith("application/json"):
+            self._send_json(415, {"ok": False, "code": "unsupported_media_type"})
+            return
         request_body = self._read_body() if self.command == "POST" else None
         if self.command == "POST" and request_body is None:
+            code = getattr(self, "_body_error", None)
+            if code == "payload_too_large":
+                self._send_json(413, {"ok": False, "code": code})
+            elif code:
+                self._send_json(400, {"ok": False, "code": code})
             return
         status, payload = dispatch(self.command, path, request_body, query)
         self._send_json(status, payload)
@@ -712,7 +774,7 @@ def _open_url(url: str, *, mode: str = "browser") -> bool:
                     stdin=subprocess.DEVNULL,
                     close_fds=True,
                 )
-                _log_launcher(f"opened app window: {url}")
+                _log_launcher("opened Atlas app window")
                 return True
             except OSError as exc:
                 _log_launcher(f"edge app-window open failed: {type(exc).__name__}: {exc}")
@@ -721,7 +783,7 @@ def _open_url(url: str, *, mode: str = "browser") -> bool:
 
         opened = bool(webbrowser.open(url))
         if opened:
-            _log_launcher(f"opened browser: {url}")
+            _log_launcher("opened Atlas browser window")
         return opened
     except Exception as exc:  # no browser / sandbox
         _log_launcher(f"browser open failed: {type(exc).__name__}: {exc}")
@@ -735,9 +797,9 @@ def _open_after_health(host: str, port: int, url: str, *, mode: str) -> None:
         time.sleep(0.15)
     opened = _open_url(url, mode=mode)
     if not opened:
-        _log_launcher(f"could not auto-open; visit {url} manually")
+        _log_launcher("could not auto-open protected Atlas window")
         if not getattr(sys, "frozen", False):
-            print(f"  Could not auto-open Atlas. Open this URL manually:\n    {url}")
+            print("  Could not auto-open Atlas. Restart Atlas to open its protected local window.")
 
 
 def _track_app_started() -> None:
@@ -772,10 +834,16 @@ def run(
     path = start_path if start_path.startswith("/") else f"/{start_path}"
     url = f"http://{host}:{bound_port}{path}"
     if existing:
+        descriptor = runtime_startup.read_runtime_descriptor()
+        token = str((descriptor or {}).get("runtime_token") or "")
+        launch_url = f"{url}?atlas_runtime_token={token}" if token else url
         if open_browser:
-            _open_url(url, mode=open_mode)
+            _open_url(launch_url, mode=open_mode)
         return
     identity = runtime_startup.new_instance_identity(bound_port)
+    # Keep compatibility with controlled test/frozen launch wrappers which may
+    # construct the identity dictionary themselves.
+    identity.setdefault("runtime_token", __import__("secrets").token_urlsafe(32))
     httpd.atlas_runtime_identity = identity
     try:
         runtime_startup.write_runtime_descriptor(identity)
@@ -787,7 +855,7 @@ def run(
     if open_browser:
         threading.Thread(
             target=_open_after_health,
-            args=(host, bound_port, url),
+            args=(host, bound_port, f"{url}?atlas_runtime_token={identity['runtime_token']}"),
             kwargs={"mode": open_mode},
             daemon=True,
         ).start()

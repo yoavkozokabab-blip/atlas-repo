@@ -28,7 +28,11 @@ def _isolated_runtime_data(tmp_path, monkeypatch):
 def atlas_http_server():
     httpd = server.AtlasHTTPServer(("127.0.0.1", 0), server.AtlasHandler)
     port = int(httpd.server_address[1])
-    httpd.atlas_runtime_identity = {"pid": 12345, "instance_id": "transport-boundary-test"}
+    httpd.atlas_runtime_identity = {
+        "pid": 12345,
+        "instance_id": "transport-boundary-test",
+        "runtime_token": "test-runtime-token-not-for-production",
+    }
     thread = threading.Thread(target=httpd.serve_forever, daemon=True)
     thread.start()
     try:
@@ -49,15 +53,23 @@ def _request(port: int, method: str, path: str, headers: dict[str, str] | None =
     return response.status, response_headers, body
 
 
+def _runtime_headers(port: int, **headers: str) -> dict[str, str]:
+    return {
+        "Host": f"127.0.0.1:{port}",
+        "Cookie": "atlas_runtime_token=test-runtime-token-not-for-production",
+        **headers,
+    }
+
+
 def test_same_origin_api_and_scoped_options(atlas_http_server):
     port = atlas_http_server
     origin = f"http://127.0.0.1:{port}"
 
-    status, headers, _body = _request(port, "GET", "/api/health")
+    status, headers, _body = _request(port, "GET", "/api/health", _runtime_headers(port))
     assert status == 200
     assert "access-control-allow-origin" not in headers
 
-    status, headers, _body = _request(port, "GET", "/api/health", {"Origin": origin})
+    status, headers, _body = _request(port, "GET", "/api/health", _runtime_headers(port, Origin=origin))
     assert status == 200
     assert headers["access-control-allow-origin"] == origin
     assert headers["vary"] == "Origin"
@@ -111,6 +123,25 @@ def test_same_origin_api_and_scoped_options(atlas_http_server):
     assert status == 405
     assert headers["allow"] == "GET, OPTIONS"
     assert json.loads(body.decode("utf-8"))["code"] == "method_not_allowed"
+
+
+def test_runtime_cookie_is_one_instance_scoped_and_removed_from_url(atlas_http_server):
+    port = atlas_http_server
+    token = "test-runtime-token-not-for-production"
+    status, headers, _body = _request(port, "GET", f"/?atlas_runtime_token={token}")
+    assert status == 302
+    assert headers["location"] == "/"
+    assert "HttpOnly" in headers["set-cookie"]
+    assert "SameSite=Strict" in headers["set-cookie"]
+
+    status, _headers, body = _request(port, "GET", "/api/repositories/current/summary")
+    assert status == 403
+    assert json.loads(body.decode("utf-8"))["code"] == "untrusted_runtime_origin"
+
+    status, _headers, _body = _request(
+        port, "GET", "/api/repositories/current/summary", _runtime_headers(port)
+    )
+    assert status in {200, 500}
 
 
 @pytest.mark.parametrize(
@@ -861,6 +892,19 @@ def test_static_response_and_request_body_ignore_client_disconnect(tmp_path, mon
     assert dispatched == []
 
 
+def test_local_api_rejects_oversized_or_non_object_json_before_dispatch():
+    handler = object.__new__(server.AtlasHandler)
+    handler.headers = {"Content-Length": str(server.MAX_API_BODY_BYTES + 1)}
+    handler.rfile = SimpleNamespace(read=lambda _length: b"")
+    assert handler._read_body() is None
+    assert handler._body_error == "payload_too_large"
+
+    handler.headers = {"Content-Length": "2"}
+    handler.rfile = SimpleNamespace(read=lambda _length: b"[]")
+    assert handler._read_body() is None
+    assert handler._body_error == "invalid_json_object"
+
+
 def test_fastapi_runtime_handshake_matches_listener_port(monkeypatch):
     pytest.importorskip("fastapi")
     testclient_module = pytest.importorskip("fastapi.testclient")
@@ -1004,7 +1048,10 @@ def test_run_propagates_selected_fallback_port_to_open_url(monkeypatch):
 
     server.run(host="127.0.0.1", port=8777, open_browser=True, open_mode="app")
 
-    assert ("127.0.0.1", 8778, "http://127.0.0.1:8778/", "app") in events
+    launch = next(event for event in events if len(event) == 4)
+    assert launch[:2] == ("127.0.0.1", 8778)
+    assert launch[2].startswith("http://127.0.0.1:8778/?atlas_runtime_token=")
+    assert launch[3] == "app"
     assert all("8777" not in str(event) for event in events)
     assert ("served", 8778) in events
     assert ("closed", 8778) in events

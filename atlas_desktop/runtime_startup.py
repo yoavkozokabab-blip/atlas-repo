@@ -137,6 +137,10 @@ def _descriptor_payload(identity: Dict[str, Any]) -> Dict[str, Any]:
         "port": int(identity["port"]),
         "pid": int(identity["pid"]),
         "instance_id": str(identity["instance_id"]),
+        # Kept only in the user-scoped, HMAC-protected runtime descriptor so a
+        # second Atlas launcher for the same installed user can open an already
+        # running instance. It is never returned by HTTP status or handshake APIs.
+        "runtime_token": str(identity["runtime_token"]),
         "started_at": str(identity.get("started_at") or ""),
     }
 
@@ -183,5 +187,6 @@ def new_instance_identity(port: int) -> Dict[str, Any]:
         "port": int(port),
         "pid": os.getpid(),
         "instance_id": secrets.token_urlsafe(24),
+        "runtime_token": secrets.token_urlsafe(32),
         "started_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
     }
