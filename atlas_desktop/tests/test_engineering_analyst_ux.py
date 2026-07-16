@@ -141,14 +141,13 @@ def test_loaded_repository_replaces_stale_workflow_gate_with_evidence_state() ->
     assert "function renderWorkflowReadyState(view)" in APP
     assert "renderWorkflowReadyState(view);" in APP
     for marker in (
-        "Indexed evidence",
-        "Repository evidence ready",
-        "Dependency evidence ready",
+        "workflow-context-line",
+        "workflow-empty-state",
+        "renderWorkflowContextLine",
         "STATE.summary.file_count",
         "STATE.summary.dependency_edges",
     ):
-        assert marker in APP
-    assert ".workflow-ready-state" in CSS
+        assert marker in APP or marker in (STATIC / "ui-polish-v104.css").read_text(encoding="utf-8")
 
 
 # NOTE: the secondary-surface vocabulary rewrite (about/docs/demo/gallery/admin/

@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="design-tokens.css" />
   <link rel="stylesheet" href="ui-polish-v102.css" />
   <link rel="stylesheet" href="ui-polish-v103.css" />
+  <link rel="stylesheet" href="ui-polish-v104.css" />
   <!-- 3D dependency graph (bundled locally for offline use). -->
   <script src="vendor/three.min.js"></script>
   <script src="vendor/3d-force-graph.min.js"></script>
@@ -957,8 +958,9 @@
 
     <!-- ===================== SCREEN: PLAN CHANGE ===================== -->
     <section class="view analysis-workspace" id="view-build">
-      <header class="workspace-head"><p class="workspace-kicker">Engineering investigation</p><h2 class="vh">Implementation Plan</h2>
+      <header class="workspace-head"><p class="workspace-kicker">Engineering investigation</p><h2 class="vh" tabindex="-1">Implementation Plan</h2>
       <p class="muted">Plan the change before editing code.</p></header>
+      <p id="buildContextLine" class="workflow-context-line" hidden></p>
       <div id="readyState"></div>
       <div id="firstBuildBanner" class="product-notice glass" style="display:none">
         <b>Your first implementation plan</b> — keep the example below or define the change you are evaluating.
@@ -977,8 +979,9 @@
 
     <!-- ===================== SCREEN: DEBUG ===================== -->
     <section class="view analysis-workspace" id="view-investigate">
-      <header class="workspace-head"><p class="workspace-kicker">Engineering investigation</p><h2 class="vh">Failure Investigation</h2>
+      <header class="workspace-head"><p class="workspace-kicker">Engineering investigation</p><h2 class="vh" tabindex="-1">Failure Investigation</h2>
       <p class="muted">Trace a failure through the repository.</p></header>
+      <p id="investigateContextLine" class="workflow-context-line" hidden></p>
       <div class="io glass investigation-input">
         <label>Observed failure</label>
         <textarea id="investigateSymptom" rows="6" placeholder="e.g. API requests fail intermittently under load&#10;Dashboard shows stale data after deploy&#10;Payments fail silently after the last deploy&#10;&#10;Or paste a traceback with file paths…"></textarea>
@@ -993,8 +996,9 @@
 
     <!-- ===================== SCREEN 5: WHAT BREAKS? ===================== -->
     <section class="view analysis-workspace" id="view-impact">
-      <header class="workspace-head"><p class="workspace-kicker">Engineering investigation</p><h2 class="vh">Change Impact</h2>
+      <header class="workspace-head"><p class="workspace-kicker">Engineering investigation</p><h2 class="vh" tabindex="-1">Change Impact</h2>
       <p class="muted">See what depends on a file before changing it.</p></header>
+      <p id="impactContextLine" class="workflow-context-line" hidden></p>
       <div class="io glass investigation-input">
         <label>Change target</label>
         <div class="pick-row">
@@ -1123,7 +1127,8 @@
     <section class="view atlas-workspace" id="view-diagnostics" aria-labelledby="diagnosticsTitle">
       <header class="workspace-titlebar"><div><p class="workspace-kicker">Operational intelligence</p><h1 id="diagnosticsTitle" tabindex="-1">System Health</h1><p>Understand what is healthy, what needs attention, and the safest recovery action—before opening raw diagnostic data.</p></div><div class="title-actions"><button class="btn primary" type="button" onclick="atlasDesktopShell.refreshDiagnostics()">Run health check</button><a class="btn ghost" href="support.html">Recovery center</a></div></header>
       <section class="diagnostic-command" aria-labelledby="diagnosticOverallTitle"><div class="diagnostic-score" id="diagnosticScore"><span>—</span><small>health</small></div><div><p class="workspace-kicker">Overall status</p><h2 id="diagnosticOverallTitle">Checking Atlas components</h2><div id="diagnosticsSummary" class="diagnostic-summary" aria-live="polite"></div></div><div id="diagnosticPrimaryAction"></div></section>
-      <div class="diagnostic-action-grid"><section><div class="instrument-section-head"><div><span>Priority</span><h2>Issues requiring attention</h2></div></div><div id="diagnosticIssues" class="diagnostic-issue-list"></div></section><section><div class="instrument-section-head"><div><span>Recovery plan</span><h2>Recommended fixes</h2></div></div><div id="diagnosticFixes" class="diagnostic-fix-list"></div></section></div>
+      <div class="diagnostic-action-grid" id="diagnosticActionGrid"><section><div class="instrument-section-head"><div><span>Priority</span><h2>Issues requiring attention</h2></div></div><div id="diagnosticIssues" class="diagnostic-issue-list"></div></section><section><div class="instrument-section-head"><div><span>Recovery plan</span><h2>Recommended fixes</h2></div></div><div id="diagnosticFixes" class="diagnostic-fix-list"></div></section></div>
+      <p id="diagnosticHealthyLine" class="diagnostic-compact-healthy" hidden><strong>No issues detected</strong> · All core systems responded successfully.</p>
       <div class="instrument-section-head diagnostic-components-head"><div><span>Runtime map</span><h2>System components</h2></div><span class="state-label">Local only</span></div>
       <div class="diagnostic-grid" id="diagnosticsGrid"></div>
       <details class="diagnostic-report" aria-labelledby="diagnosticReportTitle"><summary><span><small>Advanced</small><strong id="diagnosticReportTitle">Raw diagnostic report</strong></span><span>Expand JSON</span></summary><div class="section-heading"><span></span><button class="btn ghost small" type="button" onclick="atlasDesktopShell.copyDiagnosticReport()">Copy report</button></div><pre id="diagnosticsReport" class="code"></pre></details>
@@ -1137,6 +1142,7 @@
         <section><div class="section-heading"><h2>Local storage and privacy</h2><a class="btn ghost small" href="privacy.html">Privacy details</a></div><dl class="fact-table" id="settingsStorageFacts"></dl><p>Repository indexing and Atlas memory remain on this machine. Connected coding agents may send selected context to their own configured model provider.</p></section>
         <section><div class="section-heading"><h2>Appearance and accessibility</h2></div><p>Atlas follows the operating system’s reduced-motion and browser zoom settings. The desktop workbench uses the high-contrast graphite theme.</p></section>
         <section><div class="section-heading"><h2>Advanced recovery</h2><a class="btn ghost small" href="support.html">Open recovery tools</a></div><p>Cache clearing, index rebuilding, self-test, logs, and support bundle export are separated in Diagnostics to prevent accidental data changes.</p></section>
+        <section class="settings-advanced"><details><summary>Advanced technical details</summary><dl class="fact-table" id="settingsAdvancedFacts"></dl></details></section>
       </div>
     </section>
 
@@ -1397,7 +1403,7 @@
     <button class="btn ghost small" type="button" onclick="atlasDemoTour.end()">Skip tour</button>
   </div>
 
-  <footer id="appBuildMarker" class="app-build-marker muted tiny" aria-label="Build version"><span data-atlas-version>Atlas 1.0.3</span> · <a href="mailto:yoavkozokabab@gmail.com?subject=Atlas%20bug%20report" style="color:inherit">Report a bug</a> · <a href="mailto:yoavkozokabab@gmail.com?subject=Atlas%20feature%20request" style="color:inherit">Suggest a feature</a></footer>
+  <footer id="appBuildMarker" class="app-build-marker muted tiny" aria-label="Build version"><span data-atlas-version>Atlas 1.0.4</span> · <a href="mailto:yoavkozokabab@gmail.com?subject=Atlas%20bug%20report" style="color:inherit">Report a bug</a> · <a href="mailto:yoavkozokabab@gmail.com?subject=Atlas%20feature%20request" style="color:inherit">Suggest a feature</a></footer>
   <script src="universe.js"></script>
   <script src="atlas_copy.js"></script>
   <script src="atlas_repository_state.js"></script>

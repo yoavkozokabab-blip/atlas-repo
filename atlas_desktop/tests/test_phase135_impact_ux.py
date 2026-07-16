@@ -52,17 +52,19 @@ class TestFileListCapping:
 
 class TestCardOrder:
     def test_cards_above_file_lists_in_order(self):
-        run = APP[APP.index("async function runImpact"):APP.index("function impactInspect")]
+        start = APP.index("async function runImpact")
+        end = APP.index('renderWorkflowHistory("impact", "impactHistory");', start)
+        run = APP[start:end]
         order = [
-            run.index("impactSemanticCard(r)"),
-            run.index("impactBlastCard(r)"),
-            run.index("impactArchSummary(r)"),
-            run.index("Files that import this"),
-            run.index("Also affected through them"),
-            run.index("Tests to run"),
+            run.index("${impactSemanticCard(r)}"),
+            run.index("${impactBlastCard(r)}"),
+            run.index("${directHtml}"),
+            run.index("${indirectHtml}"),
+            run.index("Affected tests"),
+            run.index('<div class="impact-arch-summary">${esc(impactArchSummary(r))}</div>'),
             run.index("Verification steps"),
         ]
-        assert order == sorted(order), "cards must precede file lists in the documented order"
+        assert order == sorted(order), "impact summary cards must precede dependent lists in documented order"
 
 
 class TestCopilotImpactSummary:

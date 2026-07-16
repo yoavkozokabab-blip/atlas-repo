@@ -864,26 +864,100 @@ function renderWorkflowGate(view) {
   return true;
 }
 
-function renderWorkflowReadyState(view) {
+function activeRepositoryKey(summary) {
+  const s = summary || STATE.summary || {};
+  return String(s.repo_id || s.repo_path || s.repo_name || "").trim();
+}
+
+function renderWorkflowContextLine(view) {
+  const lines = { build: "buildContextLine", investigate: "investigateContextLine", impact: "impactContextLine" };
+  const lineId = lines[view];
+  const line = lineId ? $(lineId) : null;
+  if (!line) return;
+  if (!STATE.summary?.ok) {
+    line.hidden = true;
+    line.textContent = "";
+    return;
+  }
+  const repo = STATE.summary.repo_name || "Current repository";
+  const files = homeMetric(STATE.summary.file_count);
+  const edges = homeMetric(STATE.summary.dependency_edges);
+  line.hidden = false;
+  line.textContent = `Ready · ${repo}${files ? ` · ${files} files` : ""}${edges ? ` · ${edges} dependencies` : ""}`;
+}
+
+function renderWorkflowEmptyState(view) {
   const specs = {
-    build: { el: "buildOut", title: "Repository evidence ready", body: "Define the intended change. Atlas will rank affected files, sequence the work, and surface implementation risk." },
-    investigate: { el: "investigateOut", title: "Repository evidence ready", body: "Describe the observed failure. Atlas will correlate it with indexed code paths and rank testable hypotheses." },
-    impact: { el: "impactOut", title: "Dependency evidence ready", body: "Choose a file or module. Atlas will trace direct dependents, transitive reach, affected tests, and unresolved edges." },
+    build: {
+      el: "buildOut",
+      body: "Define the intended change. Atlas will rank affected files, sequence the work, and surface implementation risk.",
+    },
+    investigate: {
+      el: "investigateOut",
+      body: "Describe the observed failure. Atlas will correlate it with indexed code paths and rank testable hypotheses.",
+    },
+    impact: {
+      el: "impactOut",
+      body: "Choose a file or module. Atlas will trace direct dependents, transitive reach, affected tests, and unresolved edges.",
+    },
   };
   const spec = specs[view];
   if (!spec || !STATE.summary?.ok) return false;
   const host = $(spec.el);
   if (!host) return false;
+  if (host.querySelector(".impact-result-panel, .beginner-plan-card, .advanced-only.impact-card, .domain-panel")) return false;
   const current = host.textContent.trim();
-  if (current && !current.startsWith("Scan a repository first")) return false;
-  const repo = esc(STATE.summary.repo_name || "Current repository");
-  const files = homeMetric(STATE.summary.file_count);
-  const edges = homeMetric(STATE.summary.dependency_edges);
-  host.innerHTML = `<div class="workflow-ready-state">
-    <div><span class="workspace-kicker">Indexed evidence</span><h3>${spec.title}</h3><p>${spec.body}</p></div>
-    <dl><div><dt>Repository</dt><dd>${repo}</dd></div><div><dt>Files</dt><dd>${files}</dd></div><div><dt>Dependencies</dt><dd>${edges}</dd></div></dl>
-  </div>`;
+  if (current && !current.startsWith("Scan a repository first") && !host.querySelector(".workflow-empty-state")) return false;
+  host.innerHTML = `<div class="workflow-empty-state"><p class="muted">${spec.body}</p></div>`;
+  host.dataset.atlasRepoKey = activeRepositoryKey();
   return true;
+}
+
+function renderWorkflowReadyState(view) {
+  renderWorkflowContextLine(view);
+  return renderWorkflowEmptyState(view);
+}
+
+function clearWorkflowInvestigationState() {
+  STATE.buildResult = null;
+  STATE.investigateResult = null;
+  STATE.impactResult = null;
+  [
+    ["buildOut", "build"],
+    ["investigateOut", "investigate"],
+    ["impactOut", "impact"],
+  ].forEach(([hostId, view]) => {
+    const host = $(hostId);
+    if (!host) return;
+    delete host.dataset.atlasRepoKey;
+    host.innerHTML = "";
+    if (STATE.summary?.ok) {
+      renderWorkflowEmptyState(view);
+      renderWorkflowContextLine(view);
+    } else {
+      renderWorkflowGate(view);
+      renderWorkflowContextLine(view);
+    }
+  });
+  ["buildHistory", "investigateHistory", "impactHistory"].forEach((id) => {
+    const host = $(id);
+    if (host) host.innerHTML = "";
+  });
+  updateWorkflowToolbars();
+  if (STATE.summary?.ok) {
+    ["buildOut", "investigateOut", "impactOut"].forEach((id) => {
+      const host = $(id);
+      if (host) host.dataset.atlasRepoKey = activeRepositoryKey();
+    });
+  }
+}
+
+function workflowResultMatchesRepository(view) {
+  const hosts = { build: "buildOut", investigate: "investigateOut", impact: "impactOut" };
+  const host = $(hosts[view]);
+  if (!host || !host.querySelector(".impact-result-panel, .beginner-plan-card, .advanced-only.impact-card, .domain-panel")) return false;
+  const current = activeRepositoryKey();
+  return !!current && host.dataset.atlasRepoKey === current;
 }
 
 function fiCapScore(score) {
@@ -1432,6 +1506,20 @@ function routeHomeSuggestion(view, prompt) {
 
 window.renderHomeExperience = renderHomeExperience;
 
+function atlasScrollContainer() {
+  return document.getElementById("app") || document.scrollingElement || document.documentElement;
+}
+
+function resetViewScroll(viewEl) {
+  const root = atlasScrollContainer();
+  root.scrollTo({ top: 0, behavior: "auto" });
+  window.scrollTo({ top: 0, behavior: "auto" });
+  if (!viewEl) return;
+  viewEl.querySelectorAll(".table-scroll, .memory-workbench, .memory-concepts, .memory-inspector, .ask-history-rail, .ask-evidence-rail, .files-workbench").forEach((el) => {
+    el.scrollTop = 0;
+  });
+}
+
 function go(view) {
   if (document.body.classList.contains('auth-mode') && view !== 'accounts') return;
   view = NAV_ALIASES[view] || view;
@@ -1450,7 +1538,7 @@ function go(view) {
     else b.removeAttribute("aria-current");
   });
   const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+  resetViewScroll(el);
   document.dispatchEvent(new CustomEvent("atlas:viewchange", { detail: { view } }));
   if (el && view !== "home") {
     setTimeout(() => el.querySelector("h1[tabindex='-1'], h2[tabindex='-1'], h1, h2")?.focus({ preventScroll: true }), 60);
@@ -1476,7 +1564,11 @@ function go(view) {
   if (view === "build" || view === "investigate" || view === "impact") {
     if (!STATE.summary?.ok) renderWorkflowGate(view);
     else {
-      renderWorkflowReadyState(view);
+      if (!workflowResultMatchesRepository(view)) {
+        renderWorkflowReadyState(view);
+      } else {
+        renderWorkflowContextLine(view);
+      }
       renderWorkflowQuickStarts(view);
       if (view === "build") showFirstBuildBannerIfNeeded();
     }
@@ -1502,9 +1594,16 @@ function unlockNav() { document.querySelectorAll('#nav button[data-lock="1"]').f
 
 function updateWorkflowToolbars() {
   const on = !!STATE.summary?.ok;
-  ["buildToolbar", "investigateToolbar", "impactToolbar"].forEach(id => {
+  const hasBuild = !!(STATE.buildResult && STATE.buildResult.ok);
+  const hasInvestigate = !!(STATE.investigateResult && STATE.investigateResult.ok);
+  const hasImpact = !!(STATE.impactResult && STATE.impactResult.ok);
+  [
+    ["buildToolbar", hasBuild],
+    ["investigateToolbar", hasInvestigate],
+    ["impactToolbar", hasImpact],
+  ].forEach(([id, show]) => {
     const el = $(id);
-    if (el) el.style.display = on ? "flex" : "none";
+    if (el) el.style.display = on && show ? "flex" : "none";
   });
 }
 
@@ -1700,8 +1799,13 @@ async function reopenHistoryItem(historyId, workflowType) {
   const r = await api(`/api/history/item?history_id=${encodeURIComponent(historyId)}`);
   if (!r.ok || !r.item) { toast(r.error || "Could not load history", "error"); return; }
   const item = r.item;
-  const staleNote = item.export_allowed === false
-    ? `<p class="workflow-history-stale">Refresh before exporting — ${esc(item.stale_reason || "context is stale")}</p>` : "";
+  const currentRepo = activeRepositoryKey();
+  const itemRepo = String(item.repo_id || item.repository_id || "").trim();
+  const staleFromOtherRepo = !!(currentRepo && itemRepo && itemRepo !== currentRepo);
+  const staleNote = staleFromOtherRepo
+    ? `<p class="workflow-history-stale">Historical result from another repository — rerun analysis for the current repository.</p>`
+    : (item.export_allowed === false
+      ? `<p class="workflow-history-stale">Refresh before exporting — ${esc(item.stale_reason || "context is stale")}</p>` : "");
   const md = esc(item.summary_markdown || "");
   if (workflowType === "build") {
     if ($("buildRequest") && item.request_text) $("buildRequest").value = item.request_text;
@@ -3072,14 +3176,30 @@ async function runImpact() {
   if (!requireAtlasAccess("Change Impact")) return;
   const target = $("impactTarget").value.trim();
   if (!target) { toast("Enter a file or module"); return; }
-  window.atlasActivity?.add("Impact analysis run");
-  const r = await api("/api/planning/impact", "POST", { target });
   const out = $("impactOut");
+  const btn = $("impactTarget")?.closest(".pick-row")?.querySelector(".btn.primary");
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = "Analyzing…";
+  }
+  out.innerHTML = `<div class="impact-result-panel impact-loading"><p class="muted">Analyzing <span class="mono">${esc(target)}</span>…</p></div>`;
+  out.dataset.atlasRepoKey = activeRepositoryKey();
+  window.atlasActivity?.add("Impact analysis run");
+  let r;
+  try {
+    r = await api("/api/planning/impact", "POST", { target });
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = "Analyze impact";
+    }
+  }
   if (!r.ok) {
-    out.innerHTML = workflowErrorHtml("Change impact analysis could not run", r, "Use a path from the graph or an architecture concept (e.g. authentication, routing).");
+    out.innerHTML = `<div class="impact-result-panel">${workflowErrorHtml("Change impact analysis could not run", r, "Use a path from the graph or an architecture concept (e.g. authentication, routing).")}</div>`;
     return;
   }
   STATE.impactResult = r;
+  updateWorkflowToolbars();
   if (r.target_node_id) {
     ATLAS_UNIVERSE.highlightBlastRadius({
       target_node_id: r.target_node_id,
@@ -3089,40 +3209,50 @@ async function runImpact() {
   const rl = r.risk_level || "unknown";
   const conf = r.confidence || "medium";
   const mockTag = r.mock ? `<span class="pill warn">Estimate only — not in last scan</span>` : "";
-  const list = (arr, n) => (arr || []).slice(0, n || 8).map(t => `<li>${esc(t)}</li>`).join("") || '<li class="muted">—</li>';
+  const list = (arr, n) => (arr || []).slice(0, n || 8).map(t => `<li>${esc(t)}</li>`).join("") || "";
   const dirN = (r.direct_impact || []).length;
   const indN = (r.indirect_impact || []).length;
-  // summary cards ABOVE the file lists; lists capped at 10 with a
-  // collapsible "show all" so a first-time user understands the answer fast.
-  out.innerHTML = `
-    ${typeof beginnerImpactHero === "function" ? beginnerImpactHero(r) : ""}
-    <div class="advanced-only glass ocard impact-card">
-      <div class="impact-head">
-        <h3 style="margin:0">Impact of changing <span class="mono">${esc(r.target)}</span></h3>
-        <div class="impact-badges"><span class="lvl ${rl}">${rl} risk</span><span class="pill">confidence ${esc(conf)}</span>${mockTag}</div>
-      </div>
-      ${typeof trustBlock === "function" ? trustBlock("impact") : ""}
-      ${impactSemanticCard(r)}
-      ${impactBlastCard(r)}
-      ${renderEvidenceSummary(r.evidence_panel || r.impact_evidence_panel, null)}
-      <div class="impact-arch-summary">${esc(impactArchSummary(r))}</div>
-      <div class="report-section"><div class="report-label">Files that import this (${dirN})<span class="muted" style="font-weight:400"> — may break</span></div>${impactModuleTags(r.direct_impact)}</div>
-      <div class="report-section"><div class="report-label">Also affected through them (${indN})<span class="muted" style="font-weight:400"> — lower risk</span></div>${impactModuleTags(r.indirect_impact)}</div>
-      <div class="report-section"><div class="report-label">Tests to run</div><ul class="clean">${list(r.tests_likely_affected)}</ul></div>
-      <div class="report-section"><div class="report-label">Verification steps</div><ul class="clean">${list(r.recommended_verification)}</ul></div>
-      <details style="margin-top:6px"><summary class="muted tiny">What to watch out for · probably safe · evidence</summary>
-        <div class="report-label" style="margin-top:8px">What to watch out for</div><ul class="clean tiny">${list(r.risks_of_incorrect_fix, 5)}</ul>
-        <div class="report-label" style="margin-top:8px">Likely safe (no import path)</div><ul class="clean tiny">${list(r.what_probably_wont_break, 6)}</ul>
-        <div class="report-label" style="margin-top:8px">Evidence</div><ul class="clean tiny">${list(r.evidence, 6)}</ul></details>
-      ${typeof sendToAiPanel === "function" ? sendToAiPanel("impact") : ""}
-      <details style="margin-top:8px"><summary class="muted tiny">Full impact report (markdown)</summary>
-        <pre class="code" style="max-height:320px;overflow:auto">${esc(r.formatted || "")}</pre>
-      </details>
-      <div class="copy-row" style="margin-top:12px">
-        <button class="btn small ghost" onclick="go('center')">Show on map</button>
-      </div>
-      ${typeof workflowFeedbackHtml === "function" ? workflowFeedbackHtml("impact") : ""}
-    </div>`;
+  const subs = [...new Set((r.affected_subsystems || r.architecture?.subsystems_impacted || []).map(String))].slice(0, 8);
+  const unresolved = [...new Set([...(r.limitations || []), ...((r.risky_areas || []).map(a => typeof a === "string" ? a : (a.reason || a.label || "")))]).filter(Boolean)].slice(0, 6);
+  const repoLine = STATE.summary?.ok
+    ? `<p class="impact-context-inline">Analyzing <span class="mono">${esc(STATE.summary.repo_name || "repository")}</span>${STATE.summary.file_count != null ? ` · ${homeMetric(STATE.summary.file_count)} files` : ""}${STATE.summary.dependency_edges != null ? ` · ${homeMetric(STATE.summary.dependency_edges)} dependencies` : ""}</p>`
+    : "";
+  const directHtml = dirN
+    ? `<div class="report-section"><div class="report-label">Direct dependents (${dirN})</div>${impactModuleTags(r.direct_impact)}</div>`
+    : `<div class="report-section"><div class="report-label">Direct dependents</div><p class="muted tiny">No indexed dependents found.</p></div>`;
+  const indirectHtml = indN
+    ? `<div class="report-section"><div class="report-label">Transitive dependents (${indN})</div>${impactModuleTags(r.indirect_impact)}</div>`
+    : "";
+  out.innerHTML = `<div class="impact-result-panel glass ocard impact-card" data-atlas-repo-key="${esc(activeRepositoryKey())}">
+    ${repoLine}
+    <div class="impact-head">
+      <h3 style="margin:0">Impact of changing <span class="mono">${esc(r.target)}</span></h3>
+      <div class="impact-badges"><span class="lvl ${rl}">${rl} risk</span><span class="pill">confidence ${esc(conf)}</span>${mockTag}</div>
+    </div>
+    ${impactSemanticCard(r)}
+    ${impactBlastCard(r)}
+    ${directHtml}
+    ${indirectHtml}
+    ${subs.length ? `<div class="report-section"><div class="report-label">Affected subsystems</div><ul class="clean">${subs.map(s => `<li>${esc(s)}</li>`).join("")}</ul></div>` : ""}
+    <div class="report-section"><div class="report-label">Affected tests</div><ul class="clean">${list(r.tests_likely_affected) || '<li class="muted tiny">No indexed test paths linked to this target.</li>'}</ul></div>
+    ${unresolved.length ? `<div class="report-section"><div class="report-label">Unresolved dynamic edges</div><ul class="clean tiny">${unresolved.map(u => `<li>${esc(u)}</li>`).join("")}</ul></div>` : ""}
+    <div class="impact-arch-summary">${esc(impactArchSummary(r))}</div>
+    ${typeof trustBlock === "function" ? `<div class="advanced-only">${trustBlock("impact")}</div>` : ""}
+    <div class="report-section"><div class="report-label">Verification steps</div><ul class="clean">${list(r.recommended_verification) || '<li class="muted tiny">Run targeted tests after any change.</li>'}</ul></div>
+    <details class="advanced-only" style="margin-top:6px"><summary class="muted tiny">What to watch out for · probably safe · evidence</summary>
+      <div class="report-label" style="margin-top:8px">What to watch out for</div><ul class="clean tiny">${list(r.risks_of_incorrect_fix, 5) || '<li class="muted tiny">—</li>'}</ul>
+      <div class="report-label" style="margin-top:8px">Likely safe (no import path)</div><ul class="clean tiny">${list(r.what_probably_wont_break, 6) || '<li class="muted tiny">—</li>'}</ul>
+      <div class="report-label" style="margin-top:8px">Evidence</div><ul class="clean tiny">${list(r.evidence, 6) || '<li class="muted tiny">—</li>'}</ul></details>
+    ${typeof sendToAiPanel === "function" ? sendToAiPanel("impact") : ""}
+    <details class="advanced-only" style="margin-top:8px"><summary class="muted tiny">Full impact report (markdown)</summary>
+      <pre class="code" style="max-height:320px;overflow:auto">${esc(r.formatted || "")}</pre>
+    </details>
+    <div class="copy-row" style="margin-top:12px">
+      <button class="btn small ghost" onclick="go('center')">Show on map</button>
+    </div>
+    ${typeof workflowFeedbackHtml === "function" ? workflowFeedbackHtml("impact") : ""}
+  </div>`;
+  out.dataset.atlasRepoKey = activeRepositoryKey();
   renderWorkflowHistory("impact", "impactHistory");
 }
 
@@ -3512,3 +3642,12 @@ async function bootAtlasApp() {
 }
 window.bootAtlasApp = bootAtlasApp;
 document.addEventListener("atlas:authenticated", bootAtlasApp);
+document.addEventListener("atlas:repository-invalidated", () => clearWorkflowInvestigationState());
+document.addEventListener("atlas:repository-state-changed", () => {
+  ["build", "investigate", "impact"].forEach((view) => {
+    renderWorkflowContextLine(view);
+    if (!workflowResultMatchesRepository(view)) renderWorkflowEmptyState(view);
+  });
+});
+window.clearWorkflowInvestigationState = clearWorkflowInvestigationState;
+window.resetViewScroll = resetViewScroll;

@@ -17,10 +17,7 @@ async function atlasFetchProductConfig() {
 
 function atlasFormatVersionLine(cfg) {
   if (!cfg || !cfg.version) return "";
-  const parts = [cfg.version];
-  if (cfg.build_commit && cfg.build_commit !== "unknown") parts.push(cfg.build_commit);
-  if (cfg.build_date) parts.push(cfg.build_date);
-  return parts.join(" · ");
+  return `Atlas ${cfg.version}`;
 }
 
 async function atlasRenderVersionTargets() {

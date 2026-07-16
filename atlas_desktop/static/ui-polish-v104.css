@@ -1,0 +1,165 @@
+/* Atlas desktop UI polish — v1.0.4 launch hotfix */
+
+html {
+  scroll-padding-top: var(--atlas-bar, 58px);
+}
+
+body.atlas-desktop-v2:not(.auth-mode) {
+  overflow: hidden;
+}
+
+body.atlas-desktop-v2:not(.auth-mode) #app {
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: clip;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+body.atlas-desktop-v2:not(.auth-mode) #app > .view {
+  scroll-margin-top: 0;
+  padding-top: 8px;
+}
+
+.workspace-titlebar,
+.workspace-head {
+  border-bottom: none;
+  box-shadow: none;
+  margin-bottom: 18px;
+  padding-bottom: 0;
+}
+
+.workspace-titlebar h1,
+.workspace-head h1,
+.workspace-head h2.vh {
+  padding-top: 2px;
+}
+
+.workflow-context-line {
+  margin: -8px 0 14px;
+  font-size: var(--v103-meta, 0.75rem);
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--text-muted, #9aa8ad) 92%, #fff 8%);
+}
+
+.workflow-empty-state {
+  padding: 14px 16px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--atlas-panel, #11161a) 92%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--wb-line, #243038) 55%, transparent);
+}
+
+.workflow-empty-state p {
+  margin: 0;
+  font-family: var(--sans);
+}
+
+.impact-result-panel {
+  margin-top: 8px;
+}
+
+.impact-result-panel.impact-loading {
+  min-height: 120px;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.impact-context-inline {
+  margin: 0 0 12px;
+  font-size: 0.8125rem;
+  color: color-mix(in srgb, var(--text-muted, #9aa8ad) 90%, #fff 10%);
+  font-family: var(--sans);
+}
+
+.impact-context-inline .mono {
+  font-family: var(--mono);
+}
+
+.diagnostic-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.diagnostic-action-grid.is-healthy {
+  display: none;
+}
+
+.diagnostic-compact-healthy {
+  max-width: 1500px;
+  margin: 0 auto 18px;
+  font-size: 0.875rem;
+  color: color-mix(in srgb, var(--text-muted, #9aa8ad) 88%, #fff 12%);
+  font-family: var(--sans);
+}
+
+.diagnostic-compact-healthy strong {
+  color: var(--atlas-text, #dce2e5);
+  font-weight: 600;
+}
+
+.settings-sections {
+  display: grid;
+  gap: 18px;
+  max-width: 980px;
+}
+
+.settings-sections > section {
+  align-self: start;
+  min-height: 0;
+}
+
+.settings-advanced details {
+  margin-top: 8px;
+}
+
+.settings-advanced summary {
+  cursor: pointer;
+  color: var(--atlas-muted);
+  font-size: 0.875rem;
+}
+
+.app-build-marker {
+  font-family: var(--sans);
+}
+
+body.atlas-desktop-v2 .workspace-head p.muted,
+body.atlas-desktop-v2 .workspace-titlebar p:not(.workspace-kicker) {
+  font-family: var(--sans);
+}
+
+.glass p.muted,
+.glass .muted,
+.workflow-empty-state .muted,
+.diagnostic-summary {
+  font-family: var(--sans);
+}
+
+.glass .code,
+.glass .mono,
+.fact-table dd,
+.table-path,
+.app-build-marker .mono {
+  font-family: var(--mono);
+}
+
+.glass:not(.controls):not(.preview):not(.io) {
+  padding: 14px 16px;
+}
+
+@media (max-width: 1250px) {
+  .diagnostic-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .diagnostic-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-resolution: 1.25dppx) {
+  body.atlas-desktop-v2:not(.auth-mode) #app > .view {
+    padding-top: 10px;
+  }
+}

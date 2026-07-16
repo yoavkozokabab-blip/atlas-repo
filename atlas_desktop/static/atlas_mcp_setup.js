@@ -49,6 +49,12 @@ const atlasMcpSetup = (() => {
     btn.classList.toggle("ghost", !!connected);
   }
 
+  function mcpVerificationState(key, data) {
+    if (!data?.atlas_configured) return "not_configured";
+    if (key === "cursor" && (data.client_verified || data.mcp_handshake_ok || data.last_handshake)) return "verified";
+    return "configured";
+  }
+
   function renderHomeStatus(status) {
     if (!status) return;
     const claude = status.claude || {};
@@ -58,21 +64,24 @@ const atlasMcpSetup = (() => {
     const cursorOn = !!cursor.atlas_configured;
     const codexOn = !!codex.atlas_configured;
     const codexManual = !codexOn && codex.can_auto_write === false;
+    const claudeState = mcpVerificationState("claude", claude);
+    const cursorState = mcpVerificationState("cursor", cursor);
+    const codexState = mcpVerificationState("codex", codex);
 
     setText(
       "mcpClaudeStatus",
-      claudeOn ? "Configured" : "Not configured",
-      claudeOn ? "connected" : "disconnected"
+      claudeState === "verified" ? "Verified" : (claudeOn ? "Configured" : "Not configured"),
+      claudeState === "verified" ? "verified" : (claudeOn ? "configured" : "disconnected")
     );
     setText(
       "mcpCursorStatus",
-      cursorOn ? "Configured" : "Not configured",
-      cursorOn ? "connected" : "disconnected"
+      cursorState === "verified" ? "Verified" : (cursorOn ? "Configured" : "Not configured"),
+      cursorState === "verified" ? "verified" : (cursorOn ? "configured" : "disconnected")
     );
     setText(
       "mcpCodexStatus",
-      codexOn ? "Codex configured" : (codexManual ? "Manual setup required" : "Not configured"),
-      codexOn ? "connected" : (codexManual ? "manual" : "disconnected")
+      codexState === "verified" ? "Verified" : (codexOn ? "Configured" : (codexManual ? "Manual setup required" : "Not configured")),
+      codexState === "verified" ? "verified" : (codexOn ? "configured" : (codexManual ? "manual" : "disconnected"))
     );
 
     setConnectButton("mcpClaudeBtn", claudeOn, false, "claude");
@@ -213,8 +222,8 @@ const atlasMcpSetup = (() => {
     const res = await api("/api/integrations/codex/write-config", "POST", { confirm: true });
     if (res.ok) {
       closeManualSetup();
-      toast("Codex configured. Restart Codex to use Atlas.", "success");
-      window.atlasActivity?.add("Codex configured for MCP");
+      toast("Configured. Restart Codex to use Atlas.", "success");
+      window.atlasActivity?.add("Codex MCP configured");
       await loadStatus(true);
       return res;
     }

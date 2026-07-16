@@ -81,7 +81,7 @@
 
   function agentVerificationState(key, data) {
     if (!data?.atlas_configured) return "not_configured";
-    if (key === "cursor") return "verified";
+    if (key === "cursor" && (data.client_verified || data.mcp_handshake_ok || data.last_handshake)) return "verified";
     return "configured";
   }
 
@@ -198,16 +198,25 @@
     return rows.slice(0, 5);
   }
 
-  function renderHomeActivity(history, recent, trust) {
+  function renderHomeActivity(history, recent, trust, summary) {
     const host = byId("activityList");
     if (!host) return;
-    const items = list(history).slice(0, 4).map((item) => ({
+    const activeKey = summary?.repo_id || summary?.repo_path || summary?.repo_name || "";
+    const scopedHistory = list(history).filter((item) => {
+      const itemKey = item.repo_id || item.repository_id || item.repo_path || item.repo_name || "";
+      return !itemKey || !activeKey || String(itemKey) === String(activeKey);
+    });
+    const scopedRecent = list(recent).filter((item) => {
+      const itemKey = item.repo_id || item.repo_path || item.repo_name || "";
+      return !itemKey || !activeKey || String(itemKey) === String(activeKey);
+    });
+    const items = scopedHistory.slice(0, 4).map((item) => ({
       title: clean(item.title || item.request_text || item.workflow_type, "Repository investigation"),
       when: clean(item.created_at || item.updated_at, "Saved locally"),
     }));
     if (!items.length && trust) items.push({ title: trust.user_trust_label === "Fresh" ? "Repository evidence verified" : "Repository changes require review", when: "Current scan state" });
-    list(recent).slice(0, 2).forEach((item) => items.push({ title: `Scan baseline · ${clean(item.repo_name, "repository")}`, when: clean(item.last_scan_at, "Saved locally") }));
-    host.innerHTML = items.length ? items.slice(0, 5).map((item) => `<article class="technical-row"><strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(item.when)}</span></article>`).join("") : `<span class="muted tiny">No saved questions or scan changes yet.</span>`;
+    scopedRecent.slice(0, 2).forEach((item) => items.push({ title: `Scan baseline · ${clean(item.repo_name, "repository")}`, when: clean(item.last_scan_at || item.scanned_at, "Saved locally") }));
+    host.innerHTML = items.length ? items.slice(0, 5).map((item) => `<article class="technical-row"><strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(item.when)}</span></article>`).join("") : `<span class="muted tiny">No saved questions or scan changes yet for this repository.</span>`;
   }
 
   function renderHomeDetails(summary, trust, graph, history, recent, agents, health) {
@@ -250,7 +259,7 @@
       findings.querySelectorAll(".finding-row").forEach((row) => row.addEventListener("click", () => window.go(row.dataset.tone === "risk" ? "impact" : "center")));
     }
     renderArchitectureMap(graph, summary);
-    renderHomeActivity(history, recent, trust);
+    renderHomeActivity(history, recent, trust, summary);
   }
 
   async function renderHomeWorkbench() {
@@ -516,6 +525,8 @@
         : (degraded.length === 1 ? "1 component is degraded" : `${degraded.length} components are degraded`);
     }
     const issues = byId("diagnosticIssues");
+    const actionGrid = byId("diagnosticActionGrid");
+    const healthyLine = byId("diagnosticHealthyLine");
     if (issues) {
       issues.innerHTML = degraded.length
         ? degraded.map((card) => {
@@ -524,8 +535,10 @@
           const pill = card.querySelector(".state-label")?.textContent || "Degraded";
           return `<article class="diagnostic-issue" data-state="warning"><i></i><div><strong>${escapeHtml(name)}</strong><small>${escapeHtml(detail)}</small></div><span>${escapeHtml(pill)}</span></article>`;
         }).join("")
-        : `<article class="diagnostic-issue" data-state="ready"><i></i><div><strong>All core systems healthy</strong><small>No verified failures detected.</small></div><span>Healthy</span></article>`;
+        : "";
     }
+    if (actionGrid) actionGrid.classList.toggle("is-healthy", degraded.length === 0);
+    if (healthyLine) healthyLine.hidden = degraded.length !== 0;
     const fixes = byId("diagnosticFixes");
     if (fixes) {
       fixes.innerHTML = degraded.length
@@ -534,13 +547,13 @@
           const fix = diagnosticActionFor(name);
           return `<article class="diagnostic-fix"><i></i><div><strong>${escapeHtml(name)}</strong><small>Use the action that matches this component.</small></div><button type="button" onclick="${fix.action}">${escapeHtml(fix.label)}</button></article>`;
         }).join("")
-        : `<article class="diagnostic-fix"><i style="background:var(--wb-green)"></i><div><strong>No recovery action required</strong><small>Backend, index, memory and integrations responded successfully.</small></div><button type="button" onclick="atlasDesktopShell.refreshDiagnostics()">Verify again</button></article>`;
+        : "";
     }
     const primary = byId("diagnosticPrimaryAction");
     if (primary) {
       primary.innerHTML = degraded.length
         ? `<button class="btn primary" type="button" onclick="atlasDesktopShell.refreshDiagnostics()">Retry runtime</button>`
-        : `<button class="btn ghost" type="button" onclick="go('home')">Return to repository</button>`;
+        : `<button class="btn ghost" type="button" onclick="atlasDesktopShell.refreshDiagnostics()">Verify again</button>`;
     }
   }
 

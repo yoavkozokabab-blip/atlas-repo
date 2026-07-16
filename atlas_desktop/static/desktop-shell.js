@@ -657,7 +657,7 @@
     if (unavailable) {
       summaryHost.innerHTML = `${statusPill("Unavailable", "warning")} Atlas runtime is unavailable.`;
     } else if (degradedCount === 0) {
-      summaryHost.innerHTML = `${statusPill("Ready", "ready")} Atlas is ready. All core systems are operating normally.`;
+      summaryHost.innerHTML = `${statusPill("Ready", "ready")} Atlas is ready.`;
     } else {
       summaryHost.innerHTML = `${statusPill("Attention", "warning")} Atlas needs attention. ${degradedCount} component${degradedCount === 1 ? " is" : "s are"} degraded.`;
     }
@@ -680,7 +680,6 @@
   function agentVerificationState(key, data) {
     if (!data || !data.atlas_configured) return "not_configured";
     if (key === "cursor" && (data.client_verified || data.mcp_handshake_ok || data.last_handshake)) return "verified";
-    if (key === "cursor") return "verified";
     return "configured";
   }
 
@@ -706,6 +705,7 @@
   async function renderSettings() {
     const account = byId("settingsAccountState");
     const facts = byId("settingsStorageFacts");
+    const advanced = byId("settingsAdvancedFacts");
     if (!account || !facts) return;
     const [health, product] = await Promise.all([
       api("/api/health", "GET", undefined, { optional: true }),
@@ -726,8 +726,14 @@
       ["Memory persistence", persistence.ok ? "Verified" : "Available locally"],
       ["Repository changed", yesNo(trust.scan_stale || trust.fresh === false)],
       ["Version", product && product.version],
-      ["Build commit", product && product.build_commit],
     ]);
+    if (advanced) {
+      const commit = product && product.build_commit;
+      advanced.innerHTML = factRows([
+        ["Build commit", commit && commit !== "unknown" ? commit : "Unavailable"],
+        ["Build date", product && product.build_date],
+      ]);
+    }
   }
 
   function copyDiagnosticReport() {

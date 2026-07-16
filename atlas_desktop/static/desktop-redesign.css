@@ -483,7 +483,7 @@ body.atlas-desktop-v2:not(.auth-mode) #app > #view-center { padding: 0; }
 
 /* Diagnostics and settings */
 .diagnostic-summary { max-width: 1500px; margin: 0 auto 18px; }
-.diagnostic-grid { max-width: 1500px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0 auto 18px; }
+.diagnostic-grid { max-width: 1500px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin: 0 auto 18px; }
 .diagnostic-card { min-height: 132px; padding: 16px; border: 1px solid var(--atlas-line); border-top: 2px solid #48545c; border-radius: var(--atlas-radius); background: var(--atlas-panel); }
 .diagnostic-card[data-state="ready"] { border-top-color: var(--atlas-success); }
 .diagnostic-card[data-state="warning"] { border-top-color: var(--atlas-warning); }

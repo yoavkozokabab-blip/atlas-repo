@@ -42,14 +42,14 @@ def _run_node(script: str) -> dict:
     return json.loads(proc.stdout.strip())
 
 
-def test_product_version_is_103():
-    assert product_info.PRODUCT_VERSION == "1.0.3"
-    assert product_info.LAUNCH_BUILD_LABEL == "Atlas v1.0.3"
+def test_product_version_is_104():
+    assert product_info.PRODUCT_VERSION == "1.0.4"
+    assert product_info.LAUNCH_BUILD_LABEL == "Atlas v1.0.4"
 
 
 def test_index_footer_and_assets():
     html = INDEX.read_text(encoding="utf-8")
-    assert "Atlas 1.0.3" in html
+    assert "Atlas 1.0.4" in html
     assert "Report a bug" in html
     assert "Suggest a feature" in html
     assert "atlas_repository_state.js" in html
