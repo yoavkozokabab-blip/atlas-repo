@@ -8,6 +8,17 @@ export const metadata: Metadata = {
 
 const releases = [
   {
+    version: "v1.0.4",
+    date: "2026-07-16",
+    label: "Workflow fix",
+    items: [
+      "Fixed Impact panel rendering after analysis (removed invalid Set.filter usage on dependents).",
+      "History-scope repository invalidations no longer erase Ask, Impact, Debug, and Plan results after they render.",
+      "Demo naming: visible Atlas Demo — Medium with canonical medium_repo, stable across restart.",
+      "Rebuilt Windows installer from corrected source commit a4782f87.",
+    ],
+  },
+  {
     version: "v1.0.3",
     date: "2026-07-15",
     label: "HN polish",
