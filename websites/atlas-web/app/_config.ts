@@ -16,13 +16,12 @@ export const DOWNLOAD_URL =
   "https://github.com/yoavkozokabab-blip/atlas-repo/releases/download/v1.0.4/Atlas_Setup.exe";
 
 /**
- * Paid plan visibility.
- * ON by default for the launch pricing page: Free is available, Pro shows its
- * 7-day trial, and Team remains contact-only. Set NEXT_PUBLIC_PAID_PLANS=0 only
- * for local demos that should hide checkout actions. Live payments still require
- * the server-side Paddle path to be deliberately wired.
+ * Paid plans are deliberately suspended for the v1.0.5 launch candidate.
+ * This is a source-level safety interlock: no production environment variable
+ * can make a checkout CTA live until a separately reviewed billing release
+ * changes this constant and proves the corresponding lifecycle gates.
  */
-export const PAID_PLANS_ENABLED = process.env.NEXT_PUBLIC_PAID_PLANS !== "0";
+export const PAID_PLANS_ENABLED = false;
 
 /** Returns a mailto: link for the configured support email, or /contact if unset. */
 export function supportMailto(subject?: string): string {

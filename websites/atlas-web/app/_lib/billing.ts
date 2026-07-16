@@ -1,6 +1,7 @@
 ﻿import crypto from "node:crypto";
 import { ENV, liveChargesEnabled, paddleCheckoutConfigured, paddleWebhookConfigured } from "./config";
 import { store, User, newId, PlanStatus } from "./store";
+import { PAID_PLANS_ENABLED } from "@/app/_config";
 
 export const PLANS = {
   free: {
@@ -72,10 +73,11 @@ function checkoutUrlFromResponse(data: unknown): string | null {
 }
 
 export function proCheckoutReady(): boolean {
-  return paddleCheckoutConfigured();
+  return PAID_PLANS_ENABLED && paddleCheckoutConfigured();
 }
 
 export async function startCheckout(user: User, plan: PlanId): Promise<CheckoutResult> {
+  if (!PAID_PLANS_ENABLED) throw unavailable("billing_not_configured");
   if (plan === "team") throw unavailable("team_not_billed");
   if (plan === "free") {
     await store.update(user.id, { plan: "free", planStatus: "none", trialEndsAt: null, renewsAt: null });

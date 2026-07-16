@@ -13,6 +13,8 @@ import {
 } from "../app/_lib/analytics-contract";
 import { buildAnalyticsRow } from "../app/_lib/analytics-server";
 import { createToken, hashPassword, verifyPassword, verifyToken } from "../app/_lib/auth";
+import { PAID_PLANS_ENABLED } from "../app/_config";
+import { proCheckoutReady } from "../app/_lib/billing";
 
 test.beforeEach(() => {
   const env = process.env as Record<string, string | undefined>;
@@ -111,4 +113,9 @@ test("migration keeps browser roles server-only", () => {
   expect(v105).toContain("duration_active_ms");
   expect(v105).toContain("atlas_purge_analytics_events");
   expect(v105).toContain("revoke execute on function public.atlas_purge_analytics_events");
+});
+
+test("paid checkout remains source-disabled regardless of environment configuration", () => {
+  expect(PAID_PLANS_ENABLED).toBe(false);
+  expect(proCheckoutReady()).toBe(false);
 });

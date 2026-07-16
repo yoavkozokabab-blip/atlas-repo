@@ -49,7 +49,7 @@ export default function PricingPage() {
             {proReady ? (
               <Link className="btn-mag" href="/checkout/plan/pro" data-evt="pro_cta_click">Start 7-day trial <span className="arw" aria-hidden>→</span></Link>
             ) : (
-              <button className="btn btn-primary btn-lg" disabled data-evt="pro_cta_click">Coming soon</button>
+              <button className="btn btn-primary btn-lg" disabled data-evt="pro_cta_click">Pro coming soon</button>
             )}
             <div className="note-accent" style={{ marginTop: 18 }}>
               <p style={{ margin: 0 }}><b>Paddle is the Merchant of Record.</b></p>
