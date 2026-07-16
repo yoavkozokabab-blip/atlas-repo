@@ -1,4 +1,4 @@
-import { currentSafeUser } from "@/app/_lib/auth";
+import { userFromBearer } from "@/app/_lib/auth";
 import { isAnalyticsEvent } from "@/app/_lib/analytics-contract";
 import { acceptsAnalyticsRequest, analyticsBody, eventBatch } from "@/app/_lib/analytics-ingestion";
 import { buildAnalyticsRow } from "@/app/_lib/analytics-server";
@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   try {
-    if (!(await acceptsAnalyticsRequest(req, "website", 60))) {
+    if (!(await acceptsAnalyticsRequest(req, "desktop", 30))) {
       return privateJson({ ok: false, error: "rate_limited" }, { status: 429, headers: { "Retry-After": "60" } });
     }
     const body = await analyticsBody(req);
@@ -18,17 +18,16 @@ export async function POST(req: Request) {
     if (!events || events.some((event) => !isAnalyticsEvent(event.eventName))) {
       return privateJson({ ok: false, error: "invalid_event" }, { status: 400 });
     }
-    const user = await currentSafeUser().catch(() => null);
+    const user = await userFromBearer(req).catch(() => null);
     const rows = events.map((event) => buildAnalyticsRow({
       eventName: event.eventName as Parameters<typeof buildAnalyticsRow>[0]["eventName"],
-      source: "website", anonymousId: event.anonymousId, sessionId: event.sessionId,
-      route: event.route, properties: event.properties, deduplicationKey: event.deduplicationKey,
-      internal: event.internal === true, userId: user?.id || null, request: req,
+      source: "desktop", installationId: event.installationId, sessionId: event.sessionId,
+      route: "/desktop", properties: event.properties, deduplicationKey: event.eventId,
+      appVersion: event.appVersion, buildCommit: event.buildCommit, userId: user?.id || null, request: req,
     }));
     const result = await recordAnalyticsEvents(rows);
     return privateJson({ ok: true, accepted: rows.length, recorded: result.recorded }, { status: 202 });
   } catch {
-    // Never block navigation, auth or download flows because analytics failed.
-    return privateJson({ ok: true, recorded: false }, { status: 202 });
+    return privateJson({ ok: true, accepted: 0, recorded: 0 }, { status: 202 });
   }
 }

@@ -1,7 +1,11 @@
 export const ANALYTICS_EVENTS = [
   "site_visit",
   "page_view",
+  "page_active_heartbeat",
+  "page_active_ended",
+  "session_ended",
   "download_clicked",
+  "installer_download_response_started",
   "download_unavailable_seen",
   "github_clicked",
   "docs_clicked",
@@ -14,16 +18,27 @@ export const ANALYTICS_EVENTS = [
   "login_failed",
   "guest_mode_started",
   "contact_submitted",
-  "installer_download_started",
-  "installer_download_completed",
-  "desktop_installed",
-  "desktop_launched",
-  "repository_selected",
+  "app_first_run",
+  "app_launch",
+  "repository_loaded",
   "scan_started",
   "scan_completed",
-  "agent_connected",
-  "ask_submitted",
+  "scan_failed",
+  "impact_started",
+  "impact_completed",
+  "impact_failed",
+  "ask_started",
   "ask_completed",
+  "ask_failed",
+  "debug_started",
+  "debug_completed",
+  "debug_failed",
+  "plan_started",
+  "plan_completed",
+  "plan_failed",
+  "mcp_configured",
+  "mcp_connected",
+  "mcp_disconnected",
 ] as const;
 
 export type AnalyticsEventName = (typeof ANALYTICS_EVENTS)[number];
@@ -39,6 +54,15 @@ const PROPERTY_KEYS = new Set([
   "reason_code",
   "status",
   "surface",
+  "workflow",
+  "duration_active_ms",
+  "duration_elapsed_ms",
+  "referrer_category",
+  "campaign_source",
+  "campaign_medium",
+  "campaign_name",
+  "device_category",
+  "browser_category",
 ]);
 const SENSITIVE_KEY = /(authorization|cookie|email|password|prompt|repo|path|secret|token)/i;
 const LOCAL_PATH = /(?:[a-z]:\\|\\\\|\/(?:Users|home|var|etc|private|tmp)\/)/i;
@@ -66,7 +90,9 @@ export function sanitizeProperties(value: unknown): Record<string, string | numb
   for (const [key, raw] of Object.entries(value).slice(0, 16)) {
     if (!PROPERTY_KEYS.has(key) || SENSITIVE_KEY.test(key)) continue;
     if (typeof raw === "boolean" || (typeof raw === "number" && Number.isFinite(raw))) {
-      output[key] = raw;
+      output[key] = typeof raw === "number" && key.startsWith("duration_")
+        ? Math.max(0, Math.min(Math.floor(raw), 86_400_000))
+        : raw;
       continue;
     }
     if (typeof raw !== "string") continue;
@@ -75,6 +101,32 @@ export function sanitizeProperties(value: unknown): Record<string, string | numb
     output[key] = text;
   }
   return output;
+}
+
+export function classifyReferrer(value: string | null): string {
+  if (!value) return "direct";
+  try {
+    const host = new URL(value).hostname.toLowerCase();
+    if (/google\.|bing\.|duckduckgo\.|search\.yahoo\./.test(host)) return "search";
+    if (/github\.com|twitter\.com|x\.com|linkedin\.com|reddit\.com|news\.ycombinator\.com/.test(host)) return "social";
+    return "referral";
+  } catch {
+    return "unknown";
+  }
+}
+
+export function classifyDevice(userAgent: string | null): "mobile" | "desktop" | "unknown" {
+  if (!userAgent) return "unknown";
+  return /mobile|android|iphone|ipad/i.test(userAgent) ? "mobile" : "desktop";
+}
+
+export function classifyBrowser(userAgent: string | null): "edge" | "chrome" | "firefox" | "safari" | "other" {
+  const value = userAgent || "";
+  if (/edg\//i.test(value)) return "edge";
+  if (/firefox\//i.test(value)) return "firefox";
+  if (/chrome\//i.test(value)) return "chrome";
+  if (/safari\//i.test(value)) return "safari";
+  return "other";
 }
 
 export function analyticsEnvironment(): "production" | "preview" | "development" | "test" | "unknown" {

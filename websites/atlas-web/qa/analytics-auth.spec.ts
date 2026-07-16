@@ -2,6 +2,9 @@ import { test, expect } from "playwright/test";
 import fs from "node:fs";
 import path from "node:path";
 import {
+  classifyBrowser,
+  classifyDevice,
+  classifyReferrer,
   analyticsEnvironment,
   isAnalyticsEvent,
   sanitizeIdentifier,
@@ -20,6 +23,8 @@ test.beforeEach(() => {
 
 test("canonical contract rejects unknown events and sensitive payloads", () => {
   expect(isAnalyticsEvent("site_visit")).toBe(true);
+  expect(isAnalyticsEvent("installer_download_completed")).toBe(false);
+  expect(isAnalyticsEvent("installer_download_response_started")).toBe(true);
   expect(isAnalyticsEvent("api_me_success")).toBe(false);
   expect(sanitizeRoute("/pricing?email=private@example.com")).toBe("/pricing");
   expect(sanitizeRoute("C:\\Users\\private\\repo")).toBeNull();
@@ -32,6 +37,13 @@ test("canonical contract rejects unknown events and sensitive payloads", () => {
     surface: "C:\\Users\\private\\repo",
     prompt: "private code",
   })).toEqual({ status: "ok", http_status: 202 });
+});
+
+test("request context is classified without persisting raw referrers or user agents", () => {
+  expect(classifyReferrer("https://www.google.com/search?q=atlas")).toBe("search");
+  expect(classifyReferrer("https://news.ycombinator.com/item?id=1")).toBe("social");
+  expect(classifyDevice("Mozilla/5.0 (iPhone; CPU iPhone OS 17_0)")).toBe("mobile");
+  expect(classifyBrowser("Mozilla/5.0 Chrome/124.0.0.0 Safari/537.36")).toBe("chrome");
 });
 
 test("server owns environment, identity, version and deterministic deduplication", () => {
@@ -77,4 +89,11 @@ test("migration keeps browser roles server-only", () => {
   expect(migration).toContain("revoke execute on function public.atlas_rate_limit_hit");
   expect(migration).toContain("analytics_events_deduplication_key_uidx");
   expect(migration).toContain("grant execute on function public.atlas_analytics_summary");
+  const v105 = fs.readFileSync(
+    path.join(process.cwd(), "supabase", "migrations", "20260716200846_v105_analytics_engagement_and_desktop_ingestion.sql"),
+    "utf8"
+  );
+  expect(v105).toContain("duration_active_ms");
+  expect(v105).toContain("atlas_purge_analytics_events");
+  expect(v105).toContain("revoke execute on function public.atlas_purge_analytics_events");
 });

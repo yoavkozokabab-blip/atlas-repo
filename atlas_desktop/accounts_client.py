@@ -34,7 +34,7 @@ _SERVICE_BASE = os.environ.get("ATLAS_ACCOUNTS_URL", "http://127.0.0.1:8788")
 
 def web_base() -> str:
     """Base URL of the website auth authority (Supabase-backed)."""
-    return (os.environ.get("ATLAS_WEB_URL") or "https://atlas-repo-chi.vercel.app").rstrip("/")
+    return (os.environ.get("ATLAS_WEB_URL") or "https://atlas-repo-wu76.vercel.app").rstrip("/")
 
 
 def auth_mode() -> str:

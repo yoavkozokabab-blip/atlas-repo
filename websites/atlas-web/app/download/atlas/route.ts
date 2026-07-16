@@ -1,10 +1,12 @@
 ﻿import { NextResponse } from "next/server";
+import crypto from "node:crypto";
 import { createReadStream, existsSync, statSync } from "node:fs";
 import { Readable } from "node:stream";
 import path from "node:path";
 import { currentUser } from "@/app/_lib/auth";
 import { DOWNLOAD_URL } from "@/app/_config";
-import { store, newId } from "@/app/_lib/store";
+import { store, newId, recordAnalyticsEvent } from "@/app/_lib/store";
+import { buildAnalyticsRow } from "@/app/_lib/analytics-server";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -32,12 +34,26 @@ async function recordDownloadIfSignedIn(): Promise<void> {
   });
 }
 
-export async function GET() {
+async function recordInstallerResponseStarted(req: Request): Promise<void> {
+  try {
+    await recordAnalyticsEvent(buildAnalyticsRow({
+      eventName: "installer_download_response_started",
+      source: "server",
+      route: "/download/atlas",
+      deduplicationKey: crypto.randomUUID(),
+      request: req,
+    }));
+  } catch {
+    // Download behavior must not depend on analytics availability.
+  }
+}
+
+export async function GET(req: Request) {
   const hostedUrl =
     process.env.ATLAS_INSTALLER_URL ||
     (DOWNLOAD_URL && DOWNLOAD_URL !== "/download/atlas" ? DOWNLOAD_URL : undefined);
   if (hostedUrl) {
-    await recordDownloadIfSignedIn();
+    await Promise.all([recordDownloadIfSignedIn(), recordInstallerResponseStarted(req)]);
     return NextResponse.redirect(hostedUrl, 302);
   }
 
@@ -53,7 +69,7 @@ export async function GET() {
     );
   }
 
-  await recordDownloadIfSignedIn();
+  await Promise.all([recordDownloadIfSignedIn(), recordInstallerResponseStarted(req)]);
   const size = statSync(file).size;
   const webStream = Readable.toWeb(createReadStream(file)) as ReadableStream;
   return new NextResponse(webStream, {

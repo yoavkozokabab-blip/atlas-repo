@@ -9,7 +9,7 @@ import time
 import uuid
 from typing import Any, Dict, List, Optional, Tuple
 
-from . import analytics
+from . import analytics, analytics_remote
 from .product_info import PRODUCT_VERSION, build_commit as _build_commit, check_for_update
 
 PIPELINE_VERSION = "1"
@@ -361,6 +361,25 @@ def pipeline_track_event(event: str, **properties: Any) -> Dict[str, Any]:
         **{k: v for k, v in safe_props.items() if v is not None},
     }
     result = analytics.track_event(name, **enriched)
+    # Delivery is deliberately fire-and-forget. The local log above remains
+    # available even when the network, website collector, or Supabase is down.
+    try:
+        analytics_remote.track_pipeline_event(
+            name,
+            installation_id=identity.get("installation_id"),
+            app_version=PRODUCT_VERSION,
+            build_commit=_build_commit(),
+            properties=safe_props,
+        )
+        if name == "app_started":
+            analytics_remote.record_first_run(
+                installation_id=identity.get("installation_id"),
+                app_version=PRODUCT_VERSION,
+                build_commit=_build_commit(),
+            )
+    except Exception:
+        # Remote analytics cannot change the result of a local product action.
+        pass
     _bridge_accounts_telemetry(name)
     if name in {"scan_crash", "app_crash"}:
         record_crash(

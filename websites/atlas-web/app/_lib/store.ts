@@ -481,16 +481,23 @@ export const store = getStore();
 export async function recordAnalyticsEvent(
   row: AnalyticsRow
 ): Promise<{ recorded: boolean }> {
-  if (!ENV.hasSupabase) return { recorded: false };
+  const result = await recordAnalyticsEvents([row]);
+  return { recorded: result.recorded === 1 };
+}
+
+export async function recordAnalyticsEvents(
+  rowsToRecord: AnalyticsRow[]
+): Promise<{ recorded: number }> {
+  if (!ENV.hasSupabase) return { recorded: 0 };
   const rows = await sbRows(
     await sb("analytics_events?on_conflict=deduplication_key", {
       method: "POST",
       headers: { Prefer: "resolution=ignore-duplicates,return=representation" },
-      body: JSON.stringify(row),
+      body: JSON.stringify(rowsToRecord),
     }),
     "analytics-event"
   );
-  return { recorded: rows.length === 1 };
+  return { recorded: rows.length };
 }
 
 export type AnalyticsSummary = {
