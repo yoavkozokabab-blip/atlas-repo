@@ -695,8 +695,9 @@
     const configured = ["claude", "cursor", "codex"].filter((key) => agentVerificationState(key, result && result[key]) !== "not_configured");
     const repository = window.STATE && STATE.summary;
     const contextReady = !!(repository && repository.ok);
+    // Lead with the live connection state; configuration count is secondary.
     status.innerHTML = result && result.ok
-      ? `${statusPill(connected.length ? "Connected" : "Not connected", connected.length ? "ready" : "neutral")} Active clients: ${connected.length}. Configured clients: ${configured.length}. Available MCP tools: 18. Transport: Local stdio.${
+      ? `${statusPill(connected.length ? "Connected" : "Not connected", connected.length ? "ready" : "neutral")} Connected clients: ${connected.length}. Configured clients: ${configured.length}. Available MCP tools: 18. Transport: Local stdio.${
           contextReady ? ` Repository context: ${escapeHtml(repository.repo_name || "active")}.` : " Load a repository for MCP context."
         }`
       : `${statusPill("Error", "warning")} MCP status could not be read. Open Diagnostics for details.`;

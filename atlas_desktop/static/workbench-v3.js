@@ -469,15 +469,16 @@
       card.dataset.verification = verification;
       let meta = card.querySelector(".agent-runtime-meta");
       if (!meta) { meta = document.createElement("div"); meta.className = "agent-runtime-meta"; card.querySelector(".mcp-tool-card-top")?.after(meta); }
+      const clientLabel = { claude: "Claude Code", cursor: "Cursor", codex: "Codex" }[key] || key;
       const statusLabel = connected ? "Connected" : "Not connected";
       const connection = data.connection || {};
       const handshakeLine = connected
-        ? `${connection.client_name || "MCP client"} active now`
-        : (configured ? "MCP configuration installed. Restart the client to connect." : "Not configured");
+        ? `${connection.client_name || clientLabel} MCP handshake verified`
+        : (configured ? `MCP configuration installed. Restart ${clientLabel} to connect.` : "No MCP configuration found");
       meta.innerHTML = [
         ["Status", statusLabel],
-        ["Config file", configured ? "Found" : "Missing"],
-        ["Connection", handshakeLine],
+        ["Configuration", configured ? "Installed" : "Not installed"],
+        ["Client check", handshakeLine],
         ["Repository context", active?.ok ? active.repo_name : "Select a repository"],
       ].map(([label, value]) => `<div class="agent-meta-row"><span>${escapeHtml(label)}</span><b>${escapeHtml(value)}</b></div>`).join("") + `<div class="agent-tool-list"><span>health</span><span>scan</span><span>find files</span><span>ask</span><span>impact</span><span>debug</span><span>plan</span></div>`;
       const statusEl = byId(`mcp${key.charAt(0).toUpperCase() + key.slice(1)}Status`);

@@ -3300,7 +3300,21 @@ async function runImpact() {
     }
   }
   if (!r.ok) {
-    out.innerHTML = `<div class="impact-result-panel">${workflowErrorHtml("Change impact analysis could not run", r, "Use a path from the graph or an architecture concept (e.g. authentication, routing).")}</div>`;
+    // Distinct state: the analysis ran fine but the target is not in the
+    // scanned graph. This is not a failure of Atlas — say so plainly instead
+    // of showing the generic error panel.
+    if (r.status === "target_not_resolved" || r.unresolved) {
+      out.innerHTML = `<div class="impact-result-panel impact-state-not-found">
+        <h3 style="margin:0 0 6px">Target not found in this repository</h3>
+        <p class="muted"><span class="mono">${esc(target)}</span> is not in the last scan, so Atlas cannot trace its dependents.</p>
+        <ul class="clean tiny muted">
+          <li>Check the spelling, or pick a file from the scanned list below the input.</li>
+          <li>If the file is new, refresh the scan first.</li>
+        </ul>
+      </div>`;
+      return;
+    }
+    out.innerHTML = `<div class="impact-result-panel impact-state-failed">${workflowErrorHtml("Change impact analysis could not run", r, "Use a path from the graph or an architecture concept (e.g. authentication, routing).")}</div>`;
     return;
   }
   STATE.impactResult = r;

@@ -25,9 +25,9 @@ export default function HeroCine() {
     <section className="hero-cine" id="top">
       <div className="hero-cine-inner">
         <h1>
-          <Reveal text="Your codebase," base={0.15} />
+          <Reveal text="Know what may break" base={0.15} />
           <br />
-          <Reveal text="remembered." live base={0.35} />
+          <Reveal text="before the code changes." live base={0.35} />
         </h1>
 
         <p className="hero-support fade-seq" style={{ animationDelay: "0.6s" }}>

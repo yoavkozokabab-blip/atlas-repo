@@ -42,10 +42,10 @@ export const limitations = [
 
 /** Home copy deck (kept beside the facts so tone + numbers stay consistent). */
 export const copy = {
-  h1: "Your codebase, remembered.",
+  h1: "Know what may break before the code changes.",
   support:
-    "Atlas maps your repository into a persistent memory and serves cited context to Claude Code, Cursor and Codex — locally, across every session.",
-  heroNote: "No signup required · Local-first · Your code stays on your machine",
+    "Atlas maps your repository into persistent, evidence-backed memory — so you and your coding agent (Claude Code, Cursor, Codex) see likely blast radius before a change, locally, across every session.",
+  heroNote: "Windows · Free to use · No signup required · Local-first · Your code stays on your machine",
   acts: {
     problem: "Every AI session starts from zero.",
     scan: "Atlas maps your repository.",
