@@ -12,9 +12,11 @@ import json
 import os
 import re
 import sys
+import threading
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 from .. import agent_integrations, api, repository_memory as repo_memory
+from .. import mcp_connection_status
 from ..context_pack import build_context_pack_from_state
 
 MCP_PROTOCOL_VERSION = "2024-11-05"
@@ -33,6 +35,11 @@ _SAFE_TOKEN_METRIC_KEYS = {
     "token_reduction_pct", "file_level_tokens", "symbol_level_tokens",
     "slice_tokens", "full_tokens", "tokens_before", "tokens_after",
 }
+
+_SESSION_ID: Optional[str] = None
+_HEARTBEAT_STOP: Optional[threading.Event] = None
+_HEARTBEAT_THREAD: Optional[threading.Thread] = None
+_HEARTBEAT_INTERVAL_SECONDS = 10.0
 
 
 def _schema(
@@ -982,11 +989,57 @@ def _mcp_tool_result(payload: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
+def _start_connection_heartbeat() -> None:
+    global _HEARTBEAT_STOP, _HEARTBEAT_THREAD
+    if not _SESSION_ID or (_HEARTBEAT_THREAD and _HEARTBEAT_THREAD.is_alive()):
+        return
+    stop = threading.Event()
+    _HEARTBEAT_STOP = stop
+
+    def _run() -> None:
+        while not stop.wait(_HEARTBEAT_INTERVAL_SECONDS):
+            sid = _SESSION_ID
+            if not sid:
+                return
+            mcp_connection_status.touch_session(sid, transport_only=True)
+
+    _HEARTBEAT_THREAD = threading.Thread(target=_run, name="atlas-mcp-connection-heartbeat", daemon=True)
+    _HEARTBEAT_THREAD.start()
+
+
+def _record_initialize(params: Dict[str, Any]) -> None:
+    global _SESSION_ID
+    info = params.get("clientInfo") if isinstance(params, dict) else {}
+    if not isinstance(info, dict):
+        info = {}
+    _SESSION_ID = mcp_connection_status.record_initialize(info)
+    _start_connection_heartbeat()
+
+
+def _record_activity() -> None:
+    if _SESSION_ID:
+        mcp_connection_status.touch_session(_SESSION_ID)
+
+
+def _close_current_session(reason: str) -> None:
+    global _SESSION_ID, _HEARTBEAT_STOP, _HEARTBEAT_THREAD
+    if _HEARTBEAT_STOP:
+        _HEARTBEAT_STOP.set()
+    if _SESSION_ID:
+        mcp_connection_status.disconnect_session(_SESSION_ID, reason)
+    _SESSION_ID = None
+    _HEARTBEAT_STOP = None
+    _HEARTBEAT_THREAD = None
+
+
 def handle_jsonrpc(message: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     method = message.get("method")
     msg_id = message.get("id")
     try:
+        _record_activity()
         if method == "initialize":
+            params = message.get("params") if isinstance(message.get("params"), dict) else {}
+            _record_initialize(params)
             return {
                 "jsonrpc": "2.0",
                 "id": msg_id,
@@ -997,6 +1050,11 @@ def handle_jsonrpc(message: Dict[str, Any]) -> Optional[Dict[str, Any]]:
                 },
             }
         if method == "notifications/initialized":
+            return None
+        if method == "shutdown":
+            return {"jsonrpc": "2.0", "id": msg_id, "result": None}
+        if method == "notifications/exit":
+            _close_current_session("client_exit")
             return None
         if method == "tools/list":
             return {"jsonrpc": "2.0", "id": msg_id, "result": list_tools()}
@@ -1062,10 +1120,13 @@ def _write_message(stream: Any, message: Dict[str, Any]) -> None:
 
 
 def serve_stdio() -> int:
-    for message in _read_messages(sys.stdin.buffer):
-        response = handle_jsonrpc(message)
-        if response is not None:
-            _write_message(sys.stdout.buffer, response)
+    try:
+        for message in _read_messages(sys.stdin.buffer):
+            response = handle_jsonrpc(message)
+            if response is not None:
+                _write_message(sys.stdout.buffer, response)
+    finally:
+        _close_current_session("stream_closed")
     return 0
 
 

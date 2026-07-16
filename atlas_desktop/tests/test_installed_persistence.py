@@ -251,7 +251,7 @@ def test_ui_distinguishes_configured_agent_without_repository_context() -> None:
         encoding="utf-8"
     )
     assert "Load a repository for MCP context" in shell
-    assert "Client verification not completed" in workbench
+    assert "MCP configuration installed. Restart the client to connect." in workbench
     assert "Select a repository" in workbench
     assert 'summary?.ok ? "Connected"' not in workbench
     assert '"Connected agents"' not in workbench

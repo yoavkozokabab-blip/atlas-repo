@@ -66,7 +66,7 @@
 
   function agentNames(status) {
     const labels = { claude: "Claude Code", cursor: "Cursor", codex: "Codex" };
-    return Object.keys(labels).filter((key) => status?.[key]?.atlas_configured).map((key) => labels[key]);
+    return Object.keys(labels).filter((key) => status?.[key]?.connected || status?.connections?.clients?.[key]?.connected).map((key) => labels[key]);
   }
 
   function branchLabel(summary) {
@@ -80,9 +80,9 @@
   }
 
   function agentVerificationState(key, data) {
-    if (!data?.atlas_configured) return "not_configured";
-    if (key === "cursor" && (data.client_verified || data.mcp_handshake_ok || data.last_handshake)) return "verified";
-    return "configured";
+    if (data?.connected || data?.connection?.connected) return "connected";
+    if (data?.atlas_configured) return "configured";
+    return "not_configured";
   }
 
   function syncSidebar(summary, trust, agents) {
@@ -450,7 +450,7 @@
   function decorateAgentCards(status, summary) {
     const active = currentRepoSummary(summary);
     const connected = agentNames(status);
-    const verified = ["claude", "cursor", "codex"].filter((key) => agentVerificationState(key, status?.[key]) === "verified");
+    const verified = ["claude", "cursor", "codex"].filter((key) => agentVerificationState(key, status?.[key]) === "connected");
     if (byId("agentRepoContext")) {
       byId("agentRepoContext").textContent = active?.ok
         ? `${active.repo_name} · ${num(active.module_count)} modules`
@@ -464,24 +464,26 @@
       const data = status?.[key] || {};
       const verification = agentVerificationState(key, data);
       const configured = verification !== "not_configured";
-      card.dataset.connected = configured ? "true" : "false";
+      const connected = verification === "connected";
+      card.dataset.connected = connected ? "true" : "false";
       card.dataset.verification = verification;
       let meta = card.querySelector(".agent-runtime-meta");
       if (!meta) { meta = document.createElement("div"); meta.className = "agent-runtime-meta"; card.querySelector(".mcp-tool-card-top")?.after(meta); }
-      const statusLabel = verification === "verified" ? "Verified" : (configured ? "Configured" : "Not configured");
-      const handshakeLine = verification === "verified"
-        ? "MCP handshake verified"
-        : (configured ? "Client verification not completed" : "Not configured");
+      const statusLabel = connected ? "Connected" : "Not connected";
+      const connection = data.connection || {};
+      const handshakeLine = connected
+        ? `${connection.client_name || "MCP client"} active now`
+        : (configured ? "MCP configuration installed. Restart the client to connect." : "Not configured");
       meta.innerHTML = [
         ["Status", statusLabel],
         ["Config file", configured ? "Found" : "Missing"],
-        ["Client check", handshakeLine],
+        ["Connection", handshakeLine],
         ["Repository context", active?.ok ? active.repo_name : "Select a repository"],
       ].map(([label, value]) => `<div class="agent-meta-row"><span>${escapeHtml(label)}</span><b>${escapeHtml(value)}</b></div>`).join("") + `<div class="agent-tool-list"><span>health</span><span>scan</span><span>find files</span><span>ask</span><span>impact</span><span>debug</span><span>plan</span></div>`;
       const statusEl = byId(`mcp${key.charAt(0).toUpperCase() + key.slice(1)}Status`);
       if (statusEl) {
         statusEl.textContent = statusLabel;
-        statusEl.className = `mcp-tool-card-status ${verification === "verified" ? "verified" : (configured ? "configured" : "disconnected")}`;
+        statusEl.className = `mcp-tool-card-status ${connected ? "connected" : "disconnected"}`;
       }
     });
   }

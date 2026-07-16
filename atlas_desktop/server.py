@@ -293,6 +293,7 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
         # Phase 189 — result feedback funnel
         ("POST", "/api/feedback/result"): lambda body, _query: api.submit_result_feedback(body or {}),
         ("GET", "/api/integrations/mcp/status"): lambda _body, _query: api.mcp_setup_status(),
+        ("GET", "/api/mcp/connections"): lambda _body, _query: api.mcp_connections_status(),
         ("GET", "/api/integrations/claude/config"): lambda _body, _query: api.agent_integrations_status(),
         ("POST", "/api/integrations/cursor/write-config"): lambda body, _query: api.write_cursor_mcp_config(
             body.get("confirm") is True or str(body.get("confirm", "")).lower() in {"1", "true", "yes"}
@@ -1138,6 +1139,10 @@ def create_fastapi_app():  # pragma: no cover - exercised only when fastapi pres
     @app.get("/api/integrations/mcp/status")
     def _mcp_status():
         return api.mcp_setup_status()
+
+    @app.get("/api/mcp/connections")
+    def _mcp_connections():
+        return api.mcp_connections_status()
 
     @app.post("/api/integrations/cursor/write-config")
     async def _cursor_write_config(request: Request):

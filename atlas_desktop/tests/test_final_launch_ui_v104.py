@@ -75,7 +75,8 @@ def test_agents_verification_semantics():
     shell = SHELL.read_text(encoding="utf-8")
     assert 'codexOn ? "Codex configured"' not in mcp
     assert '"Codex configured"' not in mcp.split("setText(")[1:]
-    assert "mcpVerificationState" in mcp
+    assert "connectionFor" in mcp
+    assert 'connected ? "Connected" : "Not connected"' in mcp
     assert 'if (key === "cursor") return "verified"' not in shell
 
 

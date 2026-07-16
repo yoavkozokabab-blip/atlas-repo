@@ -645,7 +645,7 @@ vm.runInContext({json.dumps(ask_renderer)}, askContext);
 """
     result = _run_node(script)
     assert result["home"] == {
-        "state": "productive",
+        "state": "indexed",
         "repo": "atlas rc1 clean",
         "files": "20,877",
         "modules": "382",
@@ -659,7 +659,7 @@ vm.runInContext({json.dumps(ask_renderer)}, askContext);
     assert result["graph"]["nodes"] == 382
     assert result["graph"]["links"] == 481
     assert result["workbenchHome"] == {
-        "state": "productive",
+        "state": "indexed",
         "modules": "382",
         "edges": "481",
         "subsystems": "28",

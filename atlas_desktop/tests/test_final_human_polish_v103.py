@@ -218,10 +218,11 @@ def test_agents_configured_vs_verified_semantics():
     workbench_source = WORKBENCH.read_text(encoding="utf-8")
     assert "agentVerificationState" in workbench_source
     assert "Configuration verified" not in workbench_source
-    assert 'key === "cursor"' in workbench_source
-    html = INDEX.read_text(encoding="utf-8")
-    assert "Configured clients" in html
-    assert "Verified clients" in html
+    assert 'return "connected"' in workbench_source
+    shell = SHELL.read_text(encoding="utf-8")
+    assert "Active clients" in shell
+    assert "Configured clients" in shell
+    assert "Verified clients" not in shell
 
 
 def test_diagnostics_uses_repository_summary_not_zero_modules():

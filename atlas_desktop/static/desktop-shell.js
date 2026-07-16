@@ -45,7 +45,7 @@
 
   function connectedAgents(status) {
     if (!status || !status.ok) return [];
-    return ["claude", "cursor", "codex"].filter((key) => status[key] && status[key].atlas_configured);
+    return ["claude", "cursor", "codex"].filter((key) => status[key]?.connected || status.connections?.clients?.[key]?.connected);
   }
 
   function scheduleTrustCheck(delay = 6000) {
@@ -622,21 +622,21 @@
 
     const agents = connectedAgents(mcp);
     let agentState = "neutral";
-    let agentLabel = "Not configured";
-    let agentDetails = "No coding agent reports Atlas MCP configuration";
+    let agentLabel = "Not connected";
+    let agentDetails = "No coding agent currently has an active Atlas MCP session";
     if (mcp && mcp.ok) {
       if (agents.length === 3) {
         agentState = "ready";
-        agentLabel = "Configured";
-        agentDetails = "Claude, Cursor, and Codex are configured";
+        agentLabel = "Connected";
+        agentDetails = "Claude, Cursor, and Codex are actively connected";
       } else if (agents.length > 0) {
         agentState = "neutral";
-        agentLabel = "Partially configured";
-        agentDetails = `${agents.length} of 3 agents configured`;
+        agentLabel = "Partially connected";
+        agentDetails = `${agents.length} of 3 agents currently connected`;
       } else {
         agentState = "neutral";
-        agentLabel = "Not configured";
-        agentDetails = "Connect Claude, Cursor, or Codex from Agents";
+        agentLabel = "Not connected";
+        agentDetails = "Configure and restart Claude, Cursor, or Codex to connect";
       }
     } else if (mcp) {
       agentState = "warning";
@@ -678,9 +678,9 @@
   }
 
   function agentVerificationState(key, data) {
-    if (!data || !data.atlas_configured) return "not_configured";
-    if (key === "cursor" && (data.client_verified || data.mcp_handshake_ok || data.last_handshake)) return "verified";
-    return "configured";
+    if (data?.connected || data?.connection?.connected) return "connected";
+    if (data?.atlas_configured) return "configured";
+    return "not_configured";
   }
 
   async function renderAgents() {
@@ -691,12 +691,12 @@
     if (!status) return;
     status.innerHTML = `${statusPill("Checking", "neutral")} Reading local MCP configuration…`;
     const result = await atlasMcpSetup.loadStatus(true);
-    const configured = connectedAgents(result);
-    const verified = ["claude", "cursor", "codex"].filter((key) => agentVerificationState(key, result && result[key]) === "verified");
+    const connected = connectedAgents(result);
+    const configured = ["claude", "cursor", "codex"].filter((key) => agentVerificationState(key, result && result[key]) !== "not_configured");
     const repository = window.STATE && STATE.summary;
     const contextReady = !!(repository && repository.ok);
     status.innerHTML = result && result.ok
-      ? `${statusPill(configured.length ? "Configured" : "Not configured", configured.length ? "neutral" : "neutral")} Configured clients: ${configured.length}. Verified clients: ${verified.length}. Available MCP tools: 18. Transport: Local stdio.${
+      ? `${statusPill(connected.length ? "Connected" : "Not connected", connected.length ? "ready" : "neutral")} Active clients: ${connected.length}. Configured clients: ${configured.length}. Available MCP tools: 18. Transport: Local stdio.${
           contextReady ? ` Repository context: ${escapeHtml(repository.repo_name || "active")}.` : " Load a repository for MCP context."
         }`
       : `${statusPill("Error", "warning")} MCP status could not be read. Open Diagnostics for details.`;

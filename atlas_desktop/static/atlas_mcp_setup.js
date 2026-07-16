@@ -4,6 +4,8 @@ const atlasMcpSetup = (() => {
   let cachedJson = "";
   let manualSnippet = "";
   let manualTool = "";
+  let pollTimer = null;
+  const POLL_INTERVAL_MS = 8000;
 
   const CONNECT_LABELS = {
     claude: "Connect to Claude",
@@ -31,7 +33,22 @@ const atlasMcpSetup = (() => {
     const el = document.getElementById(id);
     if (!el) return;
     el.textContent = text;
+    el.setAttribute("aria-label", text);
     if (state) el.className = `mcp-tool-card-status ${state}`;
+  }
+
+  function setSecondary(tool, text) {
+    const id = toolId(tool);
+    if (!id) return;
+    const card = document.getElementById(`mcp${id}Card`);
+    if (!card) return;
+    let el = card.querySelector(".mcp-tool-card-secondary");
+    if (!el) {
+      el = document.createElement("p");
+      el.className = "mcp-tool-card-secondary muted tiny";
+      card.querySelector(".mcp-tool-card-top")?.after(el);
+    }
+    el.textContent = text;
   }
 
   function setConnectButton(id, connected, manual, tool) {
@@ -49,44 +66,39 @@ const atlasMcpSetup = (() => {
     btn.classList.toggle("ghost", !!connected);
   }
 
-  function mcpVerificationState(key, data) {
-    if (!data?.atlas_configured) return "not_configured";
-    if (key === "cursor" && (data.client_verified || data.mcp_handshake_ok || data.last_handshake)) return "verified";
-    return "configured";
+  function connectionFor(status, key) {
+    return status?.connections?.clients?.[key] || status?.[key]?.connection || { connected: false };
+  }
+
+  function secondaryLine(key, data, connection) {
+    if (connection?.connected) {
+      const client = [connection.client_name, connection.client_version].filter(Boolean).join(" ");
+      const sessions = Number(connection.session_count || 0);
+      return `${client || TOOL_LABELS[key]} · Active now${sessions > 1 ? ` · ${sessions} sessions` : ""}`;
+    }
+    if (data?.atlas_configured) return `MCP configuration installed. Restart ${TOOL_LABELS[key]} to connect.`;
+    if (key === "codex" && data?.can_auto_write === false) return "Manual setup required before Codex can connect.";
+    return "MCP configuration not installed.";
+  }
+
+  function renderClientStatus(status, key) {
+    const data = status?.[key] || {};
+    const connection = connectionFor(status, key);
+    const connected = !!connection.connected;
+    const id = toolId(key);
+    setText(`mcp${id}Status`, connected ? "Connected" : "Not connected", connected ? "connected" : "disconnected");
+    setSecondary(key, secondaryLine(key, data, connection));
+    setConnectButton(`mcp${id}Btn`, !!data.atlas_configured, key === "codex" && !data.atlas_configured && data.can_auto_write === false, key);
+    const card = document.getElementById(`mcp${id}Card`);
+    if (card) {
+      card.dataset.connected = connected ? "true" : "false";
+      card.dataset.configured = data.atlas_configured ? "true" : "false";
+    }
   }
 
   function renderHomeStatus(status) {
     if (!status) return;
-    const claude = status.claude || {};
-    const cursor = status.cursor || {};
-    const codex = status.codex || {};
-    const claudeOn = !!claude.atlas_configured;
-    const cursorOn = !!cursor.atlas_configured;
-    const codexOn = !!codex.atlas_configured;
-    const codexManual = !codexOn && codex.can_auto_write === false;
-    const claudeState = mcpVerificationState("claude", claude);
-    const cursorState = mcpVerificationState("cursor", cursor);
-    const codexState = mcpVerificationState("codex", codex);
-
-    setText(
-      "mcpClaudeStatus",
-      claudeState === "verified" ? "Verified" : (claudeOn ? "Configured" : "Not configured"),
-      claudeState === "verified" ? "verified" : (claudeOn ? "configured" : "disconnected")
-    );
-    setText(
-      "mcpCursorStatus",
-      cursorState === "verified" ? "Verified" : (cursorOn ? "Configured" : "Not configured"),
-      cursorState === "verified" ? "verified" : (cursorOn ? "configured" : "disconnected")
-    );
-    setText(
-      "mcpCodexStatus",
-      codexState === "verified" ? "Verified" : (codexOn ? "Configured" : (codexManual ? "Manual setup required" : "Not configured")),
-      codexState === "verified" ? "verified" : (codexOn ? "configured" : (codexManual ? "manual" : "disconnected"))
-    );
-
-    setConnectButton("mcpClaudeBtn", claudeOn, false, "claude");
-    setConnectButton("mcpCursorBtn", cursorOn, false, "cursor");
-    setConnectButton("mcpCodexBtn", codexOn, codexManual, "codex");
+    ["claude", "cursor", "codex"].forEach((key) => renderClientStatus(status, key));
     if (typeof window.renderHomeExperience === "function") {
       window.renderHomeExperience({ mcpStatus: status });
     }
@@ -308,9 +320,24 @@ const atlasMcpSetup = (() => {
     copyManualConfig,
     toggleToolDetails,
     loadStatus,
+    startConnectionPolling,
   };
+
+  function startConnectionPolling() {
+    if (pollTimer) return;
+    const tick = async () => {
+      pollTimer = null;
+      if (!document.hidden) await loadStatus(true).catch(() => {});
+      pollTimer = window.setTimeout(tick, POLL_INTERVAL_MS);
+    };
+    pollTimer = window.setTimeout(tick, POLL_INTERVAL_MS);
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) loadStatus(true).catch(() => {});
+    }, { once: false });
+  }
 })();
 
 document.addEventListener("DOMContentLoaded", () => {
-  atlasMcpSetup.loadStatus().catch(() => {});
+  atlasMcpSetup.loadStatus(true).catch(() => {});
+  atlasMcpSetup.startConnectionPolling();
 });

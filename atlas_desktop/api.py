@@ -33,6 +33,7 @@ from builder_core.bug_intelligence import depgraph
 from . import analytics
 from . import atlas_export
 from . import agent_integrations as _agent_integrations
+from . import mcp_connection_status as _mcp_connection_status
 from . import first_impression as _fi
 from . import graph_build
 from . import persistence as _persist
@@ -4878,6 +4879,10 @@ def copilot_ask(
 
 def mcp_setup_status() -> Dict[str, Any]:
     return _agent_integrations.mcp_setup_status()
+
+
+def mcp_connections_status() -> Dict[str, Any]:
+    return _mcp_connection_status.connections_payload()
 
 
 def _tracked_mcp_write(tool: str, result: Dict[str, Any]) -> Dict[str, Any]:

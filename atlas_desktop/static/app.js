@@ -1370,7 +1370,7 @@ function selectDemoPack(id) {
 const HOME_AGENT_LABELS = { claude: "Claude Code", cursor: "Cursor", codex: "Codex" };
 
 function homeConnectedAgents(status) {
-  return Object.keys(HOME_AGENT_LABELS).filter(key => !!status?.[key]?.atlas_configured);
+  return Object.keys(HOME_AGENT_LABELS).filter(key => !!(status?.[key]?.connected || status?.connections?.clients?.[key]?.connected));
 }
 
 function setHomeText(id, value) {

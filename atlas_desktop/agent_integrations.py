@@ -20,7 +20,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
-from . import product_info
+from . import mcp_connection_status, product_info
 from .context_pack import build_context_pack, build_context_pack_from_state, estimate_tokens
 
 ATLAS_START = "<!-- ATLAS:START -->"
@@ -946,6 +946,11 @@ def mcp_setup_status() -> Dict[str, Any]:
     cursor = cursor_config_status()
     claude = claude_config_status()
     codex = codex_config_status()
+    connections = mcp_connection_status.connections_payload()
+    for key, config in (("cursor", cursor), ("claude", claude), ("codex", codex)):
+        connection = (connections.get("clients") or {}).get(key) or {"connected": False}
+        config["connected"] = bool(connection.get("connected"))
+        config["connection"] = connection
     command, args = _atlas_mcp_command()
     return {
         "ok": True,
@@ -955,6 +960,7 @@ def mcp_setup_status() -> Dict[str, Any]:
         "mcp_args": args,
         "snippet": mcp_snippet(),
         "copyable_json": json.dumps(mcp_snippet(), indent=2),
+        "connections": connections,
         "cursor": cursor,
         "claude": claude,
         "codex": codex,

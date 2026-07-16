@@ -971,7 +971,7 @@ body.auth-loading.auth-mode .auth-stage::after{
 .atlas-home .mcp-tool-card{gap:var(--space-4);padding:var(--space-5);border:0;border-left:1px solid var(--atlas-line);border-radius:0;background:transparent}
 .atlas-home .mcp-tool-card:first-child{border-left:0}
 .atlas-home .mcp-tool-card-title{color:var(--atlas-ink-strong);font-size:15px}.atlas-home .mcp-tool-card-status{font-size:12px}
-.atlas-home .mcp-tool-card-status.connected{color:var(--atlas-success)}.atlas-home .mcp-tool-card-status.disconnected,.atlas-home .mcp-tool-card-status.manual{color:var(--atlas-stale)}
+.atlas-home .mcp-tool-card-status.connected{color:var(--atlas-success)}.atlas-home .mcp-tool-card-status.disconnected{color:var(--atlas-ink-muted)}.atlas-home .mcp-tool-card-status.manual{color:var(--atlas-stale)}
 .mcp-home-advanced{margin-top:auto;color:var(--atlas-ink-muted);font-size:12px}.mcp-home-advanced summary{cursor:pointer;padding:var(--space-2) 0}.mcp-home-advanced .mcp-tool-card-actions{padding-top:var(--space-2)}
 .atlas-home-productive-head{padding:var(--space-6) 0 var(--space-5)}
 .atlas-home-ask{margin-top:var(--space-4);padding:var(--space-5);border:1px solid var(--atlas-line-strong);border-radius:var(--atlas-radius);background:var(--atlas-surface-1)}
@@ -1087,7 +1087,7 @@ body:not(.atlas-no-repo) .needs-no-repo{display:none !important}
 .mcp-tool-card-title{margin:0;font-size:14px;color:#dce6ff;font-weight:650}
 .mcp-tool-card-status{margin:0;font-size:12px;font-weight:650;color:var(--muted)}
 .mcp-tool-card-status.connected{color:var(--green)}
-.mcp-tool-card-status.disconnected{color:var(--amber)}
+.mcp-tool-card-status.disconnected{color:var(--muted)}
 .mcp-tool-card-status.manual{color:var(--amber)}
 .mcp-tool-card-actions{display:flex;flex-wrap:wrap;gap:8px}
 .mcp-tool-card .mcp-connect-btn{white-space:nowrap}
