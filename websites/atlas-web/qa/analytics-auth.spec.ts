@@ -175,7 +175,9 @@ test("browser writes reject hostile origins while allowing same-origin and nativ
 test("security-header baseline denies framing and keeps payment origins absent", () => {
   const config = fs.readFileSync(path.join(process.cwd(), "next.config.mjs"), "utf8");
   expect(config).toContain("X-Frame-Options");
-  expect(config).toContain("Content-Security-Policy-Report-Only");
+  expect(config).toContain("Content-Security-Policy");
+  expect(config).not.toContain("Content-Security-Policy-Report-Only");
+  expect(config).not.toContain("unsafe-eval");
   expect(config).toContain("frame-ancestors 'none'");
   expect(config).toContain("Strict-Transport-Security");
   expect(config).not.toMatch(/paddle\.com/i);
