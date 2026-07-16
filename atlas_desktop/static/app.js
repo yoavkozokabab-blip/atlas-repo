@@ -3213,7 +3213,7 @@ async function runImpact() {
   const dirN = (r.direct_impact || []).length;
   const indN = (r.indirect_impact || []).length;
   const subs = [...new Set((r.affected_subsystems || r.architecture?.subsystems_impacted || []).map(String))].slice(0, 8);
-  const unresolved = [...new Set([...(r.limitations || []), ...((r.risky_areas || []).map(a => typeof a === "string" ? a : (a.reason || a.label || "")))]).filter(Boolean)].slice(0, 6);
+  const unresolved = [...new Set([...(r.limitations || []), ...((r.risky_areas || []).map(a => typeof a === "string" ? a : (a.reason || a.label || "")))])].filter(Boolean).slice(0, 6);
   const repoLine = STATE.summary?.ok
     ? `<p class="impact-context-inline">Analyzing <span class="mono">${esc(STATE.summary.repo_name || "repository")}</span>${STATE.summary.file_count != null ? ` · ${homeMetric(STATE.summary.file_count)} files` : ""}${STATE.summary.dependency_edges != null ? ` · ${homeMetric(STATE.summary.dependency_edges)} dependencies` : ""}</p>`
     : "";
@@ -3642,7 +3642,13 @@ async function bootAtlasApp() {
 }
 window.bootAtlasApp = bootAtlasApp;
 document.addEventListener("atlas:authenticated", bootAtlasApp);
-document.addEventListener("atlas:repository-invalidated", () => clearWorkflowInvestigationState());
+document.addEventListener("atlas:repository-invalidated", (event) => {
+  // "history" invalidations only mean new history entries exist; wiping the
+  // just-rendered workflow result here would erase every Impact/Plan/Debug
+  // report the moment it completes. Only repository-scope changes clear them.
+  if (event?.detail?.reason === "history") return;
+  clearWorkflowInvestigationState();
+});
 document.addEventListener("atlas:repository-state-changed", () => {
   ["build", "investigate", "impact"].forEach((view) => {
     renderWorkflowContextLine(view);

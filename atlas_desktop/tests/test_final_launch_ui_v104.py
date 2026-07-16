@@ -82,7 +82,13 @@ def test_agents_verification_semantics():
 def test_repository_switch_clears_workflow_context():
     app = APP.read_text(encoding="utf-8")
     assert "function clearWorkflowInvestigationState" in app
-    assert 'document.addEventListener("atlas:repository-invalidated", () => clearWorkflowInvestigationState());' in app
+    assert 'document.addEventListener("atlas:repository-invalidated", (event) => {' in app
+    assert 'if (event?.detail?.reason === "history") return;' in app
+    assert "clearWorkflowInvestigationState();" in app
+    # The impact renderer must not call Array methods on a Set (v1.0.4 rc bug:
+    # `new Set(...).filter(...)` threw and left the Impact panel permanently empty).
+    assert ".filter is not a function" not in app
+    assert "]).filter(Boolean)].slice" not in app
     assert "STATE.impactResult = null" in app
     assert "renderWorkflowContextLine(view)" in app
     assert "workflow-empty-state" in app

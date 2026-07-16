@@ -1229,17 +1229,29 @@ def load_demo_mode(pack: str = "small") -> Dict[str, Any]:
     result = scan_repository(demo_path)
     if not result.get("ok"):
         return result
-    label = meta["label"]
+    # Human-facing demo title. Pack labels carry a "demo" suffix for the pack
+    # picker ("Medium demo"), but the repository title already says "Atlas
+    # Demo", so strip the redundant word to avoid "Atlas Demo — Medium demo".
+    label = re.sub(r"\s*demo$", "", str(meta["label"]), flags=re.IGNORECASE).strip()
+    display_name = f"Atlas Demo — {label}"
+    canonical_name = os.path.basename(demo_path) or demo_path
     _STATE["demo_mode"] = True
     result["demo_mode"] = True
     result["demo_pack"] = pack_id
-    result["repo_name"] = f"Atlas Demo — {label}"
+    result["repo_name"] = display_name
+    result["display_name"] = display_name
+    result["canonical_name"] = canonical_name
     result["repo_path"] = demo_path
     _STATE["scan"]["demo_mode"] = True
     _STATE["scan"]["demo_pack"] = pack_id
-    _STATE["scan"]["repo_name"] = result["repo_name"]
+    _STATE["scan"]["repo_name"] = display_name
+    _STATE["scan"]["canonical_name"] = canonical_name
     _STATE["scan"]["repo_path"] = demo_path
     track_analytics_event("demo_loaded", pack=pack_id, modules=result.get("module_count", 0))
+    # scan_repository() already persisted the raw folder basename before this
+    # override; re-snapshot so the human-facing title (not "medium_repo")
+    # survives a restart instead of flipping back on restore.
+    _persist_scan_snapshot()
     return _attach_analytics_status(result)
 
 
@@ -1820,6 +1832,8 @@ def current_summary() -> Dict[str, Any]:
     return {
         "ok": True,
         "repo_name": scan["repo_name"],
+        "display_name": scan["repo_name"],
+        "canonical_name": scan.get("canonical_name") or os.path.basename(scan["repo_path"]) or scan["repo_path"],
         "repo_path": scan["repo_path"],
         "demo_mode": bool(scan.get("demo_mode")),
         "file_count": scan["file_count"],
