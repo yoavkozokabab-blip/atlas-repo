@@ -206,6 +206,9 @@ function percentage(numerator: number, denominator: number) {
 
 function AnalyticsDashboard() {
   const [days, setDays] = useState(7);
+  const [customRange, setCustomRange] = useState(false);
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
   const [environment, setEnvironment] = useState("production");
   const [build, setBuild] = useState("");
   const [includeInternal, setIncludeInternal] = useState(false);
@@ -220,6 +223,10 @@ function AnalyticsDashboard() {
       environment,
       include_internal: String(includeInternal),
     });
+    if (customRange && from && to) {
+      params.set("from", from);
+      params.set("to", to);
+    }
     if (build) params.set("build", build);
     setLoading(true);
     setError("");
@@ -236,7 +243,7 @@ function AnalyticsDashboard() {
       })
       .finally(() => setLoading(false));
     return () => controller.abort();
-  }, [days, environment, build, includeInternal]);
+  }, [days, customRange, from, to, environment, build, includeInternal]);
 
   const metrics = summary
     ? [
@@ -266,10 +273,19 @@ function AnalyticsDashboard() {
       <div className="form" style={{ flexDirection: "row", flexWrap: "wrap", alignItems: "end", marginBottom: 18 }}>
         <div className="field">
           <label htmlFor="analytics-days">Range</label>
-          <select id="analytics-days" value={days} onChange={(e) => setDays(Number(e.target.value))}>
+          <select id="analytics-days" value={customRange ? "custom" : days} onChange={(e) => {
+            const value = e.target.value;
+            setCustomRange(value === "custom");
+            if (value !== "custom") setDays(Number(value));
+          }}>
             <option value={1}>1 day</option><option value={7}>7 days</option><option value={30}>30 days</option>
+            <option value="custom">Custom (UTC)</option>
           </select>
         </div>
+        {customRange && <>
+          <div className="field"><label htmlFor="analytics-from">From (UTC)</label><input id="analytics-from" type="date" value={from} onChange={(e) => setFrom(e.target.value)} /></div>
+          <div className="field"><label htmlFor="analytics-to">To (UTC)</label><input id="analytics-to" type="date" value={to} onChange={(e) => setTo(e.target.value)} /></div>
+        </>}
         <div className="field">
           <label htmlFor="analytics-environment">Environment</label>
           <select id="analytics-environment" value={environment} onChange={(e) => setEnvironment(e.target.value)}>
@@ -299,6 +315,14 @@ function AnalyticsDashboard() {
           <p className="muted">
             Download CTR {percentage(summary.downloads_attempted, summary.unique_visitors)} · Signup conversion {percentage(summary.signup_success, summary.unique_visitors)} · Returning-user rate {percentage(summary.returning_users, summary.active_users)}
           </p>
+          <button className="btn btn-ghost" type="button" onClick={() => {
+            const rows = [["metric", "value"], ...metrics.map(([label, value]) => [String(label), String(value)])];
+            const body = rows.map((row) => row.map((value) => `"${value.replaceAll('"', '""')}"`).join(",")).join("\n");
+            const href = URL.createObjectURL(new Blob([body], { type: "text/csv;charset=utf-8" }));
+            const anchor = document.createElement("a");
+            anchor.href = href; anchor.download = "atlas-analytics-summary.csv"; anchor.click();
+            URL.revokeObjectURL(href);
+          }}>Export displayed aggregates (CSV)</button>
           <h4>Top routes</h4>
           <table className="tbl">
             <thead><tr><th>Route</th><th>Views</th></tr></thead>
@@ -308,7 +332,7 @@ function AnalyticsDashboard() {
             </tbody>
           </table>
           <div className="note-accent" style={{ marginTop: 18 }}>
-            Funnel totals are partial whenever the corresponding canonical event is not emitted by a verified website or desktop flow. Missing events are shown as zero, never estimated.
+            Active time is approximate engaged time, not open-tab time. Funnel totals are partial whenever the corresponding canonical event is not emitted by a verified website or desktop flow. Missing events are shown as zero, never estimated.
           </div>
         </>
       )}

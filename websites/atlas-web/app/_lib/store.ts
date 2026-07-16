@@ -525,6 +525,7 @@ export type AnalyticsSummary = {
 
 export async function analyticsSummary(input: {
   since: string;
+  until?: string | null;
   environment?: string | null;
   buildCommit?: string | null;
   includeInternal?: boolean;
@@ -534,7 +535,8 @@ export async function analyticsSummary(input: {
     await sb("rpc/atlas_analytics_summary", {
       method: "POST",
       body: JSON.stringify({
-        p_since: input.since,
+          p_since: input.since,
+          p_until: input.until || null,
         p_environment: input.environment || null,
         p_build_commit: input.buildCommit || null,
         p_include_internal: input.includeInternal === true,

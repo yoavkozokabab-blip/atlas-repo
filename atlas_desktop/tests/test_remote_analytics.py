@@ -57,6 +57,18 @@ def test_remote_analytics_opt_out_blocks_delivery(tmp_path, monkeypatch):
     assert not (tmp_path / "operations" / "analytics-outbox.json").exists()
 
 
+def test_remote_analytics_accepts_only_safe_screen_engagement_dimensions(tmp_path, monkeypatch):
+    monkeypatch.setenv("ATLAS_DESKTOP_DATA", str(tmp_path))
+    monkeypatch.delenv("ATLAS_ANALYTICS_ENDPOINT", raising=False)
+    analytics_remote.track_pipeline_event(
+        "screen_active_ended", installation_id="installation-12345678", app_version="1.0.5", build_commit="d" * 40,
+        properties={"screen": "graph", "duration_active_ms": 2400, "duration_elapsed_ms": 3000, "path": "C:\\Users\\private\\repo"},
+    )
+    queued = json.loads((tmp_path / "operations" / "analytics-outbox.json").read_text(encoding="utf-8"))
+    assert queued[0]["eventName"] == "screen_active_ended"
+    assert queued[0]["properties"] == {"screen": "graph", "duration_active_ms": 2400, "duration_elapsed_ms": 3000}
+
+
 def test_pipeline_stays_functional_when_remote_delivery_is_unavailable(tmp_path, monkeypatch):
     monkeypatch.setenv("ATLAS_DESKTOP_DATA", str(tmp_path))
     monkeypatch.setattr(analytics_remote, "track_pipeline_event", lambda *_args, **_kwargs: (_ for _ in ()).throw(OSError("offline")))

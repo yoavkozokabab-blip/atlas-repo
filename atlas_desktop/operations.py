@@ -23,7 +23,8 @@ _SEMVER_RE = re.compile(r"(\d+)\.(\d+)\.(\d+)")
 # Fields accepted from external callers via /api/analytics/event.
 _ALLOWED_USER_FIELDS = frozenset({
     "event", "event_type", "timestamp", "duration_ms", "token_count",
-    "file_count", "repo_language", "workflow_type", "success",
+    "file_count", "repo_language", "workflow_type", "success", "surface", "screen",
+    "duration_active_ms", "duration_elapsed_ms",
 })
 
 # Fields added by the pipeline itself — always permitted.

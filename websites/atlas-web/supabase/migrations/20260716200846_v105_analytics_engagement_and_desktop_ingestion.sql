@@ -19,8 +19,10 @@ alter table public.analytics_events enable row level security;
 revoke all on table public.analytics_events from public, anon, authenticated;
 grant select, insert, update, delete on table public.analytics_events to service_role;
 
-create or replace function public.atlas_analytics_summary(
+drop function if exists public.atlas_analytics_summary(timestamptz, text, text, boolean);
+create function public.atlas_analytics_summary(
   p_since timestamptz,
+  p_until timestamptz default null,
   p_environment text default null,
   p_build_commit text default null,
   p_include_internal boolean default false
@@ -33,6 +35,7 @@ as $$
   with filtered as (
     select * from public.analytics_events
     where created_at >= p_since
+      and (p_until is null or created_at < p_until)
       and (p_environment is null or environment = p_environment)
       and (p_build_commit is null or build_commit = p_build_commit)
       and (p_include_internal or not is_internal)
@@ -88,9 +91,9 @@ begin
 end;
 $$;
 
-revoke execute on function public.atlas_analytics_summary(timestamptz, text, text, boolean)
+revoke execute on function public.atlas_analytics_summary(timestamptz, timestamptz, text, text, boolean)
   from public, anon, authenticated;
-grant execute on function public.atlas_analytics_summary(timestamptz, text, text, boolean)
+grant execute on function public.atlas_analytics_summary(timestamptz, timestamptz, text, text, boolean)
   to service_role;
 revoke execute on function public.atlas_purge_analytics_events(timestamptz)
   from public, anon, authenticated;

@@ -25,6 +25,7 @@ test("canonical contract rejects unknown events and sensitive payloads", () => {
   expect(isAnalyticsEvent("site_visit")).toBe(true);
   expect(isAnalyticsEvent("installer_download_completed")).toBe(false);
   expect(isAnalyticsEvent("installer_download_response_started")).toBe(true);
+  expect(isAnalyticsEvent("screen_active_ended")).toBe(true);
   expect(isAnalyticsEvent("api_me_success")).toBe(false);
   expect(sanitizeRoute("/pricing?email=private@example.com")).toBe("/pricing");
   expect(sanitizeRoute("C:\\Users\\private\\repo")).toBeNull();
@@ -37,6 +38,9 @@ test("canonical contract rejects unknown events and sensitive payloads", () => {
     surface: "C:\\Users\\private\\repo",
     prompt: "private code",
   })).toEqual({ status: "ok", http_status: 202 });
+  expect(sanitizeProperties({ screen: "graph", duration_active_ms: 1200, duration_elapsed_ms: 2000 })).toEqual({
+    screen: "graph", duration_active_ms: 1200, duration_elapsed_ms: 2000,
+  });
 });
 
 test("request context is classified without persisting raw referrers or user agents", () => {
@@ -65,6 +69,17 @@ test("server owns environment, identity, version and deterministic deduplication
   expect(first.is_internal).toBe(true);
   expect(first.user_id).toBe(input.userId);
   expect(first.metadata).toEqual({});
+});
+
+test("desktop version accepts a safe semver without treating it as an identifier", () => {
+  const row = buildAnalyticsRow({
+    eventName: "app_launch", source: "desktop", installationId: "installation-12345678",
+    sessionId: "desktop-session-12345678", appVersion: "1.0.5", buildCommit: "a".repeat(40),
+    properties: { screen: "home", duration_active_ms: 1000 },
+  });
+  expect(row.app_version).toBe("1.0.5");
+  expect(row.duration_active_ms).toBe(1000);
+  expect(row.metadata).toEqual({ screen: "home", duration_active_ms: 1000 });
 });
 
 test("password hashes and signed sessions validate and expire", () => {

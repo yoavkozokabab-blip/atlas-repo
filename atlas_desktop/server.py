@@ -196,6 +196,12 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
     def _usage_event(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
         return api.usage_post_event(body)
 
+    def _analytics_preferences(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+        from . import analytics_remote
+        if "opted_out" not in body:
+            return {"ok": True, "opted_out": not analytics_remote.analytics_enabled()}
+        return analytics_remote.set_analytics_opt_out(bool(body.get("opted_out")))
+
     return {
         ("GET", "/api/health"): lambda _body, _query: api.health(),
         ("POST", "/api/system/browse-folder"): lambda _body, _query: system_browse.browse_folder(),
@@ -207,6 +213,8 @@ def _route_handlers() -> Dict[Tuple[str, str], RouteHandler]:
         ("POST", "/api/demo/export-bundle"): lambda _body, _query: api.export_demo_bundle(),
         ("POST", "/api/analytics/event"): _analytics_event,
         ("GET", "/api/analytics/summary"): lambda _body, _query: api.analytics_overview(),
+        ("GET", "/api/analytics/preferences"): lambda _body, _query: _analytics_preferences({}, _query),
+        ("POST", "/api/analytics/preferences"): _analytics_preferences,
         ("POST", "/api/repositories/scan"): lambda body, _query: api.scan_repository(body.get("path"), body.get("scope")),
         ("GET", "/api/repositories/current/scan-status"): lambda _body, _query: api.scan_status(),
         ("GET", "/api/repositories/current/scan-performance"): lambda _body, _query: api.current_scan_performance(),

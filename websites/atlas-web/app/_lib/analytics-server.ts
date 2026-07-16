@@ -12,6 +12,12 @@ import {
   sanitizeRoute,
 } from "./analytics-contract";
 
+function sanitizeAppVersion(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const version = value.trim();
+  return /^[0-9A-Za-z][0-9A-Za-z._-]{0,79}$/.test(version) ? version : null;
+}
+
 type EventInput = {
   eventName: AnalyticsEventName;
   source: AnalyticsSource;
@@ -56,6 +62,7 @@ export function buildAnalyticsRow(input: EventInput): AnalyticsRow {
   const route = sanitizeRoute(input.route);
   const installationId = sanitizeIdentifier(input.installationId);
   const clientKey = sanitizeIdentifier(input.deduplicationKey) || "event";
+  const properties = sanitizeProperties(input.properties);
   const identity = input.userId || installationId || anonymousId || "anonymous";
   const material = [environment, input.source, input.eventName, identity, sessionId, route, clientKey].join("|");
   return {
@@ -68,18 +75,16 @@ export function buildAnalyticsRow(input: EventInput): AnalyticsRow {
     source: input.source,
     environment,
     route,
-    app_version: sanitizeIdentifier(input.appVersion)?.slice(0, 80) || ENV.appVersion,
+    app_version: sanitizeAppVersion(input.appVersion) || ENV.appVersion,
     build_commit: sanitizeIdentifier(input.buildCommit)?.slice(0, 40) || process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 40) || null,
     platform: input.source === "website" ? "web" : "windows",
     event_version: 1,
     deduplication_key: crypto.createHash("sha256").update(material).digest("hex"),
-    duration_active_ms: typeof sanitizeProperties(input.properties).duration_active_ms === "number"
-      ? Number(sanitizeProperties(input.properties).duration_active_ms) : null,
-    duration_elapsed_ms: typeof sanitizeProperties(input.properties).duration_elapsed_ms === "number"
-      ? Number(sanitizeProperties(input.properties).duration_elapsed_ms) : null,
+    duration_active_ms: typeof properties.duration_active_ms === "number" ? properties.duration_active_ms : null,
+    duration_elapsed_ms: typeof properties.duration_elapsed_ms === "number" ? properties.duration_elapsed_ms : null,
     is_internal: environment !== "production" || input.internal === true,
     metadata: {
-      ...sanitizeProperties(input.properties),
+      ...properties,
       ...(input.request ? {
         referrer_category: classifyReferrer(input.request.headers.get("referer")),
         device_category: classifyDevice(input.request.headers.get("user-agent")),

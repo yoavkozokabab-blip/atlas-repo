@@ -33,9 +33,13 @@ _EVENT_MAP = {
     "mcp_configured": "mcp_configured",
     "mcp_connected": "mcp_connected",
     "mcp_disconnected": "mcp_disconnected",
+    "screen_view": "screen_view",
+    "screen_active_heartbeat": "screen_active_heartbeat",
+    "screen_active_ended": "screen_active_ended",
+    "app_session_ended": "app_session_ended",
 }
 _ALLOWED_EVENTS = frozenset(_EVENT_MAP.values()) | {"app_first_run", "repository_loaded", "guest_mode_started", "account_signup_completed", "account_login_completed"}
-_ALLOWED_PROPERTIES = frozenset({"surface", "outcome", "status", "agent", "workflow", "duration_active_ms", "duration_elapsed_ms", "app_version", "build_commit"})
+_ALLOWED_PROPERTIES = frozenset({"surface", "outcome", "status", "agent", "workflow", "screen", "duration_active_ms", "duration_elapsed_ms", "app_version", "build_commit"})
 _SENSITIVE = re.compile(r"(?:[a-z]:\\|\\\\|/(?:users|home|var|etc|private|tmp)/|bearer\s+|secret|token|password|prompt|repo(?:sitory)?|path|file(?:name)?)", re.IGNORECASE)
 _MAX_QUEUE_EVENTS = 100
 _MAX_QUEUE_BYTES = 256 * 1024

@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "scenarios": {
+    "python_nested_cycle": {
+      "files": ["app/main.py", "app/services/worker.py", "app/models/node.py", "tests/test_worker.py", "pyproject.toml"],
+      "relevant_files": ["app/main.py", "app/services/worker.py", "tests/test_worker.py"],
+      "dependencies": [["app/main.py", "app/services/worker.py"], ["app/services/worker.py", "app/models/node.py"], ["app/models/node.py", "app/services/worker.py"]],
+      "impact": ["app/main.py", "tests/test_worker.py"],
+      "citation_files": ["app/services/worker.py", "tests/test_worker.py"],
+      "stale_context_rejected": true
+    },
+    "typescript_dynamic": {
+      "files": ["src/index.ts", "src/loader.ts", "src/plugins/alpha.ts", "src/generated/schema.ts", "vitest.config.ts"],
+      "relevant_files": ["src/index.ts", "src/loader.ts", "src/plugins/alpha.ts"],
+      "dependencies": [["src/index.ts", "src/loader.ts"], ["src/loader.ts", "src/plugins/alpha.ts"]],
+      "impact": ["src/index.ts"],
+      "citation_files": ["src/loader.ts"],
+      "stale_context_rejected": true,
+      "excluded_files": ["src/generated/schema.ts"]
+    },
+    "mixed_frontend_backend": {
+      "files": ["web/page.tsx", "web/api/client.ts", "server/routes.py", "server/service.py", "config/settings.json"],
+      "relevant_files": ["web/page.tsx", "web/api/client.ts", "server/routes.py", "server/service.py"],
+      "dependencies": [["web/page.tsx", "web/api/client.ts"], ["server/routes.py", "server/service.py"]],
+      "impact": ["server/routes.py"],
+      "citation_files": ["server/service.py"],
+      "stale_context_rejected": true
+    },
+    "cross_repository_isolation": {
+      "files": ["repo_a/src/config.py", "repo_b/src/config.py"],
+      "relevant_files": ["repo_a/src/config.py"],
+      "dependencies": [],
+      "impact": [],
+      "citation_files": ["repo_a/src/config.py"],
+      "stale_context_rejected": true,
+      "cross_repository_isolated": true
+    }
+  }
+}
