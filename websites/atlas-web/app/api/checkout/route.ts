@@ -3,10 +3,12 @@ import { startCheckout, isPlanId } from "@/app/_lib/billing";
 import { readJson } from "@/app/_lib/ratelimit";
 import { PAID_PLANS_ENABLED } from "@/app/_config";
 import { privateJson, unavailableJson } from "@/app/_lib/http";
+import { csrfRejected, isTrustedBrowserWrite } from "@/app/_lib/request-security";
 
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
+  if (!isTrustedBrowserWrite(req)) return csrfRejected();
   // Guard for deployments that intentionally hide paid-plan actions.
   if (!PAID_PLANS_ENABLED) {
     return privateJson(

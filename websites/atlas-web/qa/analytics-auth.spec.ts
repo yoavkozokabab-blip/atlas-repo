@@ -15,6 +15,7 @@ import { buildAnalyticsRow } from "../app/_lib/analytics-server";
 import { createToken, hashPassword, verifyPassword, verifyToken } from "../app/_lib/auth";
 import { PAID_PLANS_ENABLED } from "../app/_config";
 import { proCheckoutReady } from "../app/_lib/billing";
+import { isTrustedBrowserWrite } from "../app/_lib/request-security";
 
 test.beforeEach(() => {
   const env = process.env as Record<string, string | undefined>;
@@ -118,4 +119,26 @@ test("migration keeps browser roles server-only", () => {
 test("paid checkout remains source-disabled regardless of environment configuration", () => {
   expect(PAID_PLANS_ENABLED).toBe(false);
   expect(proCheckoutReady()).toBe(false);
+});
+
+test("browser writes reject hostile origins while allowing same-origin and native requests", () => {
+  expect(isTrustedBrowserWrite(new Request("http://localhost:3000/api/auth/login", {
+    method: "POST", headers: { origin: "http://localhost:3000" },
+  }))).toBe(true);
+  expect(isTrustedBrowserWrite(new Request("http://localhost:3000/api/auth/login", {
+    method: "POST", headers: { origin: "https://attacker.example", "sec-fetch-site": "cross-site" },
+  }))).toBe(false);
+  expect(isTrustedBrowserWrite(new Request("http://localhost:3000/api/auth/login", {
+    method: "POST", headers: { "sec-fetch-site": "same-origin" },
+  }))).toBe(false);
+  expect(isTrustedBrowserWrite(new Request("http://localhost:3000/api/auth/login", { method: "POST" }))).toBe(true);
+});
+
+test("security-header baseline denies framing and keeps payment origins absent", () => {
+  const config = fs.readFileSync(path.join(process.cwd(), "next.config.mjs"), "utf8");
+  expect(config).toContain("X-Frame-Options");
+  expect(config).toContain("Content-Security-Policy-Report-Only");
+  expect(config).toContain("frame-ancestors 'none'");
+  expect(config).toContain("Strict-Transport-Security");
+  expect(config).not.toMatch(/paddle\.com/i);
 });

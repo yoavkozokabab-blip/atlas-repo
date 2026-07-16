@@ -2,6 +2,7 @@ import { requireAdmin } from "@/app/_lib/auth";
 import { store, toSafe, newId, type User } from "@/app/_lib/store";
 import { readJson } from "@/app/_lib/ratelimit";
 import { privateJson, unavailableJson } from "@/app/_lib/http";
+import { csrfRejected, isTrustedBrowserWrite } from "@/app/_lib/request-security";
 
 export const runtime = "nodejs";
 
@@ -9,6 +10,7 @@ const ALLOWED = new Set(["suspend", "restore", "revoke_license", "grant_pro"]);
 
 export async function POST(req: Request) {
   try {
+  if (!isTrustedBrowserWrite(req)) return csrfRejected();
   const admin = await requireAdmin();
   if (!admin) return privateJson({ ok: false, error: "forbidden" }, { status: 403 });
 

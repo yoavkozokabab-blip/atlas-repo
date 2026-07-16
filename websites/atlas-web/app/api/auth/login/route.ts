@@ -2,11 +2,13 @@ import { loginUser, setSession } from "@/app/_lib/auth";
 import { toSafe } from "@/app/_lib/store";
 import { rateLimit, clientIp, readJson } from "@/app/_lib/ratelimit";
 import { privateJson, unavailableJson } from "@/app/_lib/http";
+import { csrfRejected, isTrustedBrowserWrite } from "@/app/_lib/request-security";
 
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
   try {
+    if (!isTrustedBrowserWrite(req)) return csrfRejected();
     if (!(await rateLimit(`login:${clientIp(req)}`, 8, 900_000))) {
       return privateJson({ ok: false, error: "Too many login attempts. Please wait a few minutes." }, { status: 429 });
     }

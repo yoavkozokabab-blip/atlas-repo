@@ -4,11 +4,13 @@ import { validEmail } from "@/app/_lib/auth";
 import { rateLimit, clientIp, readJson } from "@/app/_lib/ratelimit";
 import { ENV } from "@/app/_lib/config";
 import { privateJson, unavailableJson } from "@/app/_lib/http";
+import { csrfRejected, isTrustedBrowserWrite } from "@/app/_lib/request-security";
 
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
   try {
+    if (!isTrustedBrowserWrite(req)) return csrfRejected();
     if (!(await rateLimit(`forgot:${clientIp(req)}`, 5, 900_000))) {
       return privateJson({ ok: true, resetAvailable: false });
     }
