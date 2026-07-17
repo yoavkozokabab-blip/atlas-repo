@@ -17,6 +17,12 @@ import { PAID_PLANS_ENABLED } from "../app/_config";
 import { BILLING_NOT_AVAILABLE, DisabledBillingProvider, proCheckoutReady } from "../app/_lib/billing";
 import { isTrustedBrowserWrite } from "../app/_lib/request-security";
 import { hasPaidAccess, transitionEntitlement } from "../app/_lib/billing-state";
+import {
+  FeatureGate,
+  FREE_ADVANCED_IMPACT_LIMIT,
+  FreeOnlyEntitlementService,
+  InMemoryUsageMeter,
+} from "../app/_lib/free-plan";
 
 test.beforeEach(() => {
   const env = process.env as Record<string, string | undefined>;
@@ -157,6 +163,23 @@ test("billing state transitions fail closed and reject out-of-order resurrection
   expect(hasPaidAccess(canceled.state)).toBe(false);
   expect(transitionEntitlement(canceled, { kind: "provider_observed", state: "active", observedAt: "2026-07-17T10:01:30.000Z" })).toEqual(canceled);
   expect(hasPaidAccess("unknown")).toBe(false);
+});
+
+test("free plan limits are server-owned, shared, and resilient to client clock changes", async () => {
+  let now = Date.parse("2026-07-17T00:00:00.000Z");
+  const meter = new InMemoryUsageMeter(() => now);
+  const firstInstance = new FeatureGate(new FreeOnlyEntitlementService(), meter);
+  const secondInstance = new FeatureGate(new FreeOnlyEntitlementService(), meter);
+  const identity = "account-identity";
+  expect((await firstInstance.consume(identity, "active_repository", { demo: true })).used).toBe(0);
+  expect((await firstInstance.consume(identity, "active_repository")).allowed).toBe(true);
+  expect((await secondInstance.consume(identity, "active_repository")).allowed).toBe(false);
+  for (let index = 0; index < FREE_ADVANCED_IMPACT_LIMIT; index += 1) {
+    expect((await firstInstance.consume(identity, "advanced_impact")).allowed).toBe(true);
+  }
+  expect((await secondInstance.consume(identity, "advanced_impact")).allowed).toBe(false);
+  now -= 12 * 60 * 60 * 1000;
+  expect((await firstInstance.consume(identity, "advanced_impact")).allowed).toBe(false);
 });
 
 test("browser writes reject hostile origins while allowing same-origin and native requests", () => {
