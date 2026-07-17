@@ -126,14 +126,31 @@ class TestJwtSecretProvisioning:
         result = load_jwt_secret()
         assert result == "auth-override-secret-at-least-thirty-two-bytes"
 
-    def test_missing_secret_fails_closed(self, tmp_path, monkeypatch):
+    def test_missing_env_secret_uses_per_install_key(self, tmp_path, monkeypatch):
+        """v1.0.5: a missing env var is NOT a packaged-production startup
+        failure — the per-installation key store provides a stable, protected
+        256-bit key so ordinary users never configure a secret manually."""
         monkeypatch.setenv("ATLAS_ACCOUNTS_DATA_DIR", str(tmp_path))
         monkeypatch.delenv("ATLAS_AUTH_JWT_SECRET", raising=False)
         monkeypatch.delenv("ATLAS_JWT_SECRET", raising=False)
 
-        from accounts_service.jwt_secret import load_jwt_secret
-        with pytest.raises(RuntimeError, match="required"):
-            load_jwt_secret()
+        import importlib
+        import accounts_service.jwt_secret as jwt_secret
+        importlib.reload(jwt_secret)
+        first = jwt_secret.load_jwt_secret()
+        assert len(first) >= 32
+        # Stable across "restarts" (reload) and never a shipped default.
+        importlib.reload(jwt_secret)
+        assert jwt_secret.load_jwt_secret() == first
+
+    def test_short_env_secret_still_rejected(self, tmp_path, monkeypatch):
+        monkeypatch.setenv("ATLAS_ACCOUNTS_DATA_DIR", str(tmp_path))
+        monkeypatch.setenv("ATLAS_AUTH_JWT_SECRET", "too-short")
+        import importlib
+        import accounts_service.jwt_secret as jwt_secret
+        importlib.reload(jwt_secret)
+        with pytest.raises(RuntimeError, match="32"):
+            jwt_secret.load_jwt_secret()
 
 
 # ── Session cleanup ────────────────────────────────────────────────────────────

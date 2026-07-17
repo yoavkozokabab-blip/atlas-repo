@@ -28,8 +28,8 @@ from accounts_service.database import Base, SessionLocal, engine
 from accounts_service.main import app
 from accounts_service.models import Device, License, Session as DBSession, User
 from accounts_service.rate_limit import reset_rate_limit_store
-from jarvis_desktop import accounts_client, server
-from jarvis_desktop.data_paths import reset_desktop_data_dir_cache
+from atlas_desktop import accounts_client, server
+from atlas_desktop.data_paths import reset_desktop_data_dir_cache
 
 
 @pytest.fixture(autouse=True)

@@ -8,6 +8,7 @@ import secrets
 import sys
 import time
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 
 _ROOT = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 _LIB = os.path.join(_ROOT, "accounts_service", ".lib")
@@ -75,14 +76,28 @@ def _register(client: TestClient) -> dict:
 
 
 class TestEnvironmentJwtSecret:
-    def test_secret_file_is_not_a_fallback(self, tmp_path, monkeypatch):
-        monkeypatch.setenv("ATLAS_ACCOUNTS_DATA_DIR", str(tmp_path / "authdata"))
+    def test_no_plaintext_secret_file_fallback(self, tmp_path, monkeypatch):
+        """v1.0.5 contract: with no env secret, packaged production loads a
+        per-installation key from the protected store — never a plaintext
+        ``jwt_secret`` file and never a shipped default."""
+        data_dir = tmp_path / "authdata"
+        monkeypatch.setenv("ATLAS_ACCOUNTS_DATA_DIR", str(data_dir))
         monkeypatch.delenv("ATLAS_AUTH_JWT_SECRET", raising=False)
         monkeypatch.delenv("ATLAS_JWT_SECRET", raising=False)
 
-        from accounts_service.jwt_secret import load_jwt_secret
-        with pytest.raises(RuntimeError, match="required"):
-            load_jwt_secret()
+        import importlib
+        import accounts_service.jwt_secret as jwt_secret
+        importlib.reload(jwt_secret)
+        secret = jwt_secret.load_jwt_secret()
+        assert len(secret) >= 32
+        # No plaintext jwt_secret artifact is ever written.
+        assert not list(Path(data_dir).rglob("*jwt*secret*"))
+        # The key material that *is* stored is the protected binary blob.
+        key_files = list(Path(data_dir).rglob("signing_key.v1.bin"))
+        assert key_files, "expected a per-install signing key file"
+        raw = key_files[0].read_bytes()
+        assert raw.startswith(b"ATLAS-SK1\x00")
+        assert secret.encode() not in raw  # encoded key never sits in plaintext
 
     def test_login_token_valid_after_simulated_restart(self, client):
         from accounts_service import config
@@ -147,8 +162,8 @@ class TestRefreshTokenStorage:
 
     def test_support_bundle_redacts_refresh_token(self, tmp_path, monkeypatch):
         monkeypatch.setenv("LOCALAPPDATA", str(tmp_path))
-        from jarvis_desktop.data_paths import desktop_data_dir
-        from jarvis_desktop.install_support import export_support_bundle
+        from atlas_desktop.data_paths import desktop_data_dir
+        from atlas_desktop.install_support import export_support_bundle
 
         state_path = os.path.join(desktop_data_dir(), "accounts_state.json")
         os.makedirs(os.path.dirname(state_path), exist_ok=True)

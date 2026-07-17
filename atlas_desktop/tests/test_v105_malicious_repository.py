@@ -124,7 +124,7 @@ def test_invalid_encoding_and_binary_files_do_not_crash(data_dir, tmp_path):
     repo.mkdir()
     (repo / "app.py").write_text("import util\n", encoding="utf-8")
     (repo / "util.py").write_text("x = 1\n", encoding="utf-8")
-    (repo / "bad.py").write_bytes(b"\xff\xfe\x00garbage\x80\x81\import os\n")
+    (repo / "bad.py").write_bytes(b"\xff\xfe\x00garbage\x80\x81 import os\n")
     (repo / "blob.py").write_bytes(os.urandom(4096))
     result = _scan(repo)
     assert result.get("ok"), result.get("error")

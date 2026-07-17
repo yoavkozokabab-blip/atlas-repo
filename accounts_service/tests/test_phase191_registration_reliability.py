@@ -173,9 +173,9 @@ class TestRegistrationReliability:
 
 class TestDesktopRegisterProxy:
     def test_service_unavailable_response_shape(self):
-        from jarvis_desktop import accounts_routes
+        from atlas_desktop import accounts_routes
 
-        with patch("jarvis_desktop.accounts_service_runner.ensure_running", return_value=False):
+        with patch("atlas_desktop.accounts_service_runner.ensure_running", return_value=False):
             out = accounts_routes.accounts_register({
                 "email": "offline@example.com",
                 "password": "SecurePass1!",
@@ -188,7 +188,7 @@ class TestDesktopRegisterProxy:
         assert "has not been submitted" in out["detail"].lower()
 
     def test_duplicate_email_proxy_code(self):
-        from jarvis_desktop import accounts_routes
+        from atlas_desktop import accounts_routes
 
         calls = {"n": 0}
 
@@ -198,8 +198,8 @@ class TestDesktopRegisterProxy:
                 return {"access_token": "tok", "user": {"user_id": "u1", "email": "a@example.com"}, "license": {}}
             return {"_http_status": 409, "detail": "Email already registered."}
 
-        with patch("jarvis_desktop.accounts_service_runner.ensure_running", return_value=True):
-            with patch("jarvis_desktop.accounts_client.register", side_effect=fake_register):
+        with patch("atlas_desktop.accounts_service_runner.ensure_running", return_value=True):
+            with patch("atlas_desktop.accounts_client.register", side_effect=fake_register):
                 first = accounts_routes.accounts_register({
                     "email": "dup@example.com",
                     "password": "SecurePass1!",

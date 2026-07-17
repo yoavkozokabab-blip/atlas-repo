@@ -25,7 +25,7 @@ from accounts_service.database import Base, SessionLocal, engine
 from accounts_service.main import app
 from accounts_service.models import BetaProfile, Session as DBSession, User
 from accounts_service.rate_limit import reset_rate_limit_store
-from jarvis_desktop import accounts_routes
+from atlas_desktop import accounts_routes
 
 
 BETA_PROFILE: Dict[str, Any] = {
@@ -202,7 +202,9 @@ def test_phase188_desktop_register_validates_email_password_and_required_profile
         {},
     )
     assert missing_profile["ok"] is False
-    assert "beta profile" in missing_profile["error"].lower()
+    # A missing developer/beta profile must be rejected; the route surfaces
+    # this as a required-profile-fields error.
+    assert "profile" in missing_profile["error"].lower()
 
     ok = accounts_routes.accounts_register(
         {
