@@ -19,6 +19,15 @@ const releases = [
     ],
   },
   {
+    version: "v1.0.3",
+    date: "2026-07-15",
+    label: "Public release",
+    items: [
+      "Desktop: launch presentation polish, restored configured-without-repo status copy, and installed-state persistence fixes.",
+      "Website: download metadata now points at the v1.0.3 installer with its published SHA-256.",
+    ],
+  },
+  {
     version: "v1.0.2",
     date: "2026-07-15",
     label: "UI/UX polish",

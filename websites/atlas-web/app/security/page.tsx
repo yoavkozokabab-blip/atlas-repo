@@ -13,9 +13,9 @@ export default function SecurityPage() {
             items={[
               ["Indexing", "Atlas reads the selected folder on your machine. Nothing is transmitted."],
               ["Storage", "Scans, graphs, and repository memory live in ~/.atlas_desktop on your disk."],
-              ["MCP retrieval", "Your agent queries Atlas over local stdio. Nothing is transmitted off-machine by Atlas."],
+              ["MCP retrieval", "Your agent queries Atlas over local stdio. Atlas itself transmits nothing off-machine; your agent may forward requested context to its own configured model provider."],
               ["Agent path", "Your connected agent may send retrieved context to its own model provider under that provider's terms."],
-              ["Analytics", "Event names and basic metadata only; never repository contents, prompts, secrets, or raw file paths."],
+              ["Analytics", "Pseudonymous events (random per-installation id): event names, timings, and app version only - never repository contents, names, paths, file names, prompts, answers, secrets, or MCP payloads. Can be disabled in Settings."],
               ["Billing", "Payment details are handled by Paddle as Merchant of Record. Atlas never stores card data."],
             ]}
           />

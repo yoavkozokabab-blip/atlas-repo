@@ -24,16 +24,21 @@ export default function PrivacyPage() {
             <li>Generation of the AI context packet</li>
           </ul>
           <p>Your source code is read and analyzed entirely on your device. Atlas does not upload
-            your repository to any server.</p>
+            your repository to an Atlas-hosted service.</p>
 
           <h2>What can leave your device</h2>
           <ul>
-            <li><b>The context you copy.</b> When you click “Copy for Claude/Codex/Cursor”, the
-              compact packet goes wherever <em>you</em> paste it — into your AI tool of choice.</li>
+            <li><b>The context you copy or your agent requests.</b> When you click “Copy for
+              Claude/Codex/Cursor”, the compact packet goes wherever <em>you</em> paste it. If you
+              connect an external coding agent over MCP, that agent may send the context you request
+              to the model provider <em>it</em> is configured to use — the same as when you use that
+              agent without Atlas.</li>
             <li><b>Account &amp; licensing</b> (if you sign in): email and license status are exchanged
               with the Atlas accounts service to validate your plan. Your code is never included.</li>
-            <li><b>Aggregate, privacy-respecting product analytics</b> to improve Atlas. No source
-              code or file contents.</li>
+            <li><b>Pseudonymous product analytics</b> to improve Atlas (can be disabled in Settings).
+              Events carry a random per-installation identifier — and your account id if you are
+              signed in — but never repository contents, repository names or paths, file names,
+              source code, prompts, answers, secrets, or MCP payloads.</li>
             <li><b>Billing metadata.</b> Paid subscriptions are handled by Paddle as Merchant of
               Record. Atlas does not store your payment details.</li>
           </ul>
