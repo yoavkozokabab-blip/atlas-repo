@@ -514,8 +514,14 @@ _SCAN_STAGE_PROGRESS: Dict[str, Tuple[int, str]] = {
     "generating_summary": (92, "Building AI context packets"),
     "completed": (100, "Complete"),
     "cancel_requested": (0, "Cancelling"),
+    "cancelled": (0, "Cancelled"),
+    "error": (0, "Scan failed"),
+    "interrupted": (0, "Scan interrupted"),
     "idle": (0, "Idle"),
 }
+
+# Stages from which the indexing modal must release the UI (terminal states).
+_SCAN_TERMINAL_STAGES = {"completed", "error", "interrupted", "cancelled", "idle"}
 
 
 # --------------------------------------------------------------------------
@@ -1272,8 +1278,29 @@ def _build_evidence_store_for_scan(repo: str) -> Dict[str, Any]:
 def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     """Run the real Builder Core scan (graph + light index + risk ranking)."""
     with _ti.state_guard():
-        result = _scan_repository_locked(path, scope)
+        try:
+            result = _scan_repository_locked(path, scope)
+        except BaseException as exc:
+            # A crash mid-scan must never leave the job frozen at its last
+            # stage (e.g. ranking_risks/68%). Move it to a terminal error
+            # state so the indexing modal releases and shows a failure.
+            job = _STATE.get("scan_job")
+            if isinstance(job, dict) and job.get("stage") not in _SCAN_TERMINAL_STAGES:
+                job["stage"] = "error"
+                job["error"] = f"{type(exc).__name__}: {exc}"
+            try:
+                _ops.record_crash("scan_exception", f"{type(exc).__name__}: {exc}")
+            except Exception:
+                pass
+            if isinstance(exc, Exception):
+                return {"ok": False, "code": "scan_failed", "error": "The repository scan could not complete.", "stage": "error"}
+            raise
         if not result.get("ok"):
+            # A structured failure must also leave the stuck stage behind.
+            job = _STATE.get("scan_job")
+            if isinstance(job, dict) and job.get("stage") not in _SCAN_TERMINAL_STAGES:
+                job["stage"] = "error"
+                job["error"] = str(result.get("error") or "scan failed")
             try:
                 _ops.record_crash(
                     "scan_failure",
@@ -2300,6 +2327,11 @@ def scan_status() -> Dict[str, Any]:
         "progress_pct": pct,
         "perf_available": bool(perf),
         "scan_complete": stage == "completed",
+        # Terminal states let the frontend release the indexing modal even when
+        # a scan fails or is interrupted (never a permanently active modal).
+        "is_terminal": stage in _SCAN_TERMINAL_STAGES,
+        "scan_failed": stage in {"error", "interrupted"},
+        "scan_error": job.get("error") if stage in {"error", "interrupted"} else None,
         "graph_detail_level": _STATE.get("graph_detail_level"),
         "full_graph_pending": bool(_STATE.get("full_graph_pending")),
     }

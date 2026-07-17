@@ -2058,9 +2058,19 @@ function applyScanStatus(status) {
 
 async function pollScanProgress(stopRef) {
   while (!stopRef.stop) {
-    const status = await api("/api/repositories/current/scan-status");
+    let status;
+    try {
+      status = await api("/api/repositories/current/scan-status");
+    } catch (e) {
+      // Transient runtime hiccup: keep polling; the modal is released by a
+      // terminal status or by the scan call resolving, never left hanging.
+      await sleep(400);
+      continue;
+    }
     applyScanStatus(status);
-    if (status.scan_complete) break;
+    // Break on any terminal state — completion, failure, interruption, or
+    // cancellation — so the indexing modal never stays active indefinitely.
+    if (status.scan_complete || status.is_terminal) break;
     await sleep(400);
   }
 }
@@ -2093,18 +2103,30 @@ async function executeScanFlow(validation) {
   const pollRef = { stop: false };
   const pollTask = pollScanProgress(pollRef);
 
-  const scan = await api("/api/repositories/scan", "POST", { path, scope: readScopeConfig() });
+  let scan;
+  try {
+    scan = await api("/api/repositories/scan", "POST", { path, scope: readScopeConfig() });
+  } catch (e) {
+    // The scan request itself failed (e.g. runtime became unavailable). Release
+    // the modal into an explicit failure rather than a frozen progress bar.
+    pollRef.stop = true;
+    try { await pollTask; } catch (_) {}
+    showScanFailed("Atlas lost contact with the local runtime during indexing. Please try again.", "runtime_unavailable");
+    toast("✗ Scan interrupted", "error");
+    return;
+  }
   pollRef.stop = true;
   await pollTask;
   const finalStatus = await api("/api/repositories/current/scan-status");
   applyScanStatus(finalStatus);
-  STAGES.forEach((_, i) => setStage(i, "done")); setBar(100); $("scanPct").textContent = "100%";
-  if (!scan.ok) {
-    const code = scan.code || (scan.degraded ? "partial_graph" : "");
-    showScanFailed(scan.error || "Scan failed", code);
+  if (!scan.ok || finalStatus.scan_failed) {
+    // Never flash 100% for a scan that did not commit a result.
+    const code = scan.code || finalStatus.job?.error || (scan.degraded ? "partial_graph" : "");
+    showScanFailed(scan.error || finalStatus.scan_error || "Scan failed", code);
     toast("✗ Scan failed", "error");
     return;
   }
+  STAGES.forEach((_, i) => setStage(i, "done")); setBar(100); $("scanPct").textContent = "100%";
   updateMassiveBadge(!!scan.massive_mode);
   if (scan.full_graph_pending) {
     $("scanModeInfo").style.display = "block";
