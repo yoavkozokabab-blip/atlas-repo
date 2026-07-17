@@ -343,6 +343,14 @@ def _bridge_accounts_telemetry(event: str) -> None:
     stage = _ACQUISITION_FROM_ANALYTICS.get(event)
     if not mapping and not stage:
         return
+    # The accounts mirror is an analytics emission like any other: the local
+    # opt-out must silence it too, not only the JSONL log and remote queue.
+    try:
+        from . import analytics_remote
+        if not analytics_remote.analytics_enabled():
+            return
+    except Exception:
+        return
 
     def _deliver() -> None:
         try:

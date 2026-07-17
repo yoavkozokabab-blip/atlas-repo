@@ -123,3 +123,59 @@ def test_ui_wires_toggle_to_backend_preference():
     assert 'role="switch"' in index
     assert "setAnalyticsPreference" in app
     assert '/api/analytics/preferences' in app and '/api/analytics/preferences' in shell
+
+
+def test_corrupt_preference_file_fails_closed(data_dir):
+    """A user who opted out must never be re-enabled by a corrupted preference."""
+    analytics, remote = data_dir
+    remote.set_analytics_opt_out(True)
+    with open(remote._preferences_path(), "w", encoding="utf-8") as fh:
+        fh.write("{not-json!!")
+    assert remote.analytics_enabled() is False
+    r = analytics.track_event("impact_completed", duration_ms=5)
+    assert r.get("skipped") == "analytics_disabled"
+
+
+def test_missing_preference_file_defaults_enabled(data_dir):
+    analytics, remote = data_dir
+    assert not os.path.exists(remote._preferences_path())
+    assert remote.analytics_enabled() is True
+
+
+def test_accounts_bridge_respects_opt_out(data_dir, monkeypatch):
+    """The accounts telemetry mirror is an emission and must honor the opt-out."""
+    analytics, remote = data_dir
+    from atlas_desktop import operations
+
+    delivered = []
+    monkeypatch.setattr(
+        "atlas_desktop.accounts_client.send_analytics_event",
+        lambda *a, **k: delivered.append(("event", a, k)),
+        raising=False,
+    )
+    monkeypatch.setattr(
+        "atlas_desktop.accounts_client.record_acquisition_event",
+        lambda *a, **k: delivered.append(("acquisition", a, k)),
+        raising=False,
+    )
+
+    def _run_bridge(event):
+        threads_before = set(__import__("threading").enumerate())
+        operations._bridge_accounts_telemetry(event)
+        import threading as _t
+        for t in set(_t.enumerate()) - threads_before:
+            t.join(timeout=5)
+
+    bridged_events = sorted(
+        set(operations._ANALYTICS_TO_ACCOUNTS) | set(operations._ACQUISITION_FROM_ANALYTICS)
+    )
+    assert bridged_events, "expected at least one analytics->accounts mapping"
+    probe = bridged_events[0]
+
+    remote.set_analytics_opt_out(True)
+    _run_bridge(probe)
+    assert delivered == []
+
+    remote.set_analytics_opt_out(False)
+    _run_bridge(probe)
+    assert delivered, "bridge should deliver again once analytics is re-enabled"

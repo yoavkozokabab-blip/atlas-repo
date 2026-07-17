@@ -84,8 +84,21 @@ def _write_json(path: str, value: Any) -> None:
 
 
 def analytics_enabled() -> bool:
-    """Return whether the local user has not opted out of analytics."""
-    return _read_json(_preferences_path(), {}).get("opted_out") is not True
+    """Return whether the local user has not opted out of analytics.
+
+    A missing preferences file means the user never opted out (default on).
+    A present-but-unreadable file fails CLOSED: a user who disabled analytics
+    must never be silently re-enabled by a corrupted preference."""
+    path = _preferences_path()
+    try:
+        if not os.path.exists(path):
+            return True
+    except OSError:
+        return False
+    value = _read_json(path, None)
+    if not isinstance(value, dict):
+        return False
+    return value.get("opted_out") is not True
 
 
 def set_analytics_opt_out(opted_out: bool) -> Dict[str, Any]:
@@ -98,8 +111,10 @@ def set_analytics_opt_out(opted_out: bool) -> Dict[str, Any]:
     if opted_out:
         with _LOCK:
             try:
-                _save_queue([])
-            except Exception:
+                # Remove the outbox entirely: nothing already captured may
+                # still be delivered, and no queue artifact should remain.
+                os.remove(_queue_path())
+            except OSError:
                 pass
     return {"ok": True, "opted_out": bool(opted_out)}
 
