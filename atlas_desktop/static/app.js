@@ -1545,10 +1545,11 @@ function homeConnectedAgents(status) {
 
 // Truly connected = verified MCP handshake, never configuration alone.
 function homeVerifiedAgents(status) {
+  // Live MCP connection only — a written config or a stale handshake
+  // timestamp must never surface as "connected" on Home.
   return Object.keys(HOME_AGENT_LABELS).filter(key => {
     const data = status?.[key];
-    if (!data?.atlas_configured) return false;
-    return !!(data.client_verified || data.mcp_handshake_ok || data.last_handshake);
+    return !!(data?.connected || data?.connection?.connected);
   });
 }
 

@@ -103,9 +103,9 @@
         : "Select a local codebase";
     }
     if (byId("sidebarAgentState")) {
-      // Chip says "connected" only for verified handshakes; config-only reads
-      // as "configured" so the sidebar never overstates the MCP state.
-      const live = ["claude", "cursor", "codex"].filter((key) => agentVerificationState(key, agents?.[key]) === "verified");
+      // Chip says "connected" only for a live MCP connection; config-only
+      // reads as "configured" so the sidebar never overstates the MCP state.
+      const live = ["claude", "cursor", "codex"].filter((key) => agentVerificationState(key, agents?.[key]) === "connected");
       byId("sidebarAgentState").textContent = live.length
         ? `${live.length} agent${live.length === 1 ? "" : "s"} connected`
         : `${connected.length} agent${connected.length === 1 ? "" : "s"} configured`;

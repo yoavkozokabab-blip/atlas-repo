@@ -972,7 +972,7 @@
     // inactive/rejected) so they always have Account + Sign out and are
     // never dependent on the loose pre-login chip.
     if (_state && _state.guest && _state.local_access) {
-      if (chip) { chip.textContent = 'Local guest mode'; chip.className = 'account-chip signed-in guest'; chip.style.display = ''; }
+      if (chip) { chip.textContent = 'Guest'; chip.title = 'Using Atlas locally without an account'; chip.className = 'account-chip signed-in guest'; chip.style.display = ''; }
       if (menu) menu.style.display = 'none';
       if (adminEntry) adminEntry.style.display = 'none';
       if (accAdminEntry) accAdminEntry.style.display = 'none';
@@ -981,7 +981,7 @@
     }
 
     if (!_state || !_state.signed_in) {
-      if (chip) { chip.textContent = 'Account'; chip.className = 'account-chip unsigned'; chip.style.display = ''; }
+      if (chip) { chip.textContent = 'Sign in'; chip.className = 'account-chip unsigned'; chip.style.display = ''; }
       if (menu) menu.style.display = 'none';
       if (adminEntry) adminEntry.style.display = 'none';
       if (accAdminEntry) accAdminEntry.style.display = 'none';
@@ -998,7 +998,8 @@
     // Signed in: show the consolidated user menu, hide the loose chip.
     if (chip) { chip.textContent = `${email.split('@')[0]} · ${plan}${offline}`; chip.className = 'account-chip signed-in' + (license._offline ? ' offline' : ''); chip.style.display = 'none'; }
     if (menu) menu.style.display = '';
-    if (summary) summary.textContent = `${email.split('@')[0]}${admin ? ' · admin' : ''} ▾`;
+    const planTitle = plan === 'pro' ? 'Pro' : 'Free';
+    if (summary) summary.textContent = `${email.split('@')[0]} · ${planTitle}${admin ? ' · admin' : ''} ▾`;
     if (adminEntry) adminEntry.style.display = admin ? '' : 'none';
     if (accAdminEntry) accAdminEntry.style.display = admin ? '' : 'none';
     document.body.classList.toggle('role-admin', admin);
