@@ -217,13 +217,21 @@
       const itemKey = item.repo_id || item.repo_path || item.repo_name || "";
       return !itemKey || !activeKey || String(itemKey) === String(activeKey);
     });
+    const viewFor = { build: "build", investigate: "investigate", impact: "impact", ask: "ask" };
     const items = scopedHistory.slice(0, 4).map((item) => ({
       title: clean(item.title || item.request_text || item.workflow_type, "Repository investigation"),
       when: clean(item.created_at || item.updated_at, "Saved locally"),
+      view: viewFor[String(item.workflow_type || "").toLowerCase()] || "",
     }));
-    if (!items.length && trust) items.push({ title: trust.user_trust_label === "Fresh" ? "Repository evidence verified" : "Repository changes require review", when: "Current scan state" });
-    scopedRecent.slice(0, 2).forEach((item) => items.push({ title: `Scan baseline · ${clean(item.repo_name, "repository")}`, when: clean(item.last_scan_at || item.scanned_at, "Saved locally") }));
-    host.innerHTML = items.length ? items.slice(0, 5).map((item) => `<article class="technical-row"><strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(item.when)}</span></article>`).join("") : `<span class="muted tiny">No saved questions or scan changes yet for this repository.</span>`;
+    if (!items.length && trust) items.push({ title: trust.user_trust_label === "Fresh" ? "Repository evidence verified" : "Repository changes require review", when: "Current scan state", view: "" });
+    scopedRecent.slice(0, 2).forEach((item) => items.push({ title: `Scan baseline · ${clean(item.repo_name, "repository")}`, when: clean(item.last_scan_at || item.scanned_at, "Saved locally"), view: "" }));
+    // Continue where you left off: recent items reopen their workflow view.
+    host.innerHTML = items.length ? items.slice(0, 5).map((item) => `<article class="technical-row${item.view ? " technical-row-link" : ""}"${item.view ? ` role="button" tabindex="0" data-view="${item.view}"` : ""}><strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(item.when)}</span></article>`).join("") : `<span class="muted tiny">No saved questions or scan changes yet for this repository.</span>`;
+    host.querySelectorAll("[data-view]").forEach((row) => {
+      const open = () => window.go && window.go(row.dataset.view);
+      row.addEventListener("click", open);
+      row.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } });
+    });
   }
 
   function renderHomeDetails(summary, trust, graph, history, recent, agents, health) {

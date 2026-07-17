@@ -2804,6 +2804,7 @@ function renderCopilotPrimaryActions(res) {
   }
   if (topFile && res.mode !== "impact") {
     btns.push(`<button class="btn small ghost" onclick="copilotRunImpact()">Run Impact</button>`);
+    btns.push(`<button class="btn small ghost" onclick="copilotDebugSubsystem()">Debug this subsystem</button>`);
   }
   if ((res.files || []).length) {
     btns.push(`<button class="btn small ghost" onclick="copilotShowInMap()">Show in Map</button>`);
@@ -2823,6 +2824,14 @@ function copilotInspectEvidence() {
   const show = ev && ev.style.display === "none";
   if (ev && (STATE.copilotResult?.evidence || []).length) ev.style.display = show ? "block" : "none";
   if (fl && (STATE.copilotResult?.files || []).length) fl.style.display = show ? "block" : "none";
+}
+function copilotDebugSubsystem() {
+  // Handoff: same repository context; seeds Investigate with the answer's top file.
+  const topFile = (STATE.copilotResult?.files || [])[0] || "";
+  if (!topFile) { toast("No file to investigate"); return; }
+  if ($("investigateSymptom")) $("investigateSymptom").value = `Unexpected behavior involving ${topFile}: `;
+  go("investigate");
+  $("investigateSymptom")?.focus();
 }
 function copilotRunImpact() {
   const topFile = (STATE.copilotResult?.files || [])[0];
@@ -3428,6 +3437,18 @@ function investigateFile(path) {
   runImpact();
 }
 
+function impactInvestigateTopDependency() {
+  // Handoff: Impact -> Investigate, same repository and scan context.
+  const r = STATE.impactResult || {};
+  const dep = (r.direct_impact || [])[0];
+  if (!dep) { toast("No dependents to investigate"); return; }
+  if ($("investigateSymptom")) {
+    $("investigateSymptom").value = `A change to ${r.target || "the target"} may break ${dep}: `;
+  }
+  go("investigate");
+  $("investigateSymptom")?.focus();
+}
+
 function copyInvestigatePrompt(tool) {
   const text = STATE.investigateResult?.prompts?.[tool] || "";
   if (!text) { toast("Generate a plan first"); return; }
@@ -3532,6 +3553,7 @@ async function runImpact() {
     </details>
     <div class="copy-row" style="margin-top:12px">
       <button class="btn small ghost" onclick="go('center')">Show on map</button>
+      ${dirN ? `<button class="btn small ghost" onclick="impactInvestigateTopDependency()">Investigate highest-risk dependency</button>` : ""}
     </div>
     ${typeof workflowFeedbackHtml === "function" ? workflowFeedbackHtml("impact") : ""}
   </div>`;
