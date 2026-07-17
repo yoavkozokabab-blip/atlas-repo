@@ -109,42 +109,31 @@ class TestJwtSecretProvisioning:
     """Verify the jwt_secret.py persistence behaviour used in the runbook."""
 
     def test_env_var_takes_priority_over_file(self, tmp_path, monkeypatch):
-        monkeypatch.setenv("ATLAS_JWT_SECRET", "env-override-secret")
+        monkeypatch.delenv("ATLAS_AUTH_JWT_SECRET", raising=False)
+        monkeypatch.setenv("ATLAS_JWT_SECRET", "env-override-secret-at-least-thirty-two-bytes")
         monkeypatch.setenv("ATLAS_ACCOUNTS_DATA_DIR", str(tmp_path))
 
         from accounts_service.jwt_secret import load_jwt_secret
         result = load_jwt_secret()
-        assert result == "env-override-secret"
+        assert result == "env-override-secret-at-least-thirty-two-bytes"
 
     def test_atlas_auth_jwt_secret_takes_priority(self, tmp_path, monkeypatch):
-        monkeypatch.setenv("ATLAS_AUTH_JWT_SECRET", "auth-override-secret")
+        monkeypatch.setenv("ATLAS_AUTH_JWT_SECRET", "auth-override-secret-at-least-thirty-two-bytes")
         monkeypatch.delenv("ATLAS_JWT_SECRET", raising=False)
         monkeypatch.setenv("ATLAS_ACCOUNTS_DATA_DIR", str(tmp_path))
 
         from accounts_service.jwt_secret import load_jwt_secret
         result = load_jwt_secret()
-        assert result == "auth-override-secret"
+        assert result == "auth-override-secret-at-least-thirty-two-bytes"
 
-    def test_persisted_secret_stable_across_calls(self, tmp_path, monkeypatch):
+    def test_missing_secret_fails_closed(self, tmp_path, monkeypatch):
         monkeypatch.setenv("ATLAS_ACCOUNTS_DATA_DIR", str(tmp_path))
         monkeypatch.delenv("ATLAS_AUTH_JWT_SECRET", raising=False)
         monkeypatch.delenv("ATLAS_JWT_SECRET", raising=False)
 
         from accounts_service.jwt_secret import load_jwt_secret
-        first = load_jwt_secret()
-        second = load_jwt_secret()
-        assert first == second
-        assert len(first) == 64  # 32-byte hex string
-
-    def test_secret_file_created_with_restricted_permissions(self, tmp_path, monkeypatch):
-        monkeypatch.setenv("ATLAS_ACCOUNTS_DATA_DIR", str(tmp_path))
-        monkeypatch.delenv("ATLAS_AUTH_JWT_SECRET", raising=False)
-        monkeypatch.delenv("ATLAS_JWT_SECRET", raising=False)
-
-        from accounts_service.jwt_secret import jwt_secret_file_path, load_jwt_secret
-        load_jwt_secret()
-        secret_path = jwt_secret_file_path()
-        assert os.path.isfile(secret_path)
+        with pytest.raises(RuntimeError, match="required"):
+            load_jwt_secret()
 
 
 # ── Session cleanup ────────────────────────────────────────────────────────────

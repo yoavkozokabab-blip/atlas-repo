@@ -17,7 +17,6 @@ const releases = [
       "Demo naming: visible Atlas Demo — Medium with canonical medium_repo, stable across restart.",
       "Rebuilt Windows installer from corrected source commit a4782f87.",
     ],
-    ],
   },
   {
     version: "v1.0.2",

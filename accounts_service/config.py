@@ -13,7 +13,7 @@ DATABASE_URL: str = os.environ.get(
 )
 
 # ── JWT ────────────────────────────────────────────────────────────────────
-# Prefer ATLAS_AUTH_JWT_SECRET; otherwise load/create a persisted local secret.
+# Required environment-only signing secret. Startup fails closed if absent.
 JWT_SECRET: str = load_jwt_secret()
 JWT_ALGORITHM: str = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES: int = 15

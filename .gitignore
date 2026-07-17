@@ -48,6 +48,9 @@ packaging/installer/build_info.json
 packaging/installer/generated_version.iss
 installer/output/
 .env.local
+auth/jwt_secret
+**/jwt_secret
+**/*jwt*secret*
 manual_context_pack_tests/
 manual_mcp_tests/
 tmp*

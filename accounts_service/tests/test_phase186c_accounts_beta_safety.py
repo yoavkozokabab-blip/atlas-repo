@@ -74,22 +74,15 @@ def _register(client: TestClient) -> dict:
     return data
 
 
-class TestStableJwtSecret:
-    def test_secret_file_created_when_env_unset(self, tmp_path, monkeypatch):
+class TestEnvironmentJwtSecret:
+    def test_secret_file_is_not_a_fallback(self, tmp_path, monkeypatch):
         monkeypatch.setenv("ATLAS_ACCOUNTS_DATA_DIR", str(tmp_path / "authdata"))
         monkeypatch.delenv("ATLAS_AUTH_JWT_SECRET", raising=False)
         monkeypatch.delenv("ATLAS_JWT_SECRET", raising=False)
 
-        from accounts_service.jwt_secret import jwt_secret_file_path, load_jwt_secret
-
-        path = jwt_secret_file_path()
-        assert not os.path.isfile(path)
-        secret_one = load_jwt_secret()
-        secret_two = load_jwt_secret()
-        assert secret_one == secret_two
-        assert os.path.isfile(path)
-        with open(path, encoding="utf-8") as fh:
-            assert fh.read().strip() == secret_one
+        from accounts_service.jwt_secret import load_jwt_secret
+        with pytest.raises(RuntimeError, match="required"):
+            load_jwt_secret()
 
     def test_login_token_valid_after_simulated_restart(self, client):
         from accounts_service import config
