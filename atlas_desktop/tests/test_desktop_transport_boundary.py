@@ -415,7 +415,7 @@ vm.runInContext(source, context);
     assert result["accessPreserved"] is True
     assert result["authMode"] is False
     assert result["state"] == result["domState"] == "unavailable"
-    assert result["chip"]["textContent"] == "Local guest mode"
+    assert result["chip"]["textContent"] == "Guest"
 
 
 def test_frontend_blocks_api_requests_when_handshake_fails():

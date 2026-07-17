@@ -59,7 +59,7 @@ def test_index_footer_and_assets():
     assert "Plan the change before editing code." in html
     assert "Trace a failure through the repository." in html
     assert "See what depends on a file before changing it." in html
-    assert "Verify available clients" in html
+    assert "Check connections" in html
 
 
 def test_shell_does_not_surface_runtime_timeout_copy():
@@ -220,7 +220,7 @@ def test_agents_configured_vs_verified_semantics():
     assert "Configuration verified" not in workbench_source
     assert 'return "connected"' in workbench_source
     shell = SHELL.read_text(encoding="utf-8")
-    assert "Active clients" in shell
+    assert "Connected clients" in shell
     assert "Configured clients" in shell
     assert "Verified clients" not in shell
 
