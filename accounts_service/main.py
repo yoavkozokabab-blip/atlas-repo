@@ -53,6 +53,19 @@ def _startup() -> None:
 
     init_db()
 
+    # v1.0.4 -> v1.0.5 signing-key migration: revoke legacy refresh sessions
+    # exactly once per installation (idempotent, marker-gated).
+    from .key_migration import run_key_migration
+
+    _dbm = SessionLocal()
+    try:
+        if run_key_migration(_dbm):
+            _log.info("startup: jwt key migration v105 completed")
+    except Exception as exc:  # pragma: no cover
+        _log.warning("startup: jwt key migration failed — %s", exc)
+    finally:
+        _dbm.close()
+
     # Prune stale sessions and tokens from previous runs.
     _db = SessionLocal()
     try:

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import secrets
+import uuid
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, Optional
 
@@ -20,6 +21,13 @@ from .config import (
     ACCESS_TOKEN_EXPIRE_MINUTES,
     REFRESH_TOKEN_EXPIRE_DAYS,
 )
+from .jwt_secret import current_key_fingerprint
+
+# Fingerprint of the active signing key. Embedded in every token and checked
+# on decode so a token signed under any other key (the leaked v1.0.4 secret,
+# another installation's key, a rotated-away key) is rejected even if its
+# signature were somehow acceptable.
+_ACTIVE_KEY_FP = current_key_fingerprint()
 
 # Precomputed hash for constant-time login when email is unknown.
 _DUMMY_HASH = bcrypt.hashpw(b"dummy_constant_time_check", bcrypt.gensalt()).decode("utf-8")
@@ -59,6 +67,8 @@ def create_access_token(
         "exp": now + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
         "aud": "atlas-api",
         "iss": "atlas-auth",
+        "jti": uuid.uuid4().hex,
+        "kfp": _ACTIVE_KEY_FP,
     }
     if extra:
         payload.update(extra)
@@ -66,14 +76,25 @@ def create_access_token(
 
 
 def decode_access_token(token: str) -> Dict[str, Any]:
-    """Decode and validate a JWT. Raises jwt.PyJWTError on failure."""
-    return jwt.decode(
+    """Decode and validate a JWT. Raises jwt.PyJWTError on failure.
+
+    Enforces signature, exp/iat presence, audience, issuer, a pinned
+    algorithm list, and that the token was minted under the currently
+    active signing key (``kfp`` claim). Tokens from the leaked v1.0.4
+    secret, a different installation, or a rotated-away key all fail here
+    regardless of signature validity.
+    """
+    payload = jwt.decode(
         token,
         JWT_SECRET,
         algorithms=[JWT_ALGORITHM],
         audience="atlas-api",
         issuer="atlas-auth",
+        options={"require": ["exp", "iat", "aud", "iss"]},
     )
+    if str(payload.get("kfp") or "") != _ACTIVE_KEY_FP:
+        raise jwt.InvalidTokenError("token was not issued under the active signing key")
+    return payload
 
 
 # ── Refresh tokens ─────────────────────────────────────────────────────────
