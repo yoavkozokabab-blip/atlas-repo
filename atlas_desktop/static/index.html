@@ -1140,7 +1140,16 @@
       <header class="workspace-titlebar"><div><p class="workspace-kicker">Application preferences</p><h1 id="settingsTitle" tabindex="-1">Settings</h1><p>Review local storage, privacy, appearance, repository defaults, and account state.</p></div></header>
       <div class="settings-sections">
         <section><div class="section-heading"><h2>Account</h2><button class="btn ghost small" type="button" onclick="atlasAccounts && atlasAccounts.open()">Manage account</button></div><p id="settingsAccountState" class="muted">Checking account state…</p></section>
-        <section><div class="section-heading"><h2>Local storage and privacy</h2><a class="btn ghost small" href="privacy.html">Privacy details</a></div><dl class="fact-table" id="settingsStorageFacts"></dl><p>Repository indexing and Atlas memory remain on this machine. Connected coding agents may send selected context to their own configured model provider.</p></section>
+        <section><div class="section-heading"><h2>Local storage and privacy</h2><a class="btn ghost small" href="privacy.html">Privacy details</a></div><dl class="fact-table" id="settingsStorageFacts"></dl><p>Repository indexing and Atlas memory remain on this machine. Connected coding agents may send selected context to their own configured model provider.</p>
+          <div class="settings-toggle-row">
+            <label class="settings-toggle" for="analyticsOptToggle">
+              <input type="checkbox" id="analyticsOptToggle" role="switch" onchange="setAnalyticsPreference(this.checked)" />
+              <span class="settings-toggle-label">Share pseudonymous usage analytics</span>
+            </label>
+            <p id="analyticsToggleDesc" class="muted tiny" style="margin:6px 0 0">Helps improve Atlas by sharing feature and performance events. Repository contents, paths, filenames, source code, prompts, answers, secrets, and MCP payloads are never included.</p>
+            <p id="analyticsToggleState" class="muted tiny" aria-live="polite" style="margin:4px 0 0"></p>
+          </div>
+        </section>
         <section><div class="section-heading"><h2>Appearance and accessibility</h2></div><p>Atlas follows the operating system’s reduced-motion and browser zoom settings. The desktop workbench uses the high-contrast graphite theme.</p></section>
         <section><div class="section-heading"><h2>Getting started</h2><button class="btn ghost small" type="button" onclick="reopenOnboarding()">Reopen welcome tour</button></div><p class="muted">Replay the first-run walkthrough: what Atlas does, local-first, loading a repository, and your first Impact analysis.</p></section>
         <section><div class="section-heading"><h2>Advanced recovery</h2><a class="btn ghost small" href="support.html">Open recovery tools</a></div><p>Cache clearing, index rebuilding, self-test, logs, and support bundle export are separated in Diagnostics to prevent accidental data changes.</p></section>

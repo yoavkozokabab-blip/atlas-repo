@@ -998,6 +998,23 @@ window.reopenOnboarding = reopenOnboarding;
 window.onboardingStep = onboardingStep;
 window.onboardingRunImpact = onboardingRunImpact;
 
+// Analytics opt-out toggle (Settings). Checked = sharing; unchecked = opted out.
+async function setAnalyticsPreference(sharing) {
+  const optedOut = !sharing;
+  const stateEl = $("analyticsToggleState");
+  try {
+    await api("/api/analytics/preferences", "POST", { opted_out: optedOut });
+    if (stateEl) stateEl.textContent = optedOut
+      ? "Analytics is off. No usage events are shared from this installation."
+      : "Sharing anonymous usage events. You can turn this off anytime.";
+  } catch (e) {
+    if (stateEl) stateEl.textContent = "Could not update the analytics preference. Try again.";
+    // Reflect the true backend state on failure rather than a stale checkbox.
+    const t = $("analyticsOptToggle"); if (t) t.checked = sharing;
+  }
+}
+window.setAnalyticsPreference = setAnalyticsPreference;
+
 function workflowEmptyHtml(title, body, primaryLabel, primaryFn, secondaryLabel, secondaryFn) {
   return `<div class="glass empty-panel">
     <h3 style="margin:0 0 8px">${title}</h3>

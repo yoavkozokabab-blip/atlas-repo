@@ -735,6 +735,19 @@
         ["Build date", product && product.build_date],
       ]);
     }
+    // Load the current analytics preference into the toggle from the backend.
+    const toggle = byId("analyticsOptToggle");
+    const stateEl = byId("analyticsToggleState");
+    if (toggle) {
+      try {
+        const pref = await api("/api/analytics/preferences", "GET", undefined, { optional: true });
+        const optedOut = !!(pref && pref.opted_out);
+        toggle.checked = !optedOut;
+        if (stateEl) stateEl.textContent = optedOut
+          ? "Analytics is off. No usage events are shared from this installation."
+          : "Sharing anonymous usage events. You can turn this off anytime.";
+      } catch (e) { /* preference read must never break Settings */ }
+    }
   }
 
   function copyDiagnosticReport() {

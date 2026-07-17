@@ -49,3 +49,19 @@ textarea:focus-visible,
 @media (prefers-reduced-motion: reduce) {
   .onboard-dots i { transition: none; }
 }
+
+/* Settings analytics opt-out toggle. */
+.settings-toggle-row { margin-top: 16px; }
+.settings-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+.settings-toggle input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent, #35d0ba);
+  cursor: pointer;
+}
+.settings-toggle-label { font-weight: 600; }

@@ -98,6 +98,18 @@ def track_event(event: str, **properties: Any) -> Dict[str, Any]:
     name = (event or "").strip()
     if not name:
         return {"ok": False, "error": "Event name required.", "analytics_status": _ANALYTICS_STATUS}
+    # Authoritative opt-out gate: this is the single lowest-level emitter, so a
+    # disabled preference blocks EVERY subsequent desktop analytics event —
+    # local log and remote queue alike — including direct emitter calls. Read
+    # lazily to avoid an import cycle; a preference-read error fails closed only
+    # for delivery, never for the product.
+    try:
+        from . import analytics_remote
+        if not analytics_remote.analytics_enabled():
+            return {"ok": True, "skipped": "analytics_disabled", "event": name,
+                    "analytics_status": _ANALYTICS_STATUS}
+    except Exception:
+        pass
     row = {
         "ts": time.time(),
         "event": name,

@@ -89,8 +89,18 @@ def analytics_enabled() -> bool:
 
 
 def set_analytics_opt_out(opted_out: bool) -> Dict[str, Any]:
-    """Persist the explicit local opt-out without contacting the network."""
+    """Persist the explicit local opt-out without contacting the network.
+
+    Opting out also drops any queued-but-unsent events so the choice is
+    retroactive: nothing already captured can still be delivered.
+    """
     _write_json(_preferences_path(), {"opted_out": bool(opted_out), "updated_at": int(time.time())})
+    if opted_out:
+        with _LOCK:
+            try:
+                _save_queue([])
+            except Exception:
+                pass
     return {"ok": True, "opted_out": bool(opted_out)}
 
 
