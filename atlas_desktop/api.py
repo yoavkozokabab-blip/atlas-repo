@@ -4364,17 +4364,82 @@ def _copilot_envelope(
     return payload
 
 
+# Vocabulary the intent router keys on. Tokens in a question that are one
+# typo away from one of these are normalized before routing, so "What braeks
+# if I chnage app.py?" still reaches the impact engine. Tokens that look like
+# paths or code identifiers are never rewritten.
+_ROUTING_VOCABULARY = (
+    "change", "changing", "breaks", "break", "impact", "remove", "removing",
+    "delete", "deleting", "depends", "dependency", "dependencies", "imports",
+    "imported", "importers", "cycle", "circular", "risk", "risky", "dangerous",
+    "architecture", "subsystem", "subsystems", "module", "modules", "where",
+    "which", "files", "implemented", "implement", "defined", "handled",
+    "explain", "overview", "entry", "flow", "request", "repository", "start",
+    "tests", "prompt", "context", "authentication", "security", "blast",
+    "radius", "bottleneck", "locate",
+)
+_COMMON_MISSPELLINGS = {
+    "braeks": "breaks", "brakes": "breaks", "chnage": "change", "chagne": "change",
+    "changr": "change", "improt": "import", "imprt": "import", "dependancy": "dependency",
+    "dependancies": "dependencies", "architechture": "architecture",
+    "architecure": "architecture", "secuirty": "security", "authentification": "authentication",
+    "authenication": "authentication", "wich": "which", "wher": "where",
+    "explian": "explain", "overveiw": "overview", "modul": "module",
+}
+
+
+def _looks_like_code_token(token: str) -> bool:
+    return bool(
+        "/" in token or "\\" in token or "." in token or "_" in token
+        or token.endswith((".py", ".js", ".ts")) or any(c.isupper() for c in token)
+    )
+
+
+def normalize_copilot_question(question: str) -> str:
+    """Repair casing and common typos in routing words only (never in paths)."""
+    import difflib
+
+    words = (question or "").strip().split()
+    repaired: List[str] = []
+    for word in words:
+        bare = word.strip(".,;:!?\"'()[]{}")
+        lower = bare.lower()
+        if not bare or _looks_like_code_token(bare):
+            repaired.append(word)
+            continue
+        if lower in _COMMON_MISSPELLINGS:
+            repaired.append(word.replace(bare, _COMMON_MISSPELLINGS[lower]))
+            continue
+        if lower in _ROUTING_VOCABULARY or len(lower) < 5:
+            repaired.append(word)
+            continue
+        close = difflib.get_close_matches(lower, _ROUTING_VOCABULARY, n=1, cutoff=0.85)
+        if close and close[0] != lower:
+            repaired.append(word.replace(bare, close[0]))
+        else:
+            repaired.append(word)
+    return " ".join(repaired)
+
+
 def classify_copilot_question(question: str) -> str:
     """Deterministic intent routing for copilot questions."""
     q = (question or "").strip().lower()
     if not q:
         return "unknown"
+    q = normalize_copilot_question(q)
     if any(token in q for token in ("claude", "codex", "cursor", "context packet", "generate a prompt", "generate prompt")):
         return "context_export"
     if "prompt" in q and any(token in q for token in ("generate", "copy", "prepare", "export")):
         return "context_export"
     if any(token in q for token in ("cycle", "circular", "import loop")):
         return "cycles"
+    if any(token in q for token in ("what changed", "changed since", "recent changes",
+                                    "since my last scan", "since last scan")):
+        return "changes"
+    # "Which part has the biggest blast radius?" is a ranking question, not a
+    # single-target impact simulation.
+    if "blast radius" in q and any(t in q for t in ("biggest", "largest", "widest", "most ", "which part", "what part")):
+        return "risk"
     if any(token in q for token in ("who imports", "importers", "imported by", "imports this")):
         return "dependency"
     if any(token in q for token in ("what breaks", "blast radius", "impact of", "if i change", "what tests",
@@ -4588,9 +4653,14 @@ def _answer_risk(packet: str) -> Dict[str, Any]:
     files = []
     for item in ranked[:8]:
         path = item.get("path", "")
+        fan_in = int(item.get("metrics", {}).get("fan_in", 0) or 0)
+        blast = (
+            f"imported by {fan_in} other modules — wide blast radius" if fan_in >= 6
+            else f"imported by {fan_in} other module{'s' if fan_in != 1 else ''}"
+        )
         lines.append(
-            f"{item.get('rank', '?')}. {item.get('label', path)} — score {item.get('total_score', 0)} "
-            f"(fan-in={item.get('metrics', {}).get('fan_in', 0)})"
+            f"{item.get('rank', '?')}. {item.get('label', path)} — risk score "
+            f"{item.get('total_score', 0)}, {blast}"
         )
         evidence.extend((item.get("signals") or [])[:2])
         if path:
@@ -4650,6 +4720,15 @@ def _answer_impact(question: str, node_context: Optional[Dict[str, Any]], packet
     for s in (literal, concept):
         if s and s not in seeds:
             seeds.append(s)
+    # "the main module" / "the entry point" — resolve to the scan's top hub so a
+    # reasonable generic question gets a grounded answer instead of a prompt to
+    # rephrase.
+    lower_q = (question or "").lower()
+    if any(t in lower_q for t in ("main module", "entry point", "main file", "the core module")):
+        hub = ((_STATE.get("scan") or {}).get("top_hubs") or [{}])[0]
+        hub_path = hub.get("path") or hub.get("module") or ""
+        if hub_path and hub_path not in seeds:
+            seeds.append(hub_path)
     res: Optional[Dict[str, Any]] = None
     for seed in seeds:
         r = change_impact_simulation(seed)
@@ -4890,23 +4969,88 @@ def _answer_location(question: str, packet: str) -> Dict[str, Any]:
     )
 
 
+def _answer_changes(packet: str) -> Dict[str, Any]:
+    """Answer "what changed since my last scan?" from the freshness engine."""
+    status, _snapshot = _responsive_staleness()
+    changed = [str(c) for c in (status.get("changed_files") or [])][:20]
+    if status.get("fresh"):
+        answer = "Nothing changed since the last scan — Atlas repository memory is current."
+        action = "Keep working; rescan only after you edit files."
+        confidence = "high"
+    else:
+        answer = (
+            f"{len(status.get('changed_files') or [])} file(s) changed since the last scan. "
+            "Results that mention these files may be stale — refresh the scan to update Atlas memory."
+        )
+        action = "Rescan the repository to refresh Atlas memory."
+        confidence = "high" if changed else "medium"
+    return _copilot_envelope(
+        "changes",
+        answer,
+        evidence=[f"freshness={status.get('status') or 'fresh'}"] + [f"changed: {c}" for c in changed[:8]],
+        files=changed,
+        risk_level="low" if status.get("fresh") else "medium",
+        suggested_prompt="What breaks if I change " + (changed[0] if changed else "this file") + "?",
+        suggested_action=action,
+        confidence=confidence,
+        limitations=[] if status.get("fresh") else ["Only files inside the scan scope are compared."],
+        packet=packet,
+    )
+
+
 def _answer_unknown(question: str, packet: str) -> Dict[str, Any]:
     scan = _STATE.get("scan") or {}
     suggestions = _recommended_questions(scan)
+    q = (question or "").strip()
+    lower = q.lower()
+
+    # Broad question — answer with the repository overview instead of a dead
+    # end ("tell me about this repo", "help", one-or-two-word questions).
+    broad_markers = ("help", "this repo", "the repo", "this project", "summary",
+                     "about", "what is this", "get started", "getting started")
+    if q and (len(q.split()) <= 3 or any(t in lower for t in broad_markers)):
+        result = _answer_repository_understanding(question, packet)
+        if result.get("ok"):
+            result.setdefault("limitations", []).append(
+                "Broad question — this is the repository overview. Name a file, "
+                "symbol, or subsystem to go deeper."
+            )
+            return result
+
+    # A recognizable file in the question — the intent is ambiguous, so offer
+    # two or three concrete interpretations instead of refusing.
+    target = _extract_path_from_question(q)
+    interpretations: List[str] = []
+    if target:
+        interpretations = [
+            f"What breaks if I change {target}?",
+            f"Who imports {target}?",
+            f"Explain {target}.",
+        ]
+    missing = (
+        f"I can see `{target}` in your question but not what you want to know about it."
+        if target
+        else "The question does not name a file, symbol, or analysis goal Atlas can ground in the scan."
+    )
     answer = (
-        "I could not map that question to a grounded analysis mode. "
-        "Try one of the suggested questions below."
+        f"I was not sure how to interpret that. {missing} "
+        + ("Choose one of the interpretations below, or rephrase." if interpretations
+           else "Try one of the suggested questions below, or include a file path.")
     )
     return _copilot_envelope(
         "unknown",
         answer,
-        evidence=[f"question={question[:120]}"],
+        evidence=[f"question={q[:120]}"],
         risk_level="unknown",
-        suggested_prompt=suggestions[0] if suggestions else "What does this repository do?",
+        suggested_prompt=(interpretations[0] if interpretations else (suggestions[0] if suggestions else "What does this repository do?")),
         suggested_action="Pick a suggested question or name a specific file path.",
         confidence="low",
-        limitations=["Question did not match deterministic routing rules."],
+        limitations=[
+            "Question did not match deterministic routing rules.",
+            missing,
+        ],
         packet=packet,
+        extra={"interpretations": interpretations} if interpretations else None,
     )
 
 
@@ -4961,6 +5105,8 @@ def copilot_ask(
             result = _answer_impact(question, node_context, packet)
         elif mode == "cycles":
             result = _answer_cycles(packet)
+        elif mode == "changes":
+            result = _answer_changes(packet)
         elif mode == "dependency":
             result = _answer_dependency(question, node_context, packet)
         elif mode == "context_export":
