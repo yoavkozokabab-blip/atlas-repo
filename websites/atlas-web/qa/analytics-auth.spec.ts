@@ -24,6 +24,7 @@ import { PAID_PLANS_ENABLED } from "../app/_config";
 import { BILLING_NOT_AVAILABLE, DisabledBillingProvider, proCheckoutReady } from "../app/_lib/billing";
 import { isTrustedBrowserWrite } from "../app/_lib/request-security";
 import { hasPaidAccess, transitionEntitlement } from "../app/_lib/billing-state";
+import { parseWaitlistForm } from "../app/_lib/waitlist-form";
 import {
   FeatureGate,
   FREE_ADVANCED_IMPACT_LIMIT,
@@ -227,6 +228,15 @@ test("browser writes reject hostile origins while allowing same-origin and nativ
     method: "POST", headers: { "sec-fetch-site": "same-origin" },
   }))).toBe(false);
   expect(isTrustedBrowserWrite(new Request("http://localhost:3000/api/auth/login", { method: "POST" }))).toBe(true);
+});
+
+test("waitlist accepts only its bounded public form schema", () => {
+  const valid = new FormData(); valid.set("email", "person@example.com"); valid.set("role", "developer");
+  expect(parseWaitlistForm(valid)).toEqual({ email: "person@example.com", role: "developer" });
+  const forged = new FormData(); forged.set("email", "person@example.com"); forged.set("role", "developer"); forged.set("user_id", "admin");
+  expect(parseWaitlistForm(forged)).toBeNull();
+  const duplicate = new FormData(); duplicate.append("email", "person@example.com"); duplicate.append("email", "other@example.com");
+  expect(parseWaitlistForm(duplicate)).toBeNull();
 });
 
 test("security-header baseline denies framing and keeps payment origins absent", () => {
