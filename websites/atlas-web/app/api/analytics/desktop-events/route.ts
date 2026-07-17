@@ -1,6 +1,6 @@
 import { userFromBearer } from "@/app/_lib/auth";
 import { isAnalyticsEvent } from "@/app/_lib/analytics-contract";
-import { acceptsAnalyticsRequest, analyticsBody, eventBatch } from "@/app/_lib/analytics-ingestion";
+import { acceptsAnalyticsRequest, analyticsBody, DESKTOP_ANALYTICS_EVENT_KEYS, eventBatch } from "@/app/_lib/analytics-ingestion";
 import { buildAnalyticsRow } from "@/app/_lib/analytics-server";
 import { recordAnalyticsEvents } from "@/app/_lib/store";
 import { privateJson } from "@/app/_lib/http";
@@ -14,7 +14,13 @@ export async function POST(req: Request) {
       return privateJson({ ok: false, error: "rate_limited" }, { status: 429, headers: { "Retry-After": "60" } });
     }
     const body = await analyticsBody(req);
-    const events = body && eventBatch(body);
+    // Desktop delivery is a native client protocol. Browser-originated posts
+    // are never accepted on this endpoint, even if the Origin is the Atlas
+    // site; the browser uses /api/analytics/events instead.
+    if (req.headers.has("origin") || req.headers.has("referer")) {
+      return privateJson({ ok: false, error: "native_client_required" }, { status: 403 });
+    }
+    const events = body && eventBatch(body, DESKTOP_ANALYTICS_EVENT_KEYS);
     if (!events || events.some((event) => !isAnalyticsEvent(event.eventName))) {
       return privateJson({ ok: false, error: "invalid_event" }, { status: 400 });
     }

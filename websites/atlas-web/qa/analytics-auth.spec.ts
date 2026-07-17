@@ -2,6 +2,13 @@ import { test, expect } from "playwright/test";
 import fs from "node:fs";
 import path from "node:path";
 import {
+  DESKTOP_ANALYTICS_EVENT_KEYS,
+  analyticsBody,
+  eventBatch,
+  MAX_ANALYTICS_DEPTH,
+  WEBSITE_ANALYTICS_EVENT_KEYS,
+} from "../app/_lib/analytics-ingestion";
+import {
   classifyBrowser,
   classifyDevice,
   classifyReferrer,
@@ -51,6 +58,17 @@ test("canonical contract rejects unknown events and sensitive payloads", () => {
   expect(sanitizeProperties({ screen: "graph", duration_active_ms: 1200, duration_elapsed_ms: 2000 })).toEqual({
     screen: "graph", duration_active_ms: 1200, duration_elapsed_ms: 2000,
   });
+});
+
+test("analytics envelopes reject unknown fields and hostile nested payloads", async () => {
+  expect(eventBatch({ eventName: "site_visit", unknown: "no" }, WEBSITE_ANALYTICS_EVENT_KEYS)).toBeNull();
+  expect(eventBatch({ events: [{ eventName: "app_launch", installationId: "install-12345678" }], extra: true }, DESKTOP_ANALYTICS_EVENT_KEYS)).toBeNull();
+  expect(eventBatch({ eventName: "site_visit", anonymousId: "anonymous-12345678" }, WEBSITE_ANALYTICS_EVENT_KEYS)).toHaveLength(1);
+  let nested: unknown = "leaf";
+  for (let index = 0; index <= MAX_ANALYTICS_DEPTH; index += 1) nested = { nested };
+  const deepRequest = new Request("http://localhost/api/analytics/events", { method: "POST", body: JSON.stringify(nested) });
+  expect(await analyticsBody(deepRequest)).toBeNull();
+  expect(sanitizeProperties({ repo: "repo-name", status: "ok", token: "eyJ.fake.secret" })).toEqual({ status: "ok" });
 });
 
 test("request context is classified without persisting raw referrers or user agents", () => {
