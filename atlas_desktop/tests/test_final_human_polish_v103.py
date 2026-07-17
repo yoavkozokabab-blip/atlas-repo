@@ -65,7 +65,7 @@ def test_index_footer_and_assets():
 def test_shell_does_not_surface_runtime_timeout_copy():
     source = SHELL.read_text(encoding="utf-8")
     assert "Runtime timed out" not in source
-    assert "Atlas runtime is unavailable" in source
+    assert "Atlas stopped responding. Your repository was not changed." in source
 
 
 def test_repository_state_model_states():
@@ -171,7 +171,7 @@ vm.runInContext(source, context);
 }})();
 """
     result = _run_node(script)
-    assert result["first"]["label"] == "Atlas runtime is unavailable"
+    assert result["first"]["label"] == "Atlas stopped responding. Your repository was not changed."
     assert result["second"]["label"] == "No repository loaded"
     assert result["second"]["state"] == "idle"
 
@@ -210,7 +210,7 @@ vm.runInContext(source, context);
 }})();
 """
     result = _run_node(script)
-    assert result["label"] == "Atlas runtime is unavailable"
+    assert result["label"] == "Atlas stopped responding. Your repository was not changed."
     assert result["state"] == "error"
 
 

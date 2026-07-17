@@ -100,7 +100,7 @@
     const runtimeHealthy = !!(health && health.ok && health.product === "ATLAS");
     if (!runtimeHealthy) {
       readiness.dataset.state = "error";
-      label.textContent = "Atlas runtime is unavailable";
+      label.textContent = "Atlas stopped responding. Your repository was not changed.";
       renderGlobalReadinessActions(
         '<button type="button" class="btn ghost tiny" data-global-retry>Retry</button>'
         + '<button type="button" class="btn ghost tiny" data-global-diagnostics>Open diagnostics</button>'
