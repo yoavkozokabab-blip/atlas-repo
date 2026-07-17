@@ -6,12 +6,13 @@ import { useEffect, useRef, useState } from "react";
 import AtlasMark from "../AtlasMark";
 import { GITHUB_URL } from "../../_config";
 
+// Primary navigation stays to the trust-critical pages; Docs, Pricing and the
+// rest remain reachable from the footer.
 const LINKS = [
   ["Product", "/features"],
   ["How it works", "/how-it-works"],
   ["Integrations", "/integrations"],
-  ["Docs", "/docs"],
-  ["Pricing", "/pricing"],
+  ["Security", "/security"],
 ] as const;
 
 export default function CineNav() {
