@@ -83,7 +83,7 @@ bounded to 512 KiB and stdout contains protocol messages only.
   rejection, envelope/depth limits, sensitive redaction, server-owned session
   evidence, disabled billing and free-plan limits.
 - Desktop source proofs: `atlas_desktop/tests/test_desktop_transport_boundary.py`
-  covers exact loopback Host/Origin/runtime-token behavior; 
+  covers exact loopback Host/Origin/runtime-token behavior;
   `atlas_desktop/tests/test_mcp_security_v105.py` covers malformed, oversized,
   nested and bounded-output JSON-RPC cases.
 - Database-backed RLS, session rows, rate-limit storage and analytics retention
