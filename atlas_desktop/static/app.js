@@ -1056,6 +1056,26 @@ function activeRepositoryKey(summary) {
   return String(s.repo_id || s.repo_path || s.repo_name || "").trim();
 }
 
+// v1.0.5 isolation guard: a workflow response is stale when the selected
+// repository changed while the request was in flight, or when the server's
+// context_binding names a different repository than the one on screen.
+// Stale responses are discarded instead of rendered.
+function workflowResponseIsStale(requestRepoKey, res) {
+  const current = activeRepositoryKey();
+  if (current !== String(requestRepoKey || "").trim()) return true;
+  const bound = res && res.context_binding ? String(res.context_binding.repo_path || "").trim() : "";
+  const currentPath = String(STATE.summary?.repo_path || "").trim();
+  if (bound && currentPath && bound.toLowerCase() !== currentPath.toLowerCase()) return true;
+  return false;
+}
+
+function discardStaleWorkflowResponse(view) {
+  toast("Repository changed — the previous result was discarded");
+  if (!view) return;
+  if (STATE.summary?.ok) renderWorkflowReadyState(view);
+  else renderWorkflowGate(view);
+}
+
 function renderWorkflowContextLine(view) {
   const lines = { build: "buildContextLine", investigate: "investigateContextLine", impact: "impactContextLine" };
   const lineId = lines[view];
@@ -2662,10 +2682,15 @@ async function sendCopilotQuestion() {
   $("copilotLoading").style.display = "block";
   $("copilotCard").style.display = "none";
   window.atlasActivity?.add("Repository analysis started");
+  const requestRepoKey = activeRepositoryKey();
   const body = { question, target: "none", packet: "compact" };
   if (STATE.selectedNode) body.node_context = STATE.selectedNode;
   const res = await api("/api/copilot/ask", "POST", body);
   $("copilotLoading").style.display = "none";
+  if (workflowResponseIsStale(requestRepoKey, res)) {
+    discardStaleWorkflowResponse();
+    return;
+  }
   if (!res.ok) {
     if (res.code === "no_repository" || res.code === "requires_scan") renderAskPage();
     toast("✗ " + (res.error || "Repository analysis failed"));
@@ -3227,7 +3252,12 @@ async function runChangePlan() {
   const request = $("buildRequest")?.value.trim();
   if (!request) { toast("Describe the change you want"); return; }
   window.atlasActivity?.add("Implementation Plan created");
+  const requestRepoKey = activeRepositoryKey();
   const r = await api("/api/planning/change", "POST", { request });
+  if (workflowResponseIsStale(requestRepoKey, r)) {
+    discardStaleWorkflowResponse("build");
+    return;
+  }
   const out = $("buildOut");
   if (!r.ok) {
     out.innerHTML = workflowErrorHtml("Could not generate plan", r, "Try a more specific request or pick a module from the Map.");
@@ -3293,7 +3323,12 @@ function copyBuildPrompt(tool) {
 async function runBuildImpact() {
   const target = $("buildImpactTarget")?.value.trim();
   if (!target) { toast("Enter a file or module"); return; }
+  const requestRepoKey = activeRepositoryKey();
   const r = await api("/api/planning/impact", "POST", { target });
+  if (workflowResponseIsStale(requestRepoKey, r)) {
+    discardStaleWorkflowResponse();
+    return;
+  }
   const host = $("buildImpactOut");
   if (!host) return;
   if (!r.ok) { host.innerHTML = `<p class="muted tiny">${esc(r.error)}</p>`; return; }
@@ -3312,7 +3347,12 @@ async function runInvestigationPlan() {
   const symptom = $("investigateSymptom")?.value.trim();
   if (!symptom) { toast("Describe the symptom"); return; }
   window.atlasActivity?.add("Failure Investigation completed");
+  const requestRepoKey = activeRepositoryKey();
   const r = await api("/api/planning/investigate", "POST", { symptom });
+  if (workflowResponseIsStale(requestRepoKey, r)) {
+    discardStaleWorkflowResponse("investigate");
+    return;
+  }
   const out = $("investigateOut");
   if (!r.ok) {
     out.innerHTML = workflowErrorHtml("Failure investigation could not run", r, "Include a file path, error message, or module name for better grounding.");
@@ -3405,8 +3445,9 @@ async function runImpact() {
     btn.disabled = true;
     btn.textContent = "Analyzing…";
   }
+  const requestRepoKey = activeRepositoryKey();
   out.innerHTML = `<div class="impact-result-panel impact-loading"><p class="muted">Analyzing <span class="mono">${esc(target)}</span>…</p></div>`;
-  out.dataset.atlasRepoKey = activeRepositoryKey();
+  out.dataset.atlasRepoKey = requestRepoKey;
   window.atlasActivity?.add("Impact analysis run");
   let r;
   try {
@@ -3416,6 +3457,10 @@ async function runImpact() {
       btn.disabled = false;
       btn.textContent = "Analyze impact";
     }
+  }
+  if (workflowResponseIsStale(requestRepoKey, r)) {
+    discardStaleWorkflowResponse("impact");
+    return;
   }
   if (!r.ok) {
     // Distinct state: the analysis ran fine but the target is not in the
@@ -3460,7 +3505,7 @@ async function runImpact() {
   const indirectHtml = indN
     ? `<div class="report-section"><div class="report-label">Transitive dependents (${indN})</div>${impactModuleTags(r.indirect_impact)}</div>`
     : "";
-  out.innerHTML = `<div class="impact-result-panel glass ocard impact-card" data-atlas-repo-key="${esc(activeRepositoryKey())}">
+  out.innerHTML = `<div class="impact-result-panel glass ocard impact-card" data-atlas-repo-key="${esc(requestRepoKey)}">
     ${repoLine}
     <div class="impact-head">
       <h3 style="margin:0">Impact of changing <span class="mono">${esc(r.target)}</span></h3>
@@ -3489,7 +3534,7 @@ async function runImpact() {
     </div>
     ${typeof workflowFeedbackHtml === "function" ? workflowFeedbackHtml("impact") : ""}
   </div>`;
-  out.dataset.atlasRepoKey = activeRepositoryKey();
+  out.dataset.atlasRepoKey = requestRepoKey;
   renderWorkflowHistory("impact", "impactHistory");
 }
 

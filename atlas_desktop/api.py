@@ -1172,6 +1172,30 @@ def _scan_matches_current_path() -> bool:
     return scan_path == os.path.abspath(str(path))
 
 
+def _context_binding() -> Dict[str, Any]:
+    """Authoritative repository identity attached to every workflow response.
+
+    Consumers (UI, MCP clients, exports) compare this against the currently
+    selected repository so a late response from a previous repository can
+    never render under a newly selected one."""
+    scan = _STATE.get("scan") or {}
+    path = str(_STATE.get("path") or scan.get("repo_path") or "")
+    signature = (_ti.stored_signature(_STATE) or {}).get("signature") or ""
+    scan_id = (
+        (_STATE.get("_current_memory") or {}).get("scan_id")
+        or scan.get("scan_id")
+        or ""
+    )
+    return {
+        "repo_id": _repo_memory.repo_id(path) if path else "",
+        "repo_path": os.path.abspath(path) if path else "",
+        "repo_name": str(scan.get("repo_name") or (os.path.basename(path) if path else "")),
+        "demo_mode": bool(_STATE.get("demo_mode") or scan.get("demo_mode")),
+        "scan_id": str(scan_id),
+        "scan_signature": str(signature),
+    }
+
+
 def select_repository(path: str) -> Dict[str, Any]:
     with _ti.state_guard():
         return _select_repository_locked(path)
@@ -3354,6 +3378,7 @@ def impact(target: str) -> Dict[str, Any]:
     affected_node_ids = sorted(importers)
     return {
         "ok": True,
+        "context_binding": _context_binding(),
         "target": node.get("path"),
         "target_node_id": nid,
         "fan_in": fan_in,
@@ -3453,6 +3478,7 @@ def plan_change(request: str) -> Dict[str, Any]:
             track_analytics_event("change_plan_created", intent=plan.get("intent"), confidence=plan.get("confidence"))
             _record_usage("build_plan_created", intent=plan.get("intent"))
             _save_workflow_history("build", request, result)
+        result["context_binding"] = _context_binding()
         return _ti.attach_trust_status(result, _STATE)
 
 
@@ -3508,6 +3534,7 @@ def investigate_symptom(symptom: str) -> Dict[str, Any]:
             track_analytics_event("investigation_plan_created", intent=plan.get("intent"), confidence=plan.get("confidence"))
             _record_usage("investigation_created", intent=plan.get("intent"))
             _save_workflow_history("investigate", symptom, result)
+        result["context_binding"] = _context_binding()
         return _ti.attach_trust_status(result, _STATE)
 
 
@@ -3581,6 +3608,7 @@ def change_impact_simulation(target: str) -> Dict[str, Any]:
         _augment_impact_with_architecture(res)
         res = _fi.polish_workflow_result("impact", res, _STATE, goal=target)
         if not res.get("ok"):
+            res["context_binding"] = _context_binding()
             return _ti.attach_trust_status(res, _STATE)
         _reconcile_wont_break(res)
         from . import result_reports
@@ -3599,6 +3627,7 @@ def change_impact_simulation(target: str) -> Dict[str, Any]:
         track_analytics_event("impact_analyzed", risk_level=res.get("risk_level"), confidence=res.get("confidence"))
         _record_usage("impact_created", target=target, risk_level=res.get("risk_level"))
         _save_workflow_history("impact", target, res)
+        res["context_binding"] = _context_binding()
         return _ti.attach_trust_status(res, _STATE)
 
 
@@ -4892,21 +4921,25 @@ def copilot_ask(
 
     track_analytics_event("copilot_question", mode=mode)
 
-    if mode == "repository_understanding":
-        return _answer_repository_understanding(question, packet)
-    if mode == "risk":
-        return _answer_risk(packet)
-    if mode == "impact":
-        return _answer_impact(question, node_context, packet)
-    if mode == "cycles":
-        return _answer_cycles(packet)
-    if mode == "dependency":
-        return _answer_dependency(question, node_context, packet)
-    if mode == "context_export":
-        return _answer_context_export(question, packet)
-    if mode == "location":
-        return _answer_location(question, packet)
-    return _answer_unknown(question, packet)
+    with _ti.state_guard():
+        if mode == "repository_understanding":
+            result = _answer_repository_understanding(question, packet)
+        elif mode == "risk":
+            result = _answer_risk(packet)
+        elif mode == "impact":
+            result = _answer_impact(question, node_context, packet)
+        elif mode == "cycles":
+            result = _answer_cycles(packet)
+        elif mode == "dependency":
+            result = _answer_dependency(question, node_context, packet)
+        elif mode == "context_export":
+            result = _answer_context_export(question, packet)
+        elif mode == "location":
+            result = _answer_location(question, packet)
+        else:
+            result = _answer_unknown(question, packet)
+        result["context_binding"] = _context_binding()
+        return result
 
 
 def mcp_setup_status() -> Dict[str, Any]:
