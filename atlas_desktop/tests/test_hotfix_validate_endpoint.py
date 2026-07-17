@@ -27,9 +27,14 @@ def _repo(tmp_path: Path) -> Path:
     return root
 
 
-def _post_json(port: int, path: str, body: dict) -> tuple[int, dict]:
+def _post_json(port: int, path: str, body: dict, token: str | None = None) -> tuple[int, dict]:
+    headers = {"Content-Type": "application/json"}
+    if token is not None:
+        # The runtime-transport boundary requires the current runtime's opaque
+        # cookie on every non-handshake API call.
+        headers["Cookie"] = f"atlas_runtime_token={token}"
     conn = http.client.HTTPConnection("127.0.0.1", port, timeout=5)
-    conn.request("POST", path, json.dumps(body), {"Content-Type": "application/json"})
+    conn.request("POST", path, json.dumps(body), headers)
     resp = conn.getresponse()
     payload = json.loads(resp.read().decode("utf-8"))
     conn.close()
@@ -38,12 +43,18 @@ def _post_json(port: int, path: str, body: dict) -> tuple[int, dict]:
 
 @pytest.fixture()
 def http_server():
+    from atlas_desktop import runtime_startup
+
     httpd = HTTPServer(("127.0.0.1", 0), server.AtlasHandler)
     port = httpd.server_address[1]
+    # Mirror the packaged launcher: attach a real runtime identity so the
+    # transport boundary can authorize this runtime's own requests.
+    identity = runtime_startup.new_instance_identity(port)
+    httpd.atlas_runtime_identity = identity
     thread = threading.Thread(target=httpd.serve_forever, daemon=True)
     thread.start()
     try:
-        yield port
+        yield port, identity["runtime_token"]
     finally:
         httpd.shutdown()
         httpd.server_close()
@@ -51,8 +62,9 @@ def http_server():
 
 def test_home_validate_success_over_http(http_server, tmp_path):
     """Home → enter path → Validate → structured success payload."""
+    port, token = http_server
     root = _repo(tmp_path)
-    status, payload = _post_json(http_server, "/api/repositories/validate", {"path": str(root)})
+    status, payload = _post_json(port, "/api/repositories/validate", {"path": str(root)}, token=token)
     assert status == 200
     assert payload["ok"] is True
     assert payload["path"] == str(root.resolve())
@@ -60,9 +72,25 @@ def test_home_validate_success_over_http(http_server, tmp_path):
     assert "Unknown endpoint" not in str(payload.get("error", ""))
 
 
+def test_validate_requires_runtime_token(http_server, tmp_path):
+    """The transport boundary must still reject a request with no runtime
+    token (a hostile local webpage), even for a valid route/body."""
+    port, _token = http_server
+    root = _repo(tmp_path)
+    status, payload = _post_json(port, "/api/repositories/validate", {"path": str(root)}, token=None)
+    assert status == 403
+    assert payload["ok"] is False
+    assert payload["code"] == "untrusted_runtime_origin"
+
+    # A wrong token is likewise rejected.
+    status_bad, _ = _post_json(port, "/api/repositories/validate", {"path": str(root)}, token="not-the-real-token")
+    assert status_bad == 403
+
+
 def test_home_validate_invalid_path_over_http(http_server):
     """Invalid path → Validate → structured validation error (not Unknown endpoint)."""
-    status, payload = _post_json(http_server, "/api/repositories/validate", {"path": ""})
+    port, token = http_server
+    status, payload = _post_json(port, "/api/repositories/validate", {"path": ""}, token=token)
     assert status == 200
     assert payload["ok"] is False
     assert payload["code"] == "empty_path"
@@ -71,8 +99,9 @@ def test_home_validate_invalid_path_over_http(http_server):
 
 
 def test_validate_trailing_slash_is_normalized(http_server, tmp_path):
+    port, token = http_server
     root = _repo(tmp_path)
-    status, payload = _post_json(http_server, "/api/repositories/validate/", {"path": str(root)})
+    status, payload = _post_json(port, "/api/repositories/validate/", {"path": str(root)}, token=token)
     assert status == 200
     assert payload["ok"] is True
     assert server.route_is_registered("POST", "/api/repositories/validate/")

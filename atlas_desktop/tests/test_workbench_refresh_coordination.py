@@ -314,20 +314,31 @@ def test_threaded_server_keeps_health_responsive_while_diagnostics_is_slow(monke
         return {"ok": True}
 
     monkeypatch.setattr(api, "beta_diagnostics", slow_diagnostics)
+    from atlas_desktop import runtime_startup
+
     httpd = server.AtlasHTTPServer(("127.0.0.1", 0), server.AtlasHandler)
     port = int(httpd.server_address[1])
+    # Authorize this runtime's own requests through the transport boundary.
+    identity = runtime_startup.new_instance_identity(port)
+    httpd.atlas_runtime_identity = identity
+    cookie = {"Cookie": f"atlas_runtime_token={identity['runtime_token']}"}
+
+    def _get(path: str, timeout: float) -> bytes:
+        req = urllib.request.Request(f"http://127.0.0.1:{port}{path}", headers=cookie)
+        return urllib.request.urlopen(req, timeout=timeout).read()
+
     thread = threading.Thread(target=httpd.serve_forever, daemon=True)
     thread.start()
     slow_result: list[bytes] = []
     slow_thread = threading.Thread(
-        target=lambda: slow_result.append(urllib.request.urlopen(f"http://127.0.0.1:{port}/api/system/diagnostics", timeout=3).read()),
+        target=lambda: slow_result.append(_get("/api/system/diagnostics", timeout=3)),
         daemon=True,
     )
     slow_thread.start()
     try:
         assert entered.wait(timeout=1)
         started = time.perf_counter()
-        health = json.loads(urllib.request.urlopen(f"http://127.0.0.1:{port}/api/health", timeout=1).read())
+        health = json.loads(_get("/api/health", timeout=1))
         elapsed = time.perf_counter() - started
         assert health["ok"] is True
         assert elapsed < 0.5

@@ -107,9 +107,14 @@ FORBIDDEN_VISIBLE = re.compile(
 )
 
 # Directories whose every rendered text file must be clean.
+# NOTE: ``websites/atlas-web/docs`` is deliberately NOT scanned — it holds
+# internal engineering documentation (analytics/Supabase audits, design plans)
+# that is not a Next.js route, not in public/, and never shipped as product
+# copy. Those files legitimately reference infrastructure names such as the
+# real Supabase ``waitlist`` table. The user-visible /docs page lives at
+# ``app/docs/page.tsx`` and is still fully scanned via the ``app`` dir below.
 SCAN_DIRS = [
     "websites/atlas-web/app",
-    "websites/atlas-web/docs",
     "atlas_desktop/static",
 ]
 # Optional dirs: scanned when present (public/ currently ships no text assets).
@@ -226,13 +231,23 @@ def test_launch_download_is_not_login_gated():
 
 def test_launch_billing_does_not_fake_pro_trial():
     billing = (ROOT / "websites/atlas-web/app/_lib/billing.ts").read_text(encoding="utf-8")
+    config = (ROOT / "websites/atlas-web/app/_config.ts").read_text(encoding="utf-8")
     pricing = (ROOT / "websites/atlas-web/app/pricing/page.tsx").read_text(encoding="utf-8")
-    assert "PADDLE_PRO_PRICE_ID" in billing
-    assert "billing_not_configured" in billing
+    # Payments are hard-disabled by an immutable constant, not an env toggle.
+    assert "PAID_PLANS_ENABLED = false" in config
+    # The active provider is the disabled one, and checkout surfaces the
+    # canonical unavailable code rather than a stub/fake trial.
+    assert "BILLING_NOT_AVAILABLE" in billing
+    assert "new DisabledBillingProvider()" in billing
+    assert "if (!PAID_PLANS_ENABLED) return billingProvider().createCheckout" in billing
     assert "STUB" not in billing
     assert "trialEnds = new Date" not in billing
     assert "mode=stub" not in billing
-    assert "Coming soon" in pricing
+    # Pricing shows a disabled "Pro coming soon" CTA; the real checkout link is
+    # rendered only when proReady (which is false while payments are disabled).
+    assert "coming soon" in pricing.lower()
+    assert "disabled" in pricing
+    assert "proReady ?" in pricing
     assert "stub" not in (ROOT / "websites/atlas-web/app/billing/success/page.tsx").read_text(encoding="utf-8").lower()
 
 
