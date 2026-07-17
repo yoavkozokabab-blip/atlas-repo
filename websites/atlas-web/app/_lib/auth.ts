@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 import { cookies } from "next/headers";
 import { ENV } from "./config";
-import { isDuplicateEmailError, store, User, SafeUser, toSafe, newId } from "./store";
+import { isDuplicateEmailError, store, Session, User, SafeUser, toSafe, newId } from "./store";
 
 const COOKIE = "atlas_session";
 const SESSION_TTL_S = 60 * 60 * 24 * 7; // 7 days
@@ -50,12 +50,22 @@ export function verifyToken(token: string): string | null {
   return verifySessionToken(token)?.sub ?? null;
 }
 
+export function sessionClaimsMatchRecord(
+  claims: SessionClaims,
+  session: Pick<Session, "id" | "userId" | "expiresAt" | "revokedAt"> | undefined,
+  now = Date.now(),
+): boolean {
+  if (!session || session.id !== claims.sid || session.userId !== claims.sub || session.revokedAt) return false;
+  const expiresAt = Date.parse(session.expiresAt);
+  return Number.isFinite(expiresAt) && expiresAt >= now;
+}
+
 async function activeSession(token: string): Promise<SessionClaims | null> {
   const claims = verifySessionToken(token);
   if (!claims) return null;
   const session = await store.getSession(claims.sid);
-  if (!session || session.userId !== claims.sub || session.revokedAt) return null;
-  if (Date.parse(session.expiresAt) < Date.now()) {
+  if (!session || session.id !== claims.sid || session.userId !== claims.sub || session.revokedAt) return null;
+  if (!sessionClaimsMatchRecord(claims, session)) {
     await store.revokeSession(session.id);
     return null;
   }

@@ -19,7 +19,7 @@ import {
   sanitizeRoute,
 } from "../app/_lib/analytics-contract";
 import { buildAnalyticsRow } from "../app/_lib/analytics-server";
-import { createToken, hashPassword, verifyPassword, verifySessionToken, verifyToken } from "../app/_lib/auth";
+import { createToken, hashPassword, sessionClaimsMatchRecord, verifyPassword, verifySessionToken, verifyToken } from "../app/_lib/auth";
 import { PAID_PLANS_ENABLED } from "../app/_config";
 import { BILLING_NOT_AVAILABLE, DisabledBillingProvider, proCheckoutReady } from "../app/_lib/billing";
 import { isTrustedBrowserWrite } from "../app/_lib/request-security";
@@ -124,6 +124,20 @@ test("password hashes and signed sessions validate and expire", () => {
   expect(verifyToken(`${valid}tampered`)).toBeNull();
 });
 
+test("server session records rotate, revoke, expire, and cannot cross identities", () => {
+  const first = createToken("qa-user", 60);
+  const second = createToken("qa-user", 60);
+  expect(first).not.toBe(second);
+  const claims = verifySessionToken(first)!;
+  const validRecord = {
+    id: claims.sid, userId: claims.sub, expiresAt: new Date(Date.now() + 60_000).toISOString(), revokedAt: null,
+  };
+  expect(sessionClaimsMatchRecord(claims, validRecord)).toBe(true);
+  expect(sessionClaimsMatchRecord(claims, { ...validRecord, revokedAt: new Date().toISOString() })).toBe(false);
+  expect(sessionClaimsMatchRecord(claims, { ...validRecord, userId: "another-user" })).toBe(false);
+  expect(sessionClaimsMatchRecord(claims, { ...validRecord, expiresAt: new Date(Date.now() - 1).toISOString() })).toBe(false);
+});
+
 test("authenticated requests are bound to an opaque server session record", () => {
   const auth = fs.readFileSync(path.join(process.cwd(), "app", "_lib", "auth.ts"), "utf8");
   const migration = fs.readFileSync(
@@ -133,6 +147,8 @@ test("authenticated requests are bound to an opaque server session record", () =
   expect(auth).toContain("await store.getSession(claims.sid)");
   expect(auth).toContain("await store.revokeSession(claims.sid)");
   expect(auth).toContain("crypto.randomBytes(32)");
+  const deletion = fs.readFileSync(path.join(process.cwd(), "app", "api", "account", "delete", "route.ts"), "utf8");
+  expect(deletion).toContain("await store.revokeSessionsForUser(user.id)");
   expect(migration).toContain("atlas_sessions");
   expect(migration).toContain("enable row level security");
   expect(migration).toContain("on delete cascade");
