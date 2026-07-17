@@ -140,7 +140,10 @@ def _descriptor_payload(identity: Dict[str, Any]) -> Dict[str, Any]:
         # Kept only in the user-scoped, HMAC-protected runtime descriptor so a
         # second Atlas launcher for the same installed user can open an already
         # running instance. It is never returned by HTTP status or handshake APIs.
-        "runtime_token": str(identity["runtime_token"]),
+        # Descriptors produced by older Atlas builds did not include the
+        # per-runtime token. Preserve their ability to be read during an
+        # upgrade; newly written descriptors always include a non-empty token.
+        "runtime_token": str(identity.get("runtime_token") or ""),
         "started_at": str(identity.get("started_at") or ""),
     }
 

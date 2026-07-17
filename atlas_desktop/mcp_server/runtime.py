@@ -1032,9 +1032,30 @@ def _close_current_session(reason: str) -> None:
     _HEARTBEAT_THREAD = None
 
 
-def handle_jsonrpc(message: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+MAX_JSONRPC_BYTES = 64 * 1024
+MAX_JSONRPC_DEPTH = 16
+MAX_JSONRPC_RESPONSE_BYTES = 512 * 1024
+
+
+def _json_depth(value: Any, depth: int = 0) -> int:
+    if not isinstance(value, (dict, list)):
+        return depth
+    if not value:
+        return depth + 1
+    return max(_json_depth(item, depth + 1) for item in (value.values() if isinstance(value, dict) else value))
+
+
+def _invalid_request(message: str, msg_id: Any = None) -> Dict[str, Any]:
+    return {"jsonrpc": "2.0", "id": msg_id, "error": {"code": -32600, "message": message}}
+
+
+def handle_jsonrpc(message: Any) -> Optional[Dict[str, Any]]:
+    if not isinstance(message, dict):
+        return _invalid_request("Invalid JSON-RPC request")
     method = message.get("method")
     msg_id = message.get("id")
+    if message.get("jsonrpc") != "2.0" or not isinstance(method, str) or _json_depth(message) > MAX_JSONRPC_DEPTH:
+        return _invalid_request("Invalid JSON-RPC request", msg_id)
     try:
         _record_activity()
         if method == "initialize":
@@ -1060,7 +1081,12 @@ def handle_jsonrpc(message: Dict[str, Any]) -> Optional[Dict[str, Any]]:
             return {"jsonrpc": "2.0", "id": msg_id, "result": list_tools()}
         if method == "tools/call":
             params = message.get("params") or {}
-            payload = call_tool(str(params.get("name") or ""), params.get("arguments") or {})
+            if not isinstance(params, dict):
+                return _invalid_request("Invalid tools/call parameters", msg_id)
+            arguments = params.get("arguments", {})
+            if not isinstance(arguments, dict):
+                return _invalid_request("Invalid tools/call parameters", msg_id)
+            payload = call_tool(str(params.get("name") or ""), arguments)
             return {"jsonrpc": "2.0", "id": msg_id, "result": _mcp_tool_result(payload)}
         return {
             "jsonrpc": "2.0",
@@ -1086,11 +1112,24 @@ def _read_messages(stream: Any) -> Iterable[Dict[str, Any]]:
             first_text = str(first)
         if not first_text.strip():
             continue
+        if len(first_text.encode("utf-8", errors="replace")) > MAX_JSONRPC_BYTES:
+            yield {"_atlas_invalid": "JSON-RPC request too large"}
+            continue
         if first_text.lstrip().startswith("{"):
-            yield json.loads(first_text)
+            try:
+                yield json.loads(first_text)
+            except json.JSONDecodeError:
+                yield {"_atlas_invalid": "Malformed JSON-RPC request"}
             continue
         if first_text.lower().startswith("content-length:"):
-            length = int(first_text.split(":", 1)[1].strip())
+            try:
+                length = int(first_text.split(":", 1)[1].strip())
+            except ValueError:
+                yield {"_atlas_invalid": "Invalid Content-Length"}
+                continue
+            if length < 1 or length > MAX_JSONRPC_BYTES:
+                yield {"_atlas_invalid": "JSON-RPC request too large"}
+                continue
             while True:
                 header = stream.readline()
                 if isinstance(header, bytes):
@@ -1104,7 +1143,10 @@ def _read_messages(stream: Any) -> Iterable[Dict[str, Any]]:
                 body_text = body.decode("utf-8", errors="replace")
             else:
                 body_text = str(body)
-            yield json.loads(body_text)
+            try:
+                yield json.loads(body_text)
+            except json.JSONDecodeError:
+                yield {"_atlas_invalid": "Malformed JSON-RPC request"}
 
 
 def _write_message(stream: Any, message: Dict[str, Any]) -> None:
@@ -1114,6 +1156,12 @@ def _write_message(stream: Any, message: Dict[str, Any]) -> None:
     # (Claude Desktop, Cursor, Codex). The reader (_read_messages) still tolerates
     # legacy Content-Length input for backward compatibility.
     data = json.dumps(message, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+    if len(data) > MAX_JSONRPC_RESPONSE_BYTES:
+        data = json.dumps(
+            _invalid_request("Atlas MCP response exceeded the safe size limit", message.get("id")),
+            ensure_ascii=False,
+            separators=(",", ":"),
+        ).encode("utf-8")
     stream.write(data)
     stream.write(b"\n")
     stream.flush()
@@ -1122,7 +1170,10 @@ def _write_message(stream: Any, message: Dict[str, Any]) -> None:
 def serve_stdio() -> int:
     try:
         for message in _read_messages(sys.stdin.buffer):
-            response = handle_jsonrpc(message)
+            if isinstance(message, dict) and "_atlas_invalid" in message:
+                response = _invalid_request(str(message["_atlas_invalid"]))
+            else:
+                response = handle_jsonrpc(message)
             if response is not None:
                 _write_message(sys.stdout.buffer, response)
     finally:
