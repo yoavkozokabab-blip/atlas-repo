@@ -402,12 +402,15 @@ function beginnerImpactHero(result) {
 function sendToAiPanel(kind, insideBeginner) {
   const extra = insideBeginner ? "" : `<p class="muted tiny">A bounded engineering handoff for the selected coding agent.</p>`;
   const memNote = `<p class="muted tiny memory-export-note">Includes a compact repository summary, evidence, and plan — not source bodies.</p>`;
+  // Impact's differentiating action gets an explicit name; other workflows
+  // keep the Claude-first label ("Copy Claude handoff").
+  const primaryLabel = kind === "impact" ? "Copy impact context for agent" : "Copy Claude handoff";
   return `<div class="send-to-ai glass" data-kind="${kind}">
     <h3 class="send-to-ai-title">${insideBeginner ? "Claude handoff" : "Agent handoff"}</h3>
     ${extra}
     ${memNote}
     <div class="copy-row copy-row-primary">
-      <button class="btn primary${insideBeginner ? " big" : " small"}" type="button" onclick="copyForAi('claude','${kind}')">Copy Claude handoff</button>
+      <button class="btn primary${insideBeginner ? " big" : " small"}" type="button" onclick="copyForAi('claude','${kind}')">${primaryLabel}</button>
       <button class="btn small" type="button" onclick="copyForAi('cursor','${kind}')">Copy Cursor handoff</button>
       <button class="btn small" type="button" onclick="copyForAi('codex','${kind}')">Copy Codex handoff</button>
       <button class="btn ghost small advanced-only" type="button" onclick="downloadAiMarkdown('${kind}')">Download Markdown</button>

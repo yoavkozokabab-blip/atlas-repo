@@ -3649,6 +3649,9 @@ def change_impact_simulation(target: str) -> Dict[str, Any]:
         mem_ref = _repo_memory.get_memory_ref(_STATE)
         _ti.record_workflow_context(_STATE, "impact", res, memory_ref=mem_ref)
         _STATE.setdefault("last_workflow_results", {})["impact"] = {"target": target, "result": res}
+        # Binding must exist before exports so the copied agent context names
+        # the repository and scan revision it came from.
+        res["context_binding"] = _context_binding()
         export_refusal = _ti.require_fresh_context(_STATE, for_export=True)
         if export_refusal:
             res["export_blocked"] = True

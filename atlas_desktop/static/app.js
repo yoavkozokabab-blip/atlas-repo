@@ -3511,6 +3511,7 @@ async function runImpact() {
       <h3 style="margin:0">Impact of changing <span class="mono">${esc(r.target)}</span></h3>
       <div class="impact-badges"><span class="lvl ${rl}">${rl} risk</span><span class="pill">confidence ${esc(conf)}</span>${mockTag}</div>
     </div>
+    <p class="impact-top-summary">Changing <span class="mono">${esc(r.target)}</span> may affect <b>${dirN + indN}</b> file${dirN + indN === 1 ? "" : "s"} across <b>${subs.length}</b> subsystem${subs.length === 1 ? "" : "s"}.</p>
     ${impactSemanticCard(r)}
     ${impactBlastCard(r)}
     ${directHtml}

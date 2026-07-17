@@ -164,6 +164,23 @@ def minimal_investigate_export(plan: Dict[str, Any]) -> str:
     return "\n".join(lines).strip() + "\n"
 
 
+def _impact_identity_lines(result: Dict[str, Any]) -> List[str]:
+    """Repository identity + scan revision for agent-bound impact context.
+
+    Name and pseudonymous ids only — never the filesystem path, analytics
+    identifiers, or debugging state."""
+    binding = result.get("context_binding") or {}
+    lines: List[str] = []
+    name = str(binding.get("repo_name") or "").strip()
+    repo_id = str(binding.get("repo_id") or "").strip()
+    if name:
+        lines.append(f"Repository: {name}" + (f" (id {repo_id})" if repo_id else ""))
+    rev = str(binding.get("scan_id") or "").strip() or str(binding.get("scan_signature") or "")[:12]
+    if rev:
+        lines.append(f"Scan revision: {rev}")
+    return lines
+
+
 def minimal_impact_export(result: Dict[str, Any]) -> str:
     target = result.get("target") or ""
     direct = _dedupe_paths(list(result.get("direct_impact") or []), 8)
@@ -172,6 +189,7 @@ def minimal_impact_export(result: Dict[str, Any]) -> str:
     sem = result.get("semantic_label") or ""
     lines = [
         "# Atlas Impact (minimal)",
+        *_impact_identity_lines(result),
         f"Target: {target}",
     ]
     if sem:
@@ -188,6 +206,16 @@ def minimal_impact_export(result: Dict[str, Any]) -> str:
         lines.append("")
         lines.append("## Evidence")
         lines.append(_bullets(evidence, 2))
+    tests = list(result.get("tests_likely_affected") or [])[:6]
+    if tests:
+        lines.append("")
+        lines.append("## Test recommendations")
+        lines.append(_bullets(tests, 6))
+    limits = list(result.get("limitations") or [])[:4]
+    if limits:
+        lines.append("")
+        lines.append("## Uncertainty")
+        lines.append(_bullets(limits, 4))
     return "\n".join(lines).strip() + "\n"
 
 
@@ -219,6 +247,7 @@ def full_impact_export(result: Dict[str, Any]) -> str:
         prompt,
         "",
         "## Impact detail",
+        *_impact_identity_lines(result),
         f"Target: {target}",
         f"Risk: {result.get('risk_level')} · Confidence: {result.get('confidence')}",
         "## Direct",
