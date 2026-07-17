@@ -102,7 +102,14 @@
         ? (active?.demo_mode ? "Sample repository" : branchLabel(active))
         : "Select a local codebase";
     }
-    if (byId("sidebarAgentState")) byId("sidebarAgentState").textContent = `${connected.length} agent${connected.length === 1 ? "" : "s"}`;
+    if (byId("sidebarAgentState")) {
+      // Chip says "connected" only for verified handshakes; config-only reads
+      // as "configured" so the sidebar never overstates the MCP state.
+      const live = ["claude", "cursor", "codex"].filter((key) => agentVerificationState(key, agents?.[key]) === "verified");
+      byId("sidebarAgentState").textContent = live.length
+        ? `${live.length} agent${live.length === 1 ? "" : "s"} connected`
+        : `${connected.length} agent${connected.length === 1 ? "" : "s"} configured`;
+    }
     const memory = byId("sidebarMemoryState");
     if (memory) {
       const fresh = !!(hasRepo && (snapshot?.memoryStatus === "ready" || (trust && (trust.fresh === true || trust.trust_status?.fresh === true || trust.user_trust_label === "Fresh"))));

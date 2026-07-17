@@ -913,9 +913,47 @@ function readScopeConfig() {
   return { mode, folder, include_patterns, exclude_patterns, manual_massive_mode };
 }
 
+/* ---------------- First-run tour (stepper) ---------------- */
+const ONBOARD_STEP_COUNT = 4;
+let _onboardStep = 0;
+
+function _renderOnboardStep() {
+  const card = $("onboardingCard");
+  if (!card) return;
+  card.querySelectorAll("[data-onboard-step]").forEach((panel) => {
+    panel.hidden = Number(panel.dataset.onboardStep) !== _onboardStep;
+  });
+  card.querySelectorAll(".onboard-dots i").forEach((dot) => {
+    dot.classList.toggle("on", Number(dot.dataset.dot) <= _onboardStep);
+  });
+  setHomeText("onboardStepLabel", `Step ${_onboardStep + 1} of ${ONBOARD_STEP_COUNT}`);
+  const back = $("onboardBackBtn");
+  const next = $("onboardNextBtn");
+  if (back) back.disabled = _onboardStep === 0;
+  if (next) {
+    // Final step: Next becomes Done so the tour never dead-ends.
+    next.textContent = _onboardStep === ONBOARD_STEP_COUNT - 1 ? "Done" : "Next";
+  }
+}
+
+function onboardingStep(delta) {
+  const target = _onboardStep + delta;
+  if (target >= ONBOARD_STEP_COUNT) { dismissOnboarding(false); return; }
+  _onboardStep = Math.max(0, Math.min(ONBOARD_STEP_COUNT - 1, target));
+  _renderOnboardStep();
+}
+
+function _onboardKeydown(event) {
+  if ($("onboarding")?.style.display === "none") return;
+  if (event.key === "Escape") { dismissOnboarding(false); event.preventDefault(); }
+  if (event.key === "ArrowRight") { onboardingStep(1); event.preventDefault(); }
+  if (event.key === "ArrowLeft") { onboardingStep(-1); event.preventDefault(); }
+}
+
 function dismissOnboarding(skipDemo) {
   try { localStorage.setItem(ONBOARDING_KEY, "1"); } catch (e) {}
   $("onboarding").style.display = "none";
+  document.removeEventListener("keydown", _onboardKeydown);
   if (!skipDemo) go("home");
 }
 
@@ -925,12 +963,40 @@ function onboardingLoadSample() {
   loadDemoMode(DEFAULT_DEMO_PACK);
 }
 
+async function onboardingRunImpact() {
+  dismissOnboarding(true);
+  // Guarantee a repository so the first Impact always shows a visible result.
+  if (!STATE.summary?.ok) {
+    if (!requireAtlasAccess("Sample repository")) return;
+    await loadDemoMode(DEFAULT_DEMO_PACK);
+  }
+  go("impact");
+  const input = $("impactTarget");
+  if (input && STATE.summary?.demo_mode) {
+    input.value = "services/billing.py";
+    runImpact();
+  } else if (input) {
+    input.focus();
+  }
+}
+
 function maybeShowOnboarding() {
   try {
     if (localStorage.getItem(ONBOARDING_KEY) === "1") return;
   } catch (e) {}
-  $("onboarding").style.display = "grid";
+  reopenOnboarding();
 }
+
+function reopenOnboarding() {
+  _onboardStep = 0;
+  _renderOnboardStep();
+  $("onboarding").style.display = "grid";
+  document.addEventListener("keydown", _onboardKeydown);
+  setTimeout(() => $("onboardingCard")?.focus(), 50);
+}
+window.reopenOnboarding = reopenOnboarding;
+window.onboardingStep = onboardingStep;
+window.onboardingRunImpact = onboardingRunImpact;
 
 function workflowEmptyHtml(title, body, primaryLabel, primaryFn, secondaryLabel, secondaryFn) {
   return `<div class="glass empty-panel">
@@ -1477,6 +1543,15 @@ function homeConnectedAgents(status) {
   return Object.keys(HOME_AGENT_LABELS).filter(key => !!(status?.[key]?.connected || status?.connections?.clients?.[key]?.connected));
 }
 
+// Truly connected = verified MCP handshake, never configuration alone.
+function homeVerifiedAgents(status) {
+  return Object.keys(HOME_AGENT_LABELS).filter(key => {
+    const data = status?.[key];
+    if (!data?.atlas_configured) return false;
+    return !!(data.client_verified || data.mcp_handshake_ok || data.last_handshake);
+  });
+}
+
 function setHomeText(id, value) {
   const el = $(id);
   if (el) el.textContent = value;
@@ -1529,7 +1604,10 @@ function renderHomeExperience(update) {
   const repoName = homeDisplayName(summary.repo_name) || "Current repository";
   const fileCount = homeMetric(summary.file_count);
   const agentNames = agents.map(key => HOME_AGENT_LABELS[key]);
-  const agentText = agentNames.length ? agentNames.join(", ") : "No agent connected";
+  const verifiedAgents = homeVerifiedAgents(STATE.homeMcpStatus);
+  const agentText = verifiedAgents.length
+    ? `${verifiedAgents.map(key => HOME_AGENT_LABELS[key]).join(", ")} connected`
+    : (agentNames.length ? `${agentNames.length} configured — not connected` : "No agent connected");
   const trustLabel = STATE.homeTrustStatus?.user_trust_label || "Checking";
   const restored = !!STATE.homeHealth?.persistence?.restored;
   const stale = trustLabel !== "Fresh" && trustLabel !== "Checking";

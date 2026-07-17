@@ -1,0 +1,51 @@
+/* v1.0.5 UX polish — first-run stepper + focus visibility. */
+
+.onboard-progress {
+  margin: 0 0 6px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted, #9aa7b0);
+}
+
+.onboard-dots {
+  display: flex;
+  gap: 6px;
+  margin: 0 0 16px;
+}
+.onboard-dots i {
+  width: 22px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.12);
+  transition: background 0.2s ease;
+}
+.onboard-dots i.on { background: var(--accent, #35d0ba); }
+
+.onboarding-card section h2 { margin: 0 0 10px; }
+.onboarding-card section p { margin: 0 0 14px; max-width: 46ch; }
+
+.onboard-nav {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+  align-items: center;
+}
+.onboard-nav #onboardNextBtn { margin-left: auto; }
+.onboard-nav button[disabled] { opacity: 0.4; cursor: default; }
+
+/* Keyboard visibility: a consistent, obvious focus ring everywhere. */
+.onboarding-card:focus-visible,
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent, #35d0ba);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .onboard-dots i { transition: none; }
+}

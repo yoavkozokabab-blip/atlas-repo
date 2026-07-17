@@ -26,8 +26,9 @@ export const facts = {
   impactRecall: 0.93,
   impactRepos: 20,
   impactQuestions: 100,
-  // distribution
-  version: "1.0.4",
+  // distribution — keep in sync with the GitHub release the download page
+  // actually serves (bump together with the installer metadata in _config).
+  version: "1.0.5",
   platform: "Windows",
 } as const;
 
