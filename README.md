@@ -11,7 +11,7 @@ Your code stays on your machine. Atlas runs locally over stdio (MCP), tool outpu
 secret-redacted, and **no source code is uploaded to Atlas servers** to provide the
 product (verified by source inspection — see [Security & Local-First](docs/LOCAL_FIRST.md)).
 
-> Status: **1.0.1, Windows only.**
+> Status: **1.0.5 candidate, Windows only.**
 
 ---
 
