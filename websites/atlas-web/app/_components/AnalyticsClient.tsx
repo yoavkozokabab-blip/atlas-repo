@@ -7,6 +7,7 @@ import type { AnalyticsEventName } from "../_lib/analytics-contract";
 const ANON_KEY = "atlas_analytics_anonymous_id";
 const SESSION_KEY = "atlas_analytics_session_id";
 const SENT_PREFIX = "atlas_analytics_sent:";
+const BACKOFF_KEY = "atlas_analytics_backoff_until";
 const INTERACTION_GRACE_MS = 60_000;
 const HEARTBEAT_MS = 15_000;
 
@@ -53,11 +54,24 @@ export function trackAnalyticsEvent(
       eventName, anonymousId, sessionId, route,
       properties: options.properties || {}, deduplicationKey: clientKey, internal: options.internal === true,
     });
-    if (navigator.sendBeacon) {
-      navigator.sendBeacon("/api/analytics/events", new Blob([payload], { type: "application/json" }));
-    } else {
-      void fetch("/api/analytics/events", { method: "POST", headers: { "Content-Type": "application/json" }, body: payload, keepalive: true });
-    }
+    // Honor server rate limiting: after a 429 we stop sending until the
+    // Retry-After window passes instead of hammering the endpoint.
+    const backoffUntil = Number(localStorage.getItem(BACKOFF_KEY) || 0);
+    if (backoffUntil > Date.now()) return;
+    // keepalive fetch survives page unload (sendBeacon cannot report 429s).
+    void fetch("/api/analytics/events", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: payload,
+      keepalive: true,
+    })
+      .then((res) => {
+        if (res.status === 429) {
+          const retry = Math.min(Number(res.headers.get("Retry-After")) || 60, 300);
+          try { localStorage.setItem(BACKOFF_KEY, String(Date.now() + retry * 1000)); } catch { /* best-effort */ }
+        }
+      })
+      .catch(() => { /* analytics never blocks the product */ });
   } catch {
     // Analytics is strictly best-effort; product interaction always wins.
   }

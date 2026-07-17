@@ -5008,10 +5008,17 @@ def _answer_unknown(question: str, packet: str) -> Dict[str, Any]:
     lower = q.lower()
 
     # Broad question — answer with the repository overview instead of a dead
-    # end ("tell me about this repo", "help", one-or-two-word questions).
+    # end ("tell me about this repo", "help", "what is this?"). Requires a
+    # recognizable broad-intent word so nonsense input stays "unknown".
     broad_markers = ("help", "this repo", "the repo", "this project", "summary",
                      "about", "what is this", "get started", "getting started")
-    if q and (len(q.split()) <= 3 or any(t in lower for t in broad_markers)):
+    broad_words = {"what", "how", "help", "repo", "repository", "project",
+                   "overview", "start", "about", "summary", "explain", "codebase", "intro"}
+    tokens = {t.strip(".,;:!?\"'()") for t in lower.split()}
+    if q and (
+        (len(q.split()) <= 3 and tokens & broad_words)
+        or any(t in lower for t in broad_markers)
+    ):
         result = _answer_repository_understanding(question, packet)
         if result.get("ok"):
             result.setdefault("limitations", []).append(
