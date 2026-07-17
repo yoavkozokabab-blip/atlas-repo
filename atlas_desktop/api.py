@@ -219,8 +219,23 @@ def _persist_scan_snapshot() -> None:
     scan = _STATE.get("scan") or {}
     if not scan.get("ok") and scan.get("module_count") is None:
         return
+    # Skip the multi-MB rewrite when this exact snapshot is already on disk
+    # (unchanged warm scans). The key includes the display fields load_demo_mode
+    # mutates after a cache-hit scan, so the demo-title re-snapshot still runs.
+    sig = ((scan.get("signature_v2") or {}).get("signature") or "").strip()
+    persist_key = "|".join((
+        sig,
+        str(scan.get("repo_name") or ""),
+        str(scan.get("demo_pack") or ""),
+        str(bool(scan.get("demo_mode"))),
+    ))
+    if sig and _STATE.get("_last_persisted_scan_key") == persist_key:
+        return
     try:
-        trust = _ti.assess_staleness(_STATE)
+        # The scan's signature_v2 comes from a live walk taken moments before
+        # every _persist_scan_snapshot() call site; reusing it avoids a second
+        # full repository hash walk per scan.
+        trust = _ti.assess_staleness(_STATE, live_signature=scan.get("signature_v2") or None)
         _persist.save_scan_state(
             _desktop_data_dir(),
             scan=scan,
@@ -232,6 +247,7 @@ def _persist_scan_snapshot() -> None:
             atlas_version=PRODUCT_VERSION,
             trust_status=trust,
         )
+        _STATE["_last_persisted_scan_key"] = persist_key
     except Exception:
         pass
 
@@ -880,11 +896,6 @@ def _is_binary_ext(ext: str) -> bool:
     }
 
 
-def _scan_signature(root: str, scope: Dict[str, Any]) -> str:
-    """Phase 174B — signature v2 (full manifest + git metadata, no 2500 cap)."""
-    return _ti.compute_signature_v2(root, scope)["signature"]
-
-
 def _scope_from_input(scope: Optional[Dict[str, Any]]) -> Dict[str, Any]:
     scope = scope or {}
     mode = str(scope.get("mode", "entire_repo")).strip().lower()
@@ -925,8 +936,13 @@ def _scope_allows(path: str, ext: str, scope: Dict[str, Any]) -> bool:
     return True
 
 
-def validate_repository_path(path: str) -> Dict[str, Any]:
-    """Validate a repository path before scan (exists, readable, contains code)."""
+def validate_repository_path(
+    path: str, *, precounted: Optional[Tuple[int, int]] = None
+) -> Dict[str, Any]:
+    """Validate a repository path before scan (exists, readable, contains code).
+
+    ``precounted`` lets the scan pipeline reuse (total_files, code_files) from
+    the pre-scan estimate walk instead of re-walking the whole tree."""
     raw = (path or "").strip()
     if not raw:
         return {
@@ -960,7 +976,10 @@ def validate_repository_path(path: str) -> Dict[str, Any]:
             "path": abspath,
             "warnings": [],
         }
-    total_files, code_files = _count_code_files(abspath)
+    if precounted is not None:
+        total_files, code_files = precounted
+    else:
+        total_files, code_files = _count_code_files(abspath)
     warnings: List[str] = []
     if code_files == 0:
         return {
@@ -1160,6 +1179,7 @@ def _invalidate_repository_state(state: Dict[str, Any]) -> None:
     state.pop("last_workflow_results", None)
     state.pop("refresh_generation", None)
     state.pop("active_memory_ref", None)
+    state.pop("_last_persisted_scan_key", None)
     _repo_memory.clear_for_path_change(state)
 
 
@@ -1353,8 +1373,19 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
 def _scan_repository_locked(path: Optional[str] = None, scope: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     repo = os.path.abspath(path or _STATE.get("path") or ".")
     scope_data = _scope_from_input(scope)
+    # One discovery walk feeds both the estimate and validation counts —
+    # previously validate_repository_path re-walked the entire tree.
+    t_estimate_start = time.time()
+    estimate = pre_scan_estimate(repo, scope_data)
+    t_estimate_end = time.time()
     t_validate_start = time.time()
-    validation = validate_repository_path(repo)
+    validation = validate_repository_path(
+        repo,
+        precounted=(
+            int(estimate.get("total_files") or 0),
+            int(estimate.get("code_files") or 0),
+        ),
+    )
     t_validate_end = time.time()
     if not validation.get("ok"):
         return {
@@ -1366,9 +1397,6 @@ def _scan_repository_locked(path: Optional[str] = None, scope: Optional[Dict[str
     repo = validation["path"]
     _STATE["demo_mode"] = _is_demo_path(repo)
     _STATE["last_scope"] = scope_data
-    t_estimate_start = time.time()
-    estimate = pre_scan_estimate(repo, scope_data)
-    t_estimate_end = time.time()
     scan_job = _STATE.get("scan_job") or {"id": None, "cancelled": False, "stage": "idle"}
     previous_stage = scan_job.get("stage", "idle")
     if previous_stage in {"idle", "completed"}:
@@ -1376,12 +1404,15 @@ def _scan_repository_locked(path: Optional[str] = None, scope: Optional[Dict[str
     scan_job.update({"id": f"scan-{int(time.time()*1000)}", "stage": "discovering_files"})
     _STATE["scan_job"] = scan_job
 
-    cache_key = _scan_signature(repo, scope_data)
+    # ONE live signature walk per scan (content-hash basis, same computation
+    # restore validation performs). It doubles as the cache key, the stored
+    # scan signature, and the freshness baseline — previously this walk ran
+    # up to four times per scan.
+    live_sig = _ti.compute_signature_v2(repo, scope_data, include_content_hash=True)
+    cache_key = live_sig["signature"]
     cache = _STATE.setdefault("scan_cache", {})
     cached = cache.get(cache_key)
     if cached:
-        # Same live-walk basis as the stored signature and restore validation.
-        live_sig = _ti.compute_signature_v2(repo, scope_data, include_content_hash=True)
         stored_sig = (cached.get("scan") or {}).get("signature_v2") or {}
         if stored_sig.get("signature") != live_sig.get("signature"):
             cached = None
@@ -1418,7 +1449,7 @@ def _scan_repository_locked(path: Optional[str] = None, scope: Optional[Dict[str
             }
         )
         # Same live-walk basis as the fresh-scan signature and restore validation.
-        sig_v2 = _ti.compute_signature_v2(repo, scope_data, include_content_hash=True)
+        sig_v2 = live_sig
         # Re-read the reference: a concurrent select/clear can null out
         # _STATE["scan"] between the scan above and this write.
         scan_obj = _STATE.get("scan")
@@ -1639,7 +1670,7 @@ def _scan_repository_locked(path: Optional[str] = None, scope: Optional[Dict[str
     }
     # Live-walk basis (indexed_files omitted) — the SAME computation restore
     # validation performs, so an unchanged repo validates across processes.
-    sig_v2 = _ti.compute_signature_v2(repo, scope_data, include_content_hash=True)
+    sig_v2 = live_sig
     scan["signature_v2"] = sig_v2
     scan["cache"] = {"hit": False, "signature": sig_v2["signature"]}
     signature = sig_v2["signature"]

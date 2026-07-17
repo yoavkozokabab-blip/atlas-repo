@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import threading
 import time
 import uuid
 from typing import Any, Dict, List, Optional, Tuple
@@ -332,16 +333,30 @@ _ACQUISITION_FROM_ANALYTICS: Dict[str, str] = {
 
 
 def _bridge_accounts_telemetry(event: str) -> None:
-    """Best-effort mirror of local analytics into accounts service (Phase 199)."""
+    """Best-effort mirror of local analytics into accounts service (Phase 199).
+
+    Runs on a daemon thread: when the accounts service is down, the HTTP
+    connect timeout must never stall a product workflow (scans previously
+    lost ~2s per event to a synchronous connect while holding the state lock).
+    """
+    mapping = _ANALYTICS_TO_ACCOUNTS.get(event)
+    stage = _ACQUISITION_FROM_ANALYTICS.get(event)
+    if not mapping and not stage:
+        return
+
+    def _deliver() -> None:
+        try:
+            from . import accounts_client
+            if mapping:
+                event_type, counters = mapping
+                accounts_client.send_analytics_event(event_type, PRODUCT_VERSION, **counters)
+            if stage:
+                accounts_client.record_acquisition_event(stage)
+        except Exception:
+            pass
+
     try:
-        from . import accounts_client
-        mapping = _ANALYTICS_TO_ACCOUNTS.get(event)
-        if mapping:
-            event_type, counters = mapping
-            accounts_client.send_analytics_event(event_type, PRODUCT_VERSION, **counters)
-        stage = _ACQUISITION_FROM_ANALYTICS.get(event)
-        if stage:
-            accounts_client.record_acquisition_event(stage)
+        threading.Thread(target=_deliver, name="atlas-telemetry-bridge", daemon=True).start()
     except Exception:
         pass
 

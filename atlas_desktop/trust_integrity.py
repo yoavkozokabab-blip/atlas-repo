@@ -108,6 +108,29 @@ def _content_hash(abs_path: str, max_bytes: int = 262_144) -> str:
         return ""
 
 
+# Per-file details from the most recent content-hash signature walk, so
+# capture_file_manifest() right after a scan reuses that walk's stat+hash work
+# instead of re-reading every indexed file.
+_WALK_DETAIL_TTL_SECONDS = 1800.0
+_LAST_WALK_DETAIL: Dict[str, Any] = {"root": "", "at": 0.0, "files": {}}
+
+
+def _remember_walk_detail(root: str, files: Dict[str, Dict[str, Any]]) -> None:
+    _LAST_WALK_DETAIL.update({
+        "root": os.path.abspath(root).lower(),
+        "at": time.monotonic(),
+        "files": files,
+    })
+
+
+def _recent_walk_detail(root: str) -> Dict[str, Dict[str, Any]]:
+    if _LAST_WALK_DETAIL["root"] != os.path.abspath(root).lower():
+        return {}
+    if time.monotonic() - float(_LAST_WALK_DETAIL["at"]) > _WALK_DETAIL_TTL_SECONDS:
+        return {}
+    return _LAST_WALK_DETAIL["files"] or {}
+
+
 def _manifest_entries(
     root: str,
     scope: Dict[str, Any],
@@ -146,6 +169,7 @@ def _manifest_entries(
                     part += f":{_content_hash(abs_path)}"
             entries.append(part)
     else:
+        walk_detail: Dict[str, Dict[str, Any]] = {}
         for dirpath, dirnames, filenames in os.walk(root):
             rel_dir = os.path.relpath(dirpath, root).replace("\\", "/")
             rel_dir = "" if rel_dir == "." else rel_dir
@@ -176,13 +200,22 @@ def _manifest_entries(
                 mtime = int(st.st_mtime)
                 total_size += size
                 total_mtime += mtime
+                content_hash = _content_hash(abs_path) if include_content_hash else ""
                 if include_content_hash and signature_version >= 4:
-                    part = f"{rel}:{size}:{_content_hash(abs_path)}"
+                    part = f"{rel}:{size}:{content_hash}"
                 else:
                     part = f"{rel}:{size}:{mtime}"
                     if include_content_hash:
-                        part += f":{_content_hash(abs_path)}"
+                        part += f":{content_hash}"
+                if include_content_hash:
+                    walk_detail[rel] = {
+                        "size": size,
+                        "mtime": mtime,
+                        "content_hash": content_hash,
+                    }
                 entries.append(part)
+        if include_content_hash:
+            _remember_walk_detail(root, walk_detail)
 
     # Sort the complete manifest before hashing so the signature depends only
     # on the file SET and per-file metadata — never on traversal order. This is
@@ -253,10 +286,15 @@ def capture_file_manifest(state: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
     if not path:
         return {}
     root = os.path.abspath(str(path))
+    walk_detail = _recent_walk_detail(root)
     manifest: Dict[str, Dict[str, Any]] = {}
     for f in (state.get("index") or {}).get("files") or []:
         rel = _norm_path(str(f.get("path") or ""))
         if not rel:
+            continue
+        known = walk_detail.get(rel)
+        if known:
+            manifest[rel] = dict(known)
             continue
         abs_path = os.path.join(root, rel.replace("/", os.sep))
         try:

@@ -386,8 +386,12 @@ def _language_profile(scan: Dict[str, Any]) -> Dict[str, Any]:
 
 def _json_write(path: str, payload: Any) -> None:
     tmp = path + ".tmp"
+    # Serialize to one string first: json.dump() issues millions of tiny
+    # TextIOWrapper writes on multi-MB payloads (graph/index snapshots), which
+    # dominated warm-scan persistence time.
+    text = json.dumps(payload, indent=2, default=str)
     with open(tmp, "w", encoding="utf-8") as fh:
-        json.dump(payload, fh, indent=2, default=str)
+        fh.write(text)
     os.replace(tmp, path)
 
 

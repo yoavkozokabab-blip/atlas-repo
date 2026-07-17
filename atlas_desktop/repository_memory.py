@@ -652,7 +652,13 @@ def update_after_scan(
     try:
         from . import trust_integrity as _ti
 
-        st = _ti.assess_staleness(state)
+        # Every caller reaches this point moments after computing the scan's
+        # live signature (scan or targeted refresh), so reuse it instead of
+        # re-walking and re-hashing the entire repository.
+        st = _ti.assess_staleness(
+            state,
+            live_signature=(state.get("scan") or {}).get("signature_v2") or None,
+        )
         freshness = "fresh" if st.get("fresh") else str(st.get("status") or "stale")
     except Exception:
         pass

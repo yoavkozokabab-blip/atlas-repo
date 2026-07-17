@@ -12,6 +12,7 @@ import os
 import re
 import ast
 import configparser
+import time
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 try:  # Python 3.11+
@@ -64,9 +65,20 @@ def _rel_parts(rel: str) -> List[str]:
     return [p for p in rel.replace("\\", "/").split("/") if p]
 
 
+# derive_agent_context() fans out to five helpers that each need the repo file
+# list; a short-lived cache turns five full walks per memory build into one.
+_REPO_FILES_TTL_SECONDS = 10.0
+_REPO_FILES_CACHE: Dict[str, Tuple[float, int, List[str]]] = {}
+
+
 def _iter_repo_files(repo: str, *, max_files: int = 60000) -> Iterable[str]:
     """Yield repo-relative paths while ignoring generated/vendor directories."""
-    seen = 0
+    now = time.monotonic()
+    cached = _REPO_FILES_CACHE.get(repo)
+    if cached and now - cached[0] < _REPO_FILES_TTL_SECONDS and cached[1] >= max_files:
+        yield from cached[2][:max_files]
+        return
+    collected: List[str] = []
     try:
         walker = os.walk(repo)
         for root, dirs, files in walker:
@@ -79,12 +91,17 @@ def _iter_repo_files(repo: str, *, max_files: int = 60000) -> Iterable[str]:
                 parts = _rel_parts(rel)
                 if any(p in _NOISE_DIRS for p in parts):
                     continue
-                seen += 1
-                if seen > max_files:
+                if len(collected) >= max_files:
+                    _REPO_FILES_CACHE[repo] = (now, max_files, collected)
+                    yield from collected
                     return
-                yield rel
+                collected.append(rel)
     except OSError:
-        return
+        pass
+    # Walk finished without hitting max_files: the list is complete, so it can
+    # serve any later request regardless of its max_files.
+    _REPO_FILES_CACHE[repo] = (now, 1 << 31, collected)
+    yield from collected
 
 
 def _is_root_file(rel: str) -> bool:
