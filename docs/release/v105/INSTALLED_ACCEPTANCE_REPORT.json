@@ -1,0 +1,99 @@
+﻿{
+    "generated_at":  "2026-07-18T10:59:02",
+    "setup":  "C:\\J.A.R.V.I.S\\atlas-v105-final-build-d72f6223\\packaging\\installer\\output\\Atlas_Setup.exe",
+    "overall":  "PASS",
+    "results":  {
+                    "clean_install":  {
+                                          "pass":  true,
+                                          "detail":  "exe sha256=A712AF9E48F9FD832E6BB9AD8C3A27F41E9384E000B069CD154769D548EDF1FB"
+                                      },
+                    "cold_launch_health":  {
+                                               "pass":  true,
+                                               "detail":  "port=8777 launch=0.7s"
+                                           },
+                    "version_is_105":  {
+                                           "pass":  true,
+                                           "detail":  "version=1.0.5 commit="
+                                       },
+                    "guest_mode_available":  {
+                                                 "pass":  true,
+                                                 "detail":  ""
+                                             },
+                    "demo_loads_named_demo":  {
+                                                  "pass":  true,
+                                                  "detail":  "name=Atlas Demo — Medium"
+                                              },
+                    "ask_grounded":  {
+                                         "pass":  true,
+                                         "detail":  "mode=impact files=12"
+                                     },
+                    "ask_context_binding":  {
+                                                "pass":  true,
+                                                "detail":  "repo=Atlas Demo — Medium"
+                                            },
+                    "impact_result":  {
+                                          "pass":  true,
+                                          "detail":  "direct=8 t=0.2s"
+                                      },
+                    "time_to_first_value_under_60s":  {
+                                                          "pass":  true,
+                                                          "detail":  "total=0.9s"
+                                                      },
+                    "debug_result":  {
+                                         "pass":  true,
+                                         "detail":  "confidence=high"
+                                     },
+                    "plan_result":  {
+                                        "pass":  true,
+                                        "detail":  "risk=low"
+                                    },
+                    "analytics_opt_out_set":  {
+                                                  "pass":  true,
+                                                  "detail":  ""
+                                              },
+                    "no_checkout_surface":  {
+                                                "pass":  true,
+                                                "detail":  "checkout_enabled=false payments_active=false"
+                                            },
+                    "restart_restores_repository":  {
+                                                        "pass":  true,
+                                                        "detail":  "repo=Atlas Demo — Medium"
+                                                    },
+                    "opt_out_survives_restart":  {
+                                                     "pass":  true,
+                                                     "detail":  ""
+                                                 },
+                    "second_install_boots":  {
+                                                 "pass":  true,
+                                                 "detail":  "port=8777"
+                                             },
+                    "distinct_ports_or_data":  {
+                                                   "pass":  true,
+                                                   "detail":  "A=8777 B=8777"
+                                               },
+                    "b_sees_no_a_repository":  {
+                                                   "pass":  true,
+                                                   "detail":  "fresh install has no repository"
+                                               },
+                    "distinct_instance_identity":  {
+                                                       "pass":  true,
+                                                       "detail":  ""
+                                                   },
+                    "distinct_runtime_tokens":  {
+                                                    "pass":  true,
+                                                    "detail":  ""
+                                                },
+                    "b_not_affected_by_a_optout":  {
+                                                       "pass":  true,
+                                                       "detail":  "B default preference independent"
+                                                   },
+                    "update_version_is_105":  {
+                                                  "pass":  true,
+                                                  "detail":  "version=1.0.5"
+                                              },
+                    "update_retains_user_data":  {
+                                                     "pass":  true,
+                                                     "detail":  "summary_ok=False"
+                                                 }
+                }
+}
