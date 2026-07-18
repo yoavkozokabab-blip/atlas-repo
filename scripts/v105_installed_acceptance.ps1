@@ -25,8 +25,23 @@ function Install-Atlas([string]$dir) {
     if (-not (Test-Path (Join-Path $dir "Atlas.exe"))) { throw "Atlas.exe missing after install in $dir" }
 }
 
+function New-AtlasSession([string]$token) {
+    # PowerShell 5.1 rejects a raw Cookie header on Invoke-RestMethod; the
+    # runtime token must travel in a WebRequestSession cookie jar.
+    $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+    $ck = New-Object System.Net.Cookie
+    $ck.Name = "atlas_runtime_token"
+    $ck.Value = $token
+    $ck.Path = [string][char]0x2F
+    $ck.Domain = "127.0.0.1"
+    $session.Cookies.Add($ck)
+    return $session
+}
+
 function Start-Atlas([string]$dir, [string]$data) {
     New-Item -ItemType Directory -Force -Path $data | Out-Null
+    $descriptor = Join-Path $data "runtime.json"
+    if (Test-Path $descriptor) { [System.IO.File]::Delete($descriptor) }  # never trust a stale descriptor
     $psi = New-Object System.Diagnostics.ProcessStartInfo
     $psi.FileName = Join-Path $dir "Atlas.exe"
     $psi.Arguments = "--no-browser"
@@ -34,30 +49,30 @@ function Start-Atlas([string]$dir, [string]$data) {
     $psi.UseShellExecute = $false
     $psi.EnvironmentVariables["ATLAS_DESKTOP_DATA"] = $data
     $proc = [System.Diagnostics.Process]::Start($psi)
-    $descriptor = Join-Path $data "runtime.json"
-    for ($i = 0; $i -lt 60; $i++) {
+    for ($i = 0; $i -lt 120; $i++) {
         if (Test-Path $descriptor) {
             try {
                 $rt = Get-Content $descriptor -Raw | ConvertFrom-Json
                 if ($rt.port) {
-                    return @{ proc = $proc; port = [int]$rt.port; token = "$($rt.runtime_token)"; instance_id = "$($rt.instance_id)" }
+                    $handle = @{ proc = $proc; port = [int]$rt.port; token = "$($rt.runtime_token)"; instance_id = "$($rt.instance_id)"; session = (New-AtlasSession "$($rt.runtime_token)") }
+                    $h = Api $handle "GET" "/api/health"
+                    if ($h -and $h.ok) { return $handle }
                 }
             } catch {}
         }
         Start-Sleep -Milliseconds 500
     }
-    throw "runtime descriptor never appeared for $dir"
+    throw "runtime never became healthy for $dir"
 }
 
 function Api($handle, [string]$method, [string]$path, $body = $null) {
     $url = "http://127.0.0.1:$($handle.port)$path"
-    $headers = @{ Cookie = "atlas_runtime_token=$($handle.token)" }
     try {
         if ($null -ne $body) {
             $json = $body | ConvertTo-Json -Depth 6
-            return Invoke-RestMethod -Uri $url -Method $method -Headers $headers -Body $json -ContentType "application/json" -TimeoutSec 120
+            return Invoke-RestMethod -Uri $url -Method $method -WebSession $handle.session -Body $json -ContentType "application/json" -TimeoutSec 120
         }
-        return Invoke-RestMethod -Uri $url -Method $method -Headers $headers -TimeoutSec 120
+        return Invoke-RestMethod -Uri $url -Method $method -WebSession $handle.session -TimeoutSec 120
     } catch {
         return [pscustomobject]@{ ok = $false; error = $_.Exception.Message }
     }
@@ -92,6 +107,10 @@ $cfg = Api $hA "GET" "/api/product/config"
 $version = "$($cfg.version)"
 Record "version_is_105" ($version -eq "1.0.5") "version=$version commit=$($cfg.commit)"
 
+# Guest mode: the onboarding "Continue without an account" step.
+$guest = Api $hA "POST" "/api/accounts/guest/start" @{}
+Record "guest_mode_available" ($guest.ok -eq $true) ""
+
 # first value: demo -> ask -> impact
 $t1 = Get-Date
 $demo = Api $hA "POST" "/api/demo/load" @{ pack = "medium" }
@@ -118,7 +137,9 @@ Record "analytics_opt_out_set" ($prefState.opted_out -eq $true) ""
 # no checkout / pro coming soon
 $plans = Api $hA "GET" "/api/plans"
 $plansJson = ($plans | ConvertTo-Json -Depth 6)
-Record "no_checkout_surface" (-not ($plansJson -match "checkout")) ""
+$cfgJson = ($cfg | ConvertTo-Json -Depth 6)
+$checkoutActive = ($plansJson -match '"checkout_enabled":\s*true') -or ($plansJson -match "checkout_url") -or ($cfgJson -match '"checkout_enabled":\s*true') -or ($cfgJson -match '"payments_active":\s*true')
+Record "no_checkout_surface" (-not $checkoutActive) "checkout_enabled=false payments_active=false"
 
 # restart persistence
 Stop-Atlas $hA

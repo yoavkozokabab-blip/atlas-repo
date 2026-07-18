@@ -12,7 +12,20 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+function New-AtlasSession([string]$token) {
+    $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+    $ck = New-Object System.Net.Cookie
+    $ck.Name = "atlas_runtime_token"
+    $ck.Value = $token
+    $ck.Path = [string][char]0x2F
+    $ck.Domain = "127.0.0.1"
+    $session.Cookies.Add($ck)
+    return $session
+}
+
 function Start-Atlas {
+    $descriptor = Join-Path $DataDir "runtime.json"
+    if (Test-Path $descriptor) { [System.IO.File]::Delete($descriptor) }
     $psi = New-Object System.Diagnostics.ProcessStartInfo
     $psi.FileName = Join-Path $InstallDir "Atlas.exe"
     $psi.Arguments = "--no-browser"
@@ -20,12 +33,15 @@ function Start-Atlas {
     $psi.UseShellExecute = $false
     $psi.EnvironmentVariables["ATLAS_DESKTOP_DATA"] = $DataDir
     $proc = [System.Diagnostics.Process]::Start($psi)
-    $descriptor = Join-Path $DataDir "runtime.json"
-    for ($i = 0; $i -lt 60; $i++) {
+    for ($i = 0; $i -lt 120; $i++) {
         if (Test-Path $descriptor) {
             try {
                 $rt = Get-Content $descriptor -Raw | ConvertFrom-Json
-                if ($rt.port) { return @{ proc = $proc; port = [int]$rt.port; token = "$($rt.runtime_token)" } }
+                if ($rt.port) {
+                    $h = @{ proc = $proc; port = [int]$rt.port; token = "$($rt.runtime_token)"; session = (New-AtlasSession "$($rt.runtime_token)") }
+                    $ok = Api $h "GET" "/api/health"
+                    if ($ok -and $ok.ok) { return $h }
+                }
             } catch {}
         }
         Start-Sleep -Milliseconds 500
@@ -34,12 +50,11 @@ function Start-Atlas {
 }
 
 function Api($h, [string]$method, [string]$path, $body = $null) {
-    $headers = @{ Cookie = "atlas_runtime_token=$($h.token)" }
     try {
         if ($null -ne $body) {
-            return Invoke-RestMethod -Uri "http://127.0.0.1:$($h.port)$path" -Method $method -Headers $headers -Body ($body | ConvertTo-Json -Depth 5) -ContentType "application/json" -TimeoutSec 90
+            return Invoke-RestMethod -Uri "http://127.0.0.1:$($h.port)$path" -Method $method -WebSession $h.session -Body ($body | ConvertTo-Json -Depth 5) -ContentType "application/json" -TimeoutSec 90
         }
-        return Invoke-RestMethod -Uri "http://127.0.0.1:$($h.port)$path" -Method $method -Headers $headers -TimeoutSec 90
+        return Invoke-RestMethod -Uri "http://127.0.0.1:$($h.port)$path" -Method $method -WebSession $h.session -TimeoutSec 90
     } catch { return $null }
 }
 
