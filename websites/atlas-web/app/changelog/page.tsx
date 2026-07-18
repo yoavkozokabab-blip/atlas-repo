@@ -8,6 +8,21 @@ export const metadata: Metadata = {
 
 const releases = [
   {
+    version: "v1.0.5",
+    date: "2026-07-18",
+    label: "Security + performance release",
+    items: [
+      "Indexing: real-world 3 GB repository cold scan ~8 s (was ~57 s); unchanged rescan ~3.6 s; one-file rescan ~8 s.",
+      "Repository-context isolation: every Ask, Impact, Debug, and Plan result is bound to the repository and scan that produced it; switching repositories can never surface another repository's results.",
+      "Security: the local accounts service now uses per-installation DPAPI-protected signing keys instead of a shared secret; upgrading invalidates legacy sessions. Users of v1.0.0–v1.0.4 should update.",
+      "Ask: typo-tolerant question routing, plain-language answers, and honest recovery with concrete interpretations when a question is ambiguous.",
+      "Impact: one-sentence result summary and 'Copy impact context for agent' carrying repository identity and scan revision.",
+      "Analytics: Settings toggle to disable pseudonymous usage analytics; disabling blocks and clears everything, including queued events.",
+      "Agents: Connected reflects a live MCP handshake and drops within seconds of the client closing.",
+      "Rebuilt Windows installer from source commit d72f6223 (Atlas-Setup-1.0.5.exe).",
+    ],
+  },
+  {
     version: "v1.0.4",
     date: "2026-07-16",
     label: "Workflow fix",

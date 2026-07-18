@@ -15,7 +15,7 @@ function installerSizeMB(): string {
       if (existsSync(p)) return (statSync(p).size / (1024 * 1024)).toFixed(0) + " MB";
     } catch {}
   }
-  return "31.7 MB";
+  return "41.3 MB";
 }
 
 export default async function DownloadsPage() {
@@ -25,7 +25,7 @@ export default async function DownloadsPage() {
     <div>
       <div className="dl-card" style={{ marginBottom: 22 }}>
         <h3>Atlas for Windows</h3>
-        <p className="dl-meta">Atlas_Setup.exe · v{ENV.appVersion} · Windows 10 / 11 · {installerSizeMB()}</p>
+        <p className="dl-meta">Atlas-Setup-1.0.5.exe · v{ENV.appVersion} · Windows 10 / 11 · {installerSizeMB()}</p>
         <a className="btn btn-primary btn-lg" href="/download/atlas" download style={{ marginTop: 14 }}>
           Download for Windows
         </a>

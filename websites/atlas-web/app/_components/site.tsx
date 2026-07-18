@@ -291,7 +291,7 @@ export function InstallationBlock() {
     <div className="install-block">
       <div>
         <p className="eyebrow">Windows release</p>
-        <h3>Atlas_Setup.exe · v{facts.version}</h3>
+        <h3>Atlas-Setup-{facts.version}.exe · v{facts.version}</h3>
         <p className="dl-meta">SHA256: <code>{INSTALLER_SHA256}</code></p>
         <p className="note" style={{ marginTop: 10 }}>
           No signup required. Windows SmartScreen may warn until the installer is signed.

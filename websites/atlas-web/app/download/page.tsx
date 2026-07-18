@@ -30,12 +30,15 @@ export default function DownloadPage() {
       >
         <div className="dl-card">
           <h3>Atlas for Windows</h3>
-          <p className="dl-meta">Atlas_Setup.exe · v{ENV.appVersion} · 31.7 MB · Windows 10 / 11</p>
+          <p className="dl-meta">Atlas-Setup-1.0.5.exe · v{ENV.appVersion} · 41.3 MB · Windows 10 / 11</p>
           <p className="dl-meta" style={{ marginTop: 12, wordBreak: "break-all" }}>
             SHA256: <code>{INSTALLER_SHA256}</code>
           </p>
           <div className="dl-warn">
             <b>Windows SmartScreen may show a warning on first run.</b> Confirm you downloaded Atlas from the official release link before continuing.
+          </div>
+          <div className="dl-warn" style={{ marginTop: 10 }}>
+            <b>Using v1.0.0–v1.0.4?</b> Please update. v1.0.5 replaces a shared local authentication secret with per-installation protected keys; older sessions are signed out automatically after upgrading.
           </div>
           <p style={{ marginTop: 18 }}>
             <a className="btn-line" href={GITHUB_RELEASE_URL} target="_blank" rel="noreferrer">

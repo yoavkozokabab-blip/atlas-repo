@@ -5,15 +5,15 @@ export const HELLO_EMAIL = process.env.NEXT_PUBLIC_HELLO_EMAIL || "yoavkozokabab
 export const SECURITY_EMAIL = process.env.NEXT_PUBLIC_SECURITY_EMAIL || "yoavkozokabab@gmail.com";
 export const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL || "https://github.com/yoavkozokabab-blip/atlas-repo";
 export const GITHUB_RELEASE_URL =
-  process.env.NEXT_PUBLIC_GITHUB_RELEASE_URL || `${GITHUB_URL}/releases/tag/v1.0.4`;
-/** SHA256 of the published Atlas_Setup.exe — shown on /hn and /download. */
+  process.env.NEXT_PUBLIC_GITHUB_RELEASE_URL || `${GITHUB_URL}/releases/tag/v1.0.5`;
+/** SHA256 of the published Atlas-Setup-1.0.5.exe — shown on /hn and /download. */
 export const INSTALLER_SHA256 =
   process.env.NEXT_PUBLIC_INSTALLER_SHA256 ||
-  "2A1EAA9EEC99311E44496DA04157AD1DB1F60C4373ECD5FFB33D52127CDFFF8A";
+  "63980A6A7D4C377F08C815C710DC8C56C464387F1E77741C4076D387199EF2B0";
 export const DOWNLOAD_URL =
   process.env.NEXT_PUBLIC_DOWNLOAD_URL ||
   process.env.ATLAS_INSTALLER_URL ||
-  "https://github.com/yoavkozokabab-blip/atlas-repo/releases/download/v1.0.4/Atlas_Setup.exe";
+  "https://github.com/yoavkozokabab-blip/atlas-repo/releases/download/v1.0.5/Atlas-Setup-1.0.5.exe";
 
 /**
  * Paid plans are deliberately suspended for the v1.0.5 launch candidate.
