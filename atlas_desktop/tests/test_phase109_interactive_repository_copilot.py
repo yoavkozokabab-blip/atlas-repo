@@ -93,7 +93,8 @@ def test_question_routing_context_export(scanned):
 
 def test_unknown_question_fallback(scanned):
     res = api.copilot_ask("xyzzy plugh")
-    assert res["ok"] and res["mode"] == "unknown"
+    assert res["ok"] and res["mode"] == "not_found"
+    assert res["answer"].startswith("I couldn't find evidence that xyzzy plugh exists")
     assert res["confidence"] == "low"
 
 

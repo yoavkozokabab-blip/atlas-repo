@@ -46,6 +46,7 @@ from .evidence_engine import build_evidence_store
 from . import usage as usage_tracking
 from . import operations as _ops
 from . import product_info as _product
+from . import not_found_confidence as _not_found_confidence
 
 PRODUCT_VERSION = _product.PRODUCT_VERSION
 CHARS_PER_TOKEN = 4.0
@@ -4347,24 +4348,32 @@ def _copilot_envelope(
     graph_highlight: Optional[Dict[str, Any]] = None,
     extra: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
+    evidence = list(evidence or [])
+    files = list(files or [])
+    limitations = list(limitations or [])
+    normalized_confidence = str(confidence or "unknown").strip().lower()
+    if "high" in normalized_confidence and not (evidence or files or graph_highlight):
+        confidence = "medium"
+        limitations.append("High confidence was withheld because no direct supporting evidence was attached.")
     payload = {
         "ok": True,
         "mode": mode,
         "answer": answer,
-        "evidence": evidence or [],
-        "files": files or [],
+        "evidence": evidence,
+        "files": files,
         "risk_level": risk_level,
         "suggested_prompt": suggested_prompt,
         "suggested_action": suggested_action,
         "copy_targets": _copilot_copy_targets(packet),
         "confidence": confidence,
-        "limitations": limitations or [],
+        "limitations": limitations,
     }
     if graph_highlight:
         payload["graph_highlight"] = graph_highlight
     if extra:
         payload.update(extra)
     return payload
+
 
 
 # Vocabulary the intent router keys on. Tokens in a question that are one
@@ -4422,6 +4431,48 @@ def normalize_copilot_question(question: str) -> str:
         else:
             repaired.append(word)
     return " ".join(repaired)
+
+
+def _answer_entity_not_found(check: Dict[str, Any]) -> Dict[str, Any]:
+    entity = str(check.get("entity") or "that entity")
+    ambiguous = check.get("status") == "ambiguous"
+    display_entity = f"{entity} as a unique entity" if ambiguous else entity
+    lines = [f"I couldn't find evidence that {display_entity} exists in this repository.", "", "Searched:"]
+    lines.extend(f"- {item}" for item in (check.get("searched") or []))
+    similar = check.get("similar") or []
+    if similar:
+        lines.extend(["", "Similar symbols/files:"])
+        lines.extend(f"- {item.get('detail') or item.get('name')}" for item in similar)
+    suggested_files = []
+    for item in similar:
+        path = str(item.get("path") or "")
+        if path and path not in suggested_files:
+            suggested_files.append(path)
+    return {
+        "ok": True,
+        "mode": "not_found",
+        "answer": "\n".join(lines),
+        "evidence": list(check.get("searched") or []),
+        "files": suggested_files[:8],
+        "risk_level": "unknown",
+        "suggested_prompt": "",
+        "suggested_action": (
+            "Name the exact file path or fully-qualified symbol."
+            if ambiguous
+            else "Check the spelling or ask about one of the similar indexed symbols/files."
+        ),
+        # A not-found result must never smuggle a repository summary through a
+        # generated context packet.
+        "copy_targets": {"claude": "", "codex": "", "cursor": ""},
+        "confidence": "low",
+        "limitations": [
+            "No unique direct definition or exact indexed path supports the requested entity."
+        ],
+        "entity_check": check,
+        "searched": list(check.get("searched") or []),
+        "similar": similar,
+    }
+
 
 
 def classify_copilot_question(question: str) -> str:
@@ -5104,6 +5155,17 @@ def copilot_ask(
         elif "prompt" in q or "claude" in q:
             mode = "context_export"
 
+    entity_check = _not_found_confidence.resolve_indexed_entity(
+        question,
+        mode,
+        _STATE.get("index") or {},
+        _STATE.get("evidence_store") or {},
+        node_context=node_context,
+    )
+    if entity_check and entity_check.get("status") != "found":
+        track_analytics_event("copilot_question", mode="not_found")
+        return _answer_entity_not_found(entity_check)
+
     track_analytics_event("copilot_question", mode=mode)
 
     with _ti.state_guard():
@@ -5125,8 +5187,20 @@ def copilot_ask(
             result = _answer_location(question, packet)
         else:
             result = _answer_unknown(question, packet)
+        # dd9b7ba8: when a valid entity resolved, promote its direct evidence and
+        # matched files so grounded answers cite the resolved entity first.
+        if entity_check:
+            result["entity_check"] = entity_check
+            for evidence in entity_check.get("direct_evidence") or []:
+                if evidence not in (result.get("evidence") or []):
+                    result.setdefault("evidence", []).insert(0, evidence)
+            for match in entity_check.get("matches") or []:
+                path = str(match.get("path") or "")
+                if path and path not in (result.get("files") or []):
+                    result.setdefault("files", []).insert(0, path)
         result["context_binding"] = _context_binding()
         return result
+
 
 
 def mcp_setup_status() -> Dict[str, Any]:
