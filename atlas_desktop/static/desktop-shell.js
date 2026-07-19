@@ -85,17 +85,25 @@
     }
   }
 
+  async function fetchRuntimeHealth() {
+    for (let attempt = 0; attempt < 2; attempt += 1) {
+      try {
+        const health = await api("/api/health", "GET", undefined, { optional: true, force: attempt > 0 });
+        if (health && health.ok && health.product === "ATLAS") return health;
+      } catch (_error) {}
+      // A forced second request is enough to escape the transport cache and
+      // avoids making readiness depend on a timer that can be throttled while
+      // the application window is still becoming visible.
+    }
+    return null;
+  }
+
   async function updateGlobalStatus() {
     const readiness = byId("globalReadiness");
     const label = byId("globalReadinessLabel");
     if (!readiness || !label) return;
 
-    let health = null;
-    try {
-      health = await api("/api/health", "GET", undefined, { optional: true });
-    } catch (_error) {
-      health = null;
-    }
+    const health = await fetchRuntimeHealth();
 
     const runtimeHealthy = !!(health && health.ok && health.product === "ATLAS");
     if (!runtimeHealthy) {
@@ -546,7 +554,7 @@
     };
 
     const [health, diagnostics, startup, selfTest, mcp] = await Promise.all([
-      fetchOptional("/api/health"),
+      fetchRuntimeHealth(),
       fetchOptional("/api/system/diagnostics", { force: options.force === true }),
       fetchOptional("/api/system/startup-status"),
       fetchOptional("/api/system/self-test"),
