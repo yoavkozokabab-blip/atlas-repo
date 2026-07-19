@@ -1648,7 +1648,17 @@ function renderHomeExperience(update) {
     : (agentNames.length ? `${agentNames.length} configured — not connected` : "No agent connected");
   const trustLabel = STATE.homeTrustStatus?.user_trust_label || "Checking";
   const restored = !!STATE.homeHealth?.persistence?.restored;
-  const stale = trustLabel !== "Fresh" && trustLabel !== "Checking";
+  // A repository restored on startup whose resume card is fresh+valid is not
+  // stale — the server confirmed it. Without this, the home screen briefly (or
+  // persistently, if trust-status is slow) rendered "Repository needs refresh"
+  // and "Full rescan required" for an unchanged, successfully-restored repo,
+  // contradicting the sidebar and the readiness pill. Defer to the authoritative
+  // resume-card freshness, exactly as the readiness pill does.
+  const _resumeCard = STATE.homeHealth?.persistence?.resume_card;
+  const _startupFresh = !!(_resumeCard
+    && _resumeCard.freshness_status === "fresh"
+    && _resumeCard.validation_status === "valid");
+  const stale = !_startupFresh && trustLabel !== "Fresh" && trustLabel !== "Checking";
 
   setHomeFact("homeRepoName", repoName);
   setHomeFact("homeFileCount", fileCount);
@@ -1656,7 +1666,7 @@ function renderHomeExperience(update) {
   setHomeFact("homeEdgeCount", homeMetric(summary.dependency_edges));
   setHomeFact("homeLastIndexed", homeLastIndexed(summary, STATE.homeRecent));
   setHomeFact("homeRestoreStatus", restored ? "Repository restored" : "Ready for fresh agent sessions");
-  setHomeText("homeFreshness", trustLabel);
+  setHomeText("homeFreshness", stale ? trustLabel : "Fresh");
   setHomeText("homeIndexedTitle", stale ? "Repository needs refresh." : "Repository ready.");
   setHomeText("homeIndexedLead", stale
     ? "Repository changed since the last index. Refresh before relying on graph evidence."
