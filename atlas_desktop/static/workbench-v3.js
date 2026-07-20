@@ -128,11 +128,18 @@
   // When repository state lands, re-read the summary once and re-sync so the
   // sidebar can never disagree with the restored session.
   async function healSidebarFromRestore() {
-    if (window.STATE?.summary?.ok) { syncSidebarFromState(); return; }
-    const summary = await get("/api/repositories/current/summary");
+    const summary = window.STATE?.summary?.ok
+      ? window.STATE.summary
+      : await get("/api/repositories/current/summary");
     if (!summary?.ok) return;
     if (window.STATE) window.STATE.summary = summary;
     workbench.summary = summary;
+    // Without trust the memory chip falls back to "Review memory" while the
+    // rest of the UI already reports the restored repository as current, so
+    // derive it from the startup resume card when we do not have it yet.
+    if (!workbench.trust) {
+      workbench.trust = await getTrust() || trustFromHealth(await get("/api/health"));
+    }
     syncSidebar(summary, workbench.trust, workbench.agents);
   }
 
