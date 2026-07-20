@@ -42,7 +42,7 @@ export default function FeaturesPage() {
           aside={<MetricBlock metrics={[
             [String(facts.mcpTools), "MCP tools"],
             [facts.restoreMsLabel, "fresh-session restore"],
-            [facts.askLatencyLabel, "Ask Atlas latency"],
+            [facts.askLatencyLabel, "cited-context retrieval"],
           ]} />}
         >
           <ul className="premium-list">

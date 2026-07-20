@@ -15,7 +15,7 @@ const steps: Array<[string, string]> = [
   ["Build graph evidence", "Modules, symbols, import paths and evidence rows become a dependency map the app can validate."],
   ["Persist memory", `Fresh sessions restore the saved scan in ${facts.restoreMsLabel} when the repository signature still matches.`],
   ["Connect agents", `Claude Code, Cursor and Codex use the same ${facts.mcpTools}-tool MCP surface.`],
-  ["Return cited context", `Ask Atlas responds in ${facts.askLatencyLabel} after indexing, with cited files rather than model guesses.`],
+  ["Return cited context", `Atlas returns cited context in ${facts.askLatencyLabel} after indexing — cited files rather than model guesses.`],
 ];
 
 export default function HowItWorks() {

@@ -55,7 +55,7 @@ export default function DownloadPage() {
             ["Run installer", "Install per-user on Windows 10 or 11."],
             ["Open a repository", "Scan the bundled sample repo or choose your own local project."],
             ["Connect an agent", "Use the app to configure Claude Code, Cursor or Codex."],
-            ["Ask with citations", "Use the cited files in your agent instead of re-explaining the repo."],
+            ["Use cited context", "Pull the cited files into your agent instead of re-explaining the repo."],
           ]}
         />
         <p className="note" style={{ marginTop: 20 }}>
