@@ -5164,7 +5164,11 @@ def copilot_ask(
     )
     if entity_check and entity_check.get("status") != "found":
         track_analytics_event("copilot_question", mode="not_found")
-        return _answer_entity_not_found(entity_check)
+        not_found = _answer_entity_not_found(entity_check)
+        # Isolation contract: every Ask response must carry the active binding so
+        # the UI can prove the answer belongs to the currently bound repository.
+        not_found["context_binding"] = _context_binding()
+        return not_found
 
     track_analytics_event("copilot_question", mode=mode)
 
