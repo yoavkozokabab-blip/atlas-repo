@@ -3,7 +3,7 @@ import { facts } from "../../lib/content/facts";
 import { GITHUB_URL, INSTALLER_SHA256 } from "../../_config";
 
 const capabilities = [
-  ["01", "Ask Atlas", "Where behavior lives, why a module matters, which files are involved — answered with real citations from the local index."],
+  ["01", "Graph", "Where behavior lives, why a module matters, which files are involved — read straight off the dependency graph built from your local index."],
   ["02", "Impact", "The files a change is likely to affect and the dependency paths between them, before you touch a subsystem."],
   ["03", "Debug", "Start from an error or symptom; Atlas parses the traceback to repo files and symbol spans and returns an investigation path."],
 ] as const;
@@ -17,7 +17,7 @@ const integrations = [
 
 const metrics = [
   [facts.sampleIndexLabel, `index · ${facts.sampleFiles}-file sample repo`],
-  [facts.askLatencyLabel, "Ask Atlas latency"],
+  [facts.askLatencyLabel, "cited-context retrieval"],
   [facts.restoreMsLabel, "restore across sessions"],
   ["0.95–0.98", "file recall · 50 scenarios"],
   [String(facts.mcpTools), "MCP tools"],
@@ -38,10 +38,11 @@ export default function HomeSections() {
         <div className="container cap-grid">
           <div className="cap-intro">
             <p className="eyebrow">Capabilities</p>
-            <h2>Ask in the language of your codebase.</h2>
+            <h2>Read your codebase as a graph.</h2>
             <p className="lead" style={{ marginTop: 16 }}>
-              Three kinds of question, each grounded in cited files. No model in the
-              retrieval loop — deterministic lookups against the local index.
+              Three views of the same indexed repository, each grounded in cited files.
+              No model in the retrieval loop — deterministic lookups against the
+              local index.
             </p>
           </div>
           <ol className="cap-list">

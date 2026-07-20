@@ -59,7 +59,7 @@ export default function HackerNewsPage() {
               <h3>What it does</h3>
               <ul>
                 <li>Scans a local repository into a resolved import graph, subsystem map, risk model, and symbol evidence.</li>
-                <li>Answers repo questions with cited files (Ask Atlas), and runs Impact, Debug, and Plan Change on the graph.</li>
+                <li>Runs Impact, Debug, and Plan Change on the graph, returning the exact cited files behind every result. (In-app repository Q&amp;A is turned off in v1.0.5 — see the changelog.)</li>
                 <li>Persists the scan, index, and repository memory to disk, and restores them in fresh MCP sessions after validating a content signature.</li>
                 <li>One-click MCP setup for Claude Desktop, Cursor, and Codex — with timestamped config backups that preserve your other MCP servers.</li>
               </ul>

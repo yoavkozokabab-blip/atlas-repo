@@ -3,7 +3,7 @@ import { PageShell, PremiumSection, ReleaseVersionBlock } from "../_components/s
 
 export const metadata: Metadata = {
   title: "Changelog - Atlas",
-  description: "What shipped in Atlas v1.0: local-first indexing, Ask Atlas with cited files, MCP setup for Claude Code, Cursor, and Codex.",
+  description: "What shipped in Atlas v1.0: local-first indexing, dependency graph and impact analysis, MCP setup for Claude Code, Cursor, and Codex.",
 };
 
 const releases = [
@@ -13,13 +13,13 @@ const releases = [
     label: "Security + performance release",
     items: [
       "Indexing: real-world 3 GB repository cold scan ~8 s (was ~57 s); unchanged rescan ~3.6 s; one-file rescan ~8 s.",
-      "Repository-context isolation: every Ask, Impact, Debug, and Plan result is bound to the repository and scan that produced it; switching repositories can never surface another repository's results.",
+      "Repository-context isolation: every Impact, Debug, and Plan result is bound to the repository and scan that produced it; switching repositories can never surface another repository's results.",
       "Security: the local accounts service now uses per-installation DPAPI-protected signing keys instead of a shared secret; upgrading invalidates legacy sessions. Users of v1.0.0–v1.0.4 should update.",
-      "Ask: typo-tolerant question routing, plain-language answers, and honest recovery with concrete interpretations when a question is ambiguous.",
+      "Ask: in-app repository Q&A is turned off in this release. It could still answer confidently about concepts that are not in the repository, and we would rather ship nothing there than ship a wrong answer. Graph, Impact, Debug, and Plan are unaffected, and agents still retrieve cited context over MCP.",
       "Impact: one-sentence result summary and 'Copy impact context for agent' carrying repository identity and scan revision.",
       "Analytics: Settings toggle to disable pseudonymous usage analytics; disabling blocks and clears everything, including queued events.",
       "Agents: Connected reflects a live MCP handshake and drops within seconds of the client closing.",
-      "Rebuilt Windows installer from source commit d72f6223 (Atlas-Setup-1.0.5.exe).",
+      "Rebuilt Windows installer from source commit ffa7152a (Atlas-Setup-1.0.5.exe), fixing restart persistence so a restored repository is never reported as needing a full rescan.",
     ],
   },
   {

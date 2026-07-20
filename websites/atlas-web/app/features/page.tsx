@@ -20,7 +20,6 @@ export const metadata: Metadata = {
 
 const capabilities = [
   ["Dependency graph", "A local map of modules, imports, hubs, cycles and dependency paths."],
-  ["Ask Atlas", "Repo-aware questions answered with cited files from the local evidence store."],
   ["Impact", "Deterministic what-breaks analysis from the resolved graph before you edit."],
   ["Debug", "Start from a symptom or traceback and get a grounded investigation path."],
   ["Plan Change", "Generate a change plan around the files and symbols Atlas found."],
@@ -42,7 +41,7 @@ export default function FeaturesPage() {
           aside={<MetricBlock metrics={[
             [String(facts.mcpTools), "MCP tools"],
             [facts.restoreMsLabel, "fresh-session restore"],
-            [facts.askLatencyLabel, "Ask Atlas latency"],
+            [facts.askLatencyLabel, "cited-context retrieval"],
           ]} />}
         >
           <ul className="premium-list">
