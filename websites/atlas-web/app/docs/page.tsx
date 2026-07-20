@@ -30,13 +30,13 @@ export default function DocsPage() {
           <h2 id="quickstart">Quickstart</h2>
           <ol className="steps">
             <li>Open Atlas and click <b>Load sample repository</b> (or scan your own project folder).</li>
-            <li>Ask a repo-aware question such as <code>Where is authentication implemented?</code> — Atlas answers with cited files.</li>
+            <li>Explore the dependency graph, or run <b>Impact</b> on a file to see what a change would affect — every result cites the exact files and dependencies.</li>
             <li>Connect Claude, Cursor, or Codex from the home screen so your agent can use the same index.</li>
           </ol>
 
           <h2 id="demo">Demo mode</h2>
           <p>The <b>HN demo</b> in the app&apos;s navigation is a guided tour: load the bundled sample
-            repository, ask a prefilled question, then step through <b>Impact</b>, <b>Debug</b>, and{" "}
+            repository, then step through <b>Impact</b>, <b>Debug</b>, and{" "}
             <b>Plan Change</b> on the same sample. Each step is one click and you can skip out at any
             point. Nothing in demo mode touches your own code.</p>
 

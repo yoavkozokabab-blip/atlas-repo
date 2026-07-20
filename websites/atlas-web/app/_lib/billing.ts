@@ -10,7 +10,7 @@ export const PLANS = {
     price: 0,
     interval: null as null | "month",
     trialDays: 0,
-    blurb: "Core local app, local scan, Ask Atlas, MCP, Impact, Debug, Plan Change and Map.",
+    blurb: "Core local app, local scan, MCP context retrieval, Impact, Debug, Plan Change and Map.",
   },
   pro: {
     id: "pro",

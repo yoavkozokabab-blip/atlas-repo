@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: "Atlas pricing: Free local app today, Pro planned at $19/month with Paddle checkout when billing is configured.",
 };
 
-const free = ["Local repository scan", "Ask Atlas", "MCP integration", "Impact", "Debug", "Plan Change", "Map"];
+const free = ["Local repository scan", "MCP integration", "Impact", "Debug", "Plan Change", "Map"];
 const pro = [
   "Everything in Free",
   "Unlimited repositories and indexing",
