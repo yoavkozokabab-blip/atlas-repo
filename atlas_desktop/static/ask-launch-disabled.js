@@ -27,14 +27,25 @@
     'files and dependencies behind every result.</p>' +
     '</div>';
 
+  function hide(el) {
+    if (!el) return;
+    el.setAttribute("hidden", "hidden");
+    el.style.display = "none";
+    el.setAttribute("aria-hidden", "true");
+    el.tabIndex = -1;
+  }
+
   function neutraliseAsk() {
     // 1. Remove the Ask entry from the sidebar (all data-view="ask" controls).
-    document.querySelectorAll('[data-view="ask"]').forEach(function (el) {
-      el.setAttribute("hidden", "hidden");
-      el.style.display = "none";
-      el.setAttribute("aria-hidden", "true");
-      el.tabIndex = -1;
-    });
+    //    The home "next actions" Ask tile carries data-view="ask" too.
+    document.querySelectorAll('[data-view="ask"]').forEach(hide);
+    // 1b. Remove the home Ask composer and its suggested-question buttons —
+    //     they are the most prominent promise of a feature that is turned off.
+    document.querySelectorAll(".atlas-home-ask, #homeRecommendedQuestions").forEach(hide);
+    window.submitHomeAsk = function (event) {
+      if (event && typeof event.preventDefault === "function") event.preventDefault();
+      return false;
+    };
     // 2. Replace the Ask view body so any residual route lands on an honest state.
     var view = document.getElementById("view-ask");
     if (view && !view.dataset.askDisabled) {

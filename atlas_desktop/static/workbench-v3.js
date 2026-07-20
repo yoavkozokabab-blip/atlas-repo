@@ -122,6 +122,20 @@
     syncSidebar(window.STATE?.summary, workbench.trust, workbench.agents);
   }
 
+  // Restart hydration: on a cold start the sidebar can render before the
+  // server has finished restoring the persisted repository, latching
+  // "No repository" while the rest of the UI reports the repository as ready.
+  // When repository state lands, re-read the summary once and re-sync so the
+  // sidebar can never disagree with the restored session.
+  async function healSidebarFromRestore() {
+    if (window.STATE?.summary?.ok) { syncSidebarFromState(); return; }
+    const summary = await get("/api/repositories/current/summary");
+    if (!summary?.ok) return;
+    if (window.STATE) window.STATE.summary = summary;
+    workbench.summary = summary;
+    syncSidebar(summary, workbench.trust, workbench.agents);
+  }
+
   function questionButtons(questions, limit = 3) {
     return list(questions).slice(0, limit).map((question) => `<button type="button" data-question="${escapeHtml(question)}">${escapeHtml(question)}</button>`).join("");
   }
@@ -627,6 +641,9 @@
 
   Object.assign(workbench, { toggleSidebar, renderHomeWorkbench, renderMemoryWorkbench, renderAskContext, renderAgentsWorkbench, decorateDiagnostics, selectMemoryConcept, filterMemory, searchGraph, syncAskEvidence, syncSidebarFromState });
   window.atlasWorkbench = workbench;
+  document.addEventListener("atlas:repository-state", () => { healSidebarFromRestore(); });
+  // Belt-and-braces for a slow restore that finishes after the last state event.
+  setTimeout(() => { healSidebarFromRestore(); }, 3000);
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();
 })();

@@ -80,3 +80,8 @@ textarea:focus-visible,
 .ask-unavailable h2 { font-size: 22px; margin: 0 0 12px; letter-spacing: -0.015em; }
 .ask-unavailable p { color: var(--muted, #9aa8be); font-size: 14px; line-height: 1.6; margin: 0 auto 8px; max-width: 46ch; }
 .ask-unavailable-actions { display: flex; justify-content: center; gap: 12px; margin: 22px 0 16px; flex-wrap: wrap; }
+
+/* Release salvage (v1.0.5-final): Ask is disabled for launch — the home
+   composer and suggested questions must not promise it either. */
+.atlas-home-ask,
+#homeRecommendedQuestions { display: none !important; }
