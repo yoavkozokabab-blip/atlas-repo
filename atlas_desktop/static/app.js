@@ -893,10 +893,28 @@ function emptyStateHtml(title, body, actionLabel, actionFn) {
   return `<div class="empty-state glass"><h3>${title}</h3><p>${body}</p><button class="btn primary" onclick="${actionFn}">${actionLabel}</button></div>`;
 }
 
+// A scan of a multi-GB repository can legitimately run for minutes. Cap the
+// client wait far above any real indexing time so the interactive controls
+// (progress + cancel) — not a premature transport abort — govern the flow.
+const SCAN_REQUEST_TIMEOUT_MS = 1_800_000; // 30 minutes
+
 function updateRepoChip(name, demo) {
   $("repoChip").textContent = name || "No repository";
   $("demoBadge").style.display = demo ? "inline-block" : "none";
   STATE.demoMode = !!demo;
+}
+
+// Single source of truth for repository labels after a failed/aborted scan.
+// The top bar must never show a repository name while the sidebar says
+// "No repository" (or vice versa). Both surfaces are re-derived from the
+// committed summary: preserve a still-valid repository, otherwise clear every
+// label to one consistent empty state.
+function reconcileRepoIdentity() {
+  const committed = (window.STATE && STATE.summary && STATE.summary.ok) ? STATE.summary : null;
+  updateRepoChip(committed ? (committed.repo_name || committed.display_name || "") : "", committed ? !!committed.demo_mode : false);
+  if (window.atlasWorkbench && typeof atlasWorkbench.syncSidebarFromState === "function") {
+    atlasWorkbench.syncSidebarFromState();
+  }
 }
 
 function updateMassiveBadge(on) {
@@ -1296,6 +1314,10 @@ function renderScanSkeleton() {
 
 function showScanFailed(message, code) {
   showScanPanel("failed");
+  // A failed scan commits nothing. Reconcile the repository labels so the top
+  // bar and sidebar can never disagree (the optimistic chip set at scan start
+  // is reverted to the committed repository, or cleared if none is active).
+  reconcileRepoIdentity();
   const friendly = {
     empty_path: "No folder path was provided.",
     not_found: "Atlas could not find that folder on disk.",
@@ -2152,7 +2174,12 @@ async function executeScanFlow(validation) {
 
   let scan;
   try {
-    scan = await api("/api/repositories/scan", "POST", { path, scope: readScopeConfig() });
+    // Indexing is a long-running operation (a multi-GB repository can take
+    // minutes to enumerate and build). It must not inherit the short default
+    // request timeout, or the client aborts a scan the backend is still
+    // completing and reports a false "lost contact" failure. Progress polling
+    // and the cancel control remain the interactive escape hatches.
+    scan = await api("/api/repositories/scan", "POST", { path, scope: readScopeConfig() }, { timeoutMs: SCAN_REQUEST_TIMEOUT_MS });
   } catch (e) {
     // The scan request itself failed (e.g. runtime became unavailable). Release
     // the modal into an explicit failure rather than a frozen progress bar.
