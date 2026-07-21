@@ -12,8 +12,10 @@
   let _appRevealed = false;
   let _accountTransportState = 'unknown';
   let _accountRetryTimer = null;
+  let _accountsUiMode = 'local_only';
 
   const POLL_INTERVAL_MS = 60_000;
+  const LOCAL_ONLY_NOTE = 'Accounts are temporarily unavailable. Atlas works fully in local mode.';
 
   const AUTH_PANELS = ['acc-panel-login', 'acc-panel-register', 'acc-panel-state', 'acc-panel-submitted', 'acc-panel-submit-failed'];
 
@@ -86,7 +88,52 @@
     return target ? target.value.trim() : '';
   }
 
+  function _isLocalOnlyLaunch() {
+    return _accountsUiMode !== 'full';
+  }
+
+  function _applyAccountsUiMode(mode) {
+    _accountsUiMode = (mode === 'full') ? 'full' : 'local_only';
+    const localOnly = _isLocalOnlyLaunch();
+    if (document.body) {
+      document.body.classList.toggle('atlas-local-only-auth', localOnly);
+    }
+    const note = el('acc-local-only-note');
+    if (note) {
+      note.textContent = LOCAL_ONLY_NOTE;
+      if (localOnly) note.removeAttribute('hidden');
+      else note.setAttribute('hidden', '');
+    }
+    const title = el('acc-login-title');
+    if (title) title.textContent = localOnly ? 'Welcome to Atlas' : 'Sign in';
+    const loginBtn = el('acc-login-btn');
+    const createBtn = el('acc-create-btn');
+    const guestBtn = el('acc-guest-btn');
+    if (loginBtn) {
+      loginBtn.hidden = localOnly;
+      loginBtn.disabled = localOnly;
+      loginBtn.setAttribute('aria-hidden', localOnly ? 'true' : 'false');
+      loginBtn.className = localOnly ? 'btn ghost auth-btn-secondary' : 'btn primary auth-btn-primary';
+    }
+    if (createBtn) {
+      createBtn.hidden = localOnly;
+      createBtn.disabled = localOnly;
+      createBtn.setAttribute('aria-hidden', localOnly ? 'true' : 'false');
+    }
+    if (guestBtn) {
+      guestBtn.className = localOnly ? 'btn primary auth-btn-primary' : 'btn ghost auth-btn-secondary';
+    }
+    // Never surface a red account-service error on the first-run local-only screen.
+    if (localOnly) setError('acc-login-error', '');
+  }
+
   function setError(containerId, msg, title) {
+    if (_isLocalOnlyLaunch() && containerId === 'acc-login-error') {
+      // Local-only launch: keep the first-run screen free of account outage chrome.
+      const c = el(containerId);
+      if (c) { c.textContent = ''; c.style.display = 'none'; }
+      return;
+    }
     const c = el(containerId);
     if (!c) return;
     if (!msg) {
@@ -244,6 +291,10 @@
   }
 
   function retrySubmit() {
+    if (_isLocalOnlyLaunch()) {
+      showAccountScreen('login');
+      return;
+    }
     showAccountScreen('register');
     doRegister();
   }
@@ -522,6 +573,9 @@
   }
 
   function showAccountScreen(mode) {
+    if (_isLocalOnlyLaunch() && (mode === 'register' || mode === 'login')) {
+      mode = 'login';
+    }
     _screenMode = mode || _screenMode;
 
     if (_screenMode === 'profile') {
@@ -548,10 +602,17 @@
     const panel = el('acc-panel-' + _screenMode);
     if (panel) panel.style.display = '';
     if (_screenMode === 'register') {
-      _wireRegisterEvents();
-      resetRegisterWizard();
-      restoreDraft();
+      if (_isLocalOnlyLaunch()) {
+        _screenMode = 'login';
+        const loginPanel = el('acc-panel-login');
+        if (loginPanel) loginPanel.style.display = '';
+      } else {
+        _wireRegisterEvents();
+        resetRegisterWizard();
+        restoreDraft();
+      }
     }
+    _applyAccountsUiMode(_accountsUiMode);
     _setAuthMode(true);
     requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: 'auto' }));
   }
@@ -620,9 +681,14 @@
         const state = data && data.transport_kind === 'timeout' ? 'timed_out' : 'unavailable';
         _setAccountTransportState(state, { code: data && data.code || 'account_unavailable' });
         _scheduleAccountRetry();
+        // Keep local-only chrome ready, but never block Atlas behind a red account wall
+        // when the account endpoint itself is unreachable.
+        _applyAccountsUiMode(_accountsUiMode);
         if (!_state && !_appRevealed) _enterApp();
         return data || { ok: false, error: 'Account endpoint unavailable', transport_error: true };
       }
+      if (data.accounts_ui_mode) _applyAccountsUiMode(data.accounts_ui_mode);
+      else _applyAccountsUiMode(_accountsUiMode);
       _state = data;
       if (_accountRetryTimer) {
         window.clearTimeout(_accountRetryTimer);
@@ -679,6 +745,7 @@
   }
 
   function doLogin() {
+    if (_isLocalOnlyLaunch()) return;
     const email = el('acc-login-email') && el('acc-login-email').value.trim();
     const password = el('acc-login-pwd') && el('acc-login-pwd').value;
     setError('acc-login-error', '');
@@ -864,6 +931,7 @@
   }
 
   function doRegister() {
+    if (_isLocalOnlyLaunch()) return;
     // Re-validate each step; jump to the first incomplete one.
     for (let s = 1; s <= _REG_STEPS - 1; s++) {
       if (!_validateRegStep(s, { quiet: true })) {
@@ -1093,6 +1161,9 @@
   }
 
   function init() {
+    // Apply launch-safe local-only chrome before the first state round-trip so a
+    // missing helper / closed accounts port never paints a red account error.
+    _applyAccountsUiMode(_accountsUiMode);
     restoreDraft();
     refreshState().finally(() => {
       document.body.classList.remove('auth-loading');
@@ -1136,6 +1207,7 @@
     isGuest: () => !!( _state && _state.guest),
     isAdmin: _isAdmin,
     transportState: () => _accountTransportState,
+    accountsUiMode: () => _accountsUiMode,
     startGuest: startGuest,
     requireAccess: () => {
       if (_state && (_state.authenticated || _state.local_access)) return true;

@@ -819,6 +819,17 @@ body.auth-mode{
 .auth-btn-primary{width:100%;padding:13px 18px;font-size:14px;border-radius:12px}
 .auth-btn-secondary{width:100%;padding:11px 18px;font-size:13px;color:var(--muted);border-color:transparent}
 .auth-btn-secondary:hover{color:var(--txt);border-color:var(--line);background:rgba(255,255,255,.03)}
+.auth-local-only-note{
+  margin:0 0 18px;padding:12px 14px;border-radius:12px;
+  border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);
+  color:var(--muted);font-size:13px;line-height:1.5;text-align:center;
+}
+body.atlas-local-only-auth #acc-login-fields,
+body.atlas-local-only-auth #acc-login-btn,
+body.atlas-local-only-auth #acc-create-btn{display:none !important}
+body.atlas-local-only-auth #acc-login-error{display:none !important}
+body.atlas-local-only-auth #acc-local-only-note{display:block}
+body.atlas-local-only-auth #acc-panel-register{display:none !important}
 
 .acc-error{
   background:rgba(255,92,122,.1);border:1px solid rgba(255,92,122,.35);color:#ffb3c4;

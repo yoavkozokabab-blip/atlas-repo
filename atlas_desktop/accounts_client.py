@@ -55,6 +55,22 @@ def auth_mode() -> str:
     if os.environ.get("ATLAS_LOCAL_ACCOUNTS") == "1" or os.environ.get("ATLAS_DEV") == "1":
         return "local"
     return "website" if getattr(sys, "frozen", False) else "local"
+
+
+def accounts_ui_mode() -> str:
+    """First-run auth screen mode (v1.0.5 launch safety).
+
+    "local_only" — Continue without an account is primary; Sign In / Create Account
+    are hidden. Account code remains installed for a later release.
+    "full" — expose Sign In / Create Account / guest (dev / future restore).
+
+    Default is local_only so a missing helper, closed port 8788/8779, or unreachable
+    Supabase never blocks first run. Override with ATLAS_ACCOUNTS_UI_MODE=full|local_only.
+    """
+    m = (os.environ.get("ATLAS_ACCOUNTS_UI_MODE") or "").strip().lower()
+    if m in ("full", "local_only"):
+        return m
+    return "local_only"
 _OFFLINE_GRACE_SECONDS = 7 * 24 * 3600   # 7 days
 _ACCESS_TOKEN_BUFFER_SECONDS = 120        # refresh if <2 min left
 _CONNECT_TIMEOUT = 5                      # seconds
@@ -1085,6 +1101,7 @@ def get_account_state() -> Dict[str, Any]:
         "guest_created_at": str(state.get("guest_created_at") or "") if guest_valid else "",
         "local_access": local_access,
         "account_required_features": not authenticated,
+        "accounts_ui_mode": accounts_ui_mode(),
         "user": user,
         "license": license_status,
         "plan": license_status.get("plan") or "free",

@@ -42,29 +42,34 @@
           <p class="auth-subtitle">Persistent repository memory for Claude Code, Cursor, and Codex.</p>
         </div>
 
-        <!-- LOGIN -->
+        <!-- LOGIN / local-only first run (v1.0.5) -->
         <div id="acc-panel-login" class="auth-panel">
-          <h2 class="auth-panel-title">Sign in</h2>
+          <h2 id="acc-login-title" class="auth-panel-title">Sign in</h2>
+          <p id="acc-local-only-note" class="auth-local-only-note" hidden>
+            Accounts are temporarily unavailable. Atlas works fully in local mode.
+          </p>
           <div id="acc-login-error" class="acc-error" style="display:none" role="alert"></div>
-          <div class="acc-field">
-            <label for="acc-login-email">Email</label>
-            <div class="acc-input-wrap">
-              <span class="acc-input-icon" aria-hidden="true">✉</span>
-              <input id="acc-login-email" type="email" autocomplete="email" placeholder="you@company.com" />
+          <div id="acc-login-fields">
+            <div class="acc-field">
+              <label for="acc-login-email">Email</label>
+              <div class="acc-input-wrap">
+                <span class="acc-input-icon" aria-hidden="true">✉</span>
+                <input id="acc-login-email" type="email" autocomplete="email" placeholder="you@company.com" />
+              </div>
+              <div id="acc-login-email-msg" class="acc-field-error" role="alert"></div>
             </div>
-            <div id="acc-login-email-msg" class="acc-field-error" role="alert"></div>
-          </div>
-          <div class="acc-field">
-            <label for="acc-login-pwd">Password</label>
-            <div class="acc-input-wrap">
-              <span class="acc-input-icon" aria-hidden="true">🔒</span>
-              <input id="acc-login-pwd" type="password" autocomplete="current-password" placeholder="Your password" onkeydown="if(event.key==='Enter') atlasAccounts.login()" />
+            <div class="acc-field">
+              <label for="acc-login-pwd">Password</label>
+              <div class="acc-input-wrap">
+                <span class="acc-input-icon" aria-hidden="true">🔒</span>
+                <input id="acc-login-pwd" type="password" autocomplete="current-password" placeholder="Your password" onkeydown="if(event.key==='Enter') atlasAccounts.login()" />
+              </div>
             </div>
           </div>
           <div class="acc-actions acc-actions-stack">
-            <button id="acc-login-btn" class="btn primary auth-btn-primary" type="button" onclick="atlasAccounts.login()">Sign In</button>
-            <button class="btn ghost auth-btn-secondary" type="button" onclick="atlasAccounts.switchPanel('register')">Create free account</button>
-            <button id="acc-guest-btn" class="btn ghost auth-btn-secondary" type="button" onclick="atlasAccounts.startGuest()">Continue without an account</button>
+            <button id="acc-guest-btn" class="btn primary auth-btn-primary" type="button" onclick="atlasAccounts.startGuest()">Continue without an account</button>
+            <button id="acc-login-btn" class="btn ghost auth-btn-secondary" type="button" onclick="atlasAccounts.login()" hidden disabled aria-hidden="true">Sign In</button>
+            <button id="acc-create-btn" class="btn ghost auth-btn-secondary" type="button" onclick="atlasAccounts.switchPanel('register')" hidden disabled aria-hidden="true">Create free account</button>
           </div>
         </div>
 
