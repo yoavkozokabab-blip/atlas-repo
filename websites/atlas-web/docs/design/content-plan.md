@@ -38,7 +38,7 @@ the published installer is shown for verification (`INSTALLER_SHA256` in `_confi
 **Distribution:** GitHub `yoavkozokabab-blip/atlas-repo`, **v1.0.1** released; download via
 `/download/atlas` redirects to the verified GitHub Release asset. Canonical production site:
 atlas-repo-wu76.vercel.app. Current installer SHA256:
-`93AAC567999B0E3D0AAA30AA6E4FBFC9DCFF605DD35DC1D0E1523F4D066B5649`.
+`B2531078FC814B9D2AA454FAFD31711AE353AAFCD336C6E39D21B4645A9573EF`.
 
 **Pricing:** Free (local, no signup) / **Pro $19/mo** (7-day trial, no card up front) / Team —
 coming soon. Payments run through Paddle (MoR); live charging is not yet wired (Team + Pro

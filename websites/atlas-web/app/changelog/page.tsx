@@ -20,6 +20,7 @@ const releases = [
       "Analytics: Settings toggle to disable pseudonymous usage analytics; disabling blocks and clears everything, including queued events.",
       "Agents: Connected reflects a live MCP handshake and drops within seconds of the client closing.",
       "Rebuilt Windows installer from source commit ffa7152a (Atlas-Setup-1.0.5.exe), fixing restart persistence so a restored repository is never reported as needing a full rescan.",
+      "Hotfix: first-run accounts are temporarily unavailable; Atlas launches in local mode with no account required. Graph, Impact, scanning, persistence, and MCP remain available. Installer identity updated to desktop commit 459884c6.",
     ],
   },
   {
