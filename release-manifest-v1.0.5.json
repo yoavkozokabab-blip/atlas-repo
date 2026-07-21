@@ -1,24 +1,33 @@
 {
   "version": "1.0.5",
-  "desktop_branch": "release/atlas-v1.0.5-final",
-  "desktop_commit": "db887f626290d9909266e2f690c805acb7fe10fd",
+  "hotfix": "hotfix1",
+  "desktop_branch": "release/atlas-v1.0.5-hotfix1",
+  "desktop_commit": "459884c6c89d98eb2aaf7fb33b2815be206b552d",
   "website_branch": "release/atlas-web-v105-final",
-  "website_commit": "002d4b0972286312ddfb4fb1cc780ae58029b622",
+  "website_commit": "PENDING_HOTFIX1_WEB_UPDATE",
   "release_tag": "v1.0.5",
-  "desktop_freeze_tag": "v1.0.5-final",
+  "desktop_freeze_tag": "v1.0.5-hotfix1",
   "website_freeze_tag": "atlas-web-v1.0.5-final",
   "installer_filename": "Atlas-Setup-1.0.5.exe",
-  "installer_sha256": "D093D17ABEE5A6B2D8149EAB62D4041AD26BDA387122627B5E7FA76E3001DB53",
-  "installer_size_bytes": 43294830,
+  "installer_sha256": "B2531078FC814B9D2AA454FAFD31711AE353AAFCD336C6E39D21B4645A9573EF",
+  "installer_size_bytes": 43296784,
   "public_download_url": "https://atlas-repo-wu76.vercel.app/download",
   "github_release_url": "https://github.com/yoavkozokabab-blip/atlas-repo/releases/tag/v1.0.5",
-  "app_health_commit": "db887f626290d9909266e2f690c805acb7fe10fd",
+  "app_health_commit": "459884c6c89d98eb2aaf7fb33b2815be206b552d",
   "ask_enabled": false,
+  "accounts_ui_mode": "local_only",
   "signed": false,
   "frozen_utc": "2026-07-21",
+  "notes": [
+    "First-run accounts are temporarily unavailable in v1.0.5.",
+    "Atlas launches directly in local mode with no account required.",
+    "Graph, Impact, repository scanning, persistence, and MCP remain available.",
+    "The account implementation is preserved for a later update."
+  ],
   "rollback": {
-    "installer_sha256": "24E0BD8169E1ADC9868CB7EAEE311B108E4463280C52A54CF523A3F81C3399F6",
-    "installer_size_bytes": 43294766,
-    "desktop_commit": "ffa7152af471430e6932514ca1fd87dd4d61178b"
+    "installer_sha256": "D093D17ABEE5A6B2D8149EAB62D4041AD26BDA387122627B5E7FA76E3001DB53",
+    "installer_size_bytes": 43294830,
+    "desktop_commit": "db887f626290d9909266e2f690c805acb7fe10fd",
+    "backup_dir": "C:\\J.A.R.V.I.S\\Atlas-Releases\\_backup-public-v1.0.5-pre-hotfix1-20260721-162723"
   }
 }
