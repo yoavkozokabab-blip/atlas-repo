@@ -1,4 +1,4 @@
-../../Include/greenlet/greenlet.h,sha256=goR9ZprGoq71mBRhzBuexFvTNryvf4uceMHMIaSxh3o,4919
+../../include/python/greenlet/greenlet.h,sha256=goR9ZprGoq71mBRhzBuexFvTNryvf4uceMHMIaSxh3o,4919
 greenlet-3.5.1.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4
 greenlet-3.5.1.dist-info/METADATA,sha256=pdKAobY6lKaAuD5S1nVCRP52-nRlKaooHdOruQ3Ng7c,3881
 greenlet-3.5.1.dist-info/RECORD,,
