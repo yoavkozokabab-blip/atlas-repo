@@ -3,6 +3,7 @@ import { store } from "@/app/_lib/store";
 import { readJson } from "@/app/_lib/ratelimit";
 import { privateJson, unavailableJson } from "@/app/_lib/http";
 import { csrfRejected, isTrustedBrowserWrite } from "@/app/_lib/request-security";
+import { ENV } from "@/app/_lib/config";
 
 export const runtime = "nodejs";
 
@@ -23,6 +24,13 @@ export async function POST(req: Request) {
   // true for the local/test backend and records fail closed on partial failure.
   await store.revokeSessionsForUser(user.id);
   await store.deleteAccount(user);
+  if (ENV.authBridgeEnabled && ENV.hasSupabase && user.authUserId) {
+    const { deleteAuthIdentity } = await import("@/app/_lib/supabase-auth");
+    // The database trigger has already queued this Auth id. Successful Auth
+    // deletion removes the queue row through its FK; failure leaves a durable,
+    // server-only deletion request for an operator retry.
+    await deleteAuthIdentity(user.authUserId);
+  }
   await clearSession();
     return privateJson({ ok: true });
   } catch {

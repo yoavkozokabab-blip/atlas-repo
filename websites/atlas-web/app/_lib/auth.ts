@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 import { cookies } from "next/headers";
 import { ENV } from "./config";
 import { isDuplicateEmailError, store, Session, User, SafeUser, toSafe, newId } from "./store";
+import { authenticateOrMigrateLegacyUser } from "./auth-bridge";
 
 const COOKIE = "atlas_session";
 const SESSION_TTL_S = 60 * 60 * 24 * 7; // 7 days
@@ -135,6 +136,52 @@ export async function registerUser(email: string, password: string, name?: strin
   if (await store.getByEmail(email)) return { ok: false, error: "An account with this email already exists." };
   const now = new Date().toISOString();
   const role = ENV.adminEmails.includes(email) ? "admin" : "user";
+  if (ENV.authBridgeEnabled && ENV.hasSupabase) {
+    const { createNewAuthIdentity, deleteAuthIdentity, supabasePasswordAuthority } = await import("./supabase-auth");
+    const identity = await createNewAuthIdentity(email, password);
+    if (identity.status === "unavailable") {
+      return { ok: false, error: "Account creation is temporarily unavailable. Please try again." };
+    }
+    let authUserId: string;
+    let createdByRequest = false;
+    if (identity.status === "created") {
+      authUserId = identity.userId;
+      createdByRequest = true;
+    } else {
+      // A previous request may have created Auth but failed before the profile
+      // insert. Resume only after the same password authenticates that identity.
+      const existing = await supabasePasswordAuthority.signIn(email, password);
+      if (existing.status !== "authenticated") {
+        return { ok: false, error: "Unable to create an account with these details." };
+      }
+      authUserId = existing.userId;
+    }
+    const user: User = {
+      id: newId(),
+      email,
+      name: name?.trim() || undefined,
+      authUserId,
+      authMigratedAt: now,
+      legacyAuthDisabledAt: now,
+      updatedAt: now,
+      role,
+      status: "active",
+      plan: "free",
+      planStatus: "none",
+      createdAt: now,
+      lastLoginAt: now,
+      downloads: 0,
+    };
+    try {
+      return { ok: true, user: await store.create(user) };
+    } catch (error) {
+      if (createdByRequest) await deleteAuthIdentity(authUserId);
+      if (isDuplicateEmailError(error)) {
+        return { ok: false, error: "Unable to create an account with these details." };
+      }
+      throw error;
+    }
+  }
   const user: User = {
     id: newId(),
     email,
@@ -166,6 +213,32 @@ export async function loginUser(email: string, password: string): Promise<AuthRe
   email = (email || "").trim().toLowerCase();
   const user = await store.getByEmail(email);
   const valid = verifyPassword(password, user?.passwordHash || DUMMY_HASH);
+  if (ENV.authBridgeEnabled && ENV.hasSupabase && user) {
+    const { supabasePasswordAuthority } = await import("./supabase-auth");
+    const bridged = await authenticateOrMigrateLegacyUser({
+      userId: user.id,
+      email,
+      password,
+      legacyPasswordValid: valid,
+      linkedAuthUserId: user.authUserId,
+      legacyAuthDisabledAt: user.legacyAuthDisabledAt,
+      authority: supabasePasswordAuthority,
+      bridgeStore: store,
+    });
+    if (bridged.status === "unavailable") {
+      return { ok: false, error: "Sign-in is temporarily unavailable. Please try again." };
+    }
+    if (bridged.status !== "authenticated" && bridged.status !== "migrated") {
+      return { ok: false, error: "Invalid email or password." };
+    }
+    const migrated = await store.getById(user.id);
+    if (!migrated || migrated.status === "suspended") {
+      return { ok: false, error: "Invalid email or password." };
+    }
+    const now = new Date().toISOString();
+    await store.update(migrated.id, { lastLoginAt: now, updatedAt: now });
+    return { ok: true, user: migrated };
+  }
   // Generic message — never reveal whether the email exists (anti-enumeration).
   if (!user || !valid) return { ok: false, error: "Invalid email or password." };
   if (user.status === "suspended") return { ok: false, error: "This account is suspended. Contact support." };

@@ -60,6 +60,9 @@ export const ENV = {
   get hasSupabase(): boolean {
     return !!(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
   },
+  get authBridgeEnabled(): boolean {
+    return process.env.ATLAS_SUPABASE_AUTH_BRIDGE === "1";
+  },
   get hasPaddle(): boolean {
     return !!process.env.PADDLE_API_KEY;
   },
@@ -112,9 +115,10 @@ export function paddleWebhookConfigured(): boolean {
 // ---------------------------------------------------------------------------
 // Supabase config validation (production env reconciliation).
 // Validates ONLY the variables this codebase actually consumes — SUPABASE_URL
-// and SUPABASE_SERVICE_ROLE_KEY (raw PostgREST + service role; see _lib/store.ts
-// and _lib/ratelimit.ts). The app does NOT use createClient / anon key /
-// NEXT_PUBLIC_SUPABASE_*, so those are not required and not validated here.
+// and SUPABASE_SERVICE_ROLE_KEY (PostgREST and server-only Supabase Auth Admin;
+// see _lib/store.ts, _lib/ratelimit.ts and _lib/supabase-auth.ts). The browser
+// bundle never receives the service-role key. NEXT_PUBLIC_SUPABASE_* variables
+// are not required by this server-mediated architecture.
 //
 // No project id is hardcoded — drift is caught by surfacing the resolved
 // hostname via /api/health so an operator can see a wrong/stale project.

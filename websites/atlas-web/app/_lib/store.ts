@@ -27,7 +27,11 @@ export interface User {
   id: string;
   email: string;
   name?: string;
-  passwordHash: string; // scrypt "scrypt$salt$hash" — never plaintext, never sent to client
+  passwordHash?: string; // legacy scrypt hash; null after Supabase Auth migration
+  authUserId?: string | null;
+  authMigratedAt?: string | null;
+  legacyAuthDisabledAt?: string | null;
+  updatedAt?: string | null;
   role: Role;
   status: AccountStatus;
   plan: Plan;
@@ -41,10 +45,16 @@ export interface User {
   downloads: number;
 }
 
-export type SafeUser = Omit<User, "passwordHash">;
+export type SafeUser = Omit<
+  User,
+  "passwordHash" | "authUserId" | "authMigratedAt" | "legacyAuthDisabledAt"
+>;
 export function toSafe(u: User): SafeUser {
   const rest: Partial<User> = { ...u };
   delete rest.passwordHash; // never expose the hash to the client
+  delete rest.authUserId;
+  delete rest.authMigratedAt;
+  delete rest.legacyAuthDisabledAt;
   return rest as SafeUser;
 }
 
@@ -117,6 +127,7 @@ export interface Store {
   getSession(id: string): Promise<Session | undefined>;
   revokeSession(id: string): Promise<void>;
   revokeSessionsForUser(userId: string): Promise<void>;
+  linkAuthIdentity(userId: string, authUserId: string): Promise<boolean>;
   /** Identifies the active backend for health checks / diagnostics. */
   backend(): "supabase" | "file";
 }
@@ -245,6 +256,29 @@ const fileStore: Store = {
     }
     persist(db);
   },
+  linkAuthIdentity: async (userId, authUserId) => {
+    const db = load();
+    const user = db.users.find((entry) => entry.id === userId);
+    if (!user || (user.authUserId && user.authUserId !== authUserId)) return false;
+    const now = new Date().toISOString();
+    user.authUserId = authUserId;
+    user.authMigratedAt = user.authMigratedAt || now;
+    user.legacyAuthDisabledAt = user.legacyAuthDisabledAt || now;
+    user.updatedAt = now;
+    delete user.passwordHash;
+    db.audit.push({
+      id: newId(),
+      at: now,
+      actorId: user.id,
+      actorEmail: user.email,
+      action: "legacy_auth_migrated",
+      targetId: user.id,
+      targetEmail: user.email,
+      meta: { authority: "supabase_auth" },
+    });
+    persist(db);
+    return true;
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -299,6 +333,10 @@ function userToRow(u: Partial<User>): Row {
   if (u.email !== undefined) r.email = u.email.toLowerCase();
   if (u.name !== undefined) r.name = u.name ?? null;
   if (u.passwordHash !== undefined) r.password_hash = u.passwordHash;
+  if (u.authUserId !== undefined) r.auth_user_id = u.authUserId ?? null;
+  if (u.authMigratedAt !== undefined) r.auth_migrated_at = u.authMigratedAt ?? null;
+  if (u.legacyAuthDisabledAt !== undefined) r.legacy_auth_disabled_at = u.legacyAuthDisabledAt ?? null;
+  if (u.updatedAt !== undefined) r.updated_at = u.updatedAt ?? null;
   if (u.role !== undefined) r.role = u.role;
   if (u.status !== undefined) r.status = u.status;
   if (u.plan !== undefined) r.plan = u.plan;
@@ -317,7 +355,11 @@ function rowToUser(r: Row): User {
     id: String(r.id),
     email: String(r.email),
     name: (r.name as string) ?? undefined,
-    passwordHash: String(r.password_hash ?? ""),
+    passwordHash: r.password_hash == null ? undefined : String(r.password_hash),
+    authUserId: (r.auth_user_id as string) ?? null,
+    authMigratedAt: (r.auth_migrated_at as string) ?? null,
+    legacyAuthDisabledAt: (r.legacy_auth_disabled_at as string) ?? null,
+    updatedAt: (r.updated_at as string) ?? null,
     role: (r.role as Role) ?? "user",
     status: (r.status as AccountStatus) ?? "active",
     plan: (r.plan as Plan) ?? "free",
@@ -558,6 +600,15 @@ const supabaseStore: Store = {
         body: JSON.stringify({ revoked_at: new Date().toISOString() }),
       }),
       "revoke-user-sessions"
+    );
+  },
+  linkAuthIdentity: async (userId, authUserId) => {
+    return sbValue<boolean>(
+      await sb("rpc/atlas_link_auth_identity", {
+        method: "POST",
+        body: JSON.stringify({ p_user_id: userId, p_auth_user_id: authUserId }),
+      }),
+      "link-auth-identity"
     );
   },
 };
