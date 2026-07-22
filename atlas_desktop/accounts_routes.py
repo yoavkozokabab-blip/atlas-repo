@@ -64,7 +64,7 @@ def _service_unavailable_response() -> Dict[str, Any]:
         "code": "service_unavailable",
         "submitted": False,
         "error": "Accounts are temporarily unavailable. Atlas works fully in local mode.",
-        "detail": "You can continue using Atlas locally and try accounts again later.",
+        "detail": "Your application has not been submitted yet.",
     }
 
 
