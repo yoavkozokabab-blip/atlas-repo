@@ -2,6 +2,13 @@
 
 Verdict: **NOT READY**
 
+## Latest evidence-gate attempt
+
+Gate 1 stopped before any production action. The local environment has no
+Supabase authentication/session, no database URL or password, no
+`supabase`/`pg_dump`/`psql`/Docker tooling, no private backup directory, and no
+private backup artifact. Gates 2–6 were not attempted.
+
 This is a new evidence pass on `release/atlas-v1.0.6-analytics-rc`. No
 deployment, upload, tag, public-installer replacement, or merge was performed.
 
