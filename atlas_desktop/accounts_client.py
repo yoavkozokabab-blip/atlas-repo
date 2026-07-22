@@ -5,7 +5,7 @@ desktop application. Communicates with the Atlas Accounts Service over HTTP.
 
 Responsibilities:
   - Persistent device_id (generated once, stored in data dir)
-  - Token cache (access + refresh tokens, stored in accounts_state.json)
+  - Token cache (access + refresh tokens, protected with Windows DPAPI)
   - License cache with offline grace (7 days after last successful check)
   - All account API calls proxied through this module
   - Privacy: NEVER includes source code, file paths, or prompt text in payloads
@@ -26,6 +26,7 @@ from datetime import datetime, timezone
 from typing import Any, Dict, Optional
 
 from .data_paths import desktop_data_dir
+from .protected_storage import ProtectedStorageError, decode_credentials, encode_credentials
 
 # ── Configuration ─────────────────────────────────────────────────────────────
 # Local accounts service (dev-only fallback).
@@ -76,6 +77,12 @@ _ACCESS_TOKEN_BUFFER_SECONDS = 120        # refresh if <2 min left
 _CONNECT_TIMEOUT = 5                      # seconds
 _INTEGRITY_FIELD = "_integrity"
 _STATE_SECRET_FILE = "accounts_state_secret"
+_CREDENTIAL_FILE = "accounts_credentials.dpapi"
+_CREDENTIAL_KEYS = (
+    "access_token",
+    "access_token_expires_at",
+    "refresh_token",
+)
 _SIGNED_STATE_KEYS = (
     "device_id",
     "access_token",
@@ -108,6 +115,10 @@ def _state_path() -> str:
 
 def _state_secret_path() -> str:
     return os.path.join(desktop_data_dir(), _STATE_SECRET_FILE)
+
+
+def _credential_path() -> str:
+    return os.path.join(desktop_data_dir(), _CREDENTIAL_FILE)
 
 
 def _load_state_secret() -> str:
@@ -152,6 +163,57 @@ def _state_integrity_valid(state: Dict[str, Any]) -> bool:
     return hmac.compare_digest(expected, _state_digest(unsigned))
 
 
+def _write_state_file(state: Dict[str, Any]) -> None:
+    state = {key: value for key, value in state.items() if key != "_state_integrity_error"}
+    unsigned = {key: value for key, value in state.items() if key != _INTEGRITY_FIELD}
+    unsigned[_INTEGRITY_FIELD] = {"version": 1, "sha256": _state_digest(unsigned)}
+    try:
+        with open(_state_path(), "w", encoding="utf-8") as f:
+            json.dump(unsigned, f, indent=2)
+    except OSError:
+        pass
+
+
+def _store_protected_credentials(credentials: Dict[str, Any]) -> None:
+    path = _credential_path()
+    if not credentials:
+        try:
+            os.remove(path)
+        except FileNotFoundError:
+            pass
+        except OSError:
+            pass
+        return
+    protected = encode_credentials(credentials)
+    temporary = f"{path}.{os.getpid()}.tmp"
+    try:
+        with open(temporary, "wb") as f:
+            f.write(protected)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(temporary, path)
+    except OSError as exc:
+        try:
+            os.remove(temporary)
+        except OSError:
+            pass
+        raise ProtectedStorageError("Atlas could not persist protected credentials") from exc
+
+
+def _read_protected_credentials() -> Dict[str, Any]:
+    try:
+        with open(_credential_path(), "rb") as f:
+            protected = f.read()
+    except FileNotFoundError:
+        return {}
+    except OSError as exc:
+        raise ProtectedStorageError("Atlas could not read protected credentials") from exc
+    if not protected:
+        raise ProtectedStorageError("Atlas credential data is corrupted")
+    credentials = decode_credentials(protected)
+    return {key: credentials[key] for key in _CREDENTIAL_KEYS if key in credentials}
+
+
 def _load_state() -> Dict[str, Any]:
     try:
         with open(_state_path(), encoding="utf-8") as f:
@@ -165,18 +227,44 @@ def _load_state() -> Dict[str, Any]:
         if isinstance(state.get("device_id"), str):
             clean["device_id"] = state["device_id"]
         return clean
+    legacy_credentials = {key: state[key] for key in _CREDENTIAL_KEYS if key in state}
+    if legacy_credentials:
+        try:
+            _store_protected_credentials(legacy_credentials)
+        except ProtectedStorageError:
+            for key in _CREDENTIAL_KEYS:
+                state.pop(key, None)
+            _write_state_file(state)
+            clean = {"_state_integrity_error": True}
+            if isinstance(state.get("device_id"), str):
+                clean["device_id"] = state["device_id"]
+            return clean
+        for key in _CREDENTIAL_KEYS:
+            state.pop(key, None)
+        _write_state_file(state)
+    try:
+        state.update(_read_protected_credentials())
+    except ProtectedStorageError:
+        clean = {"_state_integrity_error": True}
+        if isinstance(state.get("device_id"), str):
+            clean["device_id"] = state["device_id"]
+        return clean
     return state
 
 
 def _save_state(state: Dict[str, Any]) -> None:
-    state = {key: value for key, value in state.items() if key != "_state_integrity_error"}
-    unsigned = {key: value for key, value in state.items() if key != _INTEGRITY_FIELD}
-    unsigned[_INTEGRITY_FIELD] = {"version": 1, "sha256": _state_digest(unsigned)}
     try:
-        with open(_state_path(), "w", encoding="utf-8") as f:
-            json.dump(unsigned, f, indent=2)
-    except OSError:
-        pass
+        credentials = {key: state[key] for key in _CREDENTIAL_KEYS if key in state}
+        _store_protected_credentials(credentials)
+    except ProtectedStorageError:
+        credentials = {}
+        _store_protected_credentials({})
+    public_state = {
+        key: value
+        for key, value in state.items()
+        if key not in _CREDENTIAL_KEYS and key != "_state_integrity_error"
+    }
+    _write_state_file(public_state)
 
 
 def _utc_now_iso() -> str:
