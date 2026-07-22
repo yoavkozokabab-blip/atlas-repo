@@ -63,9 +63,21 @@ def _service_unavailable_response() -> Dict[str, Any]:
         "ok": False,
         "code": "service_unavailable",
         "submitted": False,
-        "error": "We could not reach the Atlas account service.",
-        "detail": "Your application has not been submitted yet.",
+        "error": "Accounts are temporarily unavailable. Atlas works fully in local mode.",
+        "detail": "You can continue using Atlas locally and try accounts again later.",
     }
+
+
+def _accounts_backend_ready() -> bool:
+    """Prepare the legacy helper only when it is the selected authority.
+
+    Packaged Atlas uses the website authority.  Starting (or waiting for) the
+    local helper in that mode made an otherwise healthy website account flow
+    fail before it made its first network request.
+    """
+    if accounts_client.auth_mode() == "website":
+        return True
+    return accounts_service_runner.ensure_running()
 
 
 def accounts_state(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
@@ -97,7 +109,7 @@ def accounts_register(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str,
         if profile_error:
             return {"ok": False, "code": "validation_error", "submitted": False, "error": profile_error}
 
-    if not accounts_service_runner.ensure_running():
+    if not _accounts_backend_ready():
         return _service_unavailable_response()
 
     result = accounts_client.register(
@@ -139,11 +151,11 @@ def accounts_login(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, An
         return {"ok": False, "error": "email and password are required"}
     if not _valid_email(email):
         return {"ok": False, "error": "Enter a valid email address."}
-    if not accounts_service_runner.ensure_running():
+    if not _accounts_backend_ready():
         return {
             "ok": False,
             "code": "service_unavailable",
-            "error": "The Atlas accounts service isn't available right now. Please restart Atlas, and contact yoavkozokabab@gmail.com if this keeps happening.",
+            "error": "Accounts are temporarily unavailable. Atlas works fully in local mode.",
         }
     result = accounts_client.login(
         email=email,
@@ -155,7 +167,7 @@ def accounts_login(body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, An
         return {
             "ok": False,
             "code": "service_unavailable",
-            "error": "The Atlas accounts service isn't available right now. Please restart Atlas, and contact yoavkozokabab@gmail.com if this keeps happening.",
+            "error": "Accounts are temporarily unavailable. Atlas works fully in local mode.",
         }
     if result.get("_http_status"):
         detail = result.get("detail", "Login failed")
@@ -317,6 +329,11 @@ def accounts_admin_update_user(body: Dict[str, Any], _query: Dict[str, str]) -> 
 
 
 def accounts_service_status(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
+    if accounts_client.auth_mode() == "website":
+        # A website-authority build has no local process to probe or spawn.
+        # The UI remains local-first; login/register surface a neutral fallback
+        # if the remote authority cannot be reached.
+        return {"running": True, "authority": "website"}
     running = accounts_client.is_service_running()
     if not running:
         running = accounts_service_runner.ensure_running(timeout=8.0)

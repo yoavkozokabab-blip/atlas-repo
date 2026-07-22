@@ -2,7 +2,7 @@ import { userFromBearer } from "@/app/_lib/auth";
 import { isAnalyticsEvent } from "@/app/_lib/analytics-contract";
 import { acceptsAnalyticsRequest, analyticsBody, DESKTOP_ANALYTICS_EVENT_KEYS, eventBatch } from "@/app/_lib/analytics-ingestion";
 import { buildAnalyticsRow } from "@/app/_lib/analytics-server";
-import { recordAnalyticsEvents } from "@/app/_lib/store";
+import { analyticsStoreErrorInfo, recordAnalyticsEvents } from "@/app/_lib/store";
 import { privateJson } from "@/app/_lib/http";
 
 export const runtime = "nodejs";
@@ -33,7 +33,15 @@ export async function POST(req: Request) {
     }));
     const result = await recordAnalyticsEvents(rows);
     return privateJson({ ok: true, accepted: rows.length, recorded: result.recorded }, { status: 202 });
-  } catch {
-    return privateJson({ ok: true, accepted: 0, recorded: 0 }, { status: 202 });
+  } catch (error) {
+    // Preserve operational evidence without returning a raw PostgREST error or
+    // any request content to the desktop.  A 5xx lets the bounded native
+    // outbox retry; falsely returning 202 used to discard real 400 failures.
+    const detail = analyticsStoreErrorInfo(error);
+    console.error("[atlas] desktop_analytics_delivery_failed", {
+      status: detail.status,
+      code: detail.code,
+    });
+    return privateJson({ ok: false, error: "analytics_temporarily_unavailable" }, { status: 503 });
   }
 }

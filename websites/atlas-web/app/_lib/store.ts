@@ -272,6 +272,18 @@ class SupabaseStoreError extends Error {
   }
 }
 
+/**
+ * Safe diagnostics for server-side delivery logs.  Never return the Supabase
+ * body to native clients: it can include schema details that are not useful to
+ * a user and must not become UI copy.
+ */
+export function analyticsStoreErrorInfo(error: unknown): { status: number | null; code: string | null } {
+  if (error instanceof SupabaseStoreError) {
+    return { status: error.status, code: error.code || null };
+  }
+  return { status: null, code: null };
+}
+
 function isUniqueEmailViolation(error: unknown): boolean {
   if (!(error instanceof SupabaseStoreError)) return false;
   const body = error.body.toLowerCase();

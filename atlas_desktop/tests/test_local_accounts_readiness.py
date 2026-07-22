@@ -60,3 +60,24 @@ def test_backend_500_is_not_shown_as_registration_error():
     assert out["code"] == "service_unavailable"
     assert out["submitted"] is False
     assert "Internal Server Error" not in out.get("error", "")
+
+
+def test_website_authority_login_never_starts_the_legacy_helper():
+    with patch("atlas_desktop.accounts_client.auth_mode", return_value="website"):
+        with patch("atlas_desktop.accounts_service_runner.ensure_running") as ensure:
+            with patch("atlas_desktop.accounts_client.login", return_value={"ok": True, "token": "opaque"}):
+                out = accounts_routes.accounts_login({"email": "person@example.com", "password": "SecurePass1!"}, {})
+
+    assert out["ok"] is True
+    ensure.assert_not_called()
+
+
+def test_website_authority_outage_has_a_neutral_local_fallback_message():
+    with patch("atlas_desktop.accounts_client.auth_mode", return_value="website"):
+        with patch("atlas_desktop.accounts_service_runner.ensure_running") as ensure:
+            with patch("atlas_desktop.accounts_client.login", return_value={"_offline": True}):
+                out = accounts_routes.accounts_login({"email": "person@example.com", "password": "SecurePass1!"}, {})
+
+    assert out["code"] == "service_unavailable"
+    assert out["error"] == "Accounts are temporarily unavailable. Atlas works fully in local mode."
+    ensure.assert_not_called()

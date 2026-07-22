@@ -36,9 +36,9 @@ export function AuthForm({ next }: { next: string }) {
         return;
       }
       const url = mode === "signup" ? "/api/auth/register" : "/api/auth/login";
-      const startedEvent = mode === "signup" ? "signup_started" : "login_started";
-      const successEvent = mode === "signup" ? "signup_success" : "login_success";
-      const failedEvent = mode === "signup" ? "signup_failed" : "login_failed";
+      const startedEvent = mode === "signup" ? "account_create_started" : "login_started";
+      const successEvent = mode === "signup" ? "account_create_success" : "login_success";
+      const failedEvent = mode === "signup" ? "account_create_failed" : "login_failed";
       trackAnalyticsEvent(startedEvent, { deduplicationKey: crypto.randomUUID() });
       const { res, data } = await postJson(url, { email, password, name });
       if (!res.ok) {
@@ -54,7 +54,7 @@ export function AuthForm({ next }: { next: string }) {
       router.refresh();
     } catch {
       if (mode !== "forgot") {
-        trackAnalyticsEvent(mode === "signup" ? "signup_failed" : "login_failed", {
+        trackAnalyticsEvent(mode === "signup" ? "account_create_failed" : "login_failed", {
           properties: { reason_code: "network_error" },
           deduplicationKey: crypto.randomUUID(),
         });

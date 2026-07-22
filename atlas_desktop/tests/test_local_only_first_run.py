@@ -82,6 +82,12 @@ def test_first_run_js_defaults_local_only_and_suppresses_red_error():
     assert "_applyAccountsUiMode" in init_block
 
 
+def test_registration_drafts_never_persist_passwords():
+    assert "sessionStorage.setItem(DRAFT_SESSION_KEY" not in ACCOUNTS_JS
+    assert "sessionStorage.removeItem(DRAFT_SESSION_KEY)" in ACCOUNTS_JS
+    assert "password: includeSecrets" not in ACCOUNTS_JS
+
+
 def test_guest_local_mode_works_without_accounts_helper_or_supabase(isolated_accounts, monkeypatch):
     calls = []
 

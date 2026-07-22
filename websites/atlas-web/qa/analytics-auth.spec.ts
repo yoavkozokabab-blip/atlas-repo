@@ -42,8 +42,9 @@ test.beforeEach(() => {
 test("canonical contract rejects unknown events and sensitive payloads", () => {
   expect(isAnalyticsEvent("site_visit")).toBe(true);
   expect(isAnalyticsEvent("installer_download_completed")).toBe(false);
-  expect(isAnalyticsEvent("installer_download_response_started")).toBe(true);
-  expect(isAnalyticsEvent("screen_active_ended")).toBe(true);
+  expect(isAnalyticsEvent("installer_download_started")).toBe(true);
+  expect(isAnalyticsEvent("desktop_launched")).toBe(true);
+  expect(isAnalyticsEvent("screen_active_ended")).toBe(false);
   expect(isAnalyticsEvent("api_me_success")).toBe(false);
   expect(sanitizeRoute("/pricing?email=private@example.com")).toBe("/pricing");
   expect(sanitizeRoute("C:\\Users\\private\\repo")).toBeNull();
@@ -63,7 +64,7 @@ test("canonical contract rejects unknown events and sensitive payloads", () => {
 
 test("analytics envelopes reject unknown fields and hostile nested payloads", async () => {
   expect(eventBatch({ eventName: "site_visit", unknown: "no" }, WEBSITE_ANALYTICS_EVENT_KEYS)).toBeNull();
-  expect(eventBatch({ events: [{ eventName: "app_launch", installationId: "install-12345678" }], extra: true }, DESKTOP_ANALYTICS_EVENT_KEYS)).toBeNull();
+  expect(eventBatch({ events: [{ eventName: "desktop_launched", installationId: "install-12345678" }], extra: true }, DESKTOP_ANALYTICS_EVENT_KEYS)).toBeNull();
   expect(eventBatch({ eventName: "site_visit", anonymousId: "anonymous-12345678" }, WEBSITE_ANALYTICS_EVENT_KEYS)).toHaveLength(1);
   let nested: unknown = "leaf";
   for (let index = 0; index <= MAX_ANALYTICS_DEPTH; index += 1) nested = { nested };
@@ -82,7 +83,7 @@ test("request context is classified without persisting raw referrers or user age
 test("server owns environment, identity, version and deterministic deduplication", () => {
   expect(analyticsEnvironment()).toBe("test");
   const input = {
-    eventName: "signup_success" as const,
+    eventName: "account_create_success" as const,
     source: "website" as const,
     anonymousId: "anonymous-12345678",
     sessionId: "session-12345678",
@@ -102,7 +103,7 @@ test("server owns environment, identity, version and deterministic deduplication
 
 test("desktop version accepts a safe semver without treating it as an identifier", () => {
   const row = buildAnalyticsRow({
-    eventName: "app_launch", source: "desktop", installationId: "installation-12345678",
+    eventName: "desktop_launched", source: "desktop", installationId: "installation-12345678",
     sessionId: "desktop-session-12345678", appVersion: "1.0.5", buildCommit: "a".repeat(40),
     properties: { screen: "home", duration_active_ms: 1000 },
   });

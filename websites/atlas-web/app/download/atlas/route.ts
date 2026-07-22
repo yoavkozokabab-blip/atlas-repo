@@ -37,7 +37,7 @@ async function recordDownloadIfSignedIn(): Promise<void> {
 async function recordInstallerResponseStarted(req: Request): Promise<void> {
   try {
     await recordAnalyticsEvent(buildAnalyticsRow({
-      eventName: "installer_download_response_started",
+      eventName: "installer_download_started",
       source: "server",
       route: "/download/atlas",
       deduplicationKey: crypto.randomUUID(),

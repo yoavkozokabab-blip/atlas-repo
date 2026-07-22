@@ -42,9 +42,12 @@ def test_remote_analytics_allowlists_and_flushes_without_private_data(tmp_path, 
     analytics_remote.flush()
     assert sent
     event = sent[0]["events"][0]
-    assert event["eventName"] == "scan_completed"
+    assert event["eventName"] == "real_repo_scan_completed"
     assert event["properties"] == {"surface": "desktop", "duration_active_ms": 123}
-    assert "repo" not in json.dumps(event).lower()
+    serialized = json.dumps(event).lower()
+    assert "c:\\users\\private" not in serialized
+    assert '"path"' not in serialized
+    assert '"message"' not in serialized
 
 
 def test_remote_analytics_opt_out_blocks_delivery(tmp_path, monkeypatch):
@@ -57,16 +60,39 @@ def test_remote_analytics_opt_out_blocks_delivery(tmp_path, monkeypatch):
     assert not (tmp_path / "operations" / "analytics-outbox.json").exists()
 
 
-def test_remote_analytics_accepts_only_safe_screen_engagement_dimensions(tmp_path, monkeypatch):
+def test_remote_analytics_rejects_ui_heartbeats_and_nested_private_data(tmp_path, monkeypatch):
     monkeypatch.setenv("ATLAS_DESKTOP_DATA", str(tmp_path))
     monkeypatch.delenv("ATLAS_ANALYTICS_ENDPOINT", raising=False)
     analytics_remote.track_pipeline_event(
         "screen_active_ended", installation_id="installation-12345678", app_version="1.0.5", build_commit="d" * 40,
         properties={"screen": "graph", "duration_active_ms": 2400, "duration_elapsed_ms": 3000, "path": "C:\\Users\\private\\repo"},
     )
-    queued = json.loads((tmp_path / "operations" / "analytics-outbox.json").read_text(encoding="utf-8"))
-    assert queued[0]["eventName"] == "screen_active_ended"
-    assert queued[0]["properties"] == {"screen": "graph", "duration_active_ms": 2400, "duration_elapsed_ms": 3000}
+    assert not (tmp_path / "operations" / "analytics-outbox.json").exists()
+    assert analytics_remote._safe_properties({
+        "surface": {"path": "C:\\Users\\private\\repo"},
+        "workflow": "scan",
+    }) == {"workflow": "scan"}
+
+
+def test_remote_analytics_retries_are_bounded_and_diagnostics_are_safe(tmp_path, monkeypatch):
+    monkeypatch.setenv("ATLAS_DESKTOP_DATA", str(tmp_path))
+    monkeypatch.setenv("ATLAS_ANALYTICS_ENDPOINT", "https://collector.example.test/api/analytics/desktop-events")
+    monkeypatch.setattr(analytics_remote, "_schedule_flush", lambda: None)
+
+    def rejected(_request, timeout):
+        raise analytics_remote.urllib.error.HTTPError("https://collector.example.test", 400, "Bad Request", {}, None)
+
+    monkeypatch.setattr(analytics_remote.urllib.request, "urlopen", rejected)
+    analytics_remote.track_pipeline_event(
+        "scan_completed", installation_id="installation-12345678", app_version="1.0.5", build_commit="d" * 40,
+        properties={"workflow": "scan"},
+    )
+    assert analytics_remote.flush() is False
+    assert analytics_remote.flush() is False
+    assert analytics_remote.flush() is False
+    assert analytics_remote._load_queue() == []
+    assert analytics_remote.diagnostics()["last_status_class"] == "http_4xx"
+    assert analytics_remote.diagnostics()["rejected"] == 1
 
 
 def test_pipeline_stays_functional_when_remote_delivery_is_unavailable(tmp_path, monkeypatch):

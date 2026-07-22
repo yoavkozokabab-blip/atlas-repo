@@ -23,26 +23,32 @@ from typing import Any, Dict, List, Optional
 from .data_paths import desktop_data_dir
 
 _EVENT_MAP = {
-    "app_started": "app_launch",
-    "scan_started": "scan_started",
-    "scan_completed": "scan_completed",
+    # This is intentionally a small product-milestone contract, never a UI
+    # activity stream.  Local analytics retains its separate local record.
+    "app_started": "desktop_launched",
+    "sample_scan_completed": "sample_scan_completed",
+    "scan_completed": "real_repo_scan_completed",
+    "scan_failed": "scan_failed",
     "what_breaks_generated": "impact_completed",
-    "copilot_question": "ask_started",
-    "change_plan_generated": "plan_completed",
-    "debug_generated": "debug_completed",
-    "mcp_configured": "mcp_configured",
+    "graph_opened": "graph_opened",
     "mcp_connected": "mcp_connected",
-    "mcp_disconnected": "mcp_disconnected",
-    "screen_view": "screen_view",
-    "screen_active_heartbeat": "screen_active_heartbeat",
-    "screen_active_ended": "screen_active_ended",
-    "app_session_ended": "app_session_ended",
+    "account_create_started": "account_create_started",
+    "account_signup_completed": "account_create_success",
+    "account_create_failed": "account_create_failed",
+    "login_started": "login_started",
+    "account_login_completed": "login_success",
+    "login_failed": "login_failed",
+    "logout": "logout",
+    "account_deleted": "account_deleted",
+    "analytics_opted_out": "analytics_opted_out",
+    "app_first_run": "desktop_installed",
 }
-_ALLOWED_EVENTS = frozenset(_EVENT_MAP.values()) | {"app_first_run", "repository_loaded", "guest_mode_started", "account_signup_completed", "account_login_completed"}
-_ALLOWED_PROPERTIES = frozenset({"surface", "outcome", "status", "agent", "workflow", "screen", "duration_active_ms", "duration_elapsed_ms", "app_version", "build_commit"})
+_ALLOWED_EVENTS = frozenset(_EVENT_MAP.values())
+_ALLOWED_PROPERTIES = frozenset({"surface", "outcome", "status", "agent", "workflow", "duration_active_ms", "duration_elapsed_ms"})
 _SENSITIVE = re.compile(r"(?:[a-z]:\\|\\\\|/(?:users|home|var|etc|private|tmp)/|bearer\s+|secret|token|password|prompt|repo(?:sitory)?|path|file(?:name)?)", re.IGNORECASE)
 _MAX_QUEUE_EVENTS = 100
 _MAX_QUEUE_BYTES = 256 * 1024
+_MAX_DELIVERY_ATTEMPTS = 3
 _LOCK = threading.Lock()
 _FLUSHING = False
 
@@ -62,6 +68,10 @@ def _queue_path() -> str:
 
 def _preferences_path() -> str:
     return os.path.join(_operations_dir(), "analytics-preferences.json")
+
+
+def _diagnostics_path() -> str:
+    return os.path.join(_operations_dir(), "analytics-diagnostics.json")
 
 
 def _read_json(path: str, fallback: Any) -> Any:
@@ -133,6 +143,12 @@ def analytics_endpoint() -> str:
 
 
 def _safe_properties(properties: Dict[str, Any]) -> Dict[str, Any]:
+    """Return only primitive, allowlisted coarse metadata.
+
+    Nested objects are intentionally discarded rather than flattened.  This
+    prevents accidental repository data, source snippets or prompts from
+    crossing the local boundary through a future caller.
+    """
     output: Dict[str, Any] = {}
     for key, value in properties.items():
         if key not in _ALLOWED_PROPERTIES or value is None:
@@ -146,6 +162,25 @@ def _safe_properties(properties: Dict[str, Any]) -> Dict[str, Any]:
             if cleaned and not _SENSITIVE.search(cleaned):
                 output[key] = cleaned
     return output
+
+
+def _record_delivery_result(*, status: str, accepted: int = 0, rejected: int = 0, retried: int = 0) -> None:
+    """Keep diagnostics operational and non-sensitive: no payloads or tokens."""
+    current = _read_json(_diagnostics_path(), {})
+    if not isinstance(current, dict):
+        current = {}
+    current["accepted"] = int(current.get("accepted") or 0) + accepted
+    current["rejected"] = int(current.get("rejected") or 0) + rejected
+    current["retries"] = int(current.get("retries") or 0) + retried
+    current["last_status_class"] = status[:24]
+    current["updated_at"] = int(time.time())
+    _write_json(_diagnostics_path(), current)
+
+
+def diagnostics() -> Dict[str, Any]:
+    """Return safe delivery counters for local diagnostics and tests."""
+    value = _read_json(_diagnostics_path(), {})
+    return value if isinstance(value, dict) else {}
 
 
 def _load_queue() -> List[Dict[str, Any]]:
@@ -172,7 +207,7 @@ def _enqueue(event: Dict[str, Any]) -> None:
         _save_queue(queue)
 
 
-def _post_batch(endpoint: str, events: List[Dict[str, Any]]) -> bool:
+def _post_batch(endpoint: str, events: List[Dict[str, Any]]) -> tuple[bool, str]:
     request = urllib.request.Request(
         endpoint,
         data=json.dumps({"events": events}, separators=(",", ":")).encode("utf-8"),
@@ -181,9 +216,12 @@ def _post_batch(endpoint: str, events: List[Dict[str, Any]]) -> bool:
     )
     try:
         with urllib.request.urlopen(request, timeout=2.0) as response:
-            return 200 <= int(response.status) < 300
-    except (OSError, urllib.error.URLError, urllib.error.HTTPError):
-        return False
+            status = int(response.status)
+            return 200 <= status < 300, f"http_{status // 100}xx"
+    except urllib.error.HTTPError as exc:
+        return False, f"http_{int(exc.code) // 100}xx"
+    except (OSError, urllib.error.URLError):
+        return False, "network_error"
 
 
 def flush() -> bool:
@@ -196,12 +234,31 @@ def flush() -> bool:
         batch = queue[:20]
     if not batch:
         return True
-    if not _post_batch(endpoint, batch):
+    posted, status = _post_batch(endpoint, batch)
+    if not posted:
+        with _LOCK:
+            latest = _load_queue()
+            failed = {str(item.get("eventId")) for item in batch}
+            retained: List[Dict[str, Any]] = []
+            dropped = 0
+            for item in latest:
+                if str(item.get("eventId")) not in failed:
+                    retained.append(item)
+                    continue
+                attempts = int(item.get("_delivery_attempts") or 0) + 1
+                if attempts >= _MAX_DELIVERY_ATTEMPTS:
+                    dropped += 1
+                    continue
+                item["_delivery_attempts"] = attempts
+                retained.append(item)
+            _save_queue(retained)
+        _record_delivery_result(status=status, rejected=dropped, retried=len(batch) - dropped)
         return False
     with _LOCK:
         latest = _load_queue()
         delivered = {str(item.get("eventId")) for item in batch}
         _save_queue([item for item in latest if str(item.get("eventId")) not in delivered])
+    _record_delivery_result(status=status, accepted=len(batch))
     return True
 
 

@@ -203,7 +203,7 @@
     _screenMode = 'submit-failed';
   }
 
-  function _draftPayload(includeSecrets) {
+  function _draftPayload() {
     const dev = selectedRadio('acc-current-dev');
     return {
       step: _regStep,
@@ -220,21 +220,13 @@
       atlas_help: checkedValues('acc-help'),
       notes: fieldValue('acc-notes'),
       saved_at: new Date().toISOString(),
-      password: includeSecrets && el('acc-reg-pwd') ? el('acc-reg-pwd').value : undefined,
-      confirm_password: includeSecrets && el('acc-reg-pwd2') ? el('acc-reg-pwd2').value : undefined,
     };
   }
 
   function saveDraft(showToast) {
     try {
-      const draft = _draftPayload(false);
+      const draft = _draftPayload();
       localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
-      const session = _draftPayload(true);
-      delete session.saved_at;
-      sessionStorage.setItem(DRAFT_SESSION_KEY, JSON.stringify({
-        password: session.password,
-        confirm_password: session.confirm_password,
-      }));
       if (showToast !== false && typeof toast === 'function') toast('Draft saved locally', 'success');
       return true;
     } catch (e) {
@@ -244,6 +236,9 @@
 
   function restoreDraft() {
     try {
+      // Earlier builds stored registration passwords in sessionStorage. They
+      // are never restored and are erased on the first load of this version.
+      sessionStorage.removeItem(DRAFT_SESSION_KEY);
       const raw = localStorage.getItem(DRAFT_KEY);
       if (!raw) return false;
       const draft = JSON.parse(raw);
@@ -269,12 +264,6 @@
         const cb = document.querySelector(`input[name="acc-help"][value="${v}"]`);
         if (cb) cb.checked = true;
       });
-      const sessRaw = sessionStorage.getItem(DRAFT_SESSION_KEY);
-      if (sessRaw) {
-        const sess = JSON.parse(sessRaw);
-        if (el('acc-reg-pwd') && sess.password) el('acc-reg-pwd').value = sess.password;
-        if (el('acc-reg-pwd2') && sess.confirm_password) el('acc-reg-pwd2').value = sess.confirm_password;
-      }
       _updateConditionalFields();
       if (draft.step) _showRegStep(Number(draft.step) || 1);
       return true;
