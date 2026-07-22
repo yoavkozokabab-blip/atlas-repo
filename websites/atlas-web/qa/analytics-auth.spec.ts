@@ -172,6 +172,9 @@ test("migration keeps browser roles server-only", () => {
   expect(v105).toContain("duration_active_ms");
   expect(v105).toContain("atlas_purge_analytics_events");
   expect(v105).toContain("revoke execute on function public.atlas_purge_analytics_events");
+  expect(v105).toContain("event_name = 'graph_opened'");
+  expect(v105).toContain("event_name = 'impact_completed'");
+  expect(v105).not.toContain("ask_completed");
 });
 
 test("paid checkout remains source-disabled regardless of environment configuration", () => {

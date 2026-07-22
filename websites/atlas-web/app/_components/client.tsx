@@ -186,11 +186,11 @@ type AnalyticsSummary = {
   sessions: number;
   page_views: number;
   downloads_attempted: number;
-  downloads_unavailable: number;
   successful_installs: number;
   first_launches: number;
   scans_completed: number;
-  ask_completed: number;
+  graphs_opened: number;
+  impact_completed: number;
   agents_connected: number;
   signup_success: number;
   signup_failed: number;
@@ -251,7 +251,6 @@ function AnalyticsDashboard() {
         ["Sessions", summary.sessions],
         ["Page views", summary.page_views],
         ["Download attempts", summary.downloads_attempted],
-        ["Download unavailable", summary.downloads_unavailable],
         ["Installations", summary.successful_installs],
         ["First launches", summary.first_launches],
         ["Signup success", summary.signup_success],
@@ -259,7 +258,8 @@ function AnalyticsDashboard() {
         ["Active users", summary.active_users],
         ["Returning users", summary.returning_users],
         ["Scan completed", summary.scans_completed],
-        ["Ask completed", summary.ask_completed],
+        ["Graph opened", summary.graphs_opened],
+        ["Impact completed", summary.impact_completed],
         ["Agents connected", summary.agents_connected],
       ]
     : [];

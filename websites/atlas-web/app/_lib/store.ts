@@ -658,11 +658,11 @@ export type AnalyticsSummary = {
   sessions: number;
   page_views: number;
   downloads_attempted: number;
-  downloads_unavailable: number;
   successful_installs: number;
   first_launches: number;
   scans_completed: number;
-  ask_completed: number;
+  graphs_opened: number;
+  impact_completed: number;
   agents_connected: number;
   signup_success: number;
   signup_failed: number;
