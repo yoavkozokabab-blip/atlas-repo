@@ -1,5 +1,5 @@
 import { userFromBearer } from "@/app/_lib/auth";
-import { isAnalyticsEvent } from "@/app/_lib/analytics-contract";
+import { hasForbiddenAnalyticsData, isDesktopAnalyticsEvent } from "@/app/_lib/analytics-contract";
 import { acceptsAnalyticsRequest, analyticsBody, DESKTOP_ANALYTICS_EVENT_KEYS, eventBatch } from "@/app/_lib/analytics-ingestion";
 import { buildAnalyticsRow } from "@/app/_lib/analytics-server";
 import { analyticsStoreErrorInfo, recordAnalyticsEvents } from "@/app/_lib/store";
@@ -21,7 +21,19 @@ export async function POST(req: Request) {
       return privateJson({ ok: false, error: "native_client_required" }, { status: 403 });
     }
     const events = body && eventBatch(body, DESKTOP_ANALYTICS_EVENT_KEYS);
-    if (!events || events.some((event) => !isAnalyticsEvent(event.eventName))) {
+    if (!events || events.some((event) => {
+      if (!isDesktopAnalyticsEvent(event.eventName)) return true;
+      // Repository/privacy data must not enter through identity or build
+      // fields either. Event names are checked separately because the
+      // contract intentionally contains `real_repo_scan_completed`.
+      return hasForbiddenAnalyticsData({
+        installationId: event.installationId,
+        sessionId: event.sessionId,
+        appVersion: event.appVersion,
+        buildCommit: event.buildCommit,
+        properties: event.properties,
+      });
+    })) {
       return privateJson({ ok: false, error: "invalid_event" }, { status: 400 });
     }
     const user = await userFromBearer(req).catch(() => null);

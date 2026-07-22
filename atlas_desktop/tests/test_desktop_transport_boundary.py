@@ -5,6 +5,7 @@ import json
 import shutil
 import subprocess
 import threading
+from unittest.mock import Mock
 from types import SimpleNamespace
 from pathlib import Path
 
@@ -1039,7 +1040,8 @@ def test_run_propagates_selected_fallback_port_to_open_url(monkeypatch):
 
     fake_httpd = FakeHTTPServer()
     monkeypatch.setattr(server, "_track_app_started", lambda: None)
-    monkeypatch.setattr(server.accounts_service_runner, "ensure_running_async", lambda: None)
+    ensure_accounts = Mock()
+    monkeypatch.setattr(server.accounts_service_runner, "ensure_running_async", ensure_accounts)
     monkeypatch.setattr(server, "_select_runtime", lambda host, port: (fake_httpd, 8778, None))
     monkeypatch.setattr(server.runtime_startup, "new_instance_identity", lambda port: {"port": port, "pid": 123, "instance_id": "fallback"})
     monkeypatch.setattr(server.runtime_startup, "write_runtime_descriptor", lambda identity: None)
@@ -1055,3 +1057,5 @@ def test_run_propagates_selected_fallback_port_to_open_url(monkeypatch):
     assert all("8777" not in str(event) for event in events)
     assert ("served", 8778) in events
     assert ("closed", 8778) in events
+    # Analytics-only/local-only mode must not launch AtlasAccounts.exe.
+    ensure_accounts.assert_not_called()

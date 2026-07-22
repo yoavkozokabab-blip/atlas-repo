@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { trackAnalyticsEvent } from "./AnalyticsClient";
 
 async function postJson(url: string, body?: unknown) {
   const res = await fetch(url, {
@@ -36,29 +35,14 @@ export function AuthForm({ next }: { next: string }) {
         return;
       }
       const url = mode === "signup" ? "/api/auth/register" : "/api/auth/login";
-      const startedEvent = mode === "signup" ? "account_create_started" : "login_started";
-      const successEvent = mode === "signup" ? "account_create_success" : "login_success";
-      const failedEvent = mode === "signup" ? "account_create_failed" : "login_failed";
-      trackAnalyticsEvent(startedEvent, { deduplicationKey: crypto.randomUUID() });
       const { res, data } = await postJson(url, { email, password, name });
       if (!res.ok) {
-        trackAnalyticsEvent(failedEvent, {
-          properties: { http_status: res.status, reason_code: `http_${res.status}` },
-          deduplicationKey: crypto.randomUUID(),
-        });
         setError(String(data.error || "Something went wrong."));
         return;
       }
-      trackAnalyticsEvent(successEvent, { deduplicationKey: crypto.randomUUID() });
       router.push(next || "/account");
       router.refresh();
     } catch {
-      if (mode !== "forgot") {
-        trackAnalyticsEvent(mode === "signup" ? "account_create_failed" : "login_failed", {
-          properties: { reason_code: "network_error" },
-          deduplicationKey: crypto.randomUUID(),
-        });
-      }
       setError("Account service is temporarily unavailable. Please try again.");
     } finally {
       setBusy(false);

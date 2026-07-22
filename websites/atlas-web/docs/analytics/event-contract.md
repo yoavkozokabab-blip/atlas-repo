@@ -1,57 +1,46 @@
 # Atlas analytics event contract
 
-Status: canonical contract, version 1. Times are recorded by Postgres in UTC. The server is the authority for `environment`, `app_version`, `build_commit`, `user_id`, and `created_at`.
+Status: canonical analytics-only release contract, version 1. Times are recorded by Postgres in UTC. The server is the authority for `environment`, `app_version`, `build_commit`, `user_id`, and `created_at`.
 
 ## Privacy and identity rules
 
-- Website events use a random, stable browser `anonymous_id` and a per-tab `session_id`. After login, the server associates new events with the authenticated `user_id`; the browser may never submit a `user_id`.
-- Desktop events must use a random installation identifier and a per-process session identifier. They must not reuse a repository identifier as an identity.
-- Allowed metadata keys are `agent`, `href_kind`, `http_status`, `outcome`, `plan`, `reason_code`, `status`, and `surface`. Unknown keys are discarded by the server.
+- Website events use a random, stable browser `anonymous_id` and a per-tab `session_id`. The browser may never submit a `user_id`.
+- Desktop events use a random installation identifier and a per-process session identifier. They never reuse a repository identifier as an identity.
+- Allowed metadata keys are `agent`, `href_kind`, `http_status`, `outcome`, `plan`, `reason_code`, `status`, `surface`, coarse duration fields, and coarse campaign/device fields. Unknown keys are discarded by the server.
 - Email addresses, names, IP addresses, source code, repository names, full or relative local paths, raw prompts, cookies, authorization headers, tokens, and secrets are forbidden.
-- Production, Preview, development, and test events are separate values of `environment`. Preview, localhost, tests, bots, and known QA sessions are marked `is_internal=true` and excluded from default metrics.
-- Raw events are retained only as long as needed to validate aggregate product metrics. Review at 90 days and aggregate or expire them under an approved retention policy. Account deletion must not silently break historical aggregates.
+- Production, preview, development, and test events are separate `environment` values. Preview, localhost, tests, bots, and known QA sessions are `is_internal=true` and excluded from default metrics.
+- Raw events are retained only as long as needed to validate aggregate product metrics. Review at 90 days and aggregate or expire them under an approved retention policy.
 
 Every accepted event includes: UUID `id`, server `created_at`, exact `event_name`, `source`, optional server-derived `user_id`, optional anonymous/session identifiers, `environment`, route, application version, build commit, platform, contract version, SHA-256 `deduplication_key`, internal flag, and allowlisted metadata.
 
-## Website and server events
+## Website events
+
+The analytics-only release has exactly four browser events. The endpoint rejects all other event names, including account, Ask, health-check, heartbeat, and UI-render events.
 
 | Event | Source | Exact trigger | Required properties | Optional properties | Deduplication | PII | Retention |
 |---|---|---|---|---|---|---|---|
-| `site_visit` | website | First mounted Atlas page in a browser session | none | none | anonymous ID + session ID | forbidden | 90 days |
-| `page_view` | website | One completed route transition | route | none | session ID + route | forbidden | 90 days |
-| `download_clicked` | website | A user activates a real `/download` link | route, `surface` | none | unique click UUID | forbidden | 90 days |
-| `download_unavailable_seen` | website | A rendered page contains a verified temporary download-unavailable state | route | none | session ID + route | forbidden | 90 days |
-| `github_clicked` | website | A user activates an external GitHub link | route, `href_kind=github` | none | unique click UUID | forbidden | 90 days |
-| `docs_clicked` | website | A user activates an Atlas docs link | route, `href_kind=docs` | none | unique click UUID | forbidden | 90 days |
-| `pricing_viewed` | website | `/pricing` route is viewed | route | none | session ID + route | forbidden | 90 days |
-| `signup_started` | website | Valid form submission begins | route | none | unique attempt UUID | forbidden | 90 days |
-| `signup_success` | website | Server returns a completed account creation | route | `http_status` | attempt UUID | forbidden | 90 days |
-| `signup_failed` | website | Account creation returns a handled failure | route, `reason_code` | `http_status` | attempt UUID | forbidden | 30 days |
-| `login_started` | website | Sign-in form submission begins | route | none | unique attempt UUID | forbidden | 30 days |
-| `login_success` | website | Server returns a valid session | route | `http_status` | attempt UUID | forbidden | 30 days |
-| `login_failed` | website | Sign-in returns a handled failure | route, `reason_code` | `http_status` | attempt UUID | forbidden | 30 days |
-| `contact_submitted` | server | A server-backed contact form accepts a message | `outcome` | `reason_code` | submission UUID | forbidden in analytics; contact data belongs in a separate restricted table | 30 days |
-| `installer_download_started` | server | The installer route starts a verified asset response | version/build | none | request/asset UUID | forbidden | 90 days |
-| `installer_download_completed` | server | A trusted delivery provider confirms a full asset transfer | version/build | `http_status` | delivery UUID | forbidden | 90 days |
+| `site_visit` | website | First mounted Atlas page in a browser session | none | campaign fields | anonymous ID + session ID | forbidden | 90 days |
+| `page_view` | website | One completed route transition | route | campaign fields | session ID + route | forbidden | 90 days |
+| `download_clicked` | website | A user activates a real `/download` link | route, `surface` | campaign fields | unique click UUID | forbidden | 90 days |
+| `installer_download_started` | server | The installer route starts a verified asset response | route | none | request/asset UUID | forbidden | 90 days |
 
-`contact_submitted` is not emitted because the current contact page is `mailto:` only. Website click events alone are not evidence of a completed installer download; completion must be proven by the served executable matching the verified release SHA256 or by a trusted delivery-provider signal.
+Website click events alone are not evidence of a completed installer download. Completion must be proven by the served executable matching the verified release SHA256 or by a trusted delivery-provider signal. If the installer is hosted by GitHub Releases, GitHub's asset count is the source for raw file downloads; Atlas records only the click/start request and later `desktop_launched` events.
 
 ## Desktop events
 
+The desktop sender is limited to these eight events. Accounts and Ask remain disabled in this release, so no account or Ask event is valid.
+
 | Event | Exact trigger | Required properties | Optional properties | Deduplication | PII / repository data | Retention |
 |---|---|---|---|---|---|---|
-| `guest_mode_started` | User chooses local guest mode | app version, build | none | installation + version | forbidden | 90 days |
-| `desktop_installed` | Verified installed app performs its first post-install launch | installer version, build | `status` | installation + version | forbidden | 180 days |
-| `desktop_launched` | Fresh Atlas process reaches runtime ready | app version, build | `status` | installation + process session | forbidden | 90 days |
-| `repository_selected` | User confirms a repository | none | none | session + selection UUID | repository name/path forbidden | 30 days |
-| `scan_started` | Runtime accepts a real scan request | none | none | runtime scan ID | repository name/path/code forbidden | 30 days |
-| `scan_completed` | That scan reaches a terminal success state | `outcome` | none | runtime scan ID | repository name/path/code forbidden | 90 days |
-| `agent_connected` | A real agent connection is verified | `agent`, `status` | none | installation + agent + connection generation | credentials/config paths forbidden | 90 days |
-| `ask_submitted` | Runtime accepts an Ask request | none | none | request UUID | raw prompt/code forbidden | 30 days |
-| `ask_completed` | Ask request reaches a successful terminal state | `outcome` | none | request UUID | response/code forbidden | 90 days |
-
-The desktop currently does not implement this canonical emitter. Desktop and installation metrics therefore remain unavailable, not inferred from account or page events.
+| `desktop_launched` | Fresh Atlas process reaches runtime ready | app version, build | coarse status/duration | installation + process session | forbidden | 90 days |
+| `sample_scan_completed` | Bundled sample scan reaches a terminal state | `outcome` | coarse duration | runtime scan ID | forbidden | 90 days |
+| `real_repo_scan_completed` | A real repository scan reaches a terminal state | `outcome` | coarse duration | runtime scan ID | forbidden | 90 days |
+| `scan_failed` | A scan reaches a handled failure state | `reason_code` | coarse duration | runtime scan ID | forbidden | 30 days |
+| `graph_opened` | Graph view is opened | none | coarse duration | session + view UUID | forbidden | 90 days |
+| `impact_completed` | Impact analysis reaches a terminal state | `outcome` | coarse duration | runtime analysis ID | forbidden | 90 days |
+| `mcp_connected` | MCP connection is verified | `agent`, `status` | none | installation + connection generation | forbidden | 90 days |
+| `analytics_opted_out` | User confirms analytics opt-out | none | none | installation + opt-out transition | forbidden | 90 days |
 
 ## Delivery and failure behavior
 
-Website delivery uses `sendBeacon` with a non-blocking `fetch(..., keepalive=true)` fallback. Client session storage prevents Strict Mode and route-rerender duplicates, and a unique database index on the server-hashed deduplication key makes retries idempotent. Analytics failures return an accepted-but-not-recorded response and never block rendering, auth, download state, or desktop workflows.
+Website delivery uses a non-blocking `fetch(..., keepalive=true)` fallback. Client session storage prevents Strict Mode and route-rerender duplicates, and a unique database index on the server-hashed deduplication key makes retries idempotent. Analytics failures never block rendering, auth, download state, or desktop workflows. Invalid payloads receive a controlled `4xx`; transient storage failures are handled as best-effort delivery failures.

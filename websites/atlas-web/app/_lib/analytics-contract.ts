@@ -1,9 +1,11 @@
-export const ANALYTICS_EVENTS = [
+export const WEBSITE_ANALYTICS_EVENTS = [
   "site_visit",
   "page_view",
   "download_clicked",
   "installer_download_started",
-  "desktop_installed",
+] as const;
+
+export const DESKTOP_ANALYTICS_EVENTS = [
   "desktop_launched",
   "sample_scan_completed",
   "real_repo_scan_completed",
@@ -11,21 +13,17 @@ export const ANALYTICS_EVENTS = [
   "graph_opened",
   "impact_completed",
   "mcp_connected",
-  "account_create_started",
-  "account_create_success",
-  "account_create_failed",
-  "login_started",
-  "login_success",
-  "login_failed",
-  "logout",
-  "account_deleted",
   "analytics_opted_out",
 ] as const;
+
+export const ANALYTICS_EVENTS = [...WEBSITE_ANALYTICS_EVENTS, ...DESKTOP_ANALYTICS_EVENTS] as const;
 
 export type AnalyticsEventName = (typeof ANALYTICS_EVENTS)[number];
 export type AnalyticsSource = "website" | "server" | "desktop";
 
 const EVENT_SET = new Set<string>(ANALYTICS_EVENTS);
+const WEBSITE_EVENT_SET = new Set<string>(WEBSITE_ANALYTICS_EVENTS);
+const DESKTOP_EVENT_SET = new Set<string>(DESKTOP_ANALYTICS_EVENTS);
 const PROPERTY_KEYS = new Set([
   "agent",
   "href_kind",
@@ -49,9 +47,30 @@ const PROPERTY_KEYS = new Set([
 const SENSITIVE_KEY = /(authorization|cookie|email|password|prompt|repo|path|secret|token)/i;
 const LOCAL_PATH = /(?:[a-z]:\\|\\\\|\/(?:Users|home|var|etc|private|tmp)\/)/i;
 const SECRET_VALUE = /(?:bearer\s+[a-z0-9._-]+|sb_secret_|service[_-]?role|eyJ[a-z0-9_-]{10,}\.)/i;
+const EMAIL_VALUE = /\b[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9-]+(?:\.[a-z0-9-]+)+\b/i;
+const FORBIDDEN_MARKER = /(?:repo(?:sitory)?(?:[_\s-]*(?:path|name|folder))?|file(?:[_\s-]*(?:path|name))|source(?:[_\s-]*code)?|prompt|symbol(?:[_\s-]*name)?|graph(?:[_\s-]*(?:content|node|edge))|impact(?:[_\s-]*(?:path|result))|terminal(?:[_\s-]*output)?|windows(?:[_\s-]*user(?:name)?)|user(?:name)?|email|access[_-]?token|password|stack[_-]?trace)/i;
 
 export function isAnalyticsEvent(value: unknown): value is AnalyticsEventName {
   return typeof value === "string" && EVENT_SET.has(value);
+}
+
+export function isWebsiteAnalyticsEvent(value: unknown): value is AnalyticsEventName {
+  return typeof value === "string" && WEBSITE_EVENT_SET.has(value);
+}
+
+export function isDesktopAnalyticsEvent(value: unknown): value is AnalyticsEventName {
+  return typeof value === "string" && DESKTOP_EVENT_SET.has(value);
+}
+
+export function hasForbiddenAnalyticsData(value: unknown): boolean {
+  if (typeof value === "string") {
+    return LOCAL_PATH.test(value) || SECRET_VALUE.test(value) || EMAIL_VALUE.test(value) || FORBIDDEN_MARKER.test(value);
+  }
+  if (!value || typeof value !== "object") return false;
+  if (Array.isArray(value)) return value.some(hasForbiddenAnalyticsData);
+  return Object.entries(value as Record<string, unknown>).some(
+    ([key, child]) => SENSITIVE_KEY.test(key) || FORBIDDEN_MARKER.test(key) || hasForbiddenAnalyticsData(child),
+  );
 }
 
 export function sanitizeRoute(value: unknown): string | null {
@@ -68,6 +87,7 @@ export function sanitizeIdentifier(value: unknown): string | null {
 
 export function sanitizeProperties(value: unknown): Record<string, string | number | boolean> {
   if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+  if (hasForbiddenAnalyticsData(value)) return {};
   const output: Record<string, string | number | boolean> = {};
   for (const [key, raw] of Object.entries(value).slice(0, 16)) {
     if (!PROPERTY_KEYS.has(key) || SENSITIVE_KEY.test(key)) continue;

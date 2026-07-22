@@ -32,25 +32,32 @@ _EVENT_MAP = {
     "what_breaks_generated": "impact_completed",
     "graph_opened": "graph_opened",
     "mcp_connected": "mcp_connected",
-    "account_create_started": "account_create_started",
-    "account_signup_completed": "account_create_success",
-    "account_create_failed": "account_create_failed",
-    "login_started": "login_started",
-    "account_login_completed": "login_success",
-    "login_failed": "login_failed",
-    "logout": "logout",
-    "account_deleted": "account_deleted",
     "analytics_opted_out": "analytics_opted_out",
-    "app_first_run": "desktop_installed",
 }
 _ALLOWED_EVENTS = frozenset(_EVENT_MAP.values())
 _ALLOWED_PROPERTIES = frozenset({"surface", "outcome", "status", "agent", "workflow", "duration_active_ms", "duration_elapsed_ms"})
-_SENSITIVE = re.compile(r"(?:[a-z]:\\|\\\\|/(?:users|home|var|etc|private|tmp)/|bearer\s+|secret|token|password|prompt|repo(?:sitory)?|path|file(?:name)?)", re.IGNORECASE)
+_SENSITIVE = re.compile(
+    r"(?:[a-z]:\\|\\\\|/(?:users|home|var|etc|private|tmp)/|"
+    r"\b[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9-]+(?:\.[a-z0-9-]+)+\b|"
+    r"bearer\s+|sb_secret_|service[_-]?role|eyJ[a-z0-9_-]{10,}\.|"
+    r"access[_-]?token|secret|password|prompt|"
+    r"repo(?:sitory)?(?:[_\s-]*(?:path|name|folder))?|"
+    r"file(?:[_\s-]*(?:path|name))|source(?:[_\s-]*code)?|"
+    r"symbol(?:[_\s-]*name)?|graph(?:[_\s-]*(?:content|node|edge))|"
+    r"impact(?:[_\s-]*(?:path|result))|terminal(?:[_\s-]*output)?|"
+    r"windows(?:[_\s-]*user(?:name)?)|user(?:name)?|stack[_-]?trace)",
+    re.IGNORECASE,
+)
 _MAX_QUEUE_EVENTS = 100
 _MAX_QUEUE_BYTES = 256 * 1024
 _MAX_DELIVERY_ATTEMPTS = 3
 _LOCK = threading.Lock()
 _FLUSHING = False
+# Fail closed for the lifetime of this process if an opt-out write cannot be
+# persisted.  This prevents a transient disk error from silently re-enabling
+# delivery after the user explicitly disabled analytics.
+_LOCAL_OPT_OUT: Optional[bool] = None
+_LOCAL_OPT_OUT_PATH: Optional[str] = None
 
 
 def _operations_dir() -> str:
@@ -83,14 +90,15 @@ def _read_json(path: str, fallback: Any) -> Any:
         return fallback
 
 
-def _write_json(path: str, value: Any) -> None:
+def _write_json(path: str, value: Any) -> bool:
     try:
         temporary = f"{path}.tmp"
         with open(temporary, "w", encoding="utf-8") as fh:
             json.dump(value, fh, separators=(",", ":"))
         os.replace(temporary, path)
+        return True
     except OSError:
-        pass
+        return False
 
 
 def analytics_enabled() -> bool:
@@ -99,6 +107,8 @@ def analytics_enabled() -> bool:
     A missing preferences file means the user never opted out (default on).
     A present-but-unreadable file fails CLOSED: a user who disabled analytics
     must never be silently re-enabled by a corrupted preference."""
+    if _LOCAL_OPT_OUT is True and _LOCAL_OPT_OUT_PATH == _preferences_path():
+        return False
     path = _preferences_path()
     try:
         if not os.path.exists(path):
@@ -117,8 +127,21 @@ def set_analytics_opt_out(opted_out: bool) -> Dict[str, Any]:
     Opting out also drops any queued-but-unsent events so the choice is
     retroactive: nothing already captured can still be delivered.
     """
-    _write_json(_preferences_path(), {"opted_out": bool(opted_out), "updated_at": int(time.time())})
-    if opted_out:
+    global _LOCAL_OPT_OUT, _LOCAL_OPT_OUT_PATH
+    requested = bool(opted_out)
+    preference_path = _preferences_path()
+    # Block immediately while the preference is being persisted.  If the
+    # write fails, retain this in-memory fail-closed state and report failure
+    # so the UI can explain that the choice needs to be retried.
+    if requested:
+        _LOCAL_OPT_OUT = True
+        _LOCAL_OPT_OUT_PATH = preference_path
+    persisted = _write_json(preference_path, {"opted_out": requested, "updated_at": int(time.time())})
+    if not persisted:
+        return {"ok": False, "opted_out": requested, "error": "analytics_preference_unavailable"}
+    _LOCAL_OPT_OUT = requested
+    _LOCAL_OPT_OUT_PATH = preference_path
+    if requested:
         with _LOCK:
             try:
                 # Remove the outbox entirely: nothing already captured may
@@ -142,6 +165,17 @@ def analytics_endpoint() -> str:
     return f"{web_base()}/api/analytics/desktop-events"
 
 
+def _contains_forbidden(value: Any) -> bool:
+    """Reject forbidden keys or values at any nesting depth."""
+    if isinstance(value, str):
+        return bool(_SENSITIVE.search(value))
+    if isinstance(value, dict):
+        return any(_SENSITIVE.search(str(key)) or _contains_forbidden(child) for key, child in value.items())
+    if isinstance(value, (list, tuple, set)):
+        return any(_contains_forbidden(child) for child in value)
+    return False
+
+
 def _safe_properties(properties: Dict[str, Any]) -> Dict[str, Any]:
     """Return only primitive, allowlisted coarse metadata.
 
@@ -149,6 +183,8 @@ def _safe_properties(properties: Dict[str, Any]) -> Dict[str, Any]:
     prevents accidental repository data, source snippets or prompts from
     crossing the local boundary through a future caller.
     """
+    if _contains_forbidden(properties):
+        return {}
     output: Dict[str, Any] = {}
     for key, value in properties.items():
         if key not in _ALLOWED_PROPERTIES or value is None:
@@ -287,6 +323,8 @@ def track_pipeline_event(event: str, *, installation_id: Optional[str], app_vers
     event_name = _EVENT_MAP.get(event, event if event in _ALLOWED_EVENTS else "")
     if not event_name:
         return
+    if _contains_forbidden(properties):
+        return
     identity = str(installation_id or "").strip()
     if not re.fullmatch(r"[A-Za-z0-9._:-]{8,160}", identity):
         return
@@ -303,10 +341,5 @@ def track_pipeline_event(event: str, *, installation_id: Optional[str], app_vers
 
 
 def record_first_run(*, installation_id: Optional[str], app_version: str, build_commit: str) -> None:
-    """Queue exactly one first-successful-run event for a local installation."""
-    path = os.path.join(_operations_dir(), "analytics-first-run.json")
-    state = _read_json(path, {})
-    if state.get("recorded") is True or not analytics_enabled():
-        return
-    track_pipeline_event("app_first_run", installation_id=installation_id, app_version=app_version, build_commit=build_commit, properties={})
-    _write_json(path, {"recorded": True, "at": int(time.time())})
+    """Legacy no-op: website clicks never claim a completed installation."""
+    return None

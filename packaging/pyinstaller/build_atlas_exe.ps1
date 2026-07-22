@@ -7,7 +7,10 @@
 #   py -3 -m pip install --target .phase152_packaging_lib pyinstaller PyYAML
 
 param(
-    [switch]$Clean
+    [switch]$Clean,
+    # Accounts are intentionally excluded from the analytics-only RC. This
+    # opt-in is retained for a later account-enabled release.
+    [switch]$IncludeAccounts
 )
 
 $ErrorActionPreference = "Stop"
@@ -145,13 +148,19 @@ if ($uxIssues.Count -gt 0) {
 }
 Write-Host "Packaged UI verified: desktop workspaces, no Repository Context, launch build marker." -ForegroundColor Green
 
-# Phase 192 — build the frozen Atlas Accounts Service (AtlasAccounts.exe) and
-# bundle it inside the Atlas folder under accounts\ so Atlas.exe can launch it.
+# Phase 192 — optionally build the frozen Atlas Accounts Service. The
+# analytics-only RC leaves this disabled so AtlasAccounts.exe is not packaged.
+$AccountsTarget = Join-PathSafe $DistAtlas "accounts"
+if (-not $IncludeAccounts -and (Test-Path -LiteralPath $AccountsTarget)) {
+    # A non-clean local rebuild must not accidentally retain a helper emitted
+    # by an earlier account-enabled build.
+    Remove-Item -LiteralPath $AccountsTarget -Recurse -Force
+}
 $AccountsSpec = Join-Path $ScriptDir "accounts.spec"
 $AccountsLib = Join-Path $Root "accounts_service\.lib"
 $AccountsDist = Join-Path $DistDir "AtlasAccounts"
 $AccountsWork = Join-Path $Root "build\pyinstaller_accounts"
-if (Test-Path $AccountsSpec) {
+if ($IncludeAccounts -and (Test-Path $AccountsSpec)) {
     $oldPP = $env:PYTHONPATH
     $prevEap = $ErrorActionPreference
     try {
@@ -170,7 +179,6 @@ if (Test-Path $AccountsSpec) {
     if (-not (Test-Path -LiteralPath $DistAtlas)) {
         throw "Main Atlas dist folder missing: $DistAtlas (PyInstaller must finish before accounts bundling)."
     }
-    $AccountsTarget = Join-PathSafe $DistAtlas "accounts"
     if (Test-Path $AccountsTarget) { Remove-Item -LiteralPath $AccountsTarget -Recurse -Force }
     New-Item -ItemType Directory -Path $AccountsTarget -Force | Out-Null
     Copy-Item -Path (Join-Path $AccountsDist "*") -Destination $AccountsTarget -Recurse -Force

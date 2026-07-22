@@ -1,5 +1,5 @@
 import { currentSafeUser } from "@/app/_lib/auth";
-import { isAnalyticsEvent } from "@/app/_lib/analytics-contract";
+import { hasForbiddenAnalyticsData, isWebsiteAnalyticsEvent } from "@/app/_lib/analytics-contract";
 import { acceptsAnalyticsRequest, analyticsBody, eventBatch, WEBSITE_ANALYTICS_EVENT_KEYS } from "@/app/_lib/analytics-ingestion";
 import { buildAnalyticsRow } from "@/app/_lib/analytics-server";
 import { recordAnalyticsEvents } from "@/app/_lib/store";
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     }
     const body = await analyticsBody(req);
     const events = body && eventBatch(body, WEBSITE_ANALYTICS_EVENT_KEYS);
-    if (!events || events.some((event) => !isAnalyticsEvent(event.eventName))) {
+    if (!events || events.some((event) => !isWebsiteAnalyticsEvent(event.eventName) || hasForbiddenAnalyticsData(event.properties))) {
       return privateJson({ ok: false, error: "invalid_event" }, { status: 400 });
     }
     const user = await currentSafeUser().catch(() => null);

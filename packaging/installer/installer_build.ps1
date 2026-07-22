@@ -6,7 +6,10 @@
 
 param(
     [switch]$SkipPackage,
-    [switch]$SkipCompile
+    [switch]$SkipCompile,
+    # Keep account packaging available only for a future account-enabled
+    # release; the analytics-only RC must not include AtlasAccounts.exe.
+    [switch]$IncludeAccounts
 )
 
 $ErrorActionPreference = "Stop"
@@ -74,7 +77,8 @@ Write-InnoVersionDefines
 Ensure-Icon
 
 if (-not $SkipPackage) {
-    & $PyBuild -Clean
+    if ($IncludeAccounts) { & $PyBuild -Clean -IncludeAccounts }
+    else { & $PyBuild -Clean }
     if ($LASTEXITCODE -ne 0) { throw "PyInstaller build failed with exit code $LASTEXITCODE" }
 }
 
@@ -97,7 +101,8 @@ function Test-StagedInstaller {
     $stagedExe = Join-Path $Staging "Atlas.exe"
     if (-not (Test-Path $stagedExe)) { $issues += "missing staged Atlas.exe ($stagedExe)" }
     $stagedAccounts = Join-Path $Staging "accounts\AtlasAccounts.exe"
-    if (-not (Test-Path $stagedAccounts)) { $issues += "missing bundled accounts service ($stagedAccounts)" }
+    if ($IncludeAccounts -and -not (Test-Path $stagedAccounts)) { $issues += "missing bundled accounts service ($stagedAccounts)" }
+    if (-not $IncludeAccounts -and (Test-Path $stagedAccounts)) { $issues += "accounts service must not be bundled in analytics-only RC" }
     $issText = Get-Content -Raw (Join-Path $InstallerDir "Atlas.iss")
     if ($issText -notmatch "autodesktop") { $issues += "Atlas.iss does not create a desktop shortcut" }
     if ($issText -notmatch "\{group\}") { $issues += "Atlas.iss does not create a Start menu shortcut" }

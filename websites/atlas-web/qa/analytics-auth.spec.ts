@@ -13,7 +13,10 @@ import {
   classifyDevice,
   classifyReferrer,
   analyticsEnvironment,
+  hasForbiddenAnalyticsData,
+  isDesktopAnalyticsEvent,
   isAnalyticsEvent,
+  isWebsiteAnalyticsEvent,
   sanitizeIdentifier,
   sanitizeProperties,
   sanitizeRoute,
@@ -44,6 +47,12 @@ test("canonical contract rejects unknown events and sensitive payloads", () => {
   expect(isAnalyticsEvent("installer_download_completed")).toBe(false);
   expect(isAnalyticsEvent("installer_download_started")).toBe(true);
   expect(isAnalyticsEvent("desktop_launched")).toBe(true);
+  expect(isWebsiteAnalyticsEvent("site_visit")).toBe(true);
+  expect(isWebsiteAnalyticsEvent("desktop_launched")).toBe(false);
+  expect(isDesktopAnalyticsEvent("desktop_launched")).toBe(true);
+  expect(isDesktopAnalyticsEvent("site_visit")).toBe(false);
+  expect(isAnalyticsEvent("desktop_installed")).toBe(false);
+  expect(isAnalyticsEvent("account_create_success")).toBe(false);
   expect(isAnalyticsEvent("screen_active_ended")).toBe(false);
   expect(isAnalyticsEvent("api_me_success")).toBe(false);
   expect(sanitizeRoute("/pricing?email=private@example.com")).toBe("/pricing");
@@ -56,7 +65,7 @@ test("canonical contract rejects unknown events and sensitive payloads", () => {
     token: "do-not-store",
     surface: "C:\\Users\\private\\repo",
     prompt: "private code",
-  })).toEqual({ status: "ok", http_status: 202 });
+  })).toEqual({});
   expect(sanitizeProperties({ screen: "graph", duration_active_ms: 1200, duration_elapsed_ms: 2000 })).toEqual({
     screen: "graph", duration_active_ms: 1200, duration_elapsed_ms: 2000,
   });
@@ -70,7 +79,38 @@ test("analytics envelopes reject unknown fields and hostile nested payloads", as
   for (let index = 0; index <= MAX_ANALYTICS_DEPTH; index += 1) nested = { nested };
   const deepRequest = new Request("http://localhost/api/analytics/events", { method: "POST", body: JSON.stringify(nested) });
   expect(await analyticsBody(deepRequest)).toBeNull();
-  expect(sanitizeProperties({ repo: "repo-name", status: "ok", token: "eyJ.fake.secret" })).toEqual({ status: "ok" });
+  expect(sanitizeProperties({ repo: "repo-name", status: "ok", token: "eyJ.fake.secret" })).toEqual({});
+});
+
+test("privacy contract rejects every forbidden category recursively", () => {
+  const forbidden = [
+    "C:\\Users\\ATLAS_WINDOWS_USERNAME_MARKER\\ATLAS_REPOSITORY_FOLDER_MARKER",
+    "ATLAS_REPOSITORY_NAME_MARKER",
+    "ATLAS_FILE_PATH_MARKER",
+    "ATLAS_FILE_NAME_MARKER",
+    "ATLAS_SOURCE_CODE_MARKER",
+    "ATLAS_PROMPT_MARKER",
+    "ATLAS_SYMBOL_NAME_MARKER",
+    "ATLAS_GRAPH_CONTENT_MARKER",
+    "ATLAS_IMPACT_RESULT_MARKER",
+    "ATLAS_TERMINAL_OUTPUT_MARKER",
+    "unique-atlas-email-marker@example.test",
+    "Bearer ATLAS_ACCESS_TOKEN_MARKER",
+    "ATLAS_PASSWORD_MARKER",
+    "ATLAS_STACK_TRACE_MARKER C:\\Users\\private\\repo\\file.py:9",
+  ];
+  for (const marker of forbidden) {
+    expect(hasForbiddenAnalyticsData({ safe: [{ nested: { status: marker } }] })).toBe(true);
+    expect(sanitizeProperties({ status: marker })).toEqual({});
+  }
+  expect(hasForbiddenAnalyticsData({ surface: "graph", outcome: "success", duration_active_ms: 42 })).toBe(false);
+});
+
+test("desktop privacy rejects forbidden identity and build fields", () => {
+  expect(hasForbiddenAnalyticsData({ installationId: "ATLAS_REPOSITORY_NAME_MARKER" })).toBe(true);
+  expect(hasForbiddenAnalyticsData({ sessionId: "ATLAS_FILE_NAME_MARKER" })).toBe(true);
+  expect(hasForbiddenAnalyticsData({ appVersion: "C:\\Users\\ATLAS_WINDOWS_USERNAME_MARKER" })).toBe(true);
+  expect(hasForbiddenAnalyticsData({ buildCommit: "ATLAS_SOURCE_CODE_MARKER" })).toBe(true);
 });
 
 test("request context is classified without persisting raw referrers or user agents", () => {
@@ -83,7 +123,7 @@ test("request context is classified without persisting raw referrers or user age
 test("server owns environment, identity, version and deterministic deduplication", () => {
   expect(analyticsEnvironment()).toBe("test");
   const input = {
-    eventName: "account_create_success" as const,
+    eventName: "site_visit" as const,
     source: "website" as const,
     anonymousId: "anonymous-12345678",
     sessionId: "session-12345678",
@@ -165,16 +205,22 @@ test("migration keeps browser roles server-only", () => {
   expect(migration).toContain("revoke execute on function public.atlas_rate_limit_hit");
   expect(migration).toContain("analytics_events_deduplication_key_uidx");
   expect(migration).toContain("grant execute on function public.atlas_analytics_summary");
-  const v105 = fs.readFileSync(
-    path.join(process.cwd(), "supabase", "migrations", "20260716200846_v105_analytics_engagement_and_desktop_ingestion.sql"),
+  const v106 = fs.readFileSync(
+    path.join(process.cwd(), "supabase", "migrations", "20260722090000_v106_analytics_only.sql"),
     "utf8"
   );
-  expect(v105).toContain("duration_active_ms");
-  expect(v105).toContain("atlas_purge_analytics_events");
-  expect(v105).toContain("revoke execute on function public.atlas_purge_analytics_events");
-  expect(v105).toContain("event_name = 'graph_opened'");
-  expect(v105).toContain("event_name = 'impact_completed'");
-  expect(v105).not.toContain("ask_completed");
+  expect(v106).toContain("duration_active_ms");
+  expect(v106).toContain("duration_elapsed_ms");
+  expect(v106).toContain("installation_id");
+  expect(v106).toContain("analytics_events_installation_created_at_idx");
+  expect(v106).not.toContain("create function");
+  expect(v106).not.toContain("grant ");
+  expect(v106).not.toContain("public.users");
+  const rollback = fs.readFileSync(
+    path.join(process.cwd(), "supabase", "rollbacks", "20260722090000_v106_analytics_only.rollback.sql"),
+    "utf8"
+  );
+  expect(rollback).toContain("drop column if exists installation_id");
 });
 
 test("paid checkout remains source-disabled regardless of environment configuration", () => {

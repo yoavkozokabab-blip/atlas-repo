@@ -142,40 +142,22 @@ def test_missing_preference_file_defaults_enabled(data_dir):
     assert remote.analytics_enabled() is True
 
 
-def test_accounts_bridge_respects_opt_out(data_dir, monkeypatch):
-    """The accounts telemetry mirror is an emission and must honor the opt-out."""
+def test_opt_out_fails_closed_when_preference_cannot_be_persisted(data_dir, monkeypatch):
+    """A disk error must not turn an explicit opt-out into a false success."""
     analytics, remote = data_dir
+    monkeypatch.setattr(remote, "_write_json", lambda *_args, **_kwargs: False)
+    result = remote.set_analytics_opt_out(True)
+    assert result["ok"] is False
+    assert remote.analytics_enabled() is False
+    remote.track_pipeline_event(
+        "graph_opened", installation_id="install-abcdef12", app_version="1.0.5",
+        build_commit="deadbeef", properties={},
+    )
+    assert remote._load_queue() == []
+
+
+def test_accounts_telemetry_bridge_is_absent_from_analytics_only_rc(data_dir):
     from atlas_desktop import operations
-
-    delivered = []
-    monkeypatch.setattr(
-        "atlas_desktop.accounts_client.send_analytics_event",
-        lambda *a, **k: delivered.append(("event", a, k)),
-        raising=False,
-    )
-    monkeypatch.setattr(
-        "atlas_desktop.accounts_client.record_acquisition_event",
-        lambda *a, **k: delivered.append(("acquisition", a, k)),
-        raising=False,
-    )
-
-    def _run_bridge(event):
-        threads_before = set(__import__("threading").enumerate())
-        operations._bridge_accounts_telemetry(event)
-        import threading as _t
-        for t in set(_t.enumerate()) - threads_before:
-            t.join(timeout=5)
-
-    bridged_events = sorted(
-        set(operations._ANALYTICS_TO_ACCOUNTS) | set(operations._ACQUISITION_FROM_ANALYTICS)
-    )
-    assert bridged_events, "expected at least one analytics->accounts mapping"
-    probe = bridged_events[0]
-
-    remote.set_analytics_opt_out(True)
-    _run_bridge(probe)
-    assert delivered == []
-
-    remote.set_analytics_opt_out(False)
-    _run_bridge(probe)
-    assert delivered, "bridge should deliver again once analytics is re-enabled"
+    assert not hasattr(operations, "_bridge_accounts_telemetry")
+    assert not hasattr(operations, "_ANALYTICS_TO_ACCOUNTS")
+    assert not hasattr(operations, "_ACQUISITION_FROM_ANALYTICS")

@@ -820,7 +820,11 @@ def run(
     start_path: str = "/",
 ) -> None:
     _track_app_started()
-    accounts_service_runner.ensure_running_async()
+    # Analytics-only RC is local-first: the hidden/disabled account surface
+    # must not start or require AtlasAccounts.exe. Keep the runner available
+    # for a future account-enabled build without invoking it here.
+    if accounts_client.accounts_ui_mode() != "local_only":
+        accounts_service_runner.ensure_running_async()
     try:
         httpd, bound_port, existing = _select_runtime(host, port)
     except OSError as exc:
