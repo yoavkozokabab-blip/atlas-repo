@@ -1,21 +1,38 @@
 # Atlas v1.0.6 analytics RC — production backup gate
 
-Status: **BLOCKED pending operator backup**
+Status: **COMPLETE**
 
-The analytics DDL has not been applied by this branch. No Supabase credentials
-or dashboard session are available in the local workspace, so a restorable
-production backup cannot be truthfully claimed.
+The analytics DDL has not been applied by this branch. Gate 1 completed at
+2026-07-23T22:04:00Z through a live, non-dry-run PostgreSQL 17.10 logical
+backup.
 
-Before applying `websites/atlas-web/supabase/migrations/20260722090000_v106_analytics_only.sql`, an operator with access to the `atlas-prod` Supabase project must capture, privately:
+Private Git-external evidence directory:
 
-- `public.analytics_events` data and schema (including rows, indexes, constraints, grants, and RLS state)
-- `public.analytics_identities` data and schema
-- migration history (`supabase_migrations.schema_migrations` or dashboard export)
-- the current 1,106-row count (before synthetic events)
+`C:\J.A.R.V.I.S\.atlas-private\analytics-v106-gate1-direct-20260723T220310Z`
 
-Preferred methods, in order: Supabase dashboard database export, `supabase db dump`,
-`pg_dump`, then table-level CSV/JSON plus schema export. Backup files must remain
-outside Git and must never contain a service-role key in reports or logs.
+Captured and verified:
+
+- custom-format production archive:
+  `atlas-prod-pre-v106.full.custom`
+- archive size: 359,845 bytes
+- archive SHA-256:
+  `237C6F065B63AF36B44F4DB656ACC4E736243998C3732D735ACFBF0416B30B0B`
+- roles export with role passwords excluded
+- `pg_restore --list`: passed, 576 catalog entries
+- required archive objects: `public.analytics_events`,
+  `public.analytics_identities`, and
+  `supabase_migrations.schema_migrations`
+- restore SQL extraction: passed, 490,158 bytes
+- post-backup counts: 1,106 analytics events, 36 analytics identities,
+  and 14 public users
+- migration history remains the four pre-v1.0.6 production migrations
+- production DDL applied: no
+- Gates 2–6 attempted: no
+- credentials or database URL recorded: no
+
+The Supabase Management API returned no managed backup records; PITR is
+disabled and WALG is enabled. The private logical archive is therefore the
+Gate 1 restore artifact.
 
 ## Restoration procedure
 
@@ -27,6 +44,7 @@ outside Git and must never contain a service-role key in reports or logs.
    only after all senders have been rolled back.
 5. Re-run the analytics contract and ingestion tests before reconnecting production.
 
-Required operator input to clear this gate: a restorable backup artifact and the
-non-secret Supabase project reference/command output proving the backup can be
-restored. Do not provide the service-role URL or key in chat, commits, or reports.
+The archive catalog and restore-SQL extraction prove that the custom archive is
+readable by PostgreSQL 17. A destructive restore rehearsal was not run against
+production. Do not provide the database URL or access token in chat, commits,
+or reports.
