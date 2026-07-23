@@ -9,6 +9,11 @@ Supabase authentication/session, no database URL or password, no
 `supabase`/`pg_dump`/`psql`/Docker tooling, no private backup directory, and no
 private backup artifact. Gates 2–6 were not attempted.
 
+Latest operator attempt: the operator reported setting both credentials in a
+PowerShell session, but neither variable was visible to the Codex process
+(both validated at length zero). Management access, database access, and all
+backup actions were therefore withheld.
+
 This is a new evidence pass on `release/atlas-v1.0.6-analytics-rc`. No
 deployment, upload, tag, public-installer replacement, or merge was performed.
 
