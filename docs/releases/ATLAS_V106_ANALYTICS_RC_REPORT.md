@@ -4,18 +4,22 @@ Verdict: **NOT READY**
 
 ## Latest evidence-gate attempt
 
-Gate 1 completed through a live, non-dry-run PostgreSQL 17.10 logical backup.
-The private custom-format archive is 359,845 bytes with SHA-256
-`237C6F065B63AF36B44F4DB656ACC4E736243998C3732D735ACFBF0416B30B0B`.
-`pg_restore --list` passed with 576 catalog entries, the archive contains
-`analytics_events`, `analytics_identities`, and migration history, and restore
-SQL extraction passed. A roles export was also captured with role passwords
-excluded. Gates 2–6 were not attempted.
+Gate 2 preflight ran after the completed live PostgreSQL 17.10 Gate 1 backup.
+The archive SHA-256 was reverified as
+`237C6F065B63AF36B44F4DB656ACC4E736243998C3732D735ACFBF0416B30B0B`,
+and `pg_restore --list` still reports 576 catalog entries.
 
-Post-backup production counts remain 1,106 analytics events, 36 analytics
-identities, and 14 public users. The Supabase Management API reports no
-managed backup records and PITR is disabled, so the private logical backup is
-the Gate 1 restore artifact.
+The required stop condition then triggered: production migration history does
+not match the repository migration set. Production records four versions,
+while only `20260715022446` is common by version with the local files.
+Production has three recorded versions absent from local filenames, and the
+repository has eight versions not recorded in production, including
+`20260722090000_v106_analytics_only`.
+
+No migration, migration-history repair, schema-cache reload, rollback, or
+synthetic ingestion was run. Counts remain 1,106 analytics events, 36 analytics
+identities, and 14 public users. Full sanitized drift evidence is in
+`ATLAS_V106_ANALYTICS_GATE2_GATE3_EVIDENCE.md`.
 
 This is a new evidence pass on `release/atlas-v1.0.6-analytics-rc`. No
 deployment, upload, tag, public-installer replacement, or merge was performed.
@@ -45,9 +49,8 @@ evidence. The archive catalog includes schema, data, indexes, constraints,
 grants, RLS objects, and migration history. No production DDL or synthetic
 ingestion was executed.
 
-Gate 2 remains explicitly deferred: apply and verify only the v1.0.6 additive
-migration, then run the production ingestion checks and remove or mark internal
-synthetic events.
+Gate 2 is blocked by migration-history drift. The reviewed v1.0.6 migration was
+not applied, and Gate 3 did not start.
 
 The private backup/restoration procedure is documented in
 `ATLAS_V106_ANALYTICS_BACKUP_GATE.md`.
@@ -100,18 +103,23 @@ release operator before publication.
   accounts tests and arise from shared SQLite fixture contamination (`users`
   already exists / `devices` missing); they are outside the analytics-only
   runtime and were not treated as release evidence.
-- Production backup and post-backup row-count verification: **passed**.
-- Production migration/RLS/grant verification after migration, synthetic
-  production ingestion, packet capture, fresh-profile install, and
-  upgrade-over-v1.0.5 verification: **not run** because this pass was limited
-  to Gate 1.
+- Production backup revalidation and Gate 2 pre-migration snapshot: **passed**.
+- Production migration: **not run** because migration-history drift triggered
+  the mandatory stop condition.
+- Synthetic production ingestion: **not run** because Gate 2 did not pass.
+- Production migration/RLS/grant verification after migration, packet capture,
+  fresh-profile install, and upgrade-over-v1.0.5 verification remain
+  incomplete.
 
 ## Release blockers
 
-1. Production migration and ingestion verification are unexecuted.
-2. Fresh Windows profile, upgrade-over-v1.0.5, offline/opt-out packet capture,
+1. Production migration history and repository migration files have unresolved
+   drift. The exact correspondence and schema effects must be reconciled
+   without force-repairing or marking unrelated migrations as applied.
+2. The v1.0.6 migration and production ingestion verification are unexecuted.
+3. Fresh Windows profile, upgrade-over-v1.0.5, offline/opt-out packet capture,
    and installed-application verification remain unproven.
-3. The full desktop suite is not green because of pre-existing accounts-test
+4. The full desktop suite is not green because of pre-existing accounts-test
    fixture contamination; the accounts feature is intentionally disabled in
    this RC, but the suite result must be reconciled before a public release.
 
