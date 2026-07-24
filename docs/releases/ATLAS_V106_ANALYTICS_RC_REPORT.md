@@ -4,21 +4,24 @@ Verdict: **NOT READY**
 
 ## Latest evidence-gate attempt
 
-Gate 2 preflight ran after the completed live PostgreSQL 17.10 Gate 1 backup.
+Gate 2 passed on 2026-07-24. The isolated Supabase CLI workdir contained the
+four recovered production migrations and only
+`20260724120103_v106_analytics_production_state_reconciliation.sql` as pending.
+The CLI applied and recorded that single migration.
+
 The archive SHA-256 was reverified as
 `237C6F065B63AF36B44F4DB656ACC4E736243998C3732D735ACFBF0416B30B0B`,
-and `pg_restore --list` still reports 576 catalog entries.
+and `pg_restore --list` still reports 576 catalog entries. Counts before and
+after migration were 1,106 analytics events, 36 analytics identities, and 14
+public users. Exact columns, indexes, history, protected user/auth hashes,
+RLS, grants, constraints, functions, and the non-analytics schema passed.
+PostgREST recognized all three new columns with HTTP 200.
 
-The required stop condition then triggered: production migration history does
-not match the repository migration set. Production records four versions,
-while only `20260715022446` is common by version with the local files.
-Production has three recorded versions absent from local filenames, and the
-repository has eight versions not recorded in production, including
-`20260722090000_v106_analytics_only`.
-
-No migration, migration-history repair, schema-cache reload, rollback, or
-synthetic ingestion was run. Counts remain 1,106 analytics events, 36 analytics
-identities, and 14 public users. Full sanitized drift evidence is in
+Gate 3 stopped before ingestion. The production desktop route rejects an
+`internal` request field, while its production row builder otherwise records
+`is_internal=false`. Sending the required synthetic test set would therefore
+risk contaminating public analytics. No Gate 3 request or synthetic row was
+created. Full sanitized evidence is in
 `ATLAS_V106_ANALYTICS_GATE2_GATE3_EVIDENCE.md`.
 
 This is a new evidence pass on `release/atlas-v1.0.6-analytics-rc`. No
@@ -29,7 +32,8 @@ deployment, upload, tag, public-installer replacement, or merge was performed.
 - Branch: `release/atlas-v1.0.6-analytics-rc`
 - Branch HEAD: report-only commit after the RC build (the packaged code commit is listed below)
 - Packaged desktop/website source commit: `6bdaf6eafd62fbd90af85d461acbadba5396fc8b`
-- Migration: `20260722090000_v106_analytics_only`
+- Production reconciliation migration:
+  `20260724120103_v106_analytics_production_state_reconciliation`
 - RC payload: `dist/Atlas/Atlas.exe`
 - RC size: 3,703,963 bytes
 - RC SHA-256: `1E3C9F8A0E66135983009016EB76C2BC512C6A9EFACD5D2C9F50893C8D731C20`
@@ -47,10 +51,14 @@ It contains the custom-format database archive, roles without passwords,
 archive catalog, extracted restore SQL, manifest, hashes, and non-secret Gate 1
 evidence. The archive catalog includes schema, data, indexes, constraints,
 grants, RLS objects, and migration history. No production DDL or synthetic
-ingestion was executed.
+ingestion had been executed when Gate 1 completed.
 
-Gate 2 is blocked by migration-history drift. The reviewed v1.0.6 migration was
-not applied, and Gate 3 did not start.
+Gate 2 is complete. The reviewed production-state reconciliation was applied
+without history repair, replaying unrelated migrations, or changing
+non-analytics objects.
+
+Gate 3 did not send events because the deployed desktop ingestion contract has
+no supported way to create `is_internal=true` events in production.
 
 The private backup/restoration procedure is documented in
 `ATLAS_V106_ANALYTICS_BACKUP_GATE.md`.
@@ -104,22 +112,20 @@ release operator before publication.
   already exists / `devices` missing); they are outside the analytics-only
   runtime and were not treated as release evidence.
 - Production backup revalidation and Gate 2 pre-migration snapshot: **passed**.
-- Production migration: **not run** because migration-history drift triggered
-  the mandatory stop condition.
-- Synthetic production ingestion: **not run** because Gate 2 did not pass.
-- Production migration/RLS/grant verification after migration, packet capture,
-  fresh-profile install, and upgrade-over-v1.0.5 verification remain
-  incomplete.
+- Production migration and post-migration verification: **passed**.
+- PostgREST recognition of the three new analytics columns: **passed**.
+- Synthetic production ingestion: **not run** because the production desktop
+  route cannot safely mark the required test events internal.
+- Packet capture, fresh-profile install, and upgrade-over-v1.0.5 verification
+  remain incomplete.
 
 ## Release blockers
 
-1. Production migration history and repository migration files have unresolved
-   drift. The exact correspondence and schema effects must be reconciled
-   without force-repairing or marking unrelated migrations as applied.
-2. The v1.0.6 migration and production ingestion verification are unexecuted.
-3. Fresh Windows profile, upgrade-over-v1.0.5, offline/opt-out packet capture,
+1. The production desktop ingestion route cannot accept an internal-test flag,
+   so Gate 3 cannot create the required `is_internal=true` synthetic events.
+2. Fresh Windows profile, upgrade-over-v1.0.5, offline/opt-out packet capture,
    and installed-application verification remain unproven.
-4. The full desktop suite is not green because of pre-existing accounts-test
+3. The full desktop suite is not green because of pre-existing accounts-test
    fixture contamination; the accounts feature is intentionally disabled in
    this RC, but the suite result must be reconciled before a public release.
 
