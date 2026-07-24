@@ -9,4 +9,3 @@ alter table public.analytics_events
   drop column if exists duration_elapsed_ms,
   drop column if exists duration_active_ms,
   drop column if exists installation_id;
-
