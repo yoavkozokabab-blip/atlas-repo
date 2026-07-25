@@ -92,6 +92,11 @@ def test_build_info_when_present():
         assert re.fullmatch(r"[0-9a-f]{40}", commit)
 
 
+def test_packaged_build_info_does_not_embed_source_path():
+    build_script = (PKG / "pyinstaller" / "build_atlas_exe.ps1").read_text(encoding="utf-8")
+    assert "source_root" not in build_script
+
+
 def test_packaging_embeds_full_commit_hash():
     pyinstaller = (PKG / "pyinstaller" / "build_atlas_exe.ps1").read_text(encoding="utf-8")
     installer = (PKG / "installer" / "installer_build.ps1").read_text(encoding="utf-8")

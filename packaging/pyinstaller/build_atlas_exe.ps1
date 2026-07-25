@@ -55,7 +55,6 @@ function Write-BuildInfo {
         build_date = (Get-Date -Format "yyyy-MM-ddTHH:mm:ss")
         commit = $commit
         entry = "Atlas.exe"
-        source_root = $Root
     }
     $out = Join-Path $InstallerDir "build_info.json"
     New-Item -ItemType Directory -Path $InstallerDir -Force | Out-Null
