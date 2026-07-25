@@ -10,7 +10,7 @@ from pathlib import Path
 
 import pytest
 
-from atlas_desktop import analytics, api
+from atlas_desktop import analytics, analytics_remote, api
 from atlas_desktop import server
 
 
@@ -48,6 +48,13 @@ def test_load_demo_pack_sizes():
     api._STATE.update({"path": None, "scan": None, "graph": None, "index": None, "risks": None, "demo_mode": False})
     large = api.load_demo_mode("large")
     assert large["ok"] and large["module_count"] >= medium["module_count"]
+
+
+def test_demo_scan_uses_sample_remote_milestone(monkeypatch):
+    monkeypatch.setattr(analytics_remote, "_schedule_flush", lambda: None)
+    assert api.load_demo_mode("small")["ok"]
+    queued = analytics_remote._load_queue()
+    assert [event["eventName"] for event in queued] == ["sample_scan_completed"]
 
 
 def test_export_demo_bundle():

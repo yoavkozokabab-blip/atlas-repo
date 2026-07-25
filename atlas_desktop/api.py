@@ -1489,7 +1489,8 @@ def _scan_repository_locked(path: Optional[str] = None, scope: Optional[Dict[str
                 "summary": current_summary(),
             })
         _STATE["scan_perf"] = recorder.snapshot()
-        track_analytics_event("scan_completed", demo=bool(_STATE.get("demo_mode")), cache_hit=True)
+        scan_event = "sample_scan_completed" if _STATE.get("demo_mode") else "scan_completed"
+        track_analytics_event(scan_event, demo=bool(_STATE.get("demo_mode")), cache_hit=True)
         _record_usage("scan_completed", cache_hit=True)
         _persist_scan_snapshot()
         return _attach_analytics_status(_STATE["scan"])
@@ -1831,8 +1832,9 @@ def _scan_repository_locked(path: Optional[str] = None, scope: Optional[Dict[str
         })
     _STATE["scan_job"]["stage"] = "completed"
     _STATE["scan_perf"] = recorder.snapshot()
+    scan_event = "sample_scan_completed" if _STATE.get("demo_mode") else "scan_completed"
     track_analytics_event(
-        "scan_completed",
+        scan_event,
         demo=bool(_STATE.get("demo_mode")),
         modules=scan["module_count"],
         edges=scan["dependency_edges"],
