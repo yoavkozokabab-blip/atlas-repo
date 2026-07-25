@@ -299,3 +299,21 @@ test("security-header baseline denies framing and keeps payment origins absent",
   expect(config).toContain("Strict-Transport-Security");
   expect(config).not.toMatch(/paddle\.com/i);
 });
+
+test("built-in image optimization stays disabled while locked sharp is vulnerable", () => {
+  const config = fs.readFileSync(path.join(process.cwd(), "next.config.mjs"), "utf8");
+  expect(config).toMatch(/images\s*:\s*\{[\s\S]*?unoptimized\s*:\s*true[\s\S]*?\}/);
+
+  const sourceFiles: string[] = [];
+  const visit = (directory: string) => {
+    for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+      const fullPath = path.join(directory, entry.name);
+      if (entry.isDirectory()) visit(fullPath);
+      else if (/\.(?:js|jsx|ts|tsx)$/.test(entry.name)) sourceFiles.push(fullPath);
+    }
+  };
+  visit(path.join(process.cwd(), "app"));
+  const source = sourceFiles.map((file) => fs.readFileSync(file, "utf8")).join("\n");
+  expect(source).not.toMatch(/from\s+["']next\/image["']/);
+  expect(source).not.toMatch(/require\(\s*["']next\/image["']\s*\)/);
+});

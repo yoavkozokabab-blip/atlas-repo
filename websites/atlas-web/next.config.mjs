@@ -3,6 +3,12 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
   reactStrictMode: true,
+  // Atlas serves its checked-in images directly and does not use next/image.
+  // Keep Next's optional sharp dependency unreachable until the supported
+  // Next 15 dependency range includes a sharp release with the libvips fixes.
+  images: {
+    unoptimized: true,
+  },
   async headers() {
     return [{
       source: "/:path*",
