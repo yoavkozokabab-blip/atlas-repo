@@ -1,6 +1,100 @@
 # Atlas v1.0.6 analytics-only release candidate
 
-Verdict: **READY FOR GATE 4; PUBLIC RELEASE STILL NOT READY**
+Verdict: **NOT READY**
+
+## Gate 4-6 attempt (2026-07-25)
+
+Gate 4 did not pass, so no v1.0.6 installer was built and Gates 5-6 were not
+started. No installer was run, no production analytics request was sent, and no
+deployment, merge, tag, release upload, or public-installer replacement was
+performed.
+
+Release identity at the start of the attempt:
+
+- Branch: `release/atlas-v1.0.6-analytics-rc`
+- HEAD: `8da893799e2421d91db450e687498c362ab9b094`
+- Last committed desktop source change: `6bdaf6eafd62fbd90af85d461acbadba5396fc8b`
+- Last committed website source change: `12bed38574efd4066db930d134f1e1c1166d5205`
+- Production migration:
+  `20260724120103_v106_analytics_production_state_reconciliation`
+- Target desktop version: `1.0.6`
+- Worktree: clean at entry; dirty at exit with uncommitted fixture,
+  v1.0.6 identity, Ask-disabled copy, and sharp-reachability mitigation changes
+
+Accounts remain hidden, local-only mode remains the default, the accounts
+helper is not started in local-only mode, and packaging excludes
+`AtlasAccounts.exe` unless the explicit future `-IncludeAccounts` option is
+used. Ask remains disabled by the launch guard loaded last in the desktop UI.
+The frozen analytics allowlists and sanitizers were not broadened.
+
+The live download route did not match the stated v1.0.5-hotfix1 baseline. On
+2026-07-25 it redirected to the public v1.0.4 GitHub asset. That asset was
+43,212,710 bytes, SHA-256
+`2A1EAA9EEC99311E44496DA04157AD1DB1F60C4373ECD5FFB33D52127CDFFF8A`,
+file version `1.0.4 (2026-07-16) a`, and unsigned. The public v1.0.5 release
+asset was also downloaded without execution for upgrade provenance: 43,296,784
+bytes, SHA-256
+`B2531078FC814B9D2AA454FAFD31711AE353AAFCD336C6E39D21B4645A9573EF`,
+file version `1.0.5 (2026-07-21) 4`, and unsigned. The tracked v1.0.5 release
+manifest records a different size and hash, so it cannot currently establish
+the public upgrade baseline.
+
+The clean desktop baseline collected 1,659 tests and produced **1,637 passed,
+21 skipped, 1 failed, 0 errors**. The single failure was a stale fixture:
+`test_copy_review_table_exists` escaped the repository through `parents[3]`
+and succeeded only when an unrelated sibling workspace report existed. The
+correction keeps the same copy assertion and points to a tracked repository
+fixture. The other source changes set desktop metadata and visible version copy
+to v1.0.6 while preserving the existing Ask-disabled launch guard.
+
+The 21 skips were classified as follows:
+
+- 19 explicit external-repository skips: Home Assistant was not present and
+  six slow Home Assistant route tests require `ATLAS_RUN_HA=1`. These are
+  acceptable in the unit suite only if the required large-repository installed
+  test is later completed.
+- 2 release-relevant packaging skips: fresh `dist/Atlas` and
+  `generated_version.iss` do not exist until a fresh packaging run. They must
+  pass after the release build and are not waived.
+
+Targeted and full reruns could not execute because pytest lost access to each
+new Windows temp root during its mandatory autouse `tmp_path` setup. A
+sandbox-external rerun could not be approved because the approval service
+reported its usage limit. Playwright likewise failed before assertions at
+worker creation with `spawn EPERM`. These are test-environment failures, not
+product passes.
+
+Dependency reproduction identified a newly published advisory that npm's
+current audit response did not include:
+
+- Locked runtime: Next `15.5.18`, React/React DOM `19.2.6`, sharp `0.34.5`,
+  Supabase JS `2.110.8`; development Supabase CLI `2.109.1`.
+- `npm audit --omit=dev --json`: 0 critical, 0 high, 0 total.
+- Full `npm audit --json`: 0 critical, 0 high, 0 total.
+- GitHub-reviewed `GHSA-f88m-g3jw-g9cj`: 1 high-severity sharp finding,
+  affecting `<0.35.0`; patched in `0.35.0`.
+- Next `15.5.18` and `15.5.19` both declare `sharp ^0.34.3`, so the patched
+  sharp line is not compatible with the supported Next 15 dependency range.
+  No override, forced audit fix, lockfile regeneration, or framework major
+  upgrade was used.
+- Atlas has no `next/image` import. A source change sets
+  `images.unoptimized=true`, the supported Next switch that disables the
+  Image Optimization API, and adds an assertion that the app remains free of
+  `next/image`. Static configuration inspection passed, but the clean build and
+  runtime route verification are blocked, so reachability is not yet accepted
+  as closed.
+
+Clean `npm ci` failed during lifecycle-script process creation with
+`spawn EPERM`; the partially created dependency tree is not release evidence.
+The clean production build and 42-route check were therefore not run.
+
+The removed Gate 3 endpoint is absent from source. A stale ignored
+`websites/atlas-web/.next` cache still contained an old compiled copy of the
+retired endpoint and the environment-variable name, but no secret value.
+Removal was attempted against the exact validated cache path and could not be
+approved because the approval service reported its usage limit. This stale
+cache was not packaged or deployed, but it must be deleted and the clean build
+must prove that the endpoint is absent before release.
 
 ## Latest evidence-gate attempt
 
@@ -103,12 +197,11 @@ is inferred from a click.
 
 ## Dependency security
 
-Current resolved runtime is Next `15.5.18` with sharp `0.34.5` (same supported
-Next major). `npm audit --audit-level=high --omit=dev` and the full current
-`npm audit` both report zero vulnerabilities. A clean `npm ci` completed, but
-its terminal summary and the cleanup Vercel install transiently reported five
-high findings; the immediate post-install local audits were clean, so this
-discrepancy must be rechecked by the release operator before publication.
+The earlier npm-only conclusion is superseded by the Gate 4-6 attempt above.
+npm currently reports zero vulnerabilities, but the July 21 GitHub-reviewed
+sharp advisory applies to the locked sharp `0.34.5`. The supported
+image-optimization-disable mitigation is present but cannot be accepted until
+the clean build and runtime route verification pass.
 
 ## Tests and verification
 
@@ -118,11 +211,11 @@ discrepancy must be rechecked by the release operator before publication.
 - Website production build: **passed** (42 routes generated).
 - Installer staging self-test: **passed**; no accounts helper staged during the
   RC build (tracked staging was restored after the external RC copy was saved).
-- Full desktop suite: **1,598 passed, 21 skipped, 5 failed, 36 errors** out of
-  1,659 collected. The failures/errors are in legacy `phase186`/`phase193`
-  accounts tests and arise from shared SQLite fixture contamination (`users`
-  already exists / `devices` missing); they are outside the analytics-only
-  runtime and were not treated as release evidence.
+- Clean desktop baseline: **1,637 passed, 21 skipped, 1 failed, 0 errors** out
+  of 1,659 collected. The prior reported SQLite contamination did not
+  reproduce. The one stale copy-review fixture was corrected without weakening
+  its assertion, but mandatory reruns are blocked by the Windows temp-root ACL
+  failure and cannot yet be reported green.
 - Production backup revalidation and Gate 2 pre-migration snapshot: **passed**.
 - Production migration and post-migration verification: **passed**.
 - PostgREST recognition of the three new analytics columns: **passed**.
@@ -136,11 +229,19 @@ discrepancy must be rechecked by the release operator before publication.
 
 ## Release blockers
 
-1. Fresh Windows profile, upgrade-over-v1.0.5, offline/opt-out packet capture,
-   and installed-application verification remain unproven.
-2. The full desktop suite is not green because of pre-existing accounts-test
-   fixture contamination; the accounts feature is intentionally disabled in
-   this RC, but the suite result must be reconciled before a public release.
+1. Targeted and full desktop reruns are blocked by the pytest temp-root ACL
+   failure; zero release-relevant failures has not been demonstrated.
+2. Clean `npm ci`, analytics/auth tests, clean production build, and the
+   42-route check are blocked by `spawn EPERM`.
+3. The sharp high-severity advisory is not represented in npm's audit result.
+   The supported reachability mitigation is unverified at build/runtime level.
+4. The stale ignored `.next` cache still contains a compiled copy of the
+   retired Gate 3 endpoint and must be deleted before a clean build.
+5. No v1.0.6 installer was built because the prerequisite gates did not pass.
+   Fresh-profile, upgrade, packet-capture, installed-app, production analytics,
+   and final-installer verification therefore remain incomplete.
+6. The live download route points to v1.0.4, not the stated v1.0.5-hotfix1
+   baseline, and the tracked v1.0.5 manifest does not match the public v1.0.5
+   asset.
 
-Gate 4 may begin. Public release review can complete only after the remaining
-blockers are resolved. The current public installer was not replaced.
+The current public installer was not replaced. **NOT READY**.
