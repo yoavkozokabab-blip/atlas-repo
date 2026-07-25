@@ -25,6 +25,15 @@ def test_new_installation_identity_is_a_random_uuid(tmp_path, monkeypatch):
     assert second["installation_id"] == first["installation_id"]
 
 
+def test_touch_false_first_identity_is_persisted(tmp_path, monkeypatch):
+    monkeypatch.setenv("ATLAS_DESKTOP_DATA", str(tmp_path))
+    first = operations.get_installation_identity(data_dir=str(tmp_path), touch=False)
+    second = operations.get_installation_identity(data_dir=str(tmp_path), touch=False)
+    assert second["installation_id"] == first["installation_id"]
+    stored = json.loads((tmp_path / "operations" / "installation.json").read_text(encoding="utf-8"))
+    assert stored["installation_id"] == first["installation_id"]
+
+
 def test_corrupt_installation_identity_is_replaced_with_uuidv4(tmp_path, monkeypatch):
     monkeypatch.setenv("ATLAS_DESKTOP_DATA", str(tmp_path))
     path = tmp_path / "operations" / "installation.json"
@@ -75,6 +84,43 @@ def test_remote_analytics_allowlists_and_flushes_without_private_data(tmp_path, 
     assert "c:\\users\\private" not in serialized
     assert '"path"' not in serialized
     assert '"message"' not in serialized
+
+
+@pytest.mark.parametrize(
+    ("event", "properties", "expected"),
+    [
+        ("scan_completed", {"demo": True}, "sample_scan_completed"),
+        ("scan_completed", {"demo": False}, "real_repo_scan_completed"),
+        ("impact_analyzed", {}, "impact_completed"),
+        ("mcp_connect", {}, "mcp_connected"),
+    ],
+)
+def test_runtime_milestones_map_to_canonical_remote_events(
+    tmp_path, monkeypatch, event, properties, expected
+):
+    monkeypatch.setenv("ATLAS_DESKTOP_DATA", str(tmp_path))
+    monkeypatch.setattr(analytics_remote, "_schedule_flush", lambda: None)
+    analytics_remote.track_pipeline_event(
+        event,
+        installation_id="installation-12345678",
+        app_version="1.0.6",
+        build_commit="a" * 40,
+        properties=properties,
+    )
+    assert analytics_remote._load_queue()[0]["eventName"] == expected
+
+
+def test_async_flush_rearms_when_an_event_arrives_during_delivery(monkeypatch):
+    scheduled = []
+    monkeypatch.setattr(analytics_remote, "flush", lambda: True)
+    monkeypatch.setattr(analytics_remote, "analytics_enabled", lambda: True)
+    monkeypatch.setattr(analytics_remote, "analytics_endpoint", lambda: "https://collector.example.test")
+    monkeypatch.setattr(analytics_remote, "_load_queue", lambda: [{"eventId": "late"}])
+    monkeypatch.setattr(analytics_remote, "_schedule_flush", lambda: scheduled.append(True))
+    analytics_remote._FLUSHING = True
+    analytics_remote._flush_async()
+    assert scheduled == [True]
+    assert analytics_remote._FLUSHING is False
 
 
 def test_remote_analytics_opt_out_blocks_delivery(tmp_path, monkeypatch):

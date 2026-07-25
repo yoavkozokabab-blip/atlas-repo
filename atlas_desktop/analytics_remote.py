@@ -30,8 +30,10 @@ _EVENT_MAP = {
     "scan_completed": "real_repo_scan_completed",
     "scan_failed": "scan_failed",
     "what_breaks_generated": "impact_completed",
+    "impact_analyzed": "impact_completed",
     "graph_opened": "graph_opened",
     "mcp_connected": "mcp_connected",
+    "mcp_connect": "mcp_connected",
     "analytics_opted_out": "analytics_opted_out",
 }
 _ALLOWED_EVENTS = frozenset(_EVENT_MAP.values())
@@ -305,6 +307,12 @@ def _flush_async() -> None:
     finally:
         with _LOCK:
             _FLUSHING = False
+        # An event can be queued after flush() snapshots its batch but before
+        # this worker clears _FLUSHING. Its scheduling attempt then sees the
+        # active worker and returns. Re-arm delivery here so the last milestone
+        # in a session cannot remain stranded until another event occurs.
+        if analytics_enabled() and analytics_endpoint() and _load_queue():
+            _schedule_flush()
 
 
 def _schedule_flush() -> None:
@@ -320,7 +328,10 @@ def track_pipeline_event(event: str, *, installation_id: Optional[str], app_vers
     """Queue one allowlisted event without exposing product data or blocking."""
     if not analytics_enabled():
         return
-    event_name = _EVENT_MAP.get(event, event if event in _ALLOWED_EVENTS else "")
+    if event == "scan_completed" and properties.get("demo") is True:
+        event_name = "sample_scan_completed"
+    else:
+        event_name = _EVENT_MAP.get(event, event if event in _ALLOWED_EVENTS else "")
     if not event_name:
         return
     if _contains_forbidden(properties):
