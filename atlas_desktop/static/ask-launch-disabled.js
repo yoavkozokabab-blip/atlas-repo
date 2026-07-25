@@ -1,5 +1,5 @@
 "use strict";
-/* Release salvage (v1.0.5-final): Ask is disabled for launch.
+/* Release posture (v1.0.6): Ask is disabled for launch.
  *
  * The not-found gate (not_found_confidence) reliably refuses most absent
  * concepts, but free-form "how does <absent concept> work" questions route to
