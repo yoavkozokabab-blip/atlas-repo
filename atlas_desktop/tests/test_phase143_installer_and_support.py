@@ -15,8 +15,14 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 @pytest.fixture(autouse=True)
-def _demo_loaded():
-    server.dispatch("POST", "/api/demo/load", {"pack": "small"})
+def _demo_loaded(tmp_path, local_guest_account):
+    _, loaded = server.dispatch("POST", "/api/demo/load", {"pack": "small"})
+    if not loaded.get("ok"):
+        repo = tmp_path / "support-fixture"
+        repo.mkdir()
+        (repo / "app.py").write_text("print('atlas support fixture')\n", encoding="utf-8")
+        _, loaded = server.dispatch("POST", "/api/repositories/scan", {"path": str(repo)})
+        assert loaded.get("ok"), loaded
     yield
 
 
