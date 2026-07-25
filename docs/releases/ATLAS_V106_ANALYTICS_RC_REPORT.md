@@ -1,6 +1,15 @@
 # Atlas v1.0.6 analytics-only release candidate
 
-Verdict: **NOT READY**
+Gate 4 pre-build verdict: **READY TO BUILD V1.0.6 RC**
+
+Final-publication verdict: **NOT READY** until the RC is built and the
+post-build install, upgrade, packet-capture, packaging, and public-identity
+gates pass.
+
+The completed, superseding Gate 4 environment and public-identity baseline is
+recorded in `ATLAS_V106_GATE4_PREBUILD_BASELINE.md`. The blocked attempt below
+is retained as historical evidence and must not be read as the current Gate 4
+result.
 
 ## Gate 4-6 attempt (2026-07-25)
 
