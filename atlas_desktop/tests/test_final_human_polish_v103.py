@@ -42,14 +42,14 @@ def _run_node(script: str) -> dict:
     return json.loads(proc.stdout.strip())
 
 
-def test_product_version_is_104():
-    assert product_info.PRODUCT_VERSION == "1.0.5"
-    assert product_info.LAUNCH_BUILD_LABEL == "Atlas v1.0.5"
+def test_product_version_is_106():
+    assert product_info.PRODUCT_VERSION == "1.0.6"
+    assert product_info.LAUNCH_BUILD_LABEL == "Atlas v1.0.6"
 
 
 def test_index_footer_and_assets():
     html = INDEX.read_text(encoding="utf-8")
-    assert "Atlas 1.0.5" in html
+    assert "Atlas 1.0.6" in html
     assert "Report a bug" in html
     assert "Suggest a feature" in html
     assert "atlas_repository_state.js" in html
@@ -233,7 +233,7 @@ def test_diagnostics_uses_repository_summary_not_zero_modules():
 
 
 def test_copy_review_table_exists():
-    report = Path(__file__).resolve().parents[3] / "reports" / "final-human-polish-v103" / "copy-review.md"
+    report = Path(__file__).resolve().parent / "fixtures" / "final-human-polish-v103-copy-review.md"
     assert report.exists()
     text = report.read_text(encoding="utf-8")
     assert "Plan the change before editing code." in text

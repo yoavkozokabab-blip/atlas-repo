@@ -46,13 +46,13 @@ def _run_node(script: str) -> dict:
 
 
 def test_product_version_is_104():
-    assert product_info.PRODUCT_VERSION == "1.0.5"
-    assert product_info.LAUNCH_BUILD_LABEL == "Atlas v1.0.5"
+    assert product_info.PRODUCT_VERSION == "1.0.6"
+    assert product_info.LAUNCH_BUILD_LABEL == "Atlas v1.0.6"
 
 
 def test_footer_and_settings_hide_public_build_hash():
     html = INDEX.read_text(encoding="utf-8")
-    assert "Atlas 1.0.5" in html
+    assert "Atlas 1.0.6" in html
     assert "ui-polish-v104.css" in html
     assert "settingsAdvancedFacts" in html
     assert "Build commit" not in html
