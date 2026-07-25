@@ -1,6 +1,6 @@
 # Atlas v1.0.6 analytics-only release candidate
 
-Verdict: **NOT READY**
+Verdict: **READY FOR GATE 4; PUBLIC RELEASE STILL NOT READY**
 
 ## Latest evidence-gate attempt
 
@@ -17,20 +17,29 @@ public users. Exact columns, indexes, history, protected user/auth hashes,
 RLS, grants, constraints, functions, and the non-analytics schema passed.
 PostgREST recognized all three new columns with HTTP 200.
 
-Gate 3 stopped before ingestion. The production desktop route rejects an
-`internal` request field, while its production row builder otherwise records
-`is_internal=false`. Sending the required synthetic test set would therefore
-risk contaminating public analytics. No Gate 3 request or synthetic row was
-created. Full sanitized evidence is in
+Gate 3 passed on 2026-07-25 through a temporary server-only endpoint protected
+by a dedicated short-lived secret. Normal public ingestion continued to reject
+client-controlled `internal` fields. The three valid events were stored exactly
+once each with `is_internal=true`; duplicate delivery recorded zero additional
+rows; malformed, unsupported, forbidden, nested-source, oversized, and client
+override requests returned controlled 4xx responses. No forbidden marker or
+schema-related PostgREST 400 was found.
+
+The short-lived variable and temporary deployment were removed after testing.
+Cleanup commit `12bed385` removed the endpoint and helper, and cleaned
+deployment `dpl_9ji1orenMyZcWNeomoiQZ7eq5pBj` is `READY` on the production
+alias. Full sanitized evidence is in
 `ATLAS_V106_ANALYTICS_GATE2_GATE3_EVIDENCE.md`.
 
-This is a new evidence pass on `release/atlas-v1.0.6-analytics-rc`. No
-deployment, upload, tag, public-installer replacement, or merge was performed.
+This is a new evidence pass on `release/atlas-v1.0.6-analytics-rc`. No merge,
+tag, release upload, public-installer replacement, or installer build was
+performed.
 
 ## Branch and build
 
 - Branch: `release/atlas-v1.0.6-analytics-rc`
-- Branch HEAD: report-only commit after the RC build (the packaged code commit is listed below)
+- Branch HEAD: sanitized evidence-report commit after cleanup (the packaged
+  code commit is listed below)
 - Packaged desktop/website source commit: `6bdaf6eafd62fbd90af85d461acbadba5396fc8b`
 - Production reconciliation migration:
   `20260724120103_v106_analytics_production_state_reconciliation`
@@ -57,8 +66,11 @@ Gate 2 is complete. The reviewed production-state reconciliation was applied
 without history repair, replaying unrelated migrations, or changing
 non-analytics objects.
 
-Gate 3 did not send events because the deployed desktop ingestion contract has
-no supported way to create `is_internal=true` events in production.
+Gate 3 is complete. The three uniquely identified synthetic rows were retained
+because all are marked `is_internal=true`. At verification, the live analytics
+total was 1,125: the 1,106 Gate 2 baseline, 16 ordinary non-internal website
+events received afterward, and the three internal Gate 3 rows. Identities
+remained 36 and public users remained 14.
 
 The private backup/restoration procedure is documented in
 `ATLAS_V106_ANALYTICS_BACKUP_GATE.md`.
@@ -94,9 +106,9 @@ is inferred from a click.
 Current resolved runtime is Next `15.5.18` with sharp `0.34.5` (same supported
 Next major). `npm audit --audit-level=high --omit=dev` and the full current
 `npm audit` both report zero vulnerabilities. A clean `npm ci` completed, but
-its terminal summary transiently reported four high findings; the immediate
-post-install audit was clean, so this discrepancy must be rechecked by the
-release operator before publication.
+its terminal summary and the cleanup Vercel install transiently reported five
+high findings; the immediate post-install local audits were clean, so this
+discrepancy must be rechecked by the release operator before publication.
 
 ## Tests and verification
 
@@ -114,20 +126,21 @@ release operator before publication.
 - Production backup revalidation and Gate 2 pre-migration snapshot: **passed**.
 - Production migration and post-migration verification: **passed**.
 - PostgREST recognition of the three new analytics columns: **passed**.
-- Synthetic production ingestion: **not run** because the production desktop
-  route cannot safely mark the required test events internal.
+- Temporary internal-capability analytics/auth verification: **39 passed**.
+- Synthetic production ingestion: **passed**; three retained internal rows,
+  duplicate suppressed, invalid/privacy/oversize probes controlled.
+- Capability cleanup: **passed**; secret absent, temporary deployment deleted,
+  cleaned endpoint HTTP 404.
 - Packet capture, fresh-profile install, and upgrade-over-v1.0.5 verification
   remain incomplete.
 
 ## Release blockers
 
-1. The production desktop ingestion route cannot accept an internal-test flag,
-   so Gate 3 cannot create the required `is_internal=true` synthetic events.
-2. Fresh Windows profile, upgrade-over-v1.0.5, offline/opt-out packet capture,
+1. Fresh Windows profile, upgrade-over-v1.0.5, offline/opt-out packet capture,
    and installed-application verification remain unproven.
-3. The full desktop suite is not green because of pre-existing accounts-test
+2. The full desktop suite is not green because of pre-existing accounts-test
    fixture contamination; the accounts feature is intentionally disabled in
    this RC, but the suite result must be reconciled before a public release.
 
-Manual release review can begin only after these blockers are resolved. The
-current public installer was not replaced.
+Gate 4 may begin. Public release review can complete only after the remaining
+blockers are resolved. The current public installer was not replaced.
