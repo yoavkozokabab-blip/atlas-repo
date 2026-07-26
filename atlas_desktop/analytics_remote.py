@@ -246,9 +246,16 @@ def _enqueue(event: Dict[str, Any]) -> None:
 
 
 def _post_batch(endpoint: str, events: List[Dict[str, Any]]) -> tuple[bool, str]:
+    # Delivery-attempt state belongs only to the local bounded outbox. Sending
+    # it would violate the frozen desktop contract and turn any retry after a
+    # transient failure into a deterministic `invalid_event` response.
+    wire_events = [
+        {key: value for key, value in event.items() if key != "_delivery_attempts"}
+        for event in events
+    ]
     request = urllib.request.Request(
         endpoint,
-        data=json.dumps({"events": events}, separators=(",", ":")).encode("utf-8"),
+        data=json.dumps({"events": wire_events}, separators=(",", ":")).encode("utf-8"),
         headers={"Content-Type": "application/json", "User-Agent": "AtlasDesktop/1.0"},
         method="POST",
     )

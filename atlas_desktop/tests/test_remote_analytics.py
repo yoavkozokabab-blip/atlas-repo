@@ -180,8 +180,10 @@ def test_remote_analytics_retries_are_bounded_and_diagnostics_are_safe(tmp_path,
     monkeypatch.setenv("ATLAS_DESKTOP_DATA", str(tmp_path))
     monkeypatch.setenv("ATLAS_ANALYTICS_ENDPOINT", "https://collector.example.test/api/analytics/desktop-events")
     monkeypatch.setattr(analytics_remote, "_schedule_flush", lambda: None)
+    sent = []
 
-    def rejected(_request, timeout):
+    def rejected(request, timeout):
+        sent.append(json.loads(request.data.decode("utf-8")))
         raise analytics_remote.urllib.error.HTTPError("https://collector.example.test", 400, "Bad Request", {}, None)
 
     monkeypatch.setattr(analytics_remote.urllib.request, "urlopen", rejected)
@@ -195,6 +197,15 @@ def test_remote_analytics_retries_are_bounded_and_diagnostics_are_safe(tmp_path,
     assert analytics_remote._load_queue() == []
     assert analytics_remote.diagnostics()["last_status_class"] == "http_4xx"
     assert analytics_remote.diagnostics()["rejected"] == 1
+    assert len(sent) == 3
+    assert all("_delivery_attempts" not in payload["events"][0] for payload in sent)
+    assert all(
+        set(payload["events"][0]) == {
+            "eventId", "eventName", "installationId", "sessionId",
+            "appVersion", "buildCommit", "properties",
+        }
+        for payload in sent
+    )
 
 
 def test_pipeline_stays_functional_when_remote_delivery_is_unavailable(tmp_path, monkeypatch):
