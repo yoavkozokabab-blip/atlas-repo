@@ -7,9 +7,11 @@ Verdict: **NOT READY**
 The installed-client analytics 4xx was diagnosed and fixed with a minimal
 sender-only change. A new RC2 installer was built and passed the affected
 fresh-install, upgrade, packaging, privacy, retry, deduplication, and opt-out
-verification. Production negative validation still has two release blockers:
-malformed installation UUIDs and nested metadata are accepted rather than
-returning controlled 4xx responses.
+verification. The two production validation gaps now have a narrow local
+server fix with passing affected tests, build, route QA, and bundle scans.
+Deployment was withheld because the required production dependency audit
+reports two high-severity findings. Production therefore still accepts
+malformed installation UUIDs and nested metadata.
 
 No deployment, upload, tag, merge, release replacement, account change, RLS
 change, grant change, or unrelated migration was performed.
@@ -21,6 +23,8 @@ change, grant change, or unrelated migration was performed.
   `753ddc38a9bccc7010931c7903795280c9091a1a`
 - Website commit:
   `d6565ec57af5988d5c5e28a9a7557f69897796d4`
+- Undeployed server-validation fix:
+  `ee5656cd028d1c3ca23a0f10ec453e704ce28dba`
 - Production migration:
   `20260724120103_v106_analytics_production_state_reconciliation`
 - RC2 installer:
@@ -36,6 +40,69 @@ change, grant change, or unrelated migration was performed.
 The staged payload contained the v1.0.6 sender at commit `753ddc38`.
 `AtlasAccounts.exe` was absent. The embedded build metadata contained no
 source-root path.
+
+## Server-validation follow-up
+
+The frozen contract requires every desktop event to carry a canonical UUID
+installation identifier. It does not permit omission, coercion, trimming, or
+server-generated replacement of a malformed value. Metadata is a one-level
+object whose values may only be JSON strings, finite numbers, or booleans.
+Nested objects, arrays, and `null` are invalid; unknown primitive keys continue
+to be discarded by the existing sanitizer.
+
+Two route-validation gaps caused the production failures:
+
+1. The desktop route passed `installationId` directly to the generic
+   `sanitizeIdentifier` path. That sanitizer accepts safe arbitrary text and
+   was never intended to prove UUID identity.
+2. The route checked nested content only for privacy markers. Safe nested
+   objects therefore reached `sanitizeProperties`, which silently discarded
+   nonprimitive values and allowed the event.
+
+Commit `ee5656cd028d1c3ca23a0f10ec453e704ce28dba` adds two narrow runtime
+predicates before normalization and storage:
+
+- canonical, lowercase UUID syntax for required desktop `installationId`;
+- one-level finite JSON primitive values for desktop `properties`.
+
+The route retains the existing `invalid_event` HTTP 400 response. It does not
+echo rejected values, bodies, validation internals, or stack traces. Rate
+limiting still runs before validation. The server remains authoritative for
+`is_internal`, and service-role handling, deduplication, storage payloads,
+event allowlists, privacy keys, database schema, accounts, Auth, billing, Ask,
+Graph, Impact, and MCP are unchanged.
+
+Changed files:
+
+- `websites/atlas-web/app/_lib/analytics-contract.ts`
+- `websites/atlas-web/app/api/analytics/desktop-events/route.ts`
+- `websites/atlas-web/qa/analytics-auth.spec.ts`
+- `websites/atlas-web/docs/analytics/event-contract.md`
+
+Predeployment verification:
+
+- Clean `npm ci`: passed; 336 packages reproduced from the lockfile.
+- Analytics/auth and frozen-contract tests: 28 passed, 0 failed.
+- Production build: passed; 42 pages generated.
+- Public-site QA: 42 desktop/mobile route views passed with zero page errors,
+  overflow, broken links, or accessibility violations. An initial QA harness
+  run used the production origin while browsing localhost and correctly
+  received 403 from browser-write protection; the isolated server was
+  restarted with its localhost origin and the complete run passed.
+- Client bundle: zero credential values, server-secret names, or retired
+  internal-test capability remnants.
+- Server bundle: zero credential values or retired internal-test capability
+  remnants. Two literal `sb_secret_` sanitizer patterns were classified as
+  validation code, not secret values.
+- Production dependency audit: **failed** with two high-severity findings,
+  `next` through transitive `sharp`, and `sharp <0.35.0`
+  (`GHSA-f88m-g3jw-g9cj`).
+
+The dependency finding is outside the authorized analytics-validator diff.
+No override, forced audit fix, framework downgrade, or unrelated dependency
+change was made. Because the request required a green audit with no ignored
+failures, commit `ee5656cd` was not deployed. There is no deployment ID, and
+no follow-up production validation or RC2 post-deployment request was sent.
 
 ## Runtime-token containment
 
@@ -170,9 +237,8 @@ persisted and produced zero future analytics requests.
   sanitization — **FAIL**
 
 The sender fix did not broaden the allowlist, sanitizer, event version,
-payload limit, or internal-event controls. The two failures are production
-validation gaps outside the desktop retry fix and require a reviewed
-server-side correction and authorized deployment before release.
+payload limit, or internal-event controls. The production results in this
+matrix predate undeployed validation commit `ee5656cd`.
 
 ## Production database evidence and cleanup
 
@@ -230,13 +296,22 @@ The live website returned HTTP 200. The public `/download/atlas` route still
 returned HTTP 302 to the existing v1.0.4 GitHub release asset. No production
 deployment or public installer replacement occurred.
 
+The RC2 installer remains 12,229,183 bytes with SHA-256
+`2D53AAD6BB4D48EEBF9DE407DAFE9BE58BF591C05099402941CCA733D8BB5ADA`.
+No desktop rebuild was performed. The generated `.next` tree, Playwright
+results, local server logs, and route screenshots from the follow-up were
+deleted.
+
 ## Remaining blockers
 
-1. Production accepts a malformed non-UUID `installation_id` with HTTP 202.
-2. Production accepts and sanitizes a nested metadata object with HTTP 202
-   instead of returning the required controlled 4xx response.
+1. The required production dependency audit reports two high-severity findings
+   through Next's transitive `sharp <0.35.0` dependency. This predeployment
+   gate is not green.
+2. Server-validation commit `ee5656cd` is intentionally undeployed, so
+   production still accepts malformed installation UUIDs and nested metadata.
+3. The bounded production negative matrix, one valid control request, exact
+   database cleanup, and RC2 post-deployment compatibility check cannot run
+   until deployment is authorized by a fully green predeployment gate.
 
-Both require a reviewed server-side validation change, an authorized
-deployment, and repetition of the affected negative production tests. Until
-both return controlled 4xx responses without weakening privacy or public
-ingestion controls, Atlas v1.0.6 is **NOT READY**.
+Atlas v1.0.6 remains **NOT READY**. No production behavior or public release
+was changed during this follow-up.
