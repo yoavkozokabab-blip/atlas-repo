@@ -5,8 +5,8 @@ Status: canonical analytics-only release contract, version 1. Times are recorded
 ## Privacy and identity rules
 
 - Website events use a random, stable browser `anonymous_id` and a per-tab `session_id`. The browser may never submit a `user_id`.
-- Desktop events use a random installation identifier and a per-process session identifier. They never reuse a repository identifier as an identity.
-- Allowed metadata keys are `agent`, `href_kind`, `http_status`, `outcome`, `plan`, `reason_code`, `status`, `surface`, coarse duration fields, and coarse campaign/device fields. Unknown keys are discarded by the server.
+- Desktop events require a random canonical UUID installation identifier and a per-process session identifier. Malformed, empty, padded, or non-UUID installation identifiers are rejected rather than coerced or replaced. They never reuse a repository identifier as an identity.
+- Allowed metadata keys are `agent`, `href_kind`, `http_status`, `outcome`, `plan`, `reason_code`, `status`, `surface`, coarse duration fields, and coarse campaign/device fields. Values must be one-level JSON strings, finite numbers, or booleans; nested objects, arrays, and `null` are rejected. Unknown primitive keys are discarded by the server.
 - Email addresses, names, IP addresses, source code, repository names, full or relative local paths, raw prompts, cookies, authorization headers, tokens, and secrets are forbidden.
 - Production, preview, development, and test events are separate `environment` values. Preview, localhost, tests, bots, and known QA sessions are `is_internal=true` and excluded from default metrics.
 - Raw events are retained only as long as needed to validate aggregate product metrics. Review at 90 days and aggregate or expire them under an approved retention policy.

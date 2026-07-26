@@ -5,6 +5,7 @@ import {
   DESKTOP_ANALYTICS_EVENT_KEYS,
   analyticsBody,
   eventBatch,
+  MAX_ANALYTICS_BYTES,
   MAX_ANALYTICS_DEPTH,
   WEBSITE_ANALYTICS_EVENT_KEYS,
 } from "../app/_lib/analytics-ingestion";
@@ -14,6 +15,8 @@ import {
   classifyReferrer,
   analyticsEnvironment,
   hasForbiddenAnalyticsData,
+  hasOnlyPrimitiveAnalyticsProperties,
+  isCanonicalAnalyticsUuid,
   isDesktopAnalyticsEvent,
   isAnalyticsEvent,
   isWebsiteAnalyticsEvent,
@@ -22,6 +25,7 @@ import {
   sanitizeRoute,
 } from "../app/_lib/analytics-contract";
 import { buildAnalyticsRow } from "../app/_lib/analytics-server";
+import { POST as postDesktopAnalytics } from "../app/api/analytics/desktop-events/route";
 import { createToken, hashPassword, sessionClaimsMatchRecord, verifyPassword, verifySessionToken, verifyToken } from "../app/_lib/auth";
 import { PAID_PLANS_ENABLED } from "../app/_config";
 import { BILLING_NOT_AVAILABLE, DisabledBillingProvider, proCheckoutReady } from "../app/_lib/billing";
@@ -80,6 +84,110 @@ test("analytics envelopes reject unknown fields and hostile nested payloads", as
   const deepRequest = new Request("http://localhost/api/analytics/events", { method: "POST", body: JSON.stringify(nested) });
   expect(await analyticsBody(deepRequest)).toBeNull();
   expect(sanitizeProperties({ repo: "repo-name", status: "ok", token: "eyJ.fake.secret" })).toEqual({});
+});
+
+test("desktop analytics identity requires a canonical UUID without coercion", () => {
+  expect(isCanonicalAnalyticsUuid("123e4567-e89b-42d3-a456-426614174000")).toBe(true);
+  for (const value of [
+    undefined,
+    "arbitrary-text",
+    "",
+    "   ",
+    "123e4567-e89b-42d3-a456-42661417400",
+    "123e4567-e89b-42d3-a456-426614174000-extra",
+    " 123e4567-e89b-42d3-a456-426614174000",
+    "123E4567-E89B-42D3-A456-426614174000",
+  ]) {
+    expect(isCanonicalAnalyticsUuid(value)).toBe(false);
+  }
+});
+
+test("desktop analytics metadata permits only one level of JSON primitives", () => {
+  expect(hasOnlyPrimitiveAnalyticsProperties(undefined)).toBe(true);
+  expect(hasOnlyPrimitiveAnalyticsProperties({})).toBe(true);
+  expect(hasOnlyPrimitiveAnalyticsProperties({ status: "ok", http_status: 202, outcome: true })).toBe(true);
+  for (const value of [
+    null,
+    [],
+    { status: null },
+    { status: { nested: "value" } },
+    { status: ["value"] },
+    { status: [{ nested: "value" }] },
+    { status: { nested: ["value"] } },
+    { status: { nested: { deep: "value" } } },
+    { status: Number.POSITIVE_INFINITY },
+  ]) {
+    expect(hasOnlyPrimitiveAnalyticsProperties(value)).toBe(false);
+  }
+});
+
+test("desktop analytics route returns controlled 400 for invalid UUID and nested metadata", async () => {
+  const valid = {
+    eventName: "desktop_launched",
+    installationId: "123e4567-e89b-42d3-a456-426614174000",
+    sessionId: "desktop-session-12345678",
+    appVersion: "1.0.6",
+    buildCommit: "7".repeat(40),
+    properties: {},
+    eventId: "event-12345678",
+  };
+  const invalidPayloads = [
+    { ...valid, installationId: undefined },
+    { ...valid, installationId: "not-a-uuid" },
+    { ...valid, installationId: "" },
+    { ...valid, installationId: "   " },
+    { ...valid, installationId: "123e4567-e89b-42d3-a456-42661417400" },
+    { ...valid, installationId: "123e4567-e89b-42d3-a456-426614174000-extra" },
+    { ...valid, installationId: " 123e4567-e89b-42d3-a456-426614174000" },
+    { ...valid, properties: { status: { nested: "value" } } },
+    { ...valid, properties: { status: ["value"] } },
+    { ...valid, properties: { status: [{ nested: "value" }] } },
+    { ...valid, properties: { status: { nested: ["value"] } } },
+    { ...valid, properties: { status: { nested: { deep: "value" } } } },
+  ];
+  for (const payload of invalidPayloads) {
+    const response = await postDesktopAnalytics(new Request("http://localhost/api/analytics/desktop-events", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(payload),
+    }));
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({ ok: false, error: "invalid_event" });
+  }
+});
+
+test("desktop analytics route preserves existing validation boundaries", async () => {
+  const valid = {
+    eventName: "desktop_launched",
+    installationId: "123e4567-e89b-42d3-a456-426614174000",
+    sessionId: "desktop-session-12345678",
+    appVersion: "1.0.6",
+    buildCommit: "7".repeat(40),
+    properties: {},
+    eventId: "event-12345678",
+  };
+  const invalidPayloads = [
+    { ...valid, eventName: "unsupported_event" },
+    { ...valid, repository_path: "forbidden" },
+    { ...valid, eventVersion: 2 },
+    { ...valid, is_internal: true },
+  ];
+  for (const payload of invalidPayloads) {
+    const response = await postDesktopAnalytics(new Request("http://localhost/api/analytics/desktop-events", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(payload),
+    }));
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({ ok: false, error: "invalid_event" });
+  }
+  const oversized = await postDesktopAnalytics(new Request("http://localhost/api/analytics/desktop-events", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ ...valid, properties: { status: "x".repeat(MAX_ANALYTICS_BYTES) } }),
+  }));
+  expect(oversized.status).toBe(400);
+  expect(await oversized.json()).toEqual({ ok: false, error: "invalid_event" });
 });
 
 test("privacy contract rejects every forbidden category recursively", () => {
@@ -143,13 +251,31 @@ test("server owns environment, identity, version and deterministic deduplication
 
 test("desktop version accepts a safe semver without treating it as an identifier", () => {
   const row = buildAnalyticsRow({
-    eventName: "desktop_launched", source: "desktop", installationId: "installation-12345678",
+    eventName: "desktop_launched", source: "desktop", installationId: "123e4567-e89b-42d3-a456-426614174000",
     sessionId: "desktop-session-12345678", appVersion: "1.0.5", buildCommit: "a".repeat(40),
     properties: { screen: "home", duration_active_ms: 1000 },
   });
   expect(row.app_version).toBe("1.0.5");
   expect(row.duration_active_ms).toBe(1000);
   expect(row.metadata).toEqual({ screen: "home", duration_active_ms: 1000 });
+});
+
+test("valid desktop production payload remains deterministic across duplicate delivery", () => {
+  const input = {
+    eventName: "desktop_launched" as const,
+    source: "desktop" as const,
+    installationId: "123e4567-e89b-42d3-a456-426614174000",
+    sessionId: "desktop-session-12345678",
+    appVersion: "1.0.6",
+    buildCommit: "7".repeat(40),
+    properties: { status: "ready", duration_active_ms: 1000 },
+    deduplicationKey: "event-12345678",
+  };
+  const first = buildAnalyticsRow(input);
+  const duplicate = buildAnalyticsRow(input);
+  expect(first.installation_id).toBe(input.installationId);
+  expect(first.metadata).toEqual(input.properties);
+  expect(first.deduplication_key).toBe(duplicate.deduplication_key);
 });
 
 test("password hashes and signed sessions validate and expire", () => {

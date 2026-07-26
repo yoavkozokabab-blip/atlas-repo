@@ -1,5 +1,10 @@
 import { userFromBearer } from "@/app/_lib/auth";
-import { hasForbiddenAnalyticsData, isDesktopAnalyticsEvent } from "@/app/_lib/analytics-contract";
+import {
+  hasForbiddenAnalyticsData,
+  hasOnlyPrimitiveAnalyticsProperties,
+  isCanonicalAnalyticsUuid,
+  isDesktopAnalyticsEvent,
+} from "@/app/_lib/analytics-contract";
 import { acceptsAnalyticsRequest, analyticsBody, DESKTOP_ANALYTICS_EVENT_KEYS, eventBatch } from "@/app/_lib/analytics-ingestion";
 import { buildAnalyticsRow } from "@/app/_lib/analytics-server";
 import { analyticsStoreErrorInfo, recordAnalyticsEvents } from "@/app/_lib/store";
@@ -23,6 +28,8 @@ export async function POST(req: Request) {
     const events = body && eventBatch(body, DESKTOP_ANALYTICS_EVENT_KEYS);
     if (!events || events.some((event) => {
       if (!isDesktopAnalyticsEvent(event.eventName)) return true;
+      if (!isCanonicalAnalyticsUuid(event.installationId)) return true;
+      if (!hasOnlyPrimitiveAnalyticsProperties(event.properties)) return true;
       // Repository/privacy data must not enter through identity or build
       // fields either. Event names are checked separately because the
       // contract intentionally contains `real_repo_scan_completed`.

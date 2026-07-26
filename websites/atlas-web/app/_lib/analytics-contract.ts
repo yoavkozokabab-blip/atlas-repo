@@ -49,6 +49,7 @@ const LOCAL_PATH = /(?:[a-z]:\\|\\\\|\/(?:Users|home|var|etc|private|tmp)\/)/i;
 const SECRET_VALUE = /(?:bearer\s+[a-z0-9._-]+|sb_secret_|service[_-]?role|eyJ[a-z0-9_-]{10,}\.)/i;
 const EMAIL_VALUE = /\b[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9-]+(?:\.[a-z0-9-]+)+\b/i;
 const FORBIDDEN_MARKER = /(?:repo(?:sitory)?(?:[_\s-]*(?:path|name|folder))?|file(?:[_\s-]*(?:path|name))|source(?:[_\s-]*code)?|prompt|symbol(?:[_\s-]*name)?|graph(?:[_\s-]*(?:content|node|edge))|impact(?:[_\s-]*(?:path|result))|terminal(?:[_\s-]*output)?|windows(?:[_\s-]*user(?:name)?)|user(?:name)?|email|access[_-]?token|password|stack[_-]?trace)/i;
+const CANONICAL_UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 
 export function isAnalyticsEvent(value: unknown): value is AnalyticsEventName {
   return typeof value === "string" && EVENT_SET.has(value);
@@ -83,6 +84,20 @@ export function sanitizeIdentifier(value: unknown): string | null {
   if (typeof value !== "string") return null;
   const result = value.trim();
   return /^[a-zA-Z0-9._:-]{8,160}$/.test(result) ? result : null;
+}
+
+export function isCanonicalAnalyticsUuid(value: unknown): value is string {
+  return typeof value === "string" && CANONICAL_UUID.test(value);
+}
+
+export function hasOnlyPrimitiveAnalyticsProperties(value: unknown): boolean {
+  if (value === undefined) return true;
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+  return Object.values(value as Record<string, unknown>).every(
+    (item) => typeof item === "string"
+      || typeof item === "boolean"
+      || (typeof item === "number" && Number.isFinite(item)),
+  );
 }
 
 export function sanitizeProperties(value: unknown): Record<string, string | number | boolean> {
