@@ -2,9 +2,10 @@ import Link from "next/link";
 import AtlasMark from "./AtlasMark";
 import SiteNav from "./nav/SiteNav";
 import {
+  CURRENT_WINDOWS_RELEASE,
   GITHUB_RELEASE_URL,
   GITHUB_URL,
-  INSTALLER_SHA256,
+  releaseSizeLabel,
   SUPPORT_EMAIL,
   supportMailto,
 } from "../_config";
@@ -291,8 +292,10 @@ export function InstallationBlock() {
     <div className="install-block">
       <div>
         <p className="eyebrow">Windows release</p>
-        <h3>Atlas_Setup.exe · v{facts.version}</h3>
-        <p className="dl-meta">SHA256: <code>{INSTALLER_SHA256}</code></p>
+        <h3>{CURRENT_WINDOWS_RELEASE.filename} · v{CURRENT_WINDOWS_RELEASE.version}</h3>
+        <p className="dl-meta">
+          {releaseSizeLabel()} · SHA256: <code>{CURRENT_WINDOWS_RELEASE.sha256}</code>
+        </p>
         <p className="note" style={{ marginTop: 10 }}>
           No signup required. Windows SmartScreen may warn until the installer is signed.
         </p>

@@ -4,7 +4,7 @@ import { createReadStream, existsSync, statSync } from "node:fs";
 import { Readable } from "node:stream";
 import path from "node:path";
 import { currentUser } from "@/app/_lib/auth";
-import { DOWNLOAD_URL } from "@/app/_config";
+import { CURRENT_WINDOWS_RELEASE } from "@/app/_config";
 import { store, newId, recordAnalyticsEvent } from "@/app/_lib/store";
 import { buildAnalyticsRow } from "@/app/_lib/analytics-server";
 
@@ -14,10 +14,14 @@ export const dynamic = "force-dynamic";
 function resolveLocalInstaller(): string | null {
   const env = process.env.ATLAS_INSTALLER_PATH;
   if (env && existsSync(env)) return env;
-  const candidates = [
-    path.join(process.cwd(), "..", "..", "packaging", "installer", "output", "Atlas_Setup.exe"),
-    path.join(process.cwd(), "..", "..", "installer", "output", "Atlas_Setup.exe"),
-  ];
+  // Local development only, never a user-facing name: the installer build
+  // emits the versioned filename, and the historical un-versioned name is
+  // still probed so an older local build keeps working. dev-fallback-legacy-name
+  const names = [CURRENT_WINDOWS_RELEASE.filename, "Atlas_Setup.exe"];
+  const candidates = names.flatMap((name) => [
+    path.join(process.cwd(), "..", "..", "packaging", "installer", "output", name),
+    path.join(process.cwd(), "..", "..", "installer", "output", name),
+  ]);
   return candidates.find((p) => existsSync(p)) ?? null;
 }
 
@@ -49,9 +53,10 @@ async function recordInstallerResponseStarted(req: Request): Promise<void> {
 }
 
 export async function GET(req: Request) {
-  const hostedUrl =
-    process.env.ATLAS_INSTALLER_URL ||
-    (DOWNLOAD_URL && DOWNLOAD_URL !== "/download/atlas" ? DOWNLOAD_URL : undefined);
+  // The redirect target and the version/checksum the download page renders
+  // come from the same object, so they cannot describe different files.
+  const { downloadUrl } = CURRENT_WINDOWS_RELEASE;
+  const hostedUrl = downloadUrl && downloadUrl !== "/download/atlas" ? downloadUrl : undefined;
   if (hostedUrl) {
     await Promise.all([recordDownloadIfSignedIn(), recordInstallerResponseStarted(req)]);
     return NextResponse.redirect(hostedUrl, 302);
@@ -75,7 +80,7 @@ export async function GET(req: Request) {
   return new NextResponse(webStream, {
     headers: {
       "Content-Type": "application/octet-stream",
-      "Content-Disposition": 'attachment; filename="Atlas_Setup.exe"',
+      "Content-Disposition": `attachment; filename="${CURRENT_WINDOWS_RELEASE.filename}"`,
       "Content-Length": String(size),
       "Cache-Control": "no-store",
     },

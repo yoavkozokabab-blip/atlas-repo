@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteNav, SiteFooter, InstallFlow } from "../_components/site";
-import { GITHUB_RELEASE_URL, GITHUB_URL, INSTALLER_SHA256, SUPPORT_EMAIL } from "../_config";
+import { CURRENT_WINDOWS_RELEASE, GITHUB_RELEASE_URL, GITHUB_URL, SUPPORT_EMAIL } from "../_config";
 
 export const metadata: Metadata = {
   title: "Atlas for Hacker News",
@@ -59,7 +59,7 @@ export default function HackerNewsPage() {
               <h3>What it does</h3>
               <ul>
                 <li>Scans a local repository into a resolved import graph, subsystem map, risk model, and symbol evidence.</li>
-                <li>Answers repo questions with cited files (Ask Atlas), and runs Impact, Debug, and Plan Change on the graph.</li>
+                <li>Runs Impact, Debug, and Plan Change on the graph with cited files. (Ask Atlas, free-form repository Q&amp;A, is under development and not included in this beta.)</li>
                 <li>Persists the scan, index, and repository memory to disk, and restores them in fresh MCP sessions after validating a content signature.</li>
                 <li>One-click MCP setup for Claude Desktop, Cursor, and Codex — with timestamped config backups that preserve your other MCP servers.</li>
               </ul>
@@ -135,7 +135,7 @@ export default function HackerNewsPage() {
             <div className="card">
               <h3>Verify the build</h3>
               <p className="note" style={{ wordBreak: "break-all" }}>
-                Atlas_Setup.exe SHA256:<br /><code>{INSTALLER_SHA256}</code>
+                {CURRENT_WINDOWS_RELEASE.filename} SHA256:<br /><code>{CURRENT_WINDOWS_RELEASE.sha256}</code>
               </p>
               <p style={{ marginTop: 14 }}>
                 <a className="btn btn-ghost" href={GITHUB_RELEASE_URL} target="_blank" rel="noreferrer">GitHub release</a>{" "}

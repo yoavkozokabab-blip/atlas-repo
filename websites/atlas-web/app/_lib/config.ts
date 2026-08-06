@@ -1,6 +1,7 @@
 import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
+import { CURRENT_WINDOWS_RELEASE } from "../_config";
 
 // Server-only configuration. Reads from environment; NEVER hardcodes secrets.
 function csv(v: string | undefined): string[] {
@@ -94,8 +95,13 @@ export const ENV = {
   get isProd(): boolean {
     return process.env.NODE_ENV === "production";
   },
+  /**
+   * Always the version of the artifact the site actually serves. Derived from
+   * CURRENT_WINDOWS_RELEASE so /api/health, analytics fallbacks and the
+   * download surfaces can never report different versions.
+   */
   get appVersion(): string {
-    return process.env.NEXT_PUBLIC_ATLAS_VERSION || "1.0.5";
+    return process.env.NEXT_PUBLIC_ATLAS_VERSION || CURRENT_WINDOWS_RELEASE.version;
   },
 };
 

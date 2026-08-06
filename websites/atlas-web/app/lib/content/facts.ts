@@ -5,6 +5,8 @@
  * docs/design/content-plan.md). Do not add a claim here without evidence.
  */
 
+import { CURRENT_WINDOWS_RELEASE } from "../../_config";
+
 export const AGENTS = ["Claude Code", "Cursor", "Codex"] as const;
 
 export const facts = {
@@ -21,15 +23,20 @@ export const facts = {
   precision: { feature: 0.8, bug: 0.3, impact: 0.88 },
   suiteScenarios: 50,
   suiteMeanScore: 86.3,
-  // impact engine (separate suite)
+  // Impact engine, DIRECT-DEPENDENCY tier only ("definitely impacted").
+  // These figures describe the direct-importer set the engine resolves from
+  // real import edges. They do NOT describe the broader `affected_files` list,
+  // which measures far lower on real repositories and must never be published
+  // under these numbers. Always render them with the qualifier below.
   impactPrecision: 1.0,
   impactRecall: 0.93,
+  impactQualifier: "direct-dependency impact",
   impactRepos: 20,
   impactQuestions: 100,
-  // distribution — keep in sync with the GitHub release the download page
-  // actually serves (bump together with the installer metadata in _config).
-  version: "1.0.5",
-  platform: "Windows",
+  // distribution — derived, never hand-edited. CURRENT_WINDOWS_RELEASE is the
+  // single source of truth for everything about the published artifact.
+  version: CURRENT_WINDOWS_RELEASE.version,
+  platform: CURRENT_WINDOWS_RELEASE.platform,
 } as const;
 
 /** Honest limitations — publish these; they build trust. */
