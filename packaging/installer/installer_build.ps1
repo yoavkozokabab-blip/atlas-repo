@@ -1,4 +1,4 @@
-# Atlas — Inno Setup installer build
+# Atlas  -  Inno Setup installer build
 # Usage:
 #   .\packaging\installer\installer_build.ps1
 #   .\packaging\installer\installer_build.ps1 -SkipPackage
@@ -128,6 +128,19 @@ function Test-StagedInstaller {
 }
 Test-StagedInstaller
 
+# Release gate: refuse to package a tree whose metadata names the build
+# machine. v1.0.5 shipped the developer's source_root to every user; this makes
+# a repeat impossible rather than merely unlikely.
+$LeakScanner = Join-PathSafe $Root "scripts\scan_build_metadata_leaks.py"
+if (Test-Path -LiteralPath $LeakScanner) {
+    & py -3 $LeakScanner $Staging
+    if ($LASTEXITCODE -ne 0) {
+        throw "Build metadata leak scan failed  -  refusing to package. See the findings above."
+    }
+} else {
+    throw "Missing release gate: $LeakScanner"
+}
+
 if ($SkipCompile) {
     Write-Host "SkipCompile - staging only." -ForegroundColor Yellow
     exit 0
@@ -148,7 +161,8 @@ try {
     Pop-Location
 }
 
-$setup = Join-Path $OutputDir "Atlas_Setup.exe"
+$version = Get-AtlasProductVersion -Root $Root
+$setup = Join-Path $OutputDir "Atlas-Setup-$version.exe"
 if (-not (Test-Path $setup)) {
     throw "Expected installer not found: $setup"
 }
@@ -160,3 +174,13 @@ Write-Host ("Built: {0} ({1} MB)" -f $setup, $setupMb) -ForegroundColor Green
 $hash = (Get-FileHash -LiteralPath $setup -Algorithm SHA256).Hash
 [System.IO.File]::WriteAllText("$setup.sha256", $hash, (New-Object System.Text.UTF8Encoding $false))
 Write-Host ("SHA256: {0}" -f $hash) -ForegroundColor Green
+
+# The exact three values websites/atlas-web/app/_config.ts needs. Printing them
+# together is what makes "paste the build output into the release constant" a
+# mechanical step rather than three separate chances to transcribe one wrong.
+Write-Host ""
+Write-Host "Paste into CURRENT_WINDOWS_RELEASE (app/_config.ts):" -ForegroundColor Cyan
+Write-Host ("  version:   `"{0}`"" -f $version)
+Write-Host ("  filename:  `"{0}`"" -f (Split-Path -Leaf $setup))
+Write-Host ("  sha256:    `"{0}`"" -f $hash)
+Write-Host ("  sizeBytes: {0}" -f $item.Length)

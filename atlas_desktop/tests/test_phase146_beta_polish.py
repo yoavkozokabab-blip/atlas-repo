@@ -50,7 +50,13 @@ def test_quickstart_doc_exists():
     doc = ROOT / "docs" / "ATLAS_QUICKSTART.md"
     assert doc.is_file()
     text = doc.read_text(encoding="utf-8")
-    assert "pip install" in text.lower()
+    # The doc must still tell the user they need no Python toolchain. It used
+    # to say so by naming a `pip install` command not to run, which also put
+    # the old monorepo name in front of every user; the assertion now pins the
+    # meaning rather than that particular sentence.
+    lowered = text.lower()
+    assert "python standard library" in lowered or "pip install" in lowered
+    assert "do not" in lowered
     assert "Load Sample" in text
 
 

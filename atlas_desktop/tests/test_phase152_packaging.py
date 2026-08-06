@@ -39,7 +39,9 @@ def test_inno_references_atlas_exe():
     text = ISS.read_text(encoding="utf-8")
     assert "Atlas.exe" in text
     assert "staging" in text
-    assert "Atlas_Setup" in text
+    # The installer is named for the version it carries, so two downloads in a
+    # Downloads folder can be told apart without running either.
+    assert "OutputBaseFilename=Atlas-Setup-{#MyAppVersion}" in text
     assert "desktopicon" in text
 
 

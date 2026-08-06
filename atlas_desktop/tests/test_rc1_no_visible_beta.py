@@ -1,4 +1,19 @@
-"""RC-1 visible-copy gate for beta-era language."""
+"""Visible-copy gate for access-gating language.
+
+Originally an RC-1 rule that banned the word "beta" outright, written when the
+product was heading for an open v1.0.0 launch and any hedging read as an
+unfinished funnel.
+
+v1.0.6-beta.1 is a deliberately labelled private beta, so a factual version
+identifier and an honest "not included in this beta" disclaimer are exactly
+what the copy should say -- hiding them would be the defect. What must still
+never appear is the access-gating vocabulary: waitlist, invite-only, approval,
+pending, allowlist, early access. Those describe a signup funnel Atlas does not
+have, and promising one it cannot honour is the harm this gate exists to stop.
+
+So: "beta" is permitted only as a release identifier or as a statement of what
+a release does not include. Every other gated-access word stays forbidden.
+"""
 from __future__ import annotations
 
 import re
@@ -8,9 +23,30 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 
 FORBIDDEN = re.compile(
-    r"\b(beta|waitlist|invite|invite-only|approval|approved|pending|allowlist)\b|early access",
+    r"\b(waitlist|invite|invite-only|approval|approved|pending|allowlist)\b|early access",
     re.IGNORECASE,
 )
+
+# "beta" is allowed only in these shapes. Anything else -- "join the beta",
+# "beta access", "request beta" -- still fails, because that is funnel language.
+ALLOWED_BETA = re.compile(
+    r"""
+      \d+\.\d+\.\d+-beta(?:\.\d+)?        # a semantic version identifier
+    | (?:in|for|during|to)\s+this\s+beta  # "not included in this beta"
+    | this\s+beta                         # "this beta ships Windows only"
+    | the\s+beta\b                        # "suspended for the beta"
+    | private\s+beta\b                    # naming the release channel
+    | beta\s+(?:release|build|installer|feedback|smoke|gate|user)s?\b
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+BETA_WORD = re.compile(r"\bbeta\b", re.IGNORECASE)
+
+
+def _unlabelled_beta(line: str) -> bool:
+    """True when 'beta' appears in a shape that is not an honest release label."""
+    stripped = ALLOWED_BETA.sub("", line)
+    return bool(BETA_WORD.search(stripped))
 
 VISIBLE_FILES = [
     "README.md",
@@ -86,7 +122,7 @@ def test_rc1_visible_surfaces_do_not_use_beta_language():
         path = ROOT / rel
         assert path.exists(), rel
         for lineno, line in enumerate(_visible_text(path).splitlines(), start=1):
-            if FORBIDDEN.search(line):
+            if FORBIDDEN.search(line) or _unlabelled_beta(line):
                 matches.append(f"{rel}:{lineno}: {line.strip()}")
 
     assert matches == []
@@ -99,10 +135,12 @@ def test_rc1_visible_surfaces_do_not_use_beta_language():
 # flag, admin API paths) are allowed ONLY in backend modules that are never
 # rendered to users — those live under app/_lib and app/api, which are skipped.
 
-# Forbidden VISIBLE words (RC-1 contract). "approval" also covers
-# "pending approval"; "beta" also covers "private beta".
+# Forbidden VISIBLE words. "approval" also covers "pending approval".
+# "beta" is handled separately by _unlabelled_beta: permitted as a version
+# identifier or a not-included-in-this-beta statement, forbidden as funnel
+# language ("join the beta", "request beta access").
 FORBIDDEN_VISIBLE = re.compile(
-    r"\b(beta|waitlist|invite|approval)\b|early\s+access|private\s+beta",
+    r"\b(waitlist|invite|approval)\b|early\s+access",
     re.IGNORECASE,
 )
 
@@ -159,7 +197,7 @@ def test_rc1_recursive_visible_surfaces_have_no_beta_language():
         for snippet in SAFE_COMPAT_SNIPPETS:
             text = text.replace(snippet, "")
         for lineno, line in enumerate(text.splitlines(), start=1):
-            if FORBIDDEN_VISIBLE.search(line):
+            if FORBIDDEN_VISIBLE.search(line) or _unlabelled_beta(line):
                 offenders.append(f"{rel.as_posix()}:{lineno}: {line.strip()}")
 
     for rel_dir in SCAN_DIRS:
@@ -184,6 +222,30 @@ def test_rc1_recursive_visible_surfaces_have_no_beta_language():
 
     assert scanned > 0, "no files were scanned — surfaces missing?"
     assert offenders == [], "Visible beta/waitlist language found:\n" + "\n".join(offenders)
+
+
+def test_funnel_language_is_still_rejected():
+    """The narrowing must not have opened the door it was written to close."""
+    for line in (
+        "Join the beta and get early access",
+        "Request beta access below",
+        "You are on the waitlist",
+        "Your account is pending approval",
+        "Invite-only while we scale",
+    ):
+        assert FORBIDDEN_VISIBLE.search(line) or _unlabelled_beta(line), line
+
+
+def test_honest_release_labelling_is_allowed():
+    """A factual version and an honest exclusion must not trip the gate."""
+    for line in (
+        'const RELEASE_VERSION = "1.0.6-beta.1";',
+        "Ask Atlas is under development and is not included in this beta.",
+        "Paid plans are deliberately suspended for the beta.",
+        "Atlas v1.0.6-beta.1",
+    ):
+        assert not FORBIDDEN_VISIBLE.search(line), line
+        assert not _unlabelled_beta(line), line
 
 
 # ── Rendered desktop plan/usage payloads (RC-1) ──────────────────────────────

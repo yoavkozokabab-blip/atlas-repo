@@ -53,7 +53,7 @@ const releases = [
     date: "2026-07-10",
     label: "Launch build",
     items: [
-      "Ask Atlas: repo-aware questions with cited files — subsequently disabled and still under development; not included in the current beta.",
+      "Ask Atlas: repo-aware questions with cited files — subsequently disabled and still under development; not included in this beta.",
       "HN-ready first-run flow: load the sample repository, ask a prefilled question, and see cited files in about 30 seconds.",
       "One-click MCP setup for Claude Desktop, Cursor, and Codex - each with independent status, connect, test, and manual fallback.",
       "Local-first repository indexing: dependency graph, subsystem map, and impact analysis built entirely on your machine.",

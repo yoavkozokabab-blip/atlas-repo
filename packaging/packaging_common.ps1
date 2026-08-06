@@ -123,3 +123,22 @@ function Find-InnoSetupCompiler {
     }
     return $null
 }
+
+function Get-AtlasProductVersion {
+    <#
+        The one place packaging reads the product version from. Everything the
+        build emits  -  installer filename, Inno version defines, the executable
+        version resource, build_info.json  -  must trace back to this single
+        PRODUCT_VERSION so no two artifacts can disagree about what they are.
+    #>
+    param([Parameter(Mandatory = $true)][string]$Root)
+    $productFile = Join-Path $Root "atlas_desktop\product_info.py"
+    if (-not (Test-Path -LiteralPath $productFile)) {
+        throw "Cannot resolve product version: missing $productFile"
+    }
+    $match = Select-String -Path $productFile -Pattern 'PRODUCT_VERSION\s*=\s*"([^"]+)"' | Select-Object -First 1
+    if (-not $match) {
+        throw "Cannot resolve product version: PRODUCT_VERSION not found in $productFile"
+    }
+    return $match.Matches[0].Groups[1].Value
+}

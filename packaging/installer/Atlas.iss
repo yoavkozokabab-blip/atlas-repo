@@ -17,7 +17,9 @@ DefaultDirName={autopf}\Atlas
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir=output
-OutputBaseFilename=Atlas_Setup
+; Self-describing filename: a user with two installers in Downloads can tell
+; which is which without running either.
+OutputBaseFilename=Atlas-Setup-{#MyAppVersion}
 SetupIconFile=assets\atlas.ico
 ; Phase 155 — show plain-language install notes before installing.
 InfoBeforeFile=install_notes.txt
