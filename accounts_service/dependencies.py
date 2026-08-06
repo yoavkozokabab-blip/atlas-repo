@@ -80,7 +80,7 @@ def get_current_user(
     if user.status in ("suspended", "banned", "expired"):
         raise HTTPException(
             status_code=403,
-            detail=f"Account {user.status}. Contact support@useatlas.dev.",
+            detail=f"Account {user.status}. Contact yoavkozokabab@gmail.com.",
         )
     return user
 

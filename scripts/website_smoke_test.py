@@ -1,7 +1,7 @@
 """Live website smoke test for the Atlas site (use after deploy).
 
 Usage:
-  BASE_URL=https://useatlas.dev py -3 scripts/website_smoke_test.py
+  BASE_URL=https://atlas-repo-wu76.vercel.app py -3 scripts/website_smoke_test.py
   py -3 scripts/website_smoke_test.py http://127.0.0.1:3000
 
 Checks each page's status, response time, and a required text marker, plus

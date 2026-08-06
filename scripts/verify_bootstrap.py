@@ -123,7 +123,8 @@ check("GET /admin/users/{id} - role=superadmin",
 # Register a beta candidate
 beta_dev = secrets.token_hex(16)
 beta_reg = client.post("/auth/register", json={
-    "email": f"beta_{secrets.token_hex(4)}@useatlas.dev",
+    # RFC 6761 reserved TLD: never routes, never collides with a real domain.
+    "email": f"beta_{secrets.token_hex(4)}@example.invalid",
     "password": "Beta1234!",
     "device_id": beta_dev,
     "app_version": "0.1.0-beta",

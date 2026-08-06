@@ -1,7 +1,7 @@
 # Atlas Terms of Use
 
 > Effective date: 2026-07-09
-> Contact: support@useatlas.dev
+> Contact: yoavkozokabab@gmail.com
 
 1. **Use of Atlas.** Atlas is provided under these terms. Features may change, degrade,
    or be removed without notice. **[LAWYER REVIEW]**
@@ -40,4 +40,4 @@
 10. **Changes.** We may update these terms; continued use after changes constitutes
     acceptance. **[LAWYER REVIEW]**
 
-11. **Contact.** support@useatlas.dev.
+11. **Contact.** yoavkozokabab@gmail.com.

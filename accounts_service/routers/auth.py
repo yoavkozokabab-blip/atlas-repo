@@ -240,9 +240,9 @@ def login(req: LoginRequest, request: Request, db: Session = Depends(get_db)):
 
     if user.status in BLOCKED_STATUSES:
         reason_map = {
-            "suspended": "Your account has been suspended. Contact support@useatlas.dev.",
-            "banned": "Your account has been banned. Contact support@useatlas.dev.",
-            "expired": "Your access has expired. Contact support@useatlas.dev.",
+            "suspended": "Your account has been suspended. Contact yoavkozokabab@gmail.com.",
+            "banned": "Your account has been banned. Contact yoavkozokabab@gmail.com.",
+            "expired": "Your access has expired. Contact yoavkozokabab@gmail.com.",
         }
         raise HTTPException(status_code=403, detail=reason_map.get(user.status, "Account not available."))
 

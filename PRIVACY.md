@@ -1,7 +1,7 @@
 # Atlas Privacy Policy
 
 > Effective date: 2026-07-09
-> Contact: support@useatlas.dev
+> Contact: yoavkozokabab@gmail.com
 
 ## Summary
 
