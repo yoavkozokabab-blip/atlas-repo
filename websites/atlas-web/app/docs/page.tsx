@@ -30,15 +30,20 @@ export default function DocsPage() {
           <h2 id="quickstart">Quickstart</h2>
           <ol className="steps">
             <li>Open Atlas and click <b>Load sample repository</b> (or scan your own project folder).</li>
-            <li>Ask a repo-aware question such as <code>Where is authentication implemented?</code> — Atlas answers with cited files.</li>
+            <li>Open <b>Impact</b> and pick a file — Atlas lists the modules that import it directly, with the evidence behind each one.</li>
             <li>Connect Claude, Cursor, or Codex from the home screen so your agent can use the same index.</li>
           </ol>
 
           <h2 id="demo">Demo mode</h2>
           <p>The <b>HN demo</b> in the app&apos;s navigation is a guided tour: load the bundled sample
-            repository, ask a prefilled question, then step through <b>Impact</b>, <b>Debug</b>, and{" "}
+            repository, then step through <b>Impact</b>, <b>Debug</b>, and{" "}
             <b>Plan Change</b> on the same sample. Each step is one click and you can skip out at any
             point. Nothing in demo mode touches your own code.</p>
+
+          <h2 id="ask">Repository Q&amp;A</h2>
+          <p>Free-form <b>Ask Atlas</b> questions are under development and are <b>not included in
+            this beta</b>. Impact, Debug, Plan Change, the graph and the MCP tools all work today and
+            cite the exact files and dependencies behind every result.</p>
 
           <h2 id="mcp">MCP setup</h2>
           <p>Atlas ships a local MCP server (18 tools) that Claude Desktop, Cursor, and Codex can call.

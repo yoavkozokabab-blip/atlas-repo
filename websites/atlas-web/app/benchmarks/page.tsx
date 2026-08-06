@@ -4,7 +4,7 @@ import { PageShell } from "../_components/site";
 
 export const metadata: Metadata = {
   title: "Benchmarks - Atlas",
-  description: "Transparent, reproducible Atlas measurements: sample-repo indexing time, Ask Atlas latency, and retrieval quality on a 50-scenario suite.",
+  description: "Transparent, reproducible Atlas measurements: sample-repo indexing time, retrieval latency, and retrieval quality on a 50-scenario suite.",
 };
 
 export default function BenchmarksPage() {
@@ -20,7 +20,7 @@ export default function BenchmarksPage() {
           <ul>
             <li><b>Size:</b> 18 files / 17 production modules.</li>
             <li><b>Indexing time:</b> ~4 seconds, measured end-to-end (load + scan + graph build).</li>
-            <li><b>Ask Atlas latency:</b> 1–30 ms per question after indexing. Answers are deterministic lookups against the local index — there is no model call in the loop.</li>
+            <li><b>Retrieval latency:</b> 1–30 ms per lookup after indexing. Results are deterministic lookups against the local index — there is no model call in the loop. (Measured against the Ask Atlas retrieval path, which is under development and not included in this beta; Impact, Debug and Plan Change use the same index.)</li>
           </ul>
 
           <h2>Retrieval quality (50-scenario suite)</h2>

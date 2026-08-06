@@ -20,11 +20,15 @@ export const metadata: Metadata = {
 
 const capabilities = [
   ["Dependency graph", "A local map of modules, imports, hubs, cycles and dependency paths."],
-  ["Ask Atlas", "Repo-aware questions answered with cited files from the local evidence store."],
-  ["Impact", "Deterministic what-breaks analysis from the resolved graph before you edit."],
+  ["Impact", "Deterministic direct-dependency what-breaks analysis from the resolved graph before you edit."],
   ["Debug", "Start from a symptom or traceback and get a grounded investigation path."],
   ["Plan Change", "Generate a change plan around the files and symbols Atlas found."],
   ["MCP export", "Serve the same local index to Claude Code, Cursor and Codex."],
+] as const;
+
+/** Built, but not enabled in the shipping build. Never listed as available. */
+const inDevelopment = [
+  ["Ask Atlas", "Repository Q&A with cited files. Under development and not included in this beta."],
 ] as const;
 
 export default function FeaturesPage() {
@@ -37,7 +41,7 @@ export default function FeaturesPage() {
       <PremiumSection>
         <AsymSection
           eyebrow="Capabilities"
-          title="Ask about behavior, not filenames."
+          title="Answer with evidence, not filenames."
           intro="Atlas is not a chatbot over your repo. It is a deterministic local index your agents can query when they need grounded context."
           aside={<MetricBlock metrics={[
             [String(facts.mcpTools), "MCP tools"],
@@ -56,6 +60,10 @@ export default function FeaturesPage() {
               </li>
             ))}
           </ul>
+          <p className="note" style={{ marginTop: 24 }}>
+            <b>In development.</b>{" "}
+            {inDevelopment.map(([title, body]) => `${title} — ${body}`).join(" ")}
+          </p>
         </AsymSection>
       </PremiumSection>
 

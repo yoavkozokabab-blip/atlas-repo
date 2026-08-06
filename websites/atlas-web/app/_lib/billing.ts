@@ -10,7 +10,7 @@ export const PLANS = {
     price: 0,
     interval: null as null | "month",
     trialDays: 0,
-    blurb: "Core local app, local scan, Ask Atlas, MCP, Impact, Debug, Plan Change and Map.",
+    blurb: "Core local app, local scan, MCP, Impact, Debug, Plan Change and Map.",
   },
   pro: {
     id: "pro",
@@ -46,7 +46,7 @@ export interface BillingUnavailable {
   message: string;
 }
 
-/** Provider-neutral billing contract. v1.0.5 always selects DisabledBillingProvider. */
+/** Provider-neutral billing contract. The beta always selects DisabledBillingProvider. */
 export type PaddleEvent = {
   event_type?: string;
   data?: {
@@ -90,7 +90,7 @@ export class DisabledBillingProvider implements BillingProvider {
 /**
  * Dormant Paddle adapter. It is dependency-injected so lifecycle behavior can
  * be exhaustively tested without live credentials. `activeProvider` below is
- * intentionally never this class in v1.0.5.
+ * intentionally never this class while paid plans are suspended.
  */
 export class PaddleBillingProvider implements BillingProvider {
   constructor(private readonly operations: BillingProvider) {}

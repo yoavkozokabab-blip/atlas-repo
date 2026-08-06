@@ -13,7 +13,7 @@ const sections = [
     items: [
       "Windows installer (per-user, no admin required).",
       "Local-first repository indexing: dependency graph, subsystem map, entry points.",
-      "Ask Atlas with cited files, plus Impact, Debug, and Plan Change workflows.",
+      "Impact, Debug, and Plan Change workflows with cited files. Ask Atlas (free-form repository Q&A) is still under development.",
       "MCP integration for Claude Desktop, Cursor, and Codex with one-click config writes.",
       "30-second sample-repository demo.",
     ],

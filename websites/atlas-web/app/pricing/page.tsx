@@ -8,7 +8,10 @@ export const metadata: Metadata = {
   description: "Atlas pricing: Free local app today, Pro planned at $19/month with Paddle checkout when billing is configured.",
 };
 
-const free = ["Local repository scan", "Ask Atlas", "MCP integration", "Impact", "Debug", "Plan Change", "Map"];
+// Only what the shipping build actually does. Repository Q&A is disabled in
+// this release (manifest ask_enabled=false) and is listed as not included.
+const free = ["Local repository scan", "MCP integration", "Impact", "Debug", "Plan Change", "Map"];
+const planned = ["Ask Atlas — repository Q&A"];
 const pro = [
   "Everything in Free",
   "Unlimited repositories and indexing",
@@ -37,6 +40,10 @@ export default function PricingPage() {
             <div className="price">$0</div>
             <p className="note">Available today.</p>
             <ul>{free.map((item) => <li key={item}>{item}</li>)}</ul>
+            <p className="note" style={{ marginTop: 12 }}>
+              In development, not included in this beta:{" "}
+              {planned.join(", ")}.
+            </p>
             <Link className="btn-mag" href="/download">Download Atlas <span className="arw" aria-hidden>→</span></Link>
           </div>
 

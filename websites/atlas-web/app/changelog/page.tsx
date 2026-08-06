@@ -3,7 +3,7 @@ import { PageShell, PremiumSection, ReleaseVersionBlock } from "../_components/s
 
 export const metadata: Metadata = {
   title: "Changelog - Atlas",
-  description: "What shipped in Atlas v1.0: local-first indexing, Ask Atlas with cited files, MCP setup for Claude Code, Cursor, and Codex.",
+  description: "What shipped in Atlas v1.0: local-first indexing, impact analysis with cited files, MCP setup for Claude Code, Cursor, and Codex.",
 };
 
 const releases = [
@@ -53,7 +53,7 @@ const releases = [
     date: "2026-07-10",
     label: "Launch build",
     items: [
-      "Ask Atlas: repo-aware questions answered with cited files from the local index, including where-is-X-implemented routing.",
+      "Ask Atlas: repo-aware questions with cited files — subsequently disabled and still under development; not included in the current beta.",
       "HN-ready first-run flow: load the sample repository, ask a prefilled question, and see cited files in about 30 seconds.",
       "One-click MCP setup for Claude Desktop, Cursor, and Codex - each with independent status, connect, test, and manual fallback.",
       "Local-first repository indexing: dependency graph, subsystem map, and impact analysis built entirely on your machine.",
