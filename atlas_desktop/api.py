@@ -2072,6 +2072,18 @@ def submit_feedback(body: Dict[str, Any]) -> Dict[str, Any]:
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
     }
 
+    # Persist locally FIRST. Delivery can hang, fail or crash the process, and
+    # the user's words must survive all three — the local copy is the backstop,
+    # never something a failed send can lose.
+    try:
+        feedback_dir = os.path.join(_desktop_data_dir(), "feedback")
+        os.makedirs(feedback_dir, exist_ok=True)
+        feedback_file = os.path.join(feedback_dir, "feedback.jsonl")
+        with open(feedback_file, "a", encoding="utf-8") as fh:
+            fh.write(_json.dumps(payload) + "\n")
+    except Exception:
+        pass
+
     remote_url = _product.feedback_url()
     remote_sent = False
     if remote_url:
@@ -2085,7 +2097,9 @@ def submit_feedback(body: Dict[str, Any]) -> Dict[str, Any]:
                 headers={"Content-Type": "application/json", "Accept": "application/json"},
                 method="POST",
             )
-            resp = urllib.request.urlopen(req, timeout=10)
+            # Short: this runs inside a UI request, so a slow or unreachable
+            # service must not leave the user staring at a spinner.
+            resp = urllib.request.urlopen(req, timeout=5)
             try:
                 code = int(getattr(resp, "status", None) or resp.getcode())
                 remote_sent = 200 <= code < 300
@@ -2095,24 +2109,23 @@ def submit_feedback(body: Dict[str, Any]) -> Dict[str, Any]:
         except (urllib.error.URLError, urllib.error.HTTPError, OSError, ValueError):
             remote_sent = False
 
-    # Always persist to local JSONL — provides beta visibility regardless of remote config.
-    try:
-        feedback_dir = os.path.join(_desktop_data_dir(), "feedback")
-        os.makedirs(feedback_dir, exist_ok=True)
-        feedback_file = os.path.join(feedback_dir, "feedback.jsonl")
-        with open(feedback_file, "a", encoding="utf-8") as fh:
-            fh.write(_json.dumps(payload) + "\n")
-    except Exception:
-        pass
-
+    # The UI must never imply delivery that did not happen. "Saved" alone read
+    # as success while the report sat in a local file nobody would ever see.
+    support = _product.support_email()
     if remote_sent:
         msg = "Feedback sent — thank you."
         destination = "remote"
     elif remote_url:
-        msg = "Saved. We'll follow up at your email if provided."
+        msg = (
+            "Not sent — Atlas could not reach the feedback service. Your report is "
+            f"saved on this machine only. Please email {support} so it reaches us."
+        )
         destination = "local_after_remote_fail"
     else:
-        msg = "Saved. Email yoavkozokabab@gmail.com if you need immediate help."
+        msg = (
+            "Saved on this machine only — this build has no feedback service "
+            f"configured. Please email {support} so it reaches us."
+        )
         destination = "local"
 
     return {

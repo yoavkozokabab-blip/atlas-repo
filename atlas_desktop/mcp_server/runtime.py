@@ -21,7 +21,9 @@ from ..context_pack import build_context_pack_from_state
 
 MCP_PROTOCOL_VERSION = "2024-11-05"
 # Server version reported in initialize.serverInfo — kept in step with the app.
-ATLAS_MCP_VERSION = "0.1.0-beta"
+# Previously a hand-written "0.1.0-beta" that never moved, so an agent asking
+# the MCP server its version got a different answer from the app it belongs to.
+from ..product_info import PRODUCT_VERSION as ATLAS_MCP_VERSION  # noqa: F401
 
 _SECRET_KEY_RE = re.compile(
     r"(secret|token|password|passwd|api[_-]?key|authorization|bearer|cookie|session|credential)",

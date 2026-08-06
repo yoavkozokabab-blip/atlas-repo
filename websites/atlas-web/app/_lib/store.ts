@@ -86,12 +86,27 @@ export interface Session {
   revokedAt?: string | null;
 }
 
+/** Redacted beta feedback. Never carries source, paths, repo names or prompts. */
+export interface BetaFeedback {
+  feedbackId: string;
+  category: string;
+  message: string;
+  replyEmail?: string | null;
+  page?: string | null;
+  appVersion?: string | null;
+  buildCommit?: string | null;
+  installationId?: string | null;
+  environment: string;
+  diagnostics: Record<string, string | number | boolean>;
+}
+
 interface DBShape {
   users: User[];
   audit: AuditEntry[];
   resetTokens: { token: string; email: string; exp: number }[];
   waitlist: WaitlistEntry[];
   sessions: Session[];
+  feedback: BetaFeedback[];
 }
 
 export function newId(): string {
@@ -123,6 +138,11 @@ export interface Store {
   /** Returns duplicate:true if the email was already captured (idempotent). */
   addWaitlist(w: { email: string; role?: string; source?: string }): Promise<{ ok: boolean; duplicate: boolean }>;
   listWaitlist(limit?: number): Promise<WaitlistEntry[]>;
+  /**
+   * Idempotent on feedbackId, so a desktop retry after an ambiguous response
+   * cannot create a second row. Returns duplicate:true when already stored.
+   */
+  addFeedback(f: BetaFeedback): Promise<{ ok: boolean; duplicate: boolean }>;
   createSession(session: Session): Promise<void>;
   getSession(id: string): Promise<Session | undefined>;
   revokeSession(id: string): Promise<void>;
@@ -148,9 +168,10 @@ function load(): DBShape {
       resetTokens: d.resetTokens || [],
       waitlist: d.waitlist || [],
       sessions: d.sessions || [],
+      feedback: d.feedback || [],
     };
   } catch {
-    return { users: [], audit: [], resetTokens: [], waitlist: [], sessions: [] };
+    return { users: [], audit: [], resetTokens: [], waitlist: [], sessions: [], feedback: [] };
   }
 }
 function persist(db: DBShape): void {
@@ -236,6 +257,13 @@ const fileStore: Store = {
     return { ok: true, duplicate: false };
   },
   listWaitlist: async (limit = 1000) => load().waitlist.slice(-limit).reverse(),
+  addFeedback: async (f) => {
+    const db = load();
+    if (db.feedback.some((e) => e.feedbackId === f.feedbackId)) return { ok: true, duplicate: true };
+    db.feedback.push(f);
+    persist(db);
+    return { ok: true, duplicate: false };
+  },
   createSession: async (session) => {
     const db = load();
     db.sessions.push(session);
@@ -549,6 +577,34 @@ const supabaseStore: Store = {
         }),
       }),
       "waitlist-insert"
+    );
+    return { ok: true, duplicate: false };
+  },
+  addFeedback: async (f) => {
+    const existing = await sbRows(
+      await sb(`beta_feedback?feedback_id=eq.${enc(f.feedbackId)}&limit=1`),
+      "feedback-check",
+    );
+    if (existing[0]) return { ok: true, duplicate: true };
+    await sbRows(
+      await sb("beta_feedback", {
+        method: "POST",
+        headers: { Prefer: "resolution=ignore-duplicates" },
+        body: JSON.stringify({
+          feedback_id: f.feedbackId,
+          category: f.category,
+          message: f.message,
+          reply_email: f.replyEmail ?? null,
+          page: f.page ?? null,
+          app_version: f.appVersion ?? null,
+          build_commit: f.buildCommit ?? null,
+          installation_id: f.installationId ?? null,
+          environment: f.environment,
+          diagnostics: f.diagnostics,
+          created_at: new Date().toISOString(),
+        }),
+      }),
+      "feedback-insert",
     );
     return { ok: true, duplicate: false };
   },

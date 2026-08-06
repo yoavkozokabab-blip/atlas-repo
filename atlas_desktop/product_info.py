@@ -11,8 +11,12 @@ import urllib.error
 import urllib.request
 from typing import Any, Dict, Optional
 
-PRODUCT_VERSION = "1.0.6"
-LAUNCH_BUILD_LABEL = "Atlas v1.0.6"
+# One version string for the whole product: the app UI, executable metadata,
+# MCP serverInfo, build_info.json, the installer filename, the update manifest,
+# the Git tag and the release page all derive from this. Keep it in step with
+# CURRENT_WINDOWS_RELEASE.version in websites/atlas-web/app/_config.ts.
+PRODUCT_VERSION = "1.0.6-beta.1"
+LAUNCH_BUILD_LABEL = "Atlas v1.0.6-beta.1"
 DEFAULT_SUPPORT_EMAIL = "yoavkozokabab@gmail.com"
 
 _BUILD_DATE = time.strftime("%Y-%m-%d", time.gmtime())
@@ -67,12 +71,31 @@ def support_email() -> str:
     return (os.environ.get("ATLAS_SUPPORT_EMAIL") or "").strip() or DEFAULT_SUPPORT_EMAIL
 
 
+def _packaged_default(path: str) -> str:
+    """Canonical website URL for a packaged build; empty for source/dev runs.
+
+    Both feedback delivery and the update check used to be env-only with no
+    default. Nothing set those variables at package time, so an installed Atlas
+    silently had neither: feedback stayed on the user's disk while the UI
+    implied it had been sent, and no install ever learned about an update.
+    Packaged builds now default to the same authority the desktop already
+    authenticates against; source runs stay offline unless told otherwise.
+    """
+    if not getattr(sys, "frozen", False):
+        return ""
+    from .accounts_client import web_base
+
+    return f"{web_base()}{path}"
+
+
 def feedback_url() -> str:
-    return (os.environ.get("ATLAS_FEEDBACK_URL") or "").strip()
+    explicit = (os.environ.get("ATLAS_FEEDBACK_URL") or "").strip()
+    return explicit or _packaged_default("/api/feedback")
 
 
 def update_check_url() -> str:
-    return (os.environ.get("ATLAS_UPDATE_CHECK_URL") or "").strip()
+    explicit = (os.environ.get("ATLAS_UPDATE_CHECK_URL") or "").strip()
+    return explicit or _packaged_default("/api/update/windows")
 
 
 def version_info() -> Dict[str, Any]:
