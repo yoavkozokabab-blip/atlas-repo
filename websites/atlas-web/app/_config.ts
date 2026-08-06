@@ -32,11 +32,15 @@ export const CURRENT_WINDOWS_RELEASE = {
     process.env.ATLAS_INSTALLER_URL ||
     `${GITHUB_URL}/releases/download/${RELEASE_TAG}/${RELEASE_FILENAME}`,
   releaseUrl: process.env.NEXT_PUBLIC_GITHUB_RELEASE_URL || `${GITHUB_URL}/releases/tag/${RELEASE_TAG}`,
-  // Sentinels, not plausible values. A wrong-but-realistic hash is precisely
+  // Pasted verbatim from the installer build. Until a release is cut these are
+  // sentinels, not plausible values: a wrong-but-realistic hash is precisely
   // the defect this object exists to prevent, so an unfilled release fails
   // loudly in the gate instead of shipping a checksum that verifies nothing.
-  sha256: (process.env.NEXT_PUBLIC_INSTALLER_SHA256 || "PENDING_RELEASE_BUILD").toUpperCase(),
-  sizeBytes: Number(process.env.NEXT_PUBLIC_INSTALLER_SIZE_BYTES || 0),
+  sha256: (
+    process.env.NEXT_PUBLIC_INSTALLER_SHA256
+    || "1C8A470D4D9F20C92F1C80402DAABF84194928AE20308F3AC70FADEC3959B857"
+  ).toUpperCase(),
+  sizeBytes: Number(process.env.NEXT_PUBLIC_INSTALLER_SIZE_BYTES || 12_228_197),
   /** Windows-only, unsigned. Stated on every download surface — do not drop. */
   platform: "Windows",
   signed: false,

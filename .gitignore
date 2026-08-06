@@ -46,6 +46,9 @@ packaging/installer/staging/
 packaging/installer/output/
 packaging/installer/build_info.json
 packaging/installer/generated_version.iss
+# Generated from PRODUCT_VERSION by build_atlas_exe.ps1; committing it would
+# let a stale version resource outlive the version it was generated from.
+packaging/pyinstaller/version_info.txt
 installer/output/
 .env.local
 auth/jwt_secret
