@@ -1,0 +1,52 @@
+# Vercel deploys this repository with Root Directory = websites/atlas-web, so
+# the CLI uploads the repository root and builds from that subdirectory. The
+# root is a monorepo containing the desktop app, its packaged build output and
+# years of engineering reports: 16,212 files, which exceeds Vercel's 15,000
+# file upload limit and makes `vercel deploy` fail outright with
+# `missing_archive`.
+#
+# Nothing excluded here participates in the Next.js build. Keep websites/**
+# uploaded; everything below is desktop, packaging, or evidence.
+
+# Committed build output of the desktop app (see the release report: these are
+# tracked in git, which is its own cleanup task).
+dist
+staging
+packaging
+
+# Desktop application, its service and its vendored build toolchain.
+atlas_desktop
+accounts_service
+builder_core
+licensing
+.phase152_packaging_lib
+.phase150_inno
+
+# Engineering evidence and benchmark corpora.
+reports
+benchmarks
+external_repos
+data
+docs
+screenshots
+website_audit
+
+# Scratch directories left by past test runs.
+.phase137a_*
+.tmp_phase*
+tests_tmp
+
+# Dependencies and build artifacts anywhere in the tree. Vercel installs from
+# package-lock.json and builds in its own container.
+**/node_modules
+**/.next
+**/test-results
+**/playwright-report
+**/__pycache__
+
+# Local environment files must never be uploaded.
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.local
