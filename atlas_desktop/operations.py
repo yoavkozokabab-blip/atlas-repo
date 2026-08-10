@@ -25,6 +25,13 @@ _ALLOWED_USER_FIELDS = frozenset({
     "event", "event_type", "timestamp", "duration_ms", "token_count",
     "file_count", "repo_language", "workflow_type", "success", "surface", "screen",
     "duration_active_ms", "duration_elapsed_ms",
+    # 1.0.6-beta.2 launch funnel. This sanitizer runs BEFORE analytics_remote,
+    # so a property missing here is silently stripped and the funnel dimension
+    # arrives empty - which is exactly how beta.1 lost the MCP client name.
+    # Each of these is a closed enum, enforced again downstream and a third
+    # time server-side.
+    "agent", "workflow", "outcome", "status",
+    "tool_name", "error_code", "repo_size_bucket", "category",
 })
 
 # Fields added by the pipeline itself — always permitted.
