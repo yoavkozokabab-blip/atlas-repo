@@ -17,7 +17,7 @@ function identifier(storage: Storage, key: string): string {
   return value;
 }
 
-const SOURCE_KEY = "atlas_analytics_acquisition_source";
+const SOURCE_KEY = "atlas_analytics_acquisition_channel";
 
 /**
  * Sticky, session-scoped acquisition source.
@@ -27,7 +27,7 @@ const SOURCE_KEY = "atlas_analytics_acquisition_source";
  * string is gone. Capturing it once per session and replaying it on every
  * later event is what makes the HN funnel measurable end to end.
  */
-function acquisitionSource(): string {
+function acquisitionChannel(): string {
   try {
     const existing = sessionStorage.getItem(SOURCE_KEY);
     if (existing) return existing;
@@ -54,7 +54,7 @@ function acquisitionSource(): string {
 
 function campaignProperties(): Record<string, string> {
   const query = new URLSearchParams(window.location.search);
-  const values: Record<string, string> = { acquisition_source: acquisitionSource() };
+  const values: Record<string, string> = { acquisition_channel: acquisitionChannel() };
   const pairs: [string, string][] = [
     ["utm_source", "campaign_source"], ["utm_medium", "campaign_medium"], ["utm_campaign", "campaign_name"],
   ];
@@ -126,7 +126,7 @@ export default function AnalyticsClient() {
       const href = anchor.getAttribute("href") || "";
       // The CTA must carry the session's acquisition source too, otherwise the
       // HN funnel breaks at exactly the step that matters most.
-      if (href.startsWith("/download")) trackAnalyticsEvent("download_clicked", { properties: { surface: window.location.pathname, acquisition_source: acquisitionSource() }, deduplicationKey: crypto.randomUUID() });
+      if (href.startsWith("/download")) trackAnalyticsEvent("download_clicked", { properties: { surface: window.location.pathname, acquisition_channel: acquisitionChannel() }, deduplicationKey: crypto.randomUUID() });
     };
     document.addEventListener("click", onClick, true);
     return () => document.removeEventListener("click", onClick, true);

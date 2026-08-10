@@ -60,7 +60,7 @@ const PROPERTY_KEYS = new Set([
   "error_code",
   "repo_size_bucket",
   "category",
-  "acquisition_source",
+  "acquisition_channel",
 ]);
 
 /**
@@ -80,7 +80,7 @@ export const ENUM_PROPERTY_VALUES: Record<string, ReadonlySet<string>> = {
     "index_failure", "cancelled", "disk_failure", "unknown_safe",
   ]),
   category: new Set(["general", "bug", "feature", "question", "performance", "accuracy"]),
-  acquisition_source: new Set(["hacker_news", "search", "social", "referral", "direct", "unknown"]),
+  acquisition_channel: new Set(["hacker_news", "search", "social", "referral", "direct", "unknown"]),
   outcome: new Set(["success", "failure"]),
   status: new Set(["success", "failure", "cancelled"]),
   tool_name: new Set([
@@ -203,7 +203,7 @@ export function resolveAcquisitionSource(referrer: string | null, refParam: stri
   const explicit = (refParam || "").trim().toLowerCase();
   if (explicit === "hn" || explicit === "hackernews" || explicit === "hacker_news") return "hacker_news";
   const classified = classifyReferrer(referrer);
-  return ENUM_PROPERTY_VALUES.acquisition_source.has(classified) ? classified : "unknown";
+  return ENUM_PROPERTY_VALUES.acquisition_channel.has(classified) ? classified : "unknown";
 }
 
 export function classifyDevice(userAgent: string | null): "mobile" | "desktop" | "unknown" {
