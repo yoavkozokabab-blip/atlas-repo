@@ -35,9 +35,76 @@ _EVENT_MAP = {
     "mcp_connected": "mcp_connected",
     "mcp_connect": "mcp_connected",
     "analytics_opted_out": "analytics_opted_out",
+    # beta.2 funnel. Without these we can count launches and finished scans but
+    # cannot tell where anyone stops, which agent they use, or whether Atlas
+    # ever did something useful for them.
+    "onboarding_local_mode_selected": "onboarding_local_mode_selected",
+    "repository_selected": "repository_selected",
+    "scan_started": "scan_started",
+    "mcp_configured": "mcp_configured",
+    "mcp_initialize_success": "mcp_initialize_success",
+    "atlas_tool_called": "atlas_tool_called",
+    "first_value_reached": "first_value_reached",
+    "feedback_opened": "feedback_opened",
+    "feedback_submitted": "feedback_submitted",
 }
 _ALLOWED_EVENTS = frozenset(_EVENT_MAP.values())
-_ALLOWED_PROPERTIES = frozenset({"surface", "outcome", "status", "agent", "workflow", "duration_active_ms", "duration_elapsed_ms"})
+_ALLOWED_PROPERTIES = frozenset({
+    "surface", "outcome", "status", "agent", "workflow",
+    "duration_active_ms", "duration_elapsed_ms",
+    # beta.2 additions. Every one is a closed enum or a coarse bucket; none can
+    # carry a name, path, identifier or free text.
+    "tool_name", "error_code", "repo_size_bucket", "category",
+})
+
+# Value-level allowlists. Key filtering alone is not enough: a caller could put
+# a repository path in a permitted key. Anything not in these sets is replaced
+# with a safe sentinel or dropped, never forwarded.
+_AGENTS = frozenset({"claude", "cursor", "codex", "other"})
+_REPO_SIZE_BUCKETS = frozenset({"tiny", "small", "medium", "large", "very_large"})
+_ERROR_CODES = frozenset({
+    "permission_denied", "invalid_repository", "parser_failure",
+    "index_failure", "cancelled", "disk_failure", "unknown_safe",
+})
+_FEEDBACK_CATEGORIES = frozenset({
+    "general", "bug", "feature", "question", "performance", "accuracy",
+})
+# The 18 MCP tools this build exposes. An unknown tool name is dropped rather
+# than forwarded, so a renamed or injected tool cannot leak through.
+_TOOL_NAMES = frozenset({
+    "atlas_scan_repo", "atlas_get_codebase_map", "atlas_repo_summary",
+    "atlas_get_architecture", "atlas_get_dependency_graph", "atlas_find_relevant_files",
+    "atlas_build_context_pack", "atlas_what_breaks", "atlas_get_impact_analysis",
+    "atlas_plan_change", "atlas_get_change_plan", "atlas_root_cause",
+    "atlas_find_file", "atlas_repo_health", "atlas_export_for_claude",
+    "atlas_export_for_cursor", "atlas_export_for_codex", "atlas_health",
+})
+# The pre-existing free-text properties are closed here too. A permitted key
+# was previously a licence to carry any string that dodged the sensitive-value
+# regex, so a filename like "billing_service.py" or a source snippet could ride
+# out in `surface` or `workflow`. Every string property is now a closed set.
+_SURFACES = frozenset({
+    "desktop", "first_run", "workbench", "home", "graph", "impact", "debug",
+    "plan", "memory", "files", "agents", "diagnostics", "settings", "support", "other",
+})
+_WORKFLOWS = frozenset({
+    "scan", "impact", "debug", "plan", "export", "understanding", "memory", "other",
+})
+_OUTCOMES = frozenset({"success", "failure"})
+_STATUSES = frozenset({"success", "failure", "cancelled"})
+
+_ENUM_PROPERTIES: Dict[str, tuple] = {
+    # property -> (allowed values, fallback or None to drop)
+    "agent": (_AGENTS, "other"),
+    "repo_size_bucket": (_REPO_SIZE_BUCKETS, None),
+    "error_code": (_ERROR_CODES, "unknown_safe"),
+    "category": (_FEEDBACK_CATEGORIES, "general"),
+    "tool_name": (_TOOL_NAMES, None),
+    "surface": (_SURFACES, "other"),
+    "workflow": (_WORKFLOWS, "other"),
+    "outcome": (_OUTCOMES, None),
+    "status": (_STATUSES, None),
+}
 _SENSITIVE = re.compile(
     r"(?:[a-z]:\\|\\\\|/(?:users|home|var|etc|private|tmp)/|"
     r"\b[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9-]+(?:\.[a-z0-9-]+)+\b|"
@@ -178,6 +245,36 @@ def _contains_forbidden(value: Any) -> bool:
     return False
 
 
+def _forbidden_in_payload(properties: Dict[str, Any]) -> bool:
+    """Whether an event must be dropped outright rather than sanitized.
+
+    The blunt version of this check scanned every key and value against the
+    sensitive-word pattern, which contains a bare `repo`. That silently
+    destroyed the entire `repository_selected` and `scan_started` events,
+    because their own property is called `repo_size_bucket` and one of the
+    error codes is `invalid_repository` - the funnel would have looked empty
+    with no error anywhere.
+
+    So: a key we defined is trusted as a name. Its value is trusted only when
+    the property is enum-constrained, because then it can only ever be one of
+    our own terms. Everything else is still scanned, and any hit kills the
+    whole event rather than being quietly stripped.
+    """
+    for key, value in properties.items():
+        if key not in _ALLOWED_PROPERTIES:
+            if _SENSITIVE.search(str(key)) or _contains_forbidden(value):
+                return True
+            continue
+        # The exemption is only for plain strings, which enum membership fully
+        # constrains. A dict/list under an enum key is still scanned, so
+        # `{"surface": {"path": "C:\\..."}}` keeps killing the whole event.
+        if key in _ENUM_PROPERTIES and isinstance(value, str):
+            continue
+        if _contains_forbidden(value):
+            return True
+    return False
+
+
 def _safe_properties(properties: Dict[str, Any]) -> Dict[str, Any]:
     """Return only primitive, allowlisted coarse metadata.
 
@@ -185,7 +282,7 @@ def _safe_properties(properties: Dict[str, Any]) -> Dict[str, Any]:
     prevents accidental repository data, source snippets or prompts from
     crossing the local boundary through a future caller.
     """
-    if _contains_forbidden(properties):
+    if _forbidden_in_payload(properties):
         return {}
     output: Dict[str, Any] = {}
     for key, value in properties.items():
@@ -197,8 +294,28 @@ def _safe_properties(properties: Dict[str, Any]) -> Dict[str, Any]:
             output[key] = max(0, min(int(value), 86_400_000))
         elif isinstance(value, str):
             cleaned = value.strip()[:80]
-            if cleaned and not _SENSITIVE.search(cleaned):
+            if not cleaned:
+                continue
+            enum = _ENUM_PROPERTIES.get(key)
+            if enum is None:
+                # Free-text property: the word filter is the only defence.
+                if _SENSITIVE.search(cleaned):
+                    continue
                 output[key] = cleaned
+                continue
+            # Enum property: membership is strictly stronger than the word
+            # filter, and the filter would reject our own terms - it contains a
+            # bare `repo`, which matches the legitimate code `invalid_repository`.
+            allowed, fallback = enum
+            # A value outside the closed set is never forwarded verbatim: it is
+            # either mapped to a sentinel or dropped. This is what stops a
+            # repository name arriving in `tool_name` or a raw exception string
+            # arriving in `error_code`.
+            normalized = cleaned.lower()
+            if normalized in allowed:
+                output[key] = normalized
+            elif fallback is not None:
+                output[key] = fallback
     return output
 
 
@@ -341,7 +458,7 @@ def track_pipeline_event(event: str, *, installation_id: Optional[str], app_vers
         event_name = _EVENT_MAP.get(event, event if event in _ALLOWED_EVENTS else "")
     if not event_name:
         return
-    if _contains_forbidden(properties):
+    if _forbidden_in_payload(properties):
         return
     identity = str(installation_id or "").strip()
     if not re.fullmatch(r"[A-Za-z0-9._:-]{8,160}", identity):
@@ -361,3 +478,37 @@ def track_pipeline_event(event: str, *, installation_id: Optional[str], app_vers
 def record_first_run(*, installation_id: Optional[str], app_version: str, build_commit: str) -> None:
     """Legacy no-op: website clicks never claim a completed installation."""
     return None
+
+
+def _first_value_path() -> str:
+    return os.path.join(_operations_dir(), "first-value.json")
+
+
+def first_value_reached() -> bool:
+    """Whether this installation has already recorded its first value."""
+    value = _read_json(_first_value_path(), None)
+    return isinstance(value, dict) and value.get("reached") is True
+
+
+def mark_first_value(*, agent: str = "", tool_name: str = "") -> bool:
+    """Record the first successful Atlas tool execution, exactly once.
+
+    `first_value_reached` is the single number that says whether Atlas actually
+    did something useful for someone, so it must not be inflated by restarts or
+    by a user running a second tool. The marker file makes it idempotent across
+    process restarts; a write failure fails CLOSED (returns False, no event) so
+    a disk problem can never turn one install into a stream of first values.
+
+    Returns True only on the transition, i.e. only when an event should be sent.
+    """
+    with _LOCK:
+        if first_value_reached():
+            return False
+        stored = _write_json(_first_value_path(), {
+            "reached": True,
+            "at": int(time.time()),
+            # Coarse context only, and only from closed enums.
+            "agent": str(agent or "")[:16],
+            "tool_name": str(tool_name or "")[:64],
+        })
+        return bool(stored)

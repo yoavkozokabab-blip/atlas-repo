@@ -85,7 +85,18 @@ def accounts_state(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, A
 
 
 def accounts_guest_start(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:
-    return accounts_client.start_guest_session()
+    result = accounts_client.start_guest_session()
+    # "Continue without an account" is the first funnel step after launch and
+    # the only onboarding choice this build offers, so a drop-off here means
+    # the user never got past the first screen.
+    if result.get("ok"):
+        try:
+            from .api import track_analytics_event
+
+            track_analytics_event("onboarding_local_mode_selected", surface="first_run")
+        except Exception:
+            pass
+    return result
 
 
 def accounts_guest_clear(_body: Dict[str, Any], _query: Dict[str, str]) -> Dict[str, Any]:

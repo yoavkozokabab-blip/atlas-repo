@@ -7,6 +7,7 @@ import {
   classifyBrowser,
   classifyDevice,
   classifyReferrer,
+  resolveAcquisitionSource,
   sanitizeIdentifier,
   sanitizeProperties,
   sanitizeRoute,
@@ -89,6 +90,13 @@ export function buildAnalyticsRow(input: EventInput): AnalyticsRow {
         referrer_category: classifyReferrer(input.request.headers.get("referer")),
         device_category: classifyDevice(input.request.headers.get("user-agent")),
         browser_category: classifyBrowser(input.request.headers.get("user-agent")),
+        // Server-derived so the client cannot claim an arbitrary source. A
+        // client-supplied acquisition_source that survived sanitizeProperties
+        // (i.e. was already in the closed set) is preferred, because only the
+        // browser knows the ?ref= the session actually landed with.
+        acquisition_source: typeof properties.acquisition_source === "string"
+          ? properties.acquisition_source
+          : resolveAcquisitionSource(input.request.headers.get("referer"), null),
       } : {}),
     },
   };

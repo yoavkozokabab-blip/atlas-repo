@@ -250,5 +250,5 @@ def test_mcp_reports_the_product_version(monkeypatch: pytest.MonkeyPatch) -> Non
 
 
 def test_release_version_is_the_beta_identity() -> None:
-    assert product_info.PRODUCT_VERSION == "1.0.6-beta.1"
+    assert product_info.PRODUCT_VERSION == "1.0.6-beta.2"
     assert product_info.LAUNCH_BUILD_LABEL.endswith(product_info.PRODUCT_VERSION)

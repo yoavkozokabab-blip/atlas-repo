@@ -54,7 +54,12 @@ def test_demo_scan_uses_sample_remote_milestone(monkeypatch):
     monkeypatch.setattr(analytics_remote, "_schedule_flush", lambda: None)
     assert api.load_demo_mode("small")["ok"]
     queued = analytics_remote._load_queue()
-    assert [event["eventName"] for event in queued] == ["sample_scan_completed"]
+    names = [event["eventName"] for event in queued]
+    # beta.2 records the funnel around the scan too, so the sample repository
+    # walks the same steps a real one does. The demo scan must still finish on
+    # the SAMPLE milestone and must never be counted as a real repository scan.
+    assert names == ["repository_selected", "scan_started", "sample_scan_completed"]
+    assert "real_repo_scan_completed" not in names
 
 
 def test_export_demo_bundle():

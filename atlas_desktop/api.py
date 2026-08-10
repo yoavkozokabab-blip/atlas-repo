@@ -803,6 +803,52 @@ def track_analytics_event(event: str, **properties: Any) -> Dict[str, Any]:
     return _ops.pipeline_track_event(event, **safe)
 
 
+# Coarse size buckets keep scan-duration and failure numbers comparable without
+# ever revealing how large a specific user's private repository is.
+def _repo_size_bucket(file_count: Any) -> str:
+    try:
+        count = int(file_count or 0)
+    except (TypeError, ValueError):
+        return "tiny"
+    if count < 50:
+        return "tiny"
+    if count < 200:
+        return "small"
+    if count < 1_000:
+        return "medium"
+    if count < 5_000:
+        return "large"
+    return "very_large"
+
+
+# Scan failures must be countable without shipping an exception string. Every
+# outcome maps into this closed set; anything unrecognised becomes unknown_safe.
+_SCAN_ERROR_CODES = {
+    "permission": "permission_denied",
+    "denied": "permission_denied",
+    "invalid": "invalid_repository",
+    "not_a_repository": "invalid_repository",
+    "empty": "invalid_repository",
+    "parse": "parser_failure",
+    "parser": "parser_failure",
+    "index": "index_failure",
+    "cancelled": "cancelled",
+    "canceled": "cancelled",
+    "disk": "disk_failure",
+    "space": "disk_failure",
+}
+
+
+def _scan_error_code(code: Any) -> str:
+    text = str(code or "").strip().lower()
+    if not text:
+        return "unknown_safe"
+    for marker, mapped in _SCAN_ERROR_CODES.items():
+        if marker in text:
+            return mapped
+    return "unknown_safe"
+
+
 def system_identity() -> Dict[str, Any]:
     return _ops.get_system_identity()
 
@@ -1338,6 +1384,14 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
             except Exception:
                 pass
             if isinstance(exc, Exception):
+                # Only a closed error code travels. The exception string stays
+                # local: it routinely contains the repository path.
+                track_analytics_event(
+                    "scan_failed",
+                    error_code=_scan_error_code(type(exc).__name__),
+                    repo_size_bucket=str(_STATE.get("scan_size_bucket") or "tiny"),
+                    status="failure",
+                )
                 return {"ok": False, "code": "scan_failed", "error": "The repository scan could not complete.", "stage": "error"}
             raise
         if not result.get("ok"):
@@ -1354,6 +1408,12 @@ def scan_repository(path: Optional[str] = None, scope: Optional[Dict[str, Any]] 
                 )
             except Exception:
                 pass
+            track_analytics_event(
+                "scan_failed",
+                error_code=_scan_error_code(result.get("code")),
+                repo_size_bucket=str(_STATE.get("scan_size_bucket") or "tiny"),
+                status="failure",
+            )
         else:
             # License integration (opt-in via ATLAS_LICENSING_ENABLED): emit a
             # repo_scanned analytics event and, for Free users over the cap,
@@ -1398,6 +1458,13 @@ def _scan_repository_locked(path: Optional[str] = None, scope: Optional[Dict[str
     repo = validation["path"]
     _STATE["demo_mode"] = _is_demo_path(repo)
     _STATE["last_scope"] = scope_data
+    # Funnel: the repository is chosen and the scan is about to run. Only the
+    # coarse size bucket travels — never the path, name, remote or branch.
+    _size_bucket = _repo_size_bucket(estimate.get("code_files") or estimate.get("total_files") or 0)
+    track_analytics_event("repository_selected", surface="workbench", repo_size_bucket=_size_bucket)
+    track_analytics_event("scan_started", repo_size_bucket=_size_bucket, workflow="scan")
+    _STATE["scan_started_at"] = time.time()
+    _STATE["scan_size_bucket"] = _size_bucket
     scan_job = _STATE.get("scan_job") or {"id": None, "cancelled": False, "stage": "idle"}
     previous_stage = scan_job.get("stage", "idle")
     if previous_stage in {"idle", "completed"}:
@@ -1840,6 +1907,9 @@ def _scan_repository_locked(path: Optional[str] = None, scope: Optional[Dict[str
         edges=scan["dependency_edges"],
         cache_hit=False,
         massive_mode=massive_mode,
+        status="success",
+        repo_size_bucket=_repo_size_bucket(scan.get("file_count")),
+        duration_elapsed_ms=int(max(0.0, time.time() - float(_STATE.get("scan_started_at") or time.time())) * 1000),
     )
     _record_usage("scan_completed", cache_hit=False, massive_mode=massive_mode)
     _persist_scan_snapshot()
@@ -2084,6 +2154,7 @@ def submit_feedback(body: Dict[str, Any]) -> Dict[str, Any]:
     except Exception:
         pass
 
+    track_analytics_event("feedback_opened", surface="support")
     remote_url = _product.feedback_url()
     remote_sent = False
     if remote_url:
@@ -2113,6 +2184,10 @@ def submit_feedback(body: Dict[str, Any]) -> Dict[str, Any]:
     # as success while the report sat in a local file nobody would ever see.
     support = _product.support_email()
     if remote_sent:
+        # Emitted only after the remote POST actually succeeded, so this event
+        # counts delivered reports rather than attempts. The message text is
+        # never sent through analytics — only the closed-enum category.
+        track_analytics_event("feedback_submitted", category=category, outcome="success")
         msg = "Feedback sent — thank you."
         destination = "remote"
     elif remote_url:
@@ -5231,8 +5306,14 @@ def mcp_connections_status() -> Dict[str, Any]:
 
 
 def _tracked_mcp_write(tool: str, result: Dict[str, Any]) -> Dict[str, Any]:
-    # Local-only analytics: tool name + outcome, never config contents or paths.
-    track_analytics_event("mcp_connect", tool=tool, ok=bool(result.get("ok")), code=result.get("code") or "")
+    # Never config contents or paths. `agent` is a closed enum so the funnel can
+    # be split by client; `tool` alone used to be dropped by the property
+    # allowlist, which is why beta.1 could not tell Claude from Cursor.
+    track_analytics_event(
+        "mcp_configured",
+        agent=tool if tool in ("claude", "cursor", "codex") else "other",
+        outcome="success" if result.get("ok") else "failure",
+    )
     return result
 
 

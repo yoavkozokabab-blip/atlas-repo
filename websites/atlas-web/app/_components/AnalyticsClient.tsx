@@ -17,9 +17,44 @@ function identifier(storage: Storage, key: string): string {
   return value;
 }
 
+const SOURCE_KEY = "atlas_analytics_acquisition_source";
+
+/**
+ * Sticky, session-scoped acquisition source.
+ *
+ * The landing page is where `?ref=hn` and the HN referrer exist; by the time
+ * the visitor clicks Download the referrer is our own site and the query
+ * string is gone. Capturing it once per session and replaying it on every
+ * later event is what makes the HN funnel measurable end to end.
+ */
+function acquisitionSource(): string {
+  try {
+    const existing = sessionStorage.getItem(SOURCE_KEY);
+    if (existing) return existing;
+    const ref = (new URLSearchParams(window.location.search).get("ref") || "").trim().toLowerCase();
+    let source = "unknown";
+    if (ref === "hn" || ref === "hackernews" || ref === "hacker_news") {
+      source = "hacker_news";
+    } else if (document.referrer) {
+      try {
+        const host = new URL(document.referrer).hostname.toLowerCase();
+        if (host === "news.ycombinator.com") source = "hacker_news";
+        else if (host.endsWith(new URL(window.location.href).hostname)) source = existing || "unknown";
+        else source = "referral";
+      } catch { /* keep unknown */ }
+    } else {
+      source = "direct";
+    }
+    sessionStorage.setItem(SOURCE_KEY, source);
+    return source;
+  } catch {
+    return "unknown";
+  }
+}
+
 function campaignProperties(): Record<string, string> {
   const query = new URLSearchParams(window.location.search);
-  const values: Record<string, string> = {};
+  const values: Record<string, string> = { acquisition_source: acquisitionSource() };
   const pairs: [string, string][] = [
     ["utm_source", "campaign_source"], ["utm_medium", "campaign_medium"], ["utm_campaign", "campaign_name"],
   ];
@@ -89,7 +124,9 @@ export default function AnalyticsClient() {
       const anchor = (event.target as Element | null)?.closest?.("a[href]") as HTMLAnchorElement | null;
       if (!anchor) return;
       const href = anchor.getAttribute("href") || "";
-      if (href.startsWith("/download")) trackAnalyticsEvent("download_clicked", { properties: { surface: window.location.pathname }, deduplicationKey: crypto.randomUUID() });
+      // The CTA must carry the session's acquisition source too, otherwise the
+      // HN funnel breaks at exactly the step that matters most.
+      if (href.startsWith("/download")) trackAnalyticsEvent("download_clicked", { properties: { surface: window.location.pathname, acquisition_source: acquisitionSource() }, deduplicationKey: crypto.randomUUID() });
     };
     document.addEventListener("click", onClick, true);
     return () => document.removeEventListener("click", onClick, true);

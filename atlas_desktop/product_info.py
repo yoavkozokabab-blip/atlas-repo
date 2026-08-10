@@ -15,8 +15,8 @@ from typing import Any, Dict, Optional
 # MCP serverInfo, build_info.json, the installer filename, the update manifest,
 # the Git tag and the release page all derive from this. Keep it in step with
 # CURRENT_WINDOWS_RELEASE.version in websites/atlas-web/app/_config.ts.
-PRODUCT_VERSION = "1.0.6-beta.1"
-LAUNCH_BUILD_LABEL = "Atlas v1.0.6-beta.1"
+PRODUCT_VERSION = "1.0.6-beta.2"
+LAUNCH_BUILD_LABEL = "Atlas v1.0.6-beta.2"
 DEFAULT_SUPPORT_EMAIL = "yoavkozokabab@gmail.com"
 
 _BUILD_DATE = time.strftime("%Y-%m-%d", time.gmtime())

@@ -13,6 +13,7 @@ import os
 import re
 import sys
 import threading
+import time
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 from .. import agent_integrations, api, repository_memory as repo_memory
@@ -39,6 +40,8 @@ _SAFE_TOKEN_METRIC_KEYS = {
 }
 
 _SESSION_ID: Optional[str] = None
+# Closed-enum agent for this MCP session, set at initialize.
+_AGENT: str = "other"
 _HEARTBEAT_STOP: Optional[threading.Event] = None
 _HEARTBEAT_THREAD: Optional[threading.Thread] = None
 _HEARTBEAT_INTERVAL_SECONDS = 10.0
@@ -1009,13 +1012,80 @@ def _start_connection_heartbeat() -> None:
     _HEARTBEAT_THREAD.start()
 
 
+_AGENT_MARKERS = (("claude", "claude"), ("cursor", "cursor"), ("codex", "codex"))
+
+
+def _agent_from_client(info: Dict[str, Any]) -> str:
+    """Map the MCP clientInfo name onto the closed agent enum.
+
+    Only the enum value ever leaves the machine — never the raw client string,
+    which is attacker/third-party controlled and could contain anything.
+    """
+    name = str((info or {}).get("name") or "").strip().lower()
+    for marker, agent in _AGENT_MARKERS:
+        if marker in name:
+            return agent
+    return "other"
+
+
+def _emit(event: str, **properties: Any) -> None:
+    """Fire-and-forget analytics from the MCP process. Never raises.
+
+    The MCP server is what an agent talks to; an analytics problem here must
+    never surface as a tool failure to Claude/Cursor/Codex.
+    """
+    try:
+        from .. import api as _api
+
+        _api.track_analytics_event(event, **properties)
+    except Exception:
+        pass
+
+
 def _record_initialize(params: Dict[str, Any]) -> None:
-    global _SESSION_ID
+    global _SESSION_ID, _AGENT
     info = params.get("clientInfo") if isinstance(params, dict) else {}
     if not isinstance(info, dict):
         info = {}
+    _AGENT = _agent_from_client(info)
     _SESSION_ID = mcp_connection_status.record_initialize(info)
     _start_connection_heartbeat()
+    _emit("mcp_initialize_success", agent=_AGENT, outcome="success")
+
+
+# Tools that only report on Atlas itself. Reaching one of these does not mean
+# Atlas produced repository value, so they never trigger first_value_reached.
+_NON_VALUE_TOOLS = frozenset({"atlas_health", "atlas_repo_health"})
+
+
+def _track_tool_call(tool_name: str, payload: Dict[str, Any], elapsed: float) -> None:
+    """Record that a tool ran, and the first time one produced real value.
+
+    Only the tool name (validated against the shipped enum downstream), the
+    agent enum, an outcome and a coarse duration are recorded. Arguments, the
+    task text, the returned context, file names and symbols are never touched
+    here and cannot reach analytics through this path.
+    """
+    ok = bool(isinstance(payload, dict) and payload.get("ok"))
+    _emit(
+        "atlas_tool_called",
+        tool_name=tool_name,
+        agent=_AGENT,
+        outcome="success" if ok else "failure",
+        duration_elapsed_ms=int(max(0.0, elapsed) * 1000),
+    )
+    if not ok or tool_name in _NON_VALUE_TOOLS:
+        return
+    # First value = the first successful, meaningful Atlas tool execution
+    # against a scanned repository. Recorded exactly once per installation,
+    # persisted so restarts cannot re-emit it.
+    try:
+        from .. import analytics_remote
+
+        if analytics_remote.mark_first_value(agent=_AGENT, tool_name=tool_name):
+            _emit("first_value_reached", tool_name=tool_name, agent=_AGENT)
+    except Exception:
+        pass
 
 
 def _record_activity() -> None:
@@ -1088,7 +1158,10 @@ def handle_jsonrpc(message: Any) -> Optional[Dict[str, Any]]:
             arguments = params.get("arguments", {})
             if not isinstance(arguments, dict):
                 return _invalid_request("Invalid tools/call parameters", msg_id)
-            payload = call_tool(str(params.get("name") or ""), arguments)
+            tool_name = str(params.get("name") or "")
+            started = time.time()
+            payload = call_tool(tool_name, arguments)
+            _track_tool_call(tool_name, payload, time.time() - started)
             return {"jsonrpc": "2.0", "id": msg_id, "result": _mcp_tool_result(payload)}
         return {
             "jsonrpc": "2.0",

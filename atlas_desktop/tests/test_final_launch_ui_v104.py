@@ -46,8 +46,8 @@ def _run_node(script: str) -> dict:
 
 
 def test_product_version_matches_the_release_identity():
-    assert product_info.PRODUCT_VERSION == "1.0.6-beta.1"
-    assert product_info.LAUNCH_BUILD_LABEL == "Atlas v1.0.6-beta.1"
+    assert product_info.PRODUCT_VERSION == "1.0.6-beta.2"
+    assert product_info.LAUNCH_BUILD_LABEL == "Atlas v1.0.6-beta.2"
 
 
 def test_footer_and_settings_hide_public_build_hash():

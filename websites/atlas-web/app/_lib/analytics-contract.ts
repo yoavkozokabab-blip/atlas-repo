@@ -14,6 +14,17 @@ export const DESKTOP_ANALYTICS_EVENTS = [
   "impact_completed",
   "mcp_connected",
   "analytics_opted_out",
+  // beta.2 funnel: where people stop, which agent they use, and whether Atlas
+  // ever did something useful for them.
+  "onboarding_local_mode_selected",
+  "repository_selected",
+  "scan_started",
+  "mcp_configured",
+  "mcp_initialize_success",
+  "atlas_tool_called",
+  "first_value_reached",
+  "feedback_opened",
+  "feedback_submitted",
 ] as const;
 
 export const ANALYTICS_EVENTS = [...WEBSITE_ANALYTICS_EVENTS, ...DESKTOP_ANALYTICS_EVENTS] as const;
@@ -43,7 +54,44 @@ const PROPERTY_KEYS = new Set([
   "campaign_name",
   "device_category",
   "browser_category",
+  // beta.2. Every one is value-validated below, not merely key-allowlisted:
+  // a permitted key is not a licence to carry arbitrary text.
+  "tool_name",
+  "error_code",
+  "repo_size_bucket",
+  "category",
+  "acquisition_source",
 ]);
+
+/**
+ * Value-level allowlists.
+ *
+ * Key filtering alone is not enough. A modified or third-party client can put
+ * a repository path in `tool_name` or a raw exception in `error_code`, and the
+ * key allowlist would happily pass it through. Any value outside these sets is
+ * dropped rather than stored, so the column can only ever contain terms we
+ * defined ourselves.
+ */
+export const ENUM_PROPERTY_VALUES: Record<string, ReadonlySet<string>> = {
+  agent: new Set(["claude", "cursor", "codex", "other"]),
+  repo_size_bucket: new Set(["tiny", "small", "medium", "large", "very_large"]),
+  error_code: new Set([
+    "permission_denied", "invalid_repository", "parser_failure",
+    "index_failure", "cancelled", "disk_failure", "unknown_safe",
+  ]),
+  category: new Set(["general", "bug", "feature", "question", "performance", "accuracy"]),
+  acquisition_source: new Set(["hacker_news", "search", "social", "referral", "direct", "unknown"]),
+  outcome: new Set(["success", "failure"]),
+  status: new Set(["success", "failure", "cancelled"]),
+  tool_name: new Set([
+    "atlas_scan_repo", "atlas_get_codebase_map", "atlas_repo_summary",
+    "atlas_get_architecture", "atlas_get_dependency_graph", "atlas_find_relevant_files",
+    "atlas_build_context_pack", "atlas_what_breaks", "atlas_get_impact_analysis",
+    "atlas_plan_change", "atlas_get_change_plan", "atlas_root_cause",
+    "atlas_find_file", "atlas_repo_health", "atlas_export_for_claude",
+    "atlas_export_for_cursor", "atlas_export_for_codex", "atlas_health",
+  ]),
+};
 const SENSITIVE_KEY = /(authorization|cookie|email|password|prompt|repo|path|secret|token)/i;
 const LOCAL_PATH = /(?:[a-z]:\\|\\\\|\/(?:Users|home|var|etc|private|tmp)\/)/i;
 const SECRET_VALUE = /(?:bearer\s+[a-z0-9._-]+|sb_secret_|service[_-]?role|eyJ[a-z0-9_-]{10,}\.)/i;
@@ -115,6 +163,13 @@ export function sanitizeProperties(value: unknown): Record<string, string | numb
     if (typeof raw !== "string") continue;
     const text = raw.trim().slice(0, 120);
     if (!text || LOCAL_PATH.test(text) || SECRET_VALUE.test(text)) continue;
+    const allowed = ENUM_PROPERTY_VALUES[key];
+    if (allowed) {
+      // Closed set: an unrecognised value is dropped, never stored.
+      const normalized = text.toLowerCase();
+      if (allowed.has(normalized)) output[key] = normalized;
+      continue;
+    }
     output[key] = text;
   }
   return output;
@@ -124,12 +179,31 @@ export function classifyReferrer(value: string | null): string {
   if (!value) return "direct";
   try {
     const host = new URL(value).hostname.toLowerCase();
+    // Hacker News gets its own class. Folded into "social" it was
+    // indistinguishable from GitHub, Twitter, LinkedIn and Reddit, which made
+    // it impossible to measure a Show HN at all.
+    if (/(^|\.)news\.ycombinator\.com$/.test(host) || host === "news.ycombinator.com") return "hacker_news";
     if (/google\.|bing\.|duckduckgo\.|search\.yahoo\./.test(host)) return "search";
-    if (/github\.com|twitter\.com|x\.com|linkedin\.com|reddit\.com|news\.ycombinator\.com/.test(host)) return "social";
+    if (/github\.com|twitter\.com|x\.com|linkedin\.com|reddit\.com/.test(host)) return "social";
     return "referral";
   } catch {
     return "unknown";
   }
+}
+
+/**
+ * Resolve the acquisition source for a request.
+ *
+ * Referrer alone is not enough: browsers and HN's own redirects frequently
+ * suppress it, which would silently undercount the launch. An explicit
+ * `?ref=hn` on the URL we post to HN is the fallback. Only values from the
+ * closed set are ever accepted, so this cannot become a free-text field.
+ */
+export function resolveAcquisitionSource(referrer: string | null, refParam: string | null): string {
+  const explicit = (refParam || "").trim().toLowerCase();
+  if (explicit === "hn" || explicit === "hackernews" || explicit === "hacker_news") return "hacker_news";
+  const classified = classifyReferrer(referrer);
+  return ENUM_PROPERTY_VALUES.acquisition_source.has(classified) ? classified : "unknown";
 }
 
 export function classifyDevice(userAgent: string | null): "mobile" | "desktop" | "unknown" {

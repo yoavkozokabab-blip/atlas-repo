@@ -11,9 +11,20 @@ from atlas_desktop import analytics_remote, operations
 
 
 def test_remote_event_allowlist_is_frozen_analytics_only():
+    """The complete set of events this build can ever send.
+
+    Extended in 1.0.6-beta.2 with the launch funnel. It is still a closed
+    product-milestone contract, not a UI activity stream: no event here carries
+    a name, path, argument, prompt or response.
+    """
     assert analytics_remote._ALLOWED_EVENTS == {
+        # 1.0.6-beta.1 and earlier
         "desktop_launched", "sample_scan_completed", "real_repo_scan_completed", "scan_failed",
         "graph_opened", "impact_completed", "mcp_connected", "analytics_opted_out",
+        # 1.0.6-beta.2 launch funnel
+        "onboarding_local_mode_selected", "repository_selected", "scan_started",
+        "mcp_configured", "mcp_initialize_success", "atlas_tool_called",
+        "first_value_reached", "feedback_opened", "feedback_submitted",
     }
 
 

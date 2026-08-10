@@ -19,7 +19,7 @@ export const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL || "https://github.
  * fails if they are left at the placeholder, if they disagree with each other,
  * or if a retired version string reappears anywhere.
  */
-const RELEASE_VERSION = "1.0.6-beta.1";
+const RELEASE_VERSION = "1.0.6-beta.2";
 const RELEASE_TAG = `v${RELEASE_VERSION}`;
 const RELEASE_FILENAME = `Atlas-Setup-${RELEASE_VERSION}.exe`;
 
@@ -38,9 +38,9 @@ export const CURRENT_WINDOWS_RELEASE = {
   // loudly in the gate instead of shipping a checksum that verifies nothing.
   sha256: (
     process.env.NEXT_PUBLIC_INSTALLER_SHA256
-    || "1C8A470D4D9F20C92F1C80402DAABF84194928AE20308F3AC70FADEC3959B857"
+    || "PENDING_RELEASE_BUILD"
   ).toUpperCase(),
-  sizeBytes: Number(process.env.NEXT_PUBLIC_INSTALLER_SIZE_BYTES || 12_228_197),
+  sizeBytes: Number(process.env.NEXT_PUBLIC_INSTALLER_SIZE_BYTES || 0),
   /** Windows-only, unsigned. Stated on every download surface — do not drop. */
   platform: "Windows",
   signed: false,
