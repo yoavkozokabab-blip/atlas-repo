@@ -39,6 +39,15 @@ The desktop sender is limited to these eight events. Accounts and Ask remain dis
 | `graph_opened` | Graph view is opened | none | coarse duration | session + view UUID | forbidden | 90 days |
 | `impact_completed` | Impact analysis reaches a terminal state | `outcome` | coarse duration | runtime analysis ID | forbidden | 90 days |
 | `mcp_connected` | MCP connection is verified | `agent`, `status` | none | installation + connection generation | forbidden | 90 days |
+| `onboarding_local_mode_selected` | User chooses Continue without an account | `surface` | none | installation | forbidden | 90 days |
+| `repository_selected` | A repository is chosen for scanning | `surface`, `repo_size_bucket` | none | installation | forbidden - never the name or path | 90 days |
+| `scan_started` | A scan begins | `repo_size_bucket`, `workflow` | none | installation | forbidden | 90 days |
+| `mcp_configured` | MCP config written for an agent | `agent`, `outcome` | none | installation + agent | forbidden | 90 days |
+| `mcp_initialize_success` | An agent completed MCP initialize | `agent`, `outcome` | none | installation + agent | forbidden | 90 days |
+| `atlas_tool_called` | An Atlas MCP tool executed | `tool_name`, `agent`, `outcome`, `duration_elapsed_ms` | none | installation + tool | forbidden - never arguments or responses | 90 days |
+| `first_value_reached` | First successful meaningful tool execution, once per installation | `tool_name`, `agent` | none | installation (exactly once) | forbidden | 90 days |
+| `feedback_opened` | Feedback form opened | `surface` | none | installation | forbidden | 90 days |
+| `feedback_submitted` | Feedback delivered to the server | `category`, `outcome` | none | installation | forbidden - never the message text | 90 days |
 | `analytics_opted_out` | User confirms analytics opt-out | none | none | installation + opt-out transition | forbidden | 90 days |
 
 ## Delivery and failure behavior

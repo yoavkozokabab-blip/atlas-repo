@@ -23,6 +23,7 @@ test("analytics-only release exposes exactly the frozen website and desktop allo
     "installer_download_started",
   ]);
   expect([...DESKTOP_ANALYTICS_EVENTS]).toEqual([
+    // 1.0.6-beta.1 and earlier
     "desktop_launched",
     "sample_scan_completed",
     "real_repo_scan_completed",
@@ -31,6 +32,17 @@ test("analytics-only release exposes exactly the frozen website and desktop allo
     "impact_completed",
     "mcp_connected",
     "analytics_opted_out",
+    // 1.0.6-beta.2 launch funnel. Still product milestones only: no event
+    // below carries a name, path, argument, prompt or response.
+    "onboarding_local_mode_selected",
+    "repository_selected",
+    "scan_started",
+    "mcp_configured",
+    "mcp_initialize_success",
+    "atlas_tool_called",
+    "first_value_reached",
+    "feedback_opened",
+    "feedback_submitted",
   ]);
   for (const event of ["download_unavailable_seen", "github_clicked", "signup_success", "login_success", "ask_completed", "heartbeat", "api_me_success"]) {
     expect(isWebsiteAnalyticsEvent(event)).toBe(false);

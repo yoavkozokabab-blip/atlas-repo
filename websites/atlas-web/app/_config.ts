@@ -38,9 +38,9 @@ export const CURRENT_WINDOWS_RELEASE = {
   // loudly in the gate instead of shipping a checksum that verifies nothing.
   sha256: (
     process.env.NEXT_PUBLIC_INSTALLER_SHA256
-    || "02252C4B50CC5A710F2FEC25FE0C3536DC23D58F121B3665C7A80A599D7F8359"
+    || "A8129003CEF2CE1EB0D8550031608D440FA3FD0691F4C183F541B06DD97270A8"
   ).toUpperCase(),
-  sizeBytes: Number(process.env.NEXT_PUBLIC_INSTALLER_SIZE_BYTES || 12_235_159),
+  sizeBytes: Number(process.env.NEXT_PUBLIC_INSTALLER_SIZE_BYTES || 12_235_993),
   /** Windows-only, unsigned. Stated on every download surface — do not drop. */
   platform: "Windows",
   signed: false,
