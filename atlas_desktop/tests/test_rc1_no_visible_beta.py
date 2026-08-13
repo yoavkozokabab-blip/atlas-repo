@@ -35,7 +35,7 @@ ALLOWED_BETA = re.compile(
     | (?:in|for|during|to)\s+this\s+beta  # "not included in this beta"
     | this\s+beta                         # "this beta ships Windows only"
     | the\s+beta\b                        # "suspended for the beta"
-    | private\s+beta\b                    # naming the release channel
+    | (?:private|public)\s+beta\b        # naming the release channel
     | beta\s+(?:release|build|installer|feedback|smoke|gate|user)s?\b
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -243,6 +243,7 @@ def test_honest_release_labelling_is_allowed():
         "Ask Atlas is under development and is not included in this beta.",
         "Paid plans are deliberately suspended for the beta.",
         "Atlas v1.0.6-beta.1",
+        "Status: 1.0.6-beta.2 - public beta, Windows only",
     ):
         assert not FORBIDDEN_VISIBLE.search(line), line
         assert not _unlabelled_beta(line), line

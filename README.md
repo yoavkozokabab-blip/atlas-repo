@@ -11,7 +11,9 @@ Your code stays on your machine. Atlas runs locally over stdio (MCP), tool outpu
 secret-redacted, and **no source code is uploaded to Atlas servers** to provide the
 product (verified by source inspection — see [Security & Local-First](docs/LOCAL_FIRST.md)).
 
-> Status: **1.0.5 candidate, Windows only.**
+> Status: **1.0.6-beta.2 - public beta, Windows only, installer not code-signed.**
+>
+> [Download](https://atlas-repo-wu76.vercel.app/download) | [Release notes](https://github.com/yoavkozokabab-blip/atlas-repo/releases/tag/v1.0.6-beta.2) | No signup, no account, no email required.
 
 ---
 
@@ -54,7 +56,9 @@ Full tool list and setup: [README_MCP.md](README_MCP.md) (18 tools).
 
 ## Install & connect (Windows)
 
-1. Download and run the Windows installer (`Atlas_Setup.exe`). The app is not currently
+1. Download and run the Windows installer (`Atlas-Setup-1.0.6-beta.2.exe`) from
+   [the download page](https://atlas-repo-wu76.vercel.app/download), and verify the
+   SHA-256 shown there against your copy. The app is not currently
    code-signed, so Windows SmartScreen may warn ("unknown publisher") — choose
    *More info → Run anyway* if you trust the download source.
 2. Connect your agent — see [README_MCP.md](README_MCP.md) and
@@ -65,6 +69,24 @@ Full tool list and setup: [README_MCP.md](README_MCP.md) (18 tools).
 First scan on a very large monorepo can take up to a minute; results are cached afterward.
 
 ---
+
+## Not included in this beta
+
+- **Ask Atlas** (free-form repository Q&A) is disabled. Impact, Debug, Plan Change,
+  the dependency graph and the 18 MCP tools all work.
+- **Accounts** are unavailable - Atlas starts in local mode and there is nothing to
+  sign in to.
+- **Paid plans** are suspended; nothing in the app can charge you.
+- **Impact reports direct dependencies** - the modules that import the file you name.
+  Transitive blast radius is not computed in this release, and the API says so
+  (`"impact_scope": "direct_only"`). Any published precision/recall figure describes
+  that direct-dependency tier and nothing broader.
+
+## Reporting a problem
+
+Use **Report an issue** in the app, or email yoavkozokabab@gmail.com. Bug reports are
+redacted for paths and credentials before sending, and a copy is always kept on your
+machine - if delivery fails, Atlas tells you so rather than pretending it succeeded.
 
 ## Current limitations (honest)
 
