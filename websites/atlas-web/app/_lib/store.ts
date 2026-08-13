@@ -749,3 +749,38 @@ export async function analyticsSummary(input: {
     "analytics-summary"
   );
 }
+
+// ---------------------------------------------------------------------------
+// Show HN launch funnel
+//
+// Deliberately a raw row read plus aggregation in Node rather than a new
+// Postgres function: adding an RPC needs DDL against production, and the
+// launch cannot wait on that. The trade-off is a bounded window and a row cap,
+// both surfaced to the caller so a truncated read is never silently presented
+// as a complete count.
+// ---------------------------------------------------------------------------
+
+export type FunnelRow = {
+  event_name: string;
+  installation_id: string | null;
+  anonymous_id: string | null;
+  session_id: string | null;
+  created_at: string;
+  app_version: string | null;
+  metadata: Record<string, string | number | boolean> | null;
+};
+
+export const FUNNEL_ROW_CAP = 50_000;
+
+export async function funnelRows(sinceIso: string): Promise<{ rows: FunnelRow[]; truncated: boolean }> {
+  if (!ENV.hasSupabase) throw new Error("analytics backend unavailable");
+  const columns = "event_name,installation_id,anonymous_id,session_id,created_at,app_version,metadata";
+  const query =
+    `analytics_events?created_at=gte.${enc(sinceIso)}` +
+    `&is_internal=eq.false` +
+    `&select=${columns}` +
+    `&order=created_at.asc` +
+    `&limit=${FUNNEL_ROW_CAP + 1}`;
+  const rows = (await sbRows(await sb(query), "funnel-rows")) as unknown as FunnelRow[];
+  return { rows: rows.slice(0, FUNNEL_ROW_CAP), truncated: rows.length > FUNNEL_ROW_CAP };
+}
