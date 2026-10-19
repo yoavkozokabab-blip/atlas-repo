@@ -117,29 +117,39 @@ function spatial(){
   const next=()=>{
     if(q>=N){const avg=times.reduce((a,b)=>a+b,0)/N;R.spatial={correct,N,avg,score:clamp(correct*0.85-(avg-2500)/1500)};multitask();return}
     q++; const k=Math.random()<.15?4:ri(0,3), [,p,b]=opts[k], start=performance.now();
-    screen(`<h2>שלב 3 · התמצאות מרחבית</h2><p>מה מצב המטוס לפי האופק המלאכותי?</p>
+    screen(`<h2>שלב 3 · התמצאות מרחבית</h2><p>מה מצב המטוס לפי האופק המלאכותי?</p>${q===1?ATT_HELP:""}
     <div class="hud"><span>שאלה ${q}/${N}</span><span id="fb"></span></div>
-    <canvas id="c" width="400" height="300" style="max-width:340px;margin:0 auto"></canvas>
+    <canvas id="c" width="320" height="320" style="max-width:300px;margin:0 auto;background:none;border:0"></canvas>
     <div class="grid" id="o">${opts.map((o,i)=>`<button data-i="${i}">${o[0]}</button>`).join('')}</div>`);
-    drawHorizon($('#c'), p*rnd(8,18), b*rnd(15,40));
+    drawHorizon($('#c'), p*rnd(10,20), b*rnd(20,40));
     $('#o').onclick=e=>{const i=e.target.dataset.i;if(i==null)return;times.push(performance.now()-start);
-      if(+i===k)correct++; next()};
+      const good=+i===k;if(good)correct++;$('#fb').innerHTML=good?'<b class="flash-ok">נכון</b>':'<b class="flash-bad">'+opts[k][0]+'</b>';$('#o').onclick=null;setTimeout(next,good?500:1500)};
   };
   next();
 }
 function drawHorizon(c,pitch,bank){
-  const x=c.getContext('2d'),W=c.width,H=c.height;x.save();x.translate(W/2,H/2);
-  // aircraft rolls right -> horizon tilts left (counter-clockwise on screen)
-  x.rotate(-bank*Math.PI/180);x.translate(0,pitch*4);
-  x.fillStyle='#2f7fc4';x.fillRect(-600,-600,1200,600);x.fillStyle='#8a5a2b';x.fillRect(-600,0,1200,600);
-  x.strokeStyle='#fff';x.lineWidth=3;x.beginPath();x.moveTo(-600,0);x.lineTo(600,0);x.stroke();
-  x.lineWidth=1.5;x.font='12px monospace';x.fillStyle='#fff';
-  for(let d=-30;d<=30;d+=10){if(!d)continue;const y=-d*4,w=d%20?25:45;x.beginPath();x.moveTo(-w,y);x.lineTo(w,y);x.stroke()}
-  x.restore();
-  x.strokeStyle='#ffb020';x.lineWidth=5;x.beginPath();x.moveTo(W/2-80,H/2);x.lineTo(W/2-25,H/2);x.lineTo(W/2-12,H/2+12);
-  x.moveTo(W/2+80,H/2);x.lineTo(W/2+25,H/2);x.lineTo(W/2+12,H/2+12);x.stroke();
-  x.fillStyle='#ffb020';x.beginPath();x.arc(W/2,H/2,4,0,7);x.fill();
+  const x=c.getContext('2d'),W=c.width,H=c.height,cx=W/2,cy=H/2,Rr=135;
+  x.clearRect(0,0,W,H);x.save();x.beginPath();x.arc(cx,cy,Rr,0,7);x.clip();
+  x.translate(cx,cy);x.rotate(-bank*Math.PI/180);x.translate(0,pitch*4);
+  x.fillStyle='#3a8fd6';x.fillRect(-400,-400,800,400);x.fillStyle='#8a5a2b';x.fillRect(-400,0,800,400);
+  x.strokeStyle='#fff';x.lineWidth=3;x.beginPath();x.moveTo(-400,0);x.lineTo(400,0);x.stroke();
+  x.lineWidth=2;x.font='bold 13px monospace';x.fillStyle='#fff';x.textAlign='center';x.textBaseline='middle';
+  for(let d=-30;d<=30;d+=10){if(!d)continue;const y=-d*4;x.beginPath();x.moveTo(-35,y);x.lineTo(35,y);x.stroke();x.fillText(Math.abs(d),-52,y);x.fillText(Math.abs(d),52,y)}
+    x.restore();
+  // fixed bank scale + pointer that turns with the horizon
+  x.strokeStyle='#dbe7ef';x.lineWidth=2;
+  for(const a of[-60,-45,-30,-20,-10,0,10,20,30,45,60]){const r=a*Math.PI/180,l=a%30?8:14;
+    x.beginPath();x.moveTo(cx+Math.sin(r)*Rr,cy-Math.cos(r)*Rr);x.lineTo(cx+Math.sin(r)*(Rr+l),cy-Math.cos(r)*(Rr+l));x.stroke()}
+  const br=-bank*Math.PI/180;x.fillStyle='#fff';x.beginPath();
+  x.moveTo(cx+Math.sin(br)*(Rr-4),cy-Math.cos(br)*(Rr-4));
+  x.lineTo(cx+Math.sin(br-.07)*(Rr-20),cy-Math.cos(br-.07)*(Rr-20));x.lineTo(cx+Math.sin(br+.07)*(Rr-20),cy-Math.cos(br+.07)*(Rr-20));x.fill();
+  x.strokeStyle='#24384a';x.lineWidth=4;x.beginPath();x.arc(cx,cy,Rr,0,7);x.stroke();
+  // fixed aircraft symbol
+  x.strokeStyle='#ffb020';x.lineWidth=6;x.lineCap='round';x.beginPath();
+  x.moveTo(cx-75,cy);x.lineTo(cx-25,cy);x.lineTo(cx-12,cy+12);x.moveTo(cx+75,cy);x.lineTo(cx+25,cy);x.lineTo(cx+12,cy+12);x.stroke();
+  x.fillStyle='#ffb020';x.beginPath();x.arc(cx,cy,5,0,7);x.fill();
 }
+const ATT_HELP=`<p style="font-size:.9rem">הסמל הצהוב הוא המטוס ואינו זז. <b>מרכז מעל קו האופק = טיפוס</b>, מתחתיו = צלילה. <b>צד ימין של האופק עולה = גלגול ימינה</b> (הכנף הימנית יורדת לכיוון הקרקע).</p>`;
 
 /* 4. Multitask: keep crosshair on drifting target while solving arithmetic, 75s */
 function multitask(){
