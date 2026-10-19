@@ -199,11 +199,11 @@ function multitask(){
   const end=Date.now()+75000;
   const loop=()=>{
     const left=end-Date.now();
-    vx+=rnd(-.25,.25);vy+=rnd(-.25,.25);vx=Math.max(-3,Math.min(3,vx));vy=Math.max(-3,Math.min(3,vy));
+    vx+=rnd(-.15,.15);vy+=rnd(-.15,.15);vx=Math.max(-2.2,Math.min(2.2,vx));vy=Math.max(-2.2,Math.min(2.2,vy));
     tx+=vx;ty+=vy;if(tx<20||tx>W-20)vx*=-1;if(ty<20||ty>H-20)vy*=-1;
-    const d=Math.hypot(tx-cx,ty-cy);tot++;if(d<28)on++;
+    const d=Math.hypot(tx-cx,ty-cy);tot++;if(d<32)on++;
     x.clearRect(0,0,W,H);x.strokeStyle='#24384a';for(let i=0;i<W;i+=50){x.beginPath();x.moveTo(i,0);x.lineTo(i,H);x.stroke()}
-    x.fillStyle=d<28?'#3ddc84':'#ff5a5f';x.beginPath();x.arc(tx,ty,14,0,7);x.fill();
+    x.fillStyle=d<32?'#3ddc84':'#ff5a5f';x.beginPath();x.arc(tx,ty,16,0,7);x.fill();
     x.strokeStyle='#ffb020';x.lineWidth=2;x.beginPath();x.arc(cx,cy,22,0,7);x.moveTo(cx-32,cy);x.lineTo(cx+32,cy);x.moveTo(cx,cy-32);x.lineTo(cx,cy+32);x.stroke();x.lineWidth=1;
     if(!$('#tl'))return;$('#tl').textContent=Math.ceil(left/1000)+'s';$('#on').textContent='מעקב '+Math.round(on/tot*100)+'%';
     if(left>0)requestAnimationFrame(loop);
