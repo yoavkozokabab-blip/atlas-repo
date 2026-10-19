@@ -15,7 +15,9 @@ button,.pad,canvas{touch-action:manipulation}
 .numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;direction:ltr}
 .numpad button{font-family:var(--f-mono);font-size:1.4rem;padding:12px 0}
 .display{font-family:var(--f-mono);font-size:1.6rem;min-height:2.4rem;text-align:center;direction:ltr;border:1px solid var(--line);border-radius:8px;padding:6px;background:#0e171e;letter-spacing:.15em}
-.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.choices{display:grid;grid-template-columns:1fr;gap:6px}
+.mtctl{display:grid;grid-template-columns:1fr 1fr;gap:10px;direction:ltr}
+.tp{border:1px dashed var(--accent);border-radius:10px;min-height:190px;display:grid;place-items:center;color:var(--dim);font-size:.85rem;touch-action:none;background:#0e171e;text-align:center;padding:8px}
 .choices button{font-family:var(--f-mono);font-size:1.3rem;padding:14px 0}
 body{background:var(--bg);color:var(--fg);font-family:var(--f-body);direction:rtl;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px}
@@ -168,10 +170,11 @@ const ATT_HELP=`<p style="font-size:.9rem">הסמל הצהוב הוא המטוס
 /* 4. Multitask: keep crosshair on drifting target while solving arithmetic, 75s */
 function multitask(){
   setStep(3);
-  screen(`<h2>שלב 4 · ריבוי משימות</h2><p>אגודל אחד גורר את הכוונת על המטרה, השני בוחר תשובה לתרגיל. אפשר לגרור מכל מקום במסגרת. 75 שניות.</p>
+  screen(`<h2>שלב 4 · ריבוי משימות</h2><p>אגודל שמאל מחליק על משטח השליטה ומזיז את הכוונת אל הכדור. אגודל ימין בוחר תשובה. 75 שניות.</p>
   <div class="hud"><span id="tl">75s</span><span id="on">על המטרה 0%</span><span id="ma">0/0</span></div>
-  <canvas id="c" width="600" height="340"></canvas>
-  <div class="mono big" id="eq" style="font-size:1.6rem;letter-spacing:0;direction:ltr"></div><div class="choices" id="ch"></div>`);
+  <canvas id="c" width="600" height="300"></canvas>
+  <div class="mtctl"><div class="tp" id="tp">משטח שליטה<br>החלק כאן להזזת הכוונת</div>
+  <div style="display:flex;flex-direction:column;gap:6px"><div class="mono big" id="eq" style="font-size:1.4rem;letter-spacing:0;direction:ltr"></div><div class="choices" id="ch"></div></div></div>`);
   const c=$('#c'),x=c.getContext('2d'),W=c.width,H=c.height;
   let tx=W/2,ty=H/2,vx=1.6,vy=1.1,cx=W/2,cy=H/2,on=0,tot=0,ok=0,asked=0,ans;
   const newEq=()=>{let a=ri(6,49),b=ri(3,29);const op=Math.random()<.5?'+':'−';if(op==='−'&&b>a)[a,b]=[b,a];ans=op==='+'?a+b:a-b;$('#eq').textContent=`${a} ${op} ${b} = ?`;asked++;$('#ma').textContent=`תרגילים ${ok}/${asked-1}`;
@@ -188,6 +191,11 @@ function multitask(){
     if(drag){cx=Math.max(0,Math.min(W,drag.cx+(e.clientX-drag.x)*drag.k));cy=Math.max(0,Math.min(H,drag.cy+(e.clientY-drag.y)*drag.k))}
     else if(e.pointerType==='mouse'){cx=(e.clientX-r.left)*W/r.width;cy=(e.clientY-r.top)*H/r.height}};
   c.onpointerup=c.onpointercancel=()=>drag=null;
+  const tp=$('#tp');let tpd=null;
+  tp.onpointerdown=e=>{e.preventDefault();tp.setPointerCapture(e.pointerId);tpd={x:e.clientX,y:e.clientY}};
+  tp.onpointermove=e=>{if(!tpd)return;const g=1.8*W/c.getBoundingClientRect().width;
+    cx=Math.max(0,Math.min(W,cx+(e.clientX-tpd.x)*g));cy=Math.max(0,Math.min(H,cy+(e.clientY-tpd.y)*g));tpd={x:e.clientX,y:e.clientY}};
+  tp.onpointerup=tp.onpointercancel=()=>tpd=null;
   const end=Date.now()+75000;
   const loop=()=>{
     const left=end-Date.now();
