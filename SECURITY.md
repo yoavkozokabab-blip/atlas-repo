@@ -2,35 +2,35 @@
 
 ## Reporting a vulnerability
 
-If you believe you have found a security issue in Atlas, please report it privately to
-_[security/support email — owner to set before publishing]_. Do **not** open a public
-issue for security reports. We aim to acknowledge reports within _[X business days]_.
-_[NEEDS OWNER CONFIRMATION: contact + response SLA.]_
+Please report security issues privately by email to **yoavkozokabab@gmail.com**
+rather than in a public issue. Atlas is maintained by one person, so replies may take
+a few days.
 
 ## Scope
 
-- Atlas desktop application and local MCP server.
-- Atlas website (account/auth).
+- The Atlas desktop application and its local MCP server.
+- The installer published on GitHub Releases.
 
 ## Design (summary)
 
-Atlas is local-first: the scanning engine and MCP server run on your machine, and your
-source code is not uploaded to Atlas servers to provide the product. See
-[`docs/LOCAL_FIRST.md`](docs/LOCAL_FIRST.md) for what runs locally, what is sent, and what
-not to upload.
+Atlas is local-first: the scanning engine and the MCP server run on your machine, and
+your source code is not uploaded anywhere by Atlas. See
+[`docs/LOCAL_FIRST.md`](docs/LOCAL_FIRST.md) for what runs locally and
+[`PRIVACY.md`](PRIVACY.md) for exactly what leaves your machine.
 
-- Passwords are scrypt-hashed and compared in constant time (`app/_lib/auth.ts`).
-- MCP tool output passes through a secret-redaction filter before returning to the agent.
-- MCP tools are read-only and local-path-only.
+- MCP tools are read-only and only accept local paths; Atlas never writes to your
+  repository.
+- MCP tool output passes through a secret-redaction filter before it is returned to
+  the agent.
+- The MCP server runs on the Python standard library — no third-party packages.
 
-## Current limitations (honest)
+## Current limitations
 
-- Windows only; macOS/Linux not supported yet.
-- The app is not currently code-signed — Windows SmartScreen may warn.
-- **No third-party security certification** (e.g., SOC 2) exists yet.
-- The full web → desktop → MCP path has not been independently verified on a clean
-  machine at the time of writing.
+- Windows only; macOS and Linux are not supported yet.
+- The installer is not code-signed, so Windows SmartScreen will warn. You can verify
+  the SHA-256 published with each release, or run Atlas from source instead.
+- No third-party security audit or certification.
 
 ## Supported versions
 
-Atlas `1.0.0`. Security fixes target the latest build only.
+Security fixes target the latest release only.

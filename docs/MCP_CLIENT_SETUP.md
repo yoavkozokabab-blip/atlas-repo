@@ -3,7 +3,7 @@
 Connect Claude Desktop, Claude Code, Cursor, or Codex to the local Atlas MCP server so
 your AI agent can query repository intelligence mid-task.
 
-The server is **local-first** (nothing leaves your machine), **read-only** (never writes
+The server is **local-first** (your code never leaves your machine), **read-only** (never writes
 to your repo), and speaks **newline-delimited JSON-RPC over stdio** — the standard MCP
 stdio transport.
 
@@ -52,7 +52,7 @@ Source-mode equivalent:
     "atlas": {
       "command": "py",
       "args": ["-3", "run_atlas.py", "--mcp"],
-      "cwd": "C:/J.A.R.V.I.S/local_atlas"
+      "cwd": "C:/path/to/atlas-repo"
     }
   }
 }
@@ -69,7 +69,7 @@ claude mcp add atlas -- py -3 run_atlas.py --mcp     # run from your Atlas dir
 or a project `.mcp.json`:
 
 ```json
-{ "mcpServers": { "atlas": { "command": "py", "args": ["-3", "run_atlas.py", "--mcp"], "cwd": "C:/J.A.R.V.I.S/local_atlas" } } }
+{ "mcpServers": { "atlas": { "command": "py", "args": ["-3", "run_atlas.py", "--mcp"], "cwd": "C:/path/to/atlas-repo" } } }
 ```
 
 ## 4. Cursor
@@ -77,7 +77,7 @@ or a project `.mcp.json`:
 Cursor → Settings → MCP → Add new server, or `.cursor/mcp.json`:
 
 ```json
-{ "mcpServers": { "atlas": { "command": "py", "args": ["-3", "run_atlas.py", "--mcp"], "cwd": "C:/J.A.R.V.I.S/local_atlas" } } }
+{ "mcpServers": { "atlas": { "command": "py", "args": ["-3", "run_atlas.py", "--mcp"], "cwd": "C:/path/to/atlas-repo" } } }
 ```
 
 ## 5. Codex / any other MCP client
@@ -117,7 +117,7 @@ Tool mapping: the first two call `atlas_build_context_pack` and `atlas_what_brea
 | No response / hangs | The server reads one JSON-RPC message per line. Send newline-terminated requests. |
 | `repo not scanned` errors | Tools auto-scan on first use; pass an absolute `repo_path` or call `atlas_scan_repo` first. |
 | Garbled output | Something wrote to stdout besides the protocol. Use the installed `--mcp` entry or `py -3 run_atlas.py --mcp`; don't pipe other Atlas output to the same stream. |
-| Logs | `<Atlas data dir>/mcp_server.log` and the launcher log. No telemetry. |
+| Logs | `<Atlas data dir>/mcp_server.log` and the launcher log. No code or paths are sent anywhere (see PRIVACY.md). |
 
 ## Safety
 

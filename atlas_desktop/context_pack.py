@@ -195,7 +195,13 @@ def estimate_tokens(text: str) -> int:
 
 
 def _norm_path(path: str) -> str:
-    return (path or "").replace("\\", "/").strip().lstrip("./")
+    # Drop a leading "./" or "/" but keep dot-directories such as ".github/".
+    # (str.lstrip("./") strips every leading "." too, turning ".github/x" into
+    # "github/x", a path that does not exist.)
+    p = (path or "").replace("\\", "/").strip()
+    while p.startswith(("./", "/")):
+        p = p[1:] if p.startswith("/") else p[2:]
+    return p
 
 
 def _path_parts(path: str) -> List[str]:

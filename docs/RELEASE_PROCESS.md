@@ -56,7 +56,7 @@ py -3 run_atlas.py --self-test          # launcher/dirs/shortcuts READY
 py scripts\mcp_smoke_test.py            # MCP 12/12 green
 ```
 
-(Full clean-machine install verification: see `reports/atlas_install_verification.md`.)
+
 
 ## Step 5 — Publish to GitHub Releases (1–2 min)
 

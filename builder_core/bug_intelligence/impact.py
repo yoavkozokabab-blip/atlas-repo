@@ -66,7 +66,13 @@ def _round(value: float) -> float:
 
 
 def _norm_path(path: str) -> str:
-    return path.replace("\\", "/").lstrip("./")
+    # Drop a leading "./" or "/" but keep dot-directories such as ".github/".
+    # (str.lstrip("./") strips every leading "." too, turning ".github/x" into
+    # "github/x", a path that does not exist.)
+    p = path.replace("\\", "/")
+    while p.startswith(("./", "/")):
+        p = p[1:] if p.startswith("/") else p[2:]
+    return p
 
 
 def _subsystem(path: str) -> str:
