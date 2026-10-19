@@ -1,0 +1,193 @@
+<title>סימולטור מיון טיס</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: one cockpit panel, test stages in sequence, instrument-style readouts */
+:root{
+  --bg:#0b1218; --panel:#121d26; --line:#24384a; --fg:#dbe7ef; --dim:#7d95a8;
+  --accent:#ffb020; --ok:#3ddc84; --bad:#ff5a5f; --sky:#2f7fc4; --ground:#8a5a2b;
+  --f-body:"Heebo",system-ui,sans-serif; --f-mono:"JetBrains Mono",ui-monospace,monospace;
+  color-scheme:dark;
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);direction:rtl;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px}
+.wrap{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+header{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+h1{font-size:1.35rem;margin:0;font-weight:800;text-wrap:balance}
+h2{font-size:1.15rem;margin:0}
+.tag{font-family:var(--f-mono);font-size:.75rem;color:var(--accent);letter-spacing:.08em}
+.steps{display:flex;gap:6px}
+.steps i{flex:1;height:5px;border-radius:3px;background:var(--line)}
+.steps i.on{background:var(--accent)} .steps i.done{background:var(--ok)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+p{margin:0;line-height:1.6;color:var(--dim)}
+button{font-family:var(--f-body);font-size:1rem;font-weight:600;border:1px solid var(--line);background:#1a2a37;color:var(--fg);border-radius:8px;padding:12px 16px;cursor:pointer}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button.primary{background:var(--accent);color:#1b1200;border-color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.big{font-size:2.6rem;font-weight:700;text-align:center;letter-spacing:.15em}
+.pad{height:220px;border-radius:10px;display:grid;place-items:center;font-size:1.3rem;font-weight:800;user-select:none;cursor:pointer;border:1px solid var(--line);background:#0e171e}
+.pad.go{background:var(--ok);color:#03200f}
+.pad.early{background:var(--bad);color:#fff}
+canvas{width:100%;max-width:100%;border-radius:10px;background:#0e171e;border:1px solid var(--line);touch-action:none;display:block}
+input{font-family:var(--f-mono);font-size:1.4rem;padding:10px;border-radius:8px;border:1px solid var(--line);background:#0e171e;color:var(--fg);width:100%;text-align:center;direction:ltr}
+.hud{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:.85rem;color:var(--dim)}
+.flash-ok{color:var(--ok)} .flash-bad{color:var(--bad)}
+table{width:100%;border-collapse:collapse;font-size:.95rem}
+td,th{padding:8px 4px;border-bottom:1px solid var(--line);text-align:right}
+.stanine{font-family:var(--f-mono);font-size:3rem;color:var(--accent);text-align:center;font-weight:700}
+small{color:var(--dim);font-size:.8rem;line-height:1.5}
+</style>
+
+<div class="wrap">
+  <header>
+    <div><div class="tag">YARPA-A · SIM</div><h1>סימולטור מיון ירפ"א א'</h1></div>
+    <div class="mono tag" id="clock">00:00</div>
+  </header>
+  <div class="steps" id="steps"><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="panel" id="stage"></div>
+  <small>סימולציה לתרגול בלבד, בהשראת סוגי המבחנים הממוחשבים במיון. אינה המבחן הרשמי ואינה מנבאת תוצאה.</small>
+</div>
+
+<script>
+const $=s=>document.querySelector(s), stage=$('#stage');
+const R={}; let step=0, t0=null;
+const STEPS=['זמן תגובה','זיכרון עבודה','התמצאות מרחבית','ריבוי משימות','תוצאות'];
+setInterval(()=>{if(t0){const s=Math.floor((Date.now()-t0)/1000);$('#clock').textContent=String(s/60|0).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}},500);
+function setStep(n){step=n;[...$('#steps').children].forEach((e,i)=>e.className=i<n?'done':i===n?'on':'')}
+function screen(html){stage.innerHTML=html}
+const rnd=(a,b)=>a+Math.random()*(b-a), ri=(a,b)=>Math.floor(rnd(a,b+1));
+
+function intro(){
+  setStep(-1);
+  screen(`<h2>מבחן מלא · 4 שלבים</h2>
+  <p>הסימולציה מדמה יום מבחנים ממוחשבים: זמן תגובה, זיכרון ספרות, קריאת אופק מלאכותי ועבודה במקביל (מעקב + חשבון). בסוף תקבל ציון 1–9 לכל שלב וציון משוקלל.</p>
+  <div class="grid">${STEPS.slice(0,4).map((s,i)=>`<div class="panel" style="padding:12px;gap:4px"><span class="tag">שלב ${i+1}</span><b>${s}</b></div>`).join('')}</div>
+  <p>משך כולל: כ-8 דקות. עדיף מסך שקט וללא הפרעות.</p>
+  <button class="primary" id="go">התחל מבחן</button>`);
+  $('#go').onclick=()=>{t0=Date.now();reaction()};
+}
+
+/* 1. Reaction time: 8 trials */
+function reaction(){
+  setStep(0); const times=[]; let early=0, n=0, tm, start;
+  screen(`<h2>שלב 1 · זמן תגובה</h2><p>כשהמשטח הופך ירוק, לחץ מהר ככל האפשר. לחיצה מוקדמת נספרת כטעות.</p>
+  <div class="hud"><span id="rc">ניסיון 0/8</span><span id="rl">—</span></div><div class="pad" id="pad">לחץ כדי להתחיל</div>`);
+  const pad=$('#pad'); let state='idle';
+  const arm=()=>{state='wait';pad.className='pad';pad.textContent='המתן…';tm=setTimeout(()=>{state='go';pad.className='pad go';pad.textContent='עכשיו!';start=performance.now()},rnd(1200,3500))};
+  pad.onpointerdown=()=>{
+    if(state==='idle'){arm();return}
+    if(state==='wait'){clearTimeout(tm);early++;pad.className='pad early';pad.textContent='מוקדם מדי';state='pause';setTimeout(arm,900);return}
+    if(state==='go'){const t=performance.now()-start;times.push(t);n++;$('#rc').textContent=`ניסיון ${n}/8`;$('#rl').textContent=Math.round(t)+' ms';
+      state='pause';pad.className='pad';pad.textContent=Math.round(t)+' ms';
+      if(n>=8){const avg=times.reduce((a,b)=>a+b)/times.length;R.reaction={avg,early,score:clamp(9-(avg-220)/35-early*0.7)};setTimeout(memory,900)}
+      else setTimeout(arm,700)}
+  };
+}
+const clamp=x=>Math.max(1,Math.min(9,Math.round(x)));
+
+/* 2. Digit span: starts at 4, grows on success, 2 strikes */
+function memory(){
+  setStep(1); let len=4, strikes=0, best=3, rounds=0;
+  const round=()=>{
+    const seq=Array.from({length:len},()=>ri(0,9)).join(''); rounds++;
+    screen(`<h2>שלב 2 · זיכרון עבודה</h2><p>זכור את רצף הספרות. הוא יוצג ספרה אחר ספרה.</p>
+    <div class="hud"><span>אורך ${len}</span><span>פסילות ${strikes}/2</span></div><div class="big mono" id="d">·</div>`);
+    let i=0; const iv=setInterval(()=>{
+      if(i<seq.length){$('#d').textContent=seq[i++];setTimeout(()=>{const d=$('#d');if(d)d.textContent='·'},650)}
+      else{clearInterval(iv);ask(seq)}},900);
+  };
+  const ask=seq=>{
+    screen(`<h2>שלב 2 · זיכרון עבודה</h2><p>הקלד את הרצף לפי הסדר.</p>
+    <form id="f" style="display:flex;flex-direction:column;gap:10px"><input id="ans" inputmode="numeric" autocomplete="off"><button class="primary">אשר</button></form>`);
+    $('#ans').focus();
+    $('#f').onsubmit=e=>{e.preventDefault();const ok=$('#ans').value.trim()===seq;
+      if(ok){best=len;len++}else strikes++;
+      if(strikes>=2||len>11){R.memory={span:best,score:clamp(best-1.5)};spatial()}else round()};
+  };
+  round();
+}
+
+/* 3. Spatial orientation: read artificial horizon, pick aircraft attitude */
+function spatial(){
+  setStep(2); let q=0, correct=0; const N=10, times=[];
+  const opts=[['טיפוס, גלגול ימינה',1,1],['טיפוס, גלגול שמאלה',1,-1],['צלילה, גלגול ימינה',-1,1],['צלילה, גלגול שמאלה',-1,-1],['טיסה ישרה ואופקית',0,0]];
+  const next=()=>{
+    if(q>=N){const avg=times.reduce((a,b)=>a+b,0)/N;R.spatial={correct,N,avg,score:clamp(correct*0.85-(avg-2500)/1500)};multitask();return}
+    q++; const k=Math.random()<.15?4:ri(0,3), [,p,b]=opts[k], start=performance.now();
+    screen(`<h2>שלב 3 · התמצאות מרחבית</h2><p>מה מצב המטוס לפי האופק המלאכותי?</p>
+    <div class="hud"><span>שאלה ${q}/${N}</span><span id="fb"></span></div>
+    <canvas id="c" width="400" height="300" style="max-width:340px;margin:0 auto"></canvas>
+    <div class="grid" id="o">${opts.map((o,i)=>`<button data-i="${i}">${o[0]}</button>`).join('')}</div>`);
+    drawHorizon($('#c'), p*rnd(8,18), b*rnd(15,40));
+    $('#o').onclick=e=>{const i=e.target.dataset.i;if(i==null)return;times.push(performance.now()-start);
+      if(+i===k)correct++; next()};
+  };
+  next();
+}
+function drawHorizon(c,pitch,bank){
+  const x=c.getContext('2d'),W=c.width,H=c.height;x.save();x.translate(W/2,H/2);
+  // aircraft rolls right -> horizon tilts left (counter-clockwise on screen)
+  x.rotate(-bank*Math.PI/180);x.translate(0,pitch*4);
+  x.fillStyle='#2f7fc4';x.fillRect(-600,-600,1200,600);x.fillStyle='#8a5a2b';x.fillRect(-600,0,1200,600);
+  x.strokeStyle='#fff';x.lineWidth=3;x.beginPath();x.moveTo(-600,0);x.lineTo(600,0);x.stroke();
+  x.lineWidth=1.5;x.font='12px monospace';x.fillStyle='#fff';
+  for(let d=-30;d<=30;d+=10){if(!d)continue;const y=-d*4,w=d%20?25:45;x.beginPath();x.moveTo(-w,y);x.lineTo(w,y);x.stroke()}
+  x.restore();
+  x.strokeStyle='#ffb020';x.lineWidth=5;x.beginPath();x.moveTo(W/2-80,H/2);x.lineTo(W/2-25,H/2);x.lineTo(W/2-12,H/2+12);
+  x.moveTo(W/2+80,H/2);x.lineTo(W/2+25,H/2);x.lineTo(W/2+12,H/2+12);x.stroke();
+  x.fillStyle='#ffb020';x.beginPath();x.arc(W/2,H/2,4,0,7);x.fill();
+}
+
+/* 4. Multitask: keep crosshair on drifting target while solving arithmetic, 75s */
+function multitask(){
+  setStep(3);
+  screen(`<h2>שלב 4 · ריבוי משימות</h2><p>גרור את הכוונת כך שתישאר על המטרה הנודדת, ובמקביל פתור תרגילים. 75 שניות.</p>
+  <div class="hud"><span id="tl">75s</span><span id="on">על המטרה 0%</span><span id="ma">0/0</span></div>
+  <canvas id="c" width="600" height="300"></canvas>
+  <form id="f" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center">
+  <div class="mono big" id="eq" style="font-size:1.5rem;letter-spacing:0"></div><input id="ans" inputmode="numeric" autocomplete="off"></form>`);
+  const c=$('#c'),x=c.getContext('2d'),W=c.width,H=c.height;
+  let tx=W/2,ty=H/2,vx=1.6,vy=1.1,cx=W/2,cy=H/2,on=0,tot=0,ok=0,asked=0,ans;
+  const newEq=()=>{const a=ri(6,49),b=ri(3,29),op=Math.random()<.5?'+':'−';ans=op==='+'?a+b:a-b;$('#eq').textContent=`${a} ${op} ${b}`;asked++;$('#ma').textContent=`${ok}/${asked-1}`};
+  newEq();
+  $('#f').onsubmit=e=>{e.preventDefault();if(+$('#ans').value===ans)ok++;$('#ans').value='';newEq()};
+  const move=e=>{const r=c.getBoundingClientRect();cx=(e.clientX-r.left)*W/r.width;cy=(e.clientY-r.top)*H/r.height};
+  c.onpointermove=move;c.onpointerdown=move;
+  const end=Date.now()+75000;
+  const loop=()=>{
+    const left=end-Date.now();
+    vx+=rnd(-.25,.25);vy+=rnd(-.25,.25);vx=Math.max(-3,Math.min(3,vx));vy=Math.max(-3,Math.min(3,vy));
+    tx+=vx;ty+=vy;if(tx<20||tx>W-20)vx*=-1;if(ty<20||ty>H-20)vy*=-1;
+    const d=Math.hypot(tx-cx,ty-cy);tot++;if(d<28)on++;
+    x.clearRect(0,0,W,H);x.strokeStyle='#24384a';for(let i=0;i<W;i+=50){x.beginPath();x.moveTo(i,0);x.lineTo(i,H);x.stroke()}
+    x.fillStyle=d<28?'#3ddc84':'#ff5a5f';x.beginPath();x.arc(tx,ty,14,0,7);x.fill();
+    x.strokeStyle='#ffb020';x.lineWidth=2;x.beginPath();x.arc(cx,cy,22,0,7);x.moveTo(cx-32,cy);x.lineTo(cx+32,cy);x.moveTo(cx,cy-32);x.lineTo(cx,cy+32);x.stroke();x.lineWidth=1;
+    $('#tl').textContent=Math.ceil(left/1000)+'s';$('#on').textContent='על המטרה '+Math.round(on/tot*100)+'%';
+    if(left>0)requestAnimationFrame(loop);
+    else{const track=on/tot,acc=asked>1?ok/(asked-1):0;R.multi={track,ok,n:asked-1,score:clamp(track*6+acc*2.5+Math.min(ok,20)/20*1.5)};results()}
+  };
+  requestAnimationFrame(loop);
+}
+
+function results(){
+  setStep(4);t0=null;
+  const w={reaction:.2,memory:.25,spatial:.25,multi:.3};
+  const total=clamp(Object.keys(w).reduce((s,k)=>s+R[k].score*w[k],0));
+  const verdict=total>=7?'עובר לשלב הבא':total>=5?'גבולי':'לא עובר';
+  screen(`<h2>תוצאות</h2>
+  <div class="stanine">${total}<span style="font-size:1rem;color:var(--dim)"> / 9</span></div>
+  <p style="text-align:center"><b class="${total>=7?'flash-ok':total>=5?'':'flash-bad'}">${verdict}</b> (סימולציה)</p>
+  <div style="overflow-x:auto"><table class="mono"><tr><th>שלב</th><th>ביצוע</th><th>ציון</th></tr>
+  <tr><td>זמן תגובה</td><td>${Math.round(R.reaction.avg)}ms · ${R.reaction.early} מוקדמות</td><td>${R.reaction.score}</td></tr>
+  <tr><td>זיכרון עבודה</td><td>טווח ${R.memory.span} ספרות</td><td>${R.memory.score}</td></tr>
+  <tr><td>התמצאות</td><td>${R.spatial.correct}/${R.spatial.N} · ${(R.spatial.avg/1000).toFixed(1)}s</td><td>${R.spatial.score}</td></tr>
+  <tr><td>ריבוי משימות</td><td>${Math.round(R.multi.track*100)}% מעקב · ${R.multi.ok}/${R.multi.n}</td><td>${R.multi.score}</td></tr>
+  </table></div>
+  <button class="primary" id="again">מבחן חוזר</button>`);
+  $('#again').onclick=intro;
+}
+intro();
+</script>
