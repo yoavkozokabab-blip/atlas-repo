@@ -5,6 +5,7 @@ import importlib
 import json
 import os
 import base64
+import tempfile
 import time
 import uuid
 from pathlib import Path
@@ -14,7 +15,8 @@ import pytest
 
 @pytest.fixture()
 def isolated_accounts(monkeypatch):
-    root = Path(os.environ.get("ATLAS_GUEST_TEST_ROOT", r"C:\J.A.R.V.I.S\atlas_guest_test_data"))
+    root = Path(os.environ.get("ATLAS_GUEST_TEST_ROOT")
+                or Path(tempfile.gettempdir()) / "atlas_guest_test_data")
     data_dir = root / f"run_{uuid.uuid4().hex}" / "atlas_data"
     data_dir.mkdir(parents=True, exist_ok=True)
     monkeypatch.setenv("ATLAS_DESKTOP_DATA", str(data_dir))
