@@ -9,7 +9,14 @@
   --f-body:"Heebo",system-ui,sans-serif; --f-mono:"JetBrains Mono",ui-monospace,monospace;
   color-scheme:dark;
 }
-html,body{height:100%}
+html,body{min-height:100%}
+body{-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+button,.pad,canvas{touch-action:manipulation}
+.numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;direction:ltr}
+.numpad button{font-family:var(--f-mono);font-size:1.4rem;padding:12px 0}
+.display{font-family:var(--f-mono);font-size:1.6rem;min-height:2.4rem;text-align:center;direction:ltr;border:1px solid var(--line);border-radius:8px;padding:6px;background:#0e171e;letter-spacing:.15em}
+.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.choices button{font-family:var(--f-mono);font-size:1.3rem;padding:14px 0}
 body{background:var(--bg);color:var(--fg);font-family:var(--f-body);direction:rtl;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px}
 .wrap{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
@@ -56,7 +63,7 @@ const $=s=>document.querySelector(s), stage=$('#stage');
 const R={}; let step=0, t0=null;
 const STEPS=['זמן תגובה','זיכרון עבודה','התמצאות מרחבית','ריבוי משימות','תוצאות'];
 setInterval(()=>{if(t0){const s=Math.floor((Date.now()-t0)/1000);$('#clock').textContent=String(s/60|0).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}},500);
-function setStep(n){step=n;[...$('#steps').children].forEach((e,i)=>e.className=i<n?'done':i===n?'on':'')}
+function setStep(n){step=n;[...$('#steps').children].forEach((e,i)=>e.className=(i<n||n===4)?'done':i===n?'on':'')}
 function screen(html){stage.innerHTML=html}
 const rnd=(a,b)=>a+Math.random()*(b-a), ri=(a,b)=>Math.floor(rnd(a,b+1));
 
@@ -67,7 +74,7 @@ function intro(){
   <div class="grid">${STEPS.slice(0,4).map((s,i)=>`<div class="panel" style="padding:12px;gap:4px"><span class="tag">שלב ${i+1}</span><b>${s}</b></div>`).join('')}</div>
   <p>משך כולל: כ-8 דקות. עדיף מסך שקט וללא הפרעות.</p>
   <button class="primary" id="go">התחל מבחן</button>`);
-  $('#go').onclick=()=>{t0=Date.now();reaction()};
+  $('#go').onclick=()=>{t0=Date.now();keepAwake();reaction()};
 }
 
 /* 1. Reaction time: 8 trials */
@@ -86,6 +93,12 @@ function reaction(){
       else setTimeout(arm,700)}
   };
 }
+let wake=null;async function keepAwake(){try{wake=await navigator.wakeLock?.request('screen')}catch(e){}}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&t0)keepAwake()});
+function numpad(el,onOk){let v='';const d=el.querySelector('.display');
+  el.querySelector('.numpad').onclick=e=>{const k=e.target.dataset.k;if(k==null)return;
+    if(k==='del')v=v.slice(0,-1);else if(k==='ok'){if(v)onOk(v);return}else if(v.length<12)v+=k;d.textContent=v||' '}}
+const NUMPAD=`<div class="display" id="disp"> </div><div class="numpad">${[1,2,3,4,5,6,7,8,9].map(n=>`<button type="button" data-k="${n}">${n}</button>`).join('')}<button type="button" data-k="del">⌫</button><button type="button" data-k="0">0</button><button type="button" class="primary" data-k="ok">✓</button></div>`;
 const clamp=x=>Math.max(1,Math.min(9,Math.round(x)));
 
 /* 2. Digit span: starts at 4, grows on success, 2 strikes */
@@ -96,16 +109,17 @@ function memory(){
     screen(`<h2>שלב 2 · זיכרון עבודה</h2><p>זכור את רצף הספרות. הוא יוצג ספרה אחר ספרה.</p>
     <div class="hud"><span>אורך ${len}</span><span>פסילות ${strikes}/2</span></div><div class="big mono" id="d">·</div>`);
     let i=0; const iv=setInterval(()=>{
+      if(!$('#d')){clearInterval(iv);return}
       if(i<seq.length){$('#d').textContent=seq[i++];setTimeout(()=>{const d=$('#d');if(d)d.textContent='·'},650)}
       else{clearInterval(iv);ask(seq)}},900);
   };
   const ask=seq=>{
     screen(`<h2>שלב 2 · זיכרון עבודה</h2><p>הקלד את הרצף לפי הסדר.</p>
-    <form id="f" style="display:flex;flex-direction:column;gap:10px"><input id="ans" inputmode="numeric" autocomplete="off"><button class="primary">אשר</button></form>`);
-    $('#ans').focus();
-    $('#f').onsubmit=e=>{e.preventDefault();const ok=$('#ans').value.trim()===seq;
+    <div id="np" style="display:flex;flex-direction:column;gap:8px">${NUMPAD}</div>`);
+    numpad($('#np'),v=>{const ok=v===seq;
       if(ok){best=len;len++}else strikes++;
-      if(strikes>=2||len>11){R.memory={span:best,score:clamp(best-1.5)};spatial()}else round()};
+      const fb=ok?'<b class="flash-ok">נכון</b>':'<b class="flash-bad">הרצף היה '+seq+'</b>';$('#np').innerHTML='<p style="text-align:center">'+fb+'</p>';
+      setTimeout(()=>{if(strikes>=2||len>11){R.memory={span:best,score:clamp(best-1.5)};spatial()}else round()},ok?600:1600)});
   };
   round();
 }
@@ -154,18 +168,26 @@ const ATT_HELP=`<p style="font-size:.9rem">הסמל הצהוב הוא המטוס
 /* 4. Multitask: keep crosshair on drifting target while solving arithmetic, 75s */
 function multitask(){
   setStep(3);
-  screen(`<h2>שלב 4 · ריבוי משימות</h2><p>גרור את הכוונת כך שתישאר על המטרה הנודדת, ובמקביל פתור תרגילים. 75 שניות.</p>
+  screen(`<h2>שלב 4 · ריבוי משימות</h2><p>אגודל אחד גורר את הכוונת על המטרה, השני בוחר תשובה לתרגיל. אפשר לגרור מכל מקום במסגרת. 75 שניות.</p>
   <div class="hud"><span id="tl">75s</span><span id="on">על המטרה 0%</span><span id="ma">0/0</span></div>
-  <canvas id="c" width="600" height="300"></canvas>
-  <form id="f" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center">
-  <div class="mono big" id="eq" style="font-size:1.5rem;letter-spacing:0"></div><input id="ans" inputmode="numeric" autocomplete="off"></form>`);
+  <canvas id="c" width="600" height="340"></canvas>
+  <div class="mono big" id="eq" style="font-size:1.6rem;letter-spacing:0;direction:ltr"></div><div class="choices" id="ch"></div>`);
   const c=$('#c'),x=c.getContext('2d'),W=c.width,H=c.height;
   let tx=W/2,ty=H/2,vx=1.6,vy=1.1,cx=W/2,cy=H/2,on=0,tot=0,ok=0,asked=0,ans;
-  const newEq=()=>{const a=ri(6,49),b=ri(3,29),op=Math.random()<.5?'+':'−';ans=op==='+'?a+b:a-b;$('#eq').textContent=`${a} ${op} ${b}`;asked++;$('#ma').textContent=`${ok}/${asked-1}`};
+  const newEq=()=>{let a=ri(6,49),b=ri(3,29);const op=Math.random()<.5?'+':'−';if(op==='−'&&b>a)[a,b]=[b,a];ans=op==='+'?a+b:a-b;$('#eq').textContent=`${a} ${op} ${b} = ?`;asked++;$('#ma').textContent=`תרגילים ${ok}/${asked-1}`;
+    const o=new Set([ans]);while(o.size<3)o.add(ans+[-10,-2,-1,1,2,10][ri(0,5)]);
+    $('#ch').innerHTML=[...o].sort(()=>Math.random()-.5).map(v=>`<button type="button" data-v="${v}">${v}</button>`).join('')};
   newEq();
-  $('#f').onsubmit=e=>{e.preventDefault();if(+$('#ans').value===ans)ok++;$('#ans').value='';newEq()};
-  const move=e=>{const r=c.getBoundingClientRect();cx=(e.clientX-r.left)*W/r.width;cy=(e.clientY-r.top)*H/r.height};
-  c.onpointermove=move;c.onpointerdown=move;
+  $('#ch').onpointerdown=e=>{const v=e.target.dataset.v;if(v==null)return;e.preventDefault();if(+v===ans)ok++;newEq()};
+  // relative drag: finger offset kept, so the thumb never hides the crosshair
+  let drag=null;
+  c.onpointerdown=e=>{c.setPointerCapture(e.pointerId);const r=c.getBoundingClientRect();
+    if(e.pointerType==='mouse'){cx=(e.clientX-r.left)*W/r.width;cy=(e.clientY-r.top)*H/r.height}
+    drag={x:e.clientX,y:e.clientY,cx,cy,k:W/r.width}};
+  c.onpointermove=e=>{const r=c.getBoundingClientRect();
+    if(drag){cx=Math.max(0,Math.min(W,drag.cx+(e.clientX-drag.x)*drag.k));cy=Math.max(0,Math.min(H,drag.cy+(e.clientY-drag.y)*drag.k))}
+    else if(e.pointerType==='mouse'){cx=(e.clientX-r.left)*W/r.width;cy=(e.clientY-r.top)*H/r.height}};
+  c.onpointerup=c.onpointercancel=()=>drag=null;
   const end=Date.now()+75000;
   const loop=()=>{
     const left=end-Date.now();
@@ -175,15 +197,17 @@ function multitask(){
     x.clearRect(0,0,W,H);x.strokeStyle='#24384a';for(let i=0;i<W;i+=50){x.beginPath();x.moveTo(i,0);x.lineTo(i,H);x.stroke()}
     x.fillStyle=d<28?'#3ddc84':'#ff5a5f';x.beginPath();x.arc(tx,ty,14,0,7);x.fill();
     x.strokeStyle='#ffb020';x.lineWidth=2;x.beginPath();x.arc(cx,cy,22,0,7);x.moveTo(cx-32,cy);x.lineTo(cx+32,cy);x.moveTo(cx,cy-32);x.lineTo(cx,cy+32);x.stroke();x.lineWidth=1;
-    $('#tl').textContent=Math.ceil(left/1000)+'s';$('#on').textContent='על המטרה '+Math.round(on/tot*100)+'%';
+    if(!$('#tl'))return;$('#tl').textContent=Math.ceil(left/1000)+'s';$('#on').textContent='מעקב '+Math.round(on/tot*100)+'%';
     if(left>0)requestAnimationFrame(loop);
-    else{const track=on/tot,acc=asked>1?ok/(asked-1):0;R.multi={track,ok,n:asked-1,score:clamp(track*6+acc*2.5+Math.min(ok,20)/20*1.5)};results()}
+    else{const track=on/tot,acc=asked>1?ok/(asked-1):0;c.onpointerdown=c.onpointermove=null;R.multi={track,ok,n:asked-1,score:clamp(track*6+acc*2.5+Math.min(ok,20)/20*1.5)};results()}
   };
   requestAnimationFrame(loop);
 }
 
+function tips(){const t=[],L={reaction:'זמן תגובה: חכה לצבע ולא לתחושת קצב, אל תנחש.',memory:'זיכרון: קבץ את הספרות לזוגות או שלשות (472-918) ולחש אותן לעצמך.',spatial:'התמצאות: קודם עלרוד (נקודה מעל/מתחת לקו), אחר כך גלגול (איזה צד של האופק גבוה).',multi:'ריבוי משימות: אל תעצור את המעקב כשאתה פותר. עדיף תשובה מהירה מאשר מדויקת.'};
+  const w=Object.entries(R).sort((a,b)=>a[1].score-b[1].score).slice(0,2);for(const[k]of w)t.push('• '+L[k]);return t}
 function results(){
-  setStep(4);t0=null;
+  setStep(4);t0=null;try{wake?.release()}catch(e){}
   const w={reaction:.2,memory:.25,spatial:.25,multi:.3};
   const total=clamp(Object.keys(w).reduce((s,k)=>s+R[k].score*w[k],0));
   const verdict=total>=7?'עובר לשלב הבא':total>=5?'גבולי':'לא עובר';
@@ -196,6 +220,7 @@ function results(){
   <tr><td>התמצאות</td><td>${R.spatial.correct}/${R.spatial.N} · ${(R.spatial.avg/1000).toFixed(1)}s</td><td>${R.spatial.score}</td></tr>
   <tr><td>ריבוי משימות</td><td>${Math.round(R.multi.track*100)}% מעקב · ${R.multi.ok}/${R.multi.n}</td><td>${R.multi.score}</td></tr>
   </table></div>
+  <p style="font-size:.9rem">${tips().join('<br>')}</p>
   <button class="primary" id="again">מבחן חוזר</button>`);
   $('#again').onclick=intro;
 }
