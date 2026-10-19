@@ -55,17 +55,25 @@ sqlmodel, django, langchain and Atlas itself). The "correct" file is decided wit
 Atlas: for symbol tasks it is the file where `class X` / `def X` is defined, found by
 regex over the repo's own source.
 
-| | Hit@1 | MRR | Recall@5 | Invented files |
-|---|---|---|---|---|
-| Atlas | **0.55** | **0.68** | **0.77** | 0 |
-| Keyword grep / BM25 | 0.27–0.32 | | | |
+Results from a run on 19 Oct 2026 against fresh clones of each repository
+([how to reproduce](benchmarks/README.md)):
 
-Atlas also used roughly 90–97% fewer tokens than opening a naive search's top files.
+| | Hit@1 | Hit@5 | MRR | Recall@5 |
+|---|---|---|---|---|
+| **Atlas** | **0.52** | **0.84** | **0.66** | **0.80** |
+| Keyword grep | 0.31 | 0.66 | 0.45 | 0.58 |
+| BM25 | 0.24 | 0.53 | 0.36 | 0.50 |
+
+- Hit@5 is better than grep (McNemar p = 0.013) and BM25 (p = 0.0003).
+- Every file Atlas recommended exists in the repository (0 invented paths).
+- The context Atlas returns is about 97% smaller than the files grep's top hits point to
+  (91% smaller than BM25's).
 
 What this does **not** show: it measures retrieval quality, not whether an agent finishes
-tasks better. The advantage is clear against BM25 but not statistically significant
-against naive grep on top-5 hits, and it is largest on big repositories. On small repos
-your editor's search may be enough. More in [docs/DIFFERENTIATION.md](docs/DIFFERENTIATION.md).
+tasks better; that hasn't been measured. When grep does find the right file, it ranks it
+about as well as Atlas. Results vary by repository (in this run Atlas lost to grep on typer, and all
+three methods struggled on langchain), and on small repos your editor's search may be enough. More in
+[docs/DIFFERENTIATION.md](docs/DIFFERENTIATION.md).
 
 ## Install (Windows)
 
