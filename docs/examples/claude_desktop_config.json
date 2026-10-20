@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "atlas": {
+      "command": "py",
+      "args": ["-m", "atlas_desktop.mcp_server"],
+      "cwd": "C:/path/to/Atlas"
+    }
+  }
+}

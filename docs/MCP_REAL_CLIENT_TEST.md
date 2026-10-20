@@ -18,7 +18,7 @@ Test the Atlas MCP server against actual AI coding clients.
 ```
 command: py
 args:    ["-3", "run_atlas.py", "--mcp"]
-cwd:     C:/J.A.R.V.I.S/local_atlas
+cwd:     C:/path/to/atlas-repo
 ```
 After you rebuild + reinstall Atlas, switch to the installed app:
 ```
@@ -35,7 +35,7 @@ Edit `%APPDATA%\Claude\claude_desktop_config.json` — **merge** into existing `
     "atlas": {
       "command": "py",
       "args": ["-3", "run_atlas.py", "--mcp"],
-      "cwd": "C:/J.A.R.V.I.S/local_atlas"
+      "cwd": "C:/path/to/atlas-repo"
     }
   }
 }
@@ -45,13 +45,13 @@ Fully quit and reopen Claude Desktop. Click the tools (hammer) icon → "atlas" 
 
 ## Claude Code (CLI)
 ```bash
-claude mcp add atlas -- py -3 run_atlas.py --mcp   # run from C:\J.A.R.V.I.S\local_atlas
+claude mcp add atlas -- py -3 run_atlas.py --mcp   # run from C:\path\to\atlas-repo
 ```
 
 ## Cursor
 `.cursor/mcp.json` in your workspace (or Settings → MCP → Add):
 ```json
-{ "mcpServers": { "atlas": { "command": "py", "args": ["-3", "run_atlas.py", "--mcp"], "cwd": "C:/J.A.R.V.I.S/local_atlas" } } }
+{ "mcpServers": { "atlas": { "command": "py", "args": ["-3", "run_atlas.py", "--mcp"], "cwd": "C:/path/to/atlas-repo" } } }
 ```
 
 ## Codex / generic stdio client
@@ -73,7 +73,7 @@ Same command/args as above.
 ## Pre-verified (no client needed)
 The protocol is already verified directly over stdio (initialize, notifications, tools/list,
 tools/call scan/context-pack/what-breaks, error handling) and the 12-check smoke test passes —
-see `reports/mcp_client_compatibility.md`. The real-client test confirms the *handshake +
+see the MCP client notes in `docs/MCP_CLIENT_SETUP.md`. The real-client test confirms the *handshake +
 spawn* inside Claude Desktop / Cursor specifically.
 
 ## If a client isn't installed
@@ -82,7 +82,7 @@ claim a client passed if it wasn't actually run.
 
 ## Manual one-shot sanity check (no client)
 ```powershell
-cd C:\J.A.R.V.I.S\local_atlas
+cd C:\path\to\atlas-repo
 '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"t","version":"0"}}}' | py -3 run_atlas.py --mcp
 # expect one line: {"jsonrpc":"2.0","id":1,"result":{..."serverInfo":{"name":"atlas-local","version":"1.0.0"}}}
 ```
