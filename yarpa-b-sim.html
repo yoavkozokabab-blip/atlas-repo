@@ -1,0 +1,231 @@
+<title>סימולטור ירפ"א ב'</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: same cockpit panel as Yarpa A, stages in sequence; instrument tiles for monitoring */
+:root{
+  --bg:#0b1218; --panel:#121d26; --line:#24384a; --fg:#dbe7ef; --dim:#7d95a8;
+  --accent:#ffb020; --ok:#3ddc84; --bad:#ff5a5f; --well:#0e171e;
+  --f-body:"Heebo",system-ui,sans-serif; --f-mono:"JetBrains Mono",ui-monospace,monospace;
+  color-scheme:dark;
+}
+html,body{min-height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);direction:rtl;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px}
+.wrap{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+header{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+h1{font-size:1.35rem;margin:0;font-weight:800;text-wrap:balance}
+h2{font-size:1.15rem;margin:0}
+.tag{font-family:var(--f-mono);font-size:.75rem;color:var(--accent);letter-spacing:.08em}
+.steps{display:flex;gap:6px}
+.steps i{flex:1;height:5px;border-radius:3px;background:var(--line)}
+.steps i.on{background:var(--accent)} .steps i.done{background:var(--ok)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+p{margin:0;line-height:1.6;color:var(--dim)}
+button{font-family:var(--f-body);font-size:1rem;font-weight:600;border:1px solid var(--line);background:#1a2a37;color:var(--fg);border-radius:8px;padding:12px 16px;cursor:pointer;touch-action:manipulation}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button.primary{background:var(--accent);color:#1b1200;border-color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opts button{font-family:var(--f-mono);font-size:1.25rem;padding:14px 0}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.q.rtl{direction:rtl;font-family:var(--f-body);font-size:1.15rem;font-weight:600;line-height:1.5;letter-spacing:0}
+.q bdi{font-family:var(--f-mono)}
+.q{font-family:var(--f-mono);font-size:1.5rem;text-align:center;direction:ltr;letter-spacing:.05em;padding:10px;background:var(--well);border:1px solid var(--line);border-radius:8px}
+.hud{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:.85rem;color:var(--dim);gap:8px}
+.timebar{height:4px;background:var(--line);border-radius:2px;overflow:hidden}
+.timebar i{display:block;height:100%;background:var(--accent);width:100%}
+canvas{width:100%;max-width:100%;border-radius:10px;background:var(--well);border:1px solid var(--line);touch-action:none;display:block}
+.gauges{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;direction:ltr}
+.gauge{border:1px solid var(--line);border-radius:8px;background:var(--well);height:150px;position:relative;overflow:hidden;cursor:pointer;touch-action:manipulation}
+.gauge.short{height:90px}
+.gauge .zone{position:absolute;left:0;right:0;background:color-mix(in srgb,var(--ok) 18%,transparent);border-block:1px solid var(--ok)}
+.gauge .needle{position:absolute;left:8%;right:8%;height:4px;background:var(--fg);border-radius:2px}
+.gauge.alarm{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 14%,var(--well))}
+.gauge.alarm .needle{background:var(--bad)}
+.gauge b{position:absolute;bottom:4px;left:0;right:0;text-align:center;font-family:var(--f-mono);font-size:.7rem;color:var(--dim)}
+.tp{border:1px dashed var(--accent);border-radius:10px;min-height:150px;display:grid;place-items:center;color:var(--dim);font-size:.85rem;touch-action:none;background:var(--well);text-align:center;padding:8px}
+table{width:100%;border-collapse:collapse;font-size:.95rem}
+td,th{padding:8px 4px;border-bottom:1px solid var(--line);text-align:right}
+.stanine{font-family:var(--f-mono);font-size:3rem;color:var(--accent);text-align:center;font-weight:700}
+.ok{color:var(--ok)} .bad{color:var(--bad)}
+small{color:var(--dim);font-size:.8rem;line-height:1.5}
+</style>
+
+<div class="wrap">
+  <header>
+    <div><div class="tag">YARPA-B · SIM</div><h1>סימולטור מיון ירפ"א ב'</h1></div>
+    <div class="mono tag" id="clock">00:00</div>
+  </header>
+  <div class="steps" id="steps"><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="panel" id="stage"></div>
+  <small>סימולציה לתרגול בלבד, בהשראת סוגי המבחנים במיון. אינה המבחן הרשמי ואינה מנבאת תוצאה.</small>
+</div>
+
+<script>
+const $=s=>document.querySelector(s), stage=$('#stage');
+const R={}; let t0=null, wake=null;
+const STEPS=['סדרות ולוגיקה','כיוונים וזוויות','ניטור מכשירים','שליטה משולבת','תוצאות'];
+const rnd=(a,b)=>a+Math.random()*(b-a), ri=(a,b)=>Math.floor(rnd(a,b+1));
+const clamp=x=>Math.max(1,Math.min(9,Math.round(x)));
+const shuffle=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]);
+setInterval(()=>{if(t0){const s=Math.floor((Date.now()-t0)/1000);$('#clock').textContent=String(s/60|0).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}},500);
+async function keepAwake(){try{wake=await navigator.wakeLock?.request('screen')}catch(e){}}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&t0)keepAwake()});
+function setStep(n){[...$('#steps').children].forEach((e,i)=>e.className=(i<n||n===4)?'done':i===n?'on':'')}
+function screen(h){stage.innerHTML=h}
+
+function intro(){
+  setStep(-1);
+  screen(`<h2>מבחן מלא · 4 שלבים</h2>
+  <p>המשך של ירפ"א א'. כאן בודקים חשיבה תחת לחץ זמן, התמצאות בכיווני טיסה, ערנות לתקלות במכשירים ושליטה במטוס בזמן שמנטרים מכשירים.</p>
+  <div class="grid">${STEPS.slice(0,4).map((s,i)=>`<div class="panel" style="padding:12px;gap:4px"><span class="tag">שלב ${i+1}</span><b>${s}</b></div>`).join('')}</div>
+  <p>משך כולל: כ-9 דקות. בשלבים 3 ו-4 כדאי להחזיק את הטלפון בשתי ידיים.</p>
+  <button class="primary" id="go">התחל מבחן</button>`);
+  $('#go').onclick=()=>{t0=Date.now();keepAwake();series()};
+}
+
+/* Generic timed multiple-choice runner */
+function quiz({step,title,help,N,limit,make,done,rtl}){
+  setStep(step);let q=0,correct=0;const times=[];let tm,raf;
+  const next=()=>{
+    if(q>=N){done(correct,N,times.reduce((a,b)=>a+b,0)/N);return}
+    q++;const {text,ans,opts}=make(),start=performance.now();
+    screen(`<h2>${title}</h2>${q===1?`<p>${help}</p>`:''}
+    <div class="hud"><span>שאלה ${q}/${N}</span><span id="fb"></span></div>
+    <div class="timebar"><i id="tb"></i></div>
+    <div class="q${rtl?' rtl':''}">${text}</div>
+    <div class="opts" id="o">${opts.map(v=>`<button type="button" data-v="${v}">${v}</button>`).join('')}</div>`);
+    const tick=()=>{const f=1-(performance.now()-start)/limit;const b=$('#tb');if(!b)return;b.style.width=Math.max(0,f*100)+'%';if(f>0)raf=requestAnimationFrame(tick)};tick();
+    const answer=v=>{clearTimeout(tm);cancelAnimationFrame(raf);$('#o').onclick=null;
+      const t=performance.now()-start;times.push(Math.min(t,limit));const good=v!=null&&String(v)===String(ans);if(good)correct++;
+      $('#fb').innerHTML=good?'<b class="ok">נכון</b>':`<b class="bad">${v==null?'הזמן נגמר · ':''}${ans}</b>`;
+      setTimeout(next,good?450:1400)};
+    tm=setTimeout(()=>answer(null),limit);
+    $('#o').onclick=e=>{const v=e.target.dataset.v;if(v!=null)answer(v)};
+  };
+  next();
+}
+function choices(ans,deltas){const o=new Set([ans]);while(o.size<4)o.add(ans+deltas[ri(0,deltas.length-1)]);return shuffle([...o])}
+
+/* 1. Number series */
+function series(){
+  const gens=[
+    ()=>{const a=ri(2,20),d=ri(3,9);return[a,a+d,a+2*d,a+3*d,a+4*d]},
+    ()=>{const a=ri(2,5),r=ri(2,3);return[a,a*r,a*r*r,a*r**3,a*r**4]},
+    ()=>{const a=ri(1,10),d=ri(1,4);const s=[a];for(let i=1;i<5;i++)s.push(s[i-1]+d*i);return s},
+    ()=>{const a=ri(10,30),b=ri(2,6),c=ri(1,4);const s=[a];for(let i=1;i<5;i++)s.push(i%2?s[i-1]+b:s[i-1]-c);return s},
+    ()=>{const a=ri(1,4),b=ri(1,5);const s=[a,b];for(let i=2;i<5;i++)s.push(s[i-1]+s[i-2]);return s},
+    ()=>{const a=ri(1,6);return[a*a,(a+1)**2,(a+2)**2,(a+3)**2,(a+4)**2]},
+    ()=>{const a=ri(2,6);const s=[a];for(let i=1;i<5;i++)s.push(s[i-1]*2+(i%2?1:-1));return s},
+  ];
+  quiz({step:0,title:'שלב 1 · סדרות ולוגיקה',help:'מצא את המספר הבא בסדרה. 15 שניות לשאלה.',N:10,limit:15000,
+    make:()=>{const s=gens[ri(0,gens.length-1)]();const ans=s.pop();return{text:s.join(', ')+', ?',ans,opts:choices(ans,[-3,-2,-1,1,2,3,4,6])}},
+    done:(c,N,avg)=>{R.series={correct:c,N,avg,score:clamp(c*0.85-(avg-6000)/4000)};heading()}});
+}
+
+/* 2. Headings */
+const H3=h=>String(((h%360)+360)%360).padStart(3,'0')+'°';
+const B=h=>`<bdi>${H3(h)}</bdi>`;
+function heading(){
+  const types=[
+    ()=>{const h=ri(0,35)*10,t=ri(1,17)*10,d=Math.random()<.5?'ימינה':'שמאלה';return{text:`כיוון ${B(h)} · פנייה ${d} ${t}°`,a:h+(d==='ימינה'?t:-t)}},
+    ()=>{const h=ri(0,35)*10;return{text:`כיוון ${B(h)} · מה הכיוון ההפוך?`,a:h+180}},
+    ()=>{const h=ri(0,35)*10,s=[['מימין לך',90],['משמאלך',-90],['מאחוריך',180]][ri(0,2)];return{text:`כיוון ${B(h)} · מטרה ${s[0]}. לאיזה כיוון לפנות?`,a:h+s[1]}},
+    ()=>{const h=ri(0,35)*10,t1=ri(1,9)*10,t2=ri(1,9)*10;return{text:`כיוון ${B(h)} · ימינה ${t1}° ואז שמאלה ${t2}°`,a:h+t1-t2}},
+  ];
+  quiz({step:1,title:'שלב 2 · כיוונים וזוויות',help:'חשב את כיוון הטיסה החדש. צפון הוא 000 מעלות, ופנייה ימינה מוסיפה מעלות (עם כיוון השעון). 12 שניות לשאלה.',N:10,limit:12000,rtl:true,
+    make:()=>{const {text,a}=types[ri(0,types.length-1)]();const ans=H3(a);const n=((a%360)+360)%360;
+      const o=new Set([ans]);for(const d of shuffle([-90,90,180,-20,20,-40,40,-10,10]))if(o.size<4)o.add(H3(n+d));return{text,ans,opts:shuffle([...o])}},
+    done:(c,N,avg)=>{R.heading={correct:c,N,avg,score:clamp(c*0.85-(avg-5000)/3500)};monitor()}});
+}
+
+/* Gauge model shared by stages 3 and 4 */
+function gauges(el,short){
+  const names=['שמן','דלק','טמפ׳','לחץ'];
+  el.innerHTML=names.map((n,i)=>`<div class="gauge${short?' short':''}" data-i="${i}"><div class="zone" style="top:30%;bottom:30%"></div><div class="needle"></div><b>${n}</b></div>`).join('');
+  const g=names.map(()=>({v:.5,drift:0,alarmAt:0}));const st={hits:0,miss:0,falses:0,rts:[]};
+  let nextFault=performance.now()+rnd(2000,4000);
+  el.onpointerdown=e=>{const d=e.target.closest('.gauge');if(!d)return;const s=g[d.dataset.i];
+    if(s.alarmAt){st.hits++;st.rts.push(performance.now()-s.alarmAt);s.v=.5;s.drift=0;s.alarmAt=0}else st.falses++};
+  const els=[...el.children];
+  return{st,step(now){
+    if(now>nextFault){const c=g.filter(s=>!s.drift&&!s.alarmAt);if(c.length){const s=c[ri(0,c.length-1)];s.drift=(Math.random()<.5?-1:1)*rnd(.003,.006)}nextFault=now+rnd(2500,5000)}
+    g.forEach((s,i)=>{s.v+=s.drift+rnd(-.002,.002);if(!s.drift)s.v+=(.5-s.v)*.02;
+      s.v=Math.max(.02,Math.min(.98,s.v));
+      const out=s.v<.3||s.v>.7;if(out&&!s.alarmAt)s.alarmAt=now;
+      if(s.alarmAt&&now-s.alarmAt>4000){st.miss++;s.v=.5;s.drift=0;s.alarmAt=0}
+      els[i].classList.toggle('alarm',!!s.alarmAt);els[i].querySelector('.needle').style.top=((1-s.v)*100-1)+'%'})}}
+}
+
+/* 3. Monitoring */
+function monitor(){
+  setStep(2);
+  screen(`<h2>שלב 3 · ניטור מכשירים</h2><p>כל מחוג צריך להישאר בתוך הפס הירוק. כשמחוג יוצא ממנו והמכשיר נצבע אדום, הקש עליו כדי לאפס. הקשה על מכשיר תקין נספרת כטעות. 50 שניות.</p>
+  <div class="hud"><span id="tl">50s</span><span id="hs">תוקנו 0</span><span id="ms">פוספסו 0</span></div>
+  <div class="gauges" id="g"></div>`);
+  const G=gauges($('#g')),end=performance.now()+50000;
+  const loop=now=>{if(!$('#tl'))return;G.step(now);
+    $('#tl').textContent=Math.ceil((end-now)/1000)+'s';$('#hs').textContent='תוקנו '+G.st.hits;$('#ms').textContent='פוספסו '+G.st.miss;
+    if(now<end)requestAnimationFrame(loop);
+    else{const s=G.st,rt=s.rts.length?s.rts.reduce((a,b)=>a+b)/s.rts.length:4000,tot=s.hits+s.miss||1;
+      R.monitor={...s,rt,score:clamp(s.hits/tot*7+2-(rt-900)/700-s.falses*.4)};combined()}};
+  requestAnimationFrame(loop);
+}
+
+/* 4. Combined: compensatory tracking against gusts + gauges */
+function combined(){
+  setStep(3);
+  screen(`<h2>שלב 4 · שליטה משולבת</h2><p>רוח מסיטה את המטוס (הכוונת). החלק על משטח השליטה כדי להחזיק אותה בעיגול שבמרכז, ובמקביל תקן מכשירים שנצבעים אדום. 60 שניות.</p>
+  <div class="hud"><span id="tl">60s</span><span id="on">ייצוב 0%</span><span id="hs">מכשירים 0/0</span></div>
+  <canvas id="c" width="600" height="240"></canvas>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;direction:ltr">
+    <div class="tp" id="tp">משטח שליטה<br>החלק כדי לתקן</div>
+    <div class="gauges" id="g" style="grid-template-columns:1fr 1fr"></div>
+  </div>`);
+  const c=$('#c'),x=c.getContext('2d'),W=c.width,H=c.height,G=gauges($('#g'),true);
+  let px=W/2,py=H/2,wx=0,wy=0,on=0,tot=0;const end=performance.now()+60000;
+  const tp=$('#tp');let last=null;
+  tp.onpointerdown=e=>{e.preventDefault();tp.setPointerCapture(e.pointerId);last={x:e.clientX,y:e.clientY}};
+  tp.onpointermove=e=>{if(!last)return;const g=1.6*W/c.getBoundingClientRect().width;px+=(e.clientX-last.x)*g;py+=(e.clientY-last.y)*g;last={x:e.clientX,y:e.clientY}};
+  tp.onpointerup=tp.onpointercancel=()=>last=null;
+  const loop=now=>{if(!$('#tl'))return;G.step(now);
+    wx+=rnd(-.06,.06);wy+=rnd(-.06,.06);wx=Math.max(-1.3,Math.min(1.3,wx))*.995;wy=Math.max(-1.3,Math.min(1.3,wy))*.995;
+    px=Math.max(10,Math.min(W-10,px+wx));py=Math.max(10,Math.min(H-10,py+wy));
+    const d=Math.hypot(px-W/2,py-H/2);tot++;if(d<30)on++;
+    x.clearRect(0,0,W,H);x.strokeStyle='#24384a';x.lineWidth=1;
+    x.beginPath();x.moveTo(W/2,0);x.lineTo(W/2,H);x.moveTo(0,H/2);x.lineTo(W,H/2);x.stroke();
+    x.strokeStyle=d<30?'#3ddc84':'#7d95a8';x.lineWidth=2;x.beginPath();x.arc(W/2,H/2,30,0,7);x.stroke();
+    x.strokeStyle='#ffb020';x.lineWidth=5;x.lineCap='round';x.beginPath();
+    x.moveTo(px-40,py);x.lineTo(px-12,py);x.lineTo(px-6,py+6);x.moveTo(px+40,py);x.lineTo(px+12,py);x.lineTo(px+6,py+6);x.stroke();
+    x.fillStyle='#ffb020';x.beginPath();x.arc(px,py,4,0,7);x.fill();
+    $('#tl').textContent=Math.ceil((end-now)/1000)+'s';$('#on').textContent='ייצוב '+Math.round(on/tot*100)+'%';
+    $('#hs').textContent=`מכשירים ${G.st.hits}/${G.st.hits+G.st.miss}`;
+    if(now<end)requestAnimationFrame(loop);
+    else{const s=G.st,track=on/tot,gm=s.hits/((s.hits+s.miss)||1);
+      R.combined={track,hits:s.hits,miss:s.miss,score:clamp(track*5.5+gm*3.5+.5-s.falses*.3)};results()}};
+  requestAnimationFrame(loop);
+}
+
+function tips(){const L={series:'סדרות: בדוק קודם הפרשים בין מספרים צמודים, ואז את ההפרשים של ההפרשים.',heading:'כיוונים: הפוך = ±180. ימינה = מוסיפים, שמאלה = מחסירים. מעל 360 מורידים 360.',monitor:'ניטור: סרוק את המכשירים במחזוריות קבועה ואל תתמקד באחד.',combined:'שליטה משולבת: תיקונים קטנים ורציפים, ומבט חטוף על המכשירים כל שנייה-שתיים.'};
+  return Object.entries(R).sort((a,b)=>a[1].score-b[1].score).slice(0,2).map(([k])=>'• '+L[k])}
+function results(){
+  setStep(4);t0=null;try{wake?.release()}catch(e){}
+  const w={series:.2,heading:.25,monitor:.2,combined:.35};
+  const total=clamp(Object.keys(w).reduce((s,k)=>s+R[k].score*w[k],0));
+  const verdict=total>=7?'עובר לשלב הבא':total>=5?'גבולי':'לא עובר';
+  screen(`<h2>תוצאות</h2>
+  <div class="stanine">${total}<span style="font-size:1rem;color:var(--dim)"> / 9</span></div>
+  <p style="text-align:center"><b class="${total>=7?'ok':total>=5?'':'bad'}">${verdict}</b> (סימולציה)</p>
+  <div style="overflow-x:auto"><table class="mono"><tr><th>שלב</th><th>ביצוע</th><th>ציון</th></tr>
+  <tr><td>סדרות</td><td>${R.series.correct}/${R.series.N} · ${(R.series.avg/1000).toFixed(1)}s</td><td>${R.series.score}</td></tr>
+  <tr><td>כיוונים</td><td>${R.heading.correct}/${R.heading.N} · ${(R.heading.avg/1000).toFixed(1)}s</td><td>${R.heading.score}</td></tr>
+  <tr><td>ניטור</td><td>${R.monitor.hits} תוקנו · ${R.monitor.miss} פוספסו · ${(R.monitor.rt/1000).toFixed(1)}s</td><td>${R.monitor.score}</td></tr>
+  <tr><td>משולב</td><td>${Math.round(R.combined.track*100)}% ייצוב · ${R.combined.hits}/${R.combined.hits+R.combined.miss}</td><td>${R.combined.score}</td></tr>
+  </table></div>
+  <p style="font-size:.9rem">${tips().join('<br>')}</p>
+  <button class="primary" id="again">מבחן חוזר</button>`);
+  $('#again').onclick=intro;
+}
+intro();
+</script>
