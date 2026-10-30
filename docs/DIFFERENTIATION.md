@@ -4,12 +4,12 @@ Atlas is a **local, agent-agnostic code-context engine** over MCP. It scans a re
 real import/symbol graph and serves any AI agent evidence-ranked files + symbols, impact
 analysis (`what_breaks`), and root-cause — with confidence, locally.
 
-Benchmark context (independent retrieval benchmark, gold = symbol-definition file resolved
-by grep, 62 tasks / 11 repos): Hit@1 **0.55** vs ~0.27–0.32 for keyword/BM25, MRR **0.68**,
-**0 fabricated files**, **~90–97% fewer tokens**. Honest scope: this is *retrieval
-quality*, not end-to-end task outcomes; the advantage is largest on big/complex repos and
-behavioural ("no symbol named") queries, and decisive vs BM25 but **not** statistically
-significant vs naive grep on top-5 hit. On small repos your IDE's search may be enough.
+Benchmark context (retrieval benchmark, gold = symbol-definition file resolved by regex,
+62 tasks / 11 repos, run 19 Oct 2026): Hit@1 **0.52** vs 0.31 grep / 0.24 BM25, Hit@5
+**0.84** vs 0.66 / 0.53, MRR **0.66**, **0 invented paths**, ~97% less context than grep's
+top files. Honest scope: this is *retrieval quality*, not end-to-end task outcomes; results
+vary by repository (Atlas loses to grep on typer). On small repos your IDE's search may be
+enough. Reproduce with `benchmarks/README.md`.
 
 | Compared to | What they do well | How Atlas differs | Honest caveat |
 |---|---|---|---|

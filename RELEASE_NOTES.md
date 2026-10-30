@@ -1,7 +1,13 @@
-# Atlas v1.0.6-beta.1
+# Atlas v1.0.6-beta.2
 
-Private beta. Persistent repository memory for Claude Code, Cursor, and Codex —
+Public beta. Persistent repository memory for Claude Code, Cursor, and Codex —
 local-first, Windows only, installer not code-signed.
+
+## Changes since beta.1
+
+beta.2 adds a few more anonymous product events (for example which MCP tool was called
+and the repository size bucket) so it is possible to see where people get stuck. No
+names, paths or code are included; see [PRIVACY.md](PRIVACY.md). No feature changes.
 
 ## What Atlas does
 
@@ -35,7 +41,7 @@ tier and no broader set.
 
 ## Installation
 
-1. Download `Atlas-Setup-1.0.6-beta.1.exe` and verify the SHA-256 against the release page.
+1. Download `Atlas-Setup-1.0.6-beta.2.exe` and verify the SHA-256 against the release page.
 2. Run the installer (per-user, no admin rights required), then launch Atlas.
 3. Choose **Continue without an account**.
 4. Load the bundled sample repository or scan your own folder.

@@ -11,7 +11,7 @@ import json
 import sys
 from pathlib import Path
 
-from jarvis_desktop import agent_integrations
+from atlas_desktop import agent_integrations
 
 
 def _context(args: argparse.Namespace) -> int:

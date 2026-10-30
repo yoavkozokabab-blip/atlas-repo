@@ -59,3 +59,14 @@ manual_mcp_tests/
 tmp*
 *_raw_results.json
 .vercel
+
+# Open-source cleanup — vendored toolchains and local scratch (regenerate, don't commit)
+# Build deps:     py -3 -m pip install --target .phase152_packaging_lib pyinstaller PyYAML
+# Accounts deps:  py -3 -m pip install --target accounts_service/.lib -r accounts_service/requirements.txt
+.phase152_packaging_lib/
+.phase152_inno/
+accounts_service/.lib/
+.phase1*_*/
+.tmp_phase*/
+staging/
+backups/

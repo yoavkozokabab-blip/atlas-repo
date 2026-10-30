@@ -54,11 +54,7 @@ VISIBLE_FILES = [
     "SECURITY.md",
     "TERMS.md",
     "docs/ATLAS_QUICKSTART.md",
-    "docs/CLEAN_INSTALL_TEST_PLAN.md",
     "docs/DIFFERENTIATION.md",
-    "docs/GITHUB_PUBLIC_CHECKLIST.md",
-    "docs/GITHUB_RELEASE_CLICK_BY_CLICK.md",
-    "docs/LAUNCH_COPY.md",
     "docs/LOCAL_FIRST.md",
     "docs/MCP_CLIENT_SETUP.md",
     "docs/MCP_REAL_CLIENT_TEST.md",
@@ -165,7 +161,6 @@ SCAN_ROOT_FILES = [
     "PRIVACY.md",
     "SECURITY.md",
     "TERMS.md",
-    "RC1_BUILD.md",
 ]
 
 # Only these extensions can render text to a user.

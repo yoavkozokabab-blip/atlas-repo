@@ -36,11 +36,13 @@ from verification_isolation import activate_isolated_atlas_data
 
 activate_isolated_atlas_data("bench-audit4-retrieval")
 
-ROOT = r"C:\J.A.R.V.I.S\local_atlas"
+# Atlas checkout to benchmark (default: this repository) and the folder holding the
+# cloned benchmark repos (default: <ROOT>/external_repos). See benchmarks/README.md.
+ROOT = os.environ.get("ATLAS_ROOT") or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 from atlas_desktop import api, context_pack as cp  # noqa: E402
 
-EXT = os.path.join(ROOT, "external_repos")
+EXT = os.environ.get("ATLAS_BENCH_REPOS") or os.path.join(ROOT, "external_repos")
 random.seed(1234)
 
 STOP = set("the a an of to in for and or where is are was how do does find fix add "
@@ -371,7 +373,10 @@ def main():
             recs = pack.get("recommended_files") or []
             a_ranked = [norm(it["path"]) for it in recs]
             a_tok = int(pack.get("token_estimate") or 0)
-            halluc = [p for p in a_ranked if p not in allpaths]
+            # A recommended file counts as invented only if it does not exist on disk.
+            # (Real non-.py/.js/.ts files, e.g. Rust sources, are not inventions.)
+            halluc = [it["path"] for it in recs
+                      if not os.path.exists(os.path.join(repo, it["path"]))]
             g_ranked = grep_rank(ftext, task)
             b_ranked = bm25_rank(bm, task)
             g_tok = sum(len(ftext.get(p, "")) for p in g_ranked) // 4

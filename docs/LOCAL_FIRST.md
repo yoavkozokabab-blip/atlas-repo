@@ -1,28 +1,28 @@
 # Security and Local-First Design
 
 Atlas runs on your machine. The scanning engine, the dependency/symbol graph, context
-packs, and the MCP server all execute locally. **Your source code is not uploaded to
-Atlas servers to provide the core product.** (Verified by source inspection of the desktop
-and MCP server, commit `69556ceeb`.)
+packs, and the MCP server all execute locally. **Your source code is never uploaded by
+Atlas.** The code is open source, so you can check this yourself.
 
 ## What stays on your machine
 
 - Source code, file contents, scans, indexes, and generated context packs.
 - The MCP server — it speaks JSON-RPC over local stdio, launched by your agent; traffic
   stays between your agent and the local Atlas process.
-- Desktop logs and usage analytics — written to your local Atlas data directory; not
-  transmitted. (Verified: `analytics.py` is local-file only, no remote endpoint.)
+- Desktop logs and the full local analytics log — written to your local Atlas data
+  directory.
 - The desktop's local web UI runs on `127.0.0.1` (your machine only).
 
 ## What may be sent to Atlas servers
 
-- If you create an account: your email and an authentication token, to log in and manage
-  your subscription. **Never your source code.** (Verified: the desktop auth client
-  excludes source code, file paths, and prompt text from request payloads —
-  `accounts_client.py`.)
-- Website usage produces standard server request logs (via Vercel).
-- Payments: Paddle is Merchant of Record for paid subscriptions. Atlas does not
-  store payment details or card numbers.
+- **Installed app only:** a small, fixed list of anonymous product events (for example
+  `real_repo_scan_completed` or which MCP tool was called) with a random installation ID.
+  Never code, names, paths or free text. Opt out in Settings → *Share anonymous usage
+  analytics*. Running from source sends nothing. Details: [PRIVACY.md](../PRIVACY.md).
+- **Installed app only:** a version check against the Atlas website.
+- **Only when you click Report an issue:** the bug report, with paths and credentials
+  redacted.
+- There are no accounts and no payments in the current release.
 
 > When you connect Atlas to an AI agent (Claude, Cursor, Codex), that agent receives the
 > context Atlas returns. From that point the data is governed by **your agent vendor's**
@@ -47,7 +47,8 @@ and MCP server, commit `69556ceeb`.)
 
 ## Current limitations
 
-- **Windows only** — macOS/Linux are not supported yet.
+- **Windows only** for the desktop app and installer. The MCP server runs from source
+  on the Python standard library.
 - The installer is **unsigned** — Windows SmartScreen may warn ("unknown publisher").
 - First scan of a very large repository can take up to a minute; results are cached after.
 - **No third-party security certification** yet.

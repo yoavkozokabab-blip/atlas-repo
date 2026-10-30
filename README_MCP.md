@@ -6,7 +6,7 @@ Atlas's repository intelligence. Ask, mid-task:
 > "Ask Atlas what files matter for implementing OAuth login."
 > "Ask Atlas what breaks if I change `sessions.py`."
 
-The server is **local-first** (nothing leaves your machine), **read-only** (it never
+The server is **local-first** (your code never leaves your machine), **read-only** (it never
 writes to your repo), and has **no third-party dependencies** — it runs on the Python
 already shipped with Atlas.
 
@@ -31,8 +31,9 @@ already shipped with Atlas.
 
 **18 tools total.**
 
-Every tool takes an absolute `repo_path`. Tools auto-scan on first use, so you don't have
-to call `atlas_scan_repo` first (they report `scanned_now` so you know if a scan happened).
+Every tool takes an absolute `repo_path`. Scan a repository once with `atlas_scan_repo`;
+until then the other tools return `requires_scan`. Scans are saved to disk and restored in
+later sessions after Atlas checks that the repository hasn't changed.
 
 ## Run it
 
@@ -51,13 +52,13 @@ py -m atlas_desktop.mcp_server
 ```
 
 It speaks newline-delimited JSON-RPC over stdio — that's how MCP clients launch it.
-Logs go to `<Atlas data dir>/mcp_server.log` (no telemetry). stdout carries the
+Logs go to `<Atlas data dir>/mcp_server.log` (no code or paths are ever sent anywhere; see PRIVACY.md). stdout carries the
 protocol, so it must stay clean — never run other Atlas commands on the same stream.
 
 > Status: **experimental for the installed app.** The stdio entry works in source
 > mode (verified). Launching it from the windowed `Atlas.exe` rebinds stdio from the
 > client's pipes; this path is implemented but not yet verified against every client.
-> See `docs/MCP_CLIENT_SETUP.md` and `reports/mcp_final_beta_readiness.md`.
+> See `docs/MCP_CLIENT_SETUP.md`.
 
 ## Smoke test
 
@@ -137,7 +138,10 @@ Atlas:  impacted_files: api/router.py, app.py ... tests_to_run: tests/test_throt
 
 ## Safety
 
-- No network calls in any tool. No secrets are ever returned (`atlas_repo_health`
-  whitelists only version/build/repo fields).
+- Tools never need the network to do their work, and no secrets are ever returned
+  (`atlas_repo_health` whitelists only version/build/repo fields). In the installed app
+  the MCP process may send the anonymous usage event described in
+  [PRIVACY.md](PRIVACY.md) (for example, which tool was called); from source, nothing
+  is sent.
 - No tool executes your input or writes to your repo. Scanning only reads source files.
 - Invalid paths and unscanned repos return structured errors with a `hint`.

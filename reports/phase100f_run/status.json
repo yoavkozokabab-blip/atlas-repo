@@ -1,4 +1,0 @@
-{
-  "status": "blocked",
-  "reason": "`ANTHROPIC_API_KEY` was not found in the environment or `.env` files."
-}
